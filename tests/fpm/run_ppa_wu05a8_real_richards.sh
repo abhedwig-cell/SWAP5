@@ -73,8 +73,7 @@ MODULE_SRC=(
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
-  src/process/macropore/mod_macropore_covering_layer_input.f90
-  src/runtime/mod_fmr_macropore_top_input.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
@@ -87,18 +86,21 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
-  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
-  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
+  src/runtime/mod_fmr_macropore_top_input.f90
+  src/process/macropore/mod_macropore_covering_layer_input.f90
   src/solver/mod_macropore_exchange_overlay_provider.f90
+  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
+  src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
+  src/process/mod_solute_macropore_exchange.f90
+  src/process/mod_solute_mobile_macro_salt_transport.f90
+  src/process/mod_solute_water_face_flux_reconstruction.f90
+  src/process/mod_solute_mobile_salt_state.f90
+  src/process/mod_root_salinity_response.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
   src/runtime/mod_fmr_committed_restart.f90
-  src/process/mod_solute_water_face_flux_reconstruction.f90
-  src/process/mod_solute_mobile_salt_state.f90
-  src/process/mod_solute_macropore_exchange.f90
-  src/process/mod_solute_mobile_macro_salt_transport.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
@@ -114,7 +116,18 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
   grep -Fq 'PPA_WU05A7_REAL_RICHARDS_RUNTIME=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_MATRIX_ONLY_SALT_REJECTS_MACRO_EXCHANGE=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_CANDIDATE=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_DISCARD_REPLAY_COMMIT_RESTART=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_RESTART_CHANGED_FORCING=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_JARVIS_SALINITY_RESPONSE=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_PROFILE_INIT=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_ENVELOPE_REJECT=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_TEMPORAL_REJECT_ROLLBACK_REPLAY=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_ADAPTIVE_RETRY=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_INTERVAL_RECEIPTS=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_UNIT_SALINITY_WATER_EQUIVALENCE=PASS_TEST_ONLY' "$OUT/out.txt"
+  grep -Fq 'PPA_WU05E_FMR_SALT_KERNEL_FAILURE_ROLLBACK=PASS_TEST_ONLY' "$OUT/out.txt"
   grep -Fq 'PPA_WU05E_FMR_TRACE_MAPPED_SALT_PROCESS=PASS_TEST_ONLY' "$OUT/out.txt"
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c     tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90 -o "$OUT/test_fmr_macro.o"

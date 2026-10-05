@@ -254,3 +254,16 @@ is historical and no longer the current contract.
 ### Macropore solute boundary audit (2026-10-04)
 
 `PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md` records the current source boundary. The accepted FMR water trace carries signed exchange by domain/node, matching macro-water start/end volumes, and ordered per-domain vertical faces; the A7 O0/O2 gate checks nonzero signals, source-sum identity, water closure, and exact retry/replay/restart identity. The stateless exchange kernel passes its O0/O2 arithmetic oracle but is not called by FMR. A typed macro dissolved-salt payload and clone/Restart v3 scaffold now exist, but live initialization/advancement, typed boundary-salt receipts, and atomic FMR candidate ownership remain absent, so the live E1 consumer still fails closed. Preserve PPA-WU05-F for frost.
+
+
+### Current live prototype follow-up (2026-10-05)
+
+The earlier fail-closed-only findings are historical. The restricted live FMR
+salt candidate and same-state Jarvis response have been recovered and advanced.
+The current compatibility/storage/initialization contract is
+[PPA_WU05E_LIVE_FMR_ENVELOPE.md](PPA_WU05E_LIVE_FMR_ENVELOPE.md); current
+implementation and unresolved dependencies are in
+`integration/audits/PPA_WU05E_STATUS.json`. Final local evidence is source-pinned
+in `PPA_WU05E_FMR_SALT_LOCAL_GATE.json`. No production qualification or canonical
+salinity admission is claimed. In-memory restart with a new backend must not
+be described as separate-process serialized restart evidence.

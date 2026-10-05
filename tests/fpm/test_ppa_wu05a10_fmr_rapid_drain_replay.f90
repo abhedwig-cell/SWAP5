@@ -221,6 +221,7 @@ contains
     mcfg%geometry=geometry_config
     mcfg%rate_template=rate_template
     mcfg%history_template=history_request
+    mcfg%matrix_area_fraction=1.0_real64-geometry_config%static_volume_cp/dz
     mcfg%rate_template%rapid%enabled=.true.
     mcfg%rate_template%rapid%drain_type=2
     mcfg%rate_template%rapid%drain_level_cm=-1.9_real64
@@ -241,10 +242,10 @@ contains
     initial%groundwater_level=-200.0_real64
     initial%macropore=macro
     initial%macropore%water_domain_cp=0.0_real64
-    initial%macropore%water_domain_cp(1,4)=0.50_real64
-    initial%macropore%water_domain_cp(1,3)=0.50_real64
-    initial%macropore%water_domain_cp(1,2)=0.50_real64
-    initial%macropore%water_domain_cp(1,1)=0.10_real64
+    initial%macropore%water_domain_cp(1,4)=0.25_real64
+    initial%macropore%water_domain_cp(1,3)=0.25_real64
+    initial%macropore%water_domain_cp(1,2)=0.25_real64
+    initial%macropore%water_domain_cp(1,1)=0.05_real64
 
     call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
     if(.not.state_ok)error stop 'A10 FMR rapid-drain committed init'
@@ -401,7 +402,7 @@ contains
     config%top_node=1
     allocate(config%static_volume_cp(numnod),config%domain_fraction(nd,numnod), &
          config%potential_bottom_domain(nd),config%dz(numnod),config%characteristic_diameter(numnod))
-    config%static_volume_cp=0.50_real64
+    config%static_volume_cp=0.25_real64
     config%domain_fraction=1.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz

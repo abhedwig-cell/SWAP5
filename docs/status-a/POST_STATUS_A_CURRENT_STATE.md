@@ -207,3 +207,68 @@ including the full bottom of a partially rooted node.
 See [canonical closeout](../audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md) for
 qualification, exact scope, legacy-source limitations and the remaining D4/D5 gaps.
 This does not admit salinity, frost, MICRO or general coupling combinations.
+
+## PPA-WU05-MIGMAC02 dynamic crack geometry
+
+PR #1019 canonically admits Kim clay direct option-1 shrinkage in the
+existing serialized Reference Richards macropore chain. Candidate moisture and
+accepted crack history derive subsidence, capacity, domain bottoms and top crack
+area. Existing exchange/top-input/rapid-drain owners consume that geometry;
+displacement enters the matrix receipt before acceptance. Retry and restart
+retain the accepted boundary. The explicit provider disables the inherited
+short-step source-freezing heuristic when geometry can change.
+
+The controlling scope, exact source postimages, independent oracles, O0/O2,
+A/B/A, smaller retry, restart, water closure and preservation evidence are in
+`integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json` and
+`docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md`. Canonical admission is recorded in
+`integration/audits/PPA_WU05_MIGMAC02_STATUS.json` with canonical merge `957b87d69888f1eb7ef5671f441563bd9b798687`. Peat/alternate fitting and additional surface/drain compositions
+remain outside this bounded admission. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC03 peat and rigid constitutive extension
+
+Direct regular Hendriks and three-segment peat laws, including alternating
+rigid/peat compartment profiles, are canonically admitted by PR #1020 in the existing Reference
+Richards macropore geometry/transaction chain. Optional typed law selectors
+preserve implicit Kim callers. No new water or restart owner is introduced.
+[Closeout](../audits/PPA_WU05_MIGMAC03_CLOSEOUT.md) bounds parameter validity and
+claims; `integration/audits/PPA_WU05_MIGMAC03_STATUS.json` records admission.
+Parameter fitting, mixed Kim/peat runtime and new mixed-law rapid-drain reference
+construction remain separate gaps. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC04 characteristic-point shrinkage input
+
+Kim clay input2 and the uniquely identifiable regular Hendriks peat input2
+branch are canonically admitted by PR #1021 as preparation of existing constitutive carriers.
+Clay preparation is analytic; peat preparation uses bounded, bracketed root
+finding against the exact B1.11 equation. No runtime/state/mass owner is added.
+[Closeout](../audits/PPA_WU05_MIGMAC04_CLOSEOUT.md) bounds input validity, numerical
+criteria and non-identifiable cases; `integration/audits/PPA_WU05_MIGMAC04_STATUS.json`
+records admission. Ambiguous fits and new mixed-law/drain compositions remain
+outside this scope. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC05 mixed constitutive Reference profiles
+
+PR #1022 canonically admits mixed Kim/direct Hendriks, Kim/three-segment peat and
+rigid/Kim/peat qualification in the existing serialized Reference geometry chain.
+This later admission closes the mixed Kim/peat runtime gap named in MIGMAC03/04.
+No production source or physical owner changes. Prepared carriers, accepted history,
+wetting displacement, retry, A/B/A and restart pass at O0/O2. Supplied-coefficient
+two-domain drainage composes; new mixed-law reference KD derivation remains open.
+See [closeout](../audits/PPA_WU05_MIGMAC05_CLOSEOUT.md) and its pinned qualification.
+Wider drain/surface compositions and whole-model equivalence remain excluded.
+Frozen Status A remains unchanged.
+
+## PPA-WU05-MIGMAC06 hydrostatic rapid-drain reference KD
+
+PR #1023 admits explicit pre-trial preparation of the existing immutable reference
+KD from hydraulic-owner supplied hydrostatic moisture and mixed constitutive laws.
+This closes the bounded mixed-law reference construction gap named in MIGMAC05.
+The source reference geometry, node tolerance, saturation cap and rigid barrier
+rules are preserved. Zero connectivity disables rapid drainage. No new water,
+state or restart owner is added. Supplied and adapter-derived Reference results
+agree at O0/O2, including wetting and two-domain rapid drainage; retry and restart
+pass. [Closeout](../audits/PPA_WU05_MIGMAC06_CLOSEOUT.md) pins source and gates.
+Multiple/within-compartment drains, covering-layer reference preparation and
+additional surface/whole-model compositions remain excluded. Frozen Status A
+and the incomplete broad migration denominator remain unchanged.

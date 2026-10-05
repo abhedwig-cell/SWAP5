@@ -84,3 +84,16 @@ distinct per-domain macro mass payload and Restart v3 layout/clone contract now
 exist in the shared FMR carrier. The live FMR route still rejects salt, and
 initialization, accepted exchange advancement, typed boundary receipts, and
 atomic candidate ownership remain open.
+
+
+### Current live prototype follow-up (2026-10-05)
+
+The earlier fail-closed-only findings are historical. The restricted live FMR
+salt candidate and same-state Jarvis response have been recovered and advanced.
+The current compatibility/storage/initialization contract is
+[PPA_WU05E_LIVE_FMR_ENVELOPE.md](PPA_WU05E_LIVE_FMR_ENVELOPE.md); current
+implementation and unresolved dependencies are in
+`integration/audits/PPA_WU05E_STATUS.json`. Final local evidence is source-pinned
+in `PPA_WU05E_FMR_SALT_LOCAL_GATE.json`. No production qualification or canonical
+salinity admission is claimed. In-memory restart with a new backend must not
+be described as separate-process serialized restart evidence.

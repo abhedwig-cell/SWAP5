@@ -105,6 +105,11 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
   use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
+  use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
+  use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
+       advance_mobile_macro_salt_trial, initialize_mobile_macro_salt_state, MACRO_SALT_OK, MACRO_SALT_INVALID
+  use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
+  use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
@@ -245,6 +250,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    logical :: root_salinity_active = .false.
+    real(real64) :: solute_tscf = 0.0_real64
+    real(real64) :: saltmax_mg_cm3 = 0.0_real64
+    real(real64) :: saltslope_cm3_mg = 0.0_real64
+    real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
     type(root_compensation_config_t) :: root_compensation
     type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     logical :: macropore_active = .false.
@@ -355,6 +365,7 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_water_flux_substep_trace_t
     real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
+    type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
          macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
@@ -373,6 +384,17 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_compensation_drought_loss = 0.0_real64
     real(real64) :: root_compensation_oxygen_loss = 0.0_real64
     real(real64), allocatable :: root_compensation_final_sink(:)
+    logical :: root_salinity_executed = .false.
+    integer :: root_salinity_status = 0
+    real(real64) :: root_salinity_base_uptake = 0.0_real64
+    real(real64) :: root_salinity_final_uptake = 0.0_real64
+    real(real64) :: root_salinity_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_salinity_alpha(:), root_salinity_cml_mg_cm3(:)
+    logical :: salt_transport_executed = .false.
+    integer :: salt_transport_status = 0
+    real(real64) :: salt_transport_closure_mg_cm2 = 0.0_real64
+    real(real64) :: salt_root_uptake_mg_cm2 = 0.0_real64
+    real(real64), allocatable :: salt_qdra_signed_out_mg_cm2(:)
     logical :: solver_executed = .false.
     logical :: accepted_water_flux_trace_available = .false.
     type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
@@ -550,6 +572,15 @@ module mod_fmr_serialized_reference_backend
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
+    logical :: root_salinity_active = .false.
+    real(real64) :: solute_tscf = 0.0_real64
+    real(real64) :: saltmax_mg_cm3 = 0.0_real64
+    real(real64) :: saltslope_cm3_mg = 0.0_real64
+    real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
+    real(real64) :: temporal_tolerance_cm = 0.0_real64
+    integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
+    type(fmr_c_drain_salt_forcing_t) :: c_drain_salt_forcing
+    type(fmr_soil_salt_boundary_forcing_t) :: soil_salt_boundary_forcing
     logical :: macropore_active = .false.
     type(fmr_macropore_physical_config_t), allocatable :: macropore_config
     type(fmr_macropore_top_input_forcing_t) :: macropore_top_input_forcing
@@ -656,6 +687,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_c_drain_salt_matches_trial
   public :: fmr_soil_salt_boundary_matches_trial
   public :: fmr_new_b110_committed_state
+  public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
@@ -967,6 +999,38 @@ contains
     if (.not. available) return
     call self%temporal_history%snapshot(derivative, available)
   end subroutine fmr_b110_temporal_history_snapshot
+
+  subroutine fmr_initialize_mobile_macro_salt_profile(state, node_thickness_cm, matrix_concentration_mg_cm3, &
+       macro_concentration_mg_cm3, status, matrix_area_fraction)
+    type(fmr_b110_physical_state_t), intent(inout) :: state
+    real(real64), intent(in) :: node_thickness_cm(:), matrix_concentration_mg_cm3(:)
+    real(real64), intent(in) :: macro_concentration_mg_cm3(:,:)
+    integer, intent(out) :: status
+    real(real64), intent(in), optional :: matrix_area_fraction(:)
+    type(mobile_macro_salt_state_t) :: initialized
+    real(real64), allocatable :: matrix_storage_thickness(:)
+
+    status = MACRO_SALT_INVALID
+    ! Existing inventory is authoritative, particularly after warm restart.
+    if (allocated(state%salt)) return
+    if (.not. allocated(state%water_content) .or. .not. allocated(state%macropore)) return
+    if (.not. state%macropore%ready()) return
+    if (state%active_nodes /= size(state%water_content) .or. &
+        state%macropore%num_nodes /= state%active_nodes) return
+    matrix_storage_thickness=node_thickness_cm
+    if (present(matrix_area_fraction)) then
+      if (size(matrix_area_fraction)/=size(node_thickness_cm)) return
+      if (any(.not.ieee_is_finite(matrix_area_fraction)).or.any(matrix_area_fraction<=0.0_real64).or. &
+          any(matrix_area_fraction>1.0_real64)) return
+      matrix_storage_thickness=node_thickness_cm*matrix_area_fraction
+    end if
+    call initialize_mobile_macro_salt_state(matrix_storage_thickness, state%water_content, &
+         state%macropore%water_domain_cp, matrix_concentration_mg_cm3, macro_concentration_mg_cm3, initialized, status)
+    if (status /= MACRO_SALT_OK) return
+    allocate(state%salt)
+    call move_alloc(initialized%matrix_mass_mg_cm2, state%salt%mass_mg_cm2)
+    call move_alloc(initialized%macro_mass_mg_cm2, state%salt%macro_mass_mg_cm2)
+  end subroutine fmr_initialize_mobile_macro_salt_profile
 
   subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok)
     type(kernel_committed_state_t), intent(out) :: committed
@@ -1695,8 +1759,34 @@ contains
         call reject_backend_trial(result, candidate, diagnostics)
         return
       end if
-      ! Active salt layouts remain fail-closed until an FMR-owned candidate and
-      ! its complete boundary receipts can be staged and discarded atomically.
+      if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE .or. &
+          .not. parameters%macropore_active .or. &
+          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+          .not. allocated(parameters%macropore) .or. &
+          .not. ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2) .or. &
+          parameters%salt_temporal_tolerance_mg_cm2 <= 0.0_real64) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (parameters%snow_active .or. parameters%frost_active .or. parameters%soil_temperature_active .or. &
+          parameters%drainage_response_active .or. parameters%black_evaporation_active .or. &
+          parameters%boesten_evaporation_active .or. self%model%rfm_configuration%enabled .or. &
+          self%model%fixed_weir_surface_water_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (.not. allocated(parameters%macropore%matrix_area_fraction)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (parameters%macropore%shrinkage%enabled .or. &
+          any(.not.ieee_is_finite(parameters%macropore%matrix_area_fraction)) .or. &
+          any(parameters%macropore%matrix_area_fraction<=0.0_real64) .or. &
+          any(parameters%macropore%matrix_area_fraction>1.0_real64)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    else if (parameters%root_salinity_active) then
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
@@ -1847,6 +1937,12 @@ contains
         self%model%trusted_parameter_source => parameters
       end if
     end if
+    self%model%solute_state_layout_id = template%solute_state_layout_id
+    self%model%temporal_tolerance_cm = config%transaction%temporal_tolerance
+    self%model%c_drain_salt_forcing = fmr_c_drain_salt_forcing_t()
+    self%model%soil_salt_boundary_forcing = fmr_soil_salt_boundary_forcing_t()
+    if (allocated(forcing%c_drain_salt)) self%model%c_drain_salt_forcing = forcing%c_drain_salt
+    if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
     if (allocated(forcing%legacy_swbotb5_control)) then
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_hbot5_proposal)
@@ -2129,6 +2225,17 @@ contains
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
+      if (parameters%root_salinity_active) then
+        ok = ok .and. parameters%root_extraction_active .and. parameters%macropore_active .and. &
+             parameters%root_compensation%method == ROOT_COMP_JARVIS .and. &
+             ieee_is_finite(parameters%solute_tscf) .and. parameters%solute_tscf >= 0.0_real64 .and. &
+             parameters%solute_tscf <= 10.0_real64 .and. ieee_is_finite(parameters%saltmax_mg_cm3) .and. &
+             parameters%saltmax_mg_cm3 >= 0.0_real64 .and. parameters%saltmax_mg_cm3 <= 100.0_real64 .and. &
+             ieee_is_finite(parameters%saltslope_cm3_mg) .and. parameters%saltslope_cm3_mg >= 0.0_real64 .and. &
+             parameters%saltslope_cm3_mg <= 1.0_real64 .and. &
+             ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2) .and. &
+             parameters%salt_temporal_tolerance_mg_cm2 > 0.0_real64
+      end if
       if(allocated(parameters%bartholomeus)) then
         ok=ok .and. valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)
         call select_fmr_bartholomeus_route(parameters%bartholomeus%selection,oxygen_route,waterfilm_mode)
@@ -2220,6 +2327,11 @@ contains
       end if
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
+      self%root_salinity_active = parameters%root_salinity_active
+      self%solute_tscf = parameters%solute_tscf
+      self%saltmax_mg_cm3 = parameters%saltmax_mg_cm3
+      self%saltslope_cm3_mg = parameters%saltslope_cm3_mg
+      self%salt_temporal_tolerance_mg_cm2 = parameters%salt_temporal_tolerance_mg_cm2
       self%root_compensation = parameters%root_compensation
       if (self%root_compensation%method < ROOT_COMP_OFF .or. self%root_compensation%method > ROOT_COMP_WALSUM) return
       if (self%root_compensation%method /= ROOT_COMP_OFF .and. .not. self%root_extraction_active) return
@@ -2716,6 +2828,7 @@ contains
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
     type(macropore_runtime_result_t) :: macropore_result
+    type(mobile_macro_salt_receipt_t) :: salt_receipt
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
@@ -2725,9 +2838,10 @@ contains
     type(soil_temperature_field_view_t) :: oxygen_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:)
+    real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:)
     real(real64),allocatable :: trace_macro_water_start(:,:)
-    real(real64) :: atmospheric_ctop
-    integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes
+    real(real64) :: atmospheric_ctop,salinity_loss_total,salinity_loss_rate
+    integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes,salinity_status,salt_status
     logical :: publish_root_result
     type(black_evaporation_forcing_t) :: black_process_forcing
     type(black_evaporation_result_t) :: black_result
@@ -3066,6 +3180,30 @@ contains
           return
         end if
       end if
+      salinity_loss_total = 0.0_real64
+      if (self%root_salinity_active) then
+        if (.not. allocated(physical%salt) .or. .not. allocated(physical%macropore) .or. &
+            .not. allocated(self%root_potential_sink)) return
+        if (.not. physical%salt%ready(physical%active_nodes, physical%macropore%num_domains)) return
+        call evaluate_mobile_root_salinity_sink(physical%salt%mass_mg_cm2,physical%water_content, &
+             self%soil_parameters%dz*self%macropore_config%matrix_area_fraction, &
+             self%saltmax_mg_cm3,self%saltslope_cm3_mg,self%root_potential_sink,salinity_cml,salinity_alpha, &
+             salinity_sink,salinity_node_loss,salinity_loss_rate,salinity_status)
+        self%last_observation%root_salinity_executed = .true.
+        self%last_observation%root_salinity_status = salinity_status
+        if (salinity_status /= SALINITY_OK) return
+        if (.not. associated(self%qrot) .or. size(self%qrot) /= size(salinity_alpha)) return
+        root_after_oxygen = self%qrot
+        if (.not. allocated(oxygen_factors)) then
+          allocate(oxygen_factors(size(self%qrot)))
+          oxygen_factors = 1.0_real64
+        end if
+        self%qrot = self%qrot * salinity_alpha
+        self%last_observation%root_salinity_base_uptake = sum(root_after_oxygen)
+        self%last_observation%root_salinity_final_uptake = sum(self%qrot)
+        self%last_observation%root_salinity_alpha = salinity_alpha
+        self%last_observation%root_salinity_cml_mg_cm3 = salinity_cml
+      end if
       if (self%root_compensation%method /= ROOT_COMP_OFF) then
         block
           type(root_water_uptake_flux_result_t) :: compensation_base, compensation_final
@@ -3076,8 +3214,20 @@ contains
           compensation_base%root_extraction_sink = self%qrot
           compensation_base%actual_uptake_total = sum(self%qrot)
           compensation_base_diagnostics%drought_reduction_total = self%root_drought_reduction_total
-          oxygen_reduction_total = sum(self%qrot_unmodified)-compensation_base%actual_uptake_total
-          if(allocated(oxygen_factors).and.self%root_drought_reduction_total>0.0_real64) then
+          if (self%root_salinity_active) then
+            oxygen_reduction_total = sum(self%qrot_unmodified)-sum(root_after_oxygen)
+            if (.not. allocated(self%root_potential_sink)) return
+            if (abs(sum(self%root_potential_sink)-self%root_potential_transpiration) > &
+                256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                 salinity_factor=salinity_alpha,salinity_loss=salinity_loss_total)
+            if (attribution_status /= ROOT_COMP_OK) return
+          else
+            oxygen_reduction_total = sum(self%qrot_unmodified)-compensation_base%actual_uptake_total
+          end if
+          if(.not.self%root_salinity_active.and.allocated(oxygen_factors).and. &
+             self%root_drought_reduction_total>0.0_real64) then
             ! Mixed stress requires the existing drought owner's potential nodes.
             ! Scalar sequential losses do not reproduce B1.11 apportionment.
             if(.not.allocated(self%root_potential_sink)) return
@@ -3089,13 +3239,15 @@ contains
           end if
           call apply_root_uptake_compensation(self%root_compensation,self%root_potential_transpiration, &
                compensation_base,compensation_base_diagnostics,oxygen_reduction_total,compensation_final, &
-               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz)
+               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz, &
+               salinity_loss_total)
           self%last_observation%root_compensation_executed=.true.
           self%last_observation%root_compensation_status=compensation_status
           self%last_observation%root_compensation_base_uptake=compensation_base%actual_uptake_total
           if(compensation_status/=ROOT_COMP_EXEC_OK) return
           self%last_observation%root_compensation_drought_loss=compensation_diagnostics%drought_reduction_total
           self%last_observation%root_compensation_oxygen_loss=compensation_diagnostics%oxygen_reduction_total
+          self%last_observation%root_salinity_reduction_total=compensation_diagnostics%salinity_reduction_total
           self%qrot=compensation_final%root_extraction_sink
           self%last_observation%root_compensation_final_uptake=compensation_final%actual_uptake_total
           self%last_observation%root_compensation_final_sink=compensation_final%root_extraction_sink
@@ -3223,7 +3375,8 @@ contains
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
       select type (physical_macro => state)
       type is (fmr_b110_macropore_reduction_state_t)
-        if(self%accepted_water_flux_trace_enabled)then
+        if(self%accepted_water_flux_trace_enabled.or. &
+           self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE)then
           if(allocated(physical_macro%macropore%water_domain_cp))then
             trace_macro_water_start=physical_macro%macropore%water_domain_cp
           else
@@ -3236,17 +3389,22 @@ contains
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
                top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
-               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         else
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation)
+               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
         if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
              physical_macro%reduction_continuation=macropore_result%reduction_candidate
       class is (fmr_b110_physical_state_t)
-        if(self%accepted_water_flux_trace_enabled)then
+        if(self%accepted_water_flux_trace_enabled.or. &
+           self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE)then
           if(allocated(physical_macro%macropore%water_domain_cp))then
             trace_macro_water_start=physical_macro%macropore%water_domain_cp
           else
@@ -3259,12 +3417,16 @@ contains
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
                top_input=self%macropore_top_input_forcing, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
-               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day)
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         else
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing)
+               top_input=self%macropore_top_input_forcing, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
       class default
         return
@@ -3334,6 +3496,26 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE) return
+      select type (salt_physical => state)
+      class is (fmr_b110_physical_state_t)
+        call advance_fmr_mobile_macro_salt_step(self,salt_physical,request,solve_result,macropore_result, &
+             trace_macro_water_start,t0,t1,salt_receipt,salt_status)
+        if (salt_status /= MACRO_SALT_OK) then
+          self%last_observation%salt_transport_executed = .true.
+          self%last_observation%salt_transport_status = salt_status
+          return
+        end if
+        self%last_observation%salt_transport_executed = .true.
+        self%last_observation%salt_transport_status = salt_status
+        self%last_observation%salt_transport_closure_mg_cm2 = salt_receipt%closure_error_mg_cm2
+        self%last_observation%salt_root_uptake_mg_cm2 = sum(salt_receipt%root_solute_uptake_mg_cm2)
+        self%last_observation%salt_qdra_signed_out_mg_cm2 = salt_receipt%qdra_signed_out_mg_cm2
+      class default
+        return
+      end select
+    end if
     if (self%drainage_qbot_smooth_freatic_projection) then
       call project_fmr_qbot_smooth_groundwater_level(self%soil_parameters, solve_result%candidate_state, &
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
@@ -3511,7 +3693,7 @@ contains
         else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
              macropore_result%exchange_rate_node,macropore_result%exchange_rate_domain_cp,trace_macro_water_start, &
              macropore_result%macropore_candidate%water_domain_cp, &
-             macropore_result%vertical_flux%vertical_face_rate)) then
+             macropore_result%vertical_flux%vertical_face_rate,salt_receipt=salt_receipt)) then
           self%accepted_water_flux_trace_failed = .true.
         end if
       else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1)) then
@@ -3521,8 +3703,82 @@ contains
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
 
+  subroutine advance_fmr_mobile_macro_salt_step(self, physical, request, solve_result, macropore_result, &
+       macro_water_start, t0, t1, receipt, status)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(fmr_b110_physical_state_t), intent(inout) :: physical
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    type(macropore_runtime_result_t), intent(in) :: macropore_result
+    real(real64), intent(in) :: macro_water_start(:,:), t0, t1
+    type(mobile_macro_salt_receipt_t), intent(out) :: receipt
+    integer, intent(out) :: status
+
+    type(mobile_macro_salt_state_t) :: committed_salt, candidate_salt
+    real(real64), allocatable :: matrix_faces(:), net_source(:), matrix_storage_thickness(:)
+    real(real64) :: closure, dt
+    integer :: face_status, n, nd
+
+    receipt = mobile_macro_salt_receipt_t()
+    status = MACRO_SALT_INVALID
+    if (.not. allocated(physical%salt) .or. .not. allocated(physical%macropore)) return
+    if (.not. associated(self%soil_parameters) .or. &
+        .not. allocated(self%soil_salt_boundary_forcing%macropore_top_mg_cm3) .or. &
+        .not. allocated(self%soil_salt_boundary_forcing%macropore_bottom_mg_cm3)) return
+    if (.not. associated(self%qrot) .or. .not. associated(self%qssdi) .or. .not. associated(self%qdra)) return
+    if (.not. allocated(request%base_state%water_content) .or. &
+        .not. allocated(solve_result%candidate_state%water_content)) return
+    if (.not. allocated(macropore_result%exchange_rate_node) .or. &
+        .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
+        .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
+        .not. allocated(macropore_result%macropore_candidate%water_domain_cp)) return
+    ! This binding has no salt pools for accepted/returned macropore surface
+    ! water, covering, or rapid drainage. Keep those routes explicitly closed.
+    if (macropore_result%requested_top_input_cm /= 0.0_real64 .or. &
+        macropore_result%accepted_top_input_cm /= 0.0_real64 .or. &
+        macropore_result%returned_surface_cm /= 0.0_real64 .or. &
+        macropore_result%covered_internal_transfer_cm /= 0.0_real64 .or. &
+        macropore_result%rapid_external_outflow_cm /= 0.0_real64) return
+
+    n = physical%active_nodes
+    nd = physical%macropore%num_domains
+    dt = t1 - t0
+    if (n <= 0 .or. nd <= 0 .or. dt <= 0.0_real64) return
+    if (.not. physical%salt%ready(n, nd)) return
+    if (size(self%soil_parameters%dz) /= n .or. size(self%qrot) /= n .or. size(self%qssdi) /= n .or. &
+        size(self%qdra, 2) /= n .or. any(shape(macro_water_start) /= [nd,n]) .or. &
+        any(shape(macropore_result%exchange_rate_domain_cp) /= [nd,n]) .or. &
+        any(shape(macropore_result%vertical_flux%vertical_face_rate) /= [nd,n+1]) .or. &
+        any(shape(macropore_result%macropore_candidate%water_domain_cp) /= [nd,n])) return
+    if (physical%salt%cdrain_source_id /= 0_int64 .and. &
+        physical%salt%cdrain_source_id /= self%c_drain_salt_forcing%source_id) return
+
+    net_source = self%qssdi - sum(self%qdra, dim=1) - self%qrot + macropore_result%exchange_rate_node
+    matrix_storage_thickness=self%soil_parameters%dz*self%macropore_config%matrix_area_fraction
+    call reconstruct_interval_water_face_flux(matrix_storage_thickness, request%base_state%water_content, &
+         solve_result%candidate_state%water_content, net_source, -solve_result%top_flux, -solve_result%bottom_flux, &
+         dt, max(1.0e-12_real64, self%compartment_balance_tolerance / dt), matrix_faces, closure, face_status)
+    if (face_status /= WATER_FACE_FLUX_OK) return
+
+    committed_salt%matrix_mass_mg_cm2 = physical%salt%mass_mg_cm2
+    committed_salt%macro_mass_mg_cm2 = physical%salt%macro_mass_mg_cm2
+    call advance_mobile_macro_salt_trial(committed_salt, matrix_storage_thickness, &
+         request%base_state%water_content, solve_result%candidate_state%water_content, macro_water_start, &
+         macropore_result%macropore_candidate%water_domain_cp, matrix_faces, &
+         macropore_result%vertical_flux%vertical_face_rate, macropore_result%exchange_rate_domain_cp, self%qrot, &
+         self%soil_salt_boundary_forcing%matrix_top_mg_cm3, self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3, &
+         self%soil_salt_boundary_forcing%macropore_top_mg_cm3, self%soil_salt_boundary_forcing%macropore_bottom_mg_cm3, &
+         self%solute_tscf, dt, candidate_salt, receipt, status, qdra_rate=self%qdra, qssdi_rate=self%qssdi, &
+         cdrain_mg_cm3=self%c_drain_salt_forcing%concentration_mg_cm3, cdrain_available=.true.)
+    if (status /= MACRO_SALT_OK) return
+    physical%salt%mass_mg_cm2 = candidate_salt%matrix_mass_mg_cm2
+    physical%salt%macro_mass_mg_cm2 = candidate_salt%macro_mass_mg_cm2
+    physical%salt%cdrain_source_id = self%c_drain_salt_forcing%source_id
+    physical%salt%cdrain_revision = self%c_drain_salt_forcing%revision
+  end subroutine advance_fmr_mobile_macro_salt_step
+
   logical function append_accepted_water_flux_substep(self,request,solve_result,t0,t1,macropore_exchange, &
-       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate) result(ok)
+       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate,salt_receipt) result(ok)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solve_result
@@ -3531,6 +3787,7 @@ contains
     real(real64), intent(in), optional :: macropore_exchange_domain(:,:)
     real(real64), intent(in), optional :: macropore_water_start(:,:),macropore_water_end(:,:)
     real(real64), intent(in), optional :: macropore_vertical_face_rate(:,:)
+    type(mobile_macro_salt_receipt_t), intent(in), optional :: salt_receipt
     type(fmr_water_flux_substep_trace_t), allocatable :: grown(:)
     type(fmr_water_flux_substep_trace_t) :: step
     integer :: n, prior
@@ -3597,6 +3854,12 @@ contains
         any(.not. ieee_is_finite(step%net_node_source))) return
 
     prior = 0
+    if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      if (.not. present(salt_receipt)) return
+      if (.not. allocated(salt_receipt%root_solute_uptake_mg_cm2)) return
+      allocate(step%salt_receipt)
+      step%salt_receipt = salt_receipt
+    end if
     if (allocated(self%accepted_water_flux_substeps)) prior = size(self%accepted_water_flux_substeps)
     allocate(grown(prior+1))
     if (prior > 0) grown(1:prior) = self%accepted_water_flux_substeps
@@ -3989,6 +4252,24 @@ contains
         value = max(value, maxval(abs(full%macropore%water_domain_cp-half%macropore%water_domain_cp)))
         value = max(value, maxval(abs(full%macropore%volume_domain_cp-half%macropore%volume_domain_cp)))
         value = max(value, maxval(abs(full%macropore%dynamic_volume_cp-half%macropore%dynamic_volume_cp)))
+        if (self%solute_state_layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE) then
+          if (.not. allocated(full%salt) .or. .not. allocated(half%salt)) then
+            value = huge(0.0_real64)
+            return
+          end if
+          if (.not. full%salt%ready(n, full%macropore%num_domains) .or. &
+              .not. half%salt%ready(n, half%macropore%num_domains) .or. &
+              .not. ieee_is_finite(self%salt_temporal_tolerance_mg_cm2) .or. &
+              self%salt_temporal_tolerance_mg_cm2 <= 0.0_real64 .or. &
+              .not. ieee_is_finite(self%temporal_tolerance_cm) .or. self%temporal_tolerance_cm <= 0.0_real64) then
+            value = huge(0.0_real64)
+            return
+          end if
+          value = max(value, maxval(abs(full%salt%mass_mg_cm2-half%salt%mass_mg_cm2)) / &
+               self%salt_temporal_tolerance_mg_cm2 * self%temporal_tolerance_cm)
+          value = max(value, maxval(abs(full%salt%macro_mass_mg_cm2-half%salt%macro_mass_mg_cm2)) / &
+               self%salt_temporal_tolerance_mg_cm2 * self%temporal_tolerance_cm)
+        end if
       class default
         return
       end select

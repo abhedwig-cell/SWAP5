@@ -31,11 +31,12 @@ program test_ppa_wu05a7_real_richards_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t, fmr_water_flux_substep_trace_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
-       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg, &
+       fmr_new_b110_committed_state, fmr_initialize_mobile_macro_salt_profile, prepare_fmr_b110_default_mvg, &
        fmr_c_drain_salt_forcing_t, FMR_C_DRAIN_UNIT_MG_CM3, fmr_c_drain_salt_covers_interval, &
        fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_forcing_t, &
        fmr_soil_salt_boundary_matches_trial
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
+  use mod_root_uptake_compensation, only: root_compensation_config_t, ROOT_COMP_JARVIS, ROOT_COMP_SALINITY
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK, FMR_RESTART_SCHEMA_VERSION, &
@@ -417,7 +418,7 @@ contains
          error stop 'failed paired salt candidate published a partial receipt'
     if(any(committed_salt%mass_mg_cm2/=0.4_real64*water_trace(1)%water_start*node_thickness).or. &
        any(committed_salt%concentration_mg_cm3/=0.4_real64))error stop 'failed salt candidate mutated committed state'
-    print '(a)','PPA_WU05E_FMR_SALT_CANDIDATE=FAIL_CLOSED_UNOWNED_MATRIX_EXCHANGE'
+    print '(a)','PPA_WU05E_MATRIX_ONLY_SALT_REJECTS_MACRO_EXCHANGE=PASS_TEST_ONLY'
   end subroutine exercise_salt_candidate_rejects_unowned_exchange
 
   subroutine exercise_macro_salt_exchange_trace(water_trace,node_thickness)
@@ -614,27 +615,37 @@ contains
 
   subroutine exercise_serialized_fmr(trace_mode)
     logical, intent(in), optional :: trace_mode
-    type(fmr_serialized_reference_backend_t) :: backend, restored_backend
+    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, salt_restored_backend
     type(fmr_serialized_physical_observation_t) :: fmr_observation
     type(fmr_serialized_physical_observation_t) :: replay_observation, next_observation, restored_next_observation
     type(fmr_b110_physical_parameters_t), target :: fparams
     type(fmr_b110_physical_forcing_t) :: forcing
     type(fmr_b110_physical_state_t) :: initial
+    type(fmr_b110_physical_state_t) :: salt_initial, salt_invalid_initial
     type(fmr_macropore_physical_config_t) :: mcfg
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
-    type(kernel_committed_state_t) :: committed, restored
-    type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
-    type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate
-    type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result
+    type(kernel_committed_state_t) :: committed, restored, salt_committed, salt_invalid_committed
+    type(kernel_committed_state_t) :: salt_restart_registry(1), salt_restored_registry(1)
+    type(fmr_template_t) :: salt_template_registry(1)
+    type(fmr_logical_column_t) :: salt_column_registry(1)
+    type(fmr_committed_restart_bundle_t) :: salt_restart_bundle
+    type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint, salt_checkpoint
+    type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate, salt_candidate
+    type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result, salt_result
     type(kernel_diagnostics_t) :: kdiag, replay_diag, next_diag, restored_next_diag
+    type(kernel_diagnostics_t) :: salt_diagnostics
+    type(fmr_serialized_physical_observation_t) :: salt_observation
     type(kernel_persistence_snapshot_t) :: persisted
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
-         restored_state, next_state, restored_next_state
+         restored_state, next_state, restored_next_state, salt_state_snapshot, salt_candidate_snapshot, &
+         salt_replay_snapshot
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
     logical :: trace_requested
-    integer :: commit_status, persistence_status, trace_i, trace_status
+    logical :: salt_committed_ok, salt_available, salt_did_commit
+    integer :: commit_status, persistence_status, trace_i, trace_status, salt_commit_status, salt_restart_status
+    logical :: salt_restart_exported, salt_restart_restored
     real(real64), allocatable :: trace_faces(:)
     real(real64) :: trace_closure, max_trace_closure, max_trace_macro_exchange, max_trace_macro_water_change
     real(real64) :: max_trace_macro_vertical_face
@@ -666,17 +677,17 @@ contains
     fparams%ponding_tolerance=tol
     fparams%root_extraction_active=.true.
     fparams%macropore_active=.true.
+    fparams%salt_temporal_tolerance_mg_cm2=1.0e-5_real64
     call prepare_fmr_b110_default_mvg(fparams,prepared)
     if(.not.prepared)error stop 'A8 FMR prepared MVG'
 
     mcfg%geometry=geometry_config
     mcfg%rate_template=rate_template
     mcfg%history_template=history_request
+    mcfg%matrix_area_fraction=1.0_real64-geometry_config%static_volume_cp/dz
     if(.not.mcfg%valid_for_nodes(numnod))error stop 'A8 FMR config validity'
     allocate(fparams%macropore)
     fparams%macropore=mcfg
-    allocate(fparams%macropore%matrix_area_fraction(numnod))
-    fparams%macropore%matrix_area_fraction=1.0_real64
 
     initial%active_nodes=numnod
     allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
@@ -702,7 +713,7 @@ contains
     forcing%subsurface_irrigation_source(max(1,numnod-1))=2.0e-6_real64
     forcing%drainage_flux_by_level(1,max(1,numnod-1))=2.0e-6_real64
     forcing%drainage_flux_by_level(2,max(1,numnod-1))=-1.0e-6_real64
-    forcing%root_extraction_sink(numnod)=2.0e-4_real64
+      forcing%root_extraction_sink(numnod)=2.0e-4_real64
 
     column%column_id=lineage
     column%template_id=505801_int64
@@ -711,6 +722,7 @@ contains
     column%forcing_handle=1_int64
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=column%template_id
+    template%state_layout_id=layout_id
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
     template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -773,13 +785,285 @@ contains
            forcing%soil_salt_boundary%macropore_bottom_mg_cm3(fparams%macropore%geometry%num_domains))
       forcing%soil_salt_boundary%macropore_top_mg_cm3=.3_real64
       forcing%soil_salt_boundary%macropore_bottom_mg_cm3=.3_real64
-      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
-           kres,candidate,kdiag)
-      if(kres%completed.or.candidate%ready())error stop 'unqualified active salt trial opened'
+      allocate(forcing%root_potential_sink(numnod))
+      forcing%root_potential_sink=forcing%root_extraction_sink
+      forcing%root_potential_transpiration=sum(forcing%root_potential_sink)
+      forcing%root_drought_reduction_total=0.0_real64
+      fparams%root_salinity_active=.true.
+      fparams%root_compensation=root_compensation_config_t()
+      fparams%root_compensation%method=ROOT_COMP_JARVIS
+      fparams%root_compensation%stressor=ROOT_COMP_SALINITY
+      fparams%root_compensation%alpha_critical=.9_real64
+      fparams%saltmax_mg_cm3=0.0_real64
+      fparams%saltslope_cm3_mg=1.0_real64
+      fparams%solute_tscf=1.0_real64
+      salt_initial=initial
+      call fmr_initialize_mobile_macro_salt_profile(salt_initial,fparams%dz, &
+           spread(-.3_real64,1,numnod),salt_initial%macropore%water_domain_cp,trace_status)
+      if(trace_status==MACRO_SALT_OK.or.allocated(salt_initial%salt).or. &
+         any(salt_initial%water_content/=initial%water_content))error stop 'invalid salt initialization leaked state'
+      call fmr_initialize_mobile_macro_salt_profile(salt_initial,fparams%dz, &
+           spread(.3_real64,1,numnod),reshape(spread(.3_real64,1, &
+           fparams%macropore%geometry%num_domains*numnod),[fparams%macropore%geometry%num_domains,numnod]),trace_status, &
+           matrix_area_fraction=fparams%macropore%matrix_area_fraction)
+      if(trace_status/=MACRO_SALT_OK.or..not.allocated(salt_initial%salt))error stop 'typed salt profile initialization'
+      call fmr_initialize_mobile_macro_salt_profile(salt_initial,fparams%dz, &
+           spread(.9_real64,1,numnod),salt_initial%macropore%water_domain_cp,trace_status)
+      if(trace_status==MACRO_SALT_OK.or.any(salt_initial%salt%mass_mg_cm2/= &
+           .3_real64*initial%water_content*fparams%dz*fparams%macropore%matrix_area_fraction))error stop 'salt profile reapplied to existing inventory'
+      print '(a)','PPA_WU05E_FMR_SALT_PROFILE_INIT=PASS_TEST_ONLY'
+      call fmr_new_b110_committed_state(salt_committed,lineage,salt_initial,0.0_real64,salt_committed_ok)
+      if(.not.salt_committed_ok)error stop 'active macro salt committed state initialization'
+      call salt_committed%capture_checkpoint(salt_checkpoint,salt_available)
+      if(.not.salt_available)error stop 'active macro salt checkpoint capture'
+      fparams%macropore%matrix_area_fraction=0.0_real64
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(salt_result%completed.or.salt_candidate%ready().or.salt_diagnostics%admission_rejections/=1) &
+           error stop 'invalid salt matrix area weighting admitted'
+      fparams%macropore%matrix_area_fraction=mcfg%matrix_area_fraction
+      fparams%macropore%shrinkage%enabled=.true.
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(salt_result%completed.or.salt_candidate%ready().or.salt_diagnostics%admission_rejections/=1) &
+           error stop 'unqualified shrinking salt route admitted'
+      fparams%macropore%shrinkage%enabled=.false.
+      fparams%snow_active=.true.
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(salt_result%completed.or.salt_candidate%ready().or.salt_diagnostics%admission_rejections/=1) &
+           error stop 'unqualified snow salt route admitted'
+      fparams%snow_active=.false.
+      print '(a)','PPA_WU05E_FMR_SALT_ENVELOPE_REJECT=PASS_TEST_ONLY'
+      ! A dry macro donor with positive salt tests a real late salt-kernel
+      ! failure after water execution, rather than preflight rejection.
+      salt_invalid_initial=salt_initial
+      salt_invalid_initial%macropore%water_domain_cp(1,1)=0.0_real64
+      salt_invalid_initial%salt%macro_mass_mg_cm2(1,1)=.1_real64
+      call fmr_new_b110_committed_state(salt_invalid_committed,lineage,salt_invalid_initial,0.0_real64,salt_committed_ok)
+      call salt_invalid_committed%capture_checkpoint(salt_checkpoint,salt_available)
+      numerical%transaction%max_retries=0
+      call backend%run_trial(column,template,fparams,salt_invalid_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      salt_observation=backend%observation()
+      if(salt_result%completed.or.salt_candidate%ready().or..not.salt_observation%salt_transport_executed.or. &
+         salt_observation%salt_transport_status==MACRO_SALT_OK)error stop 'late salt-kernel failure was not exercised'
+      call salt_invalid_committed%snapshot(salt_state_snapshot,salt_available)
+      select type(failed_physical=>salt_state_snapshot)
+      type is(fmr_b110_physical_state_t)
+        if(any(failed_physical%salt%mass_mg_cm2/=salt_invalid_initial%salt%mass_mg_cm2).or. &
+           any(failed_physical%salt%macro_mass_mg_cm2/=salt_invalid_initial%salt%macro_mass_mg_cm2).or. &
+           any(failed_physical%water_content/=salt_invalid_initial%water_content).or. &
+           any(failed_physical%macropore%water_domain_cp/=salt_invalid_initial%macropore%water_domain_cp)) &
+             error stop 'late salt-kernel failure leaked physical state'
+      class default
+        error stop 'late salt-kernel state family'
+      end select
+      numerical%transaction%max_retries=40
+      call salt_committed%capture_checkpoint(salt_checkpoint,salt_available)
+      print '(a)','PPA_WU05E_FMR_SALT_KERNEL_FAILURE_ROLLBACK=PASS_TEST_ONLY'
+      ! With unit salinity alpha, adding salt transport must leave the admitted
+      ! water/root transaction bitwise unchanged.
+      fparams%saltslope_cm3_mg=0.0_real64
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(.not.salt_result%completed.or..not.salt_candidate%ready())error stop 'unit-alpha salt trial failed'
+      call salt_candidate%snapshot(salt_candidate_snapshot,salt_available)
+      call backend%discard_trial_candidate(salt_candidate,salt_diagnostics)
+      fparams%root_salinity_active=.false.
+      template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
+      call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt, &
+           checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(.not.salt_result%completed.or..not.salt_candidate%ready())error stop 'salt-disabled equivalence trial failed'
+      call salt_candidate%snapshot(salt_replay_snapshot,salt_available)
+      if(.not.same_fmr_state(salt_candidate_snapshot,salt_replay_snapshot))error stop 'unit-alpha salt changed water state'
+      call backend%discard_trial_candidate(salt_candidate,salt_diagnostics)
+      print '(a)','PPA_WU05E_FMR_UNIT_SALINITY_WATER_EQUIVALENCE=PASS_TEST_ONLY'
+      fparams%root_salinity_active=.true.
+      fparams%saltslope_cm3_mg=1.0_real64
+      template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics,trace_accepted_water_flux_substeps=.true.)
+      salt_observation=backend%observation()
+      if(.not.salt_result%completed.or..not.salt_candidate%ready())error stop 'active macro salt FMR trial rejected'
+      if(.not.salt_observation%salt_transport_executed.or. &
+         salt_observation%salt_transport_status/=MACRO_SALT_OK)error stop 'active macro salt transport did not execute'
+      if(abs(salt_observation%salt_transport_closure_mg_cm2)>1.0e-10_real64) &
+           error stop 'active macro salt ledger did not close'
+      if(.not.salt_observation%root_salinity_executed.or. &
+         salt_observation%root_salinity_final_uptake>=salt_observation%root_salinity_base_uptake) &
+           error stop 'Jarvis trial did not consume and apply salinity response'
+      if(.not.salt_observation%root_compensation_executed.or. &
+         salt_observation%root_compensation_status/=0.or. &
+         salt_observation%root_compensation_final_uptake<=salt_observation%root_compensation_base_uptake.or. &
+         salt_observation%root_compensation_final_uptake>=forcing%root_potential_transpiration) &
+           error stop 'Jarvis salinity compensation response outside expected range'
+      print '(a)','PPA_WU05E_FMR_JARVIS_SALINITY_RESPONSE=PASS_TEST_ONLY'
+      write(*,'(*(g0))') 'PPA_WU05E_SALT_INITIAL_TEMP_REJ=',salt_diagnostics%temporal_rejections
+      call salt_candidate%snapshot(salt_candidate_snapshot,salt_available)
+      if(.not.salt_available.or..not.allocated(salt_candidate_snapshot))error stop 'active salt candidate snapshot'
+      call verify_salt_interval_receipts(salt_observation,salt_candidate_snapshot,salt_initial)
+      call backend%discard_trial_candidate(salt_candidate,salt_diagnostics)
+      if(salt_candidate%ready())error stop 'active salt candidate discard did not clear candidate'
+      call salt_committed%snapshot(salt_state_snapshot,salt_available)
+      if(.not.salt_available.or..not.allocated(salt_state_snapshot))error stop 'discarded salt trial snapshot'
+      select type (discarded_physical=>salt_state_snapshot)
+      type is (fmr_b110_physical_state_t)
+        if(any(discarded_physical%salt%mass_mg_cm2/=salt_initial%salt%mass_mg_cm2).or. &
+           any(discarded_physical%salt%macro_mass_mg_cm2/=salt_initial%salt%macro_mass_mg_cm2)) &
+             error stop 'discarded salt trial mutated committed inventory'
+      class default
+        error stop 'discarded salt trial state family'
+      end select
+      call salt_committed%capture_checkpoint(salt_checkpoint,salt_available)
+      if(.not.salt_available)error stop 'salt replay checkpoint capture'
+      ! Force the real full/half salt metric to reject after salt has advanced.
+      ! The exhausted attempt must publish no candidate or committed inventory.
+      fparams%salt_temporal_tolerance_mg_cm2=1.0e-20_real64
+      numerical%transaction%max_retries=0
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      write(*,'(*(g0))') 'PPA_WU05E_SALT_FORCED_REJECT|TEMP_REJ=',salt_diagnostics%temporal_rejections, &
+           '|SOLVER_REJ=',salt_diagnostics%solver_rejections,'|COMPLETED=',salt_result%completed
+      if(salt_result%completed.or.salt_candidate%ready().or.salt_diagnostics%temporal_rejections<1.or. &
+         salt_diagnostics%solver_rejections/=0)error stop 'salt temporal rejection was not exercised'
+      call salt_committed%snapshot(salt_state_snapshot,salt_available)
+      select type (rejected_physical=>salt_state_snapshot)
+      type is (fmr_b110_physical_state_t)
+        if(any(rejected_physical%salt%mass_mg_cm2/=salt_initial%salt%mass_mg_cm2).or. &
+           any(rejected_physical%salt%macro_mass_mg_cm2/=salt_initial%salt%macro_mass_mg_cm2).or. &
+           any(rejected_physical%water_content/=salt_initial%water_content).or. &
+           any(rejected_physical%macropore%water_domain_cp/=salt_initial%macropore%water_domain_cp)) &
+             error stop 'temporally rejected salt trial mutated committed physical state'
+      class default
+        error stop 'rejected salt state family'
+      end select
+      fparams%salt_temporal_tolerance_mg_cm2=1.0e-5_real64
+      numerical%transaction%max_retries=40
+      ! A stricter but attainable salt budget must trigger adaptive retries
+      ! within the real transaction and still finish the requested interval.
+      fparams%salt_temporal_tolerance_mg_cm2=1.0e-7_real64
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics,trace_accepted_water_flux_substeps=.true.)
+      salt_observation=backend%observation()
+      write(*,'(*(g0))') 'PPA_WU05E_SALT_ADAPTIVE_RETRY|TEMP_REJ=',salt_diagnostics%temporal_rejections, &
+           '|SOLVER_REJ=',salt_diagnostics%solver_rejections,'|COMPLETED=',salt_result%completed
+      if(.not.salt_result%completed.or..not.salt_candidate%ready().or.salt_diagnostics%temporal_rejections<1) &
+           error stop 'salt-driven adaptive retry did not complete'
+      call salt_candidate%snapshot(salt_replay_snapshot,salt_available)
+      call verify_salt_interval_receipts(salt_observation,salt_replay_snapshot,salt_initial)
+      call backend%discard_trial_candidate(salt_candidate,salt_diagnostics)
+      fparams%salt_temporal_tolerance_mg_cm2=1.0e-5_real64
+      call backend%run_trial(column,template,fparams,salt_committed,forcing,numerical,0.0_real64,fmr_dt, &
+           salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      if(.not.salt_result%completed.or..not.salt_candidate%ready())error stop 'active salt retry from committed failed'
+      call salt_candidate%snapshot(salt_replay_snapshot,salt_available)
+      if(.not.salt_available.or..not.allocated(salt_replay_snapshot))error stop 'active salt replay snapshot'
+      select type (first_physical=>salt_candidate_snapshot)
+      type is (fmr_b110_physical_state_t)
+        select type (replay_physical=>salt_replay_snapshot)
+        type is (fmr_b110_physical_state_t)
+          if(any(first_physical%salt%mass_mg_cm2/=replay_physical%salt%mass_mg_cm2).or. &
+             any(first_physical%salt%macro_mass_mg_cm2/=replay_physical%salt%macro_mass_mg_cm2)) &
+               error stop 'active salt replay from committed is not deterministic'
+        class default
+          error stop 'active salt replay state family'
+        end select
+      class default
+        error stop 'active salt first candidate state family'
+      end select
+      call backend%commit_trial_candidate(salt_committed,salt_candidate,salt_diagnostics,salt_did_commit,salt_commit_status)
+      if(.not.salt_did_commit.or.salt_commit_status/=0)error stop 'active macro salt candidate commit failed'
+      call salt_committed%snapshot(salt_state_snapshot,salt_available)
+      if(.not.salt_available.or..not.allocated(salt_state_snapshot))error stop 'active macro salt commit snapshot'
+      select type (salt_physical=>salt_state_snapshot)
+      type is (fmr_b110_physical_state_t)
+        if(.not.allocated(salt_physical%salt%macro_mass_mg_cm2))error stop 'active macro salt candidate lost payload'
+        if(all(salt_physical%salt%mass_mg_cm2==salt_initial%salt%mass_mg_cm2).and. &
+           all(salt_physical%salt%macro_mass_mg_cm2==salt_initial%salt%macro_mass_mg_cm2)) &
+             error stop 'active macro salt commit did not change inventory'
+      class default
+        error stop 'active macro salt committed state family'
+      end select
+      salt_template_registry(1)=template
+      salt_column_registry(1)=column
+      salt_restart_registry(1)=salt_committed
+      select type (restart_ready_physical=>salt_state_snapshot)
+      type is (fmr_b110_physical_state_t)
+        if(.not.fmr_restart_state_matches_template(restart_ready_physical,salt_template_registry(1))) &
+             error stop 'active salt committed state fails restart layout contract'
+      class default
+        error stop 'active salt restart source state family'
+      end select
+      call fmr_export_committed_restart(salt_column_registry,salt_template_registry,salt_restart_registry, &
+           805_int64,salt_restart_bundle,salt_restart_exported,salt_restart_status)
+      if(.not.salt_restart_exported.or.salt_restart_status/=FMR_RESTART_OK) then
+        write(*,'(*(g0))') 'PPA_WU05E_ACTIVE_SALT_RESTART_EXPORT_STATUS=',salt_restart_status
+           error stop 'active salt FMR restart export failed'
+      end if
+      call fmr_restore_committed_restart(salt_restart_bundle,805_int64,salt_column_registry, &
+           salt_template_registry,salt_restored_registry,salt_restart_restored,salt_restart_status)
+      if(.not.salt_restart_restored.or.salt_restart_status/=FMR_RESTART_OK) &
+           error stop 'active salt FMR restart restore failed'
+      call salt_restored_registry(1)%snapshot(salt_replay_snapshot,salt_available)
+      if(.not.salt_available.or..not.allocated(salt_replay_snapshot))error stop 'active salt restart snapshot'
+      select type (committed_physical=>salt_state_snapshot)
+      type is (fmr_b110_physical_state_t)
+        select type (restarted_physical=>salt_replay_snapshot)
+        type is (fmr_b110_physical_state_t)
+          if(any(committed_physical%salt%mass_mg_cm2/=restarted_physical%salt%mass_mg_cm2).or. &
+             any(committed_physical%salt%macro_mass_mg_cm2/=restarted_physical%salt%macro_mass_mg_cm2).or. &
+             committed_physical%salt%cdrain_source_id/=restarted_physical%salt%cdrain_source_id.or. &
+             committed_physical%salt%cdrain_revision/=restarted_physical%salt%cdrain_revision) &
+               error stop 'active salt restart candidate mismatch'
+        class default
+          error stop 'active salt restart state family'
+        end select
+      class default
+        error stop 'active salt committed snapshot family'
+      end select
+      forcing%c_drain_salt%valid_t0=fmr_dt
+      forcing%c_drain_salt%valid_t1=2.0_real64*fmr_dt
+      forcing%c_drain_salt%revision=1_int64
+      forcing%c_drain_salt%concentration_mg_cm3=.5_real64
+      forcing%soil_salt_boundary%valid_t0=fmr_dt
+      forcing%soil_salt_boundary%valid_t1=2.0_real64*fmr_dt
+      forcing%soil_salt_boundary%revision=1_int64
+      forcing%soil_salt_boundary%matrix_top_mg_cm3=.45_real64
+      forcing%soil_salt_boundary%matrix_bottom_mg_cm3=.35_real64
+      forcing%soil_salt_boundary%macropore_top_mg_cm3=.25_real64
+      forcing%soil_salt_boundary%macropore_bottom_mg_cm3=.35_real64
+      call salt_restored_registry(1)%capture_checkpoint(salt_checkpoint,salt_available)
+      if(.not.salt_available)error stop 'restored salt state changed-forcing checkpoint'
+      call salt_restored_backend%initialize(top)
+      call salt_restored_backend%configure_macropore_policy(policy,policy_ok)
+      if(.not.policy_ok)error stop 'fresh salt restart backend configuration'
+      call salt_restored_backend%run_trial(column,template,fparams,salt_restored_registry(1),forcing,numerical,fmr_dt, &
+           2.0_real64*fmr_dt,salt_checkpoint,salt_result,salt_candidate,salt_diagnostics)
+      salt_observation=salt_restored_backend%observation()
+      if(.not.salt_result%completed.or..not.salt_candidate%ready().or. &
+         .not.salt_observation%root_salinity_executed.or..not.salt_observation%salt_transport_executed) &
+           error stop 'changed-forcing trial after salt restart failed'
+      call salt_restored_backend%commit_trial_candidate(salt_restored_registry(1),salt_candidate,salt_diagnostics, &
+           salt_did_commit,salt_commit_status)
+      if(.not.salt_did_commit.or.salt_commit_status/=0)error stop 'changed-forcing restarted salt commit failed'
+      print '(a)','PPA_WU05E_FMR_SALT_RESTART_CHANGED_FORCING=PASS_TEST_ONLY'
+      print '(a)','PPA_WU05E_FMR_SALT_DISCARD_REPLAY_COMMIT_RESTART=PASS_TEST_ONLY'
+      print '(a)','PPA_WU05E_FMR_SALT_TEMPORAL_REJECT_ROLLBACK_REPLAY=PASS_TEST_ONLY'
+      print '(a)','PPA_WU05E_FMR_SALT_ADAPTIVE_RETRY=PASS_TEST_ONLY'
+      print '(a)','PPA_WU05E_FMR_SALT_CANDIDATE=PASS_TEST_ONLY'
+      fparams%root_salinity_active=.false.
+      fparams%root_compensation=root_compensation_config_t()
+      fparams%saltmax_mg_cm3=0.0_real64
+      fparams%saltslope_cm3_mg=0.0_real64
+      fparams%solute_tscf=0.0_real64
+      if(allocated(forcing%root_potential_sink))deallocate(forcing%root_potential_sink)
       deallocate(forcing%soil_salt_boundary)
       deallocate(forcing%c_drain_salt)
       template%solute_state_layout_id=FMR_SOLUTE_STATE_LAYOUT_NONE
     end if
+
+    fparams%macropore%matrix_area_fraction=mcfg%matrix_area_fraction
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          kres,candidate,kdiag,trusted_prepared_parameters=.true., &
@@ -862,7 +1146,7 @@ contains
              maxval(abs(fmr_observation%accepted_water_flux_substeps(trace_i)%macropore_vertical_face_rate)))
         if(abs(sum(fmr_observation%accepted_water_flux_substeps(trace_i)%root_sink)- &
              sum(forcing%root_extraction_sink))>1.0e-16_real64) error stop 'FMR trace lost final qrot'
-        call reconstruct_interval_water_face_flux(dz(1:numnod), &
+        call reconstruct_interval_water_face_flux(dz(1:numnod)*mcfg%matrix_area_fraction, &
              fmr_observation%accepted_water_flux_substeps(trace_i)%water_start, &
              fmr_observation%accepted_water_flux_substeps(trace_i)%water_end, &
              fmr_observation%accepted_water_flux_substeps(trace_i)%net_node_source, &
@@ -879,10 +1163,10 @@ contains
       if(max_trace_macro_water_change<=1.0e-14_real64)error stop 'FMR trace did not carry domain water change'
       if(max_trace_macro_vertical_face<=1.0e-14_real64)error stop 'FMR trace did not carry nonzero macro vertical face'
       call exercise_salt_candidate_rejects_unowned_exchange( &
-           fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
-      call exercise_macro_salt_exchange_trace(fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
+           fmr_observation%accepted_water_flux_substeps,dz(1:numnod)*mcfg%matrix_area_fraction)
+      call exercise_macro_salt_exchange_trace(fmr_observation%accepted_water_flux_substeps,dz(1:numnod)*mcfg%matrix_area_fraction)
       call exercise_macro_salt_process_from_fmr_trace( &
-           fmr_observation%accepted_water_flux_substeps,dz(1:numnod))
+           fmr_observation%accepted_water_flux_substeps,dz(1:numnod)*mcfg%matrix_area_fraction)
       write(*,'(*(g0))') 'PPA_WU05E_FMR_ACCEPTED_SUBSTEP_TRACE=PASS|COUNT=', &
            size(fmr_observation%accepted_water_flux_substeps),'|MAX_CLOSURE=',max_trace_closure, &
            '|MAX_DOMAIN_EXCHANGE=',max_trace_macro_exchange,'|MAX_DOMAIN_WATER_CHANGE=',max_trace_macro_water_change, &
@@ -965,6 +1249,42 @@ contains
     print '(a)', 'PPA_WU05A8_FMR_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A8_FMR_RESTART=PASS'
   end subroutine exercise_serialized_fmr
+
+  subroutine verify_salt_interval_receipts(observation,candidate,initial)
+    type(fmr_serialized_physical_observation_t),intent(in)::observation
+    class(transaction_state_t),intent(in)::candidate
+    type(fmr_b110_physical_state_t),intent(in)::initial
+    real(real64)::net,cursor,inventory_delta
+    integer::i
+    if(.not.observation%accepted_water_flux_trace_available.or. &
+       .not.allocated(observation%accepted_water_flux_substeps))error stop 'salt interval trace unavailable'
+    net=0.0_real64;cursor=0.0_real64
+    do i=1,size(observation%accepted_water_flux_substeps)
+      associate(step=>observation%accepted_water_flux_substeps(i))
+        if(abs(step%t0-cursor)>1.0e-14_real64.or.step%t1<=step%t0)error stop 'rejected salt receipt entered trace'
+        if(.not.allocated(step%salt_receipt))error stop 'salt interval receipt missing'
+        associate(r=>step%salt_receipt)
+          if(abs(r%closure_error_mg_cm2)>1.0e-10_real64)error stop 'salt substep receipt fails balance'
+          net=net+r%matrix_top_input_mg_cm2-r%matrix_top_output_mg_cm2+ &
+               r%matrix_bottom_input_mg_cm2-r%matrix_bottom_output_mg_cm2+ &
+               sum(r%macro_top_input_mg_cm2)-sum(r%macro_top_output_mg_cm2)+ &
+               sum(r%macro_bottom_input_mg_cm2)-sum(r%macro_bottom_output_mg_cm2)- &
+               sum(r%root_solute_uptake_mg_cm2)-sum(r%qdra_signed_out_mg_cm2)
+        end associate
+        cursor=step%t1
+      end associate
+    end do
+    if(abs(cursor-1.0e-3_real64)>1.0e-14_real64)error stop 'salt receipt interval incomplete'
+    select type(physical=>candidate)
+    type is(fmr_b110_physical_state_t)
+      inventory_delta=sum(physical%salt%mass_mg_cm2)+sum(physical%salt%macro_mass_mg_cm2)- &
+           sum(initial%salt%mass_mg_cm2)-sum(initial%salt%macro_mass_mg_cm2)
+      if(abs(inventory_delta-net)>1.0e-10_real64)error stop 'salt interval external/root ledger does not close'
+    class default
+      error stop 'salt ledger candidate family'
+    end select
+    print '(a)','PPA_WU05E_FMR_SALT_INTERVAL_RECEIPTS=PASS_TEST_ONLY'
+  end subroutine verify_salt_interval_receipts
 
   logical function same_accepted_water_flux_trace(a,b) result(same)
     type(fmr_serialized_physical_observation_t), intent(in) :: a,b
@@ -1070,7 +1390,7 @@ contains
     config%top_node=1
     allocate(config%static_volume_cp(numnod),config%domain_fraction(nd,numnod), &
          config%potential_bottom_domain(nd),config%dz(numnod),config%characteristic_diameter(numnod))
-    config%static_volume_cp=0.50_real64
+    config%static_volume_cp=0.25_real64
     config%domain_fraction=1.0_real64
     config%potential_bottom_domain=numnod
     config%dz=dz

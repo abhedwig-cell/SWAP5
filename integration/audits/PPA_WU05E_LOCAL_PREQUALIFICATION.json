@@ -3,7 +3,7 @@
   "work_unit": "PPA-WU05-E",
   "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
-  "target_state": "PPA-WU05-E local prequalification includes exact B1.11 source recovery, signed per-level qdra candidate handling, qssdi water-only closure, and ordered salt trace rollback; not formal qualification; typed Cdrain interval/provenance contract and test-only FMR trace mapping are locally verified but remain outside FMR-owned candidate/commit/restart; FMR Restart v4 forcing-handle mismatch rejection and disabled-only v3/v2 migration pass the A7 O0/O2 gate; Cdrain source/revision provenance is clone/restart-preserved by the typed FMR salt component, while live trial binding and candidate advancement remain blocked; trial-boundary validation now requires the Cdrain source ID to match the column forcing handle and cover the full trial interval, while active salt layouts remain rejected; exact B1.11 solute/root-extraction members recovered and byte-verified; active-backend tests reject missing or mismatched Cdrain and confirm no live salt candidate is admitted; Jarvis composition now supports separately attributed salinity reduction and selection, but the FMR/root runtime does not yet derive or pass salinity from the salt state; same-view mass/water-derived CML and Maas-Hoffman sink scaling are O0/O2 tested at process level, with no live FMR caller; O0/O2 D2 test now feeds mass-derived Maas-Hoffman sink/loss into the salinity selector with bounded recovery and closure, but no FMR caller; Maas-Hoffman inputs now enforce byte-verified B1.11 reader bounds SALTMAX 0..100 mg/cm3 and SALTSLOPE 0..1 cm3/mg; exact source-derived TSCF range 0..10 now accepted by both matrix and matrix/macropore process kernels, with O0/O2 coverage above unity and above-range rejection; overdraw still fails closed; rerun of full A7/A8 real-Richards O0/O2 gate passed after the same-view root response tests and exact TSCF range correction; active FMR salt rejection unchanged; typed interval-scoped matrix/macropore interface concentrations now validate source, revision, units, interval and active-domain dimensions at the FMR trial boundary; valid inputs still do not open the active layout",
+  "target_state": "Historical process and fail-closed boundary evidence. Current restricted live FMR prototype evidence is in PPA_WU05E_FMR_SALT_LOCAL_GATE.json; this historical record does not describe current live execution.",
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "source_sha256": {
     "docs/audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md": "d9ff6009ef032ac41b0d528ecd09ef849acdadde40f40205f07340fe690f8cce",
@@ -333,5 +333,7 @@
     "rootextraction_f90_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
     "rootextraction_f90_bytes": 22013,
     "verification": "local B1.11 reconstruction; solute member byte-matches B0 manifest and B1.11 snapshot declares unchanged"
-  }
+  },
+  "historical_evidence": true,
+  "superseded_current_live_evidence": "integration/audits/PPA_WU05E_FMR_SALT_LOCAL_GATE.json"
 }

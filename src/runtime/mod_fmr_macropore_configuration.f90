@@ -4,15 +4,18 @@ module mod_fmr_macropore_configuration
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t
   use mod_ppa_wu05a6_sorptivity_history, only: sorptivity_history_update_request_t
+  use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, map_surface_crack_depth_to_node, &
+       derive_dynamic_minimum_subsidence, prepare_rapid_drain_reference_kd
   implicit none
   private
 
-  public :: initialize_fmr_macropore_standard_config
+  public :: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference
 
   type, public :: fmr_macropore_physical_config_t
     type(macropore_geometry_config_t) :: geometry
     type(macropore_rate_bundle_request_t) :: rate_template
     type(sorptivity_history_update_request_t) :: history_template
+    type(dynamic_shrinkage_config_t) :: shrinkage
     real(real64), allocatable :: matrix_area_fraction(:)
     logical :: covering_parameters_available = .false.
     real(real64) :: covering_minimum_polygon_diameter_cm = 0.0_real64
@@ -24,13 +27,31 @@ module mod_fmr_macropore_configuration
 contains
 
 
+  subroutine prepare_fmr_macropore_rapid_reference(config,z,theta_hydrostatic,static_bottom,ok)
+    type(fmr_macropore_physical_config_t),intent(inout)::config
+    real(real64),intent(in)::z(:),theta_hydrostatic(:),static_bottom
+    logical,intent(out)::ok
+    real(real64)::kd
+    ok=.false.
+    if(.not.config%valid_for_nodes(size(z)))return
+    if(config%geometry%top_node/=1)return
+    call prepare_rapid_drain_reference_kd(config%shrinkage,z,config%geometry%dz,theta_hydrostatic, &
+         config%geometry%static_volume_cp,config%geometry%domain_fraction(1,:), &
+         config%geometry%characteristic_diameter,static_bottom,config%rate_template%rapid%drain_level_cm, &
+         config%rate_template%rapid%drain_type,config%rate_template%rapid%area_exponent,kd,ok)
+    if(.not.ok)return
+    config%rate_template%rapid%kd_reference=kd
+    ! Valid disconnected source outcome never becomes a zero-resistance trial.
+    if(kd<=0.0_real64)config%rate_template%rapid%enabled=.false.
+  end subroutine prepare_fmr_macropore_rapid_reference
+
   subroutine initialize_fmr_macropore_standard_config(config, top_node, static_volume_cp, domain_fraction, &
        potential_bottom_domain, z, dz, diameter, theta_s, theta_r, wall_correction, sorptivity_max, &
        sorptivity_alpha, conductivity, entry_head, sorp_fac_parallel, ksat_horizontal, cdarcy, &
        flow_reduction, shape_factor, swsep, ok, rapid_enabled, rapid_drain_type, rapid_drain_level_cm, &
        rapid_area_exponent, rapid_kd_reference, rapid_resistance_reference_day, perched_enabled, &
        critical_under_saturated_volume_cm, matrix_area_fraction, covering_minimum_polygon_diameter_cm, &
-       covering_ksat_cm_per_day)
+       covering_ksat_cm_per_day, shrinkage)
     type(fmr_macropore_physical_config_t), intent(out) :: config
     integer, intent(in) :: top_node
     real(real64), intent(in) :: static_volume_cp(:), domain_fraction(:,:), z(:), dz(:), diameter(:)
@@ -48,14 +69,16 @@ contains
     logical, intent(in), optional :: perched_enabled
     real(real64), intent(in), optional :: matrix_area_fraction(:)
     real(real64), intent(in), optional :: covering_minimum_polygon_diameter_cm, covering_ksat_cm_per_day
+    type(dynamic_shrinkage_config_t), intent(in), optional :: shrinkage
 
-    integer :: n, nd, id
+    integer :: n, nd, id, crack_node
     real(real64) :: bottom_level
-    logical :: rapid_on, perched_on
+    logical :: rapid_on, perched_on, crack_node_ok
     real(real64) :: perched_crit
 
     config = fmr_macropore_physical_config_t()
     ok = .false.
+    if (present(shrinkage)) config%shrinkage = shrinkage
     rapid_on = .false.
     if (present(rapid_enabled)) rapid_on = rapid_enabled
     perched_on = .false.
@@ -87,6 +110,18 @@ contains
     if (top_node < 1 .or. top_node > n) return
     if (size(potential_bottom_domain) /= nd) return
     if (size(z) /= n .or. size(dz) /= n .or. size(diameter) /= n) return
+    if (config%shrinkage%enabled .and. .not. config%shrinkage%surface_crack_area_node_supplied .and. &
+        config%shrinkage%surface_crack_area_depth_supplied) then
+      call map_surface_crack_depth_to_node(config%shrinkage%surface_crack_area_depth_cm,z,dz,top_node,crack_node,crack_node_ok)
+      if (.not.crack_node_ok) return
+      config%shrinkage%surface_crack_area_node=crack_node
+      config%shrinkage%surface_crack_area_node_supplied=.true.
+    end if
+    if (config%shrinkage%enabled .and. .not.allocated(config%shrinkage%minimum_subsidence_cm)) then
+      call derive_dynamic_minimum_subsidence(config%shrinkage,dz,crack_node_ok)
+      if (.not.crack_node_ok) return
+    end if
+    if (.not. config%shrinkage%valid_for_nodes(n)) return
     if (size(theta_s) /= n .or. size(theta_r) /= n .or. size(wall_correction) /= n) return
     if (size(sorptivity_max) /= n .or. size(sorptivity_alpha) /= n) return
     if (size(conductivity) /= n .or. size(entry_head) /= n .or. size(sorp_fac_parallel) /= n) return
@@ -102,6 +137,15 @@ contains
     config%geometry%dz = dz
     config%geometry%characteristic_diameter = diameter
     if (.not. config%geometry%valid()) return
+    if (.not. allocated(config%matrix_area_fraction)) then
+      ! B1.11 MACROPORE initialization derives FrArMtrx from static capacity.
+      ! Keep that physical default when callers do not supply an explicit
+      ! matrix cross-sectional fraction.
+      if (any(dz <= 0.0_real64) .or. any(.not. ieee_is_finite(static_volume_cp))) return
+      config%matrix_area_fraction = 1.0_real64-static_volume_cp/dz
+      if (any(config%matrix_area_fraction <= 0.0_real64) .or. &
+          any(config%matrix_area_fraction > 1.0_real64)) return
+    end if
 
     config%rate_template%unsaturated%sorptivity%num_domains = nd
     config%rate_template%unsaturated%sorptivity%num_nodes = n
@@ -236,7 +280,12 @@ contains
     ok = .false.
     if (active_nodes <= 0) return
     if (.not. self%geometry%valid()) return
+    if (self%shrinkage%enabled) then
+      if (.not. self%shrinkage%valid_for_nodes(active_nodes)) return
+      if (.not. allocated(self%matrix_area_fraction)) return
+    end if
     if (self%geometry%num_nodes /= active_nodes) return
+    if (.not. allocated(self%matrix_area_fraction)) return
     if (allocated(self%matrix_area_fraction)) then
       if (size(self%matrix_area_fraction) /= active_nodes) return
       if (any(.not. ieee_is_finite(self%matrix_area_fraction)) .or. &
