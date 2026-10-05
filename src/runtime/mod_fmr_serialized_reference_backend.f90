@@ -330,7 +330,7 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_water_flux_substep_trace_t
     real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
-    real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), &
+    real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
          macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
   end type fmr_water_flux_substep_trace_t
@@ -3441,6 +3441,7 @@ contains
     step%water_end = solve_result%candidate_state%water_content
     step%subsurface_source = self%qssdi
     step%drainage_sink = sum(self%qdra,dim=1)
+    step%drainage_sink_by_level = self%qdra
     step%root_sink = self%qrot
     allocate(step%macropore_matrix_exchange(n))
     allocate(step%macropore_matrix_exchange_domain(0,n))
@@ -3504,16 +3505,20 @@ contains
       if (allocated(steps(i)%water_start)) n=size(steps(i)%water_start)
       if (n <= 0 .or. .not. allocated(steps(i)%water_end) .or. &
           .not. allocated(steps(i)%subsurface_source) .or. .not. allocated(steps(i)%drainage_sink) .or. &
-          .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
+          .not. allocated(steps(i)%drainage_sink_by_level) .or. .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
           .not. allocated(steps(i)%macropore_matrix_exchange_domain) .or. &
           .not. allocated(steps(i)%macropore_water_start) .or. .not. allocated(steps(i)%macropore_water_end) .or. &
           .not. allocated(steps(i)%macropore_vertical_face_rate) .or. &
           .not. allocated(steps(i)%net_node_source)) return
       if (size(steps(i)%water_end)/=n .or. size(steps(i)%subsurface_source)/=n .or. &
-          size(steps(i)%drainage_sink)/=n .or. size(steps(i)%root_sink)/=n .or. &
+          size(steps(i)%drainage_sink)/=n .or. size(steps(i)%drainage_sink_by_level,2)/=n .or. &
+          size(steps(i)%drainage_sink_by_level,1)<=0 .or. size(steps(i)%root_sink)/=n .or. &
           size(steps(i)%macropore_matrix_exchange)/=n .or. &
           size(steps(i)%macropore_matrix_exchange_domain,2)/=n .or. &
           size(steps(i)%net_node_source)/=n) return
+      if(any(.not.ieee_is_finite(steps(i)%drainage_sink_by_level)))return
+      if(maxval(abs(sum(steps(i)%drainage_sink_by_level,dim=1)-steps(i)%drainage_sink))> &
+           1.0e-12_real64*max(1.0_real64,maxval(abs(steps(i)%drainage_sink))))return
       if(any(shape(steps(i)%macropore_water_start)/=shape(steps(i)%macropore_matrix_exchange_domain)) .or. &
          any(shape(steps(i)%macropore_water_end)/=shape(steps(i)%macropore_matrix_exchange_domain)))return
       if(any(shape(steps(i)%macropore_vertical_face_rate)/= &
