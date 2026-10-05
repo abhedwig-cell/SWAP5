@@ -15,6 +15,7 @@ on:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_committed_restart.f90'
       - 'tests/frost/**'
+      - 'reference/swap-4.3.1/frost-corrections/**'
       - 'docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md'
       - 'integration/audits/PPA_WU05B*.json'
       - '.github/workflows/ppa-wu05b-frost-admission.yml'
@@ -64,6 +65,16 @@ jobs:
             bash tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh
             WU05E_COMPENSATION_METHOD=walsum C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
             WU05E_COMPENSATION_METHOD=walsum WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+          fi
+      - name: Joint empirical root and no-drain bottom frost
+        run: |
+          if test -f tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh; then
+            bash tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh
+          fi
+      - name: Bounded original versus corrected B1 drainage accounting
+        run: |
+          if test -f tests/frost/run_ppa_wu05b5_corrected_drain_source.sh; then
+            bash tests/frost/run_ppa_wu05b5_corrected_drain_source.sh
           fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh

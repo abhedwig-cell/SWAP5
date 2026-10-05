@@ -27,12 +27,14 @@
     "invalid/nonnegative deepest drain configuration",
     "frost-depth interpolation correction",
     "full legacy simulation/global B1 equivalence",
-    "SWAP5 production admission"
+    "SWAP5 production admission",
+    "SWDRA=2 surface-water feedback"
   ],
   "affected_invariants": [
     13,
     21,
     22
   ],
-  "next_action": "Implement exact byte-safe reporting-only overlay and original/corrected source probe; preserve before tests"
+  "next_action": "Implement exact byte-safe reporting-only overlay and original/corrected source probe; preserve before tests",
+  "scope_amendment": "Ordinary SWDRA=1 only: SWDRA=2 surface-water feedback is outside this source-only physical identity claim; correction guarded to preserve it unchanged."
 }

@@ -893,7 +893,7 @@ contains
     if(tile%parameters%frost_bottom%active)then
       if(.not.tile%parameters%frost_bottom%valid())return
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
-      if(tile%parameters%root_extraction_active.or.tile%parameters%root_frost%active)return
+      if(tile%parameters%root_extraction_active.neqv.tile%parameters%root_frost%active)return
       if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt))return
       if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen))return
       if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active)return
@@ -905,7 +905,8 @@ contains
       if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt)) return
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%root_extraction_active.or. &
            .not.tile%parameters%soil_temperature_active) return
-      if(tile%parameters%bottom_mode/=2.or.tile%base_forcing%bottom_flux/=0.0_real64) return
+      if(tile%parameters%bottom_mode/=2) return
+      if(.not.tile%parameters%frost_bottom%active.and.tile%base_forcing%bottom_flux/=0.0_real64) return
       if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen)) return
       if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE) return
       if(tile%parameters%root_frost%rooted_nodes<0.or. &

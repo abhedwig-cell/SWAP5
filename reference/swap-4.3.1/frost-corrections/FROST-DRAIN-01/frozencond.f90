@@ -193,7 +193,7 @@ contains
                call divdra (ksatcp,ztop)
             end if
             ! FROST-DRAIN-01: report the actual HeadCalc nodal sink owner.
-            if (swdivd == 0 .and. swmacro == 0) then
+            if (swdivd == 0 .and. swmacro == 0 .and. swdra == 1) then
                do level=1,nrlevs
                   qdrain(level) = sum(qdra(level,1:numnod))
                end do

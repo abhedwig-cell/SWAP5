@@ -10,7 +10,7 @@ program corrected_probe
   real(8)::original_qdra(2,4),original_qbot,original_total,node_rate,report_rate
   integer::signq,signd,regime,cases
   cases=0
-  do regime=1,4
+  do regime=1,6
     do signq=-1,1
       do signd=-1,1
         call fixture(regime,signq,signd)
@@ -21,7 +21,7 @@ program corrected_probe
         call require(all(transfer(qdra,[0_int64],8)==transfer(original_qdra,[0_int64],8)),'nodal physical bit identity')
         call require(transfer(qbot,0_int64)==transfer(original_qbot,0_int64),'bottom physical bit identity')
         call require(all(legacy_factor==corrected_factor),'hydraulic factors held')
-        if(swdra/=0)then
+        if(swdra==1.and.swmacro==0)then
           call require(all(abs(qdrain-sum(qdra,dim=2))<=1.d-14),'each level is actual nodal sum')
           call require(abs(qdrtot-sum(qdra))<=1.d-14,'aggregate is actual nodal sum')
           node_rate=sum(qdra)-qbot;report_rate=qdrtot-qbot
@@ -51,6 +51,8 @@ contains
       legacy_node=1;corrected_node=1
     end if
     if(regime==4)swdra=0
+    if(regime==5)swdra=2
+    if(regime==6)swmacro=1
   end subroutine
   subroutine require(ok,label)
     logical,intent(in)::ok

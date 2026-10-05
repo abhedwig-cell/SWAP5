@@ -25,7 +25,7 @@
     "src/process",
     "tests/fci"
   ],
-  "next_action": "Qualify joint root/bottom frost; correct and qualify B1 drainage node/level inconsistency before migrating that branch",
+  "next_action": "Qualify bounded B1 drainage reporting correction and migrate drainage against its single-owner reference; geometry and redistribution remain separately bounded",
   "blockers": [],
   "remote_checkpoint_note": "Implementation persisted at 17a5f1da903415d4568127476c24d835e9326836; revised tests and preserved gate pin uploaded before full qualification",
   "test_paths": [
@@ -49,5 +49,6 @@
   "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
   "canonical_pr": 1034,
   "canonical_admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json",
-  "aggregate_frost_migration_complete": false
+  "aggregate_frost_migration_complete": false,
+  "joint_root_successor": "integration/audits/PPA_WU05B4_CANONICAL_ADMISSION.json"
 }
