@@ -1,20 +1,17 @@
 {
   "work_unit": "PPA-WU05B9",
-  "status": "IMPLEMENTED_RUNTIME_PENDING",
+  "status": "LOCAL_QUALIFIED_NOT_CANONICALLY_ADMITTED",
   "baseline": "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
   "preregistration": "integration/audits/PPA_WU05B9_PREREGISTRATION.json",
   "implemented": true,
   "persisted": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "pending": [
-    "source composition parity",
-    "runtime O0/O2 source-bound trajectory/mass/restart/application",
-    "incumbent frost/salt/drainage/current preservation",
-    "docs"
+    "exact proposed merge identity and canonical admission"
   ],
   "aggregate_frost_migration_complete": false,
-  "next_action": "Compile and execute persisted new carrier and fix observed failures without weakening ownership or numerical gates",
+  "next_action": "Publish exact qualified candidate and admit bounded LINEAR normal frost composition",
   "negative_findings": [
     "First staged generation call used an unbuilt hydraulic_start view and correctly failed the admitted response binding before solver; build original request view before early generation and reuse it at the former build point.",
     "Source test local variable shadowed TRANSFER intrinsic; renamed generated_transfer.",
@@ -29,5 +26,70 @@
     "horizon_temperature_c": 0.0001,
     "hard_mass_cm": 1e-12
   },
-  "source_component": "27_ACTUAL_LINEAR_PLUS_CORRECTED_FROZENBOUNDS_CASES_O0_O2_PASS_IDENTICAL_STDOUT"
+  "source_component": "27_ACTUAL_LINEAR_PLUS_CORRECTED_FROZENBOUNDS_CASES_O0_O2_PASS_IDENTICAL_STDOUT",
+  "tested": "ALL_PREREGISTERED_LOCAL_SOURCE_RUNTIME_PRESERVATION_GATES_PASS",
+  "production_source_tree": "0379fcc374513baaa487979ac7cc8288c9f44641",
+  "qualification_checkpoint": "dcc511cdacb8c5214a577f0efa3329de4363bc70",
+  "execution_checkout": "554bb1c9217b20e46420c00f603bd379001f8944",
+  "runtime_fixture_checkpoint": "bca51b527481f42158d70b9993e1b34a3caf2e95",
+  "runtime_results": {
+    "six_cases": "O0_O2_PASS_IDENTICAL_STDOUT",
+    "accepted_substeps": [
+      42,
+      40,
+      21,
+      19,
+      1,
+      1
+    ],
+    "rejections": [
+      171,
+      161,
+      66,
+      59,
+      0,
+      0
+    ],
+    "max_head_cm": 2.254222e-07,
+    "max_temperature_c": 8.090195e-13,
+    "refinements": {
+      "16384": {
+        "scope": "warm and partial, negative qbot only, O0 current source",
+        "head_cm": [
+          2.259615e-07,
+          1.206521e-07
+        ],
+        "temperature_c": [
+          2.270073e-12,
+          2.441713e-12
+        ]
+      },
+      "32768": {
+        "scope": "warm and partial, negative qbot only, O0 current source",
+        "head_cm": [
+          2.262456e-07,
+          1.207402e-07
+        ],
+        "temperature_c": [
+          1.407874e-12,
+          1.110223e-15
+        ]
+      }
+    },
+    "ownership_restart_application": "PASS",
+    "warm_inactive_generator": "PASS"
+  },
+  "preservation": {
+    "B1_B2_B3_B4_B6_B8": "FRESH_CURRENT_SOURCE_O0_O2_PASS_IDENTICAL_STDOUT",
+    "SALFRO01": "FOUR_PASS_179_SOURCE_ENTRIES_EACH_MATCH",
+    "VQ73_VQ74": "EXACT_IMMUTABLE_PROGRAMS_FRESH_CURRENT_SOURCE_O0_O2_PASS_IDENTICAL_STDOUT",
+    "canonical": "COMPLETE_LOCAL_GATE_PASS"
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B9_LOCAL_REPLAY.json.gz",
+    "sha256": "f5679a2f10af5117e7c0ccc9cb265b8b231cba4b81b1844191445f8ca72e4441",
+    "bytes": 113479,
+    "manifest_entries": 491
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
 }

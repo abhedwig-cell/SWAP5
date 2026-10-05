@@ -7,14 +7,14 @@
   "findings": [
     "B9 helper explicitly rejects active low-air configuration; changing that guard alone is insufficient.",
     "Response forcing branch returns before prescribed-drain-depth cardinality validation; generated level count must be validated against explicit physical depths before trial/solver.",
-    "B8 temporal comparison currently recomposes terminal branch and qbot decision using self%unfrozen_drainage_flux, valid for immutable prescribed forcing. Generated LINEAR proposals depend on GWL. Each terminal full/half view must generate its own proposal before comparing blocked levels and qbot decision; a shared last-generated proposal would misclassify the 1e-6 total-rate threshold.",
+    "B8 terminal comparison recomposes full/half branches using immutable prescribed proposal scratch. For generated proposals, independent terminal generation is a conservative provenance/availability contract. Source proof: bottom_depth < min(drain_depth) implies every level blocked and final total exactly zero. With admitted finite negative depths and SWDIVD0, the 1e-6 total threshold cannot independently change bottom_blocked; earlier generic threshold-risk interpretation was too broad.",
     "Existing final-node receipt selection already follows B9 final frost drainage total, and B8 qbot remains separate. Both decisions need independent actual runtime owners and refined trajectories.",
-    "Geometry and positive numerical budgets remain unchanged. Near threshold and zero-generation cases must be explicit falsification cases."
+    "Existing strict geometry and positive numerical budgets remain unchanged. Tiny surviving totals above/below 1e-6 must preserve qbot when deepest level survives; all-cut cases suppress qbot regardless original generated magnitude."
   ],
   "planned_gates": [
     "Actual LINEAR plus guarded corrected FrozenBounds low-air source parity O0/O2",
     "Current-GWL generation on every full/half/retry, final-node receipt, separate final-qbot storage oracle, rejection atomicity",
-    "Terminal full/half threshold decision test with differing generated proposals",
+    "Independent terminal proposal regeneration/availability and geometry implication test; tiny surviving totals around 1e-6 must not invent a qbot transition.",
     "Owned consistent nonuniform grid actual runtime, refined trajectory, restart/application",
     "Preserve B9/B8/B6/roots/salt/drainage immutable oracles and current canonical gate"
   ],
@@ -22,5 +22,8 @@
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Finish B9 exact admission, preregister bounded terminal-regeneration contract before changing production"
+  "next_action": "Finish B9 exact admission, preregister bounded terminal-regeneration contract before changing production",
+  "negative_review_findings": [
+    "Initial review overgeneralized proposal dependence of the qbot threshold. Exact B8 depth ordering proves that all levels are zero whenever the depth condition for qbot blocking holds. No reachable SWDIVD0 finite-depth threshold-only qbot branch exists."
+  ]
 }
