@@ -4,8 +4,8 @@
   "title": "Salinity state, solute mass owner, and root-stress migration",
   "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
   "baseline": "integration/f-ci-canonical@8125ba01b5bfd7377c721caa1105d68e24e77183",
-  "checkpoint_commit": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
-  "last_reconciled_head": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
+  "checkpoint_commit": "bd4f52751b2f1384410ac790ae92b165911d7948",
+  "last_reconciled_head": "bd4f52751b2f1384410ac790ae92b165911d7948",
   "last_reconciled_upstream": "8125ba01b5bfd7377c721caa1105d68e24e77183",
   "status": "BOUNDED_MATRIX_LIFECYCLE_QUALIFIED_FULL_TRANSPORT_NOT_ADMITTED",
   "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
@@ -21,7 +21,8 @@
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_fmr_base_salt_temporal_policy.f90",
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
-    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/process/mod_solute_closed_mobile_diffusion.f90"
   ],
   "reference_delta": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -115,7 +116,9 @@
     "tests/physics/test_mobile_macro_salt_transport.f90",
     "tests/physics/run_ppa_wu05e_mixed_salt.py",
     "tests/physics/test_fmr_base_salt_temporal_policy.f90",
-    "tests/physics/test_ppa_wu05e_mixed_salt.f90"
+    "tests/physics/test_ppa_wu05e_mixed_salt.f90",
+    "tests/physics/test_closed_mobile_diffusion.f90",
+    "tests/physics/run_ppa_wu05e_closed_diffusion.sh"
   ],
   "evidence_paths": [
     "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
@@ -129,7 +132,9 @@
     "docs/audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md",
     "integration/audits/PPA_WU05E_MATRIX_SALT_LOCAL_GATE.json",
     "docs/audits/PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md",
-    "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json"
+    "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
+    "docs/audits/PPA_WU05E_CLOSED_DIFFUSION_CONTRACT.md",
+    "integration/audits/PPA_WU05E_CLOSED_DIFFUSION_PROCESS_GATE.json"
   ],
   "dependency_surface": [
     "B1.11 solute transport/state source and restart lifecycle",
@@ -156,13 +161,13 @@
     "independent salt-mass owner",
     "water and solute conservation"
   ],
-  "next_action": "Separate source-contract migration for remaining B1.11 salt transport: dispersion/internal substeps, sorption/decomposition, surface/aquifer mass ownership and seasonal stability. Maintain draft PR; no general or canonical salinity admission from this bounded integration proof.",
+  "next_action": "Extend the source-bound diffusion process to mechanical dispersion and jointly stable advection/dispersion with changing accepted water storage; qualify boundary behavior before live FMR integration. Keep existing bounded matrix application qualification and full-transport hold separate.",
   "blockers": [
     "Upwind advection, manufactured receipts and local lifecycle tests do not establish exact full B1.11 transport equivalence, dispersion or production stability qualification.",
     "Surface CPRE/CIRR mixing pools, macro top/return, covering, rapid outflow, dynamic shrinkage salt redistribution and SWBR=1 aquifer salt state remain unsupported; the bounded guards reject incompatible routes.",
     "Full B1.11 dispersion/sorption/decomposition/solute boundary application and seasonal stability remain unqualified. Separate-process proof uses test-only decoded-record encoding; no public restart file format is admitted."
   ],
-  "recovery_point": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a; exact-source bounded qualification in PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
+  "recovery_point": "bd4f52751b2f1384410ac790ae92b165911d7948 plus closed-diffusion and matrix-lifecycle qualification records",
   "source_family_census": {
     "initialization": "SWINCO != 3 interpolates ZC/CML input to nodes; SWINCO = 3 consumes a warm-start concentration profile and does not reapply the initial table (source-family only).",
     "state": "CML is mobile-water concentration; CMSY is dissolved plus adsorbed mass per bulk soil volume; column inventory integrates CMSY over node thickness.",
@@ -178,5 +183,13 @@
     "evidence": "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
     "tested_commit": "abff5c95fe4bd072f9e24c5497d6f4b2f069364a",
     "run_id": 37311241437
+  },
+  "closed_diffusion_process": {
+    "implemented": true,
+    "persisted": true,
+    "locally_qualified": true,
+    "runtime_admitted": false,
+    "evidence": "integration/audits/PPA_WU05E_CLOSED_DIFFUSION_PROCESS_GATE.json",
+    "tested_commit": "bd4f52751b2f1384410ac790ae92b165911d7948"
   }
 }

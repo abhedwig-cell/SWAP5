@@ -51,3 +51,23 @@ The zero-diffusion case must preserve the state exactly.
 Passing these tests establishes only this closed diffusion process. Mechanical
 dispersion, advection/dispersive joint stability, changing water storage,
 surface/aquifer ownership and live runtime integration remain separate gates.
+
+## Local process qualification result
+
+The published source at `bd4f52751b2f1384410ac790ae92b165911d7948`
+passes the required O0/O2 gate with runtime checking and invalid/zero/overflow
+floating-point traps. The analytical errors at maximum steps 0.1, 0.05 and
+0.025 day are 0.00855264, 0.00420001 and 0.00208153 mg/cm3. This is the
+expected first-order convergence toward the exact two-node solution.
+The source molecular coefficient and flux sign also pass a one-step direct
+equation oracle. Heterogeneous conservation/extrema, steady identities,
+replay and atomic malformed/exhaustion rejection pass.
+
+The existing independent mobile-salt, salinity-response and water-face
+reconstruction O0/O2 gates remain successful. Exact source/dependency hashes
+and result lines are persisted in
+`integration/audits/PPA_WU05E_CLOSED_DIFFUSION_PROCESS_GATE.json`. This local
+process qualification does not extend the earlier live matrix lifecycle
+qualification: the new process is not called by FMR. Mechanical dispersion
+and jointly stable advection/dispersion under changing water storage are the
+next process gate, followed by typed boundary and runtime qualification.
