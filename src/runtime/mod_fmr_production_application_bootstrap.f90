@@ -890,6 +890,12 @@ contains
       if(allocated(tile%base_forcing%crop_oxygen)) return
     end if
 
+    if(tile%parameters%frost_low_air_drainage%active)then
+      if(.not.tile%parameters%frost_low_air_drainage%valid().or..not.tile%parameters%frost_drainage%active)return
+      if(.not.allocated(tile%base_forcing%drainage_flux_by_level))return
+      if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
+           size(tile%base_forcing%drainage_flux_by_level,1))return
+    end if
     if(tile%parameters%frost_drainage%active)then
       if(.not.tile%parameters%frost_drainage%valid())return
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return

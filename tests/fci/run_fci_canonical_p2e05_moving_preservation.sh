@@ -301,7 +301,34 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor a4e092bf95f7b0db7f5d64f2d83f63a535a3d4f2 HEAD; then
+  if git merge-base --is-ancestor 5427a3e4e9502944e117066f0ee4c2e1277f16cf HEAD; then
+    git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B8 lost normal-drain and guarded reference admissions"
+    git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail "PPA-WU05B8 lost selected salt/root frost admission"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "69fcbf1898d615d0c0e17b06de7ded141224b3de" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "f7f4097d965533c167b6442efe7615662ae4522d" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_low_air_drainage_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_drainage_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_root_frost_stress.f90"
+    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "4c6172384a1255bfe4b2fb809ae159fe624a91a0" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
+    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
+    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/process/mod_frost_hydraulic_effect.f90"
+    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "08492a7272860629c9ffee34968c9cc29952bd58" || \
+      fail "PPA-WU05B8 exact bracketed low-air postimage drift: src/solver/mod_frost_hydraulic_provider.f90"
+    backend_authority="$(git rev-parse HEAD:$BACKEND)"
+    echo "FCI_CANONICAL_PPA_WU05B8_EXACT_BRACKETED_LOW_AIR_CANDIDATE=ACTIVE"
+  elif git merge-base --is-ancestor a4e092bf95f7b0db7f5d64f2d83f63a535a3d4f2 HEAD; then
     git merge-base --is-ancestor b872ddbd930ea08b058575877a03774d313742cc HEAD || fail "PPA-WU05B6 lost admitted frost/reference baseline"
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "84993a601cd57f4e164000f7c7e0ca8cc4992c41" || \
       fail "PPA-WU05B6 exact normal drainage postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"

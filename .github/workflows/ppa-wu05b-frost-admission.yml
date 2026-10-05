@@ -87,6 +87,12 @@ jobs:
           if test -f tests/frost/run_ppa_wu05b7_geometry_reference.py; then
             python3 tests/frost/run_ppa_wu05b7_geometry_reference.py
           fi
+      - name: Explicit bracketed low-air nodal frost drainage
+        run: |
+          if test -f tests/frost/run_ppa_wu05b8_low_air_source.sh; then
+            bash tests/frost/run_ppa_wu05b8_low_air_source.sh
+            bash tests/frost/run_ppa_wu05b8_low_air_runtime.sh
+          fi
       - name: Exact current-canonical preservation for the bounded frost successor
         run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
       - name: Install documentation dependencies

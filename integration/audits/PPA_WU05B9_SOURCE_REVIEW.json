@@ -1,0 +1,55 @@
+{
+  "work_unit": "PPA-WU05B9",
+  "status": "SOURCE_REVIEW_ONLY_NO_PRODUCTION_CHANGE",
+  "baseline": "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+  "prerequisite": "Complete exact B8 qualification/admission before modifying shared runtime again",
+  "scope_under_review": "Rootless ordinary Reference mode2 admitted drainage response using its current groundwater-level carrier, followed by B6 normal frost modifier; start with existing linear response, retain bottom-lumped drainage owner. No head-derived groundwater projection or fully implicit feedback claim.",
+  "observed_paths": {
+    "generation": "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "trial_order": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "mass_receipt": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "application": "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  },
+  "source_findings": [
+    "Current preflight correctly excludes drainage_response_active whenever frost_drainage is active.",
+    "Frost modifier currently executes before active drainage generation, so removing the exclusion alone would allow generation to overwrite modified qdra.",
+    "Generated diagnostic aggregate is used for step/window drainage exchange receipt; enabling composition requires receipts to follow final frost-modified nodal rates, while retaining raw generation diagnostics as proposed values.",
+    "Temporal terminal checks currently use immutable prescribed nodal proposals; state-dependent generation must be recomputed from each terminal hydraulic snapshot before modifier branch/flux checks.",
+    "Existing B8 physical guards, single solver source/sink/mass ownership and no new committed drainage state must remain intact."
+  ],
+  "authorities": [
+    "docs/capabilities/drainage.md",
+    "integration/f-tb/F-TB12_STATUS.json",
+    "integration/f-ci/F-CI61P_STATUS.json",
+    "integration/audits/PPA_WU05B6_CANONICAL_ADMISSION.json"
+  ],
+  "authority_reconstruction_note": "Recovered F-PM19 status exact blob1d237b26 from GitHub and VQ73/VQ74 immutable programs exact blobs e7008eda/dabe53d0 via F-TB12 recorded VQ76 inner b5269247. Local git materialization omits those historical paths; actual source hashes are checked before replay. This resolves the locator issue without inventing status from filenames.",
+  "planned_invariants": [
+    "Generate unmodified drainage once from immutable trial-start hydraulic view, then apply frost before binding the one solver sink.",
+    "Recompute from untouched input on each retry/full/half; never progressively rescale mutable proposals.",
+    "Step/window observation and any accepted receipt use final nodal drainage, not raw generation totals.",
+    "Numerical head/temperature/mass bounds remain explicit and physical opt-ins independent.",
+    "Prescribed B6/B8 paths and eight-variant nonfrost denominator retain exact behaviour."
+  ],
+  "excluded_from_initial_candidate": [
+    "B8 low-air geometry combined with response generation",
+    "SWDIVD1 redistribution",
+    "new nodal drainage distribution",
+    "projection/directional coupling",
+    "root/salt/macropore/snow",
+    "groundwater-owned bottom",
+    "new fully-frozen/last-node interpretation"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "next_action": "Finish B8 admission, then preregister bounded linear drainage generation/frost composition with recovered immutable VQ73/VQ74 preservation",
+  "aggregate_frost_migration_complete": false,
+  "recovered_oracles": {
+    "F_PM19_status_blob": "1d237b26f31c5e83fa7b299e01f47bd9ec6d5ff4",
+    "VQ76_inner_blob": "b5269247a8d5939a2c639239d8512451f9eca8b2",
+    "VQ73_test_blob": "e7008eda5f29ee2e401cb3eb8a1b1523da3bc25a",
+    "VQ74_test_blob": "dabe53d0714abee8e87b2e90f89c2eed169506e0",
+    "baseline_replay": "CURRENT_SOURCE_52944AEC_O0_O2_PASS_EXACT_STDOUT_BOTH_ORACLES"
+  }
+}
