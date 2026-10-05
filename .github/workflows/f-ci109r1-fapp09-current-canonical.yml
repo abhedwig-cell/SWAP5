@@ -52,19 +52,11 @@ jobs:
           applicable=false
           for path in "${changed[@]}"; do
             case "$path" in
-              src/process/mod_drainage_extended_exchange.f90|\\
-              src/runtime/mod_fmr_drainage_response_binding.f90|\\
-              src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90|\\
-              src/runtime/mod_fmr_surface_water_swap_participant.f90|\\
-              tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90|\\
-              tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh|\\
-              tests/fvq/*fvq128*fapp09*|\\
-              tests/fci/run_fci109r1_fapp09_current_canonical.sh|\\
-              integration/f-ci/F-CI109R1_*)
+              src/process/mod_drainage_extended_exchange.f90|src/runtime/mod_fmr_drainage_response_binding.f90|src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90|src/runtime/mod_fmr_surface_water_swap_participant.f90|tests/fapp/test_fapp09_ribasim_external_surface_water_profile.f90|tests/fapp/run_fapp09_ribasim_external_surface_water_profile.sh|tests/fvq/*fvq128*fapp09*|tests/fci/run_fci109r1_fapp09_current_canonical.sh|integration/f-ci/F-CI109R1_*)
                 applicable=true
                 break
                 ;;
-            esac
+          esac
           done
 
           echo "applicable=$applicable" >> "$GITHUB_OUTPUT"
