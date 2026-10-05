@@ -1,6 +1,6 @@
 # PPA-WU05-MIGMAC03 constitutive closeout
 
-Date: 2026-10-05. Status: LOCAL_QUALIFICATION_COMPLETE_PENDING_CANONICAL_ADMISSION.
+Date: 2026-10-05. Status: CANONICAL_PRODUCTION_ADMITTED_CLOSED.
 Base: canonical c1322db6e5551e95dcb4f86d707d22a6316f86e6.
 
 The existing dynamic configuration accepts optional per-compartment law selectors:
@@ -34,3 +34,10 @@ pinned in integration/audits/PPA_WU05_MIGMAC03_QUALIFICATION.json.
 Excluded: parameter fitting, mixed Kim/peat runtime, new mixed-law rapid-drain
 reference construction, general surface-owner/coupling combinations, official
 whole-model equivalence, RossFast and concurrent MultiSWAP.
+
+## Canonical admission
+
+PR #1020 merged exact qualified tree `475b607a3c95115f3d7ca0835d273dd951e5d6ee`
+at `cee05d19338e53c353d3b07a1003a61d587c038f`. Published qualification commit:
+`347d14dcf8181560e286fa2ecb5b99756bf16088`. All 30 source/test postimages match.
+The admission closeout changes only documentation and status records.

@@ -228,7 +228,7 @@ remain outside this bounded admission. Frozen Status A is unchanged.
 ## PPA-WU05-MIGMAC03 peat and rigid constitutive extension
 
 Direct regular Hendriks and three-segment peat laws, including alternating
-rigid/peat compartment profiles, are locally qualified in the existing Reference
+rigid/peat compartment profiles, are canonically admitted by PR #1020 in the existing Reference
 Richards macropore geometry/transaction chain. Optional typed law selectors
 preserve implicit Kim callers. No new water or restart owner is introduced.
 [Closeout](../audits/PPA_WU05_MIGMAC03_CLOSEOUT.md) bounds parameter validity and
