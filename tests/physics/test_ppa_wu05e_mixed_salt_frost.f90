@@ -142,6 +142,9 @@ program test_ppa_wu05e_mixed_salt_frost
     call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,restored(1), &
          cfg%tiles(1)%base_forcing,cfg%numerical,T1,T1+1.e-5_real64,cp,continuation,candidate,diag)
     call require(continuation%completed.and.candidate%ready(),'separate process changed forcing continuation')
+    obs=backend%observation()
+    call require(obs%root_compensation_base_uptake/cfg%tiles(1)%base_forcing%root_potential_transpiration<.05_real64.and. &
+         obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'fresh severe restart compensation remains active')
     call candidate%snapshot(snapshot,ok)
     call write_physical_file(trim(result_path),snapshot)
     print '(a)','PPA_WU05E_FRESH_PROCESS_RESTART=PASS_TEST_ONLY'
@@ -316,9 +319,18 @@ program test_ppa_wu05e_mixed_salt_frost
   obs2=backend%observation();call other%snapshot(after,ok);call verify_ledger(obs2,after)
   call backend%discard_trial_candidate(other,diag2)
   call backend%configure_base_salt_temporal_policy(policy,ok)
+  deallocate(cfg%tiles(1)%initial_state%salt)
+  call fmr_initialize_mobile_salt_profile(cfg%tiles(1)%initial_state,dz,spread(.99_real64,1,numnod),status)
+  call require(status==0,'severe restart profile')
+  call fmr_new_b110_committed_state(states(1),columns(1)%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  call states(1)%capture_checkpoint(cp,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag,trace_accepted_water_flux_substeps=.true.)
   call require(first%completed.and.candidate%ready(),'joint final candidate')
+  obs=backend%observation()
+  call require(obs%root_compensation_base_uptake/cfg%tiles(1)%base_forcing%root_potential_transpiration<.05_real64.and. &
+       obs%root_compensation_final_uptake>obs%root_compensation_base_uptake,'accepted severe restart input remains source eligible')
+  print '(a)','PPA_EXACT01_SEVERE_RESTART_INPUT=PASS'
   call backend%commit_trial_candidate(states(1),candidate,diag,ok,status)
   call require(ok,'joint final commit')
   call fmr_export_committed_restart(columns,[cfg%tiles(1)%template],states, &
