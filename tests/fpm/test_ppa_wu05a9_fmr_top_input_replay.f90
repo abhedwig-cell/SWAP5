@@ -13,6 +13,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
   use mod_macropore_dynamic_shrinkage, only: prepare_clay_kim_option1, map_surface_crack_depth_to_node, &
        SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, &
+       prepare_clay_kim_option2, prepare_peat_characteristic_points, &
        derive_dynamic_minimum_subsidence
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, &
        macropore_geometry_result_t, evaluate_macropore_geometry
@@ -38,7 +39,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
   implicit none
-  character(len=1)::constitutive_flag
+  character(len=1)::constitutive_flag,fit_flag
 
   real(real64),parameter::dt=1.0e-3_real64,tol=1.0e-12_real64
   integer,parameter::nd=1
@@ -69,6 +70,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
   logical::dynamic_enabled
   character(len=1)::dynamic_flag
 
+  fit_flag='0'
+  call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
   constitutive_flag='0'
   call get_environment_variable('WU05_MIGMAC03_LAW',constitutive_flag)
   dynamic_flag='0'
@@ -261,6 +264,25 @@ contains
       mcfg%shrinkage%peat%p=0.1_real64
       mcfg%shrinkage%peat%intermediate_moisture_ratio=0.2_real64
       mcfg%shrinkage%peat%intermediate_void_ratio=0.4_real64
+    end if
+
+    if(fit_flag=='1')then
+      do k=1,numnod
+        call prepare_clay_kim_option2(0.427494_real64,0.2_real64,0.35_real64,mcfg%shrinkage%kim(k),state_ok)
+        if(.not.state_ok)error stop 'MIGMAC04 clay points prepare'
+      end do
+    else if(fit_flag=='2' .or. fit_flag=='3')then
+      if(.not.allocated(mcfg%shrinkage%peat))error stop 'MIGMAC04 peat carrier present'
+      do k=1,numnod
+        if(fit_flag=='2')then
+          call prepare_peat_characteristic_points(0.427494_real64,0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,0.1_real64,mcfg%shrinkage%peat(k),state_ok)
+        else
+          call prepare_peat_characteristic_points(0.427494_real64,0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,-0.3_real64,mcfg%shrinkage%peat(k),state_ok)
+        end if
+        if(.not.state_ok)error stop 'MIGMAC04 peat points prepare'
+      end do
     end if
     call derive_dynamic_minimum_subsidence(mcfg%shrinkage,dz,state_ok)
     if(.not.state_ok)error stop 'MIGMAC02 replay source minimum subsidence'
