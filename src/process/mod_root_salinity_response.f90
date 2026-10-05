@@ -22,7 +22,8 @@ contains
     if(size(cml_mg_cm3)==0.or.size(alpha)/=size(cml_mg_cm3)) return
     if(.not.all(ieee_is_finite(cml_mg_cm3)).or. &
        .not.all(ieee_is_finite([saltmax_mg_cm3,saltslope_cm3_mg]))) return
-    if(any(cml_mg_cm3<0.0_real64).or.saltmax_mg_cm3<0.0_real64.or.saltslope_cm3_mg<0.0_real64) return
+    if(any(cml_mg_cm3<0.0_real64).or.saltmax_mg_cm3<0.0_real64.or.saltmax_mg_cm3>100.0_real64.or. &
+       saltslope_cm3_mg<0.0_real64.or.saltslope_cm3_mg>1.0_real64) return
     do i=1,size(cml_mg_cm3)
       if(cml_mg_cm3(i)<=saltmax_mg_cm3.or.saltslope_cm3_mg<=0.0_real64) then
         alpha(i)=1.0_real64
