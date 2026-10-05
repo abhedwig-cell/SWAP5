@@ -18,6 +18,7 @@ module mod_solute_mobile_macro_salt_transport
     real(real64), allocatable :: macro_bottom_input_mg_cm2(:), macro_bottom_output_mg_cm2(:)
     real(real64), allocatable :: macro_to_matrix_mg_cm2(:,:), matrix_to_macro_mg_cm2(:,:)
     real(real64), allocatable :: root_solute_uptake_mg_cm2(:)
+    real(real64), allocatable :: qdra_signed_out_mg_cm2(:)
     real(real64) :: closure_error_mg_cm2=0.0_real64
   end type
 
@@ -215,7 +216,7 @@ contains
   subroutine advance_mobile_macro_salt_trial(committed,node_thickness_cm,matrix_water_start,matrix_water_end, &
        macro_water_start,macro_water_end,matrix_face_rate,macro_face_rate,exchange_rate,root_water_sink, &
        matrix_top_concentration,matrix_bottom_concentration,macro_top_concentration,macro_bottom_concentration, &
-       tscf,dt_day,candidate,receipt,status)
+       tscf,dt_day,candidate,receipt,status,qdra_rate,qssdi_rate,cdrain_mg_cm3,cdrain_available)
     type(mobile_macro_salt_state_t), intent(in) :: committed
     real(real64), intent(in) :: node_thickness_cm(:),matrix_water_start(:),matrix_water_end(:)
     real(real64), intent(in) :: macro_water_start(:,:),macro_water_end(:,:)
@@ -225,8 +226,11 @@ contains
     type(mobile_macro_salt_state_t), intent(out) :: candidate
     type(mobile_macro_salt_receipt_t), intent(out) :: receipt
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: qdra_rate(:,:),qssdi_rate(:),cdrain_mg_cm3
+    logical, intent(in), optional :: cdrain_available
     real(real64), allocatable :: cm(:),cp(:,:),dm(:),dp(:,:),outm(:),outp(:,:),matrix_volume_start(:)
-    real(real64) :: q,amount,root_salt,total_before,total_after,tol,water_expected
+    real(real64) :: q,amount,root_salt,total_before,total_after,tol,water_expected,drain_c
+    logical :: has_drain_c
     integer :: n,nd,i,d
 
     candidate=mobile_macro_salt_state_t(); receipt=mobile_macro_salt_receipt_t(); status=MACRO_SALT_INVALID
@@ -237,6 +241,19 @@ contains
        size(macro_top_concentration)/=nd.or.size(macro_bottom_concentration)/=nd)return
     if(.not.allocated(committed%matrix_mass_mg_cm2).or..not.allocated(committed%macro_mass_mg_cm2))return
     if(size(committed%matrix_mass_mg_cm2)/=n.or.any(shape(committed%macro_mass_mg_cm2)/=[nd,n]))return
+    if(present(qdra_rate))then
+      if(size(qdra_rate,2)/=n.or..not.all(ieee_is_finite(qdra_rate)))return
+      if(any(qdra_rate<0.0_real64))then
+        if(.not.present(cdrain_available).or..not.present(cdrain_mg_cm3))return
+        if(.not.cdrain_available)return
+      end if
+    end if
+    if(present(qssdi_rate))then
+      if(size(qssdi_rate)/=n.or..not.all(ieee_is_finite(qssdi_rate)))return
+    end if
+    if(present(cdrain_mg_cm3))then
+      if(.not.ieee_is_finite(cdrain_mg_cm3).or.cdrain_mg_cm3<0.0_real64)return
+    end if
     if(.not.all(ieee_is_finite(node_thickness_cm)).or..not.all(ieee_is_finite(matrix_water_start)).or. &
        .not.all(ieee_is_finite(matrix_water_end)).or. &
        .not.all(ieee_is_finite(macro_water_start)).or..not.all(ieee_is_finite(macro_water_end)).or. &
@@ -261,8 +278,12 @@ contains
          maxval(matrix_water_end*node_thickness_cm),maxval(macro_water_start),maxval(macro_water_end), &
          dt_day*maxval(abs(matrix_face_rate)),dt_day*maxval(abs(macro_face_rate)), &
          dt_day*maxval(abs(exchange_rate)),dt_day*maxval(root_water_sink))
+    if(present(qdra_rate))tol=max(tol,dt_day*maxval(abs(qdra_rate)))
+    if(present(qssdi_rate))tol=max(tol,dt_day*maxval(abs(qssdi_rate)))
     do i=1,n
       water_expected=dt_day*(matrix_face_rate(i)-matrix_face_rate(i+1)+sum(exchange_rate(:,i))-root_water_sink(i))
+      if(present(qssdi_rate))water_expected=water_expected+dt_day*qssdi_rate(i)
+      if(present(qdra_rate))water_expected=water_expected-dt_day*sum(qdra_rate(:,i))
       if(abs((matrix_water_end(i)-matrix_water_start(i))*node_thickness_cm(i)-water_expected)>tol)then
         status=MACRO_SALT_WATER_CLOSURE;return
       end if
@@ -288,6 +309,26 @@ contains
     receipt%macro_bottom_input_mg_cm2=0.0_real64;receipt%macro_bottom_output_mg_cm2=0.0_real64
     receipt%macro_to_matrix_mg_cm2=0.0_real64;receipt%matrix_to_macro_mg_cm2=0.0_real64
     receipt%root_solute_uptake_mg_cm2=0.0_real64
+    if(present(qdra_rate))then
+      allocate(receipt%qdra_signed_out_mg_cm2(size(qdra_rate,1)))
+      receipt%qdra_signed_out_mg_cm2=0.0_real64
+      drain_c=0.0_real64;has_drain_c=.false.
+      if(present(cdrain_mg_cm3))drain_c=cdrain_mg_cm3
+      if(present(cdrain_available))has_drain_c=cdrain_available
+      if(any(qdra_rate<0.0_real64).and..not.has_drain_c)return
+      do i=1,n
+        do d=1,size(qdra_rate,1)
+          if(qdra_rate(d,i)>0.0_real64)then
+            amount=qdra_rate(d,i)*dt_day*cm(i)
+            outm(i)=outm(i)+qdra_rate(d,i)*dt_day
+          else
+            amount=qdra_rate(d,i)*dt_day*drain_c
+          end if
+          dm(i)=dm(i)-amount
+          receipt%qdra_signed_out_mg_cm2(d)=receipt%qdra_signed_out_mg_cm2(d)+amount
+        end do
+      end do
+    end if
 
     ! Matrix vertical faces, including explicit surface and bottom boundaries.
     q=matrix_face_rate(1)*dt_day
@@ -380,7 +421,8 @@ contains
     total_after=sum(candidate%matrix_mass_mg_cm2)+sum(candidate%macro_mass_mg_cm2)
     receipt%closure_error_mg_cm2=total_after-total_before-receipt%matrix_top_input_mg_cm2+ &
          receipt%matrix_top_output_mg_cm2-receipt%matrix_bottom_input_mg_cm2+ &
-         receipt%matrix_bottom_output_mg_cm2-sum(receipt%macro_top_input_mg_cm2)+ &
+         receipt%matrix_bottom_output_mg_cm2+sum(receipt%qdra_signed_out_mg_cm2)- &
+         sum(receipt%macro_top_input_mg_cm2)+ &
          sum(receipt%macro_top_output_mg_cm2)-sum(receipt%macro_bottom_input_mg_cm2)+ &
          sum(receipt%macro_bottom_output_mg_cm2)+sum(receipt%root_solute_uptake_mg_cm2)
     tol=1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(total_before),abs(total_after))
