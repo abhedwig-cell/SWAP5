@@ -37,6 +37,7 @@ def validate(require_closed=False):
     assert hashlib.sha256(manifest).hexdigest() == census['b111_manifest_sha256'], 'B1.11 manifest'
     entries = ledger['capabilities']
     ids = {e['capability_id'] for e in entries}
+    by_id = {e['capability_id']: e for e in entries}
     assert len(ids) == len(entries), 'duplicate capability ID'
     assert ledger['summary']['capabilities'] == len(entries), 'stale capability count'
     registered = {u['id']: u for u in work['new_workunits']}
@@ -52,12 +53,14 @@ def validate(require_closed=False):
         lines = members[source['member']].decode('latin1').splitlines()
         assert source['locator_lines'] and all(1 <= n <= len(lines) for n in source['locator_lines']), cap
         assert set(entry['remaining_dependency']) <= ids, f'{cap}: dangling dependency'
+        assert all(by_id[d]['current_disposition'] == 'ACTIVE_MIGRATION' for d in entry['remaining_dependency']), f'{cap}: closed dependency treated as blocker'
         if entry['current_disposition'] == 'ACTIVE_MIGRATION':
             assert entry['active_workunit'] in registered, f'{cap}: unregistered workunit'
             assert cap in registered[entry['active_workunit']]['capabilities'], cap
             assert not entry['production_reachability']['established'], cap
         else:
             assert entry['active_workunit'] is None, cap
+            assert not entry['remaining_dependency'], f'{cap}: final disposition still has unresolved dependency'
         if entry['current_disposition'] in {'ADMITTED', 'SUPERSEDED'}:
             assert entry['swap5_implementation_authority'] and entry['evidence'], cap
             assert entry['production_reachability']['established'], cap
@@ -74,6 +77,13 @@ def validate(require_closed=False):
         done.add(cap)
     for cap in graph:
         visit(cap)
+    depths = {}
+    def depth(cap):
+        if cap not in depths:
+            depths[cap] = max((depth(dep) + 1 for dep in graph[cap]), default=0)
+        return depths[cap]
+    for entry in entries:
+        assert entry['migration_priority']['dependency_depth'] == depth(entry['capability_id']), 'stale dependency depth'
     counts = dict(collections.Counter(e['current_disposition'] for e in entries))
     active = [e for e in entries if e['current_disposition'] == 'ACTIVE_MIGRATION']
     assert ledger['summary']['dispositions'] == counts, 'stale summary'
@@ -96,6 +106,11 @@ def validate(require_closed=False):
             if 'authority' in row:
                 assert (ROOT/row['authority']).is_file(), 'missing PR reconciliation authority'
     assert {e['capability_id'] for e in ledger['remaining_queue']} == {e['capability_id'] for e in active}, 'queue mismatch'
+    for row in ledger['remaining_queue']:
+        assert row['dependencies'] == by_id[row['capability_id']]['remaining_dependency'], 'stale queue dependencies'
+    priority_fields = ['dependency_depth', 'functional_relevance', 'implementation_extent', 'physical_risk', 'regression_risk']
+    ordered = sorted(ledger['remaining_queue'], key=lambda row: tuple(row['priority'][k] for k in priority_fields) + (row['capability_id'],))
+    assert ledger['remaining_queue'] == ordered, 'queue ordering mismatch'
     if ledger['coverage_closed'] or require_closed:
         assert ledger['denominator_complete'] and census['census_complete'], 'denominator incomplete'
         assert not active, f'{len(active)} unresolved capabilities'

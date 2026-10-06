@@ -25,15 +25,19 @@
         "SW431-CROP-ROTATION",
         "SW431-ROOT-DENSITY",
         "SW431-ROOT-ANAE-GROW",
-        "SW431-CROP-ATTAINABLE"
+        "SW431-CROP-ATTAINABLE",
+        "SW431-CROP-FIXED-THERMAL"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-CROP-ROOTGROW",
-        "SW431-CROP-WOF81"
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-CROP-ROOTGROW"
       ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "closed_foundation_authorities": [
+        "SW431-CROP-WOF81"
+      ]
     },
     {
       "id": "MC-DRAIN01",
@@ -46,11 +50,13 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-DRAIN-DIV",
         "SW431-DRAIN-EXT"
-      ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      ]
     },
     {
       "id": "MC-FROST01",
@@ -59,18 +65,24 @@
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-EXT-MULTI",
         "SW431-FROST-ROOTDRAIN",
-        "SW431-FROST-GW"
+        "SW431-FROST-GW",
+        "SW431-FROST-SNOW"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [
         "SW431-FROST-DIVDRA",
+        "SW431-TEMP-SNOW"
+      ],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-FROST-DRAIN-EXTENDED",
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-HYD",
-        "SW431-ROOT-FROST"
-      ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+        "SW431-ROOT-FROST",
+        "SW431-SNOW"
+      ]
     },
     {
       "id": "MC-HEAT01",
@@ -84,10 +96,12 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-TEMP-SENSIBLE"
-      ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      ]
     },
     {
       "id": "MC-HYD01",
@@ -111,14 +125,16 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
         "SW431-HYD-MODEL10",
         "SW431-HYD-MODEL11",
         "SW431-HYD-MODEL12",
         "SW431-HYD-MODEL8",
         "SW431-HYD-MODEL9"
       ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "closed_foundation_authorities": []
     },
     {
       "id": "MC-HYST01",
@@ -129,11 +145,13 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-HYD-MVG"
-      ],
+      "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
     },
     {
       "id": "MC-IRR01",
@@ -151,15 +169,23 @@
         "SW431-IRR-SSDI",
         "SW431-IRR-FREQ",
         "SW431-IRR-LIMIT",
-        "SW431-IRR-SALTEXCESS"
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP",
+        "SW431-IRR-AVAIL"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-IRR-TCS1"
-      ],
+      "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-IRR-TCS1"
+      ]
     },
     {
       "id": "MC-LOW01",
@@ -171,7 +197,9 @@
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
     },
     {
       "id": "MC-MACRO01",
@@ -183,12 +211,14 @@
         "SW431-MACRO-POWM",
         "SW431-MACRO-DARCY",
         "SW431-MACRO-SORP1",
-        "SW431-MACRO-SORP2"
+        "SW431-MACRO-SEP1"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
     },
     {
       "id": "MC-MACROSUR01",
@@ -198,14 +228,19 @@
         "SW431-MACRO-RUNON",
         "SW431-MACRO-SW",
         "SW431-MACRO-SNOW",
-        "SW431-MACRO-EVAP"
+        "SW431-MACRO-EVAP",
+        "SW431-MACRO-SW-EXTERNAL"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [
-        "SW431-MACRO-TOP"
+        "SW431-RUNON"
       ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-MACRO-TOP"
+      ]
     },
     {
       "id": "MC-MET01",
@@ -222,7 +257,9 @@
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
     },
     {
       "id": "MC-MICRO01",
@@ -236,13 +273,16 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-HYD-MVG",
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
         "SW431-ROOT-MICRO2",
         "SW431-ROOT-MICRO3"
       ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
     },
     {
       "id": "MC-NUT01",
@@ -260,10 +300,16 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-CROP-WOF81"
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-NUT-CROP",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
       ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "closed_foundation_authorities": [
+        "SW431-CROP-WOF81"
+      ]
     },
     {
       "id": "MC-ROOT01",
@@ -275,7 +321,9 @@
       "next_action": "Migrate and qualify separate empirical SWOXYGEN=1 wet-head and SWOXYGEN=2/type2 reproduction factors; neither is supplied by Bartholomeus type1. Compose with the single root-sink owner and source stress attribution.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
     },
     {
       "id": "MC-SOL01",
@@ -289,11 +337,13 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-SALT-TRANSPORT"
-      ],
+      "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-SALT-TRANSPORT"
+      ]
     },
     {
       "id": "MC-SUR01",
@@ -304,10 +354,12 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-PONDING"
-      ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      ]
     },
     {
       "id": "MC-SW01",
@@ -321,11 +373,13 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-SW-EXTERNAL",
         "SW431-SW-FIXED"
-      ],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence."
+      ]
     },
     {
       "id": "MC-TILL01",
@@ -333,15 +387,26 @@
       "capabilities": [
         "SW431-TILL-EVENT",
         "SW431-TILL-CONSOL",
-        "SW431-TILL-REDIST"
+        "SW431-TILL-REDIST",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3",
+        "SW431-TILL-REDIST1"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Adjudicate source redistribution defects and consolidation rain semantics; qualify three n-laws before a conservative typed material/water owner. Do not copy negative pond or unweighted branch selection into production.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-HYD-MVG"
-      ],
+      "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
+        "SW431-TILL-EVENT",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
     }
   ]
 }

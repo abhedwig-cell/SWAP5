@@ -130,7 +130,7 @@ solute.f90 lines553–574 defines SWBOTBC0 as Cseep=Cdrain, 1 as independently s
 
 ### Additional Soil-N capabilities from complete source routines
 
-The routine scan now also includes no-argument procedures, bringing navigation to 392 routines and 6073 control-branch locations. This is source navigation, not 6073 independent capabilities. The source Soil-N family separates ammonium/nitrate inventory/supply, analytical water/solute balance, nitrification, denitrification and crop biological N fixation. These have individual IDs under MC-NUT01 rather than hiding transformations inside an undifferentiated mineral-N gap. Rate constants depend on temperature/wetness; denitrification additionally depends on organic respiration. NFIXF partitions soil demand and biological fixation and books N fixation into crop balance. Current WOFOST81 donor mechanics exist, but its admitted N-unlimited request-equals-supply scope does not establish these additional source options or Soil-N coupling. No claim of missing crop-N algebra is made.
+The routine scan now also includes no-argument procedures, bringing navigation to 392 routine declarations/definitions. The statement-aware scanner now records 4085 executable control-branch statements and 1256 selector-branch statements; terminators such as END IF are excluded. These are source-navigation counts, not independent capability counts. The source Soil-N family separates ammonium/nitrate inventory/supply, analytical water/solute balance, nitrification, denitrification and crop biological N fixation. These have individual IDs under MC-NUT01 rather than hiding transformations inside an undifferentiated mineral-N gap. Rate constants depend on temperature/wetness; denitrification additionally depends on organic respiration. NFIXF partitions soil demand and biological fixation and books N fixation into crop balance. Current WOFOST81 donor mechanics exist, but its admitted N-unlimited request-equals-supply scope does not establish these additional source options or Soil-N coupling. No claim of missing crop-N algebra is made.
 
 ### Complete current PR inventory and MICRO successor
 
@@ -149,3 +149,35 @@ The runoff selector was previously mislabeled RSIGNI, which actually belongs to 
 The draft ledger previously cited C3A as admission of SWOXYGEN=1. That was incorrect: C3A explicitly admits only mode2/type1 Bartholomeus. Legacy empirical wet stress uses distinct HLIM1/HLIM2U/HLIM2L pressure-head factors; the current Feddes process is drought-only. SW431-ROOT-OXYGEN-EMP is restored to an actual open MC-ROOT01 capability. No canonical runtime admission is withdrawn by this audit correction.
 
 The current thermal forcing/assembly proves absence of the five listed harmonic/flux/mixed/bottom-temperature/snow-interface routes. They are confirmed missing production implementations rather than unspecified qualification reviews. De Vries, sensible thermal state and prescribed surface temperature remain admitted.
+
+## Statement-aware source scan
+
+Schema1.2 joins free-form continuation lines, preserves quoted !/semicolon characters and doubled quotes, and splits independent semicolon statements. Four targeted lexical tests pass. The full 63-member scan retains 881 input-reader calls and 238 integer/boolean reader calls with zero unmapped navigation targets. Every continued record carries its first and final source line. This closes a scanner limitation; it does not declare the physics denominator exhaustive.
+
+## Empirical macropore absorption and Darcy split
+
+The A8 real-FMR fixture explicitly supplies positive empirical sorptivity alpha and SorpMax, current theta/heads and committed sorption history. The runtime implements the SWABS1 empirical power-law amount and restart fields. SW431-MACRO-SORP2 is therefore bounded ADMITTED for positive alpha and extra Darcy OFF; this does not qualify Parlange preparation or the full legacy parameter range.
+
+SWDARCY=0 is functionally replaced by the typed zero unsaturated-exchange conductivity coefficient used in the actual A8 fixture. This coefficient is not the Richards soil conductivity; saturated horizontal conductivity/CDarcy are separate inputs. The resulting Darcy amount is exactly zero and sorption remains active. SWDARCY=1 is a different capability: source uses current K(ic), while current adapter retains immutable template conductivity instead of binding current constitutive K. That binding is missing, despite the presence of Darcy algebra. SWABS2 also requires a distinct diffusivity operator absent from the current request. No production source has been changed by these adjudications.
+
+## Fixed-crop state and additional physical branches
+
+CROPTYPE1 is not merely calendar/table parsing: IDEV1 advances DVS by 2/LCC; IDEV2 advances by max(0,TAV-TBASE)/TSUMEA or TSUMAM across anthesis. DVS/TSUM and previous WRT are continued process data. The two routes now have separate capability IDs. Typed crop views consume their results but do not implement these updates, so neither is written off as supplied-table compatibility. SWGC1 is just the deprecated GCTB-to-LAITB input alias; SWGC2 errors and has no executable soil-cover capability.
+
+SWSEP1 Ernst horizontal/vertical/radial resistance and SWSEP2 Youngs seepage geometry are separate physical branches. Both have typed algebra, but the A8 coupled fixture disables saturated exchange; active branch coverage still needs admission reconciliation. Snow-insulated temperature driving frost is separate from bare sensible thermal frost and depends on TEMP-SNOW. Current explicit gates prove the listed frost and macro compositions blocked. Internal fixed-weir rapid-drain receipt is separated from externally prescribed surface-water level; the latter is not automatically classified as absent merely because the internal owner is blocked.
+
+## Tillage selector correction and bounded source defects
+
+I_N_MODEL1/2/3 changes the hydraulic n parameter (unchanged, silt/clay density power law, matching-point slope), not consolidation models. Shared theta_r/theta_s/Ksat/alpha changes precede water adaptation. Consolidate_Bdens uses exp(-K_R_cons*nraidt*10); the source itself questions this forcing substitution. Rain rate/amount and interval semantics need adjudication; no accepted time-clock model is inferred.
+
+The literal extracted Adapt_WC_H routine is reproduced at O0/O2 in SWAP431_TILLAGE_DEFECT_PROBE.json. IREDIST1 turns oversaturation into negative pond: 3cm initial water becomes1cm including pond=-1cm. IREDIST2 selects branches by unweighted theta sums; a bounded equal-sum, unequal-thickness case skips the new-material inverse update. Its stubbed constitutive query is explicitly scoped, not a full trajectory qualification. These defects are registered for the reference-policy review; the intended conservative tillage capability stays open. Unadmitted SWAP003/004 changes are not adopted. IREDIST0 fatally errors outside TEST and is NOT_APPLICABLE production physics.
+
+## Irrigation event-rate and interval branches
+
+TCSFIX1 is already qualified with TCS1/DCS2 in F-APP07 and now has an explicit bounded ADMITTED entry. TCSFIX0 has no equivalent admitted owner binding; it must not be inferred from setting the minimum interval to1. Scheduled IRR_RATE0 uses depth/day; positive-rate requested duration>1 uses a depth-preserving rate adaptation. The admitted TCS1 owner requires positive rate and rejects duration>1, so these two fallback capabilities are explicit production gaps.
+
+TASK4 is not discarded as plumbing: source scales gird and dt_irr_event by F_IRR_AVAIL, hence both rate and duration affect delivered volume. Actual callers and allocation semantics remain under source review. Fixed SSDI divides configured depth by node count (725..729), whereas scheduled SSDI sets each node to the requested rate/depth. Single-node and multi-node ownership must be qualified separately rather than assuming identical aggregate semantics.
+
+## Actual remaining dependencies
+
+Already admitted foundations are recorded as nonblocking closed_foundation_authorities rather than remaining dependencies. Queue depth is recomputed from only unresolved capability edges. Internal sequencing is separate from external workunit dependencies. Source-bound additions include runon before macropore runon, tillage events before consolidation/redistribution, mineral/organic inventories before amendment/residue coupling, soil supply before crop-N limitation, and sensor TCS7/8 before concentration-threshold excess irrigation. Legacy irrigation initializes SWCIRRTHRES only within TCS7/8 (irrigation.f90:279..302); tillage event/consolidation precedes hydraulic/water adaptation (tillage.f90:160..190). No closed admission is treated as a blocker.

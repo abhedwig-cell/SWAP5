@@ -149,7 +149,10 @@
         "SW431-IRR-SSDI",
         "SW431-IRR-FREQ",
         "SW431-IRR-LIMIT",
-        "SW431-IRR-SALTEXCESS"
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP",
+        "SW431-IRR-AVAIL"
       ],
       "physics": "Committed-window irrigation decision with source root-zone deficits and sensor thresholds. TCS7 is pressure head, TCS8 water content, TCS6 is weekly deficit-gated. DCS1 refills deficit with DI and rain discount; DCS2 fixed depth is already bounded admitted with TCS1.",
       "state": [
@@ -177,7 +180,10 @@
         "one event per accepted day",
         "retry/restart event identity",
         "O0/O2",
-        "F-APP07 preservation"
+        "F-APP07 preservation",
+        "zero-rate daily fallback and long-duration depth-preserving rate cap",
+        "fixed versus scheduled SSDI per-node/total depth semantics",
+        "external availability rate/duration and actual caller trace"
       ],
       "dependencies": [
         "SW431-IRR-TCS1"
@@ -189,27 +195,34 @@
       "capabilities": [
         "SW431-TILL-EVENT",
         "SW431-TILL-CONSOL",
-        "SW431-TILL-REDIST"
+        "SW431-TILL-REDIST",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3",
+        "SW431-TILL-REDIST1"
       ],
-      "physics": "Event-induced bulk-density/hydraulic change, consolidation models1..3 and redistribution0..2. Do not merge unadmitted SWAP003/004 reference changes into B1.11 authority.",
+      "physics": "Event-induced density and shared hydraulic material change; I_N_MODEL1/2/3 selects the n-update law. Post-event consolidation is rain-forcing driven. IREDIST1/2 require source-defect adjudication and conservative water/material replacement; IREDIST0 is TEST-only.",
       "state": [
         "accepted event cursor",
-        "density/geometry/hydraulic material evolution",
-        "consolidation clock and memory",
-        "redistributed owned water"
+        "accepted bulk density and hydraulic material",
+        "previous/event/consolidated density and rain-forcing identity",
+        "owned water/head/pond after conservative material adaptation"
       ],
       "ownership": "Candidate-only event with complete geometry/material/water update; atomic accepted publish and restart. Source-prohibited hysteresis/solute/soil-N/macro/KSATEXM combinations are held, not silently generalized.",
       "qualification": [
-        "unchanged B1.11 event/consolidation/redistribution oracles",
+        "B1.11 literal event and three n-law oracles",
         "SWAP002 start-date repair preservation",
-        "pre/post event water mass",
-        "density/material validity",
+        "review nraidt rate/amount semantics in consolidation",
+        "preserve bounded defect probe and qualify separately admitted reference correction or explicit conservative replacement",
+        "pre/post event weighted water mass and nonnegative pond",
+        "theta/head/material consistency",
         "retry/discard and restart",
         "O0/O2"
       ],
       "dependencies": [
         "SW431-HYD-MVG"
-      ]
+      ],
+      "source_defect_evidence": "integration/audits/evidence/SWAP431_TILLAGE_DEFECT_PROBE.json"
     }
   ]
 }

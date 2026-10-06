@@ -1,7 +1,7 @@
 {
   "schema": "swap5.coverage.implementation_reachability_review.v1",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "reviewed_postimage": "53158e8e7b033d0fcd83d4bc19146a540bca7d5a",
+  "reviewed_postimage": "32aede1ca6a9ee4c27cc5f226b5b8d7c5c7c019b",
   "constitutive_provider_inventory": [
     {
       "path": "src/solver/mod_b110_default_mvg_provider.f90",
@@ -32,7 +32,16 @@
     "src/runtime/mod_fmr_wofost81_crop_transaction.f90": "da47da6ec514fd752d7fbd7b75c91a82f9122a795566a224f45e82666d08e7a5",
     "src/process/mod_root_water_uptake_process.f90": "f0805c00977efdef834384d412608a1f454e2a9adf40ed27f0986de0230231c8",
     "src/process/mod_soil_temperature_contract.f90": "f68e8380a6db4fbcaeb9cdbc1c75c2dc1fe691022eab96c577928fff78a078a5",
-    "src/process/mod_restricted_soil_temperature.f90": "602858657ce4ccd8004303f4d09bc96ee4dae6dace8572d33aa947aef97aefe7"
+    "src/process/mod_restricted_soil_temperature.f90": "602858657ce4ccd8004303f4d09bc96ee4dae6dace8572d33aa947aef97aefe7",
+    "src/runtime/mod_fmr_macropore_configuration.f90": "2f1d13759ad0ba420f9032ee2468cb4cc48aa3edd4f3fdee2bcf042c856d30bd",
+    "src/runtime/mod_macropore_standard_rate_adapter.f90": "d28e618a53458724d7f222bc2fbd3a5d46aed4faad9752334f86d2d656c693ab",
+    "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+    "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "b695009067bd261a89ee3ca3a7e3a4efbd4492d9be21056aa5f5624568e93a5a",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90": "41a2f082116362cd21c1e13d7972b689e8450b25d793647f06447acb37131964",
+    "src/process/mod_irrigation_process.f90": "0cbe4d23a2a29e8dc585fa92f9eb826b8e6f8b6124228e0b8955d160d97d64dd",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90": "0e7b5f97af8a2f3685dff202b37b040a5dafcfaf8cd2cabc890ee9366c0a357d"
   },
   "findings": [
     {
@@ -71,6 +80,46 @@
       "evidence_locators": [
         "src/process/mod_soil_temperature_contract.f90:42..44",
         "src/process/mod_restricted_soil_temperature.f90:91..165,260..281"
+      ]
+    },
+    {
+      "family": "macropore_absorption",
+      "finding": "Actual A8 fixture has SorpMax=0.001, alpha=0.5, unsaturated exchange conductivity=0, independent Richards MvG conductivity, and accepted sorption history. Thus positive empirical SWABS1 sorptivity and extra-Darcy OFF have bounded production coverage. Current request preparation does not update the exchange conductivity from current Richards constitutive K, so active source SWDARCY1 binding remains missing. SWABS2 diffusivity algebra is absent. No admission of Parlange fitting, negative empirical exponent or active alternative saturated geometry follows.",
+      "evidence_locators": [
+        "SWAP/macropore.f90:988..996,1974..1977",
+        "SWAP/macrorate.f90:1692..1710,1720..1800",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90:264..385",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90:128..159",
+        "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90:217..242"
+      ]
+    },
+    {
+      "family": "fixed_crop",
+      "finding": "CROPTYPE1 is not stateless prescribed forcing: IDEV1 calendar and IDEV2 thermal-sum branches update DVS/TSUM and previous WRT. Current crop typed views consume DVS/LAI/root inputs; no fixed-crop accepted owner/evaluator is supplied by the admitted WOFOST81 runtime. SWGC1 is only an obsolete LAI-table name and SWGC2 errors.",
+      "evidence_locators": [
+        "SWAP/fixed.f90:109..137,208..276",
+        "src/crop/mod_crop_et_canopy_view_provider.f90:27..48",
+        "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90:24..51",
+        "docs/science/wofost-crop-coupling.md"
+      ]
+    },
+    {
+      "family": "composed_admission_guards",
+      "finding": "Concrete current runtime guards establish missing frost/root-drain, non-mode2 frost bottom, multilevel extended frost, frost/snow, macro/snow, macro/Black-Boesten and macro/internal-fixed-weir composition. These findings concern absent supported bindings; they do not label every underlying algorithm missing. External prescribed surface-water and two saturated seepage-face branches remain separately registered source/admission reviews.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:840..847,2590..2601,2639..2655,2665..2669,3274..3282",
+        "SWAP/temperature.f90:255..262",
+        "SWAP/surfacewater.f90:64..71,305,338,357",
+        "SWAP/macrorate.f90:1550..1561"
+      ]
+    },
+    {
+      "family": "irrigation_rate_interval",
+      "finding": "F-APP07 positive-rate, <=one-day, minimum-interval owner does not implement source scheduled zero-rate daily fallback, >one-day adaptive-rate fallback or TCSFIX0. The admitted dayfix gate is separately explicit. TASK4 scales rate and duration and must be traced as physical allocation rather than discarded as executable plumbing. Fixed SSDI divides depth by node count before selection, while scheduled SSDI assignments retain per-node rate; do not conflate these source routes.",
+      "evidence_locators": [
+        "SWAP/irrigation.f90:551..562,596..636,725..729",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:214..220,268..270",
+        "integration/f-app/F-APP07_PREREGISTRATION.json"
       ]
     }
   ],
