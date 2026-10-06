@@ -76,6 +76,8 @@ module mod_fmr_serialized_reference_backend
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
+  use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
+       evaluate_b111_profile_groundwater_projection
   use mod_soil_temperature_contract, only: copy_soil_temperature_profile, soil_temperature_at_node, soil_temperature_field_view_t, &
        build_soil_temperature_field_view
   use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
@@ -339,6 +341,8 @@ module mod_fmr_serialized_reference_backend
     ! drainage hydraulic-view GWL from the current substep-start pressure
     ! profile. Default false preserves every previously admitted PM14 route.
     logical :: drainage_qbot_smooth_freatic_projection = .false.
+    ! MC-LOW01 general value owner. Default false preserves all existing routes.
+    logical :: profile_groundwater_projection = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
@@ -627,6 +631,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qdra(:,:) => null()
     logical :: drainage_response_active = .false.
     logical :: drainage_qbot_smooth_freatic_projection = .false.
+    logical :: profile_groundwater_projection = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
@@ -2978,6 +2983,7 @@ contains
       end if
       self%drainage_response_active = parameters%drainage_response_active
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
+      self%profile_groundwater_projection = parameters%profile_groundwater_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
       if (parameters%drainage_response_active .and. allocated(parameters%drainage_response_levels)) then
         allocate(self%drainage_response_levels(size(parameters%drainage_response_levels)))
@@ -3582,6 +3588,7 @@ contains
          rutter_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
+    type(b111_profile_groundwater_projection_t) :: profile_projection
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
@@ -4420,6 +4427,11 @@ contains
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
       if (candidate_projection_status /= FMR_QBOT_DRAIN_DIRECTION_OK) return
       solve_result%candidate_state%groundwater_level = candidate_projected_groundwater_level
+    else if (self%profile_groundwater_projection) then
+      call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z, self%soil_parameters%node_distance, &
+           solve_result%candidate_state%pressure_head, solve_result%candidate_state%ponding_depth, profile_projection)
+      if (.not. profile_projection%valid .or. .not. profile_projection%level_present) return
+      solve_result%candidate_state%groundwater_level = profile_projection%level_cm
     end if
     if (self%soil_water_selection%uses_rossfast()) then
       call self%soil_water_selection%temporal_certificate_snapshot(rossfast_certificate_available, &
