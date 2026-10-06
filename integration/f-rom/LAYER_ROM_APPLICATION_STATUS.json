@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.layer-rom.application-validation.status.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-APP0",
+  "date": "2026-09-20",
+  "baseline": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "checkpoint_commit": "1ee4ea212e45acd07b298bd4d44edc088371d451",
+  "frozen_core_evidence": {
+    "branch": "work/f-rom-layer-a",
+    "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+    "research_checkpoint": "09185dc63ac1e1da8ef3b3794fa49d42a8c1334c",
+    "pull_request": 495,
+    "pull_request_state": "OPEN_DRAFT_NOT_MERGED",
+    "retained_candidate_set": [
+      "L4",
+      "L6",
+      "R8"
+    ],
+    "mutable_from_application_response": false
+  },
+  "phase": "CLOSED_SCIENTIFIC_BLOCKER_APPLICATION_TOLERANCE_AUTHORITY",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "blind_candidate_responses_exposed": false,
+  "acceptance_envelope_frozen": false,
+  "blind_panel_executable": false,
+  "application_acceptance_adjudicated": false,
+  "purpose_states": {
+    "GW-R": "UNRESOLVED_AUTHORITY",
+    "GW-D": "UNRESOLVED_AUTHORITY",
+    "SCI-P": "UNRESOLVED_AUTHORITY"
+  },
+  "relevant_paths": [
+    "integration/f-rom/LAYER_ROM_APP0_SOURCE_PROVENANCE.json",
+    "integration/f-rom/LAYER_ROM_APP0_EXTERNAL_AUTHORITY_REVIEW.json",
+    "integration/f-rom/LAYER_ROM_APP0_ACCEPTANCE_ENVELOPE_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_APP0_BLIND_PANEL_PREREGISTRATION.json",
+    "integration/f-rom/LAYER_ROM_APP0_VALIDATION_RESULT.json",
+    "integration/f-rom/LAYER_ROM_APP0_PURPOSE_CLOSEOUT.json",
+    "integration/f-rom/LAYER_ROM_APPLICATION_ADMISSIBILITY_MAP.json",
+    "integration/f-rom/LAYER_ROM_APP0_AUTHORITY_CLOSEOUT.json"
+  ],
+  "authority_paths": [
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_BC1_AUTHORITY_BINDING.json",
+    "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa:integration/f-rom/LAYER_ROM_COMP1_COMPARATOR_AUTHORITY.json"
+  ],
+  "evidence_paths": [
+    "External literature/source review persisted in LAYER_ROM_APP0_SOURCE_PROVENANCE.json",
+    "Purpose adjudication persisted in LAYER_ROM_APP0_EXTERNAL_AUTHORITY_REVIEW.json",
+    "No new candidate/reference validation evidence generated"
+  ],
+  "dependency_surface": [
+    "integration/f-rom application-research evidence",
+    "frozen Layer-ROM frontier provenance",
+    "external or purpose-owner fit-for-purpose tolerance authority"
+  ],
+  "blockers": [
+    {
+      "id": "APPLICATION_TOLERANCE_AUTHORITY",
+      "state": "BLOCKED",
+      "class": "SCIENTIFIC_APPLICATION_AUTHORITY_REQUIRED",
+      "description": "No independently justified absolute purpose-specific tolerance and temporal-allocation semantics were found for GW-R, GW-D or SCI-P without making a new application-value judgment."
+    }
+  ],
+  "next_action": "Obtain an independently established purpose requirement with threshold and temporal semantics. Then freeze one purpose acceptance envelope and a real blind panel before exposing any new L4/L6/R8 response.",
+  "recovery_point": "Resume from work/f-rom-layer-appval at or after 1ee4ea212e45acd07b298bd4d44edc088371d451. Do not rerun core feasibility or inspect new validation responses before APPLICATION_TOLERANCE_AUTHORITY is resolved."
+}

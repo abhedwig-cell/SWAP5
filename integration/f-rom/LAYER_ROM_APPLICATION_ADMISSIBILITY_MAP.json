@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.layer-rom.application-admissibility-map.v1",
+  "workstream": "F-ROM-LAYER",
+  "date": "2026-09-20",
+  "core_frontier_authority": "work/f-rom-layer-a@07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+  "application_authority_phase": "LAYER-ROM-APP0",
+  "status": "ALL_PURPOSES_UNRESOLVED_PENDING_INDEPENDENT_TOLERANCE_AUTHORITY",
+  "representations": {
+    "L4": {
+      "GW-R": "UNRESOLVED_AUTHORITY",
+      "GW-D": "UNRESOLVED_AUTHORITY",
+      "SCI-P": "UNRESOLVED_AUTHORITY"
+    },
+    "L6": {
+      "GW-R": "UNRESOLVED_AUTHORITY",
+      "GW-D": "UNRESOLVED_AUTHORITY",
+      "SCI-P": "UNRESOLVED_AUTHORITY"
+    },
+    "R8": {
+      "GW-R": "UNRESOLVED_AUTHORITY",
+      "GW-D": "UNRESOLVED_AUTHORITY",
+      "SCI-P": "UNRESOLVED_AUTHORITY"
+    }
+  },
+  "error_attribution_available_from_core": true,
+  "purpose_validation_domain": null,
+  "response_vector": null,
+  "supported_minimum_dimension_by_purpose": {
+    "GW-R": null,
+    "GW-D": null,
+    "SCI-P": null
+  },
+  "shared_host_cost_signal_preserved": {
+    "L4": true,
+    "L6": true,
+    "R8": true
+  },
+  "portable_speedup_authorized": false,
+  "formal_performance_authorized": false,
+  "application_acceptance_authorized": false,
+  "note": "UNRESOLVED_AUTHORITY must not be interpreted as failure or pass. No new candidate response was exposed in APP0."
+}
