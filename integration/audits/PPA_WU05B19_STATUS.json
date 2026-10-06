@@ -1,0 +1,128 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "workstream": "RT/HY/VQ",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "status": "QUALIFIED_CANONICAL_ADMISSION_AUTHORIZED_CONTROLLING_GATE_PENDING",
+  "contract": "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
+  "source_review": "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "blockers": [
+    "Canonical admission requires current-source reconciliation of inherited CI wrappers: a frozen B15 source-pin rejection and an unchanged PUB-P2E02 compile-list dependency failure are diagnosed. This is not a blanket disposition of all PR checks.",
+    "The preregistered B19 current-source controlling admission gate must pass before merge. User has explicitly authorized canonical admission and merge."
+  ],
+  "next_action": "Run the preregistered source-bound B19 admission gate, verify exact PR head and unchanged live canonical dependencies, merge only when the controlling gate succeeds and repository protection permits it, then verify and record the actual admitted production source tree.",
+  "admission_plan": "integration/audits/PPA_WU05B19_ADMISSION_PLAN.json",
+  "remote_check_reconciliation": "integration/audits/PPA_WU05B19_REMOTE_CHECK_RECONCILIATION.json",
+  "relevant_paths": [
+    "src/process/mod_frost_divdra_drainage_effect.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/frost/",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "candidate_source": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "recovery_point": "a9a0774500d044bd2c42d2cc6551f687e010fa80",
+  "completed_gates": [
+    "Final source 24 runtime trajectories O0/O2 with 8192-step independent continuations",
+    "Final source 4 additional 16384-step trajectories O0/O2",
+    "Final source 28 invalid owner/domain runtime and application cases",
+    "Final source restart replay and actual application lifecycle",
+    "B18 full corrected reference replay 4536 cases O0/O2 with unchanged additive-wrapper process source",
+    "Literal root 330+12 cases O0/O2 on unchanged dependency source",
+    "Extended 1507-case and analytic 148-case science on unchanged process source",
+    "Final source B1..B15 normal preservation 32 complete original fresh executions, O0/O2 exact immutable stdout identity",
+    "Final source four salt/root/frost restart lifecycle variants and immutable VQ73/VQ74/full original FAPP09/VQ128 O0/O2",
+    "Final source moving canonical lineage-aware preservation",
+    "Documentation source checks and strict MkDocs",
+    "Final source B8/B10/B11..B15 low-air preservation: all 48 complete original fresh executions and O0/O2 exact immutable stdout identity",
+    "Final source-bound evidence seal: all 11 declared gates passed; final Markdown postimages passed source checks and strict MkDocs"
+  ],
+  "pending_gates": [],
+  "remote_persisted": true,
+  "publication": {
+    "repository": "abhedwig-cell/SWAP5",
+    "branch": "work/ppa-wu05b19-divdra-runtime-20261006",
+    "published_checkpoint": "a0630beff3b7b329ede3e57a10620116e5b1f456",
+    "published_checkpoint_tree": "59231cc0b2443e622d62a49637604837be4ee2ba",
+    "whole_checkpoint_tree_matches_local_recovered_tree": true,
+    "method": "Configured GitHub connector blob/tree/commit/branch operations. Direct Git push lacked username authentication after local Git storage loss; no credentials extracted or permission restriction bypassed.",
+    "pr": 1078,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1078",
+    "base": "integration/f-ci-canonical",
+    "base_sha_at_publication": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "merged": false,
+    "authorization_scope": "User first authorized branch publication and PR creation, then explicitly answered Ja to completing canonical admission and merging PR #1078 after its applicable gates pass.",
+    "qualification_snapshot_policy": "Original immutable replay, summary and report retain their qualification-time remote/admission flags and historical run commit IDs. This current status owns publication and PR tracking."
+  },
+  "negative_evidence": [
+    "Superseded wet low-air case revealed invalid test receipt duration assumption; actual trial duration observation added and final case qualified without changing mass or temporal budgets",
+    "Final adjacent replay interrupted by scratch executable permission loss; negative log retained, rerun restores only owner execute bit before each compiled program invocation",
+    "Twelve-way low-air scheduling exceeded the 8GiB cgroup memory limit and caused seven OOM kills. Incomplete processes and group interrupts are failures. The bounded rerun used a shared four-process budget, completed all 48 original executions, and caused no further OOM kill; physical and numerical criteria were unchanged."
+  ],
+  "partial_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_PARTIAL_RECOVERY.json.gz",
+    "sha256": "bab46155b1c8c3c12d0221d76d51a53b1d8a61d4913f9e43a6befe17ddf18081",
+    "qualified": false
+  },
+  "local_low_air_resume_commands": [
+    "python tests/frost/run_ppa_wu05b19_preservation.py --route low_air --opts 0 --workers 4 --global-workers 4 --resume --build /workspace/scratch/347bb5c6d55a/ppa-wu05b19-low-air-runtime-boundary-qualified",
+    "python tests/frost/run_ppa_wu05b19_preservation.py --route low_air --opts 2 --workers 4 --global-workers 4 --resume --build /workspace/scratch/347bb5c6d55a/ppa-wu05b19-low-air-runtime-boundary-qualified"
+  ],
+  "runtime_regression_strengthened": "Case25 initializes a ready dynamic mode2 table. Four bottom carrier cases assert shared preflight exclusion, then actual runtime and application rejection. Complete 24+4 trajectory matrices rerun at both optimizations.",
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "verified_remote_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "matches_pinned_baseline": true,
+    "method": "read-only GitHub fetch_commit of canonical ref; main is not the canonical authority"
+  },
+  "local_process_budget": "Four heavy preservation processes shared across both optimization groups through file locks. Verified complete receipts bypass execution only after source/binary/stdout checks.",
+  "preserved": true,
+  "recovery_point_scope": "Recovered exact qualified source, harness and sealed evidence. Original local Git metadata disappeared; see the explicit recovery record. Publication tracking is owned by this current status, not the historical qualification snapshot.",
+  "git_recovery": "integration/audits/PPA_WU05B19_GIT_RECOVERY.json",
+  "qualification": "integration/audits/PPA_WU05B19_QUALIFICATION.json",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_LOCAL_REPLAY.json.gz",
+    "sha256": "d74b5df08b04bb7f720d49921e233bc0975105e0fbcb8fbb510afd7f3c4dcfb6",
+    "bytes": 456879
+  },
+  "runtime_maxima": {
+    "mass_residual_cm": 6.3570282206809126e-15,
+    "fine_head_error_cm": 2.125502e-08,
+    "fine_temperature_error_c": 3.074508e-05
+  },
+  "preservation_counts": {
+    "normal": 32,
+    "low_air": 48
+  },
+  "local_gate_results": {
+    "signed_runtime": true,
+    "normal_full_module_preservation": true,
+    "low_air_full_module_preservation": true,
+    "component": true,
+    "literal_root": true,
+    "extended_science": true,
+    "analytic_science": true,
+    "adjacent": true,
+    "moving_canonical": true,
+    "docs": true,
+    "mkdocs": true
+  }
+}
