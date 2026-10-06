@@ -3,7 +3,7 @@ program test_ppa_micro02_source_oracle
   use MOD_grid, only: dz
   use MOD_re_global, only: hroot, mroot, mflux
   use mod_RWU_micro, only: RWU_micro, UpwPot, swDoSatRel, swHydrLift, swO2ECT, swTypeTred, &
-       RootRadius, Kroot, Lstem_A0, Lstem_A1, PLhalf, CampA, Tol_2, myTolX, TolConv, factor, Ntrial, PP, X, Q, S, delX
+       RootRadius, Kroot, Lstem_A0, Lstem_A1, PLhalf, CampA, Tol_2, myTolX, TolConv, factor, Ntrial, PP, X, Q, S, delX, iMicro
   use mod_root_micro_matric_flux_table
   use mod_root_micro_de_willigen_process
   implicit none
@@ -39,6 +39,9 @@ program test_ppa_micro02_source_oracle
   TolConv=1.0e-4_real64
   factor=1.25_real64
   Ntrial=500
+  ! do_RWU_micro normally sets this module SAVE value before calling RWU_micro.
+  ! The direct oracle entry point must make that hidden source dependency explicit.
+  iMicro=1
   swDoSatRel=0
   swHydrLift=0
   head=[-100.0_real64,-100.0_real64]
@@ -77,8 +80,7 @@ program test_ppa_micro02_source_oracle
     end if
     print '(A,I0,A,2F12.8)', 'SOURCE_CASE=',case_no,' UPTAKE=',source_flux
   end do
-  ! The uncorrected endpoint branch publishes a signed sink here; the explicit
-  ! final myFun reevaluation must restore the same closed nonnegative flux.
+  ! Heterogeneous pressure heads with one source hydraulic horizon.
   head=[-100.0_real64,-200.0_real64]
   swO2ECT=0
   swTypeTred=1

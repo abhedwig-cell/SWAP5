@@ -13,19 +13,16 @@ per-node `Upw` sink. The source SHA256 is
 Its dry table defect has the explicitly corrected reference policy in
 `PPA_MICRO01_TABLE_REPAIR_CONTRACT.md`.
 
-Negative literal-source result on the first full nonlinear replay: at
-`h=[-100,-200]` cm with constant K, equal root densities and
-`swHydrLift=0`, the corrected-table B1.11 source returned layer `Upw`
-`[0.3,-0.2]` cm/d, `Tact1=0.1` and `Tact2=0`, with `check=[T,T,F]`.
-This is not a valid nonnegative sink or a closed soil-to-root flux even though
-the first two checks pass. A second test with equal heads returned
-`Upw=[0.05,0.05]`, `Tact2=0`, and the same failing third check. The source
-`myFun` endpoint-acceptance branches skip the advertised reevaluation at the
-selected pressure. A controlled test adding `fxp=myFun(xp)` at that point did
-not remove the anomaly (run 37419805293); endpoint-state staleness alone is
-therefore falsified as its cause. The root-interface diagnostic remains open.
-The unchanged anomaly remains negative evidence, not an equivalence target.
-Positive source comparisons require all three checks to pass.
+The first literal harness called `RWU_micro` directly but omitted the public
+module `iMicro=1` setting normally performed by `do_RWU_micro`. Consequently
+`myFun` bypassed both model branches, returning uninitialized function state;
+the observed `Upw=[0.3,-0.2]` and failed third check are **invalid harness
+results**, not a B1.11 physics defect. Runs 37419245041 through 37420138750
+are retained as negative harness evidence and must not support source claims.
+An attempted final `myFun` reevaluation did not address the missing setting
+and has been removed from the generated literal. Correct source comparison
+sets `iMicro=1` before direct initialization, reproducing the wrapper's
+module state and preserving the exact source nonlinear code.
 
 This work unit first owns a call-local, typed *standalone* evaluator. It accepts
 the committed hydraulic pressure-head view, rooted node thickness, root length
