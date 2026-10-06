@@ -11,7 +11,7 @@ program multilevel_owner
     read(*,*,iostat=ios) id,nrlevs,swdivdinf,gwl,zfrostbot,air,initial_bottom,raw,Lspacing,aniso
     if(ios<0)exit
     if(ios/=0)error stop 'invalid case input'
-    if(nrlevs<2.or.nrlevs>3)error stop 'invalid level count'
+    if(nrlevs<1.or.nrlevs>3)error stop 'invalid level count'
     cofani=aniso;rfcp=1.d0;nodfrostbot=0
     do i=1,numnod
       if(z(i)>=zfrostbot)then

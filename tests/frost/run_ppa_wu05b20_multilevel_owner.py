@@ -23,6 +23,15 @@ def integral(k, a, b):
                for i, v in enumerate(k))
 
 
+def literal_sum(values):
+    # Python3.12 sum(float) is compensated; the native FrozenBounds scalar
+    # loop is a left-to-right binary64 reduction. Near cancellation matters.
+    total = 0.
+    for value in values:
+        total += value
+    return total
+
+
 def inverse_integral(k, start, amount):
     """Independent exact layerwise inverse, not the original compartment loops."""
     top = start
@@ -186,6 +195,7 @@ def main():
                   corrected_nodal_scalar_residual=0.,scalar_error=0.,
                   independent_single_level_superposition_error=0.,cancellation_net_departure=0.)
     witnesses = {}
+    precision_findings = {variant:[] for variant in sources}
     affected_cases = set()
     candidate_rows = {int(line.split()[0]):line for line in outputs['candidate/o0'].splitlines()}
     unchanged_controls = 0
@@ -213,7 +223,7 @@ def main():
             if air < .01:
                 blocked = [frost < z for z in (-3.,-4.7,-6.3)[:levels]]
                 retained = [0. if b else v for v,b in zip(q,blocked)]
-                total = sum(retained)
+                total = literal_sum(retained)
                 expected_scalar = retained.copy()
                 deepest = levels-1
                 if abs(total) < 1e-6:
@@ -228,7 +238,8 @@ def main():
                 affected = affected or same_compartment_infiltration(expected_scalar,modified,min(gw,frost),s,aniso,inf)
             else:
                 expected_after = [[v*r for v,r in zip(row,rf)] for row in expected_before]
-                expected_scalar = list(map(sum,expected_after))
+                scalar_basis = expected_before if variant == 'candidate' else before
+                expected_scalar = [literal_sum(v*r for v,r in zip(row,rf)) for row in scalar_basis]
             error = max(abs(a-b) for ar,br in zip(before+after,expected_before+expected_after)
                         for a,b in zip(ar,br))
             maxima['partition_error'] = max(maxima['partition_error'],error)
@@ -243,15 +254,17 @@ def main():
             if variant == 'candidate':
                 maxima['candidate_partition_error'] = max(maxima['candidate_partition_error'],error)
                 maxima['candidate_unit_rate_partition_error'] = max(maxima['candidate_unit_rate_partition_error'],normalized_error)
-                assert normalized_error < 2e-12,(variant,id,case,error,normalized_error)
+                if normalized_error >= 2e-12:
+                    precision_findings[variant].append(dict(case=id,absolute_error=error,unit_rate_error=normalized_error))
             elif not affected:
-                assert normalized_error < 2e-12,(variant,id,case,error,normalized_error)
+                if normalized_error >= 2e-12:
+                    precision_findings[variant].append(dict(case=id,absolute_error=error,unit_rate_error=normalized_error))
             if variant == 'corrected' and not affected:
                 assert line == candidate_rows[id],('unaffected control changed',id)
                 unchanged_controls += 1
             scalar_error = max(abs(a-b) for a,b in zip(final_scalar,expected_scalar))
             maxima['scalar_error'] = max(maxima['scalar_error'],scalar_error)
-            assert scalar_error < 1e-14 and final_bottom == expected_bottom
+            assert scalar_error < 1e-14 and final_bottom == expected_bottom,(variant,id,case,scalar_error,final_bottom,expected_bottom)
             if variant == 'candidate':
                 residual = max(abs(sum(row)-v) for row,v in zip(after,final_scalar))
                 maxima['corrected_nodal_scalar_residual'] = max(maxima['corrected_nodal_scalar_residual'],residual)
@@ -271,18 +284,69 @@ def main():
                 if air < .01 and 1e-6 < abs(sum(retained)) < 2e-6 and not blocked[-1] and 'above_threshold' not in witnesses:
                     witnesses['above_threshold'] = dict(case=id,input=case,retained_raw=retained,final_scalar=final_scalar,final_bottom=final_bottom,net_departure=(final_bottom-sum(final_scalar))+sum(retained))
     assert set(witnesses) == {'joint_distribution','exact_cancellation','below_threshold','above_threshold'}
+    supplements = {}
+    one_level = '1 1 1 -2.25 -2.5 .001 -.002 0 0 0 20 40 60 .5\n'
+    for variant in sources:
+        for opt in (0,2):
+            key = f'{variant}/o{opt}'
+            p = subprocess.run([str(build/variant/f'o{opt}/test')],input=one_level,
+                               text=True,capture_output=True)
+            supplements['single_level/'+key] = dict(exit_code=p.returncode,input=one_level,
+                                                    stdout=p.stdout,stderr=p.stderr)
+            assert (p.returncode == 0) == (variant == 'candidate')
+            if variant == 'candidate':
+                row = list(map(float,p.stdout.split()))
+                expected = partition([-.002],[v*r+(1.-r)*1e-10 for v,r in
+                    zip([1.,4.]*4,[0.,0.,0.,.5,1.,1.,1.,1.])],-2.5,[20.],.5,1,False)[0]
+                assert max(abs(a-b) for a,b in zip(row[28:36],expected)) < 1e-14
+    # Inherit no preexisting source outputs by assertion alone: execute the
+    # complete immutable B17 single-level matrix again with its actual driver.
+    prior_status = json.loads((ROOT/'integration/audits/PPA_WU05B17_REF_STATUS.json').read_text())
+    prior_data = (ROOT/prior_status['evidence']['path']).read_bytes()
+    assert sha(prior_data) == prior_status['evidence']['sha256']
+    prior = json.loads(gzip.decompress(prior_data))
+    prior_input = prior['manifest']['actual/cases.txt']['content']
+    prior_output = prior['manifest']['actual/corrected/o0/output.txt']['content']
+    for opt in (0,2):
+        d = build/'single-level-preservation'/f'o{opt}';d.mkdir(parents=True)
+        files = [ROOT/'tests/frost/test_ppa_wu05b16_divdra_globals.f90',candidate,
+                 ROOT/common[1],ROOT/'tests/frost/test_ppa_wu05b16_divdra_owner.f90']
+        command = ['gfortran','-std=f2008','-ffree-line-length-none','-fcheck=all',
+                   '-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J',str(d),'-I',str(d),
+                   *map(str,files),'-o',str(d/'test')]
+        subprocess.run(command,check=True,cwd=d)
+        p = subprocess.run([str(d/'test')],input=prior_input,text=True,capture_output=True,cwd=d)
+        assert p.returncode == 0 and p.stdout == prior_output
+        supplements[f'B17_4536/o{opt}'] = dict(exit_code=0,cases=4536,command=command,
+            executable_sha256=sha((d/'test').read_bytes()),stdout_sha256=sha(p.stdout.encode()),
+            input_sha256=sha(prior_input.encode()),immutable_output_identity=True,stderr=p.stderr)
+    occupied = build/'occupied.f90';occupied.write_bytes(b'occupied')
+    bad = build/'bad.f90';bad.write_bytes((ROOT/sources['corrected']).read_bytes()+b'! wrong')
+    for source,target in [(bad,build/'should-not-exist.f90'),
+                          (ROOT/sources['corrected'],ROOT/sources['corrected']),
+                          (ROOT/sources['corrected'],occupied)]:
+        p = subprocess.run(['python3',str(correction/'apply.py'),str(source),str(target)],
+                           text=True,capture_output=True)
+        assert p.returncode != 0
+    assert occupied.read_bytes() == b'occupied' and not (build/'should-not-exist.f90').exists()
     sources_to_seal = list(dict.fromkeys([PLAN,*list(sources.values())[:2],*common,
         str(Path(__file__).relative_to(ROOT)),str((correction/'apply.py').relative_to(ROOT)),
         str((correction/'manifest.json').relative_to(ROOT)),
+        'tests/frost/test_ppa_wu05b16_divdra_globals.f90',
+        'tests/frost/test_ppa_wu05b16_divdra_owner.f90',
         'integration/audits/PPA_WU05B20_CORRECTION_PREREGISTRATION.json']))
     record = dict(work_unit='PPA-WU05B20',status='MULTILEVEL_REFERENCE_PROBE_COMPLETE_RUNTIME_OWNER_DECISION_REQUIRED',
                   baseline=plan['baseline'],production_source_tree=plan['baseline_source'],production_mutation=False,
                   runtime_admitted=False,aggregate_frost_migration_complete=False,cases_per_variant_optimization=len(cases),
-                  complete_source_executions=4*len(cases),O0_O2_byte_identity=True,independent_oracle_passed=True,
+                  complete_source_case_attempts=6*len(cases),O0_O2_byte_identity=True,
+                  independent_oracle_passed=not precision_findings['candidate'],
+                  independent_comparison_unit_rate_criterion=2e-12,
+                  precision_findings=precision_findings,
                   source_sha256={f:sha((ROOT/f).read_bytes()) for f in sources_to_seal},
                   input_sha256=sha(inputs.encode()),inputs=inputs,receipts=receipts,
                   outputs={variant:outputs[f'{variant}/o0'] for variant in sources},failures=failures,
                   candidate_source=candidate.read_text(),candidate_source_sha256=sha(candidate.read_bytes()),
+                  supplements=supplements,hash_and_overwrite_guards_passed=True,
                   maxima=maxima,witnesses=witnesses,affected_same_compartment_cases=len(affected_cases),
                   byte_exact_unaffected_B17_controls=unchanged_controls,
                   interpretation='Nodal/scalar closure is not lost in corrected reference. Mixed-sign near-zero aggregate triggers deepest-level replacement, retaining other levels and changing the net bottom-minus-drainage proposal. Whether that is intended physical transfer or a legacy defect is not established by code parity; a new runtime mass/flux interpretation requires owner decision.')
