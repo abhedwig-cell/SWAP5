@@ -3,9 +3,9 @@
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "checkpoint_commit": "82570f26f3d9b4edbc3905009a5d677288cb8a25",
+  "checkpoint_commit": "0cc4d81c10fbfac4b852f1080c9ed6dec7abfe60",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": {
     "coverage_integrity": "PASS",
     "census_lexical_tests": "4 PASS",
@@ -88,14 +88,14 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "82570f26f3d9b4edbc3905009a5d677288cb8a25",
+  "last_reconciled_head": "0cc4d81c10fbfac4b852f1080c9ed6dec7abfe60",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
-    "sha": "82570f26f3d9b4edbc3905009a5d677288cb8a25",
-    "local_and_remote_tree": "27901c5b6828bdbf40654c36c41f91096cf95955",
-    "changed_blob_hashes_verified": 14,
-    "mechanism": "GitHub connector; nonforced expected-head update; verified exact local Git tree",
-    "pending_successor": true
+    "sha": "0cc4d81c10fbfac4b852f1080c9ed6dec7abfe60",
+    "local_and_remote_tree": "d59651231ee3fd5038f76d9889389da06ebe0476",
+    "changed_blob_hashes_verified": 13,
+    "mechanism": "GitHub connector; nonforced expected-head update; full content tree verified against local Git. This metadata-only successor records the published content checkpoint.",
+    "pending_successor": false
   }
 }
