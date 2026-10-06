@@ -1,0 +1,20 @@
+name: MIGMAC11 pond donor qualification
+on:
+  push:
+    branches: [work/ppa-wu05-migmac11-pond-donor]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compile-and-preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile production runtime
+        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+      - name: Preserve A9 top input
+        run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
+      - name: Preserve MIGMAC02 dynamic shrinkage
+        run: bash tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
+      - name: Preserve MIGMAC09 source runtime
+        run: bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh
