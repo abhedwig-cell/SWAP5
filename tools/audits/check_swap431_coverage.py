@@ -93,6 +93,26 @@ def validate(require_closed=False):
     for entry in entries:
         assert entry['migration_priority']['dependency_depth'] == depth(entry['capability_id']), 'stale dependency depth'
     counts = dict(collections.Counter(e['current_disposition'] for e in entries))
+    # A source-derived label can be wrong even while its JSON shape is valid.
+    # Bind the resumed drainage decisions to the reviewed source postimage and
+    # protect the concrete selector mix-up found during this census.
+    assert by_id['SW431-DRAIN-TAB']['legacy_selector'] == 'DRAMET=1', 'wrong tabulated drainage selector'
+    assert 'DRAMET=3' in by_id['SW431-DRAIN-LINEAR']['legacy_selector'], 'wrong linear contribution selector'
+    for name in ['SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json', 'SWAP431_DRAMET3_REPLACEMENT_PROBE.json']:
+        record = json.loads((AUDIT / 'evidence' / name).read_text())
+        for path, expected in record['source_files_sha256'].items():
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale review: {path}'
+        if 'findings' in record:
+            assert record['baseline'] == ledger['canonical_head'], 'drainage review baseline mismatch'
+            for finding in record['findings']:
+                assert finding['capability_id'] in ids, 'unknown reviewed capability'
+                assert hashlib.sha256(members[finding['legacy_member']]).hexdigest() == finding['source_sha256']
+        else:
+            assert hashlib.sha256(members[record['source_member']]).hexdigest() == record['source_sha256']
+            assert not record['runtime_admission_created']
+            assert {r['optimization'] for r in record['results']} == {'-O0', '-O2'}
+            assert len({r['stdout'] for r in record['results']}) == 1, 'DRAMET3 optimization mismatch'
+            assert all('DRAMET3_REPLACEMENT_COUNTEREXAMPLE_PASS' in r['stdout'] for r in record['results'])
     swcf_path = AUDIT / 'evidence/SWAP431_SWCF2_ADMISSION_RECONCILIATION.json'
     if swcf_path.exists():
         swcf = json.loads(swcf_path.read_text())

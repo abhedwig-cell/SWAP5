@@ -221,3 +221,81 @@ The current generic irrigation component has fixed-event geometry and TCS7/DCS2 
 ### Historical SWCF2 hold removed against actual canonical admission
 
 The Git ancestor `158ef1e704fbc72f293773cc30ae4d6082d3c28f` explicitly admits the F-APP05 restricted Hupsel SWCF2 aerodynamic crop-height route after owner/F-VQ114/F-VQ115 passes. F-APP05 preregistration and admission-ready records identify the typed field change and three frozen daily observations. The complete current daily evaluator equals the evaluator at the admitted merge; the later module diff adds only SWINTER0 interval handling. Existing daily observations pass locally at both O0 and O2. `SW431-ET-CROPHEIGHT` is ADMITTED within this envelope, correcting this audit's earlier reliance on the superseded F-APP03 hold. Detailed ET, traditional partition, soil-factor variants and generic crop materialization are not thereby admitted.
+
+### Resumed canonical census: drainage selector correction
+
+Canonical was fetched again at e5eab995ef04fc813dd644025fb0f32e4f5050a1.
+The recovered published audit is 01fd0afe62a455bfff9f479bf83a1d070cb98aba.
+The previous local continuation was not itself a Git recovery authority; its
+MICRO, oxygen-type2, kinematic/Parlange and vernalisation conclusions were
+rechecked against the unchanged source before inclusion here.
+
+The master ledger had incorrectly assigned DRAMET1 to linear resistance and
+DRAMET3 to tabulated drainage. Literal drainage.f90 and the admitted
+Drainage-v1 scientific authority agree: DRAMET1 is the groundwater-depth table,
+DRAMET2 is Hooghoudt/Ernst, DRAMET3 is per-level drainage/infiltration resistance
+with OWLTAB head resolution, a drain-bottom clamp and directional controls.
+The bounded one-way linear and highest-level empirical contributions remain
+admitted, with their source selector and claim boundaries corrected. Their
+existence does not admit the entire native DRAMET3 dispatcher.
+
+Three distinct residuals are now explicit: native signed DRAMET3 controls and
+resistance dispatch, ordinary signed default DIVDRA, and multiple interacting
+DIVDRA discharge layers. Scalar multilevel aggregation with bottom-node lumping
+is not the latter. Separate infiltration partition and fixed/fractional
+redistribution at the top of a discharge layer retain their individual IDs.
+The ordinary DIVDRA binding allocates one level and rejects negative transfer;
+B18 is an isolated scientific component and is not a runtime counterexample.
+
+The literal DRAMET3 branch and actual EXTENDED provider were compared locally
+at O0/O2. With zero entry/exit resistance and GWLINF=ZBOTDR, three bulk cases
+agree, but the independent EXTENDED 0.001 cm activation seam suppresses a
+positive source flux near 5e-6 cm/day. The same probe verifies direction
+suppression and channel-depth infiltration capping. Therefore a blanket
+SUPERSEDED decision is not defensible. The constant OWLTAB test stub does not
+qualify interpolation or full trajectories. See the replayable
+SWAP431_DRAMET3_REPLACEMENT_PROBE.json evidence.
+
+### Lower-boundary and rainfall residuals narrowed
+
+SWBOTB9 is selectable input, not merely a private mode: DATE9A/HBOT9 and
+DATE9B/QBOT9 supply two histories. BoundBottom overwrites the last cell's
+head/theta/K; HeadCalc solves numnod-1 cells and Fluxes excludes mode9 from
+bottom-flux reconstruction. The master retains this as an explicit physical
+ownership/migration decision. No unexecuted global mass-defect claim or
+unapproved scope rejection is inferred. The explicit SWBOTB3 variant also
+remains distinct: its GWL/SHAPE_3 and saturated-profile resistance calculation
+is absent from the implicit Cauchy application route.
+
+SWRAIN1 constructs a midnight-start pulse using min(1,depth/intensity) and
+rate=depth/duration. SWRAIN2 uses WET duration. SWRAIN3 derives rates from
+end-stamped interval amounts and reconstructs daily totals. The time controller
+clips to rain events. Generic typed rate intervals can carry these resolved
+inputs, but do not by themselves implement their derivation or qualify daily
+interception/snow composition. The first two need a typed stateless resolver;
+the third needs a source-bound mapping/envelope qualification. None needs the
+old file cursor as kernel state.
+
+### Persistent vernalisation and other recovered source findings
+
+IDSL2 in wofost.f90 accumulates VERN and FL_VERNALISED. The canonical common
+crop parameter validator permits only IDSL0/1 and its crop owner lacks that
+history. Vernalisation is now a distinct open capability; daylength forcing is
+not its replacement. The classical AMAXTB crop component also exists in the
+canonical tree: source-envelope reconciliation remains necessary and absence
+of the entire annual-crop implementation is not claimed.
+
+SWSORP1 derives SorpMax/SorpAlfa through hydraulic diffusivity integration and
+fitting; the empirical runtime operator accepts these parameters but does not
+supply that resolver. SWMBF2 instead requires NKWT wave/storage propagation;
+the production configuration fixes SWMBF1 and rejects 2. The canonical MICRO
+component still ends at the table at this baseline. PR1077 is a bounded draft
+runtime successor, excluding de Jong van Lier, lift and stress composition;
+it must not be counted as canonical admission or independently reimplemented.
+
+The separate top-interflow partition (SWTOPNRSRF1) was also missing from the
+ordinary census. It first distributes the highest level down to its physical
+drain bottom and excludes that layer from subsequent levels. This is neither
+SWDISLAY truncation nor B15's highest scalar response. Its new individual ID
+is SW431-DRAIN-DIV-TOPINTERFLOW. The empirical reader name SWINTFL maps into
+the source variable SWNRSRF; both names remain explicit navigation aliases.

@@ -1101,6 +1101,11 @@
       "source": "call rdsinr ('dramet',1,3,dramet)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-EMP",
+        "SW431-DRAIN-INF-LIMIT",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-DRAIN-IPOS1",
         "SW431-DRAIN-IPOS2",
         "SW431-DRAIN-IPOS3",
@@ -1108,7 +1113,8 @@
         "SW431-DRAIN-IPOS5",
         "SW431-DRAIN-LINEAR",
         "SW431-DRAIN-TAB",
-        "SW431-FROST-DRAIN-ANALYTIC"
+        "SW431-FROST-DRAIN-ANALYTIC",
+        "SW431-FROST-DRAIN-EMP"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -1121,6 +1127,8 @@
       "source": "if (dramet == 3) call rdsinr ('nrlevs',1,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-EMP",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-EXT-MULTI"
       ],
@@ -1135,7 +1143,12 @@
       "source": "call rdsinr ('swdivd',0,1,swdivd)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-DIVDRA",
         "SW431-FROST-DRAIN-PRESCRIBED"
@@ -1151,6 +1164,7 @@
       "source": "if (rdinqr('swdivdinf')) call rdsinr ('swdivdinf',0,1,swdivdinf)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-INF-SPLIT"
       ],
       "navigation_is_disposition_proof": false
@@ -1164,7 +1178,8 @@
       "source": "call rdsinr ('swdislay',0,2,swdislay)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-DISLAYER"
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-DIV"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -1203,7 +1218,9 @@
       "source": "call rdsinr ('swdtyp' ,1,2,swdtyp(1))",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-ALLOCATION"
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-INF-LIMIT"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -1248,7 +1265,7 @@
       "source": "if (swnrsrf == 1)  call rdsinr ('SwTopnrsrf',0,1,SwTopnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-FROST-DRAIN-HIGHEST"
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -2281,6 +2298,8 @@
       "source": "call rdsinr ('swfrost',0,1,swfrost)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-GW",
         "SW431-FROST-HYD",
         "SW431-FROST-MACRO",
@@ -2395,6 +2414,7 @@
       "capability_navigation": [
         "SW431-DRAIN-EXT",
         "SW431-FROST-DRAIN-EXTENDED",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-EXT-MULTI",
         "SW431-FROST-ROOTDRAIN",
@@ -2608,7 +2628,12 @@
       "source": "call rdsinr ('swdivd',0,1,swdivd)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-DIVDRA",
         "SW431-FROST-DRAIN-PRESCRIBED"
@@ -2624,6 +2649,7 @@
       "source": "call rdsinr ('swdivdinf',0,1,swdivdinf)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-INF-SPLIT"
       ],
       "navigation_is_disposition_proof": false
@@ -2650,7 +2676,8 @@
       "source": "call rdsinr ('swdislay',0,2,swdislay)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-DISLAYER"
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-DIV"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -2689,6 +2716,7 @@
       "source": "call rdfinr ('lev',1,Madr,level,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-EMP",
         "SW431-SW-MULTILEVEL"
       ],
       "navigation_is_disposition_proof": false
@@ -2702,7 +2730,9 @@
       "source": "call rdfinr ('swdtyp',0,2,swdtyp,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-ALLOCATION"
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-INF-LIMIT"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -2715,7 +2745,12 @@
       "source": "call rdsinr ('swnrsrf',0,2,swnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-EXT"
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-EMP",
+        "SW431-DRAIN-EXT",
+        "SW431-DRAIN-LINEAR",
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -2728,7 +2763,7 @@
       "source": "if (swnrsrf > 0)  call rdsinr ('SwTopnrsrf',0,1,SwTopnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-FROST-DRAIN-HIGHEST"
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -3069,6 +3104,8 @@
       "source": "call rdsinr ('swfrost',0,1,swfrost)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-GW",
         "SW431-FROST-HYD",
         "SW431-FROST-MACRO",
@@ -3092,6 +3129,7 @@
       "capability_navigation": [
         "SW431-DRAIN-EXT",
         "SW431-FROST-DRAIN-EXTENDED",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-EXT-MULTI",
         "SW431-FROST-ROOTDRAIN",
@@ -3494,6 +3532,7 @@
       "computed_name": false,
       "capability_navigation": [
         "SW431-CROP-ANNUAL",
+        "SW431-CROP-VERNAL",
         "SW431-CROP-WOF-OTHER"
       ],
       "navigation_is_disposition_proof": false
@@ -6245,6 +6284,11 @@
       "source": "call rdsinr ('dramet',1,3,dramet)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-EMP",
+        "SW431-DRAIN-INF-LIMIT",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-DRAIN-IPOS1",
         "SW431-DRAIN-IPOS2",
         "SW431-DRAIN-IPOS3",
@@ -6252,7 +6296,8 @@
         "SW431-DRAIN-IPOS5",
         "SW431-DRAIN-LINEAR",
         "SW431-DRAIN-TAB",
-        "SW431-FROST-DRAIN-ANALYTIC"
+        "SW431-FROST-DRAIN-ANALYTIC",
+        "SW431-FROST-DRAIN-EMP"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -6265,6 +6310,8 @@
       "source": "if (dramet == 3) call rdsinr ('nrlevs',1,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-EMP",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-EXT-MULTI"
       ],
@@ -6279,7 +6326,12 @@
       "source": "call rdsinr ('swdivd',0,1,swdivd)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-DIVDRA",
         "SW431-FROST-DRAIN-PRESCRIBED"
@@ -6313,6 +6365,7 @@
       "source": "if (rdinqr('swdivdinf')) call rdsinr ('swdivdinf',0,1,swdivdinf)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-INF-SPLIT"
       ],
       "navigation_is_disposition_proof": false
@@ -6335,7 +6388,8 @@
       "source": "call rdsinr ('swdislay',0,2,swdislay)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-DISLAYER"
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-DIV"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -6419,7 +6473,9 @@
       "source": "call rdsinr ('swdtyp' ,1,2,swdtyp(1))",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-ALLOCATION"
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-INF-LIMIT"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -6599,7 +6655,7 @@
       "source": "if (swnrsrf == 1)  call rdsinr ('SwTopnrsrf',0,1,SwTopnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-FROST-DRAIN-HIGHEST"
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -9450,6 +9506,8 @@
       "source": "call rdsinr ('swfrost',0,1,swfrost)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-GW",
         "SW431-FROST-HYD",
         "SW431-FROST-MACRO",
@@ -9681,6 +9739,7 @@
       "capability_navigation": [
         "SW431-DRAIN-EXT",
         "SW431-FROST-DRAIN-EXTENDED",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-EXT-MULTI",
         "SW431-FROST-ROOTDRAIN",
@@ -10605,7 +10664,12 @@
       "source": "call rdsinr ('swdivd',0,1,swdivd)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-INF-SPLIT",
         "SW431-FROST-DIV-MULTI",
         "SW431-FROST-DIVDRA",
         "SW431-FROST-DRAIN-PRESCRIBED"
@@ -10621,6 +10685,7 @@
       "source": "call rdsinr ('swdivdinf',0,1,swdivdinf)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-INF-SPLIT"
       ],
       "navigation_is_disposition_proof": false
@@ -10683,7 +10748,8 @@
       "source": "call rdsinr ('swdislay',0,2,swdislay)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-DISLAYER"
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-DIV"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -10740,6 +10806,7 @@
       "source": "call rdfinr ('lev',1,Madr,level,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-DRAIN-EMP",
         "SW431-SW-MULTILEVEL"
       ],
       "navigation_is_disposition_proof": false
@@ -10753,7 +10820,9 @@
       "source": "call rdfinr ('swdtyp',0,2,swdtyp,Madr,nrlevs)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-ALLOCATION"
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-INF-LIMIT"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -10847,7 +10916,12 @@
       "source": "call rdsinr ('swnrsrf',0,2,swnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-DRAIN-EXT"
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-EMP",
+        "SW431-DRAIN-EXT",
+        "SW431-DRAIN-LINEAR",
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -10896,7 +10970,7 @@
       "source": "if (swnrsrf > 0)  call rdsinr ('SwTopnrsrf',0,1,SwTopnrsrf)",
       "computed_name": false,
       "capability_navigation": [
-        "SW431-FROST-DRAIN-HIGHEST"
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
       "navigation_is_disposition_proof": false
     },
@@ -11480,6 +11554,8 @@
       "source": "call rdsinr ('swfrost',0,1,swfrost)",
       "computed_name": false,
       "capability_navigation": [
+        "SW431-FROST-DRAIN-EMP",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-GW",
         "SW431-FROST-HYD",
         "SW431-FROST-MACRO",
@@ -11503,6 +11579,7 @@
       "capability_navigation": [
         "SW431-DRAIN-EXT",
         "SW431-FROST-DRAIN-EXTENDED",
+        "SW431-FROST-DRAIN-HIGHEST",
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-EXT-MULTI",
         "SW431-FROST-ROOTDRAIN",
@@ -12184,6 +12261,7 @@
       "computed_name": false,
       "capability_navigation": [
         "SW431-CROP-ANNUAL",
+        "SW431-CROP-VERNAL",
         "SW431-CROP-WOF-OTHER"
       ],
       "navigation_is_disposition_proof": false

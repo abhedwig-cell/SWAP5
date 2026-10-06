@@ -23,16 +23,17 @@
         "SW431-CROP-ROOTGROW",
         "SW431-CROP-CO2",
         "SW431-CROP-ROTATION",
+        "SW431-CROP-ANNUAL",
         "SW431-ROOT-DENSITY",
         "SW431-ROOT-ANAE-GROW",
         "SW431-CROP-ATTAINABLE",
         "SW431-CROP-FIXED-THERMAL",
-        "SW431-CROP-ANNUAL",
         "SW431-CROP-ROOTGROW-DVS",
         "SW431-CROP-ROOTGROW-BIOMASS",
         "SW431-CROP-ROOTGROW-WATER",
         "SW431-CROP-ROOTGROW-SUPPLY",
-        "SW431-ROOT-LRV-CONSTANT"
+        "SW431-ROOT-LRV-CONSTANT",
+        "SW431-CROP-VERNAL"
       ],
       "next_action": "Adjudicate annual-crop functional replacement against actual B1.11 AMAXTB/phenology rather than the separate13B donor; then trace remaining fixed/soy/grass/root/management slices.",
       "production_edits_authorized_by_this_record": false,
@@ -55,13 +56,20 @@
         "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-INF-SPLIT",
         "SW431-DRAIN-ALLOCATION",
-        "SW431-DRAIN-INF-LIMIT"
+        "SW431-DRAIN-INF-LIMIT",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Implement/qualify native DRAMET3 resolved controls and direction policy first; ordinary signed DIVDRA next; distinct infiltration, multilevel interaction and top-of-layer redistribution as separately qualified slices. Reuse B18 algebra without treating it as ordinary runtime admission.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "internal_sequence_dependencies": [],
+      "internal_sequence_dependencies": [
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DRAMET3"
+      ],
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV",
         "SW431-DRAIN-EXT"
@@ -80,6 +88,7 @@
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [
+        "SW431-DRAIN-DIV-MULTI",
         "SW431-FROST-DIVDRA",
         "SW431-TEMP-SNOW"
       ],
@@ -282,7 +291,7 @@
         "SW431-ROOT-MICRO-STRESS",
         "SW431-ROOT-MICRO-TRED"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Reconcile PR1077 after actual canonical admission; reuse its de Willigen normal-uptake/horizon/restart implementation. Then separately implement de Jong van Lier, stress and signed lift. Do not duplicate the noncanonical candidate.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -325,8 +334,8 @@
       "id": "MC-ROOT01",
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
-        "SW431-ROOT-OXYGEN-REPRO",
-        "SW431-ROOT-OXYGEN-EMP"
+        "SW431-ROOT-OXYGEN-EMP",
+        "SW431-ROOT-OXYGEN-REPRO"
       ],
       "next_action": "Migrate and qualify separate empirical SWOXYGEN=1 wet-head and SWOXYGEN=2/type2 reproduction factors; neither is supplied by Bartholomeus type1. Compose with the single root-sink owner and source stress attribution.",
       "production_edits_authorized_by_this_record": false,

@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MASTER-COVERAGE",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "last_reconciled_upstream": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "checkpoint_commit": "80acf3159",
+  "implemented": true,
+  "persisted": "local Git; connector publication pending because CLI push lacks credentials",
+  "tested": {
+    "coverage_integrity": "PASS",
+    "census_lexical_tests": "4 PASS",
+    "literal_dramet3_probe": "O0/O2 identical; replacement counterexample reproduced",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "whitespace": "PASS",
+    "false_closure_guard": "EXPECTED REJECTION: denominator incomplete"
+  },
+  "qualified": false,
+  "coverage_closed": false,
+  "denominator_complete": false,
+  "summary": {
+    "capabilities": 241,
+    "dispositions": {
+      "ADMITTED": 79,
+      "ACTIVE_MIGRATION": 130,
+      "SUPERSEDED": 12,
+      "REJECTED": 1,
+      "NOT_APPLICABLE": 19
+    },
+    "open_capabilities": 130,
+    "open_workunits": 19,
+    "confirmed_missing_production_entries": 106,
+    "other_unresolved_source_admission_reviews": 24
+  },
+  "next_action": "Resolve the 24 source-mapping/admission reviews in the master ledger; complete routine/branch/composition denominator adjudication before a final missing-functionality count. The other 106 entries require missing implementation, typed derivation or production binding at this canonical baseline.",
+  "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+  "relevant_paths": [
+    "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+    "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
+    "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+    "integration/audits/SWAP431_SOURCE_REVIEW.md"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "integration/audits/evidence/SWAP431_SOURCE_CENSUS.json"
+  ],
+  "test_paths": [
+    "tools/audits/check_swap431_coverage.py",
+    "tools/audits/census_swap431_source.py",
+    "tools/audits/probe_swap431_dramet3.py"
+  ],
+  "interfaces_changed": false,
+  "production_source_changed": false,
+  "invariants_affected": "No runtime semantics changed. Source/admission claim boundaries and derived audit data only.",
+  "blockers": [
+    "Coverage cannot be declared closed while 130 capability entries remain active and the source denominator has not passed semantic completeness review. This is not a claim of an environment or permission blocker."
+  ],
+  "noncanonical_work_reuse": {
+    "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
+    "frost_DIVDRA": "PPA-WU05B19 is canonical preregistered successor to component-only B18; no runtime admission at baseline"
+  },
+  "unresolved_review_ids": [
+    "SW431-MET-RAIN3",
+    "SW431-MACRO-SEP2",
+    "SW431-MACRO-POWM",
+    "SW431-MACRO-POND",
+    "SW431-MACRO-RUNON",
+    "SW431-SW-PRIMARY",
+    "SW431-SW-MULTILEVEL",
+    "SW431-IRR-FIXED-SPRINK",
+    "SW431-IRR-SCHED-SURF",
+    "SW431-CROP-WOF-OTHER",
+    "SW431-CROP-SOY",
+    "SW431-CROP-GRASS",
+    "SW431-CROP-SOW",
+    "SW431-CROP-CO2",
+    "SW431-CROP-ROTATION",
+    "SW431-CROP-ANNUAL",
+    "SW431-DRAIN-INF-LIMIT",
+    "SW431-CROP-ATTAINABLE",
+    "SW431-NUT-NFIX",
+    "SW431-MACRO-SEP1",
+    "SW431-MACRO-SW-EXTERNAL",
+    "SW431-MACRO-GEOMETRY",
+    "SW431-CROP-ROOTGROW-DVS",
+    "SW431-CROP-ROOTGROW-BIOMASS"
+  ],
+  "dependency_surface": [
+    "src",
+    "reference/swap-4.3.1",
+    "integration/audits",
+    "integration/f-app",
+    "integration/f-wof",
+    "docs/status-a",
+    "docs/science",
+    "docs/migration",
+    "tools/audits"
+  ]
+}
