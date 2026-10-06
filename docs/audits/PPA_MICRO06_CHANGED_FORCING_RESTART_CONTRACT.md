@@ -1,6 +1,6 @@
 # PPA-MICRO06 changing forcing and committed restart
 
-Status: proposed stacked qualification on MICRO05. This work unit changes no
+Status: local O0/O2 qualified, stacked draft, canonical admission pending. This work unit changes no
 production physics. It exercises the opt-in normal de Willigen route over a
 committed interval, followed by changed potential transpiration and root
 length density in a second interval. The source `rootextraction.f90` calls
@@ -19,5 +19,13 @@ This qualification covers bounded two-interval normal uptake with a declared
 two-horizon first-node map. It makes no claim for crop ET generation, oxygen,
 salinity, frost, hydraulic lift, de Jong van Lier or full-model equivalence.
 It does not admit the draft stack canonically.
+
+The local result records a first-interval uptake of `1.0e-4 cm/d` and a
+second-interval uptake of `2.0e-4 cm/d`. Changed root density also changes
+the nodewise distribution. Uninterrupted and restored workers have identical
+sink vectors at every accepted substep and identical mass receipts and end
+time; hard mass accounting and the ROOT-HYD01 preservation runner pass in
+both optimization modes. The source and output manifest is
+`docs/audits/evidence/PPA_MICRO06_CHANGED_FORCING_RESTART_LOCAL.json`.
 
 Affected invariants: 3, 5, 7, 13, 21, 22, 23, 25.
