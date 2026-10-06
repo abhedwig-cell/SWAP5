@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05B18",
   "baseline": "2acee704219d2f54d73df104364dffaeca205565",
   "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
-  "status": "PREREGISTERED_TYPED_COMPONENT_PENDING",
-  "implemented": false,
+  "status": "TYPED_COMPONENT_PERSISTED_UNTESTED",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -28,8 +28,7 @@
     "integration/audits/PPA_WU05B18_SOURCE_REVIEW.json"
   ],
   "owned_surface": [
-    "New src/process/mod_frost_divdra_drainage_effect.f90 only",
-    "New standalone scientific harness and qualification/evidence/status records"
+    "src/process/mod_frost_divdra_drainage_effect.f90"
   ],
   "interfaces_held_fixed": [
     "Existing positive-only DIVDRA API, process and runtime binding",
@@ -37,8 +36,12 @@
     "All original/reference files and B17 corrected artifact",
     "Physical scalar/bottom policies and fixed reference thresholds"
   ],
-  "next_action": "Publish preregistration before adding typed process/harness",
-  "recovery_point": "Preregistration commit before process/harness",
+  "next_action": "Run full actual corrected reference and typed component O0/O2, then relevant positive-DIVDRA and geometry seam guards",
+  "recovery_point": "Checkpoint commit containing complete process and scientific harness",
   "last_reconciled_upstream": "2acee704219d2f54d73df104364dffaeca205565",
-  "blockers": []
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b18_divdra_component.py",
+    "tests/frost/test_ppa_wu05b18_divdra_component.f90"
+  ]
 }
