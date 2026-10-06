@@ -52,6 +52,20 @@ def validate(require_closed=False):
     entries = ledger['capabilities']
     ids = {e['capability_id'] for e in entries}
     by_id = {e['capability_id']: e for e in entries}
+    groundwater = json.loads((AUDIT / 'evidence/SWAP431_GROUNDWATER_PROJECTION_PROBE.json').read_text())
+    assert hashlib.sha256(members[groundwater['source_member']]).hexdigest() == groundwater['source_sha256']
+    assert hashlib.sha256((ROOT / groundwater['production_source']).read_bytes()).hexdigest() == groundwater['production_sha256']
+    import probe_swap431_groundwater_projection as groundwater_probe
+    assert hashlib.sha256(groundwater_probe.DRIVER.encode()).hexdigest() == groundwater['driver_sha256']
+    assert hashlib.sha256(groundwater_probe.STUBS.encode()).hexdigest() == groundwater['stubs_sha256']
+    assert [r['optimization'] for r in groundwater['results']] == ['-O0', '-O2']
+    assert all(r['passed'] and r['cases'] == 6 for r in groundwater['results'])
+    assert groundwater['results'][0]['stdout'] == groundwater['results'][1]['stdout']
+    import re
+    active_gwl_source = '\n'.join(line.split('!')[0] for line in members['SWAP/calcgwl.f90'].decode('latin1').splitlines())
+    assert set(re.findall(r'=\s*gwlevel\s*\(\s*(\d+)', active_gwl_source, re.I)) == {'1', '3'}
+    assert by_id['SW431-GW-INACTIVE-AVERAGE']['current_disposition'] == 'NOT_APPLICABLE'
+    assert by_id['SW431-GW-PROJECTION']['active_workunit'] == 'MC-LOW01'
     foundations = {f['foundation_id']: f for f in ledger.get('swap5_admitted_foundations', [])}
     assert not ids.intersection(foundations), 'foundation counted as legacy capability'
     for foundation in foundations.values():

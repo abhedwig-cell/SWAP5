@@ -390,6 +390,27 @@
         "Restart at moving drain-level and surface-storage boundaries"
       ],
       "review": "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+    },
+    {
+      "id": "MC-LOW01",
+      "decision": "MIGRATE",
+      "capabilities": [
+        "SW431-GW-PROJECTION",
+        "SW431-LOW3-EXPLICIT",
+        "SW431-LOW9"
+      ],
+      "source_authority": "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
+      "first_slice": "Value-only candidate profile-to-GWL resolver, distinct from smooth derivative and external aquifer forcing.",
+      "ownership": "Recomputable geometry/head/pond view; no new water store. Start-state sampling before solve, candidate publication only on accept; external head remains separate.",
+      "gates": [
+        "Literal nonuniform-grid and full-saturation/zero-crossing/no-interior comparisons",
+        "Rejected-candidate and retry identity",
+        "Accepted next-step sampling and fresh-process restart",
+        "Preserve ordinary lower boundaries, smooth drainage service, PERCH21 and external head owner"
+      ],
+      "evidence": [
+        "integration/audits/evidence/SWAP431_GROUNDWATER_PROJECTION_PROBE.json"
+      ]
     }
   ]
 }

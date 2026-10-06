@@ -45,5 +45,8 @@ text += ['', '## Latest resolved-input and owner review', '',
          'Eight further owner reviews now have concrete MIGRATE contracts: pond-derived macro input, runon composition, time-varying rapid-drain basis, fixed sprinkler and scheduled surface routing, consistent CO2 response, crop rotation and the ordinary infiltration cap.', '',
          'The four existing-code entries have explicit source/runtime qualification gates: Ernst, Youngs, classic annual crop and IDSL1. No absent-evaluator claim is made for those entries.', '',
          'The literal SWBR aquifer block fails bounds checks at numnod+1 in all eight O0/O2 probes. Its intended physical capability remains open with a reference-correction prerequisite. Soil phase-change absence is distinguished from the admitted snow liquid-retention and melting terms.', '',
-         'Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md).']
+         'Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md).', '',
+         '## Groundwater source reconciliation', '',
+         'The fixed-interface external groundwater admission does not close every internal CALCGWL branch. MC-LOW01 now separately owns the general candidate profile-to-GWL binding; its explicit mode-3 successor depends on that resolver. The unreachable internal gwlevel option 2 is NOT_APPLICABLE, while PERCH21 retains its bounded perched-zone admission.', '',
+         'Six unchanged-source/current-service comparisons per O0/O2 distinguish the admitted smooth interior service from full saturation, zero-pressure and absent-interior cases. Details: [groundwater source review](SWAP431_GROUNDWATER_SOURCE_REVIEW.md).']
 (A/'SWAP431_FUNCTIONAL_COVERAGE_MASTER.md').write_text('\n'.join(text)+'\n')

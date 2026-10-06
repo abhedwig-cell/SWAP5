@@ -2,9 +2,9 @@
 
 Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 241 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 127 ACTIVE_MIGRATION entries across 18 review/migration workunits.
+The ledger currently contains 243 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE and 128 ACTIVE_MIGRATION entries across 18 review/migration workunits.
 
-Only 123 entries are currently marked as proven missing production implementation/binding. The other 4 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 124 entries are currently marked as proven missing production implementation/binding. The other 4 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -40,6 +40,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-FROST-EXT-MULTI | Multilevel extended surface-water/drain frost | MC-FROST01 | None |
 | SW431-FROST-GW | Frost with other legacy lower-boundary owners | MC-FROST01 | None |
 | SW431-FROST-ROOTDRAIN | Root uptake composed with frost drainage | MC-FROST01 | None |
+| SW431-GW-PROJECTION | Candidate profile-derived GWL including full saturation, zero crossings and absent interior table | MC-LOW01 | None |
 | SW431-HYD-MODEL10 | Bimodal PDI capillary, adsorption and film-flow relations | MC-HYD01 | None |
 | SW431-HYD-MODEL11 | Bimodal PDI normalized at finite dry-end head | MC-HYD01 | None |
 | SW431-HYD-MODEL12 | RIA hydraulic relations | MC-HYD01 | None |
@@ -64,7 +65,6 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ET-PMDETAIL | Detailed-record Penman-Monteith atmospheric demand | MC-MET01 | None |
 | SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | MC-MET01 | None |
 | SW431-ET-SOILFACTOR | Soil-factor conversion of potential soil evaporation | MC-MET01 | None |
-| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | MC-LOW01 | None |
 | SW431-LOW9 | Simultaneously imposed bottom flux and head with forced last-node head/theta/K reset | MC-LOW01 | None |
 | SW431-MACRO-ABS2 | Alternative unsaturated absorption route | MC-MACRO01 | None |
 | SW431-MACRO-DARCY | Extra unsaturated Darcy exchange | MC-MACRO01 | None |
@@ -122,6 +122,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO-STRESS | Microscopic oxygen/salinity reduction and stress attribution | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-ROOT-MICRO-TRED | MICRO transpiration-reduction and maximum-drought policy | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | MC-CROP01 | SW431-ROOT-DENSITY |
+| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | MC-LOW01 | SW431-GW-PROJECTION |
 | SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | MC-MACRO01 | SW431-MACRO-GEOMETRY |
 | SW431-MACRO-RUNON | External runon composition through the pond-derived macropore donor | MC-MACROSUR01 | SW431-RUNON, SW431-MACRO-POND |
 | SW431-SW-MULTILEVEL | Common secondary storage depletion limiter across multiple drain levels | MC-SW01 | SW431-SW-DRAIN-FEEDBACK, SW431-SW-SIGNED |
@@ -153,7 +154,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | MC-HYD01 | 15 | Source/admission adjudication for the exact IDs below |
 | MC-HYST01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-IRR01 | 16 | Source/admission adjudication for the exact IDs below |
-| MC-LOW01 | 2 | Source/admission adjudication for the exact IDs below |
+| MC-LOW01 | 3 | Source/admission adjudication for the exact IDs below |
 | MC-MACRO01 | 8 | Source/admission adjudication for the exact IDs below |
 | MC-MACROSUR01 | 6 | Source/admission adjudication for the exact IDs below |
 | MC-MET01 | 4 | Source/admission adjudication for the exact IDs below |
@@ -274,8 +275,9 @@ These are individual capability decisions, not admitted implementation plans. De
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement. | None |
+| SW431-GW-PROJECTION | Candidate profile-derived GWL including full saturation, zero crossings and absent interior table | General candidate profile-to-GWL binding absent outside bounded smooth drainage projection; existing carriers/services do not admit all source branches. | None |
 | SW431-LOW9 | Simultaneously imposed bottom flux and head with forced last-node head/theta/K reset | Source reader accepts independent DATE9A/HBOT9 and DATE9B/QBOT9. BoundBottom sets qbot and overwrites the final cell h/theta/K; HeadCalc solves only numnod-1 and Fluxes deliberately excludes mode9 from qbot reconstruction. No typed production mode9 route is admitted. This is a real state/flux ownership decision, not obsolete parser plumbing. | None |
+| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement. | SW431-GW-PROJECTION |
 
 ### MC-MACRO01
 
@@ -408,3 +410,9 @@ The four existing-code entries have explicit source/runtime qualification gates:
 The literal SWBR aquifer block fails bounds checks at numnod+1 in all eight O0/O2 probes. Its intended physical capability remains open with a reference-correction prerequisite. Soil phase-change absence is distinguished from the admitted snow liquid-retention and melting terms.
 
 Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md).
+
+## Groundwater source reconciliation
+
+The fixed-interface external groundwater admission does not close every internal CALCGWL branch. MC-LOW01 now separately owns the general candidate profile-to-GWL binding; its explicit mode-3 successor depends on that resolver. The unreachable internal gwlevel option 2 is NOT_APPLICABLE, while PERCH21 retains its bounded perched-zone admission.
+
+Six unchanged-source/current-service comparisons per O0/O2 distinguish the admitted smooth interior service from full saturation, zero-pressure and absent-interior cases. Details: [groundwater source review](SWAP431_GROUNDWATER_SOURCE_REVIEW.md).

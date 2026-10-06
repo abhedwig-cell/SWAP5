@@ -5,7 +5,7 @@
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
-  "persisted": true,
+  "persisted": false,
   "tested": {
     "coverage_integrity": "PASS",
     "census_lexical_tests": "4 PASS",
@@ -20,26 +20,27 @@
     "rain_representation": "O0/O2 PASS; literal B1.11 conversion + full production adapter module closure",
     "nfix_equation_discrimination": "6 cases per O0/O2; 3 independent semantic witnesses; PASS",
     "aquifer_bounds_probe": "8 expected bounds failures: O0/O2, 1/3 nodes, positive/negative qdrtot",
-    "seepage_runtime": "6/6 O0/O2 PASS in closed-bottom partial-top-cell fixture; O0/O2 stdout identical; initial free-drainage activity failures retained and attributed"
+    "seepage_runtime": "6/6 O0/O2 PASS in closed-bottom partial-top-cell fixture; O0/O2 stdout identical; initial free-drainage activity failures retained and attributed",
+    "groundwater_projection": "Six unchanged CALCGWL/current-service profiles per O0/O2; identical output; no runtime admission"
   },
   "qualified": false,
   "coverage_closed": false,
   "denominator_complete": false,
   "summary": {
-    "capabilities": 241,
+    "capabilities": 243,
     "dispositions": {
       "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 127,
+      "ACTIVE_MIGRATION": 128,
       "SUPERSEDED": 14,
       "REJECTED": 1,
-      "NOT_APPLICABLE": 19
+      "NOT_APPLICABLE": 20
     },
-    "open_capabilities": 127,
+    "open_capabilities": 128,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 123,
+    "confirmed_missing_production_entries": 124,
     "other_unresolved_source_admission_reviews": 4
   },
-  "next_action": "Finish semantic routine/branch census; complete MC-MACRO01 seepage full-top/capacity/retry/restart/source-trajectory gates after active runtime smoke. MC-CROP01 classic annual/IDSL1 gates remain. Aquifer migration first needs an explicit reference-defect storage/coefficient contract.",
+  "next_action": "Continue semantic routine/branch census; MC-LOW01 now owns general candidate GWL derivation before explicit mode-3 exchange. Remaining seepage and annual-crop qualification gates persist.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -47,7 +48,8 @@
     "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
     "integration/audits/SWAP431_SOURCE_REVIEW.md",
     "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-    "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json"
+    "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json",
+    "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -67,7 +69,7 @@
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "127 active entries: 123 missing implementations/bindings plus four explicitly preregistered existing-route qualification gates. Semantic denominator completeness remains unproven."
+    "128 active entries: 124 missing implementations/bindings plus four existing-route qualification gates. Semantic denominator completeness remains unproven."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
@@ -98,6 +100,6 @@
     "local_and_remote_tree": "a7a234607893fa1f79621c546bbcbbe365320d47",
     "changed_blob_hashes_verified": 10,
     "mechanism": "GitHub connector; nonforced expected-head update; full content tree verified against local Git. This metadata-only successor records the published content checkpoint.",
-    "pending_successor": false
+    "pending_successor": true
   }
 }

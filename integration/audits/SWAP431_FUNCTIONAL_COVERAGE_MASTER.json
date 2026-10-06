@@ -14,17 +14,17 @@
   ],
   "source_census": "integration/audits/evidence/SWAP431_SOURCE_CENSUS.json",
   "summary": {
-    "capabilities": 241,
+    "capabilities": 243,
     "dispositions": {
       "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 127,
+      "ACTIVE_MIGRATION": 128,
       "SUPERSEDED": 14,
       "REJECTED": 1,
-      "NOT_APPLICABLE": 19
+      "NOT_APPLICABLE": 20
     },
-    "open_capabilities": 127,
+    "open_capabilities": 128,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 123,
+    "confirmed_missing_production_entries": 124,
     "other_unresolved_source_admission_reviews": 4
   },
   "capabilities": [
@@ -2876,10 +2876,12 @@
       "restrictions": [
         "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-GW-PROJECTION"
+      ],
       "active_workunit": "MC-LOW01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -3010,13 +3012,14 @@
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Groundwater level and signed soil-aquifer exchange",
+      "meaning": "External groundwater head ownership and signed fixed-interface soil-aquifer exchange",
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
-        "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md"
+        "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+        "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md"
       ],
       "production_reachability": {
         "established": true,
@@ -3024,7 +3027,8 @@
         "claim": "Fixed-interface production SWAP-MODFLOW6 ownership; no triangle implication"
       },
       "restrictions": [
-        "Fixed-interface production SWAP-MODFLOW6 ownership; no triangle implication"
+        "Fixed-interface production SWAP-MODFLOW6 ownership; no triangle implication",
+        "Does not establish all CALCGWL internal profile-level branches; see SW431-GW-PROJECTION."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -12619,6 +12623,105 @@
         "SW431-DRAIN-DIV"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+    },
+    {
+      "capability_id": "SW431-GW-PROJECTION",
+      "subsystem": "groundwater",
+      "legacy_selector": "CALCGWL active ordinary profile branches; not an input selector",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/calcgwl.f90",
+        "sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+        "locator_lines": [
+          58,
+          89,
+          137,
+          224,
+          257,
+          299
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Candidate profile-derived GWL including full saturation, zero crossings and absent interior table",
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_smooth_freatic_projection.f90",
+        "src/solver/mod_reference_richards_state_binding.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90"
+      ],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_GROUNDWATER_PROJECTION_PROBE.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "General candidate profile-to-GWL binding absent outside bounded smooth drainage projection; existing carriers/services do not admit all source branches."
+      },
+      "restrictions": [
+        "Keep external aquifer forcing distinct; preserve bounded smooth derivative and PERCH21 ownership."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-LOW01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "implementation_absence_proven": true,
+      "resolution_decision": "MIGRATE",
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION"
+    },
+    {
+      "capability_id": "SW431-GW-INACTIVE-AVERAGE",
+      "subsystem": "groundwater",
+      "legacy_selector": "internal gwlevel(swoptlev=2); no live call",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/calcgwl.f90",
+        "sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+        "locator_lines": [
+          76,
+          81,
+          162,
+          178,
+          257,
+          344
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Unreachable historical average of h=-1 and h=+1 elevations",
+      "swap5_implementation_authority": [],
+      "current_disposition": "NOT_APPLICABLE",
+      "evidence": [
+        "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "Not a selectable capability: every live source call passes 1 or 3."
+      },
+      "restrictions": [
+        "Only unreachable internal option 2; active options 1 and 3 are separately assessed."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": null,
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "OBSOLETE_CONTROL_FLOW",
+      "coverage_gap_type": null
     }
   ],
   "remaining_queue": [
@@ -12959,6 +13062,20 @@
       "implementation_absence_proven": true
     },
     {
+      "capability_id": "SW431-GW-PROJECTION",
+      "work_unit": "MC-LOW01",
+      "dependencies": [],
+      "why_open": "General candidate profile-to-GWL binding absent outside bounded smooth drainage projection; existing carriers/services do not admit all source branches.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
       "capability_id": "SW431-HYD-MODEL10",
       "work_unit": "MC-HYD01",
       "dependencies": [],
@@ -13285,20 +13402,6 @@
       "work_unit": "MC-MET01",
       "dependencies": [],
       "why_open": "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-LOW3-EXPLICIT",
-      "work_unit": "MC-LOW01",
-      "dependencies": [],
-      "why_open": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14176,6 +14279,22 @@
         "SW431-ROOT-DENSITY"
       ],
       "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-LOW3-EXPLICIT",
+      "work_unit": "MC-LOW01",
+      "dependencies": [
+        "SW431-GW-PROJECTION"
+      ],
+      "why_open": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
