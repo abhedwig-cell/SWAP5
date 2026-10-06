@@ -13,6 +13,17 @@ per-node `Upw` sink. The source SHA256 is
 Its dry table defect has the explicitly corrected reference policy in
 `PPA_MICRO01_TABLE_REPAIR_CONTRACT.md`.
 
+Negative literal-source result on the first full nonlinear replay: at
+`h=[-100,-200]` cm with constant K, equal root densities and
+`swHydrLift=0`, the corrected-table B1.11 source returned layer `Upw`
+`[0.3,-0.2]` cm/d, `Tact1=0.1` and `Tact2=0`, with `check=[T,T,F]`.
+This is not a valid nonnegative sink or a closed soil-to-root flux even though
+the first two checks pass. The source `myFun` endpoint-acceptance branches do
+not perform their advertised final reevaluation at the chosen pressure; that
+is a plausible mechanism, pending a controlled falsification. The anomaly is
+preserved as negative evidence, not used as an equivalence target. Positive
+source comparisons are restricted to cases where all three checks pass.
+
 This work unit first owns a call-local, typed *standalone* evaluator. It accepts
 the committed hydraulic pressure-head view, rooted node thickness, root length
 density, bounded stress factors and immutable MICRO01 tables. The tables are

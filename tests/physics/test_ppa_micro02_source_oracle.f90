@@ -40,7 +40,7 @@ program test_ppa_micro02_source_oracle
   Ntrial=500
   swDoSatRel=0
   swHydrLift=0
-  head=[-100.0_real64,-200.0_real64]
+  head=[-100.0_real64,-100.0_real64]
   density=.5_real64
 
   do case_no=1,4
@@ -72,5 +72,19 @@ program test_ppa_micro02_source_oracle
     end if
     print '(A,I0,A,2F12.8)', 'SOURCE_CASE=',case_no,' UPTAKE=',source_flux
   end do
+  ! The unchanged nonlinear source may publish a signed layer sink even when
+  ! hydraulic lift is disabled. Keep this as explicit negative evidence.
+  head=[-100.0_real64,-200.0_real64]
+  swO2ECT=0
+  swTypeTred=1
+  stress=1.0_real64
+  call RWU_micro(1,1,2,dz,head,density,stress,.false.,.1_real64,tact,source_flux,alpha,tact1,tact2,check)
+  call RWU_micro(2,1,2,dz,head,density,stress,.false.,.1_real64,tact,source_flux,alpha,tact1,tact2,check)
+  if(check(3).or.source_flux(2)>=0.0_real64) error stop 5
+  parameters%oxygen_mode=0
+  parameters%reduction_mode=1
+  call evaluate_micro_de_willigen(parameters,head,dz,density,stress,2,.1_real64,tables,typed)
+  if(typed%status/=MICRO_DW_OK.or.any(typed%root_extraction_sink<0.0_real64)) error stop 6
+  print '(A,2F12.8,A,3L2)', 'SOURCE_NO_LIFT_SIGNED_ANOMALY=',source_flux,' CHECK=',check
   print '(A)', 'MICRO02_CORRECTED_LITERAL_COMPARISON_PASS'
 end program
