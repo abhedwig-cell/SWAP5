@@ -26,7 +26,7 @@ contains
     if(any(.not.ieee_is_finite(conductivity))) return
     if(.not.ieee_is_finite(dry_conductivity).or..not.ieee_is_finite(saturated_conductivity)) return
     if(any(conductivity<0.0_real64).or.dry_conductivity<0.0_real64.or.saturated_conductivity<0.0_real64) return
-    if(max(maxval(conductivity),dry_conductivity)>huge(1.0_real64)/(4.0_real64*abs(MICRO_DRY_HEAD))) return
+    if(max(maxval(conductivity),dry_conductivity,saturated_conductivity)>huge(1.0_real64)/(4.0_real64*abs(MICRO_DRY_HEAD))) return
     candidate%k=conductivity
     candidate%dry_k=dry_conductivity
     candidate%saturated_k=saturated_conductivity
