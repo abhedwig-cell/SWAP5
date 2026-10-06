@@ -4,11 +4,16 @@ from pathlib import Path
 import argparse,hashlib,json,os,subprocess
 ROOT=Path(__file__).resolve().parents[2]
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--whole-record',required=True);ap.add_argument('--record',required=True);a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--whole-record',required=True);ap.add_argument('--record',required=True);ap.add_argument('--resume-completed',action='store_true');a=ap.parse_args()
     whole=json.loads(Path(a.whole_record).read_text());source=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip();assert source==whole['production_source']=='636e782080abdd2c0366f96317c4f59e8170dc53'
     checkout=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();results={}
     def run(name,command,extra=None):
-        out=Path('/tmp/frost-b19-'+name+'.log')
+        out=Path('/tmp/frost-b19-'+name+'.log');rp=Path(str(out)+'.receipt.json')
+        if a.resume_completed and rp.exists():
+            prior=json.loads(rp.read_text())
+            assert prior['complete']and prior['exit_code']==0 and prior['command']==command and prior['production_source']==source
+            assert hashlib.sha256(out.read_bytes()).hexdigest()==prior['stdout_sha256']
+            results[name]=prior;print(f'B19_REMAINING_{name.upper()}_VERIFIED_COMPLETE_CASE_RESUME=PASS',flush=True);return
         with out.open('w')as f:r=subprocess.run(command,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,env={**os.environ,'C3A_TESTED_SHA':checkout,**(extra or{})})
         receipt=dict(command=command,exit_code=r.returncode,stdout_sha256=hashlib.sha256(out.read_bytes()).hexdigest(),production_source=source,complete=r.returncode==0)
         Path(str(out)+'.receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');assert r.returncode==0,(name,out.read_text()[-3000:]);results[name]=receipt
@@ -20,7 +25,7 @@ def main():
         for variant in ('','dispersion'):
             label=method+('-dispersion'if variant else'');record=Path('/tmp/frost-b19-'+label+'.json')
             run(label,['python','tests/physics/run_ppa_wu05e_mixed_salt_frost.py'],{'C3A_RESULT':str(record),'WU05E_COMPENSATION_METHOD':method,'WU05E_TRANSPORT_VARIANT':variant})
-            m=json.loads(record.read_text());assert m['status']=='LOCAL_MATRIX_SALT_MIXED_GATES_PASS_NOT_ADMITTED'and len(m['source_sha256'])==180
+            m=json.loads(record.read_text());assert m['status']=='LOCAL_MATRIX_SALT_MIXED_GATES_PASS_NOT_ADMITTED'and len(m['source_sha256'])==181
             for f,h in m['source_sha256'].items():assert hashlib.sha256((ROOT/f).read_bytes()).hexdigest()==h,f
     run('canonical-preservation',['bash','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'])
     assert 'FCI_CANONICAL_PPA_WU05B19_EXACT_HIGHEST_RESPONSE_CANDIDATE=ACTIVE'in Path('/tmp/frost-b19-canonical-preservation.log').read_text()

@@ -1,0 +1,15 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "SOURCE_COUNTER_ADJUDICATION_NOT_PHYSICAL_CORRECTION",
+  "production_source": "636e782080abdd2c0366f96317c4f59e8170dc53",
+  "baseline_manifest_entries": 179,
+  "current_ordered_compiled_sources": 179,
+  "current_manifest_entries": 181,
+  "additional_transitive_modules": [
+    "src/process/mod_frost_divdra_drainage_effect.f90",
+    "src/process/mod_drainage_spatial_distribution.f90"
+  ],
+  "counter_roles": "Current mixed SALT/root/frost driver compiles all179 dependency/test sources; fixture include and driver are two additional manifest entries. B19 whole runtime production graph compiles177 dependency/legacy sources versus B15 production175 plus two fixture/main files in its177-line source list.",
+  "adjudication": "The initial orchestration guard expected180 entries by assuming only the new component adds a dependency. Actual graph includes existing spatial-distribution type module as a newly reached transitive dependency. Require full181 source manifests, four complete physical matrices, actual fresh restart and unchanged budgets. No source file or physical case is omitted; no preregistration scope is reduced.",
+  "resume": "Only completed full exit-zero scientific/root/external/SALT cases with exact command, source stamp and stdout hash are reusable. Matrix JSON source hashes are checked again. Failed or partial outputs never establish a completed gate."
+}
