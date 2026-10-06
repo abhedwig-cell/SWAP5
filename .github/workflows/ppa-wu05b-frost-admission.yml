@@ -140,6 +140,13 @@ jobs:
             python3 tests/frost/run_ppa_wu05b14_scientific.py
             python3 tests/frost/run_ppa_wu05b14_extended_response_source.py
           fi
+      - name: Highest drainage scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b15_scientific.py; then
+            git cat-file -e 48df989b098d73208eed2496005b656f588ebffd^{commit} 2>/dev/null || git fetch --no-tags origin 48df989b098d73208eed2496005b656f588ebffd
+            python3 tests/frost/run_ppa_wu05b15_scientific.py
+            python3 tests/frost/run_ppa_wu05b15_extended_response_source.py
+          fi
       - name: Install documentation dependencies
         run: python3 -m pip install -r requirements-docs.txt
       - name: Validate docs, JSON and whitespace
@@ -231,8 +238,36 @@ jobs:
           sudo apt-get install -y gfortran
       - name: Actual signed runtime, control branches, finer references and preservation
         run: |
-          if test -f tests/frost/run_ppa_wu05b14_runtime.py; then
+          if test -f tests/frost/run_ppa_wu05b14_runtime.py && ! test -f tests/frost/run_ppa_wu05b15_runtime.py; then
             python3 tests/frost/run_ppa_wu05b14_runtime.py --route ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b14_additional.py --routes ${{ matrix.route }}
             python3 tests/frost/run_ppa_wu05b14_preservation.py --route ${{ matrix.route }}
+          fi
+
+  highest-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B15_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B15_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B15_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Actual highest runtime, held cases, finer references and preservation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b15_runtime.py; then
+            python3 tests/frost/run_ppa_wu05b15_runtime.py --route ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b15_additional.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b15_preservation.py --route ${{ matrix.route }}
           fi
