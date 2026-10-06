@@ -1,0 +1,52 @@
+{
+  "work_unit": "PPA-MICRO02",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "status": "STANDALONE_QUALIFIED_DRAFT_UNADMITTED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "runtime_admitted": false,
+  "contract": "docs/audits/PPA_MICRO02_DE_WILLIGEN_CONTRACT.md",
+  "dependency_surface": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
+    "src/process/mod_root_micro_matric_flux_table.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "scope": "Call-local de Willigen standalone uptake and real MvG table samples, no runtime sink or restart admission",
+  "interfaces_changed": [],
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25
+  ],
+  "next_action": "Bind source horizon representative hydraulics and qualify one accepted root sink through trial/reject, mass and restart; de Jong van Lier and signed hydraulic lift remain separate",
+  "recovery_point": "a1c597da109619c981bd317bf362bdde51e47af2",
+  "blockers": [],
+  "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77",
+  "negative_findings": [
+    "First targeted smoke run 37418820901 compiled O0 but failed because bracket extension moved in the wrong direction; corrected and O0/O2 smoke passed in run 37418937324.",
+    "Runs 37419245041, 37419481032, 37419641673, 37419805293, 37419980702, 37420138750 used a direct RWU_micro literal harness without setting module iMicro=1, which the production wrapper sets. myFun skipped both branches; signed/no-closure results were invalid harness artifacts, not evidence of a B1.11 source defect.",
+    "An attempted extra final myFun call did not repair this harness issue and was removed. Exact source nonlinear routine remains unchanged; only the disclosed MICRO01 dry table correction and public test access remain."
+  ],
+  "smoke_tested": true,
+  "smoke_run": 37418937324,
+  "smoke_scope": "O0/O2 synthetic normal/stress/threshold and real MvG table plus normal uptake; exact source oracle pending",
+  "qualification_scope": "O0/O2 constant-K corrected literal de Willigen four cases plus heterogeneous head, source checks true and per-node tolerance 2e-5 cm/d; real MvG provider smoke only",
+  "component_admitted": false,
+  "source_oracle_run": 37420361646,
+  "source_oracle_head": "a1c597da109619c981bd317bf362bdde51e47af2",
+  "source_oracle_executed_pr_merge": "988541fe77d391dcf01131772fb55819436b6be1",
+  "source_oracle_evidence": "docs/audits/evidence/PPA_MICRO02_STANDALONE_SOURCE_FINAL_REPLAY.json.gz",
+  "source_oracle_artifact_sha256": "38cb1b5062cc544a0da7d25b312fb0b6bea661f6bea5162700dacb51a5fc4166",
+  "draft_pr": 1071
+}

@@ -1,0 +1,22 @@
+{
+  "work_unit": "PPA-MICRO04",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "a46e22b4eba7f5a96b25a7c70ed47c014b77ea94",
+  "status": "HORIZON_BINDING_STANDALONE_LOCAL_QUALIFIED_DRAFT_UNADMITTED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "canonical_admitted": false,
+  "contract": "docs/audits/PPA_MICRO04_HORIZON_BINDING_CONTRACT.md",
+  "scope": "Optional B1.11 first-node-per-horizon MvG table selection in the standalone adapter; existing default per-node production route unchanged",
+  "interface_changed": "fmr_build_micro_mvg_tables optional horizon_first_node",
+  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
+  "evidence": "docs/audits/evidence/PPA_MICRO04_HORIZON_BINDING_LOCAL.json",
+  "next_action": "Compare literal B1.11 MvG and ksatfit table semantics, then pass an explicit horizon map through the production parameter owner and trial/mass/restart gates",
+  "recovery_point": "work/ppa-micro04-horizon-binding-20261006",
+  "qualified_postimage": "f9be379d8714e11c8d5f30838857c17864c18798",
+  "draft_pr": 1074,
+  "stack_parent_pr": 1073
+}

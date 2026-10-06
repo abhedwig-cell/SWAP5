@@ -267,7 +267,12 @@ jobs:
       - name: Actual highest runtime, held cases, finer references and preservation
         run: |
           if test -f tests/frost/run_ppa_wu05b15_runtime.py; then
-            python3 tests/frost/run_ppa_wu05b15_runtime.py --route ${{ matrix.route }}
-            python3 tests/frost/run_ppa_wu05b15_additional.py --routes ${{ matrix.route }}
-            python3 tests/frost/run_ppa_wu05b15_preservation.py --route ${{ matrix.route }}
+            if test "$(git rev-parse HEAD:src)" = ac822aafd5403547a2c7ffad5c3ba02c9fa36496; then
+              successor=--micro-successor
+            else
+              successor=
+            fi
+            python3 tests/frost/run_ppa_wu05b15_runtime.py --route ${{ matrix.route }} $successor
+            python3 tests/frost/run_ppa_wu05b15_additional.py --routes ${{ matrix.route }} $successor
+            python3 tests/frost/run_ppa_wu05b15_preservation.py --route ${{ matrix.route }} $successor
           fi

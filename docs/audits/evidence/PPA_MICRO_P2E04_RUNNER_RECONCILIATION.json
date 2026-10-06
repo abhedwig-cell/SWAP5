@@ -1,0 +1,48 @@
+{
+  "work_unit": "PPA-MICRO02-06-HISTORICAL-PUB-P2E04-RUNNER-RECONCILIATION",
+  "status": "BASELINE_AND_MICRO_SOURCE_TREES_PASS_AFTER_EXPLICIT_DEPENDENCY_CLOSURE_REPAIR",
+  "canonical_baseline_commit": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "canonical_baseline_source_tree": "52d5b774ce12369a7113e39445886d463fbe7dd2",
+  "micro_candidate_commit": "4002c655c3056bb1d3953831ccf80cecd8b01364",
+  "micro_candidate_source_tree": "ac822aafd5403547a2c7ffad5c3ba02c9fa36496",
+  "unmodified_baseline_census_failure": "Missing mod_drainage_extended_exchange.mod while compiling existing mod_fmr_drainage_response_binding; same missing-source-list failure appears in PR CI runs 37432003343 and 37432003316.",
+  "runner_only_dependencies_added": [
+    "src/solver/mod_b110_root_sink_provider.f90",
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/solver/mod_b110_direct_retention_core.f90",
+    "src/solver/mod_b110_direct_retention_provider.f90"
+  ],
+  "scientific_contract_changed": false,
+  "rossfast_firewall_preserved": true,
+  "fixed_tolerances_and_frozen_targets_changed": false,
+  "results": {
+    "census": {
+      "canonical_baseline": "PASS O0/O2",
+      "micro_candidate": "PASS O0/O2",
+      "combined_o0_o2_sha256": "2f1112b5a62170094614da27b2b4fd1d414a925109a1b9fc347bcb91ab2933df",
+      "candidate_log_sha256": "bdf4f6eb743e3a93fefe2b459b39cbdc554b921eb6e9416e553d10a8cb20c972",
+      "baseline_log_sha256": "bdf4f6eb743e3a93fefe2b459b39cbdc554b921eb6e9416e553d10a8cb20c972",
+      "logs_byte_identical": true
+    },
+    "stage_bc": {
+      "canonical_baseline": "PASS O0/O2",
+      "micro_candidate": "PASS O0/O2",
+      "combined_o0_o2_sha256": "890489b2d78216dd09c0ecd1a0d3825d9aef801986f4b73d9300620646b4c587",
+      "candidate_log_sha256": "cd8534471c159c3e9ce3fc60acbfcda6b7b82931d270cc76e4c025fbd3244329",
+      "baseline_log_sha256": "cd8534471c159c3e9ce3fc60acbfcda6b7b82931d270cc76e4c025fbd3244329",
+      "logs_byte_identical": true
+    }
+  },
+  "original_runner_blob_sha": {
+    "census": "33d0a4ab74fc838a42a01bd14c5b77e56726a77e",
+    "stage_bc": "2db07a28a6a477573246dba1c322bad145783f82"
+  },
+  "patched_runner_sha256": {
+    "census": "44dd4c74e86dc5a74ee902e7048d87b59ef7d327c27fcc8a49277ca38488da7b",
+    "stage_bc": "2019c47963c29805658b6fe726905d86dced1884edcf4f26e6d4468ca8c6e6bd"
+  },
+  "replay_zip": "PPA_MICRO_P2E04_RUNNER_RECONCILIATION_REPLAY.zip",
+  "replay_zip_sha256": "5bdfead5e5d789abb880e88e6003a5e8e75d82584ec86d58f428cee3158a4bd7",
+  "replay_zip_bytes": 27057,
+  "claim_ceiling": "The red P2E04 compile jobs were source-list defects present on canonical baseline; local compile-closure corrected runners pass and produce byte-identical outputs on baseline and MICRO candidate. Persisted PR rerun pending."
+}

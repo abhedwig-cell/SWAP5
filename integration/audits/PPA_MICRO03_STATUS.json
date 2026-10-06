@@ -1,0 +1,38 @@
+{
+  "work_unit": "PPA-MICRO03",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "status": "BOUNDED_RUNTIME_LOCAL_QUALIFIED_DRAFT_UNADMITTED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "canonical_admitted": false,
+  "contract": "docs/audits/PPA_MICRO03_RUNTIME_CONTRACT.md",
+  "scope": "Opt-in de Willigen normal uptake in serialized Reference B1.10 production trial and application bootstrap; certificate continuation and homogeneous rooted hydraulics",
+  "interfaces_changed": [
+    "fmr_b110_physical_parameters_t%micro_de_willigen",
+    "fmr_b110_physical_forcing_t%micro_rooted_nodes",
+    "fmr_b110_physical_forcing_t%micro_root_length_density"
+  ],
+  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
+  "dependency_surface": [
+    "src/process/mod_root_micro_matric_flux_table.f90",
+    "src/process/mod_root_micro_de_willigen_process.f90",
+    "src/runtime/mod_fmr_micro_mvg_table_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "test": "tests/physics/run_ppa_micro03_runtime.py",
+  "qualification_scope": "Local gfortran O0/O2 identical accepted 1e-4 cm/d root sink, 1.636603e-16 cm mass residual, rejected external double sink and failed nonlinear trial without commit, checkpoint replay and application commit; existing root hydrology O0/O2 preservation runtime passed",
+  "evidence": "docs/audits/evidence/PPA_MICRO03_LOCAL_RUNTIME_REPLAY.json",
+  "preservation_note": "The historical root-hyd01 wrapper stops at its exact backend blob guard after this intentional backend edit; its runtime source is compiled and executed O0/O2 by the MICRO03 runner.",
+  "next_action": "Independently review source horizon and real MvG trajectory equivalence, then run the required admission gates; ET and crop stress composition remain separate",
+  "recovery_point": "work/ppa-micro03-runtime-20261006",
+  "qualified_postimage": "6623cb0b9a3eeb6bd0a2b2780f8d22bf13c71ded",
+  "blockers": [],
+  "draft_branch": "work/ppa-micro03-runtime-20261006",
+  "draft_pr": 1073,
+  "stack_parent_pr": 1071
+}

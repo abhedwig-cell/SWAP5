@@ -1,0 +1,26 @@
+{
+  "work_unit": "PPA-MICRO06",
+  "scope": "Stacked MICRO02, MICRO04, MICRO05 and MICRO06 source, horizon, normal uptake runtime and ROOT-HYD01 preservation qualification",
+  "status": "PERSISTED_PR_MERGE_O0_O2_PASS_DRAFT_UNADMITTED",
+  "draft_pr": 1076,
+  "base_pr": 1075,
+  "head_sha": "26ea9dfe612bd2eac48d9099a03d574f8e98b51b",
+  "tested_pr_merge_sha": "082e55f556ebfa967c598cde88d5c3c094c80f18",
+  "workflow_run_id": 37428720498,
+  "workflow_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37428720498",
+  "workflow_conclusion": "success",
+  "job_id": 112154265752,
+  "job_conclusion": "success",
+  "artifact_id": 11395463608,
+  "artifact_name": "ppa-micro06-stack",
+  "artifact_sha256": "4c782323f820ee9cf2fba9b7e9bb9995894df693c49e86d3a54e42020912b1cb",
+  "repository_evidence_copy": "docs/audits/evidence/PPA_MICRO06_STACK_PERSISTED_REPLAY.zip",
+  "checks": [
+    "MICRO02 standalone MvG and corrected literal nonlinear oracle O0/O2",
+    "MICRO04 first-node horizon map O0/O2",
+    "MICRO05 literal B1.11 MvG and normal sink O0/O2",
+    "MICRO03 to MICRO06 production trial, changed forcing, committed restart and ROOT-HYD01 preservation O0/O2"
+  ],
+  "verification": "The ZIP digest matches the GitHub artifact digest; all five JSON source manifests match the locally published source tree and the MICRO02 smoke record identifies the PR merge SHA. All named workflow steps completed successfully.",
+  "claim_ceiling": "Bounded de Willigen normal uptake with standard MvG and declared two-horizon map; no crop ET generation, stress construction, de Jong van Lier, lift, broad production trajectory or canonical admission"
+}
