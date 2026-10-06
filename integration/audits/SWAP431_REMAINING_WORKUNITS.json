@@ -259,7 +259,9 @@
         "SW431-RUNON"
       ],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "internal_sequence_dependencies": [],
+      "internal_sequence_dependencies": [
+        "SW431-MACRO-POND"
+      ],
       "closed_foundation_authorities": [
         "SW431-MACRO-TOP"
       ]

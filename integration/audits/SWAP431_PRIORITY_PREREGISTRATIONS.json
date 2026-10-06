@@ -132,6 +132,16 @@
       ],
       "dependencies": [
         "SW431-SALT-TRANSPORT"
+      ],
+      "reference_defect_prerequisite": {
+        "capability": "SW431-SALT-AQUIFER",
+        "evidence": "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json",
+        "decision": "Retain intended aquifer capability; derive and approve explicit reservoir coefficient/storage and accumulated-versus-rate units before porting. No guessed replacement node.",
+        "first_gate": "Dimensionally consistent zero-flow, positive/negative drainage and multiple solute substeps with dissolved+sorbed aquifer mass."
+      },
+      "source_branch_contracts": [
+        "SWDC: temperature factor is zero with SWHEA=0; adjudicate source semantics explicitly.",
+        "Age tracer: own age amount, source production 0.5*(theta+thetm1), signed carriers and pond history."
       ]
     },
     {
@@ -188,7 +198,8 @@
       ],
       "dependencies": [
         "SW431-IRR-TCS1"
-      ]
+      ],
+      "existing_implementation_to_reuse": "Fixed-event index/active interval in mod_irrigation_process; F-APP07 TCS1/DCS2 owner; nonintercepting fixed identity binding. Add distinct fixed-sprinkler intercepted and scheduled-surface nonintercepted composition; do not duplicate event state."
     },
     {
       "id": "MC-TILL01",
@@ -247,7 +258,11 @@
         "O0/O2",
         "existing A26/MIGMAC09 production preservation"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "existing_route_qualification_slices": {
+        "SW431-MACRO-SEP1": "Reuse Ernst algebra and 48-case literal comparison; actual positive-K/full-partial seepage runtime with donor bounds, rollback and restart.",
+        "SW431-MACRO-SEP2": "Reuse Youngs algebra; same active runtime owner gate with Youngs geometry selected, not inherited SWSEP0."
+      }
     },
     {
       "id": "MC-NUT01",
@@ -327,7 +342,46 @@
       ],
       "dependencies": [
         "SW431-CROP-ANNUAL"
-      ]
+      ],
+      "additional_owner_slices": {
+        "SW431-CROP-CO2": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner.",
+        "SW431-CROP-ROTATION": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
+      },
+      "existing_route_qualification_slices": {
+        "SW431-CROP-ANNUAL": "Literal B1.11 classic daily/seasonal trajectory, actual water stress, carbon/organ/leaf balance, accepted-event and restart ownership; reuse AMAXTB implementation.",
+        "SW431-CROP-WOF-OTHER": "After classic annual gate, independently exercise IDSL1 DLC/DLO and anthesis; no IDSL2 admission."
+      }
+    },
+    {
+      "id": "MC-MACROSUR01",
+      "decision": "MIGRATE_BOUNDED_OWNER_BINDINGS",
+      "capabilities": [
+        "SW431-MACRO-POND",
+        "SW431-MACRO-RUNON",
+        "SW431-MACRO-SW-EXTERNAL"
+      ],
+      "physics": "Pond-derived QMpLatSs with shared surface donor; runon composition via q0; separate prescribed rapid-drain basis carrier.",
+      "sequence": [
+        "Pond transfer without runon; reuse A9 partition/limiter/returns",
+        "Add admitted runon carrier to the same surface donor",
+        "Independent prescribed rapid-drain level slice; internal store feedback remains separate"
+      ],
+      "ownership": "One accepted surface debit and macro credit; returned capacity excess stays in surface store. Immutable interval drain basis, no configuration reset as forcing.",
+      "dependencies": [
+        "SW431-RUNON"
+      ],
+      "closed_foundations": [
+        "SW431-MACRO-TOP"
+      ],
+      "qualification": [
+        "Literal source threshold/donor-cap and returned-excess cases",
+        "Actual Reference Richards coupled water mass",
+        "No double counted runon",
+        "O0/O2",
+        "Rejected trial and changed-forcing retry",
+        "Restart at moving drain-level and surface-storage boundaries"
+      ],
+      "review": "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
     }
   ]
 }

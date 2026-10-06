@@ -39,9 +39,10 @@ source-reachable combinations also matter.
 - SWBMA selects yearly BMA balance output, not additional exchange physics.
 - TCS5 raises an error and directs callers to the executable TCS7/8 routes.
 - Frost modifies hydraulic conductivity/derivative, empirical root extraction
-  and FrozenBounds drain/bottom heuristics. There is no ice/liquid partition or
-  latent-heat state/equation in the recovered source. Phase change is outside
-  this denominator.
+  and FrozenBounds drain/bottom heuristics. The soil-temperature/frost equations
+  have no soil-ice partition or latent-heat state. This does not describe snow:
+  `snow.f90` has liquid retention and uses melting latent heat in rain-on-snow
+  melt. Those terms belong to SW431-SNOW, not a soil phase-change capability.
 
 ## Independent persistent or stateful physics
 

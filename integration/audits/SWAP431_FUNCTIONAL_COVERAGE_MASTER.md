@@ -4,7 +4,7 @@ Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Cov
 
 The ledger currently contains 241 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 127 ACTIVE_MIGRATION entries across 18 review/migration workunits.
 
-Only 115 entries are currently marked as proven missing production implementation/binding. The other 12 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 123 entries are currently marked as proven missing production implementation/binding. The other 4 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -23,10 +23,12 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | MC-HYD01 | None |
 | SW431-IRR-AVAIL | External irrigation-availability scaling of selected event | MC-IRR01 | None |
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | MC-IRR01 | None |
+| SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MC-IRR01 | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | MC-IRR01 | None |
 | SW431-IRR-LIMIT | Minimum/maximum irrigation depth constraints | MC-IRR01 | None |
 | SW431-IRR-RATE-CAP | Cap long scheduled irrigation events at one day while preserving depth | MC-IRR01 | None |
 | SW431-IRR-RATE-DAILY | Spread scheduled irrigation depth uniformly over one day | MC-IRR01 | None |
+| SW431-IRR-SCHED-SURF | Scheduled surface irrigation routing | MC-IRR01 | None |
 | SW431-IRR-SSDI | Single-node or depth-interval subsurface drip irrigation | MC-IRR01 | None |
 | SW431-IRR-TCS2 | Readily available root-zone water depletion trigger | MC-IRR01 | None |
 | SW431-IRR-TCS3 | Total available root-zone water depletion trigger | MC-IRR01 | None |
@@ -69,9 +71,11 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-MACRO-EVAP | Stateful evaporation with macropore surface input | MC-MACROSUR01 | None |
 | SW431-MACRO-GEOMETRY | Integrated depth-dependent static macropore capacity, IC subdomain topology and polygon diameter | MC-MACRO01 | None |
 | SW431-MACRO-KINEMATIC | Kinematic-wave main bypass compartment propagation with exponent NKWT | MC-MACRO01 | None |
+| SW431-MACRO-POND | Pond-derived lateral macropore request and shared surface donor debit/return | MC-MACROSUR01 | None |
 | SW431-MACRO-SNOW | Daily snow and transactional macropore top input | MC-MACROSUR01 | None |
 | SW431-MACRO-SORP1 | Parlange hydraulic diffusivity integration and fitting of sorptivity maximum/exponent | MC-MACRO01 | None |
 | SW431-MACRO-SW | Rapid drainage routed into internal fixed-weir surface-water storage | MC-MACROSUR01 | None |
+| SW431-MACRO-SW-EXTERNAL | Rapid-drain/macropore interaction with externally prescribed surface-water level | MC-MACROSUR01 | None |
 | SW431-MET-RAIN1 | Within-day rainfall intensity distribution from RAINTB | MC-MET01 | None |
 | SW431-RUNOFF-NONLINEAR | Nonlinear surface-runoff power law and iterative ponding solution | MC-SUR01 | None |
 | SW431-RUNON | Externally supplied lateral water entering soil surface | MC-SUR01 | None |
@@ -92,6 +96,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | MC-SOL01 | None |
 | SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | MC-SOL01 | None |
 | SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | MC-SOL01 | None |
+| SW431-CROP-CO2 | Time-varying CO2 crop response and forcing | MC-CROP01 | None |
 | SW431-CROP-FIXED | Calendar-clock prescribed-LAI/root-biomass crop development and harvest | MC-CROP01 | None |
 | SW431-CROP-FIXED-THERMAL | Thermal-sum prescribed-LAI/root-biomass crop development and harvest | MC-CROP01 | None |
 | SW431-CROP-GRASS | Grass regrowth, mowing and grazing | MC-CROP01 | None |
@@ -105,6 +110,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
 | SW431-IRR-SALTEXCESS | Sensor salt-threshold excess irrigation | MC-IRR01 | SW431-IRR-TCS7, SW431-IRR-TCS8 |
 | SW431-ROOT-ANAE-GROW | Anaerobic suppression of root extension | MC-CROP01 | SW431-CROP-ROOTGROW |
@@ -117,11 +123,13 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO-TRED | MICRO transpiration-reduction and maximum-drought policy | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | MC-CROP01 | SW431-ROOT-DENSITY |
 | SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | MC-MACRO01 | SW431-MACRO-GEOMETRY |
+| SW431-MACRO-RUNON | External runon composition through the pond-derived macropore donor | MC-MACROSUR01 | SW431-RUNON, SW431-MACRO-POND |
 | SW431-SW-MULTILEVEL | Common secondary storage depletion limiter across multiple drain levels | MC-SW01 | SW431-SW-DRAIN-FEEDBACK, SW431-SW-SIGNED |
 | SW431-TILL-CONSOL | Rain-forcing-driven post-tillage bulk-density consolidation | MC-TILL01 | SW431-TILL-EVENT |
 | SW431-TILL-N1 | Keep n unchanged during density-induced hydraulic material update | MC-TILL01 | SW431-TILL-EVENT |
 | SW431-TILL-N2 | Update n using silt/clay ratio and density ratio exponent | MC-TILL01 | SW431-TILL-EVENT |
 | SW431-TILL-N3 | Update n with density matching-point slope and floor1.001 | MC-TILL01 | SW431-TILL-EVENT |
+| SW431-CROP-ROTATION | Multi-crop start/end/harvest accepted lifecycle | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-NUT-AMEND | Fertilizer/manure applications and volatilisation | MC-NUT01 | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
 | SW431-NUT-CROP | Demand/supply coupling and nitrogen-limited crop growth | MC-NUT01 | SW431-NUT-MINERAL |
 | SW431-NUT-DENIT | Nitrate loss controlled by temperature, wetness and organic respiration activity | MC-NUT01 | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
@@ -165,21 +173,21 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-CROP-ROOTGROW-BIOMASS | Root depth from actual/potential root-biomass table | Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver. | None |
 | SW431-CROP-ROOTGROW-DVS | Prescribed DVS-table root depth with soil-depth cap | Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping. | None |
 | SW431-CROP-ROOTGROW-WATER | Daily root extension scaled by actual/potential transpiration | No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state. | None |
-| SW431-CROP-ANNUAL | B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology | Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation. | None |
-| SW431-CROP-CO2 | Time-varying CO2 crop response and forcing | Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted. | None |
+| SW431-CROP-ANNUAL | B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology | Classic AMAXTB route exists and F-WOF38/39 preservation passes. MC-CROP01 must qualify literal B1.11 actual daily/seasonal crop trajectories and accepted-event/restart state; distinct WOFOST81 donor admission does not supply this classic source gate. Root extension, Soil-N and potential RELMF remain separate capabilities. | None |
+| SW431-CROP-CO2 | Time-varying CO2 crop response and forcing | MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner. | None |
 | SW431-CROP-FIXED | Calendar-clock prescribed-LAI/root-biomass crop development and harvest | Source IDEV1 advances DVS by 2/LCC, accumulates TSUM, interpolates LAITB, and retains previous root biomass where applicable. Typed canopy/root views are consumers; the current admitted WOFOST81 owner does not implement this fixed-crop state update. | None |
 | SW431-CROP-FIXED-THERMAL | Thermal-sum prescribed-LAI/root-biomass crop development and harvest | Source IDEV2 uses max(0,TAV-TBASE), TSUMEA before anthesis and TSUMAM after anthesis to advance DVS, then updates prescribed LAI/root biomass. Current typed views do not supply this independent accepted phenology state/evaluator. | None |
 | SW431-CROP-GRASS | Grass regrowth, mowing and grazing | Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management. | None |
 | SW431-CROP-ROOTGROW | Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth | Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner. | None |
-| SW431-CROP-ROTATION | Multi-crop start/end/harvest accepted lifecycle | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
 | SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress. | None |
 | SW431-CROP-SOY | Soybean-specific phenology and photoperiod | B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer. | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | Current common rate parameters accept IDSL0/1 only and crop owners have no vern accumulation/completion state or vernalisation response operator. Typed daily daylength forcing does not replace this persistent temperature history. | None |
-| SW431-CROP-WOF-OTHER | Annual crop daylength-dependent phenology | IDSL1 daylength algebra is implemented by the common crop parameter/finalizer route. Bounded classic-crop source/admission reconciliation remains; IDSL2 persistent vernalisation is a separate confirmed gap. | None |
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing. | SW431-CROP-ANNUAL |
 | SW431-ROOT-ANAE-GROW | Anaerobic suppression of root extension | Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition. | SW431-CROP-ROOTGROW |
 | SW431-ROOT-LRV-CONSTANT | Force root length density from RDCTB using rooted-compartment depth | Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding. | SW431-ROOT-MICRO2 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification. | SW431-ROOT-DENSITY |
+| SW431-CROP-ROTATION | Multi-crop start/end/harvest accepted lifecycle | MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate. | SW431-CROP-ANNUAL |
+| SW431-CROP-WOF-OTHER | Annual crop daylength-dependent phenology | IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history. | SW431-CROP-ANNUAL |
 
 ### MC-DRAIN01
 
@@ -191,7 +199,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present. | None |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher. | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions. | SW431-DRAIN-DIV-SIGNED |
-| SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent. | SW431-DRAIN-DRAMET3 |
+| SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics. | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission. | SW431-DRAIN-DIV-SIGNED |
 
 ### MC-FROST01
@@ -247,12 +255,12 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-IRR-AVAIL | External irrigation-availability scaling of selected event | No external F_IRR_AVAIL postselection scaling request or candidate event-duration update. Supplied gross irrigation forcing alone does not implement management availability. | None |
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | No field-capacity deficit, DITAB under/over depth and conditional rainfall deduction request/evaluator. | None |
-| SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07 | None |
+| SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required. | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route. | None |
 | SW431-IRR-LIMIT | Minimum/maximum irrigation depth constraints | No DCSLIM minimum/maximum selected event depth parameters or postselection clamp. | None |
 | SW431-IRR-RATE-CAP | Cap long scheduled irrigation events at one day while preserving depth | Source temporarily raises the rate to depth/day when requested duration exceeds one day. Current admitted TCS1 owner rejects duration>1 and never performs this adaptation. | None |
 | SW431-IRR-RATE-DAILY | Spread scheduled irrigation depth uniformly over one day | Source zero-rate fallback selects daily depth as rate. Current admitted TCS1 owner requires strictly positive rate and does not implement this fallback. | None |
-| SW431-IRR-SCHED-SURF | Scheduled surface irrigation routing | Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07 | None |
+| SW431-IRR-SCHED-SURF | Scheduled surface irrigation routing | MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission. | None |
 | SW431-IRR-SSDI | Single-node or depth-interval subsurface drip irrigation | Restricted process exists and is independently qualified; production runtime binding is absent at the audited canonical head. | None |
 | SW431-IRR-TCS2 | Readily available root-zone water depletion trigger | No RAWTAB or root-zone readily available water/depletion evaluator in current scheduling contracts. | None |
 | SW431-IRR-TCS3 | Total available root-zone water depletion trigger | No TAWTAB or total available root-zone water/depletion evaluator in current scheduling contracts. | None |
@@ -287,11 +295,11 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-MACRO-EVAP | Stateful evaporation with macropore surface input | Current macropore admission explicitly rejects both black_evaporation_active and boesten_evaporation_active, and top ingestion repeats those guards. | None |
-| SW431-MACRO-POND | Explicit ponding macropore donor and returned surface water | Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions | None |
+| SW431-MACRO-POND | Pond-derived lateral macropore request and shared surface donor debit/return | MIGRATE the source pond-derived lateral request (PndmxMp/KsMpSs, coupled surface head and donor cap) and accepted surface debit/returned-input binding. A9 already partitions supplied lateral input and limits macro capacity; those operators must be reused. | None |
 | SW431-MACRO-SNOW | Daily snow and transactional macropore top input | Current macropore admission explicitly rejects snow_active; the macropore top-forcing ingestion also rejects a supplied input composed with snow. | None |
 | SW431-MACRO-SW | Rapid drainage routed into internal fixed-weir surface-water storage | Current macropore admission requires fixed_weir_surface_water_active=false and drainage_response_active=false; legacy internal surface-water storage receives QRapDra in WLEVBAL. This owner composition is production-blocked. | None |
-| SW431-MACRO-SW-EXTERNAL | Rapid-drain/macropore interaction with externally prescribed surface-water level | Trace externally prescribed level, effective rapid-drain basis, immutable forcing and signed receipt semantics independently of internal fixed-weir storage; existing static rapid-drain admission alone is not proof of this full time-varying route. | None |
-| SW431-MACRO-RUNON | Runon/excess lateral macropore donor | Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions | SW431-RUNON |
+| SW431-MACRO-SW-EXTERNAL | Rapid-drain/macropore interaction with externally prescribed surface-water level | MIGRATE an immutable time-varying open-channel rapid-drain basis carrier. Current factory sets a static template drain level; the adapter updates macro water level and volume-under-drain but does not bind a new interval drain basis. Reuse existing static rapid drainage and receipt. | None |
+| SW431-MACRO-RUNON | External runon composition through the pond-derived macropore donor | MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding. | SW431-RUNON, SW431-MACRO-POND |
 
 ### MC-MET01
 
@@ -339,7 +347,7 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-AGE-TRACER | Water age tracer with ageing and advective/dispersive transport | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
 | SW431-SALT-AQUIFER | Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
-| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation. | None |
 | SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
 | SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
 
@@ -390,3 +398,13 @@ SWRAIN2 WET duration and SWRAIN3 interval amounts are SUPERSEDED as input repres
 Macropore static geometry and SWPOWM, the B1.11 N-demand policy, companion potential RELMF, primary/secondary routing and the common-secondary-store multilevel limiter now have explicit MIGRATE decisions and bounded contracts.
 
 Details: [resolved input and owner review](SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md). The literal rain mapping and N-demand discrimination probes passed O0/O2. Production source remains unchanged.
+
+## Surface, crop and solute follow-up
+
+Eight further owner reviews now have concrete MIGRATE contracts: pond-derived macro input, runon composition, time-varying rapid-drain basis, fixed sprinkler and scheduled surface routing, consistent CO2 response, crop rotation and the ordinary infiltration cap.
+
+The four existing-code entries have explicit source/runtime qualification gates: Ernst, Youngs, classic annual crop and IDSL1. No absent-evaluator claim is made for those entries.
+
+The literal SWBR aquifer block fails bounds checks at numnod+1 in all eight O0/O2 probes. Its intended physical capability remains open with a reference-correction prerequisite. Soil phase-change absence is distinguished from the admitted snow liquid-retention and melting terms.
+
+Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md).

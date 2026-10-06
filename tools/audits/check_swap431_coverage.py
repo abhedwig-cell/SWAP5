@@ -127,11 +127,16 @@ def validate(require_closed=False):
     assert hashlib.sha256(replay['stdout_stderr'].encode()).hexdigest() == replay['stdout_stderr_sha256']
     assert 'F_WOF_PP03_FWO38_FWO39_CURRENT_CONTRACT_PRESERVATION_GATE PASS' in replay['stdout_stderr']
     for name in ['SWAP431_OWNER_GAPS_RECONCILIATION.json', 'SWAP431_NFIX_REPLACEMENT_PROBE.json',
-                 'SWAP431_RAIN_TYPED_MAPPING_PROBE.json']:
+                 'SWAP431_RAIN_TYPED_MAPPING_PROBE.json',
+                 'SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())
         assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'
         for path, expected in record['source_files_sha256'].items():
             assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'
+        for path, expected in record.get('legacy_members_sha256', {}).items():
+            assert hashlib.sha256(members[path]).hexdigest() == expected, f'stale legacy owner review: {path}'
+        for cap, decision in record.get('decisions', {}).items():
+            assert by_id[cap]['resolution_decision'] == decision, f'owner decision mismatch: {cap}'
         if 'results' in record:
             assert not record['runtime_admission_created']
             assert hashlib.sha256(members[record['source_member']]).hexdigest() == record['source_sha256']
@@ -141,6 +146,23 @@ def validate(require_closed=False):
     for cap in ['SW431-MET-RAIN2', 'SW431-MET-RAIN3']:
         assert by_id[cap]['current_disposition'] == 'SUPERSEDED'
         assert by_id[cap]['classification'] == 'LEGACY_COMPATIBILITY'
+    aquifer = json.loads((AUDIT / 'evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json').read_text())
+    assert aquifer['baseline'] == ledger['canonical_head'] and not aquifer['runtime_admission_created']
+    raw = members[aquifer['source_member']]
+    assert hashlib.sha256(raw).hexdigest() == aquifer['source_sha256']
+    source = raw.decode('latin1')
+    start = source.index('            if (swbr == 1) then', source.index('! ---       solute balance in aquifer'))
+    end = source.index('! ---       flux to surface water from aquifer', start)
+    assert hashlib.sha256(source[start:end].encode()).hexdigest() == aquifer['literal_sha256']
+    assert len(aquifer['results']) == 8
+    assert {(r['optimization'], r['nodes'], r['qdrtot']) for r in aquifer['results']} == {
+        (opt, nodes, flow) for opt in ['-O0', '-O2'] for nodes in [1, 3] for flow in ['0.1', '-0.1']}
+    for result in aquifer['results']:
+        assert result['exit_code'] != 0 and result['expected_bounds_failure']
+        expected = f"Index '{result['nodes'] + 1}' of dimension 1 of array 'bdenskfsatporos' above upper bound of {result['nodes']}"
+        assert expected in result['stderr']
+    assert by_id['SW431-SALT-AQUIFER']['current_disposition'] == 'ACTIVE_MIGRATION'
+    assert by_id['SW431-ICE']['classification'] == 'CORE_PHYSICS'
     assert by_id['SW431-SW-MULTILEVEL']['legacy_selector'] == 'SWDRA=2;SWSEC=2;NRLEVS-NRPRI>1'
     for name in ['SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json', 'SWAP431_DRAMET3_REPLACEMENT_PROBE.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())

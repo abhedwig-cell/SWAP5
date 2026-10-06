@@ -24,8 +24,8 @@
     },
     "open_capabilities": 127,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 115,
-    "other_unresolved_source_admission_reviews": 12
+    "confirmed_missing_production_entries": 123,
+    "other_unresolved_source_admission_reviews": 4
   },
   "capabilities": [
     {
@@ -1178,7 +1178,8 @@
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json"
+        "integration/f-pm/F-PM02_CURRENT_CANONICAL_CLOSE.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": true,
@@ -4573,19 +4574,20 @@
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Real ice/liquid partition and phase change",
+      "meaning": "Soil ice/liquid partition and latent-heat phase-change energy",
       "swap5_implementation_authority": [],
       "current_disposition": "NOT_APPLICABLE",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "B1.11 contains no ice-state partition, latent heat or phase-change energy ledger; new physics is outside legacy denominator"
+        "claim": "B1.11 soil temperature/frost has no soil-ice partition or latent-heat energy state. This does not exclude the separate admitted snow liquid-retention and rain-on-snow melting terms."
       },
       "restrictions": [
-        "B1.11 contains no ice-state partition, latent heat or phase-change energy ledger; new physics is outside legacy denominator"
+        "B1.11 soil temperature/frost has no soil-ice partition or latent-heat energy state. This does not exclude the separate admitted snow liquid-retention and rain-on-snow melting terms."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -4596,7 +4598,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "classification": "OBSOLETE_CONTROL_FLOW",
+      "classification": "CORE_PHYSICS",
       "coverage_gap_type": null
     },
     {
@@ -5362,7 +5364,8 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
-        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json"
+        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -5384,9 +5387,10 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED"
+      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-MACRO-POWM",
@@ -5498,35 +5502,42 @@
     {
       "capability_id": "SW431-MACRO-POND",
       "subsystem": "macropore",
-      "legacy_selector": "pond surface input",
+      "legacy_selector": "SWMACRO=1;ArMpSs>0;h0max>PndmxMp",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/macrorate.f90",
-        "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "member": "SWAP/boundtop.f90",
+        "sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
         "locator_lines": [
-          153,
-          1009,
-          1404,
-          1855,
-          1910
+          150,
+          154,
+          158,
+          160,
+          161,
+          162,
+          209,
+          214,
+          231
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Explicit ponding macropore donor and returned surface water",
+      "meaning": "Pond-derived lateral macropore request and shared surface donor debit/return",
       "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_macropore_top_input.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions"
+        "claim": "MIGRATE the source pond-derived lateral request (PndmxMp/KsMpSs, coupled surface head and donor cap) and accepted surface debit/returned-input binding. A9 already partitions supplied lateral input and limits macro capacity; those operators must be reused."
       },
       "restrictions": [
-        "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions"
+        "MIGRATE the source pond-derived lateral request (PndmxMp/KsMpSs, coupled surface head and donor cap) and accepted surface debit/returned-input binding. A9 already partitions supplied lateral input and limits macro capacity; those operators must be reused."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACROSUR01",
@@ -5538,13 +5549,14 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-MACRO-TOP"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-MACRO-RUNON",
@@ -5552,32 +5564,37 @@
       "legacy_selector": "runon surface input",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/macrorate.f90",
-        "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "member": "SWAP/headcalc.f90",
+        "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
         "locator_lines": [
-          153,
-          1404
+          98,
+          329,
+          339
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Runon/excess lateral macropore donor",
+      "meaning": "External runon composition through the pond-derived macropore donor",
       "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_macropore_top_input.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions"
+        "claim": "MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding."
       },
       "restrictions": [
-        "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions"
+        "MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding."
       ],
       "remaining_dependency": [
-        "SW431-RUNON"
+        "SW431-RUNON",
+        "SW431-MACRO-POND"
       ],
       "active_workunit": "MC-MACROSUR01",
       "migration_priority": {
@@ -5588,13 +5605,14 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-MACRO-TOP"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-MACRO-SW",
@@ -7268,19 +7286,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Fixed scheduled-date sprinkling",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "claim": "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required."
       },
       "restrictions": [
-        "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -7292,13 +7315,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-IRR-SCHED-SURF",
@@ -7325,19 +7349,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Scheduled surface irrigation routing",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "claim": "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission."
       },
       "restrictions": [
-        "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -7349,13 +7378,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-IRR-SSDI",
@@ -7706,7 +7736,8 @@
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -7714,7 +7745,8 @@
         "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
-        "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+        "Source SWHEA=0 sets ftemp=0; qualify or explicitly adjudicate this branch rather than silently using unit temperature response."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SOL01",
@@ -7758,15 +7790,18 @@
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
+        "claim": "Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation."
       },
       "restrictions": [
-        "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+        "Do not silently replace the out-of-bounds coefficient with an arbitrary soil node; accumulated isqdra versus qdrtot rate units require adjudication."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SOL01",
@@ -7839,7 +7874,8 @@
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-SALT-POND",
@@ -8051,37 +8087,44 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Annual crop daylength-dependent phenology",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_rate_parameters.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "IDSL1 daylength algebra is implemented by the common crop parameter/finalizer route. Bounded classic-crop source/admission reconciliation remains; IDSL2 persistent vernalisation is a separate confirmed gap."
+        "claim": "IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history."
       },
       "restrictions": [
         "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-CROP-ANNUAL"
+      ],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
+      "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-CROP-SOY",
@@ -8315,7 +8358,7 @@
     {
       "capability_id": "SW431-CROP-CO2",
       "subsystem": "crop",
-      "legacy_selector": "SWCO2=1;SWATMOFIL=1",
+      "legacy_selector": "SWCO2=1;SWATMOFIL=0/1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/MOD_cropdevelopment.f90",
@@ -8329,19 +8372,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Time-varying CO2 crop response and forcing",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_wofost_prepare_assimilation.f90",
+        "src/crop/mod_wofost81_prepare_assimilation.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted."
+        "claim": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8353,16 +8401,17 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "co2year"
       ],
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-CROP-ROTATION",
@@ -8389,37 +8438,45 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Multi-crop start/end/harvest accepted lifecycle",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
+        "src/crop/mod_wofost_crop_owner_state.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-CROP-ANNUAL"
+      ],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-CROP-ANNUAL",
@@ -8458,12 +8515,13 @@
         "docs/science/wofost-crop-coupling.md",
         "tests/fwof/pp01/MAPPING_CONTRACT.md",
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
-        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation."
+        "claim": "Classic AMAXTB route exists and F-WOF38/39 preservation passes. MC-CROP01 must qualify literal B1.11 actual daily/seasonal crop trajectories and accepted-event/restart state; distinct WOFOST81 donor admission does not supply this classic source gate. Root extension, Soil-N and potential RELMF remain separate capabilities."
       },
       "restrictions": [
         "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation."
@@ -8478,9 +8536,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_REVIEW",
+      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
       "implementation_absence_proven": false,
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
@@ -8488,7 +8546,8 @@
         "SW_WOFOST",
         "AMAXTB"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -10099,15 +10158,17 @@
       "evidence": [
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
         "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
-        "integration/audits/evidence/SWAP431_DRAMET3_REPLACEMENT_PROBE.json"
+        "integration/audits/evidence/SWAP431_DRAMET3_REPLACEMENT_PROBE.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent."
+        "claim": "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics."
       },
       "restrictions": [
-        "SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent."
+        "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics."
       ],
       "remaining_dependency": [
         "SW431-DRAIN-DRAMET3"
@@ -10121,13 +10182,14 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_AND_ENVELOPE_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-DRAIN-EXT"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-SALT-BOTTOM-C",
@@ -11063,7 +11125,8 @@
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json"
+        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -11085,9 +11148,10 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED"
+      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-FROST-SNOW",
@@ -11155,39 +11219,38 @@
       "legacy_selector": "SWMACRO=1;SWDRRAP=1;SWDRA=2;SWSEC=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/macrorate.f90",
-        "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "member": "SWAP/surfacewater.f90",
+        "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
         "locator_lines": [
-          8,
-          81,
-          84,
-          96,
-          98,
-          108,
-          145,
-          152,
-          153,
-          189,
-          198,
-          199
+          503,
+          529,
+          591,
+          595,
+          604,
+          1160,
+          1167
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Rapid-drain/macropore interaction with externally prescribed surface-water level",
       "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_macropore_configuration.f90",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Trace externally prescribed level, effective rapid-drain basis, immutable forcing and signed receipt semantics independently of internal fixed-weir storage; existing static rapid-drain admission alone is not proof of this full time-varying route."
+        "claim": "MIGRATE an immutable time-varying open-channel rapid-drain basis carrier. Current factory sets a static template drain level; the adapter updates macro water level and volume-under-drain but does not bind a new interval drain basis. Reuse existing static rapid drainage and receipt."
       },
       "restrictions": [
-        "Trace externally prescribed level, effective rapid-drain basis, immutable forcing and signed receipt semantics independently of internal fixed-weir storage; existing static rapid-drain admission alone is not proof of this full time-varying route."
+        "MIGRATE an immutable time-varying open-channel rapid-drain basis carrier. Current factory sets a static template drain level; the adapter updates macro water level and volume-under-drain but does not bind a new interval drain basis. Reuse existing static rapid drainage and receipt."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACROSUR01",
@@ -11199,13 +11262,14 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-MACRO-TOP"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-TILL-N1",
@@ -12652,7 +12716,7 @@
       "capability_id": "SW431-IRR-FIXED-SPRINK",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
+      "why_open": "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12660,7 +12724,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-FREQ",
@@ -12722,7 +12786,7 @@
       "capability_id": "SW431-IRR-SCHED-SURF",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
+      "why_open": "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12730,7 +12794,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-SSDI",
@@ -13324,7 +13388,7 @@
       "capability_id": "SW431-MACRO-POND",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [],
-      "why_open": "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions",
+      "why_open": "MIGRATE the source pond-derived lateral request (PndmxMp/KsMpSs, coupled surface head and donor cap) and accepted surface debit/returned-input binding. A9 already partitions supplied lateral input and limits macro capacity; those operators must be reused.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13332,7 +13396,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-MACRO-SEP1",
@@ -13408,7 +13472,7 @@
       "capability_id": "SW431-MACRO-SW-EXTERNAL",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [],
-      "why_open": "Trace externally prescribed level, effective rapid-drain basis, immutable forcing and signed receipt semantics independently of internal fixed-weir storage; existing static rapid-drain admission alone is not proof of this full time-varying route.",
+      "why_open": "MIGRATE an immutable time-varying open-channel rapid-drain basis carrier. Current factory sets a static template drain level; the adapter updates macro water level and volume-under-drain but does not bind a new interval drain basis. Reuse existing static rapid drainage and receipt.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13416,7 +13480,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-MET-RAIN1",
@@ -13660,7 +13724,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
+      "why_open": "Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13702,7 +13766,7 @@
       "capability_id": "SW431-CROP-ANNUAL",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation.",
+      "why_open": "Classic AMAXTB route exists and F-WOF38/39 preservation passes. MC-CROP01 must qualify literal B1.11 actual daily/seasonal crop trajectories and accepted-event/restart state; distinct WOFOST81 donor admission does not supply this classic source gate. Root extension, Soil-N and potential RELMF remain separate capabilities.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13716,7 +13780,7 @@
       "capability_id": "SW431-CROP-CO2",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted.",
+      "why_open": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13724,7 +13788,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-FIXED",
@@ -13783,20 +13847,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-CROP-ROTATION",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-CROP-SOW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
@@ -13837,20 +13887,6 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-WOF-OTHER",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "IDSL1 daylength algebra is implemented by the common crop parameter/finalizer route. Bounded classic-crop source/admission reconciliation remains; IDSL2 persistent vernalisation is a separate confirmed gap.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-NUT-MINERAL",
@@ -13948,7 +13984,7 @@
       "dependencies": [
         "SW431-DRAIN-DRAMET3"
       ],
-      "why_open": "SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent.",
+      "why_open": "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -13956,7 +13992,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-DRAIN-INF-SPLIT",
@@ -14161,9 +14197,10 @@
       "capability_id": "SW431-MACRO-RUNON",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [
-        "SW431-RUNON"
+        "SW431-RUNON",
+        "SW431-MACRO-POND"
       ],
-      "why_open": "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions",
+      "why_open": "MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -14171,7 +14208,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SW-MULTILEVEL",
@@ -14253,6 +14290,38 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ],
+      "why_open": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-CROP-WOF-OTHER",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ],
+      "why_open": "IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-NUT-AMEND",

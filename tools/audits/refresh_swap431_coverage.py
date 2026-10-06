@@ -40,5 +40,10 @@ text[-1] = text[-1].replace('The complete paginated snapshot records', 'The hist
 text += ['', '## Latest resolved-input and owner review', '',
          'SWRAIN2 WET duration and SWRAIN3 interval amounts are SUPERSEDED as input representations by admitted immutable precipitation spans. No legacy parser or new snow/interception composition is claimed.', '',
          'Macropore static geometry and SWPOWM, the B1.11 N-demand policy, companion potential RELMF, primary/secondary routing and the common-secondary-store multilevel limiter now have explicit MIGRATE decisions and bounded contracts.', '',
-         'Details: [resolved input and owner review](SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md). The literal rain mapping and N-demand discrimination probes passed O0/O2. Production source remains unchanged.']
+         'Details: [resolved input and owner review](SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md). The literal rain mapping and N-demand discrimination probes passed O0/O2. Production source remains unchanged.', '',
+         '## Surface, crop and solute follow-up', '',
+         'Eight further owner reviews now have concrete MIGRATE contracts: pond-derived macro input, runon composition, time-varying rapid-drain basis, fixed sprinkler and scheduled surface routing, consistent CO2 response, crop rotation and the ordinary infiltration cap.', '',
+         'The four existing-code entries have explicit source/runtime qualification gates: Ernst, Youngs, classic annual crop and IDSL1. No absent-evaluator claim is made for those entries.', '',
+         'The literal SWBR aquifer block fails bounds checks at numnod+1 in all eight O0/O2 probes. Its intended physical capability remains open with a reference-correction prerequisite. Soil phase-change absence is distinguished from the admitted snow liquid-retention and melting terms.', '',
+         'Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md).']
 (A/'SWAP431_FUNCTIONAL_COVERAGE_MASTER.md').write_text('\n'.join(text)+'\n')
