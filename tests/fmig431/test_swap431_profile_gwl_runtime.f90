@@ -100,6 +100,12 @@ contains
     call backend%initialize(top)
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters,forcing, &
          committed,config,0.0_real64,equilibrium_dt,output,diagnostic,runtime,active_physical_calls)
+    if (.not. output%completed .or. .not. output%committed) then
+      write(*,'(A,L1,A,L1,A,I0,A,I0,A,I0,A,ES26.17E3)') 'SW431_GWL_DEBUG completed=',output%completed, &
+           ' committed=',output%committed,' kernel_status=',output%kernel_status,' accepted=',output%accepted_substeps, &
+           ' revision=',output%final_revision,' mass_residual=',output%mass%residual
+      write(*,'(A,A)') 'SW431_GWL_DEBUG admission=',trim(output%admission_status)
+    end if
     call require(output%completed .and. output%committed, 'projection transaction committed')
     call committed%snapshot(snapshot,available)
     call require(available, 'projection committed snapshot available')
