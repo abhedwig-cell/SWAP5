@@ -7,7 +7,7 @@ on:
       - 'tests/fmig431/test_swap431_profile_gwl_projection.f90'
       - 'tests/fmig431/run_swap431_profile_gwl_projection.sh'
       - 'tests/fmig431/test_swap431_profile_gwl_runtime.f90'
-      - 'tests/fmig431/run_swap431_profile_gwl_runtime.sh'
+      - 'tests/fmig431/run_swap431_profile_gwl_runtime.py'
       - '.github/workflows/swap431-gw-projection.yml'
   workflow_dispatch:
 jobs:
@@ -22,4 +22,4 @@ jobs:
         run: |
           python3 tests/fmig431/run_lowgwl01_feasibility.py
       - name: Transactional runtime commit O0/O2
-        run: bash tests/fmig431/run_swap431_profile_gwl_runtime.sh
+        run: python3 tests/fmig431/run_swap431_profile_gwl_runtime.py
