@@ -21,9 +21,9 @@ This is not a valid nonnegative sink or a closed soil-to-root flux even though
 the first two checks pass. A second test with equal heads returned
 `Upw=[0.05,0.05]`, `Tact2=0`, and the same failing third check. The source
 `myFun` endpoint-acceptance branches skip the advertised reevaluation at the
-selected pressure. A controlled corrected-literal test adds exactly one
-`fxp=myFun(xp)` at the final pressure before evaluating convergence and flux;
-that proposed repair must be tested before it can become reference policy.
+selected pressure. A controlled test adding `fxp=myFun(xp)` at that point did
+not remove the anomaly (run 37419805293); endpoint-state staleness alone is
+therefore falsified as its cause. The root-interface diagnostic remains open.
 The unchanged anomaly remains negative evidence, not an equivalence target.
 Positive source comparisons require all three checks to pass.
 
