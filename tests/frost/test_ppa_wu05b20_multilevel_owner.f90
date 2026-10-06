@@ -38,5 +38,6 @@ program multilevel_owner
     write(*,'(I0,1X,52(ES26.17E3,1X))') id, &
       ((before(level,i),i=1,8),level=1,3),qdrain, &
       ((qdra(level,i),i=1,8),level=1,3),qbot
+    flush(6)
   end do
 end program

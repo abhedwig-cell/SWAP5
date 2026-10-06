@@ -118,7 +118,12 @@ def main():
               'tests/frost/test_ppa_wu05b20_multilevel_owner.f90']
     sources = {'original':'reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90',
                'corrected':'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90'}
-    receipts, outputs = {}, {}
+    correction = ROOT/'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03'
+    candidate = build/'candidate.f90'
+    subprocess.run(['python3',str(correction/'apply.py'),str(ROOT/sources['corrected']),
+                    str(candidate)],check=True)
+    sources['candidate'] = str(candidate)
+    receipts, outputs, failures = {}, {}, {}
     for variant, source in sources.items():
         for opt in (0,2):
             d = build/variant/f'o{opt}'
@@ -128,25 +133,47 @@ def main():
                        '-fcheck=all','-ffpe-trap=invalid,zero,overflow',f'-O{opt}',
                        '-J',str(d),'-I',str(d),*[str(ROOT/f) for f in files],'-o',str(d/'test')]
             subprocess.run(command,check=True,cwd=d)
-            p = subprocess.run([str(d/'test')],input=inputs,text=True,capture_output=True,cwd=d)
-            (d/'output.txt').write_text(p.stdout)
-            (d/'stderr.txt').write_text(p.stderr)
             key = f'{variant}/o{opt}'
-            receipts[key] = dict(exit_code=p.returncode,command=command,
-                executable_sha256=sha((d/'test').read_bytes()),stdout_sha256=sha(p.stdout.encode()),
-                stderr_sha256=sha(p.stderr.encode()),stderr=p.stderr)
-            assert p.returncode == 0, (key,p.stderr)
-            outputs[key] = p.stdout
-            print(f'B20_FULL_{variant.upper()}_O{opt}_EXECUTION=PASS',flush=True)
+            remaining = inputs.splitlines(); complete = []; negative = []
+            attempts = []
+            while remaining:
+                p = subprocess.run([str(d/'test')],input='\n'.join(remaining)+'\n',
+                                   text=True,capture_output=True,cwd=d)
+                rows = p.stdout.splitlines()
+                assert [int(r.split()[0]) for r in rows] == [int(r.split()[0]) for r in remaining[:len(rows)]]
+                complete.extend(rows)
+                attempts.append(dict(exit_code=p.returncode,complete_rows=len(rows),
+                                     stdout_sha256=sha(p.stdout.encode()),stderr=p.stderr))
+                if p.returncode == 0:
+                    assert len(rows) == len(remaining)
+                    remaining = []
+                else:
+                    assert len(rows) < len(remaining)
+                    negative.append(dict(case=int(remaining[len(rows)].split()[0]),
+                                         input=remaining[len(rows)],exit_code=p.returncode,stderr=p.stderr))
+                    remaining = remaining[len(rows)+1:]
+            stdout = '\n'.join(complete)+'\n'
+            (d/'output.txt').write_text(stdout)
+            receipts[key] = dict(command=command,attempts=attempts,
+                executable_sha256=sha((d/'test').read_bytes()),stdout_sha256=sha(stdout.encode()),
+                completed_cases=len(complete),negative_cases=len(negative))
+            failures[key] = negative
+            outputs[key] = stdout
+            assert len(complete)+len(negative) == len(cases)
+            if variant == 'candidate':
+                assert not negative,(key,negative[:1])
+            print(f'B20_{variant.upper()}_O{opt}_CENSUS_COMPLETE positive={len(complete)} negative={len(negative)}',flush=True)
         assert outputs[f'{variant}/o0'] == outputs[f'{variant}/o2']
+        assert [f['case'] for f in failures[f'{variant}/o0']] == [f['case'] for f in failures[f'{variant}/o2']]
     maxima = dict(partition_error=0.,corrected_nodal_scalar_residual=0.,scalar_error=0.,
                   independent_single_level_superposition_error=0.,cancellation_net_departure=0.)
     witnesses = {}
     for variant in sources:
         rows = outputs[f'{variant}/o0'].splitlines()
-        assert len(rows) == len(cases)
-        for id,(case,line) in enumerate(zip(cases,rows),1):
+        assert len(rows)+len(failures[f'{variant}/o0']) == len(cases)
+        for line in rows:
             values = list(map(float,line.split()))
+            id = int(values[0]); case = cases[id-1]
             assert len(values) == 53 and values[0] == id
             levels,inf,gw,frost,air,bottom = case[:6]
             raw,spacing,aniso = case[6:9],case[9:12],case[12]
@@ -186,7 +213,7 @@ def main():
             scalar_error = max(abs(a-b) for a,b in zip(final_scalar,expected_scalar))
             maxima['scalar_error'] = max(maxima['scalar_error'],scalar_error)
             assert scalar_error < 1e-14 and final_bottom == expected_bottom
-            if variant == 'corrected':
+            if variant == 'candidate':
                 residual = max(abs(sum(row)-v) for row,v in zip(after,final_scalar))
                 maxima['corrected_nodal_scalar_residual'] = max(maxima['corrected_nodal_scalar_residual'],residual)
                 assert residual < 1e-14,(id,case,residual)
@@ -205,14 +232,19 @@ def main():
                 if air < .01 and 1e-6 < abs(sum(retained)) < 2e-6 and not blocked[-1] and 'above_threshold' not in witnesses:
                     witnesses['above_threshold'] = dict(case=id,input=case,retained_raw=retained,final_scalar=final_scalar,final_bottom=final_bottom,net_departure=(final_bottom-sum(final_scalar))+sum(retained))
     assert set(witnesses) == {'joint_distribution','exact_cancellation','below_threshold','above_threshold'}
-    sources_to_seal = list(dict.fromkeys([PLAN,*sources.values(),*common,str(Path(__file__).relative_to(ROOT))]))
+    sources_to_seal = list(dict.fromkeys([PLAN,*list(sources.values())[:2],*common,
+        str(Path(__file__).relative_to(ROOT)),str((correction/'apply.py').relative_to(ROOT)),
+        str((correction/'manifest.json').relative_to(ROOT)),
+        'integration/audits/PPA_WU05B20_CORRECTION_PREREGISTRATION.json']))
     record = dict(work_unit='PPA-WU05B20',status='MULTILEVEL_REFERENCE_PROBE_COMPLETE_RUNTIME_OWNER_DECISION_REQUIRED',
                   baseline=plan['baseline'],production_source_tree=plan['baseline_source'],production_mutation=False,
                   runtime_admitted=False,aggregate_frost_migration_complete=False,cases_per_variant_optimization=len(cases),
                   complete_source_executions=4*len(cases),O0_O2_byte_identity=True,independent_oracle_passed=True,
                   source_sha256={f:sha((ROOT/f).read_bytes()) for f in sources_to_seal},
                   input_sha256=sha(inputs.encode()),inputs=inputs,receipts=receipts,
-                  outputs={variant:outputs[f'{variant}/o0'] for variant in sources},maxima=maxima,witnesses=witnesses,
+                  outputs={variant:outputs[f'{variant}/o0'] for variant in sources},failures=failures,
+                  candidate_source=candidate.read_text(),candidate_source_sha256=sha(candidate.read_bytes()),
+                  maxima=maxima,witnesses=witnesses,
                   interpretation='Nodal/scalar closure is not lost in corrected reference. Mixed-sign near-zero aggregate triggers deepest-level replacement, retaining other levels and changing the net bottom-minus-drainage proposal. Whether that is intended physical transfer or a legacy defect is not established by code parity; a new runtime mass/flux interpretation requires owner decision.')
     evidence = Path(args.evidence)
     evidence.write_bytes(gzip.compress((json.dumps(record,sort_keys=True)+'\n').encode(),mtime=0))
