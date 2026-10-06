@@ -1,0 +1,35 @@
+{
+  "work_unit": "PPA-MICRO01",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "status": "EXACT_SOURCE_REVIEW_PERSISTED_EXECUTABLE_GATE_BLOCKED",
+  "implemented": false,
+  "test_harness_prepared": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "production_mutation": false,
+  "reference_mutation": false,
+  "review": "docs/audits/PPA_MICRO01_DRY_TABLE_REVIEW.md",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
+    "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json"
+  ],
+  "test_paths": ["tests/physics/run_ppa_micro01_dry_table.py"],
+  "dependency_surface": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "tests/physics/run_ppa_micro01_dry_table.py"
+  ],
+  "source_finding": "Dry table initialization fills M430 and M/K1:429, while rate lookup at h=-20000 reads M431 and K430:431. Source-level uninitialized bracket, not actual historical-output prediction.",
+  "blockers": [
+    "No gfortran executable in renewed Work environment",
+    "Compiler installation failed with setgroups/seteuid permission errors; no bypass attempted"
+  ],
+  "next_action": "Run C3A_RESULT=<result.json> python tests/physics/run_ppa_micro01_dry_table.py in an authorized Fortran-capable environment, then qualify a corrected-reference endpoint policy before full MICRO migration",
+  "recovery_point": "Current persisted workstream commit",
+  "interfaces_changed": [],
+  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
+  "scope_limit": "Source review and prepared unchanged table component test only; no MICRO production physics or legacy full-model equivalence. Jarvis/Walsum remains separately admitted."
+}
