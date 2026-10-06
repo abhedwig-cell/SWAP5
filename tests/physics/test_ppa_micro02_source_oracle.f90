@@ -61,6 +61,8 @@ program test_ppa_micro02_source_oracle
     parameters%reduction_mode=swTypeTred
     call RWU_micro(1,1,2,dz,head,density,stress,.false.,.1_real64,tact,source_flux,alpha,tact1,tact2,check)
     call RWU_micro(2,1,2,dz,head,density,stress,.false.,.1_real64,tact,source_flux,alpha,tact1,tact2,check)
+    print '(A,I0,A,3L2,A,5ES17.8)', 'SOURCE_DIAGNOSTIC=',case_no,' CHECK=',check, &
+         ' TACT/T1/T2/U1/U2=',tact,tact1,tact2,source_flux
     if(.not.all(check)) error stop 2
     call evaluate_micro_de_willigen(parameters,head,dz,density,stress,2,.1_real64,tables,typed)
     if(typed%status/=MICRO_DW_OK) error stop 3
