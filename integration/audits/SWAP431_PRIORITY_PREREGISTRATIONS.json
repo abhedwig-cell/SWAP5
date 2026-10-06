@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0.0",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "status": "SOURCE_BOUND_CONTRACT_PREREGISTRATIONS_NOT_RUNTIME_ADMISSIONS",
+  "workunits": [
+    {
+      "id": "MC-MICRO01",
+      "decision": "MIGRATE",
+      "capabilities": ["SW431-ROOT-MICRO2", "SW431-ROOT-MICRO3", "SW431-ROOT-MICRO-LIFT", "SW431-ROOT-MICRO-STRESS", "SW431-ROOT-MICRO-TRED"],
+      "source_dispatch": "SWDROUGHT2 -> iMicro2 de Jong van Lier; SWDROUGHT3 -> iMicro1 de Willigen. External Jarvis/Walsum and frost are prohibited, not optional composition work.",
+      "physics": "Solve soil bulk/root interface/xylem/leaf potential network from immutable hydraulic M/K tables and current accepted/candidate soil heads, root length density, geometry, demand and permitted stress reduction. Preserve distinct formulations and Campbell/linear reduction.",
+      "state": {
+        "immutable": ["typed root/leaf conductances and dimensions", "root efficiency", "validated corrected M/K tables", "stress/reduction/lift selectors"],
+        "scratch": ["jLayer", "X", "delX", "Pav", "Q", "S", "Phiav", "root-potential bracket", "iteration workspace"],
+        "candidate_outputs": ["Upw", "UpwPot", "Prz", "PP", "PL", "Tact", "stress attribution"],
+        "cross_call_source_trace": "Each rate call reconstructs active jLayer, Pav, X, Q, S, Phiav; myFun resets X from Pav for each root-potential evaluation. Saved allocation does not establish physical history. Prz/PP/PL/UpwPot are derived outputs. Root density/growth and accepted daily aggregates remain separately owned.",
+        "restart": "No new physical MICRO history field is justified by this rate-path trace. Configuration/table identity and independently owned accepted root/crop/daily state must survive restart. Requalify fresh-process reconstruction and reject/discard identity before committing this conclusion."
+      },
+      "water_ownership": "Upw -> existing single qrot sink. UpwPot and diagnostics never create additional water removal. Hydraulic lift can produce signed nodal redistribution; aggregate atmospheric transpiration remains a separate nonnegative external receipt.",
+      "first_slice": "SWDROUGHT2, no lift, no external compensation, no frost, SWDOSATREL0; current MvG provider and corrected MICRO01 table; one typed nodewise sink and candidate diagnostics.",
+      "dependencies": ["SW431-HYD-MVG", "PPA-MICRO01 corrected typed table component"],
+      "qualification": ["literal nonlinear source oracle for heterogeneous soil-head/root-density profiles", "zero demand/root length and saturated/dry controls", "nonconvergence and finite/domain failure isolation", "O0/O2", "real Reference Richards sink and mass receipt", "rejected trial and replay", "fresh-process restart", "add de Willigen, stress options and signed lift as separately qualified slices"],
+      "held_fixed": ["Jarvis/Walsum EXACT01", "Bartholomeus and salinity root owners", "solver numerical policy", "water conservation", "existing admitted restart layouts"]
+    },
+    {
+      "id": "MC-HYST01",
+      "decision": "MIGRATE",
+      "capabilities": ["SW431-HYST1", "SW431-HYST2"],
+      "physics": "MvG wetting/drying scanning retention history, cumulative DELP reversal threshold TAU, INDEKS sign and FHYST adjustment; fixed-water head reinversion and updated capacity.",
+      "source_state": ["INDEKS(node)", "FHYST(node)", "DELP(node)", "HM1/H/theta accepted water state", "wetting and drying alpha parameters"],
+      "ownership": "One typed constitutive-history owner; trial candidate only. Update head/capacity at fixed owned theta without an additional water storage or source receipt. Derived cofgen/cache belongs to disposable provider scratch.",
+      "first_slice": "Ordinary Reference MvG, fixed grid, no table/PDI/RIA, no tillage or extra root/bottom/frost/macro composition; initial wetting and drying independently qualified.",
+      "qualification": ["unchanged literal reversal oracle", "threshold-neighbour and near-saturation cases", "dry-wet-dry scanning loops", "minimum FHYST adaptation", "constant-water inverse consistency", "retry/discard history isolation", "serialized node history restart", "O0/O2", "existing default MvG preservation"],
+      "dependencies": ["SW431-HYD-MVG"]
+    },
+    {
+      "id": "MC-SOL01",
+      "decision": "MIGRATE_OR_EXPLICIT_OWNER_REPLACEMENT_PER_CAPABILITY",
+      "capabilities": ["SW431-SALT-SORPTION", "SW431-SALT-DECAY", "SW431-SALT-AQUIFER", "SW431-SALT-POND", "SW431-AGE-TRACER", "SW431-SALT-BOTTOM-C"],
+      "physics": "Separate matrix sorbed storage, transformation, aquifer mixing/storage and pond salt from already admitted dissolved mobile matrix transport. Water age uses its own age-production equation. Macropore solute and osmotic-head selector2 are not executable source requirements.",
+      "ownership": "Separate dissolved/sorbed/aquifer/pond conserved stores and explicit transformation source/sink; one receipt per actual carrier. TSCF root removal and water-only SSDI semantics remain unchanged in admitted envelopes.",
+      "sequence": ["reconcile bottom-concentration forcing and pond donor ownership", "nonlinear sorption candidate/restart storage", "temperature/moisture/depth decay with explicit removed mass", "aquifer salt storage/sorption/decay and breakthrough", "water-age production and conservative transport"],
+      "qualification": ["source equation and initialization oracles", "zero sorption/zero decay legacy limits", "signed top/bottom/drain carriers", "mass of dissolved plus sorbed plus pond/aquifer storage", "reject/discard and fresh-process restart", "O0/O2", "salt/Jarvis/Walsum/SALFRO01 preservation"],
+      "dependencies": ["SW431-SALT-TRANSPORT"]
+    },
+    {
+      "id": "MC-IRR01",
+      "decision": "MIGRATE_BOUNDED_SELECTOR_SLICES",
+      "capabilities": ["SW431-IRR-TCS2", "SW431-IRR-TCS3", "SW431-IRR-TCS4", "SW431-IRR-TCS6", "SW431-IRR-TCS7", "SW431-IRR-TCS8", "SW431-IRR-DCS1", "SW431-IRR-FIXED-SPRINK", "SW431-IRR-SCHED-SURF", "SW431-IRR-SSDI", "SW431-IRR-FREQ", "SW431-IRR-LIMIT", "SW431-IRR-SALTEXCESS"],
+      "physics": "Committed-window irrigation decision with source root-zone deficits and sensor thresholds. TCS7 is pressure head, TCS8 water content, TCS6 is weekly deficit-gated. DCS1 refills deficit with DI and rain discount; DCS2 fixed depth is already bounded admitted with TCS1.",
+      "state": ["accepted event/crop/season identity", "dayfix interval/weekly counter", "fixed-event progress", "daily demand/stress aggregates", "sensor/root-zone geometry"],
+      "ownership": "One gross irrigation event and one partition to canopy/surface or explicitly bounded SSDI nodes; no rainfall/interception double counting. Rejected hydraulic trials do not retrigger or advance management counters.",
+      "sequence": ["reuse admitted TCS1+DCS2 lifecycle and close table/season controls", "TCS2/3/4 deficits with DCS2", "TCS7/8 sensors", "TCS6 weekly clock", "DCS1 and depth bounds", "fixed sprinkling/scheduled surface routing", "SSDI and salt-excess irrigation"],
+      "qualification": ["literal source trigger/depth boundary cases", "partly rooted last node", "cross-year season and interval counters", "gross/net intercepted water mass", "one event per accepted day", "retry/restart event identity", "O0/O2", "F-APP07 preservation"],
+      "dependencies": ["SW431-IRR-TCS1"]
+    },
+    {
+      "id": "MC-TILL01",
+      "decision": "SOURCE_BOUND_MIGRATION_REQUIRES_SEPARATE_CONTRACT",
+      "capabilities": ["SW431-TILL-EVENT", "SW431-TILL-CONSOL", "SW431-TILL-REDIST"],
+      "physics": "Event-induced bulk-density/hydraulic change, consolidation models1..3 and redistribution0..2. Do not merge unadmitted SWAP003/004 reference changes into B1.11 authority.",
+      "state": ["accepted event cursor", "density/geometry/hydraulic material evolution", "consolidation clock and memory", "redistributed owned water"],
+      "ownership": "Candidate-only event with complete geometry/material/water update; atomic accepted publish and restart. Source-prohibited hysteresis/solute/soil-N/macro/KSATEXM combinations are held, not silently generalized.",
+      "qualification": ["unchanged B1.11 event/consolidation/redistribution oracles", "SWAP002 start-date repair preservation", "pre/post event water mass", "density/material validity", "retry/discard and restart", "O0/O2"],
+      "dependencies": ["SW431-HYD-MVG"]
+    }
+  ]
+}

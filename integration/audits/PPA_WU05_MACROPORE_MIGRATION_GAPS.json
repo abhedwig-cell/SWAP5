@@ -1,21 +1,18 @@
 {
   "schema": "swap5.ppa_wu05.macropore_migration_gap_audit.v1",
   "date": "2026-10-05",
-  "canonical_audit_base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "canonical_audit_base": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
   "standard_core_perched_exchange": "CANONICALLY_ADMITTED",
   "broad_swap431_macropore_migration_complete": false,
   "remaining_standard_gaps": [
-    "mixed Kim/peat runtime and new mixed-law rapid-drain reference construction",
-    "within-compartment and multiple rapid-drain geometry",
-    "ponding/runon and other surface-owner compositions",
-    "fixed-weir/Ribasim rapid-drain receipt composition",
-    "full official SWAP 4.3.1 macropore case equivalence matrix"
+    "Explicit ponding/runon and broader surface-owner compositions",
+    "Fixed-weir/Ribasim rapid-drain receipt composition"
   ],
   "execution_expansions_not_counted_as_physics_gaps": [
     "RossFast macropore execution",
     "parallel/concurrent MultiSWAP macropore execution"
   ],
-  "separate_rfm_gap": "complete live backend dispatch not established by this audit",
+  "separate_rfm_gap": null,
   "next_workunit": null,
   "next_scope": "Select separately preregistered remaining constitutive or drain/surface composition capability",
   "migmac01_progress": {
@@ -68,5 +65,21 @@
   },
   "deliberate_constitutive_exclusions": [
     "Peat characteristic points at or beyond peak, P=0 and numerically flat brackets require a separate identifiability/root-selection contract; not silently mapped to Newton-seed-dependent parameters."
-  ]
+  ],
+  "historical_audit_base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "rfm_reconciliation": {
+    "status": "CANONICAL_ADMITTED_CLOSED_BOUNDED",
+    "authority": "integration/audits/PPA_WU05A26_STATUS.json",
+    "restriction": "Accepted-state-frozen first-order split, unponded/runoff-free; does not demonstrate legacy SWMBF2 kinematic-wave equivalence"
+  },
+  "reconciliation_20261006": {
+    "master_ledger": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+    "mixed_geometry_and_kd": "MIGMAC05/06 canonically admitted within bounded scope",
+    "partial_compartment_rapid_drain": "MIGMAC07 canonically admitted",
+    "cover_mask": "MIGMAC09 supersedes narrower MIGMAC08 cover scope",
+    "multiple_simultaneous_rapid_levels": "Not executable in B1.11; NumLevRapDra selects one active level",
+    "nondefault_source_options": "Individual admission review in master ledger, not closed by standard-core label",
+    "full_official_case_equivalence": "Validation requirement, not an independent missing physics capability",
+    "master_denominator_complete": false
+  }
 }

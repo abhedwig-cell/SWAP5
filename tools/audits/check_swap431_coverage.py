@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+"""Validate coverage evidence integrity; --require-closed also enforces closure."""
+import argparse
+import base64
+import collections
+import gzip
+import hashlib
+import io
+import json
+from pathlib import Path
+import tarfile
+
+ROOT = Path(__file__).resolve().parents[2]
+AUDIT = ROOT / 'integration/audits'
+DISPOSITIONS = {'ADMITTED', 'SUPERSEDED', 'REJECTED', 'NOT_APPLICABLE', 'ACTIVE_MIGRATION'}
+CLASSES = {'CORE_PHYSICS', 'APPLICATION_PHYSICS', 'LEGACY_COMPATIBILITY', 'LEGACY_IO', 'OBSOLETE_CONTROL_FLOW'}
+
+
+def validate(require_closed=False):
+    ledger = json.loads((AUDIT / 'SWAP431_FUNCTIONAL_COVERAGE_MASTER.json').read_text())
+    census = json.loads((AUDIT / 'evidence/SWAP431_SOURCE_CENSUS.json').read_text())
+    work = json.loads((AUDIT / 'SWAP431_REMAINING_WORKUNITS.json').read_text())
+    compressed = base64.b64decode((ROOT / census['authority_bundle']).read_bytes(), validate=False)
+    assert hashlib.sha256(compressed).hexdigest() == census['bundle_gzip_sha256'], 'source bundle SHA'
+    with tarfile.open(fileobj=io.BytesIO(gzip.decompress(compressed))) as archive:
+        members = {m.name: archive.extractfile(m).read() for m in archive.getmembers() if m.isfile()}
+    assert len(members) == 63, 'source member count'
+    assert sum(map(len, members.values())) == 1886519, 'source byte count'
+    for row in census['members']:
+        raw = members[row['path']]
+        assert len(raw) == row['bytes'] and hashlib.sha256(raw).hexdigest() == row['sha256'], row['path']
+    manifest = ''.join(f'{hashlib.sha256(raw).hexdigest()}  {len(raw):8d}  {name}\n' for name, raw in sorted(members.items())).encode('ascii')
+    assert hashlib.sha256(manifest).hexdigest() == census['b111_manifest_sha256'], 'B1.11 manifest'
+    entries = ledger['capabilities']
+    ids = {e['capability_id'] for e in entries}
+    assert len(ids) == len(entries), 'duplicate capability ID'
+    registered = {u['id']: u for u in work['new_workunits']}
+    registered['PPA-WU05B19'] = {'capabilities': ['SW431-FROST-DIVDRA']}
+    for entry in entries:
+        cap = entry['capability_id']
+        assert entry['current_disposition'] in DISPOSITIONS, cap
+        assert entry['classification'] in CLASSES, cap
+        for path in entry['evidence'] + entry['swap5_implementation_authority']:
+            assert (ROOT / path).is_file(), f'{cap}: missing {path}'
+        source = entry['legacy_source_authority']
+        assert hashlib.sha256(members[source['member']]).hexdigest() == source['sha256'], cap
+        lines = members[source['member']].decode('latin1').splitlines()
+        assert source['locator_lines'] and all(1 <= n <= len(lines) for n in source['locator_lines']), cap
+        assert set(entry['remaining_dependency']) <= ids, f'{cap}: dangling dependency'
+        if entry['current_disposition'] == 'ACTIVE_MIGRATION':
+            assert entry['active_workunit'] in registered, f'{cap}: unregistered workunit'
+            assert cap in registered[entry['active_workunit']]['capabilities'], cap
+            assert not entry['production_reachability']['established'], cap
+        else:
+            assert entry['active_workunit'] is None, cap
+        if entry['current_disposition'] in {'ADMITTED', 'SUPERSEDED'}:
+            assert entry['swap5_implementation_authority'] and entry['evidence'], cap
+            assert entry['production_reachability']['established'], cap
+    graph = {e['capability_id']: e['remaining_dependency'] for e in entries}
+    visiting, done = set(), set()
+    def visit(cap):
+        assert cap not in visiting, f'dependency cycle: {cap}'
+        if cap in done:
+            return
+        visiting.add(cap)
+        for dep in graph[cap]:
+            visit(dep)
+        visiting.remove(cap)
+        done.add(cap)
+    for cap in graph:
+        visit(cap)
+    counts = dict(collections.Counter(e['current_disposition'] for e in entries))
+    active = [e for e in entries if e['current_disposition'] == 'ACTIVE_MIGRATION']
+    assert ledger['summary']['dispositions'] == counts, 'stale summary'
+    assert ledger['summary']['open_capabilities'] == len(active), 'stale open count'
+    assert {e['capability_id'] for e in ledger['remaining_queue']} == {e['capability_id'] for e in active}, 'queue mismatch'
+    if ledger['coverage_closed'] or require_closed:
+        assert ledger['denominator_complete'] and census['census_complete'], 'denominator incomplete'
+        assert not active, f'{len(active)} unresolved capabilities'
+        assert ledger['closure_statement'] == 'SWAP431 FUNCTIONAL COVERAGE CLOSED', 'closure statement'
+    return {'schema': 'swap5.coverage_integrity_result.v1', 'integrity': 'PASS', 'baseline': ledger['canonical_head'], 'source_members': len(members), 'capabilities': len(entries), 'dispositions': counts, 'denominator_complete': ledger['denominator_complete'], 'coverage_closed': ledger['coverage_closed'], 'claim': 'Evidence integrity only; not independent physics qualification or admission'}
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--require-closed', action='store_true')
+    args = parser.parse_args()
+    try:
+        print(json.dumps(validate(args.require_closed), indent=2))
+    except (AssertionError, KeyError, ValueError) as exc:
+        parser.exit(1, f'SWAP431_COVERAGE_FAIL: {exc}\n')
