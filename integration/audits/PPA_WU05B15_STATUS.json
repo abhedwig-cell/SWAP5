@@ -1,15 +1,15 @@
 {
   "work_unit": "PPA-WU05B15",
   "baseline": "f72d72622264111edbadca1bfc49690a47b287a9",
-  "last_reconciled_upstream": "f72d72622264111edbadca1bfc49690a47b287a9",
+  "last_reconciled_upstream": "83dbe781295e4dc66b33a28ccd4c4570247e6aeb",
   "baseline_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "preregistration": "integration/audits/PPA_WU05B15_PREREGISTRATION.json",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
     "src/process/mod_drainage_extended_exchange.f90",
@@ -40,12 +40,10 @@
     29,
     30
   ],
-  "pending": [
-    "Exact proposed/actual canonical admission"
-  ],
+  "pending": [],
   "blockers": [],
-  "next_action": "Persist complete qualified evidence; verify exact proposed/actual tree/source/parents, admit and close",
-  "recovery_point": "Immutable unqualified current-source partial recovery with exact compiled source/artifact proof and completed/partial outputs",
+  "next_action": "Reconcile exact metadata closeout then preregister actual full SWDIVD1 reference-owner adjudication",
+  "recovery_point": "83dbe781295e4dc66b33a28ccd4c4570247e6aeb",
   "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
   "source_matrix": {
     "distinct_kind_modes": 4,
@@ -428,5 +426,7 @@
     "bytes": 236478,
     "manifest_entries": 294
   },
-  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "canonical_merge": "83dbe781295e4dc66b33a28ccd4c4570247e6aeb",
+  "canonical_pr": 1062
 }
