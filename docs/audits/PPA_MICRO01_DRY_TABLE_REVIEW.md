@@ -1,7 +1,8 @@
 # PPA-MICRO01 exact-source dry-table review
 
-Status: source-inspected, executable qualification blocked. No production or
-reference change and no MICRO admission.
+Status: exact-source defect confirmed by executable component replay.
+A separately preregistered typed table successor is being qualified; full MICRO
+production uptake remains open. The original reference member is unchanged.
 
 Canonical recovery baseline: `ca856e88e582d468a6f40971ce1f2a75e5089c40`.
 EXACT01 Jarvis/Walsum remains admitted. Its two process modules and the exact
@@ -17,7 +18,7 @@ In `get_MFLP_K`, the initializer sets
 only at indices 429 down to 1. It does not initialize `M_table(431)` or
 `K_table(430:431)`. At `h=-20000`, the rate branch does not take its strict
 `h < -20000` zero branch. Its interpolation count is 430, so the unchanged
-routine reads those uninitialized cells. The affected dry interval includes
+routine reads those uninitialized cells. The affected M dry interval includes
 `[-20000, -10**4.30]`, approximately `[-20000, -19952.62315]` cm.
 This is a source-level definedness defect, not proof of any particular value
 returned by an actual historical allocator or complete model run.
@@ -67,3 +68,16 @@ The local compiler blocker remains. One branch-scoped GitHub Actions component
 replay is prepared in `.github/workflows/ppa-micro01-dry-table.yml`, using an
 Ubuntu Fortran runner. Its O0/O2 evidence must complete and be inspected before
 any executable confirmation claim. No production/reference changes are made.
+
+## Executable confirmation and typed successor
+
+Run 37416500205 confirms the original M/K defect at O0/O2 with identical
+output and verified manifest. K430 additionally contaminates the adjacent
+interpolation interval up to `-10**4.29`, approximately -19498.45 cm; -19900
+is explicitly tested as K-only contamination. The original first test used it
+as a normal control and failed. Its workflow masked the error through tee;
+pipefail and the control were repaired, with negative evidence retained.
+
+The [repair contract](PPA_MICRO01_TABLE_REPAIR_CONTRACT.md) owns only the
+unused typed lookup component and its explicit corrected endpoint policy.
+Full MICRO model/configuration, provider, sink and restart remain open.

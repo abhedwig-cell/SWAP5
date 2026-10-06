@@ -2,14 +2,14 @@
   "work_unit": "PPA-MICRO01",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "status": "FIRST_ACTIONS_FALSE_GREEN_REPAIRED_COMPONENT_REPLAY_PENDING",
-  "implemented": false,
+  "status": "QUALIFIED_TYPED_CORRECTED_TABLE_COMPONENT_ONLY",
+  "implemented": true,
   "test_harness_prepared": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_admitted": false,
-  "production_mutation": false,
+  "production_mutation": true,
   "reference_mutation": false,
   "review": "docs/audits/PPA_MICRO01_DRY_TABLE_REVIEW.md",
   "authority_paths": [
@@ -25,11 +25,8 @@
     "tests/physics/run_ppa_micro01_dry_table.py"
   ],
   "source_finding": "Dry table initialization fills M430 and M/K1:429, while rate lookup at h=-20000 reads M431 and K430:431. Source-level uninitialized bracket, not actual historical-output prediction.",
-  "blockers": [
-    "No gfortran executable in renewed Work environment",
-    "Compiler installation failed with setgroups/seteuid permission errors; no bypass attempted"
-  ],
-  "next_action": "Await the single branch-scoped Actions exact-component replay, inspect O0/O2 evidence and persist outcome; no production mutation",
+  "blockers": [],
+  "next_action": "Complete docs and reconcile canonical; admit the unused typed table component only",
   "recovery_point": "Current persisted workstream commit",
   "interfaces_changed": [],
   "invariants_affected": [
@@ -48,5 +45,8 @@
     "Initial pipeline masked ERROR STOP 3 because pipefail absent; no successful component evidence claimed",
     "K430 also affects previous -19900 normal control; move normal control to -19000 and explicitly test the K-only gap"
   ],
-  "negative_evidence": "integration/audits/PPA_MICRO01_FIRST_REPLAY_NEGATIVE.json"
+  "negative_evidence": "integration/audits/PPA_MICRO01_FIRST_REPLAY_NEGATIVE.json",
+  "qualification": "integration/audits/PPA_MICRO01_QUALIFICATION.json",
+  "qualification_scope": "Typed table component only, unused by default runtime",
+  "local_compiler_available": false
 }

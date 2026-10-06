@@ -51,6 +51,13 @@ program corrected_table_test
     call rejected()
     call build_micro_matric_flux_table(values,ieee_value(0d0,ieee_quiet_nan),1d0,table,status)
     call rejected()
+    bad=huge(1d0)
+    call build_micro_matric_flux_table(bad,dry_k,1d0,table,status)
+    call rejected()
+    call build_micro_matric_flux_table(values,dry_k,ieee_value(0d0,ieee_positive_inf),table,status)
+    call rejected()
+    call evaluate_micro_matric_flux_table(table,huge(1d0),m,k,status)
+    call require(status==MICRO_TABLE_INVALID,'overflowing head rejected')
     call evaluate_micro_matric_flux_table(table,ieee_value(0d0,ieee_quiet_nan),m,k,status)
     call require(status==MICRO_TABLE_INVALID,'nonfinite head rejected')
   end do

@@ -40,3 +40,6 @@ provider binding, single final root sink, signed hydraulic redistribution,
 salt/osmotic composition, transaction and committed restart remain open.
 This contract admits no frost capability and no external Jarvis/Walsum-after-
 MICRO option. The frozen Status-A denominator remains unchanged.
+
+Qualification also requires rejecting finite but overflowing table samples and
+wet extrapolation requests before arithmetic traps, with previous-table isolation.
