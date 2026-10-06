@@ -1,6 +1,6 @@
 # PPA-MICRO01 matric flux table repair contract
 
-Status: preregistered component successor before implementation.
+Status: qualified corrected table component, canonical admission pending. Preregistered before implementation.
 
 The unchanged exact B1.11 routine has an executable confirmed uninitialized
 M/K dry bracket. Run 37416500205 at `9d9ac400fd5777d005d8ca993d4451c41c88ea1f`

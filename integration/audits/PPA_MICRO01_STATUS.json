@@ -2,12 +2,12 @@
   "work_unit": "PPA-MICRO01",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "status": "FIRST_TYPED_TABLE_QUALIFIED_OVERFLOW_SUCCESSOR_REPLAY_PENDING",
+  "status": "QUALIFIED_FINAL_TYPED_TABLE_COMPONENT_ADMISSION_PENDING",
   "implemented": true,
   "test_harness_prepared": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_admitted": false,
   "production_mutation": true,
   "reference_mutation": false,
@@ -26,7 +26,7 @@
   ],
   "source_finding": "Dry table initialization fills M430 and M/K1:429, while rate lookup at h=-20000 reads M431 and K430:431. Source-level uninitialized bracket, not actual historical-output prediction.",
   "blockers": [],
-  "next_action": "Verify final typed table overflow/rejection successor run then complete component-only admission",
+  "next_action": "Complete documentation gates and admit typed table component only",
   "recovery_point": "Current persisted workstream commit",
   "interfaces_changed": [],
   "invariants_affected": [
@@ -46,7 +46,8 @@
     "K430 also affects previous -19900 normal control; move normal control to -19000 and explicitly test the K-only gap"
   ],
   "negative_evidence": "integration/audits/PPA_MICRO01_FIRST_REPLAY_NEGATIVE.json",
-  "qualification": "integration/audits/PPA_MICRO01_QUALIFICATION.json",
+  "qualification": "integration/audits/PPA_MICRO01_FINAL_QUALIFICATION.json",
   "qualification_scope": "Typed table component only, unused by default runtime",
-  "local_compiler_available": false
+  "local_compiler_available": false,
+  "execution": "3175892870dac0671a46602eca7e47d050add9fb"
 }

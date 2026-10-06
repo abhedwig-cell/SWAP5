@@ -23,7 +23,7 @@ routine reads those uninitialized cells. The affected M dry interval includes
 This is a source-level definedness defect, not proof of any particular value
 returned by an actual historical allocator or complete model run.
 
-The prepared [component replay](../../tests/physics/run_ppa_micro01_dry_table.py)
+The prepared [component replay](https://github.com/abhedwig-cell/SWAP5/blob/3175892870dac0671a46602eca7e47d050add9fb/tests/physics/run_ppa_micro01_dry_table.py)
 extracts the original routine without changing its bytes. Explicitly synthetic
 constant-K dependencies isolate table construction and lookup. Three finite
 realizations of only uninitialized cells are tested at the dry boundary and
