@@ -4,6 +4,7 @@ module mod_b110_dynamic_top_boundary_provider
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, &
        evaluate_b110_default_mvg_conductivity
+  use mod_fmr_macropore_top_input, only: fmr_macropore_pond_donor_request_t, evaluate_fmr_macropore_pond_donor
   use mod_restricted_surface_evaporation, only: surface_evaporation_demand_t, &
        surface_evaporation_hydraulic_input_t, surface_evaporation_result_t, &
        evaluate_restricted_surface_evaporation, SURFACE_EVAP_AVAILABLE
@@ -48,6 +49,9 @@ module mod_b110_dynamic_top_boundary_provider
     ! conductivity fixed during Newton iterations. The override is opt-in so
     ! existing dynamic-top callers retain their current semantics.
     real(real64) :: fixed_top_node_conductivity_cm_per_day = -1.0_real64
+    logical :: macropore_pond_donor_active = .false.
+    real(real64) :: macropore_pond_threshold_cm = 0.0_real64
+    real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64
   end type b110_dynamic_top_boundary_request_t
 
   type, public :: b110_dynamic_top_boundary_result_t
@@ -64,6 +68,7 @@ module mod_b110_dynamic_top_boundary_provider
     logical :: surface_head_derivative_available = .false.
     real(real64) :: surface_head_dpressure_head_top = 0.0_real64
     real(real64) :: evaporation_capacity_cm_per_day = 0.0_real64
+    real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
     logical :: runoff_potential = .false.
     character(len=48) :: route = 'not-run'
   end type b110_dynamic_top_boundary_result_t
@@ -81,10 +86,11 @@ contains
     type(surface_evaporation_demand_t) :: demand
     type(surface_evaporation_hydraulic_input_t) :: evap_hydraulic
     type(surface_evaporation_result_t) :: evaporation
+    type(fmr_macropore_pond_donor_request_t) :: pond_donor
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
-    logical :: ok
+    logical :: ok, donor_ok
 
     result = b110_dynamic_top_boundary_result_t()
 
@@ -103,6 +109,13 @@ contains
       result%status = B110_DYN_TOP_INVALID_INPUT
       result%route = 'invalid-atmospheric-k'
       return
+    end if
+    if (request%macropore_pond_donor_active) then
+      if (request%macropore_surface_area_fraction < 0.0_real64 .or. &
+          request%macropore_pond_threshold_cm < 0.0_real64 .or. &
+          request%macropore_surface_conductivity_cm_per_day <= 0.0_real64) return
+      if (.not. all(ieee_is_finite([request%macropore_pond_threshold_cm, &
+          request%macropore_surface_conductivity_cm_per_day]))) return
     end if
     if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
       k_top = request%fixed_top_node_conductivity_cm_per_day
@@ -207,6 +220,29 @@ contains
     p2 = 1.0_real64/(p1+1.0_real64)
     h0max = p2 * (request%previous_ponding_depth_cm + q0*request%step_duration_day - &
          k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
+
+    if (request%macropore_pond_donor_active .and. request%macropore_surface_area_fraction > 0.0_real64) then
+      pond_donor%no_macro_ponding_depth_cm = max(0.0_real64,h0max)
+      pond_donor%direct_macro_input_cm = (request%precipitation_rate_cm_per_day + &
+           request%irrigation_rate_cm_per_day + request%snowmelt_rate_cm_per_day) * &
+           request%macropore_surface_area_fraction * request%step_duration_day
+      pond_donor%threshold_cm = request%macropore_pond_threshold_cm
+      pond_donor%surface_conductance_step = p1
+      pond_donor%macropore_surface_conductivity_cm_per_day = request%macropore_surface_conductivity_cm_per_day
+      pond_donor%step_duration_day = request%step_duration_day
+      call evaluate_fmr_macropore_pond_donor(pond_donor,result%macropore_pond_requested_lateral_cm,donor_ok)
+      if (.not.donor_ok) then
+        result%status=B110_DYN_TOP_INVALID_INPUT
+        result%route='macropore-pond-donor-invalid'
+        return
+      end if
+      if (result%macropore_pond_requested_lateral_cm > 0.0_real64) then
+        q0=q0-result%macropore_pond_requested_lateral_cm/request%step_duration_day
+        result%net_potential_surface_flux_cm_per_day=q0
+        h0max = p2 * (request%previous_ponding_depth_cm + q0*request%step_duration_day - &
+             k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
+      end if
+    end if
 
     if (h0max <= request%ponding_max_cm) then
       result%candidate_ponding_depth_cm = max(0.0_real64, h0max)
@@ -314,12 +350,12 @@ contains
 
   pure logical function all_finite_result(result) result(ok)
     type(b110_dynamic_top_boundary_result_t), intent(in) :: result
-    real(real64) :: values(9)
+    real(real64) :: values(10)
     values = [result%actual_top_flux_cm_per_day, result%surface_head_cm, &
          result%surface_face_conductivity_cm_per_day, result%candidate_ponding_depth_cm, &
          result%bare_soil_evaporation_cm_per_day, result%ponded_water_evaporation_cm_per_day, &
          result%runoff_depth_cm, result%net_potential_surface_flux_cm_per_day, &
-         result%evaporation_capacity_cm_per_day]
+         result%evaporation_capacity_cm_per_day, result%macropore_pond_requested_lateral_cm]
     ok = all(ieee_is_finite(values))
   end function all_finite_result
 
