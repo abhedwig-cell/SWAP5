@@ -34,6 +34,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
     real(real64) :: step_duration=0.0_real64
     real(real64) :: accepted_ponding_depth=0.0_real64
     real(real64) :: accepted_groundwater_level=0.0_real64
+    real(real64) :: candidate_pond_lateral_cm=0.0_real64
     integer :: bottom_boundary_mode=1
     logical :: covering_layer_enabled=.false.
     real(real64) :: covering_minimum_polygon_diameter_cm=0.0_real64
@@ -44,9 +45,26 @@ module mod_ppa_wu05a16_inner_macropore_provider
     procedure, public :: evaluate_derivative => evaluate_inner_macropore_derivative
     procedure, public :: evaluate_trial_geometry => evaluate_inner_trial_geometry
     procedure, public :: permits_source_freezing => inner_permits_source_freezing
+    procedure, public :: set_candidate_pond_lateral => inner_set_candidate_pond_lateral
+    procedure, public :: candidate_pond_lateral => inner_candidate_pond_lateral
   end type ppa_wu05a16_inner_macropore_provider_t
 
 contains
+
+  subroutine inner_set_candidate_pond_lateral(self,amount_cm)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
+    real(real64),intent(in)::amount_cm
+    if(ieee_is_finite(amount_cm) .and. amount_cm>=0.0_real64)then
+      self%candidate_pond_lateral_cm=amount_cm
+    else
+      self%candidate_pond_lateral_cm=0.0_real64
+    end if
+  end subroutine inner_set_candidate_pond_lateral
+
+  real(real64) function inner_candidate_pond_lateral(self) result(amount_cm)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    amount_cm=self%candidate_pond_lateral_cm
+  end function inner_candidate_pond_lateral
 
   logical function inner_permits_source_freezing(self) result(permitted)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
@@ -134,6 +152,7 @@ contains
     self%step_duration=step_duration
     self%accepted_ponding_depth=accepted_ponding_depth
     self%accepted_groundwater_level=accepted_groundwater_level
+    self%candidate_pond_lateral_cm=0.0_real64
     self%bottom_boundary_mode=1
     if(present(bottom_boundary_mode))self%bottom_boundary_mode=bottom_boundary_mode
     self%covering_layer_enabled=.false.
@@ -355,6 +374,11 @@ contains
       if(.not.ok)return
       request%limiter%potential_top_vertical_cm=top_vertical
       request%limiter%potential_top_lateral_cm=top_lateral
+      if(self%candidate_pond_lateral_cm>0.0_real64)then
+        if(sum(request%limiter%potential_top_lateral_cm)>1.0e-14_real64)return
+        request%limiter%potential_top_lateral_cm= &
+             self%geometry_config%domain_fraction(:,geometry_current%top_node)*self%candidate_pond_lateral_cm
+      end if
     end if
     call evaluate_macropore_rate_bundle(request,rates)
     ok=rates%valid
