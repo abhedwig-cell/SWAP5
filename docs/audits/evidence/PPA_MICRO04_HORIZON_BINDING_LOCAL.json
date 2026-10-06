@@ -1,0 +1,17 @@
+{
+  "work_unit": "PPA-MICRO04",
+  "status": "STANDALONE_O0_O2_MAP_PASS",
+  "source_sha256": {
+    "src/solver/mod_soil_water_solver_contract.f90": "82e3cf865c0e66de8d9020832ff161e75a4c9f02186cf02a297bf5e4776e90c2",
+    "src/solver/mod_b110_default_mvg_provider.f90": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990",
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "src/runtime/mod_fmr_micro_mvg_table_binding.f90": "64077bd4b29768f4252a5b42e6b8fbc317210d81b56352732b30a9d653d10cc8",
+    "tests/physics/test_ppa_micro04_horizon_binding.f90": "0fe8efc7b294b87cd2b8107a0db1e251e3a8716b44f70df0b9b314e83720e14d",
+    "tests/physics/run_ppa_micro04_horizon_binding.py": "ff0bc8c108d2d5c7a2afe0166357dd4efc4bcd3cba841894c6346cdef51545f8"
+  },
+  "outputs": {
+    "O0": "MICRO04_MAPPED_NODE2_M_K=  5.7362294097042916E+00  8.8938811800528178E-02\nMICRO04_HORIZON_FIRST_NODE_SELECTION=PASS\n",
+    "O2": "MICRO04_MAPPED_NODE2_M_K=  5.7362294097042916E+00  8.8938811800528178E-02\nMICRO04_HORIZON_FIRST_NODE_SELECTION=PASS\n"
+  },
+  "claim_ceiling": "Horizon first-node table selection only; no B1.11 MvG equivalence or heterogeneous production admission"
+}
