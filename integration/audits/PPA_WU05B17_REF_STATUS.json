@@ -1,0 +1,87 @@
+{
+  "work_unit": "PPA-WU05B17",
+  "status": "QUALIFIED_BOUNDED_CORRECTED_REFERENCE_CANONICAL_PENDING",
+  "baseline": "9906bf429c445f3eb715a949b47460d223294a29",
+  "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "preregistration": "integration/audits/PPA_WU05B17_REF_PREREGISTRATION.json",
+  "relevant_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py",
+    "tests/frost/test_ppa_wu05b16_divdra_globals.f90",
+    "tests/frost/test_ppa_wu05b16_divdra_owner.f90"
+  ],
+  "owned_surface": "Isolated reference patch artifact, hash-guarded materializer, reference qualification runner and evidence only. All original source files and production sources remain unchanged.",
+  "recovery_point": "Qualification commit with immutable full replay",
+  "next_action": "Verify exact reference admission, close metadata, then preregister the bounded immutable-trial frost/SWDIVD1 production composition. Positive-only existing DIVDRA runtime remains distinct; separate infiltration still requires its own production contract.",
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py"
+  ],
+  "correction_path": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B17_CORRECTED_REFERENCE_REPLAY.json.gz",
+    "sha256": "e497d7b8302e1174e64c68aa1035aa6b811a48f42f591c9f07f13f462166f27a",
+    "bytes": 304971,
+    "manifest_count": 21
+  },
+  "qualification": "integration/audits/PPA_WU05B17_REF_QUALIFICATION.json",
+  "completed_gates": {
+    "work_unit": "PPA-WU05B17",
+    "status": "LOCAL_BOUNDED_CORRECTED_REFERENCE_PASS_NOT_ADMITTED",
+    "baseline": "9906bf429c445f3eb715a949b47460d223294a29",
+    "production_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+    "cases_per_variant_optimization": 4536,
+    "complete_case_executions": 18144,
+    "changed_cases": 192,
+    "byte_exact_unchanged_cases": 4344,
+    "initial_tiny_scalar_domain_retained": 1296,
+    "original_B16_output_identity": true,
+    "original_and_corrected_O0_O2_identity": true,
+    "max_independent_conservative_partition_error": 2.7755575615628914e-17,
+    "max_corrected_nodal_scalar_residual": 4.163336342344337e-17,
+    "max_original_residual": 2.43440267944095e-11,
+    "max_expected_nodal_difference": 2.4344013897431595e-11,
+    "hash_guard_and_overwrite_negatives": true,
+    "source_sha256": {
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+      "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+      "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/manifest.json": "8e39e936ec556e81a2ec931f5aef18845ae7a69ddd6086c3f6aa6843581cb3b4",
+      "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/apply.py": "97f8defcb1c7c19eb9db3e0965e792701a5ac689c6a08e7a6ee411f1851e66f1",
+      "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/correction.patch": "8660e8c511cc09bde8c3372d695fab69629247f19330e2c0135dc9f27ca91bc2",
+      "tests/frost/test_ppa_wu05b16_divdra_globals.f90": "92f855a16c850c67cdaa28bcbebbc7bb8594302e420e073e51f94999556039d3",
+      "tests/frost/test_ppa_wu05b16_divdra_owner.f90": "39f0a0e7d5a4ed6d32ac1d43a4b29371da6917bfd65117ee56a7019a1ed8024e",
+      "tests/frost/run_ppa_wu05b16_divdra_owner.py": "e87ffc0649fb37a2d8acd8885425e1e2e92d4c245472bc624bd04aa063179f1d",
+      "tests/frost/run_ppa_wu05b17_corrected_divdra.py": "565dd26ad06e8c864b27f599f8abd695b13b93623396417b47b58e17d5726074"
+    },
+    "input_sha256": "f3ca5f450ab3c692b395d138472e2efeb1f5e30dcbd7ef6b7762e3d7ffb37f83",
+    "build": "/tmp/ppa-wu05b17-ref-a4bga_ii",
+    "executables": {
+      "original/o0": "64baed7882abfa82c828c225da22abbf9f588a904dd7a6960eaac8488789eadd",
+      "original/o2": "b10103b774fdb4acae116082eec266fa9b3a104855bf6728dfda90536fa0e28e",
+      "corrected/o0": "7c9faa6d626ddcb6a5185dbb2da3ca3812a55d78a1b316853909e0d188e53c31",
+      "corrected/o2": "66a22b1a3fd67b2b8b48c8f2680e3d077f56abd1f77bfb7e666e15ed485524b2"
+    },
+    "outputs": {
+      "original/o0": "cc1d968fff5b3c28e14bfbde3bde5c0c92a8a5b95ed84e70cd3d0d04fcbada44",
+      "original/o2": "cc1d968fff5b3c28e14bfbde3bde5c0c92a8a5b95ed84e70cd3d0d04fcbada44",
+      "corrected/o0": "a03b6c889785f4965df45b045335b264b32799aff90a513e0963d12ecaef57b9",
+      "corrected/o2": "a03b6c889785f4965df45b045335b264b32799aff90a513e0963d12ecaef57b9"
+    },
+    "scope": "Bounded corrected reference process-composition only; no full legacy simulation, multilevel qualification, new physics or production runtime capability",
+    "global_B1_snapshot_promoted": false,
+    "runtime_admitted": false
+  },
+  "last_reconciled_upstream": "9906bf429c445f3eb715a949b47460d223294a29",
+  "production_source_unchanged": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "global_B1_snapshot_promoted": false,
+  "canonical_admission_pending": true
+}
