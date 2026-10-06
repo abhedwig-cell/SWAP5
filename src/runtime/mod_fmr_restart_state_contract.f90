@@ -1,4 +1,6 @@
 module mod_fmr_restart_state_contract
+  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
@@ -7,13 +9,15 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
        fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_macropore_reduction_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
-       fmr_b110_boesten_evaporation_state_t
+       fmr_b110_boesten_evaporation_state_t, fmr_b110_boesten_macropore_state_t
   implicit none
   private
 
@@ -30,7 +34,8 @@ contains
     ! Rutter state is admitted only under its own optional-state layout.
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
-      if (allocated(physical%rutter) .and. template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
+      if (allocated(physical%rutter) .and. template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER .and. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) return
     end select
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
@@ -95,12 +100,46 @@ contains
         return
       end if
 
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE) then
+        ! MIGMAC10 keeps Boesten history and the A9 macropore state in one
+        ! explicit restart identity; neither component may be reconstructed.
+        if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_boesten_macropore_state_t)
+          matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature) .and. &
+               allocated(state%macropore) .and. state%macropore%ready() .and. &
+               state%macropore%num_nodes == state%active_nodes .and. &
+               ieee_is_finite(state%boesten_evaporation%spev) .and. state%boesten_evaporation%spev >= 0.0_real64 .and. &
+               ieee_is_finite(state%boesten_evaporation%saev) .and. state%boesten_evaporation%saev >= 0.0_real64
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) then
+        if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_boesten_macropore_state_t)
+          matches = allocated(state%rutter) .and. allocated(state%macropore) .and. state%macropore%ready() .and. &
+               state%macropore%num_nodes == state%active_nodes .and. &
+               ieee_is_finite(state%boesten_evaporation%spev) .and. state%boesten_evaporation%spev >= 0.0_real64 .and. &
+               ieee_is_finite(state%boesten_evaporation%saev) .and. state%boesten_evaporation%saev >= 0.0_real64 .and. &
+               .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
       if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
         if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
         if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
         select type (state)
         type is (fmr_b110_physical_state_t)
-          matches = allocated(state%rutter) .and. .not. allocated(state%snow) .and. &
+        matches = allocated(state%rutter) .and. .not. allocated(state%snow) .and. &
                .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore)
         class default
           matches = .false.

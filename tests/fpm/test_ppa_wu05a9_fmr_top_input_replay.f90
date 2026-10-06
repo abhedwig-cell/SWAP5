@@ -28,19 +28,28 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_kernel_committed_persistence, only: kernel_persistence_snapshot_t, export_kernel_committed_state, &
        restore_kernel_committed_state, KERNEL_PERSISTENCE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
-       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg, &
+       fmr_new_b110_boesten_macropore_committed_state, fmr_b110_boesten_macropore_state_t
+  use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
+  use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window
+  use mod_rutter_source_window_processor, only: initialize_rutter_canopy_state, RUTTER_WINDOW_OK
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t, prepare_fmr_macropore_rapid_reference
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
   implicit none
   character(len=1)::constitutive_flag,fit_flag,cover_flag
   integer::macro_top=1
+  logical::migmac10=.false.
+  logical::migmac10_rutter=.false.
 
   real(real64),parameter::dt=1.0e-3_real64,tol=1.0e-12_real64
   integer,parameter::nd=1
@@ -80,6 +89,17 @@ program test_ppa_wu05a9_fmr_top_input_replay
   dynamic_flag='0'
   call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
   dynamic_enabled=dynamic_flag=='1'
+  block
+    character(len=1)::m10_flag
+    character(len=1)::rutter_flag
+    m10_flag='0'
+    rutter_flag='0'
+    call get_environment_variable('WU05_MIGMAC10',m10_flag)
+    migmac10=m10_flag=='1'
+    call get_environment_variable('WU05_MIGMAC10_RUTTER',rutter_flag)
+    migmac10_rutter=rutter_flag=='1'
+    if(migmac10_rutter)migmac10=.true.
+  end block
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=505701_int64
   params%active_nodes=numnod
@@ -190,30 +210,44 @@ program test_ppa_wu05a9_fmr_top_input_replay
 contains
 
   subroutine exercise_serialized_fmr()
-    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, fresh_backend
-    type(fmr_b110_physical_parameters_t), target :: fparams
-    type(fmr_b110_physical_forcing_t) :: forcing
+    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, fresh_backend, negative_backend, fmr_restart_backend
+    type(fmr_b110_physical_parameters_t), target :: fparams, negative_params
+    type(fmr_b110_physical_forcing_t) :: forcing, negative_forcing
     type(fmr_b110_physical_state_t) :: initial
+    type(boesten_evaporation_state_t) :: boesten_state
+    type(interception_source_window_t) :: rutter_window
     type(fmr_macropore_physical_config_t) :: mcfg
     type(fmr_logical_column_t) :: column
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
     type(kernel_committed_state_t) :: committed, restored
+    type(kernel_committed_state_t) :: restart_source_states(1), restart_restored_states(1)
     type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
+    type(kernel_checkpoint_t) :: fmr_restart_checkpoint
     type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate
     type(kernel_candidate_state_t) :: retry_candidate, fresh_retry_candidate
+    type(kernel_candidate_state_t) :: fmr_restart_next_candidate
     type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result
     type(kernel_result_t) :: retry_result, fresh_retry_result
+    type(kernel_result_t) :: negative_result
+    type(kernel_result_t) :: fmr_restart_next_result
     type(kernel_diagnostics_t) :: kdiag, replay_diag, next_diag, restored_next_diag
     type(kernel_diagnostics_t) :: retry_diag, fresh_retry_diag
+    type(kernel_diagnostics_t) :: negative_diag
+    type(kernel_diagnostics_t) :: fmr_restart_next_diag
+    type(kernel_candidate_state_t) :: negative_candidate
+    type(fmr_logical_column_t) :: restart_columns(1)
+    type(fmr_template_t) :: restart_templates(1)
+    type(fmr_committed_restart_bundle_t) :: restart_bundle
     type(kernel_persistence_snapshot_t) :: persisted
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
          restored_state, next_state, restored_next_state, retry_state, fresh_retry_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
+    logical :: restart_exported, restart_restored
     character(len=1)::reference_flag,partial_flag
     real(real64)::drain_level
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
-    integer :: commit_status, persistence_status, k, crack_node
+    integer :: commit_status, persistence_status, k, crack_node, rutter_status, negative_case, restart_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64), parameter :: fmr_dt=1.0e-3_real64
 
@@ -237,6 +271,13 @@ contains
     fparams%head_rel_tolerance=tol
     fparams%ponding_tolerance=tol
     fparams%macropore_active=.true.
+    if(migmac10)then
+      fparams%boesten_evaporation_active=.true.
+      allocate(fparams%boesten_evaporation)
+      fparams%boesten_evaporation%cofred=0.79_real64
+      boesten_state%spev=0.4_real64
+      boesten_state%saev=0.2_real64
+    end if
     call prepare_fmr_b110_default_mvg(fparams,prepared)
     if(.not.prepared)error stop 'A9 FMR top-input prepared MVG'
 
@@ -321,13 +362,22 @@ contains
 
     initial%active_nodes=numnod
     allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
+    if(migmac10_rutter)allocate(initial%rutter)
     initial%pressure_head=heads
     initial%water_content=water
     initial%ponding_depth=0.0_real64
     initial%groundwater_level=-200.0_real64
     initial%macropore=macro
+    if(migmac10_rutter)then
+      call initialize_rutter_canopy_state(0.0_real64,initial%rutter,rutter_status)
+      if(rutter_status/=RUTTER_WINDOW_OK)error stop 'MIGMAC10 Rutter replay initial state'
+    end if
 
-    call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
+    if(migmac10)then
+      call fmr_new_b110_boesten_macropore_committed_state(committed,lineage,initial,boesten_state,0.0_real64,state_ok)
+    else
+      call fmr_new_b110_committed_state(committed,lineage,initial,0.0_real64,state_ok)
+    end if
     if(.not.state_ok)error stop 'A9 FMR top-input committed init'
 
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod), &
@@ -347,6 +397,33 @@ contains
     forcing%macropore_top_input%melt_rate_cm_per_day=0.0_real64
     forcing%macropore_top_input%lateral_overland_rate_cm_per_day=0.10_real64
     if(macro_top>1)forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
+    if(migmac10)then
+      allocate(forcing%boesten_evaporation)
+      forcing%boesten_evaporation%precipitation_rate_cm_per_day=1.0_real64
+      forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.25_real64
+      forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=0.2_real64
+      forcing%boesten_evaporation%ponding_max_cm=2.0_real64
+      forcing%boesten_evaporation%runoff_resistance_day=1.0_real64
+      forcing%boesten_evaporation%runoff_exponent=1.0_real64
+    end if
+    if(migmac10_rutter)then
+      deallocate(forcing%macropore_top_input)
+      allocate(forcing%rutter)
+      call initialize_interception_window(505811_int64,0.0_real64,fmr_dt,fmr_dt,rutter_window,rutter_status)
+      if(rutter_status/=0)error stop 'MIGMAC10 Rutter replay source window'
+      forcing%rutter%prepared=.true.
+      forcing%rutter%source_window=rutter_window
+      forcing%rutter%process%surface_irrigation_cm_per_day=0.25_real64
+      forcing%rutter%process%vegetation_cover_fraction=0.5_real64
+      forcing%rutter%process%canopy_storage_capacity_cm=0.05_real64
+      forcing%rutter%process%interception_evaporation_capacity_cm_per_day=0.0_real64
+      forcing%rutter%process%potential_transpiration_dry_cm_per_day=0.0_real64
+      forcing%rutter%process%potential_transpiration_wet_cm_per_day=0.0_real64
+      forcing%rutter%potential_bare_soil_evaporation_cm_per_day=0.2_real64
+      forcing%rutter%ponding_max_cm=2.0_real64
+      forcing%rutter%runoff_resistance_day=1.0_real64
+      forcing%rutter%runoff_exponent=1.0_real64
+    end if
 
     column%column_id=lineage
     column%template_id=505801_int64
@@ -355,7 +432,13 @@ contains
     column%forcing_handle=1_int64
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=column%template_id
+    template%physics_topology_id=505802_int64
+    template%vertical_layout_id=505803_int64
+    template%state_layout_id=505804_int64
+    template%solver_interface_id=505805_int64
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+    if(migmac10)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE
+    if(migmac10_rutter)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
     template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
 
@@ -375,6 +458,67 @@ contains
     if(.not.available)error stop 'A9 FMR top-input checkpoint capture'
     call committed%snapshot(before_state,available)
     if(.not.available)error stop 'A9 FMR top-input before snapshot'
+
+    if(migmac10_rutter)then
+      allocate(forcing%macropore_top_input)
+      forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
+      forcing%macropore_top_input%supplied=.true.
+      forcing%macropore_top_input%net_rain_rate_cm_per_day=1.0_real64
+      call negative_backend%initialize(top)
+      call negative_backend%configure_macropore_policy(policy,policy_ok)
+      if(.not.policy_ok)error stop 'MIGMAC10 competing-source negative policy'
+      call negative_backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
+           negative_result,negative_candidate,negative_diag,trusted_prepared_parameters=.true.)
+      if(negative_result%completed .or. negative_candidate%ready()) &
+           error stop 'MIGMAC10 accepted competing caller macropore source'
+      call committed%snapshot(after_trial_state,available)
+      if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &
+           error stop 'MIGMAC10 competing-source rejection mutated accepted state'
+      deallocate(forcing%macropore_top_input)
+      print '(a)','PPA_WU05_MIGMAC10_RUTTER_COMPETING_MACRO_SOURCE_REJECT=PASS'
+      ! Each unsupported combination must fail without publishing any state.
+      do negative_case=1,10
+        negative_params=fparams
+        negative_forcing=forcing
+        select case(negative_case)
+        case(1)
+          negative_params%snow_active=.true.
+        case(2)
+          negative_params%soil_temperature_active=.true.
+        case(3)
+          negative_params%black_evaporation_active=.true.
+        case(4)
+          negative_params%macropore_active=.false.
+        case(5)
+          negative_params%boesten_evaporation_active=.false.
+        case(6)
+          negative_params%drainage_response_active=.true.
+        case(7)
+          negative_params%elasticity_active=.true.
+        case(8)
+          negative_params%direct_retention_active=.true.
+        case(9)
+          negative_forcing%top_flux=0.1_real64
+        case(10)
+          negative_forcing%rutter%process%vegetation_cover_fraction=1.5_real64
+        end select
+        call negative_backend%initialize(top)
+        call negative_backend%configure_macropore_policy(policy,policy_ok)
+        if(.not.policy_ok)error stop 'MIGMAC10 negative envelope policy'
+        call negative_backend%run_trial(column,template,negative_params,committed,negative_forcing,numerical, &
+             0.0_real64,fmr_dt,checkpoint,negative_result,negative_candidate,negative_diag, &
+             trusted_prepared_parameters=.true.)
+        if(negative_result%completed.or.negative_candidate%ready())then
+          write(*,*) 'MIGMAC10 unsupported combination accepted: ',negative_case
+          error stop 'MIGMAC10 negative envelope accepted'
+        end if
+        call committed%snapshot(after_trial_state,available)
+        if(.not.available.or..not.same_fmr_state(before_state,after_trial_state)) &
+             error stop 'MIGMAC10 negative envelope mutated accepted state'
+      end do
+      print '(a)','PPA_WU05_MIGMAC10_RUTTER_UNSUPPORTED_ENVELOPE_10_REJECT=PASS'
+
+    end if
 
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &
          kres,candidate,kdiag,trusted_prepared_parameters=.true.)
@@ -447,6 +591,26 @@ contains
     call restored%snapshot(restored_state,available)
     if(.not.available .or. .not.same_fmr_state(after_trial_state,restored_state))error stop 'A9 FMR top-input restored state'
 
+    if(migmac10_rutter)then
+      restart_columns(1)=column
+      restart_templates(1)=template
+      restart_source_states(1)=committed
+      call fmr_export_committed_restart(restart_columns,restart_templates,restart_source_states, &
+           505899_int64,restart_bundle,restart_exported,restart_status)
+      if(.not.restart_exported .or. restart_status/=FMR_RESTART_OK)error stop 'MIGMAC10 FMR restart export'
+      call fmr_restore_committed_restart(restart_bundle,505899_int64,restart_columns,restart_templates, &
+           restart_restored_states,restart_restored,restart_status)
+      if(.not.restart_restored .or. restart_status/=FMR_RESTART_OK)error stop 'MIGMAC10 FMR restart restore'
+      call restart_restored_states(1)%snapshot(restored_state,available)
+      if(.not.available .or. .not.same_fmr_state(after_trial_state,restored_state)) &
+           error stop 'MIGMAC10 FMR restart state identity'
+      call restart_restored_states(1)%capture_checkpoint(fmr_restart_checkpoint,available)
+      if(.not.available)error stop 'MIGMAC10 FMR restart checkpoint'
+      call fmr_restart_backend%initialize(top)
+      call fmr_restart_backend%configure_macropore_policy(policy,policy_ok)
+      if(.not.policy_ok)error stop 'MIGMAC10 FMR restart backend policy'
+    end if
+
     call committed%capture_checkpoint(checkpoint,available)
     if(.not.available)error stop 'A9 FMR top-input next checkpoint'
     call restored%capture_checkpoint(restored_checkpoint,available)
@@ -455,21 +619,81 @@ contains
     call restored_backend%configure_macropore_policy(policy,policy_ok)
     if(.not.policy_ok)error stop 'A9 FMR top-input restored policy'
 
+    if(migmac10)then
+      ! The first accepted interval rewets the profile. Continue from the
+      ! separately restored checkpoint with rain and irrigation now absent.
+      forcing%boesten_evaporation%precipitation_rate_cm_per_day=0.0_real64
+      forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.0_real64
+      if(allocated(forcing%macropore_top_input))then
+        forcing%macropore_top_input%net_rain_rate_cm_per_day=0.0_real64
+        forcing%macropore_top_input%net_irrigation_rate_cm_per_day=0.0_real64
+      end if
+    end if
+    if(migmac10_rutter)then
+      forcing%boesten_evaporation%precipitation_rate_cm_per_day=0.0_real64
+      call initialize_interception_window(505812_int64,fmr_dt,2.0_real64*fmr_dt,0.0_real64,rutter_window,rutter_status)
+      if(rutter_status/=0)error stop 'MIGMAC10 Rutter restart next source window'
+      forcing%rutter%source_window=rutter_window
+    end if
+
     call backend%run_trial(column,template,fparams,committed,forcing,numerical,fmr_dt,2.0_real64*fmr_dt,checkpoint, &
          next_result,next_candidate,next_diag,trusted_prepared_parameters=.true.)
     call restored_backend%run_trial(column,template,fparams,restored,forcing,numerical,fmr_dt,2.0_real64*fmr_dt, &
          restored_checkpoint,restored_next_result,restored_next_candidate,restored_next_diag, &
          trusted_prepared_parameters=.true.)
+    if(migmac10_rutter)then
+      call fmr_restart_backend%run_trial(column,template,fparams,restart_restored_states(1),forcing,numerical, &
+           fmr_dt,2.0_real64*fmr_dt,fmr_restart_checkpoint,fmr_restart_next_result,fmr_restart_next_candidate, &
+           fmr_restart_next_diag,trusted_prepared_parameters=.true.)
+    end if
     if(.not.next_result%completed .or. .not.restored_next_result%completed)error stop 'A9 FMR top-input restart continuation'
     call next_candidate%snapshot(next_state,available)
     if(.not.available)error stop 'A9 FMR top-input next candidate'
     call restored_next_candidate%snapshot(restored_next_state,available)
     if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
          error stop 'A9 FMR top-input restart next-candidate replay'
+    if(migmac10_rutter)then
+      if(.not.fmr_restart_next_result%completed)error stop 'MIGMAC10 FMR restart next interval'
+      call fmr_restart_next_candidate%snapshot(restored_next_state,available)
+      if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
+           error stop 'MIGMAC10 FMR restart next-candidate identity'
+    end if
+    if(migmac10)then
+      select type(previous=>after_trial_state)
+      type is(fmr_b110_boesten_macropore_state_t)
+        select type(current=>next_state)
+        type is(fmr_b110_boesten_macropore_state_t)
+          if(current%boesten_evaporation%spev<=previous%boesten_evaporation%spev) &
+               error stop 'MIGMAC10 dry continuation did not advance SPEV after restart'
+        class default
+          error stop 'MIGMAC10 dry continuation state layout'
+        end select
+      class default
+        error stop 'MIGMAC10 wet continuation state layout'
+      end select
+    end if
+    if(migmac10_rutter)then
+      select type(current=>next_state)
+      class is(fmr_b110_physical_state_t)
+        if(.not.allocated(current%rutter))error stop 'MIGMAC10 Rutter restart state missing'
+        if(abs(current%rutter%accepted_until()-2.0_real64*fmr_dt)>1.0e-14_real64) &
+             error stop 'MIGMAC10 Rutter restart progress mismatch'
+      class default
+        error stop 'MIGMAC10 Rutter restart physical state type'
+      end select
+    end if
 
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_SERIALIZED=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS'
     print '(a)', 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS'
+    if(migmac10)then
+      print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_REJECT_REPLAY=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_RESTART=PASS'
+    end if
+    if(migmac10_rutter)then
+      print '(a)', 'PPA_WU05_MIGMAC10_RUTTER_BOESTEN_MACROPORE_REJECT_REPLAY=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC10_RUTTER_BOESTEN_MACROPORE_RESTART=PASS'
+    end if
     if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_RESTART=PASS'
   if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_REPLAY=PASS'
     if(dynamic_enabled)then
@@ -483,9 +707,9 @@ contains
     class(transaction_state_t), intent(in) :: a,b
     same=.false.
     select type (aa=>a)
-    type is (fmr_b110_physical_state_t)
+    class is (fmr_b110_physical_state_t)
       select type (bb=>b)
-      type is (fmr_b110_physical_state_t)
+      class is (fmr_b110_physical_state_t)
         same=aa%active_nodes==bb%active_nodes
         if(same)same=allocated(aa%pressure_head).eqv.allocated(bb%pressure_head)
         if(same)same=allocated(aa%water_content).eqv.allocated(bb%water_content)
@@ -497,6 +721,29 @@ contains
         if(same)same=transfer(aa%groundwater_level,0_int64)==transfer(bb%groundwater_level,0_int64)
         if(same)same=allocated(aa%macropore).eqv.allocated(bb%macropore)
         if(same.and.allocated(aa%macropore))same=aa%macropore%same_values(bb%macropore)
+        if(same.and.migmac10_rutter)then
+          same=allocated(aa%rutter).eqv.allocated(bb%rutter)
+          if(same.and.allocated(aa%rutter))then
+            same=aa%rutter%source_window_initialized().eqv.bb%rutter%source_window_initialized()
+            if(same)same=aa%rutter%canopy_storage()==bb%rutter%canopy_storage() .and. &
+                 aa%rutter%accepted_until()==bb%rutter%accepted_until()
+            if(same.and.aa%rutter%source_window_initialized())same=aa%rutter%same_source_candidate(bb%rutter)
+          end if
+        end if
+        if(same.and.migmac10)then
+          select type(aaa=>a)
+          type is(fmr_b110_boesten_macropore_state_t)
+            select type(bbb=>b)
+            type is(fmr_b110_boesten_macropore_state_t)
+              same=transfer(aaa%boesten_evaporation%spev,0_int64)==transfer(bbb%boesten_evaporation%spev,0_int64) .and. &
+                   transfer(aaa%boesten_evaporation%saev,0_int64)==transfer(bbb%boesten_evaporation%saev,0_int64)
+            class default
+              same=.false.
+            end select
+          class default
+            same=.false.
+          end select
+        end if
       class default
         same=.false.
       end select

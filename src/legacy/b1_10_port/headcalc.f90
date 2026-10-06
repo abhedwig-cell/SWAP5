@@ -68,6 +68,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+   type(soil_water_boundary_conditions_t) :: evaluated_boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
    type(soil_water_physical_config_t), intent(in), optional :: physical_config
    real(8), intent(in), optional :: explicit_step_duration
@@ -78,6 +79,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
    logical :: provider_macropore_active, provider_macropore_rate_active, provider_macropore_derivative_available
+   logical :: provider_macropore_partition_evaluated
+   real(8) :: provider_macropore_surface_area_fraction
    logical :: provider_tuple_valid, provider_tuple_from_candidate
    logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
@@ -212,6 +215,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
    provider_top_active = .false.
    provider_dynamic_top_active = .false.
+   evaluated_boundary_conditions = soil_water_boundary_conditions_t()
+   if (present(boundary_conditions)) evaluated_boundary_conditions = boundary_conditions
+   provider_macropore_partition_evaluated = .false.
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
@@ -245,6 +251,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
            error stop 'HeadCalc: explicit-flux top mode requires fixed top-boundary provider'
       if (boundary_conditions%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER .and. .not. provider_dynamic_top_active) &
            error stop 'HeadCalc: dynamic top mode requires dynamic top-boundary provider'
+      if (boundary_conditions%matrix_source_area_partition) then
+         if (.not. provider_dynamic_top_active .or. .not. provider_macropore_active) &
+              error stop 'HeadCalc: matrix source partition requires dynamic top and macropore providers'
+      end if
    end if
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
@@ -940,8 +950,17 @@ subroutine boundtop_state_bridge(task)
    real(8) :: provider_runoff_flux
    provider_runoff_resolved = .false.
    if (provider_dynamic_top_active) then
+      if (evaluated_boundary_conditions%matrix_source_area_partition) then
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
+         if (.not.ieee_is_finite(provider_macropore_surface_area_fraction) .or. &
+             provider_macropore_surface_area_fraction<0.0d0 .or. provider_macropore_surface_area_fraction>1.0d0) &
+              error stop 'HeadCalc: candidate macropore surface-area fraction unavailable'
+         evaluated_boundary_conditions%macropore_surface_area_fraction=provider_macropore_surface_area_fraction
+         provider_macropore_partition_evaluated=.true.
+      end if
       call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
-           boundary_conditions, provider_dynamic_top_result)
+           evaluated_boundary_conditions, provider_dynamic_top_result)
       if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
            error stop 'HeadCalc: dynamic top-boundary provider unavailable'
       if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
@@ -1056,6 +1075,7 @@ subroutine vector_F(iTask)
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
 
 !  take care of top BC
+   provider_macropore_partition_evaluated = .false.
    call boundtop_state_bridge(2)
 
 !  depending on iTask
@@ -1067,7 +1087,7 @@ subroutine vector_F(iTask)
       end if
    end if
    if (provider_macropore_active) then
-      if (.not. fsi_ws%unsaturated_flags(3)) then
+      if (.not. provider_macropore_partition_evaluated .and. .not. fsi_ws%unsaturated_flags(3)) then
          call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
               provider_macropore_exchange,provider_macropore_rate_active)
       end if

@@ -1,0 +1,117 @@
+{
+  "source_tree": "711a1a4b4a2dbcd737472c819519a01a3ffc7571",
+  "canonical": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "gates": [
+    {
+      "gate": "restart",
+      "terminal_marker": "PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_O0_O2_IDENTITY=PASS",
+      "sha256": "288c4be95f09144f91adf40c528f8600cfecf14c6b17f5d52cffc0c47a160dc3"
+    },
+    {
+      "gate": "frost",
+      "terminal_marker": "MIGMAC10_B19_24_CASES_O0_O2_IDENTITY=PASS",
+      "sha256": "3b479fc62041c3fb4445f18fa05cdbeef162d4b486df65e7fadc7b83138d26ed"
+    },
+    {
+      "gate": "boesten",
+      "terminal_marker": "PPA-WU04-B BOESTEN PRESERVATION PASS",
+      "sha256": "1e919e57801c335f71b11d6d5a7bd0d1c5c63c6fd37e5a57419b66e86a14aa3b"
+    },
+    {
+      "gate": "a10",
+      "terminal_marker": "PPA_WU05_MIGMAC07_PARTIAL_A10_O0_O2=PASS",
+      "sha256": "cad2267bfb3af705b6895fffb30b50ef6d74e72b3c40b79494806b1f02612656"
+    },
+    {
+      "gate": "migmac09",
+      "terminal_marker": "PPA_WU05_MIGMAC09_NONRIGID_COVER_O0_O2=PASS",
+      "sha256": "5c9545c43fc3e06ed24ca6fc3f0a99b4ab46badbf81942181c716f2dcc08ac72"
+    },
+    {
+      "gate": "perch20",
+      "terminal_marker": "PPA_WU05_PERCH20_O0_O2_IDENTITY=PASS",
+      "sha256": "3d30a24fff54fd0b10f2ee56316f56ccce3e77ce38288d42fb7fba3ceec2b437"
+    }
+  ],
+  "b111_manifest_counts": {
+    "B1.11": 63,
+    "TTUTIL": 153
+  },
+  "b111_files": {
+    "swap.swp": {
+      "sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "bytes": 26423
+    },
+    "swap.bbc": {
+      "sha256": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+      "bytes": 9788
+    },
+    "swap.dra": {
+      "sha256": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+      "bytes": 3411
+    },
+    "wintcer1.crp": {
+      "sha256": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+      "bytes": 8433
+    },
+    "wintcer2.crp": {
+      "sha256": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe",
+      "bytes": 8217
+    },
+    "andelst_meteo.998": {
+      "sha256": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+      "bytes": 32409
+    },
+    "andelst_meteo.999": {
+      "sha256": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+      "bytes": 11018
+    },
+    "andelst_rain.998": {
+      "sha256": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+      "bytes": 105000
+    },
+    "andelst_rain.999": {
+      "sha256": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+      "bytes": 26700
+    },
+    "result_output.csv": {
+      "sha256": "3f03c1599ae0579235b96d2a339dd06c078089cacfb84d0d21ba9ddb013afabf",
+      "bytes": 15635
+    },
+    "swap.ok": {
+      "sha256": "8e7e4e0eb83d5711116ca99a935e9da9cd4b0a7d00446148618758ecec86255f",
+      "bytes": 166
+    },
+    "swap.err": {
+      "present": false,
+      "error": false
+    },
+    "macrogeom.csv": {
+      "sha256": "e825c947ac12040e9cfe6438b0c1351152a41af1f9e406387cef952646b5e7a2",
+      "bytes": 13683
+    },
+    "soilshrinkchar.csv": {
+      "sha256": "b7b5079eeafb5372385ea3fa0345888f946d5201d9683319b1614eb639f8d1be",
+      "bytes": 25259
+    }
+  },
+  "executable_sha256": "b1eec2a29308a6e8f3175436d549cd3c45d2b0738e92cd125b55027ea1468b1a",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "source_runner": "tools/vq/migmac01_build_reference.py",
+  "reference_exit_code": 100,
+  "qualification_scope": "Bounded merged composition and preservation; B1.11 full-case reference only",
+  "production_admitted": false,
+  "swap5_full_case_equivalent": false,
+  "b0_b111_comparison": {
+    "records": 482,
+    "fields": [
+      "DATE",
+      "RAIN",
+      "DRN",
+      "GWL"
+    ],
+    "exact": true,
+    "b0_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+    "scope": "Only the four emitted fields, not all state or physics"
+  }
+}

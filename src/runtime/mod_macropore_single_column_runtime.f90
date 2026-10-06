@@ -61,6 +61,7 @@ module mod_macropore_single_column_runtime
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: covered_internal_transfer_cm=0.0_real64
     logical :: inner_richards_exchange_used=.false.
+    logical :: matrix_source_area_partition_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
     integer :: source_reduction_attempts=0
@@ -289,6 +290,12 @@ contains
         request=base_request
         request%physical%macropore_active=.true.
         request%evaluation%macropore=>inner_provider
+        ! Keep direct atmospheric input and the macro top receipt on the same
+        ! residual candidate geometry. HeadCalc asks this provider for the
+        ! candidate area before evaluating the dynamic top boundary.
+        if(top_input_local%supplied .and. associated(request%evaluation%dynamic_top_boundary)) &
+             request%boundary%matrix_source_area_partition=.true.
+        result%matrix_source_area_partition_used=request%boundary%matrix_source_area_partition
         call solver%solve(request,workspace,corrector)
         result%matrix_result=corrector
         result%source_reduction_attempts=result%source_reduction_attempts+1

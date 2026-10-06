@@ -35,6 +35,9 @@ module mod_b110_dynamic_top_boundary_provider
     real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
     real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
     real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    ! Negative preserves legacy behaviour. Otherwise apply the complementary
+    ! matrix share to direct rain, irrigation and melt.
+    real(real64) :: macropore_surface_area_fraction = -1.0_real64
     real(real64) :: runon_rate_cm_per_day = 0.0_real64
     real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
     real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
@@ -154,7 +157,10 @@ contains
     result%ponded_water_evaporation_cm_per_day = evaporation%ponded_water_evaporation
 
     q0 = request%precipitation_rate_cm_per_day + request%irrigation_rate_cm_per_day + &
-         request%snowmelt_rate_cm_per_day + request%runon_rate_cm_per_day - &
+         request%snowmelt_rate_cm_per_day
+    if (request%macropore_surface_area_fraction >= 0.0_real64) &
+         q0 = q0 * (1.0_real64-request%macropore_surface_area_fraction)
+    q0 = q0 + request%runon_rate_cm_per_day - &
          result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day
     q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day
     result%net_potential_surface_flux_cm_per_day = q0
@@ -255,7 +261,7 @@ contains
     type(b110_default_mvg_parameters_t), intent(in) :: hydraulics
     type(b110_dynamic_top_boundary_request_t), intent(in) :: request
     logical, intent(out) :: ok
-    real(real64) :: values(14)
+    real(real64) :: values(15)
     integer :: n
 
     ok = .false.
@@ -270,6 +276,7 @@ contains
          request%candidate_ponding_depth_cm, request%previous_ponding_depth_cm, &
          request%step_duration_day, request%precipitation_rate_cm_per_day, &
          request%irrigation_rate_cm_per_day, request%snowmelt_rate_cm_per_day, &
+         request%macropore_surface_area_fraction, &
          request%runon_rate_cm_per_day, request%potential_bare_soil_evaporation_cm_per_day, &
          request%potential_pond_evaporation_cm_per_day, request%ponding_max_cm, &
          request%runoff_resistance_day, request%runoff_exponent]
@@ -277,6 +284,8 @@ contains
     if (request%candidate_ponding_depth_cm < 0.0_real64) return
     if (request%previous_ponding_depth_cm < 0.0_real64) return
     if (request%step_duration_day <= 0.0_real64) return
+    if (request%macropore_surface_area_fraction < -1.0_real64 .or. &
+        request%macropore_surface_area_fraction > 1.0_real64) return
     if (request%potential_bare_soil_evaporation_cm_per_day < 0.0_real64) return
     if (request%potential_pond_evaporation_cm_per_day < 0.0_real64) return
     if (request%ponding_max_cm < 0.0_real64) return

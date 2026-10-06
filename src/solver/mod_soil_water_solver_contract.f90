@@ -47,6 +47,10 @@ module mod_soil_water_solver_contract
      ! Mode3 head is external total head; flux is independent extra qbot.
      real(real64) :: bottom_external_resistance_days = 0.0_real64
      logical :: bottom_include_half_cell = .true.
+     ! Optional candidate macro surface-area fraction for source-aware dynamic
+     ! top boundaries. Negative preserves the existing unpartitioned route.
+     real(real64) :: macropore_surface_area_fraction = -1.0_real64
+     logical :: matrix_source_area_partition = .false.
   end type soil_water_boundary_conditions_t
 
   type, public :: soil_water_physical_config_t
@@ -281,13 +285,15 @@ module mod_soil_water_solver_contract
        type(soil_water_top_boundary_result_t), intent(out) :: result
      end subroutine dynamic_top_boundary_evaluate_ifc
 
-     subroutine macropore_rate_evaluate_ifc(self, pressure_head, water_content, exchange_flux, active)
+     subroutine macropore_rate_evaluate_ifc(self, pressure_head, water_content, exchange_flux, active, &
+                                              surface_area_fraction)
        import :: macropore_exchange_provider_t, real64
        class(macropore_exchange_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head(:)
        real(real64), intent(in) :: water_content(:)
        real(real64), intent(out) :: exchange_flux(:)
        logical, intent(out) :: active
+       real(real64), intent(out), optional :: surface_area_fraction
      end subroutine macropore_rate_evaluate_ifc
 
      subroutine macropore_derivative_evaluate_ifc(self, pressure_head, water_content, capacity, &
