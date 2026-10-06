@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-Locally qualified and persisted; canonical admission pending. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its unchanged 1507-case independent source-derived value/tangent oracle passes on actual current production with the full soil solver contract and hydraulic view at O0/O2. Existing process bodies are identical except for the parameter-validator PURE annotation.
+Canonically admitted via PR #1060 at `16e4e854016129ccc44a4e719adf02db74887186`. Exact baseline `0511717b6c428d18dc223c9e81fd73da3bf5c3fd` closes B13. The source review binds Q4A scientific authority `48df989b098d73208eed2496005b656f588ebffd` and unchanged process blob `25d76013d25c2eaa2d254865149c740bc3257617`. Its unchanged 1507-case independent source-derived value/tangent oracle passes on actual current production with the full soil solver contract and hydraulic view at O0/O2. Existing process bodies are identical except for the parameter-validator PURE annotation.
 
 ## Bounded ordinary composition
 
@@ -20,7 +20,7 @@ Literal FrozenBounds routes nonzero SWDRA through a common modifier. Its admitte
 
 The unchanged Q4A oracle/driver must pass on actual current process/hydraulic modules O0/O2. Source composition must cover both drain types, signed/inactive/capped/suppressed controls, parameter bounds, separate physical depths, frost cuts/equality/qbot and corrected B7 parity. Four type/sign configurations each run six full trajectories per route, with independent 8192/65536-step references, actual low-air branches, hard mass, immutable retry, final receipts, replay, application, empty restart and active invalid-control rejection before the solver. Additional actual activation and finer references plus complete relevant B1..B13, four salt/root matrices, immutable VQ73/74, original F-APP09/VQ128, literal root, strict canonical and docs gates are required.
 
-Aggregate frost migration remains open. Canonical admission is pending; no external frost profile or practical low-air performance claim is made.
+Aggregate frost migration remains open. No external frost profile or practical low-air performance claim is made.
 
 ## Completed current-source qualification
 
@@ -33,3 +33,7 @@ The immutable oracle loader initially failed before compilation because dataclas
 normal maximum head error: 1.557399e-07 cm; temperature error: 8.090195e-13 C.
 
 low_air maximum head error: 1.93595e-07 cm; temperature error: 3.527497e-07 C.
+
+## Canonical admission
+
+Proposed merge `f0a500ae77d204c17ce12671bbf298606be48b67` and actual merge share exact qualified tree `c92781ccdf429b437330571124a4575f70ec64bd` and production source `f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d`. The admission record binds actual parents, qualified head and immutable replay. Highest surface resistance/power remains source review only. Aggregate frost migration remains open.

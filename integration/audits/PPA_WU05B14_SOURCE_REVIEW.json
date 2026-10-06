@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B14",
-  "status": "SOURCE_REVIEW_COMPLETE_LOCALLY_QUALIFIED",
+  "status": "SOURCE_REVIEW_COMPLETE_CANONICALLY_ADMITTED",
   "reviewed_B13_candidate_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
   "prerequisite": "B13 admitted PR1058 and exact metadata closeout PR1059 verified",
   "selected_next_slice": "Explicit rootless ordinary Reference mode2 single-level signed EXTENDED response with TUBE/OPEN_CHANNEL, highest_level false and TOP_NONE, finite supplied resolved surface-water control head; normal and B8 guarded low-air frost. Low-air physical zbotdr must equal selected frost drain depth. This is a bounded normalized constitutive composition, separate from the F-APP09 external coupling profile.",
@@ -46,7 +46,7 @@
   },
   "implemented": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "exclusions": [
     "F-APP09 external coupling with frost or multi-substep publication",
@@ -61,7 +61,7 @@
     "Global frost equivalence",
     "Legacy SWDRA2 surface-water feedback and reporting-reference scope expansion"
   ],
-  "next_action": "Exact proposed/actual merge verification and canonical admission",
+  "next_action": "Reconcile exact metadata closeout then preregister source-reviewed highest surface resistance/power ordinary frost composition",
   "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
   "current_source_sha256": {
     "src/process/mod_drainage_extended_exchange.f90": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292",

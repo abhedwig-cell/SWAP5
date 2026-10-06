@@ -1,15 +1,15 @@
 {
   "work_unit": "PPA-WU05B14",
   "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
-  "last_reconciled_upstream": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+  "last_reconciled_upstream": "16e4e854016129ccc44a4e719adf02db74887186",
   "baseline_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
   "preregistration": "integration/audits/PPA_WU05B14_PREREGISTRATION.json",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
     "src/process/mod_drainage_extended_exchange.f90",
@@ -40,12 +40,10 @@
     29,
     30
   ],
-  "next_action": "Persist full qualified evidence; verify exact proposed/actual tree/source/parents, admit and close",
-  "recovery_point": "Immutable unqualified B14 current-source partial recovery; compiled source/artifact hashes and completed/partial physical outputs preserved",
+  "next_action": "Reconcile exact metadata closeout then preregister source-reviewed highest surface resistance/power ordinary frost composition",
+  "recovery_point": "16e4e854016129ccc44a4e719adf02db74887186",
   "blockers": [],
-  "pending": [
-    "Exact proposed/actual canonical admission"
-  ],
+  "pending": [],
   "production_source_tree": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "completed": {
     "scientific": "Unchanged Q4A primary1507 actual current process/full soil contract/hydraulic cases per opt, exact O0/O2 value/tangent/seam/hold PASS",
@@ -316,5 +314,7 @@
     "bytes": 236742,
     "manifest_entries": 285
   },
-  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "canonical_merge": "16e4e854016129ccc44a4e719adf02db74887186",
+  "canonical_pr": 1060
 }
