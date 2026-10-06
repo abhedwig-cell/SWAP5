@@ -21,3 +21,7 @@ This is physical spatial redistribution with a separate bottom owner. The SWDIVD
 ## Evidence and limits
 
 [Qualification](https://github.com/abhedwig-cell/SWAP5/blob/048d9040c9828bc7f6ba9cbb911afec3a9c6587c/integration/audits/PPA_WU05B16_REFERENCE_OWNER_QUALIFICATION.json), [status](https://github.com/abhedwig-cell/SWAP5/blob/048d9040c9828bc7f6ba9cbb911afec3a9c6587c/integration/audits/PPA_WU05B16_STATUS.json), and [immutable replay](evidence/PPA_WU05B16_REFERENCE_OWNER_REPLAY.json.gz) bind actual complete outputs, inputs, source bytes and executable hashes. All declared source cases completed. No hard-mass production admission, global frost equivalence, mixed/multilevel drainage or external frost is inferred. Aggregate frost migration remains open.
+
+## Canonical reference admission
+
+PR #1064 admits only this reference evidence at `9906bf429c445f3eb715a949b47460d223294a29`. Exact proposed/actual tree, source and ordered parents are verified in the canonical admission record. Production source remains `ab1849e155cfe4aadb838075c3e402985bc4e0f5`. No runtime redistribution capability is admitted.

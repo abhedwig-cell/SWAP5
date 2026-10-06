@@ -1,0 +1,24 @@
+{
+  "work_unit": "PPA-WU05B16",
+  "decision": "ADMIT_REFERENCE_OWNER_EVIDENCE_ONLY",
+  "canonical_pr": 1064,
+  "qualified_base": "b38dcd9febacebd94581465160e65224e8059621",
+  "qualified_head": "cb3cd0c97a5ca82c9889283a61a3029e7c288346",
+  "accepted_tree": "12ba394b91f28bedc67cb28a55855a6c8a06fce1",
+  "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "verified_proposed_merge": "1c969b3fc451815e71dc96e21e69c001e497bd8a",
+  "actual_first_parent": "b38dcd9febacebd94581465160e65224e8059621",
+  "canonical_merge": "9906bf429c445f3eb715a949b47460d223294a29",
+  "proposed_and_actual_tree_source_identity": true,
+  "production_unchanged": true,
+  "runtime_admitted": false,
+  "reference_evidence_qualified": true,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B16_REFERENCE_OWNER_REPLAY.json.gz",
+    "sha256": "d66196bc89a9fcdc7fd43c652091aed68af3a2be81492d6a4cdf2d31af79305f",
+    "bytes": 231903,
+    "manifest_count": 21
+  },
+  "aggregate_frost_migration_complete": false,
+  "next_action": "PPA-WU05B17: separately preregister and qualify the bounded positive-unsaturated-transmissivity omission correction; retain all original small-scalar, sign, geometry and scalar/qbot policies."
+}
