@@ -2,7 +2,7 @@
   "work_unit": "PPA-WU05B19",
   "workstream": "RT/HY/VQ",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "status": "QUALIFIED_RECOVERED_PUBLICATION_AUTHORIZED_NOT_ADMITTED",
+  "status": "REMOTE_PERSISTED_QUALIFIED_PR_OPEN_NOT_CANONICALLY_ADMITTED",
   "contract": "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
   "source_review": "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json",
   "implemented": true,
@@ -13,7 +13,7 @@
   "runtime_admitted": false,
   "aggregate_frost_migration_complete": false,
   "blockers": [],
-  "next_action": "Publish the exact recovered qualified branch and open the explicitly authorized PR against integration/f-ci-canonical. Canonical admission is separate and aggregate frost migration remains open.",
+  "next_action": "Complete the separately controlled canonical admission for PR #1078, only after its applicable checks and approval boundary are satisfied. The authorized branch publication and PR creation are complete; aggregate frost migration remains open.",
   "relevant_paths": [
     "src/process/mod_frost_divdra_drainage_effect.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -51,7 +51,22 @@
     "Final source-bound evidence seal: all 11 declared gates passed; final Markdown postimages passed source checks and strict MkDocs"
   ],
   "pending_gates": [],
-  "remote_persisted": false,
+  "remote_persisted": true,
+  "publication": {
+    "repository": "abhedwig-cell/SWAP5",
+    "branch": "work/ppa-wu05b19-divdra-runtime-20261006",
+    "published_checkpoint": "a0630beff3b7b329ede3e57a10620116e5b1f456",
+    "published_checkpoint_tree": "59231cc0b2443e622d62a49637604837be4ee2ba",
+    "whole_checkpoint_tree_matches_local_recovered_tree": true,
+    "method": "Configured GitHub connector blob/tree/commit/branch operations. Direct Git push lacked username authentication after local Git storage loss; no credentials extracted or permission restriction bypassed.",
+    "pr": 1078,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1078",
+    "base": "integration/f-ci-canonical",
+    "base_sha_at_publication": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "merged": false,
+    "authorization_scope": "User explicitly continued the proposed branch publication and PR creation. Canonical admission is separate.",
+    "qualification_snapshot_policy": "Original immutable replay, summary and report retain their qualification-time remote/admission flags and historical run commit IDs. This current status owns publication and PR tracking."
+  },
   "negative_evidence": [
     "Superseded wet low-air case revealed invalid test receipt duration assumption; actual trial duration observation added and final case qualified without changing mass or temporal budgets",
     "Final adjacent replay interrupted by scratch executable permission loss; negative log retained, rerun restores only owner execute bit before each compiled program invocation",
