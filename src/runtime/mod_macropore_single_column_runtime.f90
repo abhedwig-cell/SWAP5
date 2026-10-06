@@ -293,8 +293,10 @@ contains
         ! Keep direct atmospheric input and the macro top receipt on the same
         ! residual candidate geometry. HeadCalc asks this provider for the
         ! candidate area before evaluating the dynamic top boundary.
-        if(top_input_local%supplied .and. associated(request%evaluation%dynamic_top_boundary)) &
-             request%boundary%matrix_source_area_partition=.true.
+        if(associated(request%evaluation%dynamic_top_boundary))then
+          if(top_input_local%supplied .or. geometry%surface_area_fraction>=0.0_real64) &
+               request%boundary%matrix_source_area_partition=.true.
+        end if
         result%matrix_source_area_partition_used=request%boundary%matrix_source_area_partition
         call solver%solve(request,workspace,corrector)
         result%matrix_result=corrector
