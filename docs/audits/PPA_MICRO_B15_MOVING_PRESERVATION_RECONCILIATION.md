@@ -52,6 +52,22 @@ Each affected owner must either qualify its new dependency surface or
 document its immutable historical gate as outside this admission. No
 historical scientific tolerance, mass gate or source postimage is relaxed.
 
+F-KT22's EB-I25 preservation gate is a different kind of red check. Its
+runtime fails at the external full-half outflow fixture after two prior
+markers pass in run 37432003245. I ran the same unmodified gate in a clean
+archive of the canonical preimage `e5eab995ef04fc813dd644025fb0f32e4f5050a1`
+(`e5eab995:src` tree `52d5b774ce12369a7113e39445886d463fbe7dd2`). It exits
+1 at the identical assertion, with `EB_I25_TWO_HALF_ACCEPTED_AGGREGATION`
+and `EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED` passing first. The baseline log
+SHA256 is `7de696b5058501fda530235777cb2b5a8ab3fe9b16d09469e347e1ddc8225677`.
+The compressed full log is
+`docs/audits/evidence/PPA_MICRO_FKT22_CANONICAL_BASELINE.log.gz` (SHA256
+`0bdd60cee6059525dbfa06be667450675336f12330e5721237741c8833b59a1c`).
+This shows the failure pre-exists MICRO; it does not qualify EB-I25 or excuse
+its separate repair by its owner. The central F-CI qualification, MICRO stack,
+documentation and all B15 jobs except the still-running highest low-air job
+passed on the draft candidate at `3d0e5f2effd9bb4855ec831890ca1335cbaaba42`.
+
 Canonical admission remains false until the moving preservation and
 controlling cross-workstream checks pass on the persisted merge tree and
 the central F-CI owner records the accepted postimage.
