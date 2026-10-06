@@ -37,7 +37,7 @@
     "closure": "Final low-air signed scalar is authoritative. Apply an explicit last participating node residual only for floating-point partition roundoff, diagnosed independently. Normal-air scalar is literal final nodal sum. One final nodal sink, separate bottom.",
     "rejected_domain": "Every nonzero raw or transformed scalar with abs<=1e-10 fails closed; zero is valid. No clipping or sign change. Invalid shapes/NaNs/geometry/physical controls fail closed before final publication.",
     "bounded_geometry": "Finite positive conductivity1e-10..1e6; dz1e-6..1e6; total profile depth<=1e6; anisotropy1e-6..1e6; spacing1e-6..1e6; |raw/bottom|<=1e6; groundwater within profile; separate-infiltration surface level above groundwater within profile, infiltration-depth factor0..1. This bounds scientific evaluation arithmetic and does not alter solver tolerance or execution policy.",
-    "geometry_seam": "Retain original1e-10 Lev2Comp seam; explicitly reject supplied groundwater lying just below a grid boundary while still assigned to its shallower compartment (negative saturated thickness), pending separate geometry qualification. Exact boundary and deeper-than-offset remain distinct admitted source seams."
+    "geometry_seam": "Retain original1e-10 Lev2Comp seam. Explicitly reject groundwater, supplied infiltration surface level or computed discharge/infiltration bottom lying just below a grid boundary while original Lev2Comp still assigns the shallower compartment; exact boundary and deeper-than-offset remain distinct admitted source seams. Separate infiltration requires surface compartment strictly above groundwater compartment, covering every declared B16/B17 case; same-compartment legacy branches remain outside this bounded qualification."
   },
   "required_gates": [
     "Full corrected B17 FrozenBounds+DIVDRA reference on all4536 original inputs at O0/O2; independent current-source output identity",
@@ -50,5 +50,11 @@
   ],
   "qualification_scope": "Isolated scientific process component only. No backend runtime admission, hard-mass full simulation, external frost, multilevel distribution, source physics expansion or global equivalence.",
   "next_action": "Publish preregistration before adding typed process/harness",
-  "aggregate_frost_migration_complete": false
+  "aggregate_frost_migration_complete": false,
+  "exclusions": [
+    "Same-compartment separate-infiltration surface and groundwater geometry",
+    "Grid-boundary negative-thickness offset domains",
+    "Nonzero tiny raw/transformed scalar domain",
+    "Runtime/application composition"
+  ]
 }
