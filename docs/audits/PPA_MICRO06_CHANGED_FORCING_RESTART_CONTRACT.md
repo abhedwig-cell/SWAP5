@@ -28,4 +28,11 @@ time; hard mass accounting and the ROOT-HYD01 preservation runner pass in
 both optimization modes. The source and output manifest is
 `docs/audits/evidence/PPA_MICRO06_CHANGED_FORCING_RESTART_LOCAL.json`.
 
+The full stacked source and runtime gate also passed on the PR merge
+postimage in run 37428720498. The five manifests and O0/O2 logs are retained
+in `docs/audits/evidence/PPA_MICRO06_STACK_PERSISTED_REPLAY.zip` and indexed
+in `integration/audits/PPA_MICRO06_STACK_QUALIFICATION.json`. This is a
+qualification of the declared normal-uptake envelope, not a decision to
+admit the stack to canonical Status A.
+
 Affected invariants: 3, 5, 7, 13, 21, 22, 23, 25.
