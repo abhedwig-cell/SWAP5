@@ -58,6 +58,8 @@ for route in args.routes:
    call copy_soil_temperature_profile(initial%soil_temperature,td,status)
    call require(status==0.and.size(tf)==size(td),'held initial thermal snapshot available')
    call require(all(tf==td).and.final%groundwater_level==initial%groundwater_level.and.final%ponding_depth==initial%ponding_depth,'held power preserves committed thermal/hydraulic carrier')
+   call require(final%active_nodes==initial%active_nodes,'held power preserves active state shape')
+   call require((allocated(final%snow).eqv.allocated(initial%snow)).and.(allocated(final%macropore).eqv.allocated(initial%macropore)).and.(allocated(final%salt).eqv.allocated(initial%salt)).and.(allocated(final%rutter).eqv.allocated(initial%rutter)),'held power preserves absent optional physical components')
    held_cases=held_cases+1;cases=cases+1
    cycle
   end if
