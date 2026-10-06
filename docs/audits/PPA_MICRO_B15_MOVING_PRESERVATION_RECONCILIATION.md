@@ -37,7 +37,9 @@ passed and matched the previous local B15 output byte for byte; its other
 configurations and O2 remain in progress. No full frost compatibility claim
 is inferred from this partial local result or the standalone MICRO stack gate.
 Local receipts and exact output digests are recorded in
-`docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json`.
+`docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json`; its replay ZIP
+contains 20 source-bound incumbent receipts, runtime outputs and the full
+normal and F-CI logs.
 
 Other historical workflows also reject the candidate because of fixed
 source ownership/scope lists. For example, F-PE-ELASTIC09 application
