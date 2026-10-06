@@ -116,6 +116,11 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call bind_b110_default_mvg_provider(hyd,hp,dt)
   call initialize_macropore_config(parameters,ok)
   call require(ok,'physical macropore config initialized')
+  if(migmac11)then
+    parameters%macropore%surface_pond_inflow_enabled=.true.
+    parameters%macropore%surface_pond_threshold_cm=0.05_real64
+    parameters%macropore%surface_macropore_conductivity_cm_per_day=3.0_real64
+  end if
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
   call require(all(abs(parameters%macropore%matrix_area_fraction- &
        (1.0_real64-parameters%macropore%geometry%static_volume_cp/dz))<=1.0e-14_real64),'legacy FrArMtrx default exact')
