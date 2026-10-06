@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcm.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCM",
+  "status": "CLOSED_CONTINUOUS_TIME_REBASE_RESOLVED_CORICHARDS_TEMPORAL_DECOMPOSITION_AUTHORIZED",
+  "decision": "B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCM_PREREGISTRATION.json",
+    "workflow_run": 35505540455,
+    "executed_head": "4d74d35584e0467ae9af8503144f5f27b9b30ce5",
+    "aggregate_artifact_id": 10603109454,
+    "aggregate_artifact_digest": "sha256:9bfa67a96b325d8d1f6cbb0d69f18ad1df25a05ae6495aa175b4e236473ef4b5"
+  },
+  "conclusions": [
+    "Candidate-time and Reference-time contamination are removed from the Layer-ROM reduced-ladder comparison under the bounded fixed-head laboratory.",
+    "The targeted dimension ladder is monotone on the full six-material panel once temporal effects are removed.",
+    "A same-partition CoRichards temporal-limit rebase is the remaining prerequisite for separating Richards spatial discretization from Layer-ROM closure/model form."
+  ],
+  "next_authorized": "LAYER-ROM-B1HCN_CORICHARDS_TEMPORAL_LIMIT_REBASE",
+  "production_rom_authorized": false
+}

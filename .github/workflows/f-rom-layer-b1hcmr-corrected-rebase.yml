@@ -1,0 +1,153 @@
+name: F-ROM Layer-ROM B1HCMR corrected continuous-time rebase
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json
+      - integration/f-rom/LAYER_ROM_B1HCM_EXECUTION_AUTHORITY.json
+      - tests/rom/analyze_layer_rom_b1hcmr_corrected_rebase.py
+      - tests/rom/aggregate_layer_rom_b1hcmr.py
+      - .github/workflows/f-rom-layer-b1hcmr-corrected-rebase.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: f-rom-layer-b1hcmr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  material:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {material: B02, b1h_id: 10600214649, b1h_digest: 'fd0e9637c351fd7817797a3fc429499e2cf78fdef4b467ea1074788b213aa3b0', b1hck_id: 10602639932, b1hck_digest: 'bf12533bd3165202e96a03c2db37ee9a4e82506be7eb2f60c735a11fca36cc7e', b1hcl_id: 10603208865, b1hcl_digest: 'd0e4971839ee9d27e80359855784b7d6bd95175fe088fc94e95ce028b1d9ae7d'}
+          - {material: B05, b1h_id: 10600409481, b1h_digest: '7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5', b1hck_id: 10602999048, b1hck_digest: '07327da8b991913350fdf314e367ae02d8caceb2993eabd7af583f4decfefac4', b1hcl_id: 10602989491, b1hcl_digest: 'f5bfdcb0fe34d32a1d8a412c474bcf39c858fc217a4a9a589f4db7312e9ff32c'}
+          - {material: B06, b1h_id: 10600414651, b1h_digest: '3b7516aad94226faecaf6404693840446c478688e33dcc527829edcac58f0380', b1hck_id: 10603098741, b1hck_digest: 'f6a2313150ef7b9080eb2556012a1e3543c11f90c43d8826d89c8650fa129d5d', b1hcl_id: 10603760794, b1hcl_digest: 'fee06409ee7bdfcf77ec3a2bb92b790c15585ba10783c904bdfbb5803f313212'}
+          - {material: B11, b1h_id: 10600034910, b1h_digest: 'b637f0796c9abeb8d5bc194f0f1523324f3fc225c734a3c2345fc55efc4ed61c', b1hck_id: 10603393122, b1hck_digest: 'f67a14afab9c94ccfe34b843d731437a4be50bd33ebd5547e433b6c2d829428c', b1hcl_id: 10603223814, b1hcl_digest: '97a3ce162c4a1f0b42359d2871779c43a3727d0f895ecfaeb374179201c6b17c'}
+          - {material: B12, b1h_id: 10599789755, b1h_digest: 'ba26a5cebca0c6cd36b467ea45eae5cc7bedbbdfab9abfc6c9ac0daf65d94bd7', b1hck_id: 10603830084, b1hck_digest: '96d4e3e7b087c559ab6faf8bfb08da7c54d8b804a3b7b3bd53fa15bba7e86fc9', b1hcl_id: 10603770562, b1hcl_digest: '68110523e84b1691abfa7cfc32d2df204d61b30cf56054f65b4a0d385231c5b6'}
+          - {material: B16, b1h_id: 10600289675, b1h_digest: 'fa3c4ccad2b05f1044d7b7fb443ecaec25b735d4c6ab3d94cc3138a862fb668c', b1hck_id: 10603820596, b1hck_digest: '6cfaa5be827c70cba39dd4d03961cbd545b8939014c0fc12c2625a685d4a936d', b1hcl_id: 10603433546, b1hcl_digest: 'd6ddb83994bd9090107eb855f62711fb173a37ad8d296ced802e073453e6d1ae'}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Authority and semantic freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json'))
+          a=json.load(open('integration/f-rom/LAYER_ROM_B1HCM_EXECUTION_AUTHORITY.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_SEMANTIC_REPAIR_REBASE_RESPONSE'
+          assert p['reference_semantics']['frozen_Richardson_order']==1
+          assert 'bottom 10-cm theta' in p['reference_semantics']['QEND'] and 'Do not extrapolate persisted finite-step BOTTOM_FLUX/QEND directly' in p['reference_semantics']['QEND']
+          assert p['scope']['representations']==['L4','L6','R8','U4','U8','R16_OP']
+          assert a['authority']=='NO_B1HCM_EXECUTION_IS_DECISION_AUTHORITY'
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCMR_AUTHORITY_LOCK=PASS')
+          PY
+          python3 -m py_compile             tests/rom/analyze_layer_rom_b1hcmr_corrected_rebase.py             tests/rom/aggregate_layer_rom_b1hcmr.py
+
+      - name: Recover immutable evidence and candidate basis
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hcmr/b1h /tmp/b1hcmr/b1hck /tmp/b1hcmr/b1hcl /tmp/b1hcmr/basis
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcmr/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcmr/basis/run_lare_bc1_stage_b.py
+          test "$(git hash-object /tmp/b1hcmr/basis/analyze_lare_bc2_c4v_one_day.py)" = "e7d22818d935bedddeb2f2cdf2cec58e95814f93"
+          test "$(git hash-object /tmp/b1hcmr/basis/run_lare_bc1_stage_b.py)" = "33a68fc51d5c1905b9f377e2d14626aeebe27f98"
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1h_id }}/zip" > /tmp/b1hcmr/b1h.zip
+          actual="$(sha256sum /tmp/b1hcmr/b1h.zip | awk '{print $1}')"
+          if [ "$actual" != "${{ matrix.b1h_digest }}" ] && [ "${{ matrix.material }}" != "B12" ]; then
+            echo "unexpected B1H archive digest: $actual" >&2; exit 1
+          fi
+          unzip -q /tmp/b1hcmr/b1h.zip -d /tmp/b1hcmr/b1h
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1hck_id }}/zip" > /tmp/b1hcmr/b1hck.zip
+          echo "${{ matrix.b1hck_digest }}  /tmp/b1hcmr/b1hck.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcmr/b1hck.zip -d /tmp/b1hcmr/b1hck
+
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${{ matrix.b1hcl_id }}/zip" > /tmp/b1hcmr/b1hcl.zip
+          echo "${{ matrix.b1hcl_digest }}  /tmp/b1hcmr/b1hcl.zip" | sha256sum -c -
+          unzip -q /tmp/b1hcmr/b1hcl.zip -d /tmp/b1hcmr/b1hcl
+
+          test -f "/tmp/b1hcmr/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"
+          test -f "/tmp/b1hcmr/b1hck/R16_${{ matrix.material }}_fine.txt"
+          test -f "/tmp/b1hcmr/b1hcl/R16_${{ matrix.material }}_ultra.txt"
+
+      - name: Install numerical stack
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Execute corrected continuous-time rebase
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCMR_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcmr_corrected_rebase.py             --material "${{ matrix.material }}"             --b1h-result "/tmp/b1hcmr/b1h/LAYER_ROM_B1H_${{ matrix.material }}_RESULT.json"             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --b1hci-prereg integration/f-rom/LAYER_ROM_B1HCI_PREREGISTRATION.json             --fine-reference "/tmp/b1hcmr/b1hck/R16_${{ matrix.material }}_fine.txt"             --ultra-reference "/tmp/b1hcmr/b1hcl/R16_${{ matrix.material }}_ultra.txt"             --basis-dir /tmp/b1hcmr/basis             --prereg integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json             --output "B1HCMR_EVIDENCE/LAYER_ROM_B1HCMR_${{ matrix.material }}_RESULT.json"             | tee B1HCMR_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import glob,json
+          fs=glob.glob('B1HCMR_EVIDENCE/LAYER_ROM_B1HCMR_*_RESULT.json'); assert len(fs)==1
+          r=json.load(open(fs[0]))
+          assert r['decision'] in {'B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED','B1HCMR_NUMERICAL_ORACLE_UNRESOLVED'}
+          assert r['integrity']['corrected_QEND_from_endpoint_state'] is True
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCMR_MATERIAL_GATE=PASS')
+          PY
+          sha256sum B1HCMR_EVIDENCE/* > B1HCMR_EVIDENCE/sha256.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcmr-${{ matrix.material }}
+          path: B1HCMR_EVIDENCE/
+          if-no-files-found: error
+
+  aggregate:
+    needs: material
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: layer-rom-b1hcmr-B*
+          path: /tmp/b1hcmr-results
+          merge-multiple: false
+
+      - name: Aggregate corrected rebase
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCMR_AGGREGATE
+          python3 tests/rom/aggregate_layer_rom_b1hcmr.py             --input-dir /tmp/b1hcmr-results             --prereg integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json             --output B1HCMR_AGGREGATE/LAYER_ROM_B1HCMR_RESULT.json             | tee B1HCMR_AGGREGATE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json'))
+          r=json.load(open('B1HCMR_AGGREGATE/LAYER_ROM_B1HCMR_RESULT.json'))
+          assert r['decision'] in {p['decisions']['complete'],p['decisions']['oracle_unresolved']}
+          assert r['integrity']['corrected_QEND_contract_all_materials'] is True
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1HCMR_AGGREGATE_GATE=PASS')
+          PY
+          sha256sum B1HCMR_AGGREGATE/* > B1HCMR_AGGREGATE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+          echo "LAYER_ROM_B1HCMR=PASS"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcmr-aggregate
+          path: B1HCMR_AGGREGATE/
+          if-no-files-found: error

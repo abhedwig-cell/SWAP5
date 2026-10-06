@@ -1,0 +1,57 @@
+name: F-ROM Layer-ROM CF1 cost-fidelity synthesis
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_COST1_RESULT.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock CF1 authority
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tests/rom/synthesize_layer_rom_cf1.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_CF1_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_COST1_RESULT_EXPOSURE_TO_SYNTHESIS'
+          assert p['frozen_candidates']==['L4','L6','R8']
+          assert p['frozen_materials']==['B02','B05','B06','B11','B12','B16']
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_CF1_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Synthesize frozen fidelity and cost axes
+        run: |
+          set -euo pipefail
+          mkdir -p LAYER_ROM_CF1_EVIDENCE
+          python3 tests/rom/synthesize_layer_rom_cf1.py             --prereg integration/f-rom/LAYER_ROM_CF1_PREREGISTRATION.json             --phase-b integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json             --model-form integration/f-rom/LAYER_ROM_B1HCP_RESULT.json             --cost1 integration/f-rom/LAYER_ROM_COST1_RESULT.json             --output LAYER_ROM_CF1_EVIDENCE/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json             | tee LAYER_ROM_CF1_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('LAYER_ROM_CF1_EVIDENCE/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json'))
+          assert r['decision']=='LAYER_ROM_COST_FIDELITY_CURVE_COMPLETE'
+          assert r['cost_claim_boundary']['formal_performance_claim'] is False
+          assert r['cost_claim_boundary']['portable_speedup_claim'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_CF1_RESULT_GATE=PASS')
+          PY
+          sha256sum LAYER_ROM_CF1_EVIDENCE/* > LAYER_ROM_CF1_EVIDENCE/sha256.txt
+          echo 'LAYER_ROM_CF1=PASS'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-cf1-cost-fidelity
+          path: LAYER_ROM_CF1_EVIDENCE/
+          if-no-files-found: error

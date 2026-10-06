@@ -1,0 +1,281 @@
+{
+  "schema": "swap5.layer-rom.phase-b0.transfer-panel-preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B0",
+  "phase": "PREREGISTERED_BEFORE_NEW_LAYER_ROM_TRANSFER_REFERENCE_RESPONSE",
+  "purpose": "Freeze a response-independent Staringreeks B-material transfer panel and unchanged targeted-layer ladder before generating any new Layer-ROM transfer trajectories.",
+  "canonical_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "phase_A_authority": "integration/f-rom/LAYER_ROM_PHASE_A_CLOSEOUT.json",
+  "material_authority": {
+    "source_path": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "source_ref": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "source_catalog_input": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "source_catalog_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "constitutive_scope": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED"
+  },
+  "selection_rule": {
+    "population": "B01-B18 only",
+    "fixed_anchor": "B01",
+    "prior_transfer_replication_anchor": "B14",
+    "response_independent_extrema": [
+      "minimum and maximum theta_s",
+      "minimum and maximum alpha_per_cm",
+      "minimum and maximum n",
+      "minimum and maximum ksatfit_cm_per_day",
+      "minimum and maximum Mualem lambda"
+    ],
+    "deduplicate": true,
+    "no_ROM_response_used_for_selection": true
+  },
+  "panel": [
+    {
+      "id": "B01",
+      "role": [
+        "Phase-A anchor"
+      ],
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "Ksat_cm_per_day": 31.225016,
+      "lambda": 0.98087
+    },
+    {
+      "id": "B14",
+      "role": [
+        "prior transfer replication",
+        "minimum alpha",
+        "minimum Ksat"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.416774,
+      "alpha_per_cm": 0.00541,
+      "n": 1.301528,
+      "Ksat_cm_per_day": 0.895023,
+      "lambda": -0.334926
+    },
+    {
+      "id": "B05",
+      "role": [
+        "minimum theta_s",
+        "maximum alpha",
+        "maximum n"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.380881,
+      "alpha_per_cm": 0.042807,
+      "n": 1.8078,
+      "Ksat_cm_per_day": 63.650403,
+      "lambda": 0.024227
+    },
+    {
+      "id": "B16",
+      "role": [
+        "maximum theta_s"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.786061,
+      "alpha_per_cm": 0.021072,
+      "n": 1.278798,
+      "Ksat_cm_per_day": 12.357246,
+      "lambda": -1.220936
+    },
+    {
+      "id": "B12",
+      "role": [
+        "minimum n"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.529749,
+      "alpha_per_cm": 0.016562,
+      "n": 1.090671,
+      "Ksat_cm_per_day": 2.245895,
+      "lambda": -4.493581
+    },
+    {
+      "id": "B06",
+      "role": [
+        "maximum Ksat"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.384816,
+      "alpha_per_cm": 0.020923,
+      "n": 1.24225,
+      "Ksat_cm_per_day": 104.103005,
+      "lambda": -1.20013
+    },
+    {
+      "id": "B11",
+      "role": [
+        "minimum Mualem lambda"
+      ],
+      "theta_r": 0.01,
+      "theta_s": 0.591286,
+      "alpha_per_cm": 0.02162,
+      "n": 1.106695,
+      "Ksat_cm_per_day": 6.30532,
+      "lambda": -5.549216
+    },
+    {
+      "id": "B02",
+      "role": [
+        "maximum Mualem lambda"
+      ],
+      "theta_r": 0.02,
+      "theta_s": 0.433878,
+      "alpha_per_cm": 0.021645,
+      "n": 1.34877,
+      "Ksat_cm_per_day": 83.241635,
+      "lambda": 7.202077
+    }
+  ],
+  "evidence_label": {
+    "B01": "EXPOSED_ANCHOR",
+    "B14": "EXPOSED_MATERIAL_BUT_NEW_PANEL_REPLICATION",
+    "B02_B05_B06_B11_B12_B16": "PROSPECTIVELY_SELECTED_FOR_LAYER_ROM_TRANSFER; other repository solver/material evidence may exist, so do not call them globally blind materials without a separate exposure audit"
+  },
+  "first_transfer_regime": {
+    "id": "B1H_FIXED_HEAD",
+    "reason": "Phase A showed material dependence most sharply in the one-day fixed-head groundwater frontier, and same-partition CoRichards can be attempted under a frozen fail-closed policy.",
+    "column_depth_cm": 160,
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero prescribed pressure head at fixed 160 cm lower boundary",
+    "observation_dt_day": 0.001,
+    "steps": 1024,
+    "horizon_day": 1.024,
+    "sinks": false,
+    "moving_water_table": false
+  },
+  "initial_state_transfer": {
+    "source": "LARE_BC2_C4X prospective B14 rule",
+    "invariant": "Preserve the absolute height of each source B01 deepest active front.",
+    "reference_effective_saturation": 0.505,
+    "formula": "lambda_material=lambda_B01*psi_B01(Se=0.505)/psi_material(Se=0.505)",
+    "source_B01_lambdas": [
+      0.375,
+      0.625,
+      0.875,
+      1.125
+    ],
+    "source_B01_psi_Se0p505_cm": 102.93247655038844,
+    "no_post_response_rescaling": true,
+    "pre_reference_domain_preflight_required": true
+  },
+  "representations": {
+    "targeted": [
+      {
+        "id": "L4",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "L6",
+        "dimension": 6,
+        "boundaries_cm": [
+          0,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      },
+      {
+        "id": "R8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          90,
+          100,
+          110,
+          120,
+          130,
+          140,
+          150,
+          160
+        ]
+      }
+    ],
+    "placement_controls": [
+      {
+        "id": "U4",
+        "dimension": 4,
+        "boundaries_cm": [
+          0,
+          40,
+          80,
+          120,
+          160
+        ]
+      },
+      {
+        "id": "U8",
+        "dimension": 8,
+        "boundaries_cm": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100,
+          120,
+          140,
+          160
+        ]
+      }
+    ],
+    "fine_reference": {
+      "id": "R16_REFERENCE",
+      "geometry": "16 x 10 cm"
+    },
+    "same_partition_CoRichards": {
+      "policy": "Attempt exact L4/L6/R8 partitions with the existing strict accepted-trajectory/mass policy; fail closed per material/history. Qualification on B01 does not silently transfer to new materials."
+    }
+  },
+  "fixed_closure": {
+    "interior": "standard source-anchored adjacent-layer LARE Taylor/Darcy closure",
+    "bottom": "BC1 CURRENT_LAYER_FACE",
+    "no_new_closure": true,
+    "no_empirical_coefficient": true
+  },
+  "primary_outputs": [
+    "total-storage error",
+    "cumulative bottom-exchange error",
+    "interval bottom-flux error",
+    "bottom-flux sign mismatch",
+    "reversal timing/sequence",
+    "mapped 10-cm theta profile error",
+    "water ledger",
+    "qualified-domain coverage"
+  ],
+  "adjudication": {
+    "no_single_score": true,
+    "no_application_threshold": true,
+    "primary_question": "Does the ordering targeted placement > uniform placement, and the L4/L6/R8 dimension-horizon pattern, persist across the response-independent material panel?",
+    "material_generality_support": "Report componentwise how many prospectively selected materials retain targeted-placement benefit at dimension 4 and 8, and how many require more/less dimension than B01. Do not require one universal winner.",
+    "falsification": "A material-invariant minimum-dimension rule is rejected if any prospectively selected material changes the minimum qualified/crossing dimension under the same frozen vector. A universal placement rule is rejected if a same-dimension uniform control is componentwise noninferior to the targeted member on a material."
+  },
+  "second_transfer_regime": {
+    "id": "B1F_FIXED_FLUX",
+    "status": "HELD_UNTIL_B1H_TRANSFER_CHARACTERIZED",
+    "reason": "Avoid multiplying new Reference generation before the material effect on the higher-value groundwater regime is known; use unchanged DYN0A forcing family when opened."
+  },
+  "firewalls": [
+    "NO_RESPONSE_BASED_MATERIAL_SELECTION",
+    "NO_POST_RESPONSE_PARTITION_RETUNING",
+    "NO_NEW_CLOSURE",
+    "NO_MOVING_WATER_TABLE",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_OR_PORTABLE_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

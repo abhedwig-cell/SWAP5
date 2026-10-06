@@ -1,0 +1,220 @@
+{
+  "schema": "swap5.layer-rom.dimension-state-closure-fidelity-cost-curve.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-CF1",
+  "status": "CLOSED_RESEARCH_CURVE_COMPLETE_APPLICATION_SELECTION_UNADJUDICATED",
+  "decision": "LAYER_ROM_COST_FIDELITY_CURVE_COMPLETE",
+  "authority": {
+    "agents": "AGENTS.md",
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "phase_a": "integration/f-rom/LAYER_ROM_PHASE_A_DIMENSION_CLOSURE_FIDELITY_CURVE.json",
+    "phase_b": "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "model_form": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+    "cost1": "integration/f-rom/LAYER_ROM_COST1_RESULT.json",
+    "cf1_preregistration": "integration/f-rom/LAYER_ROM_CF1_PREREGISTRATION.json",
+    "cf1_workflow_run": 35508569250,
+    "cf1_executed_head": "054197a03569c54f70b9ebd14eb06b121e266390",
+    "cf1_artifact_id": 10604583217,
+    "cf1_artifact_digest": "sha256:7e41186838724a7aee90da65c8d847fe449525cafb28414e78c4087ea827466a"
+  },
+  "state_information": {
+    "B01_lower_bound": {
+      "id": "L3",
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "finding": "Minimum bounded predictive-state-information candidate in the A1 cohort; no 1x reduction-induced aliases.",
+      "limit": "Not a broadly adequate propagated model under tested storage-only or first-moment closures."
+    },
+    "interpretation": "Extra dimensions beyond L3 in current B01 evidence primarily buy closure/localization resolution rather than demonstrated additional Markov-state information."
+  },
+  "frontier": [
+    {
+      "id": "L4",
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "AGGRESSIVE_FOUR_STATE_CANDIDATE_MATERIAL_DEPENDENT",
+      "representation_finding": "The localized fourth storage materially improves interface closure; an equal-dimension global first moment did not.",
+      "fixed_head_groundwater_relation_counts": {
+        "COR_COMPONENTWISE_NO_WORSE": 3,
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 3
+      },
+      "placement_transfer": "Supported on 5 of 6 transfer materials; B05 is the counterexample.",
+      "cost": {
+        "robust_shared_host_reduction_vs_R16": true,
+        "BASE_CPU_fraction_R16": {
+          "min": 0.002013384127957098,
+          "median": 0.003467305631707144,
+          "max": 0.0038750780269153503
+        },
+        "FINE_CPU_fraction_R16": {
+          "min": 0.0075037672138169005,
+          "median": 0.011717570274604131,
+          "max": 0.013835803364480717
+        },
+        "BASE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.014195507115780513,
+          "median": 0.023206156725508707,
+          "max": 0.026038414645474257
+        },
+        "FINE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.05290584116553048,
+          "median": 0.07838104901535153,
+          "max": 0.09296906603049067
+        },
+        "resolved_cheaper_counts": {
+          "BASE_vs_R16": 6,
+          "FINE_vs_R16": 6,
+          "BASE_vs_CoRichards": 6,
+          "FINE_vs_CoRichards": 6
+        }
+      }
+    },
+    {
+      "id": "L6",
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "INTERMEDIATE_CANDIDATE_BROADLY_STRONGER_BUT_B05_CLOSURE_BURDEN_PERSISTS",
+      "representation_finding": "Additional lower-zone localization substantially reduces difficult-regime closure error without evidence that six independent Markov coordinates are fundamentally required.",
+      "fixed_head_groundwater_relation_counts": {
+        "COR_COMPONENTWISE_NO_WORSE": 1,
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5
+      },
+      "hard_material": "B05 remains componentwise CoRichards-no-worse.",
+      "cost": {
+        "robust_shared_host_reduction_vs_R16": true,
+        "BASE_CPU_fraction_R16": {
+          "min": 0.00283728864532399,
+          "median": 0.005082690304035121,
+          "max": 0.006101526558490141
+        },
+        "FINE_CPU_fraction_R16": {
+          "min": 0.010562825568227548,
+          "median": 0.016784248922343967,
+          "max": 0.01937141873912571
+        },
+        "BASE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.01232512758121025,
+          "median": 0.020920267588431213,
+          "max": 0.029754394041281846
+        },
+        "FINE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.042579138960510104,
+          "median": 0.07299866962716114,
+          "max": 0.09446567523345294
+        },
+        "resolved_cheaper_counts": {
+          "BASE_vs_R16": 6,
+          "FINE_vs_R16": 6,
+          "BASE_vs_CoRichards": 6,
+          "FINE_vs_CoRichards": 6
+        }
+      }
+    },
+    {
+      "id": "R8",
+      "dimension": 8,
+      "boundaries_cm": [
+        0,
+        90,
+        100,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "role": "ROBUST_TARGETED_PLACEMENT_CANDIDATE_NOT_APPLICATION_ACCEPTED",
+      "representation_finding": "First tested targeted partition with stable placement support across the full six-material transfer panel.",
+      "fixed_head_groundwater_relation_counts": {
+        "LAYER_ROM_COMPONENTWISE_NO_WORSE": 5,
+        "TRADEOFF": 1
+      },
+      "hard_material": "B05 remains a groundwater-vector tradeoff versus same-partition CoRichards.",
+      "cost": {
+        "robust_shared_host_reduction_vs_R16": true,
+        "BASE_CPU_fraction_R16": {
+          "min": 0.003675470152149704,
+          "median": 0.006572798038083772,
+          "max": 0.007922072505716077
+        },
+        "FINE_CPU_fraction_R16": {
+          "min": 0.013608914297837551,
+          "median": 0.021808678443785305,
+          "max": 0.02483742068202484
+        },
+        "BASE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.012532027397208573,
+          "median": 0.021076795777001084,
+          "max": 0.030303326551888603
+        },
+        "FINE_CPU_fraction_same_partition_CoRichards": {
+          "min": 0.04294699320369194,
+          "median": 0.07370209849077028,
+          "max": 0.09500752096007202
+        },
+        "resolved_cheaper_counts": {
+          "BASE_vs_R16": 6,
+          "FINE_vs_R16": 6,
+          "BASE_vs_CoRichards": 6,
+          "FINE_vs_CoRichards": 6
+        }
+      }
+    }
+  ],
+  "purpose_dependent_interpretation": {
+    "GW_R": "L6/R8 have strong structural exchange fidelity; R8 has six-material placement support, but no independent recharge tolerance is bound.",
+    "GW_D": "Flux sign and instantaneous/mean exchange expose material dependence, especially B05; no universal low dimension is supported.",
+    "SCI_P": "Profile/process fidelity remains stricter and dimension-sensitive after groundwater exchange approaches its residual floor.",
+    "AG_WB": "Outside current no-ET/no-root-uptake envelope.",
+    "EVT": "Outside current no-ponding/no-runoff envelope."
+  },
+  "core_conclusions": [
+    "The minimum state-information dimension is not the same as the minimum useful propagated dimension.",
+    "Local interface resolution is more valuable than a single global first moment at equal scalar dimension.",
+    "No universal layer count is supported; useful dimension depends on material and hydrological purpose.",
+    "Same-partition CoRichards demonstrates that ordinary spatial discretization error and Layer-ROM closure/localization error are distinct and their relative importance changes with material and dimension.",
+    "Computational cost is not the limiting feasibility axis in the frozen six-material fixed-head laboratory: L4, L6 and R8 all satisfy the preregistered robust shared-host reduction rule against R16, even under the FINE timing bracket.",
+    "The unresolved decision is application selection: external purpose tolerances are required before L4, L6 or R8 can be called sufficient for GW-R, GW-D or another application."
+  ],
+  "minimum_dimension_statements": {
+    "B01_state_information": "L3, bounded A1 cohort only.",
+    "aggressive_practical_candidate": "L4, material-dependent.",
+    "intermediate_practical_candidate": "L6, broadly stronger with B05 residual closure burden.",
+    "broad_targeted_placement_candidate": "R8, six-material placement support with B05 tradeoff.",
+    "universal_application_minimum": "UNADJUDICATED_NO_EXTERNAL_PURPOSE_TOLERANCES"
+  },
+  "cost_claim_boundary": {
+    "class": "SHARED_HOST_SCREENING_ONLY",
+    "formal_performance_claim": false,
+    "portable_speedup_claim": false,
+    "application_acceptance": false
+  },
+  "firewalls": [
+    "NO_WEIGHTED_COST_FIDELITY_SCORE",
+    "NO_POST_RESULT_APPLICATION_TOLERANCE",
+    "NO_UNIVERSAL_MINIMUM_LAYER_CLAIM",
+    "NO_PRODUCTION_ROM",
+    "NO_PORTABLE_SPEEDUP_CLAIM"
+  ],
+  "production_rom_authorized": false
+}

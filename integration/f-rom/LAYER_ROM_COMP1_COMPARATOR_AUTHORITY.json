@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.layer-rom.comparator-authority.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-COMP1",
+  "phase": "COMPARATOR_AUTHORITY_BOUND",
+  "canonical_checked": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "comparators": {
+    "fixed_flux": {
+      "same_partition_CoRichards": {
+        "status": "REDUCED_DYNAMIC_COMPARATOR_UNAVAILABLE_UNDER_FROZEN_Q1_NUMERICAL_AUTHORITY",
+        "source": "work/f-rom-lare-rs1/integration/f-rom/LARE_CORICHARDS_Q1_CLOSEOUT.json",
+        "applicable_partitions": [
+          "L3",
+          "L4",
+          "L6 and other nested active-zone members tested as R3-R12"
+        ],
+        "interpretation": "Comparator unavailability is numerical-policy/workload specific and is not evidence that coarse Richards is hydrologically invalid."
+      },
+      "fine_reference": {
+        "id": "R16",
+        "status": "AVAILABLE"
+      },
+      "coarse_controls": {
+        "F_ROMV2_D4": "R8/R4/R2 uniform coarse-Richards balance comparators remain development controls but are not same-partition controls for L3/L4/L6."
+      }
+    },
+    "fixed_head_zero_pressure": {
+      "same_partition_CoRichards": {
+        "status": "FULL_COMMON_COHORT_AVAILABLE",
+        "source": "work/f-rom-lare-rs1/integration/f-rom/LARE_BC2_C4S_RESULT.json",
+        "workload": "B01, 160 cm, top q=0, bottom mode-5 h=0, 64 steps at 0.001 d, V01-V04",
+        "qualified_members": [
+          "L3/R3",
+          "L4/R4",
+          "R5",
+          "L6/R6",
+          "R8",
+          "R12"
+        ],
+        "all_four_histories_qualified_from_dimension": 3,
+        "maximum_qualified_transaction_mass_residual_cm": 1.734723475976807e-18,
+        "use": "eligible numerical-discretization comparator on exactly matched partitions for future fixed-head cost/fidelity tests"
+      },
+      "fine_reference": {
+        "id": "R16",
+        "status": "AVAILABLE"
+      },
+      "R2_uniform_control": {
+        "status": "AVAILABLE"
+      }
+    }
+  },
+  "error_attribution": {
+    "state_information_error": "A1 closure-free future response replay",
+    "closure_error": "A2/A2B teacher-forced same-state interface audits and later frozen-state propagation",
+    "numerical_discretization_error": "same-partition CoRichards when available under the exact boundary/workload authority",
+    "rule": "Never substitute a uniform coarse-Richards result for same-partition numerical-discretization error."
+  },
+  "next_use": [
+    "For fixed-flux Layer-ROM propagation, report CoRichards comparator as unavailable under current same-partition authority rather than relaxing Q1 policy.",
+    "For the fixed-head zero-pressure workload, include R3/L3 and R4/L4 CoRichards directly once Layer-ROM internal closure propagation is authorized.",
+    "Do not infer a universal boundary-independent comparator ranking."
+  ],
+  "production_rom_authorized": false,
+  "performance_claim_authorized": false,
+  "application_acceptance_adjudicated": false
+}

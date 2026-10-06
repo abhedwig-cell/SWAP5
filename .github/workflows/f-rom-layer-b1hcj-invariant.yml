@@ -1,0 +1,80 @@
+name: F-ROM Layer-ROM B1HCJ invariant
+
+on:
+  push:
+    branches: [work/f-rom-layer-a]
+    paths:
+      - integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json
+      - tests/rom/analyze_layer_rom_b1hcj_invariant.py
+      - .github/workflows/f-rom-layer-b1hcj-invariant.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  invariant:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+
+      - name: Authority gate
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_B12_INVARIANT_DRIFT_RESULT'
+          assert p['scope']['material']=='B12'
+          assert p['scope']['reference_trajectory_used'] is False
+          assert p['production_rom_authorized'] is False
+          PY
+          python3 -m py_compile tests/rom/analyze_layer_rom_b1hcj_invariant.py
+
+      - name: Recover immutable inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e3b11802e88316dcd57147569e985153be99e215
+          mkdir -p /tmp/b1hcj/basis /tmp/b1hcj/b1h
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/analyze_lare_bc2_c4v_one_day.py > /tmp/b1hcj/basis/analyze_lare_bc2_c4v_one_day.py
+          git show e3b11802e88316dcd57147569e985153be99e215:tests/rom/run_lare_bc1_stage_b.py > /tmp/b1hcj/basis/run_lare_bc1_stage_b.py
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10599789755/zip" > /tmp/b1hcj/b1h.zip
+          unzip -q /tmp/b1hcj/b1h.zip -d /tmp/b1hcj/b1h
+          test -f /tmp/b1hcj/b1h/LAYER_ROM_B1H_B12_RESULT.json
+          python3 - <<'PY'
+          import hashlib,pathlib
+          p=pathlib.Path('/tmp/b1hcj/b1h/LAYER_ROM_B1H_B12_RESULT.json')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='dd429968299341397077eb44d0db1314b9db1e0dc10a4ad33502f0ad6086b9cb'
+          PY
+
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+
+      - name: Execute diagnosis
+        run: |
+          set -euo pipefail
+          mkdir -p B1HCJ_EVIDENCE
+          python3 tests/rom/analyze_layer_rom_b1hcj_invariant.py             --b1h-result /tmp/b1hcj/b1h/LAYER_ROM_B1H_B12_RESULT.json             --b1h-prereg integration/f-rom/LAYER_ROM_B1H_PREREGISTRATION.json             --basis-dir /tmp/b1hcj/basis             --prereg integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json             --output B1HCJ_EVIDENCE/LAYER_ROM_B1HCJ_RESULT.json             | tee B1HCJ_EVIDENCE/analyzer.txt
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1HCJ_PREREGISTRATION.json'))
+          r=json.load(open('B1HCJ_EVIDENCE/LAYER_ROM_B1HCJ_RESULT.json'))
+          assert r['decision'] in {p['decision_gate']['label_confirmed'],p['decision_gate']['label_not_confirmed']}
+          assert r['reference_trajectory_used'] is False
+          assert r['hydrological_model_changed'] is False
+          assert r['production_rom_authorized'] is False
+          PY
+          sha256sum B1HCJ_EVIDENCE/* > B1HCJ_EVIDENCE/sha256.txt
+          git diff --check 1caa431002d5c128c73cfcfbd31af4cc39ee9f12...HEAD
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1hcj-invariant
+          path: B1HCJ_EVIDENCE/
+          if-no-files-found: error

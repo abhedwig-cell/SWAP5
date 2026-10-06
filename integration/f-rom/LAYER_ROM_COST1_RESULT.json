@@ -1,0 +1,385 @@
+{
+  "schema": "swap5.layer-rom.cost1.result.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-COST1",
+  "decision": "COST1_SHARED_HOST_SIX_MATERIAL_SCREEN_COMPLETE",
+  "materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "dimensions": [
+    4,
+    6,
+    8
+  ],
+  "by_dimension": {
+    "4": {
+      "BASE_cheaper_than_CoRichards_count": 6,
+      "BASE_cheaper_than_R16_count": 6,
+      "BASE_over_CoRichards_spread": {
+        "min": 0.014195507115780513,
+        "median": 0.023206156725508707,
+        "max": 0.026038414645474257
+      },
+      "BASE_over_R16_spread": {
+        "min": 0.002013384127957098,
+        "median": 0.003467305631707144,
+        "max": 0.0038750780269153503
+      },
+      "FINE_cheaper_than_CoRichards_count": 6,
+      "FINE_cheaper_than_R16_count": 6,
+      "FINE_over_BASE_spread": {
+        "min": 3.284038407257565,
+        "median": 3.5251369479611445,
+        "max": 3.726942668128947
+      },
+      "FINE_over_CoRichards_spread": {
+        "min": 0.05290584116553048,
+        "median": 0.07838104901535153,
+        "max": 0.09296906603049067
+      },
+      "FINE_over_R16_spread": {
+        "min": 0.0075037672138169005,
+        "median": 0.011717570274604131,
+        "max": 0.013835803364480717
+      },
+      "robust_reduction_signal_vs_R16": true,
+      "per_material": {
+        "B02": {
+          "BASE_over_CoRichards": 0.026038414645474257,
+          "BASE_over_R16": 0.0038750780269153503,
+          "FINE_over_BASE": 3.570458005846744,
+          "FINE_over_CoRichards": 0.09296906603049067,
+          "FINE_over_R16": 0.013835803364480717,
+          "fidelity_relation": "COR_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B05": {
+          "BASE_over_CoRichards": 0.02528725933936013,
+          "BASE_over_R16": 0.0036497070736553746,
+          "FINE_over_BASE": 3.4308998407730567,
+          "FINE_over_CoRichards": 0.08675805404099765,
+          "FINE_over_R16": 0.012521779417872523,
+          "fidelity_relation": "COR_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B06": {
+          "BASE_over_CoRichards": 0.022179660425617604,
+          "BASE_over_R16": 0.003379402019229927,
+          "FINE_over_BASE": 3.479815890075545,
+          "FINE_over_CoRichards": 0.07718113478554386,
+          "FINE_over_R16": 0.011759696845469682,
+          "fidelity_relation": "COR_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B11": {
+          "BASE_over_CoRichards": 0.017121419552250036,
+          "BASE_over_R16": 0.002600000619543852,
+          "FINE_over_BASE": 3.689697018110249,
+          "FINE_over_CoRichards": 0.06317285066775147,
+          "FINE_over_R16": 0.009593214533015749,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B12": {
+          "BASE_over_CoRichards": 0.014195507115780513,
+          "BASE_over_R16": 0.002013384127957098,
+          "FINE_over_BASE": 3.726942668128947,
+          "FINE_over_CoRichards": 0.05290584116553048,
+          "FINE_over_R16": 0.0075037672138169005,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B16": {
+          "BASE_over_CoRichards": 0.024232653025399814,
+          "BASE_over_R16": 0.003555209244184361,
+          "FINE_over_BASE": 3.284038407257565,
+          "FINE_over_CoRichards": 0.07958096324515922,
+          "FINE_over_R16": 0.01167544370373858,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        }
+      }
+    },
+    "6": {
+      "BASE_cheaper_than_CoRichards_count": 6,
+      "BASE_cheaper_than_R16_count": 6,
+      "BASE_over_CoRichards_spread": {
+        "min": 0.01232512758121025,
+        "median": 0.020920267588431213,
+        "max": 0.029754394041281846
+      },
+      "BASE_over_R16_spread": {
+        "min": 0.00283728864532399,
+        "median": 0.005082690304035121,
+        "max": 0.006101526558490141
+      },
+      "FINE_cheaper_than_CoRichards_count": 6,
+      "FINE_cheaper_than_R16_count": 6,
+      "FINE_over_BASE_spread": {
+        "min": 3.1748478931343507,
+        "median": 3.3851392147871446,
+        "max": 3.723506752327103
+      },
+      "FINE_over_CoRichards_spread": {
+        "min": 0.042579138960510104,
+        "median": 0.07299866962716114,
+        "max": 0.09446567523345294
+      },
+      "FINE_over_R16_spread": {
+        "min": 0.010562825568227548,
+        "median": 0.016784248922343967,
+        "max": 0.01937141873912571
+      },
+      "robust_reduction_signal_vs_R16": true,
+      "per_material": {
+        "B02": {
+          "BASE_over_CoRichards": 0.029754394041281846,
+          "BASE_over_R16": 0.006101526558490141,
+          "FINE_over_BASE": 3.1748478931343507,
+          "FINE_over_CoRichards": 0.09446567523345294,
+          "FINE_over_R16": 0.01937141873912571,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B05": {
+          "BASE_over_CoRichards": 0.01232512758121025,
+          "BASE_over_R16": 0.005166042952963411,
+          "FINE_over_BASE": 3.45466111242713,
+          "FINE_over_CoRichards": 0.042579138960510104,
+          "FINE_over_R16": 0.017846927694730914,
+          "fidelity_relation": "COR_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B06": {
+          "BASE_over_CoRichards": 0.024936422719947143,
+          "BASE_over_R16": 0.005260556098092663,
+          "FINE_over_BASE": 3.2301922124375646,
+          "FINE_over_CoRichards": 0.08054943847602442,
+          "FINE_over_R16": 0.01699260734114986,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B11": {
+          "BASE_over_CoRichards": 0.0178237915380306,
+          "BASE_over_R16": 0.0037173890532513983,
+          "FINE_over_BASE": 3.723506752327103,
+          "FINE_over_CoRichards": 0.06636700814392762,
+          "FINE_over_R16": 0.013841723240808436,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B12": {
+          "BASE_over_CoRichards": 0.014116354428356043,
+          "BASE_over_R16": 0.00283728864532399,
+          "FINE_over_BASE": 3.7228589997833583,
+          "FINE_over_CoRichards": 0.052553197127736956,
+          "FINE_over_R16": 0.010562825568227548,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B16": {
+          "BASE_over_CoRichards": 0.02401674363883182,
+          "BASE_over_R16": 0.004999337655106829,
+          "FINE_over_BASE": 3.3156173171471592,
+          "FINE_over_CoRichards": 0.07963033111039466,
+          "FINE_over_R16": 0.016575890503538075,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        }
+      }
+    },
+    "8": {
+      "BASE_cheaper_than_CoRichards_count": 6,
+      "BASE_cheaper_than_R16_count": 6,
+      "BASE_over_CoRichards_spread": {
+        "min": 0.012532027397208573,
+        "median": 0.021076795777001084,
+        "max": 0.030303326551888603
+      },
+      "BASE_over_R16_spread": {
+        "min": 0.003675470152149704,
+        "median": 0.006572798038083772,
+        "max": 0.007922072505716077
+      },
+      "FINE_cheaper_than_CoRichards_count": 6,
+      "FINE_cheaper_than_R16_count": 6,
+      "FINE_over_BASE_spread": {
+        "min": 2.9861308543413685,
+        "median": 3.3707699784473686,
+        "max": 3.740690820255135
+      },
+      "FINE_over_CoRichards_spread": {
+        "min": 0.04294699320369194,
+        "median": 0.07370209849077028,
+        "max": 0.09500752096007202
+      },
+      "FINE_over_R16_spread": {
+        "min": 0.013608914297837551,
+        "median": 0.021808678443785305,
+        "max": 0.02483742068202484
+      },
+      "robust_reduction_signal_vs_R16": true,
+      "per_material": {
+        "B02": {
+          "BASE_over_CoRichards": 0.030303326551888603,
+          "BASE_over_R16": 0.007922072505716077,
+          "FINE_over_BASE": 3.135217541130013,
+          "FINE_over_CoRichards": 0.09500752096007202,
+          "FINE_over_R16": 0.02483742068202484,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B05": {
+          "BASE_over_CoRichards": 0.012532027397208573,
+          "BASE_over_R16": 0.006719539025917426,
+          "FINE_over_BASE": 3.426978879192213,
+          "FINE_over_CoRichards": 0.04294699320369194,
+          "FINE_over_R16": 0.023027718319726838,
+          "fidelity_relation": "TRADEOFF",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B06": {
+          "BASE_over_CoRichards": 0.028590748349524266,
+          "BASE_over_R16": 0.007473817925048085,
+          "FINE_over_BASE": 2.9861308543413685,
+          "FINE_over_CoRichards": 0.08537571579522397,
+          "FINE_over_R16": 0.022317798305715675,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B11": {
+          "BASE_over_CoRichards": 0.0180309947042161,
+          "BASE_over_R16": 0.00485225021442426,
+          "FINE_over_BASE": 3.740690820255135,
+          "FINE_over_CoRichards": 0.06744837637013013,
+          "FINE_over_R16": 0.018150767834677842,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B12": {
+          "BASE_over_CoRichards": 0.01409404004380837,
+          "BASE_over_R16": 0.003675470152149704,
+          "FINE_over_BASE": 3.7026322441709905,
+          "FINE_over_CoRichards": 0.05218504711684199,
+          "FINE_over_R16": 0.013608914297837551,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        },
+        "B16": {
+          "BASE_over_CoRichards": 0.024122596849786064,
+          "BASE_over_R16": 0.006426057050250117,
+          "FINE_over_BASE": 3.3145610777025243,
+          "FINE_over_CoRichards": 0.07995582061141042,
+          "FINE_over_R16": 0.021299558581854932,
+          "fidelity_relation": "LAYER_ROM_COMPONENTWISE_NO_WORSE",
+          "BASE_resolved_cheaper_than_R16": true,
+          "FINE_resolved_cheaper_than_R16": true,
+          "BASE_resolved_cheaper_than_CoRichards": true,
+          "FINE_resolved_cheaper_than_CoRichards": true
+        }
+      }
+    }
+  },
+  "fidelity_authority": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+  "interpretation": [
+    "CPU ratios are shared-host implementation screening values, not portable speedups.",
+    "Layer-ROM BASE and FINE are timing brackets for the unchanged Heun equations; continuous-time fidelity remains governed by B1HCMR/B1HCP.",
+    "The same-partition fidelity relation is shown beside cost but never collapsed to a weighted score.",
+    "A robust reduction signal versus R16 requires both BASE and fourfold-refined FINE to be resolved cheaper on every material.",
+    "Material-to-material ratio spreads are descriptive only; no pooled speedup estimator is defined."
+  ],
+  "application_acceptance_adjudicated": false,
+  "formal_performance_claim": false,
+  "speed_claim_authorized": false,
+  "production_rom_authorized": false,
+  "execution": {
+    "workflow_run": 35507539740,
+    "executed_head": "3a6f03ae57a8c8100f52a37bbec4b821612bee59",
+    "aggregate_artifact_id": 10603918398,
+    "aggregate_artifact_digest": "sha256:4a6afdda60def554332e7c976844ae063998c8051ccf76b854b30b00aab7467b",
+    "material_artifacts": {
+      "B02": {
+        "id": 10604477796,
+        "digest": "sha256:5b406f3897b0f69cb6c41f5ace5c0cc69363292e62f52f376bcae40b4c740d46"
+      },
+      "B05": {
+        "id": 10604946483,
+        "digest": "sha256:cb4d5bdf5f616787aa60dcc4ebe26932f381b01fcf16febe1b64b6a72b84ca85"
+      },
+      "B06": {
+        "id": 10604333196,
+        "digest": "sha256:d29295d0fa3536c7c6cc77d412902a04d205eaa04100b94ca99b9de0dc987fe7"
+      },
+      "B11": {
+        "id": 10603808635,
+        "digest": "sha256:78d84518022eff3feb24f7cd605b42ec5a31d1a958452adad78a0de64d9634ea"
+      },
+      "B12": {
+        "id": 10604403123,
+        "digest": "sha256:78056cab293407382325a535454bb6c45c7930ad4bfad2eb3d3f021bc13917ef"
+      },
+      "B16": {
+        "id": 10604797423,
+        "digest": "sha256:60c318e219cede183dfa17478b14c45ceed271548d6b51759442781a26ff342e"
+      }
+    },
+    "raw_per_material_timing": "retained in immutable workflow artifacts; repository result stores the aggregate cost/fidelity fields needed for decisions"
+  },
+  "repository_summary": true
+}

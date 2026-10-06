@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcf.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCF",
+  "status": "CLOSED_METRIC_SEMANTICS_REPAIRED_TEMPORAL_DIAGNOSIS_AUTHORIZED",
+  "decision": "B1HCF_CORRECTED_FIXED_HEAD_METRICS_RECONCILED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCF_PREREGISTRATION.json",
+    "workflow_run": 35500822057,
+    "executed_head": "37f85e31ffec6859c8b0f40bd5af95ab93039517",
+    "aggregate_artifact_id": 10602356919,
+    "aggregate_artifact_digest": "sha256:e1b4be5a09ef36cfa336a83d6b35cb9c3b6a530b827d91795d24795fee1ba04e",
+    "raw_result_sha256": "8ba4656430326262958697570ed5c0bc7e5784bfac835fa731f0d64aba44cc0a"
+  },
+  "conclusions": [
+    "QAVG and QEND are the governing fixed-head flux observables from this point forward.",
+    "The old mixed-semantics flux metrics are superseded for scientific decisions.",
+    "Equal-grid R16_OP residuals persist after the semantic repair, so temporal/state-evolution diagnosis is the next causal gate.",
+    "No new closure, partition or application threshold is authorized by B1HCF."
+  ],
+  "next_authorized": [
+    "LAYER-ROM-B1HCG_CORRECTED_TEMPORAL_STATE_EVOLUTION_DIAGNOSIS",
+    "LAYER-ROM-B1R_B01_FIXED_HEAD_FRONTIER_REPAIR"
+  ],
+  "production_rom_authorized": false
+}

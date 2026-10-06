@@ -1,0 +1,169 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hco.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCO",
+  "phase": "PREREGISTERED_BEFORE_B05_L6_R8_FOURTH_CORICHARDS_TEMPORAL_RESPONSE",
+  "title": "B05 L6/R8 fourth-level CoRichards temporal holdout",
+  "scientific_question": "Do the only two unresolved B1HCN cells, B05 L6 and B05 R8, satisfy the frozen first-order CoRichards temporal-limit hypothesis when a new dt=1.25e-4 d holdout is generated?",
+  "trigger": {
+    "B1HCN_decision": "B1HCN_CORICHARDS_TEMPORAL_LIMIT_UNRESOLVED",
+    "B1HCN_result": "integration/f-rom/LAYER_ROM_B1HCN_RESULT.json",
+    "unresolved_cells": [
+      "B05:L6",
+      "B05:R8"
+    ],
+    "unresolved_component": "QAVG only",
+    "rule": "No other material, member, component, closure, partition or hydrological boundary may be opened in B1HCO."
+  },
+  "authority": {
+    "canonical_execution_basis": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "current_canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "D13_source_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "B1HCN_run": 35505862660,
+    "B1HCN_B05_artifact": {
+      "id": 10603304734,
+      "digest": "sha256:e69255eb66e4ba2c8ae8c08a6840de58a8348758490da8bfab7c84e0eaf27510"
+    },
+    "B1HCL_B05_artifact": {
+      "id": 10602989491,
+      "digest": "sha256:f5bfdcb0fe34d32a1d8a412c474bcf39c858fc217a4a9a589f4db7312e9ff32c"
+    },
+    "B1HCK_B05_artifact": {
+      "id": 10602999048,
+      "digest": "sha256:07327da8b991913350fdf314e367ae02d8caceb2993eabd7af583f4decfefac4"
+    },
+    "B1HCM_B05_artifact": {
+      "id": 10603658516,
+      "digest": "sha256:4eb87fde5099e246039e8d18dfec8ce8313a449a4ae2cee84b41b22d6eab8852"
+    },
+    "B1H_B05_artifact": {
+      "id": 10600409481,
+      "digest": "sha256:7c1cb70b8f2a084ab14eb8bf064670c3ed5460a150218dd8141bb3e731c6f3e5"
+    }
+  },
+  "scope": {
+    "material": "B05",
+    "histories": [
+      "X01",
+      "X02",
+      "X03",
+      "X04"
+    ],
+    "members": [
+      {
+        "id": "L6",
+        "dimension": 6,
+        "thickness_cm": [
+          110,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "R8",
+        "dimension": 8,
+        "thickness_cm": [
+          90,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10,
+          10
+        ]
+      }
+    ],
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "mode-5 zero pressure head at fixed 160 cm",
+    "common_observation_interval_day": 0.001,
+    "common_observation_count": 1024,
+    "horizon_day": 1.024,
+    "hydrological_model_changed": false
+  },
+  "inherited_levels": [
+    {
+      "id": "COR_MID",
+      "dt_day": 0.0005,
+      "substeps_per_observation": 2,
+      "source": "immutable B1HCN B05 artifact"
+    },
+    {
+      "id": "COR_FINE",
+      "dt_day": 0.00025,
+      "substeps_per_observation": 4,
+      "source": "immutable B1HCN B05 artifact"
+    }
+  ],
+  "new_holdout": {
+    "id": "COR_ULTRA",
+    "dt_day": 0.000125,
+    "substeps_per_observation": 8,
+    "compiler_modes": [
+      0,
+      2
+    ],
+    "O0_O2_scientific_identity_required": true,
+    "hard_mass_gate_cm": 1e-12,
+    "only_allowed_harness_changes": [
+      "NSTEPS",
+      "step_dt"
+    ],
+    "no_solver_tolerance_change": true,
+    "no_physics_change": true,
+    "no_boundary_change": true
+  },
+  "temporal_hypothesis": {
+    "frozen_order": 1,
+    "prospective_prediction": "COR_ULTRA_pred = COR_FINE + 0.5*(COR_FINE-COR_MID), pointwise",
+    "richardson_limit": "COR_star = 2*COR_ULTRA-COR_FINE, pointwise",
+    "note": "Order remains fixed at one. The B1HCN observed QAVG order near 0.887 is diagnostic and is not fitted or substituted into the decision."
+  },
+  "observables": [
+    "total_storage_cm",
+    "cumulative_bottom_exchange_cm",
+    "QAVG_cm_per_day from interval exchange",
+    "QEND_cm_per_day from end-state bottom theta and zero-head Darcy operator",
+    "mapped_10cm_theta"
+  ],
+  "numerical_floors": {
+    "storage_rms": 1e-12,
+    "cumulative_bottom_rms": 1e-12,
+    "qavg_rms": 1e-9,
+    "qend_rms": 1e-9,
+    "mapped_theta_rms": 1e-13,
+    "source": "unchanged B1HCI/B1HCL/B1HCN floors"
+  },
+  "gates": {
+    "per_component": [
+      "COR_FINE-to-COR_ULTRA RMS <= COR_MID-to-COR_FINE RMS + floor",
+      "COR_ULTRA_pred-to-COR_ULTRA RMS <= max(floor, 0.10 * COR_FINE-to-COR_ULTRA RMS)"
+    ],
+    "cell_supported": "all five components pass",
+    "B1HCO_supported": "both B05 L6 and B05 R8 cells pass"
+  },
+  "post_holdout_if_supported": {
+    "Reference_limit": "REF_star = 2*REF_DT_1P25E4-REF_DT_2P5E4 from B1HCL",
+    "compare": "B1HCM continuous-time Layer-ROM versus newly qualified COR_star for B05 L6/R8",
+    "relation_rule": "same frozen B1HCN groundwater vector relation and 1e-12 equality tolerance",
+    "panel_completion": "Combine these two resolved B05 cells with the 16 already qualified B1HCN cells. Do not rerun or retune the 16."
+  },
+  "decisions": {
+    "supported": "B1HCO_B05_L6_R8_TEMPORAL_LIMIT_SUPPORTED",
+    "unresolved": "B1HCO_B05_L6_R8_TEMPORAL_LIMIT_UNRESOLVED"
+  },
+  "firewalls": [
+    "NO_TEMPORAL_ORDER_FIT",
+    "NO_GATE_RELAXATION",
+    "NO_OTHER_MATERIAL_OR_MEMBER",
+    "NO_CLOSURE_OR_PARTITION_CHANGE",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_MEASUREMENT",
+    "NO_PRODUCTION_ROM"
+  ],
+  "evidence_classification": "PROSPECTIVE_HOLDOUT_ON_TWO_PREDECLARED_FAIL_CLOSED_CELLS",
+  "production_rom_authorized": false
+}

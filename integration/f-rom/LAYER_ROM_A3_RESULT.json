@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.layer-rom.phase-a3.result-summary.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A3",
+  "decision": "A3_FIRST_MOMENT_OPERATOR_NOT_BROADLY_SUPPORTED",
+  "execution": {
+    "authoritative_workflow_run": 35495220671,
+    "executed_head": "71e4c8f89c0c34fb63217bc4eb1f9560a7f2c72f",
+    "conclusion": "success",
+    "artifact_id": 10599939300,
+    "artifact_digest": "sha256:6dcfcfbe7d05b28ab62e0d14d3911959e541a39caeaa22690d824e9aa5152a24",
+    "result_sha256": "bab62de3e2841e3352808cb9a77d93b66f0cfc2a6fb513b199c2f5bcacf97945",
+    "reproduced_initial_operator_run": {
+      "workflow_run": 35495160112,
+      "artifact_id": 10600403219,
+      "artifact_digest": "sha256:4205d1c0858fb1da99c53f9b6405ef7c5684fbb50f01d76bd2eb5546261309b",
+      "result_bitwise_identical": true
+    }
+  },
+  "pooled_flux": {
+    "C_LARE_TAYLOR": {
+      "rms_error_cm_per_day": 0.6396881114475617,
+      "max_abs_error_cm_per_day": 2.9219646195368796,
+      "mean_signed_error_cm_per_day": -0.23918943628792147
+    },
+    "C_M1_LINEAR_PSI": {
+      "rms_error_cm_per_day": 0.743052487519409,
+      "max_abs_error_cm_per_day": 2.1942098322030414,
+      "mean_signed_error_cm_per_day": 0.18730628676522845
+    },
+    "C_M1_LINEAR_THETA": {
+      "rms_error_cm_per_day": 0.7702408036921932,
+      "max_abs_error_cm_per_day": 2.369093685671478,
+      "mean_signed_error_cm_per_day": 0.2006856309368447
+    }
+  },
+  "support": {
+    "C_M1_LINEAR_PSI": {
+      "supported": false,
+      "broad_support": false,
+      "worse_primary_cases": [
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4"
+      ]
+    },
+    "C_M1_LINEAR_THETA": {
+      "supported": false,
+      "broad_support": false,
+      "worse_primary_cases": [
+        "S2_B1_F2",
+        "S2_B1_F3",
+        "S2_B1_F4"
+      ]
+    }
+  },
+  "same_dimension_L4": {
+    "L4_LONG_130_pooled_rms_cm_per_day": 0.2920398250207365,
+    "L4_LONG_130_max_abs_cm_per_day": 1.4147938305151513,
+    "L4_LOCAL_140_identity_max_abs_cm_per_day": 8.881784197001252e-14
+  },
+  "reconstruction": {
+    "C_M1_LINEAR_PSI_theta135_rms": 0.001920364313682543,
+    "C_M1_LINEAR_THETA_theta135_rms": 0.001946501081288612
+  },
+  "adjudication": [
+    "Neither first-moment reconstruction is pooled-RMS noninferior to the L3 storage-only baseline.",
+    "Both moment routes reduce the maximum error but reverse the pooled signed-error direction and worsen RMS and maximum error together in all three S2 primary cases.",
+    "The same-dimension L4 explicit-localization control has materially lower long-interface RMS and maximum error than either four-state L3+M1 route.",
+    "The L4 local 140 cm identity guard reproduces the fine face to numerical precision, showing that explicit localization of the terminal 10 cm state directly resolves the target-face information deficit.",
+    "A second moment or front coordinate is not automatically authorized by this negative result. Existing explicit-layer resolution evidence must be reconciled first because it is both conservative to evolve and already shows monotone fidelity improvement."
+  ],
+  "next": "LAYER-ROM-A4_EXPLICIT_LAYER_FIDELITY_FRONTIER_RECONCILIATION",
+  "firewalls": [
+    "NO_REDUCED_PROPAGATION_FROM_M1",
+    "NO_EMPIRICAL_CORRECTION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

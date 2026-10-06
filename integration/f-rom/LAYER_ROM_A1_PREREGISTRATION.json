@@ -1,0 +1,281 @@
+{
+  "schema": "swap5.layer-rom.phase-a.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-A1",
+  "phase": "PREREGISTERED_BEFORE_LAYER_RESPONSE_REPLAY",
+  "canonical_basis": "integration/f-ci-canonical@b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "question": "What is the minimum vertically aggregated state representation that preserves hydrologically relevant memory of a 160 cm B01 Richards column, and which closure is then required to propagate that state?",
+  "scope": {
+    "material": "B01",
+    "column_depth_cm": 160,
+    "physics": "pure matrix-water hydraulics",
+    "excluded": [
+      "ET",
+      "root uptake",
+      "macropores",
+      "frost",
+      "snow",
+      "production groundwater coupling",
+      "Hupsel transfer"
+    ],
+    "production_rom_authorized": false
+  },
+  "authority_firewalls": [
+    "NO_REFERENCE_RICHARDS_MUTATION",
+    "NO_ROSSFAST_MUTATION",
+    "NO_PRODUCTION_GROUNDWATER_COUPLING_MUTATION",
+    "NO_FMC_SURFACE_GW_CONTACT_SEMANTICS_WHILE_D30_D31_BLOCKED",
+    "NO_NATIVE_FMC_ET_ROOT_WITHDRAWAL_SEMANTICS_WHILE_D28_BLOCKED",
+    "NO_POST_RESULT_ACCEPTANCE_THRESHOLD_SELECTION",
+    "NO_SINGLE_SCALAR_FIDELITY_SCORE"
+  ],
+  "evidence_reuse": {
+    "stage_a_reference_workflow_run": 35444243790,
+    "stage_a_artifact_id": 10585316225,
+    "stage_a_artifact_digest": "sha256:a62963c801ffa325d1f12a4314dd703c766f7db4669a33c1ef62f9da6eac45c0",
+    "stage_a_o0_sha256": "7d92c4524d16836a25200851ce560b041971d05f65256785e8cf1ef59ae0b345",
+    "stage_a_states": 6144,
+    "future_probe_workflow_run": 35445731057,
+    "future_probe_artifact_id": 10584843824,
+    "future_probe_artifact_digest": "sha256:56f9b9c732becdbfd5a0c11da21bc2b90f5bed04ab15f7b9c984a199251ded3c",
+    "future_probe_start_states": 41,
+    "future_probe_count": 7,
+    "classification": "IMMUTABLE_REUSE_PARTLY_EXPOSED_DEVELOPMENT_EVIDENCE_NOT_BLIND_VALIDATION"
+  },
+  "diagnostic_state_scale": {
+    "coordinate": "fixed-layer mean theta, information-equivalent to exact layer storage for fixed layer thickness",
+    "metric": "L_inf",
+    "B01_theta_floor": 0.0005420462931603476,
+    "radii_multipliers": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4
+    ],
+    "role": "diagnostic state-neighborhood scale only, never an application tolerance"
+  },
+  "representations": [
+    {
+      "id": "T1",
+      "class": "total_storage_control",
+      "end_indices": [
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        160
+      ]
+    },
+    {
+      "id": "L2",
+      "class": "active_lower_zone",
+      "end_indices": [
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U2",
+      "class": "uniform_control",
+      "end_indices": [
+        8,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        80,
+        160
+      ]
+    },
+    {
+      "id": "L3",
+      "class": "active_lower_zone",
+      "end_indices": [
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U3",
+      "class": "near_uniform_control",
+      "end_indices": [
+        5,
+        11,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        50,
+        110,
+        160
+      ]
+    },
+    {
+      "id": "L4",
+      "class": "active_lower_zone",
+      "end_indices": [
+        13,
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U4",
+      "class": "uniform_control",
+      "end_indices": [
+        4,
+        8,
+        12,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        40,
+        80,
+        120,
+        160
+      ]
+    },
+    {
+      "id": "L6",
+      "class": "nested_active_lower_zone",
+      "end_indices": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ]
+    },
+    {
+      "id": "U6",
+      "class": "near_uniform_control",
+      "end_indices": [
+        3,
+        5,
+        8,
+        11,
+        13,
+        16
+      ],
+      "depth_boundaries_cm": [
+        0,
+        30,
+        50,
+        80,
+        110,
+        130,
+        160
+      ]
+    }
+  ],
+  "partition_freeze_rationale": {
+    "L_family": "Nested terminal refinement tests the prior active-lower-zone hypothesis without searching the new response results.",
+    "U_family": "Same-dimension controls distribute state information approximately uniformly on the immutable 10 cm Reference grid.",
+    "L6_rule": "L6 extends the pre-existing L2/L3/L4 nested lower-zone ladder upward by two fixed 10 cm layers; it is not selected from the future-response artifact."
+  },
+  "future_response_common_cohort": {
+    "source": "exact 41 response-blind start states already frozen by LARE-RS1-GW-P2 selection",
+    "pair_universe": "all unordered cross-history pairs among the 41 starts",
+    "full_state_alias_filter": "full 16-cell theta L_inf > B01_theta_floor",
+    "identical_future_forcing": true,
+    "probes": [
+      "HOLD",
+      "TOP_PLUS",
+      "TOP_MINUS",
+      "BOTTOM_HEAD_RISE",
+      "BOTTOM_HEAD_FALL",
+      "BOTTOM_HEAD_RISE_THEN_FALL",
+      "BOTTOM_HEAD_FALL_THEN_RISE"
+    ],
+    "GW_D_horizons_steps": [
+      4,
+      64,
+      256
+    ],
+    "GW_R_horizon_steps": [
+      1250
+    ]
+  },
+  "response_vector": [
+    "candidate close-pair count",
+    "cumulative bottom exchange difference",
+    "total storage difference",
+    "lower 40-160 cm storage difference",
+    "terminal bottom-flux difference",
+    "terminal bottom-flux sign mismatch",
+    "drainage-capillary reversal sequence mismatch",
+    "reversal timing difference",
+    "one-day cumulative bottom-exchange difference",
+    "one-day systematic signed exchange difference",
+    "piecewise-constant reconstructed theta profile RMSE and max-absolute error as secondary current-state diagnostics"
+  ],
+  "error_decomposition": {
+    "state_information_error": "future-response ambiguity between full states that are close only after projection to the frozen layer state",
+    "closure_error": "difference introduced when a frozen reduced state is propagated by a specified inter-layer closure; not part of A1",
+    "numerical_discretization_error": "difference caused by solving Richards on a coarser spatial discretization; represented separately by same-partition CoRichards where qualified"
+  },
+  "closure_families_frozen_for_successor": [
+    {
+      "id": "C_LARE_TAYLOR",
+      "role": "published/declaration-bound adjacent-layer Taylor LARE closure"
+    },
+    {
+      "id": "C_DARCY_CENTROID",
+      "role": "Darcy flux from constitutive heads at layer-average state and centroid gradient, with separately declared conductivity averaging"
+    },
+    {
+      "id": "C_QS_PROFILE",
+      "role": "quasi-steady within-layer profile reconstruction constrained by layer storage before face flux evaluation"
+    },
+    {
+      "id": "C_GRADIENT_AWARE",
+      "role": "only after evidence shows layer storage alone insufficient; requires separately preregistered additional gradient or moment state"
+    }
+  ],
+  "falsification_rules": [
+    "If an added smart layer does not reduce state aliasing or future-response ambiguity relative to the lower-dimensional nested member, it has no demonstrated information value in this domain.",
+    "If a uniform same-dimension control is noninferior across every declared ambiguity component, the active-zone placement hypothesis is not supported at that dimension.",
+    "If L6 still shows material future-response ambiguity at the 1x diagnostic radius, layer-storage-only state is not established sufficient for this domain.",
+    "No representation is application-accepted without independently sourced application tolerances."
+  ],
+  "next_if_A1_supports_layer_storage_state": "Freeze one or more surviving representations and compare C_LARE_TAYLOR, C_DARCY_CENTROID and C_QS_PROFILE without changing the state representation.",
+  "next_if_A1_rejects_layer_storage_state": "Preregister an additional physically interpretable state such as gradient/moment or front position before any new closure fitting.",
+  "pre_execution_amendment": {
+    "date": "2026-09-20",
+    "before_first_layer_response_replay": true,
+    "change": "Explicitly preregister current-profile reconstruction diagnostics already implied by the requested evaluation vector.",
+    "scientific_effect": "No partition, radius, future-response metric, acceptance rule or candidate selection changed."
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcg.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCG",
+  "failed_runs": [
+    {
+      "workflow_run": 35501154590,
+      "executed_head": "be29be14e3b6f61c6713d75af9f60626482edc44",
+      "scientific_result_exposed": false,
+      "causes": [
+        "Analyzer expected implementation alias primary_temporal_horizon_step, while that alias had not yet reached the executed workflow head.",
+        "B12 immutable-artifact checksum validation failed in sha256sum -c line parsing before evidence extraction."
+      ]
+    },
+    {
+      "workflow_run": 35501211330,
+      "executed_head": "d1dcfc45ad7cd51e61a63441a0b7c477aab48073",
+      "status_at_repair": "partial material execution; B12 failed before analysis",
+      "scientific_decision_authority": false,
+      "reason": "Incomplete six-material cohort cannot satisfy preregistered aggregate gate."
+    },
+    {
+      "workflow_run": 35501314780,
+      "executed_head": "85d645415c7c671438d7a1d0e0af9e0d9247e55d",
+      "scientific_decision_authority": false,
+      "material_status": "B02/B05/B06/B11/B16 completed; B12 failed before analysis",
+      "reason": "Authenticated GitHub Actions archive download for B12 did not reproduce the registered zip digest on-runner, while connector retrieval reproduced the registered archive digest exactly. The six-material aggregate therefore remained unavailable."
+    }
+  ],
+  "repairs": [
+    {
+      "commit": "d1dcfc45ad7cd51e61a63441a0b7c477aab48073",
+      "change": "Bind primary_temporal_horizon_step=1024 as implementation alias of already frozen decision_checkpoint_step=1024.",
+      "scientific_effect": "NONE"
+    },
+    {
+      "commit": "85d645415c7c671438d7a1d0e0af9e0d9247e55d",
+      "change": "Replace sha256sum -c stdin parsing with direct scalar digest equality for immutable B1H/B1HCF artifact verification.",
+      "scientific_effect": "NONE"
+    },
+    {
+      "commit": "d080f44daa0ed9b5e4f55b5b49f67665427438d0",
+      "change": "For B12 only, fail closed on immutable internal file SHA-256 identities (R16 trajectory, B1H result, B1HCF corrected result) if archive-container digest transport differs; all other materials retain archive digest equality.",
+      "verified_internal_sha256": {
+        "R16_B12": "16598c0be9ab6c26a1196d5836d400d632f0c1bf9c0fb24a68312407b83b2652",
+        "B1H_B12_RESULT": "dd429968299341397077eb44d0db1314b9db1e0dc10a4ad33502f0ad6086b9cb",
+        "B1HCF_B12_RESULT": "bb023e36d52fd66637e152fa25d9c20dad346ebae6a1da94f6cddcabdeba4346"
+      },
+      "scientific_effect": "NONE"
+    }
+  ],
+  "unchanged": [
+    "six materials",
+    "R8 and R16_OP representations",
+    "dt ladder 1e-4, 5e-5, 2.5e-5 d",
+    "QAVG/QEND semantics",
+    "five-component causal core",
+    "step-1024 primary decision horizon",
+    "nonincrease and strict-decrease rules",
+    "no new Reference trajectories"
+  ],
+  "authority_rule": "Only the first complete six-material run after the horizon-alias and B12 file-level integrity repairs may serve as B1HCG decision authority.",
+  "production_rom_authorized": false
+}

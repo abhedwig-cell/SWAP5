@@ -1,0 +1,140 @@
+{
+  "schema": "swap5.layer-rom.phase-b1.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1",
+  "decision": "B1_DIMENSION4_GW_FRONTIER_REPLICATED",
+  "execution": {
+    "workflow_run": 35495496560,
+    "executed_head": "f889ed0c4812ee6abc775849b8fb760df6ec9c15",
+    "artifact_id": 10600039230,
+    "artifact_digest": "sha256:544cca1a352f9ba8cc490ebc610d515e420ac598614e4cddf7459535f7aeab0b",
+    "raw_result_sha256": "3c85d633f3f64f25736f7ea6eeea2384b153d32fdda98bbd758b581d1cd07c09",
+    "conclusion": "success"
+  },
+  "integrity": {
+    "pass": true,
+    "all_four_members_qualified": true,
+    "max_abs_C4R_reproduction_difference": 1.509903313490213e-14,
+    "maximum_qualified_water_ledger_cm": 1.0141193440560414e-13,
+    "deterministic_repeat": true
+  },
+  "frontier": {
+    "R2_GW": {
+      "minimum_dimension": 4,
+      "crossing_members": [
+        "L4",
+        "L6"
+      ]
+    },
+    "FMC_GW": {
+      "minimum_dimension": 4,
+      "crossing_members": [
+        "L4",
+        "L6"
+      ]
+    },
+    "R2_PROFILE": {
+      "minimum_dimension": 4,
+      "crossing_members": [
+        "L4",
+        "L6"
+      ]
+    },
+    "FMC_PROFILE": {
+      "minimum_dimension": null,
+      "crossing_members": []
+    }
+  },
+  "members": {
+    "L2": {
+      "dimension": 2,
+      "boundaries_cm": [
+        0,
+        150,
+        160
+      ],
+      "bottom_flux_sign_error_count": 113,
+      "total_storage_rmse_cm": 0.21086734481849725,
+      "cumulative_bottom_exchange_rmse_cm": 0.21086734481850522,
+      "terminal_bottom_flux_rmse_cm_per_day": 5.937730165957803,
+      "mapped_R16_theta_rmse": 0.05110706029983261,
+      "crosses_R2_GW": false,
+      "crosses_FMC_GW": false,
+      "crosses_R2_PROFILE": false,
+      "crosses_FMC_PROFILE": false
+    },
+    "L3": {
+      "dimension": 3,
+      "boundaries_cm": [
+        0,
+        140,
+        150,
+        160
+      ],
+      "bottom_flux_sign_error_count": 35,
+      "total_storage_rmse_cm": 0.046012141581535736,
+      "cumulative_bottom_exchange_rmse_cm": 0.04601214158154691,
+      "terminal_bottom_flux_rmse_cm_per_day": 1.9233891036737385,
+      "mapped_R16_theta_rmse": 0.03857070309872652,
+      "crosses_R2_GW": false,
+      "crosses_FMC_GW": false,
+      "crosses_R2_PROFILE": false,
+      "crosses_FMC_PROFILE": false
+    },
+    "L4": {
+      "dimension": 4,
+      "boundaries_cm": [
+        0,
+        130,
+        140,
+        150,
+        160
+      ],
+      "bottom_flux_sign_error_count": 1,
+      "total_storage_rmse_cm": 0.005734214567878725,
+      "cumulative_bottom_exchange_rmse_cm": 0.005734214567883706,
+      "terminal_bottom_flux_rmse_cm_per_day": 0.28192349905537223,
+      "mapped_R16_theta_rmse": 0.028917216263134846,
+      "crosses_R2_GW": true,
+      "crosses_FMC_GW": true,
+      "crosses_R2_PROFILE": true,
+      "crosses_FMC_PROFILE": false
+    },
+    "L6": {
+      "dimension": 6,
+      "boundaries_cm": [
+        0,
+        110,
+        120,
+        130,
+        140,
+        150,
+        160
+      ],
+      "bottom_flux_sign_error_count": 1,
+      "total_storage_rmse_cm": 0.0031133801324227358,
+      "cumulative_bottom_exchange_rmse_cm": 0.0031133801324331584,
+      "terminal_bottom_flux_rmse_cm_per_day": 0.0929410991274798,
+      "mapped_R16_theta_rmse": 0.01584726431670571,
+      "crosses_R2_GW": true,
+      "crosses_FMC_GW": true,
+      "crosses_R2_PROFILE": true,
+      "crosses_FMC_PROFILE": false
+    }
+  },
+  "scientific_adjudication": [
+    "The blind fixed-head groundwater frontier is first crossed at four active-lower-zone storage states; adding the previously absent L2 challenge does not change the C4R dimension-4 result.",
+    "L2 and L3 lose qualitatively important groundwater-exchange behavior, reflected in 113 and 35 bottom-flux sign errors respectively, while L4 and L6 each retain only one sign error on the frozen 256-observation cohort.",
+    "L6 materially reduces continuous storage, exchange, bottom-flux and mapped-profile errors relative to L4, so L4 is a minimum comparator-relative groundwater candidate rather than a convergence endpoint.",
+    "Neither L4 nor L6 crosses the stricter FMC full-profile frontier. Groundwater-exchange sufficiency and full vertical-profile fidelity therefore require different representation dimensions in this bounded experiment.",
+    "A1 and B1 remain logically distinct: A1 found no demonstrated predictive-state-information gain beyond L3 in its common cohort; B1 shows that closure propagation under prescribed head requires local resolution at least equivalent to L4 to cross the groundwater comparators."
+  ],
+  "next": "B2_LONGER_HORIZON_AND_REVERSAL_FIXED_HEAD_VALIDATION_WITH_L3_L4_L6_FROZEN",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_MOVING_WATER_TABLE",
+    "NO_SPEED_CLAIM",
+    "NO_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

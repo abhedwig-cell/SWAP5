@@ -1,0 +1,85 @@
+name: F-ROM Layer-ROM B1R corrected B01 fixed-head frontier
+
+on:
+  push:
+    branches:
+      - work/f-rom-layer-a
+    paths:
+      - 'integration/f-rom/LAYER_ROM_B1R_PREREGISTRATION.json'
+      - 'tests/rom/analyze_layer_rom_b1r.py'
+      - '.github/workflows/f-rom-layer-b1r-corrected-frontier.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Assert authority and source freeze
+        run: |
+          set -euo pipefail
+          git diff --quiet 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 HEAD -- src reference
+          python3 - <<'PY'
+          import json
+          p=json.load(open('integration/f-rom/LAYER_ROM_B1R_PREREGISTRATION.json'))
+          assert p['phase']=='PREREGISTERED_BEFORE_B01_FIXED_HEAD_FRONTIER_REPAIR'
+          assert p['scope']['material']=='B01'
+          assert [x['id'] for x in p['scope']['candidates']]==['L2','L3','L4','L6']
+          assert p['FMC_handling']['corrected_flux_frontier']=='HELD'
+          assert p['application_acceptance_adjudicated'] is False
+          assert p['production_rom_authorized'] is False
+          print('LAYER_ROM_B1R_AUTHORITY_LOCK=PASS')
+          PY
+
+      - name: Recover immutable C4R evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/b1r
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/10593626518/zip" > /tmp/b1r/c4r.zip
+          echo "da2f24b28ff95cfb1699a3fd7dbc5f0ac92711b4f1e8b0f34a934fff7a32ada9  /tmp/b1r/c4r.zip" | sha256sum -c -
+          unzip -q /tmp/b1r/c4r.zip -d /tmp/b1r/c4r
+          test -f /tmp/b1r/c4r/R16_o0.txt
+          test -f /tmp/b1r/c4r/R2_o0.txt
+          echo "LAYER_ROM_B1R_IMMUTABLE_EVIDENCE=PASS"
+
+      - name: Install analysis dependency
+        run: python3 -m pip install --disable-pip-version-check numpy
+
+      - name: Execute corrected B01 frontier twice
+        run: |
+          set -euo pipefail
+          mkdir -p B1R_EVIDENCE
+          for rep in 1 2; do
+            python3 tests/rom/analyze_layer_rom_b1r.py               --r16 /tmp/b1r/c4r/R16_o0.txt               --r2 /tmp/b1r/c4r/R2_o0.txt               --old-b1 integration/f-rom/LAYER_ROM_B1_RESULT.json               --prereg integration/f-rom/LAYER_ROM_B1R_PREREGISTRATION.json               --output "B1R_EVIDENCE/result-${rep}.json"               | tee "B1R_EVIDENCE/analyzer-${rep}.txt"
+          done
+          cmp B1R_EVIDENCE/result-1.json B1R_EVIDENCE/result-2.json
+          cp B1R_EVIDENCE/result-1.json B1R_EVIDENCE/LAYER_ROM_B1R_RESULT.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('B1R_EVIDENCE/LAYER_ROM_B1R_RESULT.json'))
+          assert r['decision']=='B1R_CORRECTED_R2_FRONTIER_REBUILT'
+          assert r['integrity']['pass'] is True
+          assert r['FMC']['corrected_flux_frontier']=='HELD'
+          assert r['application_acceptance_adjudicated'] is False
+          assert r['production_rom_authorized'] is False
+          print('LAYER_ROM_B1R_RESULT_GATE=PASS')
+          PY
+          sha256sum B1R_EVIDENCE/* > B1R_EVIDENCE/sha256.txt
+          echo "LAYER_ROM_B1R=PASS"
+
+      - name: Upload B1R evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: layer-rom-b1r-corrected-frontier
+          path: B1R_EVIDENCE/
+          if-no-files-found: error

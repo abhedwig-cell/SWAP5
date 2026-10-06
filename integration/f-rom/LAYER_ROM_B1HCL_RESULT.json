@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcl.adjudication.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCL",
+  "decision": "B1HCL_FIRST_ORDER_REFERENCE_LIMIT_SUPPORTED_ALL_MATERIALS",
+  "evidence_classification": "PROSPECTIVE_HOLDOUT_CONFIRMATION_OF_AN_EXPOSED_B1HCK_TEMPORAL_HYPOTHESIS",
+  "execution": {
+    "workflow_run": 35505239620,
+    "executed_head": "63d5739e6e4254fa8b733571452b35c550636a55",
+    "aggregate_artifact_id": 10603104252,
+    "aggregate_artifact_digest": "sha256:95cb19ed4df84413e00087223c5103909e0a6499a06b571caf34adc33e60d159",
+    "conclusion": "success"
+  },
+  "material_decisions": {
+    "B02": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED",
+    "B05": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED",
+    "B06": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED",
+    "B11": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED",
+    "B12": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED",
+    "B16": "B1HCL_MATERIAL_FIRST_ORDER_LIMIT_SUPPORTED"
+  },
+  "component_gate_counts": {
+    "storage_rms": {
+      "reference_convergence_pass": 6,
+      "candidate_convergence_pass": 6,
+      "holdout_prediction_pass": 6,
+      "richardson_limit_pass": 6,
+      "all_gates_pass": 6
+    },
+    "cumulative_bottom_rms": {
+      "reference_convergence_pass": 6,
+      "candidate_convergence_pass": 6,
+      "holdout_prediction_pass": 6,
+      "richardson_limit_pass": 6,
+      "all_gates_pass": 6
+    },
+    "qavg_rms": {
+      "reference_convergence_pass": 6,
+      "candidate_convergence_pass": 6,
+      "holdout_prediction_pass": 6,
+      "richardson_limit_pass": 6,
+      "all_gates_pass": 6
+    },
+    "qend_rms": {
+      "reference_convergence_pass": 6,
+      "candidate_convergence_pass": 6,
+      "holdout_prediction_pass": 6,
+      "richardson_limit_pass": 6,
+      "all_gates_pass": 6
+    },
+    "mapped_theta_rms": {
+      "reference_convergence_pass": 6,
+      "candidate_convergence_pass": 6,
+      "holdout_prediction_pass": 6,
+      "richardson_limit_pass": 6,
+      "all_gates_pass": 6
+    }
+  },
+  "component_diagnostics": {
+    "storage_rms": {
+      "max_prediction_error_over_fine_ultra": 0.004586506776620205,
+      "max_richardson_residual_over_candidate_ultra": 0.0030911000936061145,
+      "observed_order_range": [
+        0.9950947591928824,
+        1.0001043942181784
+      ]
+    },
+    "cumulative_bottom_rms": {
+      "max_prediction_error_over_fine_ultra": 0.004586506776617873,
+      "max_richardson_residual_over_candidate_ultra": 0.0030911000971274288,
+      "observed_order_range": [
+        0.9950947591928824,
+        1.0001043942181784
+      ]
+    },
+    "qavg_rms": {
+      "max_prediction_error_over_fine_ultra": 0.05954264291215361,
+      "max_richardson_residual_over_candidate_ultra": 0.04409744387613231,
+      "observed_order_range": [
+        0.9344770990150735,
+        1.0000782784438924
+      ]
+    },
+    "qend_rms": {
+      "max_prediction_error_over_fine_ultra": 0.027211824415185867,
+      "max_richardson_residual_over_candidate_ultra": 0.028789081202065758,
+      "observed_order_range": [
+        0.9823939827459817,
+        1.000109430008232
+      ]
+    },
+    "mapped_theta_rms": {
+      "max_prediction_error_over_fine_ultra": 0.009107178526244621,
+      "max_richardson_residual_over_candidate_ultra": 0.006532479598202036,
+      "observed_order_range": [
+        0.9951533901272666,
+        0.9999809218672854
+      ]
+    }
+  },
+  "adjudication": [
+    "The prospectively frozen fourth Reference level confirms first-order temporal convergence on all six materials and all five declared observables.",
+    "The frozen first-order holdout prediction passes on all 30 material-component combinations.",
+    "The DOP853 equal-grid Layer-ROM oracle lies within the frozen Richardson-limit bound on all 30 combinations.",
+    "The previously observed equal-grid finite-Reference residual is therefore attributable, within this fixed-head laboratory and numerical authority, to finite Reference temporal truncation rather than an established Layer-ROM closure/model-form discrepancy.",
+    "This conclusion does not establish application acceptance and does not imply reduced L4/L6/R8 fidelity; those candidates still require comparison after candidate temporal error is removed."
+  ],
+  "next": "LAYER-ROM-B1HCM_CONTINUOUS_TIME_REDUCED_LADDER_REBASE",
+  "firewalls": [
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_PRODUCTION_ROM",
+    "NO_NEW_CLOSURE_OR_STATE"
+  ],
+  "production_rom_authorized": false
+}

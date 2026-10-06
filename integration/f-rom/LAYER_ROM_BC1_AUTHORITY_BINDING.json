@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.layer-rom.fixed-head-boundary-authority.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-BC1",
+  "phase": "AUTHORITY_BOUND_PROPAGATION_HELD_PENDING_INTERNAL_CLOSURE",
+  "canonical_checked": "integration/f-ci-canonical@1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "source_evidence": {
+    "branch": "work/f-rom-lare-rs1",
+    "branch_role": "selective evidence and source-structure authority only; no wholesale merge",
+    "authority_doc": "docs/science/F-ROM_LARE_BC1_BOUNDARY_AUTHORITY.md",
+    "face_semantics": "integration/f-rom/LARE_BC1_A2_RESULT.json",
+    "closeout": "integration/f-rom/LARE_BC1_CLOSEOUT.json",
+    "stage_b_workflow_run": 35450497790,
+    "stage_b_artifact_id": 10586945126,
+    "stage_b_artifact_digest": "sha256:ba449e345e710c4c3e5504de290c2bca3f9d083317743efd194e05623bb94350"
+  },
+  "physical_contract": {
+    "geometry": "fixed 160 cm unsaturated column; prescribed lower-boundary pressure head",
+    "sign": "positive downward/out of the bottom in normalized Layer-ROM convention",
+    "bottom_closure": "q_b = K(theta_bar_N) * [1 + 2*(psi_b-psi_bar_N)/L_N]",
+    "selected_name": "CURRENT_LAYER_FACE",
+    "last_layer_requirement": "The frozen L2/L3/L4/L6 active-zone families all retain 150-160 cm as a distinct 10 cm terminal layer.",
+    "consequence": "For the selected Layer-ROM representations the bottom-face state does not require an additional coarse boundary layer reconstruction."
+  },
+  "evidence_interpretation": [
+    "The fixed-head Taylor gradient is algebraically compatible with the SWAP mode-5 lower-face geometry after h=-psi sign normalization.",
+    "The current Reference SWKIMPL=0 route uses lagged start-of-step conductivity internally and balance-materializes qbot; that numerical time-level is a comparator diagnostic, not Layer-ROM physical closure semantics.",
+    "BC1 branch evidence selected CURRENT_LAYER_FACE over boundary-head conductivity without fitted coefficients.",
+    "Resolution sensitivity under head-driven histories remains strong, so a qualified bottom face does not solve the internal long-to-local interface closure problem."
+  ],
+  "authorized_for_layer_rom": [
+    "same-state fixed-head bottom-operator audit",
+    "future fixed-domain head-rise/fall propagation after an internal closure passes its own gate",
+    "GW-D/GW-R relative fidelity diagnostics without application acceptance"
+  ],
+  "not_authorized": [
+    "moving-water-table geometry",
+    "saturated fraction inside a reduced layer",
+    "production groundwater coupling",
+    "groundwater application acceptance",
+    "FMC surface-groundwater contact semantics",
+    "boundary coefficient fitting"
+  ],
+  "propagation_gate": "Do not execute new Layer-ROM fixed-head propagation until A2B or a later closure work unit establishes an internal closure route eligible for propagation.",
+  "production_rom_authorized": false
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.layer-rom.cost-fidelity-synthesis.preregistration.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-CF1",
+  "phase": "PREREGISTERED_BEFORE_COST1_RESULT_EXPOSURE_TO_SYNTHESIS",
+  "title": "Frozen dimension-state-closure-fidelity-cost synthesis",
+  "question": "Given the already frozen Layer-ROM fidelity frontier, what computational reduction is actually observed for L4, L6 and R8, without changing representation or fidelity acceptance after timing results are seen?",
+  "authorities": {
+    "agent_guide": "AGENTS.md",
+    "canonical": "integration/f-ci-canonical@bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+    "phase_b_fidelity": "integration/f-rom/LAYER_ROM_PHASE_B_DIMENSION_STATE_CLOSURE_FIDELITY_CURVE.json",
+    "phase_b_closeout": "integration/f-rom/LAYER_ROM_PHASE_B_CLOSEOUT.json",
+    "model_form_decomposition": "integration/f-rom/LAYER_ROM_B1HCP_RESULT.json",
+    "cost_preregistration": "integration/f-rom/LAYER_ROM_COST1_PREREGISTRATION.json",
+    "cost_execution_authority_run": 35507539740
+  },
+  "frozen_candidates": [
+    "L4",
+    "L6",
+    "R8"
+  ],
+  "frozen_materials": [
+    "B02",
+    "B05",
+    "B06",
+    "B11",
+    "B12",
+    "B16"
+  ],
+  "synthesis_vector": [
+    "state-information interpretation inherited from Phase A/B",
+    "fixed-flux propagation interpretation inherited from Phase A",
+    "fixed-head continuous-time groundwater fidelity inherited from Phase B",
+    "same-partition Layer-ROM versus CoRichards groundwater relation inherited from B1HCP",
+    "BASE CPU/R16 per material",
+    "FINE CPU/R16 per material",
+    "BASE CPU/same-partition CoRichards per material",
+    "FINE CPU/same-partition CoRichards per material",
+    "FINE/BASE temporal-refinement cost factor per material",
+    "resolved-cheaper flags under the frozen paired two-SE rule"
+  ],
+  "adjudication": {
+    "cost_screen_complete": "Only if COST1 completes all six materials and all ten routes under its frozen equivalence and timing gates.",
+    "computational_reduction_signal_vs_R16": "Use COST1 robust_reduction_signal_vs_R16 exactly: both BASE and FINE resolved cheaper than R16 on all six materials for that dimension.",
+    "same_partition_cost_signal": "Report BASE and FINE resolved-cheaper counts and per-material relations versus same-partition CoRichards; do not convert this to a scalar winner.",
+    "fidelity_relation": "Carry B1HCP relation labels unchanged. Timing may not alter COR_COMPONENTWISE_NO_WORSE, LAYER_ROM_COMPONENTWISE_NO_WORSE or TRADEOFF labels.",
+    "practical_interpretation": "A dimension can be described as having a shared-host computational reduction signal only if the relevant frozen COST1 rule is satisfied. This remains separate from hydrological application acceptance.",
+    "no_universal_minimum": "Cost cannot establish a universal minimum dimension because Phase B already found material- and purpose-dependent fidelity."
+  },
+  "forbidden": [
+    "weighted cost-fidelity score",
+    "post-result hydrological tolerance",
+    "dropping B05 or any other material",
+    "selecting a new partition from timing results",
+    "changing closure or timestep science because a route is slow",
+    "portable or formal speedup claim",
+    "application acceptance",
+    "production ROM admission"
+  ],
+  "output": "integration/f-rom/LAYER_ROM_DIMENSION_STATE_CLOSURE_FIDELITY_COST_CURVE.json",
+  "next_rule": [
+    "If COST1 is incomplete, close CF1 blocked on COST1 and do not infer cost.",
+    "If COST1 completes, persist the full multidimensional curve and a bounded research decision on whether further Layer-ROM work is justified.",
+    "Any later application-envelope study requires externally sourced purpose tolerances and separate preregistration."
+  ],
+  "production_rom_authorized": false
+}

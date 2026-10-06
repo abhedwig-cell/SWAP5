@@ -1,0 +1,17 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hcmr.closeout.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCMR",
+  "status": "CLOSED_CORRECTED_CONTINUOUS_TIME_LAYER_ROM_REBASE",
+  "decision": "B1HCMR_CORRECTED_CONTINUOUS_TIME_REDUCED_LADDER_REBASED",
+  "authority": {
+    "preregistration": "integration/f-rom/LAYER_ROM_B1HCMR_PREREGISTRATION.json",
+    "workflow_run": 35505812730,
+    "executed_head": "398ca5d80be4a7a2bda6fd4d87c42e6e27ff882b",
+    "aggregate_artifact_id": 10603364421,
+    "aggregate_artifact_digest": "sha256:d2b2dcba548a75b29b18bc3fb22f8d1996b01db80a8eb92b6004efa255cc8a12"
+  },
+  "supersession": "B1HCM is superseded for QEND-based continuous-time fidelity; use B1HCMR.",
+  "next_authorized": "Use B1HCMR only with temporally qualified same-partition CoRichards for a frozen model-form/localization decomposition.",
+  "production_rom_authorized": false
+}

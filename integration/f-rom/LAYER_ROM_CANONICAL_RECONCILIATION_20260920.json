@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.layer-rom.canonical-reconciliation.v1",
+  "workstream": "F-ROM-LAYER",
+  "date": "2026-09-20",
+  "prior_baseline": "b3dc66cd85bcebe2bfca4d46f9ee92cb06d3137d",
+  "checked_live_canonical": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "delta": {
+    "ahead_by": 41,
+    "src_changed": false,
+    "reference_changed": false,
+    "layer_rom_paths_changed": false
+  },
+  "relevant_authority_change": {
+    "f_rom_code_frontier_now_canonical": true,
+    "admitted_by": "PR #489 / merge 3a815edda7cf5e155272b68ae49d440fd5db9138",
+    "decision": "FMC_AND_LARE_CODE_FRONTIERS_RECONCILED_DISTINCT_EXTERNAL_BLOCKERS",
+    "consequence": "Layer-ROM remains a bounded research successor. FMC D28/D30/D31 source blockers and LARE external application-accuracy blocker remain intact; no production ROM or application acceptance is authorized."
+  },
+  "compatibility": {
+    "A1_reexecution_required": false,
+    "A2_reexecution_required": false,
+    "A2B_reexecution_required_by_source_drift": false,
+    "reason": "The live delta contains governance/evidence/test-bank changes but no src/** or reference/** mutation. Immutable Reference artifacts used by Layer-ROM retain their exact digests."
+  },
+  "routing": [
+    "Continue A2B closure research on work/f-rom-layer-a.",
+    "Do not wholesale-merge work/f-rom-lare-rs1.",
+    "Return only bounded evidence successors to central regie after qualification.",
+    "Reconcile live canonical again before any admission request."
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.layer-rom.phase-b1hch.repair-record.v1",
+  "workstream": "F-ROM-LAYER",
+  "work_unit": "LAYER-ROM-B1HCH",
+  "failed_run": {
+    "workflow_run": 35502001117,
+    "executed_head": "b6e02ea763fc381860e761c6423a822e935b05fd",
+    "material_jobs": "ALL_SIX_SUCCESS",
+    "aggregate_scientific_result_exposed": true,
+    "exposed_decision": "B1HCH_R16_SELF_CONVERGENCE_MIXED",
+    "exposed_primary_map": {
+      "B02": true,
+      "B05": true,
+      "B06": true,
+      "B11": false,
+      "B12": false,
+      "B16": true
+    },
+    "failure_stage": "post-aggregation structural git diff check",
+    "cause": "aggregate checkout used fetch-depth=1, so baseline 1caa431002d5c128c73cfcfbd31af4cc39ee9f12 was unavailable to git diff",
+    "scientific_effect": "NONE"
+  },
+  "immutable_material_artifacts": {
+    "B02": {
+      "id": 10602009142,
+      "digest": "sha256:4e47d78e92a3194951a6c85cf01e2b0a3acceed025e58c8f55c548c19202f391"
+    },
+    "B05": {
+      "id": 10602258700,
+      "digest": "sha256:720fc1940a22ae3c63c8873f7957086def02bc4dba7d7ce7c88360b68d951449"
+    },
+    "B06": {
+      "id": 10602961380,
+      "digest": "sha256:c457a92922cd26b71b9969475856e0e6433112839b18f2a48d4eb71fa86a9fe2"
+    },
+    "B11": {
+      "id": 10602921554,
+      "digest": "sha256:f6d7b7b7cc494ea76c44c501dbeeeccc69b0ae739c02361f71f2e21c94ba79a1"
+    },
+    "B12": {
+      "id": 10602671722,
+      "digest": "sha256:2f961cd00e0f1af9968a88b03858f91cda67dd203d1fdf0d91e65d5c0209a8c5"
+    },
+    "B16": {
+      "id": 10602328671,
+      "digest": "sha256:7b6dd449ef21630d44309c276613f758e92488f29a3ead7521cbecb10ef72a2e"
+    }
+  },
+  "repair": {
+    "route": "aggregate-only rerun from immutable material artifacts; no material re-execution",
+    "permitted_changes": [
+      "checkout depth / baseline availability",
+      "aggregate orchestration only"
+    ],
+    "forbidden_changes": [
+      "preregistration",
+      "material results",
+      "classification rules",
+      "identity tolerance",
+      "decision logic",
+      "state",
+      "closure",
+      "dt ladder"
+    ],
+    "reproduction_requirement": "aggregate result must exactly reproduce exposed decision and primary material map"
+  },
+  "authority_rule": "Only a successful aggregate-only repair that reproduces the exposed result may close B1HCH.",
+  "production_rom_authorized": false
+}
