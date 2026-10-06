@@ -214,6 +214,10 @@ contains
       exchange_flux(cover_node)=exchange_flux(cover_node)-sum(covered_cm)/self%step_duration
     end if
     active=maxval(abs(exchange_flux))>1.0e-14_real64
+    ! A pure surface-to-macropore receipt can be physically active while its
+    ! same-residual matrix exchange is zero. Keep the provider active so the
+    ! top receipt participates in the candidate rather than being discarded.
+    if(self%candidate_pond_lateral_cm>0.0_real64)active=.true.
   end subroutine evaluate_inner_macropore_rate
 
   subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead, &
