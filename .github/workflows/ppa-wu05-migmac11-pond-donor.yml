@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile production runtime
         run: bash tests/fpm/run_migmac11_production_compile.sh
+      - name: Active MIGMAC11 pond route
+        run: WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=3 WU05_MIGMAC10=1 bash tests/fpm/run_ppa_wu05a9_top_input.sh
       - name: Preserve A9 top input
         run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
       - name: Preserve MIGMAC02 dynamic shrinkage
