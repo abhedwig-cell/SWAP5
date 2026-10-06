@@ -1,0 +1,54 @@
+{
+  "work_unit": "PPA-WU05B18",
+  "phase": "TYPED_SCIENTIFIC_COMPONENT_ONLY",
+  "baseline": "2acee704219d2f54d73df104364dffaeca205565",
+  "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "prerequisite": "integration/audits/PPA_WU05B17_REF_CANONICAL_ADMISSION.json",
+  "source_review": "integration/audits/PPA_WU05B18_SOURCE_REVIEW.json",
+  "source_sha256": {
+    "src/process/mod_drainage_spatial_distribution.f90": "ee38490c881c78cba2e533c6ffbb8716e06c6b2893256695a120602cef73b17a",
+    "src/process/mod_frost_geometry_effect.f90": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py": "e87ffc0649fb37a2d8acd8885425e1e2e92d4c245472bc624bd04aa063179f1d",
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py": "565dd26ad06e8c864b27f599f8abd695b13b93623396417b47b58e17d5726074"
+  },
+  "scope": "New isolated typed single-level signed DIVDRA/frost scientific process composition against admitted B17 corrected reference. Regenerate raw nodal distribution from the supplied immutable hydraulic view, then normal-air nodal frost multiplication or original low-air conductivity/geometry/scalar/bottom transformation. No backend/runtime selector or wrapper modification in this component phase.",
+  "interfaces_allowed_to_change": [
+    "New src/process/mod_frost_divdra_drainage_effect.f90 only",
+    "New standalone scientific harness and qualification/evidence/status records"
+  ],
+  "interfaces_held_fixed": [
+    "Existing positive-only DIVDRA API, process and runtime binding",
+    "All backend/forcing/model/application/solver/restart/receipt interfaces",
+    "All original/reference files and B17 corrected artifact",
+    "Physical scalar/bottom policies and fixed reference thresholds"
+  ],
+  "new_interface_contract": {
+    "parameters": "Typed single-level geometry: inherited drainage_distribution_parameters_t values, physical drain depth, explicit separate-infiltration switch, supplied surface-water level and infiltration-depth factor. No implicit global source variables or numerical controller options.",
+    "inputs": "Immutable process_hydraulic_view_t, already computed rfcp(:), deepest frozen node and bracketed frost-bottom depth, theta(:)/saturation(:), raw signed scalar and positive-upward bottom proposal. No committed state mutation.",
+    "outputs": "One disposable typed result with final nodal sink vector, final scalar, separate bottom, available-air/low-air/blocked/partition diagnostics. Invalid or unsupported domains produce unavailable result and never expose a partially qualified final vector.",
+    "raw_generation": "Regenerate initial raw nodal distribution from supplied hydraulic view and physical distribution parameters using original single-level discharge or B17 corrected separate-infiltration equations.",
+    "normal_air": "Literal bottom-up air scan; when low-air condition is false, multiply raw nodes by rfcp and sum to final scalar. Bottom remains unchanged.",
+    "low_air": "Select only deepest_frozen_node>1 and available_air<0.01. Block strictly frost_bottom<physical_drain_depth. If blocked zero scalar and bottom. Otherwise replace scalar with qbot for abs(raw)<1e-6, or retain raw*(1+qbot/raw). Modify conductivities with rfcp and original floor1e-10 and regenerate distribution using min(gwl,frost_bottom).",
+    "closure": "Final low-air signed scalar is authoritative. Apply an explicit last participating node residual only for floating-point partition roundoff, diagnosed independently. Normal-air scalar is literal final nodal sum. One final nodal sink, separate bottom.",
+    "rejected_domain": "Every nonzero raw or transformed scalar with abs<=1e-10 fails closed; zero is valid. No clipping or sign change. Invalid shapes/NaNs/geometry/physical controls fail closed before final publication.",
+    "bounded_geometry": "Finite positive conductivity1e-10..1e6; dz1e-6..1e6; total profile depth<=1e6; anisotropy1e-6..1e6; spacing1e-6..1e6; |raw/bottom|<=1e6; groundwater within profile; separate-infiltration surface level above groundwater within profile, infiltration-depth factor0..1. This bounds scientific evaluation arithmetic and does not alter solver tolerance or execution policy.",
+    "geometry_seam": "Retain original1e-10 Lev2Comp seam; explicitly reject supplied groundwater lying just below a grid boundary while still assigned to its shallower compartment (negative saturated thickness), pending separate geometry qualification. Exact boundary and deeper-than-offset remain distinct admitted source seams."
+  },
+  "required_gates": [
+    "Full corrected B17 FrozenBounds+DIVDRA reference on all4536 original inputs at O0/O2; independent current-source output identity",
+    "Typed component executes all4536 cases at O0/O2;1296 original nonzero tiny raw proposals retain explicit unavailable-domain outcomes; remaining3240 admissible cases compare final nodes/scalar/bottom to full corrected original within1e-14 cm/day",
+    "Original source and reference formulas, signed low-air owner equations and independent conservative partitions remain validated through inherited immutable B16/B17 evidence and fresh actual source execution",
+    "Typed O0/O2 byte identity; independent node/scalar/bottom owner sums; closure correction bounded1e-14; zero/blocked/equality/surviving, normal/low-air, sign and infiltration axes exercised",
+    "Invalid shape/finite/physical-domain and near-boundary negative-thickness guards unavailable with absent final vector and unchanged inputs; controlled actual seam reference checks where admissible",
+    "Existing positive-only DIVDRA scientific/binding preservation and unchanged transitive production module/body hashes",
+    "Documentation checks, strict MkDocs and immutable full outputs/source/hash evidence"
+  ],
+  "qualification_scope": "Isolated scientific process component only. No backend runtime admission, hard-mass full simulation, external frost, multilevel distribution, source physics expansion or global equivalence.",
+  "next_action": "Publish preregistration before adding typed process/harness",
+  "aggregate_frost_migration_complete": false
+}

@@ -1,0 +1,44 @@
+{
+  "work_unit": "PPA-WU05B18",
+  "baseline": "2acee704219d2f54d73df104364dffaeca205565",
+  "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "status": "PREREGISTERED_TYPED_COMPONENT_PENDING",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "preregistration": "integration/audits/PPA_WU05B18_PREREGISTRATION.json",
+  "relevant_paths": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/process/mod_frost_geometry_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/solver/mod_process_hydraulic_view.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90",
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py",
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py"
+  ],
+  "authority_paths": [
+    "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "integration/audits/PPA_WU05B17_REF_CANONICAL_ADMISSION.json",
+    "integration/audits/PPA_WU05B18_SOURCE_REVIEW.json"
+  ],
+  "owned_surface": [
+    "New src/process/mod_frost_divdra_drainage_effect.f90 only",
+    "New standalone scientific harness and qualification/evidence/status records"
+  ],
+  "interfaces_held_fixed": [
+    "Existing positive-only DIVDRA API, process and runtime binding",
+    "All backend/forcing/model/application/solver/restart/receipt interfaces",
+    "All original/reference files and B17 corrected artifact",
+    "Physical scalar/bottom policies and fixed reference thresholds"
+  ],
+  "next_action": "Publish preregistration before adding typed process/harness",
+  "recovery_point": "Preregistration commit before process/harness",
+  "last_reconciled_upstream": "2acee704219d2f54d73df104364dffaeca205565",
+  "blockers": []
+}
