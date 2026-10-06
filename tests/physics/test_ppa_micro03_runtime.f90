@@ -51,7 +51,7 @@ program test_ppa_micro03_runtime
   type(fmr_serialized_column_result_t), allocatable :: app_results(:)
   real(real64) :: qref
   real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-  integer :: app_status
+  integer :: app_status, step
   logical :: ok
 
   call initialize_parameters(parameters)
@@ -244,11 +244,16 @@ program test_ppa_micro03_runtime
        allocated(restored_observation%accepted_water_flux_substeps),'MICRO continuation trace available')
   call require(size(continuation_observation%accepted_water_flux_substeps)== &
        size(restored_observation%accepted_water_flux_substeps),'MICRO continuation substep count')
-  call require(all(continuation_observation%accepted_water_flux_substeps(1)%root_sink== &
-       restored_observation%accepted_water_flux_substeps(1)%root_sink),'MICRO fresh-worker sink identity')
+  do step=1,size(continuation_observation%accepted_water_flux_substeps)
+    call require(all(continuation_observation%accepted_water_flux_substeps(step)%root_sink== &
+         restored_observation%accepted_water_flux_substeps(step)%root_sink),'MICRO fresh-worker sink identity')
+  end do
   call require(sum(continuation_observation%accepted_water_flux_substeps(1)%root_sink)> &
        sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink), &
        'changed transpiration demand re-evaluates MICRO sink')
+  call require(any(continuation_observation%accepted_water_flux_substeps(1)%root_sink/= &
+       2.0_real64*heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink), &
+       'changed root density alters the node distribution')
   print '(a,es14.6,a,es14.6)', 'MICRO06_CHANGED_FORCING_SINK=', &
        sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink), &
        ' -> ',sum(continuation_observation%accepted_water_flux_substeps(1)%root_sink)
