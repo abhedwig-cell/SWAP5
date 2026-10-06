@@ -1,0 +1,43 @@
+{
+  "schema": "swap431.small_gap.runon.v1",
+  "date": "2026-10-06",
+  "capability_id": "SW431-RUNON",
+  "disposition": "REPAIRED_PENDING_QUALIFICATION",
+  "source_authority": {
+    "snapshot": "SWAP 4.3.1 B1.11",
+    "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "execution": "headcalc surface-source construction",
+    "semantics": "runon is added to the shared surface donor after direct rain/irrigation/melt partition; it is not a direct macropore source"
+  },
+  "pre_repair_gap": [
+    "The admitted dynamic-top request already owns runon_rate_cm_per_day.",
+    "PPA-WU03 rejected nonzero runon and overwrote the request field with zero.",
+    "The legacy production task2 route rejected SWRUNON and passed zero to the dynamic-top provider."
+  ],
+  "repair": [
+    "Add an explicit nonnegative finite runon_rate_cm_per_day to PPA-WU03 common forcing input.",
+    "Carry that value unchanged into the existing dynamic-top request.",
+    "Permit SWRUNON in typed legacy task2 and pass the existing runon carrier to the same dynamic-top provider.",
+    "Do not reset runon after an accepted solve; ownership remains with the existing legacy forcing lifecycle."
+  ],
+  "scope": {
+    "included": "ordinary matrix surface runon through the existing dynamic-top owner",
+    "excluded": [
+      "macropore pond/runon composition",
+      "snowmelt ingestion",
+      "nonlinear runoff exponent",
+      "new runon generation or routing model"
+    ]
+  },
+  "qualification": {
+    "local_environment": "shell/git/gfortran available, but repository checkout is not mounted and shell DNS cannot resolve github.com",
+    "focused_test": "tests/fapp/test_ppa_wu03_common_forcing_adapter.f90",
+    "assertions": [
+      "positive runon survives materialization exactly",
+      "precipitation and irrigation remain unchanged",
+      "existing dynamic-top owner accepts the request",
+      "negative runon fails closed"
+    ],
+    "ci": "pending PR #1083"
+  }
+}
