@@ -43,17 +43,19 @@
     "Reference Richards transaction and Andelst B1.11 control vector",
     "Residual evaluation ordering between dynamic top-boundary and candidate macropore geometry"
   ],
-  "next_action": "Obtain approval for the rejected GitHub push; reconcile canonical frost changes in the shared backend, then finish the official Andelst equivalence gate and canonical review.",
+  "next_action": "Reconcile canonical frost changes in the shared backend, then finish the official Andelst equivalence gate and canonical review.",
   "blockers": [
-    "Automatic approval review rejected git push to abhedwig-cell/SWAP5 as external source/history publication without explicit authorization. No remote write was retried.",
     "Canonical 78acf56f differs from ca856e88 in the shared backend (frost DIVDRA), bootstrap and root micro table. Local gates do not qualify the merged canonical postimage.",
     "Full official Andelst equivalence remains untested. Recovered MOD_meteo.f90 SHA256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822 differs from pinned B1.11 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f; the previously identified Intel executable dependency is not resolved by focused GNU tests."
   ],
   "checkpoint_commit": "5c00f98cc885e1171dc3384c3902b859bb899ff4",
   "recovery_point": "Local isolated branch: code and runner checkpoint 5c00f98cc; evidence.json records each completed run and checkpoint. The recovered checkout remains available for concurrent restart work.",
-  "remote_persisted": false,
+  "remote_persisted": true,
   "last_observed_canonical_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "evidence_paths": [
-    "tests/qualification/ppa-wu05-migmac10-local-20261006/evidence.json"
-  ]
+    "tests/qualification/ppa-wu05-migmac10-local-20261006/evidence.json",
+    "tests/qualification/ppa-wu05-migmac10-local-20261006/publication.json"
+  ],
+  "published_snapshot": "bec45d450623da84ce8c2e27aa3e502315c0d3a7",
+  "published_tree": "35170d632909b69765e358d426477d310f6aa1e4"
 }

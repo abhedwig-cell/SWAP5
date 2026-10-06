@@ -218,3 +218,16 @@ Reconciliation and qualification of that merged postimage remain required.
 The isolated continuation branch is `work/ppa-wu05-migmac10-envelope-preservation`.
 GitHub publication was rejected by automatic approval review; evidence is
 committed locally and remote persistence must not be claimed.
+
+
+## Authorized remote publication, 2026-10-06
+
+The user explicitly approved publication. Direct Git push lacked local
+credentials, so the authenticated GitHub connector published snapshot
+`bec45d450623da84ce8c2e27aa3e502315c0d3a7` on the isolated branch.
+Its tree `35170d632909b69765e358d426477d310f6aa1e4` is identical to local
+checkpoint `7e4d7ef2103de5cd56afdfdfd4629e0e55750890`, including all source and
+qualification evidence. This supersedes the remote-publication blocker above.
+`tests/qualification/ppa-wu05-migmac10-local-20261006/publication.json` records
+that identity and the verified bundle retaining all 25 original local commits.
+Scientific scope and admission status are unchanged.
