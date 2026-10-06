@@ -2,9 +2,9 @@
   "work_unit": "PPA-MICRO06",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "b81bae181b3d9546bb245ccd1c1cd1c8a368d595",
-  "status": "CHANGED_FORCING_COMMITTED_RESTART_LOCAL_QUALIFIED_DRAFT_UNADMITTED",
+  "status": "STACK_PERSISTED_CANONICAL_CANDIDATE_B15_PRESERVATION_PENDING",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": true,
   "qualified": true,
   "production_admitted": false,
@@ -25,5 +25,11 @@
   "draft_pr": 1076,
   "canonical_admission_candidate_pr": 1077,
   "canonical_admission_base": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "blockers": []
+  "canonical_candidate_head": "e19225d2cfb77660779212f3db32aa62b8556636",
+  "canonical_target_stack_workflow_run_id": 37431153468,
+  "canonical_target_stack_workflow_conclusion": "success",
+  "moving_preservation_local": "PASS_EXACT_MICRO_SOURCE_SUCCESSOR",
+  "b15_local_successor_evidence": "docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json",
+  "b15_normal_local": "RUNTIME_ADDITIONAL_INCUMBENT_PRESERVATION_O0_O2_PASS",
+  "blockers": ["PPA-WU05B15 full normal and low-air PR-merge preservation qualification pending", "F-CI canonical PR-merge preservation and historical cross-workstream scope checks pending or failing"]
 }

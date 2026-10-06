@@ -29,9 +29,15 @@ The dedicated MICRO stack gate passed on canonical-target PR merge
 `d7572236fff9c91d572a8319aadcba2c36388b5d` in run 37429592800;
 the source tree equals the tested branch tree. Local B15 normal runtime
 completed six configurations at O0 and O2 with byte-identical output.
-Low-air runtime, broader B15 preservation, and the central moving gate
-are still in progress locally at this checkpoint. No frost compatibility
-claim is inferred from the standalone MICRO stack gate.
+The normal B15 activation and finer-reference gate passed O0/O2. Its ten
+incumbent preservation programs passed O0/O2 with identical outputs. The full local F-CI moving
+preservation script passed with the exact MICRO successor marker and all
+downstream moving preservation checks. Low-air's first full O0 configuration
+passed and matched the previous local B15 output byte for byte; its other
+configurations and O2 remain in progress. No full frost compatibility claim
+is inferred from this partial local result or the standalone MICRO stack gate.
+Local receipts and exact output digests are recorded in
+`docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json`.
 
 Other historical workflows also reject the candidate because of fixed
 source ownership/scope lists. For example, F-PE-ELASTIC09 application

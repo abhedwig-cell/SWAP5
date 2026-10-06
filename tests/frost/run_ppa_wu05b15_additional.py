@@ -8,7 +8,7 @@ assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True
 def run(s,route,label,opt):
  source=pathlib.Path(f'/tmp/frost-b15-{route}-{label}-o{opt}.f90');source.write_text(s)
  b=pathlib.Path('/tmp/ppa-wu05b15-'+route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else''))/f'o{opt}'
- if route=='low_air'and opt==2 and not b.exists():b=pathlib.Path('/tmp/ppa-wu05b15-low-air-runtime-parallel/o2')
+ if route=='low_air'and opt==2 and not args.micro_successor and not b.exists():b=pathlib.Path('/tmp/ppa-wu05b15-low-air-runtime-parallel/o2')
  assert(b/'mod_fmr_production_application_bootstrap.o').exists()
  flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(b),'-I'+str(b)]
  base=source.with_suffix('')

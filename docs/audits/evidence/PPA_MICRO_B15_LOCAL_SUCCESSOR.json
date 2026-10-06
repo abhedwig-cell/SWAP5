@@ -1,0 +1,39 @@
+{
+  "work_unit": "PPA-MICRO02-06-B15-PRESERVATION",
+  "status": "LOCAL_NORMAL_AND_FCI_PASS_LOW_AIR_PARTIAL_PR_MERGE_PENDING",
+  "production_source_tree": "ac822aafd5403547a2c7ffad5c3ba02c9fa36496",
+  "canonical_target": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "compiler": "GNU Fortran 13.3.0",
+  "commands": [
+    "python tests/frost/run_ppa_wu05b15_runtime.py --route normal --micro-successor --build /tmp/ppa-wu05b15-normal-runtime-micro",
+    "python tests/frost/run_ppa_wu05b15_additional.py --routes normal --micro-successor",
+    "python tests/frost/run_ppa_wu05b15_preservation.py --route normal --micro-successor --workers 2",
+    "python tests/frost/run_ppa_wu05b15_runtime.py --route low_air --micro-successor --build /tmp/ppa-wu05b15-low-air-runtime-micro",
+    "bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "normal_runtime": {
+    "configurations_per_optimization": 6,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_byte_identity": true,
+    "combined_output_sha256": "2e3f3ac705caf3c5bd3ab627e57418293d1753a9853b009b5227361c0e964639"
+  },
+  "normal_additional": "ACTIVATION_O0_O2_IDENTITY_AND_16384_32768_REFINEMENTS_PASS",
+  "normal_preservation": {
+    "incumbent_program_count": 10,
+    "O0_O2_byte_identity_for_each": true,
+    "log_sha256": "b54c0b5f8b43b80499ab53e18eb3cc00d013bb6c73c55777122c3f811980cef1"
+  },
+  "fci_moving_preservation": {
+    "result": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+    "exact_micro_successor_marker": "FCI_CANONICAL_PPA_WU05B15_MICRO_SOURCE_SUCCESSOR=ACTIVE",
+    "log_sha256": "834613ceec79c976aa4aadb48aac3a1e85342f53e52329f57a591662136d5dcf"
+  },
+  "low_air_partial": {
+    "O0_configuration_1": "PASS",
+    "O0_configuration_1_sha256": "f348c0310ac0d82bb27ed8642634afca218debecffc71ba1b246cfd7b4f09285",
+    "matched_prior_local_output": true,
+    "full_O0_O2": "PENDING"
+  },
+  "claim_ceiling": "Local normal B15 and F-CI moving preservation; full low-air and persisted PR merge evidence pending"
+}

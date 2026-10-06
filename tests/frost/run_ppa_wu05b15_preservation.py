@@ -9,7 +9,7 @@ assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True
 names=['ppa_wu05b_frost_runtime','ppa_wu05b2_root_frost_runtime','ppa_wu05b3_frost_bottom_runtime','ppa_wu05b4_root_bottom_runtime','ppa_wu05b6_normal_drain_runtime','ppa_wu05b9_response_drain_runtime','ppa_wu05b11_normal_runtime','ppa_wu05b12_normal_runtime','ppa_wu05b13_normal_runtime','ppa_wu05b14_normal_runtime']if args.route=='normal'else['ppa_wu05b8_low_air_runtime','ppa_wu05b10_low_air_response_runtime','ppa_wu05b11_low_air_runtime','ppa_wu05b12_low_air_runtime','ppa_wu05b13_low_air_runtime','ppa_wu05b14_low_air_runtime']
 for opt in args.opts:
  base=pathlib.Path('/tmp/ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else''))
- if args.route=='low_air'and opt==2 and not(base/'o2').exists():base=pathlib.Path(str(base)+'-parallel')
+ if args.route=='low_air'and opt==2 and not args.micro_successor and not(base/'o2').exists():base=pathlib.Path(str(base)+'-parallel')
  b=base/f'o{opt}';assert(b/'mod_fmr_serialized_reference_backend.o').exists()
  flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(b),'-I'+str(b)]
  support=[]
