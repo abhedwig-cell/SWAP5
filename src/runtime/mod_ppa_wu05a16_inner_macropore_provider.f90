@@ -188,14 +188,15 @@ contains
     integer::cover_node
     logical::ok
 
-    exchange_flux=0.0_real64
     active=.false.
     if(present(surface_area_fraction))surface_area_fraction=-1.0_real64
     if(.not.self%configured)return
+    if(size(exchange_flux)/=self%accepted_macro%num_nodes)return
+    exchange_flux=0.0_real64
     call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok, &
          surface_area_fraction)
     if(.not.ok)return
-    if(size(exchange_flux)/=self%accepted_macro%num_nodes)return
+    if(size(rates%qexc_to_matrix_rate,2)/=size(exchange_flux))return
     exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
     if(self%covering_layer_enabled)then
       cover_node=self%geometry%top_node-1
