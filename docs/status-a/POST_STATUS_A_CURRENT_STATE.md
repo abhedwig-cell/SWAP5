@@ -483,3 +483,7 @@ PR #1064 at `9906bf429c445f3eb715a949b47460d223294a29` admits the [B16 reference
 ## Bounded corrected DIVDRA reference
 
 PR #1065 at `987715cbf5513a0911bd81403209452d2a99666c` admits [FROST-DIVDRA-02](../audits/PPA_WU05B17_CORRECTED_DIVDRA_REFERENCE.md) under ADR-0005: a single guard correction retains the existing infiltration integral for positive tiny unsaturated transmissivity. Full original/corrected O0/O2 source execution covers4536 cases per variant/optimization;192 predicted differences restore omitted nodal contributions,4344 controls stay byte-exact, and1296 original initial tiny-scalar early returns remain. Corrected nodal/scalar residual is at most4.17e-17 cm/day. Original reference and production source remain unchanged. This is bounded reference-component admission, with no global B1 promotion or runtime redistribution claim. Aggregate frost migration remains open.
+
+## Typed frost and DIVDRA scientific component
+
+PR #1067 at `a9a35a60409a16ef7fdf3a38d5bcffb6899c2416` admits [B18 typed single-level signed frost/DIVDRA component](../audits/PPA_WU05B18_TYPED_FROST_DIVDRA.md) only:3240 actual corrected-source parity cases,1296 original tiny-scalar unavailable cases,32 invalid-domain guards and2 actual geometry seam comparisons pass at O0/O2. Existing positive-only process/binding smoke programs remain exact and every376 prior production blob is unchanged. No backend/forcing/solver/restart/application interface is modified, and no runtime hard-mass admission follows. Aggregate frost migration remains open.

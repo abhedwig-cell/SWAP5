@@ -21,3 +21,7 @@ Existing positive-only DIVDRA process and runtime-binding complete scientific sm
 The preregistration fixes bounded finite physical parameters, sign/threshold policies and the new interface. This is scientific component qualification only. No backend selector, forcing interface, solver policy, committed state, restart schema or application receipt changes. Ordinary runtime integration requires its own preregistration, immutable-trial carrier generation, independently regenerated terminal full/half proposals and hard-mass/rejection/restart/application checks.
 
 [Complete immutable replay](evidence/PPA_WU05B18_COMPONENT_REPLAY.json.gz), `integration/audits/PPA_WU05B18_QUALIFICATION.json` and `PPA_WU05B18_STATUS.json` bind actual outputs, inputs, source/executable hashes and every unchanged production blob. Global frost equivalence, multilevel distribution, external frost and hybrids remain excluded. Aggregate frost migration stays open.
+
+## Canonical scientific-component admission
+
+PR #1067 admits this isolated component at `a9a35a60409a16ef7fdf3a38d5bcffb6899c2416`. Proposed `8591f82a7f5f318ad5ffb187faf7aa6e0607bf55` and actual merge have exact qualified tree `3906e90f30b44b9559655dd921388ed46998ae85`, source `8e8685b82235d8bdecdd753263525acf1b1888ad` and recorded ordered parents. All376 preexisting source blobs remain exact. Runtime integration remains pending.
