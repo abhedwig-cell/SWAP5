@@ -302,13 +302,20 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
   if git merge-base --is-ancestor a0630beff3b7b329ede3e57a10620116e5b1f456 HEAD; then
-    # Preregistered B19 candidate: preserve every production blob exactly,
-    # including all B1..B18 science. Whole-module runtime gates separately
-    # qualify the three explicitly declared interface/binding changes.
-    test "$(git rev-parse HEAD:src)" = "24fda78fd9a38964c16c89d5505b0056185ac410" || fail 'B19 exact candidate production tree drift'
+    # B19 is an exact production-tree authority. A later independently
+    # qualified MICRO02-06 successor changes the shared backend/bootstrap
+    # surface while preserving B19 behavior; accept only that exact successor.
+    if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
+      test "$(git rev-parse HEAD:src)" = "b61bc508ae16ad87694eb1faa977689530f357c2" || fail 'B19+MICRO exact qualified production tree drift'
+      test "$(git rev-parse HEAD:$BACKEND)" = "ab51d1346ef97a861664cc3ba049aa8685019004" || fail 'B19+MICRO serialized backend drift'
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "cbcdb7ea963227b5acdf9d2b9cfb5cb974d6196e" || fail 'B19+MICRO application bootstrap drift'
+      echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
+    else
+      test "$(git rev-parse HEAD:src)" = "24fda78fd9a38964c16c89d5505b0056185ac410" || fail 'B19 exact candidate production tree drift'
+      echo 'FCI_CANONICAL_PPA_WU05B19_EXACT_RUNTIME_CANDIDATE=ACTIVE'
+    fi
     git merge-base --is-ancestor a9a35a60409a16ef7fdf3a38d5bcffb6899c2416 HEAD || fail 'B19 lost B18 component admission'
     backend_authority="$(git rev-parse HEAD:$BACKEND)"
-    echo 'FCI_CANONICAL_PPA_WU05B19_EXACT_RUNTIME_CANDIDATE=ACTIVE'
   elif git merge-base --is-ancestor e2bb41f2e3173a6c32465e5792e1fe7386a68679 HEAD; then
     git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail "PPA-WU05B15 lost B10 composed closeout"
     test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B15 exact additive table-validator postimage drift"

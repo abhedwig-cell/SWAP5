@@ -1,0 +1,20 @@
+{
+  "work_unit": "PPA-WU05B20",
+  "correction": "FROST-DIVDRA-03",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "parent_preregistration": "integration/audits/PPA_WU05B20_PREREGISTRATION.json",
+  "observed_initial_failure": {
+    "case": 2305,
+    "input": [2,1,-2.25,-2.5,0.001,-0.002,0,0,0,20,40,60,0.5],
+    "variant": "original/O0",
+    "complete_prefix_rows": 2304,
+    "result": "SIGFPE in full native DIVDRA called by FrozenBounds; interrupted whole matrix is not a PASS"
+  },
+  "hypothesis": "Lev2Comp returns the thickness ABOVE the infiltration-layer bottom. Overwriting it with the thickness BELOW groundwater is erroneous when both surfaces share a compartment; the already-present overlap formula then subtracts a full cell from the wrong two lengths.",
+  "minimal_patch": "Remove only the single assignment to dzcpbotdislay immediately after Lev2Comp(wlev), preserving both existing same-compartment overlap formulas.",
+  "predicted_change": "Positive finite geometrical saturated transmissivity is retained instead of zero or negative artificial transmissivity. Original and B17 variants may fail or differ only on the affected separate-infiltration same-compartment domain; all unaffected controls must remain byte-exact to B17.",
+  "required_gates": ["full original and B17 native negative case census O0/O2", "full candidate matrix O0/O2", "independent geometry and nodal/scalar closure", "actual one-level reproducer", "exact bounded patch and no overwrite/hash guard negatives", "byte-exact unaffected B17 controls", "all original B17 4536 single-level inputs", "all production source unchanged"],
+  "shared_mass_transfer_policy": "No correction of deepest-level replacement or mixed-sign cancellation. Those remain an explicit separate owner decision.",
+  "global_B1_snapshot_promoted": false,
+  "production_modified": false
+}
