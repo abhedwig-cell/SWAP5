@@ -73,7 +73,7 @@ module mod_fmr_serialized_reference_backend
   use mod_root_micro_matric_flux_table, only: micro_matric_flux_table_t
   use mod_root_micro_de_willigen_process, only: micro_de_willigen_parameters_t, micro_de_willigen_result_t, &
        evaluate_micro_de_willigen, MICRO_DW_OK
-  use mod_fmr_micro_mvg_table_binding, only: fmr_build_micro_mvg_tables
+  use mod_fmr_micro_mvg_table_binding, only: fmr_build_micro_mvg_tables, fmr_micro_horizon_map_valid
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
@@ -293,6 +293,7 @@ module mod_fmr_serialized_reference_backend
     logical :: root_extraction_active = .false.
     ! MICRO owns the one trial root sink when this optional configuration exists.
     type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
+    integer, allocatable :: micro_horizon_first_node(:)
     logical :: root_salinity_active = .false.
     type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
     real(real64) :: solute_tscf = 0.0_real64
@@ -636,6 +637,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: qrot_unmodified(:)
     type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
     type(micro_matric_flux_table_t), allocatable :: micro_tables(:)
+    integer, allocatable :: micro_horizon_first_node(:)
     real(real64), allocatable :: micro_root_length_density(:)
     integer :: micro_rooted_nodes = 0
     type(root_compensation_config_t) :: root_compensation
@@ -2789,6 +2791,11 @@ contains
              .not. parameters%ksatexm_extension_active .and. .not. parameters%hysteresis_active .and. &
              .not. parameters%tabulated_hydraulics_active .and. .not. parameters%drainage_response_active .and. &
              .not. self%fixed_weir_surface_water_active
+        if (allocated(parameters%micro_horizon_first_node)) then
+          ok = ok .and. fmr_micro_horizon_map_valid(parameters%micro_horizon_first_node,parameters%active_nodes)
+        end if
+      else
+        ok = ok .and. .not. allocated(parameters%micro_horizon_first_node)
       end if
     class default
       ok = .false.
@@ -2871,9 +2878,16 @@ contains
       self%root_salinity_active = parameters%root_salinity_active
       if (allocated(self%micro_de_willigen)) deallocate(self%micro_de_willigen)
       if (allocated(self%micro_tables)) deallocate(self%micro_tables)
+      if (allocated(self%micro_horizon_first_node)) deallocate(self%micro_horizon_first_node)
       if (allocated(parameters%micro_de_willigen)) then
         self%micro_de_willigen = parameters%micro_de_willigen
-        call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
+        if (allocated(parameters%micro_horizon_first_node)) then
+          self%micro_horizon_first_node = parameters%micro_horizon_first_node
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok, &
+               self%micro_horizon_first_node)
+        else
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
+        end if
       end if
       if(allocated(self%mobile_dispersion))deallocate(self%mobile_dispersion)
       if(allocated(parameters%mobile_dispersion))self%mobile_dispersion=parameters%mobile_dispersion
@@ -3017,7 +3031,7 @@ contains
         if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_salinity_active .or. &
             self%root_frost%active .or. allocated(self%bartholomeus) .or. self%rutter_active) return
         if (self%micro_de_willigen%oxygen_mode /= 0) return
-        if (forcing%micro_rooted_nodes > 1) then
+        if (forcing%micro_rooted_nodes > 1 .and. .not. allocated(self%micro_horizon_first_node)) then
           if (any(self%hydraulic_parameters%cofgen(1:24,2:forcing%micro_rooted_nodes) /= &
               spread(self%hydraulic_parameters%cofgen(1:24,1),2,forcing%micro_rooted_nodes-1))) return
         end if

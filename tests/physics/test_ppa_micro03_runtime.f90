@@ -27,12 +27,15 @@ program test_ppa_micro03_runtime
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
   type(kernel_committed_state_t) :: committed
+  type(kernel_committed_state_t) :: heterogeneous_committed
   type(kernel_checkpoint_t) :: checkpoint
+  type(kernel_checkpoint_t) :: heterogeneous_checkpoint
   type(kernel_result_t) :: result, replay, rejected
   type(kernel_candidate_state_t) :: candidate, replay_candidate, rejected_candidate
   type(kernel_diagnostics_t) :: diagnostics, replay_diagnostics, rejected_diagnostics
   type(fmr_serialized_reference_backend_t) :: backend, new_backend
   type(fmr_serialized_physical_observation_t) :: observation, replay_observation
+  type(fmr_serialized_physical_observation_t) :: heterogeneous_observation
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
   type(b110_default_mvg_provider_t) :: constitutive
   type(fixed_flux_top_boundary_provider_t), target :: top
@@ -139,6 +142,61 @@ program test_ppa_micro03_runtime
   call require(maxval(abs(app_results%mass%residual))<=MASS_TOL,'production app hard mass')
   call app%close(app_status)
   call require(app_status==FMR_APP_BOOT_OK,'production app close')
+  ! MICRO05: an explicit two-horizon map admits varying node hydraulics while
+  ! each root table still comes from the source horizon's first node.
+  app_config%tiles(1)%parameters%cofgen(3,2)=5.1_real64
+  app_config%tiles(1)%parameters%cofgen(3,3)=5.5_real64
+  app_config%tiles(1)%parameters%cofgen(3,4)=5.9_real64
+  app_config%tiles(1)%parameters%cofgen(10,:)=app_config%tiles(1)%parameters%cofgen(3,:)
+  app_config%tiles(1)%parameters%cofgen(12,:)=0.99_real64*app_config%tiles(1)%parameters%cofgen(3,:)
+  app_config%tiles(1)%parameters%micro_horizon_first_node=[1,1,3,3]
+  app_config%tiles(1)%base_forcing%micro_rooted_nodes=numnod
+  app_config%tiles(1)%base_forcing%micro_root_length_density=0.5_real64
+  app_config%numerical%model_temporal_indicator_budget=1.0e-2_real64
+  call initialize_b110_default_mvg_parameters(hydraulic_parameters,app_config%tiles(1)%parameters%cofgen)
+  call bind_b110_default_mvg_provider(constitutive,hydraulic_parameters,1.0_real64)
+  call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
+  app_config%tiles(1)%initial_state%water_content=water
+  call app%initialize(app_config,app_status)
+  call require(app_status==FMR_APP_BOOT_OK,'heterogeneous horizon app initialize')
+  call app%run_standalone(0.0_real64,1.0e-3_real64,app_results,app_status)
+  call require(app_status==FMR_APP_BOOT_OK,'heterogeneous horizon app commit')
+  call require(all(app_results%mass%complete).and.maxval(abs(app_results%mass%residual))<=MASS_TOL, &
+       'heterogeneous horizon mass')
+  call app%close(app_status)
+  call require(app_status==FMR_APP_BOOT_OK,'heterogeneous horizon app close')
+  call fmr_new_b110_temporal_indicator_committed_state(heterogeneous_committed,COLUMN_ID, &
+       app_config%tiles(1)%initial_state,0.0_real64,ok,spread(0.0_real64,1,numnod))
+  call require(ok,'heterogeneous horizon committed origin')
+  call fmr_capture_checkpoint(heterogeneous_committed,heterogeneous_checkpoint,ok)
+  call require(ok,'heterogeneous horizon checkpoint')
+  call new_backend%run_trial(column,template,app_config%tiles(1)%parameters,heterogeneous_committed, &
+       app_config%tiles(1)%base_forcing,app_config%numerical,0.0_real64,1.0e-3_real64, &
+       heterogeneous_checkpoint,result,candidate,diagnostics,trace_accepted_water_flux_substeps=.true.)
+  call require(result%completed.and.result%mass%complete.and.abs(result%mass%residual)<=MASS_TOL, &
+       'heterogeneous horizon direct trial mass')
+  heterogeneous_observation=new_backend%observation()
+  call require(allocated(heterogeneous_observation%accepted_water_flux_substeps),'heterogeneous accepted root trace')
+  call require(sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink(1:2))>0.0_real64.and. &
+       sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink(3:4))>0.0_real64, &
+       'both horizons contribute root water')
+  call backend%run_trial(column,template,app_config%tiles(1)%parameters,heterogeneous_committed, &
+       app_config%tiles(1)%base_forcing,app_config%numerical,0.0_real64,1.0e-3_real64, &
+       heterogeneous_checkpoint,replay,replay_candidate,replay_diagnostics,trace_accepted_water_flux_substeps=.true.)
+  call require(replay%completed.and.replay_candidate%ready(),'heterogeneous restart replay')
+  call require(result%mass%residual==replay%mass%residual.and.result%completed_t==replay%completed_t, &
+       'heterogeneous replay mass and time identity')
+  replay_observation=backend%observation()
+  call require(size(heterogeneous_observation%accepted_water_flux_substeps)== &
+       size(replay_observation%accepted_water_flux_substeps),'heterogeneous replay substep count')
+  call require(all(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink== &
+       replay_observation%accepted_water_flux_substeps(1)%root_sink),'heterogeneous replay sink identity')
+  call require(heterogeneous_committed%current_revision()==0_int64,'heterogeneous trial did not commit')
+  print '(a,es14.6)', 'MICRO05_HETEROGENEOUS_RUNTIME_MASS=',result%mass%residual
+  app_config%tiles(1)%parameters%micro_horizon_first_node=[1,1,2,3]
+  call app%initialize(app_config,app_status)
+  call require(app_status/=FMR_APP_BOOT_OK,'invalid horizon map rejected')
+  print '(a)', 'MICRO05_HETEROGENEOUS_APP_TRIAL=PASS'
   print '(a)', 'MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS'
 contains
   subroutine initialize_parameters(p)
