@@ -1,0 +1,52 @@
+{
+  "work_unit": "PPA-WU05-MIGMAC11",
+  "workstream": "PPA-WU05 macropore migration",
+  "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
+  "checkpoint_commit": "87b025be61ab47b6c9feb90883ab26cb86129c17",
+  "last_reconciled_head": "87b025be61ab47b6c9feb90883ab26cb86129c17",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": "B1.11 pond-derived lateral macropore surface inflow and shared surface bookkeeping; runon composition follows after active pond route closure",
+  "interfaces_changed": [
+    "soil_water_top_boundary_result_t candidate pond receipt",
+    "macropore_exchange_provider_t candidate pond handoff",
+    "B1.11 dynamic top boundary optional pond donor parameters"
+  ],
+  "invariants_affected": [7, 13, 22, 23, 29, 30],
+  "relevant_paths": [
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
+    "src/runtime/mod_macropore_single_column_runtime.f90",
+    "src/runtime/mod_fmr_macropore_configuration.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/variables.f90",
+    "docs/architecture/invariants.md"
+  ],
+  "test_paths": [
+    "tests/fpm/test_migmac11_pond_donor.f90",
+    "tests/fpm/run_migmac11_production_compile.sh",
+    "tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90",
+    ".github/workflows/ppa-wu05-migmac11-pond-donor.yml"
+  ],
+  "evidence_paths": ["docs/audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md"],
+  "dependency_surface": [
+    "dynamic top boundary contract",
+    "HeadCalc residual callback",
+    "A9 top inflow limiter",
+    "macropore candidate/commit bookkeeping",
+    "surface ponding mass accounting"
+  ],
+  "test_status": "Production O0/O2 compile and MIGMAC01-09 preservation passed at 9d8271e671ee7a7db817a4cc7119689752c85760. Active pond route remains failing; latest failure exposed inner callback shape mismatch and repair is persisted at checkpoint.",
+  "qualification_status": "IN_PROGRESS",
+  "next_action": "Run focused qualification from checkpoint 87b025be; if active pond route passes, prove returned-surface closure then run runon paired case and retry/restart.",
+  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@87b025be61ab47b6c9feb90883ab26cb86129c17",
+  "blockers": []
+}
