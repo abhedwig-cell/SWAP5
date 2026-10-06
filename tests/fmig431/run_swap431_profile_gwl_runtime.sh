@@ -4,9 +4,8 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 cd "$ROOT"
-# Reuse the production dependency closure from the admitted FMR44R gate, but
-# compile this branch's runtime oracle instead of mutating production sources.
-python3 tests/fmr/_apply_fmr44r_serialized_qbot_runtime_patch.py
+# Reuse the FMR44R production dependency list, but compile the current tree as-is.
+# The historical FMR44R source patch is intentionally not replayed here.
 mapfile -t SRC < <(python3 - <<'PY'
 from pathlib import Path
 s=Path('tests/fmr/run_fmr44r_serialized_prescribed_qbot_gate.sh').read_text()
