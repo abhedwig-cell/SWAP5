@@ -30,7 +30,12 @@ with tempfile.TemporaryDirectory(prefix='swap431-gwl-runtime-') as folder:
             subprocess.run(FC+flags+['-c',str(p),'-o',str(obj)],check=True)
         exe=build/'test'
         subprocess.run(FC+flags+objs+['-o',str(exe)],check=True)
-        out=subprocess.check_output([str(exe)],text=True)
+        run=subprocess.run([str(exe)],capture_output=True,text=True)
+        if run.returncode != 0:
+            print(run.stdout,end='')
+            print(run.stderr,end='')
+            raise RuntimeError('transaction oracle failed')
+        out=run.stdout
         if 'SW431_GW_PROJECTION_RUNTIME_COMMIT=PASS' not in out:
             raise RuntimeError('transaction marker missing')
         print(opt+' SW431_GW_PROJECTION_RUNTIME=PASS',flush=True)
