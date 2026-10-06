@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.ppa_wu05.migmac10.status.v1",
+  "workunit": "PPA-WU05-MIGMAC10",
+  "date": "2026-10-06",
+  "canonical_base": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "branch": "work/ppa-wu05-migmac10-envelope-preservation",
+  "status": "LOCAL_COMPOSITION_AND_PRESERVATION_PASSED",
+  "production_admitted": false,
+  "scope": "First Andelst surface-composition slice: SWREDU=2 Boesten plus A9 surface-connected macropore input, with an experimental SWINTER=3 Rutter composition now implemented but not qualified or production-admitted.",
+  "preregistration": "docs/audits/PPA_WU05_MIGMAC10_PREREGISTRATION.md",
+  "qualification": null,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "last_reconciled_head": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "authority_paths": [
+    "docs/audits/PPA_WU05_MIGMAC09_CLOSEOUT.md",
+    "docs/audits/PPA_WU05A9_CLOSEOUT.md",
+    "docs/audits/PPA_WU05_MACROPORE_MIGRATION_GAP_AUDIT_20261001.md",
+    "tests/data/ppa_wu05_migmac01/modified_andelst.swp",
+    "tests/data/ppa_wu05_migmac01/B1.11-source-manifest.sha256",
+    "tests/fpm/run_ppa_wu05a9_top_input.sh"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/kernel/mod_kernel_committed_persistence.f90",
+    "tests/fmr",
+    "tests/data/ppa_wu05_migmac01",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "tests/fpm/test_ppa_wu05a16_rfm_matrix_share_rebinding.f90"
+  ],
+  "dependency_surface": [
+    "Boesten evaporation continuation and accepted-state update",
+    "macropore A9 source carrier and whole-column mass booking",
+    "FMR optional-state layout and committed-state snapshot/clone",
+    "restart encoding, validation and separate-process replay",
+    "Reference Richards transaction and Andelst B1.11 control vector",
+    "Residual evaluation ordering between dynamic top-boundary and candidate macropore geometry"
+  ],
+  "next_action": "Obtain approval for the rejected GitHub push; reconcile canonical frost changes in the shared backend, then finish the official Andelst equivalence gate and canonical review.",
+  "blockers": [
+    "Automatic approval review rejected git push to abhedwig-cell/SWAP5 as external source/history publication without explicit authorization. No remote write was retried.",
+    "Canonical 78acf56f differs from ca856e88 in the shared backend (frost DIVDRA), bootstrap and root micro table. Local gates do not qualify the merged canonical postimage.",
+    "Full official Andelst equivalence remains untested. Recovered MOD_meteo.f90 SHA256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822 differs from pinned B1.11 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f; the previously identified Intel executable dependency is not resolved by focused GNU tests."
+  ],
+  "checkpoint_commit": "5c00f98cc885e1171dc3384c3902b859bb899ff4",
+  "recovery_point": "Local isolated branch: code and runner checkpoint 5c00f98cc; evidence.json records each completed run and checkpoint. The recovered checkout remains available for concurrent restart work.",
+  "remote_persisted": false,
+  "last_observed_canonical_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "evidence_paths": [
+    "tests/qualification/ppa-wu05-migmac10-local-20261006/evidence.json"
+  ]
+}

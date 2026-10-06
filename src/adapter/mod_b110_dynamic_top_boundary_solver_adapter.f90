@@ -93,6 +93,7 @@ contains
     b110_request%precipitation_rate_cm_per_day = self%precipitation_rate
     b110_request%irrigation_rate_cm_per_day = self%irrigation_rate
     b110_request%snowmelt_rate_cm_per_day = self%snowmelt_rate
+    b110_request%macropore_surface_area_fraction = requested%macropore_surface_area_fraction
     b110_request%runon_rate_cm_per_day = self%runon_rate
     b110_request%potential_bare_soil_evaporation_cm_per_day = self%potential_bare_soil_evaporation
     b110_request%potential_pond_evaporation_cm_per_day = self%potential_pond_evaporation
