@@ -89,6 +89,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
   src/runtime/mod_fmr_macropore_top_input.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
