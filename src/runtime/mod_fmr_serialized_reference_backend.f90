@@ -3657,6 +3657,7 @@ contains
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: macropore_pond_requested_cm, macropore_pond_returned_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
@@ -3679,6 +3680,8 @@ contains
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
+    macropore_pond_requested_cm = 0.0_real64
+    macropore_pond_returned_cm = 0.0_real64
     rfm_preferential_input_cm = 0.0_real64
     rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
@@ -4430,6 +4433,14 @@ contains
         return
       end select
       solve_result = macropore_result%matrix_result
+      if (associated(request%evaluation%macropore)) &
+           macropore_pond_requested_cm=request%evaluation%macropore%candidate_pond_lateral()
+      if (macropore_pond_requested_cm>0.0_real64) then
+        macropore_pond_returned_cm=macropore_result%returned_surface_cm
+        if(macropore_pond_returned_cm<0.0_real64 .or. &
+           macropore_pond_returned_cm>macropore_pond_requested_cm+1.0e-12_real64)return
+        solve_result%candidate_state%ponding_depth=solve_result%candidate_state%ponding_depth+macropore_pond_returned_cm
+      end if
       self%last_observation%macropore_top_input_active = macro_top_input_trial%supplied
       self%last_observation%macropore_requested_top_cm = macropore_result%requested_top_input_cm
       self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
