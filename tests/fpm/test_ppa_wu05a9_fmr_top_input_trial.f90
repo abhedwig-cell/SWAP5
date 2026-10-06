@@ -71,6 +71,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   logical :: probe_ok
   logical :: migmac10
   logical :: migmac10_rutter
+  logical :: migmac11
   logical :: dynamic_enabled
   logical :: geometry_changes_expected,inner_route
   character(len=1) :: dynamic_flag
@@ -87,6 +88,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
   migmac10=.false.
   migmac10_rutter=.false.
+  migmac11=.false.
   block
     character(len=1) :: m10_flag
     character(len=1) :: rutter_flag
@@ -97,6 +99,12 @@ program test_ppa_wu05a9_fmr_top_input_trial
     call get_environment_variable('WU05_MIGMAC10_RUTTER',rutter_flag)
     migmac10_rutter=rutter_flag=='1'
     if(migmac10_rutter)migmac10=.true.
+    block
+      character(len=1)::m11_flag
+      m11_flag='0'; call get_environment_variable('WU05_MIGMAC11',m11_flag)
+      migmac11=m11_flag=='1'
+      if(migmac11)migmac10=.true.
+    end block
   end block
   dynamic_enabled=dynamic_flag=='1' .or. dynamic_flag=='2' .or. dynamic_flag=='4' .or. dynamic_flag=='5'
   geometry_changes_expected=dynamic_flag=='1'
@@ -129,7 +137,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(migmac10_rutter)allocate(physical%rutter)
   physical%pressure_head=heads
   physical%water_content=water
-  physical%ponding_depth=0.0_real64
+  physical%ponding_depth=merge(0.30_real64,0.0_real64,migmac11)
   physical%groundwater_level=-1000.0_real64
   call physical%macropore%initialize(nd,numnod,ok)
   call require(ok,'macropore continuation initialized')
@@ -187,10 +195,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
   end if
   if(migmac10)then
     allocate(forcing%boesten_evaporation)
-    forcing%boesten_evaporation%precipitation_rate_cm_per_day=1.0_real64
+    forcing%boesten_evaporation%precipitation_rate_cm_per_day=merge(25.0_real64,1.0_real64,migmac11)
     forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.25_real64
     forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=0.2_real64
-    forcing%boesten_evaporation%ponding_max_cm=2.0_real64
+    forcing%boesten_evaporation%ponding_max_cm=merge(0.20_real64,2.0_real64,migmac11)
     forcing%boesten_evaporation%runoff_resistance_day=1.0_real64
     forcing%boesten_evaporation%runoff_exponent=1.0_real64
   end if
@@ -249,6 +257,16 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(abs(result%mass%residual)<=1.0e-9_real64,'FMR macropore mass residual')
   call require(candidate%ready(),'FMR macropore candidate ready')
   observation=backend%observation()
+  if(migmac11)then
+    call require(observation%macropore_requested_top_cm>0.0_real64,'MIGMAC11 pond-derived request active')
+    call require(abs(observation%macropore_accepted_top_cm+observation%macropore_returned_surface_cm- &
+         observation%macropore_requested_top_cm)<=1.0e-9_real64,'MIGMAC11 A9 receipt exact')
+    call require(abs(result%mass%residual)<=1.0e-9_real64,'MIGMAC11 whole-column mass closure')
+    write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|REQUESTED=',observation%macropore_requested_top_cm, &
+         '|ACCEPTED=',observation%macropore_accepted_top_cm,'|RETURNED=',observation%macropore_returned_surface_cm, &
+         '|MASS=',result%mass%residual
+    write(*,'(a)') 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS'
+  end if
   if(migmac10_rutter)then
     call require(observation%boesten_evaporation_evaluated,'Rutter-Boesten reduction evaluated')
     call require(observation%macropore_matrix_source_area_partition_used, &
