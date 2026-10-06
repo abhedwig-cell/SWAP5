@@ -4,11 +4,11 @@
   "last_reconciled_upstream": "f72d72622264111edbadca1bfc49690a47b287a9",
   "baseline_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "preregistration": "integration/audits/PPA_WU05B15_PREREGISTRATION.json",
-  "status": "PARTIALLY_TESTED_RUNTIME_AND_PRESERVATION_QUALIFICATION_RUNNING",
+  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
   "relevant_paths": [
@@ -41,11 +41,10 @@
     30
   ],
   "pending": [
-    "Complete remaining six B13/four B14 low-air O0 families and verify exact original qualified stdout",
-    "Final docs, immutable full qualified replay and exact proposed/actual tree/source/parents admission and metadata closeout"
+    "Exact proposed/actual canonical admission"
   ],
   "blockers": [],
-  "next_action": "Complete primary low-air O0, full fresh low-air incumbent preservation and selected131072 references; then immutable full qualification and exact canonical admission/closeout",
+  "next_action": "Persist complete qualified evidence; verify exact proposed/actual tree/source/parents, admit and close",
   "recovery_point": "Immutable unqualified current-source partial recovery with exact compiled source/artifact proof and completed/partial outputs",
   "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
   "source_matrix": {
@@ -60,19 +59,21 @@
     "normal_runtime": "Six complete kind/mode/sign configurations x six full trajectories O0/O2 byte identity PASS; unchanged8192 independent fine references, hard mass/retry/receipts/replay/application/empty restart and42 active invalid configurations per config",
     "independent_oracles": "Original immutable VQ73/VQ74 full primaries fresh B15 whole modules O0/O2 stdout identity PASS",
     "external_preservation": "Original immutable full F-APP09/VQ128 primaries with current whole modules and fresh adapter/participant O0/O2 identity PASS; external frost exclusion unchanged",
-    "activation": "Both routes complete240 actual calls,224 committed with hard mass/independent proposal/single owner and16 original negative-power held before solver/publication with exact physical state preservation; O0/O2 byte identity PASS",
-    "literal_root": "330+12 exact literal root scientific/source cases O0/O2 PASS",
-    "canonical": "Exact B15 backend/process/ancestor pins and complete moving canonical preservation exit0 PASS",
+    "activation": "240 actual calls per route:224 committed hard-mass/final-owner cases and16 original negative-power holds before solver/publication with exact physical state retained; O0/O2 identity PASS",
+    "literal_root": "330+12 exact current root scientific/source cases O0/O2 PASS",
+    "canonical": "Exact B15 source/backend/process/preregistration+B14 actual closeout pins and full canonical moving preservation PASS",
     "normal_incumbents": "All ten fresh relevant normal B1/B2/B3/B4/B6/B9/B11/B12/B13/B14 whole-program replays O0/O2 stdout identity PASS; B12/B13/B14 exact original qualified stdout at both opts",
     "held_state_shape": "Additional activation assertions retain active_nodes and absent snow/macropore/salt/rutter allocations; both full240-call route matrices O0/O2 rerun with exact profile/carrier/shape checks PASS",
     "normal_refinements": "All six configurations surviving cases complete independent16384/32768 references PASS",
-    "SALT4": "Four complete actual179-source Jarvis/Walsum original/dispersion matrices, O0/O2 byte identity and actual fresh-process restart PASS",
+    "SALT4": "Four actual179-source Jarvis/Walsum original/dispersion mixed salt/root/frost matrices O0/O2 and fresh restart PASS",
     "B12_low_air_O2": "All five original B12 low-air families completed with fresh B15 whole modules; concatenation byte-exact original qualified O2 output",
-    "low_air_runtime": "All six complete kind/mode/sign configurations x six full trajectories O0/O2 byte-identical PASS; independent65536 references, hard mass/retry/full-half regeneration/final receipts/replay/application/empty restart and45 invalid configurations per configuration",
+    "low_air_runtime": "All six kind/mode/sign configurations x six complete trajectories O0/O2 stdout identity PASS; independent65536 references, hard mass/retry/receipts/replay/application/empty restart/45 invalid configurations",
     "low_air_preservation_O2": "All original B8/B10/B11 full programs and B12 five/B13 six/B14 four fresh-process families exit0 PASS; B12/B13/B14 exact original qualified O2 stdout",
     "low_air_incumbents_B8_B10_B11": "Fresh complete B8/B10/B11 current-source O0/O2 stdout identity PASS",
     "low_air_refinements": "All selected actual TUBE/OPEN highest-surface and POWER configurations1/3/5/6 complete full independent131072 references PASS",
-    "B12_preservation": "All original B12 normal/low-air families on fresh B15 whole modules preserve exact original qualified stdout at both optimization levels"
+    "B12_preservation": "All original B12 normal/low-air families on fresh B15 whole modules preserve exact original qualified stdout at both optimization levels",
+    "refinements": "Independent normal16384/32768 all six configurations and low-air131072 selected configs1/3/5/6 surviving cases PASS",
+    "incumbents": "Fresh relevant B1..B14 whole-module primaries O0/O2 identity PASS; B12/B13/B14 exact original qualified stdout both routes and optimization levels"
   },
   "partial_evidence": {
     "path": "docs/audits/evidence/PPA_WU05B15_PARTIAL_RECOVERY.json.gz",
@@ -102,5 +103,330 @@
     "head_error_max_cm": 1.93595e-07,
     "temperature_error_max_c": 3.530552e-07,
     "independent_fine_steps": 65536
-  }
+  },
+  "runtime_results": {
+    "normal": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 1.843838e-07,
+      "temperature_error_max_c": 8.087975e-13,
+      "substeps_and_rejections": [
+        [
+          26,
+          91
+        ],
+        [
+          22,
+          71
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          14,
+          39
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          37,
+          146
+        ],
+        [
+          35,
+          136
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          16,
+          47
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          26,
+          91
+        ],
+        [
+          21,
+          66
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          37,
+          146
+        ],
+        [
+          35,
+          136
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          16,
+          47
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 8192,
+      "activation_cases": 240,
+      "committed_activation_cases": 224,
+      "held_activation_cases": 16,
+      "activation_interval": 1e-10
+    },
+    "low_air": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 1.93595e-07,
+      "temperature_error_max_c": 3.530552e-07,
+      "substeps_and_rejections": [
+        [
+          37765,
+          523546
+        ],
+        [
+          37785,
+          523835
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37765,
+          523546
+        ],
+        [
+          37785,
+          523835
+        ],
+        [
+          37831,
+          524534
+        ],
+        [
+          37832,
+          524554
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37831,
+          524534
+        ],
+        [
+          37832,
+          524554
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37767,
+          523581
+        ],
+        [
+          37793,
+          523957
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37767,
+          523576
+        ],
+        [
+          37784,
+          523824
+        ],
+        [
+          37823,
+          524409
+        ],
+        [
+          37828,
+          524493
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37819,
+          524350
+        ],
+        [
+          37837,
+          524606
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 65536,
+      "activation_cases": 240,
+      "committed_activation_cases": 224,
+      "held_activation_cases": 16,
+      "activation_interval": 1e-10
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B15_LOCAL_REPLAY.json.gz",
+    "sha256": "451909fb28ac6f10b78e5821513680f64fbb17603e72a9d711e8cb9fc550543a",
+    "bytes": 236478,
+    "manifest_entries": 294
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
 }
