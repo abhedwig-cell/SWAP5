@@ -36,6 +36,7 @@ with tempfile.TemporaryDirectory(prefix="ppa-micro03-") as tmp:
         print(output, end="", flush=True)
         run.check_returncode()
         assert "MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS" in output
+        assert "MICRO05_HETEROGENEOUS_APP_TRIAL=PASS" in output
         outputs.append(output)
         preservation_source = "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"
         preservation_obj = build / "root_hyd01.o"
@@ -62,7 +63,8 @@ if evidence_path:
              "tests/physics/test_ppa_micro03_runtime.f90",
              "tests/physics/run_ppa_micro03_runtime.py",
              "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"]
-    record = {"work_unit": "PPA-MICRO03", "status": "LOCAL_O0_O2_RUNTIME_PASS",
+    record = {"work_unit": os.environ.get("MICRO03_EVIDENCE_WORK_UNIT", "PPA-MICRO03"),
+              "status": "LOCAL_O0_O2_RUNTIME_PASS",
               "source_sha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in paths},
               "gfortran": subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0],
               "outputs": {"O0": outputs[0].splitlines(), "O2": outputs[1].splitlines()},

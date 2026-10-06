@@ -2,6 +2,7 @@ module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_fmr_serialized_reference_backend, only: fmr_frost_response_drainage_configuration_valid
+  use mod_fmr_micro_mvg_table_binding, only: fmr_micro_horizon_map_valid
   use mod_root_uptake_compensation, only: ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -845,6 +846,10 @@ contains
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
         tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8) return
     if (allocated(tile%parameters%micro_de_willigen)) then
+      if (allocated(tile%parameters%micro_horizon_first_node)) then
+        if (.not. fmr_micro_horizon_map_valid(tile%parameters%micro_horizon_first_node, &
+            tile%parameters%active_nodes)) return
+      end if
       if (.not. tile%parameters%root_extraction_active) return
       if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
       if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF .or. tile%parameters%root_salinity_active .or. &
@@ -863,6 +868,7 @@ contains
       if (.not. allocated(tile%base_forcing%root_extraction_sink)) return
       if (any(tile%base_forcing%root_extraction_sink /= 0.0_real64)) return
     else
+      if (allocated(tile%parameters%micro_horizon_first_node)) return
       if (allocated(tile%base_forcing%micro_root_length_density) .or. &
           tile%base_forcing%micro_rooted_nodes /= 0) return
     end if

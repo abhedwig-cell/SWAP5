@@ -1,0 +1,22 @@
+{
+  "work_unit": "PPA-MICRO05",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "214f5442311e4608e3d5cccf5bb200d68bb1f027",
+  "status": "LITERAL_MVG_AND_HETEROGENEOUS_RUNTIME_LOCAL_QUALIFIED_DRAFT_UNADMITTED",
+  "implemented": true,
+  "persisted": false,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "canonical_admitted": false,
+  "contract": "docs/audits/PPA_MICRO05_LITERAL_MVG_AND_RUNTIME_MAP_CONTRACT.md",
+  "scope": "Two-horizon literal B1.11 standard MvG oracle and optional first-node horizon map in the MICRO trial application route",
+  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
+  "evidence": [
+    "docs/audits/evidence/PPA_MICRO05_LITERAL_MVG_LOCAL.json",
+    "docs/audits/evidence/PPA_MICRO05_HETEROGENEOUS_RUNTIME_LOCAL.json"
+  ],
+  "next_action": "Review draft stacked PR and bound further ET/crop coupling and unsupported uptake modes separately",
+  "recovery_point": "work/ppa-micro05-literal-mvg-runtime-20261006",
+  "stack_parent_pr": 1074
+}
