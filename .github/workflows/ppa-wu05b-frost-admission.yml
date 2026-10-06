@@ -121,18 +121,22 @@ jobs:
       - name: Analytic drainage scientific and corrected frost-source composition
         run: |
           if test -f tests/frost/run_ppa_wu05b12_scientific.py; then
+            git cat-file -e 49728b999b884a37643908c1dad40269f4e2db9b^{commit} 2>/dev/null || git fetch --no-tags origin 49728b999b884a37643908c1dad40269f4e2db9b
             python3 tests/frost/run_ppa_wu05b12_scientific.py
             python3 tests/frost/run_ppa_wu05b12_analytic_response_source.py
           fi
       - name: Empirical interflow scientific and corrected frost-source composition
         run: |
           if test -f tests/frost/run_ppa_wu05b13_scientific.py; then
+            git cat-file -e 702db051bf5dd0960a962be919ea0cfbf01895a4^{commit} 2>/dev/null || git fetch --no-tags origin 702db051bf5dd0960a962be919ea0cfbf01895a4
             python3 tests/frost/run_ppa_wu05b13_scientific.py
             python3 tests/frost/run_ppa_wu05b13_empirical_response_source.py
           fi
       - name: Signed exchange scientific and corrected frost-source composition
         run: |
           if test -f tests/frost/run_ppa_wu05b14_scientific.py; then
+            # Q4A is an immutable scientific authority outside canonical ancestry.
+            git cat-file -e 48df989b098d73208eed2496005b656f588ebffd^{commit} 2>/dev/null || git fetch --no-tags origin 48df989b098d73208eed2496005b656f588ebffd
             python3 tests/frost/run_ppa_wu05b14_scientific.py
             python3 tests/frost/run_ppa_wu05b14_extended_response_source.py
           fi
