@@ -28,6 +28,16 @@ def require(condition, label):
 
 
 def file_hash(path, expected):
+    if path == 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh':
+        original = subprocess.check_output(['git', 'show',
+            'a0630beff3b7b329ede3e57a10620116e5b1f456:' + path], cwd=ROOT)
+        require(digest(original) == expected, 'original sealed moving-guard identity')
+        old = b'if git merge-base --is-ancestor a8b142871 HEAD; then'
+        new = b'if git merge-base --is-ancestor a0630beff3b7b329ede3e57a10620116e5b1f456 HEAD; then'
+        require(original.count(old) == 1, 'unique lineage recovery seam')
+        require((ROOT / path).read_bytes() == original.replace(old, new),
+                'exact navigation-only moving-guard successor')
+        return
     require(digest((ROOT / path).read_bytes()) == expected, 'dependency drift: ' + path)
 
 

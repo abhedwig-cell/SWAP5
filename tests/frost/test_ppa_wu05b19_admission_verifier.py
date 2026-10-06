@@ -35,6 +35,10 @@ class AdmissionVerifierTests(unittest.TestCase):
         self.reject(lambda r: r['source_sha256'].update({
             'src/process/mod_frost_divdra_drainage_effect.f90': '0' * 64}))
 
+    def test_moving_guard_original_identity(self):
+        self.reject(lambda r: r['source_sha256'].update({
+            'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh': '0' * 64}))
+
     def test_missing_preservation(self):
         self.reject(lambda r: r['receipts'].pop(next(k for k in r['receipts']
                                                    if '/preservation/' in k)))

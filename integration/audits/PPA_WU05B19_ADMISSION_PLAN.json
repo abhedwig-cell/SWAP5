@@ -21,6 +21,13 @@
     "Negative admission-verifier tests for missing or failed gate, source drift, missing preservation receipt, corrupt stdout and incorrect matrix dimensions"
   ],
   "inheritance_policy": "Preserve the complete already-executed source-bound scientific, preservation and adjacent suites only while their exact dependency hashes and sealed replay digest match. The fresh CI runtime matrix is an additional controlling check, not a replacement for missing local evidence.",
+  "lineage_recovery_successor": {
+    "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "old_local_only_entry_guard": "a8b142871",
+    "published_qualified_entry_guard": "a0630beff3b7b329ede3e57a10620116e5b1f456",
+    "allowed_change": "Replace only the single B19 entry ancestry check. Assert deterministic whole-file postimage against the original sealed SHA and original published blob. Retain the exact 24fda production-tree check, B18 ancestor check and every historical guard. Fresh moving preservation is mandatory after this navigation-only repair.",
+    "negative_observation": "A fresh local moving gate failed before numerical execution because the original local-only commit no longer exists after documented Git storage loss. No numerical criterion failed or was relaxed."
+  },
   "inherited_CI_disposition": {
     "B15_frozen_runtime_runner": "Historical exact-tree authority remains unchanged. B19 current-source preservation is established by the complete original programs on fresh B19 modules and verified immutable evidence, not by changing the old source pin.",
     "PUB_P2E02_compile_list": "Unchanged canonical compile-list omission is routed to its publication owner. No numerical result was produced; no pass or broad scientific preservation is inferred from that failed job.",

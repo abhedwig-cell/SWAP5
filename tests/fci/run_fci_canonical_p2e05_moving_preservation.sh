@@ -301,7 +301,7 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor a8b142871 HEAD; then
+  if git merge-base --is-ancestor a0630beff3b7b329ede3e57a10620116e5b1f456 HEAD; then
     # Preregistered B19 candidate: preserve every production blob exactly,
     # including all B1..B18 science. Whole-module runtime gates separately
     # qualify the three explicitly declared interface/binding changes.
