@@ -6,6 +6,8 @@ on:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fmig431/test_swap431_profile_gwl_projection.f90'
       - 'tests/fmig431/run_swap431_profile_gwl_projection.sh'
+      - 'tests/fmig431/test_swap431_profile_gwl_runtime.f90'
+      - 'tests/fmig431/run_swap431_profile_gwl_runtime.sh'
       - '.github/workflows/swap431-gw-projection.yml'
   workflow_dispatch:
 jobs:
@@ -19,3 +21,5 @@ jobs:
       - name: Runtime source dependency compile smoke
         run: |
           python3 tests/fmig431/run_lowgwl01_feasibility.py
+      - name: Transactional runtime commit O0/O2
+        run: bash tests/fmig431/run_swap431_profile_gwl_runtime.sh
