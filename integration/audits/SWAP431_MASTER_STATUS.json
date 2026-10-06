@@ -3,9 +3,9 @@
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
   "last_reconciled_upstream": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "checkpoint_commit": "80acf3159",
+  "checkpoint_commit": "7427e0ac3254e4463fcc32086d621575ee0f8745",
   "implemented": true,
-  "persisted": "local Git; connector publication pending because CLI push lacks credentials",
+  "persisted": true,
   "tested": {
     "coverage_integrity": "PASS",
     "census_lexical_tests": "4 PASS",
@@ -98,5 +98,14 @@
     "docs/science",
     "docs/migration",
     "tools/audits"
-  ]
+  ],
+  "last_reconciled_head": "7427e0ac3254e4463fcc32086d621575ee0f8745",
+  "publication": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "pr": 1072,
+    "sha": "7427e0ac3254e4463fcc32086d621575ee0f8745",
+    "local_and_remote_tree": "f0aa519646af5cc2d07ffd67dd5535756da24272",
+    "all_12_changed_blob_hashes_verified": true,
+    "mechanism": "GitHub connector; ordinary CLI push unavailable without credentials"
+  }
 }
