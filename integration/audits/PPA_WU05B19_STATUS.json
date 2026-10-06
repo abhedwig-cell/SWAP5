@@ -75,6 +75,15 @@
     "manifest_files": 65,
     "qualification": false
   },
+  "recovery_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_RECOVERY_REPLAY.json.gz",
+    "sha256": "75f18ec60c6190b7d91f1e27d601239c136776e0fc3ed7e7a99c929a7b24c7e1",
+    "bytes": 1074533,
+    "manifest_files": 383,
+    "completed_case_receipts": 40,
+    "qualification": false,
+    "scope": "Fresh compile/source/additional/B18/positive-preservation records, all32 complete normal incumbent receipts, seven full scientific/root/external/SALT preservation receipts and one full low-air runtime family. Inherited source-bound normal B19 runtime remains retained; no running physical output is included."
+  },
   "negative_findings": [
     {
       "attempt": "Initial B18 preservation rebind",
