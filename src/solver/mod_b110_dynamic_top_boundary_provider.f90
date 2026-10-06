@@ -4,7 +4,6 @@ module mod_b110_dynamic_top_boundary_provider
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, &
        evaluate_b110_default_mvg_conductivity
-  use mod_fmr_macropore_top_input, only: fmr_macropore_pond_donor_request_t, evaluate_fmr_macropore_pond_donor
   use mod_restricted_surface_evaporation, only: surface_evaporation_demand_t, &
        surface_evaporation_hydraulic_input_t, surface_evaporation_result_t, &
        evaluate_restricted_surface_evaporation, SURFACE_EVAP_AVAILABLE
@@ -86,7 +85,6 @@ contains
     type(surface_evaporation_demand_t) :: demand
     type(surface_evaporation_hydraulic_input_t) :: evap_hydraulic
     type(surface_evaporation_result_t) :: evaporation
-    type(fmr_macropore_pond_donor_request_t) :: pond_donor
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
@@ -215,15 +213,11 @@ contains
          k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
 
     if (request%macropore_pond_donor_active .and. request%macropore_surface_area_fraction > 0.0_real64) then
-      pond_donor%no_macro_ponding_depth_cm = max(0.0_real64,h0max)
-      pond_donor%direct_macro_input_cm = (request%precipitation_rate_cm_per_day + &
-           request%irrigation_rate_cm_per_day + request%snowmelt_rate_cm_per_day) * &
-           request%macropore_surface_area_fraction * request%step_duration_day
-      pond_donor%threshold_cm = request%macropore_pond_threshold_cm
-      pond_donor%surface_conductance_step = p1
-      pond_donor%macropore_surface_conductivity_cm_per_day = request%macropore_surface_conductivity_cm_per_day
-      pond_donor%step_duration_day = request%step_duration_day
-      call evaluate_fmr_macropore_pond_donor(pond_donor,result%macropore_pond_requested_lateral_cm,donor_ok)
+      call evaluate_b110_macropore_pond_donor(max(0.0_real64,h0max), &
+           (request%precipitation_rate_cm_per_day+request%irrigation_rate_cm_per_day+ &
+            request%snowmelt_rate_cm_per_day)*request%macropore_surface_area_fraction*request%step_duration_day, &
+           request%macropore_pond_threshold_cm,p1,request%macropore_surface_conductivity_cm_per_day, &
+           request%step_duration_day,result%macropore_pond_requested_lateral_cm,donor_ok)
       if (.not.donor_ok) then
         result%status=B110_DYN_TOP_INVALID_INPUT
         result%route='macropore-pond-donor-invalid'
@@ -284,6 +278,26 @@ contains
       result%route = 'ponded-head-linear-runoff'
     end if
   end subroutine evaluate_b110_dynamic_top_boundary
+
+  pure subroutine evaluate_b110_macropore_pond_donor(h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day,q_cm,ok)
+    real(real64),intent(in)::h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day
+    real(real64),intent(out)::q_cm
+    logical,intent(out)::ok
+    real(real64)::rsromp_day,p2,p2mp,pond_cm
+    q_cm=0.0_real64;ok=.false.
+    if(.not.all(ieee_is_finite([h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day])))return
+    if(min(h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day)<0.0_real64 .or. dt_day<=0.0_real64)return
+    if(h0max_cm<=threshold_cm)then;ok=.true.;return;end if
+    if(ksmp_cm_day<=0.0_real64)return
+    rsromp_day=(h0max_cm+direct_macro_cm)/ksmp_cm_day
+    if(rsromp_day<=0.0_real64)return
+    p2=1.0_real64/(p1+1.0_real64)
+    p2mp=1.0_real64/(p1+1.0_real64+dt_day/rsromp_day)
+    pond_cm=(h0max_cm-threshold_cm)*p2mp/p2
+    q_cm=min(pond_cm*dt_day/rsromp_day,h0max_cm)
+    if(q_cm<1.0e-7_real64)q_cm=0.0_real64
+    ok=ieee_is_finite(q_cm).and.q_cm>=0.0_real64
+  end subroutine evaluate_b110_macropore_pond_donor
 
   subroutine validate_request(geometry, hydraulics, request, ok)
     type(soil_water_parameter_set_t), intent(in) :: geometry
