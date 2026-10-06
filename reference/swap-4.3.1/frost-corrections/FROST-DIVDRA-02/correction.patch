@@ -1,0 +1,11 @@
+--- original/divdra.f90
++++ FROST-DIVDRA-02/divdra.f90
+@@ -305,7 +305,7 @@
+                if (icpslev == icpwlev) then
+                   qdrauns = RQmax * (dzcpslevsat - dzcpwlevsat) * Khor(icpwlev) 
+                else
+-                  if (KDuns > 1.d-8) then
++                  if (KDuns > 0.d0) then
+                      CumKD = 0.d0
+                      do icp = icpslev, icpwlev-1
+                         qdra(idr,icp) = RQmax / KDuns * ((CumKD+KD(icp))**2 - CumKD**2)

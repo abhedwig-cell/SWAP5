@@ -1,9 +1,9 @@
 {
   "work_unit": "PPA-WU05B17",
-  "status": "PREREGISTERED_REFERENCE_CORRECTION_PENDING",
+  "status": "CORRECTED_REFERENCE_PERSISTED_UNTESTED",
   "baseline": "9906bf429c445f3eb715a949b47460d223294a29",
   "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -19,7 +19,11 @@
     "tests/frost/test_ppa_wu05b16_divdra_owner.f90"
   ],
   "owned_surface": "Isolated reference patch artifact, hash-guarded materializer, reference qualification runner and evidence only. All original source files and production sources remain unchanged.",
-  "recovery_point": "Preregistration commit before patch/materializer",
-  "next_action": "Persist preregistration before creating the patch or executable materializer",
-  "blockers": []
+  "recovery_point": "Git commit containing full correction and qualification harness",
+  "next_action": "Execute all4536 original/corrected cases at O0/O2 and negative materializer guards",
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py"
+  ],
+  "correction_path": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02"
 }
