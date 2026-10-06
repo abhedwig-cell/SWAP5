@@ -50,6 +50,7 @@ program test_ppa_wu03_common_forcing_adapter
   type(fmr_serialized_column_result_t), allocatable :: direct_results(:), adapter_results(:)
   integer(int64), allocatable :: direct_revisions(:), adapter_revisions(:)
   real(real64) :: conductivity0, irrigation_rate, preliminary_evap, qtarget
+  real(real64), parameter :: RUNON_PROBE = 0.003_real64
   real(real64) :: nan_value
   integer :: status, direct_status, adapter_status
 
@@ -203,6 +204,26 @@ program test_ppa_wu03_common_forcing_adapter
   call require(result_a1%top_request%potential_pond_evaporation_cm_per_day == &
        result_a2%top_request%potential_pond_evaporation_cm_per_day, 'A-B-A pond demand bit identity')
 
+  ! Runon is an explicit external surface-water carrier. It must survive
+  ! common-forcing materialization without being folded into precipitation or
+  ! irrigation, so the existing dynamic-top owner books it exactly once.
+  input_a = normal_input
+  input_a%runon_rate_cm_per_day = RUNON_PROBE
+  call materialize_ppa_wu03_common_forcing(forcing_config, input_a, base_request, result_a1, diag_a1)
+  call require(diag_a1%status == PPA_WU03_OK .and. result_a1%valid, 'positive runon materialization')
+  call require(result_a1%top_request%runon_rate_cm_per_day == RUNON_PROBE, 'runon carrier identity')
+  call require(result_a1%top_request%precipitation_rate_cm_per_day == &
+       normal_input%precipitation_rate_cm_per_day, 'runon does not rewrite precipitation')
+  call require(result_a1%top_request%irrigation_rate_cm_per_day == &
+       normal_input%surface_irrigation_rate_cm_per_day, 'runon does not rewrite irrigation')
+  call evaluate_dynamic_top(app_config, result_a1%top_request, adapter_top)
+  call require(adapter_top%status == B110_DYN_TOP_AVAILABLE, 'runon dynamic top available')
+
+  bad_input = normal_input
+  bad_input%runon_rate_cm_per_day = -RUNON_PROBE
+  call materialize_ppa_wu03_common_forcing(forcing_config, bad_input, base_request, result_b, diag_b)
+  call require(.not. result_b%valid, 'negative runon fails closed')
+
   ! Fail-closed selectors and malformed forcing.
   bad_forcing_config = forcing_config
   bad_forcing_config%et_mode = 99
@@ -263,6 +284,7 @@ program test_ppa_wu03_common_forcing_adapter
   print '(a)', 'PPA_WU03_PPA_WU01_OWNER_PRESERVED=PASS'
   print '(a)', 'PPA_WU03_RETRY_INPUT_STATELESS_ABA=PASS'
   print '(a)', 'PPA_WU03_UNSUPPORTED_OPTIONS_FAIL_CLOSED=PASS'
+  print '(a)', 'PPA_WU03_RUNON_CARRIER=PASS'
   print '(a)', 'PPA_WU03_HARD_MASS=PASS'
   print '(a)', 'PPA-WU03 COMMON FORCING OWNER GATE PASS'
 
