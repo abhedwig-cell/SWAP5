@@ -1,0 +1,55 @@
+{
+  "work_unit": "PPA-WU05B15",
+  "baseline": "f72d72622264111edbadca1bfc49690a47b287a9",
+  "last_reconciled_upstream": "f72d72622264111edbadca1bfc49690a47b287a9",
+  "baseline_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
+  "preregistration": "integration/audits/PPA_WU05B15_PREREGISTRATION.json",
+  "status": "PREREGISTERED_SOURCE_REVIEW_COMPLETE",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "relevant_paths": [
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_frost_drainage_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/PPA_WU05B15_SOURCE_REVIEW.json",
+    "integration/audits/PPA_WU05B14_CANONICAL_ADMISSION.json"
+  ],
+  "dependency_surface": "Shared backend ABI; highest selected validation, actual resolved control, single sink, normal/B8 modifiers, independently regenerated proposals, receipts/mass/retry/restart and relevant incumbent/root/salt/external preservation",
+  "interfaces_allowed_to_change": "Add OFF frost_highest_response_drainage_active requiring B9 and exactly one actual EXTENDED TUBE/OPEN_CHANNEL level with highest_level true and TOP_SURFACE_RESISTANCE or TOP_POWER_INTERFLOW. Reject B14/TAB/analytic/empirical flags and mixed/multilevel/other variants. Keep original B14 highest_level false/TOP_NONE contract unchanged. Low-air requires B10/B8 and exact zbotdr/frost physical depth agreement. No process body/control/receipt/state changes.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "pending": [
+    "Rebind unchanged1507-case original Q4A scientific oracle/driver to actual current process/full soil contract/hydraulic view O0/O2, value/tangent/seam and negative-power holds retained",
+    "Actual binding source matrix independent highest surface resistance both signed branches and power nonnegative/zero branches plus held negatives, TUBE/OPEN geometry, resistance min-switch, control clamp/GWLINF/pond/suppression seams, active parameter bounds and inactive members; corrected B7 final nodal/qbot/reporting bit parity O0/O2",
+    "Six complete type/mode/sign configurations, each six full trajectories per route at O0/O2; independent8192 normal/65536 low-air fine references, observed low-air geometry branches, fixed local physical/numerical budgets and hard mass, actual retry/full-half regeneration/single final sink/receipts/replay/application/empty restart",
+    "Actual short160 or more control/parameter endpoint cases per route with interval1e-10, nonnegative power activation/inactivity, signed highest-surface cases, selected numerical seams and independent equations; original negative-power domain HELD, no committed-state publication",
+    "Further normal16384/32768 references for all six configurations surviving patterns and selected TUBE/OPEN highest surface/power low-air131072 refs",
+    "Fresh relevant whole-module B1..B14 original runtime preservation O0/O2 including all B12/B13/B14 low-air families/configurations; exact original qualified B12/B13/B14 outputs both routes/opts; four179-source SALT/root/frost matrices, immutable VQ73/74, original full F-APP09/VQ128 external exclusion, literal root, strict exact canonical pins, docs and immutable replay",
+    "Persist useful source/harness before expensive physical gates; local completed source-bound qualification then immediate exact proposed/actual tree/source/parents admission and metadata closeout, no queued Actions success claim"
+  ],
+  "blockers": [],
+  "next_action": "Implement only preregistered backend OFF selector and active validation, preserve process/control/body ownership; persist useful production before assembling whole-module gates",
+  "recovery_point": "f72d72622264111edbadca1bfc49690a47b287a9"
+}

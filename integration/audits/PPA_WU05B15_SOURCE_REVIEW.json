@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B15",
-  "status": "SOURCE_REVIEW_ONLY_NOT_PREREGISTERED_OR_IMPLEMENTED",
+  "status": "SOURCE_REVIEW_COMPLETE_PREREGISTERED",
   "reviewed_B14_candidate_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "prerequisite": "B14 admitted via PR1060; reconcile exact metadata closeout then persist B15 preregistration before production/interface edits",
   "selected_next_slice": "Explicit rootless ordinary Reference mode2 single-level actual EXTENDED TUBE/OPEN_CHANNEL highest-level SURFACE_RESISTANCE and nonnegative POWER_INTERFLOW proposals, with normal and B8 guarded low-air frost; supplied resolved control separate from physical zbotdr. Preserve negative-power HELD behavior without clipping or exponent-domain invention. External F-APP09 profile remains excluded.",
@@ -31,7 +31,7 @@
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
   },
-  "interfaces_allowed_to_change": null,
+  "interfaces_allowed_to_change": "Add OFF frost_highest_response_drainage_active requiring B9 and exactly one actual EXTENDED TUBE/OPEN_CHANNEL level with highest_level true and TOP_SURFACE_RESISTANCE or TOP_POWER_INTERFLOW. Reject B14/TAB/analytic/empirical flags and mixed/multilevel/other variants. Keep original B14 highest_level false/TOP_NONE contract unchanged. Low-air requires B10/B8 and exact zbotdr/frost physical depth agreement. No process body/control/receipt/state changes.",
   "invariants": [
     3,
     5,
@@ -58,6 +58,6 @@
     "Global frost equivalence",
     "Legacy surface-water feedback/reporting-reference scope expansion"
   ],
-  "next_action": "After exact B14 closeout, reconcile current source and persist explicit B15 preregistration with fixed complete physical matrices, ownership and negative-domain gates before editing production",
-  "baseline": "16e4e854016129ccc44a4e719adf02db74887186"
+  "next_action": "Implement only the preregistered OFF backend selector; persist useful source before physical gates",
+  "baseline": "f72d72622264111edbadca1bfc49690a47b287a9"
 }
