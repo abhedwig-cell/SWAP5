@@ -26,7 +26,9 @@ MODULE_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
@@ -44,6 +46,8 @@ MODULE_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90

@@ -2,7 +2,7 @@
   "work_unit": "PPA-MICRO06",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "b81bae181b3d9546bb245ccd1c1cd1c8a368d595",
-  "status": "STACK_PERSISTED_CANONICAL_CANDIDATE_B15_PRESERVATION_PENDING",
+  "status": "B15_PR_MERGE_PRESERVATION_PASSED_HISTORICAL_RECONCILIATION_OPEN",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -11,9 +11,26 @@
   "canonical_admitted": false,
   "contract": "docs/audits/PPA_MICRO06_CHANGED_FORCING_RESTART_CONTRACT.md",
   "scope": "Two-interval normal MICRO uptake with changed forcing and actual committed Restart bundle",
-  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
-  "dependency_surface": ["src/process/mod_root_micro_de_willigen_process.f90", "src/runtime/mod_fmr_micro_mvg_table_binding.f90", "src/runtime/mod_fmr_serialized_reference_backend.f90", "src/runtime/mod_fmr_committed_restart.f90"],
-  "test_paths": ["tests/physics/test_ppa_micro03_runtime.f90", "tests/physics/run_ppa_micro03_runtime.py"],
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25
+  ],
+  "dependency_surface": [
+    "src/process/mod_root_micro_de_willigen_process.f90",
+    "src/runtime/mod_fmr_micro_mvg_table_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_committed_restart.f90"
+  ],
+  "test_paths": [
+    "tests/physics/test_ppa_micro03_runtime.f90",
+    "tests/physics/run_ppa_micro03_runtime.py"
+  ],
   "evidence": "docs/audits/evidence/PPA_MICRO06_CHANGED_FORCING_RESTART_LOCAL.json",
   "persisted_qualification": "integration/audits/PPA_MICRO06_STACK_QUALIFICATION.json",
   "persisted_workflow_run_id": 37428720498,
@@ -25,11 +42,22 @@
   "draft_pr": 1076,
   "canonical_admission_candidate_pr": 1077,
   "canonical_admission_base": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "canonical_candidate_head": "e19225d2cfb77660779212f3db32aa62b8556636",
+  "canonical_candidate_head": "3d0e5f2effd9bb4855ec831890ca1335cbaaba42",
   "canonical_target_stack_workflow_run_id": 37431153468,
   "canonical_target_stack_workflow_conclusion": "success",
   "moving_preservation_local": "PASS_EXACT_MICRO_SOURCE_SUCCESSOR",
   "b15_local_successor_evidence": "docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json",
   "b15_normal_local": "RUNTIME_ADDITIONAL_INCUMBENT_PRESERVATION_O0_O2_PASS",
-  "blockers": ["PPA-WU05B15 full normal and low-air PR-merge preservation qualification pending", "F-CI canonical PR-merge preservation and historical cross-workstream scope checks pending or failing"]
+  "blockers": [
+    "F-PE-ELASTIC09 historical exact-source-scope disposition by its owner remains open",
+    "PUB-P2E04 corrected compile-closure runners need persisted rerun",
+    "F-KT22 baseline-reproduced external outflow assertion remains separately owned"
+  ],
+  "b15_pr_merge_workflow_run_id": 37432003317,
+  "b15_pr_merge_workflow_conclusion": "success",
+  "b15_pr_merge_head": "5c3a761ecf65e5bf4c0d051c92e0d5c0f12a909b",
+  "b15_low_air_pr_merge": "RUNTIME_ADDITIONAL_INCUMBENT_PRESERVATION_O0_O2_PASS",
+  "b15_low_air_local_evidence": "docs/audits/evidence/PPA_MICRO_B15_LOW_AIR_LOCAL.json",
+  "historical_gate_reconciliation": "docs/audits/PPA_MICRO_HISTORICAL_GATE_RECONCILIATION.md",
+  "pub_p2e04_runner_reconciliation": "docs/audits/evidence/PPA_MICRO_P2E04_RUNNER_RECONCILIATION.json"
 }
