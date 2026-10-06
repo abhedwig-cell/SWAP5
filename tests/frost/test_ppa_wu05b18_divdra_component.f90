@@ -3,6 +3,11 @@ program component
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_frost_divdra_drainage_effect
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use MOD_drain, only: legacy_divdra=>DIVDRA,legacy_nodes=>qdra,legacy_scalar=>qdrain, &
+       legacy_aniso=>cofani,legacy_spacing=>Lspacing
+  use MOD_frost, only: FrozenBounds,legacy_factor=>rfcp,legacy_node=>nodfrostbot,legacy_bottom=>zfrostbot
+  use variables, only: legacy_theta=>theta,legacy_sat=>thetas,legacy_gwl=>gwl, &
+       legacy_qbot=>qbot,legacy_qbot_raw=>qbot_nonfrozen
   implicit none
   type(frost_divdra_parameters_t) :: p,invalid
   type(process_hydraulic_view_t) :: view,bad_view
@@ -91,5 +96,42 @@ program component
   call compose_single_level_signed_frost_divdra(p,view,factor,8,-7.5_real64,theta,sat,.1_real64,0._real64,r)
   if(r%available.or.allocated(r%final_nodal_sink))error stop 'last-node frozen publication'
   negative_count=negative_count+1
+  call compose_single_level_signed_frost_divdra(p,view,factor,nf,frost,theta,sat, &
+       ieee_value(0._real64,ieee_quiet_nan),0._real64,r)
+  call assert_unavailable(r);negative_count=negative_count+1
+  call compose_single_level_signed_frost_divdra(p,view,factor,nf,frost,theta,sat,.1_real64, &
+       ieee_value(0._real64,ieee_quiet_nan),r)
+  call assert_unavailable(r);negative_count=negative_count+1
+  call compose_single_level_signed_frost_divdra(p,view,factor,nf,frost,theta,sat,1.e7_real64,0._real64,r)
+  call assert_unavailable(r);negative_count=negative_count+1
+  nodes=factor;nodes(1:2)=0._real64;nodes(3)=.5_real64
+  bad_view=view;bad_view%water_content=sat
+  call compose_single_level_signed_frost_divdra(p,bad_view,nodes,2,-2._real64,sat,sat,.1_real64, &
+       -.1_real64+1.e-11_real64,r)
+  call assert_unavailable(r)
+  if(r%status/=FROST_DIVDRA_SMALL_SCALAR)error stop 'transformed tiny domain changed'
+  negative_count=negative_count+1
+  call compose_single_level_signed_frost_divdra(p,bad_view,nodes,2,-2._real64,sat,sat,0._real64,1.e-11_real64,r)
+  call assert_unavailable(r);negative_count=negative_count+1
+  ! Exact boundary and deeper-than-offset use fresh actual unchanged DIVDRA.
+  legacy_factor=1._real64;legacy_node=-1;legacy_bottom=0._real64
+  legacy_theta=theta;legacy_sat=sat;legacy_qbot=0._real64;legacy_qbot_raw=0._real64
+  legacy_aniso=1._real64;legacy_spacing=20._real64
+  do j=1,2
+    bad_view=view;bad_view%groundwater_level=-2._real64
+    if(j==2)bad_view%groundwater_level=-2._real64-2.e-10_real64
+    legacy_gwl=bad_view%groundwater_level;legacy_scalar=.1_real64
+    call legacy_divdra(p%distribution%saturated_conductivity,legacy_gwl)
+    call FrozenBounds
+    call compose_single_level_signed_frost_divdra(p,bad_view,factor,nf,frost,theta,sat,.1_real64,0._real64,r)
+    if(.not.r%available)error stop 'admissible seam unavailable'
+    if(maxval(abs(r%final_nodal_sink-legacy_nodes(1,:)))>1.e-14_real64)error stop 'actual seam source parity'
+  end do
   write(*,'(A,I0)')'B18_INVALID_DOMAIN_UNAVAILABLE_CASES=',negative_count
+  print '(A)','B18_ACTUAL_REFERENCE_BOUNDARY_AND_BEYOND_OFFSET_CASES=2'
+contains
+  subroutine assert_unavailable(result)
+    type(frost_divdra_result_t),intent(in)::result
+    if(result%available.or.allocated(result%final_nodal_sink))error stop 'unavailable-domain publication'
+  end subroutine
 end program

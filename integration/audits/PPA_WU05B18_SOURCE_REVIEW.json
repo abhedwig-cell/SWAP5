@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B18",
-  "status": "SOURCE_REVIEW_ONLY_NOT_IMPLEMENTED",
+  "status": "QUALIFIED_TYPED_SCIENTIFIC_COMPONENT_RUNTIME_PENDING",
   "baseline": "987715cbf5513a0911bd81403209452d2a99666c",
   "production_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
   "selected_next_slice": "New isolated typed single-level signed DIVDRA/frost scientific process composition against admitted B17 corrected reference. Regenerate raw nodal distribution from the supplied immutable hydraulic view, then normal-air nodal frost multiplication or original low-air conductivity/geometry/scalar/bottom transformation. No backend/runtime selector or wrapper modification in this component phase.",
@@ -25,10 +25,11 @@
     "tests/frost/run_ppa_wu05b17_corrected_divdra.py": "565dd26ad06e8c864b27f599f8abd695b13b93623396417b47b58e17d5726074"
   },
   "interfaces_allowed_to_change": "Only newly preregistered isolated process types/functions and their scientific harness; existing public APIs and production backend remain fixed",
-  "implemented": false,
-  "qualified": false,
+  "implemented": true,
+  "qualified": true,
   "admitted": false,
   "runtime_admitted": false,
   "aggregate_frost_migration_complete": false,
-  "next_action": "Preregister B18 typed component and complete original/corrected/independent parity plus invalid-domain/mass-owner checks"
+  "next_action": "Exact component admission and metadata closeout, then separately preregister ordinary rootless Reference mode2 immutable-trial integration, full/half regeneration and hard-mass/reject/restart/app receipts before editing backend/forcing interfaces.",
+  "qualification": "integration/audits/PPA_WU05B18_QUALIFICATION.json"
 }
