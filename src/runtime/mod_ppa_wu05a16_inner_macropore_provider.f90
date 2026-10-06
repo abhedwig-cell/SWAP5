@@ -376,11 +376,12 @@ contains
       if(.not.ok)return
       request%limiter%potential_top_vertical_cm=top_vertical
       request%limiter%potential_top_lateral_cm=top_lateral
-      if(self%candidate_pond_lateral_cm>0.0_real64)then
-        if(sum(request%limiter%potential_top_lateral_cm)>1.0e-14_real64)return
-        request%limiter%potential_top_lateral_cm= &
-             self%geometry_config%domain_fraction(:,geometry_current%top_node)*self%candidate_pond_lateral_cm
-      end if
+    end if
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      if(.not.self%geometry_config%valid())return
+      if(sum(request%limiter%potential_top_lateral_cm)>1.0e-14_real64)return
+      request%limiter%potential_top_lateral_cm= &
+           self%geometry_config%domain_fraction(:,geometry_current%top_node)*self%candidate_pond_lateral_cm
     end if
     call evaluate_macropore_rate_bundle(request,rates)
     ok=rates%valid
