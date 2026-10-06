@@ -327,6 +327,22 @@ contains
       end if
 
       result%matrix_result=corrector
+      if(associated(request%evaluation%macropore))then
+        block
+          real(real64)::candidate_pond_lateral_cm
+          candidate_pond_lateral_cm=request%evaluation%macropore%candidate_pond_lateral()
+          if(candidate_pond_lateral_cm>0.0_real64)then
+            if(sum(rate_template_attempt%limiter%potential_top_lateral_cm)>1.0e-14_real64)then
+              result%status=MACRO_RUNTIME_FAILED
+              return
+            end if
+            rate_template_attempt%limiter%potential_top_lateral_cm= &
+                 geometry_config%domain_fraction(:,geometry%top_node)*candidate_pond_lateral_cm
+            result%requested_top_input_cm=sum(rate_template_attempt%limiter%potential_top_vertical_cm)+ &
+                 candidate_pond_lateral_cm
+          end if
+        end block
+      end if
       if(present(shrinkage_config))then
         if(shrinkage_config%enabled)then
           call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok, &
