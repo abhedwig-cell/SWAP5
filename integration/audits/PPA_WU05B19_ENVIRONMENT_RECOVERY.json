@@ -1,0 +1,26 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "COMPILER_BLOCKER_RESOLVED_NOT_RUNTIME_QUALIFICATION",
+  "recovered_source_tree": "636e782080abdd2c0366f96317c4f59e8170dc53",
+  "environment_failure": "Previous scratch worktrees, executables and installed Fortran compiler were lost. System apt installation failed at setgroups/setuid due to container permissions.",
+  "solution": "Download unchanged Ubuntu packages, verify SHA256, extract with dpkg-deb -x into an owned local directory. Invoke the compiler with explicit -B frontend/system GCC and -L runtime-library search paths. No system installation or permission changes.",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "download_base": "https://snapshot.ubuntu.com/ubuntu/20250801T000000Z/",
+  "packages": {
+    "pool/main/g/gcc-13/gfortran-13-x86-64-linux-gnu_13.3.0-6ubuntu2~24.04_amd64.deb": "4f5bb750bdacc4a935fa1470af3d5001cbb3091a8d3f9bf526cf65613f8b1fa6",
+    "pool/main/g/gcc-13/libgfortran-13-dev_13.3.0-6ubuntu2~24.04_amd64.deb": "34d3d1f80b3d1e83274f0f2b770f540cae54707ddfd01e453dcb3f1b112f7377"
+  },
+  "fresh_completed_checks": [
+    "Compile, link and execute a real64 smoke program at O0/O2",
+    "Dependency-complete 177-source B19 compilation at O0/O2",
+    "Complete unchanged original B1 frost runtime program at O0/O2, stdout byte identity",
+    "Actual B19 nonuniform corrected-source parity: 660 cases, 412 available and 248 held per optimization, stdout byte identity",
+    "Complete B18 scientific preservation: 4536 cases, 3240 available, 1296 tiny-scalar held, 32 invalid domains and 2 exact boundary cases per optimization",
+    "Complete B19 additional actual native/app guards: 756 committed, 84 held, 28 invalid application cases per optimization, stdout byte identity"
+  ],
+  "retained_evidence": "Only immutable source-bound completed cases in PPA_WU05B19_PARTIAL_LOCAL_REPLAY.json.gz remain inherited. Missing executables are freshly rebuilt; no partial physical output is reused.",
+  "expected_stdout_recovery": "tests/frost/restore_ppa_wu05b19_immutable_outputs.py checks admitted/qualified status and complete replay SHA256 before recovering literal B12..B15 expected stdout. This does not count as a fresh preservation run.",
+  "pending": "Complete all low-air trajectories and all declared incumbent, SALT, external, canonical and docs preservation; persist the final full replay before qualification/admission.",
+  "qualified": false,
+  "admitted": false
+}
