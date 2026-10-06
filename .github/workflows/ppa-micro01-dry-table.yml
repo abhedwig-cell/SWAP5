@@ -1,0 +1,43 @@
+name: PPA MICRO01 exact dry table
+on:
+  push:
+    branches: [work/ppa-micro01-dry-table-audit-20261006]
+    paths:
+      - .github/workflows/ppa-micro01-dry-table.yml
+      - tests/physics/run_ppa_micro01_dry_table.py
+      - tests/physics/run_ppa_micro01_corrected_table.py
+      - tests/physics/test_ppa_micro01_corrected_table.f90
+      - src/process/mod_root_micro_matric_flux_table.f90
+permissions:
+  contents: read
+jobs:
+  exact-component:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify compiler and unchanged source component
+        shell: bash
+        env:
+          C3A_RESULT: micro01-result.json
+        run: |
+          set -euo pipefail
+          gfortran --version
+          python3 tests/physics/run_ppa_micro01_dry_table.py | tee micro01-replay.log
+      - name: Verify typed corrected table against explicit reference patch
+        shell: bash
+        env:
+          C3A_RESULT: micro01-corrected-result.json
+        run: |
+          set -euo pipefail
+          python3 tests/physics/run_ppa_micro01_corrected_table.py | tee micro01-corrected-replay.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-micro01-dry-table
+          path: |
+            micro01-result.json
+            micro01-replay.log
+            micro01-corrected-result.json
+            micro01-corrected-replay.log
+          if-no-files-found: error

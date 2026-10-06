@@ -1,0 +1,53 @@
+{
+  "work_unit": "PPA-MICRO01",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "status": "QUALIFIED_FINAL_TYPED_TABLE_COMPONENT_ADMISSION_PENDING",
+  "implemented": true,
+  "test_harness_prepared": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": false,
+  "production_mutation": true,
+  "reference_mutation": false,
+  "review": "docs/audits/PPA_MICRO01_DRY_TABLE_REVIEW.md",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
+    "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json"
+  ],
+  "test_paths": [
+    "tests/physics/run_ppa_micro01_dry_table.py"
+  ],
+  "dependency_surface": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "tests/physics/run_ppa_micro01_dry_table.py"
+  ],
+  "source_finding": "Dry table initialization fills M430 and M/K1:429, while rate lookup at h=-20000 reads M431 and K430:431. Source-level uninitialized bracket, not actual historical-output prediction.",
+  "blockers": [],
+  "next_action": "Complete documentation gates and admit typed table component only",
+  "recovery_point": "Current persisted workstream commit",
+  "interfaces_changed": [],
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25
+  ],
+  "scope_limit": "Source review and prepared unchanged table component test only; no MICRO production physics or legacy full-model equivalence. Jarvis/Walsum remains separately admitted.",
+  "qualification_fallback": ".github/workflows/ppa-micro01-dry-table.yml",
+  "negative_findings": [
+    "Initial pipeline masked ERROR STOP 3 because pipefail absent; no successful component evidence claimed",
+    "K430 also affects previous -19900 normal control; move normal control to -19000 and explicitly test the K-only gap"
+  ],
+  "negative_evidence": "integration/audits/PPA_MICRO01_FIRST_REPLAY_NEGATIVE.json",
+  "qualification": "integration/audits/PPA_MICRO01_FINAL_QUALIFICATION.json",
+  "qualification_scope": "Typed table component only, unused by default runtime",
+  "local_compiler_available": false,
+  "execution": "3175892870dac0671a46602eca7e47d050add9fb"
+}
