@@ -80,7 +80,7 @@ contains
 
     call initialize_parameters(parameters, 2)
     parameters%profile_groundwater_projection = .true.
-    call initialize_committed(committed, parameters, .true., ok)
+    call initialize_committed(committed, parameters, .false., ok)
     call require(ok, 'projection committed state initialization')
     call initialize_forcing(forcing, q, q, -999999.0_real64)
 
