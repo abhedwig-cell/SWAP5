@@ -16,6 +16,9 @@ sources = subprocess.check_output(
     ["python3", "tests/support/augment_bartholomeus_backend_sources.py", *sources],
     cwd=ROOT, text=True,
 ).splitlines()
+sources.extend(["src/kernel/mod_kernel_committed_persistence.f90",
+                "src/runtime/mod_fmr_restart_state_contract.f90",
+                "src/runtime/mod_fmr_committed_restart.f90"])
 outputs = []
 preservation_outputs = []
 with tempfile.TemporaryDirectory(prefix="ppa-micro03-") as tmp:
@@ -37,6 +40,7 @@ with tempfile.TemporaryDirectory(prefix="ppa-micro03-") as tmp:
         run.check_returncode()
         assert "MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS" in output
         assert "MICRO05_HETEROGENEOUS_APP_TRIAL=PASS" in output
+        assert "MICRO06_COMMITTED_RESTART_CHANGED_FORCING=PASS" in output
         outputs.append(output)
         preservation_source = "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"
         preservation_obj = build / "root_hyd01.o"
@@ -60,6 +64,9 @@ if evidence_path:
              "src/runtime/mod_fmr_micro_mvg_table_binding.f90",
              "src/runtime/mod_fmr_serialized_reference_backend.f90",
              "src/runtime/mod_fmr_production_application_bootstrap.f90",
+             "src/kernel/mod_kernel_committed_persistence.f90",
+             "src/runtime/mod_fmr_restart_state_contract.f90",
+             "src/runtime/mod_fmr_committed_restart.f90",
              "tests/physics/test_ppa_micro03_runtime.f90",
              "tests/physics/run_ppa_micro03_runtime.py",
              "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"]

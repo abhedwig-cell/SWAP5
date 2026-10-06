@@ -1,0 +1,24 @@
+{
+  "correction": "FROST-DIVDRA-03",
+  "audit_id": "FROST-DIVDRA-SAME-COMPARTMENT-INFILTRATION-THICKNESS",
+  "work_unit": "PPA-WU05B20",
+  "parent": {
+    "path": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90",
+    "sha256": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483"
+  },
+  "candidate_sha256": "29ff7008141bcd1d375f5aefa333f539249b40ef1cc4a81ec45f1cf86ff2b229",
+  "patch": {
+    "old": "               if (icpbotdislay(idr) == icpwlev) dzcpbotdislay(idr) = dzcpwlevsat\r\n",
+    "new": "",
+    "occurrences": 1
+  },
+  "scope": "Qualified reference correction removing erroneous infiltration-bottom thickness overwrite in Paragraph11; no signed scalar/bottom semantics change.",
+  "qualification_pending": false,
+  "global_B1_snapshot_promoted": false,
+  "production_modified": false,
+  "qualified": true,
+  "admitted": true,
+  "materialized_reference": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03/divdra.f90",
+  "qualification_authority": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json",
+  "disposition": "ALREADY_COVERED_REFERENCE_CORRECTION_ADMITTED"
+}

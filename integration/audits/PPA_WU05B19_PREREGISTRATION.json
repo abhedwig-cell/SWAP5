@@ -1,0 +1,23 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "candidate_source": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "source_sha256": {
+    "src/process/mod_frost_divdra_drainage_effect.f90": "66c309c5184134f8985bb2ec1f950023d03a4d3799d5e1056e4f101abb0cceb9",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "a1c9baa710b487709c9036a88bf9ab28be5f68b0c0541dd117c2543958de188a",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "ec4a246f20bf52b319c1bbe57e33e8a969dba9bb8bd4077aecd47ba691d18f16"
+  },
+  "contract": "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
+  "required_gates": [
+    "B18 full corrected reference replay",
+    "B19 signed runtime O0/O2 and fine continuation/restart/application",
+    "B1..B15 fresh full module normal/low-air preservation",
+    "SALT/root/frost matrices",
+    "VQ73/VQ74",
+    "FAPP09/VQ128",
+    "literal root",
+    "moving canonical",
+    "docs and mkdocs"
+  ],
+  "admitted": false
+}

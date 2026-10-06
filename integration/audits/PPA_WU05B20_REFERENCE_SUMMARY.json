@@ -1,0 +1,207 @@
+{
+  "work_unit": "PPA-WU05B20",
+  "status": "COMPLETE_REFERENCE_AUDIT_RUNTIME_OWNER_DECISION_REQUIRED",
+  "cases_per_variant_optimization": 9216,
+  "original_native_failures_per_opt": 728,
+  "B17_native_failures_per_opt": 728,
+  "candidate_native_failures": 0,
+  "candidate_precision_screen_failures": 645,
+  "independent_oracle_passed": false,
+  "affected_same_compartment_cases": 923,
+  "byte_exact_unaffected_B17_controls": 8293,
+  "B17_complete_preservation_cases_per_opt": 4536,
+  "O0_O2_identity": true,
+  "maxima": {
+    "cancellation_net_departure": 0.03,
+    "candidate_partition_error": 1.4446044360738597e-10,
+    "candidate_unit_rate_partition_error": 5.754858395379259e-11,
+    "corrected_nodal_scalar_residual": 7.105427357601002e-15,
+    "independent_single_level_superposition_error": 0.015384615384615385,
+    "partition_error": 22.205555552623988,
+    "scalar_error": 1.3877787807814457e-17
+  },
+  "witnesses": {
+    "above_threshold": {
+      "case": 7,
+      "final_bottom": -0.002,
+      "final_scalar": [
+        -13.32333333333542,
+        13.32133483333542
+      ],
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.0099985,
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        0.5
+      ],
+      "net_departure": -8.743006318923108e-16,
+      "retained_raw": [
+        0.01,
+        -0.0099985
+      ]
+    },
+    "below_threshold": {
+      "case": 6,
+      "final_bottom": -0.002,
+      "final_scalar": [
+        0.01,
+        -0.002
+      ],
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.0099995,
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        0.5
+      ],
+      "net_departure": -0.0099995,
+      "retained_raw": [
+        0.01,
+        -0.0099995
+      ]
+    },
+    "exact_cancellation": {
+      "case": 5,
+      "final_bottom": -0.002,
+      "final_nodal": [
+        [
+          0.0,
+          0.0,
+          0.01,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -0.002,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "final_scalar": [
+        0.01,
+        -0.002
+      ],
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.01,
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        0.5
+      ],
+      "net_bottom_minus_nodal": -0.01,
+      "net_departure": -0.01,
+      "retained_raw": [
+        0.01,
+        -0.01
+      ]
+    },
+    "joint_distribution": {
+      "case": 2,
+      "independent_before": [
+        [
+          0.0,
+          0.0,
+          0.0005213720757874882,
+          0.002780651070866604,
+          0.000695162767716651,
+          0.002780651070866604,
+          0.000695162767716651,
+          0.0025270002470460023
+        ],
+        [
+          0.0,
+          0.0,
+          0.001016949152542373,
+          0.005423728813559322,
+          0.0013559322033898306,
+          0.005423728813559322,
+          0.0013559322033898306,
+          0.005423728813559322
+        ]
+      ],
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        0.02,
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        0.5
+      ],
+      "max_nodal_difference": 0.004676976047777464,
+      "native_before": [
+        [
+          0.0,
+          0.0,
+          0.002542372881355932,
+          0.007457627118644068,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.001016949152542373,
+          0.005423728813559322,
+          0.0013559322033898306,
+          0.005423728813559322,
+          0.0013559322033898306,
+          0.005423728813559322
+        ]
+      ]
+    }
+  },
+  "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "candidate_reference_sha256": "29ff7008141bcd1d375f5aefa333f539249b40ef1cc4a81ec45f1cf86ff2b229",
+  "qualified": false,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
+    "sha256": "b9722a11a7684247b90cd34e3c38e27337fbd7a9d36e43888f9893ec8bd6b368",
+    "bytes": 1787077
+  },
+  "evidence_verifier_negative_tests": 7
+}

@@ -3,13 +3,13 @@
 import argparse,concurrent.futures,hashlib,json,os,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser();p.add_argument('--route',choices=['normal','low_air'],required=True)
-p.add_argument('--opts',nargs='+',type=int,choices=[0,2],default=[0,2]);p.add_argument('--workers',type=int,choices=[1,2],default=1);args=p.parse_args()
-source='ab1849e155cfe4aadb838075c3e402985bc4e0f5'
+p.add_argument('--opts',nargs='+',type=int,choices=[0,2],default=[0,2]);p.add_argument('--workers',type=int,choices=[1,2],default=1);p.add_argument('--micro-successor',action='store_true');args=p.parse_args()
+source='ac822aafd5403547a2c7ffad5c3ba02c9fa36496' if args.micro_successor else 'ab1849e155cfe4aadb838075c3e402985bc4e0f5'
 assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()==source
 names=['ppa_wu05b_frost_runtime','ppa_wu05b2_root_frost_runtime','ppa_wu05b3_frost_bottom_runtime','ppa_wu05b4_root_bottom_runtime','ppa_wu05b6_normal_drain_runtime','ppa_wu05b9_response_drain_runtime','ppa_wu05b11_normal_runtime','ppa_wu05b12_normal_runtime','ppa_wu05b13_normal_runtime','ppa_wu05b14_normal_runtime']if args.route=='normal'else['ppa_wu05b8_low_air_runtime','ppa_wu05b10_low_air_response_runtime','ppa_wu05b11_low_air_runtime','ppa_wu05b12_low_air_runtime','ppa_wu05b13_low_air_runtime','ppa_wu05b14_low_air_runtime']
 for opt in args.opts:
- base=pathlib.Path('/tmp/ppa-wu05b15-'+args.route.replace('_','-')+'-runtime')
- if args.route=='low_air'and opt==2 and not(base/'o2').exists():base=pathlib.Path(str(base)+'-parallel')
+ base=pathlib.Path('/tmp/ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else''))
+ if args.route=='low_air'and opt==2 and not args.micro_successor and not(base/'o2').exists():base=pathlib.Path(str(base)+'-parallel')
  b=base/f'o{opt}';assert(b/'mod_fmr_serialized_reference_backend.o').exists()
  flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(b),'-I'+str(b)]
  support=[]
@@ -46,4 +46,3 @@ if len(args.opts)==2:
  for name in names:
   assert pathlib.Path(f'/tmp/frost-b15-preserve-{args.route}-{name}-o0.log').read_bytes()==pathlib.Path(f'/tmp/frost-b15-preserve-{args.route}-{name}-o2.log').read_bytes()
   print(f'B15_CURRENT_{args.route.upper()}_O0_O2_{name}=PASS',flush=True)
-
