@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05B16",
   "baseline": "b38dcd9febacebd94581465160e65224e8059621",
   "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
-  "status": "PREREGISTERED_REFERENCE_PROBE_PENDING",
-  "implemented": false,
+  "status": "REFERENCE_PROBE_PERSISTED_UNTESTED",
+  "implemented": true,
   "tested": false,
   "qualified": false,
   "admitted": false,
@@ -24,5 +24,15 @@
   "preregistration": "integration/audits/PPA_WU05B16_PREREGISTRATION.json",
   "scope": "Preregistered reference-owner adjudication for actual unchanged B1.11 FrozenBounds SWDIVD1 plus full unchanged DIVDRA, before any production frost redistribution selector or reference correction. Retain sign, thresholds, low-air frozen conductivity, actual geometry and separate qbot ownership evidence.",
   "interfaces_allowed_to_change": "Only a source-bound scientific reference-probe harness and evidence. No production process/backend/selector/interface edit and no corrected reference overlay until completed reference-owner adjudication establishes the bounded behavior or an actual defect.",
-  "next_action": "Publish useful preregistration before adding the actual full original source probe"
+  "next_action": "Run full unchanged original composition at fresh O0/O2; independently adjudicate nodal/level/bottom owners",
+  "persisted": true,
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py",
+    "tests/frost/test_ppa_wu05b16_divdra_globals.f90",
+    "tests/frost/test_ppa_wu05b16_divdra_owner.f90"
+  ],
+  "interfaces_held_fixed": "All production/reference source bodies",
+  "recovery_point": "Git commit containing this status and complete source-bound probe",
+  "last_reconciled_upstream": "b38dcd9febacebd94581465160e65224e8059621",
+  "blockers": []
 }
