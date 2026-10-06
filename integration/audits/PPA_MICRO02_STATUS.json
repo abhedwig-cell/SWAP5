@@ -29,8 +29,11 @@
     23,
     25
   ],
-  "next_action": "Run targeted O0/O2 workflow and examine logs; then construct corrected literal B1.11 oracle; no production admission",
+  "next_action": "Replay targeted O0/O2 after bracket correction, preserve result; then exact corrected literal source oracle and runtime qualification",
   "recovery_point": "fe78759011114c368505f341f2eb1c408febfd77",
   "blockers": [],
-  "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77"
+  "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77",
+  "negative_findings": [
+    "First targeted run 37418820901 compiled O0 but returned ERROR STOP 2: both initial residuals positive and initial bracket extension moved only to higher pressure; corrected to expand according to residual sign. No successful test claimed."
+  ]
 }

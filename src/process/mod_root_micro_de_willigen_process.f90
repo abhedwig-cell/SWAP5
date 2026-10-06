@@ -109,14 +109,20 @@ contains
       result%status=MICRO_DW_NO_CONVERGENCE
       return
     end if
-    bracketed=flo*fhi<=0.0_real64
+    bracketed=(flo<=0.0_real64.and.fhi>=0.0_real64).or.(flo>=0.0_real64.and.fhi<=0.0_real64)
     do iteration=1,parameters%max_iterations
       if(bracketed) exit
-      hi=hi+max(1.0_real64,abs(hi-lo))
-      if(.not.ieee_is_finite(hi)) exit
-      call residual(hi,fhi,ok)
+      if(flo>0.0_real64.and.fhi>0.0_real64) then
+        lo=lo-max(1.0_real64,abs(hi-lo))
+        if(.not.ieee_is_finite(lo)) exit
+        call residual(lo,flo,ok)
+      else
+        hi=hi+max(1.0_real64,abs(hi-lo))
+        if(.not.ieee_is_finite(hi)) exit
+        call residual(hi,fhi,ok)
+      end if
       if(.not.ok) exit
-      bracketed=flo*fhi<=0.0_real64
+      bracketed=(flo<=0.0_real64.and.fhi>=0.0_real64).or.(flo>=0.0_real64.and.fhi<=0.0_real64)
     end do
     if(.not.bracketed) then
       result%status=MICRO_DW_NO_CONVERGENCE
