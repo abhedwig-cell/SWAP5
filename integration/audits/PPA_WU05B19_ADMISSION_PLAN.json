@@ -1,0 +1,31 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "PREREGISTERED_BEFORE_ADMISSION_GATE_IMPLEMENTATION",
+  "canonical_pr": 1078,
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "candidate_source": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "evidence_sha256": "d74b5df08b04bb7f720d49921e233bc0975105e0fbcb8fbb510afd7f3c4dcfb6",
+  "owning_scope": "PPA bounded ordinary Reference signed single-level frost/DIVDRA runtime, application preflight and observation provenance",
+  "held_fixed": "B18 arithmetic, existing source/sink and bottom mass owners, physical state, transaction/restart semantics, solver/controller arithmetic, historical frozen source pins and numerical budgets",
+  "invariants": [3, 5, 7, 13, 22, 23, 25, 27, 29, 30],
+  "controlling_gate": "PPA-WU05B19 source-bound runtime admission",
+  "workflow": ".github/workflows/ppa-wu05b19-runtime-admission.yml",
+  "required_checks": [
+    "Exact production source subtree, preregistered source hashes and all sealed source/test/documentation dependency hashes",
+    "Immutable replay digest and all eleven declared completed local gates, including actual 32 normal and 48 low-air receipts, complete logs, original driver hashes and O0/O2 byte identity",
+    "Scientific and adjacent receipt source hashes and original matrix dimensions; historical negative evidence retained",
+    "Fresh complete transitive module build at O0/O2 and all 24 signed runtime trajectories with 8192-step continuation, plus four 16384-step trajectories per optimization",
+    "Fresh runtime source/restart/application/domain markers, hard mass and fine envelopes, O0/O2 byte identity and source-bound receipts",
+    "Moving current-canonical lineage preservation on the same production subtree",
+    "Documentation source checks, strict MkDocs, JSON and whitespace checks",
+    "Negative admission-verifier tests for missing or failed gate, source drift, missing preservation receipt, corrupt stdout and incorrect matrix dimensions"
+  ],
+  "inheritance_policy": "Preserve the complete already-executed source-bound scientific, preservation and adjacent suites only while their exact dependency hashes and sealed replay digest match. The fresh CI runtime matrix is an additional controlling check, not a replacement for missing local evidence.",
+  "inherited_CI_disposition": {
+    "B15_frozen_runtime_runner": "Historical exact-tree authority remains unchanged. B19 current-source preservation is established by the complete original programs on fresh B19 modules and verified immutable evidence, not by changing the old source pin.",
+    "PUB_P2E02_compile_list": "Unchanged canonical compile-list omission is routed to its publication owner. No numerical result was produced; no pass or broad scientific preservation is inferred from that failed job.",
+    "other_inherited_checks": "No blanket green claim or automatic dismissal. The bounded B19 admission is controlled by the explicitly declared dependency-aware gate and actual source identity, consistent with quality-governance-a-aa and reference-preservation."
+  },
+  "merge_condition": "User authorized canonical admission and merge. Merge only the exact qualified PR head after the controlling gate succeeds, live canonical dependencies remain reconciled and repository protection permits the merge. Verify the actual admitted source tree after merge.",
+  "nonclaims": ["Aggregate frost migration closure", "Ice-water phase change or latent heat", "Long-winter equivalence", "Multilevel drainage", "Root/salt/snow/macropore hybrids with the new selector", "Blanket CI success"]
+}
