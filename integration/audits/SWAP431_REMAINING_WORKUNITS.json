@@ -77,13 +77,10 @@
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
         "SW431-TEMP-ANALYTIC",
-        "SW431-TEMP-BC1",
-        "SW431-TEMP-BC2",
         "SW431-TEMP-BC3",
         "SW431-TEMP-BC4",
         "SW431-TEMP-BOTTOM2",
-        "SW431-TEMP-SNOW",
-        "SW431-TEMP-DEVries"
+        "SW431-TEMP-SNOW"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
@@ -255,7 +252,11 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-AMEND",
         "SW431-NUT-RESIDUE",
-        "SW431-NUT-CROP"
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
@@ -283,8 +284,7 @@
         "SW431-SALT-DECAY",
         "SW431-SALT-AQUIFER",
         "SW431-SALT-POND",
-        "SW431-AGE-TRACER",
-        "SW431-SALT-BOTTOM-C"
+        "SW431-AGE-TRACER"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
@@ -298,7 +298,8 @@
       "id": "MC-SUR01",
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
-        "SW431-RUNON"
+        "SW431-RUNON",
+        "SW431-RUNOFF-NONLINEAR"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,

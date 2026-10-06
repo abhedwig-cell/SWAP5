@@ -14,18 +14,18 @@
   ],
   "source_census": "integration/audits/evidence/SWAP431_SOURCE_CENSUS.json",
   "summary": {
-    "capabilities": 204,
+    "capabilities": 212,
     "dispositions": {
-      "ADMITTED": 76,
-      "ACTIVE_MIGRATION": 105,
-      "SUPERSEDED": 6,
+      "ADMITTED": 78,
+      "ACTIVE_MIGRATION": 106,
+      "SUPERSEDED": 11,
       "REJECTED": 1,
       "NOT_APPLICABLE": 16
     },
-    "open_capabilities": 105,
+    "open_capabilities": 106,
     "open_workunits": 19,
-    "confirmed_missing_production_entries": 10,
-    "other_unresolved_source_admission_reviews": 95
+    "confirmed_missing_production_entries": 32,
+    "other_unresolved_source_admission_reviews": 74
   },
   "capabilities": [
     {
@@ -402,7 +402,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "nmetdetail"
+      ]
     },
     {
       "capability_id": "SW431-ET-PMTRAD",
@@ -432,7 +435,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/PPA_WU03_STATUS.json"
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
       ],
       "production_reachability": {
         "established": false,
@@ -440,7 +444,8 @@
         "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -484,7 +489,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/PPA_WU03_STATUS.json"
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
       ],
       "production_reachability": {
         "established": false,
@@ -492,7 +498,8 @@
         "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -533,10 +540,13 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Crop-height aerodynamic conversion in ET",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_pmdirect_swetr0_process.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/PPA_WU03_STATUS.json"
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
       ],
       "production_reachability": {
         "established": false,
@@ -544,7 +554,8 @@
         "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -556,7 +567,7 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "REQUIRED_ENVELOPE_QUALIFICATION_AND_APPLICATION_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
@@ -584,7 +595,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/PPA_WU03_STATUS.json"
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
       ],
       "production_reachability": {
         "established": false,
@@ -592,7 +604,8 @@
         "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -936,7 +949,7 @@
     {
       "capability_id": "SW431-PONDING",
       "subsystem": "surface",
-      "legacy_selector": "POND;SWPONDMX",
+      "legacy_selector": "POND;PONDMX;SWPONDMX=0",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/boundtop.f90",
@@ -988,7 +1001,7 @@
     {
       "capability_id": "SW431-RUNOFF",
       "subsystem": "surface",
-      "legacy_selector": "RSIGNI;PONDMAX",
+      "legacy_selector": "RSRO;RSROEXP=1;PONDMX",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/boundtop.f90",
@@ -1043,18 +1056,23 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Externally supplied lateral water entering soil surface",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "src/adapter/mod_b110_production_soil_water_task2.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/production_physics_application_envelope_gap_register.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source runon forcing and live store/routing envelope need distinct proof; generic supplied top flux is insufficient"
+        "claim": "Typed dynamic-top process includes runon, but current legacy production task2 reachability rejects swrunon /= 0 and common-forcing ingestion rejects nonzero runon. A qualified process field is not a production application binding."
       },
       "restrictions": [
-        "Source runon forcing and live store/routing envelope need distinct proof; generic supplied top flux is insufficient"
+        "Legacy MOD_runon is time/amount forcing preparation, not a lateral-routing model. Boundtop adds the resulting flux after macro rain/irrigation partition. Preserve that distinction.",
+        "This finding does not exclude a separately qualified caller supplying pre-resolved net top flux; no such replacement envelope has yet closed this capability."
       ],
       "remaining_dependency": [
         "SW431-PONDING"
@@ -1068,9 +1086,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-SENSIBLE",
@@ -1089,7 +1107,8 @@
       },
       "meaning": "Numeric sensible soil heat transport",
       "swap5_implementation_authority": [
-        "src/process/mod_restricted_soil_temperature.f90"
+        "src/process/mod_restricted_soil_temperature.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
@@ -1101,7 +1120,7 @@
         "claim": "Restricted stateful sensible route; no latent heat"
       },
       "restrictions": [
-        "Restricted stateful sensible route; no latent heat"
+        "Dynamic De Vries capacity/conductivity; prescribed surface temperature; zero bottom heat flux; trial/commit temperature state; no latent heat."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -1228,23 +1247,32 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Atmospheric temperature thermal boundary",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_soil_temperature.f90",
+        "src/process/mod_soil_temperature_contract.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI43_EVIDENCE.json",
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_THERMAL_LOCAL_REPLAY.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90:trial_restricted_soil_temperature",
+        "claim": "Without snow, legacy temperature.f90 sets TeTop=tav. Supplying that resolved air temperature as typed prescribed_surface_temperature_c uses the same admitted Dirichlet thermal boundary; no separate kernel selector or file reader is needed."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted numerical sensible-heat route: arithmetic face conductivity, prescribed surface temperature, zero bottom heat flux, mean start/end soil water, accepted temperature profile with rollback/restart.",
+        "No snow/soil interface resistance, imposed top heat flux, combined temperature/flux boundary, bottom prescribed temperature, analytic annual-wave or latent-heat capability is inferred.",
+        "Air temperature must be supplied explicitly as resolved forcing; legacy meteo-file parsing and interpolation are not kernel responsibilities. Snow-covered variant is separate SW431-TEMP-SNOW."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "active_workunit": "MC-HEAT01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -1253,8 +1281,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": null,
       "implementation_absence_proven": false
     },
     {
@@ -1282,23 +1309,31 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Specified temperature boundary series",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_soil_temperature.f90",
+        "src/process/mod_soil_temperature_contract.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI43_EVIDENCE.json",
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_THERMAL_LOCAL_REPLAY.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90:trial_restricted_soil_temperature",
+        "claim": "Typed prescribed_surface_temperature_c supplies the legacy measured/specified surface-temperature Dirichlet capability through the admitted thermal trial. The caller supplies the resolved forcing value for each immutable interval."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted numerical sensible-heat route: arithmetic face conductivity, prescribed surface temperature, zero bottom heat flux, mean start/end soil water, accepted temperature profile with rollback/restart.",
+        "No snow/soil interface resistance, imposed top heat flux, combined temperature/flux boundary, bottom prescribed temperature, analytic annual-wave or latent-heat capability is inferred."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "active_workunit": "MC-HEAT01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -1307,8 +1342,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": null,
       "implementation_absence_proven": false
     },
     {
@@ -1610,7 +1644,12 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "isoillay",
+        "isublay",
+        "ncomp"
+      ]
     },
     {
       "capability_id": "SW431-HYD-MODEL2",
@@ -1640,12 +1679,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1660,9 +1700,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL3",
@@ -1692,12 +1732,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1712,9 +1753,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL4",
@@ -1764,7 +1805,6 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": null,
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
     {
@@ -1789,12 +1829,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1809,9 +1850,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL6",
@@ -1835,12 +1876,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1855,9 +1897,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL7",
@@ -1881,12 +1923,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1901,9 +1944,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL8",
@@ -1927,12 +1970,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1947,9 +1991,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL9",
@@ -1973,12 +2017,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -1993,9 +2038,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL10",
@@ -2019,12 +2064,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -2039,9 +2085,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL11",
@@ -2065,12 +2111,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -2085,9 +2132,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL12",
@@ -2108,12 +2155,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion"
@@ -2128,9 +2176,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-TABLE",
@@ -2149,12 +2197,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Accelerated default-MvG lookup does not replace arbitrary input hydraulic tables"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Accelerated default-MvG lookup does not replace arbitrary input hydraulic tables"
@@ -2169,9 +2218,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYST1",
@@ -2289,12 +2338,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Default analytical admission alone excludes power-tail option"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Default analytical admission alone excludes power-tail option"
@@ -2309,9 +2359,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-KSATEXM",
@@ -2820,7 +2870,6 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": null,
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false,
       "decision_authority": "Master workstream scope decision, proposed for canonical review"
     },
@@ -3359,7 +3408,10 @@
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
-      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission"
+      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission",
+      "source_input_names": [
+        "Ntrial"
+      ]
     },
     {
       "capability_id": "SW431-ROOT-MICRO3",
@@ -3385,7 +3437,8 @@
         "docs/audits/PPA_WU05D_EXACT01_CONTRACT.md",
         "integration/audits/PPA_MICRO01_STATUS.json",
         "integration/audits/PPA_MICRO01_CANONICAL_ADMISSION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_OPEN_MIGRATION_PR_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
@@ -3394,7 +3447,8 @@
       },
       "restrictions": [
         "Independent nonlinear MFLP/root-interface/xylem/leaf solver; not equivalent to Feddes or externally compensated MICRO; source-derived candidate/scratch/restart contract required",
-        "Canonical MICRO01 closes an isolated corrected table component only, with runtime_admitted=false. Full nonlinear uptake, real hydraulic binding and sink ownership remain open."
+        "Canonical MICRO01 closes an isolated corrected table component only, with runtime_admitted=false. Full nonlinear uptake, real hydraulic binding and sink ownership remain open.",
+        "Open PR1071 already qualifies a standalone de Willigen evaluator using MICRO01. It remains draft/unmerged and explicitly excludes runtime root-sink binding, heterogeneous horizons, restart/transaction and signed lift. Do not duplicate that component migration or treat it as admitted runtime."
       ],
       "remaining_dependency": [
         "SW431-HYD-MVG"
@@ -3411,7 +3465,14 @@
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
-      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission"
+      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission",
+      "external_active_component_workunit": {
+        "id": "PPA-MICRO02",
+        "pull_request": 1071,
+        "head": "339cdec3af3fa97d1fcd19068b9ad2259a13e00c",
+        "status": "QUALIFIED_STANDALONE_DRAFT_NO_PRODUCTION_ROOT_BINDING",
+        "remaining_runtime_workunit": "MC-MICRO01"
+      }
     },
     {
       "capability_id": "SW431-ROOT-MICRO-LIFT",
@@ -4499,7 +4560,10 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "NumSbDm"
+      ]
     },
     {
       "capability_id": "SW431-MACRO-TOP",
@@ -6275,7 +6339,18 @@
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "nmper",
+        "imper_4b",
+        "intwl",
+        "imper_4c",
+        "imper_4d",
+        "imptab",
+        "imper_4e1",
+        "imper_4e2",
+        "impphase"
+      ]
     },
     {
       "capability_id": "SW431-SW-PRIMARY",
@@ -6380,7 +6455,11 @@
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "nrsrf",
+        "lev"
+      ]
     },
     {
       "capability_id": "SW431-SW-QHR1",
@@ -6438,7 +6517,6 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": null,
-      "workunit_stage": null,
       "implementation_absence_proven": false
     },
     {
@@ -7123,7 +7201,12 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "startirr",
+        "endirr",
+        "irgdayfix"
+      ]
     },
     {
       "capability_id": "SW431-IRR-LIMIT",
@@ -7336,12 +7419,13 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -7358,9 +7442,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-DECAY",
@@ -7385,12 +7469,13 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -7407,9 +7492,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-AQUIFER",
@@ -7437,12 +7522,13 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -7459,9 +7545,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-POND",
@@ -7494,12 +7580,13 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -7516,9 +7603,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-AGE-TRACER",
@@ -7551,12 +7638,13 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -7573,9 +7661,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-FIXED",
@@ -7622,7 +7710,10 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "lcc"
+      ]
     },
     {
       "capability_id": "SW431-CROP-WOF-OTHER",
@@ -7762,7 +7853,13 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "ttemptsum",
+        "mxgdgrz",
+        "mxgdmow",
+        "daygrz"
+      ]
     },
     {
       "capability_id": "SW431-CROP-SOW",
@@ -7810,7 +7907,11 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "maxprepdelay",
+        "maxsowdelay"
+      ]
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW",
@@ -7910,7 +8011,10 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "co2year"
+      ]
     },
     {
       "capability_id": "SW431-CROP-ROTATION",
@@ -8077,7 +8181,7 @@
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Mineral N balance, transport, nitrification and denitrification",
+      "meaning": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation",
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -8149,7 +8253,11 @@
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "MatNum",
+        "iMat"
+      ]
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -8287,7 +8395,11 @@
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
-      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission"
+      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission",
+      "source_input_names": [
+        "Type_tillage",
+        "iType_Tillage"
+      ]
     },
     {
       "capability_id": "SW431-TILL-CONSOL",
@@ -8438,7 +8550,14 @@
         "regression_risk": 3
       },
       "classification": "LEGACY_COMPATIBILITY",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "MaxIt",
+        "MaxBackTr",
+        "numbit_crit",
+        "flMaxIterTime",
+        "MaxIterTime"
+      ]
     },
     {
       "capability_id": "SW431-KMEAN",
@@ -8493,7 +8612,6 @@
       },
       "classification": "LEGACY_COMPATIBILITY",
       "coverage_gap_type": null,
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
     {
@@ -8580,7 +8698,10 @@
         "regression_risk": 3
       },
       "classification": "LEGACY_IO",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "id_soil"
+      ]
     },
     {
       "capability_id": "SW431-IO-OUTPUT",
@@ -8631,7 +8752,16 @@
         "regression_risk": 3
       },
       "classification": "LEGACY_IO",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "flCropExt",
+        "datefix",
+        "nprintday",
+        "flprintdt",
+        "period",
+        "numnodNew",
+        "num_decimals"
+      ]
     },
     {
       "capability_id": "SW431-IO-ANIMO",
@@ -8733,7 +8863,16 @@
         "regression_risk": 3
       },
       "classification": "OBSOLETE_CONTROL_FLOW",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "dd",
+        "mm",
+        "yyyy",
+        "record",
+        "day",
+        "month",
+        "year"
+      ]
     },
     {
       "capability_id": "SW431-CONTROL-DRIVER",
@@ -8835,23 +8974,31 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Water- and texture-dependent De Vries thermal conductivity and sensible heat capacity",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_soil_temperature.f90",
+        "src/process/mod_soil_temperature_contract.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI43_EVIDENCE.json",
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_THERMAL_LOCAL_REPLAY.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Caller-supplied constant nodal properties do not establish the source dynamic soil-water-dependent constitutive route"
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90:trial_restricted_soil_temperature",
+        "claim": "Production thermal trial evaluates De Vries C/K from mean interval-start/end theta and immutable texture fractions before heat solve. F-CI43 oracle plus F-CI45 runtime admission establishes this bounded route."
       },
       "restrictions": [
-        "Caller-supplied constant nodal properties do not establish the source dynamic soil-water-dependent constitutive route"
+        "Restricted numerical sensible-heat route: arithmetic face conductivity, prescribed surface temperature, zero bottom heat flux, mean start/end soil water, accepted temperature profile with rollback/restart.",
+        "No snow/soil interface resistance, imposed top heat flux, combined temperature/flux boundary, bottom prescribed temperature, analytic annual-wave or latent-heat capability is inferred."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "active_workunit": "MC-HEAT01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -8860,8 +9007,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": null,
       "implementation_absence_proven": false
     },
     {
@@ -9024,12 +9170,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source NoVap switch is real PDI conductivity physics; default MvG does not cover it"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Source NoVap switch is real PDI conductivity physics; default MvG does not cover it"
@@ -9049,9 +9196,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-MICRO-SATREL",
@@ -9100,7 +9247,6 @@
       },
       "classification": "OBSOLETE_CONTROL_FLOW",
       "coverage_gap_type": null,
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
     {
@@ -9187,12 +9333,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Distinct coefficient-table source route. AHL default-provider acceleration alone is not arbitrary input-table coverage"
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "Distinct coefficient-table source route. AHL default-provider acceleration alone is not arbitrary input-table coverage"
@@ -9207,9 +9354,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-DENSITY",
@@ -9459,7 +9606,11 @@
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "swallo",
+        "swdtyp"
+      ]
     },
     {
       "capability_id": "SW431-DRAIN-INF-LIMIT",
@@ -9530,24 +9681,32 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Shared, independent or time-varying bottom solute concentration",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/process/mod_solute_mobile_salt_state.f90",
+        "src/process/mod_solute_mobile_advection_dispersion.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
+        "integration/audits/PPA_WU05E_MATRIX_LIFECYCLE_QUALIFICATION.json",
+        "integration/audits/PPA_WU05E_MATRIX_TRANSPORT_QUALIFICATION.json",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Typed bottom receipts exist; full three-option source boundary envelope needs reconciliation"
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90:matrix_bottom_mg_cm3 -> advance_mobile_advection_dispersion",
+        "claim": "Typed immutable interval bottom concentration supplies common-drain, independent constant and time-varying external bottom-concentration capability. Source selectors differ by forcing materialization, not by the bottom transport operator."
       },
       "restrictions": [
-        "Typed bottom receipts exist; full three-option source boundary envelope needs reconciliation"
+        "Admitted selected matrix dissolved transport and lifecycle envelope, SWBR=0 externally supplied reservoir concentration; caller supplies Cdrain for selector0, independent Cseep for1, resolved time-series Cseep for2.",
+        "Forcing must carry correct units, source/revision identity and cover the trial interval. Legacy file/date interpolation is adapter compatibility, not a second solute kernel.",
+        "Dynamic aquifer concentration/storage (SWBR=1) remains SW431-SALT-AQUIFER; no aquifer breakthrough, pond mass, sorption or decomposition is covered by this replacement."
       ],
       "remaining_dependency": [
         "SW431-SALT-TRANSPORT"
       ],
-      "active_workunit": "MC-SOL01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -9556,8 +9715,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": null,
       "implementation_absence_proven": false
     },
     {
@@ -9770,12 +9928,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/soil-hydraulic-constitutive-relations.md"
+        "docs/science/soil-hydraulic-constitutive-relations.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "RIA reader logical options are executable constitutive subpaths. Default MvG/PDI prototype preservation is not typed RIA production admission."
+        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
       },
       "restrictions": [
         "RIA reader logical options are executable constitutive subpaths. Default MvG/PDI prototype preservation is not typed RIA production admission."
@@ -9792,9 +9951,395 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-NUT-NITRIF",
+      "subsystem": "nutrients",
+      "legacy_selector": "SWCROPSNM=1;RateConNitrif_ref",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/wofost_soil_rateconstants.f90",
+        "sha256": "0d869c9acbf290b731c2e7344a0a9df7413eba4da44dcd48d124da994f4adcc6",
+        "locator_lines": [
+          30,
+          50,
+          52,
+          54,
+          55
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      },
+      "restrictions": [
+        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      ],
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL"
+      ],
+      "active_workunit": "MC-NUT01",
+      "migration_priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-DENIT",
+      "subsystem": "nutrients",
+      "legacy_selector": "SWCROPSNM=1;RateConDenitr_ref",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/wofost_soil_rateconstants.f90",
+        "sha256": "0d869c9acbf290b731c2e7344a0a9df7413eba4da44dcd48d124da994f4adcc6",
+        "locator_lines": [
+          31,
+          51,
+          53,
+          56,
+          57,
+          62,
+          63
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Nitrate loss controlled by temperature, wetness and organic respiration activity",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      },
+      "restrictions": [
+        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      ],
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
+      ],
+      "active_workunit": "MC-NUT01",
+      "migration_priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-TRANSPORT",
+      "subsystem": "nutrients",
+      "legacy_selector": "SWCROPSNM=1;Wofost_SoilWaterN",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/wofost_soil_watern.f90",
+        "sha256": "b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
+        "locator_lines": [
+          4,
+          41,
+          54,
+          60
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      },
+      "restrictions": [
+        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      ],
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL"
+      ],
+      "active_workunit": "MC-NUT01",
+      "migration_priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-NFIX",
+      "subsystem": "nutrients",
+      "legacy_selector": "SWCROPSNM=1;NFIXF>0",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/wofostnut.f90",
+        "sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "locator_lines": [
+          23,
+          89,
+          196,
+          198,
+          242,
+          244,
+          369,
+          370
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Biological nitrogen fixation as a separately booked crop N input",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      },
+      "restrictions": [
+        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+      ],
+      "remaining_dependency": [
+        "SW431-NUT-CROP"
+      ],
+      "active_workunit": "MC-NUT01",
+      "migration_priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-INIT-PROFILE",
+      "subsystem": "initialization",
+      "legacy_selector": "SWINCO=1;HTB",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/soilwater.f90",
+        "sha256": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8",
+        "locator_lines": [
+          56,
+          60,
+          66,
+          76
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Initial supplied nodal pressure-head profile with saturated hydrostatic projection",
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/PPA_WU01_STATUS.json"
+      ],
+      "production_reachability": {
+        "established": true,
+        "route": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "claim": "Typed initial pressure_head/water_content arrays supply the same resolved initial physical state; depth-table interpolation and optional saturated hydrostatic projection are input preparation."
+      },
+      "restrictions": [
+        "Caller supplies the resolved source profile, including its saturated projection where requested, with consistent constitutive water content. Restricted admitted hydraulic and process-state envelope; no hydraulic hysteresis initialization is inferred."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": null,
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-INIT-HYDROSTATIC",
+      "subsystem": "initialization",
+      "legacy_selector": "SWINCO=2;GWLI",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/soilwater.f90",
+        "sha256": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8",
+        "locator_lines": [
+          79,
+          88,
+          90,
+          91,
+          98,
+          99
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Initial hydrostatic head profile and above-ground ponding",
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/PPA_WU01_STATUS.json"
+      ],
+      "production_reachability": {
+        "established": true,
+        "route": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "claim": "The admitted typed initial-state route represents h(i)=GWL-z(i) and pond=max(GWL,0) directly. No separate runtime initializer or file selector is needed for this same physical state."
+      },
+      "restrictions": [
+        "SWBOTB1 special prescribed-GWL history remains rejected as a separate boundary option. Advanced hydraulic/state families retain their own dispositions."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": null,
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-POND-LIMIT-TIME",
+      "subsystem": "surface",
+      "legacy_selector": "SWPONDMX=1;DATEPMX;PONDMXTB",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/boundtop.f90",
+        "sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+        "locator_lines": [
+          203,
+          204,
+          205
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Time-varying maximum ponding threshold",
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/production_physics_application_envelope_gap_register.json"
+      ],
+      "production_reachability": {
+        "established": true,
+        "route": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+        "claim": "Immutable interval top requests already carry ponding_max_cm. The caller supplies the resolved threshold for each interval; the same admitted ponding/runoff owner computes the response."
+      },
+      "restrictions": [
+        "Restricted admitted linear runoff envelope and source-valid positive resistance; source table/date interpolation is adapter compatibility. No general nonlinear runoff or surface-water inundation is inferred."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": null,
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-RUNOFF-NONLINEAR",
+      "subsystem": "surface",
+      "legacy_selector": "RSROEXP != 1",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/boundtop.f90",
+        "sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+        "locator_lines": [
+          249,
+          259,
+          269,
+          305,
+          309
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Nonlinear surface-runoff power law and iterative ponding solution",
+      "swap5_implementation_authority": [
+        "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+      ],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "The current dynamic-top provider explicitly rejects active runoff_exponent /= 1. Legacy power-law/iterative response is a distinct absent production capability."
+      },
+      "restrictions": [
+        "Do not widen the top owner by silently using a linear replacement. One accepted pond/runoff receipt and a qualified nonlinear surface solve are required."
+      ],
+      "remaining_dependency": [
+        "SW431-PONDING"
+      ],
+      "active_workunit": "MC-SUR01",
+      "migration_priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true
     }
   ],
   "remaining_queue": [
@@ -9802,7 +10347,7 @@
       "capability_id": "SW431-HYD-LINEAR-TABLE",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Distinct coefficient-table source route. AHL default-provider acceleration alone is not arbitrary input-table coverage",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9810,7 +10355,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS2",
@@ -9900,7 +10445,7 @@
       "capability_id": "SW431-HYD-MODEL10",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9908,13 +10453,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL11",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9922,13 +10467,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL12",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9936,13 +10481,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL2",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9950,13 +10495,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL3",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9964,13 +10509,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL5",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9978,13 +10523,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL6",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -9992,13 +10537,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL7",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -10006,13 +10551,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL8",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -10020,13 +10565,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-MODEL9",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -10034,13 +10579,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-POWER",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Default analytical admission alone excludes power-tail option",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -10048,13 +10593,13 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-TABLE",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Accelerated default-MvG lookup does not replace arbitrary input hydraulic tables",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -10062,7 +10607,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-OXYGEN-REPRO",
@@ -10495,22 +11040,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-SALT-BOTTOM-C",
-      "work_unit": "MC-SOL01",
-      "dependencies": [
-        "SW431-SALT-TRANSPORT"
-      ],
-      "why_open": "Typed bottom receipts exist; full three-option source boundary envelope needs reconciliation",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-FROST-DIVDRA",
       "work_unit": "PPA-WU05B19",
       "dependencies": [
@@ -10581,7 +11110,7 @@
       "dependencies": [
         "SW431-HYD-MODEL12"
       ],
-      "why_open": "RIA reader logical options are executable constitutive subpaths. Default MvG/PDI prototype preservation is not typed RIA production admission.",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -10589,7 +11118,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYD-VAPOR",
@@ -10600,7 +11129,7 @@
         "SW431-HYD-MODEL10",
         "SW431-HYD-MODEL11"
       ],
-      "why_open": "Source NoVap switch is real PDI conductivity physics; default MvG does not cover it",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -10608,7 +11137,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-HYST1",
@@ -10755,12 +11284,12 @@
       "implementation_absence_proven": false
     },
     {
-      "capability_id": "SW431-RUNON",
+      "capability_id": "SW431-RUNOFF-NONLINEAR",
       "work_unit": "MC-SUR01",
       "dependencies": [
         "SW431-PONDING"
       ],
-      "why_open": "Source runon forcing and live store/routing envelope need distinct proof; generic supplied top flux is insufficient",
+      "why_open": "The current dynamic-top provider explicitly rejects active runoff_exponent /= 1. Legacy power-law/iterative response is a distinct absent production capability.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -10768,7 +11297,23 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-RUNON",
+      "work_unit": "MC-SUR01",
+      "dependencies": [
+        "SW431-PONDING"
+      ],
+      "why_open": "Typed dynamic-top process includes runon, but current legacy production task2 reachability rejects swrunon /= 0 and common-forcing ingestion rejects nonzero runon. A qualified process field is not a production application binding.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SW-MANAGEMENT",
@@ -10871,38 +11416,6 @@
       "implementation_absence_proven": false
     },
     {
-      "capability_id": "SW431-TEMP-BC1",
-      "work_unit": "MC-HEAT01",
-      "dependencies": [
-        "SW431-TEMP-SENSIBLE"
-      ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
-      "capability_id": "SW431-TEMP-BC2",
-      "work_unit": "MC-HEAT01",
-      "dependencies": [
-        "SW431-TEMP-SENSIBLE"
-      ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-TEMP-BC3",
       "work_unit": "MC-HEAT01",
       "dependencies": [
@@ -10941,22 +11454,6 @@
         "SW431-TEMP-SENSIBLE"
       ],
       "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
-      "capability_id": "SW431-TEMP-DEVries",
-      "work_unit": "MC-HEAT01",
-      "dependencies": [
-        "SW431-TEMP-SENSIBLE"
-      ],
-      "why_open": "Caller-supplied constant nodal properties do not establish the source dynamic soil-water-dependent constitutive route",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11036,7 +11533,7 @@
       "dependencies": [
         "SW431-SALT-TRANSPORT"
       ],
-      "why_open": "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11044,7 +11541,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-AQUIFER",
@@ -11052,7 +11549,7 @@
       "dependencies": [
         "SW431-SALT-TRANSPORT"
       ],
-      "why_open": "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11060,7 +11557,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-DECAY",
@@ -11068,7 +11565,7 @@
       "dependencies": [
         "SW431-SALT-TRANSPORT"
       ],
-      "why_open": "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11076,7 +11573,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-POND",
@@ -11084,7 +11581,7 @@
       "dependencies": [
         "SW431-SALT-TRANSPORT"
       ],
-      "why_open": "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11092,7 +11589,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SALT-SORPTION",
@@ -11100,7 +11597,7 @@
       "dependencies": [
         "SW431-SALT-TRANSPORT"
       ],
-      "why_open": "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
+      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11108,7 +11605,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-CO2",
@@ -11416,6 +11913,71 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-DENIT",
+      "work_unit": "MC-NUT01",
+      "dependencies": [
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
+      ],
+      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-NFIX",
+      "work_unit": "MC-NUT01",
+      "dependencies": [
+        "SW431-NUT-CROP"
+      ],
+      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-NITRIF",
+      "work_unit": "MC-NUT01",
+      "dependencies": [
+        "SW431-NUT-MINERAL"
+      ],
+      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-NUT-TRANSPORT",
+      "work_unit": "MC-NUT01",
+      "dependencies": [
+        "SW431-NUT-MINERAL"
+      ],
+      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "priority": {
+        "dependency_depth": 2,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
     }
   ],
   "audit_state": "IN_PROGRESS_DENOMINATOR_AND_ADMISSION_REVIEW",
@@ -11444,5 +12006,12 @@
       "canonical_merge": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d"
     }
   ],
-  "initial_canonical_head": "ca856e88e582d468a6f40971ce1f2a75e5089c40"
+  "initial_canonical_head": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "pr_reconciliation": {
+    "complete_current_snapshot": "integration/audits/evidence/SWAP431_PAGINATED_PR_SNAPSHOT.json",
+    "migration_reconciliation": "integration/audits/evidence/SWAP431_OPEN_MIGRATION_PR_RECONCILIATION.json",
+    "open_pr_count": 114,
+    "recent_merged_since_20261005_count": 55,
+    "historical_bounded_snapshot": "integration/audits/evidence/SWAP431_OPEN_PR_SNAPSHOT.json"
+  }
 }

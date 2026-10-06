@@ -34,6 +34,7 @@ def validate(require_closed=False):
     entries = ledger['capabilities']
     ids = {e['capability_id'] for e in entries}
     assert len(ids) == len(entries), 'duplicate capability ID'
+    assert ledger['summary']['capabilities'] == len(entries), 'stale capability count'
     registered = {u['id']: u for u in work['new_workunits']}
     registered['PPA-WU05B19'] = {'capabilities': ['SW431-FROST-DIVDRA']}
     for entry in entries:
@@ -73,6 +74,23 @@ def validate(require_closed=False):
     active = [e for e in entries if e['current_disposition'] == 'ACTIVE_MIGRATION']
     assert ledger['summary']['dispositions'] == counts, 'stale summary'
     assert ledger['summary']['open_capabilities'] == len(active), 'stale open count'
+    confirmed = sum(e.get('implementation_absence_proven', False) for e in active)
+    assert ledger['summary']['confirmed_missing_production_entries'] == confirmed, 'stale proven-gap count'
+    assert ledger['summary']['other_unresolved_source_admission_reviews'] == len(active)-confirmed, 'stale review count'
+    for call in census['integer_input_calls']:
+        assert set(call['capability_navigation']) <= ids, 'dangling selector navigation'
+    if 'pr_reconciliation' in ledger:
+        snapshot = json.loads((ROOT/ledger['pr_reconciliation']['complete_current_snapshot']).read_text())
+        review = json.loads((ROOT/ledger['pr_reconciliation']['migration_reconciliation']).read_text())
+        for kind in ['open', 'recent_merged']:
+            pages = [p for p in snapshot['pages'] if p['kind'] == kind]
+            numbers = {x['number'] for p in pages for x in p['items']}
+            assert snapshot[kind]['pagination_complete'] and len(numbers) == snapshot[kind]['unique_count'], 'PR pagination'
+            assert snapshot[kind]['reported_totals'] == [len(numbers)] and not snapshot[kind]['incomplete_results'], 'PR total'
+        for row in review['entries']:
+            assert set(row['capabilities']) <= ids, 'dangling PR capability'
+            if 'authority' in row:
+                assert (ROOT/row['authority']).is_file(), 'missing PR reconciliation authority'
     assert {e['capability_id'] for e in ledger['remaining_queue']} == {e['capability_id'] for e in active}, 'queue mismatch'
     if ledger['coverage_closed'] or require_closed:
         assert ledger['denominator_complete'] and census['census_complete'], 'denominator incomplete'

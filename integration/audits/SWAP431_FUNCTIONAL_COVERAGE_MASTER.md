@@ -2,9 +2,9 @@
 
 Baseline: `e5eab995ef04fc813dd644025fb0f32e4f5050a1`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 204 entries: 76 bounded ADMITTED, 6 SUPERSEDED, 1 REJECTED, 16 NOT_APPLICABLE and 105 ACTIVE_MIGRATION entries across 19 review/migration workunits.
+The ledger currently contains 212 entries: 78 bounded ADMITTED, 11 SUPERSEDED, 1 REJECTED, 16 NOT_APPLICABLE and 106 ACTIVE_MIGRATION entries across 19 review/migration workunits.
 
-Only 10 entries are currently marked as proven missing production implementation/binding. The other 95 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 32 entries are currently marked as proven missing production implementation/binding. The other 74 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 The machine authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`.
 The exact source bundle and input-reader census are in `integration/audits/evidence/`.
@@ -14,16 +14,38 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 
 | Capability | Meaning | Workunit | Dependencies |
 |---|---|---|---|
+| SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | MC-HYD01 | None |
 | SW431-IRR-TCS7 | Pressure-head sensor trigger | MC-IRR01 | None |
+| SW431-HYD-MODEL10 | Bimodal PDI capillary, adsorption and film-flow relations | MC-HYD01 | None |
+| SW431-HYD-MODEL11 | Bimodal PDI normalized at finite dry-end head | MC-HYD01 | None |
+| SW431-HYD-MODEL12 | RIA hydraulic relations | MC-HYD01 | None |
+| SW431-HYD-MODEL2 | Exponential test hydraulic relations | MC-HYD01 | None |
+| SW431-HYD-MODEL3 | Bimodal Mualem-Van Genuchten | MC-HYD01 | None |
+| SW431-HYD-MODEL5 | Unimodal Mualem-Van Genuchten normalized at finite dry-end head | MC-HYD01 | None |
+| SW431-HYD-MODEL6 | Unscaled bimodal Mualem-Van Genuchten relations | MC-HYD01 | None |
+| SW431-HYD-MODEL7 | Bimodal Mualem-Van Genuchten normalized at finite dry-end head | MC-HYD01 | None |
+| SW431-HYD-MODEL8 | Unimodal PDI capillary, adsorption and film-flow relations | MC-HYD01 | None |
+| SW431-HYD-MODEL9 | Unimodal PDI normalized at finite dry-end head | MC-HYD01 | None |
+| SW431-HYD-POWER | Conductivity power-tail extension | MC-HYD01 | None |
+| SW431-HYD-TABLE | User-provided hydraulic relation tables | MC-HYD01 | None |
 | SW431-IRR-SSDI | Single-node or depth-interval subsurface drip irrigation | MC-IRR01 | SW431-IRR-TCS1 |
 | SW431-FROST-DIVDRA | Trial-start signed spatial redistribution with frost | PPA-WU05B19 | SW431-FROST-HYD |
+| SW431-HYD-RIA-VAPOR | RIA vapour/temperature-dependent conductivity and fitted dry-end relation | MC-HYD01 | SW431-HYD-MODEL12 |
+| SW431-HYD-VAPOR | PDI vapour contribution to unsaturated conductivity | MC-HYD01 | SW431-HYD-MODEL8, SW431-HYD-MODEL9, SW431-HYD-MODEL10, SW431-HYD-MODEL11 |
 | SW431-HYST1 | Scanning retention history with initial wetting branch | MC-HYST01 | SW431-HYD-MVG |
 | SW431-HYST2 | Scanning retention history with initial drying branch | MC-HYST01 | SW431-HYD-MVG |
 | SW431-ROOT-MICRO2 | de Jong van Lier microscopic soil-root hydraulic extraction | MC-MICRO01 | SW431-HYD-MVG |
 | SW431-ROOT-MICRO3 | de Willigen microscopic soil-root hydraulic extraction | MC-MICRO01 | SW431-HYD-MVG |
+| SW431-RUNOFF-NONLINEAR | Nonlinear surface-runoff power law and iterative ponding solution | MC-SUR01 | SW431-PONDING |
+| SW431-RUNON | Externally supplied lateral water entering soil surface | MC-SUR01 | SW431-PONDING |
 | SW431-TILL-CONSOL | Post-tillage consolidation history | MC-TILL01 | SW431-HYD-MVG |
 | SW431-TILL-EVENT | Tillage events modifying density and hydraulic relations | MC-TILL01 | SW431-HYD-MVG |
 | SW431-TILL-REDIST | Water redistribution after changing soil geometry/density | MC-TILL01 | SW431-HYD-MVG |
+| SW431-AGE-TRACER | Water age tracer with ageing and advective/dispersive transport | MC-SOL01 | SW431-SALT-TRANSPORT |
+| SW431-SALT-AQUIFER | Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough | MC-SOL01 | SW431-SALT-TRANSPORT |
+| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | MC-SOL01 | SW431-SALT-TRANSPORT |
+| SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | MC-SOL01 | SW431-SALT-TRANSPORT |
+| SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | MC-SOL01 | SW431-SALT-TRANSPORT |
 
 ## Registered review queue
 
@@ -40,13 +62,13 @@ These are individual capability decisions, not 20 admitted implementation plans.
 | MC-CROP01 | 11 | Source/admission adjudication for the exact IDs below |
 | MC-DRAIN01 | 4 | Source/admission adjudication for the exact IDs below |
 | MC-FROST01 | 4 | Source/admission adjudication for the exact IDs below |
-| MC-HEAT01 | 8 | Source/admission adjudication for the exact IDs below |
+| MC-HEAT01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-HYST01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-MACROSUR01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-MICRO01 | 5 | Source/admission adjudication for the exact IDs below |
-| MC-NUT01 | 5 | Source/admission adjudication for the exact IDs below |
-| MC-SOL01 | 6 | Source/admission adjudication for the exact IDs below |
-| MC-SUR01 | 1 | Source/admission adjudication for the exact IDs below |
+| MC-NUT01 | 9 | Source/admission adjudication for the exact IDs below |
+| MC-SOL01 | 5 | Source/admission adjudication for the exact IDs below |
+| MC-SUR01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-SW01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-TILL01 | 3 | Source/admission adjudication for the exact IDs below |
 | PPA-WU05B19 | 1 | Source/admission adjudication for the exact IDs below |
@@ -90,33 +112,30 @@ These are individual capability decisions, not 20 admitted implementation plans.
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-TEMP-ANALYTIC | Analytical harmonic soil temperature | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-BC1 | Atmospheric temperature thermal boundary | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-BC2 | Specified temperature boundary series | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
 | SW431-TEMP-BC3 | Specified thermal flux boundary | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
 | SW431-TEMP-BC4 | Surface temperature with heat-flux correction | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
 | SW431-TEMP-BOTTOM2 | Prescribed bottom temperature | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-DEVries | Water- and texture-dependent De Vries thermal conductivity and sensible heat capacity | Caller-supplied constant nodal properties do not establish the source dynamic soil-water-dependent constitutive route | SW431-TEMP-SENSIBLE |
 | SW431-TEMP-SNOW | Snow thermal resistance coupled to sensible heat | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
 
 ### MC-HYD01
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | Distinct coefficient-table source route. AHL default-provider acceleration alone is not arbitrary input-table coverage | None |
-| SW431-HYD-MODEL10 | Bimodal PDI capillary, adsorption and film-flow relations | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL11 | Bimodal PDI normalized at finite dry-end head | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL12 | RIA hydraulic relations | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL2 | Exponential test hydraulic relations | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL3 | Bimodal Mualem-Van Genuchten | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL5 | Unimodal Mualem-Van Genuchten normalized at finite dry-end head | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL6 | Unscaled bimodal Mualem-Van Genuchten relations | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL7 | Bimodal Mualem-Van Genuchten normalized at finite dry-end head | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL8 | Unimodal PDI capillary, adsorption and film-flow relations | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-MODEL9 | Unimodal PDI normalized at finite dry-end head | Reference-source/test-bank preservation is not a typed production constitutive dispatcher; qualify or make an explicit justified exclusion | None |
-| SW431-HYD-POWER | Conductivity power-tail extension | Default analytical admission alone excludes power-tail option | None |
-| SW431-HYD-TABLE | User-provided hydraulic relation tables | Accelerated default-MvG lookup does not replace arbitrary input hydraulic tables | None |
-| SW431-HYD-RIA-VAPOR | RIA vapour/temperature-dependent conductivity and fitted dry-end relation | RIA reader logical options are executable constitutive subpaths. Default MvG/PDI prototype preservation is not typed RIA production admission. | SW431-HYD-MODEL12 |
-| SW431-HYD-VAPOR | PDI vapour contribution to unsaturated conductivity | Source NoVap switch is real PDI conductivity physics; default MvG does not cover it | SW431-HYD-MODEL8, SW431-HYD-MODEL9, SW431-HYD-MODEL10, SW431-HYD-MODEL11 |
+| SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL10 | Bimodal PDI capillary, adsorption and film-flow relations | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL11 | Bimodal PDI normalized at finite dry-end head | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL12 | RIA hydraulic relations | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL2 | Exponential test hydraulic relations | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL3 | Bimodal Mualem-Van Genuchten | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL5 | Unimodal Mualem-Van Genuchten normalized at finite dry-end head | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL6 | Unscaled bimodal Mualem-Van Genuchten relations | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL7 | Bimodal Mualem-Van Genuchten normalized at finite dry-end head | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL8 | Unimodal PDI capillary, adsorption and film-flow relations | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-MODEL9 | Unimodal PDI normalized at finite dry-end head | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-POWER | Conductivity power-tail extension | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-TABLE | User-provided hydraulic relation tables | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-HYD-RIA-VAPOR | RIA vapour/temperature-dependent conductivity and fitted dry-end relation | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-HYD-MODEL12 |
+| SW431-HYD-VAPOR | PDI vapour contribution to unsaturated conductivity | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-HYD-MODEL8, SW431-HYD-MODEL9, SW431-HYD-MODEL10, SW431-HYD-MODEL11 |
 
 ### MC-HYST01
 
@@ -200,9 +219,13 @@ These are individual capability decisions, not 20 admitted implementation plans.
 |---|---|---|---|
 | SW431-NUT-AMEND | Fertilizer/manure applications and volatilisation | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
 | SW431-NUT-CROP | Demand/supply coupling and nitrogen-limited crop growth | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
-| SW431-NUT-MINERAL | Mineral N balance, transport, nitrification and denitrification | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
+| SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
 | SW431-NUT-RESIDUE | Crop residue transfers to organic soil pools | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-CROP-WOF81 |
+| SW431-NUT-DENIT | Nitrate loss controlled by temperature, wetness and organic respiration activity | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
+| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-NUT-CROP |
+| SW431-NUT-NITRIF | Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-NUT-MINERAL |
+| SW431-NUT-TRANSPORT | Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake | SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed | SW431-NUT-MINERAL |
 
 ### MC-ROOT01
 
@@ -214,18 +237,18 @@ These are individual capability decisions, not 20 admitted implementation plans.
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-SALT-BOTTOM-C | Shared, independent or time-varying bottom solute concentration | Typed bottom receipts exist; full three-option source boundary envelope needs reconciliation | SW431-SALT-TRANSPORT |
-| SW431-AGE-TRACER | Water age tracer with ageing and advective/dispersive transport | Selected dissolved matrix salt admission does not cover this distinct state/equation family | SW431-SALT-TRANSPORT |
-| SW431-SALT-AQUIFER | Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough | Selected dissolved matrix salt admission does not cover this distinct state/equation family | SW431-SALT-TRANSPORT |
-| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Selected dissolved matrix salt admission does not cover this distinct state/equation family | SW431-SALT-TRANSPORT |
-| SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | Selected dissolved matrix salt admission does not cover this distinct state/equation family | SW431-SALT-TRANSPORT |
-| SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | Selected dissolved matrix salt admission does not cover this distinct state/equation family | SW431-SALT-TRANSPORT |
+| SW431-AGE-TRACER | Water age tracer with ageing and advective/dispersive transport | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-SALT-TRANSPORT |
+| SW431-SALT-AQUIFER | Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-SALT-TRANSPORT |
+| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-SALT-TRANSPORT |
+| SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-SALT-TRANSPORT |
+| SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | SW431-SALT-TRANSPORT |
 
 ### MC-SUR01
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-RUNON | Externally supplied lateral water entering soil surface | Source runon forcing and live store/routing envelope need distinct proof; generic supplied top flux is insufficient | SW431-PONDING |
+| SW431-RUNOFF-NONLINEAR | Nonlinear surface-runoff power law and iterative ponding solution | The current dynamic-top provider explicitly rejects active runoff_exponent /= 1. Legacy power-law/iterative response is a distinct absent production capability. | SW431-PONDING |
+| SW431-RUNON | Externally supplied lateral water entering soil surface | Typed dynamic-top process includes runon, but current legacy production task2 reachability rejects swrunon /= 0 and common-forcing ingestion rejects nonzero runon. A qualified process field is not a production application binding. | SW431-PONDING |
 
 ### MC-SW01
 
@@ -258,4 +281,4 @@ Run `python tools/audits/check_swap431_coverage.py --require-closed` for a closu
 The latter intentionally fails while the source denominator is incomplete or any ACTIVE_MIGRATION remains.
 Neither command scientifically qualifies a process. Owning source/runtime gates and canonical admission remain required.
 
-No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The current snapshot of open PRs is bounded and must not be mistaken for a full PR census.
+No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The complete paginated snapshot records 114 open PRs and 55 merges since 2026-10-05; migration proposal reconciliation is explicit. The earlier 100-item snapshot is retained as historical evidence.

@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.coverage.implementation_reachability_review.v1",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "reviewed_postimage": "92f71bdfb8d7cb13dd938e835ba50198c71368fe",
+  "constitutive_provider_inventory": [
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "line": 22,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: b110_default_mvg_provider_t",
+      "sha256": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "line": 13,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: b110_direct_retention_provider_t",
+      "sha256": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9"
+    },
+    {
+      "path": "src/solver/mod_frost_hydraulic_provider.f90",
+      "line": 15,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: frost_constitutive_provider_t",
+      "sha256": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a"
+    }
+  ],
+  "source_files_sha256": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990",
+    "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+    "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "src/process/mod_solute_mobile_salt_state.f90": "7e9463600dd47e4f9a9b05f6f4a8ab68684c383d7dabc80195c212c6da920094",
+    "src/process/mod_solute_mobile_advection_dispersion.f90": "e619f6e1a022a43ed83d39e89ddaad1a97e4ad3a0603bb24023914a2dbe64c3b",
+    "src/runtime/mod_fmr_wofost81_crop_transaction.f90": "da47da6ec514fd752d7fbd7b75c91a82f9122a795566a224f45e82666d08e7a5"
+  },
+  "findings": [
+    {
+      "family": "hydraulic",
+      "finding": "The serialized runtime explicitly binds default MvG, default-MvG direct-retention acceleration, and frost overlay. The direct-retention provider delegates to its analytical default-MvG member. No production binding or owned history layout for models2/3/5..12, arbitrary user constitutive tables, user power tails, hysteresis or PDI/RIA vapour is supplied by these paths. Legacy/reference bodies do not establish this runtime coverage.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:605..607,718,1023..1066",
+        "src/solver/mod_b110_direct_retention_provider.f90:3..19,48..55"
+      ]
+    },
+    {
+      "family": "solute",
+      "finding": "The admitted mobile owner has dissolved mass and derived concentration only. Current physics parameters provide diffusion/dispersion, not sorbed inventory, transformation/decay, aquifer salt storage, pond dissolved mass or age accumulation. Those require different owned state/operators; root salinity stress does not create them.",
+      "evidence_locators": [
+        "src/process/mod_solute_mobile_salt_state.f90:10..17",
+        "src/process/mod_solute_mobile_advection_dispersion.f90:8..13"
+      ]
+    },
+    {
+      "family": "crop_nitrogen",
+      "finding": "WOFOST81 contains nitrogen state/request/supply mechanics. F-CI89 and docs/science/wofost-crop-coupling.md explicitly qualify only bounded N-unlimited request-equals-supply. No legacy Soil-N mineral/organic cycling admission is inferred, and presence of crop N code is not classified as missing crop N algebra."
+    }
+  ],
+  "scope_limit": "This inventory substantiates specific absent production bindings/state. It is not a complete code call graph or final denominator."
+}
