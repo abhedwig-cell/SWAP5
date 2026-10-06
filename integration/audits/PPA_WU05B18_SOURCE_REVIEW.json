@@ -1,0 +1,34 @@
+{
+  "work_unit": "PPA-WU05B18",
+  "status": "SOURCE_REVIEW_ONLY_NOT_IMPLEMENTED",
+  "baseline": "987715cbf5513a0911bd81403209452d2a99666c",
+  "production_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "selected_next_slice": "New isolated typed single-level signed DIVDRA/frost scientific process composition against admitted B17 corrected reference. Regenerate raw nodal distribution from the supplied immutable hydraulic view, then normal-air nodal frost multiplication or original low-air conductivity/geometry/scalar/bottom transformation. No backend/runtime selector or wrapper modification in this component phase.",
+  "prerequisite": "Exact B17 closeout then persist process interface and qualification contract before code",
+  "findings": [
+    "Existing positive-only distribution API and scalar-authoritative closure remain unchanged. New signed/separate-infiltration support requires a separate typed API and source-bound qualification.",
+    "Retain original 1e-10 active scalar threshold as explicit fail-closed nonzero domain, including any low-air transformed scalar. Zero remains valid. Never clip negative or tiny rates.",
+    "Original near-zero low-air scalar replacement/scaling and separate qbot remain physical policies. Signed node sink and positive-upward bottom use separate owners; single final result only.",
+    "Available air follows literal bottom-up theta/thetas/dz scan until rfcp<=0.01; nodfrostbot>1 and volair<0.01 select low air. Block test is strict frozen_bottom<drain_bottom.",
+    "Signed separate infiltration must use the qualified B17 positive-KDuns integral, preserving original discharge/infiltration geometry and sign domains. Scalar-preserving closure correction is explicit roundoff bookkeeping only.",
+    "A scientifically qualified process does not establish runtime immutable-trial integration, full/half regeneration, transactional commit, restart or application receipts. Those require a separately preregistered later backend unit."
+  ],
+  "source_sha256": {
+    "src/process/mod_drainage_spatial_distribution.f90": "ee38490c881c78cba2e533c6ffbb8716e06c6b2893256695a120602cef73b17a",
+    "src/process/mod_frost_geometry_effect.f90": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py": "e87ffc0649fb37a2d8acd8885425e1e2e92d4c245472bc624bd04aa063179f1d",
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py": "565dd26ad06e8c864b27f599f8abd695b13b93623396417b47b58e17d5726074"
+  },
+  "interfaces_allowed_to_change": "Only newly preregistered isolated process types/functions and their scientific harness; existing public APIs and production backend remain fixed",
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Preregister B18 typed component and complete original/corrected/independent parity plus invalid-domain/mass-owner checks"
+}

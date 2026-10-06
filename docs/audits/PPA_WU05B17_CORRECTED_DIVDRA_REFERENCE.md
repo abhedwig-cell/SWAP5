@@ -23,3 +23,7 @@ Maximum independent conservative partition error is **2.7755575615628914e-17** c
 [Immutable complete replay](evidence/PPA_WU05B17_CORRECTED_REFERENCE_REPLAY.json.gz) retains all original/corrected outputs, input cases, actual reconstructed source, negative guard logs and source hashes. `integration/audits/PPA_WU05B17_REF_QUALIFICATION.json` and `PPA_WU05B17_REF_STATUS.json` bind the patch, preregistration, compiled checkpoint and completed gates.
 
 This qualifies a bounded single-level corrected-reference process composition. It does not promote a global B1 snapshot, qualify multilevel redistribution, establish full legacy simulation equivalence or admit a SWAP5 frost redistribution runtime. Later production integration still requires an explicit physical contract, immutable-trial generation, one final nodal sink, separate bottom owner, full/half regeneration and hard-mass/rejection/restart/receipt gates. Aggregate frost migration remains open.
+
+## Canonical component admission
+
+PR #1065 admits the bounded reference component at `987715cbf5513a0911bd81403209452d2a99666c`. Proposed `8b2e36632a60805acfc407fb0db75e7999c1114c` and actual merge share exact qualified tree `5814fc71f02fcdb8d9dafe7dbff2b6755ead6961` and unchanged production source `ab1849e155cfe4aadb838075c3e402985bc4e0f5`. Ordered parents and source/patch identities are recorded in `PPA_WU05B17_REF_CANONICAL_ADMISSION.json`. Global B1 and production frost redistribution remain outside this admission.
