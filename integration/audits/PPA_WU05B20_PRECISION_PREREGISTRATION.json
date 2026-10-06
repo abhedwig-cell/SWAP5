@@ -1,0 +1,27 @@
+{
+  "work_unit": "PPA-WU05B20",
+  "phase": "INDEPENDENT_HIGH_PRECISION_GEOMETRIC_ADJUDICATION",
+  "baseline": "242eb7cb7f9ecec8ff0fa0ecb32ca8b04e9e88d6",
+  "source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "sealed_prior_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
+    "sha256": "b9722a11a7684247b90cd34e3c38e27337fbd7a9d36e43888f9893ec8bd6b368"
+  },
+  "observed_case": {
+    "id": 5116,
+    "candidate_final_scalar": [0,-0.004,0.02],
+    "candidate_final_nodal": "Each nonzero rate is entirely in compartment5, so the exact geometric weight is1.",
+    "previous_double_oracle_unit_rate_error": 5.754858395379259e-11
+  },
+  "hypothesis": "The double-precision independent inverse integral reconstructs a depth near4.5 cm, then subtracts4.5 again to obtain a very small interval in the1e-10 conductivity compartment. This round trip loses relative digits in the oracle. The native same-compartment source branch publishes the exact scalar and may be correct rather than numerically defective.",
+  "implementation_scope": "New test-only exact-input Decimal.from_float geometric oracle at80 and100 decimal digits. Keep source ordinal tie ordering and literal native scalar transformation distinct from high-precision geometry. No production or reference arithmetic edits.",
+  "fixed_criteria": {
+    "unit_rate_partition_error": 2e-12,
+    "nodal_scalar_residual_cm_day": 1e-14,
+    "precision_80_100_error_cm_day": 1e-25
+  },
+  "required_gates": ["all9216 candidate inputs against independent80-digit geometry", "all9216 repeated at100digits", "fresh full candidate native O0/O2 outputs equal sealed prior outputs", "every previously flagged645 case adjudicated", "nonzero exact one-compartment weights", "complete B17 preservation and original negatives inherited only by exact unchanged identities"],
+  "forbidden_changes": ["tolerance relaxation", "suppressing old645 negative screens", "reference mutation beyond preregistered03", "mixed-sign scalar/bottom policy change", "production state/solver/restart/mass/coupling change"],
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false
+}
