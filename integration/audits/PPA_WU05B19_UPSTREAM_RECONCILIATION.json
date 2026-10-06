@@ -13,6 +13,16 @@
     "runtime_binding_added": false
   },
   "dependency_conclusion": "The standalone table imports only intrinsic modules. No existing production file changed or references this new module. It is absent from the 177-source B19 compiled dependency closure. Existing source-bound physical replays are not invalidated by an unrelated unused component addition.",
+  "fresh_standalone_component_replay": {
+    "tested_upstream": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "command": "C3A_RESULT=/tmp/frost-b19-upstream-micro-preservation.json python tests/physics/run_ppa_micro01_corrected_table.py",
+    "exit_code": 0,
+    "cases_per_optimization": 2600,
+    "O0_O2_stdout_byte_identity": true,
+    "record_sha256": "b3a453e61e9a24cc59b9bd90fbd8273f4ddab88794ae8410543797e693243f77",
+    "stdout_sha256": "e804f423df0f0926c1022a243f1b18c6249bc5e534dba7e115ef340b988c0942",
+    "claim_ceiling": "Independent synthetic table component only, not MICRO runtime/frost or a composed B19 merge receipt."
+  },
   "qualification": false,
   "admitted": false,
   "pending": "Finish running source-bound low-air gates before integrating upstream. Verify the exact merged source projection and both capability authorities, rerun final canonical/docs gates, and reconcile the live canonical head again before admission. This review is not a merge receipt."

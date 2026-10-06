@@ -25,6 +25,28 @@ def add(path):
     path = Path(path)
     content = path.read_bytes()
     manifest[str(path)] = {'sha256': hashlib.sha256(content).hexdigest(), 'content': content.decode()}
+
+
+upstream_replay = None
+upstream_record = Path('/tmp/frost-b19-upstream-micro-preservation.json')
+if upstream_record.exists():
+    upstream_replay = json.loads(upstream_record.read_text())
+    reconciliation = json.loads((ROOT / 'integration/audits/PPA_WU05B19_UPSTREAM_RECONCILIATION.json').read_text())
+    upstream = reconciliation['observed_canonical']
+    replay_receipt = reconciliation['fresh_standalone_component_replay']
+    assert sha(upstream_record) == replay_receipt['record_sha256']
+    assert upstream_replay['tested_postimage'] == upstream
+    assert upstream_replay['runs']['O0'] == upstream_replay['runs']['O2']
+    assert upstream_replay['runs']['O0'].count('MICRO01_CORRECTED_LITERAL_CASES=2600') == 1
+    for relative, expected in upstream_replay['source_sha256'].items():
+        content = subprocess.check_output(['git', 'show', f'{upstream}:{relative}'], cwd=ROOT)
+        assert hashlib.sha256(content).hexdigest() == expected
+        manifest[f'upstream@{upstream}/{relative}'] = {'sha256': expected, 'content': content.decode()}
+    add(upstream_record)
+    upstream_log = Path('/tmp/frost-b19-upstream-micro-preservation.log')
+    assert sha(upstream_log) == replay_receipt['stdout_sha256']
+    assert upstream_log.read_text() == upstream_replay['runs']['O0'] + upstream_replay['runs']['O2'] + 'MICRO01_CORRECTED_TABLE_O0_O2_IDENTICAL=PASS\n'
+    add(upstream_log)
 def add_record(path):
     path = Path(path)
     if not path.exists():
@@ -79,6 +101,7 @@ add(ROOT / 'integration/audits/PPA_WU05B19_ENVIRONMENT_RECOVERY.json')
 record = {'work_unit': 'PPA-WU05B19', 'status': 'RECOVERED_COMPLETE_CASE_CHECKPOINT_NOT_QUALIFICATION', 'production_source': SOURCE,
           'qualification': False, 'admitted': False, 'inherited_replay_sha256': sha(inherited), 'manifest': manifest,
           'completed_records': completed, 'completed_case_receipts': case_receipts,
+          'upstream_component_preservation': upstream_replay,
           'pending': 'All remaining complete low-air runtime/incumbent families, full O0/O2 identity and final qualification/admission. Running physical outputs are excluded.'}
 output = Path(args.output)
 output.write_bytes(gzip.compress(json.dumps(record, sort_keys=True).encode(), mtime=0))
