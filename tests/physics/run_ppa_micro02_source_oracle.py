@@ -32,6 +32,9 @@ patches = [
          M=K_table(start+1,lay)*c0+0.5d0*(K_table(start,lay)-K_table(start+1,lay))*c0*c1
          if(Kpresent)K=K_table(start+1,lay)+(K_table(start,lay)-K_table(start+1,lay))*c1
       else if (H > -1.023293d0) then"""),
+    ("   ! convergence reached (NB: we assume TolConv > Tol_2)",
+     "   fxp = myFun(xp) ! synchronize X with the selected pressure after endpoint acceptance\n"
+     "   ! convergence reached (NB: we assume TolConv > Tol_2)"),
 ]
 for old, new in patches:
     assert source.count(old) == 1, old

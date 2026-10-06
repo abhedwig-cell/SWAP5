@@ -18,11 +18,14 @@ Negative literal-source result on the first full nonlinear replay: at
 `swHydrLift=0`, the corrected-table B1.11 source returned layer `Upw`
 `[0.3,-0.2]` cm/d, `Tact1=0.1` and `Tact2=0`, with `check=[T,T,F]`.
 This is not a valid nonnegative sink or a closed soil-to-root flux even though
-the first two checks pass. The source `myFun` endpoint-acceptance branches do
-not perform their advertised final reevaluation at the chosen pressure; that
-is a plausible mechanism, pending a controlled falsification. The anomaly is
-preserved as negative evidence, not used as an equivalence target. Positive
-source comparisons are restricted to cases where all three checks pass.
+the first two checks pass. A second test with equal heads returned
+`Upw=[0.05,0.05]`, `Tact2=0`, and the same failing third check. The source
+`myFun` endpoint-acceptance branches skip the advertised reevaluation at the
+selected pressure. A controlled corrected-literal test adds exactly one
+`fxp=myFun(xp)` at the final pressure before evaluating convergence and flux;
+that proposed repair must be tested before it can become reference policy.
+The unchanged anomaly remains negative evidence, not an equivalence target.
+Positive source comparisons require all three checks to pass.
 
 This work unit first owns a call-local, typed *standalone* evaluator. It accepts
 the committed hydraulic pressure-head view, rooted node thickness, root length
