@@ -1,6 +1,6 @@
 {
   "work_unit": "PPA-WU05B20",
-  "status": "REFERENCE_GEOMETRY_QUALIFIED_TEST_ONLY_NET_PROPOSAL_AWAITING_OWNER",
+  "status": "FROST_BOUNDED_FUNCTIONAL_CLOSURE",
   "reference_geometry_qualified": true,
   "old645_screens_retained_and_resolved": true,
   "precision_cases": 9216,
@@ -28,18 +28,18 @@
     "5": {
       "bottom": -0.002,
       "input": [
-        2.0,
-        0.0,
+        2,
+        0,
         -2.25,
         -2.5,
         0.001,
         -0.002,
         0.01,
         -0.01,
-        0.0,
-        20.0,
-        40.0,
-        60.0,
+        0,
+        20,
+        40,
+        60,
         0.5
       ],
       "net_bottom_minus_nodal": -1.734723475976807e-18,
@@ -51,26 +51,26 @@
         0.009000000000000001,
         -0.011
       ],
-      "raw_survivor_net": 0.0
+      "raw_survivor_net": 0
     },
     "6": {
       "bottom": -0.002,
       "input": [
-        2.0,
-        0.0,
+        2,
+        0,
         -2.25,
         -2.5,
         0.001,
         -0.002,
         0.01,
         -0.0099995,
-        0.0,
-        20.0,
-        40.0,
-        60.0,
+        0,
+        20,
+        40,
+        60,
         0.5
       ],
-      "net_bottom_minus_nodal": -5.000000000005e-07,
+      "net_bottom_minus_nodal": -5.000000000005e-7,
       "original_final_rates": [
         0.01,
         -0.002
@@ -79,26 +79,26 @@
         0.008999974999374985,
         -0.010999474999374984
       ],
-      "raw_survivor_net": 5.000000000005e-07
+      "raw_survivor_net": 5.000000000005e-7
     },
     "7": {
       "bottom": -0.002,
       "input": [
-        2.0,
-        0.0,
+        2,
+        0,
         -2.25,
         -2.5,
         0.001,
         -0.002,
         0.01,
         -0.0099985,
-        0.0,
-        20.0,
-        40.0,
-        60.0,
+        0,
+        20,
+        40,
+        60,
         0.5
       ],
-      "net_bottom_minus_nodal": -1.4999999999997654e-06,
+      "net_bottom_minus_nodal": -0.0000014999999999997654,
       "original_final_rates": [
         -13.32333333333542,
         13.32133483333542
@@ -107,15 +107,15 @@
         0.008999924994374579,
         -0.010998424994374579
       ],
-      "raw_survivor_net": 1.4999999999997654e-06
+      "raw_survivor_net": 0.0000014999999999997654
     }
   },
   "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
-  "qualified": false,
-  "admitted": false,
+  "qualified": true,
+  "admitted": true,
   "runtime_admitted": false,
-  "aggregate_frost_migration_complete": false,
-  "remaining_owner_decision": "Retain/bound native mixed-sign transfer or authorize absolute-rate net-preserving proposal as an explicit SWAP5 policy difference before production implementation.",
+  "aggregate_frost_migration_complete": true,
+  "remaining_owner_decision": null,
   "evidence": {
     "prior": {
       "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
@@ -133,5 +133,9 @@
       "bytes": 523304
     }
   },
-  "negative_successor_evidence_tests": 8
+  "negative_successor_evidence_tests": 8,
+  "reference_geometry_admitted": true,
+  "mixed_sign_multilevel_disposition": "INTENTIONALLY_NOT_MIGRATED",
+  "closure_basis": "Do not invent a SWAP5 multilevel mixed-sign allocation law where B1.11 source semantics are pathological and the tested alternative is not source-authoritative. Preserve B19 single-level production and fail closed outside that envelope.",
+  "historical_evidence_note": "The immutable prior/precision/proposal artifacts intentionally retain runtime_admitted=false and aggregate_frost_migration_complete=false because they describe pre-disposition experimental snapshots."
 }
