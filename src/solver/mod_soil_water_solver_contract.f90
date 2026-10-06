@@ -134,6 +134,8 @@ module mod_soil_water_solver_contract
    contains
      procedure(macropore_rate_evaluate_ifc), deferred :: evaluate_rate
      procedure(macropore_derivative_evaluate_ifc), deferred :: evaluate_derivative
+     procedure :: set_candidate_pond_lateral => default_set_candidate_pond_lateral
+     procedure :: candidate_pond_lateral => default_candidate_pond_lateral
      procedure :: permits_source_freezing => default_macropore_source_freezing
   end type macropore_exchange_provider_t
 
@@ -320,6 +322,16 @@ module mod_soil_water_solver_contract
   end interface
 
 contains
+
+  subroutine default_set_candidate_pond_lateral(self, amount_cm)
+    class(macropore_exchange_provider_t), intent(inout) :: self
+    real(real64), intent(in) :: amount_cm
+  end subroutine default_set_candidate_pond_lateral
+
+  real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+    class(macropore_exchange_provider_t), intent(in) :: self
+    amount_cm=0.0_real64
+  end function default_candidate_pond_lateral
 
   logical function default_macropore_source_freezing(self) result(permitted)
     class(macropore_exchange_provider_t),intent(in)::self
