@@ -1,0 +1,21 @@
+name: MIGMAC11 pond source extraction
+on:
+  push:
+    branches:
+      - research/ppa-wu05-migmac11-pond-source
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract exact B1.11 pond/macropore authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/b111
+          base64 -d integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64 | tar -xz -C /tmp/b111
+          find /tmp/b111 -type f | grep -Ei '(boundtop|headcalc|macrorate|MOD_runon)\.f90$'
+          for f in $(find /tmp/b111 -type f | grep -Ei '(boundtop|headcalc|macrorate|MOD_runon)\.f90$'); do
+            echo "=== $f ==="
+            grep -n -C 12 -Ei 'PndmxMp|KsMpSs|QMpLatSs|RsRoMp|p2Mp|runon' "$f" || true
+          done
