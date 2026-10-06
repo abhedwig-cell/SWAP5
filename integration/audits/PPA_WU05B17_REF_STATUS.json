@@ -1,13 +1,13 @@
 {
   "work_unit": "PPA-WU05B17",
-  "status": "QUALIFIED_BOUNDED_CORRECTED_REFERENCE_CANONICAL_PENDING",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_REFERENCE_COMPONENT",
   "baseline": "9906bf429c445f3eb715a949b47460d223294a29",
   "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "runtime_admitted": false,
   "aggregate_frost_migration_complete": false,
   "preregistration": "integration/audits/PPA_WU05B17_REF_PREREGISTRATION.json",
@@ -19,7 +19,7 @@
     "tests/frost/test_ppa_wu05b16_divdra_owner.f90"
   ],
   "owned_surface": "Isolated reference patch artifact, hash-guarded materializer, reference qualification runner and evidence only. All original source files and production sources remain unchanged.",
-  "recovery_point": "Qualification commit with immutable full replay",
+  "recovery_point": "987715cbf5513a0911bd81403209452d2a99666c",
   "next_action": "Verify exact reference admission, close metadata, then preregister the bounded immutable-trial frost/SWDIVD1 production composition. Positive-only existing DIVDRA runtime remains distinct; separate infiltration still requires its own production contract.",
   "blockers": [],
   "test_paths": [
@@ -83,5 +83,7 @@
   "last_reconciled_upstream": "9906bf429c445f3eb715a949b47460d223294a29",
   "production_source_unchanged": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
   "global_B1_snapshot_promoted": false,
-  "canonical_admission_pending": true
+  "canonical_admission_pending": false,
+  "canonical_pr": 1065,
+  "canonical_merge": "987715cbf5513a0911bd81403209452d2a99666c"
 }
