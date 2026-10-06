@@ -3,10 +3,10 @@
   "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "status": "PREREGISTERED_MULTILEVEL_REFERENCE_OWNER_ADJUDICATION",
-  "implemented": false,
+  "status": "REFERENCE_AUDIT_COMPLETE_MULTILEVEL_RUNTIME_AUTHORITY_HELD",
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "runtime_admitted": false,
@@ -18,7 +18,46 @@
   "interfaces_held_fixed": ["all production source", "original and corrected reference source", "solver and numerical policy", "committed state and restart", "mass and coupling ownership"],
   "relevant_paths": ["tests/frost/test_ppa_wu05b20_multilevel_globals.f90", "tests/frost/test_ppa_wu05b20_multilevel_owner.f90", "tests/frost/run_ppa_wu05b20_multilevel_owner.py"],
   "dependency_surface": ["full FrozenBounds", "full original and B17-corrected DIVDRA", "8-node reference globals"],
-  "blockers": [],
-  "next_action": "Implement and checkpoint source-bound probe, run complete preregistered matrix, and adjudicate shared multilevel transfer before production mutation.",
-  "recovery_point": "The commit containing this preregistration, parent 78acf56f931763d2e1d4924b3dea0742f231d2e8"
+  "summary": "integration/audits/PPA_WU05B20_REFERENCE_SUMMARY.json",
+  "report": "docs/audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
+    "sha256": "b9722a11a7684247b90cd34e3c38e27337fbd7a9d36e43888f9893ec8bd6b368",
+    "bytes": 1787077
+  },
+  "tested_postimage": "43fa981f2cc613d852a0d9e2b69f0493005cd0d6",
+  "remote_checkpoint_before_final_evidence": "ebcee4c9c0516882db8482fb347ecede5906a61e",
+  "native_matrix": {
+    "cases_per_variant_optimization": 9216,
+    "original_and_B17_each_complete_per_opt": 8488,
+    "original_and_B17_each_SIGFPE_per_opt": 728,
+    "candidate_complete_per_opt": 9216,
+    "candidate_SIGFPE": 0,
+    "O0_O2_complete_outputs_and_failure_sets_identical": true,
+    "unaffected_B17_byte_exact_controls": 8293,
+    "fresh_B17_original_single_level_preservation_per_opt": 4536,
+    "candidate_unit_rate_precision_screen_failures": 645,
+    "independent_partition_qualification_passed": false
+  },
+  "reference_correction": {
+    "id": "FROST-DIVDRA-03",
+    "preregistration": "integration/audits/PPA_WU05B20_CORRECTION_PREREGISTRATION.json",
+    "classification": "DEMONSTRATED_LEGACY_GEOMETRIC_THICKNESS_OVERWRITE_DEFECT",
+    "candidate_manifest": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03/manifest.json",
+    "admitted": false,
+    "global_B1_snapshot_promoted": false
+  },
+  "blockers": [
+    "B20-MULTILEVEL-SIGNED-TRANSFER: code parity does not establish intended low-air mixed-sign cancellation and deepest-level replacement semantics. A net-preserving replacement changes shared physical flux/mass interpretation and requires explicit owner contract before implementation.",
+    "B20-PARTITION-PRECISION: 645 candidate cases fail the unchanged 2e-12 unit-rate geometric comparison screen. Full multilevel reference qualification remains false despite complete native execution and nodal/scalar closure."
+  ],
+  "next_action": "Owner decides whether to preserve and explicitly bound the source signed-transfer policy or authorize a separately contracted net-preserving replacement. Preserve original/B17 identities and negative evidence; resolve the numerical partition screen before any multilevel component/runtime admission.",
+  "recovery_point": "Evidence and source postimages committed on work/ppa-wu05b20-multilevel-owner-20261006; tested probe postimage 43fa981f2cc613d852a0d9e2b69f0493005cd0d6, whole published tree checked against local before publication.",
+  "negative_observations": [
+    "First original/O0 whole matrix stopped after 2304 complete rows, case2305 SIGFPE. Final census isolates all 728 failed inputs at each optimization and variant rather than skipping or relabelling them.",
+    "Case7 absolute source/oracle difference 5.760725230175012e-12 arose for near-cancellation-amplified signed rates. Audit records absolute and unit-rate errors separately; final 2e-12 unit-rate screen still fails 645 candidate cases and is not relaxed.",
+    "Case4615 exposed an erroneous Python3.12 compensated-sum substitution for native left-to-right binary64 scalar aggregation, with a 4.625633209798252e-11 scalar difference. The literal branch oracle was corrected, not production arithmetic.",
+    "Case7108 exposed an erroneous stable-sort assumption: native pairwise swaps can reverse ties after a later larger key, yielding a 0.0010750605326876514 nodal difference. The source ordinal policy is now bound explicitly; no new physical ordering rule is admitted.",
+    "Candidate combined precision screen failures remain in the sealed artifact; all evidence and current status explicitly reject runtime/admission and aggregate-closure claims."
+  ]
 }

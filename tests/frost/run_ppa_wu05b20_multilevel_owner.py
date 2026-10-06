@@ -60,8 +60,13 @@ def partition(q, k, gw, spacing, aniso, inf, original):
          for v, s in zip(q, spacing)]
     ends = [min(8., w+.25*s*fac*z) for s, z in zip(spacing, f)]
     active = [i for i, v in enumerate(q) if abs(v) > 1e-10]
-    # Stable descending order is part of this bounded source comparison.
-    active.sort(key=lambda i: f[i]*spacing[i], reverse=True)
+    # The original is not a stable sort: a later larger key swaps through
+    # earlier ties. Bind that ordinal policy explicitly; only the geometric
+    # integrations and inversion below are independent scientific calculations.
+    for a in range(len(active)-1):
+        for b in range(a+1,len(active)):
+            if f[active[a]]*spacing[active[a]] < f[active[b]]*spacing[active[b]]:
+                active[a],active[b] = active[b],active[a]
     cumulative = {i: sum(f[j]*abs(q[j])*spacing[j] for j in active[n:])
                   for n, i in enumerate(active)}
     target = {}
