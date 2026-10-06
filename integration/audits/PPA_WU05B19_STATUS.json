@@ -2,21 +2,20 @@
   "work_unit": "PPA-WU05B19",
   "workstream": "RT/HY/VQ",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "status": "QUALIFIED_CANONICAL_ADMISSION_AUTHORIZED_CONTROLLING_GATE_PENDING",
+  "status": "BOUNDED_SIGNED_FROST_DIVDRA_RUNTIME_CANONICALLY_ADMITTED",
   "contract": "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
   "source_review": "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
-  "runtime_admitted": false,
+  "admitted": true,
+  "runtime_admitted": true,
   "aggregate_frost_migration_complete": false,
-  "blockers": [
-    "Canonical admission requires current-source reconciliation of inherited CI wrappers: a frozen B15 source-pin rejection and an unchanged PUB-P2E02 compile-list dependency failure are diagnosed. This is not a blanket disposition of all PR checks.",
-    "The preregistered B19 current-source controlling admission gate must pass before merge. User has explicitly authorized canonical admission and merge."
-  ],
-  "next_action": "Run the preregistered source-bound B19 admission gate, verify exact PR head and unchanged live canonical dependencies, merge only when the controlling gate succeeds and repository protection permits it, then verify and record the actual admitted production source tree.",
+  "blockers": [],
+  "next_action": "Continue separately governed remaining frost scopes; B19 admission does not close the aggregate frost migration or admit phase-change physics and excluded hybrids.",
+  "canonical_admission": "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
+  "canonical_closeout": "docs/audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md",
   "admission_plan": "integration/audits/PPA_WU05B19_ADMISSION_PLAN.json",
   "remote_check_reconciliation": "integration/audits/PPA_WU05B19_REMOTE_CHECK_RECONCILIATION.json",
   "relevant_paths": [
@@ -39,7 +38,7 @@
     30
   ],
   "candidate_source": "24fda78fd9a38964c16c89d5505b0056185ac410",
-  "recovery_point": "a9a0774500d044bd2c42d2cc6551f687e010fa80",
+  "recovery_point": "811ad186fa8f06386c73baa6abd8e19307cc8dc5",
   "completed_gates": [
     "Final source 24 runtime trajectories O0/O2 with 8192-step independent continuations",
     "Final source 4 additional 16384-step trajectories O0/O2",
@@ -68,7 +67,11 @@
     "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1078",
     "base": "integration/f-ci-canonical",
     "base_sha_at_publication": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-    "merged": false,
+    "merged": true,
+    "admitted_head": "fdbcfa0adc616dc18283dedf5c845e2ea527a32f",
+    "canonical_merge": "811ad186fa8f06386c73baa6abd8e19307cc8dc5",
+    "controlling_run": 37454134330,
+    "controlling_run_conclusion": "success",
     "authorization_scope": "User first authorized branch publication and PR creation, then explicitly answered Ja to completing canonical admission and merging PR #1078 after its applicable gates pass.",
     "qualification_snapshot_policy": "Original immutable replay, summary and report retain their qualification-time remote/admission flags and historical run commit IDs. This current status owns publication and PR tracking."
   },
@@ -89,13 +92,15 @@
   "runtime_regression_strengthened": "Case25 initializes a ready dynamic mode2 table. Four bottom carrier cases assert shared preflight exclusion, then actual runtime and application rejection. Complete 24+4 trajectory matrices rerun at both optimizations.",
   "canonical_reconciliation": {
     "branch": "integration/f-ci-canonical",
-    "verified_remote_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-    "matches_pinned_baseline": true,
-    "method": "read-only GitHub fetch_commit of canonical ref; main is not the canonical authority"
+    "verified_remote_head": "811ad186fa8f06386c73baa6abd8e19307cc8dc5",
+    "matches_pinned_baseline": false,
+    "actual_merge_first_parent_matches_pinned_baseline": true,
+    "actual_merge_tree_matches_ci_tested_merge_and_candidate": true,
+    "method": "Fetched canonical ref and verified actual merge parents, whole tree and production source against the CI-tested merge; main is not the canonical authority"
   },
   "local_process_budget": "Four heavy preservation processes shared across both optimization groups through file locks. Verified complete receipts bypass execution only after source/binary/stdout checks.",
   "preserved": true,
-  "recovery_point_scope": "Recovered exact qualified source, harness and sealed evidence. Original local Git metadata disappeared; see the explicit recovery record. Publication tracking is owned by this current status, not the historical qualification snapshot.",
+  "recovery_point_scope": "Actual canonical runtime admission merge, with exact CI-tested whole tree and qualified production source. Original Git recovery and qualification snapshots remain historical evidence; current admission authority is recorded separately.",
   "git_recovery": "integration/audits/PPA_WU05B19_GIT_RECOVERY.json",
   "qualification": "integration/audits/PPA_WU05B19_QUALIFICATION.json",
   "evidence": {
