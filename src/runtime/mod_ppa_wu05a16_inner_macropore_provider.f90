@@ -196,9 +196,13 @@ contains
     call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok, &
          surface_area_fraction)
     if(.not.ok)return
-    if(.not.allocated(rates%qexc_to_matrix_rate))return
-    if(size(rates%qexc_to_matrix_rate,2)/=size(exchange_flux))return
-    exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    if(allocated(rates%qexc_to_matrix_rate))then
+      if(size(rates%qexc_to_matrix_rate,2)/=size(exchange_flux))return
+      exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    else
+      ! A valid pure top receipt need not allocate a matrix-exchange bundle.
+      if(self%candidate_pond_lateral_cm<=0.0_real64)return
+    end if
     if(self%covering_layer_enabled)then
       cover_node=self%geometry%top_node-1
       covering%top_node=self%geometry%top_node
