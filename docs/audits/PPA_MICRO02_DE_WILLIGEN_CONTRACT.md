@@ -4,6 +4,17 @@ Status: proposed implementation and qualification boundary. Baseline canonical
 `e5eab995ef04fc813dd644025fb0f32e4f5050a1`. This is separate from the
 admitted PPA-MICRO01 table and from Jarvis/Walsum MACRO compensation.
 
+Focused standalone qualification completed on proposed branch head
+`a1c597da109619c981bd317bf362bdde51e47af2`, PR-merge execution
+`988541fe77d391dcf01131772fb55819436b6be1`, run 37420361646.
+O0/O2 outputs are identical. Four constant-conductivity corrected-literal
+B1.11 cases (Campbell, threshold, oxygen geometry modes 1 and 2) and one
+heterogeneous-pressure case pass the per-node 2e-5 cm/d tolerance with all
+three source checks true. The real B1.10 MvG binding passes a separate smoke,
+not a literal MvG source equivalence test. The immutable artifact and manifest
+are in `evidence/PPA_MICRO02_STANDALONE_SOURCE_FINAL_REPLAY.json.gz`.
+This is a standalone qualification, not canonical or runtime admission.
+
 The exact B1.11 `rootextraction.f90` dispatcher selects `sw_drought=3` for
 de Willigen (`iMicro=1`). `RWU_micro.f90` uses its tabulated matric flux
 potential, root-cylinder geometry, root-wall and soil-root conductances, the
