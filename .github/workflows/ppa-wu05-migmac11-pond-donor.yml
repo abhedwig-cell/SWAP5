@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Compile production runtime
-        run: bash tests/fpm/run_fpm08d7_runtime_compile_checkpoint.sh
+        run: bash tests/fpm/run_ppa_wu05a26_backend_compile.sh
       - name: Preserve A9 top input
         run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
       - name: Preserve MIGMAC02 dynamic shrinkage
