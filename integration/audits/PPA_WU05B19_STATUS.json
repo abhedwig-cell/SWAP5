@@ -1,0 +1,51 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "role": "CENTRAL_REGIE",
+  "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "baseline_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
+  "status": "PREREGISTERED_RUNTIME_PENDING",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "preregistration": "integration/audits/PPA_WU05B19_PREREGISTRATION.json",
+  "owned_surface": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90: explicit OFF selector, physical parameters/model copies, new scalar forcing, disposable trial/terminal composition and provenance diagnostics",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90: additive shared configuration/forcing preflight only",
+    "src/process/mod_frost_divdra_drainage_effect.f90: additive pure public parameter-validation wrapper only; no existing arithmetic change",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh: exact source/lineage guard for fully qualified B19 postimage",
+    "New runtime/source/preservation/qualification harness, evidence and status documents"
+  ],
+  "interfaces_held_fixed": [
+    "Existing DIVDRA positive process/binding/serialized wrapper APIs and source",
+    "B18 signed spatial/frost arithmetic",
+    "Every solver/provider/transaction/commit/mass/restart schema and budget owner",
+    "All original reference sources and B17 corrected artifact",
+    "Existing B1..B15 source-derived physical/numerical contracts"
+  ],
+  "relevant_paths": [
+    "src/process/mod_frost_divdra_drainage_effect.f90",
+    "src/process/mod_frost_geometry_effect.f90",
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "src/solver/mod_b110_source_sink_provider.f90",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/frost/run_ppa_wu05b18_divdra_component.py",
+    "tests/frost/test_ppa_wu05b15_normal_runtime.f90",
+    "tests/frost/test_ppa_wu05b15_low_air_runtime.f90"
+  ],
+  "authority_paths": [
+    "docs/architecture/invariants.md",
+    "docs/verification/principles.md",
+    "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json"
+  ],
+  "next_action": "Publish source-bound runtime preregistration, then implement additive exact physical interface/trial path and useful remote checkpoint",
+  "recovery_point": "Preregistration commit before runtime/interface code",
+  "last_reconciled_upstream": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "blockers": []
+}

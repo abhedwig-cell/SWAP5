@@ -1,0 +1,106 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "role": "CENTRAL_REGIE",
+  "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "baseline_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
+  "prerequisite": "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json",
+  "source_review": "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json",
+  "source_sha256": {
+    "src/process/mod_frost_divdra_drainage_effect.f90": "681cd60994fcf58491d4f11b91f0e4b972ed43544fa28be2a6b02b58b9341012",
+    "src/process/mod_frost_geometry_effect.f90": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+    "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
+    "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "e91b5bdfceeb344c1161f406642afb90aab8cd61496b0da489e8bc52bed78f8b",
+    "tests/frost/run_ppa_wu05b18_divdra_component.py": "3c9e5111f139b91dfe723f7f4af97ff76507b772ba0254cce3aecdba8502aae8",
+    "tests/frost/test_ppa_wu05b15_normal_runtime.f90": "a7a1d84e1c02f4ced85afa7375926141321eb8468e92740164da7bf4f4bf46b8",
+    "tests/frost/test_ppa_wu05b15_low_air_runtime.f90": "acd7db64ceacefe5788f0609845a7d5809f835e504ed999e745a890f4226b898"
+  },
+  "scope": "Rootless ordinary Reference mode2 single-level signed scalar forcing composed with B18 frost/DIVDRA from immutable trial-start carrier. Explicit OFF physical selector, fixed scalar owner distinct from already-materialized nodal or drainage-response forcing. Both normal/low air and explicit separate-infiltration switch remain within B18 admissibility.",
+  "interfaces_allowed_to_change": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90: explicit OFF selector, physical parameters/model copies, new scalar forcing, disposable trial/terminal composition and provenance diagnostics",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90: additive shared configuration/forcing preflight only",
+    "src/process/mod_frost_divdra_drainage_effect.f90: additive pure public parameter-validation wrapper only; no existing arithmetic change",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh: exact source/lineage guard for fully qualified B19 postimage",
+    "New runtime/source/preservation/qualification harness, evidence and status documents"
+  ],
+  "interfaces_held_fixed": [
+    "Existing DIVDRA positive process/binding/serialized wrapper APIs and source",
+    "B18 signed spatial/frost arithmetic",
+    "Every solver/provider/transaction/commit/mass/restart schema and budget owner",
+    "All original reference sources and B17 corrected artifact",
+    "Existing B1..B15 source-derived physical/numerical contracts"
+  ],
+  "new_interface_contract": {
+    "selector": "logical frost_divdra_drainage_active defaults FALSE in physical parameters/model. Active requires frost/hydraulic/temperature and frost_drainage numerical config, ordinary Reference mode2 and external full/half temporal assessment; no old response/low-air/frost-bottom/root/salt/macropore/snow/carrier/projection/implicit combination.",
+    "parameters": "type(frost_divdra_parameters_t) frost_divdra_drainage. Exact active-node/dz/cumulative-bottom agreement to column grid and saturated-conductivity agreement to default MvG cofgen(3,:). Explicit signed scalar/distribution controls, within B18 finite/geometry bounds. KSATEXM, direct/tabulated/elastic routes excluded.",
+    "forcing": "real64 frost_divdra_scalar_rate defaults zero. Only new active selector may consume a nonzero finite scalar. Reject mixed already-materialized drainage_flux_by_level or response controls, source/root/salt forcing owners. Scalar stays distinct from numerical options and nodal scratch.",
+    "trial": "Read original request base_state hydraulic carrier and start soil-temperature view. Derive current frost factors and B7 bracketed geometry; compose B18 from start theta and original raw scalar/bottom proposals. Set one self%qdra row and one request bottom boundary only after complete available result. No committed physical mutation on unavailable/rejected attempts.",
+    "terminal": "Full and half endpoints independently regenerate frost factors, geometry and B18 proposals using their own hydraulic/temperature/air views and unchanged original raw scalar/bottom forcing. Unavailable, branch/block/geometry-domain disagreements require refinement/rejection. Retain existing independent head and temperature budgets; no scratch reuse as endpoint proposal.",
+    "mass_and_receipts": "Existing one source_sink provider consumes final nodal row. Existing bottom owner consumes final qbot. Native accepted outcome mass, accepted interval diagnostics, application receipts and restart continuation follow these final owners. Raw scalar/provenance never becomes a second sink or mass ledger.",
+    "persistence": "No new physical persistent state, no restart schema. Parameter/template identities carry the immutable selected physics. Numerical continuation NONE and accepted transactional Restart v1 semantics remain exact.",
+    "configuration_preflight": "Pure shared parameter validator reused by backend and application preflight. Ordered finite/shape/physical/mixed-owner checks. Inactive scalar must be zero; nonzero raw abs<=1e-10 rejected before execution. Transformed tiny/geometry unavailable rejects before solver/publication when only trial carrier can establish the condition."
+  },
+  "qualification_matrix": {
+    "actual_runtime_families": {
+      "separate_infiltration": [
+        false,
+        true
+      ],
+      "raw_scalar_sign": [
+        -1,
+        0,
+        1
+      ],
+      "primary_magnitude_cm_day": 0.01,
+      "signed_bottom_cm_day": [
+        -0.001,
+        0.001
+      ],
+      "low_air_depth_patterns": [
+        "blocked",
+        "exact equality to initial bracketed frost bottom",
+        "surviving"
+      ],
+      "normal_air_primary_trajectories": 12,
+      "low_air_primary_trajectories": 36
+    },
+    "primary_numerical_policy": "Original strict Full Richards tolerances and hard mass1e-12, no weakening; original frost head local3e-11/qualification2.5e-11, temperature local1e-7. Rootless ordinary mode2, actual sensible temperature. Independent fixed-step reference8192 normal /65536 low-air and source-corrected partition/regeneration. Qualification envelope1e-6cm/1e-4C. Additional fine references where convergence or near-domain behavior needs resolution.",
+    "additional_actual_calls": "Positive/negative/zero/tiny and near1e-6 raw scalar, signed/zero bottom, normal/low air, blocked/equality/surviving, both infiltration switches. Predeclared supplemental native interval1e-10 may inspect exact one-call physical owner/held behavior; primary trajectories/durations/budgets remain unchanged. Count actual completed calls and distinguish admitted commits from held pre-solver domains.",
+    "required_runtime_checks": [
+      "Fresh whole-module O0/O2 primary output identity for all48 full trajectories per optimization",
+      "Explicit retries and immutable rejected state, one final nodal provider, final scalar/bottom independent owner/mass and accepted receipts",
+      "Byte/tolerance-consistent replay, empty numerical continuation restart and continued receipt ownership",
+      "Application bootstrap/run/receipts and mixed/invalid finite/shape/control/budget/owner preflight; unavailable domains publish no state",
+      "Independent terminal full/half regenerated proposals and same-source finer-reference convergence",
+      "Fresh complete B18 science/geometry guards; immutable original B16/B17 bodies/outputs preserved; additive validator wrapper changes no arithmetic"
+    ],
+    "required_preservation": [
+      "Fresh relevant full B1/B2/B3/B4/B6/B8/B9/B10/B11/B12/B13/B14/B15 runtime programs at O0/O2; full low-air families/configurations, source-bound independent references and byte-exact original qualified B12/B13/B14/B15 stdout where relevant numerical dependencies are unchanged",
+      "Fresh whole-source original Q4A drainage scientific oracle; original whole VQ73/VQ74, literal exact root cases",
+      "Four whole179-source SALT/root/frost matrices: Jarvis/Walsum with original/dispersion and actual fresh restart",
+      "Original full F-APP09 and whole original VQ128 at O0/O2; no substitute canonical subset",
+      "Full exact-source canonical moving preservation and docs/strict MkDocs",
+      "Immutable compiled source/body/executable/output/case receipts; exact live base/head/proposed/actual tree/source/ordered-parent reconciliation before admission"
+    ]
+  },
+  "execution_policy": {
+    "compute": "Local CPU, maximum3 heavy owned processes at once within8GiB cgroup. Compile/replay meaningful whole cases in fresh processes; retain completed whole case receipts, never partial outputs.",
+    "persistence": "Preregister and remotely persist useful production/harness checkpoint before costly gates; active wait/analyze/repair/admit/close/continue, no stopping at queued CI.",
+    "Actions": "Sparse qualification/admission PRs only after complete source-bound local gates; never claim queued Actions success."
+  },
+  "exclusions": [
+    "External frost surface-water availability/storage/management/publication",
+    "Mixed/multilevel spatial redistribution or EXTENDED composition",
+    "Other bottom modes, fixed weir, directional/projection/implicit coupling",
+    "Root/salt/macropore/snow/Rutter/evaporation/carrier hybrids",
+    "KSATEXM/direct/tabulated/elasticity routes",
+    "B18 unqualified within-offset/same-compartment geometry and nonzero tiny scalars",
+    "New latent heat/ice phase model",
+    "Global frost equivalence"
+  ],
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Publish source-bound runtime preregistration, then implement additive exact physical interface/trial path and useful remote checkpoint"
+}
