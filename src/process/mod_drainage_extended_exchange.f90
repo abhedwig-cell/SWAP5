@@ -81,6 +81,7 @@ module mod_drainage_extended_exchange
 
   public :: evaluate_extended_drainage_exchange
   public :: validate_extended_drainage_parameters
+  public :: valid_extended_drainage_parameters
 
 contains
 
@@ -89,7 +90,29 @@ contains
     same = transfer(a, 0_int64) == transfer(b, 0_int64)
   end function same_real_bits
 
-  subroutine validate_extended_drainage_parameters(parameters, ok)
+  pure logical function valid_extended_drainage_parameters(parameters) result(ok)
+    type(extended_drainage_parameters_t), intent(in) :: parameters
+    ok = .false.
+    ! Avoid comparisons of nonfinite active members in the unchanged
+    ! legacy predicate. Inactive geometry/highest-level members stay ignored.
+    if (.not. all(ieee_is_finite([parameters%zbotdr_cm, parameters%spacing_cm, &
+         parameters%rdrain_day, parameters%rinfi_day, parameters%rentry_day, &
+         parameters%rexit_day, parameters%gwlinf_cm, parameters%pondmx_cm]))) return
+    if (parameters%drain_type == EXT_DRAIN_OPEN_CHANNEL) then
+      if (.not. all(ieee_is_finite([parameters%width_cm, parameters%talud]))) return
+    end if
+    if (parameters%highest_level) then
+      select case (parameters%highest_surface_mode)
+      case (EXT_DRAIN_TOP_SURFACE_RESISTANCE)
+        if (.not. all(ieee_is_finite([parameters%rsurfdeep_day, parameters%rsurfshallow_day]))) return
+      case (EXT_DRAIN_TOP_POWER_INTERFLOW)
+        if (.not. all(ieee_is_finite([parameters%interflow_coefficient, parameters%interflow_exponent]))) return
+      end select
+    end if
+    call validate_extended_drainage_parameters(parameters, ok)
+  end function valid_extended_drainage_parameters
+
+  pure subroutine validate_extended_drainage_parameters(parameters, ok)
     type(extended_drainage_parameters_t), intent(in) :: parameters
     logical, intent(out) :: ok
 
