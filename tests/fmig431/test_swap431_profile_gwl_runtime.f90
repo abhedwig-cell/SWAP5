@@ -105,6 +105,9 @@ contains
            ' committed=',output%committed,' kernel_status=',output%kernel_status,' accepted=',output%accepted_substeps, &
            ' revision=',output%final_revision,' mass_residual=',output%mass%residual
       write(*,'(A,A)') 'SW431_GWL_DEBUG admission=',trim(output%admission_status)
+      write(*,'(A,I0,A,I0,A,I0,A,I0)') 'SW431_GWL_DEBUG solver_status=',output%solver_status, &
+           ' solver_rejections=',output%solver_rejections,' temporal_rejections=',output%temporal_rejections, &
+           ' mass_rejections=',output%mass_rejections
     end if
     call require(output%completed .and. output%committed, 'projection transaction committed')
     call committed%snapshot(snapshot,available)
