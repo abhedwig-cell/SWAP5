@@ -70,5 +70,9 @@
     "bytes": 126635,
     "manifest_entries": 290,
     "qualified": false
-  }
+  },
+  "negative_findings": [
+    "Additional activation harness initially attempted direct access to the private temperature_c component and failed before compilation completed or any case ran. Replaced it with the existing public copy_soil_temperature_profile accessor and retained exact snapshot equality; no production, cases, physical budget or tolerance changed. Original compile-failure logs retained."
+  ],
+  "orchestration": "Two waiting-only drivers were interrupted with exit130 before physical work to reuse the completed O2 primary slot. Replaced them with ordered guards: normal auxiliary work finishes before two-worker O0 preservation, then remaining low-air refinement waits for full O2 preservation. Interrupted prefixes are unqualified; complete original cases still required."
 }

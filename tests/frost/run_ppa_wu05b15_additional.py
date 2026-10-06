@@ -53,7 +53,11 @@ for route in args.routes:
   if(expected_power_held(initial%groundwater_level,initial%ponding_depth))then
    call require(.not.result%committed.and.result%accepted_substeps==0.and..not.observation%solver_executed,'original negative-power held before solver/publication')
    call require(all(final%pressure_head==initial%pressure_head).and.all(final%water_content==initial%water_content),'held power preserves committed water state')
-   call require(all(final%soil_temperature%temperature_c==initial%soil_temperature%temperature_c).and.final%groundwater_level==initial%groundwater_level.and.final%ponding_depth==initial%ponding_depth,'held power preserves committed thermal/hydraulic carrier')
+   call copy_soil_temperature_profile(final%soil_temperature,tf,status)
+   call require(status==0,'held final thermal snapshot available')
+   call copy_soil_temperature_profile(initial%soil_temperature,td,status)
+   call require(status==0.and.size(tf)==size(td),'held initial thermal snapshot available')
+   call require(all(tf==td).and.final%groundwater_level==initial%groundwater_level.and.final%ponding_depth==initial%ponding_depth,'held power preserves committed thermal/hydraulic carrier')
    held_cases=held_cases+1;cases=cases+1
    cycle
   end if
