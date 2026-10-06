@@ -169,3 +169,35 @@ under the reference-defect policy, including units of accumulated isqdra versus
 rate qdrtot and the substep balance. Changing the index to a guessed soil node
 is not a qualified repair. The intended aquifer capability stays ACTIVE_MIGRATION;
 neither a family rejection nor an untested corrected equation is declared.
+
+## Active seepage runtime smoke
+
+`probe_swap431_seepage_runtime.py` builds the unchanged real production module
+closure and a recorded derivative of the A8 four-node trial fixture. It changes
+the physical fixture to a partially saturated matrix with a lower macropore
+water level, positive horizontal conductivity and zero other exchange sources.
+It retains the A8 mass, candidate isolation, commit and revision assertions.
+The exact fixture replacements and every compiled dependency hash are recorded.
+
+The first mode7/free-drainage fixture did not keep the seepage face active:
+the predictor produced negative matrix heads before exchange evaluation.
+The solver and commit completed, but the independent positive-exchange assertion
+failed. Initial and diagnostic attribution records are retained; these failures
+are not proof of a missing seepage evaluator or a failed Richards solve.
+
+The closed-bottom mode2 fixture keeps the source branch active. All six runs
+pass, with identical O0/O2 stdout for each case:
+
+| Variant | Initial macro water (cm) | Accepted macro water (cm) | Reported column mass residual (cm) |
+|---|---:|---:|---:|
+| Youngs K=0 control | 0.02 | 0.02 | 0 |
+| Ernst K=0.1 | 0.02 | 0.020036413738389627 | 0 |
+| Youngs K=0.1 | 0.02 | 0.020140224810362411 | 0 |
+
+This establishes actual positive-branch execution through the existing
+Reference/macropore transaction, rather than merely a callable component.
+It does not qualify full-top-cell geometry, capacity exhaustion, changed-forcing
+retry, fresh-process restart or a coupled literal-source trajectory. MC-MACRO01
+retains exactly those gates. Neither entry is promoted to ADMITTED by this smoke.
+Evidence: `evidence/SWAP431_SEEPAGE_RUNTIME_PROBE.json`, with the two unsuccessful
+fixture records under `..._INITIAL_PROBE.json` and `..._ATTRIBUTION_PROBE.json`.

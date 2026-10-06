@@ -163,6 +163,30 @@ def validate(require_closed=False):
         assert expected in result['stderr']
     assert by_id['SW431-SALT-AQUIFER']['current_disposition'] == 'ACTIVE_MIGRATION'
     assert by_id['SW431-ICE']['classification'] == 'CORE_PHYSICS'
+    for name in ['SWAP431_SEEPAGE_RUNTIME_INITIAL_PROBE.json',
+                 'SWAP431_SEEPAGE_RUNTIME_ATTRIBUTION_PROBE.json',
+                 'SWAP431_SEEPAGE_RUNTIME_PROBE.json']:
+        probe = json.loads((AUDIT / 'evidence' / name).read_text())
+        assert probe['baseline'] == ledger['canonical_head'] and not probe['runtime_admission_created']
+        for path, expected in probe['source_files_sha256'].items():
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale seepage dependency: {path}'
+        fixture = (ROOT / probe['fixture']).read_text()
+        assert hashlib.sha256(fixture.encode()).hexdigest() == probe['fixture_sha256']
+        for old, new in probe['fixture_replacements'].items():
+            assert fixture.count(old) == 1
+            fixture = fixture.replace(old, new)
+        assert hashlib.sha256(fixture.encode()).hexdigest() == probe['generated_fixture_sha256']
+        assert len(probe['results']) == 6
+        if name == 'SWAP431_SEEPAGE_RUNTIME_PROBE.json':
+            assert all(r['exit_code'] == 0 for r in probe['results'])
+            for selector, k in [(2, '0'), (1, '0.1'), (2, '0.1')]:
+                pair = [r for r in probe['results'] if r['selector'] == selector and r['horizontal_k'] == k]
+                assert {r['optimization'] for r in pair} == {'-O0', '-O2'}
+                assert len({r['stdout'] for r in pair}) == 1
+        else:
+            assert sum(r['exit_code'] == 0 for r in probe['results']) == 2
+            assert all(r['horizontal_k'] == '0' or 'positive seepage alone increases macro storage' in r['stderr']
+                       for r in probe['results'])
     assert by_id['SW431-SW-MULTILEVEL']['legacy_selector'] == 'SWDRA=2;SWSEC=2;NRLEVS-NRPRI>1'
     for name in ['SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json', 'SWAP431_DRAMET3_REPLACEMENT_PROBE.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())

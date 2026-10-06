@@ -262,7 +262,15 @@
       "existing_route_qualification_slices": {
         "SW431-MACRO-SEP1": "Reuse Ernst algebra and 48-case literal comparison; actual positive-K/full-partial seepage runtime with donor bounds, rollback and restart.",
         "SW431-MACRO-SEP2": "Reuse Youngs algebra; same active runtime owner gate with Youngs geometry selected, not inherited SWSEP0."
-      }
+      },
+      "existing_route_runtime_evidence": "integration/audits/evidence/SWAP431_SEEPAGE_RUNTIME_PROBE.json",
+      "remaining_seepage_gates": [
+        "Full-top-cell saturated geometry",
+        "Capacity/donor-limited active exchange",
+        "Changed-forcing rejected retry",
+        "Fresh-process restart with active exchange",
+        "Coupled literal source trajectory and bounded admission"
+      ]
     },
     {
       "id": "MC-NUT01",

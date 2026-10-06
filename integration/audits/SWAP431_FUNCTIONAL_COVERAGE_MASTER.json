@@ -5365,16 +5365,20 @@
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
         "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json",
-        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SEEPAGE_RUNTIME_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra."
+        "claim": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
+        "runtime_execution_observed": true,
+        "admission_established": false
       },
       "restrictions": [
-        "Positive-K component comparison only; source pi explicitly supplied as acos(-1).",
-        "Require active seepage-face cases in actual Richards/macropore production chain with full/partial matrix top compartments, conservative donor cap, committed-state immutability, rollback, changed-forcing retry and restart."
+        "Literal component algebra passes 48 cases per O0/O2. Runtime smoke is four nodes, one domain, closed ordinary bottom2, partial top saturation, no other exchange source.",
+        "Initial mode7 fixture became unsaturated and failed the activity assertion; retained as fixture attribution, not an implementation failure.",
+        "Qualify full top, capacity limit, changed-forcing retry, restart and coupled source trajectory before admission."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACRO01",
@@ -11126,16 +11130,20 @@
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
         "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json",
-        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_SEEPAGE_RUNTIME_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra."
+        "claim": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
+        "runtime_execution_observed": true,
+        "admission_established": false
       },
       "restrictions": [
-        "Positive-K component comparison only; source pi explicitly supplied as acos(-1).",
-        "Require active seepage-face cases in actual Richards/macropore production chain with full/partial matrix top compartments, conservative donor cap, committed-state immutability, rollback, changed-forcing retry and restart."
+        "Literal component algebra passes 48 cases per O0/O2. Runtime smoke is four nodes, one domain, closed ordinary bottom2, partial top saturation, no other exchange source.",
+        "Initial mode7 fixture became unsaturated and failed the activity assertion; retained as fixture attribution, not an implementation failure.",
+        "Qualify full top, capacity limit, changed-forcing retry, restart and coupled source trajectory before admission."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACRO01",
@@ -13402,7 +13410,7 @@
       "capability_id": "SW431-MACRO-SEP1",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
-      "why_open": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra.",
+      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13416,7 +13424,7 @@
       "capability_id": "SW431-MACRO-SEP2",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
-      "why_open": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra.",
+      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
