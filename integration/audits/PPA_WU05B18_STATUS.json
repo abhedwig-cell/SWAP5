@@ -1,0 +1,102 @@
+{
+  "work_unit": "PPA-WU05B18",
+  "baseline": "2acee704219d2f54d73df104364dffaeca205565",
+  "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "status": "QUALIFIED_TYPED_SCIENTIFIC_COMPONENT_CANONICAL_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "preregistration": "integration/audits/PPA_WU05B18_PREREGISTRATION.json",
+  "relevant_paths": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/process/mod_frost_geometry_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/solver/mod_process_hydraulic_view.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90",
+    "tests/frost/run_ppa_wu05b16_divdra_owner.py",
+    "tests/frost/run_ppa_wu05b17_corrected_divdra.py"
+  ],
+  "authority_paths": [
+    "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "integration/audits/PPA_WU05B17_REF_CANONICAL_ADMISSION.json",
+    "integration/audits/PPA_WU05B18_SOURCE_REVIEW.json"
+  ],
+  "owned_surface": [
+    "src/process/mod_frost_divdra_drainage_effect.f90"
+  ],
+  "interfaces_held_fixed": [
+    "Existing positive-only DIVDRA API, process and runtime binding",
+    "All backend/forcing/model/application/solver/restart/receipt interfaces",
+    "All original/reference files and B17 corrected artifact",
+    "Physical scalar/bottom policies and fixed reference thresholds"
+  ],
+  "next_action": "Exact component admission and metadata closeout, then separately preregister ordinary rootless Reference mode2 immutable-trial integration, full/half regeneration and hard-mass/reject/restart/app receipts before editing backend/forcing interfaces.",
+  "recovery_point": "Git commit containing qualified component and immutable replay",
+  "last_reconciled_upstream": "2acee704219d2f54d73df104364dffaeca205565",
+  "blockers": [],
+  "test_paths": [
+    "tests/frost/run_ppa_wu05b18_divdra_component.py",
+    "tests/frost/test_ppa_wu05b18_divdra_component.f90"
+  ],
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B18_COMPONENT_REPLAY.json.gz",
+    "sha256": "7689ff8af9a772215f2d2d2a60792554f14c12a66e9ad6229f3ca9647f22a4ed",
+    "bytes": 280845,
+    "manifest_count": 30
+  },
+  "qualification": "integration/audits/PPA_WU05B18_QUALIFICATION.json",
+  "production_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
+  "completed_gates": {
+    "work_unit": "PPA-WU05B18",
+    "status": "LOCAL_TYPED_SCIENTIFIC_COMPONENT_PASS_NOT_ADMITTED",
+    "baseline": "2acee704219d2f54d73df104364dffaeca205565",
+    "baseline_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+    "cases": 4536,
+    "accepted_component_cases": 3240,
+    "unavailable_original_tiny_scalar_cases": 1296,
+    "invalid_domain_cases": 32,
+    "actual_reference_boundary_cases": 2,
+    "typed_O0_O2_byte_identity": true,
+    "reference_O0_O2_byte_identity": true,
+    "actual_B17_corrected_reference_output_identity": true,
+    "max_actual_corrected_nodal_error": 5.898059818321144e-17,
+    "max_actual_corrected_scalar_error": 1.3877787807814457e-17,
+    "max_typed_nodal_scalar_residual": 1.3877787807814457e-17,
+    "max_diagnosed_partition_correction": 2.7755575615628914e-17,
+    "source_sha256": {
+      "src/solver/mod_soil_water_solver_contract.f90": "82e3cf865c0e66de8d9020832ff161e75a4c9f02186cf02a297bf5e4776e90c2",
+      "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+      "src/process/mod_drainage_spatial_distribution.f90": "ee38490c881c78cba2e533c6ffbb8716e06c6b2893256695a120602cef73b17a",
+      "src/process/mod_frost_divdra_drainage_effect.f90": "681cd60994fcf58491d4f11b91f0e4b972ed43544fa28be2a6b02b58b9341012",
+      "tests/frost/test_ppa_wu05b16_divdra_globals.f90": "92f855a16c850c67cdaa28bcbebbc7bb8594302e420e073e51f94999556039d3",
+      "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+      "tests/frost/test_ppa_wu05b16_divdra_owner.f90": "39f0a0e7d5a4ed6d32ac1d43a4b29371da6917bfd65117ee56a7019a1ed8024e",
+      "tests/frost/test_ppa_wu05b18_divdra_component.f90": "c6f65d119f35062b797309a7336b190bd7ff2b0ddafe147a6b4aca68b13448d2",
+      "tests/frost/run_ppa_wu05b18_divdra_component.py": "3c9e5111f139b91dfe723f7f4af97ff76507b772ba0254cce3aecdba8502aae8"
+    },
+    "build": "/tmp/ppa-wu05b18-component-hc7t__ez",
+    "input_sha256": "f3ca5f450ab3c692b395d138472e2efeb1f5e30dcbd7ef6b7762e3d7ffb37f83",
+    "executables": {
+      "reference/o0": "f99e588e41b2ccf6c7b17c972cd7320666f3f7f101d9f2a3f15383eaf96dc640",
+      "reference/o2": "131e6771812b0d34bcd3ee565e8e473000c3da38386b700fd2b8e1fb8a4ac844",
+      "typed/o0": "0c4f6b7570822f517fac5a99bafe187d5e3802b53ed3343f95b90b925c246613",
+      "typed/o2": "f8a61e388c0a96227e36177d29294979bb6c5505b22251e7fdf58bd06368fd79"
+    },
+    "outputs": {
+      "reference/o0": "a03b6c889785f4965df45b045335b264b32799aff90a513e0963d12ecaef57b9",
+      "reference/o2": "a03b6c889785f4965df45b045335b264b32799aff90a513e0963d12ecaef57b9",
+      "typed/o0": "a5ce5606aace24ad04954b4116f800611bcb272bb73c18a70a44055c1bb38cf2",
+      "typed/o2": "a5ce5606aace24ad04954b4116f800611bcb272bb73c18a70a44055c1bb38cf2"
+    },
+    "qualification_scope": "Isolated scientific process component only. No backend runtime admission, hard-mass full simulation, external frost, multilevel distribution, source physics expansion or global equivalence.",
+    "runtime_admitted": false
+  },
+  "canonical_admission_pending": true
+}
