@@ -110,13 +110,6 @@ contains
       result%route = 'invalid-atmospheric-k'
       return
     end if
-    if (request%macropore_pond_donor_active) then
-      if (request%macropore_surface_area_fraction < 0.0_real64 .or. &
-          request%macropore_pond_threshold_cm < 0.0_real64 .or. &
-          request%macropore_surface_conductivity_cm_per_day <= 0.0_real64) return
-      if (.not. all(ieee_is_finite([request%macropore_pond_threshold_cm, &
-          request%macropore_surface_conductivity_cm_per_day]))) return
-    end if
     if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
       k_top = request%fixed_top_node_conductivity_cm_per_day
       ok = ieee_is_finite(k_top) .and. k_top >= 0.0_real64
@@ -326,6 +319,13 @@ contains
     if (request%potential_pond_evaporation_cm_per_day < 0.0_real64) return
     if (request%ponding_max_cm < 0.0_real64) return
     if (request%runoff_resistance_day < 0.0_real64) return
+    if (request%macropore_pond_donor_active) then
+      if (request%macropore_surface_area_fraction < 0.0_real64 .or. &
+          request%macropore_pond_threshold_cm < 0.0_real64 .or. &
+          request%macropore_surface_conductivity_cm_per_day <= 0.0_real64) return
+      if (.not. all(ieee_is_finite([request%macropore_pond_threshold_cm, &
+          request%macropore_surface_conductivity_cm_per_day]))) return
+    end if
     if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
       if (.not. ieee_is_finite(request%fixed_top_node_conductivity_cm_per_day)) return
       if (request%fixed_top_node_conductivity_cm_per_day < 0.0_real64) return
