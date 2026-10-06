@@ -1,10 +1,10 @@
 # SWAP431 functional coverage master: recoverable review
 
-Baseline: `e5eab995ef04fc813dd644025fb0f32e4f5050a1`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
+Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 241 entries: 79 bounded ADMITTED, 12 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 130 ACTIVE_MIGRATION entries across 19 review/migration workunits.
+The ledger currently contains 241 entries: 80 bounded ADMITTED, 12 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 129 ACTIVE_MIGRATION entries across 18 review/migration workunits.
 
-Only 106 entries are currently marked as proven missing production implementation/binding. The other 24 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 110 entries are currently marked as proven missing production implementation/binding. The other 19 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -35,7 +35,6 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-IRR-TCS7 | Pressure-head sensor trigger | MC-IRR01 | None |
 | SW431-IRR-TCS8 | Water-content sensor trigger | MC-IRR01 | None |
 | SW431-ROOT-DENSITY | Adaptive node root-biomass growth/death redistribution | MC-CROP01 | None |
-| SW431-FROST-DIVDRA | Trial-start signed spatial redistribution with frost | PPA-WU05B19 | None |
 | SW431-FROST-EXT-MULTI | Multilevel extended surface-water/drain frost | MC-FROST01 | None |
 | SW431-FROST-GW | Frost with other legacy lower-boundary owners | MC-FROST01 | None |
 | SW431-FROST-ROOTDRAIN | Root uptake composed with frost drainage | MC-FROST01 | None |
@@ -57,6 +56,8 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO3 | de Willigen microscopic soil-root hydraulic extraction | MC-MICRO01 | None |
 | SW431-ROOT-OXYGEN-EMP | Empirical anaerobic/Feddes wet stress | MC-ROOT01 | None |
 | SW431-ROOT-OXYGEN-REPRO | Bartholomeus oxygen reproduction-function route | MC-ROOT01 | None |
+| SW431-CROP-ROOTGROW-BIOMASS | Root depth from actual/potential root-biomass table | MC-CROP01 | None |
+| SW431-CROP-ROOTGROW-DVS | Prescribed DVS-table root depth with soil-depth cap | MC-CROP01 | None |
 | SW431-CROP-ROOTGROW-WATER | Daily root extension scaled by actual/potential transpiration | MC-CROP01 | None |
 | SW431-ET-PMDETAIL | Detailed-record Penman-Monteith atmospheric demand | MC-MET01 | None |
 | SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | MC-MET01 | None |
@@ -92,7 +93,10 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | MC-SOL01 | None |
 | SW431-CROP-FIXED | Calendar-clock prescribed-LAI/root-biomass crop development and harvest | MC-CROP01 | None |
 | SW431-CROP-FIXED-THERMAL | Thermal-sum prescribed-LAI/root-biomass crop development and harvest | MC-CROP01 | None |
+| SW431-CROP-GRASS | Grass regrowth, mowing and grazing | MC-CROP01 | None |
 | SW431-CROP-ROOTGROW | Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth | MC-CROP01 | None |
+| SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | MC-CROP01 | None |
+| SW431-CROP-SOY | Soybean-specific phenology and photoperiod | MC-CROP01 | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | MC-CROP01 | None |
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | MC-NUT01 | None |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | MC-NUT01 | None |
@@ -119,7 +123,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-NUT-NITRIF | Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation | MC-NUT01 | SW431-NUT-MINERAL |
 | SW431-NUT-RESIDUE | Crop residue transfers to organic soil pools | MC-NUT01 | SW431-NUT-ORGANIC |
 | SW431-NUT-TRANSPORT | Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake | MC-NUT01 | SW431-NUT-MINERAL |
-| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | MC-FROST01 | SW431-DRAIN-DIV-MULTI, SW431-FROST-DIVDRA |
+| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | MC-FROST01 | SW431-DRAIN-DIV-MULTI |
 | SW431-TILL-REDIST | Retain pressure head then redistribute weighted water after material change | MC-TILL01 | SW431-TILL-EVENT, SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
 | SW431-TILL-REDIST1 | Keep water content with excess-to-pond redistribution after material change | MC-TILL01 | SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
 
@@ -147,7 +151,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | MC-SUR01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-SW01 | 7 | Source/admission adjudication for the exact IDs below |
 | MC-TILL01 | 7 | Source/admission adjudication for the exact IDs below |
-| PPA-WU05B19 | 1 | Source/admission adjudication for the exact IDs below |
 
 ### MC-CROP01
 
@@ -155,18 +158,18 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-CROP-ATTAINABLE | Attainable versus theoretical potential growth correction | RELFMF parameter and selector not established by ten-case crop-equivalence denominator | None |
 | SW431-ROOT-DENSITY | Adaptive node root-biomass growth/death redistribution | Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory. | None |
-| SW431-CROP-ROOTGROW-BIOMASS | Root depth from actual/potential root-biomass table | Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner. | None |
-| SW431-CROP-ROOTGROW-DVS | Prescribed DVS-table root depth with soil-depth cap | Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone. | None |
+| SW431-CROP-ROOTGROW-BIOMASS | Root depth from actual/potential root-biomass table | Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver. | None |
+| SW431-CROP-ROOTGROW-DVS | Prescribed DVS-table root depth with soil-depth cap | Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping. | None |
 | SW431-CROP-ROOTGROW-WATER | Daily root extension scaled by actual/potential transpiration | No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state. | None |
-| SW431-CROP-ANNUAL | B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology | WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label. | None |
-| SW431-CROP-CO2 | Time-varying CO2 crop response and forcing | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
+| SW431-CROP-ANNUAL | B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology | Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation. | None |
+| SW431-CROP-CO2 | Time-varying CO2 crop response and forcing | Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted. | None |
 | SW431-CROP-FIXED | Calendar-clock prescribed-LAI/root-biomass crop development and harvest | Source IDEV1 advances DVS by 2/LCC, accumulates TSUM, interpolates LAITB, and retains previous root biomass where applicable. Typed canopy/root views are consumers; the current admitted WOFOST81 owner does not implement this fixed-crop state update. | None |
 | SW431-CROP-FIXED-THERMAL | Thermal-sum prescribed-LAI/root-biomass crop development and harvest | Source IDEV2 uses max(0,TAV-TBASE), TSUMEA before anthesis and TSUMAM after anthesis to advance DVS, then updates prescribed LAI/root biomass. Current typed views do not supply this independent accepted phenology state/evaluator. | None |
-| SW431-CROP-GRASS | Grass regrowth, mowing and grazing | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
+| SW431-CROP-GRASS | Grass regrowth, mowing and grazing | Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management. | None |
 | SW431-CROP-ROOTGROW | Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth | Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner. | None |
 | SW431-CROP-ROTATION | Multi-crop start/end/harvest accepted lifecycle | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
-| SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
-| SW431-CROP-SOY | Soybean-specific phenology and photoperiod | Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition | None |
+| SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress. | None |
+| SW431-CROP-SOY | Soybean-specific phenology and photoperiod | B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer. | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | Current common rate parameters accept IDSL0/1 only and crop owners have no vern accumulation/completion state or vernalisation response operator. Typed daily daylength forcing does not replace this persistent temperature history. | None |
 | SW431-CROP-WOF-OTHER | Annual crop daylength-dependent phenology | IDSL1 daylength algebra is implemented by the common crop parameter/finalizer route. Bounded classic-crop source/admission reconciliation remains; IDSL2 persistent vernalisation is a separate confirmed gap. | None |
 | SW431-ROOT-ANAE-GROW | Anaerobic suppression of root extension | Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition. | SW431-CROP-ROOTGROW |
@@ -178,13 +181,13 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-DRAIN-DISLAYER | Absolute or water-level-relative discharge-layer geometry | SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator. | None |
-| SW431-DRAIN-DIV-SIGNED | Ordinary signed conductivity-weighted drainage distribution | Source default DIVDRA partitions negative as well as positive active level transfers; the admitted ordinary scalar-to-node runtime rejects negative transfers. B18 isolated signed frost component does not constitute ordinary runtime admission. | None |
+| SW431-DRAIN-DIV-SIGNED | Ordinary signed conductivity-weighted drainage distribution | B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission. | None |
 | SW431-DRAIN-DIV-TOPINTERFLOW | Separate highest interflow discharge layer and lower-layer exclusion | Source partitions the highest interflow down to its physical drain bottom and starts all lower discharge layers below that boundary. Current ordinary positive DIVDRA has no highest-interflow selector or separate top-layer operator. This is distinct from B15 highest scalar response and from SWDISLAY top truncation. | None |
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present. | None |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher. | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions. | SW431-DRAIN-DIV-SIGNED |
 | SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent. | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | Separate DRAMET3 infiltration partition uses unsaturated/saturated transmissivity and FACDPTHINF. The ordinary runtime binds positive single-level DIVDRA only; B18 contains a bounded signed scientific component but has no canonical runtime import. B19 is rootless frost runtime work and cannot silently close ordinary/general separate infiltration. | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission. | SW431-DRAIN-DIV-SIGNED |
 
 ### MC-FROST01
 
@@ -194,7 +197,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-FROST-GW | Frost with other legacy lower-boundary owners | Current frost admission requires bottom_mode==2. The other source-relevant lower-boundary frost compositions have no admitted runtime route. | None |
 | SW431-FROST-ROOTDRAIN | Root uptake composed with frost drainage | Current frost drainage admission explicitly rejects root_extraction_active and root_frost.active. Admitted empirical root frost does not close its composition with ordinary/extended drainage. | None |
 | SW431-FROST-SNOW | Snow-insulated sensible temperature driving empirical frost hydraulics | Legacy snow resistance changes the soil-interface temperature consumed by FrozenCond; current frost admission rejects snow_active, and the current numerical thermal owner also rejects snow. This needs the TEMP-SNOW route followed by bounded snow/frost ownership qualification. No ice or latent heat is implied. | SW431-TEMP-SNOW |
-| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | The single-level B18 DIVDRA component is not backend-bound, so the source multilevel DIVDRA frost composition lacks both the prerequisite single-level runtime and multilevel owner binding. | SW431-DRAIN-DIV-MULTI, SW431-FROST-DIVDRA |
+| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution. | SW431-DRAIN-DIV-MULTI |
 
 ### MC-HEAT01
 
@@ -367,12 +370,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-TILL-N3 | Update n with density matching-point slope and floor1.001 | No accepted typed tillage material update owner implements this source n law and the shared density-induced theta_r/theta_s/Ksat/alpha update. Candidate material and water must publish atomically. | SW431-TILL-EVENT |
 | SW431-TILL-REDIST | Retain pressure head then redistribute weighted water after material change | No production tillage water owner. Literal source selects redistribution direction with unweighted theta sums but computes weighted inventory; equal sums skip state updates. Bounded O0/O2 probe exposes inverse inconsistency. Conservative replacement/reference-defect adjudication is required before admission. | SW431-TILL-EVENT, SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
 | SW431-TILL-REDIST1 | Keep water content with excess-to-pond redistribution after material change | No production tillage water owner. Literal source sums (theta_s-theta)*dz for oversaturation and assigns the negative result to pond. Probe starts with3cm and ends with1cm including pond=-1cm at O0/O2. Exact defective semantics must be adjudicated through reference policy, with conservative intended functionality retained in migration scope. | SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
-
-### PPA-WU05B19
-
-| Capability | Meaning | Why unresolved | Dependencies |
-|---|---|---|---|
-| SW431-FROST-DIVDRA | Trial-start signed spatial redistribution with frost | B18 is an isolated scientific component with no backend import; runtime scalar/nodal/bottom ownership is still open | None |
 
 ## Closure gate
 

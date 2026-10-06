@@ -496,3 +496,19 @@ bracket defect, patched-source comparison and independent terminal integral
 are qualified at O0/O2. No existing uptake runtime changes. Full MICRO
 nonlinear uptake, provider, sink and restart remain open. See the
 [component closeout](../audits/PPA_MICRO01_CANONICAL_CLOSEOUT.md).
+
+## Bounded single-level signed frost/DIVDRA runtime
+
+PR #1078, merge `811ad186fa8f06386c73baa6abd8e19307cc8dc5`, admits the
+default-OFF B19 signed frost/DIVDRA runtime on rootless ordinary Reference,
+prescribed constant bottom mode2, normal and guarded low-air routes and separate
+infiltration. The [canonical closeout](../audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md)
+records all eleven inherited complete gates, 56 fresh O0/O2 runtime receipts,
+32 original normal and 48 original low-air preservation executions, negative
+falsification checks and successful source-bound controlling CI. Actual and
+CI-tested merge trees match exactly; qualified production source is unchanged.
+Immutable trial-start generation, existing nodal/bottom ownership and one mass
+ledger remain. Retained negative evidence and separately routed inherited CI
+failures are not relabelled as passes. No phase-change, excluded hybrid,
+full-winter or practical performance claim follows. Aggregate frost migration
+and the frozen Status A denominator remain unchanged.

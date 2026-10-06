@@ -16,14 +16,28 @@ DISPOSITIONS = {'ADMITTED', 'SUPERSEDED', 'REJECTED', 'NOT_APPLICABLE', 'ACTIVE_
 CLASSES = {'CORE_PHYSICS', 'APPLICATION_PHYSICS', 'LEGACY_COMPATIBILITY', 'LEGACY_IO', 'OBSOLETE_CONTROL_FLOW'}
 
 
+def validate_inherited_review(name, record, canonical_head):
+    """Accept only an explicitly reviewed and hash-bound dependency delta."""
+    inheritance = json.loads((AUDIT / 'evidence/SWAP431_B19_MASTER_RECONCILIATION.json').read_text())
+    assert inheritance['canonical_head'] == canonical_head, 'stale inheritance baseline'
+    assert record['baseline'] == inheritance['old_baseline'], 'wrong historical review baseline'
+    review = inheritance['inherited_reviews'][name]
+    raw = (AUDIT / 'evidence' / name).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == review['record_sha256'], 'historical review changed'
+    for path, expected in record['source_files_sha256'].items():
+        if path in review['changed_dependencies']:
+            delta = review['changed_dependencies'][path]
+            assert delta['old_sha256'] == expected, 'inheritance preimage mismatch'
+            expected = delta['current_sha256']
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale inherited dependency: {path}'
+
+
 def validate(require_closed=False):
     ledger = json.loads((AUDIT / 'SWAP431_FUNCTIONAL_COVERAGE_MASTER.json').read_text())
     census = json.loads((AUDIT / 'evidence/SWAP431_SOURCE_CENSUS.json').read_text())
     work = json.loads((AUDIT / 'SWAP431_REMAINING_WORKUNITS.json').read_text())
     reachability = json.loads((AUDIT / 'evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json').read_text())
-    assert reachability['baseline'] == ledger['canonical_head'], 'reachability baseline mismatch'
-    for path, digest in reachability['source_files_sha256'].items():
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest, f'stale reachability evidence: {path}'
+    validate_inherited_review('SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json', reachability, ledger['canonical_head'])
     compressed = base64.b64decode((ROOT / census['authority_bundle']).read_bytes(), validate=False)
     assert hashlib.sha256(compressed).hexdigest() == census['bundle_gzip_sha256'], 'source bundle SHA'
     with tarfile.open(fileobj=io.BytesIO(gzip.decompress(compressed))) as archive:
@@ -98,16 +112,30 @@ def validate(require_closed=False):
     # protect the concrete selector mix-up found during this census.
     assert by_id['SW431-DRAIN-TAB']['legacy_selector'] == 'DRAMET=1', 'wrong tabulated drainage selector'
     assert 'DRAMET=3' in by_id['SW431-DRAIN-LINEAR']['legacy_selector'], 'wrong linear contribution selector'
+    for cap in ['SW431-DRAIN-DIV-SIGNED', 'SW431-DRAIN-DIV-MULTI',
+                'SW431-DRAIN-DIV-TOPINTERFLOW', 'SW431-DRAIN-DISLAYER', 'SW431-DRAIN-INF-SPLIT']:
+        assert by_id[cap]['legacy_source_authority']['member'] == 'SWAP/divdra.f90', 'wrong DIVDRA source member'
+    admission = json.loads((AUDIT / 'PPA_WU05B19_CANONICAL_ADMISSION.json').read_text())
+    assert admission['runtime_admitted'] and by_id['SW431-FROST-DIVDRA']['current_disposition'] == 'ADMITTED'
+    assert 'SW431-FROST-DIVDRA' not in by_id['SW431-FROST-DIV-MULTI']['remaining_dependency']
+    crop = json.loads((AUDIT / 'evidence/SWAP431_CROP_RESOLUTION_REVIEW.json').read_text())
+    assert crop['baseline'] == ledger['canonical_head'] and not crop['new_admission_created']
+    for path, expected in crop['source_files_sha256'].items():
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale crop review: {path}'
+    replay = crop['test']
+    assert replay['exit_code'] == 0
+    assert hashlib.sha256(replay['stdout_stderr'].encode()).hexdigest() == replay['stdout_stderr_sha256']
+    assert 'F_WOF_PP03_FWO38_FWO39_CURRENT_CONTRACT_PRESERVATION_GATE PASS' in replay['stdout_stderr']
     for name in ['SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json', 'SWAP431_DRAMET3_REPLACEMENT_PROBE.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())
-        for path, expected in record['source_files_sha256'].items():
-            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale review: {path}'
         if 'findings' in record:
-            assert record['baseline'] == ledger['canonical_head'], 'drainage review baseline mismatch'
+            validate_inherited_review(name, record, ledger['canonical_head'])
             for finding in record['findings']:
                 assert finding['capability_id'] in ids, 'unknown reviewed capability'
                 assert hashlib.sha256(members[finding['legacy_member']]).hexdigest() == finding['source_sha256']
         else:
+            for path, expected in record['source_files_sha256'].items():
+                assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale review: {path}'
             assert hashlib.sha256(members[record['source_member']]).hexdigest() == record['source_sha256']
             assert not record['runtime_admission_created']
             assert {r['optimization'] for r in record['results']} == {'-O0', '-O2'}

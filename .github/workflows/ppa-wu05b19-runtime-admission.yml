@@ -1,0 +1,69 @@
+name: PPA-WU05B19 source-bound runtime admission
+
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/process/mod_frost_divdra_drainage_effect.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/frost/*ppa_wu05b19*'
+      - 'integration/audits/PPA_WU05B19*.json'
+      - '.github/workflows/ppa-wu05b19-runtime-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ppa-wu05b19-admission-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-bound-runtime-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify complete inherited evidence and fail-closed verifier
+        run: |
+          mkdir -p "$RUNNER_TEMP/b19-admission-evidence"
+          python3 tests/frost/test_ppa_wu05b19_admission_verifier.py
+          python3 tests/frost/verify_ppa_wu05b19_admission.py --result "$RUNNER_TEMP/b19-admission-evidence/inherited-evidence.json"
+      - name: Install compiler and documentation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install -r requirements-docs.txt
+      - name: Fresh complete O0/O2 module builds
+        run: python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build "$RUNNER_TEMP/ppa-wu05b19-low-air-runtime-admission"
+      - name: Complete signed runtime, restart, domain and application matrix
+        run: |
+          python3 tests/frost/run_ppa_wu05b19_qualification.py --workers 2 --build "$RUNNER_TEMP/ppa-wu05b19-low-air-runtime-admission"
+          python3 tests/frost/run_ppa_wu05b19_qualification.py --workers 2 --fine 16384 --cases 1 9 13 23 --build "$RUNNER_TEMP/ppa-wu05b19-low-air-runtime-admission"
+      - name: Current-canonical preservation and documentation
+        run: |
+          bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+          python3 tools/docs/check_docs.py
+          python3 -m mkdocs build --strict --site-dir "$RUNNER_TEMP/b19-docs"
+          python3 - <<'PY'
+          import json, pathlib
+          for p in pathlib.Path('integration/audits').glob('PPA_WU05B19*.json'):
+              json.loads(p.read_text())
+          print('B19_ADMISSION_JSON=PASS')
+          PY
+          git diff --check
+          echo B19_SOURCE_BOUND_RUNTIME_ADMISSION=PASS
+      - name: Upload exact gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PPA-WU05B19-admission
+          path: |
+            ${{ runner.temp }}/b19-admission-evidence/
+            ${{ runner.temp }}/ppa-wu05b19-low-air-runtime-admission/o*/case-*.log
+            ${{ runner.temp }}/ppa-wu05b19-low-air-runtime-admission/o*/case-*.err
+            ${{ runner.temp }}/ppa-wu05b19-low-air-runtime-admission/o*/case-*.receipt.json
+          if-no-files-found: error

@@ -301,7 +301,15 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     backend_authority="$BALTOL02_BACKEND"
     echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
   fi
-  if git merge-base --is-ancestor e2bb41f2e3173a6c32465e5792e1fe7386a68679 HEAD; then
+  if git merge-base --is-ancestor a0630beff3b7b329ede3e57a10620116e5b1f456 HEAD; then
+    # Preregistered B19 candidate: preserve every production blob exactly,
+    # including all B1..B18 science. Whole-module runtime gates separately
+    # qualify the three explicitly declared interface/binding changes.
+    test "$(git rev-parse HEAD:src)" = "24fda78fd9a38964c16c89d5505b0056185ac410" || fail 'B19 exact candidate production tree drift'
+    git merge-base --is-ancestor a9a35a60409a16ef7fdf3a38d5bcffb6899c2416 HEAD || fail 'B19 lost B18 component admission'
+    backend_authority="$(git rev-parse HEAD:$BACKEND)"
+    echo 'FCI_CANONICAL_PPA_WU05B19_EXACT_RUNTIME_CANDIDATE=ACTIVE'
+  elif git merge-base --is-ancestor e2bb41f2e3173a6c32465e5792e1fe7386a68679 HEAD; then
     git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail "PPA-WU05B15 lost B10 composed closeout"
     test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B15 exact additive table-validator postimage drift"
     git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B15 lost normal-drain and guarded reference admissions"

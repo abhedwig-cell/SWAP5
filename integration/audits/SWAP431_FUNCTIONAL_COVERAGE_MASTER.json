@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "canonical_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "coverage_closed": false,
   "closure_statement": null,
   "denominator_basis": "Executable B1.11 source, not historical SWAP5 gap labels. Source-invalid/future combinations excluded explicitly. Bound admitted capabilities are split from source-relevant envelope remainder.",
@@ -16,16 +16,16 @@
   "summary": {
     "capabilities": 241,
     "dispositions": {
-      "ADMITTED": 79,
-      "ACTIVE_MIGRATION": 130,
+      "ADMITTED": 80,
+      "ACTIVE_MIGRATION": 129,
       "SUPERSEDED": 12,
       "REJECTED": 1,
       "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 130,
-    "open_workunits": 19,
-    "confirmed_missing_production_entries": 106,
-    "other_unresolved_source_admission_reviews": 24
+    "open_capabilities": 129,
+    "open_workunits": 18,
+    "confirmed_missing_production_entries": 110,
+    "other_unresolved_source_admission_reviews": 19
   },
   "capabilities": [
     {
@@ -4288,7 +4288,7 @@
     {
       "capability_id": "SW431-FROST-DIVDRA",
       "subsystem": "frost",
-      "legacy_selector": "SWDIVD=1",
+      "legacy_selector": "SWFROST=1;SWDIVD=1;single level;SWDIVDINF=0/1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/divdra.f90",
@@ -4299,24 +4299,31 @@
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Trial-start signed spatial redistribution with frost",
+      "meaning": "Single-level signed trial-start frost/DIVDRA redistribution",
       "swap5_implementation_authority": [
-        "src/process/mod_frost_divdra_drainage_effect.f90"
+        "src/process/mod_frost_divdra_drainage_effect.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json"
+        "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
+        "docs/audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md",
+        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": "src/process/mod_frost_divdra_drainage_effect.f90",
-        "claim": "B18 is an isolated scientific component with no backend import; runtime scalar/nodal/bottom ownership is still open"
+        "established": true,
+        "route": "frost_divdra_active -> immutable trial-start proposal -> existing nodal/bottom owners",
+        "claim": "Default-OFF single-level signed frost/DIVDRA runtime on rootless ordinary serialized Reference, prescribed constant bottom mode2, normal and guarded low-air routes, separate infiltration option, immutable trial-start regeneration and one existing mass ledger."
       },
       "restrictions": [
-        "B18 is an isolated scientific component with no backend import; runtime scalar/nodal/bottom ownership is still open"
+        "Rootless ordinary serialized Reference; prescribed constant bottom mode2; default MvG and restricted sensible temperature.",
+        "One level; bracketed frost geometry; normal and guarded low-air routes; separate infiltration only in the qualified domain.",
+        "No mixed nodal/response drainage owners, roots, salt, snow, macropores, elasticity, alternative constitutive law or surface-water coupling.",
+        "Zero scalar allowed; nonzero abs(scalar)<=1e-10 rejected. No phase change, latent heat, full-winter or multilevel claim."
       ],
       "remaining_dependency": [],
-      "active_workunit": "PPA-WU05B19",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -4325,14 +4332,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "absence_search_scope": "Canonical production source tree and named owning admission/closeout records; legacy/reference members are excluded from production admission",
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED_BOUNDED_RUNTIME",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-FROST-HYD"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CLOSED_WITHIN_EXPLICIT_ENVELOPE"
     },
     {
       "capability_id": "SW431-FROST-DIV-MULTI",
@@ -4356,19 +4362,19 @@
       "evidence": [
         "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "The single-level B18 DIVDRA component is not backend-bound, so the source multilevel DIVDRA frost composition lacks both the prerequisite single-level runtime and multilevel owner binding."
+        "claim": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution."
       },
       "restrictions": [
-        "The single-level B18 DIVDRA component is not backend-bound, so the source multilevel DIVDRA frost composition lacks both the prerequisite single-level runtime and multilevel owner binding."
+        "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution."
       ],
       "remaining_dependency": [
-        "SW431-DRAIN-DIV-MULTI",
-        "SW431-FROST-DIVDRA"
+        "SW431-DRAIN-DIV-MULTI"
       ],
       "active_workunit": "MC-FROST01",
       "migration_priority": {
@@ -4382,7 +4388,10 @@
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "closed_foundation_authorities": [
+        "SW431-FROST-DIVDRA"
+      ]
     },
     {
       "capability_id": "SW431-FROST-EXT-MULTI",
@@ -8014,7 +8023,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -8051,7 +8061,13 @@
         "member": "SWAP/wofost.f90",
         "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
         "locator_lines": [
-          456
+          1950,
+          1967,
+          1981,
+          2011,
+          2017,
+          2021,
+          2028
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
@@ -8059,15 +8075,16 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8079,13 +8096,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
     {
       "capability_id": "SW431-CROP-GRASS",
@@ -8096,7 +8113,15 @@
         "member": "SWAP/wofost.f90",
         "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
         "locator_lines": [
-          456
+          2078,
+          2098,
+          2114,
+          2123,
+          2130,
+          2143,
+          2160,
+          2171,
+          2204
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
@@ -8104,15 +8129,16 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8124,9 +8150,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "ttemptsum",
         "mxgdgrz",
@@ -8136,7 +8162,7 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
     {
       "capability_id": "SW431-CROP-SOW",
@@ -8160,15 +8186,16 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8180,9 +8207,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "maxprepdelay",
         "maxsowdelay"
@@ -8190,7 +8217,7 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW",
@@ -8274,12 +8301,13 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted."
       },
       "restrictions": [
         "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
@@ -8333,7 +8361,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -8388,21 +8417,25 @@
       },
       "meaning": "B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "src/crop/mod_wofost_prepare_assimilation.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_two_phase_crop_window.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "tests/fwof/pp01/MAPPING_CONTRACT.md",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label."
+        "claim": "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation."
       },
       "restrictions": [
-        "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label."
+        "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -9767,7 +9800,8 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
@@ -9847,8 +9881,8 @@
       "legacy_selector": "SWDIVD=1;SWDISLAY=1/2;SWTOPDISLAY=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/drainage.f90",
-        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "member": "SWAP/divdra.f90",
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
         "locator_lines": [
           336,
           338,
@@ -9905,8 +9939,8 @@
       "legacy_selector": "DRAMET=3;SWDIVD=1;SWDIVDINF=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/drainage.f90",
-        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "member": "SWAP/divdra.f90",
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
         "locator_lines": [
           46,
           253,
@@ -9926,15 +9960,16 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Separate DRAMET3 infiltration partition uses unsaturated/saturated transmissivity and FACDPTHINF. The ordinary runtime binds positive single-level DIVDRA only; B18 contains a bounded signed scientific component but has no canonical runtime import. B19 is rootless frost runtime work and cannot silently close ordinary/general separate infiltration."
+        "claim": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
       },
       "restrictions": [
-        "Separate DRAMET3 infiltration partition uses unsaturated/saturated transmissivity and FACDPTHINF. The ordinary runtime binds positive single-level DIVDRA only; B18 contains a bounded signed scientific component but has no canonical runtime import. B19 is rootless frost runtime work and cannot silently close ordinary/general separate infiltration."
+        "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
       ],
       "remaining_dependency": [
         "SW431-DRAIN-DIV-SIGNED"
@@ -11732,15 +11767,16 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone."
+        "claim": "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping."
       },
       "restrictions": [
-        "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone."
+        "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -11752,14 +11788,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "source_input_names": [],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
@@ -11789,15 +11825,16 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner."
+        "claim": "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver."
       },
       "restrictions": [
-        "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner."
+        "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -11809,14 +11846,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "source_input_names": [],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-WATER",
@@ -12285,8 +12322,8 @@
       "legacy_selector": "SWDIVD=1;SWDIVDINF=0;negative transfer",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/drainage.f90",
-        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "member": "SWAP/divdra.f90",
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
         "locator_lines": [
           37,
           46,
@@ -12310,15 +12347,16 @@
       "evidence": [
         "docs/science/drainage.md",
         "docs/science/drainage-formulations.md",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source default DIVDRA partitions negative as well as positive active level transfers; the admitted ordinary scalar-to-node runtime rejects negative transfers. B18 isolated signed frost component does not constitute ordinary runtime admission."
+        "claim": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
       },
       "restrictions": [
-        "Source default DIVDRA partitions negative as well as positive active level transfers; the admitted ordinary scalar-to-node runtime rejects negative transfers. B18 isolated signed frost component does not constitute ordinary runtime admission."
+        "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-DRAIN01",
@@ -12344,8 +12382,8 @@
       "legacy_selector": "SWDIVD=1;NRLEVS>1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/drainage.f90",
-        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "member": "SWAP/divdra.f90",
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
         "locator_lines": [
           37,
           42,
@@ -12407,8 +12445,8 @@
       "legacy_selector": "SWDIVD=1;SWNRSRF>0;SWTOPNRSRF=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/drainage.f90",
-        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "member": "SWAP/divdra.f90",
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
         "locator_lines": [
           66,
           67,
@@ -12497,7 +12535,7 @@
       "capability_id": "SW431-DRAIN-DIV-SIGNED",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
-      "why_open": "Source default DIVDRA partitions negative as well as positive active level transfers; the admitted ordinary scalar-to-node runtime rejects negative transfers. B18 isolated signed frost component does not constitute ordinary runtime admission.",
+      "why_open": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12769,20 +12807,6 @@
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-FROST-DIVDRA",
-      "work_unit": "PPA-WU05B19",
-      "dependencies": [],
-      "why_open": "B18 is an isolated scientific component with no backend import; runtime scalar/nodal/bottom ownership is still open",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 3,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -13085,7 +13109,7 @@
       "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner.",
+      "why_open": "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13093,13 +13117,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-DVS",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone.",
+      "why_open": "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13107,7 +13131,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-WATER",
@@ -13687,7 +13711,7 @@
       "capability_id": "SW431-CROP-ANNUAL",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label.",
+      "why_open": "Classic AMAXTB production exists separately from WOFOST81 and its atomic event/lifecycle preservation passes O0/O2. Remaining review is B1.11 versus the restricted B1.10 actual-crop envelope and potential/actual trajectory ownership, not absence of AMAXTB implementation.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13701,7 +13725,7 @@
       "capability_id": "SW431-CROP-CO2",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
+      "why_open": "Assimilation CO2 factors exist in both crop routes. F-WOF43A provides a transpiration table component but excludes calendar-year selection. Resolve typed annual forcing and combined crop/ET admission; no absence of factor algebra is asserted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13743,7 +13767,7 @@
       "capability_id": "SW431-CROP-GRASS",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
+      "why_open": "Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13751,7 +13775,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW",
@@ -13785,7 +13809,7 @@
       "capability_id": "SW431-CROP-SOW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
+      "why_open": "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13793,13 +13817,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-SOY",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
+      "why_open": "B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13807,7 +13831,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-VERNAL",
@@ -13933,7 +13957,7 @@
       "dependencies": [
         "SW431-DRAIN-DIV-SIGNED"
       ],
-      "why_open": "Separate DRAMET3 infiltration partition uses unsaturated/saturated transmissivity and FACDPTHINF. The ordinary runtime binds positive single-level DIVDRA only; B18 contains a bounded signed scientific component but has no canonical runtime import. B19 is rootless frost runtime work and cannot silently close ordinary/general separate infiltration.",
+      "why_open": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -14308,10 +14332,9 @@
       "capability_id": "SW431-FROST-DIV-MULTI",
       "work_unit": "MC-FROST01",
       "dependencies": [
-        "SW431-DRAIN-DIV-MULTI",
-        "SW431-FROST-DIVDRA"
+        "SW431-DRAIN-DIV-MULTI"
       ],
-      "why_open": "The single-level B18 DIVDRA component is not backend-bound, so the source multilevel DIVDRA frost composition lacks both the prerequisite single-level runtime and multilevel owner binding.",
+      "why_open": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution.",
       "priority": {
         "dependency_depth": 2,
         "functional_relevance": 1,
@@ -14383,6 +14406,13 @@
         "SW431-ROOT-MICRO3"
       ],
       "canonical_merge": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d"
+    },
+    {
+      "workunit": "PPA-WU05B19",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_RUNTIME",
+      "evidence": "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
+      "closes": "SW431-FROST-DIVDRA",
+      "canonical_merge": "811ad186fa8f06386c73baa6abd8e19307cc8dc5"
     }
   ],
   "initial_canonical_head": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
@@ -14391,7 +14421,8 @@
     "migration_reconciliation": "integration/audits/evidence/SWAP431_OPEN_MIGRATION_PR_RECONCILIATION.json",
     "open_pr_count": 114,
     "recent_merged_since_20261005_count": 55,
-    "historical_bounded_snapshot": "integration/audits/evidence/SWAP431_OPEN_PR_SNAPSHOT.json"
+    "historical_bounded_snapshot": "integration/audits/evidence/SWAP431_OPEN_PR_SNAPSHOT.json",
+    "snapshot_policy": "Historical paginated inventory, supplemented by exact live delta; not a current open-PR count."
   },
   "swap5_admitted_foundations": [
     {

@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
-  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "last_reconciled_upstream": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "checkpoint_commit": "7427e0ac3254e4463fcc32086d621575ee0f8745",
   "implemented": true,
-  "persisted": true,
+  "persisted": false,
   "tested": {
     "coverage_integrity": "PASS",
     "census_lexical_tests": "4 PASS",
@@ -13,7 +13,10 @@
     "documentation_source": "PASS",
     "strict_mkdocs": "PASS",
     "whitespace": "PASS",
-    "false_closure_guard": "EXPECTED REJECTION: denominator incomplete"
+    "false_closure_guard": "EXPECTED REJECTION: denominator incomplete",
+    "coverage_inheritance": "5 PASS, including dependency/record/baseline negative mutations",
+    "b19_source_bound_verifier": "10 PASS",
+    "classic_crop_preservation": "F-WOF38/F-WOF39 O0/O2 PASS via unchanged PP03 current-contract wrapper"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -21,18 +24,18 @@
   "summary": {
     "capabilities": 241,
     "dispositions": {
-      "ADMITTED": 79,
-      "ACTIVE_MIGRATION": 130,
+      "ADMITTED": 80,
+      "ACTIVE_MIGRATION": 129,
       "SUPERSEDED": 12,
       "REJECTED": 1,
       "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 130,
-    "open_workunits": 19,
-    "confirmed_missing_production_entries": 106,
-    "other_unresolved_source_admission_reviews": 24
+    "open_capabilities": 129,
+    "open_workunits": 18,
+    "confirmed_missing_production_entries": 110,
+    "other_unresolved_source_admission_reviews": 19
   },
-  "next_action": "Resolve the 24 source-mapping/admission reviews in the master ledger; complete routine/branch/composition denominator adjudication before a final missing-functionality count. The other 106 entries require missing implementation, typed derivation or production binding at this canonical baseline.",
+  "next_action": "Resolve the remaining 19 source/admission reviews, split compound management options into bounded selector contracts, and finish semantic routine/branch census. Do not assert an exhaustive missing-functionality count.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -54,13 +57,13 @@
   ],
   "interfaces_changed": false,
   "production_source_changed": false,
-  "invariants_affected": "No runtime semantics changed. Source/admission claim boundaries and derived audit data only.",
+  "invariants_affected": "Canonical B19 delta inherited without modifying production. Audit source authority, admission scope and dependency graph updated only.",
   "blockers": [
-    "Coverage cannot be declared closed while 130 capability entries remain active and the source denominator has not passed semantic completeness review. This is not a claim of an environment or permission blocker."
+    "Coverage remains open: 129 active entries, including 110 confirmed missing implementation/binding and 19 unresolved reviews; semantic denominator completeness is not yet proven."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
-    "frost_DIVDRA": "PPA-WU05B19 is canonical preregistered successor to component-only B18; no runtime admission at baseline"
+    "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate."
   },
   "unresolved_review_ids": [
     "SW431-MET-RAIN3",
@@ -73,9 +76,6 @@
     "SW431-IRR-FIXED-SPRINK",
     "SW431-IRR-SCHED-SURF",
     "SW431-CROP-WOF-OTHER",
-    "SW431-CROP-SOY",
-    "SW431-CROP-GRASS",
-    "SW431-CROP-SOW",
     "SW431-CROP-CO2",
     "SW431-CROP-ROTATION",
     "SW431-CROP-ANNUAL",
@@ -84,9 +84,7 @@
     "SW431-NUT-NFIX",
     "SW431-MACRO-SEP1",
     "SW431-MACRO-SW-EXTERNAL",
-    "SW431-MACRO-GEOMETRY",
-    "SW431-CROP-ROOTGROW-DVS",
-    "SW431-CROP-ROOTGROW-BIOMASS"
+    "SW431-MACRO-GEOMETRY"
   ],
   "dependency_surface": [
     "src",
@@ -106,6 +104,7 @@
     "sha": "7427e0ac3254e4463fcc32086d621575ee0f8745",
     "local_and_remote_tree": "f0aa519646af5cc2d07ffd67dd5535756da24272",
     "all_12_changed_blob_hashes_verified": true,
-    "mechanism": "GitHub connector; ordinary CLI push unavailable without credentials"
+    "mechanism": "GitHub connector; ordinary CLI push unavailable without credentials",
+    "pending_successor": true
   }
 }
