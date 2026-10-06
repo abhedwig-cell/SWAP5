@@ -17,15 +17,15 @@
     "capabilities": 241,
     "dispositions": {
       "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 129,
-      "SUPERSEDED": 12,
+      "ACTIVE_MIGRATION": 127,
+      "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 129,
+    "open_capabilities": 127,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 110,
-    "other_unresolved_source_admission_reviews": 19
+    "confirmed_missing_production_entries": 115,
+    "other_unresolved_source_admission_reviews": 12
   },
   "capabilities": [
     {
@@ -706,22 +706,29 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Daily rainfall duration WET forcing",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/audits/evidence/SWAP431_RAIN_TYPED_MAPPING_PROBE.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source uses supplied daily WET duration and rate=depth/WET, with a rain-end time-step event and zero-rain intervals. Typed intervals can carry the result, but the native depth/duration resolver and its admitted forcing lifecycle are absent."
+        "established": true,
+        "route": "PPA-WU03 immutable precipitation-rate/forcing-span input",
+        "claim": "Source supplied duration or end-stamped amount is represented by explicit constant-rate spans. Source interval amount equals rate times duration; a contained substep retains the rate. Existing PPA-WU03 admission supplies the production route. No new physical law/state is needed."
       },
       "restrictions": [
-        "Source uses supplied daily WET duration and rate=depth/WET, with a rain-end time-step event and zero-rain intervals. Typed intervals can carry the result, but the native depth/duration resolver and its admitted forcing lifecycle are absent."
+        "Caller supplies resolved rates and endpoints and splits requests at forcing boundaries. No automatic WET/.rain calendar parser is claimed.",
+        "Existing PPA-WU03 pure-flux, SWETR1/SWINTER0 envelope applies. Snow/interception/detailed ET combinations retain separate owners and admission boundaries.",
+        "Literal mapping witness is not all-date parser equivalence or a new runtime admission."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-MET01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -729,11 +736,11 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "classification": "LEGACY_COMPATIBILITY",
+      "coverage_gap_type": null,
+      "workunit_stage": "REPLACEMENT_RECONCILED",
+      "implementation_absence_proven": false,
+      "resolution_stage": "CLOSED_BY_TYPED_INPUT_REPRESENTATION"
     },
     {
       "capability_id": "SW431-MET-RAIN3",
@@ -755,22 +762,29 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Separate detailed .rain rainfall forcing",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90"
+      ],
+      "current_disposition": "SUPERSEDED",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/PPA_WU03_STATUS.json",
+        "integration/audits/evidence/SWAP431_RAIN_TYPED_MAPPING_PROBE.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source converts interval rain amounts at ordered timestamps to piecewise constant rates, reconstructs daily totals, and clips hydraulic steps to rain events. Generic typed spans support resolved rates; source-equivalent mapping of end-stamped amounts, start clipping and daily interception/snow composition still needs qualification."
+        "established": true,
+        "route": "PPA-WU03 immutable precipitation-rate/forcing-span input",
+        "claim": "Source supplied duration or end-stamped amount is represented by explicit constant-rate spans. Source interval amount equals rate times duration; a contained substep retains the rate. Existing PPA-WU03 admission supplies the production route. No new physical law/state is needed."
       },
       "restrictions": [
-        "Source converts interval rain amounts at ordered timestamps to piecewise constant rates, reconstructs daily totals, and clips hydraulic steps to rain events. Generic typed spans support resolved rates; source-equivalent mapping of end-stamped amounts, start clipping and daily interception/snow composition still needs qualification."
+        "Caller supplies resolved rates and endpoints and splits requests at forcing boundaries. No automatic WET/.rain calendar parser is claimed.",
+        "Existing PPA-WU03 pure-flux, SWETR1/SWINTER0 envelope applies. Snow/interception/detailed ET combinations retain separate owners and admission boundaries.",
+        "Literal mapping witness is not all-date parser equivalence or a new runtime admission."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-MET01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -778,11 +792,11 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_AND_ENVELOPE_REVIEW",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "classification": "LEGACY_COMPATIBILITY",
+      "coverage_gap_type": null,
+      "workunit_stage": "REPLACEMENT_RECONCILED",
       "implementation_absence_proven": false,
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "CLOSED_BY_TYPED_INPUT_REPRESENTATION"
     },
     {
       "capability_id": "SW431-EVAP-CAPACITY",
@@ -5401,15 +5415,17 @@
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/audits/PPA_WU05A8_CLOSEOUT.md"
+        "docs/audits/PPA_WU05A8_CLOSEOUT.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping."
+        "claim": "B1.11 SWPOWM1 changes the lower Ic depth-curve integral exponent to 1/PowM. Current geometry consumes resolved arrays but has no SWPOWM/depth-curve resolver. Migrate this alternative after the base static-geometry resolver."
       },
       "restrictions": [
-        "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping."
+        "B1.11 SWPOWM1 changes the lower Ic depth-curve integral exponent to 1/PowM. Current geometry consumes resolved arrays but has no SWPOWM/depth-curve resolver. Migrate this alternative after the base static-geometry resolver."
       ],
       "remaining_dependency": [
         "SW431-MACRO-GEOMETRY"
@@ -5423,13 +5439,14 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "SWPOWM"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-MACRO-DARCY",
@@ -6539,7 +6556,7 @@
     {
       "capability_id": "SW431-SW-PRIMARY",
       "subsystem": "surfacewater",
-      "legacy_selector": "SWSRF=3",
+      "legacy_selector": "SWSRF=3;NRPRI>0",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/surfacewater.f90",
@@ -6560,21 +6577,23 @@
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Primary and secondary surface-water systems",
+      "meaning": "Prescribed primary versus common secondary head and exchange routing",
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "claim": "Source levels <=NRPRI use prescribed primary WLP; others use common secondary WLS and alone enter QDRD. Existing per-level response controls and scalar aggregator have no native typed primary/secondary group routing and receipt ownership binding."
       },
       "restrictions": [
-        "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "Source levels <=NRPRI use prescribed primary WLP; others use common secondary WLS and alone enter QDRD. Existing per-level response controls and scalar aggregator have no native typed primary/secondary group routing and receipt ownership binding."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SW01",
@@ -6586,59 +6605,70 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-SW-EXTERNAL",
         "SW431-SW-FIXED"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-SW-MULTILEVEL",
       "subsystem": "surfacewater",
-      "legacy_selector": "NRLEV>1",
+      "legacy_selector": "SWDRA=2;SWSEC=2;NRLEVS-NRPRI>1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/surfacewater.f90",
         "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
         "locator_lines": [
-          5,
-          80,
-          407
+          503,
+          583,
+          598,
+          614,
+          619,
+          630,
+          631,
+          634
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Multiple external water levels and exchange owners",
+      "meaning": "Common secondary storage depletion limiter across multiple drain levels",
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "claim": "Source multiple secondary drain levels share one storage. Its falling-dry branch scales every secondary-level exchange using net QDRD and available storage+supply. Current scalar aggregator has no common-store limiter; restricted fixed-weir input rejects negative secondary exchange. Native grouped signed feedback/receipts are missing."
       },
       "restrictions": [
-        "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "Source multiple secondary drain levels share one storage. Its falling-dry branch scales every secondary-level exchange using net QDRD and available storage+supply. Current scalar aggregator has no common-store limiter; restricted fixed-weir input rejects negative secondary exchange. Native grouped signed feedback/receipts are missing."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
       "active_workunit": "MC-SW01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "nrsrf",
         "lev"
@@ -6647,7 +6677,8 @@
         "SW431-SW-EXTERNAL",
         "SW431-SW-FIXED"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-SW-QHR1",
@@ -10167,41 +10198,50 @@
         "member": "SWAP/wofost.f90",
         "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
         "locator_lines": [
-          589
+          589,
+          1393,
+          1394,
+          1403,
+          1404
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Attainable versus theoretical potential growth correction",
+      "meaning": "Selector-controlled RELMF correction of companion potential assimilation",
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "RELFMF parameter and selector not established by ten-case crop-equivalence denominator"
+        "claim": "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing."
       },
       "restrictions": [
-        "RELFMF parameter and selector not established by ten-case crop-equivalence denominator"
+        "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-CROP-ANNUAL"
+      ],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-EVAP-OFF",
@@ -10601,15 +10641,18 @@
         "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90",
         "tests/fwof/pp02/test_wofost81_nitrogen_driver.f90",
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json",
-        "tests/fwof/pp01/MAPPING_CONTRACT.md"
+        "tests/fwof/pp01/MAPPING_CONTRACT.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json",
+        "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required."
+        "claim": "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics."
       },
       "restrictions": [
-        "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required."
+        "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -10621,13 +10664,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_AND_ENVELOPE_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-INIT-PROFILE",
@@ -11704,15 +11748,17 @@
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/audits/PPA_WU05A8_CLOSEOUT.md"
+        "docs/audits/PPA_WU05A8_CLOSEOUT.md",
+        "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+        "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied."
+        "claim": "Current geometry validates supplied static volume/fraction/bottom/diameter arrays. B1.11 depth-curve cell splitting, integration, domain lumping and diameter derivation have no bound typed resolver; reuse existing immutable geometry after adding this parameterization."
       },
       "restrictions": [
-        "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied."
+        "Current geometry validates supplied static volume/fraction/bottom/diameter arrays. B1.11 depth-curve cell splitting, integration, domain lumping and diameter derivation have no bound typed resolver; reuse existing immutable geometry after adding this parameterization."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACRO01",
@@ -11724,9 +11770,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "Z_IC",
         "Z_ST",
@@ -11741,7 +11787,8 @@
         "DIPOMI",
         "DIPOMA"
       ],
-      "resolution_stage": "SOURCE_MAPPING_OR_ADMISSION_EVIDENCE_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE"
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-DVS",
@@ -12504,20 +12551,6 @@
   ],
   "remaining_queue": [
     {
-      "capability_id": "SW431-CROP-ATTAINABLE",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "RELFMF parameter and selector not established by ten-case crop-equivalence denominator",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-DRAIN-DISLAYER",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
@@ -13263,7 +13296,7 @@
       "capability_id": "SW431-MACRO-GEOMETRY",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
-      "why_open": "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied.",
+      "why_open": "Current geometry validates supplied static volume/fraction/bottom/diameter arrays. B1.11 depth-curve cell splitting, integration, domain lumping and diameter derivation have no bound typed resolver; reuse existing immutable geometry after adding this parameterization.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13271,7 +13304,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-MACRO-KINEMATIC",
@@ -13400,34 +13433,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-MET-RAIN2",
-      "work_unit": "MC-MET01",
-      "dependencies": [],
-      "why_open": "Source uses supplied daily WET duration and rate=depth/WET, with a rain-end time-step event and zero-rain intervals. Typed intervals can carry the result, but the native depth/duration resolver and its admitted forcing lifecycle are absent.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-MET-RAIN3",
-      "work_unit": "MC-MET01",
-      "dependencies": [],
-      "why_open": "Source converts interval rain amounts at ordered timestamps to piecewise constant rates, reconstructs daily totals, and clips hydraulic steps to rain events. Generic typed spans support resolved rates; source-equivalent mapping of end-stamped amounts, start clipping and daily interception/snow composition still needs qualification.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-RUNOFF-NONLINEAR",
       "work_unit": "MC-SUR01",
       "dependencies": [],
@@ -13484,24 +13489,10 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-SW-MULTILEVEL",
-      "work_unit": "MC-SW01",
-      "dependencies": [],
-      "why_open": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-SW-PRIMARY",
       "work_unit": "MC-SW01",
       "dependencies": [],
-      "why_open": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics",
+      "why_open": "Source levels <=NRPRI use prescribed primary WLP; others use common secondary WLS and alone enter QDRD. Existing per-level response controls and scalar aggregator have no native typed primary/secondary group routing and receipt ownership binding.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13509,7 +13500,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SW-QHR2",
@@ -13879,7 +13870,7 @@
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required.",
+      "why_open": "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13887,7 +13878,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -13899,6 +13890,22 @@
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-CROP-ATTAINABLE",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ],
+      "why_open": "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -14140,7 +14147,7 @@
       "dependencies": [
         "SW431-MACRO-GEOMETRY"
       ],
-      "why_open": "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping.",
+      "why_open": "B1.11 SWPOWM1 changes the lower Ic depth-curve integral exponent to 1/PowM. Current geometry consumes resolved arrays but has no SWPOWM/depth-curve resolver. Migrate this alternative after the base static-geometry resolver.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -14148,7 +14155,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-MACRO-RUNON",
@@ -14165,6 +14172,23 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-SW-MULTILEVEL",
+      "work_unit": "MC-SW01",
+      "dependencies": [
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
+      "why_open": "Source multiple secondary drain levels share one storage. Its falling-dry branch scales every secondary-level exchange using net QDRD and available storage+supply. Current scalar aggregator has no common-store limiter; restricted fixed-weir input rejects negative secondary exchange. Native grouped signed feedback/receipts are missing.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TILL-CONSOL",

@@ -5,7 +5,7 @@
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "checkpoint_commit": "81f5d4bffcf8519944e81feb6d6c411da48253a0",
   "implemented": true,
-  "persisted": true,
+  "persisted": false,
   "tested": {
     "coverage_integrity": "PASS",
     "census_lexical_tests": "4 PASS",
@@ -16,7 +16,9 @@
     "false_closure_guard": "EXPECTED REJECTION: denominator incomplete",
     "coverage_inheritance": "5 PASS, including dependency/record/baseline negative mutations",
     "b19_source_bound_verifier": "10 PASS",
-    "classic_crop_preservation": "F-WOF38/F-WOF39 O0/O2 PASS via unchanged PP03 current-contract wrapper"
+    "classic_crop_preservation": "F-WOF38/F-WOF39 O0/O2 PASS via unchanged PP03 current-contract wrapper",
+    "rain_representation": "O0/O2 PASS; literal B1.11 conversion + full production adapter module closure",
+    "nfix_equation_discrimination": "6 cases per O0/O2; 3 independent semantic witnesses; PASS"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -25,17 +27,17 @@
     "capabilities": 241,
     "dispositions": {
       "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 129,
-      "SUPERSEDED": 12,
+      "ACTIVE_MIGRATION": 127,
+      "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 129,
+    "open_capabilities": 127,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 110,
-    "other_unresolved_source_admission_reviews": 19
+    "confirmed_missing_production_entries": 115,
+    "other_unresolved_source_admission_reviews": 12
   },
-  "next_action": "Resolve the remaining 19 source/admission reviews, split compound management options into bounded selector contracts, and finish semantic routine/branch census. Do not assert an exhaustive missing-functionality count.",
+  "next_action": "Resolve the 12 remaining source/admission reviews and finish semantic routine/branch census. Execute registered bounded migrations without confusing existing component algebra with production owner composition.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -57,22 +59,18 @@
   ],
   "interfaces_changed": false,
   "production_source_changed": false,
-  "invariants_affected": "Canonical B19 delta inherited without modifying production. Audit source authority, admission scope and dependency graph updated only.",
+  "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "Coverage remains open: 129 active entries, including 110 confirmed missing implementation/binding and 19 unresolved reviews; semantic denominator completeness is not yet proven."
+    "127 active entries remain: 115 missing implementation/binding and 12 source/admission reviews. Semantic denominator completeness remains unproven."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
     "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate."
   },
   "unresolved_review_ids": [
-    "SW431-MET-RAIN3",
     "SW431-MACRO-SEP2",
-    "SW431-MACRO-POWM",
     "SW431-MACRO-POND",
     "SW431-MACRO-RUNON",
-    "SW431-SW-PRIMARY",
-    "SW431-SW-MULTILEVEL",
     "SW431-IRR-FIXED-SPRINK",
     "SW431-IRR-SCHED-SURF",
     "SW431-CROP-WOF-OTHER",
@@ -80,11 +78,8 @@
     "SW431-CROP-ROTATION",
     "SW431-CROP-ANNUAL",
     "SW431-DRAIN-INF-LIMIT",
-    "SW431-CROP-ATTAINABLE",
-    "SW431-NUT-NFIX",
     "SW431-MACRO-SEP1",
-    "SW431-MACRO-SW-EXTERNAL",
-    "SW431-MACRO-GEOMETRY"
+    "SW431-MACRO-SW-EXTERNAL"
   ],
   "dependency_surface": [
     "src",
@@ -104,6 +99,7 @@
     "sha": "81f5d4bffcf8519944e81feb6d6c411da48253a0",
     "local_and_remote_tree": "bdcebae7087c7b4160fb09c1c8a1a02322ddff58",
     "changed_blob_hashes_verified": 12,
-    "mechanism": "GitHub connector; nonforced expected-head update; metadata-only successor records this publication"
+    "mechanism": "GitHub connector; nonforced expected-head update; metadata-only successor records this publication",
+    "pending_successor": true
   }
 }

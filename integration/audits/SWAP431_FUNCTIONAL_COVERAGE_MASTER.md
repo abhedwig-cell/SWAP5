@@ -2,9 +2,9 @@
 
 Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 241 entries: 80 bounded ADMITTED, 12 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 129 ACTIVE_MIGRATION entries across 18 review/migration workunits.
+The ledger currently contains 241 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 127 ACTIVE_MIGRATION entries across 18 review/migration workunits.
 
-Only 110 entries are currently marked as proven missing production implementation/binding. The other 19 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 115 entries are currently marked as proven missing production implementation/binding. The other 12 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -67,16 +67,17 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-MACRO-ABS2 | Alternative unsaturated absorption route | MC-MACRO01 | None |
 | SW431-MACRO-DARCY | Extra unsaturated Darcy exchange | MC-MACRO01 | None |
 | SW431-MACRO-EVAP | Stateful evaporation with macropore surface input | MC-MACROSUR01 | None |
+| SW431-MACRO-GEOMETRY | Integrated depth-dependent static macropore capacity, IC subdomain topology and polygon diameter | MC-MACRO01 | None |
 | SW431-MACRO-KINEMATIC | Kinematic-wave main bypass compartment propagation with exponent NKWT | MC-MACRO01 | None |
 | SW431-MACRO-SNOW | Daily snow and transactional macropore top input | MC-MACROSUR01 | None |
 | SW431-MACRO-SORP1 | Parlange hydraulic diffusivity integration and fitting of sorptivity maximum/exponent | MC-MACRO01 | None |
 | SW431-MACRO-SW | Rapid drainage routed into internal fixed-weir surface-water storage | MC-MACROSUR01 | None |
 | SW431-MET-RAIN1 | Within-day rainfall intensity distribution from RAINTB | MC-MET01 | None |
-| SW431-MET-RAIN2 | Daily rainfall duration WET forcing | MC-MET01 | None |
 | SW431-RUNOFF-NONLINEAR | Nonlinear surface-runoff power law and iterative ponding solution | MC-SUR01 | None |
 | SW431-RUNON | Externally supplied lateral water entering soil surface | MC-SUR01 | None |
 | SW431-SW-DRAIN-FEEDBACK | Accepted drainage receipt into surface-water storage and updated level back into drainage basis | MC-SW01 | None |
 | SW431-SW-MANAGEMENT | Automatic weir adjustment from groundwater/soil-head criteria | MC-SW01 | None |
+| SW431-SW-PRIMARY | Prescribed primary versus common secondary head and exchange routing | MC-SW01 | None |
 | SW431-SW-QHR2 | Tabulated water-level/discharge rating relation | MC-SW01 | None |
 | SW431-SW-SIGNED | Surface-water storage depletion by signed infiltration into soil | MC-SW01 | None |
 | SW431-SW-TOPRUNOFF | Top runoff routed into surface-water storage | MC-SW01 | None |
@@ -99,7 +100,9 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-CROP-SOY | Soybean-specific phenology and photoperiod | MC-CROP01 | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | MC-CROP01 | None |
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | MC-NUT01 | None |
+| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | MC-NUT01 | None |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | MC-NUT01 | None |
+| SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
 | SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
@@ -113,6 +116,8 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO-STRESS | Microscopic oxygen/salinity reduction and stress attribution | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-ROOT-MICRO-TRED | MICRO transpiration-reduction and maximum-drought policy | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | MC-CROP01 | SW431-ROOT-DENSITY |
+| SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | MC-MACRO01 | SW431-MACRO-GEOMETRY |
+| SW431-SW-MULTILEVEL | Common secondary storage depletion limiter across multiple drain levels | MC-SW01 | SW431-SW-DRAIN-FEEDBACK, SW431-SW-SIGNED |
 | SW431-TILL-CONSOL | Rain-forcing-driven post-tillage bulk-density consolidation | MC-TILL01 | SW431-TILL-EVENT |
 | SW431-TILL-N1 | Keep n unchanged during density-induced hydraulic material update | MC-TILL01 | SW431-TILL-EVENT |
 | SW431-TILL-N2 | Update n using silt/clay ratio and density ratio exponent | MC-TILL01 | SW431-TILL-EVENT |
@@ -143,7 +148,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | MC-LOW01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-MACRO01 | 8 | Source/admission adjudication for the exact IDs below |
 | MC-MACROSUR01 | 6 | Source/admission adjudication for the exact IDs below |
-| MC-MET01 | 6 | Source/admission adjudication for the exact IDs below |
+| MC-MET01 | 4 | Source/admission adjudication for the exact IDs below |
 | MC-MICRO01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-NUT01 | 9 | Source/admission adjudication for the exact IDs below |
 | MC-ROOT01 | 2 | Source/admission adjudication for the exact IDs below |
@@ -156,7 +161,6 @@ These are individual capability decisions, not admitted implementation plans. De
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-CROP-ATTAINABLE | Attainable versus theoretical potential growth correction | RELFMF parameter and selector not established by ten-case crop-equivalence denominator | None |
 | SW431-ROOT-DENSITY | Adaptive node root-biomass growth/death redistribution | Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory. | None |
 | SW431-CROP-ROOTGROW-BIOMASS | Root depth from actual/potential root-biomass table | Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver. | None |
 | SW431-CROP-ROOTGROW-DVS | Prescribed DVS-table root depth with soil-depth cap | Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping. | None |
@@ -172,6 +176,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-CROP-SOY | Soybean-specific phenology and photoperiod | B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer. | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | Current common rate parameters accept IDSL0/1 only and crop owners have no vern accumulation/completion state or vernalisation response operator. Typed daily daylength forcing does not replace this persistent temperature history. | None |
 | SW431-CROP-WOF-OTHER | Annual crop daylength-dependent phenology | IDSL1 daylength algebra is implemented by the common crop parameter/finalizer route. Bounded classic-crop source/admission reconciliation remains; IDSL2 persistent vernalisation is a separate confirmed gap. | None |
+| SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing. | SW431-CROP-ANNUAL |
 | SW431-ROOT-ANAE-GROW | Anaerobic suppression of root extension | Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition. | SW431-CROP-ROOTGROW |
 | SW431-ROOT-LRV-CONSTANT | Force root length density from RDCTB using rooted-compartment depth | Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding. | SW431-ROOT-MICRO2 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification. | SW431-ROOT-DENSITY |
@@ -270,12 +275,12 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-MACRO-ABS2 | Alternative unsaturated absorption route | Source SWABS=2 computes head/theta-dependent Diffusivity and updated absorption; current unsaturated request/evaluator provides only the SWABS=1 empirical sorption-history path, with no diffusivity field/operator. | None |
 | SW431-MACRO-DARCY | Extra unsaturated Darcy exchange | The active source extra-Darcy operator uses current K(ic). Current preparation updates matrix theta/heads and sorption history but retains unsaturated conductivity from the immutable configuration; source-faithful dynamic-K binding is absent. Existing qualified fixture explicitly sets that coefficient to zero. | None |
-| SW431-MACRO-GEOMETRY | Integrated depth-dependent static macropore capacity, IC subdomain topology and polygon diameter | The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied. | None |
+| SW431-MACRO-GEOMETRY | Integrated depth-dependent static macropore capacity, IC subdomain topology and polygon diameter | Current geometry validates supplied static volume/fraction/bottom/diameter arrays. B1.11 depth-curve cell splitting, integration, domain lumping and diameter derivation have no bound typed resolver; reuse existing immutable geometry after adding this parameterization. | None |
 | SW431-MACRO-KINEMATIC | Kinematic-wave main bypass compartment propagation with exponent NKWT | Current factory fixes SWMBF1 and valid_for_nodes rejects any other value. SWMBF2 exclusion checks in the sorptivity/derivative components are compatibility guards, not the NKWT per-compartment wave/storage/flux operator; no NKWT carrier or propagation operator exists in this production route. | None |
 | SW431-MACRO-SEP1 | Ernst seepage-face exchange with horizontal, vertical and radial resistance | Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra. | None |
 | SW431-MACRO-SEP2 | Youngs seepage-potential geometry for saturated exchange | Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra. | None |
 | SW431-MACRO-SORP1 | Parlange hydraulic diffusivity integration and fitting of sorptivity maximum/exponent | B1.11 PARLANGE integrates K/C against theta at initialization, fits Mpow and S0, then supplies the same power-law absorption/event operator used by empirical input. Current factory accepts precomputed maximum/alpha but has no typed hydraulic-query integration/fitting resolver. Missing work is stateless physical parameter derivation, not a new runtime sorptivity/event-history owner. | None |
-| SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping. | SW431-MACRO-GEOMETRY |
+| SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | B1.11 SWPOWM1 changes the lower Ic depth-curve integral exponent to 1/PowM. Current geometry consumes resolved arrays but has no SWPOWM/depth-curve resolver. Migrate this alternative after the base static-geometry resolver. | SW431-MACRO-GEOMETRY |
 
 ### MC-MACROSUR01
 
@@ -296,8 +301,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch. | None |
 | SW431-ET-SOILFACTOR | Soil-factor conversion of potential soil evaporation | Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option. | None |
 | SW431-MET-RAIN1 | Within-day rainfall intensity distribution from RAINTB | Source resolves daily depth and seasonal intensity into a midnight-start pulse: duration=min(1,depth/intensity), actual rate=depth/duration. Typed interval rates can carry the resolved pulse, but no current RAINTB/day-of-year pulse resolver is present. Daily total alone does not preserve infiltration intensity. | None |
-| SW431-MET-RAIN2 | Daily rainfall duration WET forcing | Source uses supplied daily WET duration and rate=depth/WET, with a rain-end time-step event and zero-rain intervals. Typed intervals can carry the result, but the native depth/duration resolver and its admitted forcing lifecycle are absent. | None |
-| SW431-MET-RAIN3 | Separate detailed .rain rainfall forcing | Source converts interval rain amounts at ordered timestamps to piecewise constant rates, reconstructs daily totals, and clips hydraulic steps to rain events. Generic typed spans support resolved rates; source-equivalent mapping of end-stamped amounts, start clipping and daily interception/snow composition still needs qualification. | None |
 
 ### MC-MICRO01
 
@@ -314,7 +317,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
-| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required. | None |
+| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics. | None |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
 | SW431-NUT-AMEND | Fertilizer/manure applications and volatilisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
 | SW431-NUT-CROP | Demand/supply coupling and nitrogen-limited crop growth | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL |
@@ -353,11 +356,11 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-SW-DRAIN-FEEDBACK | Accepted drainage receipt into surface-water storage and updated level back into drainage basis | The existing restricted surface-water primitive consumes configured nonnegative secondary_drainage_rate. Its actual runtime call does not derive that carrier from the accepted solver drainage receipt or return updated storage level as the next native drainage basis. Primitive admission is preserved; the native shared-carrier feedback binding is missing. | None |
 | SW431-SW-MANAGEMENT | Automatic weir adjustment from groundwater/soil-head criteria | Source automatic-weir target depends on groundwater/air-volume/sensor phases, accepted adjustment periods and maximum drop rate using previous wlstar. Current restricted owner persists storage only and has fixed weir_head; no automatic-target state/dispatcher exists. | None |
-| SW431-SW-MULTILEVEL | Multiple external water levels and exchange owners | Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics | None |
-| SW431-SW-PRIMARY | Primary and secondary surface-water systems | Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics | None |
+| SW431-SW-PRIMARY | Prescribed primary versus common secondary head and exchange routing | Source levels <=NRPRI use prescribed primary WLP; others use common secondary WLS and alone enter QDRD. Existing per-level response controls and scalar aggregator have no native typed primary/secondary group routing and receipt ownership binding. | None |
 | SW431-SW-QHR2 | Tabulated water-level/discharge rating relation | Current fixed-weir parameters contain rating_coefficient/exponent only and rating_rate is a power function. There are no QH discharge knots or current table-rating operator; source SWQHR2 uses fun_qhtab including automatic capacity and level/storage solve. | None |
 | SW431-SW-SIGNED | Surface-water storage depletion by signed infiltration into soil | B1.11 permits signed qdrd in storage balance, including falling-dry/supply branches. Current primitive and backend configuration explicitly reject secondary_drainage_rate<0 (held-signed-route). The signed surface-water donor envelope is missing, independent of the already admitted external-head drainage infiltration operator. | None |
 | SW431-SW-TOPRUNOFF | Top runoff routed into surface-water storage | Source runots enters the WLEVBAL storage balance. Current surface-water forcing contains only secondary_drainage_rate and supply_capacity_rate; the runtime calls it unchanged from configured forcing, with no accepted Richards runoff receipt binding. | None |
+| SW431-SW-MULTILEVEL | Common secondary storage depletion limiter across multiple drain levels | Source multiple secondary drain levels share one storage. Its falling-dry branch scales every secondary-level exchange using net QDRD and available storage+supply. Current scalar aggregator has no common-store limiter; restricted fixed-weir input rejects negative secondary exchange. Native grouped signed feedback/receipts are missing. | SW431-SW-DRAIN-FEEDBACK, SW431-SW-SIGNED |
 
 ### MC-TILL01
 
@@ -378,4 +381,12 @@ Run `python tools/audits/check_swap431_coverage.py --require-closed` for a closu
 The latter intentionally fails while the source denominator is incomplete or any ACTIVE_MIGRATION remains.
 Neither command scientifically qualifies a process. Owning source/runtime gates and canonical admission remain required.
 
-No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The complete paginated snapshot records 114 open PRs and 55 merges since 2026-10-05; migration proposal reconciliation is explicit. The earlier 100-item snapshot is retained as historical evidence.
+No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The historical complete paginated snapshot records 114 open PRs and 55 merges since 2026-10-05; migration proposal reconciliation is explicit. The earlier 100-item snapshot is retained as historical evidence.
+
+## Latest resolved-input and owner review
+
+SWRAIN2 WET duration and SWRAIN3 interval amounts are SUPERSEDED as input representations by admitted immutable precipitation spans. No legacy parser or new snow/interception composition is claimed.
+
+Macropore static geometry and SWPOWM, the B1.11 N-demand policy, companion potential RELMF, primary/secondary routing and the common-secondary-store multilevel limiter now have explicit MIGRATE decisions and bounded contracts.
+
+Details: [resolved input and owner review](SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md). The literal rain mapping and N-demand discrimination probes passed O0/O2. Production source remains unchanged.

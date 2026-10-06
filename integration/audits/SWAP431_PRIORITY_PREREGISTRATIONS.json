@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "status": "SOURCE_BOUND_CONTRACT_PREREGISTRATIONS_NOT_RUNTIME_ADMISSIONS",
   "workunits": [
     {
@@ -224,6 +224,110 @@
         "SW431-HYD-MVG"
       ],
       "source_defect_evidence": "integration/audits/evidence/SWAP431_TILLAGE_DEFECT_PROBE.json"
+    },
+    {
+      "id": "MC-MACRO01",
+      "decision": "MIGRATE_TYPED_STATIC_GEOMETRY_RESOLVER",
+      "capabilities": [
+        "SW431-MACRO-GEOMETRY",
+        "SW431-MACRO-POWM"
+      ],
+      "physics": "B1.11 temporary depth-cell splitting, Mb/Ic integral curves, original-cell accumulation, subdomain lumping/endpoints and polygon diameter. SWPOWM1 changes only the lower Ic exponent.",
+      "ownership": "Immutable configuration only; use existing macropore geometry/water owner. Temporary integration grid is scratch, not persistent physical history.",
+      "sequence": [
+        "SWPOWM0 depth geometry",
+        "SWPOWM1 inverse exponent",
+        "map output into admitted runtime configuration without changing dynamic shrinkage/covering"
+      ],
+      "qualification": [
+        "literal source geometry arrays on split/unsplit cells",
+        "exact boundary depths Z_Tp/Z_Ah/Z_Ic/Z_St/Z_MB50",
+        "SPoint and Rzah source limits",
+        "domain volume/fraction closure and finite parameters",
+        "O0/O2",
+        "existing A26/MIGMAC09 production preservation"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "MC-NUT01",
+      "decision": "MIGRATE_SEPARATE_B111_DEMAND_POLICY",
+      "capabilities": [
+        "SW431-NUT-NFIX"
+      ],
+      "physics": "Vegetative N deficits only, strict DVS<DVSNLT and RELTR>.01 gates, soil/fixation partition by NFIXF. Do not modify the admitted WOFOST81 demand equations.",
+      "ownership": "One crop N owner; separate candidate demand from actual supplied/fixed N receipts. Soil N store and transformation remain separately owned. Fixation-only qualification may use zero soil supply and does not await mineral-soil migration.",
+      "sequence": [
+        "typed source demand policy",
+        "N owner and soil-request binding",
+        "accepted fixation and restart composition"
+      ],
+      "qualification": [
+        "literal six-case discrimination probe",
+        "zero and unit NFIXF",
+        "DVSNLT and RELTR threshold neighbours",
+        "one fixation receipt and total crop N conservation",
+        "retry/discard and fresh-process restart",
+        "O0/O2"
+      ],
+      "dependencies": [],
+      "evidence": "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json",
+      "closed_foundations": [
+        "SW5-CROP-WOF81"
+      ]
+    },
+    {
+      "id": "MC-SW01",
+      "decision": "MIGRATE_NATIVE_GROUP_ROUTING_AND_SHARED_DONOR_LIMITER",
+      "capabilities": [
+        "SW431-SW-PRIMARY",
+        "SW431-SW-MULTILEVEL"
+      ],
+      "physics": "NRPRI group maps prescribed primary WLP and common secondary WLS. Secondary levels share one store; falling-dry limiter scales their net signed exchanges by common source ratio.",
+      "ownership": "No invented primary storage. One secondary store and one transfer receipt per level, with aggregate only a derived view.",
+      "sequence": [
+        "typed primary/secondary group routing",
+        "single secondary signed depletion and accepted drainage feedback",
+        "multiple secondary level limiter and receipt reconciliation"
+      ],
+      "qualification": [
+        "primary exclusions from QDRD",
+        "mixed-sign secondary levels and zero-net exchange",
+        "empty storage and supply capacity",
+        "falling-dry and nondepleting boundaries",
+        "per-level plus total water mass",
+        "rejection/replay/restart",
+        "O0/O2",
+        "fixed-weir and Ribasim mode exclusion preservation"
+      ],
+      "dependencies": [
+        "SW431-SW-SIGNED",
+        "SW431-SW-DRAIN-FEEDBACK"
+      ]
+    },
+    {
+      "id": "MC-CROP01",
+      "decision": "MIGRATE_COMPANION_POTENTIAL_RELMF_POLICY",
+      "capabilities": [
+        "SW431-CROP-ATTAINABLE"
+      ],
+      "physics": "SWPOTRELMF1 leaves potential PGASS unscaled; SWPOTRELMF2 applies RELMF to potential PGASS. Actual PGASS scaling already exists and is preserved.",
+      "ownership": "Resolve companion potential-trajectory ownership before adding policy. No second water or actual biomass owner.",
+      "sequence": [
+        "resolve annual actual/potential trajectory contract",
+        "typed potential RELMF selector and parameter mapping",
+        "daily accepted event and restart qualification"
+      ],
+      "qualification": [
+        "selector1/2 at RELMF0,interior,1",
+        "potential/actual trajectory distinction",
+        "source carbon conversion arithmetic",
+        "rejected event isolation",
+        "O0/O2"
+      ],
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ]
     }
   ]
 }

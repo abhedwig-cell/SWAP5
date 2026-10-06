@@ -126,6 +126,22 @@ def validate(require_closed=False):
     assert replay['exit_code'] == 0
     assert hashlib.sha256(replay['stdout_stderr'].encode()).hexdigest() == replay['stdout_stderr_sha256']
     assert 'F_WOF_PP03_FWO38_FWO39_CURRENT_CONTRACT_PRESERVATION_GATE PASS' in replay['stdout_stderr']
+    for name in ['SWAP431_OWNER_GAPS_RECONCILIATION.json', 'SWAP431_NFIX_REPLACEMENT_PROBE.json',
+                 'SWAP431_RAIN_TYPED_MAPPING_PROBE.json']:
+        record = json.loads((AUDIT / 'evidence' / name).read_text())
+        assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'
+        for path, expected in record['source_files_sha256'].items():
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'
+        if 'results' in record:
+            assert not record['runtime_admission_created']
+            assert hashlib.sha256(members[record['source_member']]).hexdigest() == record['source_sha256']
+            assert {r['optimization'] for r in record['results']} == {'-O0', '-O2'}
+            assert all(r['exit_code'] == 0 for r in record['results'])
+            assert len({r['stdout'] for r in record['results']}) == 1
+    for cap in ['SW431-MET-RAIN2', 'SW431-MET-RAIN3']:
+        assert by_id[cap]['current_disposition'] == 'SUPERSEDED'
+        assert by_id[cap]['classification'] == 'LEGACY_COMPATIBILITY'
+    assert by_id['SW431-SW-MULTILEVEL']['legacy_selector'] == 'SWDRA=2;SWSEC=2;NRLEVS-NRPRI>1'
     for name in ['SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json', 'SWAP431_DRAMET3_REPLACEMENT_PROBE.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())
         if 'findings' in record:

@@ -36,4 +36,9 @@ for u,qs in sorted(groups.items()):
  for q in qs:
   e=E[q['capability_id']];text.append(f"| {e['capability_id']} | {e['meaning']} | {q['why_open']} | {', '.join(q['dependencies']) or 'None'} |")
 text+=['','## Closure gate','','Run `python tools/audits/check_swap431_coverage.py` for structural/source integrity.','Run `python tools/audits/check_swap431_coverage.py --require-closed` for a closure assertion.','The latter intentionally fails while the source denominator is incomplete or any ACTIVE_MIGRATION remains.','Neither command scientifically qualifies a process. Owning source/runtime gates and canonical admission remain required.','', 'No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The complete paginated snapshot records 114 open PRs and 55 merges since 2026-10-05; migration proposal reconciliation is explicit. The earlier 100-item snapshot is retained as historical evidence.']
+text[-1] = text[-1].replace('The complete paginated snapshot records', 'The historical complete paginated snapshot records')
+text += ['', '## Latest resolved-input and owner review', '',
+         'SWRAIN2 WET duration and SWRAIN3 interval amounts are SUPERSEDED as input representations by admitted immutable precipitation spans. No legacy parser or new snow/interception composition is claimed.', '',
+         'Macropore static geometry and SWPOWM, the B1.11 N-demand policy, companion potential RELMF, primary/secondary routing and the common-secondary-store multilevel limiter now have explicit MIGRATE decisions and bounded contracts.', '',
+         'Details: [resolved input and owner review](SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md). The literal rain mapping and N-demand discrimination probes passed O0/O2. Production source remains unchanged.']
 (A/'SWAP431_FUNCTIONAL_COVERAGE_MASTER.md').write_text('\n'.join(text)+'\n')

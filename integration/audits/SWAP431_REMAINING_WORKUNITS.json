@@ -42,6 +42,7 @@
       ],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
+        "SW431-CROP-ANNUAL",
         "SW431-CROP-ROOTGROW",
         "SW431-ROOT-DENSITY"
       ],
@@ -270,11 +271,9 @@
         "SW431-ET-PMTRAD",
         "SW431-ET-PMDETAIL",
         "SW431-ET-SOILFACTOR",
-        "SW431-MET-RAIN1",
-        "SW431-MET-RAIN2",
-        "SW431-MET-RAIN3"
+        "SW431-MET-RAIN1"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Migrate RAINTB seasonal intensity-to-pulse derivation; traditional PM, detailed-record PM and CFBS soil scaling remain independent physical slices. WET/.rain representations are closed by typed immutable spans.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -318,7 +317,7 @@
         "SW431-NUT-TRANSPORT",
         "SW431-NUT-NFIX"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Add source-selectable vegetative N-demand/DVSNLT policy reusing a single N/fixation receipt; preserve WOFOST81. Then resolve soil/crop owner coupling in dependency order.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -392,11 +391,14 @@
         "SW431-SW-DRAIN-FEEDBACK",
         "SW431-SW-SIGNED"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Implement typed primary/secondary group routing; signed common-secondary storage and accepted drainage feedback before the multiple-level donor limiter. Keep primary level prescribed and distinguish spatial DIVDRA.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "internal_sequence_dependencies": [],
+      "internal_sequence_dependencies": [
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
       "closed_foundation_authorities": [
         "SW431-SW-EXTERNAL",
         "SW431-SW-FIXED"
