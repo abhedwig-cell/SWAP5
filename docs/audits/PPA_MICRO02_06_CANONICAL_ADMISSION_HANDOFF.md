@@ -29,9 +29,14 @@ MICRO06 actual committed two-interval restart and changed forcing, hard mass,
 rejection and ROOT-HYD01 preservation. The O0/O2 stack gate passed on PR
 #1076's merge postimage in run 37428720498. Its exact artifact and digest
 are in `integration/audits/PPA_MICRO06_STACK_QUALIFICATION.json`. A separate
-run on the canonical-target PR merge postimage must pass before admission.
-Documentation source and strict build, shared runtime review and relevant
-moving preservation must also pass or be explicitly reconciled.
+run 37429592800 on canonical-target PR #1077's merge postimage
+`d7572236fff9c91d572a8319aadcba2c36388b5d` passed the same stack
+with O0/O2 and source manifests. Documentation and strict build also passed.
+The central F-CI moving preservation and several historical source-scope
+workflows are red on the MICRO source change. Their reconciliation is a
+required admission dependency; the successful bounded stack does not
+override those gates. See
+`docs/audits/PPA_MICRO_B15_MOVING_PRESERVATION_RECONCILIATION.md`.
 
 Cross-workstream consequences: other active changes to the serialized
 backend or application bootstrap intersect the same source surface and

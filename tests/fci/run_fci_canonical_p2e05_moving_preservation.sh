@@ -306,10 +306,20 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B15 exact additive table-validator postimage drift"
     git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B15 lost normal-drain and guarded reference admissions"
     git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail "PPA-WU05B15 lost selected salt/root frost admission"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "57c349f3660aadbeb28e65b01a21a7f15ce4e832" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "a8b0f4eba2d28ac21a6494268b337a288ffadf59" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
+    if test "$(git rev-parse HEAD:src)" = "ac822aafd5403547a2c7ffad5c3ba02c9fa36496"; then
+      # Independently exercise B15 normal and low-air routes on this exact
+      # MICRO successor in the bounded frost qualification before admission.
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "b7d8d3a1626a82e408434b584abda2c9fe5a520c" || \
+        fail "PPA-WU05B15 MICRO successor serialized backend drift"
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "32a218d3a08ca56e43ff4df35c56b3e3b67bf947" || \
+        fail "PPA-WU05B15 MICRO successor application bootstrap drift"
+      echo 'FCI_CANONICAL_PPA_WU05B15_MICRO_SOURCE_SUCCESSOR=ACTIVE'
+    else
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "57c349f3660aadbeb28e65b01a21a7f15ce4e832" || \
+        fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "a8b0f4eba2d28ac21a6494268b337a288ffadf59" || \
+        fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
+    fi
     test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
       fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
     test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \

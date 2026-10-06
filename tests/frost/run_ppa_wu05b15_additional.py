@@ -2,11 +2,12 @@
 """Actual control activation/cap/suppression and full independent finer references."""
 import argparse,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[2]
-p=argparse.ArgumentParser();p.add_argument('--routes',nargs='+',choices=['normal','low_air'],default=['normal','low_air']);p.add_argument('--opts',nargs='+',type=int,choices=[0,2],default=[0,2]);p.add_argument('--gates',nargs='+',choices=['activation','refinements'],default=['activation','refinements']);args=p.parse_args()
-assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()=='ab1849e155cfe4aadb838075c3e402985bc4e0f5'
+p=argparse.ArgumentParser();p.add_argument('--routes',nargs='+',choices=['normal','low_air'],default=['normal','low_air']);p.add_argument('--opts',nargs='+',type=int,choices=[0,2],default=[0,2]);p.add_argument('--gates',nargs='+',choices=['activation','refinements'],default=['activation','refinements']);p.add_argument('--micro-successor',action='store_true');args=p.parse_args()
+source='ac822aafd5403547a2c7ffad5c3ba02c9fa36496' if args.micro_successor else 'ab1849e155cfe4aadb838075c3e402985bc4e0f5'
+assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()==source
 def run(s,route,label,opt):
  source=pathlib.Path(f'/tmp/frost-b15-{route}-{label}-o{opt}.f90');source.write_text(s)
- b=pathlib.Path('/tmp/ppa-wu05b15-'+route.replace('_','-')+'-runtime')/f'o{opt}'
+ b=pathlib.Path('/tmp/ppa-wu05b15-'+route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else''))/f'o{opt}'
  if route=='low_air'and opt==2 and not b.exists():b=pathlib.Path('/tmp/ppa-wu05b15-low-air-runtime-parallel/o2')
  assert(b/'mod_fmr_production_application_bootstrap.o').exists()
  flags=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J'+str(b),'-I'+str(b)]
@@ -150,4 +151,3 @@ for route in args.routes:
    s=s[:a]+"  end do\n  print '(A)','PPA_WU05B15_ADDITIONAL_REFINEMENT=PASS'\n"+s[b:]
    out=run(s,route,'refinement-'+str(count),0);assert b'PPA_WU05B15_ADDITIONAL_REFINEMENT=PASS'in out
    print(route,count,'REFINEMENT_PASS',flush=True)
-
