@@ -105,7 +105,8 @@ module mod_fmr_serialized_reference_backend
        FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
-       EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE
+       EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
+       EXT_DRAIN_TOP_SURFACE_RESISTANCE, EXT_DRAIN_TOP_POWER_INTERFLOW
   use mod_drainage_tabulated_response, only: valid_tabulated_drainage_parameters
   use mod_drainage_hooghoudt_ipos1_response, only: valid_hooghoudt_ipos1_parameters
   use mod_drainage_hooghoudt_ipos23_response, only: valid_hooghoudt_ipos2_parameters, &
@@ -301,6 +302,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_analytic_response_drainage_active = .false.
     logical :: frost_empirical_response_drainage_active = .false.
     logical :: frost_extended_response_drainage_active = .false.
+    logical :: frost_highest_response_drainage_active = .false.
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -633,6 +635,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_analytic_response_drainage_active = .false.
     logical :: frost_empirical_response_drainage_active = .false.
     logical :: frost_extended_response_drainage_active = .false.
+    logical :: frost_highest_response_drainage_active = .false.
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -814,7 +817,8 @@ contains
            .not.parameters%frost_tabulated_response_drainage_active.and. &
            .not.parameters%frost_analytic_response_drainage_active.and. &
            .not.parameters%frost_empirical_response_drainage_active.and. &
-           .not.parameters%frost_extended_response_drainage_active
+           .not.parameters%frost_extended_response_drainage_active.and. &
+           .not.parameters%frost_highest_response_drainage_active
       return
     end if
     ok=.false.
@@ -829,6 +833,12 @@ contains
     end if
     if(parameters%frost_empirical_response_drainage_active)then
       if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active)return
+    end if
+    if(parameters%frost_highest_response_drainage_active)then
+      if(parameters%frost_extended_response_drainage_active.or.parameters%frost_tabulated_response_drainage_active.or. &
+           parameters%frost_analytic_response_drainage_active.or.parameters%frost_empirical_response_drainage_active)return
+      if(size(parameters%drainage_response_levels)/=1)return
+      if(parameters%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_EXTENDED_SIGNED)return
     end if
     if(parameters%frost_extended_response_drainage_active)then
       if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active.or. &
@@ -888,12 +898,23 @@ contains
         if(.not.valid_empirical_interflow_parameters(parameters%drainage_response_levels(level)%empirical))return
         has_empirical=.true.
       case(FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
-        if(.not.parameters%frost_extended_response_drainage_active)return
+        if(.not.parameters%frost_extended_response_drainage_active.and. &
+             .not.parameters%frost_highest_response_drainage_active)return
         if(.not.valid_extended_drainage_parameters(parameters%drainage_response_levels(level)%extended))return
         if(parameters%drainage_response_levels(level)%extended%drain_type/=EXT_DRAIN_TUBE.and. &
              parameters%drainage_response_levels(level)%extended%drain_type/=EXT_DRAIN_OPEN_CHANNEL)return
-        if(parameters%drainage_response_levels(level)%extended%highest_level)return
-        if(parameters%drainage_response_levels(level)%extended%highest_surface_mode/=EXT_DRAIN_TOP_NONE)return
+        if(parameters%frost_highest_response_drainage_active)then
+          if(.not.parameters%drainage_response_levels(level)%extended%highest_level)return
+          select case(parameters%drainage_response_levels(level)%extended%highest_surface_mode)
+          case(EXT_DRAIN_TOP_SURFACE_RESISTANCE,EXT_DRAIN_TOP_POWER_INTERFLOW)
+          case default
+            return
+          end select
+        else
+          ! B14's selected ordinary profile remains highest-level excluding.
+          if(parameters%drainage_response_levels(level)%extended%highest_level)return
+          if(parameters%drainage_response_levels(level)%extended%highest_surface_mode/=EXT_DRAIN_TOP_NONE)return
+        end if
         analytic_depth=parameters%drainage_response_levels(level)%extended%zbotdr_cm
         if(analytic_depth>=0._real64)return
         has_extended=.true.
@@ -914,6 +935,7 @@ contains
     ok=.true.
     if(parameters%frost_empirical_response_drainage_active.and..not.has_empirical)ok=.false.
     if(parameters%frost_extended_response_drainage_active.and..not.has_extended)ok=.false.
+    if(parameters%frost_highest_response_drainage_active.and..not.has_extended)ok=.false.
   end function fmr_frost_response_drainage_configuration_valid
 
   pure logical function fmr_mobile_dispersion_matches_hydraulic_owner(parameters)result(ok)
@@ -2832,6 +2854,7 @@ contains
       self%frost_analytic_response_drainage_active = parameters%frost_analytic_response_drainage_active
       self%frost_empirical_response_drainage_active = parameters%frost_empirical_response_drainage_active
       self%frost_extended_response_drainage_active = parameters%frost_extended_response_drainage_active
+      self%frost_highest_response_drainage_active = parameters%frost_highest_response_drainage_active
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm

@@ -1,0 +1,432 @@
+{
+  "work_unit": "PPA-WU05B15",
+  "baseline": "f72d72622264111edbadca1bfc49690a47b287a9",
+  "last_reconciled_upstream": "f72d72622264111edbadca1bfc49690a47b287a9",
+  "baseline_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
+  "preregistration": "integration/audits/PPA_WU05B15_PREREGISTRATION.json",
+  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "relevant_paths": [
+    "src/process/mod_drainage_extended_exchange.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_frost_drainage_effect.f90",
+    "src/process/mod_frost_low_air_drainage_effect.f90",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/PPA_WU05B15_SOURCE_REVIEW.json",
+    "integration/audits/PPA_WU05B14_CANONICAL_ADMISSION.json"
+  ],
+  "dependency_surface": "Shared backend ABI; highest selected validation, actual resolved control, single sink, normal/B8 modifiers, independently regenerated proposals, receipts/mass/retry/restart and relevant incumbent/root/salt/external preservation",
+  "interfaces_allowed_to_change": "Add OFF frost_highest_response_drainage_active requiring B9 and exactly one actual EXTENDED TUBE/OPEN_CHANNEL level with highest_level true and TOP_SURFACE_RESISTANCE or TOP_POWER_INTERFLOW. Reject B14/TAB/analytic/empirical flags and mixed/multilevel/other variants. Keep original B14 highest_level false/TOP_NONE contract unchanged. Low-air requires B10/B8 and exact zbotdr/frost physical depth agreement. No process body/control/receipt/state changes.",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "pending": [
+    "Exact proposed/actual canonical admission"
+  ],
+  "blockers": [],
+  "next_action": "Persist complete qualified evidence; verify exact proposed/actual tree/source/parents, admit and close",
+  "recovery_point": "Immutable unqualified current-source partial recovery with exact compiled source/artifact proof and completed/partial outputs",
+  "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "source_matrix": {
+    "distinct_kind_modes": 4,
+    "bindings_per_opt": 77760,
+    "physical_modifier_candidates_before_held_domain": 233280,
+    "held_power": "Count separately, actual rejected binding with zero nodal proposal; no modifier or booked physical case claim"
+  },
+  "completed": {
+    "scientific": "Unchanged original Q4A1507 actual current process/full soil contract/hydraulic cases per opt O0/O2 value/tangent/seam/negative-power holds PASS",
+    "source_composition": "77760 actual distinct kind/mode bindings per opt,215136 corrected B7 final nodal/qbot/reporting bit-parity compositions and6048 distinct original negative-power binding holds with zero nodal proposal; O0/O2 byte identity PASS",
+    "normal_runtime": "Six complete kind/mode/sign configurations x six full trajectories O0/O2 byte identity PASS; unchanged8192 independent fine references, hard mass/retry/receipts/replay/application/empty restart and42 active invalid configurations per config",
+    "independent_oracles": "Original immutable VQ73/VQ74 full primaries fresh B15 whole modules O0/O2 stdout identity PASS",
+    "external_preservation": "Original immutable full F-APP09/VQ128 primaries with current whole modules and fresh adapter/participant O0/O2 identity PASS; external frost exclusion unchanged",
+    "activation": "240 actual calls per route:224 committed hard-mass/final-owner cases and16 original negative-power holds before solver/publication with exact physical state retained; O0/O2 identity PASS",
+    "literal_root": "330+12 exact current root scientific/source cases O0/O2 PASS",
+    "canonical": "Exact B15 source/backend/process/preregistration+B14 actual closeout pins and full canonical moving preservation PASS",
+    "normal_incumbents": "All ten fresh relevant normal B1/B2/B3/B4/B6/B9/B11/B12/B13/B14 whole-program replays O0/O2 stdout identity PASS; B12/B13/B14 exact original qualified stdout at both opts",
+    "held_state_shape": "Additional activation assertions retain active_nodes and absent snow/macropore/salt/rutter allocations; both full240-call route matrices O0/O2 rerun with exact profile/carrier/shape checks PASS",
+    "normal_refinements": "All six configurations surviving cases complete independent16384/32768 references PASS",
+    "SALT4": "Four actual179-source Jarvis/Walsum original/dispersion mixed salt/root/frost matrices O0/O2 and fresh restart PASS",
+    "B12_low_air_O2": "All five original B12 low-air families completed with fresh B15 whole modules; concatenation byte-exact original qualified O2 output",
+    "low_air_runtime": "All six kind/mode/sign configurations x six complete trajectories O0/O2 stdout identity PASS; independent65536 references, hard mass/retry/receipts/replay/application/empty restart/45 invalid configurations",
+    "low_air_preservation_O2": "All original B8/B10/B11 full programs and B12 five/B13 six/B14 four fresh-process families exit0 PASS; B12/B13/B14 exact original qualified O2 stdout",
+    "low_air_incumbents_B8_B10_B11": "Fresh complete B8/B10/B11 current-source O0/O2 stdout identity PASS",
+    "low_air_refinements": "All selected actual TUBE/OPEN highest-surface and POWER configurations1/3/5/6 complete full independent131072 references PASS",
+    "B12_preservation": "All original B12 normal/low-air families on fresh B15 whole modules preserve exact original qualified stdout at both optimization levels",
+    "refinements": "Independent normal16384/32768 all six configurations and low-air131072 selected configs1/3/5/6 surviving cases PASS",
+    "incumbents": "Fresh relevant B1..B14 whole-module primaries O0/O2 identity PASS; B12/B13/B14 exact original qualified stdout both routes and optimization levels"
+  },
+  "partial_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B15_PARTIAL_RECOVERY.json.gz",
+    "sha256": "6b8c759d44aea0c896bd8a9187f95fe1f5c987bd54be4b0f9b379fba59ffb50d",
+    "bytes": 126635,
+    "manifest_entries": 290,
+    "qualified": false
+  },
+  "negative_findings": [
+    "Additional activation harness initially attempted direct access to the private temperature_c component and failed before compilation completed or any case ran. Replaced it with the existing public copy_soil_temperature_profile accessor and retained exact snapshot equality; no production, cases, physical budget or tolerance changed. Original compile-failure logs retained."
+  ],
+  "orchestration": "Waiting-only drivers were replaced with exit130 before any associated physical case interruption. Complete normal phases were verified and retained, not replayed. Four salt matrices use the freed O2 primary slot before the two-worker O0 preservation guard is released; remaining low-air refinement waits for full O2 preservation. Unfinished outputs and interrupted waiting prefixes remain unqualified.",
+  "CI_runtime_limit": "Highest-route job allows360 minutes for both optimization levels and full source-bound incumbent replay; observed local run duration motivates the limit, no performance qualification or queued Actions success claimed",
+  "preservation_recovery": {
+    "path": "docs/audits/evidence/PPA_WU05B15_PRESERVATION_RECOVERY.json.gz",
+    "sha256": "3a9542710dea4ab038b87db6a6be236b0269795c443a7cf51dcb5ce99cc1354a",
+    "bytes": 214063,
+    "manifest_entries": 294,
+    "completed_original_cases": 28,
+    "qualified": false
+  },
+  "low_air_primary_results": {
+    "trajectories": 36,
+    "configurations": 6,
+    "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+    "O0_O2_stdout_identical": true,
+    "head_error_max_cm": 1.93595e-07,
+    "temperature_error_max_c": 3.530552e-07,
+    "independent_fine_steps": 65536
+  },
+  "runtime_results": {
+    "normal": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 1.843838e-07,
+      "temperature_error_max_c": 8.087975e-13,
+      "substeps_and_rejections": [
+        [
+          26,
+          91
+        ],
+        [
+          22,
+          71
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          14,
+          39
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          37,
+          146
+        ],
+        [
+          35,
+          136
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          16,
+          47
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          26,
+          91
+        ],
+        [
+          21,
+          66
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          14,
+          38
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          10,
+          22
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          37,
+          146
+        ],
+        [
+          35,
+          136
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          16,
+          47
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 8192,
+      "activation_cases": 240,
+      "committed_activation_cases": 224,
+      "held_activation_cases": 16,
+      "activation_interval": 1e-10
+    },
+    "low_air": {
+      "configurations": 6,
+      "trajectories": 36,
+      "head_error_max_cm": 1.93595e-07,
+      "temperature_error_max_c": 3.530552e-07,
+      "substeps_and_rejections": [
+        [
+          37765,
+          523546
+        ],
+        [
+          37785,
+          523835
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37765,
+          523546
+        ],
+        [
+          37785,
+          523835
+        ],
+        [
+          37831,
+          524534
+        ],
+        [
+          37832,
+          524554
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37831,
+          524534
+        ],
+        [
+          37832,
+          524554
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37767,
+          523581
+        ],
+        [
+          37793,
+          523957
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37767,
+          523576
+        ],
+        [
+          37784,
+          523824
+        ],
+        [
+          37823,
+          524409
+        ],
+        [
+          37828,
+          524493
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37819,
+          524350
+        ],
+        [
+          37837,
+          524606
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37816,
+          524293
+        ],
+        [
+          37729,
+          523018
+        ],
+        [
+          37751,
+          523339
+        ]
+      ],
+      "O0_O2_stdout_identical": true,
+      "full_fine_steps": 65536,
+      "activation_cases": 240,
+      "committed_activation_cases": 224,
+      "held_activation_cases": 16,
+      "activation_interval": 1e-10
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B15_LOCAL_REPLAY.json.gz",
+    "sha256": "451909fb28ac6f10b78e5821513680f64fbb17603e72a9d711e8cb9fc550543a",
+    "bytes": 236478,
+    "manifest_entries": 294
+  },
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0"
+}
