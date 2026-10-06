@@ -3969,7 +3969,9 @@ contains
                self%boesten_evaporation_forcing%potential_pond_evaporation_cm_per_day, &
                self%boesten_evaporation_forcing%ponding_max_cm, &
                self%boesten_evaporation_forcing%runoff_resistance_day, &
-               self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+               self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity, &
+               macropore_pond_threshold=0.0_real64, &
+               macropore_surface_conductivity=self%macropore_config%covering_ksat_cm_per_day)
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
           return
