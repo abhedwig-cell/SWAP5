@@ -143,6 +143,9 @@ contains
       return
     end if
 
+    ! coupled_denominator is the dimensionless B1.11 p2Mp coupling term.
+    ! resistance_day is retained as source provenance/validation; the caller
+    ! supplies excess as the already resistance-scaled source amount.
     potential = excess / request%coupled_denominator
     requested_lateral_cm = min(request%available_surface_water_cm, max(0.0_real64, potential))
     ok = ieee_is_finite(requested_lateral_cm)
