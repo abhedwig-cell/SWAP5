@@ -1,7 +1,7 @@
 name: PPA MICRO06 stacked source and runtime qualification
 on:
   pull_request:
-    branches: [work/ppa-micro05-literal-mvg-runtime-20261006]
+    branches: [work/ppa-micro05-literal-mvg-runtime-20261006, integration/f-ci-canonical]
     paths:
       - .github/workflows/ppa-micro06-stack-qualification.yml
       - src/process/mod_root_micro_*.f90
