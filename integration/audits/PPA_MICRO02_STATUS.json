@@ -29,11 +29,14 @@
     23,
     25
   ],
-  "next_action": "Replay targeted O0/O2 after bracket correction, preserve result; then exact corrected literal source oracle and runtime qualification",
+  "next_action": "Run corrected literal B1.11 uptake oracle O0/O2; resolve any scientific differences before runtime design",
   "recovery_point": "fe78759011114c368505f341f2eb1c408febfd77",
   "blockers": [],
   "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77",
   "negative_findings": [
     "First targeted run 37418820901 compiled O0 but returned ERROR STOP 2: both initial residuals positive and initial bracket extension moved only to higher pressure; corrected to expand according to residual sign. No successful test claimed."
-  ]
+  ],
+  "smoke_tested": true,
+  "smoke_run": 37418937324,
+  "smoke_scope": "O0/O2 synthetic normal/stress/threshold and real MvG table plus normal uptake; exact source oracle pending"
 }

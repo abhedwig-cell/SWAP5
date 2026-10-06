@@ -8,6 +8,8 @@ on:
       - src/runtime/mod_fmr_micro_mvg_table_binding.f90
       - tests/physics/test_ppa_micro02_de_willigen.f90
       - tests/physics/run_ppa_micro02_de_willigen.py
+      - tests/physics/test_ppa_micro02_source_oracle.f90
+      - tests/physics/run_ppa_micro02_source_oracle.py
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:
@@ -16,6 +18,8 @@ on:
       - src/runtime/mod_fmr_micro_mvg_table_binding.f90
       - tests/physics/test_ppa_micro02_de_willigen.f90
       - tests/physics/run_ppa_micro02_de_willigen.py
+      - tests/physics/test_ppa_micro02_source_oracle.f90
+      - tests/physics/run_ppa_micro02_source_oracle.py
 permissions:
   contents: read
 jobs:
@@ -31,6 +35,13 @@ jobs:
         run: |
           set -euo pipefail
           python3 tests/physics/run_ppa_micro02_de_willigen.py | tee micro02-replay.log
+      - name: Compare corrected literal B1.11 nonlinear source
+        shell: bash
+        env:
+          MICRO02_ORACLE_RESULT: micro02-oracle-result.json
+        run: |
+          set -euo pipefail
+          python3 tests/physics/run_ppa_micro02_source_oracle.py | tee micro02-oracle-replay.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -38,4 +49,6 @@ jobs:
           path: |
             micro02-result.json
             micro02-replay.log
+            micro02-oracle-result.json
+            micro02-oracle-replay.log
           if-no-files-found: error
