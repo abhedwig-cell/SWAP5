@@ -16,16 +16,16 @@
   "summary": {
     "capabilities": 236,
     "dispositions": {
-      "ADMITTED": 78,
-      "ACTIVE_MIGRATION": 126,
+      "ADMITTED": 79,
+      "ACTIVE_MIGRATION": 125,
       "SUPERSEDED": 12,
       "REJECTED": 1,
       "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 126,
+    "open_capabilities": 125,
     "open_workunits": 19,
-    "confirmed_missing_production_entries": 85,
-    "other_unresolved_source_admission_reviews": 41
+    "confirmed_missing_production_entries": 88,
+    "other_unresolved_source_admission_reviews": 37
   },
   "capabilities": [
     {
@@ -432,20 +432,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Traditional Penman-Monteith reference demand partition",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_pmdirect_swetr0_process.f90",
+        "src/process/mod_reference_et_demand_process.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "claim": "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch."
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
-        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
+        "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch.",
+        "F-APP05 separately closes bounded SWCF2 crop-height input; its admission does not close this distinct ET option."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -457,9 +461,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ET-PMDETAIL",
@@ -486,20 +490,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Detailed-record Penman-Monteith atmospheric demand",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_pmdirect_swetr0_process.f90",
+        "src/process/mod_reference_et_demand_process.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "claim": "Current PMdirect weather contract is daily min/max temperature and daily radiation. B1.11 detailed-record Penman-Monteith uses record radiation with n_metdetail scaling in both partitions; detailed interception source-window continuation does not implement this atmospheric demand calculation."
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
-        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
+        "Current PMdirect weather contract is daily min/max temperature and daily radiation. B1.11 detailed-record Penman-Monteith uses record radiation with n_metdetail scaling in both partitions; detailed interception source-window continuation does not implement this atmospheric demand calculation.",
+        "F-APP05 separately closes bounded SWCF2 crop-height input; its admission does not close this distinct ET option."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -511,9 +519,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ET-CROPHEIGHT",
@@ -543,22 +551,22 @@
       "swap5_implementation_authority": [
         "src/process/mod_pmdirect_swetr0_process.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/audits/PPA_WU03_STATUS.json",
-        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
+        "integration/f-app/F-APP05_PREREGISTRATION.json",
+        "integration/f-app/F-APP05_ADMISSION_READY.json",
+        "integration/audits/evidence/SWAP431_SWCF2_ADMISSION_RECONCILIATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "established": true,
+        "route": "src/process/mod_pmdirect_swetr0_process.f90:evaluate_pmdirect_swetr0_daily",
+        "claim": "F-APP05 canonical admission 158ef1e704fbc72f293773cc30ae4d6082d3c28f qualifies restricted SWETR0/SWDIVIDE1/SWCF2 Hupsel typed canopy aerodynamic-height envelope. Daily evaluator unchanged at current canonical; three existing frozen source-observation cases rerun O0/O2 PASS."
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
-        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
+        "Bounded daily PMdirect/Hupsel canopy envelope with explicit crop-height inputs; no traditional SWDIVIDE0 or detailed-record ET, generic canopy materialization or whole-model equivalence inferred."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-MET01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -567,8 +575,7 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "REQUIRED_ENVELOPE_QUALIFICATION_AND_APPLICATION_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "coverage_gap_type": null,
       "implementation_absence_proven": false
     },
     {
@@ -592,20 +599,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Soil-factor conversion of potential soil evaporation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_pmdirect_swetr0_process.f90",
+        "src/process/mod_reference_et_demand_process.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json"
+        "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains"
+        "claim": "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option."
       },
       "restrictions": [
-        "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
-        "F-APP03 explicitly holds SWCF=2 and detailed meteorology. Current mod_pmdirect_swetr0_process implements only the PMdirect daily partition; source MOD_meteo lines1917..2001 separately defines traditional SWDIVIDE=0 and PMdirect=1."
+        "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option.",
+        "F-APP05 separately closes bounded SWCF2 crop-height input; its admission does not close this distinct ET option."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -617,9 +628,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-MET-RAIN1",
@@ -12619,24 +12630,10 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-ET-CROPHEIGHT",
-      "work_unit": "MC-MET01",
-      "dependencies": [],
-      "why_open": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-ET-PMDETAIL",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+      "why_open": "Current PMdirect weather contract is daily min/max temperature and daily radiation. B1.11 detailed-record Penman-Monteith uses record radiation with n_metdetail scaling in both partitions; detailed interception source-window continuation does not implement this atmospheric demand calculation.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12644,13 +12641,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ET-PMTRAD",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+      "why_open": "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12658,13 +12655,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ET-SOILFACTOR",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains",
+      "why_open": "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12672,7 +12669,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-LOW3-EXPLICIT",

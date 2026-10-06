@@ -2,9 +2,9 @@
 
 Baseline: `e5eab995ef04fc813dd644025fb0f32e4f5050a1`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 236 entries: 78 bounded ADMITTED, 12 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 126 ACTIVE_MIGRATION entries across 19 review/migration workunits.
+The ledger currently contains 236 entries: 79 bounded ADMITTED, 12 SUPERSEDED, 1 REJECTED, 19 NOT_APPLICABLE and 125 ACTIVE_MIGRATION entries across 19 review/migration workunits.
 
-Only 85 entries are currently marked as proven missing production implementation/binding. The other 41 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 88 entries are currently marked as proven missing production implementation/binding. The other 37 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -53,6 +53,9 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO3 | de Willigen microscopic soil-root hydraulic extraction | MC-MICRO01 | None |
 | SW431-ROOT-OXYGEN-EMP | Empirical anaerobic/Feddes wet stress | MC-ROOT01 | None |
 | SW431-CROP-ROOTGROW-WATER | Daily root extension scaled by actual/potential transpiration | MC-CROP01 | None |
+| SW431-ET-PMDETAIL | Detailed-record Penman-Monteith atmospheric demand | MC-MET01 | None |
+| SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | MC-MET01 | None |
+| SW431-ET-SOILFACTOR | Soil-factor conversion of potential soil evaporation | MC-MET01 | None |
 | SW431-MACRO-ABS2 | Alternative unsaturated absorption route | MC-MACRO01 | None |
 | SW431-MACRO-DARCY | Extra unsaturated Darcy exchange | MC-MACRO01 | None |
 | SW431-MACRO-EVAP | Stateful evaporation with macropore surface input | MC-MACROSUR01 | None |
@@ -118,7 +121,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | MC-LOW01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-MACRO01 | 8 | Source/admission adjudication for the exact IDs below |
 | MC-MACROSUR01 | 6 | Source/admission adjudication for the exact IDs below |
-| MC-MET01 | 7 | Source/admission adjudication for the exact IDs below |
+| MC-MET01 | 6 | Source/admission adjudication for the exact IDs below |
 | MC-MICRO01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-NUT01 | 9 | Source/admission adjudication for the exact IDs below |
 | MC-ROOT01 | 2 | Source/admission adjudication for the exact IDs below |
@@ -263,10 +266,9 @@ These are individual capability decisions, not admitted implementation plans. De
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-ET-CROPHEIGHT | Crop-height aerodynamic conversion in ET | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
-| SW431-ET-PMDETAIL | Detailed-record Penman-Monteith atmospheric demand | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
-| SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
-| SW431-ET-SOILFACTOR | Soil-factor conversion of potential soil evaporation | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
+| SW431-ET-PMDETAIL | Detailed-record Penman-Monteith atmospheric demand | Current PMdirect weather contract is daily min/max temperature and daily radiation. B1.11 detailed-record Penman-Monteith uses record radiation with n_metdetail scaling in both partitions; detailed interception source-window continuation does not implement this atmospheric demand calculation. | None |
+| SW431-ET-PMTRAD | Traditional Penman-Monteith reference demand partition | Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch. | None |
+| SW431-ET-SOILFACTOR | Soil-factor conversion of potential soil evaporation | Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option. | None |
 | SW431-MET-RAIN1 | Within-day rainfall intensity distribution from RAINTB | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
 | SW431-MET-RAIN2 | Daily rainfall duration WET forcing | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |
 | SW431-MET-RAIN3 | Separate detailed .rain rainfall forcing | Restricted forcing/PM admission is not proof of this source selector; source-bound typed derivation/application qualification remains | None |

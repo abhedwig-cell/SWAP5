@@ -51,7 +51,9 @@
     "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
     "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
     "src/runtime/mod_fmr_root_uptake_process_binding.f90": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
-    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86"
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "src/process/mod_pmdirect_swetr0_process.f90": "7c0561ce8b2290ced86626bab38cf6a156a7d29f2d909b2f67c7a2b235ea14d7",
+    "src/process/mod_reference_et_demand_process.f90": "e91146a3244079bb79091f137d11ab45214e5a8bd876ead8cd0c03a827821765"
   },
   "findings": [
     {
@@ -185,6 +187,16 @@
         "src/process/mod_irrigation_process.f90:29..85,343..369,430..462",
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:19..51",
         "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90:30..102"
+      ]
+    },
+    {
+      "family": "atmospheric_demand_partitions",
+      "finding": "Canonical F-APP05 closes bounded daily SWCF2 aerodynamic crop height, superseding the F-APP03 hold. Independently, the current daily PMdirect evaluator has no traditional unscaled resistance/cover partition, no detailed-record radiation multiplier/provider, and the reference-ET evaluator has no soil-only CFBS factor. These three are confirmed distinct missing production routes, not a claim that crop-height code is missing.",
+      "evidence_locators": [
+        "SWAP/MOD_meteo.f90:1415..1460,1917..2001",
+        "src/process/mod_pmdirect_swetr0_process.f90:24..35,130..133,176..230",
+        "src/process/mod_reference_et_demand_process.f90:15..27,117..132",
+        "integration/audits/evidence/SWAP431_SWCF2_ADMISSION_RECONCILIATION.json"
       ]
     }
   ],

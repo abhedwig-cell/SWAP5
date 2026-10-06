@@ -93,6 +93,15 @@ def validate(require_closed=False):
     for entry in entries:
         assert entry['migration_priority']['dependency_depth'] == depth(entry['capability_id']), 'stale dependency depth'
     counts = dict(collections.Counter(e['current_disposition'] for e in entries))
+    swcf_path = AUDIT / 'evidence/SWAP431_SWCF2_ADMISSION_RECONCILIATION.json'
+    if swcf_path.exists():
+        swcf = json.loads(swcf_path.read_text())
+        assert swcf['daily_evaluator_identical_to_admitted_commit']
+        assert not swcf['new_runtime_admission_created']
+        for path, expected in swcf['source_files_sha256'].items():
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, 'stale SWCF2 postimage'
+        assert {r['optimization'] for r in swcf['results']} == {'-O0', '-O2'}
+        assert all(r['cases'] == 3 and 'SWCF2_PMDIRECT_DAILY_PASS' in r['stdout'] for r in swcf['results'])
     seepage_path = AUDIT / 'evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json'
     if seepage_path.exists():
         seepage = json.loads(seepage_path.read_text())
