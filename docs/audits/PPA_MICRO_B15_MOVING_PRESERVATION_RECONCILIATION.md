@@ -32,10 +32,12 @@ completed six configurations at O0 and O2 with byte-identical output.
 The normal B15 activation and finer-reference gate passed O0/O2. Its ten
 incumbent preservation programs passed O0/O2 with identical outputs. The full local F-CI moving
 preservation script passed with the exact MICRO successor marker and all
-downstream moving preservation checks. Low-air's first full O0 configuration
-passed and matched the previous local B15 output byte for byte; its other
-configurations and O2 remain in progress. No full frost compatibility claim
-is inferred from this partial local result or the standalone MICRO stack gate.
+downstream moving preservation checks. All six low-air O0 configurations and
+the activation/refinement controls passed, with output byte-identical to the
+previous local B15 run. Their replay is
+`docs/audits/evidence/PPA_MICRO_B15_LOW_AIR_O0_LOCAL.json`. Low-air incumbent
+preservation and O2 remain in progress. No full frost compatibility claim is
+inferred from this partial local result or the standalone MICRO stack gate.
 Local receipts and exact output digests are recorded in
 `docs/audits/evidence/PPA_MICRO_B15_LOCAL_SUCCESSOR.json`; its replay ZIP
 contains 20 source-bound incumbent receipts, runtime outputs and the full
