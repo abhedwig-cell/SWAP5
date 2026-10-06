@@ -2,7 +2,7 @@
   "work_unit": "PPA-MICRO01",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "status": "QUALIFIED_FINAL_TYPED_TABLE_COMPONENT_ADMISSION_PENDING",
+  "status": "CANONICAL_ADMITTED_CLOSED_TYPED_TABLE_COMPONENT_ONLY",
   "implemented": true,
   "test_harness_prepared": true,
   "persisted": true,
@@ -26,8 +26,8 @@
   ],
   "source_finding": "Dry table initialization fills M430 and M/K1:429, while rate lookup at h=-20000 reads M431 and K430:431. Source-level uninitialized bracket, not actual historical-output prediction.",
   "blockers": [],
-  "next_action": "Complete documentation gates and admit typed table component only",
-  "recovery_point": "Current persisted workstream commit",
+  "next_action": "Migrate standalone MICRO nonlinear uptake with typed parameter/worker scratch ownership and real hydraulic provider; then qualify one root sink and committed restart. Table component closed.",
+  "recovery_point": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d",
   "interfaces_changed": [],
   "invariants_affected": [
     3,
@@ -49,5 +49,11 @@
   "qualification": "integration/audits/PPA_MICRO01_FINAL_QUALIFICATION.json",
   "qualification_scope": "Typed table component only, unused by default runtime",
   "local_compiler_available": false,
-  "execution": "3175892870dac0671a46602eca7e47d050add9fb"
+  "execution": "3175892870dac0671a46602eca7e47d050add9fb",
+  "component_admitted": true,
+  "runtime_admitted": false,
+  "full_micro_migration_complete": false,
+  "canonical_pr": 1069,
+  "canonical_merge": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d",
+  "canonical_admission": "integration/audits/PPA_MICRO01_CANONICAL_ADMISSION.json"
 }
