@@ -143,7 +143,7 @@ contains
       return
     end if
 
-    potential = excess / (request%resistance_day * request%coupled_denominator)
+    potential = excess / request%coupled_denominator
     requested_lateral_cm = min(request%available_surface_water_cm, max(0.0_real64, potential))
     ok = ieee_is_finite(requested_lateral_cm)
   end subroutine evaluate_fmr_macropore_pond_donor
