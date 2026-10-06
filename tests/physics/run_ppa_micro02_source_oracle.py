@@ -14,7 +14,7 @@ assert hashlib.sha256(raw).hexdigest() == PIN
 source = raw.decode().replace("\r\n", "\n")
 patches = [
     ("public :: do_RWU_micro, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table",
-     "public :: do_RWU_micro, RWU_micro, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table"),
+     "public :: do_RWU_micro, RWU_micro, X, Q, S, delX, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table"),
     ("      start = int(100.d0*dlog10(-wiltpoint))",
      "      M_table=0d0; K_table=0d0\n      start = int(100.d0*dlog10(-wiltpoint))"),
     ("         M_table(start,lay) = 0.0d0",

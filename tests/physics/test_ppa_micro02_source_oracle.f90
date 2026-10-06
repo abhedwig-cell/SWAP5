@@ -3,7 +3,7 @@ program test_ppa_micro02_source_oracle
   use MOD_grid, only: dz
   use MOD_re_global, only: hroot, mroot, mflux
   use mod_RWU_micro, only: RWU_micro, UpwPot, swDoSatRel, swHydrLift, swO2ECT, swTypeTred, &
-       RootRadius, Kroot, Lstem_A0, Lstem_A1, PLhalf, CampA, Tol_2, myTolX, TolConv, factor, Ntrial, PP
+       RootRadius, Kroot, Lstem_A0, Lstem_A1, PLhalf, CampA, Tol_2, myTolX, TolConv, factor, Ntrial, PP, X, Q, S, delX
   use mod_root_micro_matric_flux_table
   use mod_root_micro_de_willigen_process
   implicit none
@@ -66,6 +66,8 @@ program test_ppa_micro02_source_oracle
          ' TACT/T1/T2/U1/U2=',tact,tact1,tact2,source_flux
     print '(A,ES17.8,A,2ES17.8,A,2ES17.8,A,2ES17.8)', &
          'SOURCE_ROOT_PP=',PP,' HROOT=',hroot,' MROOT=',mroot,' MFLUX=',mflux
+    print '(A,3ES17.8,A,2ES17.8,A,2ES17.8,A,3ES17.8)', &
+         'SOURCE_X=',X,' Q=',Q,' S=',S,' DELX=',delX
     if(.not.all(check)) error stop 2
     call evaluate_micro_de_willigen(parameters,head,dz,density,stress,2,.1_real64,tables,typed)
     if(typed%status/=MICRO_DW_OK) error stop 3

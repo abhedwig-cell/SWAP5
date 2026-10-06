@@ -29,7 +29,7 @@
     23,
     25
   ],
-  "next_action": "Inspect source root-interface diagnostic hroot/mroot/mflux, locate actual nonlinear mismatch; revert ineffective test patch before qualification",
+  "next_action": "Inspect literal Q/S/X/delX to explain why inner root-interface head remains at bulk head; no reference repair admitted",
   "recovery_point": "fe78759011114c368505f341f2eb1c408febfd77",
   "blockers": [],
   "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77",
@@ -38,7 +38,8 @@
     "First corrected literal nonlinear replay 37419245041 compiled and passed standalone smoke but source check(1:3) failed on case 1; diagnostic rerun pending. No source parity claimed.",
     "Run 37419481032: corrected literal B1.11 with constant K, h=[-100,-200], lift=0 returned Upw=[0.3,-0.2], Tact1=0.1, Tact2=0, check=[T,T,F]. Not an admissible nonnegative sink. Source endpoint stale-X mechanism suspected, not yet proven.",
     "Run 37419641673: even homogeneous h=[-100,-100] yielded source Upw=[0.05,0.05], Tact2=0, check=[T,T,F]. Endpoint final myFun synchronization is missing in B1.11 source. Propose exact one-call corrected literal test.",
-    "Run 37419805293: adding final myFun(xp) did not change homogeneous source check=[T,T,F], Tact2=0. Endpoint-state staleness alone falsified; inspect hroot/mroot/mflux."
+    "Run 37419805293: adding final myFun(xp) did not change homogeneous source check=[T,T,F], Tact2=0. Endpoint-state staleness alone falsified; inspect hroot/mroot/mflux.",
+    "Run 37419980702: final myFun probe still hroot=[-100,-100], mroot=mflux=[199,199] at PP=110, Upw=[0.05,0.05], Tact2=0. Inner X remained at bulk head; inspect Q/S/delX."
   ],
   "smoke_tested": true,
   "smoke_run": 37418937324,
