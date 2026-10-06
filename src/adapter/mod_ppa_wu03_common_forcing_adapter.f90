@@ -40,6 +40,7 @@ module mod_ppa_wu03_common_forcing_adapter
     real(real64) :: forcing_t1 = 0.0_real64
     real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
     real(real64) :: surface_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
     type(fmr_reference_et_forcing_span_t) :: reference_et
     type(reference_et_demand_canopy_view_t) :: canopy
   end type ppa_wu03_common_forcing_input_t
@@ -109,14 +110,16 @@ contains
     if (input%precipitation_rate_cm_per_day < 0.0_real64) return
     if (.not. ieee_is_finite(input%surface_irrigation_rate_cm_per_day)) return
     if (input%surface_irrigation_rate_cm_per_day < 0.0_real64) return
+    if (.not. ieee_is_finite(input%runon_rate_cm_per_day)) return
+    if (input%runon_rate_cm_per_day < 0.0_real64) return
     if (config%irrigation_mode == PPA_WU03_IRRIGATION_NONE .and. &
         input%surface_irrigation_rate_cm_per_day /= 0.0_real64) then
       diagnostics%status = PPA_WU03_UNSUPPORTED_IRRIGATION
       return
     end if
 
-    ! Snowmelt and runon are separate ingestion slices.  They are never
-    ! silently inherited from the caller's base request in this WU03 slice.
+    ! Snowmelt remains a separate ingestion slice and is never silently
+    ! inherited from the caller. Runon is an explicit common-forcing carrier.
     if (.not. ieee_is_finite(base_top_request%snowmelt_rate_cm_per_day)) return
     if (.not. ieee_is_finite(base_top_request%runon_rate_cm_per_day)) return
     if (base_top_request%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
@@ -140,7 +143,7 @@ contains
     result%top_request%precipitation_rate_cm_per_day = input%precipitation_rate_cm_per_day
     result%top_request%irrigation_rate_cm_per_day = input%surface_irrigation_rate_cm_per_day
     result%top_request%snowmelt_rate_cm_per_day = 0.0_real64
-    result%top_request%runon_rate_cm_per_day = 0.0_real64
+    result%top_request%runon_rate_cm_per_day = input%runon_rate_cm_per_day
     result%top_request%potential_bare_soil_evaporation_cm_per_day = &
          result%reference_et_demand%potential_soil_evaporation_cm_per_day
     result%top_request%potential_pond_evaporation_cm_per_day = &
