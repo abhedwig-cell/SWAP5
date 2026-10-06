@@ -1,0 +1,40 @@
+{
+  "work_unit": "F-MIG431-LOW03-EXP-P0",
+  "state": "PREREGISTERED_SOURCE_RECONSTRUCTION",
+  "baseline": "19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "branch": "work/f-mig431-low03-explicit-p0-20261006",
+  "target": "ordinary explicit SWBOTB=3, SwBotb3Impl=0",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "authority_paths": [
+    "docs/migration/F-MIG431-LOW03-EXP-P0_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-LOW03-A_STATUS.json",
+    "docs/migration/F-MIG431-LOW03-A_APPLICATION_BINDING.md"
+  ],
+  "dependency_surface": [
+    "B1.11 lower-boundary/soil-water source",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "committed/trial soil-water state and Restart-v1"
+  ],
+  "next_action": "Reconstruct exact B1.11 explicit mode3 GWL/index/saturated-profile semantics and decide whether a shared prerequisite is required before any production edit.",
+  "recovery_point": "a2ccaf594dbcd6b8a01dea5924932f5d75408dfc",
+  "blockers": [],
+  "held_fixed": [
+    "implicit LOW03-A",
+    "LOW03-P0 law",
+    "common solver semantics",
+    "groundwater/MODFLOW ownership",
+    "transaction ledger",
+    "Restart-v1 schema",
+    "other lower-boundary selectors",
+    "RossFast/SWKIMPL1/macropore/sensitivity"
+  ]
+}
