@@ -45,7 +45,7 @@
     "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json"
   ],
   "next_action": "Complete all low-air primary/reference trajectories, application/additional preflight, fresh dependency preservation and exact canonical reconciliation",
-  "recovery_point": "Source-bound runtime/source drivers, complete local normal O0/O2 matrix and complete actual nonuniform source parity. Local receipts must be included in final immutable replay; no partial low-air admission.",
+  "recovery_point": "Remote source/test checkpoint plus immutable complete source/normal/additional/B18 science replay; running low-air and incumbent cases are excluded and cannot establish qualification.",
   "last_reconciled_upstream": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
   "blockers": [],
   "production_paths": [
@@ -66,5 +66,19 @@
     "invalid_application_preflight_cases_per_optimization": 28,
     "additional_O0_O2_byte_identity": true,
     "complete_B18_science_O0_O2_preservation": true
-  }
+  },
+  "partial_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_PARTIAL_LOCAL_REPLAY.json.gz",
+    "sha256": "f1a2f96c35b6dc91d8f938e39eeb7e969a6c9d5eefb5f7259f00e16a555d968d",
+    "bytes": 295815,
+    "manifest_files": 65,
+    "qualification": false
+  },
+  "negative_findings": [
+    {
+      "attempt": "Initial B18 preservation rebind",
+      "outcome": "Rejected before physical execution by old unrelated backend hash pin",
+      "resolution": "B19 science runner retains all unchanged pins and proves isolated additive validator removal exactly equals B18 body; affected backend/bootstrap receive separate fresh whole-module preservation"
+    }
+  ]
 }

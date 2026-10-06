@@ -18,7 +18,7 @@ def main():
     assert current.count(addition)==1
     assert current.replace(addition,'').replace('public :: compose_single_level_signed_frost_divdra, frost_divdra_parameters_valid','public :: compose_single_level_signed_frost_divdra')==original
     for f,h in p['source_sha256'].items():
-        if f!=body:assert sha(ROOT/f)==h,f
+        if f not in (body,'src/runtime/mod_fmr_serialized_reference_backend.f90','src/runtime/mod_fmr_production_application_bootstrap.f90'):assert sha(ROOT/f)==h,f
     path=ROOT/refstatus['evidence']['path'];assert sha(path)==refstatus['evidence']['sha256'];record=json.loads(gzip.decompress(path.read_bytes()));inputs=record['manifest']['actual/cases.txt']['content'];(build/'cases.txt').write_text(inputs)
     common=['src/solver/mod_soil_water_solver_contract.f90','src/solver/mod_process_hydraulic_view.f90','src/process/mod_drainage_spatial_distribution.f90','src/process/mod_frost_divdra_drainage_effect.f90']
     reference=['tests/frost/test_ppa_wu05b16_divdra_globals.f90','reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90','reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90','tests/frost/test_ppa_wu05b16_divdra_owner.f90']
