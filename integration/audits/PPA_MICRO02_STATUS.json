@@ -4,7 +4,7 @@
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
   "status": "IMPLEMENTED_UNTESTED_STANDALONE_CHECKPOINT",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "production_admitted": false,
@@ -29,7 +29,8 @@
     23,
     25
   ],
-  "next_action": "Persist exact branch tree and run O0/O2 focused smoke; then corrected literal source oracle and runtime qualification",
-  "recovery_point": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "blockers": []
+  "next_action": "Run targeted O0/O2 workflow and examine logs; then construct corrected literal B1.11 oracle; no production admission",
+  "recovery_point": "fe78759011114c368505f341f2eb1c408febfd77",
+  "blockers": [],
+  "checkpoint_commit": "fe78759011114c368505f341f2eb1c408febfd77"
 }
