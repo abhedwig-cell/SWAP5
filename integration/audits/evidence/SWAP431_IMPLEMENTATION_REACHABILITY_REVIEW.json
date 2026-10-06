@@ -41,7 +41,15 @@
     "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
     "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90": "41a2f082116362cd21c1e13d7972b689e8450b25d793647f06447acb37131964",
     "src/process/mod_irrigation_process.f90": "0cbe4d23a2a29e8dc585fa92f9eb826b8e6f8b6124228e0b8955d160d97d64dd",
-    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90": "0e7b5f97af8a2f3685dff202b37b040a5dafcfaf8cd2cabc890ee9366c0a357d"
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90": "0e7b5f97af8a2f3685dff202b37b040a5dafcfaf8cd2cabc890ee9366c0a357d",
+    "src/crop/mod_wofost81_nitrogen.f90": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce",
+    "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90": "60e9fd3fd73e1b19a6e7898aa5f83c9aee864413848e378c445c3bc328238cd4",
+    "tests/fwof/pp02/test_wofost81_nitrogen_driver.f90": "a1e08af921afa75ccc9bec27c2c8b9a02de39397046fc654f631f092bc38a68a",
+    "tests/fwof/pp02/test_wofost81_fullseason_replay.f90": "46d23d15cadbced3b096cbcfcd73c49c019ce9b4c642570cbafaa3d4e165e1ea",
+    "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90": "1e32b6feb546bd1ab809825db7b4a23957f00cc075b9706056ec85f3a0da5c8c",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90": "d8b20863a22d936e026e2633615d6c7a5a233412b8a03547459328319473bdc7",
+    "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158"
   },
   "findings": [
     {
@@ -120,6 +128,40 @@
         "SWAP/irrigation.f90:551..562,596..636,725..729",
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:214..220,268..270",
         "integration/f-app/F-APP07_PREREGISTRATION.json"
+      ]
+    },
+    {
+      "family": "soil_n_and_crop_fixation",
+      "finding": "Canonical production has WOFOST81 crop N algebra but no literal SoilManagement/Wofost_Soil* owner. Runtime passes complete soil_request as supply at334..347. The current81 fixation component exists and tests use.2; however literal B1.11 old demand excludes storage/new-growth demand and applies DVS<DVSNLT as well as RELTR>.01. Nonzero81 runtime qualification alone cannot prove old demand/cutoff coverage. PP01 MAPPING_CONTRACT pins a separately modified13B donor, not this B1.11 source.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90:334..347",
+        "src/crop/mod_wofost81_nitrogen.f90:125..149",
+        "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90:13",
+        "tests/fwof/pp02/test_wofost81_fullseason_replay.f90:178",
+        "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90:342",
+        "docs/science/wofost-crop-coupling.md:Nitrogen scope",
+        "SWAP/wofostnut.f90:354..370",
+        "SWAP/wofost.f90:1383..1397",
+        "tests/fwof/pp01/MAPPING_CONTRACT.md"
+      ]
+    },
+    {
+      "family": "root_depth_and_density_owner",
+      "finding": "The actual crop structural owner evolves biomass/DVS/LAI but has no rd/rdpot/rr state or root-depth parameters. B1.11 SWRD2 daily depth advancement, water/supply variants, adaptive node biomass and oxygen-growth gate therefore have missing production ownership. SWRD1 and3 stateless table mappings and SWLRVCONSTANT override remain separate potential typed replacements; generic root-input consumers alone do not qualify their mappings.",
+      "evidence_locators": [
+        "SWAP/MOD_cropdevelopment.f90:1682..1734,1853..1940,1997..2026,2354..2358",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90:25..64",
+        "src/crop/mod_crop_root_uptake_input_contract.f90",
+        "docs/science/wofost-crop-coupling.md"
+      ]
+    },
+    {
+      "family": "surface_water_owner_and_feedback",
+      "finding": "Restricted fixed-weir admission owns storage with power-law rating and two configured nonnegative forcing rates. It has no target-level/drop-rate history, QH table or runoff carrier. Actual backend call passes configured forcing unchanged, not the accepted solver drainage receipt; signed qdrd<0 is explicitly held. Native drain-level feedback and signed donor are therefore separate production gaps, while the bounded existing primitive admission is preserved. WLSBAK oscillation state is numerical-control provenance only.",
+      "evidence_locators": [
+        "SWAP/surfacewater.f90:176..234,254..277,309..356,384..403,496..555",
+        "src/process/mod_restricted_fixed_weir_surface_water.f90:14..29,180..187,215..225",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1725..1753,4338..4344,4400..4420"
       ]
     }
   ],

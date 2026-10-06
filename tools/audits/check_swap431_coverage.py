@@ -38,6 +38,12 @@ def validate(require_closed=False):
     entries = ledger['capabilities']
     ids = {e['capability_id'] for e in entries}
     by_id = {e['capability_id']: e for e in entries}
+    foundations = {f['foundation_id']: f for f in ledger.get('swap5_admitted_foundations', [])}
+    assert not ids.intersection(foundations), 'foundation counted as legacy capability'
+    for foundation in foundations.values():
+        assert foundation['current_disposition'] == 'ADMITTED', 'non-admitted foundation'
+        for path in foundation['implementation_authority'] + foundation['evidence']:
+            assert (ROOT / path).is_file(), f'missing foundation authority: {path}'
     assert len(ids) == len(entries), 'duplicate capability ID'
     assert ledger['summary']['capabilities'] == len(entries), 'stale capability count'
     registered = {u['id']: u for u in work['new_workunits']}
@@ -53,6 +59,8 @@ def validate(require_closed=False):
         lines = members[source['member']].decode('latin1').splitlines()
         assert source['locator_lines'] and all(1 <= n <= len(lines) for n in source['locator_lines']), cap
         assert set(entry['remaining_dependency']) <= ids, f'{cap}: dangling dependency'
+        for anchor in entry.get('closed_foundation_authorities', []):
+            assert anchor in foundations or (anchor in by_id and by_id[anchor]['current_disposition'] in {'ADMITTED', 'SUPERSEDED'}), f'{cap}: unresolved/unknown foundation {anchor}'
         assert all(by_id[d]['current_disposition'] == 'ACTIVE_MIGRATION' for d in entry['remaining_dependency']), f'{cap}: closed dependency treated as blocker'
         if entry['current_disposition'] == 'ACTIVE_MIGRATION':
             assert entry['active_workunit'] in registered, f'{cap}: unregistered workunit'
@@ -85,6 +93,13 @@ def validate(require_closed=False):
     for entry in entries:
         assert entry['migration_priority']['dependency_depth'] == depth(entry['capability_id']), 'stale dependency depth'
     counts = dict(collections.Counter(e['current_disposition'] for e in entries))
+    probe_path = AUDIT / 'evidence/SWAP431_TILLAGE_DEFECT_PROBE.json'
+    if probe_path.exists():
+        probe = json.loads(probe_path.read_text())
+        assert hashlib.sha256(members[probe['source_member']]).hexdigest() == probe['source_sha256'], 'stale tillage probe source'
+        assert not probe['production_reachability'], 'defect probe used as admission'
+        assert {r['optimization'] for r in probe['results']} == {'-O0', '-O2'}, 'missing probe optimization'
+        assert len({r['stdout'] for r in probe['results']}) == 1, 'probe optimization mismatch'
     active = [e for e in entries if e['current_disposition'] == 'ACTIVE_MIGRATION']
     assert ledger['summary']['dispositions'] == counts, 'stale summary'
     assert ledger['summary']['open_capabilities'] == len(active), 'stale open count'

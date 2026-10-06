@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
   "canonical_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
@@ -14,18 +14,18 @@
   ],
   "source_census": "integration/audits/evidence/SWAP431_SOURCE_CENSUS.json",
   "summary": {
-    "capabilities": 227,
+    "capabilities": 236,
     "dispositions": {
-      "ADMITTED": 79,
-      "ACTIVE_MIGRATION": 117,
+      "ADMITTED": 78,
+      "ACTIVE_MIGRATION": 126,
       "SUPERSEDED": 12,
       "REJECTED": 1,
-      "NOT_APPLICABLE": 18
+      "NOT_APPLICABLE": 19
     },
-    "open_capabilities": 117,
+    "open_capabilities": 126,
     "open_workunits": 19,
-    "confirmed_missing_production_entries": 57,
-    "other_unresolved_source_admission_reviews": 60
+    "confirmed_missing_production_entries": 75,
+    "other_unresolved_source_admission_reviews": 51
   },
   "capabilities": [
     {
@@ -5291,18 +5291,24 @@
       "legacy_selector": "SWPOWM=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
-        "member": "SWAP/macrorate.f90",
-        "sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "member": "SWAP/macropore.f90",
+        "sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
         "locator_lines": [
-          4,
-          116,
-          1449
+          14,
+          342,
+          346,
+          348,
+          349,
+          350,
+          351,
+          1944
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Double convex/concave internal-catchment domain frequency distribution",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_macropore_configuration.f90",
+        "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -5311,15 +5317,17 @@
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Standard bounded route/isolated component presence does not establish this selector production envelope"
+        "claim": "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping."
       },
       "restrictions": [
-        "Standard bounded route/isolated component presence does not establish this selector production envelope"
+        "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-MACRO-GEOMETRY"
+      ],
       "active_workunit": "MC-MACRO01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -5328,7 +5336,10 @@
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "SWPOWM"
+      ]
     },
     {
       "capability_id": "SW431-MACRO-DARCY",
@@ -5933,7 +5944,10 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "source_input_names": [
+        "swnrsrf"
+      ]
     },
     {
       "capability_id": "SW431-DRAIN-DIV",
@@ -6240,7 +6254,7 @@
     {
       "capability_id": "SW431-SW-FIXED",
       "subsystem": "surfacewater",
-      "legacy_selector": "SWSEC=2;SWMAN=1;SWNRSRF=0..2",
+      "legacy_selector": "SWSEC=2;SWMAN=1;SWQHR=1;resolved nonnegative qdrd",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/surfacewater.f90",
@@ -6272,10 +6286,11 @@
       "production_reachability": {
         "established": true,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Restricted fixed-weir own-store route"
+        "claim": "Admitted restricted fixed-weir storage/rating/supply owner with resolved nonnegative drainage forcing and restart state. Native coupling and signed/source carrier envelopes are separate capabilities."
       },
       "restrictions": [
-        "Restricted fixed-weir own-store route"
+        "Restricted fixed-weir own-store route",
+        "Only configured nonnegative secondary-drainage forcing; no native accepted-drainage feedback, signed infiltration donor, runoff/macropore carrier or automatic target-level claim. Those source capabilities have separate open IDs."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -6350,36 +6365,39 @@
         "member": "SWAP/surfacewater.f90",
         "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
         "locator_lines": [
-          14,
-          87,
-          88,
-          113,
-          118,
           176,
-          300,
-          325,
-          675,
-          896,
-          905,
-          907
+          180,
+          189,
+          192,
+          199,
+          206,
+          211,
+          214,
+          223,
+          224,
+          225,
+          229,
+          234
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Automatic weir adjustment from groundwater/soil-head criteria",
       "swap5_implementation_authority": [
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "claim": "Source automatic-weir target depends on groundwater/air-volume/sensor phases, accepted adjustment periods and maximum drop rate using previous wlstar. Current restricted owner persists storage only and has fixed weir_head; no automatic-target state/dispatcher exists."
       },
       "restrictions": [
-        "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "Source automatic-weir target depends on groundwater/air-volume/sensor phases, accepted adjustment periods and maximum drop rate using previous wlstar. Current restricted owner persists storage only and has fixed weir_head; no automatic-target state/dispatcher exists."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SW01",
@@ -6391,9 +6409,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "nmper",
         "imper_4b",
@@ -6588,36 +6606,34 @@
         "member": "SWAP/surfacewater.f90",
         "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
         "locator_lines": [
-          5,
-          8,
-          30,
-          59,
-          68,
-          74,
-          184,
           254,
           255,
           276,
+          277,
+          305,
+          306,
           340,
-          412
+          341
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Top runoff routed into surface-water storage",
       "swap5_implementation_authority": [
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md"
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "claim": "Source runots enters the WLEVBAL storage balance. Current surface-water forcing contains only secondary_drainage_rate and supply_capacity_rate; the runtime calls it unchanged from configured forcing, with no accepted Richards runoff receipt binding."
       },
       "restrictions": [
-        "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics"
+        "Source runots enters the WLEVBAL storage balance. Current surface-water forcing contains only secondary_drainage_rate and supply_capacity_rate; the runtime calls it unchanged from configured forcing, with no accepted Richards runoff receipt binding."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SW01",
@@ -6629,9 +6645,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-SW-EXTERNAL",
         "SW431-SW-FIXED"
@@ -7806,7 +7822,7 @@
         "lcc"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -7861,7 +7877,7 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -7905,7 +7921,7 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -7955,7 +7971,7 @@
         "daygrz"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -8008,46 +8024,52 @@
         "maxsowdelay"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW",
       "subsystem": "crop",
-      "legacy_selector": "SWRD=1..3;SWRDC;SWDMI2RD",
+      "legacy_selector": "SWRD=2;SWDMI2RD=0",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/MOD_cropdevelopment.f90",
         "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
         "locator_lines": [
-          6,
-          78,
-          166,
-          1682,
-          1683,
-          1684,
-          1688,
-          1693,
           1698,
+          1700,
+          1701,
+          1702,
           1705,
-          1706,
-          1709
+          1854,
+          1859,
+          1860,
+          1863,
+          1874,
+          1876,
+          1878,
+          1890,
+          1895,
+          1914,
+          1916,
+          1930
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Root-depth/distribution development and hydrological feedback",
+      "meaning": "Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth",
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "claim": "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner."
       },
       "restrictions": [
-        "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
+        "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8059,11 +8081,11 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -8113,7 +8135,7 @@
         "co2year"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -8168,51 +8190,54 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
-      "capability_id": "SW431-CROP-WOF81",
+      "capability_id": "SW431-CROP-ANNUAL",
       "subsystem": "crop",
-      "legacy_selector": "SWWOFOST=1;SWCROPSNM=0",
+      "legacy_selector": "SW_WOFOST=1;IDSL=0;SWCROPSNM=0",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/wofost.f90",
         "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
         "locator_lines": [
+          21,
+          107,
           275,
-          297,
           322,
-          369,
-          396,
-          416,
-          456,
-          937,
-          992,
-          1051,
-          1352,
-          1407
+          380,
+          455,
+          459,
+          556,
+          1354,
+          1383,
+          1384,
+          1387,
+          1397
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Bounded WOFOST81 crop-owned production and nitrogen trajectories",
+      "meaning": "B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology",
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
       ],
-      "current_disposition": "ADMITTED",
+      "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "tests/fwof/pp01/MAPPING_CONTRACT.md",
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
       ],
       "production_reachability": {
-        "established": true,
-        "route": "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
-        "claim": "Ten Spring Barley potential-production cases; N-unlimited; RD/TRA outside crop equivalence; event atomicity"
+        "established": false,
+        "route": null,
+        "claim": "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label."
       },
       "restrictions": [
-        "Ten Spring Barley potential-production cases; N-unlimited; RD/TRA outside crop equivalence; event atomicity"
+        "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label."
       ],
       "remaining_dependency": [],
-      "active_workunit": null,
+      "active_workunit": "MC-CROP01",
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -8221,7 +8246,16 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_REVIEW",
+      "implementation_absence_proven": false,
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ],
+      "source_input_names": [
+        "SW_WOFOST",
+        "AMAXTB"
+      ]
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -8241,15 +8275,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -8261,12 +8297,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
-      ]
+        "SW5-CROP-WOF81"
+      ],
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-MINERAL",
@@ -8287,15 +8324,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -8307,12 +8346,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
-      ]
+        "SW5-CROP-WOF81"
+      ],
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-AMEND",
@@ -8332,15 +8372,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -8355,16 +8397,17 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": [
         "MatNum",
         "iMat"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
-      ]
+        "SW5-CROP-WOF81"
+      ],
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -8384,15 +8427,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -8406,12 +8451,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
-      ]
+        "SW5-CROP-WOF81"
+      ],
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -8430,15 +8476,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/science/wofost-crop-coupling.md"
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -8452,12 +8500,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
-      ]
+        "SW5-CROP-WOF81"
+      ],
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-TILL-EVENT",
@@ -9500,28 +9549,27 @@
     {
       "capability_id": "SW431-ROOT-DENSITY",
       "subsystem": "root",
-      "legacy_selector": "SWRDC=1;SWLRVCONSTANT=1",
+      "legacy_selector": "SWRDC=1",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/MOD_cropdevelopment.f90",
         "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
         "locator_lines": [
-          6,
-          93,
-          1860,
-          1896,
           1997,
-          1998,
           2001,
           2004,
-          2025,
-          2026,
-          2062,
-          2087
+          2006,
+          2009,
+          2011,
+          2014,
+          2016,
+          2019,
+          2087,
+          2099
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
-      "meaning": "Adaptive root density and constant volumetric root length options",
+      "meaning": "Adaptive node root-biomass growth/death redistribution",
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -9530,31 +9578,29 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Separate root-biomass distribution lifecycle; needs typed crop/root state ownership"
+        "claim": "Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory."
       },
       "restrictions": [
-        "Separate root-biomass distribution lifecycle; needs typed crop/root state ownership"
+        "Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory."
       ],
-      "remaining_dependency": [
-        "SW431-CROP-ROOTGROW"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-ANAE-GROW",
       "subsystem": "root",
-      "legacy_selector": "SWWRTNONOX=1",
+      "legacy_selector": "SWWRTNONOX=1;SWRD=2",
       "legacy_source_authority": {
         "snapshot": "B1.11",
         "member": "SWAP/MOD_cropdevelopment.f90",
@@ -9578,10 +9624,10 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Empirical/physical uptake oxygen admissions do not establish oxygen-controlled root growth"
+        "claim": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition."
       },
       "restrictions": [
-        "Empirical/physical uptake oxygen admissions do not establish oxygen-controlled root growth"
+        "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition."
       ],
       "remaining_dependency": [
         "SW431-CROP-ROOTGROW"
@@ -9595,9 +9641,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-DRAIN-DISLAYER",
@@ -9903,7 +9949,7 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -10013,7 +10059,14 @@
           309,
           312,
           314,
-          957
+          330,
+          333,
+          336,
+          352,
+          355,
+          408,
+          431,
+          433
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
@@ -10025,15 +10078,16 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-ci/F-CI52P_STATUS.json",
-        "src/process/mod_restricted_fixed_weir_surface_water.f90"
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Admitted fixed-weir power rating does not establish arbitrary legacy QQHTAB/HQHTAB rating. Ribasim replacement must preserve actual rating/storage and exchange semantics."
+        "claim": "Current fixed-weir parameters contain rating_coefficient/exponent only and rating_rate is a power function. There are no QH discharge knots or current table-rating operator; source SWQHR2 uses fun_qhtab including automatic capacity and level/storage solve."
       },
       "restrictions": [
-        "Admitted fixed-weir power rating does not establish arbitrary legacy QQHTAB/HQHTAB rating. Ribasim replacement must preserve actual rating/storage and exchange semantics."
+        "Current fixed-weir parameters contain rating_coefficient/exponent only and rating_rate is a power function. There are no QH discharge knots or current table-rating operator; source SWQHR2 uses fun_qhtab including automatic capacity and level/storage solve."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SW01",
@@ -10045,9 +10099,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_SELECTOR_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-SW-FIXED"
       ]
@@ -10123,15 +10177,17 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -10145,9 +10201,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true,
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-DENIT",
@@ -10173,15 +10230,17 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -10196,9 +10255,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true,
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-TRANSPORT",
@@ -10221,15 +10281,17 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -10243,9 +10305,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true,
+      "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners."
     },
     {
       "capability_id": "SW431-NUT-NFIX",
@@ -10258,45 +10321,56 @@
         "locator_lines": [
           23,
           89,
-          196,
           198,
-          242,
           244,
+          354,
+          357,
+          360,
+          365,
+          366,
           369,
           370
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Biological nitrogen fixation as a separately booked crop N input",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_wofost81_nitrogen.f90",
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90",
+        "tests/fwof/pp02/test_wofost81_nitrogen_driver.f90",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json",
+        "tests/fwof/pp01/MAPPING_CONTRACT.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "claim": "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required."
       },
       "restrictions": [
-        "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed"
+        "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required."
       ],
-      "remaining_dependency": [
-        "SW431-NUT-CROP"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
       "migration_priority": {
-        "dependency_depth": 2,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 3,
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "SOURCE_REPLACEMENT_AUTHORITY_AND_ENVELOPE_REVIEW",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ]
     },
     {
       "capability_id": "SW431-INIT-PROFILE",
@@ -10602,7 +10676,7 @@
       "implementation_absence_proven": true,
       "source_input_names": [],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -10654,7 +10728,7 @@
       "implementation_absence_proven": false,
       "source_input_names": [],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -11314,6 +11388,518 @@
         "SW431-IRR-TCS1"
       ],
       "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-MACRO-GEOMETRY",
+      "subsystem": "macropore",
+      "legacy_selector": "SWMACRO=1;SWPOWM=0;Z_IC/Z_ST/Z_AH/Z_MB50;NUMSBDM",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/macropore.f90",
+        "sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+        "locator_lines": [
+          251,
+          268,
+          272,
+          283,
+          288,
+          290,
+          295,
+          302,
+          325,
+          339,
+          349,
+          379,
+          384,
+          387,
+          397,
+          399,
+          402,
+          411,
+          435,
+          446,
+          491,
+          499
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Integrated depth-dependent static macropore capacity, IC subdomain topology and polygon diameter",
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_macropore_configuration.f90",
+        "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90"
+      ],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/audits/PPA_WU05A8_CLOSEOUT.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied."
+      },
+      "restrictions": [
+        "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-MACRO01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false,
+      "source_input_names": [
+        "Z_IC",
+        "Z_ST",
+        "Z_AH",
+        "Z_MB50",
+        "NUMSBDM",
+        "POWM",
+        "SPOINT",
+        "RZAH",
+        "PPICSS",
+        "VLMPSTSS",
+        "DIPOMI",
+        "DIPOMA"
+      ]
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "subsystem": "crop",
+      "legacy_selector": "SWRD=1",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/MOD_cropdevelopment.f90",
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "locator_lines": [
+          1693,
+          1695,
+          1869,
+          1871,
+          1872,
+          1910,
+          1912
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Prescribed DVS-table root depth with soil-depth cap",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone."
+      },
+      "restrictions": [
+        "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-CROP01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 1,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false,
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "subsystem": "crop",
+      "legacy_selector": "SWRD=3;CROPTYPE=2",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/MOD_cropdevelopment.f90",
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "locator_lines": [
+          1688,
+          1689,
+          1715,
+          1717,
+          1719,
+          1881,
+          1883,
+          1884,
+          1936,
+          1938,
+          1939
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Root depth from actual/potential root-biomass table",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner."
+      },
+      "restrictions": [
+        "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-CROP01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 1,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false,
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-WATER",
+      "subsystem": "crop",
+      "legacy_selector": "SWRD=2;SWDMI2RD=1",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/MOD_cropdevelopment.f90",
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "locator_lines": [
+          1914,
+          1916,
+          1918,
+          1919,
+          1930
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Daily root extension scaled by actual/potential transpiration",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state."
+      },
+      "restrictions": [
+        "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-CROP01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true,
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
+      "subsystem": "crop",
+      "legacy_selector": "SWRD=2;SWDMI2RD=2",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/MOD_cropdevelopment.f90",
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "locator_lines": [
+          1708,
+          1709,
+          1710,
+          1920,
+          1921,
+          1924,
+          1925,
+          1926,
+          1928,
+          1930
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Minimum/root-drought-scaled extension limited by allocated root dry matter",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification."
+      },
+      "restrictions": [
+        "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification."
+      ],
+      "remaining_dependency": [
+        "SW431-ROOT-DENSITY"
+      ],
+      "active_workunit": "MC-CROP01",
+      "migration_priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "APPLICATION_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true,
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-ROOT-LRV-CONSTANT",
+      "subsystem": "root",
+      "legacy_selector": "SWLRVCONSTANT=1",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/MOD_cropdevelopment.f90",
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "locator_lines": [
+          2025,
+          2026,
+          2354,
+          2355,
+          2356,
+          2357
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Force root length density from RDCTB using rooted-compartment depth",
+      "swap5_implementation_authority": [],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module."
+      },
+      "restrictions": [
+        "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-CROP01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": false,
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-SW-DRAIN-FEEDBACK",
+      "subsystem": "surfacewater",
+      "legacy_selector": "SWDRA=2;SWSEC=2",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/surfacewater.f90",
+        "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+        "locator_lines": [
+          64,
+          65,
+          80,
+          254,
+          276,
+          486,
+          496,
+          503,
+          509,
+          531,
+          555,
+          580
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Accepted drainage receipt into surface-water storage and updated level back into drainage basis",
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "The existing restricted surface-water primitive consumes configured nonnegative secondary_drainage_rate. Its actual runtime call does not derive that carrier from the accepted solver drainage receipt or return updated storage level as the next native drainage basis. Primitive admission is preserved; the native shared-carrier feedback binding is missing."
+      },
+      "restrictions": [
+        "The existing restricted surface-water primitive consumes configured nonnegative secondary_drainage_rate. Its actual runtime call does not derive that carrier from the accepted solver drainage receipt or return updated storage level as the next native drainage basis. Primitive admission is preserved; the native shared-carrier feedback binding is missing."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-SW01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true,
+      "closed_foundation_authorities": [
+        "SW431-SW-FIXED"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-SW-SIGNED",
+      "subsystem": "surfacewater",
+      "legacy_selector": "SWSEC=2;qdrd<0",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/surfacewater.f90",
+        "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+        "locator_lines": [
+          254,
+          255,
+          258,
+          267,
+          268,
+          276,
+          277
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Surface-water storage depletion by signed infiltration into soil",
+      "swap5_implementation_authority": [
+        "src/process/mod_restricted_fixed_weir_surface_water.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ACTIVE_MIGRATION",
+      "evidence": [
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "B1.11 permits signed qdrd in storage balance, including falling-dry/supply branches. Current primitive and backend configuration explicitly reject secondary_drainage_rate<0 (held-signed-route). The signed surface-water donor envelope is missing, independent of the already admitted external-head drainage infiltration operator."
+      },
+      "restrictions": [
+        "B1.11 permits signed qdrd in storage balance, including falling-dry/supply branches. Current primitive and backend configuration explicitly reject secondary_drainage_rate<0 (held-signed-route). The signed surface-water donor envelope is missing, independent of the already admitted external-head drainage infiltration operator."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": "MC-SW01",
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "CORE_PHYSICS",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "implementation_absence_proven": true,
+      "closed_foundation_authorities": [
+        "SW431-SW-FIXED"
+      ],
+      "source_input_names": []
+    },
+    {
+      "capability_id": "SW431-SW-OSCIL-CONTROL",
+      "subsystem": "surfacewater",
+      "legacy_selector": "WLSBAK oscillation history;OSSWLM",
+      "legacy_source_authority": {
+        "snapshot": "B1.11",
+        "member": "SWAP/surfacewater.f90",
+        "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+        "locator_lines": [
+          385,
+          386,
+          387,
+          388,
+          389,
+          390,
+          391,
+          393,
+          394,
+          395,
+          399,
+          401
+        ],
+        "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+      },
+      "meaning": "Legacy four-call water-level oscillation heuristic for timestep reduction",
+      "swap5_implementation_authority": [],
+      "current_disposition": "NOT_APPLICABLE",
+      "evidence": [
+        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+      ],
+      "production_reachability": {
+        "established": false,
+        "route": null,
+        "claim": "WLSBAK is solely a numerical warning/timestep heuristic, not a physical hydraulic history law or conserved store. SWAP5 retains its admitted transaction/temporal policy; copying the old four-level executable heuristic is not a modelphysics requirement."
+      },
+      "restrictions": [
+        "WLSBAK is solely a numerical warning/timestep heuristic, not a physical hydraulic history law or conserved store. SWAP5 retains its admitted transaction/temporal policy; copying the old four-level executable heuristic is not a modelphysics requirement."
+      ],
+      "remaining_dependency": [],
+      "active_workunit": null,
+      "migration_priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "classification": "OBSOLETE_CONTROL_FLOW",
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false,
+      "closed_foundation_authorities": [
+        "SW431-SW-EXTERNAL",
+        "SW431-SW-FIXED"
+      ],
+      "source_input_names": []
     }
   ],
   "remaining_queue": [
@@ -11602,6 +12188,34 @@
       "work_unit": "MC-IRR01",
       "dependencies": [],
       "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-ROOT-DENSITY",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-ROOT-LRV-CONSTANT",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11920,6 +12534,48 @@
       "implementation_absence_proven": false
     },
     {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Source computes depth from WRTPOT/WRT and applies rdm. Typed WOFOST81 has root biomass but lacks an admitted biomass-to-depth/profile resolver. Functional replacement/source qualification must be adjudicated separately from a history-dependent extension owner.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 1,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Source rd=rdpot=min(AFGEN(RDTB,DVS),rdm) is stateless at update. Determine a qualified typed resolved root-profile replacement; do not infer its table/cap mapping from a root-distribution consumer alone.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 1,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-WATER",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
       "capability_id": "SW431-ET-CROPHEIGHT",
       "work_unit": "MC-MET01",
       "dependencies": [],
@@ -12046,6 +12702,20 @@
       "implementation_absence_proven": true
     },
     {
+      "capability_id": "SW431-MACRO-GEOMETRY",
+      "work_unit": "MC-MACRO01",
+      "dependencies": [],
+      "why_open": "The generic typed immutable geometry carries the resulting volumes, fractions, bottoms and diameter, with later covering/shrinkage admissions. The literal initialization integrates depth curves, splits cells at shape boundaries, lumps domains by endpoint and derives polygon diameter. Source-bound resolver/replacement qualification remains to establish whether this entire intended parameterization is functionally supplied.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
       "capability_id": "SW431-MACRO-KINEMATIC",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
@@ -12064,20 +12734,6 @@
       "work_unit": "MC-MACROSUR01",
       "dependencies": [],
       "why_open": "Explicit additional owner composition is excluded from current A9/MIGMAC09 runtime admissions",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
-      "capability_id": "SW431-MACRO-POWM",
-      "work_unit": "MC-MACRO01",
-      "dependencies": [],
-      "why_open": "Standard bounded route/isolated component presence does not establish this selector production envelope",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12242,10 +12898,10 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-SW-MANAGEMENT",
+      "capability_id": "SW431-SW-DRAIN-FEEDBACK",
       "work_unit": "MC-SW01",
       "dependencies": [],
-      "why_open": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics",
+      "why_open": "The existing restricted surface-water primitive consumes configured nonnegative secondary_drainage_rate. Its actual runtime call does not derive that carrier from the accepted solver drainage receipt or return updated storage level as the next native drainage basis. Primitive admission is preserved; the native shared-carrier feedback binding is missing.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12253,7 +12909,21 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-SW-MANAGEMENT",
+      "work_unit": "MC-SW01",
+      "dependencies": [],
+      "why_open": "Source automatic-weir target depends on groundwater/air-volume/sensor phases, accepted adjustment periods and maximum drop rate using previous wlstar. Current restricted owner persists storage only and has fixed weir_head; no automatic-target state/dispatcher exists.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SW-MULTILEVEL",
@@ -12287,7 +12957,7 @@
       "capability_id": "SW431-SW-QHR2",
       "work_unit": "MC-SW01",
       "dependencies": [],
-      "why_open": "Admitted fixed-weir power rating does not establish arbitrary legacy QQHTAB/HQHTAB rating. Ribasim replacement must preserve actual rating/storage and exchange semantics.",
+      "why_open": "Current fixed-weir parameters contain rating_coefficient/exponent only and rating_rate is a power function. There are no QH discharge knots or current table-rating operator; source SWQHR2 uses fun_qhtab including automatic capacity and level/storage solve.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12295,13 +12965,27 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-SW-SIGNED",
+      "work_unit": "MC-SW01",
+      "dependencies": [],
+      "why_open": "B1.11 permits signed qdrd in storage balance, including falling-dry/supply branches. Current primitive and backend configuration explicitly reject secondary_drainage_rate<0 (held-signed-route). The signed surface-water donor envelope is missing, independent of the already admitted external-head drainage infiltration operator.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-SW-TOPRUNOFF",
       "work_unit": "MC-SW01",
       "dependencies": [],
-      "why_open": "Restricted fixed-weir and single-level Ribasim profile do not prove the complete legacy option; same-store replacement must demonstrate physical semantics",
+      "why_open": "Source runots enters the WLEVBAL storage balance. Current surface-water forcing contains only secondary_drainage_rate and supply_capacity_rate; the runtime calls it unchanged from configured forcing, with no accepted Richards runoff receipt binding.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12309,7 +12993,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-ANALYTIC",
@@ -12466,6 +13150,20 @@
       "implementation_absence_proven": true
     },
     {
+      "capability_id": "SW431-CROP-ANNUAL",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "WOFOST81 is admitted against a separately modified 13B donor, not the bundled literal B1.11 crop equations. B1.11 uses DVS-dependent AMAXTB and older N/stress contracts; current81 uses leaf-N assimilation. Decide and demonstrate functional replacement, or qualify a separate source annual-crop envelope. Do not infer literal coverage from the shared SWAP431 label.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
       "capability_id": "SW431-CROP-CO2",
       "work_unit": "MC-CROP01",
       "dependencies": [],
@@ -12525,7 +13223,7 @@
       "capability_id": "SW431-CROP-ROOTGROW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition",
+      "why_open": "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12533,7 +13231,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-ROTATION",
@@ -12595,7 +13293,21 @@
       "capability_id": "SW431-NUT-MINERAL",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-NUT-NFIX",
+      "work_unit": "MC-NUT01",
+      "dependencies": [],
+      "why_open": "WOFOST81 fixation code and persistent nfix_total are present and component-tested, but the literal B1.11 wofostnut demand uses only vegetative deficits and DVS<DVSNLT plus RELTR>.01. WOFOST81 request includes new-growth/storage demand and lacks that old cutoff. Nonzero runtime qualification alone cannot establish source equivalence; explicit functional replacement/adjudication of these gates is required.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12609,7 +13321,7 @@
       "capability_id": "SW431-NUT-ORGANIC",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12617,7 +13329,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
@@ -12642,7 +13354,7 @@
       "dependencies": [
         "SW431-CROP-ROOTGROW"
       ],
-      "why_open": "Empirical/physical uptake oxygen admissions do not establish oxygen-controlled root growth",
+      "why_open": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -12650,23 +13362,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
-    },
-    {
-      "capability_id": "SW431-ROOT-DENSITY",
-      "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-CROP-ROOTGROW"
-      ],
-      "why_open": "Separate root-biomass distribution lifecycle; needs typed crop/root state ownership",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-FROST-DIV-MULTI",
@@ -12787,6 +13483,38 @@
       "implementation_absence_proven": false
     },
     {
+      "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-ROOT-DENSITY"
+      ],
+      "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-MACRO-POWM",
+      "work_unit": "MC-MACRO01",
+      "dependencies": [
+        "SW431-MACRO-GEOMETRY"
+      ],
+      "why_open": "SWPOWM changes only the static IC-frequency integral exponent Pm=1/PowM below SPoint, not a rate dispatcher. The runtime accepts resolved static_volume_cp/domain_fraction/potential_bottom_domain, but equivalence of the full source depth-curve mapping and topology must be demonstrated; accepting generic arrays alone does not establish that mapping.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
       "capability_id": "SW431-MACRO-RUNON",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [
@@ -12873,7 +13601,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12881,7 +13609,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -12889,7 +13617,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12897,7 +13625,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-DENIT",
@@ -12906,7 +13634,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12914,7 +13642,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-NITRIF",
@@ -12922,7 +13650,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12930,7 +13658,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -12938,7 +13666,7 @@
       "dependencies": [
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12946,7 +13674,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-NUT-TRANSPORT",
@@ -12954,7 +13682,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
+      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -12962,7 +13690,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TILL-REDIST",
@@ -13000,22 +13728,6 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-NUT-NFIX",
-      "work_unit": "MC-NUT01",
-      "dependencies": [
-        "SW431-NUT-CROP"
-      ],
-      "why_open": "SWAP431 executable calls SoilManagement and WOFOST Soil-N; N-unlimited crop admission is not a replacement; separate migrate/ANIMO replacement/rejection authority needed",
-      "priority": {
-        "dependency_depth": 2,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
     }
   ],
   "audit_state": "IN_PROGRESS_DENOMINATOR_AND_ADMISSION_REVIEW",
@@ -13051,5 +13763,28 @@
     "open_pr_count": 114,
     "recent_merged_since_20261005_count": 55,
     "historical_bounded_snapshot": "integration/audits/evidence/SWAP431_OPEN_PR_SNAPSHOT.json"
-  }
+  },
+  "swap5_admitted_foundations": [
+    {
+      "foundation_id": "SW5-CROP-WOF81",
+      "current_disposition": "ADMITTED",
+      "meaning": "Canonically admitted WOFOST81 crop-owned potential-production/N-unlimited owner, separate from literal B1.11 crop-equation coverage.",
+      "implementation_authority": [
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
+      ],
+      "evidence": [
+        "docs/science/wofost-crop-coupling.md",
+        "tests/fwof/pp01/MAPPING_CONTRACT.md",
+        "integration/f-wof/F-WOF-PP01_CHECKPOINT.json",
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
+      ],
+      "donor_archive_sha256": "4e0bf97bca7f3f8716e5bcf46a5dc9bb6b08436304b032d60adc3757491d94dc",
+      "donor_archive": "SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip",
+      "restrictions": [
+        "Ten Spring Barley potential-production cases; N-unlimited; RD/TRA outside crop equivalence; event atomicity"
+      ],
+      "does_not_establish": "Literal B1.11 AMAXTB crop model, old DVSNLT/vegetative N-demand gates or general Soil-N coupling."
+    }
+  ],
+  "foundation_policy": "swap5_admitted_foundations are nonblocking implementation/admission anchors outside the legacy capability denominator; their existence does not dispose a B1.11 source capability."
 }

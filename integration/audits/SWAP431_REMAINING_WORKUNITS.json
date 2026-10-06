@@ -26,17 +26,24 @@
         "SW431-ROOT-DENSITY",
         "SW431-ROOT-ANAE-GROW",
         "SW431-CROP-ATTAINABLE",
-        "SW431-CROP-FIXED-THERMAL"
+        "SW431-CROP-FIXED-THERMAL",
+        "SW431-CROP-ANNUAL",
+        "SW431-CROP-ROOTGROW-DVS",
+        "SW431-CROP-ROOTGROW-BIOMASS",
+        "SW431-CROP-ROOTGROW-WATER",
+        "SW431-CROP-ROOTGROW-SUPPLY",
+        "SW431-ROOT-LRV-CONSTANT"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Adjudicate annual-crop functional replacement against actual B1.11 AMAXTB/phenology rather than the separate13B donor; then trace remaining fixed/soy/grass/root/management slices.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
-        "SW431-CROP-ROOTGROW"
+        "SW431-CROP-ROOTGROW",
+        "SW431-ROOT-DENSITY"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -211,13 +218,16 @@
         "SW431-MACRO-POWM",
         "SW431-MACRO-DARCY",
         "SW431-MACRO-SORP1",
-        "SW431-MACRO-SEP1"
+        "SW431-MACRO-SEP1",
+        "SW431-MACRO-GEOMETRY"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "internal_sequence_dependencies": [],
+      "internal_sequence_dependencies": [
+        "SW431-MACRO-GEOMETRY"
+      ],
       "closed_foundation_authorities": []
     },
     {
@@ -303,12 +313,11 @@
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
-        "SW431-NUT-CROP",
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
       "closed_foundation_authorities": [
-        "SW431-CROP-WOF81"
+        "SW5-CROP-WOF81"
       ]
     },
     {
@@ -369,7 +378,9 @@
         "SW431-SW-PRIMARY",
         "SW431-SW-MULTILEVEL",
         "SW431-SW-TOPRUNOFF",
-        "SW431-SW-QHR2"
+        "SW431-SW-QHR2",
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,

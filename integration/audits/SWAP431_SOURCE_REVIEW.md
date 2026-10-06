@@ -181,3 +181,27 @@ TASK4 is not discarded as plumbing: source scales gird and dt_irr_event by F_IRR
 ## Actual remaining dependencies
 
 Already admitted foundations are recorded as nonblocking closed_foundation_authorities rather than remaining dependencies. Queue depth is recomputed from only unresolved capability edges. Internal sequencing is separate from external workunit dependencies. Source-bound additions include runon before macropore runon, tillage events before consolidation/redistribution, mineral/organic inventories before amendment/residue coupling, soil supply before crop-N limitation, and sensor TCS7/8 before concentration-threshold excess irrigation. Legacy irrigation initializes SWCIRRTHRES only within TCS7/8 (irrigation.f90:279..302); tillage event/consolidation precedes hydraulic/water adaptation (tillage.f90:160..190). No closed admission is treated as a blocker.
+
+## Static macropore geometry authority
+
+SWPOWM belongs to macropore.f90 initialization (349), not macrorate.f90. It replaces PowM with its reciprocal below SPoint in the IC-frequency integral. Both the default depth-curve geometry and this alternate curve are explicit reviews. Typed runtime inputs carry resolved static capacity, domain fractions, endpoints and diameter, while legacy initialization integrates curves, temporarily splits cells and lumps IC domains. A generic array interface is evidence of a possible replacement route, not yet source-mapping/admission evidence. Existing dynamic shrinkage and covering admissions remain closed in their own envelopes.
+
+## Soil-N ownership versus crop fixation
+
+The actual WOFOST81 transaction supplies its full soil_request (334..347), preserving the admitted N-unlimited route. Crop N state/formulas exist, but no canonical production SoilManagement/Wofost_Soil* inventory/rate owner supplies the source organic/mineral transformations, amendment/residue, NH4/NO3 transport or limited soil-crop exchange. These eight entries have confirmed missing owner/binding evidence.
+
+Biological fixation is different: mod_wofost81_nitrogen implements rnfixation and nfix_total, and PP02 component tests use nfix_fr=.2. Fullseason/PP03 runtime qualification uses0. Nonzero current81 admission is one review axis; the source-lineage correction below adds the distinct old vegetative-demand/DVSNLT gate replacement decision. Do not label the current81 fixation component absent or assume its nonzero runtime test would settle old source equivalence.
+
+## WOFOST source lineage correction
+
+F-WOF-PP01 MAPPING_CONTRACT explicitly pins SWAP_4.3.1_WOFOST81_WORKING_FINAL_13B.zip (4e0bf97b...) as its donor, distinct from the bundled B0/B1.11 authority (distribution2b48353d..., manifest24ce2768...). Literal B1.11 wofost.f90 uses AMAXTB(DVS); current WOFOST81 uses leaf-N assimilation. Literal wofostnut demand excludes storage/growth increments and gates fixation/soil uptake by DVS<DVSNLT and RELTR>.01; the current81 request differs. Current81 admission is preserved as SW5-CROP-WOF81 outside the legacy denominator. The B1.11 annual-crop entry is ACTIVE_MIGRATION for explicit replacement/source qualification; no historical WOFOST81 admission is reopened. Nonzero current81 fixation testing alone would not close the old gate semantics.
+
+## Root extension and density subselectors
+
+SWRD1 is a stateless DVS-to-depth table with rdm cap; SWRD3 uses WRTPOT/WRT and is prohibited with the simple crop. Their typed profile replacement mappings still need qualification. SWRD2 owns continued rd/rdpot/rr and gates growth by transpiration/root assimilates. SWDMI2RD0 keeps the daily maximum-rate increment,1 scales by IQROT/IPTRA, and2 applies minimum/drought-response and deepest-node biomass supply limits. These three continued growth routes are explicit production gaps. SWWRTNONOX gates actual SWRD2 only, not every root-depth option. Adaptive SWRDC1 node biomass and the independent SWLRVCONSTANT length-density override are separate entries.
+
+## Surface-water primitive versus native shared carriers
+
+The restricted fixed-weir owner remains ADMITTED with configured nonnegative drainage forcing, power-law discharge, supply and storage/restart. Its backend call passes that forcing unchanged; it does not take the just-accepted soil drainage receipt or feed its updated level into a native drain basis. Native drain/store feedback is an explicit gap. Signed qdrd is executable source storage depletion, but current provider rejects it as held-signed-route. Runoff is a separate source carrier absent from current forcing/binding. Automatic groundwater/air-volume/sensor target management and QH table rating also lack current owner fields/operators. These are not inferred admitted from the primitive.
+
+WLSBAK/OSSWLM is a four-call numerical oscillation/timestep heuristic, not physical hydraulic history; it is NOT_APPLICABLE. Persistent automatic-target wlstar history is physical management state and remains in scope.
