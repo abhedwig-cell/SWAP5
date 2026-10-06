@@ -2795,29 +2795,6 @@ contains
         ! Actual negative-temperature Bartholomeus composition is separate scope.
         ok=ok.and..not.allocated(parameters%bartholomeus)
       end if
-      if (allocated(parameters%micro_de_willigen)) then
-        ok = ok .and. parameters%root_extraction_active .and. &
-             self%soil_water_selection%uses_reference() .and. &
-             numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE .and. &
-             self%temporal_indicator_history_enabled .and. &
-             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
-             parameters%root_compensation%method == ROOT_COMP_OFF .and. &
-             parameters%micro_de_willigen%oxygen_mode == 0 .and. &
-             .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
-    logical :: micro_tables_ok
-             .not. allocated(parameters%bartholomeus) .and. .not. self%rutter_active .and. &
-             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
-             .not. parameters%frost_active .and. .not. parameters%soil_temperature_active .and. &
-             .not. parameters%elasticity_active .and. .not. parameters%direct_retention_active .and. &
-             .not. parameters%ksatexm_extension_active .and. .not. parameters%hysteresis_active .and. &
-             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%drainage_response_active .and. &
-             .not. self%fixed_weir_surface_water_active
-        if (allocated(parameters%micro_horizon_first_node)) then
-          ok = ok .and. fmr_micro_horizon_map_valid(parameters%micro_horizon_first_node,parameters%active_nodes)
-        end if
-      else
-        ok = ok .and. .not. allocated(parameters%micro_horizon_first_node)
-      end if
       if (parameters%black_evaporation_active) then
         ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
              .not. self%boesten_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
@@ -2873,19 +2850,6 @@ contains
       end if
       if(allocated(parameters%bartholomeus)) then
         ok=ok .and. valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)
-      if (allocated(self%micro_de_willigen)) deallocate(self%micro_de_willigen)
-      if (allocated(self%micro_tables)) deallocate(self%micro_tables)
-      if (allocated(self%micro_horizon_first_node)) deallocate(self%micro_horizon_first_node)
-      if (allocated(parameters%micro_de_willigen)) then
-        self%micro_de_willigen = parameters%micro_de_willigen
-        if (allocated(parameters%micro_horizon_first_node)) then
-          self%micro_horizon_first_node = parameters%micro_horizon_first_node
-          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok, &
-               self%micro_horizon_first_node)
-        else
-          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
-        end if
-      end if
         call select_fmr_bartholomeus_route(parameters%bartholomeus%selection,oxygen_route,waterfilm_mode)
         if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
           ok=ok .and. parameters%root_extraction_active .and. parameters%soil_temperature_active .and. &
@@ -2898,6 +2862,28 @@ contains
           ok=ok .and. matches_bartholomeus_hydraulic_owner(parameters%bartholomeus,parameters%cofgen,parameters%dz)
         end if
       end if
+      if (allocated(parameters%micro_de_willigen)) then
+        ok = ok .and. parameters%root_extraction_active .and. &
+             self%soil_water_selection%uses_reference() .and. &
+             numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE .and. &
+             self%temporal_indicator_history_enabled .and. &
+             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+             parameters%root_compensation%method == ROOT_COMP_OFF .and. &
+             parameters%micro_de_willigen%oxygen_mode == 0 .and. &
+             .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
+             .not. allocated(parameters%bartholomeus) .and. .not. self%rutter_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%drainage_response_active .and. &
+             .not. self%fixed_weir_surface_water_active
+        if (allocated(parameters%micro_horizon_first_node)) then
+          ok = ok .and. fmr_micro_horizon_map_valid(parameters%micro_horizon_first_node,parameters%active_nodes)
+        end if
+      else
+        ok = ok .and. .not. allocated(parameters%micro_horizon_first_node)
+      end if
     class default
       ok = .false.
     end select
@@ -2908,6 +2894,7 @@ contains
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     integer :: n
+    logical :: micro_tables_ok
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
@@ -2976,6 +2963,19 @@ contains
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%root_salinity_active = parameters%root_salinity_active
+      if (allocated(self%micro_de_willigen)) deallocate(self%micro_de_willigen)
+      if (allocated(self%micro_tables)) deallocate(self%micro_tables)
+      if (allocated(self%micro_horizon_first_node)) deallocate(self%micro_horizon_first_node)
+      if (allocated(parameters%micro_de_willigen)) then
+        self%micro_de_willigen = parameters%micro_de_willigen
+        if (allocated(parameters%micro_horizon_first_node)) then
+          self%micro_horizon_first_node = parameters%micro_horizon_first_node
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok, &
+               self%micro_horizon_first_node)
+        else
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
+        end if
+      end if
       if(allocated(self%mobile_dispersion))deallocate(self%mobile_dispersion)
       if(allocated(parameters%mobile_dispersion))self%mobile_dispersion=parameters%mobile_dispersion
       self%solute_tscf = parameters%solute_tscf
@@ -3015,29 +3015,6 @@ contains
       self%frost_hydraulic = parameters%frost_hydraulic
       if (self%frost_active) then
         if (.not. associated(self%frost_constitutive)) allocate(self%frost_constitutive)
-      end if
-      if (allocated(self%micro_de_willigen)) then
-        if (.not. self%root_extraction_active .or. .not. allocated(self%micro_tables)) return
-        if (.not. allocated(forcing%micro_root_length_density)) return
-        if (size(forcing%micro_root_length_density) /= n) return
-        if (forcing%micro_rooted_nodes < 0 .or. forcing%micro_rooted_nodes > n) return
-        if (any(.not. ieee_is_finite(forcing%micro_root_length_density))) return
-        if (any(forcing%micro_root_length_density < 0.0_real64)) return
-        if (any(forcing%root_extraction_sink /= 0.0_real64)) return
-        if (allocated(forcing%root_potential_sink) .or. forcing%root_drought_reduction_total /= 0.0_real64) return
-        if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_salinity_active .or. &
-            self%root_frost%active .or. allocated(self%bartholomeus) .or. self%rutter_active) return
-        if (self%micro_de_willigen%oxygen_mode /= 0) return
-        if (forcing%micro_rooted_nodes > 1 .and. .not. allocated(self%micro_horizon_first_node)) then
-          if (any(self%hydraulic_parameters%cofgen(1:24,2:forcing%micro_rooted_nodes) /= &
-              spread(self%hydraulic_parameters%cofgen(1:24,1),2,forcing%micro_rooted_nodes-1))) return
-        end if
-        self%micro_rooted_nodes = forcing%micro_rooted_nodes
-        self%micro_root_length_density = forcing%micro_root_length_density
-      else
-        if (allocated(forcing%micro_root_length_density) .or. forcing%micro_rooted_nodes /= 0) return
-        if (allocated(self%micro_root_length_density)) deallocate(self%micro_root_length_density)
-        self%micro_rooted_nodes = 0
       end if
       self%black_evaporation_active = parameters%black_evaporation_active
       self%black_evaporation_parameters = black_evaporation_parameters_t()
@@ -3131,6 +3108,29 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. self%root_extraction_active .or. .not. allocated(self%micro_tables)) return
+        if (.not. allocated(forcing%micro_root_length_density)) return
+        if (size(forcing%micro_root_length_density) /= n) return
+        if (forcing%micro_rooted_nodes < 0 .or. forcing%micro_rooted_nodes > n) return
+        if (any(.not. ieee_is_finite(forcing%micro_root_length_density))) return
+        if (any(forcing%micro_root_length_density < 0.0_real64)) return
+        if (any(forcing%root_extraction_sink /= 0.0_real64)) return
+        if (allocated(forcing%root_potential_sink) .or. forcing%root_drought_reduction_total /= 0.0_real64) return
+        if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_salinity_active .or. &
+            self%root_frost%active .or. allocated(self%bartholomeus) .or. self%rutter_active) return
+        if (self%micro_de_willigen%oxygen_mode /= 0) return
+        if (forcing%micro_rooted_nodes > 1 .and. .not. allocated(self%micro_horizon_first_node)) then
+          if (any(self%hydraulic_parameters%cofgen(1:24,2:forcing%micro_rooted_nodes) /= &
+              spread(self%hydraulic_parameters%cofgen(1:24,1),2,forcing%micro_rooted_nodes-1))) return
+        end if
+        self%micro_rooted_nodes = forcing%micro_rooted_nodes
+        self%micro_root_length_density = forcing%micro_root_length_density
+      else
+        if (allocated(forcing%micro_root_length_density) .or. forcing%micro_rooted_nodes /= 0) return
+        if (allocated(self%micro_root_length_density)) deallocate(self%micro_root_length_density)
+        self%micro_rooted_nodes = 0
+      end if
       if (self%rutter_active) then
         if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
             .not. forcing%rutter%source_window%valid()) return
@@ -3530,7 +3530,6 @@ contains
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
     type(soil_water_solve_request_t), intent(in) :: request
-    type(micro_de_willigen_result_t) :: micro_result
     type(soil_water_solve_result_t), intent(in) :: solve_result
     type(trial_outcome_t), intent(inout) :: outcome
     logical, intent(out) :: ok
@@ -3636,6 +3635,7 @@ contains
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
+    type(micro_de_willigen_result_t) :: micro_result
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
     real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:),salinity_storage_thickness(:)
     real(real64),allocatable :: trace_macro_water_start(:,:)
@@ -3759,18 +3759,6 @@ contains
       call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
            self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
            rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
-      if (allocated(self%micro_de_willigen)) then
-        if (.not. allocated(self%micro_root_length_density) .or. .not. allocated(self%micro_tables)) return
-        if (size(physical%pressure_head) /= physical%active_nodes) return
-        call evaluate_micro_de_willigen(self%micro_de_willigen, physical%pressure_head, self%soil_parameters%dz, &
-             self%micro_root_length_density, spread(1.0_real64,1,physical%active_nodes), &
-             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result)
-        if (micro_result%status /= MICRO_DW_OK) return
-        self%qrot = micro_result%root_extraction_sink
-        self%root_potential_sink = micro_result%potential_root_sink
-        self%root_drought_reduction_total = max(0.0_real64, &
-             self%root_potential_transpiration-micro_result%actual_uptake_total)
-      end if
            self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
            self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day, &
            self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
@@ -3853,6 +3841,27 @@ contains
       self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
     end if
     request%numerical%max_iterations = self%max_iterations
+          if(self%frost_divdra_active)then
+            if(allocated(physical%salt))return
+            call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
+            if(.not.hydraulic_view_ok)return
+            call evaluate_legacy_bracketed_frost_geometry(frost_thermal%temperature_c, &
+                 self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+                 self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+                 self%soil_parameters%z,self%soil_parameters%node_distance,self%last_observation%frost_divdra_geometry)
+            self%last_observation%frost_divdra_raw_scalar=self%frost_divdra_scalar_cm_per_day
+            self%last_observation%frost_divdra_start_gwl=hydraulic_start%groundwater_level
+            if(.not.self%last_observation%frost_divdra_geometry%available)return
+            call compose_single_level_signed_frost_divdra(self%frost_divdra,hydraulic_start,frost_factors, &
+                 self%last_observation%frost_divdra_geometry%deepest_node, &
+                 self%last_observation%frost_divdra_geometry%bottom_depth_cm, &
+                 physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                 self%frost_divdra_scalar_cm_per_day,effective_bottom_flux,self%last_observation%frost_divdra)
+            self%last_observation%frost_divdra_executed=.true.
+            if(.not.self%last_observation%frost_divdra%available)return
+            self%qdra(1,:)=self%last_observation%frost_divdra%final_nodal_sink
+            request%boundary%bottom_flux=self%last_observation%frost_divdra%final_bottom
+          else if(self%frost_drainage%active)then
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
     request%numerical%conductivity_mean_method = self%swkmean
@@ -3876,6 +3885,18 @@ contains
     class is (fmr_b110_physical_state_t)
       if (physical%active_nodes /= self%soil_parameters%active_nodes .or. .not. allocated(physical%pressure_head) .or. &
           .not. allocated(physical%water_content)) return
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. allocated(self%micro_root_length_density) .or. .not. allocated(self%micro_tables)) return
+        if (size(physical%pressure_head) /= physical%active_nodes) return
+        call evaluate_micro_de_willigen(self%micro_de_willigen, physical%pressure_head, self%soil_parameters%dz, &
+             self%micro_root_length_density, spread(1.0_real64,1,physical%active_nodes), &
+             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result)
+        if (micro_result%status /= MICRO_DW_OK) return
+        self%qrot = micro_result%root_extraction_sink
+        self%root_potential_sink = micro_result%potential_root_sink
+        self%root_drought_reduction_total = max(0.0_real64, &
+             self%root_potential_transpiration-micro_result%actual_uptake_total)
+      end if
       if (self%snow_active) then
         if (.not. allocated(physical%snow) .or. .not. self%snow_event_prepared) return
         if (.not. physical%snow%event_applied .or. .not. same_real_bits(physical%snow%event_t0, self%snow_outer_t0)) then
@@ -4006,27 +4027,7 @@ contains
           if (frost_status /= FROST_EFFECT_OK) return
           self%last_observation%frost_factor_min = minval(frost_factors)
           self%last_observation%frost_factor_max = maxval(frost_factors)
-          if(self%frost_divdra_active)then
-            if(allocated(physical%salt))return
-            call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
-            if(.not.hydraulic_view_ok)return
-            call evaluate_legacy_bracketed_frost_geometry(frost_thermal%temperature_c, &
-                 self%soil_temperature_forcing%prescribed_surface_temperature_c, &
-                 self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
-                 self%soil_parameters%z,self%soil_parameters%node_distance,self%last_observation%frost_divdra_geometry)
-            self%last_observation%frost_divdra_raw_scalar=self%frost_divdra_scalar_cm_per_day
-            self%last_observation%frost_divdra_start_gwl=hydraulic_start%groundwater_level
-            if(.not.self%last_observation%frost_divdra_geometry%available)return
-            call compose_single_level_signed_frost_divdra(self%frost_divdra,hydraulic_start,frost_factors, &
-                 self%last_observation%frost_divdra_geometry%deepest_node, &
-                 self%last_observation%frost_divdra_geometry%bottom_depth_cm, &
-                 physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
-                 self%frost_divdra_scalar_cm_per_day,effective_bottom_flux,self%last_observation%frost_divdra)
-            self%last_observation%frost_divdra_executed=.true.
-            if(.not.self%last_observation%frost_divdra%available)return
-            self%qdra(1,:)=self%last_observation%frost_divdra%final_nodal_sink
-            request%boundary%bottom_flux=self%last_observation%frost_divdra%final_bottom
-          else if(self%frost_drainage%active)then
+          if(self%frost_drainage%active)then
             if(allocated(physical%salt).or..not.allocated(self%unfrozen_drainage_flux))return
             if(self%frost_low_air_drainage%active)then
               call compose_legacy_bracketed_frost_drainage(frost_thermal%temperature_c, &
@@ -4466,6 +4467,12 @@ contains
     else
       outcome%headcalc_calls = 1
     end if
+    if(self%frost_divdra_active)then
+      ! This is provenance of the existing nodal accounting above, not a second ledger.
+      self%last_observation%frost_divdra_trial_duration=step_duration
+      self%last_observation%frost_divdra_signed_exchange_native=sum(self%qdra)*step_duration
+      self%last_observation%frost_divdra_mass_accounted_in_trial=.true.
+    end if
     outcome%jacobian_builds = solve_result%diagnostics%jacobian_builds
     outcome%linear_solves = solve_result%diagnostics%linear_solves
     outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
@@ -4619,12 +4626,6 @@ contains
     if(self%rfm_configuration%enabled)then
       outcome%mass_in=outcome%mass_in+rfm_preferential_input_cm
       outcome%mass_out=outcome%mass_out+rfm_deep_receipt_cm
-    end if
-    if(self%frost_divdra_active)then
-      ! This is provenance of the existing nodal accounting above, not a second ledger.
-      self%last_observation%frost_divdra_trial_duration=step_duration
-      self%last_observation%frost_divdra_signed_exchange_native=sum(self%qdra)*step_duration
-      self%last_observation%frost_divdra_mass_accounted_in_trial=.true.
     end if
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
@@ -5062,6 +5063,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, macropore_accepted_top_cm, &
          macropore_rapid_outflow_cm
+    if(self%frost_divdra_active)then
+      value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
+      return
+    end if
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
@@ -5212,10 +5217,6 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
-    if(self%frost_divdra_active)then
-      value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
-      return
-    end if
     if(self%frost_low_air_drainage%active)then
       value=fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state)
       return
@@ -5319,45 +5320,6 @@ contains
     end if
   end function fmr_serialized_temporal_identity
 
-  real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
-    class(fmr_serialized_reference_model_t),intent(in)::self
-    class(transaction_state_t),intent(in)::full_state,half_state
-    real(real64),allocatable::tf(:),th(:)
-    real(real64)::head_error,temperature_error
-    integer::status,n
-    value=huge(0.0_real64)
-    if(self%root_frost_head_budget_cm<=0.0_real64.or.self%root_frost_temperature_budget_c<=0.0_real64) return
-    select type(full=>full_state)
-    type is(fmr_b110_physical_state_t)
-      select type(half=>half_state)
-      type is(fmr_b110_physical_state_t)
-        n=full%active_nodes
-        if(n<=0.or.half%active_nodes/=n) return
-        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
-        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
-        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
-        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
-        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
-        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
-        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
-        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
-        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
-        if(status/=SOIL_TEMP_OK) return
-        call copy_soil_temperature_profile(half%soil_temperature,th,status)
-        if(status/=SOIL_TEMP_OK) return
-        if(size(tf)/=n.or.size(th)/=n) return
-        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
-        ! A full/half disagreement across the empirical cutoff requires refinement.
-        if(any((tf(:self%root_frost%rooted_nodes)<0.0_real64).neqv. &
-             (th(:self%root_frost%rooted_nodes)<0.0_real64))) return
-        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
-             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
-        temperature_error=maxval(abs(tf-th))
-        value=max(head_error/self%root_frost_head_budget_cm,temperature_error/self%root_frost_temperature_budget_c)
-      end select
-    end select
-  end function fmr_root_frost_temporal_error
-
   real(real64) function fmr_frost_divdra_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self
     class(transaction_state_t),intent(in)::full_state,half_state
@@ -5421,6 +5383,45 @@ contains
       if(result%available)status=0
     end subroutine regenerate
   end function fmr_frost_divdra_temporal_error
+
+  real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:)
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%root_frost_head_budget_cm<=0.0_real64.or.self%root_frost_temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        ! A full/half disagreement across the empirical cutoff requires refinement.
+        if(any((tf(:self%root_frost%rooted_nodes)<0.0_real64).neqv. &
+             (th(:self%root_frost%rooted_nodes)<0.0_real64))) return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%root_frost_head_budget_cm,temperature_error/self%root_frost_temperature_budget_c)
+      end select
+    end select
+  end function fmr_root_frost_temporal_error
 
   real(real64) function fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self
