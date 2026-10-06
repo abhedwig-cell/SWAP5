@@ -16,6 +16,18 @@ module mod_fmr_macropore_top_input
   end type fmr_macropore_top_input_forcing_t
 
   public :: prepare_fmr_macropore_top_input
+  public :: fmr_macropore_pond_donor_request_t, evaluate_fmr_macropore_pond_donor
+
+  type, public :: fmr_macropore_pond_donor_request_t
+    real(real64) :: no_macro_ponding_depth_cm = 0.0_real64
+    real(real64) :: direct_macro_input_cm = 0.0_real64
+    real(real64) :: threshold_cm = 0.0_real64
+    real(real64) :: resistance_day = 0.0_real64
+    real(real64) :: coupled_denominator = 1.0_real64
+    real(real64) :: available_surface_water_cm = 0.0_real64
+  contains
+    procedure, public :: valid => fmr_macropore_pond_donor_request_valid
+  end type fmr_macropore_pond_donor_request_t
 
 contains
 
@@ -99,5 +111,41 @@ contains
 
     ok = .true.
   end subroutine prepare_fmr_macropore_top_input
+
+  pure logical function fmr_macropore_pond_donor_request_valid(self) result(ok)
+    class(fmr_macropore_pond_donor_request_t), intent(in) :: self
+    real(real64) :: values(6)
+
+    values = [self%no_macro_ponding_depth_cm, self%direct_macro_input_cm, self%threshold_cm, &
+         self%resistance_day, self%coupled_denominator, self%available_surface_water_cm]
+    ok = all(ieee_is_finite(values)) .and. all(values >= 0.0_real64)
+    if (.not. ok) return
+    ok = self%coupled_denominator > 0.0_real64
+  end function fmr_macropore_pond_donor_request_valid
+
+  pure subroutine evaluate_fmr_macropore_pond_donor(request, requested_lateral_cm, ok)
+    type(fmr_macropore_pond_donor_request_t), intent(in) :: request
+    real(real64), intent(out) :: requested_lateral_cm
+    logical, intent(out) :: ok
+    real(real64) :: excess, potential
+
+    requested_lateral_cm = 0.0_real64
+    ok = .false.
+    if (.not. request%valid()) return
+    if (request%resistance_day <= 0.0_real64) then
+      ok = request%no_macro_ponding_depth_cm <= request%threshold_cm
+      return
+    end if
+
+    excess = request%no_macro_ponding_depth_cm + request%direct_macro_input_cm - request%threshold_cm
+    if (excess <= 0.0_real64) then
+      ok = .true.
+      return
+    end if
+
+    potential = excess / (request%resistance_day * request%coupled_denominator)
+    requested_lateral_cm = min(request%available_surface_water_cm, max(0.0_real64, potential))
+    ok = ieee_is_finite(requested_lateral_cm)
+  end subroutine evaluate_fmr_macropore_pond_donor
 
 end module mod_fmr_macropore_top_input
