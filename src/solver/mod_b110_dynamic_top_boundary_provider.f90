@@ -41,6 +41,9 @@ module mod_b110_dynamic_top_boundary_provider
     real(real64) :: ponding_max_cm = 0.0_real64
     real(real64) :: runoff_resistance_day = 0.0_real64
     real(real64) :: runoff_exponent = 1.0_real64
+    logical :: external_surface_water_head_supplied = .false.
+    real(real64) :: external_surface_water_head_cm = 0.0_real64
+    real(real64) :: external_flooding_sill_head_cm = 0.0_real64
     ! Legacy explicit-conductivity (SWKIMPL=0) keeps the time-level-t top-node
     ! conductivity fixed during Newton iterations. The override is opt-in so
     ! existing dynamic-top callers retain their current semantics.
@@ -81,7 +84,7 @@ contains
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
-    logical :: ok
+    logical :: ok, external_active
 
     result = b110_dynamic_top_boundary_result_t()
 
@@ -158,6 +161,38 @@ contains
          result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day
     q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day
     result%net_potential_surface_flux_cm_per_day = q0
+
+    ! External flooding is a strict imposed-head route. In the bounded first
+    ! profile local ponding before the solve is the accepted previous ponding.
+    external_active = request%external_surface_water_head_supplied .and. &
+         request%external_surface_water_head_cm > request%external_flooding_sill_head_cm .and. &
+         request%external_surface_water_head_cm > request%previous_ponding_depth_cm
+    if (external_active) then
+      if (k1_max <= 0.0_real64) then
+        result%status = B110_DYN_TOP_INVALID_INPUT
+        result%route = 'nonpositive-saturated-face-k'
+        return
+      end if
+      result%regime = B110_DYN_TOP_REGIME_HEAD
+      result%surface_head_cm = request%external_surface_water_head_cm
+      result%surface_face_conductivity_cm_per_day = k1_max
+      result%candidate_ponding_depth_cm = request%external_surface_water_head_cm
+      result%runoff_depth_cm = 0.0_real64
+      result%runoff_potential = .false.
+      result%surface_head_derivative_available = .true.
+      result%surface_head_dpressure_head_top = 0.0_real64
+      result%actual_top_flux_cm_per_day = -k1_max * &
+           ((result%surface_head_cm-request%pressure_head_top_cm)/top_distance + 1.0_real64)
+      if (.not. all_finite_result(result)) then
+        result = b110_dynamic_top_boundary_result_t()
+        result%status = B110_DYN_TOP_INVALID_INPUT
+        result%route = 'nonfinite-external-surface-water-result'
+        return
+      end if
+      result%status = B110_DYN_TOP_AVAILABLE
+      result%route = 'external-surface-water-head'
+      return
+    end if
 
     if (q1 >= 0.0_real64 .and. q1 > emax) then
       result%regime = B110_DYN_TOP_REGIME_HEAD
@@ -281,6 +316,10 @@ contains
     if (request%potential_pond_evaporation_cm_per_day < 0.0_real64) return
     if (request%ponding_max_cm < 0.0_real64) return
     if (request%runoff_resistance_day < 0.0_real64) return
+    if (request%external_surface_water_head_supplied) then
+      if (.not. ieee_is_finite(request%external_surface_water_head_cm) .or. &
+          .not. ieee_is_finite(request%external_flooding_sill_head_cm)) return
+    end if
     if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
       if (.not. ieee_is_finite(request%fixed_top_node_conductivity_cm_per_day)) return
       if (request%fixed_top_node_conductivity_cm_per_day < 0.0_real64) return

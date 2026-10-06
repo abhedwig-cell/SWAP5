@@ -1,0 +1,25 @@
+name: SW-RIB-TOP02 external-head qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/fapp/test_sw_rib_top02_external_head.f90'
+      - 'tests/fapp/run_sw_rib_top02_external_head.sh'
+      - '.github/workflows/sw-rib-top02-external-head.yml'
+  workflow_dispatch:
+  push:
+    branches: [work/sw-rib-top02-external-head-candidate]
+    paths:
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'tests/fapp/test_sw_rib_top02_external_head.f90'
+      - 'tests/fapp/run_sw_rib_top02_external_head.sh'
+      - '.github/workflows/sw-rib-top02-external-head.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: TOP02 O0/O2
+        run: bash tests/fapp/run_sw_rib_top02_external_head.sh
