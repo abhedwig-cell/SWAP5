@@ -961,6 +961,12 @@ subroutine boundtop_state_bridge(task)
       end if
       call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
            evaluated_boundary_conditions, provider_dynamic_top_result)
+      if (evaluated_boundary_conditions%matrix_source_area_partition) then
+         call evaluation_context%macropore%set_candidate_pond_lateral( &
+              provider_dynamic_top_result%macropore_pond_requested_lateral_cm)
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
+      end if
       if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
            error stop 'HeadCalc: dynamic top-boundary provider unavailable'
       if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
