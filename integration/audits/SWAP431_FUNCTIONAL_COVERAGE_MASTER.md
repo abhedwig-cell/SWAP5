@@ -2,9 +2,9 @@
 
 Baseline: `e5eab995ef04fc813dd644025fb0f32e4f5050a1`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 212 entries: 78 bounded ADMITTED, 11 SUPERSEDED, 1 REJECTED, 16 NOT_APPLICABLE and 106 ACTIVE_MIGRATION entries across 19 review/migration workunits.
+The ledger currently contains 212 entries: 77 bounded ADMITTED, 11 SUPERSEDED, 1 REJECTED, 16 NOT_APPLICABLE and 107 ACTIVE_MIGRATION entries across 19 review/migration workunits.
 
-Only 32 entries are currently marked as proven missing production implementation/binding. The other 74 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+Only 38 entries are currently marked as proven missing production implementation/binding. The other 69 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
 
 The machine authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`.
 The exact source bundle and input-reader census are in `integration/audits/evidence/`.
@@ -28,6 +28,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-HYD-MODEL9 | Unimodal PDI normalized at finite dry-end head | MC-HYD01 | None |
 | SW431-HYD-POWER | Conductivity power-tail extension | MC-HYD01 | None |
 | SW431-HYD-TABLE | User-provided hydraulic relation tables | MC-HYD01 | None |
+| SW431-ROOT-OXYGEN-EMP | Empirical anaerobic/Feddes wet stress | MC-ROOT01 | None |
 | SW431-IRR-SSDI | Single-node or depth-interval subsurface drip irrigation | MC-IRR01 | SW431-IRR-TCS1 |
 | SW431-FROST-DIVDRA | Trial-start signed spatial redistribution with frost | PPA-WU05B19 | SW431-FROST-HYD |
 | SW431-HYD-RIA-VAPOR | RIA vapour/temperature-dependent conductivity and fitted dry-end relation | MC-HYD01 | SW431-HYD-MODEL12 |
@@ -38,6 +39,11 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 | SW431-ROOT-MICRO3 | de Willigen microscopic soil-root hydraulic extraction | MC-MICRO01 | SW431-HYD-MVG |
 | SW431-RUNOFF-NONLINEAR | Nonlinear surface-runoff power law and iterative ponding solution | MC-SUR01 | SW431-PONDING |
 | SW431-RUNON | Externally supplied lateral water entering soil surface | MC-SUR01 | SW431-PONDING |
+| SW431-TEMP-ANALYTIC | Analytical harmonic soil temperature | MC-HEAT01 | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BC3 | Specified thermal flux boundary | MC-HEAT01 | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BC4 | Surface temperature with heat-flux correction | MC-HEAT01 | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BOTTOM2 | Prescribed bottom temperature | MC-HEAT01 | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-SNOW | Snow thermal resistance coupled to sensible heat | MC-HEAT01 | SW431-TEMP-SENSIBLE |
 | SW431-TILL-CONSOL | Post-tillage consolidation history | MC-TILL01 | SW431-HYD-MVG |
 | SW431-TILL-EVENT | Tillage events modifying density and hydraulic relations | MC-TILL01 | SW431-HYD-MVG |
 | SW431-TILL-REDIST | Water redistribution after changing soil geometry/density | MC-TILL01 | SW431-HYD-MVG |
@@ -49,7 +55,7 @@ The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 
 ## Registered review queue
 
-These are individual capability decisions, not 20 admitted implementation plans. Dependency depth orders prerequisites first; independent qualification reviews can reduce the queue before new physics work.
+These are individual capability decisions, not admitted implementation plans. Dependency depth orders prerequisites first; independent qualification reviews can reduce the queue before new physics work.
 
 | Workunit | Open entries | Next action |
 |---|---:|---|
@@ -58,7 +64,7 @@ These are individual capability decisions, not 20 admitted implementation plans.
 | MC-LOW01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-MACRO01 | 7 | Source/admission adjudication for the exact IDs below |
 | MC-MET01 | 7 | Source/admission adjudication for the exact IDs below |
-| MC-ROOT01 | 1 | Source/admission adjudication for the exact IDs below |
+| MC-ROOT01 | 2 | Source/admission adjudication for the exact IDs below |
 | MC-CROP01 | 11 | Source/admission adjudication for the exact IDs below |
 | MC-DRAIN01 | 4 | Source/admission adjudication for the exact IDs below |
 | MC-FROST01 | 4 | Source/admission adjudication for the exact IDs below |
@@ -111,11 +117,11 @@ These are individual capability decisions, not 20 admitted implementation plans.
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-TEMP-ANALYTIC | Analytical harmonic soil temperature | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-BC3 | Specified thermal flux boundary | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-BC4 | Surface temperature with heat-flux correction | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-BOTTOM2 | Prescribed bottom temperature | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
-| SW431-TEMP-SNOW | Snow thermal resistance coupled to sensible heat | Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-ANALYTIC | Analytical harmonic soil temperature | The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route. | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BC3 | Specified thermal flux boundary | The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route. | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BC4 | Surface temperature with heat-flux correction | The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route. | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-BOTTOM2 | Prescribed bottom temperature | The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route. | SW431-TEMP-SENSIBLE |
+| SW431-TEMP-SNOW | Snow thermal resistance coupled to sensible heat | The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route. | SW431-TEMP-SENSIBLE |
 
 ### MC-HYD01
 
@@ -231,6 +237,7 @@ These are individual capability decisions, not 20 admitted implementation plans.
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
+| SW431-ROOT-OXYGEN-EMP | Empirical anaerobic/Feddes wet stress | Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction. | None |
 | SW431-ROOT-OXYGEN-REPRO | Bartholomeus oxygen reproduction-function route | Physical type1 admission does not cover distinct type2 response functions | None |
 
 ### MC-SOL01

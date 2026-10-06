@@ -1,7 +1,7 @@
 {
   "schema": "swap5.coverage.implementation_reachability_review.v1",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "reviewed_postimage": "92f71bdfb8d7cb13dd938e835ba50198c71368fe",
+  "reviewed_postimage": "53158e8e7b033d0fcd83d4bc19146a540bca7d5a",
   "constitutive_provider_inventory": [
     {
       "path": "src/solver/mod_b110_default_mvg_provider.f90",
@@ -29,7 +29,10 @@
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
     "src/process/mod_solute_mobile_salt_state.f90": "7e9463600dd47e4f9a9b05f6f4a8ab68684c383d7dabc80195c212c6da920094",
     "src/process/mod_solute_mobile_advection_dispersion.f90": "e619f6e1a022a43ed83d39e89ddaad1a97e4ad3a0603bb24023914a2dbe64c3b",
-    "src/runtime/mod_fmr_wofost81_crop_transaction.f90": "da47da6ec514fd752d7fbd7b75c91a82f9122a795566a224f45e82666d08e7a5"
+    "src/runtime/mod_fmr_wofost81_crop_transaction.f90": "da47da6ec514fd752d7fbd7b75c91a82f9122a795566a224f45e82666d08e7a5",
+    "src/process/mod_root_water_uptake_process.f90": "f0805c00977efdef834384d412608a1f454e2a9adf40ed27f0986de0230231c8",
+    "src/process/mod_soil_temperature_contract.f90": "f68e8380a6db4fbcaeb9cdbc1c75c2dc1fe691022eab96c577928fff78a078a5",
+    "src/process/mod_restricted_soil_temperature.f90": "602858657ce4ccd8004303f4d09bc96ee4dae6dace8572d33aa947aef97aefe7"
   },
   "findings": [
     {
@@ -51,6 +54,24 @@
     {
       "family": "crop_nitrogen",
       "finding": "WOFOST81 contains nitrogen state/request/supply mechanics. F-CI89 and docs/science/wofost-crop-coupling.md explicitly qualify only bounded N-unlimited request-equals-supply. No legacy Soil-N mineral/organic cycling admission is inferred, and presence of crop N code is not classified as missing crop N algebra."
+    },
+    {
+      "family": "empirical_oxygen",
+      "finding": "Legacy SWOXYGEN=1 applies the HLIM1/HLIM2U/HLIM2L wet-pressure-head reduction before the sole qrot sink. Current evaluate_macro_feddes_drought_uptake uses only HLIM3/HLIM4 drought reduction. The backend optionally applies Bartholomeus mode2/type1; that is a different physical factor. The previous draft-ledger ADMITTED classification and its C3A candidate citation were incorrect and are withdrawn.",
+      "evidence_locators": [
+        "SWAP/rootextraction.f90:385..410,451",
+        "src/process/mod_root_water_uptake_process.f90:54..124",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:3872..3892",
+        "docs/audits/PPA_WU05C3A_CLOSEOUT.md:Admission"
+      ]
+    },
+    {
+      "family": "thermal_boundaries",
+      "finding": "Typed sensible thermal forcing contains only prescribed surface temperature. The actual solver assembles Dirichlet top and zero-flux bottom. No harmonic temperature evaluator, top heat-flux/mixed boundary input, bottom Dirichlet input or snow-resistance boundary is provided by this thermal owner. De Vries and Dirichlet surface admissions remain valid; the five different source routes remain missing production implementations.",
+      "evidence_locators": [
+        "src/process/mod_soil_temperature_contract.f90:42..44",
+        "src/process/mod_restricted_soil_temperature.f90:91..165,260..281"
+      ]
     }
   ],
   "scope_limit": "This inventory substantiates specific absent production bindings/state. It is not a complete code call graph or final denominator."

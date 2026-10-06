@@ -16,16 +16,16 @@
   "summary": {
     "capabilities": 212,
     "dispositions": {
-      "ADMITTED": 78,
-      "ACTIVE_MIGRATION": 106,
+      "ADMITTED": 77,
+      "ACTIVE_MIGRATION": 107,
       "SUPERSEDED": 11,
       "REJECTED": 1,
       "NOT_APPLICABLE": 16
     },
-    "open_capabilities": 106,
+    "open_capabilities": 107,
     "open_workunits": 19,
-    "confirmed_missing_production_entries": 32,
-    "other_unresolved_source_admission_reviews": 74
+    "confirmed_missing_production_entries": 38,
+    "other_unresolved_source_admission_reviews": 69
   },
   "capabilities": [
     {
@@ -1196,15 +1196,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "claim": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+        "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
@@ -1218,9 +1220,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BC1",
@@ -1373,15 +1375,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "claim": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+        "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
@@ -1395,9 +1399,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BC4",
@@ -1427,15 +1431,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "claim": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+        "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
@@ -1449,9 +1455,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BOTTOM2",
@@ -1478,15 +1484,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "claim": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+        "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
@@ -1500,9 +1508,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-SNOW",
@@ -1523,15 +1531,17 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/f-ci/F-CI45P_STATUS.json"
+        "integration/f-ci/F-CI45P_STATUS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "claim": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       },
       "restrictions": [
-        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition"
+        "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+        "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route."
       ],
       "remaining_dependency": [
         "SW431-TEMP-SENSIBLE"
@@ -1545,9 +1555,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-RICHARDS",
@@ -3020,30 +3030,38 @@
         "member": "SWAP/rootextraction.f90",
         "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
         "locator_lines": [
-          6,
-          18,
-          64
+          385,
+          390,
+          392,
+          394,
+          395,
+          397,
+          398,
+          451
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Empirical anaerobic/Feddes wet stress",
       "swap5_implementation_authority": [
+        "src/process/mod_root_water_uptake_process.f90",
         "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
-      "current_disposition": "ADMITTED",
+      "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/audits/PPA_WU05C3A_ADMISSION.md"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "docs/audits/PPA_WU05C3A_CLOSEOUT.md",
+        "docs/science/evapotranspiration-root-uptake.md"
       ],
       "production_reachability": {
-        "established": true,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Bounded root composition"
+        "established": false,
+        "route": null,
+        "claim": "Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction."
       },
       "restrictions": [
-        "Bounded root composition"
+        "Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction."
       ],
       "remaining_dependency": [],
-      "active_workunit": null,
+      "active_workunit": "MC-ROOT01",
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -3052,7 +3070,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "implementation_absence_proven": true,
+      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION"
     },
     {
       "capability_id": "SW431-ROOT-OXYGEN-BARTH",
@@ -10610,6 +10630,20 @@
       "implementation_absence_proven": true
     },
     {
+      "capability_id": "SW431-ROOT-OXYGEN-EMP",
+      "work_unit": "MC-ROOT01",
+      "dependencies": [],
+      "why_open": "Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 3,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
       "capability_id": "SW431-ROOT-OXYGEN-REPRO",
       "work_unit": "MC-ROOT01",
       "dependencies": [],
@@ -11405,7 +11439,7 @@
       "dependencies": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+      "why_open": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11413,7 +11447,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BC3",
@@ -11421,7 +11455,7 @@
       "dependencies": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+      "why_open": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11429,7 +11463,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BC4",
@@ -11437,7 +11471,7 @@
       "dependencies": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+      "why_open": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11445,7 +11479,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-BOTTOM2",
@@ -11453,7 +11487,7 @@
       "dependencies": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+      "why_open": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11461,7 +11495,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TEMP-SNOW",
@@ -11469,7 +11503,7 @@
       "dependencies": [
         "SW431-TEMP-SENSIBLE"
       ],
-      "why_open": "Restricted sensible admission does not establish this complete legacy thermal-boundary or snow composition",
+      "why_open": "The current thermal forcing carries only prescribed_surface_temperature_c; the solver assembles Dirichlet top and zero-flux bottom, with no analytic harmonic, prescribed flux/mixed boundary, prescribed bottom temperature or snow-resistance route.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -11477,7 +11511,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-TILL-CONSOL",

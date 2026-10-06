@@ -20,6 +20,10 @@ def validate(require_closed=False):
     ledger = json.loads((AUDIT / 'SWAP431_FUNCTIONAL_COVERAGE_MASTER.json').read_text())
     census = json.loads((AUDIT / 'evidence/SWAP431_SOURCE_CENSUS.json').read_text())
     work = json.loads((AUDIT / 'SWAP431_REMAINING_WORKUNITS.json').read_text())
+    reachability = json.loads((AUDIT / 'evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json').read_text())
+    assert reachability['baseline'] == ledger['canonical_head'], 'reachability baseline mismatch'
+    for path, digest in reachability['source_files_sha256'].items():
+        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest, f'stale reachability evidence: {path}'
     compressed = base64.b64decode((ROOT / census['authority_bundle']).read_bytes(), validate=False)
     assert hashlib.sha256(compressed).hexdigest() == census['bundle_gzip_sha256'], 'source bundle SHA'
     with tarfile.open(fileobj=io.BytesIO(gzip.decompress(compressed))) as archive:
