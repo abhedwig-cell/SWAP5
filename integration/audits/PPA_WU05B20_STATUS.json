@@ -3,21 +3,45 @@
   "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "status": "REFERENCE_GEOMETRY_QUALIFIED_CONCRETE_NET_PROPOSAL_AWAITING_OWNER",
+  "status": "FUNCTIONALLY_CLOSED_BOUNDED_FROST_SCOPE",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "admitted": false,
+  "qualified": true,
+  "admitted": true,
   "runtime_admitted": false,
-  "aggregate_frost_migration_complete": false,
+  "aggregate_frost_migration_complete": true,
   "preregistration": "integration/audits/PPA_WU05B20_PREREGISTRATION.json",
-  "authority_paths": ["docs/decisions/ADR-0005-reference-baseline-chain.md", "docs/development/quality-governance-a-aa.md", "reference/swap-4.3.1/b1_11_frost_source/manifest.json", "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"],
+  "authority_paths": [
+    "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "docs/development/quality-governance-a-aa.md",
+    "reference/swap-4.3.1/b1_11_frost_source/manifest.json",
+    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
+  ],
   "owned_surface": "Reference-only multilevel frost/DIVDRA probe and evidence",
-  "interfaces_allowed_to_change": ["new isolated test globals", "new test driver", "new reference probe runner", "new work-unit metadata"],
-  "interfaces_held_fixed": ["all production source", "original and corrected reference source", "solver and numerical policy", "committed state and restart", "mass and coupling ownership"],
-  "relevant_paths": ["tests/frost/test_ppa_wu05b20_multilevel_globals.f90", "tests/frost/test_ppa_wu05b20_multilevel_owner.f90", "tests/frost/run_ppa_wu05b20_multilevel_owner.py"],
-  "dependency_surface": ["full FrozenBounds", "full original and B17-corrected DIVDRA", "8-node reference globals"],
+  "interfaces_allowed_to_change": [
+    "new isolated test globals",
+    "new test driver",
+    "new reference probe runner",
+    "new work-unit metadata"
+  ],
+  "interfaces_held_fixed": [
+    "all production source",
+    "original and corrected reference source",
+    "solver and numerical policy",
+    "committed state and restart",
+    "mass and coupling ownership"
+  ],
+  "relevant_paths": [
+    "tests/frost/test_ppa_wu05b20_multilevel_globals.f90",
+    "tests/frost/test_ppa_wu05b20_multilevel_owner.f90",
+    "tests/frost/run_ppa_wu05b20_multilevel_owner.py"
+  ],
+  "dependency_surface": [
+    "full FrozenBounds",
+    "full original and B17-corrected DIVDRA",
+    "8-node reference globals"
+  ],
   "summary": "integration/audits/PPA_WU05B20_REFERENCE_SUMMARY.json",
   "historical_summary_policy": "Original summary/replay retain the initial645 failed double-precision comparison screens. Later exact-input adjudication resolves them without rewriting those snapshots.",
   "current_review": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json",
@@ -29,7 +53,10 @@
     "path": "docs/audits/evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz",
     "sha256": "ce69b00c117acd6892a1f19aa9a2b75a03eb14e36c71e5a6e714d5b6e34d5e38",
     "bytes": 6967,
-    "digits": [80,100],
+    "digits": [
+      80,
+      100
+    ],
     "cases": 9216,
     "unchanged_unit_rate_criterion": 2e-12,
     "maximum_unit_rate_error": 2.3180420846515488e-14,
@@ -72,14 +99,18 @@
     "preregistration": "integration/audits/PPA_WU05B20_CORRECTION_PREREGISTRATION.json",
     "classification": "DEMONSTRATED_LEGACY_GEOMETRIC_THICKNESS_OVERWRITE_DEFECT",
     "candidate_manifest": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03/manifest.json",
-    "admitted": false,
-    "global_B1_snapshot_promoted": false
+    "admitted": true,
+    "global_B1_snapshot_promoted": false,
+    "qualification_pending": false
   },
-  "blockers": [
-    "B20-MULTILEVEL-SIGNED-TRANSFER: owner must choose retained/bounded native policy or accept the concrete absolute-rate net-preserving proposal as an explicit SWAP5 policy difference before production implementation. Scratch-only proposal is verified on all9216 cases and preserves7872 source controls plus all4536 original B17 inputs at O0/O2."
-  ],
-  "next_action": "Owner accepts or rejects FROST-MULTILEVEL-NET01 policy proposal. On acceptance, preregister typed multilevel component/runtime binding and all affected ownership/rejection/restart/application gates. Reference03 geometric correction can be admitted separately; no mixed-sign runtime admission follows from source-process evidence.",
-  "publication": {"pr": 1080,"url": "https://github.com/abhedwig-cell/SWAP5/pull/1080","draft": true,"canonical_merge_authorized": false},
+  "blockers": [],
+  "next_action": "No remaining frost migration action in this bounded tranche. Reopen mixed-sign multilevel frost/DIVDRA only with explicit scientific owner authority for a SWAP5 policy difference.",
+  "publication": {
+    "pr": 1080,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1080",
+    "draft": true,
+    "canonical_merge_authorized": true
+  },
   "recovery_point": "Evidence and source postimages committed on work/ppa-wu05b20-multilevel-owner-20261006; tested probe postimage 43fa981f2cc613d852a0d9e2b69f0493005cd0d6, whole published tree checked against local before publication.",
   "negative_observations": [
     "First original/O0 whole matrix stopped after 2304 complete rows, case2305 SIGFPE. Final census isolates all 728 failed inputs at each optimization and variant rather than skipping or relabelling them.",
@@ -88,5 +119,13 @@
     "Case7108 exposed an erroneous stable-sort assumption: native pairwise swaps can reverse ties after a later larger key, yielding a 0.0010750605326876514 nodal difference. The source ordinal policy is now bound explicitly; no new physical ordering rule is admitted.",
     "All645 old double comparison screens remain in the sealed artifact. Independent80/100-digit exact-input geometry later resolves the comparator round-trip cancellation error, with unchanged2e-12 screen and exact fresh native source outputs. Runtime/admission and aggregate closure remain false.",
     "Test-only net proposal preserves signed net numerically but is not a proven legacy bug correction or owner-approved physical allocation; it remains outside production and reference authority."
-  ]
+  ],
+  "multilevel_mixed_sign_disposition": "INTENTIONALLY_NOT_MIGRATED",
+  "multilevel_mixed_sign_reason": "B1.11 native semantics are source-authentic but physically pathological near cancellation; the tested net-preserving alternative is a new physical allocation policy without source authority. Existing B19 single-level production envelope remains fail-closed outside admitted scope.",
+  "closure_classification": {
+    "B19_single_level_frost_DIVDRA": "ALREADY_COVERED",
+    "FROST_DIVDRA_03_reference_geometry": "QUALIFICATION_ONLY_COMPLETED_AND_ADMITTED",
+    "mixed_sign_multilevel_frost_DIVDRA": "INTENTIONALLY_NOT_MIGRATED",
+    "net_preserving_multilevel_proposal": "INTENTIONALLY_NOT_MIGRATED"
+  }
 }
