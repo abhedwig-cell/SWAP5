@@ -42,10 +42,10 @@ def add_record(path):
         source = Path(relative) if Path(relative).is_absolute() else ROOT / relative
         assert sha(source) == expected, source
         add(source)
-for name in ('compile', 'source', 'component-preservation', 'additional', 'positive-preservation', 'incumbent-normal', 'incumbent-low_air', 'external-preservation', 'scientific', 'exact', 'jarvis', 'jarvis-dispersion', 'walsum', 'walsum-dispersion', 'remaining', 'low-runtime'):
+for name in ('compile', 'source', 'component-preservation', 'additional', 'positive-preservation', 'incumbent-normal', 'incumbent-low_air', 'external-preservation', 'scientific', 'exact', 'jarvis', 'jarvis-dispersion', 'walsum', 'walsum-dispersion', 'remaining', 'normal-runtime', 'low-runtime'):
     add_record(f'/tmp/frost-b19-{name}.json')
 case_receipts = {}
-for receipt in Path('/tmp').glob('ppa-wu05b19-runtime-low-*/o*/family-*.receipt.json'):
+for receipt in Path('/tmp').glob('ppa-wu05b19-runtime-*/o*/family-*.receipt.json'):
     record = json.loads(receipt.read_text())
     assert record['production_source'] == SOURCE
     if not record['complete_case'] or record['exit_code'] != 0:
@@ -54,6 +54,9 @@ for receipt in Path('/tmp').glob('ppa-wu05b19-runtime-low-*/o*/family-*.receipt.
     error = receipt.with_name(receipt.name.replace('.receipt.json', '.err'))
     assert sha(output) == record['stdout_sha256'] and sha(error) == record['stderr_sha256']
     assert output.read_text().count('B19_RUNTIME_PASS ') == 1
+    trajectories = 2 if record['route'] == 'normal' else 6
+    assert output.read_text().count('B19_PRIMARY ') == trajectories
+    assert output.read_text().count('B19_FINE ') == trajectories
     for path in (receipt, output, error):
         add(path)
     case_receipts[str(receipt)] = record

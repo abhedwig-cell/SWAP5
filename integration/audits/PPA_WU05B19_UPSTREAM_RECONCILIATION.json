@@ -1,0 +1,19 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "LIVE_DELTA_REVIEWED_NOT_YET_MERGED_OR_ADMITTED",
+  "previous_canonical": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
+  "observed_canonical": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "concurrent_work_unit": "PPA-MICRO01",
+  "authority": "integration/audits/PPA_MICRO01_CANONICAL_ADMISSION.json at observed_canonical",
+  "production_delta": {
+    "added_path": "src/process/mod_root_micro_matric_flux_table.f90",
+    "blob": "e512da036ef39d9d3fd30a8fab168b5bd7b8026b",
+    "modified_existing_production_paths": 0,
+    "deleted_production_paths": 0,
+    "runtime_binding_added": false
+  },
+  "dependency_conclusion": "The standalone table imports only intrinsic modules. No existing production file changed or references this new module. It is absent from the 177-source B19 compiled dependency closure. Existing source-bound physical replays are not invalidated by an unrelated unused component addition.",
+  "qualification": false,
+  "admitted": false,
+  "pending": "Finish running source-bound low-air gates before integrating upstream. Verify the exact merged source projection and both capability authorities, rerun final canonical/docs gates, and reconcile the live canonical head again before admission. This review is not a merge receipt."
+}
