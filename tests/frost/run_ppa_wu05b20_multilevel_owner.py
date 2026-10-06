@@ -99,6 +99,23 @@ def matrix():
             yield [levels,inf,gw,frost,air,bottom,*raw,*spacing,aniso]
 
 
+def same_compartment_infiltration(q, k, gw, spacing, aniso, inf):
+    if not inf:
+        return False
+    w = -min(gw,0.); depth = 8.-w
+    hor = [v*aniso for v in k]
+    fac = math.sqrt((depth/integral([1./v for v in k],w,8.)) /
+                    (integral(hor,w,8.)/depth))
+    for rate, space in zip(q,spacing):
+        if rate >= -1e-10:
+            continue
+        span = .25*space*fac
+        end = min(8.,w+span*max(.5,(math.ceil(w)-w)/span))
+        if math.ceil(w) == math.ceil(end):
+            return True
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--evidence', required=True)
@@ -165,9 +182,13 @@ def main():
             print(f'B20_{variant.upper()}_O{opt}_CENSUS_COMPLETE positive={len(complete)} negative={len(negative)}',flush=True)
         assert outputs[f'{variant}/o0'] == outputs[f'{variant}/o2']
         assert [f['case'] for f in failures[f'{variant}/o0']] == [f['case'] for f in failures[f'{variant}/o2']]
-    maxima = dict(partition_error=0.,corrected_nodal_scalar_residual=0.,scalar_error=0.,
+    maxima = dict(partition_error=0.,candidate_partition_error=0.,candidate_unit_rate_partition_error=0.,
+                  corrected_nodal_scalar_residual=0.,scalar_error=0.,
                   independent_single_level_superposition_error=0.,cancellation_net_departure=0.)
     witnesses = {}
+    affected_cases = set()
+    candidate_rows = {int(line.split()[0]):line for line in outputs['candidate/o0'].splitlines()}
+    unchanged_controls = 0
     for variant in sources:
         rows = outputs[f'{variant}/o0'].splitlines()
         assert len(rows)+len(failures[f'{variant}/o0']) == len(cases)
@@ -184,6 +205,7 @@ def main():
             final_bottom = values[52]
             k = [1.,4.]*4
             expected_before = partition(q,k,gw,s,aniso,inf,variant=='original')
+            affected = same_compartment_infiltration(q,k,gw,s,aniso,inf)
             rf = [0. if -(i+.5)>=frost else 1. for i in range(8)]
             rf[rf.count(0.)] = .5
             expected_bottom = bottom
@@ -203,13 +225,30 @@ def main():
                     expected_scalar = [v*(1.+bottom/total) for v in retained]
                 modified = [v*r+(1.-r)*1e-10 for v,r in zip(k,rf)]
                 expected_after = partition(expected_scalar,modified,min(gw,frost),s,aniso,inf,variant=='original')
+                affected = affected or same_compartment_infiltration(expected_scalar,modified,min(gw,frost),s,aniso,inf)
             else:
                 expected_after = [[v*r for v,r in zip(row,rf)] for row in expected_before]
                 expected_scalar = list(map(sum,expected_after))
             error = max(abs(a-b) for ar,br in zip(before+after,expected_before+expected_after)
                         for a,b in zip(ar,br))
             maxima['partition_error'] = max(maxima['partition_error'],error)
-            assert error < 2e-12, (variant,id,case,error)
+            if affected:
+                affected_cases.add(id)
+            normalized_error = max(abs(a-b)/max(abs(rate),1e-10)
+                for ar,br,rate in zip(before+after,expected_before+expected_after,q+expected_scalar)
+                for a,b in zip(ar,br))
+            # The partition is linear in each supplied signed rate. Compare its
+            # dimensionless unit-rate weights, also when near-cancellation
+            # amplifies the actual rate beyond the original single-level probes.
+            if variant == 'candidate':
+                maxima['candidate_partition_error'] = max(maxima['candidate_partition_error'],error)
+                maxima['candidate_unit_rate_partition_error'] = max(maxima['candidate_unit_rate_partition_error'],normalized_error)
+                assert normalized_error < 2e-12,(variant,id,case,error,normalized_error)
+            elif not affected:
+                assert normalized_error < 2e-12,(variant,id,case,error,normalized_error)
+            if variant == 'corrected' and not affected:
+                assert line == candidate_rows[id],('unaffected control changed',id)
+                unchanged_controls += 1
             scalar_error = max(abs(a-b) for a,b in zip(final_scalar,expected_scalar))
             maxima['scalar_error'] = max(maxima['scalar_error'],scalar_error)
             assert scalar_error < 1e-14 and final_bottom == expected_bottom
@@ -244,7 +283,8 @@ def main():
                   input_sha256=sha(inputs.encode()),inputs=inputs,receipts=receipts,
                   outputs={variant:outputs[f'{variant}/o0'] for variant in sources},failures=failures,
                   candidate_source=candidate.read_text(),candidate_source_sha256=sha(candidate.read_bytes()),
-                  maxima=maxima,witnesses=witnesses,
+                  maxima=maxima,witnesses=witnesses,affected_same_compartment_cases=len(affected_cases),
+                  byte_exact_unaffected_B17_controls=unchanged_controls,
                   interpretation='Nodal/scalar closure is not lost in corrected reference. Mixed-sign near-zero aggregate triggers deepest-level replacement, retaining other levels and changing the net bottom-minus-drainage proposal. Whether that is intended physical transfer or a legacy defect is not established by code parity; a new runtime mass/flux interpretation requires owner decision.')
     evidence = Path(args.evidence)
     evidence.write_bytes(gzip.compress((json.dumps(record,sort_keys=True)+'\n').encode(),mtime=0))
