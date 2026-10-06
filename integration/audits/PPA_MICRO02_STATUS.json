@@ -1,0 +1,35 @@
+{
+  "work_unit": "PPA-MICRO02",
+  "workstream": "Independent microscopic root uptake migration",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "status": "IMPLEMENTED_UNTESTED_STANDALONE_CHECKPOINT",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_admitted": false,
+  "runtime_admitted": false,
+  "contract": "docs/audits/PPA_MICRO02_DE_WILLIGEN_CONTRACT.md",
+  "dependency_surface": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
+    "src/process/mod_root_micro_matric_flux_table.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "scope": "Call-local de Willigen standalone uptake and real MvG table samples, no runtime sink or restart admission",
+  "interfaces_changed": [],
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25
+  ],
+  "next_action": "Persist exact branch tree and run O0/O2 focused smoke; then corrected literal source oracle and runtime qualification",
+  "recovery_point": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "blockers": []
+}
