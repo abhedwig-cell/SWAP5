@@ -37,6 +37,7 @@ with tempfile.TemporaryDirectory(prefix="ppa-micro03-") as tmp:
         run.check_returncode()
         assert "MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS" in output
         assert "MICRO05_HETEROGENEOUS_APP_TRIAL=PASS" in output
+        assert "MICRO06_COMMITTED_RESTART_CHANGED_FORCING=PASS" in output
         outputs.append(output)
         preservation_source = "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"
         preservation_obj = build / "root_hyd01.o"

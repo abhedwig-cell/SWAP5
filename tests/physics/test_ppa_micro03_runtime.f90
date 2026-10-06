@@ -19,6 +19,8 @@ program test_ppa_micro03_runtime
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   implicit none
   real(real64), parameter :: H0_CM=-75.0_real64, MASS_TOL=1.0e-12_real64
   integer(int64), parameter :: COLUMN_ID=591001_int64
@@ -28,14 +30,18 @@ program test_ppa_micro03_runtime
   type(fmr_template_t) :: template
   type(kernel_committed_state_t) :: committed
   type(kernel_committed_state_t) :: heterogeneous_committed
+  type(kernel_committed_state_t) :: continuation_state(1), restored_state(1)
   type(kernel_checkpoint_t) :: checkpoint
   type(kernel_checkpoint_t) :: heterogeneous_checkpoint
   type(kernel_result_t) :: result, replay, rejected
   type(kernel_candidate_state_t) :: candidate, replay_candidate, rejected_candidate
   type(kernel_diagnostics_t) :: diagnostics, replay_diagnostics, rejected_diagnostics
   type(fmr_serialized_reference_backend_t) :: backend, new_backend
+  type(fmr_serialized_reference_backend_t) :: fresh_backend
   type(fmr_serialized_physical_observation_t) :: observation, replay_observation
   type(fmr_serialized_physical_observation_t) :: heterogeneous_observation
+  type(fmr_serialized_physical_observation_t) :: continuation_observation, restored_observation
+  type(fmr_committed_restart_bundle_t) :: restart_bundle
   type(b110_default_mvg_parameters_t), target :: hydraulic_parameters
   type(b110_default_mvg_provider_t) :: constitutive
   type(fixed_flux_top_boundary_provider_t), target :: top
@@ -197,6 +203,56 @@ program test_ppa_micro03_runtime
   call app%initialize(app_config,app_status)
   call require(app_status/=FMR_APP_BOOT_OK,'invalid horizon map rejected')
   print '(a)', 'MICRO05_HETEROGENEOUS_APP_TRIAL=PASS'
+  ! MICRO06: commit the accepted two-horizon trial, then change the demand and
+  ! root length distribution. A fresh worker restored from the owning bundle
+  ! must reproduce the uninterrupted candidate and its sole water receipt.
+  call new_backend%commit_trial_candidate(heterogeneous_committed,candidate,diagnostics,ok,app_status)
+  call require(ok,'heterogeneous first interval commit')
+  continuation_state(1)=heterogeneous_committed
+  call fmr_export_committed_restart([column],[template],continuation_state, &
+       app_config%tiles(1)%parameters%parameter_set_id,restart_bundle,ok,app_status)
+  call require(ok.and.app_status==FMR_RESTART_OK,'MICRO committed restart export')
+  call fmr_restore_committed_restart(restart_bundle,app_config%tiles(1)%parameters%parameter_set_id, &
+       [column],[template],restored_state,ok,app_status)
+  call require(ok.and.app_status==FMR_RESTART_OK,'MICRO fresh worker restore')
+  app_config%tiles(1)%parameters%micro_horizon_first_node=[1,1,3,3]
+  app_config%tiles(1)%base_forcing%root_potential_transpiration=2.0e-4_real64
+  app_config%tiles(1)%base_forcing%micro_root_length_density= &
+       [0.2_real64,0.4_real64,0.6_real64,0.8_real64]
+  call fmr_capture_checkpoint(continuation_state(1),checkpoint,ok)
+  call require(ok,'MICRO uninterrupted continuation checkpoint')
+  call fmr_capture_checkpoint(restored_state(1),heterogeneous_checkpoint,ok)
+  call require(ok,'MICRO restored continuation checkpoint')
+  call new_backend%run_trial(column,template,app_config%tiles(1)%parameters,continuation_state(1), &
+       app_config%tiles(1)%base_forcing,app_config%numerical,1.0e-3_real64,2.0e-3_real64, &
+       checkpoint,result,candidate,diagnostics,trace_accepted_water_flux_substeps=.true.)
+  call require(result%completed.and.result%mass%complete.and.abs(result%mass%residual)<=MASS_TOL, &
+       'MICRO changed-forcing continuation mass')
+  continuation_observation=new_backend%observation()
+  call fresh_backend%initialize(top)
+  call fresh_backend%run_trial(column,template,app_config%tiles(1)%parameters,restored_state(1), &
+       app_config%tiles(1)%base_forcing,app_config%numerical,1.0e-3_real64,2.0e-3_real64, &
+       heterogeneous_checkpoint,replay,replay_candidate,replay_diagnostics, &
+       trace_accepted_water_flux_substeps=.true.)
+  call require(replay%completed.and.replay%mass%complete.and.abs(replay%mass%residual)<=MASS_TOL, &
+       'MICRO restored changed-forcing mass')
+  restored_observation=fresh_backend%observation()
+  call require(result%mass%total_out==replay%mass%total_out.and. &
+       result%mass%storage_end==replay%mass%storage_end.and. &
+       result%completed_t==replay%completed_t,'MICRO restart mass and time identity')
+  call require(allocated(continuation_observation%accepted_water_flux_substeps).and. &
+       allocated(restored_observation%accepted_water_flux_substeps),'MICRO continuation trace available')
+  call require(size(continuation_observation%accepted_water_flux_substeps)== &
+       size(restored_observation%accepted_water_flux_substeps),'MICRO continuation substep count')
+  call require(all(continuation_observation%accepted_water_flux_substeps(1)%root_sink== &
+       restored_observation%accepted_water_flux_substeps(1)%root_sink),'MICRO fresh-worker sink identity')
+  call require(sum(continuation_observation%accepted_water_flux_substeps(1)%root_sink)> &
+       sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink), &
+       'changed transpiration demand re-evaluates MICRO sink')
+  print '(a,es14.6,a,es14.6)', 'MICRO06_CHANGED_FORCING_SINK=', &
+       sum(heterogeneous_observation%accepted_water_flux_substeps(1)%root_sink), &
+       ' -> ',sum(continuation_observation%accepted_water_flux_substeps(1)%root_sink)
+  print '(a)', 'MICRO06_COMMITTED_RESTART_CHANGED_FORCING=PASS'
   print '(a)', 'MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS'
 contains
   subroutine initialize_parameters(p)
