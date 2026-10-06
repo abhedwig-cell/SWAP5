@@ -70,6 +70,10 @@ module mod_fmr_serialized_reference_backend
        BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
+  use mod_root_micro_matric_flux_table, only: micro_matric_flux_table_t
+  use mod_root_micro_de_willigen_process, only: micro_de_willigen_parameters_t, micro_de_willigen_result_t, &
+       evaluate_micro_de_willigen, MICRO_DW_OK
+  use mod_fmr_micro_mvg_table_binding, only: fmr_build_micro_mvg_tables
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
@@ -287,6 +291,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    ! MICRO owns the one trial root sink when this optional configuration exists.
+    type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
     logical :: root_salinity_active = .false.
     type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
     real(real64) :: solute_tscf = 0.0_real64
@@ -414,6 +420,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
+    integer :: micro_rooted_nodes = 0
+    real(real64), allocatable :: micro_root_length_density(:)
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
     real(real64), allocatable :: root_potential_sink(:)
@@ -626,6 +634,10 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qrot_zero(:) => null()
     ! Disposable worker inputs/scratch, not accepted oxygen continuation state.
     real(real64), allocatable :: qrot_unmodified(:)
+    type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
+    type(micro_matric_flux_table_t), allocatable :: micro_tables(:)
+    real(real64), allocatable :: micro_root_length_density(:)
+    integer :: micro_rooted_nodes = 0
     type(root_compensation_config_t) :: root_compensation
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
@@ -2761,6 +2773,23 @@ contains
           ok=ok .and. matches_bartholomeus_hydraulic_owner(parameters%bartholomeus,parameters%cofgen,parameters%dz)
         end if
       end if
+      if (allocated(parameters%micro_de_willigen)) then
+        ok = ok .and. parameters%root_extraction_active .and. &
+             self%soil_water_selection%uses_reference() .and. &
+             numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE .and. &
+             self%temporal_indicator_history_enabled .and. &
+             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+             parameters%root_compensation%method == ROOT_COMP_OFF .and. &
+             parameters%micro_de_willigen%oxygen_mode == 0 .and. &
+             .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
+             .not. allocated(parameters%bartholomeus) .and. .not. self%rutter_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%drainage_response_active .and. &
+             .not. self%fixed_weir_surface_water_active
+      end if
     class default
       ok = .false.
     end select
@@ -2771,6 +2800,7 @@ contains
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     integer :: n
+    logical :: micro_tables_ok
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
@@ -2839,6 +2869,12 @@ contains
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
       self%root_salinity_active = parameters%root_salinity_active
+      if (allocated(self%micro_de_willigen)) deallocate(self%micro_de_willigen)
+      if (allocated(self%micro_tables)) deallocate(self%micro_tables)
+      if (allocated(parameters%micro_de_willigen)) then
+        self%micro_de_willigen = parameters%micro_de_willigen
+        call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
+      end if
       if(allocated(self%mobile_dispersion))deallocate(self%mobile_dispersion)
       if(allocated(parameters%mobile_dispersion))self%mobile_dispersion=parameters%mobile_dispersion
       self%solute_tscf = parameters%solute_tscf
@@ -2969,6 +3005,29 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. self%root_extraction_active .or. .not. allocated(self%micro_tables)) return
+        if (.not. allocated(forcing%micro_root_length_density)) return
+        if (size(forcing%micro_root_length_density) /= n) return
+        if (forcing%micro_rooted_nodes < 0 .or. forcing%micro_rooted_nodes > n) return
+        if (any(.not. ieee_is_finite(forcing%micro_root_length_density))) return
+        if (any(forcing%micro_root_length_density < 0.0_real64)) return
+        if (any(forcing%root_extraction_sink /= 0.0_real64)) return
+        if (allocated(forcing%root_potential_sink) .or. forcing%root_drought_reduction_total /= 0.0_real64) return
+        if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_salinity_active .or. &
+            self%root_frost%active .or. allocated(self%bartholomeus) .or. self%rutter_active) return
+        if (self%micro_de_willigen%oxygen_mode /= 0) return
+        if (forcing%micro_rooted_nodes > 1) then
+          if (any(self%hydraulic_parameters%cofgen(1:24,2:forcing%micro_rooted_nodes) /= &
+              spread(self%hydraulic_parameters%cofgen(1:24,1),2,forcing%micro_rooted_nodes-1))) return
+        end if
+        self%micro_rooted_nodes = forcing%micro_rooted_nodes
+        self%micro_root_length_density = forcing%micro_root_length_density
+      else
+        if (allocated(forcing%micro_root_length_density) .or. forcing%micro_rooted_nodes /= 0) return
+        if (allocated(self%micro_root_length_density)) deallocate(self%micro_root_length_density)
+        self%micro_rooted_nodes = 0
+      end if
       if (self%rutter_active) then
         if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
             .not. forcing%rutter%source_window%valid()) return
@@ -3460,6 +3519,7 @@ contains
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
+    type(micro_de_willigen_result_t) :: micro_result
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
     real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:),salinity_storage_thickness(:)
     real(real64),allocatable :: trace_macro_water_start(:,:)
@@ -3688,6 +3748,18 @@ contains
     class is (fmr_b110_physical_state_t)
       if (physical%active_nodes /= self%soil_parameters%active_nodes .or. .not. allocated(physical%pressure_head) .or. &
           .not. allocated(physical%water_content)) return
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. allocated(self%micro_root_length_density) .or. .not. allocated(self%micro_tables)) return
+        if (size(physical%pressure_head) /= physical%active_nodes) return
+        call evaluate_micro_de_willigen(self%micro_de_willigen, physical%pressure_head, self%soil_parameters%dz, &
+             self%micro_root_length_density, spread(1.0_real64,1,physical%active_nodes), &
+             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result)
+        if (micro_result%status /= MICRO_DW_OK) return
+        self%qrot = micro_result%root_extraction_sink
+        self%root_potential_sink = micro_result%potential_root_sink
+        self%root_drought_reduction_total = max(0.0_real64, &
+             self%root_potential_transpiration-micro_result%actual_uptake_total)
+      end if
       if (self%snow_active) then
         if (.not. allocated(physical%snow) .or. .not. self%snow_event_prepared) return
         if (.not. physical%snow%event_applied .or. .not. same_real_bits(physical%snow%event_t0, self%snow_outer_t0)) then
