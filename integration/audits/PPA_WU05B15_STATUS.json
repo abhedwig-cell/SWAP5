@@ -4,8 +4,8 @@
   "last_reconciled_upstream": "f72d72622264111edbadca1bfc49690a47b287a9",
   "baseline_source": "f1f8351c6cb7ccd2d1a78e79bebb79dce8076c4d",
   "preregistration": "integration/audits/PPA_WU05B15_PREREGISTRATION.json",
-  "status": "PREREGISTERED_SOURCE_REVIEW_COMPLETE",
-  "implemented": false,
+  "status": "IMPLEMENTED_UNQUALIFIED_PERSIST_BEFORE_PHYSICAL_GATES",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -50,6 +50,7 @@
     "Persist useful source/harness before expensive physical gates; local completed source-bound qualification then immediate exact proposed/actual tree/source/parents admission and metadata closeout, no queued Actions success claim"
   ],
   "blockers": [],
-  "next_action": "Implement only preregistered backend OFF selector and active validation, preserve process/control/body ownership; persist useful production before assembling whole-module gates",
-  "recovery_point": "f72d72622264111edbadca1bfc49690a47b287a9"
+  "next_action": "Assemble unchanged scientific and full independent component/runtime matrices, persist useful harness, then run whole-module qualification",
+  "recovery_point": "Published preregistration plus bounded backend selector; scientific/source/runtime/preservation harness and gates pending",
+  "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5"
 }
