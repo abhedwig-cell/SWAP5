@@ -18,6 +18,7 @@ def visit(p):
         if q and q!=p:visit(q)
         elif not q and n.lower() not in intrinsic:raise RuntimeError('missing module: '+n)
     visiting.remove(p);seen.add(p);ordered.append(p)
+visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 visit(TEST)
 with tempfile.TemporaryDirectory(prefix='swap431-gwl-runtime-') as folder:
     for opt in ('O0','O2'):
