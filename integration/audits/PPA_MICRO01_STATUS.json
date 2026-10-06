@@ -2,7 +2,7 @@
   "work_unit": "PPA-MICRO01",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "status": "EXACT_SOURCE_REVIEW_PERSISTED_EXECUTABLE_GATE_BLOCKED",
+  "status": "EXACT_SOURCE_REVIEW_ACTIONS_COMPONENT_FALLBACK_PENDING",
   "implemented": false,
   "test_harness_prepared": true,
   "persisted": true,
@@ -17,7 +17,9 @@
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90",
     "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json"
   ],
-  "test_paths": ["tests/physics/run_ppa_micro01_dry_table.py"],
+  "test_paths": [
+    "tests/physics/run_ppa_micro01_dry_table.py"
+  ],
   "dependency_surface": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90",
     "tests/physics/run_ppa_micro01_dry_table.py"
@@ -27,9 +29,19 @@
     "No gfortran executable in renewed Work environment",
     "Compiler installation failed with setgroups/seteuid permission errors; no bypass attempted"
   ],
-  "next_action": "Run C3A_RESULT=<result.json> python tests/physics/run_ppa_micro01_dry_table.py in an authorized Fortran-capable environment, then qualify a corrected-reference endpoint policy before full MICRO migration",
+  "next_action": "Await the single branch-scoped Actions exact-component replay, inspect O0/O2 evidence and persist outcome; no production mutation",
   "recovery_point": "Current persisted workstream commit",
   "interfaces_changed": [],
-  "invariants_affected": [3, 5, 7, 13, 21, 22, 23, 25],
-  "scope_limit": "Source review and prepared unchanged table component test only; no MICRO production physics or legacy full-model equivalence. Jarvis/Walsum remains separately admitted."
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25
+  ],
+  "scope_limit": "Source review and prepared unchanged table component test only; no MICRO production physics or legacy full-model equivalence. Jarvis/Walsum remains separately admitted.",
+  "qualification_fallback": ".github/workflows/ppa-micro01-dry-table.yml"
 }

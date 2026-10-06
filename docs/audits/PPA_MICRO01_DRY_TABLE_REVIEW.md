@@ -60,3 +60,10 @@ until that policy and its numerical evidence are qualified.
 The existing production water/salt owner, numerical policy, transactional
 state and restart schema are untouched. This review is not a full MICRO
 qualification, seasonal equivalence claim or frozen Status-A change.
+
+## Necessary executable fallback
+
+The local compiler blocker remains. One branch-scoped GitHub Actions component
+replay is prepared in `.github/workflows/ppa-micro01-dry-table.yml`, using an
+Ubuntu Fortran runner. Its O0/O2 evidence must complete and be inspected before
+any executable confirmation claim. No production/reference changes are made.
