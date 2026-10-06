@@ -21,8 +21,12 @@ module mod_frost_divdra_drainage_effect
     real(real64) :: initial_partition_correction=0._real64, final_partition_correction=0._real64
     real(real64), allocatable :: final_nodal_sink(:)
   end type
-  public :: compose_single_level_signed_frost_divdra
+  public :: compose_single_level_signed_frost_divdra, frost_divdra_parameters_valid
 contains
+  pure logical function frost_divdra_parameters_valid(p) result(ok)
+    type(frost_divdra_parameters_t),intent(in)::p
+    ok=valid_parameters(p)
+  end function
   pure logical function valid_parameters(p) result(ok)
     type(frost_divdra_parameters_t), intent(in) :: p
     integer :: n,i

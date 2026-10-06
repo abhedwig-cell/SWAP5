@@ -88,6 +88,9 @@ module mod_fmr_serialized_reference_backend
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
        ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, &
        attribute_root_stress_losses, evaluate_walsum_geometry
+  use mod_frost_divdra_drainage_effect, only: frost_divdra_parameters_t, frost_divdra_result_t, &
+       compose_single_level_signed_frost_divdra, frost_divdra_parameters_valid
+  use mod_frost_geometry_effect, only: frost_geometry_result_t, evaluate_legacy_bracketed_frost_geometry
   use mod_frost_low_air_drainage_effect, only: frost_low_air_drainage_config_t, frost_low_air_drainage_result_t, &
        compose_legacy_bracketed_frost_drainage
   use mod_frost_drainage_effect, only: frost_drainage_config_t, frost_drainage_result_t, &
@@ -156,6 +159,7 @@ module mod_fmr_serialized_reference_backend
   implicit none
   private
   public :: fmr_frost_response_drainage_configuration_valid
+  public :: fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
@@ -303,6 +307,8 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_empirical_response_drainage_active = .false.
     logical :: frost_extended_response_drainage_active = .false.
     logical :: frost_highest_response_drainage_active = .false.
+    logical :: frost_divdra_drainage_active = .false.
+    type(frost_divdra_parameters_t) :: frost_divdra_drainage
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
     real(real64) :: root_frost_head_budget_cm=0.0_real64
@@ -410,6 +416,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     type(fmr_c_drain_salt_forcing_t), allocatable :: c_drain_salt
     type(fmr_soil_salt_boundary_forcing_t), allocatable :: soil_salt_boundary
+    real(real64) :: frost_divdra_scalar_rate = 0.0_real64
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
@@ -446,6 +453,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
     type(frost_low_air_drainage_result_t) :: frost_low_air_drainage
+    logical :: frost_divdra_executed = .false.
+    type(frost_divdra_result_t) :: frost_divdra
     logical :: frost_drainage_executed = .false.
     type(frost_drainage_result_t) :: frost_drainage
     logical :: frost_bottom_executed = .false.
@@ -636,6 +645,9 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_empirical_response_drainage_active = .false.
     logical :: frost_extended_response_drainage_active = .false.
     logical :: frost_highest_response_drainage_active = .false.
+    logical :: frost_divdra_drainage_active = .false.
+    type(frost_divdra_parameters_t) :: frost_divdra_drainage
+    real(real64) :: frost_divdra_scalar_rate = 0.0_real64
     real(real64),allocatable :: unfrozen_drainage_flux(:,:)
     type(frost_bottom_config_t) :: frost_bottom
     type(root_frost_config_t) :: root_frost
@@ -805,6 +817,71 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer::n,i
+    real(real64)::depth
+    ok=.true.
+    if(.not.parameters%frost_divdra_drainage_active)return
+    ok=.false.
+    if(.not.parameters%frost_active.or..not.parameters%soil_temperature_active.or..not.parameters%frost_drainage%active)return
+    if(parameters%bottom_mode/=2.or.parameters%root_extraction_active.or.parameters%root_frost%active)return
+    if(parameters%root_compensation%method/=ROOT_COMP_OFF)return
+    if(parameters%root_salinity_active.or.parameters%macropore_active.or.parameters%snow_active)return
+    if(parameters%frost_bottom%active.or.parameters%frost_low_air_drainage%active)return
+    if(parameters%drainage_response_active.or.parameters%frost_response_drainage_active.or. &
+         parameters%frost_low_air_response_drainage_active.or.parameters%frost_tabulated_response_drainage_active.or. &
+         parameters%frost_analytic_response_drainage_active.or.parameters%frost_empirical_response_drainage_active.or. &
+         parameters%frost_extended_response_drainage_active.or.parameters%frost_highest_response_drainage_active)return
+    if(parameters%drainage_qbot_smooth_freatic_projection.or.parameters%ksatexm_extension_active.or. &
+         parameters%direct_retention_active.or.parameters%tabulated_hydraulics_active.or.parameters%elasticity_active)return
+    if(parameters%black_evaporation_active.or.parameters%boesten_evaporation_active.or.allocated(parameters%bartholomeus))return
+    if(.not.parameters%frost_drainage%valid())return
+    if(.not.frost_divdra_parameters_valid(parameters%frost_divdra_drainage))return
+    n=parameters%active_nodes
+    if(n/=parameters%frost_divdra_drainage%distribution%active_nodes)return
+    if(.not.allocated(parameters%z).or..not.allocated(parameters%dz).or..not.allocated(parameters%cofgen))return
+    if(size(parameters%z)/=n.or.size(parameters%dz)/=n)return
+    if(size(parameters%cofgen,1)<3.or.size(parameters%cofgen,2)/=n)return
+    if(any(.not.ieee_is_finite(parameters%z)).or.any(.not.ieee_is_finite(parameters%dz)))return
+    if(any(.not.ieee_is_finite(parameters%cofgen(3,:))))return
+    if(any(parameters%frost_divdra_drainage%distribution%dz/=parameters%dz))return
+    if(any(parameters%frost_divdra_drainage%distribution%saturated_conductivity/=parameters%cofgen(3,:)))return
+    depth=0._real64
+    do i=1,n
+      depth=depth+parameters%dz(i)
+      if(parameters%frost_divdra_drainage%distribution%zbotcp(i)/=-depth)return
+      if(parameters%z(i)/=-depth+.5_real64*parameters%dz(i))return
+    end do
+    ok=.true.
+  end function
+
+  pure logical function fmr_frost_divdra_forcing_valid(active,forcing,n) result(ok)
+    logical,intent(in)::active
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    integer,intent(in)::n
+    ok=.false.
+    if(.not.ieee_is_finite(forcing%frost_divdra_scalar_rate))return
+    if(.not.active)then
+      ok=forcing%frost_divdra_scalar_rate==0._real64
+      return
+    end if
+    if(abs(forcing%frost_divdra_scalar_rate)>1.e6_real64)return
+    if(forcing%frost_divdra_scalar_rate/=0._real64.and.abs(forcing%frost_divdra_scalar_rate)<=1.e-10_real64)return
+    if(.not.ieee_is_finite(forcing%bottom_flux))return
+    if(abs(forcing%bottom_flux)>1.e6_real64)return
+    if(allocated(forcing%drainage_flux_by_level).or.allocated(forcing%drainage_response_controls))return
+    if(allocated(forcing%legacy_swbotb2_control).or.allocated(forcing%legacy_swbotb3_implicit_control).or. &
+         allocated(forcing%legacy_swbotb4_qgwl_control).or.allocated(forcing%legacy_swbotb5_control))return
+    if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt).or.allocated(forcing%rutter))return
+    if(.not.allocated(forcing%subsurface_irrigation_source).or..not.allocated(forcing%root_extraction_sink))return
+    if(size(forcing%subsurface_irrigation_source)/=n.or.size(forcing%root_extraction_sink)/=n)return
+    if(any(.not.ieee_is_finite(forcing%subsurface_irrigation_source)).or. &
+         any(.not.ieee_is_finite(forcing%root_extraction_sink)))return
+    if(any(forcing%subsurface_irrigation_source/=0._real64).or.any(forcing%root_extraction_sink/=0._real64))return
+    ok=.true.
+  end function
 
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
@@ -2658,6 +2735,8 @@ contains
         ok = ok .and. .not. parameters%frost_hydraulic%active
       end if
       ok=ok.and.fmr_frost_response_drainage_configuration_valid(parameters)
+      ok=ok.and.fmr_frost_divdra_configuration_valid(parameters)
+      if(parameters%frost_divdra_drainage_active)ok=ok.and..not.self%rutter_active
       if(parameters%frost_low_air_drainage%active)then
         ok=ok.and.parameters%frost_low_air_drainage%valid().and.parameters%frost_drainage%active
       end if
@@ -2855,6 +2934,8 @@ contains
       self%frost_empirical_response_drainage_active = parameters%frost_empirical_response_drainage_active
       self%frost_extended_response_drainage_active = parameters%frost_extended_response_drainage_active
       self%frost_highest_response_drainage_active = parameters%frost_highest_response_drainage_active
+      self%frost_divdra_drainage_active = parameters%frost_divdra_drainage_active
+      self%frost_divdra_drainage = parameters%frost_divdra_drainage
       self%frost_bottom = parameters%frost_bottom
       self%root_frost = parameters%root_frost
       self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
@@ -2969,6 +3050,7 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if(.not.fmr_frost_divdra_forcing_valid(self%frost_divdra_drainage_active,forcing,n))return
       if (self%rutter_active) then
         if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
             .not. forcing%rutter%source_window%valid()) return
@@ -3010,7 +3092,9 @@ contains
         if (allocated(forcing%rutter)) return
         if (allocated(self%rutter_forcing)) deallocate(self%rutter_forcing)
       end if
-      if (self%drainage_response_active) then
+      if(self%frost_divdra_drainage_active)then
+        ! Scalar forcing owns raw transfer; materialized nodes are prohibited.
+      else if (self%drainage_response_active) then
         if (allocated(forcing%drainage_flux_by_level) .or. .not. allocated(self%drainage_response_levels) .or. &
             .not. allocated(forcing%drainage_response_controls)) return
         drainage_preflight_status = fmr_drainage_response_configuration_status(self%drainage_response_levels, &
@@ -3192,7 +3276,15 @@ contains
         if (allocated(forcing%boesten_evaporation)) return
       end if
 
-      if (self%drainage_response_active) then
+      if(self%frost_divdra_drainage_active)then
+        if(allocated(self%drainage_response_controls))deallocate(self%drainage_response_controls)
+        if(allocated(self%unfrozen_drainage_flux))deallocate(self%unfrozen_drainage_flux)
+        if(associated(self%qdra))then
+          if(size(self%qdra,1)/=1.or.size(self%qdra,2)/=n)deallocate(self%qdra)
+        end if
+        if(.not.associated(self%qdra))allocate(self%qdra(1,n))
+        self%qdra=0._real64;self%frost_divdra_scalar_rate=forcing%frost_divdra_scalar_rate
+      else if (self%drainage_response_active) then
         if (associated(self%qdra)) then
           if (size(self%qdra,1) /= size(self%drainage_response_levels) .or. size(self%qdra,2) /= n) then
             deallocate(self%qdra)
@@ -3459,6 +3551,7 @@ contains
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
+    type(frost_geometry_result_t) :: divdra_geometry
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
     real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:),salinity_storage_thickness(:)
@@ -3818,7 +3911,29 @@ contains
           if (frost_status /= FROST_EFFECT_OK) return
           self%last_observation%frost_factor_min = minval(frost_factors)
           self%last_observation%frost_factor_max = maxval(frost_factors)
-          if(self%frost_drainage%active)then
+          if(self%frost_divdra_drainage_active)then
+            if(allocated(physical%salt))return
+            call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
+            if(.not.hydraulic_view_ok)return
+            call evaluate_legacy_bracketed_frost_geometry(frost_thermal%temperature_c, &
+                 self%soil_temperature_forcing%prescribed_surface_temperature_c,self%frost_hydraulic%reduction_start_c, &
+                 self%frost_hydraulic%reduction_end_c,self%soil_parameters%z,self%soil_parameters%node_distance,divdra_geometry)
+            if(.not.divdra_geometry%available)return
+            call compose_single_level_signed_frost_divdra(self%frost_divdra_drainage,hydraulic_start,frost_factors, &
+                 divdra_geometry%deepest_node,divdra_geometry%bottom_depth_cm,physical%water_content, &
+                 self%hydraulic_parameters%cofgen(2,:),self%frost_divdra_scalar_rate,effective_bottom_flux, &
+                 self%last_observation%frost_divdra)
+            self%last_observation%frost_divdra_executed=.true.
+            if(.not.self%last_observation%frost_divdra%available)return
+            self%qdra(1,:)=self%last_observation%frost_divdra%final_nodal_sink
+            request%boundary%bottom_flux=self%last_observation%frost_divdra%final_bottom
+            self%last_observation%frost_drainage_executed=.true.
+            self%last_observation%frost_drainage=frost_drainage_result_t()
+            allocate(self%last_observation%frost_drainage%level_rate(1))
+            self%last_observation%frost_drainage%level_rate(1)=self%last_observation%frost_divdra%final_scalar
+            self%last_observation%frost_drainage%total_rate=self%last_observation%frost_divdra%final_scalar
+            self%last_observation%frost_drainage%available=.true.;self%last_observation%frost_drainage%status=FROST_DRAIN_OK
+          else if(self%frost_drainage%active)then
             if(allocated(physical%salt).or..not.allocated(self%unfrozen_drainage_flux))return
             if(self%frost_low_air_drainage%active)then
               call compose_legacy_bracketed_frost_drainage(frost_thermal%temperature_c, &
@@ -4998,6 +5113,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(self%frost_divdra_drainage_active)then
+      value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
+      return
+    end if
     if(self%frost_low_air_drainage%active)then
       value=fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state)
       return
@@ -5139,6 +5258,68 @@ contains
       end select
     end select
   end function fmr_root_frost_temporal_error
+
+  real(real64) function fmr_frost_divdra_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
+    type(process_hydraulic_view_t)::vf,vh
+    type(frost_geometry_result_t)::gf,gh
+    type(frost_divdra_result_t)::rf,rh
+    integer::n,status
+    real(real64)::head_error,temperature_error
+    value=huge(0._real64)
+    if(self%frost_drainage%head_budget_cm<=0._real64.or.self%frost_drainage%temperature_budget_c<=0._real64)return
+    if(.not.allocated(self%soil_temperature_forcing))return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n)return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature))return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK)return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK)return
+        if(size(tf)/=n.or.size(th)/=n)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(full%water_content))return
+        if(.not.allocated(half%pressure_head).or..not.allocated(half%water_content))return
+        if(size(full%pressure_head)/=n.or.size(full%water_content)/=n)return
+        if(size(half%pressure_head)/=n.or.size(half%water_content)/=n)return
+        vf%active_nodes=n;vf%pressure_head=full%pressure_head;vf%water_content=full%water_content
+        vf%groundwater_level=full%groundwater_level;vf%ponding_depth=full%ponding_depth
+        vh%active_nodes=n;vh%pressure_head=half%pressure_head;vh%water_content=half%water_content
+        vh%groundwater_level=half%groundwater_level;vh%ponding_depth=half%ponding_depth
+        allocate(ff(n),fh(n))
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,tf,ff,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,th,fh,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_legacy_bracketed_frost_geometry(tf,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c,self%soil_parameters%z, &
+             self%soil_parameters%node_distance,gf)
+        if(.not.gf%available)return
+        call evaluate_legacy_bracketed_frost_geometry(th,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c,self%soil_parameters%z, &
+             self%soil_parameters%node_distance,gh)
+        if(.not.gh%available)return
+        if(gf%deepest_node/=gh%deepest_node)return
+        call compose_single_level_signed_frost_divdra(self%frost_divdra_drainage,vf,ff,gf%deepest_node,gf%bottom_depth_cm, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%frost_divdra_scalar_rate,self%bottom_flux,rf)
+        if(.not.rf%available)return
+        call compose_single_level_signed_frost_divdra(self%frost_divdra_drainage,vh,fh,gh%deepest_node,gh%bottom_depth_cm, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%frost_divdra_scalar_rate,self%bottom_flux,rh)
+        if(.not.rh%available)return
+        if(rf%low_air.neqv.rh%low_air)return
+        if(rf%blocked.neqv.rh%blocked)return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_drainage%head_budget_cm,temperature_error/self%frost_drainage%temperature_budget_c)
+      end select
+    end select
+  end function
 
   real(real64) function fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self

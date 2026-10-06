@@ -3,8 +3,8 @@
   "role": "CENTRAL_REGIE",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
   "baseline_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
-  "status": "PREREGISTERED_RUNTIME_PENDING",
-  "implemented": false,
+  "status": "RUNTIME_INTERFACE_PERSISTED_UNTESTED",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -44,8 +44,13 @@
     "docs/decisions/ADR-0005-reference-baseline-chain.md",
     "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json"
   ],
-  "next_action": "Publish source-bound runtime preregistration, then implement additive exact physical interface/trial path and useful remote checkpoint",
-  "recovery_point": "Preregistration commit before runtime/interface code",
+  "next_action": "Fresh whole-module compile, then actual runtime/source qualification harnesses with immutable source checkpoint",
+  "recovery_point": "Git commit containing complete additive runtime path before compile",
   "last_reconciled_upstream": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "blockers": []
+  "blockers": [],
+  "production_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_frost_divdra_drainage_effect.f90"
+  ]
 }
