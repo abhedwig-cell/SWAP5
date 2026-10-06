@@ -44,14 +44,15 @@ unaffected B17 outputs remain byte-exact. The original complete4536-case B17
 single-level corpus was freshly executed with the candidate at O0/O2 and its
 immutable output remains byte-exact.
 
-The candidate reference is not yet canonically admitted. The combined
-multilevel numerical qualification is not complete:645 candidate cases exceed
+The candidate reference is not yet canonically admitted. The initial
+double-precision comparison did not qualify the partition: 645 cases exceeded
 the unchanged 2e-12 unit-rate partition-comparison screen. The worst unit-rate
 difference is5.754858395379259e-11, with actual nodal difference up to
 1.4446044360738597e-10 cm/day. These failures are retained, not hidden by a
 larger tolerance. The candidate's actual nodal/scalar residual stays below
 7.105427357601002e-15 cm/day. Nodal/scalar closure does not erase the distinct
-partition-accuracy failure. No runtime mass-budget relaxation follows.
+comparison-screen failure. The later exact-input adjudication below resolves
+their cause. No runtime mass-budget relaxation follows.
 
 ## Separate unresolved signed-transfer rule
 
@@ -99,7 +100,64 @@ FPE, an inappropriate absolute partition screen for amplified rates, a Python
 compensated-sum assumption for a native sequential scalar loop, and an incorrect
 stable-sort assumption. Final scalar ownership matches native sequential
 binary64 reduction; geometric integrations/inversion remain independent.
-The partition screen failures remain negative qualification evidence.
+The partition screen failures remain historical negative evidence.
+
+## Later exact-input geometric adjudication
+
+The precision hypothesis was separately preregistered before implementation.
+In the worst prior case 5116, all nonzero flux lies in one compartment; its
+exact geometric weight is 1 and the native source publishes that exact rate.
+The independent double-precision inverse integral unnecessarily reconstructs
+a depth near 4.5 cm and subtracts 4.5 again to obtain a tiny interval in a
+1e-10-conductivity compartment, losing relative digits in the comparator.
+
+A separate independent oracle uses exact binary64 inputs converted with
+`Decimal.from_float` and 80/100-digit layer integrals and inversion. It passes
+all 9216 cases at the original 2e-12 unit-rate screen, resolving all 645 old
+screens without any source or tolerance change. Maximum unit-rate error is
+2.3180420846515488e-14; maximum absolute nodal error is
+1.1063555732896357e-14 cm/day. The 80/100-digit results differ by at most
+1.11182e-73 cm/day. Fresh native O0/O2 executions reproduce the prior sealed
+candidate output byte-exactly. The geometry-correction reference is now
+qualified in this bounded scope; canonical reference admission remains separate.
+
+The old summary/replay retain the historical negative flag. The current
+successor authority is `integration/audits/PPA_WU05B20_CURRENT_REVIEW.json`,
+with `evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz`. The successor
+verifier rejects removing old failures or enlarging the comparison threshold.
+
+## Concrete test-only net-preserving alternative
+
+FROST-MULTILEVEL-NET01 is a separately preregistered scientific policy proposal,
+not a demonstrated B1 correction. On low-air mixed-sign survivors only, it
+replaces the signed-total transfer multiplier/replacement by
+`final_i = raw_i + qbot * abs(raw_i) / sum(abs(raw))`. The separate bottom
+proposal remains. This books the imported bottom contribution over absolute
+level-rate weights whose sum is 1, so the final drainage sum is raw sum plus
+bottom and the raw signed net proposal is retained. It avoids division by a
+small signed total. Unmixed/no-flow and normal-air source branches stay literal.
+
+The generated scratch-only full FrozenBounds experiment executes all 9216
+inputs at O0/O2 with byte-identical outputs. It alters 1344 mixed cases; all 7872
+unaltered controls remain byte-exact to the geometry-corrected source. All 4536
+immutable B17 one-level outputs are freshly preserved at O0/O2. Independent
+80/100-digit geometry passes the same 2e-12 screen. Maximum altered signed-net
+error is 1.2033729096598453e-17 cm/day and maximum nodal/scalar residual is
+1.0408340855860843e-17 cm/day, each against 1e-14.
+
+| Retained raw rates (cm/day) | Native final rates (cm/day) | Proposed final rates (cm/day) | Proposed signed net (cm/day) |
+| --- | --- | --- | --- |
+| +0.01, -0.01 | +0.01, -0.002 | +0.009, -0.011 | approximately 0 |
+| +0.01, -0.0099995 | +0.01, -0.002 | +0.008999975, -0.010999475 | -0.0000005 |
+| +0.01, -0.0099985 | -13.3233333333, +13.3213348333 | +0.008999925, -0.010998425 | -0.0000015 |
+
+Bottom is -0.002 cm/day in each example. No existing production module or
+reference authority is changed by this experiment. Numerical evidence makes
+the proposal reviewable; it does not establish that this physical allocation
+is the intended legacy model or authorize production admission. The owner must
+explicitly accept this SWAP5 policy difference or retain/bound the source rule.
+Full multilevel runtime/rejection/restart/application qualification would follow
+that decision. This is the remaining shared scientific authority hold.
 
 Production source, B19 qualification and all immutable original/B17 reference
 postimages remain unchanged. Aggregate frost migration remains open, with
