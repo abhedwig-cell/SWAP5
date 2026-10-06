@@ -12,7 +12,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT = ROOT / 'integration/audits'
-DISPOSITIONS = {'ADMITTED', 'SUPERSEDED', 'REJECTED', 'NOT_APPLICABLE', 'ACTIVE_MIGRATION'}
+DISPOSITIONS = {'ADMITTED', 'SUPERSEDED', 'REJECTED', 'NOT_APPLICABLE', 'ACTIVE_MIGRATION', 'QUALIFICATION_ONLY'}
 CLASSES = {'CORE_PHYSICS', 'APPLICATION_PHYSICS', 'LEGACY_COMPATIBILITY', 'LEGACY_IO', 'OBSOLETE_CONTROL_FLOW'}
 
 
@@ -89,8 +89,8 @@ def validate(require_closed=False):
         assert set(entry['remaining_dependency']) <= ids, f'{cap}: dangling dependency'
         for anchor in entry.get('closed_foundation_authorities', []):
             assert anchor in foundations or (anchor in by_id and by_id[anchor]['current_disposition'] in {'ADMITTED', 'SUPERSEDED'}), f'{cap}: unresolved/unknown foundation {anchor}'
-        assert all(by_id[d]['current_disposition'] == 'ACTIVE_MIGRATION' for d in entry['remaining_dependency']), f'{cap}: closed dependency treated as blocker'
-        if entry['current_disposition'] == 'ACTIVE_MIGRATION':
+        assert all(by_id[d]['current_disposition'] in {'ACTIVE_MIGRATION', 'QUALIFICATION_ONLY'} for d in entry['remaining_dependency']), f'{cap}: closed dependency treated as blocker'
+        if entry['current_disposition'] in {'ACTIVE_MIGRATION', 'QUALIFICATION_ONLY'}:
             assert entry['active_workunit'] in registered, f'{cap}: unregistered workunit'
             assert cap in registered[entry['active_workunit']]['capabilities'], cap
             assert not entry['production_reachability']['established'], cap
@@ -242,11 +242,14 @@ def validate(require_closed=False):
         assert {r['optimization'] for r in probe['results']} == {'-O0', '-O2'}, 'missing probe optimization'
         assert len({r['stdout'] for r in probe['results']}) == 1, 'probe optimization mismatch'
     active = [e for e in entries if e['current_disposition'] == 'ACTIVE_MIGRATION']
+    qualification = [e for e in entries if e['current_disposition'] == 'QUALIFICATION_ONLY']
     assert ledger['summary']['dispositions'] == counts, 'stale summary'
     assert ledger['summary']['open_capabilities'] == len(active), 'stale open count'
     confirmed = sum(e.get('implementation_absence_proven', False) for e in active)
     assert ledger['summary']['confirmed_missing_production_entries'] == confirmed, 'stale proven-gap count'
-    assert ledger['summary']['other_unresolved_source_admission_reviews'] == len(active)-confirmed, 'stale review count'
+    assert ledger['summary']['qualification_only_capabilities'] == len(qualification), 'stale qualification-only count'
+    assert ledger['summary']['total_unresolved_capabilities'] == len(active) + len(qualification), 'stale total unresolved count'
+    assert ledger['summary']['other_unresolved_source_admission_reviews'] == len(qualification), 'stale review count'
     for call in census['integer_input_calls']:
         assert set(call['capability_navigation']) <= ids, 'dangling selector navigation'
     if 'pr_reconciliation' in ledger:
@@ -262,6 +265,7 @@ def validate(require_closed=False):
             if 'authority' in row:
                 assert (ROOT/row['authority']).is_file(), 'missing PR reconciliation authority'
     assert {e['capability_id'] for e in ledger['remaining_queue']} == {e['capability_id'] for e in active}, 'queue mismatch'
+    assert {e['capability_id'] for e in ledger.get('qualification_queue', [])} == {e['capability_id'] for e in qualification}, 'qualification queue mismatch'
     for row in ledger['remaining_queue']:
         assert row['dependencies'] == by_id[row['capability_id']]['remaining_dependency'], 'stale queue dependencies'
     priority_fields = ['dependency_depth', 'functional_relevance', 'implementation_extent', 'physical_risk', 'regression_risk']
@@ -269,7 +273,7 @@ def validate(require_closed=False):
     assert ledger['remaining_queue'] == ordered, 'queue ordering mismatch'
     if ledger['coverage_closed'] or require_closed:
         assert ledger['denominator_complete'] and census['census_complete'], 'denominator incomplete'
-        assert not active, f'{len(active)} unresolved capabilities'
+        assert not active and not qualification, f'{len(active)} implementation gaps and {len(qualification)} qualification-only capabilities unresolved'
         assert ledger['closure_statement'] == 'SWAP431 FUNCTIONAL COVERAGE CLOSED', 'closure statement'
     return {'schema': 'swap5.coverage_integrity_result.v1', 'integrity': 'PASS', 'baseline': ledger['canonical_head'], 'source_members': len(members), 'capabilities': len(entries), 'dispositions': counts, 'denominator_complete': ledger['denominator_complete'], 'coverage_closed': ledger['coverage_closed'], 'claim': 'Evidence integrity only; not independent physics qualification or admission'}
 
