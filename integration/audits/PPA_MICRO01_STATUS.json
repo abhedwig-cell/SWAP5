@@ -2,7 +2,7 @@
   "work_unit": "PPA-MICRO01",
   "workstream": "Independent microscopic root uptake migration",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
-  "status": "EXACT_SOURCE_REVIEW_ACTIONS_COMPONENT_FALLBACK_PENDING",
+  "status": "FIRST_ACTIONS_FALSE_GREEN_REPAIRED_COMPONENT_REPLAY_PENDING",
   "implemented": false,
   "test_harness_prepared": true,
   "persisted": true,
@@ -43,5 +43,10 @@
     25
   ],
   "scope_limit": "Source review and prepared unchanged table component test only; no MICRO production physics or legacy full-model equivalence. Jarvis/Walsum remains separately admitted.",
-  "qualification_fallback": ".github/workflows/ppa-micro01-dry-table.yml"
+  "qualification_fallback": ".github/workflows/ppa-micro01-dry-table.yml",
+  "negative_findings": [
+    "Initial pipeline masked ERROR STOP 3 because pipefail absent; no successful component evidence claimed",
+    "K430 also affects previous -19900 normal control; move normal control to -19000 and explicitly test the K-only gap"
+  ],
+  "negative_evidence": "integration/audits/PPA_MICRO01_FIRST_REPLAY_NEGATIVE.json"
 }

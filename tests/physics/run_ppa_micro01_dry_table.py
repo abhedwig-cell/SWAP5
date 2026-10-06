@@ -53,8 +53,8 @@ program dry_table_audit
 use literal_micro_table
 implicit none
 integer::pass,j,start
-real(8)::m,k,head(5),poison(3),ms(5,3),ks(5,3)
-head=[-20001d0,-20000d0,-19970d0,-19900d0,-1d0]
+real(8)::m,k,head(6),poison(3),ms(6,3),ks(6,3)
+head=[-20001d0,-20000d0,-19970d0,-19900d0,-19000d0,-1d0]
 poison=[0d0,1d0,1d6]
 start=int(100d0*log10(20000d0))
 if(start/=430)error stop 1
@@ -65,7 +65,7 @@ call get_MFLP_K(1)
 do pass=1,3
  K_table(start:,:)=poison(pass)
  M_table(start+1:,:)=poison(pass)
- do j=1,5
+ do j=1,6
   call get_MFLP_K(2,head(j),1,m,k)
   ms(j,pass)=m;ks(j,pass)=k
   write(*,'(A,I0,A,F12.4,A,ES24.16,A,ES24.16)') &
@@ -73,10 +73,11 @@ do pass=1,3
  end do
 end do
 if(any(ms(1,:)/=0d0).or.any(ks(1,:)/=0d0))error stop 2
-if(any(ms(4,:)/=ms(4,1)).or.any(ks(4,:)/=ks(4,1)))error stop 3
-if(any(ms(5,:)/=ms(5,1)).or.any(ks(5,:)/=ks(5,1)))error stop 4
+if(any(ms(5,:)/=ms(5,1)).or.any(ks(5,:)/=ks(5,1)))error stop 3
+if(any(ms(6,:)/=ms(6,1)).or.any(ks(6,:)/=ks(6,1)))error stop 4
 if(ms(2,1)==ms(2,3).or.ks(2,1)==ks(2,3))error stop 5
 if(ms(3,1)==ms(3,3).or.ks(3,1)==ks(3,3))error stop 6
+if(any(ms(4,:)/=ms(4,1)).or.ks(4,1)==ks(4,3))error stop 7
 print '(A)','B111_MICRO_UNINITIALIZED_DRY_BRACKET_CONFIRMED=PASS'
 print '(A)','B111_MICRO_DRY_BELOW_AND_NORMAL_CONTROLS=PASS'
 end program
@@ -90,7 +91,12 @@ with tempfile.TemporaryDirectory(prefix='micro01-dry-table-') as tmp:
         subprocess.run(['gfortran', '-' + opt, '-ffree-line-length-none',
                         '-fcheck=all', '-ffpe-trap=invalid,zero,overflow',
                         str(f), '-o', str(tmp / opt)], cwd=tmp, check=True)
-        outputs[opt] = subprocess.check_output([str(tmp / opt)], text=True)
+        execution = subprocess.run([str(tmp / opt)], text=True, capture_output=True)
+        if execution.returncode:
+            print(execution.stdout, end='')
+            print(execution.stderr, end='')
+            execution.check_returncode()
+        outputs[opt] = execution.stdout
         print(outputs[opt], end='')
 assert outputs['O0'] == outputs['O2']
 print('B111_MICRO_DRY_TABLE_O0_O2_IDENTICAL=PASS')

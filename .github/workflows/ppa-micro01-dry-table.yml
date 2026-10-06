@@ -14,9 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify compiler and unchanged source component
+        shell: bash
         env:
           C3A_RESULT: micro01-result.json
         run: |
+          set -euo pipefail
           gfortran --version
           python3 tests/physics/run_ppa_micro01_dry_table.py | tee micro01-replay.log
       - uses: actions/upload-artifact@v4
