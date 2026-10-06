@@ -1,7 +1,8 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_fmr_serialized_reference_backend, only: fmr_frost_response_drainage_configuration_valid
+  use mod_fmr_serialized_reference_backend, only: fmr_frost_response_drainage_configuration_valid, &
+       fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
   use mod_root_uptake_compensation, only: ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
@@ -892,6 +893,8 @@ contains
     end if
 
     if(.not.fmr_frost_response_drainage_configuration_valid(tile%parameters))return
+    if(.not.fmr_frost_divdra_configuration_valid(tile%parameters))return
+    if(.not.fmr_frost_divdra_forcing_valid(tile%parameters%frost_divdra_active,tile%base_forcing))return
     if(tile%parameters%frost_low_air_drainage%active)then
       if(.not.tile%parameters%frost_low_air_drainage%valid().or..not.tile%parameters%frost_drainage%active)return
       if(tile%parameters%frost_low_air_response_drainage_active)then

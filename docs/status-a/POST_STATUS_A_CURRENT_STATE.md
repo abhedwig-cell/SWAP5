@@ -487,3 +487,28 @@ PR #1065 at `987715cbf5513a0911bd81403209452d2a99666c` admits [FROST-DIVDRA-02](
 ## Typed frost and DIVDRA scientific component
 
 PR #1067 at `a9a35a60409a16ef7fdf3a38d5bcffb6899c2416` admits [B18 typed single-level signed frost/DIVDRA component](../audits/PPA_WU05B18_TYPED_FROST_DIVDRA.md) only:3240 actual corrected-source parity cases,1296 original tiny-scalar unavailable cases,32 invalid-domain guards and2 actual geometry seam comparisons pass at O0/O2. Existing positive-only process/binding smoke programs remain exact and every376 prior production blob is unchanged. No backend/forcing/solver/restart/application interface is modified, and no runtime hard-mass admission follows. Aggregate frost migration remains open.
+
+## Independent MICRO table component (2026-10-06)
+
+PR #1069, merge `efaeffcc36205f54ed3990b2efaf99ac908e5c0d`, admits an unused typed matric-flux/conductivity
+table with a corrected explicit -20000 cm dry endpoint. The exact source
+bracket defect, patched-source comparison and independent terminal integral
+are qualified at O0/O2. No existing uptake runtime changes. Full MICRO
+nonlinear uptake, provider, sink and restart remain open. See the
+[component closeout](../audits/PPA_MICRO01_CANONICAL_CLOSEOUT.md).
+
+## Bounded single-level signed frost/DIVDRA runtime
+
+PR #1078, merge `811ad186fa8f06386c73baa6abd8e19307cc8dc5`, admits the
+default-OFF B19 signed frost/DIVDRA runtime on rootless ordinary Reference,
+prescribed constant bottom mode2, normal and guarded low-air routes and separate
+infiltration. The [canonical closeout](../audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md)
+records all eleven inherited complete gates, 56 fresh O0/O2 runtime receipts,
+32 original normal and 48 original low-air preservation executions, negative
+falsification checks and successful source-bound controlling CI. Actual and
+CI-tested merge trees match exactly; qualified production source is unchanged.
+Immutable trial-start generation, existing nodal/bottom ownership and one mass
+ledger remain. Retained negative evidence and separately routed inherited CI
+failures are not relabelled as passes. No phase-change, excluded hybrid,
+full-winter or practical performance claim follows. Aggregate frost migration
+and the frozen Status A denominator remain unchanged.

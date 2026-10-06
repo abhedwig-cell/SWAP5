@@ -162,5 +162,14 @@
     "eligibility": "alptot >= vsmall, vsmall=1e-14",
     "routing": "Drought1 MACRO with compensation; drought2/3 MICRO without MACRO compensation",
     "historical_reconstruction": "Retained as historical evidence; its 0.05 and external-after-MICRO claims are superseded by EXACT01"
+  },
+  "micro_table_component_successor": {
+    "work_unit": "PPA-MICRO01",
+    "canonical_pr": 1069,
+    "canonical_merge": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d",
+    "admission": "integration/audits/PPA_MICRO01_CANONICAL_ADMISSION.json",
+    "scope": "Corrected typed M/K table only",
+    "full_micro_migration": "OPEN",
+    "external_jarvis_after_micro": "NOT_A_B1_11_OPTION"
   }
 }

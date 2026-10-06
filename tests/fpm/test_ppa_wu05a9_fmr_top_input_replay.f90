@@ -40,6 +40,8 @@ program test_ppa_wu05a9_fmr_top_input_replay
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t, prepare_fmr_macropore_rapid_reference
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, &
        macropore_runtime_policy_t, macropore_runtime_result_t, MACRO_RUNTIME_INACTIVE, &
        MACRO_RUNTIME_CONVERGED
@@ -208,7 +210,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
 contains
 
   subroutine exercise_serialized_fmr()
-    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, fresh_backend, negative_backend
+    type(fmr_serialized_reference_backend_t) :: backend, restored_backend, fresh_backend, negative_backend, fmr_restart_backend
     type(fmr_b110_physical_parameters_t), target :: fparams, negative_params
     type(fmr_b110_physical_forcing_t) :: forcing, negative_forcing
     type(fmr_b110_physical_state_t) :: initial
@@ -219,24 +221,33 @@ contains
     type(fmr_template_t) :: template
     type(canonical_numerical_config_t) :: numerical
     type(kernel_committed_state_t) :: committed, restored
+    type(kernel_committed_state_t) :: restart_source_states(1), restart_restored_states(1)
     type(kernel_checkpoint_t) :: checkpoint, restored_checkpoint
+    type(kernel_checkpoint_t) :: fmr_restart_checkpoint
     type(kernel_candidate_state_t) :: candidate, replay_candidate, next_candidate, restored_next_candidate
     type(kernel_candidate_state_t) :: retry_candidate, fresh_retry_candidate
+    type(kernel_candidate_state_t) :: fmr_restart_next_candidate
     type(kernel_result_t) :: kres, replay_result, next_result, restored_next_result
     type(kernel_result_t) :: retry_result, fresh_retry_result
     type(kernel_result_t) :: negative_result
+    type(kernel_result_t) :: fmr_restart_next_result
     type(kernel_diagnostics_t) :: kdiag, replay_diag, next_diag, restored_next_diag
     type(kernel_diagnostics_t) :: retry_diag, fresh_retry_diag
     type(kernel_diagnostics_t) :: negative_diag
+    type(kernel_diagnostics_t) :: fmr_restart_next_diag
     type(kernel_candidate_state_t) :: negative_candidate
+    type(fmr_logical_column_t) :: restart_columns(1)
+    type(fmr_template_t) :: restart_templates(1)
+    type(fmr_committed_restart_bundle_t) :: restart_bundle
     type(kernel_persistence_snapshot_t) :: persisted
     class(transaction_state_t), allocatable :: before_state, after_trial_state, candidate_state, replay_state, &
          restored_state, next_state, restored_next_state, retry_state, fresh_retry_state
     logical :: prepared, state_ok, available, did_commit, persisted_ok, restored_ok, policy_ok
+    logical :: restart_exported, restart_restored
     character(len=1)::reference_flag,partial_flag
     real(real64)::drain_level
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
-    integer :: commit_status, persistence_status, k, crack_node, rutter_status, negative_case
+    integer :: commit_status, persistence_status, k, crack_node, rutter_status, negative_case, restart_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
     real(real64), parameter :: fmr_dt=1.0e-3_real64
 
@@ -421,6 +432,10 @@ contains
     column%forcing_handle=1_int64
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=column%template_id
+    template%physics_topology_id=505802_int64
+    template%vertical_layout_id=505803_int64
+    template%state_layout_id=505804_int64
+    template%solver_interface_id=505805_int64
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
     if(migmac10)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE
     if(migmac10_rutter)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
@@ -576,6 +591,26 @@ contains
     call restored%snapshot(restored_state,available)
     if(.not.available .or. .not.same_fmr_state(after_trial_state,restored_state))error stop 'A9 FMR top-input restored state'
 
+    if(migmac10_rutter)then
+      restart_columns(1)=column
+      restart_templates(1)=template
+      restart_source_states(1)=committed
+      call fmr_export_committed_restart(restart_columns,restart_templates,restart_source_states, &
+           505899_int64,restart_bundle,restart_exported,restart_status)
+      if(.not.restart_exported .or. restart_status/=FMR_RESTART_OK)error stop 'MIGMAC10 FMR restart export'
+      call fmr_restore_committed_restart(restart_bundle,505899_int64,restart_columns,restart_templates, &
+           restart_restored_states,restart_restored,restart_status)
+      if(.not.restart_restored .or. restart_status/=FMR_RESTART_OK)error stop 'MIGMAC10 FMR restart restore'
+      call restart_restored_states(1)%snapshot(restored_state,available)
+      if(.not.available .or. .not.same_fmr_state(after_trial_state,restored_state)) &
+           error stop 'MIGMAC10 FMR restart state identity'
+      call restart_restored_states(1)%capture_checkpoint(fmr_restart_checkpoint,available)
+      if(.not.available)error stop 'MIGMAC10 FMR restart checkpoint'
+      call fmr_restart_backend%initialize(top)
+      call fmr_restart_backend%configure_macropore_policy(policy,policy_ok)
+      if(.not.policy_ok)error stop 'MIGMAC10 FMR restart backend policy'
+    end if
+
     call committed%capture_checkpoint(checkpoint,available)
     if(.not.available)error stop 'A9 FMR top-input next checkpoint'
     call restored%capture_checkpoint(restored_checkpoint,available)
@@ -606,12 +641,23 @@ contains
     call restored_backend%run_trial(column,template,fparams,restored,forcing,numerical,fmr_dt,2.0_real64*fmr_dt, &
          restored_checkpoint,restored_next_result,restored_next_candidate,restored_next_diag, &
          trusted_prepared_parameters=.true.)
+    if(migmac10_rutter)then
+      call fmr_restart_backend%run_trial(column,template,fparams,restart_restored_states(1),forcing,numerical, &
+           fmr_dt,2.0_real64*fmr_dt,fmr_restart_checkpoint,fmr_restart_next_result,fmr_restart_next_candidate, &
+           fmr_restart_next_diag,trusted_prepared_parameters=.true.)
+    end if
     if(.not.next_result%completed .or. .not.restored_next_result%completed)error stop 'A9 FMR top-input restart continuation'
     call next_candidate%snapshot(next_state,available)
     if(.not.available)error stop 'A9 FMR top-input next candidate'
     call restored_next_candidate%snapshot(restored_next_state,available)
     if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
          error stop 'A9 FMR top-input restart next-candidate replay'
+    if(migmac10_rutter)then
+      if(.not.fmr_restart_next_result%completed)error stop 'MIGMAC10 FMR restart next interval'
+      call fmr_restart_next_candidate%snapshot(restored_next_state,available)
+      if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
+           error stop 'MIGMAC10 FMR restart next-candidate identity'
+    end if
     if(migmac10)then
       select type(previous=>after_trial_state)
       type is(fmr_b110_boesten_macropore_state_t)

@@ -1,0 +1,26 @@
+{
+  "work_unit": "PPA-MICRO01",
+  "status": "QUALIFIED_TYPED_CORRECTED_TABLE_COMPONENT_ONLY",
+  "execution": "3175892870dac0671a46602eca7e47d050add9fb",
+  "workflow_run": 37417114385,
+  "source_manifest_entries_verified": 7,
+  "component": "src/process/mod_root_micro_matric_flux_table.f90",
+  "contract": "docs/audits/PPA_MICRO01_TABLE_REPAIR_CONTRACT.md",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_MICRO01_TABLE_FINAL_REPLAY.json.gz",
+    "sha256": "5f304f30a8aaed23bc5e5dfc2a64323df55fdc2f94a40553c1c9d2693e9df8fe"
+  },
+  "cases_per_optimization": 2600,
+  "optimization_identity": "O0_O2_IDENTICAL",
+  "reference_policy": "Honor explicit -20000 cm endpoint; integrate terminal interval as linear conductivity with exact integral, retain source trapezoidal/log-grid algebra elsewhere",
+  "runtime_admitted": false,
+  "documentation_gates": "PASS: check_docs.py, python -m mkdocs build --strict, git diff --check",
+  "exclusions": [
+    "Full MICRO nonlinear uptake",
+    "Real soil hydraulic provider binding",
+    "Runtime sink/state/restart",
+    "Hydraulic lift, salt/osmotic, frost and external Jarvis after MICRO"
+  ],
+  "original_qualification": "integration/audits/PPA_MICRO01_QUALIFICATION.json",
+  "overflow_rejection": "PASS_FINITE_HUGE_SAMPLE_SATURATED_CONDUCTIVITY_HEAD_NONFINITE_AND_SHAPE"
+}
