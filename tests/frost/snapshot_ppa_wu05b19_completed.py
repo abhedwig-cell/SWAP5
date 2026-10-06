@@ -97,7 +97,9 @@ for receipt in Path('/tmp').glob('frost-b19-*.log.receipt.json'):
 for path in ROOT.joinpath('tests/frost').glob('*wu05b19*'):
     if path.is_file():
         add(path)
-add(ROOT / 'integration/audits/PPA_WU05B19_ENVIRONMENT_RECOVERY.json')
+for name in ('ENVIRONMENT_RECOVERY', 'PREREGISTRATION', 'SOURCE_REVIEW',
+             'EXECUTION_ADJUDICATION', 'UPSTREAM_RECONCILIATION'):
+    add(ROOT / f'integration/audits/PPA_WU05B19_{name}.json')
 record = {'work_unit': 'PPA-WU05B19', 'status': 'RECOVERED_COMPLETE_CASE_CHECKPOINT_NOT_QUALIFICATION', 'production_source': SOURCE,
           'qualification': False, 'admitted': False, 'inherited_replay_sha256': sha(inherited), 'manifest': manifest,
           'completed_records': completed, 'completed_case_receipts': case_receipts,

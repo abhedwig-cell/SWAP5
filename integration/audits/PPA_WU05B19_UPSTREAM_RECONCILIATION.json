@@ -25,5 +25,18 @@
   },
   "qualification": false,
   "admitted": false,
+  "pre_admission_source_projection": {
+    "local_candidate": "5fde68c178df4e346a9cd6afc80a717faaae36cf",
+    "canonical_parent": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "computed_tree_before_final_metadata": "50d7b74b852fd3252293bb9090fe9b113e9ef022",
+    "computed_source": "c62b8933f88b3f462c38e86e13db042201df2f33",
+    "qualified_source_candidate": "636e782080abdd2c0366f96317c4f59e8170dc53",
+    "source_delta": "Only added process/mod_root_micro_matric_flux_table.f90 at blob e512da036ef39d9d3fd30a8fab168b5bd7b8026b",
+    "compiled_production_dependencies_rechecked": 176,
+    "all_compiled_production_bytes_identical": true,
+    "consistent_fixture_is_separate_177th_source": true,
+    "actual_merge_verified": false,
+    "claim_ceiling": "Read-only merge-tree/source-projection check while physical gates still run. Final candidate, live canonical and actual merge must be checked separately."
+  },
   "pending": "Finish running source-bound low-air gates before integrating upstream. Verify the exact merged source projection and both capability authorities, rerun final canonical/docs gates, and reconcile the live canonical head again before admission. This review is not a merge receipt."
 }
