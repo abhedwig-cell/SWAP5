@@ -2,7 +2,7 @@
   "work_unit": "PPA-WU05B19",
   "workstream": "RT/HY/VQ",
   "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
-  "status": "REMOTE_PERSISTED_QUALIFIED_PR_OPEN_ADMISSION_RECONCILIATION_REQUIRED",
+  "status": "QUALIFIED_CANONICAL_ADMISSION_AUTHORIZED_CONTROLLING_GATE_PENDING",
   "contract": "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
   "source_review": "integration/audits/PPA_WU05B19_SOURCE_REVIEW.json",
   "implemented": true,
@@ -14,9 +14,10 @@
   "aggregate_frost_migration_complete": false,
   "blockers": [
     "Canonical admission requires current-source reconciliation of inherited CI wrappers: a frozen B15 source-pin rejection and an unchanged PUB-P2E02 compile-list dependency failure are diagnosed. This is not a blanket disposition of all PR checks.",
-    "The current explicit authorization covers branch publication and PR creation, not merging into the canonical branch. Separate canonical-admission authorization is required."
+    "The preregistered B19 current-source controlling admission gate must pass before merge. User has explicitly authorized canonical admission and merge."
   ],
-  "next_action": "With separate canonical-admission authorization, reconcile the applicable current-source admission gates while keeping historical source pins and scientific budgets intact. Only merge PR #1078 after its controlling gates and approval boundary are satisfied, then record actual admitted source-tree identity. Publication is complete; aggregate frost migration remains open.",
+  "next_action": "Run the preregistered source-bound B19 admission gate, verify exact PR head and unchanged live canonical dependencies, merge only when the controlling gate succeeds and repository protection permits it, then verify and record the actual admitted production source tree.",
+  "admission_plan": "integration/audits/PPA_WU05B19_ADMISSION_PLAN.json",
   "remote_check_reconciliation": "integration/audits/PPA_WU05B19_REMOTE_CHECK_RECONCILIATION.json",
   "relevant_paths": [
     "src/process/mod_frost_divdra_drainage_effect.f90",
@@ -68,7 +69,7 @@
     "base": "integration/f-ci-canonical",
     "base_sha_at_publication": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
     "merged": false,
-    "authorization_scope": "User explicitly continued the proposed branch publication and PR creation. Canonical admission is separate.",
+    "authorization_scope": "User first authorized branch publication and PR creation, then explicitly answered Ja to completing canonical admission and merging PR #1078 after its applicable gates pass.",
     "qualification_snapshot_policy": "Original immutable replay, summary and report retain their qualification-time remote/admission flags and historical run commit IDs. This current status owns publication and PR tracking."
   },
   "negative_evidence": [
