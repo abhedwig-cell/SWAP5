@@ -49,7 +49,9 @@
     "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90": "1e32b6feb546bd1ab809825db7b4a23957f00cc075b9706056ec85f3a0da5c8c",
     "src/crop/mod_wofost_one_day_structural_evolution.f90": "d8b20863a22d936e026e2633615d6c7a5a233412b8a03547459328319473bdc7",
     "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
-    "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158"
+    "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
+    "src/runtime/mod_fmr_root_uptake_process_binding.f90": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86"
   },
   "findings": [
     {
@@ -162,6 +164,27 @@
         "SWAP/surfacewater.f90:176..234,254..277,309..356,384..403,496..555",
         "src/process/mod_restricted_fixed_weir_surface_water.f90:14..29,180..187,215..225",
         "src/runtime/mod_fmr_serialized_reference_backend.f90:1725..1753,4338..4344,4400..4420"
+      ]
+    },
+    {
+      "family": "absolute_root_length_density_override",
+      "finding": "SWLRVCONSTANT overrides absolute LRV used by MICRO; normalized cumulative root fractions in the admitted Feddes crop contract do not represent this quantity. Canonical MICRO table admission has no LRV resolver or runtime consumer. The source override is stateless and independent of adaptive root-biomass history. No SUPERSEDED claim follows from generic root fractions.",
+      "evidence_locators": [
+        "SWAP/MOD_cropdevelopment.f90:2334..2358",
+        "SWAP/rootextraction.f90:118,234,239,251",
+        "src/crop/mod_crop_root_uptake_input_contract.f90:20..28",
+        "src/runtime/mod_fmr_root_uptake_process_binding.f90:16..21,65..72",
+        "src/process/mod_root_micro_matric_flux_table.f90"
+      ]
+    },
+    {
+      "family": "irrigation_decision_rules",
+      "finding": "Nine explicit source decision rules have no matching parameter/request/evaluator in the two current irrigation components or their application binding. TCS2/3/4 depletion, TCS6 weekly deficit, TCS8 theta sensor, DCS1 refill/rain deduction, DCSLIM clamp, salt-surplus increment and external availability scaling are distinct missing management physics. TCS7/SSDI component code and externally prescribed fluxes do not supply these decisions. Fixed sprinkling and scheduled-surface component reachability/admission are reviewed separately.",
+      "evidence_locators": [
+        "SWAP/irrigation.f90:473..636",
+        "src/process/mod_irrigation_process.f90:29..85,343..369,430..462",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:19..51",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90:30..102"
       ]
     }
   ],

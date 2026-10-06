@@ -93,6 +93,14 @@ def validate(require_closed=False):
     for entry in entries:
         assert entry['migration_priority']['dependency_depth'] == depth(entry['capability_id']), 'stale dependency depth'
     counts = dict(collections.Counter(e['current_disposition'] for e in entries))
+    seepage_path = AUDIT / 'evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json'
+    if seepage_path.exists():
+        seepage = json.loads(seepage_path.read_text())
+        assert hashlib.sha256(members[seepage['source_member']]).hexdigest() == seepage['source_sha256'], 'stale seepage source'
+        assert hashlib.sha256((ROOT / seepage['provider']).read_bytes()).hexdigest() == seepage['provider_sha256'], 'stale seepage provider'
+        assert not seepage['runtime_admission_created'], 'component probe used as runtime admission'
+        assert {r['optimization'] for r in seepage['results']} == {'-O0', '-O2'}
+        assert all(r['cases'] == 48 and r['max_relative_error'] <= 1e-12 for r in seepage['results'])
     probe_path = AUDIT / 'evidence/SWAP431_TILLAGE_DEFECT_PROBE.json'
     if probe_path.exists():
         probe = json.loads(probe_path.read_text())

@@ -24,8 +24,8 @@
     },
     "open_capabilities": 126,
     "open_workunits": 19,
-    "confirmed_missing_production_entries": 75,
-    "other_unresolved_source_admission_reviews": 51
+    "confirmed_missing_production_entries": 85,
+    "other_unresolved_source_admission_reviews": 41
   },
   "capabilities": [
     {
@@ -5257,19 +5257,23 @@
       },
       "meaning": "Youngs seepage-potential geometry for saturated exchange",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+        "src/runtime/mod_fmr_macropore_configuration.f90",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "docs/audits/PPA_WU05A8_CLOSEOUT.md"
+        "docs/audits/PPA_WU05A8_CLOSEOUT.md",
+        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Standard bounded route/isolated component presence does not establish this selector production envelope"
+        "claim": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra."
       },
       "restrictions": [
-        "Standard bounded route/isolated component presence does not establish this selector production envelope"
+        "Positive-K component comparison only; source pi explicitly supplied as acos(-1).",
+        "Require active seepage-face cases in actual Richards/macropore production chain with full/partial matrix top compartments, conservative donor cap, committed-state immutability, rollback, changed-forcing retry and restart."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACRO01",
@@ -5281,7 +5285,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
@@ -6769,16 +6773,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Readily available root-zone water depletion trigger",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
+        "claim": "No RAWTAB or root-zone readily available water/depletion evaluator in current scheduling contracts."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -6793,9 +6802,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS3",
@@ -6813,16 +6822,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Total available root-zone water depletion trigger",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
+        "claim": "No TAWTAB or total available root-zone water/depletion evaluator in current scheduling contracts."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -6837,9 +6851,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS4",
@@ -6857,16 +6871,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Absolute root-zone water depletion trigger",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
+        "claim": "No DWATAB or absolute root-zone depletion evaluator in current scheduling contracts."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -6881,9 +6900,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS6",
@@ -6901,16 +6920,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Weekly thresholded irrigation trigger",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
+        "claim": "No weekly seven-day deficit clock and IRGTHRESHOLD evaluator in current scheduling contracts; minimum event interval is a different rule."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -6925,9 +6949,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS7",
@@ -6993,16 +7017,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Water-content sensor trigger",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
+        "claim": "The scheduled component evaluates a pressure-head threshold (TCS7), not a theta sensor threshold TCRITAB."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -7017,9 +7046,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-DCS1",
@@ -7037,16 +7066,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Refill-to-field-capacity with under/over depth and rainfall deduction",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "claim": "No field-capacity deficit, DITAB under/over depth and conditional rainfall deduction request/evaluator."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7061,9 +7095,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ]
@@ -7311,16 +7345,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Minimum/maximum irrigation depth constraints",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "claim": "No DCSLIM minimum/maximum selected event depth parameters or postselection clamp."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7335,9 +7374,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ]
@@ -7361,16 +7400,21 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Sensor salt-threshold excess irrigation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
-        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json"
+        "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
+        "claim": "No concentration-threshold sensor request or PERIRRSURP postselection depth increment."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7388,9 +7432,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ]
@@ -10753,20 +10797,23 @@
       "meaning": "Ernst seepage-face exchange with horizontal, vertical and radial resistance",
       "swap5_implementation_authority": [
         "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
-        "src/runtime/mod_fmr_macropore_configuration.f90"
+        "src/runtime/mod_fmr_macropore_configuration.f90",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "The source Ernst branch and the corresponding typed SWSEP1 algebra exist, but the A8 fixture sets horizontal conductivity/CDarcy to zero. Active source branch qualification and current runtime envelope must be traced separately from SWSEP2 Youngs geometry."
+        "claim": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra."
       },
       "restrictions": [
-        "The source Ernst branch and the corresponding typed SWSEP1 algebra exist, but the A8 fixture sets horizontal conductivity/CDarcy to zero. Active source branch qualification and current runtime envelope must be traced separately from SWSEP2 Youngs geometry."
+        "Positive-K component comparison only; source pi explicitly supplied as acos(-1).",
+        "Require active seepage-face cases in actual Richards/macropore production chain with full/partial matrix top compartments, conservative donor cap, committed-state immutability, rollback, changed-forcing retry and restart."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MACRO01",
@@ -10778,7 +10825,7 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_COVERAGE_OR_REQUIRED_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": false
     },
@@ -11355,7 +11402,9 @@
       },
       "meaning": "External irrigation-availability scaling of selected event",
       "swap5_implementation_authority": [
-        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -11366,7 +11415,7 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Legacy TASK4 scales both gird and, for positive configured rate, dt_irr_event: event volume scales quadratically. Trace actual MultiSWAP callers and intended allocation semantics before migration/replacement; this is physical availability logic rather than obsolete TASK dispatch."
+        "claim": "No external F_IRR_AVAIL postselection scaling request or candidate event-duration update. Supplied gross irrigation forcing alone does not implement management availability."
       },
       "restrictions": [
         "Legacy TASK4 scales both gird and, for positive configured rate, dt_irr_event: event volume scales quadratically. Trace actual MultiSWAP callers and intended allocation semantics before migration/replacement; this is physical availability logic rather than obsolete TASK dispatch."
@@ -11381,9 +11430,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "SOURCE_ADMISSION_OR_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
@@ -11702,32 +11751,40 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Force root length density from RDCTB using rooted-compartment depth",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_root_uptake_input_contract.f90",
+        "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+        "src/process/mod_root_micro_matric_flux_table.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module."
+        "claim": "Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding."
       },
       "restrictions": [
-        "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module."
+        "Stateless RDCTB override is independent of adaptive root-biomass history; evaluate max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))) in cm/cm3 using rooted-compartment depth, not normalized uptake fractions.",
+        "An externally supplied absolute LRV carrier may replace the source resolver only after an explicit typed contract and production MICRO qualification."
       ],
-      "remaining_dependency": [],
+      "remaining_dependency": [
+        "SW431-ROOT-MICRO2"
+      ],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 0,
+        "dependency_depth": 1,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "SOURCE_TYPED_REPLACEMENT_REVIEW",
+      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": false,
+      "implementation_absence_proven": true,
       "source_input_names": []
     },
     {
@@ -11991,7 +12048,7 @@
       "capability_id": "SW431-IRR-AVAIL",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Legacy TASK4 scales both gird and, for positive configured rate, dt_irr_event: event volume scales quadratically. Trace actual MultiSWAP callers and intended allocation semantics before migration/replacement; this is physical availability logic rather than obsolete TASK dispatch.",
+      "why_open": "No external F_IRR_AVAIL postselection scaling request or candidate event-duration update. Supplied gross irrigation forcing alone does not implement management availability.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11999,13 +12056,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-DCS1",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
+      "why_open": "No field-capacity deficit, DITAB under/over depth and conditional rainfall deduction request/evaluator.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12013,7 +12070,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
@@ -12047,7 +12104,7 @@
       "capability_id": "SW431-IRR-LIMIT",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
+      "why_open": "No DCSLIM minimum/maximum selected event depth parameters or postselection clamp.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12055,7 +12112,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-RATE-CAP",
@@ -12117,7 +12174,7 @@
       "capability_id": "SW431-IRR-TCS2",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "why_open": "No RAWTAB or root-zone readily available water/depletion evaluator in current scheduling contracts.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12125,13 +12182,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS3",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "why_open": "No TAWTAB or total available root-zone water/depletion evaluator in current scheduling contracts.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12139,13 +12196,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS4",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "why_open": "No DWATAB or absolute root-zone depletion evaluator in current scheduling contracts.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12153,13 +12210,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS6",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "why_open": "No weekly seven-day deficit clock and IRGTHRESHOLD evaluator in current scheduling contracts; minimum event interval is a different rule.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12167,7 +12224,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-IRR-TCS7",
@@ -12187,7 +12244,7 @@
       "capability_id": "SW431-IRR-TCS8",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
+      "why_open": "The scheduled component evaluates a pressure-head threshold (TCS7), not a theta sensor threshold TCRITAB.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12195,7 +12252,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-DENSITY",
@@ -12210,20 +12267,6 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-ROOT-LRV-CONSTANT",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "This override is independent of SWRDC. Source sets LRV=max(.01,AFGEN(RDCTB,-z/abs(zbotcp(noddrz)))). Trace typed length-density providers and qualification separately; do not require adaptive biomass ownership merely because the routine shares a module.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-FROST-DIVDRA",
@@ -12747,7 +12790,7 @@
       "capability_id": "SW431-MACRO-SEP1",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
-      "why_open": "The source Ernst branch and the corresponding typed SWSEP1 algebra exist, but the A8 fixture sets horizontal conductivity/CDarcy to zero. Active source branch qualification and current runtime envelope must be traced separately from SWSEP2 Youngs geometry.",
+      "why_open": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12761,7 +12804,7 @@
       "capability_id": "SW431-MACRO-SEP2",
       "work_unit": "MC-MACRO01",
       "dependencies": [],
-      "why_open": "Standard bounded route/isolated component presence does not establish this selector production envelope",
+      "why_open": "Typed factory accepts SWSEP and positive horizontal conductivity; standard adapter reaches the saturated exchange component. Literal active seepage-face algebra passes 48 bounded cases at O0/O2. Existing A8 fixture uses SWSEP0 and zero horizontal conductivity, so it does not qualify active Ernst/Youngs branches. Production admission for this envelope remains unresolved, not proven absent algebra.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -13338,7 +13381,7 @@
         "SW431-IRR-TCS7",
         "SW431-IRR-TCS8"
       ],
-      "why_open": "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
+      "why_open": "No concentration-threshold sensor request or PERIRRSURP postselection depth increment.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -13346,7 +13389,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-ROOT-ANAE-GROW",
@@ -13355,6 +13398,22 @@
         "SW431-CROP-ROOTGROW"
       ],
       "why_open": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-ROOT-LRV-CONSTANT",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-ROOT-MICRO2"
+      ],
+      "why_open": "Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
