@@ -3,10 +3,10 @@
   "role": "CENTRAL_REGIE",
   "baseline": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
   "baseline_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
-  "status": "RUNTIME_INTERFACE_PERSISTED_UNTESTED",
+  "status": "PARTIAL_LOCAL_SOURCE_AND_NORMAL_RUNTIME_PASS_LOW_AIR_AND_PRESERVATION_PENDING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "admitted": false,
   "aggregate_frost_migration_complete": false,
@@ -44,13 +44,22 @@
     "docs/decisions/ADR-0005-reference-baseline-chain.md",
     "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json"
   ],
-  "next_action": "Fresh whole-module compile, then actual runtime/source qualification harnesses with immutable source checkpoint",
-  "recovery_point": "Git commit containing complete additive runtime path before compile",
+  "next_action": "Complete all low-air primary/reference trajectories, application/additional preflight, fresh dependency preservation and exact canonical reconciliation",
+  "recovery_point": "Source-bound runtime/source drivers, complete local normal O0/O2 matrix and complete actual nonuniform source parity. Local receipts must be included in final immutable replay; no partial low-air admission.",
   "last_reconciled_upstream": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
   "blockers": [],
   "production_paths": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
     "src/process/mod_frost_divdra_drainage_effect.f90"
-  ]
+  ],
+  "partial_local_results": {
+    "whole_module_sources_per_optimization": 177,
+    "normal_primary_trajectories_per_optimization": 12,
+    "normal_O0_O2_byte_identity": true,
+    "actual_nonuniform_source_cases_per_optimization": 660,
+    "actual_source_accepted": 412,
+    "actual_source_unavailable": 248,
+    "actual_source_O0_O2_byte_identity": true
+  }
 }
