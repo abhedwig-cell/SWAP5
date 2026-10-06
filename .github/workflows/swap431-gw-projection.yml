@@ -1,0 +1,17 @@
+name: SWAP431 GW projection qualification
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_b111_profile_groundwater_projection.f90'
+      - 'tests/fmig431/test_swap431_profile_gwl_projection.f90'
+      - 'tests/fmig431/run_swap431_profile_gwl_projection.sh'
+      - '.github/workflows/swap431-gw-projection.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Literal value component O0/O2
+        run: bash tests/fmig431/run_swap431_profile_gwl_projection.sh
