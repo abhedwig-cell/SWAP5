@@ -17,15 +17,18 @@
     "capabilities": 243,
     "dispositions": {
       "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 128,
+      "ACTIVE_MIGRATION": 124,
       "SUPERSEDED": 14,
       "REJECTED": 1,
-      "NOT_APPLICABLE": 20
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 128,
+    "open_capabilities": 124,
     "open_workunits": 18,
     "confirmed_missing_production_entries": 124,
-    "other_unresolved_source_admission_reviews": 4
+    "other_unresolved_source_admission_reviews": 4,
+    "qualification_only_capabilities": 4,
+    "total_unresolved_capabilities": 128
   },
   "capabilities": [
     {
@@ -5365,7 +5368,7 @@
         "src/runtime/mod_fmr_macropore_configuration.f90",
         "src/runtime/mod_macropore_standard_rate_adapter.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "QUALIFICATION_ONLY",
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
         "integration/audits/evidence/SWAP431_MACROPORE_SEEPAGE_PROBE.json",
@@ -5394,11 +5397,11 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "QUALIFICATION_ONLY_EXISTING_IMPLEMENTATION",
       "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "EXISTING_IMPLEMENTATION_QUALIFICATION_REQUIRED",
+      "resolution_decision": "QUALIFY_EXISTING"
     },
     {
       "capability_id": "SW431-MACRO-POWM",
@@ -8099,7 +8102,7 @@
         "src/crop/mod_wofost_finalize_rates.f90",
         "src/crop/mod_wofost_rate_parameters.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "QUALIFICATION_ONLY",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
@@ -8125,14 +8128,14 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "QUALIFICATION_ONLY_EXISTING_IMPLEMENTATION",
       "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "EXISTING_IMPLEMENTATION_QUALIFICATION_REQUIRED",
+      "resolution_decision": "QUALIFY_EXISTING"
     },
     {
       "capability_id": "SW431-CROP-SOY",
@@ -8518,7 +8521,7 @@
         "src/crop/mod_wofost_finalize_rates.f90",
         "src/crop/mod_wofost_two_phase_crop_window.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "QUALIFICATION_ONLY",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "tests/fwof/pp01/MAPPING_CONTRACT.md",
@@ -8544,7 +8547,7 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "QUALIFICATION_ONLY_EXISTING_IMPLEMENTATION",
       "implementation_absence_proven": false,
       "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "closed_foundation_authorities": [
@@ -8554,8 +8557,8 @@
         "SW_WOFOST",
         "AMAXTB"
       ],
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "EXISTING_IMPLEMENTATION_QUALIFICATION_REQUIRED",
+      "resolution_decision": "QUALIFY_EXISTING"
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -11129,7 +11132,7 @@
         "src/runtime/mod_fmr_macropore_configuration.f90",
         "src/runtime/mod_macropore_standard_rate_adapter.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "QUALIFICATION_ONLY",
       "evidence": [
         "docs/audits/PPA_WU05A8_CLOSEOUT.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
@@ -11159,11 +11162,11 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "REQUIRED_ACTIVE_BRANCH_RUNTIME_ENVELOPE_QUALIFICATION",
+      "coverage_gap_type": "QUALIFICATION_ONLY_EXISTING_IMPLEMENTATION",
       "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
-      "resolution_stage": "ACTIVE_RUNTIME_ENVELOPE_QUALIFICATION_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "EXISTING_IMPLEMENTATION_QUALIFICATION_REQUIRED",
+      "resolution_decision": "QUALIFY_EXISTING"
     },
     {
       "capability_id": "SW431-FROST-SNOW",
@@ -13510,34 +13513,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-MACRO-SEP1",
-      "work_unit": "MC-MACRO01",
-      "dependencies": [],
-      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
-      "capability_id": "SW431-MACRO-SEP2",
-      "work_unit": "MC-MACRO01",
-      "dependencies": [],
-      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-MACRO-SNOW",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [],
@@ -13872,20 +13847,6 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ANNUAL",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Classic AMAXTB route exists and F-WOF38/39 preservation passes. MC-CROP01 must qualify literal B1.11 actual daily/seasonal crop trajectories and accepted-event/restart state; distinct WOFOST81 donor admission does not supply this classic source gate. Root extension, Soil-N and potential RELMF remain separate capabilities.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-CROP-CO2",
@@ -14435,22 +14396,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-CROP-WOF-OTHER",
-      "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-CROP-ANNUAL"
-      ],
-      "why_open": "IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-NUT-AMEND",
       "work_unit": "MC-NUT01",
       "dependencies": [
@@ -14666,5 +14611,61 @@
       "does_not_establish": "Literal B1.11 AMAXTB crop model, old DVSNLT/vegetative N-demand gates or general Soil-N coupling."
     }
   ],
-  "foundation_policy": "swap5_admitted_foundations are nonblocking implementation/admission anchors outside the legacy capability denominator; their existence does not dispose a B1.11 source capability."
+  "foundation_policy": "swap5_admitted_foundations are nonblocking implementation/admission anchors outside the legacy capability denominator; their existence does not dispose a B1.11 source capability.",
+  "qualification_queue": [
+    {
+      "capability_id": "SW431-CROP-ANNUAL",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Classic AMAXTB route exists and F-WOF38/39 preservation passes. MC-CROP01 must qualify literal B1.11 actual daily/seasonal crop trajectories and accepted-event/restart state; distinct WOFOST81 donor admission does not supply this classic source gate. Root extension, Soil-N and potential RELMF remain separate capabilities.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      }
+    },
+    {
+      "capability_id": "SW431-CROP-WOF-OTHER",
+      "work_unit": "MC-CROP01",
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ],
+      "why_open": "IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      }
+    },
+    {
+      "capability_id": "SW431-MACRO-SEP1",
+      "work_unit": "MC-MACRO01",
+      "dependencies": [],
+      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      }
+    },
+    {
+      "capability_id": "SW431-MACRO-SEP2",
+      "work_unit": "MC-MACRO01",
+      "dependencies": [],
+      "why_open": "Existing active seepage branch now executes in the real Reference/macropore transaction: positive-K mode2 partial-top-cell smoke passes at O0/O2 with committed-state isolation, positive distinct Ernst/Youngs exchange and closed water mass. Full-top geometry, capacity exhaustion, changed-forcing retry, fresh-process restart and coupled source-trajectory gates remain MC-MACRO01; no new admission.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      }
+    }
+  ]
 }

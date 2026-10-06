@@ -2,15 +2,19 @@
 
 Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 243 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE and 128 ACTIVE_MIGRATION entries across 18 review/migration workunits.
+The ledger currently contains 243 entries: 80 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE, 124 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY entries across 18 review/migration workunits.
 
-Only 124 entries are currently marked as proven missing production implementation/binding. The other 4 are unresolved source/admission/replacement reviews. Neither number is a final exhaustive missing-functionality count. Review registration is not implementation or admission.
+All 124 ACTIVE_MIGRATION entries are currently marked as proven missing production implementation/binding. Four additional entries are QUALIFICATION_ONLY: the required evaluator/runtime code exists, but their source-bound runtime envelope or admission is not yet complete. Neither number is a final exhaustive missing-functionality count. Qualification-only is not admission and still blocks global coverage closure.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
 The machine authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`.
 The exact source bundle and input-reader census are in `integration/audits/evidence/`.
 The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
+
+## Qualification-only queue
+
+The following entries are deliberately excluded from the missing-production-implementation count while remaining unresolved: `SW431-MACRO-SEP1`, `SW431-MACRO-SEP2`, `SW431-CROP-ANNUAL`, and `SW431-CROP-WOF-OTHER`. Their existing implementation and current evidence are retained in the machine ledger; the remaining gates are runtime-envelope/admission gates, not requests for duplicate production physics.
 
 ## Confirmed production gaps traced so far
 
