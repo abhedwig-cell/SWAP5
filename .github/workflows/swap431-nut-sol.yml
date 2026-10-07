@@ -15,6 +15,7 @@ on:
       - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
       - 'tools/audits/probe_b111_nfix_policy.py'
       - 'tools/audits/extract_b111_solute_slices.py'
+      - 'tools/audits/extract_b111_solute_slices.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -35,3 +36,5 @@ jobs:
         run: python tools/audits/extract_b111_solute_slices.py
       - name: Soil-N pool owner
         run: bash tests/physics/run_soil_n_pool_state.sh
+      - name: Inspect exact B1.11 solute source slices
+        run: python tools/audits/extract_b111_solute_slices.py
