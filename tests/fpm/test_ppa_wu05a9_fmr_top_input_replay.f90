@@ -50,6 +50,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   integer::macro_top=1
   logical::migmac10=.false.
   logical::migmac10_rutter=.false.
+  logical::migmac11=.false.
 
   real(real64),parameter::dt=1.0e-3_real64,tol=1.0e-12_real64
   integer,parameter::nd=1
@@ -77,7 +78,7 @@ program test_ppa_wu05a9_fmr_top_input_replay
   real(real64)::heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
   integer::i
   logical::ok
-  logical::dynamic_enabled
+  logical::dynamic_enabled,inner_route
   character(len=1)::dynamic_flag
 
   call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
@@ -89,16 +90,22 @@ program test_ppa_wu05a9_fmr_top_input_replay
   dynamic_flag='0'
   call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
   dynamic_enabled=dynamic_flag=='1'
+  inner_route=dynamic_enabled .or. dynamic_flag=='3'
   block
     character(len=1)::m10_flag
     character(len=1)::rutter_flag
+    character(len=1)::m11_flag
     m10_flag='0'
     rutter_flag='0'
+    m11_flag='0'
     call get_environment_variable('WU05_MIGMAC10',m10_flag)
     migmac10=m10_flag=='1'
     call get_environment_variable('WU05_MIGMAC10_RUTTER',rutter_flag)
     migmac10_rutter=rutter_flag=='1'
+    call get_environment_variable('WU05_MIGMAC11',m11_flag)
+    migmac11=m11_flag=='1'
     if(migmac10_rutter)migmac10=.true.
+    if(migmac11)migmac10=.true.
   end block
   allocate(params%z(numnod),params%dz(numnod),params%node_distance(numnod),cofgen(24,numnod))
   params%parameter_set_id=505701_int64
@@ -359,13 +366,18 @@ contains
     end if
     allocate(fparams%macropore)
     fparams%macropore=mcfg
+    if(migmac11)then
+      fparams%macropore%surface_pond_inflow_enabled=.true.
+      fparams%macropore%surface_pond_threshold_cm=1.0e-4_real64
+      fparams%macropore%surface_macropore_conductivity_cm_per_day=3.0_real64
+    end if
 
     initial%active_nodes=numnod
     allocate(initial%pressure_head(numnod),initial%water_content(numnod),initial%macropore)
     if(migmac10_rutter)allocate(initial%rutter)
     initial%pressure_head=heads
     initial%water_content=water
-    initial%ponding_depth=0.0_real64
+    initial%ponding_depth=merge(0.10_real64,0.0_real64,migmac11)
     initial%groundwater_level=-200.0_real64
     initial%macropore=macro
     if(migmac10_rutter)then
@@ -396,7 +408,7 @@ contains
     forcing%macropore_top_input%net_irrigation_rate_cm_per_day=0.25_real64
     forcing%macropore_top_input%melt_rate_cm_per_day=0.0_real64
     forcing%macropore_top_input%lateral_overland_rate_cm_per_day=0.10_real64
-    if(macro_top>1)forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
+    if(macro_top>1 .or. migmac11)forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
     if(migmac10)then
       allocate(forcing%boesten_evaporation)
       forcing%boesten_evaporation%precipitation_rate_cm_per_day=1.0_real64
@@ -450,7 +462,7 @@ contains
     numerical%max_committed_substeps=64
 
     call backend%initialize(top)
-    policy%inner_richards_exchange_enabled=dynamic_enabled
+    policy%inner_richards_exchange_enabled=inner_route
     call backend%configure_macropore_policy(policy,policy_ok)
     if(.not.policy_ok)error stop 'A9 FMR top-input policy configure'
 
@@ -689,6 +701,11 @@ contains
     if(migmac10)then
       print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_REJECT_REPLAY=PASS'
       print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_RESTART=PASS'
+    end if
+    if(migmac11)then
+      print '(a)', 'PPA_WU05_MIGMAC11_REJECT_SMALLER_RETRY=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC11_ROLLBACK_REPLAY=PASS'
+      print '(a)', 'PPA_WU05_MIGMAC11_RESTART_EQUIVALENCE=PASS'
     end if
     if(migmac10_rutter)then
       print '(a)', 'PPA_WU05_MIGMAC10_RUTTER_BOESTEN_MACROPORE_REJECT_REPLAY=PASS'
