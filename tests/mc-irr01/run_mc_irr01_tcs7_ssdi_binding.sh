@@ -17,7 +17,8 @@ grep -Fq 'parameters%tcs7_pressure_head' src/process/mod_irrigation_process.f90 
 grep -Fq 'hydraulic_view%pressure_head(parameters%sensor_node) > threshold' src/process/mod_irrigation_process.f90 ||   fail "TCS7 threshold semantics drift"
 grep -Fq 'real(real64), allocatable :: subsurface_irrigation_source(:)' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail "missing real FMR SSDI carrier"
 grep -Fq 'fmr_build_committed_process_hydraulic_view' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not use committed hydraulic view"
-grep -Fq 'evaluate_scheduled_irrigation_interval' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not invoke qualified process"
+grep -Fq 'fmr_apply_scheduled_sensor_dcs2_single_node_ssdi' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not invoke shared application owner"
+if grep -Fq 'evaluate_scheduled_irrigation_interval' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90; then fail "runtime binding duplicates process invocation"; fi
 grep -Fq 'subsurface_irrigation_source' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not route SSDI source"
 
 COMMON=(-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -27,9 +28,10 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_process_hydraulic_view.f90 -o "$OUT/hyd_view.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_irrigation_process.f90 -o "$OUT/irrigation.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/mc_irr01_binding_stubs.f90 -o "$OUT/stubs.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_scheduled_irrigation_application.f90 -o "$OUT/application.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 -o "$OUT/binding.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_tcs7_ssdi_binding_unit.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "$OUT/solver_contract.o" "$OUT/hyd_view.o" "$OUT/irrigation.o" "$OUT/stubs.o" "$OUT/binding.o" "$OUT/test.o" -o "$OUT/test"
+  gfortran -O"$opt" "$OUT/solver_contract.o" "$OUT/hyd_view.o" "$OUT/irrigation.o" "$OUT/stubs.o" "$OUT/application.o" "$OUT/binding.o" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
   grep -Fq 'MC_IRR01_TCS7_SSDI_BINDING_UNIT=PASS' "$OUT/output.txt" || fail "missing binding marker O$opt"
   echo "MC_IRR01_TCS7_SSDI_O${opt}=PASS"
