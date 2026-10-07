@@ -39,7 +39,7 @@
     "accepted_water_aggregates": "actual uptake and potential transpiration already exist in WOFOST accepted-window aggregates",
     "blocker": "Detailed-crop B1.11 potential extension requires GRRTPOT. Current canonical WOFOST owner/transaction does not yet expose the source potential-companion root-growth rate as an accepted carrier."
   },
-  "disposition": "SWRD2_OWNER_IMPLEMENTED_POTENTIAL_GROWTH_CARRIER_AVAILABLE_COMPOSITION_OPEN",
+  "disposition": "SWRD2_OWNER_AND_REQUIRED_ACCEPTED_CARRIERS_IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
   "excluded_scope": [
     "SWDMI2RD=2 supply limitation",
     "SWWRTNONOX anaerobic gate",
@@ -49,9 +49,11 @@
     "potential_crop_shadow_branch": "work/swap431-crop-potential-shadow-20261007",
     "carrier": "fmr_wofost_root_growth_carrier_t%potential_gross_root_growth",
     "semantics": "GRRTPOT is now explicitly published from the optional potential crop trajectory in the same accepted daily crop transaction.",
-    "state": "IMPLEMENTED_UPSTREAM_NOT_YET_CANONICAL"
+    "state": "IMPLEMENTED_UPSTREAM_NOT_YET_CANONICAL",
+    "unified_composition_branch": "work/swap431-root-growth-oxygen-composition-20261007",
+    "accepted_daily_oxygen": "IALPWET_DAY carrier implemented in accepted-window lineage"
   },
-  "remaining_blocker": "No longer missing a GRRTPOT owner. Remaining gate is cross-branch composition of the accepted root-growth carrier into the SWRD2 depth transaction, then reject/replay/restart qualification.",
+  "remaining_blocker": "Architecture blockers GRRTPOT and IALPWET_DAY are implemented on the unified composition branch. Remaining work is persisted O0/O2 cross-branch qualification/admission, then merge sequencing.",
   "dependencies": {
     "potential_growth": {
       "authority_branch": "work/swap431-crop-potential-shadow-20261007",
