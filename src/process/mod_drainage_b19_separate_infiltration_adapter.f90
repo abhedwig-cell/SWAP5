@@ -43,8 +43,12 @@ contains
 
     result=drainage_b19_separate_infiltration_result_t()
     result%authoritative_scalar_transfer=scalar_transfer
+    if(.not.ieee_is_finite(scalar_transfer).or.scalar_transfer>=-1.0e-10_real64)then
+      result%status=DRAIN_B19_INF_INVALID_PARAMETERS
+      return
+    end if
     n=distribution%active_nodes
-    if(n<2.or..not.ieee_is_finite(scalar_transfer).or. &
+    if(n<2.or. &
          .not.all(ieee_is_finite([parameters%drain_bottom_cm,parameters%drain_level_cm, &
          parameters%infiltration_depth_factor])))then
       result%status=DRAIN_B19_INF_INVALID_PARAMETERS
