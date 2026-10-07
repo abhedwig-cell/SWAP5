@@ -42,6 +42,24 @@ once as an equal and opposite internal transfer. Boundary export/import and
 decay are booked as external output/input. Whole-system qualification checks
 the sum of all participating stores plus external receipts.
 
+## Runtime layout identity
+
+Reactive SOL01 state is a distinct restart/template topology. It must not be
+stored under either existing `FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED` or
+`FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE`.
+
+A successor production binding therefore requires a new explicit solute layout
+identity whose readiness contract includes every persistent reactive store
+enabled by that layout. Existing mobile-only layout validators remain
+fail-closed if reactive companion fields are present. This prevents a warm
+restart from changing the meaning of persisted state while retaining the same
+template capability id.
+
+The first reactive layout may compose matrix dissolved mass with sorbed matrix,
+pond and age stores. Aquifer storage may be carried only as inert persisted
+state until the SWBR reference-correction decision is approved; non-zero
+aquifer process mutation remains prohibited.
+
 ## Accepted water carrier
 
 All SOL01 stores may consume accepted water storage/flux information from the
