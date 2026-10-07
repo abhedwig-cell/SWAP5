@@ -1,0 +1,72 @@
+{
+  "schema": "swap431.mc_root01.adaptive_density.v1",
+  "branch": "work/swap431-root-density-adaptive-20261007",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capability": "SW431-ROOT-DENSITY",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "retained_git_blob_sha": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "routines": [
+      "initialize_rootdistribution",
+      "initialize_cumdens",
+      "update_wroot_node",
+      "update_cumdens",
+      "update_cumdens_top",
+      "finalize_wroot_node"
+    ]
+  },
+  "owner": {
+    "persistent": [
+      "root_biomass_by_node"
+    ],
+    "derived": [
+      "cumulative_root_fraction",
+      "wroot_node_top equivalent view",
+      "biomass-derived LRV"
+    ],
+    "external_inputs": [
+      "accepted root growth/death",
+      "accepted potential root sink",
+      "accepted stress reduction",
+      "accepted root-depth extension"
+    ],
+    "excluded": [
+      "root-depth continuation",
+      "crop total WRT",
+      "water sink",
+      "constant-LRV override"
+    ],
+    "mass_invariant": "Outside explicit per-node WRTMIN floor activation, sum(root_biomass_by_node) must equal the accepted crop root-biomass total implied by WRT_OLD+GRRT-DRRT. WRTMIN may intentionally lift a node above the proportional-death result and therefore must be diagnosed separately rather than silently renormalized."
+  },
+  "semantics": [
+    "FGWRT mixes biomass-proportional and accepted-uptake-proportional allocation of old-zone root growth",
+    "FDWRT mixes biomass-proportional and positive-stress-reduction-proportional root death",
+    "new root-zone extension receives source deepest-node biomass-density allocation capped by GRRT",
+    "WRTMIN applies as per-node rooted-thickness biomass floor after death",
+    "CUMDENS is reconstructed from accepted per-node biomass rather than persisted separately"
+  ],
+  "production_reachability": "adaptive profile derives shared crop_root_uptake_input_t and is consumed by the existing Reference ET/root-uptake composition; no second water sink",
+  "restart": "transaction clone carries the sole accepted biomass vector; derived profile/LRV are reconstructed",
+  "disposition": "SOURCE_ALGEBRA_VERIFIED_ADMISSION_CANDIDATE_PENDING_O0_O2_INTEGRATED_RUNTIME",
+  "claim_ceiling": "Does not include SWLRVCONSTANT override, SWRD2 supply limitation, anaerobic-growth gating, or Bartholomeus/reproduction oxygen physics.",
+  "source_equation_review": {
+    "verified_against": "pinned B1.11 update_wroot_node/update_cumdens/update_cumdens_top",
+    "exact_matches": [
+      "WRT_OLD=WRT-GRRT+DRRT",
+      "RD_OLD=RD-RR",
+      "GRRT_NEWNOD=min((WROOT_NODE(NODDRZ_OLD)/(RD_OLD+ZTOPCP(NODDRZ_OLD)))*RR,GRRT)",
+      "FGWRT old-zone growth mixture and QROTRTZ denominator",
+      "FDWRT death mixture with denominator WRT_OLD+GRRT_OLDNOD",
+      "WRTMIN per-node rooted-thickness floor",
+      "new-zone extension fraction and GRRT_NEWNOD distribution",
+      "CUMDENS normalization from accepted WROOT_NODE inventory"
+    ]
+  },
+  "remaining": [
+    "Run owner and production Reference ET/root-uptake runtime gates at O0/O2.",
+    "Persist integrated qualification and verify retry/restart with accepted daily redistribution forcing.",
+    "Preserve WRTMIN floor as source effect; never silently renormalize node inventory."
+  ]
+}
