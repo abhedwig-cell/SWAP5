@@ -40,6 +40,9 @@ module mod_wofost_grass_management_owner
     logical :: grazing_loss_enabled=.false.
     type(wofost_rate_table_t) :: grazing_treading_loss_fraction_by_head
     real(real64) :: dewooling_residual_biomass=0.0_real64
+    type(wofost_rate_table_t) :: leaf_partition_by_dvs
+    type(wofost_rate_table_t) :: stem_partition_by_dvs
+    type(wofost_rate_table_t) :: specific_leaf_area_by_dvs
   contains
     procedure, public :: ready=>grass_management_parameters_ready
   end type
@@ -109,6 +112,9 @@ contains
     if(.not.finite_nonnegative(self%grazing_residual_biomass))return
     if(self%grazing_days<1)return
     if(.not.finite_nonnegative(self%dewooling_residual_biomass))return
+    if(.not.self%leaf_partition_by_dvs%ready())return
+    if(.not.self%stem_partition_by_dvs%ready())return
+    if(.not.self%specific_leaf_area_by_dvs%ready())return
     if(self%mowing_loss_enabled)then
       if(.not.self%mowing_loss_fraction_by_head%ready())return
     end if
@@ -229,7 +235,8 @@ contains
       end if
       if(result%candidate_management%mowing_active)then
         result%harvest_event=.not.committed_management%potential
-        call apply_mowing_reset(parameters%mowing_residual_biomass,result%candidate_crop,result%candidate_management,status)
+        call apply_mowing_reset(parameters,parameters%mowing_residual_biomass,result%candidate_crop, &
+             result%candidate_management,status)
         if(status/=GRASS_MGMT_OK)return
         removal=max(0.0_real64,total_above-min(living_above,parameters%mowing_residual_biomass))
         loss_fraction=0.0_real64
@@ -286,7 +293,8 @@ contains
 
         if(event_kind==GRASS_EVENT_GRAZE_DEWOOL.and.result%candidate_management%cut_ends_today.and. &
            total_above>=parameters%dewooling_residual_biomass)then
-          call apply_mowing_reset(parameters%dewooling_residual_biomass,result%candidate_crop,result%candidate_management,status)
+          call apply_mowing_reset(parameters,parameters%dewooling_residual_biomass,result%candidate_crop, &
+               result%candidate_management,status)
           if(status/=GRASS_MGMT_OK)return
           result%candidate_management%growth_delay_days=1
           result%crop_growth_may_continue=.false.
@@ -312,37 +320,75 @@ contains
     status=GRASS_MGMT_OK
   end subroutine
 
-  subroutine apply_mowing_reset(dmrest,crop,management,status)
+  subroutine apply_mowing_reset(parameters,dmrest,crop,management,status)
+    type(grass_management_parameters_t), intent(in) :: parameters
     real(real64), intent(in) :: dmrest
     type(wofost_crop_owner_state_t), intent(inout) :: crop
     type(grass_management_state_t), intent(inout) :: management
     integer, intent(out) :: status
-    real(real64) :: wlv,wst,total,leaf_fraction,stem_fraction
-    integer :: n
+    real(real64) :: wlv,wst,fl,fs,sla,new_wlv,new_wst
+    integer :: n,table_status
+
     status=GRASS_MGMT_INVALID_CROP
     if(.not.finite_nonnegative(dmrest))return
-    wlv=crop%biomass%living_leaf_biomass();wst=crop%biomass%stem_biomass
-    total=wlv+wst
-    if(dmrest<total.and.total>0.0_real64)then
-      leaf_fraction=wlv/total;stem_fraction=wst/total
-      crop%biomass%stem_biomass=dmrest*stem_fraction
-      if(allocated(crop%biomass%leaf_biomass))then
-        crop%biomass%leaf_biomass=0.0_real64
-        crop%biomass%leaf_biomass(1)=dmrest*leaf_fraction
-        crop%biomass%specific_leaf_area(2:)=0.0_real64
-        crop%biomass%leaf_age=0.0_real64
-      end if
+    if(.not.parameters%ready())then
+      status=GRASS_MGMT_INVALID_PARAMETERS
+      return
     end if
+
+    call parameters%leaf_partition_by_dvs%evaluate(crop%development_stage,fl,table_status)
+    if(table_status/=WOFOST_RATE_TABLE_OK)then;status=GRASS_MGMT_TABLE_ERROR;return;end if
+    call parameters%stem_partition_by_dvs%evaluate(crop%development_stage,fs,table_status)
+    if(table_status/=WOFOST_RATE_TABLE_OK)then;status=GRASS_MGMT_TABLE_ERROR;return;end if
+    call parameters%specific_leaf_area_by_dvs%evaluate(crop%development_stage,sla,table_status)
+    if(table_status/=WOFOST_RATE_TABLE_OK)then;status=GRASS_MGMT_TABLE_ERROR;return;end if
+    if(fl<=0.0_real64.or.fs<0.0_real64.or.sla<0.0_real64)then
+      status=GRASS_MGMT_INVALID_PARAMETERS
+      return
+    end if
+
+    wlv=crop%biomass%living_leaf_biomass()
+    wst=crop%biomass%stem_biomass
+
+    ! Literal B1.11 mowing_event: reset living WLV/WST to DMREST using the
+    ! current DVS FLTB/FSTB ratio. Storage organs and root biomass are untouched.
+    if(dmrest<(wlv+wst))then
+      new_wlv=min(dmrest,wlv+wst)/(1.0_real64+(fs/fl))
+      new_wst=(fs/fl)*new_wlv
+      crop%biomass%stem_biomass=new_wst
+      if(.not.allocated(crop%biomass%leaf_biomass))then
+        status=GRASS_MGMT_INVALID_CROP
+        return
+      end if
+      crop%biomass%leaf_biomass=0.0_real64
+      crop%biomass%leaf_biomass(1)=new_wlv
+    end if
+
     management%dead_leaf_biomass=0.0_real64
     management%dead_stem_biomass=0.0_real64
-    if(allocated(crop%biomass%leaf_biomass))then
-      n=size(crop%biomass%leaf_biomass)
-      if(n>1)crop%biomass%leaf_biomass(2:n)=0.0_real64
-      crop%biomass%leaf_age=0.0_real64
-      crop%biomass%exponential_leaf_area_index=crop%biomass%leaf_area_sum()
+
+    if(.not.allocated(crop%biomass%leaf_biomass).or. &
+       .not.allocated(crop%biomass%specific_leaf_area).or. &
+       .not.allocated(crop%biomass%leaf_age))then
+      status=GRASS_MGMT_INVALID_CROP
+      return
     end if
+    n=size(crop%biomass%leaf_biomass)
+    if(n<1.or.size(crop%biomass%specific_leaf_area)/=n.or.size(crop%biomass%leaf_age)/=n)then
+      status=GRASS_MGMT_INVALID_CROP
+      return
+    end if
+
+    ! Source resets to one active cohort, SLA(1)=AFGEN(SLATB,DVS),
+    ! all leaf ages/dead pools to zero, and LAIEXP=LASUM.
+    crop%biomass%specific_leaf_area=0.0_real64
+    crop%biomass%specific_leaf_area(1)=sla
+    if(n>1)crop%biomass%leaf_biomass(2:n)=0.0_real64
+    crop%biomass%leaf_age=0.0_real64
+    crop%biomass%exponential_leaf_area_index=crop%biomass%leaf_area_sum()
+
     status=GRASS_MGMT_OK
-  end subroutine
+  end subroutine apply_mowing_reset
 
   subroutine remove_oldest_leaf_biomass(crop,amount,status)
     type(wofost_crop_owner_state_t), intent(inout) :: crop
