@@ -1,11 +1,13 @@
 program test_fapp07_hupsel_irrigation_composition
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_irrigation_process, only: irrigation_flux_result_t, irrigation_diagnostics_t, &
-       IRRIGATION_APPLICATION_SURFACE
+       IRRIGATION_APPLICATION_SURFACE, scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, &
+       irrigation_state_t, IRRIGATION_OK
   use mod_tcs1_dcs2_sprinkling_irrigation_process, only: tcs1_dcs2_sprinkling_result_t, &
        tcs1_dcs2_sprinkling_diagnostics_t
   use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_hupsel_irrigation_application_binding
   implicit none
 
@@ -21,6 +23,12 @@ program test_fapp07_hupsel_irrigation_composition
   type(rutter_interval_result_t) :: rutter
   type(rutter_diagnostics_t) :: rutter_diag
   type(fmr_hupsel_irrigation_binding_diagnostics_t) :: d
+  type(scheduled_irrigation_parameters_t) :: ssdi_p
+  type(scheduled_irrigation_request_t) :: ssdi_r
+  type(irrigation_state_t) :: ssdi_s, ssdi_c
+  type(process_hydraulic_view_t) :: ssdi_view
+  type(irrigation_flux_result_t) :: ssdi_flux
+  type(irrigation_diagnostics_t) :: ssdi_diag
   real(real64) :: max_error
 
   call get_command_argument(1,fixture)
@@ -128,6 +136,35 @@ program test_fapp07_hupsel_irrigation_composition
   if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%result_produced) error stop 26
   if (bound_top%irrigation_rate_cm_per_day /= 5.5_real64) error stop 27
   if (bound_top%precipitation_rate_cm_per_day /= base_top%precipitation_rate_cm_per_day) error stop 28
+
+  ! Runtime owner invokes the independently qualified TCS7/DCS2 single-node SSDI process.
+  ssdi_p = scheduled_irrigation_parameters_t()
+  ssdi_p%scheduled_irrigation_enabled = .true.
+  ssdi_p%active_nodes = 3
+  ssdi_p%sensor_node = 2
+  ssdi_p%single_ssdi_node = 3
+  ssdi_p%irr_rate_cm_per_day = 1.0_real64
+  ssdi_p%tcs7_knot_count = 2
+  ssdi_p%tcs7_dvs(1:2) = [0.0_real64,2.0_real64]
+  ssdi_p%tcs7_pressure_head(1:2) = [-100.0_real64,-100.0_real64]
+  ssdi_p%dcs2_knot_count = 2
+  ssdi_p%dcs2_dvs(1:2) = [0.0_real64,2.0_real64]
+  ssdi_p%dcs2_depth_cm(1:2) = [0.25_real64,0.25_real64]
+  allocate(ssdi_view%pressure_head(3),ssdi_view%water_content(3))
+  ssdi_view%active_nodes = 3
+  ssdi_view%pressure_head = -50.0_real64
+  ssdi_view%pressure_head(2) = -150.0_real64
+  ssdi_view%water_content = 0.25_real64
+  ssdi_r = scheduled_irrigation_request_t()
+  ssdi_r%t0 = 0.0_real64; ssdi_r%t1 = 0.25_real64; ssdi_r%dvs = 1.0_real64
+  ssdi_r%selection_opportunity = .true.; ssdi_r%irrigation_enabled = .true.
+  ssdi_r%schedule_enabled = .true.; ssdi_r%crop_emerged = .true.; ssdi_r%irrigation_window_open = .true.
+  call fmr_evaluate_tcs7_dcs2_ssdi(ssdi_p,ssdi_s,ssdi_r,ssdi_view,ssdi_c,ssdi_flux,ssdi_diag)
+  if (ssdi_diag%status /= IRRIGATION_OK .or. .not. ssdi_flux%applied) error stop 29
+  if (.not. allocated(ssdi_flux%subsurface_source)) error stop 30
+  if (count(abs(ssdi_flux%subsurface_source) > tiny(1.0_real64)) /= 1) error stop 31
+  if (ssdi_flux%subsurface_source(3) /= 1.0_real64) error stop 32
+  if (ssdi_flux%external_inflow_amount /= 0.25_real64) error stop 33
 
   write(*,'(A,I0)') 'F_APP07_EXACT_ACTIVE_INTERVALS=',n
   write(*,'(A,I0)') 'F_APP07_SWINTER0_INTERVALS=',n0
