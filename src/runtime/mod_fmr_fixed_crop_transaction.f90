@@ -8,6 +8,7 @@ module mod_fmr_fixed_crop_transaction
   use mod_fixed_crop_owner, only: fixed_crop_parameters_t, fixed_crop_owner_state_t, &
        fixed_crop_daily_forcing_t, fixed_crop_daily_diagnostics_t, &
        evaluate_fixed_crop_daily_candidate, FIXED_CROP_OK
+  use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t
   use mod_crop_calendar_end_event, only: crop_end_event_request_t, crop_end_event_result_t, &
        evaluate_crop_end_event, CROP_END_OK, CROP_END_BY_CALENDAR, CROP_END_BY_DVS_OR_CALENDAR
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
@@ -143,12 +144,13 @@ contains
     type(fmr_fixed_crop_event_forcing_t),intent(out)::forcing
     integer,intent(out)::status
     type(fmr_wofost_crop_event_token_t)::token
+    type(wofost_accepted_window_aggregates_t)::ignored_aggregates
     logical::available
     integer::lineage_status
     forcing=fmr_fixed_crop_event_forcing_t()
     status=FMR_FIXED_INVALID_EVENT
     if(.not.ieee_is_finite(average_temperature_c).or..not.ieee_is_finite(source_t1900))return
-    call prepare_wofost_crop_event_delivery(window,token=token,available=available,status=lineage_status)
+    call prepare_wofost_crop_event_delivery(window,ignored_aggregates,token,available,lineage_status)
     if(lineage_status/=FMR_WOFOST_LINEAGE_OK.or..not.available.or..not.token%ready())return
     call identify_wofost_crop_event(token,forcing%event_identity,lineage_status)
     if(lineage_status/=FMR_WOFOST_LINEAGE_OK.or..not.forcing%event_identity%ready())return
