@@ -13,5 +13,7 @@ program test_b111_explicit_cauchy_profile_flux
  if(abs(q-((-5._real64+17.5_real64)/(6.625_real64)+0.2_real64))>1e-12_real64)error stop 3
  call evaluate_b111_explicit_cauchy_profile_flux(-15._real64,-20._real64,1._real64,-5._real64,2._real64,zt,zb,dz,k,.false.,-0.1_real64,q,g,c,s)
  if(s/=B111_EXPLICIT_CAUCHY_OK.or.abs(c)>1e-12_real64.or.abs(q-((-5._real64+15._real64)/2._real64-0.1_real64))>1e-12_real64)error stop 4
+ call evaluate_b111_explicit_cauchy_profile_flux(5._real64,-20._real64,1._real64,-5._real64,2._real64,zt,zb,dz,k,.true.,0._real64,q,g,c,s)
+ if(s/=B111_EXPLICIT_CAUCHY_GWL_OUTSIDE_PROFILE)error stop 5
  print '(a)','SW431-LOW3-EXPLICIT-COMPONENT=PASS'
 end program
