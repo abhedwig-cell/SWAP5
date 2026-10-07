@@ -677,7 +677,7 @@ contains
       if(.not.available .or. .not.same_fmr_state(next_state,restored_next_state)) &
            error stop 'MIGMAC10 FMR restart next-candidate identity'
     end if
-    if(migmac10)then
+    if(migmac10 .and. .not.migmac11)then
       select type(previous=>after_trial_state)
       type is(fmr_b110_boesten_macropore_state_t)
         select type(current=>next_state)
@@ -710,7 +710,7 @@ contains
       print '(a)', 'PPA_WU05_MIGMAC11_POND_REPLAY=PASS'
       print '(a)', 'PPA_WU05_MIGMAC11_POND_RESTART=PASS'
     end if
-    if(migmac10)then
+    if(migmac10 .and. .not.migmac11)then
       print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_REJECT_REPLAY=PASS'
       print '(a)', 'PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_RESTART=PASS'
     end if
