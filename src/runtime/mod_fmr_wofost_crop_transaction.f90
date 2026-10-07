@@ -366,6 +366,10 @@ contains
         allocate(typed_copy%root_growth_carrier)
         typed_copy%root_growth_carrier = self%root_growth_carrier
       end if
+      if (allocated(self%root_depth_rate)) then
+        allocate(typed_copy%root_depth_rate)
+        typed_copy%root_depth_rate = self%root_depth_rate
+      end if
       typed_copy%last_consumed_event = self%last_consumed_event
     class default
       error stop 'F-WOF38 crop transaction clone allocation failure'
@@ -388,6 +392,9 @@ contains
       end if
     else
       if (allocated(self%root_growth_carrier)) return
+    end if
+    if (allocated(self%root_depth_rate)) then
+      if (self%root_depth_rate%validate() /= CROP_ROOT_RATE_OK) return
     end if
     ready = .true.
   end function fmr_wofost_crop_transaction_state_ready
@@ -427,6 +434,20 @@ contains
       if (available) carrier = self%root_growth_carrier
     end if
   end subroutine fmr_wofost_crop_transaction_snapshot_root_growth
+
+  logical function fmr_wofost_crop_transaction_root_depth_rate_enabled(self) result(enabled)
+    class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+    enabled = allocated(self%root_depth_rate)
+  end function fmr_wofost_crop_transaction_root_depth_rate_enabled
+
+  subroutine fmr_wofost_crop_transaction_snapshot_root_depth_rate(self, root_depth, available)
+    class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+    type(crop_root_depth_rate_state_t), intent(out) :: root_depth
+    logical, intent(out) :: available
+    root_depth = crop_root_depth_rate_state_t()
+    available = self%ready() .and. allocated(self%root_depth_rate)
+    if (available) root_depth = self%root_depth_rate
+  end subroutine fmr_wofost_crop_transaction_snapshot_root_depth_rate
 
   logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
