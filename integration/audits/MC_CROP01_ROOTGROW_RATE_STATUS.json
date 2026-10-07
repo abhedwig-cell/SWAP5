@@ -39,7 +39,7 @@
     "accepted_water_aggregates": "actual uptake and potential transpiration already exist in WOFOST accepted-window aggregates",
     "blocker": "Detailed-crop B1.11 potential extension requires GRRTPOT. Current canonical WOFOST owner/transaction does not yet expose the source potential-companion root-growth rate as an accepted carrier."
   },
-  "disposition": "IMPLEMENTED_DEPTH_OWNER_UPSTREAM_GRRTPOT_CARRIER_EXISTS_INTEGRATION_QUALIFICATION_OPEN",
+  "disposition": "SWRD2_OWNER_IMPLEMENTED_POTENTIAL_GROWTH_CARRIER_AVAILABLE_COMPOSITION_OPEN",
   "excluded_scope": [
     "SWDMI2RD=2 supply limitation",
     "SWWRTNONOX anaerobic gate",
@@ -51,5 +51,12 @@
     "semantics": "GRRTPOT is now explicitly published from the optional potential crop trajectory in the same accepted daily crop transaction.",
     "state": "IMPLEMENTED_UPSTREAM_NOT_YET_CANONICAL"
   },
-  "remaining_blocker": "No missing GRRTPOT owner remains. Full SWRD2 admission now depends on composing the accepted potential_gross_root_growth carrier with this depth owner and qualifying retry/restart/source trajectories."
+  "remaining_blocker": "No longer missing a GRRTPOT owner. Remaining gate is cross-branch composition of the accepted root-growth carrier into the SWRD2 depth transaction, then reject/replay/restart qualification.",
+  "dependencies": {
+    "potential_growth": {
+      "authority_branch": "work/swap431-crop-potential-shadow-20261007",
+      "carrier": "fmr_wofost_root_growth_carrier_t%potential_gross_root_growth",
+      "meaning": "source GRRTPOT before root death, published atomically with actual crop/shadow receipt"
+    }
+  }
 }
