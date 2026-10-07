@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "9131385b2eda3ddbbc461016ff6de61380ac64b1",
+  "checkpoint_commit": "b08e795f6c067cc2fed9895dfb4c6001bb0547c2",
   "last_reconciled_head": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "last_reconciled_upstream": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "implemented": true,
@@ -23,10 +23,16 @@
   ],
   "relevant_paths": [
     "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+    "src/process/mod_irrigation_process.f90",
+    "src/process/mod_irrigation_root_zone_summary.f90",
+    "src/process/mod_scheduled_irrigation_management_policy.f90",
     "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
-    "tests/f-app07/test_tcs1_dcs2_sprinkling_process.f90",
-    "tests/f-app07/test_hupsel_irrigation_composition.f90",
-    "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh"
+    "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
+    "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+    "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+    "tests/f-app07/test_scheduled_tcs7_ssdi_runtime_binding.f90",
+    "tests/mc-irr01/run_mc_irr01_management_policy.sh",
+    "tests/mc-irr01/run_mc_irr01_source_reconstruction.sh"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -53,7 +59,7 @@
     23,
     29
   ],
-  "next_action": "Qualify shared TCS7/TCS8 sensor-to-DCS2 SSDI runtime composition. Admit TCS7/SSDI on inherited F-VQ20 science plus current runtime gate. Admit TCS8 only if current process qualification and source-binding evidence are sufficient; otherwise retain as implemented pending literal B1.11 oracle.",
+  "next_action": "Wait actively for the current combined F-APP07 qualification. It must pass exact B1.11 source reconstruction, existing TCS1 preservation, TCS7/TCS8 sensor SSDI, salinity/rate normalization, and TCS2/3/4/6+DCS1 management application before expanding census admissions. Availability remains separate.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -77,8 +83,11 @@
       "evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
     },
     "tcs7_ssdi_runtime_binding": {
+      "implemented": true,
+      "persisted": true,
       "tested": false,
       "qualified": false,
+      "owner": "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
       "source_science": "F-VQ20 exact production blob c0755c1e0d0b7ca1a35e73cf26158c29e9940aec"
     },
     "tcs8_sensor_candidate": {
@@ -86,8 +95,34 @@
       "persisted": true,
       "tested": false,
       "qualified": false,
-      "theory_binding": "SWAP 4.3.1 theory equation 11.6: theta_sensor <= theta_min",
-      "source_authority": "B1.11 SWAP/irrigation.f90 hash 65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"
+      "theory_binding": "SWAP theory equation 11.6 and B1.11 source authority",
+      "owner": "src/process/mod_irrigation_process.f90"
+    },
+    "sensor_salinity_rate": {
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "scope": [
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP"
+      ]
+    },
+    "root_zone_management_application": {
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "scope": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-LIMIT"
+      ],
+      "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90"
     }
   }
 }
