@@ -30,11 +30,13 @@ The pond receipt is handed to the inner macropore provider on the same Richards 
 Focused qualification first passed on workstream head
 `37e36cfb64df55232037231fbf7ce40365279eee`, run `37603291412`.
 
-Current canonical `integration/f-ci-canonical@19d7ce86f71c7fa5fd3ed2c65a91dc705921f714`
-was then merged through PR #1089. The qualified merge postimage is
-`609cd5ee8964f0619d94bd396f53ed9fe8d8495e`.
+The workstream was then reconciled twice as canonical advanced. The final
+intersecting canonical authority was
+`integration/f-ci-canonical@d395ca3decf03e7149dbf8d65dc9ad8946826f3a`,
+reconciled through PR #1092. The final qualified production postimage is
+`5747aa6911095c3f0a6c917c40871be6aa9c9116`.
 
-Run `37612249809` passed all workflow stages:
+Run `37613833352` passed all workflow stages on that postimage:
 
 - production runtime compile at O0 and O2;
 - active pond receipt above threshold;
@@ -50,7 +52,12 @@ Run `37612249809` passed all workflow stages:
 - MIGMAC10 bounded Boesten/Rutter/macropore preservation;
 - O0/O2 output identity.
 
-Representative persisted values from the postimage qualification include active-pond mass residuals on the order of 1e-16 cm and a partial-return case with a positive accepted share and positive return, while remaining within the hard mass tolerance.
+PR #1084 was subsequently admitted as canonical merge
+`8cd14e459913f77f412e12125ccda597a841e22d`. The only delta from the final
+qualified production head to that admission was
+`integration/audits/SW431_LOW3_EXPLICIT_STATUS.md`, outside the recorded
+MIGMAC11 dependency surface. No additional production requalification was
+therefore required.
 
 ## Closure
 
