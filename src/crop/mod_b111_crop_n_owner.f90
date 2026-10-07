@@ -51,6 +51,17 @@ module mod_b111_crop_n_owner
     real(real64)::soil_supply_kg_m2_day=0.0_real64
   end type
 
+  type,public::b111_crop_n_request_t
+    integer::status=B111_CROPN_INVALID
+    real(real64)::ndeml_kg_ha=0.0_real64
+    real(real64)::ndems_kg_ha=0.0_real64
+    real(real64)::ndemr_kg_ha=0.0_real64
+    real(real64)::ndemso_kg_ha_day=0.0_real64
+    real(real64)::vegetative_demand_kg_ha=0.0_real64
+    real(real64)::soil_demand_kg_ha=0.0_real64
+    real(real64)::fixation_demand_kg_ha=0.0_real64
+  end type
+
   type,public::b111_crop_n_receipt_t
     integer::status=B111_CROPN_INVALID
     real(real64)::vegetative_demand_kg_ha=0.0_real64
@@ -62,7 +73,7 @@ module mod_b111_crop_n_owner
     real(real64)::balance_residual_kg_ha=0.0_real64
   end type
 
-  public::initialize_b111_crop_n_state,apply_b111_crop_n_day
+  public::initialize_b111_crop_n_state,prepare_b111_crop_n_request,apply_b111_crop_n_day
 
 contains
 
@@ -92,13 +103,36 @@ contains
       (self%nloss_leaf_kg_ha+self%nloss_stem_kg_ha+self%nloss_root_kg_ha)
   end function
 
+  subroutine prepare_b111_crop_n_request(committed,f,request)
+    type(b111_crop_n_state_t),intent(in)::committed
+    type(b111_crop_n_forcing_t),intent(in)::f
+    type(b111_crop_n_request_t),intent(out)::request
+    type(b111_nfix_request_t)::fixreq
+    real(real64)::nlimit
+
+    request=b111_crop_n_request_t()
+    if(.not.committed%valid().or..not.valid_forcing(f))return
+    request%ndeml_kg_ha=max(f%nmaxlv*f%wlv_kg_ha-committed%anlv_kg_ha,0.0_real64)
+    request%ndems_kg_ha=max(f%nmaxst*f%wst_kg_ha-committed%anst_kg_ha,0.0_real64)
+    request%ndemr_kg_ha=max(f%nmaxrt*f%wrt_kg_ha-committed%anrt_kg_ha,0.0_real64)
+    request%ndemso_kg_ha_day=max(f%nmaxso*f%wso_kg_ha-committed%anso_kg_ha,0.0_real64)/f%tcnt_day
+    request%vegetative_demand_kg_ha=max(0.0_real64,request%ndeml_kg_ha+request%ndems_kg_ha+request%ndemr_kg_ha)
+    nlimit=merge(1.0_real64,0.0_real64,f%dvs<f%dvsnlt.and.f%reltr>0.01_real64)
+    request%soil_demand_kg_ha=(1.0_real64-f%nfixf)*request%vegetative_demand_kg_ha*nlimit
+    call prepare_b111_nfix_request(f%dvs,f%reltr,f%dvsnlt,f%nfixf,f%wlv_kg_ha,f%wst_kg_ha,f%wrt_kg_ha, &
+         f%nmaxlv,f%nmaxst,f%nmaxrt,committed%anlv_kg_ha,committed%anst_kg_ha,committed%anrt_kg_ha,fixreq)
+    if(fixreq%status/=B111_NFIX_OK)return
+    request%fixation_demand_kg_ha=fixreq%fixation_request
+    request%status=B111_CROPN_OK
+  end subroutine
+
   subroutine apply_b111_crop_n_day(committed,f,candidate,receipt)
     type(b111_crop_n_state_t),intent(in)::committed
     type(b111_crop_n_forcing_t),intent(in)::f
     type(b111_crop_n_state_t),intent(out)::candidate
     type(b111_crop_n_receipt_t),intent(out)::receipt
-    type(b111_nfix_request_t)::fixreq
-    real(real64)::ndeml,ndems,ndemr,ndemso,ndemto,nlimit,nuptr,nfixtr
+    type(b111_crop_n_request_t)::request
+    real(real64)::ndeml,ndems,ndemr,ndemso,ndemto,nuptr,nfixtr
     real(real64)::atnlv,atnst,atnrt,atn,nsupso,rnso,rntlv,rntst,rntrt
     real(real64)::rnulv,rnust,rnurt,rnldlv,rnldst,rnldrt
     real(real64)::tol,scale
@@ -106,19 +140,13 @@ contains
     candidate=committed;receipt=b111_crop_n_receipt_t()
     if(.not.committed%valid().or..not.valid_forcing(f))return
 
-    ndeml=max(f%nmaxlv*f%wlv_kg_ha-committed%anlv_kg_ha,0.0_real64)
-    ndems=max(f%nmaxst*f%wst_kg_ha-committed%anst_kg_ha,0.0_real64)
-    ndemr=max(f%nmaxrt*f%wrt_kg_ha-committed%anrt_kg_ha,0.0_real64)
-    ndemso=max(f%nmaxso*f%wso_kg_ha-committed%anso_kg_ha,0.0_real64)/f%tcnt_day
-    ndemto=max(0.0_real64,ndeml+ndems+ndemr)
-    nlimit=merge(1.0_real64,0.0_real64,f%dvs<f%dvsnlt.and.f%reltr>0.01_real64)
-    receipt%vegetative_demand_kg_ha=ndemto
-    receipt%soil_demand_kg_ha=(1.0_real64-f%nfixf)*ndemto*nlimit
-
-    call prepare_b111_nfix_request(f%dvs,f%reltr,f%dvsnlt,f%nfixf,f%wlv_kg_ha,f%wst_kg_ha,f%wrt_kg_ha, &
-         f%nmaxlv,f%nmaxst,f%nmaxrt,committed%anlv_kg_ha,committed%anst_kg_ha,committed%anrt_kg_ha,fixreq)
-    if(fixreq%status/=B111_NFIX_OK)return
-    receipt%fixation_kg_ha=fixreq%fixation_request
+    call prepare_b111_crop_n_request(committed,f,request)
+    if(request%status/=B111_CROPN_OK)return
+    ndeml=request%ndeml_kg_ha;ndems=request%ndems_kg_ha;ndemr=request%ndemr_kg_ha
+    ndemso=request%ndemso_kg_ha_day;ndemto=request%vegetative_demand_kg_ha
+    receipt%vegetative_demand_kg_ha=request%vegetative_demand_kg_ha
+    receipt%soil_demand_kg_ha=request%soil_demand_kg_ha
+    receipt%fixation_kg_ha=request%fixation_demand_kg_ha
     nuptr=max(0.0_real64,min(receipt%soil_demand_kg_ha,f%soil_supply_kg_m2_day*1.0e4_real64))/f%delt_day
     nfixtr=receipt%fixation_kg_ha/f%delt_day
 
