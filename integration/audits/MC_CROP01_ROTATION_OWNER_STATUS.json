@@ -1,0 +1,62 @@
+{
+  "schema": "swap431.mc_crop01.rotation_owner.v1",
+  "capability_id": "SW431-CROP-ROTATION",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "routines": [
+      "croprotation",
+      "find_active_crop",
+      "cropemergence"
+    ],
+    "schedule_rules": [
+      "next crop start minus previous crop end must be >=0.5 day",
+      "crop period end-start+1 must be >=0.5 day",
+      "active calendar uses start tolerance -0.1 day and end tolerance +0.1 day",
+      "start-rotation flag uses abs(time-start)<1e-3",
+      "during fallow ICROP already points to the next upcoming crop"
+    ]
+  },
+  "implementation": "src/crop/mod_crop_rotation_owner.f90",
+  "qualification_runner": "tests/fmig431/run_swap431_crop_rotation_owner.py",
+  "ownership": {
+    "persistent": [
+      "current_crop_index",
+      "crop_calendar_active",
+      "exhausted"
+    ],
+    "immutable_schedule": [
+      "start_day",
+      "end_day",
+      "crop_key",
+      "crop_type"
+    ],
+    "emitted_requests": [
+      "bind_crop_parameters",
+      "reset_preemergence",
+      "reset_active_crop_flags"
+    ],
+    "excluded": [
+      "crop biomass",
+      "phenology",
+      "soil state",
+      "preparation/sowing/germination internals",
+      "harvest physics"
+    ]
+  },
+  "composition": {
+    "preemergence": "work/swap431-crop-preemergence-20261007",
+    "crop_end": "work/swap431-crop-calendar-end-20261007",
+    "daily_crop_event": "existing F-WOF38/F-WOF39 transaction+lifecycle",
+    "soil_state": "preserved externally; rotation owner never copies or resets it"
+  },
+  "disposition": "SOURCE_LIFECYCLE_OWNER_IMPLEMENTED_RUNTIME_ATOMIC_COMPOSITION_OPEN",
+  "remaining": [
+    "Bind parameter-set selection keyed by crop_key exactly once at season start.",
+    "Atomically retire prior crop owner and optional shadow, reset pre-emergence owner, and later initialize the next active crop owner.",
+    "Persist/restart the rotation cursor across fallow and season boundaries.",
+    "Qualify two crops separated by fallow, rejected boundary transition, replay and restart on both sides."
+  ],
+  "admission": false
+}
