@@ -88,6 +88,12 @@ on:
       - 'tests/physics/run_fmr_b111_soil_n_daily_transaction.sh'
       - 'src/process/mod_b111_solute_sorption_equilibrium_transfer.f90'
       - 'tests/physics/test_b111_solute_sorption_equilibrium_transfer.f90'
+      - 'src/crop/mod_b111_crop_n_owner.f90'
+      - 'src/runtime/mod_fmr_b111_soil_crop_n_transaction.f90'
+      - 'tests/fwof/pp02/test_b111_crop_n_owner.f90'
+      - 'tests/physics/test_fmr_b111_soil_crop_n_transaction.f90'
+      - 'tests/physics/run_fmr_b111_soil_crop_n_transaction.sh'
+      - 'integration/audits/MC_NUT01_PRODUCTION_REACHABILITY.json'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -120,6 +126,8 @@ jobs:
         run: bash tests/physics/run_fmr_b111_soil_n_transaction.sh
       - name: Integrated daily Soil-N transaction
         run: bash tests/physics/run_fmr_b111_soil_n_daily_transaction.sh
+      - name: Atomic Soil-N crop-N transaction
+        run: bash tests/physics/run_fmr_b111_soil_crop_n_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
       - name: Reactive solute layout restart
