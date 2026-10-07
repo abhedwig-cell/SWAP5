@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-DRAIN01-SIGNED-MULTILEVEL",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical_branch": "integration/f-ci-canonical",
+  "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "branch": "work/swap431-drain-signed-multilevel-20261007",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "capabilities": [
+    "SW431-DRAIN-DIV-SIGNED",
+    "SW431-DRAIN-DIV-MULTI"
+  ],
+  "source_authority": {
+    "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "signed_lines": [
+      37,
+      46,
+      224,
+      233,
+      241,
+      247
+    ],
+    "multilevel_lines": [
+      37,
+      42,
+      81,
+      94,
+      129,
+      176,
+      221,
+      228
+    ]
+  },
+  "production_paths": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+  ],
+  "test_paths": [
+    "tests/fmig431/test_swap431_drain_signed_divdra.f90",
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+  ],
+  "local_test": {
+    "compiler": "GNU Fortran 14.2.0",
+    "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace",
+    "optimization": [
+      "-O0",
+      "-O2"
+    ],
+    "result": "PASS",
+    "o0_o2_output_identical": true,
+    "note": "Focused production process/binding slice compiled against the exact process_hydraulic_view shape with a minimal solver-contract stub; serialized wrapper still requires integrated qualification."
+  },
+  "preservation": [
+    "existing positive-only public API remains fail-closed for negative transfers",
+    "zero path remains explicit",
+    "scalar transfer remains authoritative mass object",
+    "publication remains last and refuses an already allocated target"
+  ],
+  "next_action": "Implement native DRAMET3 response/resolver with allocation and channel infiltration limit, then compose SWDIVDINF using the admitted B19 algebra without duplicating frost physics.",
+  "blockers": [],
+  "recovery_point": "f66c75caab4d94cd0d9b63517cd08a8fe86e338f"
+}
