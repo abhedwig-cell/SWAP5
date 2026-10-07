@@ -18,13 +18,13 @@
       "disposition": "IMPLEMENTED_SOURCE_EQUIVALENT"
     },
     "potential": {
-      "implementation": null,
-      "semantics": "requires distinct potential crop assimilation/biomass trajectory with selector-controlled RELMF",
-      "disposition": "MISSING_POTENTIAL_TRAJECTORY_OWNER"
+      "implementation_authority": "work/swap431-crop-potential-shadow-20261007",
+      "semantics": "Optional classic potential crop shadow uses the existing assimilation physics with explicit potential multiplier policy. SWPOTRELMF=2 maps to RELMF; the uncorrected potential policy maps to 1.0. Shadow state commits atomically with actual crop and event receipt.",
+      "disposition": "IMPLEMENTED_UPSTREAM_NOT_YET_CANONICAL"
     }
   },
   "owner_rule": "Do not emulate SWPOTRELMF=2 by reusing or overwriting the accepted actual crop trajectory.",
-  "disposition": "PARTIAL_EQUIVALENCE_ACTUAL_CLOSED_POTENTIAL_OWNER_OPEN",
+  "disposition": "ACTUAL_AND_POTENTIAL_SEMANTICS_IMPLEMENTED_INTEGRATION_QUALIFICATION_OPEN",
   "admission": false,
-  "remaining": "Establish the classic potential-production companion owner/trajectory, then bind SWPOTRELMF selector and qualify actual/potential divergence plus restart."
+  "remaining": "Qualify the potential-shadow atomic transaction/source gate, then record the selector mapping as controlling admission evidence."
 }
