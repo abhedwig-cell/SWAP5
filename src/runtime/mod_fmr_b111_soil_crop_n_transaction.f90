@@ -175,8 +175,10 @@ contains
       if(root_residue_age<0.0_real64.or.leaf_residue_age<0.0_real64.or.fra_deceased_leaf_to_soil<0.0_real64.or. &
          fra_deceased_leaf_to_soil>1.0_real64)return
       model%residue_split=residue_split;model%root_residue_age=root_residue_age;model%leaf_residue_age=leaf_residue_age
-      model%stem_residue_age=merge(stem_residue_age,root_residue_age,present(stem_residue_age))
-      model%storage_residue_age=merge(storage_residue_age,leaf_residue_age,present(storage_residue_age))
+      model%stem_residue_age=root_residue_age
+      model%storage_residue_age=leaf_residue_age
+      if(present(stem_residue_age))model%stem_residue_age=stem_residue_age
+      if(present(storage_residue_age))model%storage_residue_age=storage_residue_age
       model%fra_deceased_leaf_to_soil=fra_deceased_leaf_to_soil;model%residue_return_enabled=.true.
       if(present(harvest_forcing))then
         model%harvest_forcing=harvest_forcing
