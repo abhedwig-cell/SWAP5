@@ -57,6 +57,8 @@ module mod_fmr_serialized_multiswap_runtime
     integer :: solver_rejections = 0
     integer :: temporal_rejections = 0
     integer :: mass_rejections = 0
+    real(real64) :: max_abs_step_mass_residual = 0.0_real64
+    real(real64) :: max_temporal_indicator = 0.0_real64
     integer :: solver_nonlinear_iterations = 0
     integer :: solver_internal_retries = 0
     integer :: solver_headcalc_calls = 0
@@ -802,6 +804,8 @@ contains
     output%solver_rejections = kernel_diag%solver_rejections
     output%temporal_rejections = kernel_diag%temporal_rejections
     output%mass_rejections = kernel_diag%mass_rejections
+    output%max_abs_step_mass_residual = kernel_diag%max_abs_step_mass_residual
+    output%max_temporal_indicator = kernel_diag%max_temporal_indicator
     output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
     output%solver_internal_retries = kernel_diag%internal_retries
     output%solver_headcalc_calls = kernel_diag%headcalc_calls
