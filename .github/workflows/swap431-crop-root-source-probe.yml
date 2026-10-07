@@ -1,5 +1,7 @@
 name: SWAP431 crop root B1.11 source probe
 on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
   push:
     branches: [work/swap431-crop-root-source-probe-20261007]
     paths:
