@@ -2,17 +2,21 @@
   "work_unit": "PPA-WU05-MIGMAC11",
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
-  "checkpoint_commit": "cfdc1711ae73749ebfa13de08f565369043a6b71",
-  "last_reconciled_head": "cfdc1711ae73749ebfa13de08f565369043a6b71",
+  "checkpoint_commit": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
+  "last_reconciled_head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
+  "canonical_reconciled_against": "integration/f-ci-canonical@19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "canonical_reconciliation_pr": 1089,
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "scope": "B1.11 pond-derived lateral macropore surface inflow and shared surface bookkeeping; runon composition follows after active pond route closure",
+  "tested": true,
+  "qualified": true,
+  "closed": true,
+  "scope": "B1.11 residual-synchronous surface/macropore donor chain: candidate ponding, pond-derived QMpLatSs, runon in the shared surface donor, A9 acceptance/redistribution/return, surface/macropore bookkeeping, mass conservation, transaction/replay/restart, and preservation through MIGMAC10.",
   "interfaces_changed": [
     "soil_water_top_boundary_result_t candidate pond receipt",
-    "macropore_exchange_provider_t candidate pond handoff",
-    "B1.11 dynamic top boundary optional pond donor parameters"
+    "macropore_exchange_provider_t residual-synchronous candidate pond handoff",
+    "dynamic top boundary matrix_source_area_partition ownership",
+    "macropore runtime pond-specific requested/accepted/returned receipt accounting"
   ],
   "invariants_affected": [
     7,
@@ -30,32 +34,68 @@
     "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
     "src/runtime/mod_macropore_single_column_runtime.f90",
     "src/runtime/mod_fmr_macropore_configuration.f90",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_macropore_top_input.f90"
   ],
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/variables.f90",
-    "docs/architecture/invariants.md"
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md"
   ],
   "test_paths": [
     "tests/fpm/test_migmac11_pond_donor.f90",
     "tests/fpm/run_migmac11_production_compile.sh",
     "tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90",
+    "tests/fpm/test_ppa_wu05a9_fmr_top_input_replay.f90",
+    "tests/fpm/run_ppa_wu05a9_top_input.sh",
     ".github/workflows/ppa-wu05-migmac11-pond-donor.yml"
   ],
   "evidence_paths": [
-    "docs/audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md"
+    "docs/audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md",
+    "docs/audits/PPA_WU05_MIGMAC11_CLOSEOUT.md"
   ],
   "dependency_surface": [
     "dynamic top boundary contract",
-    "HeadCalc residual callback",
+    "HeadCalc residual callback and Jacobian",
     "A9 top inflow limiter",
     "macropore candidate/commit bookkeeping",
-    "surface ponding mass accounting"
+    "surface ponding mass accounting",
+    "serialized Reference backend composition"
   ],
-  "test_status": "Run 37586507318 exposed a production compile failure from an out-of-scope `forcing` reference while binding matrix_source_area_partition. Current head cfdc1711 replaces it with `self%macropore_top_input_forcing%supplied`, preserving the distinction between candidate ArMpSs and active direct atmospheric macropore forcing. Requalification pending on this postimage.",
-  "qualification_status": "IN_PROGRESS",
-  "next_action": "Requalify current postimage. On active-pond PASS, extend the same tranche with paired runon, partial A9 acceptance/return, transactional/restart evidence, whole-column mass closure, and MIGMAC01-10 preservation.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@cfdc1711ae73749ebfa13de08f565369043a6b71",
+  "qualification_runs": {
+    "pre_reconcile": {
+      "run_id": 37603291412,
+      "head": "37e36cfb64df55232037231fbf7ce40365279eee",
+      "conclusion": "success"
+    },
+    "canonical_postimage": {
+      "run_id": 37612249809,
+      "head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
+      "conclusion": "success"
+    }
+  },
+  "qualified_cases": [
+    "production compile O0/O2",
+    "active pond above PndmxMp",
+    "runon increases the shared surface donor and is not a direct macropore source",
+    "below-threshold/no-pond receipt is zero",
+    "partial A9 capacity acceptance and returned surface water",
+    "expanding candidate macropore area",
+    "shrinking candidate macropore area and geometry return",
+    "requested_top = accepted_top + returned_surface",
+    "net surface debit from pond transfer equals accepted pond-derived macropore inflow",
+    "whole-column hard mass closure",
+    "reject/smaller-retry identity",
+    "rollback/replay identity",
+    "restart continuation equivalence",
+    "MIGMAC01-09 source/runtime preservation",
+    "MIGMAC10 bounded Boesten/Rutter/macropore preservation",
+    "O0/O2 identity"
+  ],
+  "test_status": "PASS on current canonical merge postimage 609cd5ee8964f0619d94bd396f53ed9fe8d8495e. GitHub Actions run 37612249809 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
+  "qualification_status": "CLOSED",
+  "next_action": "No MIGMAC11 implementation work remains. Treat the capability as closed unless later canonical changes intersect the recorded dependency surface or new regression evidence appears.",
+  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
   "blockers": []
 }
