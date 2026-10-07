@@ -8,10 +8,10 @@ python3 research/kalmthout_pilot/fetch_era5land_daily.py > "$OUTDIR/weather.csv"
 python3 - "$OUTDIR/weather.csv" <<'PY'
 import csv,sys
 rows=list(csv.DictReader(open(sys.argv[1])))
-assert len(rows)==1005, len(rows)
-assert rows[0]["date"]=="2024-01-01"
-assert rows[-1]["date"]=="2026-10-01"
-print("KALMTHOUT_METEO_DAILY_COMPLETE=PASS")
+assert len(rows)==24120, len(rows)
+assert rows[0]["time"]=="2024-01-01T00:00"
+assert rows[-1]["time"]=="2026-10-01T23:00"
+print("KALMTHOUT_METEO_HOURLY_COMPLETE=PASS")
 PY
 
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-kalmthout-${GITHUB_RUN_ID:-local}-$$"
