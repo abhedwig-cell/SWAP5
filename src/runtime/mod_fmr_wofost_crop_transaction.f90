@@ -496,6 +496,20 @@ contains
     if (self%update_parameters%leaf_lifespan < 0.0_real64) return
     if (.not. ieee_is_finite(self%potential_attainable_multiplier)) return
     if (self%potential_attainable_multiplier < 0.0_real64 .or. self%potential_attainable_multiplier > 1.0_real64) return
+    select case(self%phenology_mode)
+    case(WOFOST_PHENOLOGY_CLASSIC)
+      if (allocated(self%soybean_phenology) .or. allocated(self%vernalisation_phenology)) return
+    case(WOFOST_PHENOLOGY_SOYBEAN)
+      if (.not. allocated(self%soybean_phenology) .or. allocated(self%vernalisation_phenology)) return
+      if (.not. self%soybean_phenology%ready()) return
+      if (self%rate_parameters%scalar_view()%development_daylength_mode /= 0) return
+    case(WOFOST_PHENOLOGY_VERNALISATION)
+      if (.not. allocated(self%vernalisation_phenology) .or. allocated(self%soybean_phenology)) return
+      if (.not. self%vernalisation_phenology%ready()) return
+      if (self%rate_parameters%scalar_view()%development_daylength_mode /= 1) return
+    case default
+      return
+    end select
     ready = .true.
   end function fmr_wofost_crop_transaction_parameters_ready
 
