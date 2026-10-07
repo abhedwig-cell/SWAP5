@@ -6,6 +6,8 @@ on:
       - work/mc-irr01-management-cluster-20261007
     paths:
       - 'src/process/mod_irrigation_process.f90'
+      - 'src/process/mod_scheduled_irrigation_management_policy.f90'
+      - 'src/process/mod_irrigation_root_zone_summary.f90'
       - 'src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_process_hydraulic_view_binding.f90'
@@ -14,6 +16,8 @@ on:
   pull_request:
     paths:
       - 'src/process/mod_irrigation_process.f90'
+      - 'src/process/mod_scheduled_irrigation_management_policy.f90'
+      - 'src/process/mod_irrigation_root_zone_summary.f90'
       - 'src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/runtime/mod_fmr_process_hydraulic_view_binding.f90'
@@ -36,5 +40,7 @@ jobs:
         run: gfortran --version
       - name: Reconstruct exact B1.11 irrigation source
         run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
+      - name: Qualify shared management policy
+        run: bash tests/mc-irr01/run_mc_irr01_management_policy.sh
       - name: Qualify restricted runtime binding
         run: bash tests/mc-irr01/run_mc_irr01_tcs7_ssdi_binding.sh
