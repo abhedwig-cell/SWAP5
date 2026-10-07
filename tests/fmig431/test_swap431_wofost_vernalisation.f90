@@ -15,7 +15,8 @@ program test_swap431_wofost_vernalisation
   p%saturation_requirement=30.0_real64
   call construct_wofost_rate_table([-10.0_real64,20.0_real64,100.0_real64], &
        [0.0_real64,5.0_real64,0.0_real64],p%temperature_rate,status)
-  if(status/=WOFOST_RATE_TABLE_OK.or..not.p%ready()) error stop 1
+  if(status/=WOFOST_RATE_TABLE_OK) error stop 1
+  if(.not.p%ready()) error stop 101
 
   ! Below VERNBASE, factor is clamped to zero but VERN still accumulates.
   s%accumulated_units=0.0_real64
