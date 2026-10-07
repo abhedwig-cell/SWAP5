@@ -40,6 +40,7 @@ MODULE_SRC=(
   src/solver/mod_b111_legacy_hydraulic_provider.f90
   src/solver/mod_b111_extended_hydraulic_provider.f90
   src/solver/mod_b111_conductivity_power_tail.f90
+  src/solver/mod_b111_linear_table_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
