@@ -35,3 +35,7 @@ jobs:
         run: bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh
       - name: Qualify TCS7 SSDI production binding
         run: bash tests/mc-irr01/run_mc_irr01_tcs7_ssdi_binding.sh
+      - name: MC-IRR01 exact B1.11 source reconstruction
+        run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
+      - name: MC-IRR01 shared management policy
+        run: bash tests/mc-irr01/run_mc_irr01_management_policy.sh
