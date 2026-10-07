@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "SW431-HYD-HYST",
+  "branch": "work/swap431-hyd-hyst-closeout",
+  "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "checkpoint_commit": "bf20714805d7ad0769d69c4f893a60dc0adfc5fb",
+  "implemented": true,
+  "persisted": true,
+  "tested": "LOCAL_COMPONENT_PARTIAL",
+  "qualified": false,
+  "scope": {
+    "implemented": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL5",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-MODEL7",
+      "SW431-HYD-MODEL8_NO_VAPOR",
+      "SW431-HYD-MODEL9_NO_VAPOR",
+      "SW431-HYD-MODEL10_NO_VAPOR",
+      "SW431-HYD-MODEL11_NO_VAPOR"
+    ],
+    "open": [
+      "SW431-HYD-MODEL8_VAPOR",
+      "SW431-HYD-MODEL9_VAPOR",
+      "SW431-HYD-MODEL10_VAPOR",
+      "SW431-HYD-MODEL11_VAPOR",
+      "SW431-HYD-MODEL12_RIA",
+      "SW431-HYD-TABLE",
+      "SW431-HYD-POWER",
+      "SW431-HYD-LINEAR-TABLE",
+      "SW431-HYD-RIA-VAPOR",
+      "SW431-HYST1",
+      "SW431-HYST2"
+    ]
+  },
+  "decomposition": {
+    "model2": "exponential test relation owner",
+    "model3": "bimodal MvG owner",
+    "model5_7": "extended MvG truncation/bimodality family",
+    "model8_11": "PDI value family; no-vapor slice implemented; vapor kept separate",
+    "hysteresis": "one stateful reversal/scanning-curve owner; HYST1/HYST2 differ by initial branch only"
+  },
+  "local_evidence": {
+    "compiler": "GNU Fortran 14.2.0",
+    "model5_11_compile": "PASS",
+    "model5_11_o0_o2": "PASS_BYTE_IDENTICAL",
+    "model5_11_independent_oracle": "35/35 exact within floating output"
+  },
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md",
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
+    "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
+    "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
+    "reference/swap-4.3.1/patches/SWAP-011/qualification.md"
+  ],
+  "relevant_paths": [
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+    "src/solver/mod_b111_extended_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/fsi/run_b111_hydraulic_families.sh"
+  ],
+  "invariants_affected": [
+    3,
+    4,
+    5,
+    7,
+    13,
+    21,
+    22,
+    23,
+    25,
+    27
+  ],
+  "next_action": "Complete focused persisted qualification, then migrate POWER/TABLE or stateful hysteresis depending dependency order.",
+  "blockers": [],
+  "recovery_point": "bf20714805d7ad0769d69c4f893a60dc0adfc5fb"
+}
