@@ -77,11 +77,6 @@ contains
       if(reproduction_rooted_nodes<0.or.reproduction_rooted_nodes>reproduction_parameters%active_nodes()) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
-      if(reproduction_rooted_nodes<size(base_fluxes%root_extraction_sink)) then
-        if(any(abs(base_fluxes%root_extraction_sink(reproduction_rooted_nodes+1:))>tiny(1.0_real64))) then
-          status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
-        end if
-      end if
       if(reproduction_rooted_nodes==0) then
         final_fluxes=base_fluxes
         status=FMR_BARTHOLOMEUS_EXEC_OK
