@@ -47,11 +47,12 @@ program test_swap431_root_oxygen_repro_execution
   wroot=0.0_real64
   wrootz0=0.0_real64
 
-  ! Rooted support is dynamic forcing, not immutable geometry. A nonzero sink
-  ! outside the supplied rooted extent must fail closed.
+  ! Rooted support is dynamic forcing, not immutable geometry. Nodes below
+  ! that support are not evaluated and their already supplied sink is preserved.
   call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
        base,final,status,factors,repro,1)
-  if(status/=FMR_BARTHOLOMEUS_EXEC_INPUT) error stop 1
+  if(status/=FMR_BARTHOLOMEUS_EXEC_OK) error stop 1
+  if(abs(final%root_extraction_sink(1)-0.3_real64)>tol.or.abs(final%root_extraction_sink(2)-0.4_real64)>tol) error stop 10
 
   call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
        base,final,status,factors,repro,2)
