@@ -1,0 +1,29 @@
+name: SW431 Drain Signed Qualification
+
+on:
+  push:
+    branches:
+      - work/swap431-drain-frost-coverage-20261007
+    paths:
+      - 'src/process/mod_frost_divdra_drainage_effect.f90'
+      - 'src/runtime/mod_fmr_signed_divdra_runtime_binding.f90'
+      - 'src/runtime/mod_fmr_divdra_serialized_composition.f90'
+      - 'src/runtime/mod_fmr_divdra_serialized_runtime.f90'
+      - 'tests/fmig431/test_swap431_signed_divdra_runtime.f90'
+      - 'tests/fmig431/run_swap431_signed_divdra_runtime.py'
+      - '.github/workflows/swap431-drain-signed.yml'
+  workflow_dispatch:
+
+jobs:
+  signed-divdra:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: O0 O2 signed DIVDRA runtime qualification
+        run: python3 tests/fmig431/run_swap431_signed_divdra_runtime.py
+      - name: Whitespace
+        run: git diff --check integration/f-ci-canonical...HEAD
