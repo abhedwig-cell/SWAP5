@@ -3970,6 +3970,8 @@ contains
                self%boesten_evaporation_forcing%ponding_max_cm, &
                self%boesten_evaporation_forcing%runoff_resistance_day, &
                self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          boesten_top_provider%matrix_source_area_partition = allocated(forcing%macropore_top_input) .and. &
+               self%macropore_top_input_forcing%supplied
           if(self%macropore_config%surface_pond_inflow_enabled)then
             boesten_top_provider%macropore_pond_donor_active=.true.
             boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
