@@ -4,7 +4,7 @@ program test_low03_explicit_application
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_legacy_cauchy_bottom_boundary_provider
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
@@ -54,6 +54,11 @@ program test_low03_explicit_application
   cfg%tiles(1)%parameters%swbotb3_explicit_hdrain_cm=-100.0_real64
   cfg%tiles(1)%parameters%swbotb3_explicit_shape_3=1.0_real64
   cfg%tiles(1)%ledger_id=0_int64
+  block
+    logical :: prepared
+    call prepare_fmr_b110_default_mvg(cfg%tiles(1)%parameters,prepared)
+    call require(prepared,'explicit prepared MvG authority')
+  end block
   haq_eq=-1.5_real64
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
