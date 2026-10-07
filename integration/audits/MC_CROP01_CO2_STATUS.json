@@ -1,0 +1,41 @@
+{
+  "schema": "swap431.mc_crop01.co2.v1",
+  "capability_id": "SW431-CROP-CO2",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "branch_head": "d064bf436bc39e6dd34ad7b41bd9f359f9a9c1da",
+  "source_authority": {
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "semantics": [
+      "CO2EFFTB, CO2AMAXTB and CO2TRATB are independent AFGEN tables.",
+      "disabled response is neutral",
+      "inactive crop does not consume atmospheric CO2 forcing"
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_crop_co2_response_resolver.f90",
+    "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+    "src/crop/mod_crop_et_canopy_view_provider.f90"
+  ],
+  "qualification": {
+    "workflow": "SWAP431 crop CO2 response qualification",
+    "run_id": 37637780221,
+    "conclusion": "success",
+    "head_sha": "d064bf436bc39e6dd34ad7b41bd9f359f9a9c1da",
+    "O0_O2": true
+  },
+  "ownership": {
+    "response": "stateless",
+    "atmospheric_concentration": "forcing",
+    "crop_state": "existing crop owner",
+    "et_binding": "existing canopy view",
+    "persistent_state_added": false
+  },
+  "disposition": "ADMISSION_READY",
+  "admission": false,
+  "preservation": [
+    "WOFOST81 unchanged",
+    "classic crop owner unchanged",
+    "inactive crop dependency minimality preserved"
+  ]
+}
