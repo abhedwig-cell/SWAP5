@@ -386,7 +386,7 @@ contains
        return
     end if
     if (request%boundary%bottom_mode == 1) then
-       route = 'prescribed-gwl-below-profile-domain-deferred'
+       route = 'mode1-below-profile-domain'
        if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
        n=request%parameters%active_nodes
        if (n < 2) return
@@ -395,7 +395,10 @@ contains
            any(.not. ieee_is_finite(request%parameters%node_distance))) return
        if (any(request%parameters%dz <= 0.0_real64) .or. any(request%parameters%node_distance <= 0.0_real64)) return
        if (.not. ieee_is_finite(request%boundary%bottom_head)) return
-       if (request%boundary%bottom_head >= request%parameters%z(n)) return
+       if (request%boundary%bottom_head >= request%parameters%z(n)) then
+          route = 'mode1-inprofile-deferred'
+          return
+       end if
        if (any(.not. ieee_is_finite(request%base_state%pressure_head))) return
     end if
     if (request%boundary%bottom_mode == 8) then
