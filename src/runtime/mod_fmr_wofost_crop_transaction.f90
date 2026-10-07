@@ -285,7 +285,7 @@ contains
 
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
-       potential_attainable_multiplier)
+       potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -293,14 +293,20 @@ contains
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
     real(real64), intent(in), optional :: potential_attainable_multiplier
-    logical :: enable_shadow
-    real(real64) :: potential_multiplier
+    logical, intent(in), optional :: enable_anaerobic_root_growth_gate
+    real(real64), intent(in), optional :: aeration_critical_factor
+    logical :: enable_shadow, enable_anaerobic_gate
+    real(real64) :: potential_multiplier, aeration_threshold
 
     parameters = fmr_wofost_crop_transaction_parameters_t()
     enable_shadow = .false.
     if (present(enable_potential_shadow)) enable_shadow = enable_potential_shadow
     potential_multiplier = 1.0_real64
     if (present(potential_attainable_multiplier)) potential_multiplier = potential_attainable_multiplier
+    enable_anaerobic_gate = .false.
+    if (present(enable_anaerobic_root_growth_gate)) enable_anaerobic_gate = enable_anaerobic_root_growth_gate
+    aeration_threshold = 0.0001_real64
+    if (present(aeration_critical_factor)) aeration_threshold = aeration_critical_factor
     status = FMR_WOF38_INVALID_PARAMETERS
     if (.not. rate_parameters%ready()) return
     if (.not. ieee_is_finite(stem_area_coefficient) .or. stem_area_coefficient < 0.0_real64) return
@@ -310,6 +316,8 @@ contains
     if (.not. ieee_is_finite(update_parameters%leaf_lifespan) .or. update_parameters%leaf_lifespan < 0.0_real64) return
     if (.not. ieee_is_finite(potential_multiplier) .or. potential_multiplier < 0.0_real64 .or. &
         potential_multiplier > 1.0_real64) return
+    if (.not. ieee_is_finite(aeration_threshold) .or. aeration_threshold < 0.0_real64 .or. &
+        aeration_threshold > 1.0_real64) return
 
     parameters%rate_parameters = rate_parameters
     parameters%update_parameters = update_parameters
@@ -317,6 +325,8 @@ contains
     parameters%storage_area_coefficient = storage_area_coefficient
     parameters%potential_shadow_enabled = enable_shadow
     parameters%potential_attainable_multiplier = potential_multiplier
+    parameters%anaerobic_root_growth_gate_enabled = enable_anaerobic_gate
+    parameters%aeration_critical_factor = aeration_threshold
     parameters%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine construct_fmr_wofost_crop_transaction_parameters
@@ -472,6 +482,14 @@ contains
     if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
     if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
     if (self%accepted_aggregates%potential_transpiration < 0.0_real64) return
+    if (self%accepted_aggregates%deepest_root_oxygen_factor_available) then
+      if (.not. ieee_is_finite(self%accepted_aggregates%deepest_root_oxygen_factor_integral)) return
+      if (self%accepted_aggregates%deepest_root_oxygen_factor_integral < 0.0_real64 .or. &
+          self%accepted_aggregates%deepest_root_oxygen_factor_integral > 1.0_real64 + &
+          64.0_real64*epsilon(1.0_real64)) return
+    else
+      if (abs(self%accepted_aggregates%deepest_root_oxygen_factor_integral) > tiny(1.0_real64)) return
+    end if
     ready = .true.
   end function fmr_wofost_crop_event_forcing_ready
 
