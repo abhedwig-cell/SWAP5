@@ -16,11 +16,14 @@ module mod_crop_preemergence_owner
 
   type, public :: crop_preemergence_parameters_t
     logical :: preparation_enabled=.false.
+    real(real64) :: preparation_monitor_depth_cm=0.0_real64 ! ZPREP
     real(real64) :: preparation_head_threshold_cm=0.0_real64
     integer :: maximum_preparation_delay_days=1
 
     logical :: sowing_enabled=.false.
+    real(real64) :: sowing_head_monitor_depth_cm=0.0_real64 ! ZSOW
     real(real64) :: sowing_head_threshold_cm=0.0_real64
+    real(real64) :: sowing_temperature_monitor_depth_cm=0.0_real64 ! ZTEMPSOW
     real(real64) :: sowing_temperature_threshold_c=0.0_real64
     integer :: maximum_sowing_delay_days=1
 
@@ -28,6 +31,7 @@ module mod_crop_preemergence_owner
     real(real64) :: optimal_emergence_temperature_sum=0.0_real64 ! TSUMEMEOPT
     real(real64) :: germination_base_temperature_c=0.0_real64     ! TBASEM
     real(real64) :: germination_effective_max_temperature_c=0.0_real64 ! TEFFMX
+    real(real64) :: germination_head_monitor_depth_cm=-10.0_real64 ! ZGERM
     real(real64) :: dry_germination_head_cm=-1000.0_real64       ! HDRYGERM
     real(real64) :: wet_germination_head_cm=-100.0_real64        ! HWETGERM
     real(real64) :: germination_head_slope=1.0_real64             ! AGERM
@@ -74,8 +78,12 @@ contains
     ready=.false.
     if(self%maximum_preparation_delay_days<1.or.self%maximum_preparation_delay_days>366)return
     if(self%maximum_sowing_delay_days<1.or.self%maximum_sowing_delay_days>366)return
+    if(.not.ieee_is_finite(self%preparation_monitor_depth_cm).or.self%preparation_monitor_depth_cm>0.0_real64)return
     if(.not.ieee_is_finite(self%preparation_head_threshold_cm))return
+    if(.not.ieee_is_finite(self%sowing_head_monitor_depth_cm).or.self%sowing_head_monitor_depth_cm>0.0_real64)return
     if(.not.ieee_is_finite(self%sowing_head_threshold_cm))return
+    if(.not.ieee_is_finite(self%sowing_temperature_monitor_depth_cm).or. &
+       self%sowing_temperature_monitor_depth_cm>0.0_real64)return
     if(.not.ieee_is_finite(self%sowing_temperature_threshold_c))return
     if(self%germination_mode<GERMINATION_OFF.or.self%germination_mode>GERMINATION_TEMPERATURE_WATER)return
     if(self%germination_mode>=GERMINATION_TEMPERATURE)then
@@ -85,6 +93,8 @@ contains
       if(self%germination_effective_max_temperature_c<self%germination_base_temperature_c)return
     end if
     if(self%germination_mode==GERMINATION_TEMPERATURE_WATER)then
+      if(.not.ieee_is_finite(self%germination_head_monitor_depth_cm).or. &
+         self%germination_head_monitor_depth_cm>0.0_real64)return
       if(.not.ieee_is_finite(self%dry_germination_head_cm).or..not.ieee_is_finite(self%wet_germination_head_cm))return
       if(self%dry_germination_head_cm>=0.0_real64.or.self%wet_germination_head_cm>=0.0_real64)return
       if(self%dry_germination_head_cm>=self%wet_germination_head_cm)return
