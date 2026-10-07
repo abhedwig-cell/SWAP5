@@ -15,6 +15,7 @@ module mod_solute_compartment_state
     real(real64) :: pond_mass=0.0_real64
     real(real64) :: aquifer_mass=0.0_real64
     real(real64), allocatable :: age_amount(:)
+    real(real64) :: age_pond_previous_concentration=0.0_real64
   contains
     procedure :: solute_total => solcomp_solute_total
     procedure :: valid => solcomp_valid
@@ -43,8 +44,9 @@ module mod_solute_compartment_state
 
 contains
 
-  subroutine initialize_solute_compartment_state(sorbed,pond,aquifer,age_amount,state,status)
+  subroutine initialize_solute_compartment_state(sorbed,pond,aquifer,age_amount,state,status,age_pond_previous_concentration)
     real(real64),intent(in)::sorbed(:),pond,aquifer,age_amount(:)
+    real(real64),intent(in),optional::age_pond_previous_concentration
     type(solute_compartment_state_t),intent(out)::state
     integer,intent(out)::status
     state=solute_compartment_state_t()
@@ -60,6 +62,10 @@ contains
     state%pond_mass=pond
     state%aquifer_mass=aquifer
     state%age_amount=age_amount
+    if(present(age_pond_previous_concentration))then
+      if(.not.ieee_is_finite(age_pond_previous_concentration).or.age_pond_previous_concentration<0.0_real64)return
+      state%age_pond_previous_concentration=age_pond_previous_concentration
+    end if
     status=SOLCOMP_OK
   end subroutine
 
@@ -77,8 +83,10 @@ contains
     if(size(self%sorbed_matrix_mass)<1.or.size(self%age_amount)<1) return
     if(.not.all(ieee_is_finite(self%sorbed_matrix_mass)).or. &
        .not.all(ieee_is_finite(self%age_amount)).or. &
+       .not.ieee_is_finite(self%age_pond_previous_concentration).or. &
        .not.ieee_is_finite(self%pond_mass).or..not.ieee_is_finite(self%aquifer_mass)) return
     valid=all(self%sorbed_matrix_mass>=0.0_real64).and.all(self%age_amount>=0.0_real64).and. &
+          self%age_pond_previous_concentration>=0.0_real64.and. &
           self%pond_mass>=0.0_real64.and.self%aquifer_mass>=0.0_real64
   end function
 
