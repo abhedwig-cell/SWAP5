@@ -60,6 +60,9 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
+  use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
+       evaluate_b111_profile_groundwater_projection
   use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -291,6 +294,10 @@ module mod_fmr_serialized_reference_backend
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
@@ -515,6 +522,10 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: cauchy3_head_sample_t1900 = 0.0_real64, cauchy3_sine_phase_day = 0.0_real64
     real(real64) :: cauchy3_aquifer_head_cm = 0.0_real64
     real(real64) :: cauchy3_q4_sample_t1900 = 0.0_real64, cauchy3_q4_cm_per_day = 0.0_real64
+    logical :: cauchy3_explicit_active = .false.
+    real(real64) :: cauchy3_explicit_qbot_cm_per_day = 0.0_real64
+    real(real64) :: cauchy3_explicit_gwlmean_cm = 0.0_real64
+    real(real64) :: cauchy3_explicit_profile_resistance_day = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -696,6 +707,10 @@ module mod_fmr_serialized_reference_backend
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: max_iterations = 8
@@ -2781,6 +2796,12 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
        if (parameters%bottom_mode == 3) then
+         if (parameters%swbotb3_explicit_active) then
+           ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
+                ieee_is_finite(parameters%swbotb3_explicit_shape_3) .and. &
+                parameters%swbotb3_explicit_shape_3 >= 0.0_real64 .and. &
+                parameters%swbotb3_explicit_shape_3 <= 1.0_real64 .and. parameters%prepared_default_mvg_available
+         end if
          ! Admission precedes configure_parameters()/prepare_interval(). The
          ! immutable forcing-owned Cauchy control is therefore validated in
          ! prepare_interval, not through stale model-local state here.
@@ -3018,6 +3039,10 @@ contains
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
+      self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
+      self%profile_groundwater_projection = parameters%profile_groundwater_projection
+      self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
+      self%swbotb3_explicit_shape_3 = parameters%swbotb3_explicit_shape_3
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
@@ -3750,8 +3775,11 @@ contains
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    real(real64) :: cauchy3_q4, cauchy3_q4_sample_t1900
-    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status
+    real(real64) :: cauchy3_q4, cauchy3_q4_sample_t1900, low3_qbot, low3_gwlmean, low3_cvalprof
+    real(real64), allocatable :: low3_ztop(:), low3_zbot(:), low3_ksat(:)
+    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status, low3_status, low3_i
+    logical :: low3_k_ok
+    type(b111_profile_groundwater_projection_t) :: profile_projection
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     type(frost_bottom_result_t) :: frost_bottom_result
@@ -3903,12 +3931,46 @@ contains
       if (.not. self%cauchy3_proposal%covers(t0,t1)) return
       call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
       if (cauchy3_status /= FMR_CAUCHY3_OK) return
-      request%boundary%bottom_mode = 3
-      request%boundary%bottom_head = self%cauchy3_proposal%aquifer_total_head_cm
-      request%boundary%bottom_flux = cauchy3_q4
-      request%boundary%bottom_external_resistance_days = &
-           self%legacy_swbotb3_implicit_control%external_resistance_days()
-      request%boundary%bottom_include_half_cell = self%legacy_swbotb3_implicit_control%half_cell_enabled()
+      if (self%swbotb3_explicit_active) then
+        if (.not.self%profile_groundwater_projection) return
+        select type (low3_physical => state)
+        class is (fmr_b110_physical_state_t)
+          if (low3_physical%active_nodes /= self%soil_parameters%active_nodes .or. &
+              .not. allocated(low3_physical%pressure_head)) return
+          call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection)
+        class default
+          return
+        end select
+        if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
+        allocate(low3_ztop(self%soil_parameters%active_nodes), low3_zbot(self%soil_parameters%active_nodes), &
+                 low3_ksat(self%soil_parameters%active_nodes))
+        do low3_i=1,self%soil_parameters%active_nodes
+          low3_ztop(low3_i)=self%soil_parameters%z(low3_i)+0.5_real64*self%soil_parameters%dz(low3_i)
+          low3_zbot(low3_i)=self%soil_parameters%z(low3_i)-0.5_real64*self%soil_parameters%dz(low3_i)
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,low3_i,0.0_real64,low3_ksat(low3_i),low3_k_ok)
+          if(.not.low3_k_ok)return
+        end do
+        call evaluate_b111_explicit_cauchy_profile_flux(profile_projection%level_cm, &
+             self%swbotb3_explicit_hdrain_cm,self%swbotb3_explicit_shape_3,self%cauchy3_proposal%aquifer_total_head_cm, &
+             self%legacy_swbotb3_implicit_control%external_resistance_days(),low3_ztop,low3_zbot,self%soil_parameters%dz, &
+             low3_ksat,cauchy3_q4,low3_qbot,low3_gwlmean, &
+             low3_cvalprof,low3_status)
+        if(low3_status/=B111_EXPLICIT_CAUCHY_OK)return
+        request%boundary%bottom_mode = 2
+        request%boundary%bottom_flux = low3_qbot
+        self%last_observation%cauchy3_explicit_active = .true.
+        self%last_observation%cauchy3_explicit_qbot_cm_per_day = low3_qbot
+        self%last_observation%cauchy3_explicit_gwlmean_cm = low3_gwlmean
+        self%last_observation%cauchy3_explicit_profile_resistance_day = low3_cvalprof
+      else
+        request%boundary%bottom_mode = 3
+        request%boundary%bottom_head = self%cauchy3_proposal%aquifer_total_head_cm
+        request%boundary%bottom_flux = cauchy3_q4
+        request%boundary%bottom_external_resistance_days = &
+             self%legacy_swbotb3_implicit_control%external_resistance_days()
+        request%boundary%bottom_include_half_cell = self%legacy_swbotb3_implicit_control%half_cell_enabled()
+      end if
       self%last_observation%cauchy3_proposal_available = .true.
       self%last_observation%cauchy3_proposed_t0 = self%cauchy3_proposal%t0
       self%last_observation%cauchy3_proposed_t1 = self%cauchy3_proposal%original_t1
