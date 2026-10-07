@@ -6,7 +6,7 @@ program test_fmr_b111_soil_n_transaction
        initialize_soil_n_pool_state, SOIL_N_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t, fmr_b111_soil_n_model_t, &
        initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, apply_fmr_b111_soil_n_management_event, &
-       FMR_SOIL_N_OK, FMR_SOIL_N_EVENT_ALREADY_CONSUMED
+       FMR_SOIL_N_OK, FMR_SOIL_N_INVALID, FMR_SOIL_N_EVENT_ALREADY_CONSUMED
   implicit none
 
   type(soil_n_inventory_parameters_t) :: params, snapshot_params
@@ -18,8 +18,9 @@ program test_fmr_b111_soil_n_transaction
   type(transaction_policy_t) :: policy
   type(transaction_result_t) :: result
   type(soil_n_receipt_t) :: event_receipt
-  logical :: available
+  logical :: available, event_consumed
   integer :: status
+  integer(kind=8) :: event_id
 
   params%depth_m = 0.5_real64
   params%nfrac_fom = [0.01_real64, 0.02_real64]
@@ -83,11 +84,13 @@ program test_fmr_b111_soil_n_transaction
   call check(available, 'event snapshot')
   call check(abs(snapshot%ammonium_n_kg_m2 - 2.1_real64) < 1.0e-12_real64, 'event applied once')
 
-  call initialize_fmr_b111_soil_n_state(snapshot_params, snapshot, initial, status)
-  call check(status == FMR_SOIL_N_OK, 'event restart inventory')
-  ! Reconstructed inventory alone is insufficient to infer event lineage; production
-  ! restart serializers must therefore carry the transaction state, not rebuild it
-  ! only from nutrient concentrations.
+  call snapshot_event_on_committed(committed,event_id,event_consumed,available)
+  call check(available.and.event_consumed.and.event_id==42_8,'event lineage snapshot')
+  call initialize_fmr_b111_soil_n_state(snapshot_params,snapshot,initial,status,event_id,event_consumed)
+  call check(status == FMR_SOIL_N_OK, 'event restart state')
+  call check(initial%consumed_management_event(42_8),'event lineage restart')
+  call apply_fmr_b111_soil_n_management_event(initial,42_8,rate,status,event_receipt)
+  call check(status==FMR_SOIL_N_EVENT_ALREADY_CONSUMED,'restart duplicate rejected')
   print '(A)', 'FMR_B111_SOIL_N_TRANSACTION_PASS'
 
 contains
@@ -104,6 +107,17 @@ contains
     class default
       p = soil_n_inventory_parameters_t()
       s = soil_n_pool_state_t()
+    end select
+  end subroutine
+
+  subroutine snapshot_event_on_committed(state,event_id,consumed,ok)
+    class(transaction_state_t),allocatable,intent(in)::state
+    integer(kind=8),intent(out)::event_id
+    logical,intent(out)::consumed,ok
+    event_id=0_8;consumed=.false.;ok=.false.
+    select type(state)
+    type is(fmr_b111_soil_n_state_t)
+      call state%snapshot_management_event(event_id,consumed,ok)
     end select
   end subroutine
 
