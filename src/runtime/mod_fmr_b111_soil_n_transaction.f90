@@ -11,16 +11,20 @@ module mod_fmr_b111_soil_n_transaction
   integer, parameter, public :: FMR_SOIL_N_OK = 0
   integer, parameter, public :: FMR_SOIL_N_INVALID = 1
   integer, parameter, public :: FMR_SOIL_N_TRANSFER_FAILED = 2
+  integer, parameter, public :: FMR_SOIL_N_EVENT_ALREADY_CONSUMED = 3
 
   type, extends(transaction_state_t), public :: fmr_b111_soil_n_state_t
     private
     type(soil_n_inventory_parameters_t) :: params
     type(soil_n_pool_state_t) :: inventory
+    integer(int64) :: last_management_event_id = 0_int64
+    logical :: management_event_consumed = .false.
     logical :: initialized = .false.
   contains
     procedure :: clone => soil_n_clone
     procedure, public :: ready => soil_n_ready
     procedure, public :: snapshot => soil_n_snapshot
+    procedure, public :: consumed_management_event => soil_n_consumed_management_event
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_soil_n_model_t
@@ -39,6 +43,7 @@ module mod_fmr_b111_soil_n_transaction
   end type
 
   public :: initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model
+  public :: apply_fmr_b111_soil_n_management_event
 
 contains
 
@@ -83,6 +88,8 @@ contains
     type is (fmr_b111_soil_n_state_t)
       copy%params = self%params
       copy%inventory = self%inventory
+      copy%last_management_event_id = self%last_management_event_id
+      copy%management_event_consumed = self%management_event_consumed
       copy%initialized = self%initialized
     end select
   end subroutine
@@ -106,6 +113,39 @@ contains
       params = self%params
       inventory = self%inventory
     end if
+  end subroutine
+
+
+  logical function soil_n_consumed_management_event(self,event_id) result(consumed)
+    class(fmr_b111_soil_n_state_t),intent(in)::self
+    integer(int64),intent(in)::event_id
+    consumed=self%management_event_consumed.and.event_id>0_int64.and.self%last_management_event_id==event_id
+  end function
+
+  subroutine apply_fmr_b111_soil_n_management_event(state,event_id,transfer,status,receipt)
+    type(fmr_b111_soil_n_state_t),intent(inout)::state
+    integer(int64),intent(in)::event_id
+    type(soil_n_transfer_t),intent(in)::transfer
+    integer,intent(out)::status
+    type(soil_n_receipt_t),intent(out)::receipt
+    type(soil_n_pool_state_t)::candidate
+
+    receipt=soil_n_receipt_t()
+    status=FMR_SOIL_N_INVALID
+    if(.not.state%ready().or.event_id<=0_int64)return
+    if(state%consumed_management_event(event_id))then
+      status=FMR_SOIL_N_EVENT_ALREADY_CONSUMED
+      return
+    end if
+    call apply_soil_n_transfer(state%params,state%inventory,transfer,candidate,receipt)
+    if(receipt%status/=SOIL_N_OK)then
+      status=FMR_SOIL_N_TRANSFER_FAILED
+      return
+    end if
+    state%inventory=candidate
+    state%last_management_event_id=event_id
+    state%management_event_consumed=.true.
+    status=FMR_SOIL_N_OK
   end subroutine
 
   subroutine soil_n_advance(self, state, t0, t1, outcome)
