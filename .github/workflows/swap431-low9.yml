@@ -7,6 +7,10 @@ on:
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'tests/fmig431/test_swap431_low9_solver.f90'
       - 'tests/fmig431/run_swap431_low9_solver.py'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fmig431/test_swap431_low9_application.f90'
+      - 'tests/fmig431/run_swap431_low9_application.py'
       - '.github/workflows/swap431-low9.yml'
 jobs:
   qualify:
@@ -18,3 +22,5 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y gfortran
       - name: LOW9 O0 O2 typed solver
         run: python3 tests/fmig431/run_swap431_low9_solver.py
+      - name: LOW9 O0 O2 production application
+        run: python3 tests/fmig431/run_swap431_low9_application.py
