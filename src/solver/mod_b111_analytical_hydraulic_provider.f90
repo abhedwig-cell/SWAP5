@@ -6,6 +6,7 @@ module mod_b111_analytical_hydraulic_provider
   private
   integer, parameter, public :: B111_HYD_EXPONENTIAL = 2
   integer, parameter, public :: B111_HYD_BIMODAL_MVG = 3
+  integer, parameter, public :: B111_HYD_BIMODAL_MVG_WCK = 6
 
   type, public :: b111_analytical_hydraulic_parameters_t
     integer :: active_nodes = 0
@@ -32,7 +33,8 @@ contains
     integer :: n, i
     n=size(model_kind)
     if(n<=0 .or. size(cofgen,1)<16 .or. size(cofgen,2)/=n) error stop 'B1.11 analytical hydraulics: shape mismatch'
-    if(any(model_kind/=B111_HYD_EXPONENTIAL .and. model_kind/=B111_HYD_BIMODAL_MVG)) &
+    if(any(model_kind/=B111_HYD_EXPONENTIAL .and. model_kind/=B111_HYD_BIMODAL_MVG .and. &
+           model_kind/=B111_HYD_BIMODAL_MVG_WCK)) &
       error stop 'B1.11 analytical hydraulics: unsupported model kind'
     if(any(.not.ieee_is_finite(cofgen(1:16,:)))) error stop 'B1.11 analytical hydraulics: non-finite parameter'
     if(any(cofgen(2,:)<=cofgen(1,:)) .or. any(cofgen(3,:)<=0.0_real64) .or. any(cofgen(4,:)<=0.0_real64)) &
@@ -46,7 +48,7 @@ contains
     parameters%alpha_1=cofgen(4,:); parameters%lambda=cofgen(5,:); parameters%n_1=cofgen(6,:); parameters%m_1=cofgen(7,:)
     parameters%alpha_2=cofgen(13,:); parameters%n_2=cofgen(14,:); parameters%m_2=cofgen(15,:); parameters%omega_1=cofgen(16,:)
     do i=1,n
-      if(model_kind(i)==B111_HYD_BIMODAL_MVG) then
+      if(model_kind(i)==B111_HYD_BIMODAL_MVG .or. model_kind(i)==B111_HYD_BIMODAL_MVG_WCK) then
         if(parameters%n_1(i)<=1.0_real64 .or. parameters%m_1(i)<=0.0_real64 .or. &
           parameters%alpha_2(i)<=0.0_real64 .or. parameters%n_2(i)<=1.0_real64 .or. &
           parameters%m_2(i)<=0.0_real64 .or. parameters%omega_1(i)<0.0_real64 .or. parameters%omega_1(i)>1.0_real64) &
@@ -91,7 +93,7 @@ contains
       relsat=(theta-p%theta_r(i))/delta
       k=p%ksat(i)*relsat
       dkdh=p%alpha_1(i)*p%ksat(i)*exp(p%alpha_1(i)*h)
-    case(B111_HYD_BIMODAL_MVG)
+    case(B111_HYD_BIMODAL_MVG,B111_HYD_BIMODAL_MVG_WCK)
       if(h>=0.0_real64) then
         theta=p%theta_s(i)
         cap=0.0_real64
