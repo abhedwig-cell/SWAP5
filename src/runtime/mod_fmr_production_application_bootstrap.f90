@@ -1106,10 +1106,6 @@ contains
       if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
           tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
           tile%parameters%boesten_evaporation_active) return
-      if (tile%parameters%active_nodes > 1) then
-        if (any(tile%parameters%cofgen(:,2:tile%parameters%active_nodes) /= &
-             spread(tile%parameters%cofgen(:,1), 2, tile%parameters%active_nodes-1))) return
-      end if
     else if (tile%ordinary_implicit_cauchy) then
       if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
