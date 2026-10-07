@@ -121,7 +121,7 @@ contains
       select case (parameters(i)%variant)
       case (FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
         if (.not. controls(i)%drain_head_supplied .or. .not. ieee_is_finite(controls(i)%drain_head)) return
-        if (controls(i)%resolved_surface_water_head_supplied) return
+        if (controls(i)%resolved_surface_water_head_supplied .or. controls(i)%dramet3_sample_time_supplied) return
       case (FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
         if (controls(i)%drain_head_supplied .or. controls(i)%dramet3_sample_time_supplied) return
         if (.not. controls(i)%resolved_surface_water_head_supplied .or. &
