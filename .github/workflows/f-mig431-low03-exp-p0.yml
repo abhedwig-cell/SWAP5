@@ -3,7 +3,12 @@ on:
   pull_request:
     paths:
       - 'src/runtime/mod_fmr_legacy_explicit_cauchy_bottom_boundary_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'tests/fmig431/test_low03_explicit_provider.f90'
+      - 'tests/fmig431/test_low03_explicit_application.f90'
+      - 'tests/fmig431/test_low03_explicit_progress_restart.f90'
+      - 'tests/fmig431/run_low03a_qualification.py'
       - 'tests/fmig431/run_low03_explicit_provider.sh'
       - '.github/workflows/f-mig431-low03-exp-p0.yml'
   workflow_dispatch:
