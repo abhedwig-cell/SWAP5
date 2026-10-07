@@ -15,7 +15,7 @@ module mod_fmr_divdra_serialized_composition
   use mod_fmr_divdra_separate_infiltration_binding, only: fmr_divdra_separate_infiltration_binding_diagnostics_t, &
        fmr_bind_single_level_separate_infiltration, FMR_DIVDRA_INF_SPLIT_OK
   use mod_fmr_divdra_multilevel_separate_infiltration_binding, only: &
-       fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t, &
+       fmr_divdra_multi_inf_binding_diagnostics_t, &
        fmr_bind_multilevel_separate_infiltration, FMR_DIVDRA_MULTI_INF_OK
   implicit none
   private
@@ -59,7 +59,7 @@ module mod_fmr_divdra_serialized_composition
     type(drainage_discharge_layer_top_diagnostics_t), allocatable :: top_diagnostics(:)
     type(fmr_divdra_top_interflow_binding_diagnostics_t) :: top_interflow_binding
     type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: separate_infiltration_binding
-    type(fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t) :: multilevel_separate_infiltration_binding
+    type(fmr_divdra_multi_inf_binding_diagnostics_t) :: multilevel_separate_infiltration_binding
   end type fmr_divdra_serialized_binding_record_t
 
   public :: fmr_preflight_serialized_divdra
@@ -82,7 +82,7 @@ contains
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
     type(fmr_divdra_top_interflow_binding_diagnostics_t) :: topint_diag
     type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: inf_split_diag
-    type(fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t) :: multi_inf_diag
+    type(fmr_divdra_multi_inf_binding_diagnostics_t) :: multi_inf_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     type(drainage_distribution_parameters_t) :: single_parameter(1)
     real(real64) :: single_scalar(1)
