@@ -11,6 +11,7 @@ EXPECTED={
  "SWAP/wofostnut.f90":"071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
  "SWAP/wofost_soil_amendments.f90":"157caa9b6feafcd16f9505099874f0a8f56bc81618667d5acdafc17e40735df9",
  "SWAP/wofost_soil_cropresidues.f90":"1f5d61e97d4a5d1dae7be604f0ed67ce5a780471d7db35236dbb0dc27d1ff8e9",
+ "SWAP/wofost_soil_watern.f90":"b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
 }
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode="r:gz") as a:
     members={name:a.extractfile(name).read() for name in EXPECTED}
@@ -27,6 +28,7 @@ rate=packed("SWAP/wofost_soil_rateconstants.f90")
 nut=packed("SWAP/wofostnut.f90")
 amend=packed("SWAP/wofost_soil_amendments.f90")
 residue=packed("SWAP/wofost_soil_cropresidues.f90")
+watern=packed("SWAP/wofost_soil_watern.f90")
 
 solute_needles=[
  "cmsy(i)=(theta(i)*cml(i)+bdenskfcref(i)*(cml(i)/cref)**frexp)",
@@ -87,6 +89,18 @@ residue_needles=[
 for needle in residue_needles:
     if needle not in residue:
         raise SystemExit("missing exact residue equation: "+needle)
+
+watern_needles=[
+ "wfrac_av=half*(wfrac_t+wfrac_t0)",
+ "hv=(wfrac_t-wfrac_t0)/dt",
+ "hv1=hv+wflux_out/dz+tcsf*wflux_transp/dz+ratecon*wfrac_av",
+ "hv2=wflux_inbot*cseep/dz+wflux_intop*ctop/dz+wflux_inlat*clat/dz+producpot",
+ "c_t=a1*c_t0+a2*hv2",
+ "c_av=b1*c_t0+b2*hv2",
+]
+for needle in watern_needles:
+    if needle not in watern:
+        raise SystemExit("missing exact Soil-N transport equation: "+needle)
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
