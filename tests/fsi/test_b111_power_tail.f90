@@ -37,20 +37,21 @@ program test_b111_power_tail
   type(base_t),target::base
   type(b111_conductivity_power_tail_t)::power
   real(real64)::cof(42,4),h(4),theta(4),k(4),cap(4),dk(4),expected,pk
-  integer::status
+  integer::status,model(4)
   logical::available
   cof=0.0_real64
   cof(22,:)=[-100.0_real64,-100.0_real64,-100.0_real64,-100.0_real64]
   cof(23,:)=[2.0_real64,2.0_real64,2.0_real64,2.0_real64]
   cof(33,:)=[2.5_real64,2.5_real64,2.5_real64,2.5_real64]
   h=[-50.0_real64,-100.0_real64,-400.0_real64,-2.0e14_real64]
-  call configure_b111_conductivity_power_tail(power,cof,status)
+  model=[1,2,1,1]
+  call configure_b111_conductivity_power_tail(power,cof,model,status)
   if(status/=B111_POWER_OK)error stop 'power configure'
   call bind_b111_conductivity_power_tail(power,base,status)
   if(status/=B111_POWER_OK)error stop 'power bind'
   call power%evaluate(h,theta,k,cap,dk)
   if(k(1)/=3.25_real64)error stop 'normal branch preservation'
-  call close(k(2),2.0_real64,'threshold')
+  call close(k(2),3.25_real64,'non-default-model preservation')
   expected=2.0_real64*(100.0_real64/400.0_real64)**2.5_real64
   call close(k(3),expected,'power branch')
   call close(k(4),1.0e-10_real64,'dry guard')
