@@ -34,5 +34,7 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
+      - name: Reconstruct exact B1.11 irrigation source
+        run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
       - name: Qualify restricted runtime binding
         run: bash tests/mc-irr01/run_mc_irr01_tcs7_ssdi_binding.sh
