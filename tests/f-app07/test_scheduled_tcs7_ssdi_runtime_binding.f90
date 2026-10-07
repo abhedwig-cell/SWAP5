@@ -62,7 +62,65 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call require(d%status == FMR_SCHEDULED_IRR_UPSTREAM_REJECTED .and. .not. d%result_produced,8)
   call require(.not. allocated(q) .and. .not. c%active_event,9)
 
+  ! TCS8 uses water content at the same explicit sensor node.
+  p%timing_criterion = 8
+  p%tcs8_knot_count = 2
+  p%tcs8_dvs(1:2) = [0.0_real64, 2.0_real64]
+  p%tcs8_water_content(1:2) = [0.25_real64, 0.25_real64]
+  h%water_content(2) = 0.20_real64
+  r%t1 = r%t0 + duration
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. d%result_produced .and. d%source_bound,10)
+  call require(abs(q(3)-0.48_real64) < tol .and. abs(d%external_inflow_amount_cm-0.12_real64) < tol,11)
+
+  ! Sensor salinity excess increases the selected event depth before duration normalization.
+  p%salinity_excess_enabled = .true.
+  p%salinity_threshold = 8.0_real64
+  p%salinity_excess_percent = 100.0_real64
+  r%solute_enabled = .true.
+  r%sensor_concentration = 9.0_real64
+  r%t1 = r%t0 + 0.5_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. abs(d%external_inflow_amount_cm-0.24_real64) < tol,12)
+  call require(abs(q(3)-0.48_real64) < tol,13)
+
+  ! IRR_RATE=0 spreads the selected depth over one day for sensor scheduling too.
+  p%salinity_excess_enabled = .false.
+  r%solute_enabled = .false.
+  p%irr_rate_cm_per_day = 0.0_real64
+  r%t1 = r%t0 + 1.0_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. abs(q(3)-0.12_real64) < tol,14)
+  call require(abs(d%external_inflow_amount_cm-0.12_real64) < tol,15)
+
+  ! A configured rate implying >1 day is raised to depth/day and preserves depth.
+  p%irr_rate_cm_per_day = 0.06_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. abs(q(3)-0.12_real64) < tol,16)
+  call require(abs(d%external_inflow_amount_cm-0.12_real64) < tol,17)
+
+  ! The normalized rate is persistent candidate event state and survives continuation.
+  p%irr_rate_cm_per_day = 0.0_real64
+  r%t1 = r%t0 + 0.5_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. c%active_event .and. abs(q(3)-0.12_real64) < tol,18)
+  s = c
+  r = scheduled_irrigation_request_t()
+  r%t0 = 2600.875_real64
+  r%t1 = 2601.375_real64
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not. c%active_event .and. abs(q(3)-0.12_real64) < tol,19)
+  call require(abs(d%external_inflow_amount_cm-0.06_real64) < tol,20)
+
   print '(A)','MC_IRR01_TCS7_RUNTIME_BINDING=PASS'
+  print '(A)','MC_IRR01_TCS8_RUNTIME_BINDING=PASS'
+  print '(A)','MC_IRR01_SENSOR_SALINITY_EXCESS=PASS'
+  print '(A)','MC_IRR01_SENSOR_RATE_NORMALIZATION=PASS'
   print '(A)','MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS'
   print '(A)','MC_IRR01_TCS7_RETRY_FAIL_CLOSED=PASS'
 
