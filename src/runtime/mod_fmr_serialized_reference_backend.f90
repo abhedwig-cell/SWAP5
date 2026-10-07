@@ -6000,7 +6000,7 @@ contains
   end function afgen_pairs
 
   real(real64) function physical_rutter_top_head(state) result(head)
-    class(canonical_state_t), intent(in) :: state
+    class(transaction_state_t), intent(in) :: state
     head = 0.0_real64
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
