@@ -173,8 +173,16 @@ for opt in 0 2; do
       WU05_MIGMAC11=1 WU05_MIGMAC11_NO_POND=1 WU05_MIGMAC02_DYNAMIC=3         "$OUT/test_a9_fmr" | tee "$OUT/migmac11_no_pond.txt"
       grep -Fq 'PPA_WU05_MIGMAC11_NO_POND=PASS' "$OUT/migmac11_no_pond.txt"
 
-      WU05_MIGMAC11=1 WU05_MIGMAC11_PARTIAL=1 WU05_MIGMAC02_DYNAMIC=3         "$OUT/test_a9_fmr" | tee "$OUT/migmac11_partial.txt"
+      WU05_MIGMAC11=1 WU05_MIGMAC11_PARTIAL=1 WU05_MIGMAC02_DYNAMIC=3 "$OUT/test_a9_fmr" | tee "$OUT/migmac11_partial.txt"
       grep -Fq 'PPA_WU05_MIGMAC11_PARTIAL_RETURN=PASS' "$OUT/migmac11_partial.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/migmac11_expand.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS' "$OUT/migmac11_expand.txt"
+      grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS' "$OUT/migmac11_expand.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=4 "$OUT/test_a9_fmr" | tee "$OUT/migmac11_shrink.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS' "$OUT/migmac11_shrink.txt"
+      grep -Fq 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS' "$OUT/migmac11_shrink.txt"
 
       WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=3 "$OUT/test_a9_replay" | tee "$OUT/migmac11_replay.txt"
       grep -Fq 'PPA_WU05_MIGMAC11_POND_REJECT_RETRY=PASS' "$OUT/migmac11_replay.txt"
@@ -432,7 +440,7 @@ if [[ "${WU05_MIGMAC09:-0}" == 1 ]]; then
 fi
 
 if [[ "${WU05_MIGMAC11_SUITE:-0}" == 1 ]]; then
- for name in active runon no_pond partial replay; do
+ for name in active runon no_pond partial expand shrink replay; do
   cmp "$BUILD/o0/migmac11_${name}.txt" "$BUILD/o2/migmac11_${name}.txt"
  done
  echo 'PPA_WU05_MIGMAC11_O0_O2_IDENTITY=PASS'
