@@ -34,6 +34,7 @@ program test_fmr44r_serialized_prescribed_qbot_runtime
 
   call verify_equilibrium_mode2(qeq)
   call verify_explicit_mode3(qeq)
+  call verify_implicit_mode3_preserved(qeq)
   call verify_positive_bottom_inflow(1.0e-10_real64)
   call verify_unowned_mode_rejected(qeq)
 
@@ -73,6 +74,16 @@ contains
     call require(output%mass%complete.and.abs(output%mass%residual)<=hard_mass_gate,'explicit mode3 mass')
     write(*,'(A)') 'SW431_LOW3_EXPLICIT_RUNTIME=PASS'
   end subroutine verify_explicit_mode3
+
+  subroutine verify_implicit_mode3_preserved(q)
+    real(real64),intent(in)::q
+    type(fmr_serialized_column_result_t)::output
+    type(fmr_serialized_physical_observation_t)::observation
+    call execute_case(3,q,q,-999999._real64,equilibrium_dt,.false.,.false.,output,observation,explicit3=.false.)
+    call require(.not.observation%cauchy3_explicit_active,'implicit mode3 remains non-explicit')
+    call require(observation%cauchy3_proposal_available,'implicit mode3 proposal preserved')
+    write(*,'(A)') 'SW431_LOW3_IMPLICIT_PRESERVATION=PASS'
+  end subroutine verify_implicit_mode3_preserved
 
   subroutine verify_positive_bottom_inflow(q)
     real(real64), intent(in) :: q
