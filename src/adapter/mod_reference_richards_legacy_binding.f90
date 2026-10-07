@@ -143,6 +143,15 @@ contains
        ! explicit candidate state and lets HeadCalc rebuild reconstructible
        ! hydraulic intermediates in worker-owned scratch/state.
        call initialize_reference_state_binding(ws%state_binding, request)
+       mode9_prepared = .false.
+       if (request%boundary%bottom_mode == 9) then
+          call prepare_simultaneous_head_flux_bottom(request, ws%state_binding, mode9_prepared)
+          if (.not. mode9_prepared) then
+             result%status = SW_SOLVE_FAILED
+             result%diagnostics%route = 'simultaneous-head-flux-precondition-failed'
+             return
+          end if
+       end if
 
        ! Only the qualified prescribed-qbot route needs reusable-factor capture.
        ! Expanding the existing gamma scratch is temporary worker state; the
@@ -178,7 +187,8 @@ contains
        ! by HeadCalc's total-balance convergence criterion. Preserve that exact
        ! value in the compatibility field, expose it explicitly as cm/day, and
        ! separately publish its time-integrated equation-balance residual in cm.
-       if ((request%boundary%bottom_mode == 2 .or. request%boundary%bottom_mode == 3) .and. &
+       if ((request%boundary%bottom_mode == 2 .or. request%boundary%bottom_mode == 3 .or. &
+            request%boundary%bottom_mode == 9) .and. &
            .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
@@ -463,6 +473,7 @@ contains
     if (.not. ieee_is_finite(theta_eval(n)) .or. .not. ieee_is_finite(k_eval(n)) .or. k_eval(n) < 0.0_real64) return
     state%h(n) = last_head
     state%theta(n) = theta_eval(n)
+    state%k(n) = k_eval(n)
     state%hbot = request%boundary%bottom_head
     state%qbot = request%boundary%bottom_flux
     ok = .true.
