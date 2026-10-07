@@ -3688,6 +3688,10 @@ contains
     real(real64) :: cauchy3_q4, cauchy3_q4_sample_t1900
     integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
+    type(fmr_explicit_cauchy3_result_t) :: explicit_cauchy3_result
+    real(real64), allocatable :: explicit_zbotcp(:), explicit_ztopcp(:)
+    integer :: explicit_cauchy3_status, explicit_i
+    real(real64) :: explicit_bottom
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     type(frost_bottom_result_t) :: frost_bottom_result
     integer :: frost_status, frost_provider_status
@@ -3827,6 +3831,30 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%legacy_swbotb3_explicit_control)) then
+      if (.not. self%cauchy3_proposal%covers(t0,t1)) return
+      call self%legacy_swbotb3_implicit_control%resolve_q4(t0,t1,cauchy3_q4,cauchy3_q4_sample_t1900,cauchy3_status)
+      if (cauchy3_status /= FMR_CAUCHY3_OK) return
+      allocate(explicit_zbotcp(self%soil_parameters%active_nodes),explicit_ztopcp(self%soil_parameters%active_nodes))
+      explicit_bottom=0.0_real64
+      do explicit_i=1,self%soil_parameters%active_nodes
+        explicit_ztopcp(explicit_i)=explicit_bottom
+        explicit_bottom=explicit_bottom-self%soil_parameters%dz(explicit_i)
+        explicit_zbotcp(explicit_i)=explicit_bottom
+      end do
+      select type (physical_control => state)
+      class is (fmr_b110_physical_state_t)
+        call fmr_evaluate_legacy_explicit_cauchy_bottom_boundary_controlled(self%legacy_swbotb3_explicit_control, &
+             physical_control%groundwater_level,self%cauchy3_proposal%aquifer_total_head_cm, &
+             self%legacy_swbotb3_implicit_control%external_resistance_days(),cauchy3_q4,explicit_zbotcp,explicit_ztopcp, &
+             self%soil_parameters%dz,self%trusted_parameter_source%cofgen(3,:),explicit_cauchy3_result,explicit_cauchy3_status)
+      class default
+        return
+      end select
+      if(explicit_cauchy3_status/=FMR_EXPLICIT_CAUCHY3_OK.or..not.explicit_cauchy3_result%available)return
+      request%boundary%bottom_mode=2
+      request%boundary%bottom_flux=explicit_cauchy3_result%qbot_cm_per_day
+    end if
     if (allocated(self%legacy_swbotb3_implicit_control)) then
       if (.not. self%cauchy3_proposal%covers(t0,t1)) return
       call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
