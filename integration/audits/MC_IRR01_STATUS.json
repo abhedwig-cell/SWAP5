@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "888cda48ffb4c4169dc54c23d9dd11666071068d",
+  "checkpoint_commit": "38ff813a2e3e09764a628824e3c8d1a607bc7619",
   "last_reconciled_head": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "last_reconciled_upstream": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "implemented": true,
@@ -53,8 +53,21 @@
     23,
     29
   ],
-  "next_action": "Admit the five qualified capabilities in the master coverage ledger, then continue dependency-first with TCS7/SSDI runtime binding and the shared sensor/depletion trigger infrastructure.",
+  "next_action": "Admit evidence-supported first slice in the branch coverage ledger, then bind already-qualified restricted TCS7/DCS2 single-node SSDI into production runtime without broadening to general depth-interval SSDI.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
-  "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+  "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+  "qualification": {
+    "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+    "run_id": 37625736830,
+    "job_id": 112806892095,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_stable": "PASS",
+    "exact_active_intervals": 110,
+    "composition_error": 0,
+    "process_output_sha256": "8c8bb9f7d6a7b9084ce1aed1708916db99b3b4f677311c8c98c5d916a0c38b98",
+    "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c"
+  }
 }
