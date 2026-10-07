@@ -31,6 +31,7 @@ amend=packed("SWAP/wofost_soil_amendments.f90")
 residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
 orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
+management=packed("SWAP/management_soil.f90")
 
 age_substep_needles=[
  "agesurf=(nird*ageirr+nraidt*agepre)*dtsolu+pondm1*agepondm1",
@@ -140,6 +141,18 @@ for needle in residue_needles:
 residue_raw=members["SWAP/wofost_soil_cropresidues.f90"].decode("latin1").lower()
 if not re.search(r"am_om\s*(?:>=|\.ge\.)\s*1(?:\.0+)?d-?12",residue_raw):
     raise SystemExit("missing exact residue 1e-12 OM threshold")
+
+amendment_calendar_needles=[
+ "if(smedate(isme)-smedate(isme-1).lt.0.d-3)then",
+ "nuamend(j)=nuamend(j)+1",
+ "timeamend(j)=smedate(isme)",
+ "if(abs(timeamend(isme)+1.0d0-t1900).lt.1.d-3)then",
+ "callwofost_soilamendents",
+ "isme=isme+1",
+]
+for needle in amendment_calendar_needles:
+    if needle not in management:
+        raise SystemExit("missing exact amendment calendar equation: "+needle)
 
 watern_needles=[
  "wfrac_av=half*(wfrac_t+wfrac_t0)",
