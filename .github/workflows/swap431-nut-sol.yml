@@ -14,6 +14,7 @@ on:
       - 'docs/decisions/ADR-0006-soil-n-owner.md'
       - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
       - 'tools/audits/probe_b111_nfix_policy.py'
+      - 'tools/audits/extract_b111_solute_slices.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -30,5 +31,7 @@ jobs:
         run: bash tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh
       - name: Exact B1.11 fixation oracle
         run: python tools/audits/probe_b111_nfix_policy.py
+      - name: Materialize exact B1.11 solute source slices
+        run: python tools/audits/extract_b111_solute_slices.py
       - name: Soil-N pool owner
         run: bash tests/physics/run_soil_n_pool_state.sh
