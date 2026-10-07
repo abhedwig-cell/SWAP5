@@ -11,7 +11,8 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_SOLUTE_STATE_LAYOUT_NONE, &
+       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
+       FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
        fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
@@ -31,6 +32,13 @@ contains
 
     matches = .false.
     if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) return
+    ! Hysteresis is persistent physical continuation and must be carried only
+    ! under its explicit optional-state identity.
+    select type (physical => state)
+    class is (fmr_b110_physical_state_t)
+      if (allocated(physical%hysteresis) .and. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS) return
+    end select
     ! Rutter state is admitted only under its own optional-state layout.
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
@@ -134,6 +142,38 @@ contains
         return
       end if
 
+      if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS) then
+        if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
+        if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+        select type (state)
+        type is (fmr_b110_physical_state_t)
+          matches = allocated(state%hysteresis) .and. .not. allocated(state%snow) .and. &
+               .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore) .and. &
+               .not. allocated(state%rutter)
+          if (matches) then
+            matches = state%hysteresis%active_nodes == state%active_nodes .and. &
+                 allocated(state%hysteresis%branch) .and. allocated(state%hysteresis%theta_r_scan) .and. &
+                 allocated(state%hysteresis%theta_s_scan) .and. allocated(state%hysteresis%alpha_active) .and. &
+                 allocated(state%hysteresis%accepted_head) .and. allocated(state%hysteresis%accepted_theta)
+          end if
+          if (matches) matches = size(state%hysteresis%branch) == state%active_nodes .and. &
+               size(state%hysteresis%theta_r_scan) == state%active_nodes .and. &
+               size(state%hysteresis%theta_s_scan) == state%active_nodes .and. &
+               size(state%hysteresis%alpha_active) == state%active_nodes .and. &
+               size(state%hysteresis%accepted_head) == state%active_nodes .and. &
+               size(state%hysteresis%accepted_theta) == state%active_nodes
+          if (matches) matches = all(abs(state%hysteresis%branch) == 1) .and. &
+               all(ieee_is_finite(state%hysteresis%theta_r_scan)) .and. &
+               all(ieee_is_finite(state%hysteresis%theta_s_scan)) .and. &
+               all(ieee_is_finite(state%hysteresis%alpha_active)) .and. &
+               all(ieee_is_finite(state%hysteresis%accepted_head)) .and. &
+               all(ieee_is_finite(state%hysteresis%accepted_theta))
+        class default
+          matches = .false.
+        end select
+        return
+      end if
+
       if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
         if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) return
         if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
@@ -193,7 +233,8 @@ contains
     select case (template%optional_state_layout_id)
       case (FMR_OPTIONAL_STATE_LAYOUT_BASE)
         matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature) .and. &
-           .not. allocated(state%macropore) .and. .not. allocated(state%rutter)
+           .not. allocated(state%macropore) .and. .not. allocated(state%rutter) .and. &
+           .not. allocated(state%hysteresis)
     case (FMR_OPTIONAL_STATE_LAYOUT_SNOW)
       matches = .not. allocated(state%soil_temperature) .and. .not. allocated(state%macropore)
     case (FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE)
