@@ -163,6 +163,39 @@ for opt in 0 2; do
     grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REJECT_REPLAY=PASS' "$OUT/a9_replay.txt"
     grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_RESTART=PASS' "$OUT/a9_replay.txt"
     grep -Fq 'PPA_WU05A9_FMR_TOP_INPUT_REPLAY_GATE=PASS' "$OUT/a9_replay.txt"
+    if [[ "${WU05_MIGMAC11_SUITE:-0}" == 1 ]]; then
+      WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=3 "$OUT/test_a9_fmr" | tee "$OUT/migmac11_active.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS' "$OUT/migmac11_active.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_RUNON=1 WU05_MIGMAC02_DYNAMIC=3         "$OUT/test_a9_fmr" | tee "$OUT/migmac11_runon.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_RUNON=PASS' "$OUT/migmac11_runon.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_NO_POND=1 WU05_MIGMAC02_DYNAMIC=3         "$OUT/test_a9_fmr" | tee "$OUT/migmac11_no_pond.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_NO_POND=PASS' "$OUT/migmac11_no_pond.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_PARTIAL=1 WU05_MIGMAC02_DYNAMIC=3         "$OUT/test_a9_fmr" | tee "$OUT/migmac11_partial.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_PARTIAL_RETURN=PASS' "$OUT/migmac11_partial.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC02_DYNAMIC=3 "$OUT/test_a9_replay" | tee "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_POND_REJECT_RETRY=PASS' "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_POND_REPLAY=PASS' "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_POND_RESTART=PASS' "$OUT/migmac11_replay.txt"
+
+      python3 - "$OUT/migmac11_active.txt" "$OUT/migmac11_runon.txt" <<'PY'
+import re,sys
+def requested(path, marker):
+    text=open(path,encoding='utf-8').read()
+    m=re.search(marker+r'.*?POND_REQUESTED=([^|\n]+)',text)
+    if not m:
+        raise SystemExit(f'missing requested marker in {path}')
+    return float(m.group(1))
+base=requested(sys.argv[1],r'PPA_WU05_MIGMAC11_ACTIVE')
+runon=requested(sys.argv[2],r'PPA_WU05_MIGMAC11_RUNON')
+if not runon > base:
+    raise SystemExit(f'runon did not increase shared pond donor: base={base} runon={runon}')
+print(f'PPA_WU05_MIGMAC11_RUNON_SHARED_DONOR=PASS|BASE={base:.17g}|RUNON={runon:.17g}')
+PY
+    fi
     if [[ "${WU05_MIGMAC02:-0}" == 1 ]]; then
       WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/migmac02_fmr.txt"
       grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS' "$OUT/migmac02_fmr.txt"
@@ -396,6 +429,13 @@ if [[ "${WU05_MIGMAC09:-0}" == 1 ]]; then
   cmp "$BUILD/o0/nonrigid_cover_fit_${fit}.txt" "$BUILD/o2/nonrigid_cover_fit_${fit}.txt"
  done
  echo 'PPA_WU05_MIGMAC09_NONRIGID_COVER_O0_O2=PASS'
+fi
+
+if [[ "${WU05_MIGMAC11_SUITE:-0}" == 1 ]]; then
+ for name in active runon no_pond partial replay; do
+  cmp "$BUILD/o0/migmac11_${name}.txt" "$BUILD/o2/migmac11_${name}.txt"
+ done
+ echo 'PPA_WU05_MIGMAC11_O0_O2_IDENTITY=PASS'
 fi
 
 if [[ "${WU05_MIGMAC10:-0}" == 1 ]]; then
