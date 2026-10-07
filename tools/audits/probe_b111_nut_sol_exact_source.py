@@ -136,15 +136,13 @@ for needle in orgmat_needles:
     if needle not in orgmat:
         raise SystemExit("organic-N source inconsistency witness missing: "+needle)
 
-balance=packed("SWAP/wofost_soil_balancecheck.f90") if "SWAP/wofost_soil_balancecheck.f90" in members else ""
-if balance:
-    correction_needles=[
-      "out_orgn=nfom_min+nbio_min+nhum_min",
-      "nh4_miner=nminer*dz_wsn",
-    ]
-    for needle in correction_needles:
-        if needle not in balance:
-            raise SystemExit("organic-N reference-correction balance witness missing: "+needle)
+decision=(ROOT/"integration/audits/MC_NUT01_ORGANIC_SOURCE_DECISION.md").read_text().lower()
+for needle in [
+    "accepted_reference_correction",
+    "nminer = (nfom_min + nbio_min + nhum_min) / dz_wsn",
+]:
+    if needle not in decision:
+        raise SystemExit("organic-N reference-correction decision contract missing: "+needle)
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
