@@ -1,0 +1,3 @@
+module mod_drainage_b19_separate_infiltration_adapter
+implicit none
+end module mod_drainage_b19_separate_infiltration_adapter
