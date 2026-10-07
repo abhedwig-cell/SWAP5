@@ -51,6 +51,8 @@ module mod_fmr_b111_soil_crop_n_transaction
     real(real64)::internal_soil_to_crop_kg_m2=0.0_real64
     real(real64)::external_fixation_input_kg_m2=0.0_real64
     real(real64)::external_crop_loss_kg_m2=0.0_real64
+    real(real64)::pending_residue_consumed_kg_m2=0.0_real64
+    real(real64)::pending_residue_created_kg_m2=0.0_real64
   end type
 
   type,extends(transaction_model_t),public::fmr_b111_soil_crop_n_model_t
@@ -239,6 +241,12 @@ contains
         call apply_pending_residues(soil_params,soil_prepared,state,self%residue_split,self%root_residue_age, &
              self%leaf_residue_age,soil_prepared,pending_internal_n_m2,status)
         if(status/=FMR_B111_COUPLED_N_OK)then;self%last_status=status;return;end if
+        tol=4096.0_real64*epsilon(1.0_real64)*max(1.0_real64,pending_internal_n_m2, &
+             (state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64)
+        if(abs(pending_internal_n_m2-(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64)>tol)then
+          self%last_status=FMR_B111_COUPLED_N_TRANSFER_MISMATCH;return
+        end if
+        self%last_receipt%pending_residue_consumed_kg_m2=pending_internal_n_m2
       end if
 
       crop_forcing=self%crop_forcing
@@ -284,6 +292,7 @@ contains
       self%last_receipt%internal_soil_to_crop_kg_m2=soil_uptake_m2
       self%last_receipt%external_fixation_input_kg_m2=self%last_receipt%crop_process%fixation_kg_ha*1.0e-4_real64
       new_pending_n_m2=(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64
+      self%last_receipt%pending_residue_created_kg_m2=new_pending_n_m2
       self%last_receipt%external_crop_loss_kg_m2=max(0.0_real64,self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64-new_pending_n_m2)
       external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2+ &
            self%last_receipt%external_crop_loss_kg_m2
