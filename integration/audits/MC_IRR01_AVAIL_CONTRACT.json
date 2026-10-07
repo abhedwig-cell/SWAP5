@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "capability": "SW431-IRR-AVAIL",
+  "base_head": "47df3fc6ff9efbcc390aa1b25ca94fc33009153b",
+  "staging_branch": "work/mc-irr01-avail-contract-20261007",
+  "source_authority": {
+    "member": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "literal_contract": [
+      "gird = gird * f_irr_avail",
+      "if (irr_rate > 0.0d0) dt_irr_event = dt_irr_event * f_irr_avail"
+    ]
+  },
+  "implementation": {
+    "path": "src/process/mod_irrigation_availability_scaling.f90",
+    "blob_sha": "1d779e5d19445211de88e5e9c1dd851b0a44df3e",
+    "role": "typed stateless source-exact postselection transform"
+  },
+  "test": {
+    "path": "tests/mc-irr01/test_mc_irr01_availability_scaling.f90",
+    "blob_sha": "7d5091ccaaf4a3c2b2730cd6bf69fcb677a08c4d",
+    "local_compiler": "gfortran",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "bb72e1a5ca83f83681e66f60c8dac2014582d127e3e7a60ea4ef5d944b77e383",
+    "markers": [
+      "MC_IRR01_AVAIL_LITERAL_SCALING=PASS",
+      "MC_IRR01_AVAIL_POSITIVE_RATE_QUADRATIC_VOLUME=PASS",
+      "MC_IRR01_AVAIL_ZERO_RATE_LINEAR_VOLUME=PASS"
+    ]
+  },
+  "admission": {
+    "qualified": false,
+    "blocker": "Trace actual MultiSWAP F_IRR_AVAIL donor/caller and intended allocation semantics before production binding/admission.",
+    "reason": "The literal transform is proven, but production provenance and ownership of the external availability factor are not."
+  }
+}
