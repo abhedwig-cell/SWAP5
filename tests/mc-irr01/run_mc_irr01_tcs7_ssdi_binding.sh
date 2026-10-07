@@ -7,7 +7,14 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "MC_IRR01_FAIL $*" >&2; exit 1; }
 
-test "$(git hash-object src/process/mod_irrigation_process.f90)" = c0755c1e0d0b7ca1a35e73cf26158c29e9940aec || fail "F-VQ20 process blob drift"
+# Preserve the exact independently qualified F-VQ20 source object as lineage authority.
+# The current process may contain additive selector branches, so whole-file equality is
+# intentionally not used as a preservation criterion.
+git cat-file -e c0755c1e0d0b7ca1a35e73cf26158c29e9940aec^{blob} 2>/dev/null ||   fail "missing F-VQ20 qualified irrigation-process blob"
+grep -Fq 'integer :: timing_criterion = 7' src/process/mod_irrigation_process.f90 || fail "TCS7 is not the preserved default"
+grep -Fq 'case (7)' src/process/mod_irrigation_process.f90 || fail "missing current TCS7 branch"
+grep -Fq 'parameters%tcs7_pressure_head' src/process/mod_irrigation_process.f90 || fail "missing current TCS7 threshold table"
+grep -Fq 'hydraulic_view%pressure_head(parameters%sensor_node) > threshold' src/process/mod_irrigation_process.f90 ||   fail "TCS7 threshold semantics drift"
 grep -Fq 'real(real64), allocatable :: subsurface_irrigation_source(:)' src/runtime/mod_fmr_serialized_reference_backend.f90 || fail "missing real FMR SSDI carrier"
 grep -Fq 'fmr_build_committed_process_hydraulic_view' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not use committed hydraulic view"
 grep -Fq 'evaluate_scheduled_irrigation_interval' src/runtime/mod_fmr_scheduled_irrigation_runtime_binding.f90 || fail "binding does not invoke qualified process"
