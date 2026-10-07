@@ -66,10 +66,10 @@
       "evidence": [
         "typed Wofost_SoilWaterN analytical transport",
         "daily demand/supply-limited NH4/NO3 caller",
-        "mass receipts and integrated one-day Soil-N transaction"
+        "mass receipts and integrated one-day Soil-N transaction",
+        "management_soil daily caller and amendment timing are checked directly from exact B1.11 authority bundle"
       ],
       "remaining": [
-        "exact byte-pinned management_soil caller oracle",
         "persisted integrated qualification",
         "canonical admission"
       ]
@@ -102,7 +102,6 @@
         "harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
       ],
       "remaining": [
-        "harvest-day root/leaf/stem/storage residue continuation",
         "persisted O0/O2 coupled qualification",
         "canonical admission"
       ]
