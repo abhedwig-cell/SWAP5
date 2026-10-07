@@ -2,7 +2,7 @@
 
 Status: **IN_PROGRESS**
 
-Active binding branch: `work/swap431-nut-sol-binding-20261007`
+Active binding branch: `work/swap431-nut-sol-binding-recovery-20261007`
 
 Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`.
 
@@ -18,8 +18,8 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 
 ## Source-bound operators present
 
-- B1.11 fixation policy, separate from admitted WOFOST81 semantics.
-- Shared Soil-N management-event binding for amendments and crop residues: persistent event id, once-only application, duplicate rejection, and restart-preserved event lineage.
+- B1.11 fixation policy is now consumed by a separate atomic Soil-Crop N transaction; WOFOST81 remains untouched.
+- Shared Soil-N management-event binding: grouped legacy-date amendments apply exactly once with restart-preserved event lineage; crop root and configured leaf residue N can return internally from the crop owner to Soil-N.
 - Soil-N source rate factors plus source-coupled mineral reaction bridges: NH4 disappearance from aggregate transport is converted into equal NO3 production, while NO3 first-order disappearance is booked as explicit external denitrification loss. Both use the interval-average transported concentration and preserve whole-N accounting.
 - Aggregate Soil-N transport plus a one-day B1.11 mineral exchange caller and an integrated Soil-N candidate composing organic turnover, Cdissi-dependent rates, NH4/NO3 transport, nitrification and denitrification on one owner.
 - Amendments and crop residues, including distinct B1.11 OM activation
@@ -28,10 +28,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 
 ## Not yet canonical admission
 
-These owners/operators and the new reactive carrier layout are not by themselves proof of application-level
-production reachability. Census capabilities remain open until the relevant
-runtime/application route, restart identity and persisted qualification are
-bound and reviewed.
+MC-NUT01 now has transaction/event reachability candidates for all nine listed capabilities, including atomic Soil-Crop uptake/fixation and internal crop-residue return. MC-SOL01 has owner/restart candidates for sorption, decay and pond plus age-production foundation; age transport is incomplete and aquifer remains decision-blocked. None of these are canonical admissions until persisted integrated qualification is green and reviewed.
 
 ## Explicit decision boundaries
 
