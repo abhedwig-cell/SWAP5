@@ -77,18 +77,17 @@
     },
     {
       "id": "SW431-SALT-AQUIFER",
-      "state": "SOURCE_DEFECT_DECISION_REQUIRED",
+      "state": "UNSUPPORTED_SOURCE_DEFECT",
       "evidence": [
-        "persistent aquifer mass store exists",
-        "reactive restart layout persists aquifer mass",
-        "process mutation is fail-closed",
-        "exact B1.11 SWBR out-of-bounds defect is reproduced"
+        "exact B1.11 SWBR out-of-bounds coefficient access reproduced under bounds checking",
+        "KFSAT is documented as aquifer adsorption coefficient (L3/M)",
+        "POROS and DAQUIF are aquifer properties",
+        "no aquifer bulk-density parameter exists in the SWBR input contract",
+        "bottom-soil bulk density is not documented as the aquifer bulk density",
+        "reactive runtime keeps aquifer mutation fail-closed"
       ],
-      "remaining": [
-        "explicit physical aquifer storage/coefficient decision",
-        "corrected breakthrough/decay model",
-        "mass-conservative signed drainage qualification"
-      ]
+      "remaining": [],
+      "disposition_record": "integration/audits/MC_SOL01_AQUIFER_SOURCE_DECISION.md"
     }
   ],
   "global_invariants": [
@@ -97,6 +96,7 @@
     "age amount is excluded from chemical mass",
     "aquifer process mutation is fail-closed",
     "rejected candidates leave all committed reactive stores unchanged",
-    "no capability in this record is canonical ADMITTED until persisted qualification completes"
+    "no capability in this record is canonical ADMITTED until persisted qualification completes",
+    "SW431-SALT-AQUIFER is a definitive unsupported/source-defect disposition and no longer counts as remaining implementation work"
   ]
 }
