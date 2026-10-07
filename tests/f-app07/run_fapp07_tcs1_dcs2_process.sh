@@ -54,6 +54,7 @@ grep -Fq 'fmr_bind_fixed_surface_irrigation_identity_to_dynamic_top' "$BIND" || 
 COMPOSITION_SRC=(
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_irrigation_availability_policy.f90
   src/process/mod_irrigation_process.f90
   src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90
   src/process/mod_rutter_interception_process.f90
@@ -83,6 +84,7 @@ for opt in 0 2; do
   "$OUT/test_tcs7_binding" > "$OUT/tcs7_binding_output.txt" 2>&1 || { cat "$OUT/tcs7_binding_output.txt" >&2; fail "TCS7 binding runtime O$opt"; }
   grep -Fq 'MC_IRR01_TCS7_RUNTIME_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "TCS7 runtime binding O$opt"
   grep -Fq 'MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "SSDI binding O$opt"
+  grep -Fq 'MC_IRR01_AVAIL_SENSOR_POLICY=PASS' "$OUT/tcs7_binding_output.txt" || fail "availability sensor policy O$opt"
 
   grep -Fq 'F_APP07_EXACT_ACTIVE_INTERVALS=110' "$OUT/output.txt" || fail "active interval count O$opt"
   grep -Fq 'F_APP07_SWINTER0_INTERVALS=18' "$OUT/output.txt" || fail "SWINTER0 count O$opt"

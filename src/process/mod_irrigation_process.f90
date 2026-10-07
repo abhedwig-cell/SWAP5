@@ -2,6 +2,7 @@ module mod_irrigation_process
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_irrigation_availability_policy, only: apply_irrigation_availability, IRR_AVAIL_OK
   implicit none
   private
 
@@ -93,6 +94,8 @@ module mod_irrigation_process
     logical :: fixed_event_already_selected = .false.
     logical :: solute_enabled = .false.
     real(real64) :: sensor_concentration = 0.0_real64
+    logical :: availability_scaling_enabled = .false.
+    real(real64) :: availability_fraction = 1.0_real64
   end type scheduled_irrigation_request_t
 
   type, public :: irrigation_flux_result_t
@@ -122,6 +125,7 @@ module mod_irrigation_process
     real(real64) :: interpolated_depth = 0.0_real64
     logical :: depth_limited = .false.
     logical :: salinity_excess_applied = .false.
+    logical :: availability_applied = .false.
     logical :: external_inflow_is_reconciliation_only = .true.
   end type irrigation_diagnostics_t
 
@@ -270,6 +274,7 @@ contains
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
     real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1, effective_rate
+    integer :: availability_status
     logical :: ok, finishes_at_event_end
 
     candidate_state = committed_state
@@ -411,6 +416,14 @@ contains
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
     end if
+    call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
+         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+    if (availability_status /= IRR_AVAIL_OK) then
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
+    end if
+    diagnostics%availability_applied = request%availability_scaling_enabled
+    if (effective_rate <= 0.0_real64 .or. duration <= 0.0_real64) return
     event_end = request%t0 + duration
     finishes_at_event_end = same_time(request%t1, event_end)
     if (request%t1 > event_end .and. .not. finishes_at_event_end) then

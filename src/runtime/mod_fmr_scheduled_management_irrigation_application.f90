@@ -10,6 +10,7 @@ module mod_fmr_scheduled_management_irrigation_application
   use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, &
        IRRIGATION_APPLICATION_SPRINKLER, IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SSDI, &
        IRRIGATION_EVENT_SCHEDULED
+  use mod_irrigation_availability_policy, only: apply_irrigation_availability, IRR_AVAIL_OK
   implicit none
   private
 
@@ -48,6 +49,8 @@ module mod_fmr_scheduled_management_irrigation_application
     logical :: crop_emerged = .false.
     logical :: irrigation_window_open = .false.
     logical :: fixed_event_already_selected = .false.
+    logical :: availability_scaling_enabled = .false.
+    real(real64) :: availability_fraction = 1.0_real64
   end type fmr_irrigation_management_request_t
 
   type, public :: fmr_irrigation_management_diagnostics_t
@@ -59,6 +62,7 @@ module mod_fmr_scheduled_management_irrigation_application
     real(real64) :: split_time = 0.0_real64
     real(real64) :: selected_depth_cm = 0.0_real64
     real(real64) :: effective_rate_cm_per_day = 0.0_real64
+    logical :: availability_applied = .false.
   end type fmr_irrigation_management_diagnostics_t
 
   public :: fmr_evaluate_scheduled_management_irrigation
@@ -78,6 +82,7 @@ contains
     type(fmr_irrigation_management_diagnostics_t), intent(out) :: diagnostics
     type(irrigation_management_policy_request_t) :: policy_request
     real(real64) :: duration, event_end, effective_t1, effective_rate
+    integer :: availability_status
     logical :: ok, finishes
 
     candidate_state = committed_state
@@ -173,7 +178,16 @@ contains
       diagnostics%status = FMR_IRR_MGMT_APP_INVALID_PARAMETERS
       return
     end if
+    call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
+         parameters%rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+    if (availability_status /= IRR_AVAIL_OK) then
+      candidate_state = committed_state
+      diagnostics%status = FMR_IRR_MGMT_APP_INVALID_PARAMETERS
+      return
+    end if
+    diagnostics%availability_applied = request%availability_scaling_enabled
     diagnostics%effective_rate_cm_per_day = effective_rate
+    if (effective_rate <= 0.0_real64 .or. duration <= 0.0_real64) return
     event_end = request%t0 + duration
     finishes = same_time(request%t1,event_end)
     if (request%t1 > event_end .and. .not. finishes) then

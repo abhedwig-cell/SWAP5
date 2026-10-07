@@ -135,6 +135,32 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not. c%active_event .and. abs(q(3)-0.12_real64) < tol,19)
   call require(abs(d%external_inflow_amount_cm-0.06_real64) < tol,20)
 
+  ! Literal TASK=4 availability: positive configured rate scales both rate and event duration.
+  p%irr_rate_cm_per_day = 0.48_real64
+  r = scheduled_irrigation_request_t()
+  r%t0 = 2700.0_real64
+  r%t1 = 2700.125_real64
+  r%dvs = 1.0_real64
+  r%selection_opportunity = .true.; r%irrigation_enabled = .true.; r%schedule_enabled = .true.
+  r%crop_emerged = .true.; r%irrigation_window_open = .true.
+  r%availability_scaling_enabled = .true.; r%availability_fraction = 0.5_real64
+  s = irrigation_state_t()
+  h%water_content(2) = 0.20_real64
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. c%active_event,21)
+  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.03_real64) < tol,22)
+
+  ! Zero-rate fallback keeps the one-day duration and scales only the generated rate.
+  p%irr_rate_cm_per_day = 0.0_real64
+  r%t0 = 2800.0_real64
+  r%t1 = 2801.0_real64
+  r%availability_fraction = 0.5_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,23)
+  call require(abs(q(3)-0.06_real64) < tol .and. abs(d%external_inflow_amount_cm-0.06_real64) < tol,24)
+
+  print '(A)','MC_IRR01_AVAIL_SENSOR_POLICY=PASS'
   print '(A)','MC_IRR01_TCS7_RUNTIME_BINDING=PASS'
   print '(A)','MC_IRR01_TCS8_RUNTIME_BINDING=PASS'
   print '(A)','MC_IRR01_SENSOR_DCSLIM_BEFORE_SALINITY=PASS'
