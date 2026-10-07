@@ -4671,8 +4671,13 @@ contains
     ! already enforced the independent pond-balance equation.
     surface_external_exchange_cm = -solve_result%top_flux*step_duration
     if (request%boundary%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+      ! Final pond storage already contains any capacity return. Add the
+      ! accepted pond-to-macropore transfer back when reconstructing the outer
+      ! surface exchange, because that accepted share moved internally from
+      ! pond storage into macropore storage and is not an external macro input.
       surface_external_exchange_cm = solve_result%candidate_state%ponding_depth - &
-           request%base_state%ponding_depth - solve_result%top_flux*step_duration
+           request%base_state%ponding_depth - solve_result%top_flux*step_duration + &
+           macropore_pond_accepted_cm
     end if
     if (self%snow_active) surface_external_exchange_cm = -self%base_top_flux*step_duration
     if (.not. ieee_is_finite(surface_external_exchange_cm)) return
