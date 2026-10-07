@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05-MIGMAC11",
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
-  "checkpoint_commit": "92796c42b4106b5c935382ebd5af76a185486b47",
-  "last_reconciled_head": "92796c42b4106b5c935382ebd5af76a185486b47",
+  "checkpoint_commit": "cfdc1711ae73749ebfa13de08f565369043a6b71",
+  "last_reconciled_head": "cfdc1711ae73749ebfa13de08f565369043a6b71",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -53,9 +53,9 @@
     "macropore candidate/commit bookkeeping",
     "surface ponding mass accounting"
   ],
-  "test_status": "Production O0/O2 compile and MIGMAC01-09 preservation previously passed. Active pond route debugging consolidated: distinct PndmxMp/KsMpSs binding, shape-safe callback, independent lateral receipt, candidate area partition, pure top receipt support. Next gate must establish active route end-to-end.",
+  "test_status": "Run 37586507318 exposed a production compile failure from an out-of-scope `forcing` reference while binding matrix_source_area_partition. Current head cfdc1711 replaces it with `self%macropore_top_input_forcing%supplied`, preserving the distinction between candidate ArMpSs and active direct atmospheric macropore forcing. Requalification pending on this postimage.",
   "qualification_status": "IN_PROGRESS",
-  "next_action": "Run focused active-pond qualification; on PASS add runon paired case, returned-surface mass witness, reject/retry and restart before broad preservation.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@92796c42b4106b5c935382ebd5af76a185486b47",
+  "next_action": "Requalify current postimage. On active-pond PASS, extend the same tranche with paired runon, partial A9 acceptance/return, transactional/restart evidence, whole-column mass closure, and MIGMAC01-10 preservation.",
+  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@cfdc1711ae73749ebfa13de08f565369043a6b71",
   "blockers": []
 }
