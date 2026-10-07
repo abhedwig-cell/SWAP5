@@ -33,6 +33,7 @@ module mod_fmr_b111_solute_transaction
     procedure :: clone => solcomp_clone
     procedure, public :: ready => solcomp_ready
     procedure, public :: snapshot => solcomp_snapshot
+    procedure, public :: replace_candidate => solcomp_replace_candidate
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_solute_model_t
@@ -116,6 +117,21 @@ contains
     mobile=mobile_salt_state_t();companion=solute_compartment_state_t()
     available=self%ready()
     if(available)then;mobile=self%mobile;companion=self%companion;end if
+  end subroutine
+
+
+  subroutine solcomp_replace_candidate(self,mobile,companion,status)
+    class(fmr_b111_solute_state_t),intent(inout)::self
+    type(mobile_salt_state_t),intent(in)::mobile
+    type(solute_compartment_state_t),intent(in)::companion
+    integer,intent(out)::status
+    status=FMR_SOLCOMP_INVALID
+    if(.not.self%ready().or..not.mobile_valid(mobile).or..not.companion%valid())return
+    if(size(mobile%mass_mg_cm2)/=size(companion%sorbed_matrix_mass).or. &
+       size(companion%age_amount)/=size(mobile%mass_mg_cm2))return
+    self%mobile=mobile
+    self%companion=companion
+    status=FMR_SOLCOMP_OK
   end subroutine
 
   subroutine solcomp_advance(self,state,t0,t1,outcome)
