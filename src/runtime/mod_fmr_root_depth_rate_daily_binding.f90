@@ -36,6 +36,12 @@ contains
     else
       if(abs(aggregates%deepest_root_oxygen_factor_integral)>tiny(1.0_real64))return
     end if
+    if(aggregates%rootzone_drought_uptake_factor_available)then
+      if(aggregates%rootzone_drought_uptake_factor_integral<0.0_real64.or. &
+           aggregates%rootzone_drought_uptake_factor_integral>1.0_real64+64.0_real64*epsilon(1.0_real64))return
+    else
+      if(abs(aggregates%rootzone_drought_uptake_factor_integral)>tiny(1.0_real64))return
+    end if
 
     call crop_state%snapshot_root_growth(growth,available)
     if(.not.available.or..not.growth%ready())then
@@ -49,6 +55,8 @@ contains
     forcing%potential_root_growth=growth%potential_gross_root_growth
     forcing%deepest_root_oxygen_factor_available=aggregates%deepest_root_oxygen_factor_available
     forcing%deepest_root_oxygen_factor_integral=aggregates%deepest_root_oxygen_factor_integral
+    forcing%rootzone_drought_uptake_factor_available=aggregates%rootzone_drought_uptake_factor_available
+    forcing%rootzone_drought_uptake_factor_integral=aggregates%rootzone_drought_uptake_factor_integral
     status=FMR_ROOT_DEPTH_RATE_BIND_OK
   end subroutine bind_accepted_crop_event_to_root_depth_rate
 
