@@ -5437,6 +5437,7 @@ contains
     end if
     if(self%frost_low_air_drainage%active)then
       value=fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state)
+      if(self%root_frost%active)value=max(value,fmr_root_frost_temporal_error(self,full_state,half_state))
       return
     end if
     if(self%frost_drainage%active)then
