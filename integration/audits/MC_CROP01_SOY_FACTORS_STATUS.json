@@ -1,0 +1,63 @@
+{
+  "schema": "swap431.mc_crop01.soy_factors.v1",
+  "capability_id": "SW431-CROP-SOY",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "disposition": "PARTIAL_SOURCE_IMPLEMENTATION_NONLINEAR_FACTORS_COMPLETE_RATE_BINDING_OPEN",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "exact_functions": [
+      "rfmgtemp",
+      "rfmgphotop"
+    ],
+    "parameter_reads": [
+      "MG",
+      "DVRMAX1",
+      "DVRMAX2",
+      "TMAXDVR",
+      "TMINDVR",
+      "TOPTDVR",
+      "SWRFPHOTOVEG",
+      "SWPHENODAYL"
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_wofost_soybean_phenology_factors.f90"
+  ],
+  "semantics": [
+    "Setiyono-style nonlinear temperature factor with exact B1.11 exponent/equation",
+    "astronomic photoperiod using B1.11 declination/daylength equation",
+    "MG-derived POPT/PCRT when SWPHENODAYL=0",
+    "explicit POPT/PCRT carrier supported without imposing a false 24 h ceiling on PCRT"
+  ],
+  "state_owner": "none; both factors are stateless functions of immutable crop parameters and daily forcing",
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_soybean_phenology_factors.py",
+    "status": "READY_FOR_LOCAL_OR_PERSISTED_O0_O2",
+    "cases": [
+      "temperature below Tmin",
+      "temperature optimum",
+      "temperature Tmax",
+      "temperature above Tmax",
+      "MG POPT/PCRT derivation",
+      "equatorial 12 h daylength",
+      "photoperiod fully unrestrained",
+      "fully suppressed",
+      "nonlinear interior"
+    ]
+  },
+  "remaining": [
+    "Recover exact B1.11 soybean daily development-rate callsite and assembly using DVRMAX1/DVRMAX2 and SWRFPHOTOVEG.",
+    "Bind soybean rate into classic crop transaction/state owner with event/restart preservation.",
+    "Qualify full-season timing including anthesis and harvest."
+  ],
+  "admission": false,
+  "preservation": [
+    "classic WOFOST IDSL0/1 untouched",
+    "WOFOST81 untouched",
+    "no crop-state duplication",
+    "no water-mass changes"
+  ]
+}
