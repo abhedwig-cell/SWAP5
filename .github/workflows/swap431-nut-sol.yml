@@ -12,6 +12,8 @@ on:
       - 'tests/physics/test_soil_n_pool_state.f90'
       - 'tests/physics/run_soil_n_pool_state.sh'
       - 'docs/decisions/ADR-0006-soil-n-owner.md'
+      - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
+      - 'tools/audits/probe_b111_nfix_policy.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -26,5 +28,7 @@ jobs:
           sudo apt-get install -y gfortran
       - name: B1.11 fixation policy
         run: bash tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh
+      - name: Exact B1.11 fixation oracle
+        run: python tools/audits/probe_b111_nfix_policy.py
       - name: Soil-N pool owner
         run: bash tests/physics/run_soil_n_pool_state.sh
