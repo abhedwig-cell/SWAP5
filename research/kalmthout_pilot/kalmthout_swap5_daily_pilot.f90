@@ -1,7 +1,9 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+  use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window, INTWIN_OK
+  use mod_rutter_interception_process, only: rutter_interval_input_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
@@ -18,7 +20,9 @@ program kalmthout_swap5_daily_pilot
   type(fmr_production_application_bootstrap_t) :: app
   type(fmr_b110_physical_forcing_t), allocatable :: forcing(:)
   type(fmr_serialized_column_result_t), allocatable :: results(:)
-  integer :: ios,status,day_index,failures
+  type(interception_source_window_t) :: window
+  type(rutter_interval_input_t) :: rp
+  integer :: ios,status,day_index,failures,wstatus
   real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day
   real(real64) :: total_precip,total_et0,total_in,total_out
 
@@ -47,11 +51,25 @@ program kalmthout_swap5_daily_pilot
     day_index=day_index+1; t0=real(day_index-1,real64)*dt_day; t1=real(day_index,real64)*dt_day
     allocate(forcing(1))
     forcing(1)=config%tiles(1)%base_forcing
-    ! MVP smoke route: prescribed atmospheric water flux. In the Reference
-    ! convention a downward infiltration flux is negative. This deliberately
-    ! excludes ET/interception/runoff until the long Richards/state chain is
-    ! shown to execute for the complete observed forcing period.
-    forcing(1)%top_flux=-precip_mm/10.0_real64
+    allocate(forcing(1)%rutter)
+    call initialize_interception_window(int(1000000+day_index,int64),t0,t1,precip_mm/10.0_real64,window,wstatus)
+    call require(wstatus==INTWIN_OK,'12h precipitation source window')
+    rp%gross_rain_cm_per_day=(precip_mm/10.0_real64)/dt_day
+    rp%surface_irrigation_cm_per_day=0.0_real64
+    rp%surface_irrigation_is_intercepted=.false.
+    rp%vegetation_cover_fraction=0.0_real64
+    rp%canopy_storage_capacity_cm=0.0_real64
+    rp%interception_evaporation_capacity_cm_per_day=0.0_real64
+    rp%potential_transpiration_dry_cm_per_day=0.0_real64
+    rp%potential_transpiration_wet_cm_per_day=0.0_real64
+    rp%interval_days=dt_day
+    forcing(1)%rutter%source_window=window
+    forcing(1)%rutter%process=rp
+    forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=et0/10.0_real64
+    forcing(1)%rutter%potential_pond_evaporation_cm_per_day=et0/10.0_real64
+    forcing(1)%rutter%ponding_max_cm=1.0_real64
+    forcing(1)%rutter%runoff_resistance_day=0.1_real64
+    forcing(1)%rutter%runoff_exponent=1.0_real64
 
     call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
     if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
@@ -97,7 +115,7 @@ contains
     type(fmr_production_application_config_t),intent(out)::value
     real(real64)::conductivity0
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_tolerance=0.0_real64
+    value%numerical%transaction%temporal_tolerance=0.03_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
@@ -111,11 +129,12 @@ contains
     value%tiles(1)%template%vertical_layout_id=6102201_int64
     value%tiles(1)%template%state_layout_id=6102301_int64
     value%tiles(1)%template%solver_interface_id=6102401_int64
-    value%tiles(1)%template%optional_state_layout_id=0_int64
+    value%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER
     value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     value%tiles(1)%template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     call initialize_parameters(value%tiles(1)%parameters)
     call initialize_state_and_forcing(value%tiles(1)%parameters,value%tiles(1)%initial_state,value%tiles(1)%base_forcing,conductivity0)
+    value%tiles(1)%initial_rutter_canopy_storage_cm=0.0_real64
   end subroutine
 
   subroutine initialize_parameters(p)
