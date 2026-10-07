@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.mc_crop01.crop_end_event.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "shared_owner": "src/crop/mod_crop_end_event_owner.f90",
+  "consumers": [
+    "fixed crop",
+    "SWWOFOST=1 classic annual",
+    "SWWOFOST=2 soybean"
+  ],
+  "source_authority": {
+    "fixed": {
+      "member": "SWAP/fixed.f90",
+      "sha256": "pinned B1.11 authority bundle",
+      "task4": "calendar end always; DVSEND additionally when SWHARV=1"
+    },
+    "wofost": {
+      "member": "SWAP/wofost.f90",
+      "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "task4": "calendar end always; DVSEND additionally for SWWOFOST 1 or 2 when SW_HARV enabled"
+    }
+  },
+  "exact_semantics": {
+    "calendar": "abs(T1900-CROPEND-1)<0.1",
+    "development": "DVS>=DVSEND when enabled",
+    "combination": "logical OR"
+  },
+  "tests": "tests/fmig431/test_swap431_crop_end_event.f90",
+  "persistent_state_added": false,
+  "event_owner_rule": "The event decision is derived from committed crop/calendar state. It does not own crop biomass, root mass, water mass or restart state.",
+  "scope_exclusions": [
+    "grass mowing/grazing/dewooling",
+    "sowing/germination",
+    "rotation selection"
+  ],
+  "disposition": "SHARED_EVENT_COMPONENT_READY_FOR_COMPOSITION",
+  "admission": false
+}
