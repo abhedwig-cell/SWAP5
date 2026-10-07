@@ -3277,9 +3277,10 @@ contains
         self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
       end if
       if (allocated(forcing%legacy_swbotb3_explicit_control)) then
+        if (.not. allocated(forcing%legacy_swbotb3_implicit_control)) return
         if (self%bottom_mode /= 3 .or. .not. self%soil_water_selection%uses_reference()) return
-        if (allocated(forcing%legacy_swbotb3_implicit_control) .or. allocated(forcing%legacy_swbotb5_control) .or. &
-            allocated(forcing%legacy_swbotb2_control) .or. allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
+            allocated(forcing%legacy_swbotb4_qgwl_control)) return
         if (.not. forcing%legacy_swbotb3_explicit_control%valid()) return
         allocate(self%legacy_swbotb3_explicit_control)
         self%legacy_swbotb3_explicit_control = forcing%legacy_swbotb3_explicit_control
