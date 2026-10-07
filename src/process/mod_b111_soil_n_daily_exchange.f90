@@ -50,6 +50,16 @@ module mod_b111_soil_n_daily_exchange
     real(real64)::nsupply_total_kg_m2_day=0.0_real64
     real(real64)::juvenile_factor=0.0_real64
     real(real64)::nitrification_production_rate_kg_m3_day=0.0_real64
+    real(real64)::nh4_nitrified_kg_m2=0.0_real64
+    real(real64)::no3_denitrified_kg_m2=0.0_real64
+    real(real64)::nh4_boundary_input_kg_m2=0.0_real64
+    real(real64)::no3_boundary_input_kg_m2=0.0_real64
+    real(real64)::nh4_outflow_kg_m2=0.0_real64
+    real(real64)::no3_outflow_kg_m2=0.0_real64
+    real(real64)::nh4_crop_uptake_kg_m2=0.0_real64
+    real(real64)::no3_crop_uptake_kg_m2=0.0_real64
+    real(real64)::external_input_kg_m2=0.0_real64
+    real(real64)::external_output_kg_m2=0.0_real64
   end type
 
   public::evaluate_b111_soil_n_daily_exchange
@@ -183,9 +193,23 @@ contains
          result%nsupply_no3_kg_m3_day=0.0_real64
     if(result%nsupply_no3_kg_m3_day<0.0_real64)return
     result%nsupply_total_kg_m2_day=(result%nsupply_nh4_kg_m3_day+result%nsupply_no3_kg_m3_day)*f%depth_m
+    result%nh4_nitrified_kg_m2=wavg*f%ratecon_nitrif*result%cnh4_average*f%dt_day*f%depth_m
+    result%no3_denitrified_kg_m2=wavg*f%ratecon_denitr*result%cno3_average*f%dt_day*f%depth_m
+    result%nh4_boundary_input_kg_m2=(f%cnh4_top*f%wflux_intop+f%cnh4_lat*f%wflux_inlat+ &
+         f%cnh4_seep*f%wflux_inbot)*f%dt_day
+    result%no3_boundary_input_kg_m2=(f%cno3_top*f%wflux_intop+f%cno3_lat*f%wflux_inlat+ &
+         f%cno3_seep*f%wflux_inbot)*f%dt_day
+    result%nh4_outflow_kg_m2=result%cnh4_average*f%wflux_out*f%dt_day
+    result%no3_outflow_kg_m2=result%cno3_average*f%wflux_out*f%dt_day
+    result%nh4_crop_uptake_kg_m2=result%nsupply_nh4_kg_m3_day*f%depth_m
+    result%no3_crop_uptake_kg_m2=result%nsupply_no3_kg_m3_day*f%depth_m
+    result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
+    result%external_output_kg_m2=result%nh4_outflow_kg_m2+result%no3_outflow_kg_m2+ &
+         result%nh4_crop_uptake_kg_m2+result%no3_crop_uptake_kg_m2+result%no3_denitrified_kg_m2
     if(.not.all(ieee_is_finite([result%cnh4_end,result%cnh4_average,result%cno3_end,result%cno3_average, &
          result%nsupply_nh4_kg_m3_day,result%nsupply_no3_kg_m3_day,result%nsupply_total_kg_m2_day, &
-         result%nitrification_production_rate_kg_m3_day])))return
+         result%nitrification_production_rate_kg_m3_day,result%nh4_nitrified_kg_m2,result%no3_denitrified_kg_m2, &
+         result%external_input_kg_m2,result%external_output_kg_m2])))return
     result%status=B111_NEXCHANGE_OK
   end subroutine
 
