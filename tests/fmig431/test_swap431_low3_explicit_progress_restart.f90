@@ -82,6 +82,16 @@ program test_swap431_low3_explicit_progress
   call app%initialize(cfg,status)
   call require(status==FMR_APP_BOOT_OK,'ordinary production history bootstrap')
   call app%run_standalone(T0,T1,application,status)
+  if(status/=FMR_APP_BOOT_OK .or. .not.allocated(application) .or. .not.application(1)%committed)then
+    write(*,'(a,1x,i0,1x,l1)') 'LOW03EXP_PROGRESS_APP_STATUS',status,allocated(application)
+    if(allocated(application))then
+      write(*,'(a,1x,l1,1x,l1,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,es24.16,1x,a)') &
+           'LOW03EXP_PROGRESS_APP_DIAG',application(1)%completed,application(1)%committed, &
+           application(1)%kernel_status,application(1)%commit_status,application(1)%accepted_substeps, &
+           application(1)%solver_rejections,application(1)%temporal_rejections,application(1)%mass_rejections, &
+           application(1)%max_temporal_indicator,trim(application(1)%admission_status)
+    end if
+  end if
   call require(status==FMR_APP_BOOT_OK .and. application(1)%committed,'whole application interval commits')
   call require(application(1)%accepted_substeps>1,'production owner accepts multiple shortened transactions')
   call require(abs(application(1)%mass%residual)<=HARD_MASS_GATE,'application hard mass unchanged')
