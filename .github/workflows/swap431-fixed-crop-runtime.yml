@@ -1,0 +1,26 @@
+name: SWAP431 fixed crop runtime qualification
+on:
+  push:
+    branches: [work/swap431-crop-fixed-runtime-r2-20261007]
+    paths:
+      - 'src/crop/mod_fixed_crop_owner.f90'
+      - 'src/crop/mod_crop_calendar_end_event.f90'
+      - 'src/runtime/mod_fmr_fixed_crop_transaction.f90'
+      - 'tests/fmig431/run_swap431_fixed_crop_owner.py'
+      - 'tests/fmig431/run_swap431_fixed_crop_transaction.sh'
+      - 'tests/fmig431/test_swap431_fixed_crop_owner.f90'
+      - 'tests/fmig431/test_swap431_fixed_crop_transaction.f90'
+      - '.github/workflows/swap431-fixed-crop-runtime.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Fixed crop owner O0 O2
+        run: python3 tests/fmig431/run_swap431_fixed_crop_owner.py
+      - name: Fixed crop transaction and restart O0 O2
+        run: bash tests/fmig431/run_swap431_fixed_crop_transaction.sh
