@@ -301,7 +301,6 @@ contains
         end if
         result%matrix_source_area_partition_used=request%boundary%matrix_source_area_partition
         call solver%solve(request,workspace,corrector)
-        write(*,'(*(g0))') 'MIGMAC11_SOLVER_ROUTE|STATUS=',corrector%status,'|ROUTE=',trim(corrector%diagnostics%route)
         result%matrix_result=corrector
         result%source_reduction_attempts=result%source_reduction_attempts+1
         result%corrector_solves=result%corrector_solves+1
