@@ -13,6 +13,9 @@ module mod_fmr_wofost_crop_transaction
        initialize_wofost_potential_shadow_from_actual, WOFOST_POTENTIAL_SHADOW_OK
   use mod_wofost_potential_shadow_daily, only: wofost_potential_daily_result_t, &
        evaluate_wofost_potential_shadow_day, WOFOST_POTENTIAL_DAILY_OK
+  use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, &
+       crop_root_depth_rate_daily_forcing_t, crop_root_depth_rate_diagnostics_t, &
+       initialize_crop_root_depth_rate_state, evaluate_crop_root_depth_rate_candidate, CROP_ROOT_RATE_OK
   use mod_wofost_two_phase_crop_window, only: wofost_two_phase_crop_window_t, &
        wofost_crop_window_begin_diagnostics_t, wofost_crop_window_complete_diagnostics_t, &
        begin_wofost_one_day_crop_window, complete_wofost_one_day_crop_window, WOFOST_CROP_WINDOW_OK
@@ -57,6 +60,7 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_crop_owner_state_t) :: owner
     type(wofost_potential_shadow_state_t), allocatable :: potential_shadow
     type(fmr_wofost_root_growth_carrier_t), allocatable :: root_growth_carrier
+    type(crop_root_depth_rate_state_t), allocatable :: root_depth_rate
     type(fmr_wofost_crop_event_identity_t) :: last_consumed_event
   contains
     procedure :: clone => fmr_wofost_crop_transaction_clone
@@ -65,6 +69,8 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: potential_shadow_enabled => fmr_wofost_crop_transaction_potential_shadow_enabled
     procedure, public :: snapshot_potential_shadow => fmr_wofost_crop_transaction_snapshot_potential_shadow
     procedure, public :: snapshot_root_growth => fmr_wofost_crop_transaction_snapshot_root_growth
+    procedure, public :: root_depth_rate_enabled => fmr_wofost_crop_transaction_root_depth_rate_enabled
+    procedure, public :: snapshot_root_depth_rate => fmr_wofost_crop_transaction_snapshot_root_depth_rate
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
   end type fmr_wofost_crop_transaction_state_t
@@ -78,6 +84,8 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_potential_shadow_state_t) :: potential_shadow
     logical :: root_growth_carrier_present = .false.
     type(fmr_wofost_root_growth_carrier_t) :: root_growth_carrier
+    logical :: root_depth_rate_present = .false.
+    type(crop_root_depth_rate_state_t) :: root_depth_rate
     logical :: receipt_present = .false.
     type(fmr_wofost_crop_event_identity_persistence_t) :: receipt
   contains
@@ -93,6 +101,8 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    logical :: root_depth_rate_enabled = .false.
+    type(crop_root_depth_rate_parameters_t) :: root_depth_rate_parameters
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
   end type fmr_wofost_crop_transaction_parameters_t
@@ -115,6 +125,8 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    logical :: root_depth_rate_enabled = .false.
+    type(crop_root_depth_rate_parameters_t) :: root_depth_rate_parameters
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
