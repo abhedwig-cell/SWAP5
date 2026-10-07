@@ -8,6 +8,7 @@ module mod_wofost_finalize_rates
   use mod_wofost_prepare_assimilation, only: wofost_prepare_assimilation_result_t
   use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t, &
        wofost_one_day_rate_packet_t, b110_relative_transpiration
+  use mod_wofost_classic_phenology_rate, only: evaluate_wofost_classic_idsl01_rate, WOFOST_CLASSIC_PHENOLOGY_OK
   implicit none
   private
 
@@ -47,7 +48,7 @@ contains
     integer, intent(out) :: status
 
     type(wofost_rate_scalar_parameters_t) :: scalars
-    real(real64) :: reltr, dtsum, dvred, dvr
+    real(real64) :: reltr, dtsum, dvr
     real(real64) :: rfse, fr, fl, fs, fo, rdrr, rdrst, slat
     real(real64) :: gass, rmres, teff, mres, asrc
     real(real64) :: partition_check, help, cvf_denominator, cvf, dmi, carbon_check
@@ -131,16 +132,13 @@ contains
 
     reltr = b110_relative_transpiration(aggregates)
 
-    dvred = 1.0_real64
-    if (scalars%development_daylength_mode == 1) then
-      dvred = max(0.0_real64, min(1.0_real64, &
-           (forcing%photoperiodic_daylength_hours - scalars%daylength_lower_hours) / &
-           (scalars%daylength_upper_hours - scalars%daylength_lower_hours)))
-    end if
-    if (state_view%development_stage < 1.0_real64) then
-      dvr = dvred * dtsum / scalars%vegetative_temperature_sum_required
-    else
-      dvr = dtsum / scalars%generative_temperature_sum_required
+    call evaluate_wofost_classic_idsl01_rate(scalars%development_daylength_mode, &
+         state_view%development_stage, dtsum, scalars%vegetative_temperature_sum_required, &
+         scalars%generative_temperature_sum_required, forcing%photoperiodic_daylength_hours, &
+         scalars%daylength_lower_hours, scalars%daylength_upper_hours, dvr, parameter_status)
+    if (parameter_status /= WOFOST_CLASSIC_PHENOLOGY_OK) then
+      status = WOFOST_FINALIZE_RATES_INVALID_PARAMETERS
+      return
     end if
 
     ! Preserve B1.10 update_wofost arithmetic order for the restricted route.
