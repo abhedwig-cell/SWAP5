@@ -72,7 +72,7 @@ if len(days)!=expected:
         ds=date.fromordinal(cur.toordinal()+j).isoformat()
         if ds not in days or len(days[ds])!=24:
             missing.append((ds,len(days.get(ds,[]))))
-    raise SystemExit(f"incomplete ERA5-Land period: expected {expected} complete days, got {len(days)}; first missing={missing[:10]}")
+    raise SystemExit(f"incomplete ERA5 period: expected {expected} complete days, got {len(days)}; first missing={missing[:10]}")
 
 writer=csv.writer(sys.stdout)
 writer.writerow(["date","precip_mm","wet_hours","tmin_c","tmax_c","rad_mj_m2","vap_kpa","wind2_m_s","et0_mm_day"])
