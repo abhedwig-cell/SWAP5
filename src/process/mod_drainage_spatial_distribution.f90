@@ -46,10 +46,26 @@ module mod_drainage_spatial_distribution
   end type drainage_distribution_diagnostics_t
 
   public :: distribute_single_level_positive_divdra
+  public :: distribute_single_level_signed_divdra
 
 contains
 
   subroutine distribute_single_level_positive_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+    type(drainage_distribution_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    real(real64), intent(in) :: scalar_transfer
+    type(drainage_node_transfer_t), intent(out) :: node_transfer
+    type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
+
+    diagnostics = drainage_distribution_diagnostics_t()
+    if (.not. ieee_is_finite(scalar_transfer) .or. scalar_transfer < 0.0_real64) then
+      diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
+      return
+    end if
+    call distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+  end subroutine distribute_single_level_positive_divdra
+
+  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(in) :: scalar_transfer
@@ -74,18 +90,18 @@ contains
     allocate(node_transfer%soil_to_drain_rate(n))
     node_transfer%soil_to_drain_rate = 0.0_real64
 
-    if (.not. ieee_is_finite(scalar_transfer) .or. scalar_transfer < 0.0_real64) then
+    if (.not. ieee_is_finite(scalar_transfer)) then
       diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
       return
     end if
 
-    if (scalar_transfer <= 0.0_real64) then
+    if (scalar_transfer == 0.0_real64) then
       diagnostics%evaluated = .true.
       diagnostics%zero_transfer = .true.
       return
     end if
 
-    if (scalar_transfer <= LEGACY_ACTIVE_MAGNITUDE) then
+    if (abs(scalar_transfer) <= LEGACY_ACTIVE_MAGNITUDE) then
       diagnostics%status = DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE
       return
     end if
@@ -197,7 +213,7 @@ contains
     diagnostics%profile_anisotropy_factor = fac_aniso
     diagnostics%discharge_layer_bottom_depth = discharge_bottom
     diagnostics%discharge_transmissivity = kd_drain
-  end subroutine distribute_single_level_positive_divdra
+  end subroutine distribute_single_level_signed_divdra
 
   logical function valid_parameters(parameters) result(valid)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
