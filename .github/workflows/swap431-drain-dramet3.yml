@@ -1,0 +1,19 @@
+name: SW431 Drain DRAMET3 Qualification
+on:
+  push:
+    branches:
+      - work/swap431-drain-dramet3-20261007
+    paths:
+      - 'src/process/mod_drainage_dramet3_response.f90'
+      - 'tests/fmig431/test_swap431_dramet3.f90'
+      - 'tests/fmig431/run_swap431_dramet3.sh'
+      - '.github/workflows/swap431-drain-dramet3.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_swap431_dramet3.sh
+      - run: git diff --check integration/f-ci-canonical...HEAD
