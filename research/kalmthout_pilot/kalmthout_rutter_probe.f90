@@ -12,7 +12,7 @@ program kalmthout_rutter_probe
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
+  real(real64), parameter :: HARD_MASS_GATE=1.0e-8_real64
   real(real64), parameter :: H0_CM=-75.0_real64
   integer, parameter :: UNIT_MET=10, UNIT_OUT=20
   character(len=256) :: met_path, out_path, line, ds
