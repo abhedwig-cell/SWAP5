@@ -21,7 +21,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 - B1.11 fixation policy, separate from admitted WOFOST81 semantics.
 - Shared Soil-N management-event binding for amendments and crop residues: persistent event id, once-only application, duplicate rejection, and restart-preserved event lineage.
 - Soil-N source rate factors plus source-coupled mineral reaction bridges: NH4 disappearance from aggregate transport is converted into equal NO3 production, while NO3 first-order disappearance is booked as explicit external denitrification loss. Both use the interval-average transported concentration and preserve whole-N accounting.
-- Aggregate Soil-N transport.
+- Aggregate Soil-N transport plus a one-day B1.11 mineral exchange caller and an integrated Soil-N candidate composing organic turnover, Cdissi-dependent rates, NH4/NO3 transport, nitrification and denitrification on one owner.
 - Amendments and crop residues, including distinct B1.11 OM activation
   thresholds (1e-6 and 1e-12 respectively).
 - Freundlich sorption, solute decay, pond exchange and age production.
@@ -35,9 +35,7 @@ bound and reviewed.
 
 ## Explicit decision boundaries
 
-- `SW431-NUT-ORGANIC`: exact B1.11 contains inconsistent organic-N
-  mineralisation bookkeeping expressions; see
-  `MC_NUT01_ORGANIC_SOURCE_DECISION.md`.
+- `SW431-NUT-ORGANIC`: the exact-source inconsistency is resolved by an accepted mass-consistent reference correction; production qualification still has to admit the integrated daily route. See `MC_NUT01_ORGANIC_SOURCE_DECISION.md`.
 - `SW431-SALT-AQUIFER`: exact B1.11 has a reproduced out-of-bounds SWBR
   coefficient access; see `MC_SOL01_AQUIFER_SOURCE_DECISION.md`.
 
