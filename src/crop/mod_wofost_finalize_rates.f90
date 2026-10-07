@@ -6,6 +6,7 @@ module mod_wofost_finalize_rates
   use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t, &
        wofost_rate_scalar_parameters_t, WOFOST_RATE_PARAMETER_OK
   use mod_wofost_prepare_assimilation, only: wofost_prepare_assimilation_result_t
+  use mod_wofost_phenology_rate_contract, only: wofost_phenology_rate_t, WOFOST_PHENOLOGY_RATE_OK
   use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t, &
        wofost_one_day_rate_packet_t, b110_relative_transpiration
   implicit none
@@ -37,7 +38,7 @@ module mod_wofost_finalize_rates
 
 contains
 
-  subroutine finalize_wofost_one_day_rates(state_view, parameters, prepared, aggregates, forcing, rates, status)
+  subroutine finalize_wofost_one_day_rates(state_view, parameters, prepared, aggregates, forcing, rates, status, phenology_override)
     type(wofost_one_day_rate_state_view_t), intent(in) :: state_view
     type(wofost_rate_parameter_bundle_t), intent(in) :: parameters
     type(wofost_prepare_assimilation_result_t), intent(in) :: prepared
@@ -45,6 +46,7 @@ contains
     type(wofost_finalize_rate_forcing_t), intent(in) :: forcing
     type(wofost_one_day_rate_packet_t), intent(out) :: rates
     integer, intent(out) :: status
+    type(wofost_phenology_rate_t), intent(in), optional :: phenology_override
 
     type(wofost_rate_scalar_parameters_t) :: scalars
     real(real64) :: reltr, dtsum, dvred, dvr
@@ -131,16 +133,25 @@ contains
 
     reltr = b110_relative_transpiration(aggregates)
 
-    dvred = 1.0_real64
-    if (scalars%development_daylength_mode == 1) then
-      dvred = max(0.0_real64, min(1.0_real64, &
-           (forcing%photoperiodic_daylength_hours - scalars%daylength_lower_hours) / &
-           (scalars%daylength_upper_hours - scalars%daylength_lower_hours)))
-    end if
-    if (state_view%development_stage < 1.0_real64) then
-      dvr = dvred * dtsum / scalars%vegetative_temperature_sum_required
+    if (present(phenology_override)) then
+      if (phenology_override%validate() /= WOFOST_PHENOLOGY_RATE_OK) then
+        status = WOFOST_FINALIZE_RATES_INVALID_FORCING
+        return
+      end if
+      dtsum = phenology_override%temperature_sum_increment
+      dvr = phenology_override%development_rate
     else
-      dvr = dtsum / scalars%generative_temperature_sum_required
+      dvred = 1.0_real64
+      if (scalars%development_daylength_mode == 1) then
+        dvred = max(0.0_real64, min(1.0_real64, &
+             (forcing%photoperiodic_daylength_hours - scalars%daylength_lower_hours) / &
+             (scalars%daylength_upper_hours - scalars%daylength_lower_hours)))
+      end if
+      if (state_view%development_stage < 1.0_real64) then
+        dvr = dvred * dtsum / scalars%vegetative_temperature_sum_required
+      else
+        dvr = dtsum / scalars%generative_temperature_sum_required
+      end if
     end if
 
     ! Preserve B1.10 update_wofost arithmetic order for the restricted route.
