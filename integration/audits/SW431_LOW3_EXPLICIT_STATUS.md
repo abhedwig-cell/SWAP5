@@ -10,7 +10,7 @@ QUALIFICATION JOB: 112762086766
 ADMISSION PR: #1090  
 CANONICAL MERGE: 1e85f726bd5794110a60f1d2fbf22b12b72afbda  
 EVIDENCE PR: #1091  
-CURRENT RECORDED CANONICAL: d395ca3decf03e7149dbf8d65dc9ad8946826f3a  
+CURRENT RECORDED CANONICAL: 88cacf7a93d99cc966b1b993a16eb3c774a1f726  
 STATUS: REPAIRED / canonical admitted
 
 ## Scope
@@ -118,6 +118,21 @@ PR #1091 then persisted the stronger qualification record and merged at
 A dependency-surface comparison from the qualified code head
 `61a63bd4f5a00ca465dab0243e58b42e6d88d6d3` to recorded canonical
 `d395ca3decf03e7149dbf8d65dc9ad8946826f3a` shows no production, solver, runtime or test changes for this capability; the only file delta is the added qualification JSON. The qualified evidence therefore remains applicable to the current recorded canonical surface.
+
+### Current-canonical reconciliation 2026-10-07
+
+Canonical advanced from `d395ca3decf03e7149dbf8d65dc9ad8946826f3a` to
+`88cacf7a93d99cc966b1b993a16eb3c774a1f726` through 107 commits.
+The broad dependency-surface comparison includes later edits to
+`src/runtime/mod_fmr_serialized_reference_backend.f90`, but direct comparison
+of the admitted LOW3 explicit materialization block, from
+`if (self%swbotb3_explicit_active) then` through the implicit-mode fallback,
+is text-identical to qualified code head
+`61a63bd4f5a00ca465dab0243e58b42e6d88d6d3`.
+The explicit component law, CALCGWL projection modules, application-profile
+contracts and LOW3 qualification tests are otherwise unchanged in this
+reconciliation. The persisted qualification therefore remains applicable to
+current canonical.
 
 ## Claim ceiling
 
