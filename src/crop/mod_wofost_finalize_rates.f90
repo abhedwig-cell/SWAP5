@@ -80,16 +80,6 @@ contains
       if (.not. valid_inclusive(forcing%photoperiodic_daylength_hours, 0.0_real64, 24.0_real64)) return
     end if
 
-    call parameters%evaluate_temperature_sum_increment(forcing%average_temperature, dtsum, parameter_status)
-    if (parameter_status /= WOFOST_RATE_PARAMETER_OK) then
-      status = WOFOST_FINALIZE_RATES_TABLE_ERROR
-      return
-    end if
-    if (.not. ieee_is_finite(dtsum) .or. dtsum < 0.0_real64 .or. dtsum > 100.0_real64) then
-      status = WOFOST_FINALIZE_RATES_RESTRICTED_DTSUM
-      return
-    end if
-
     call parameters%evaluate_maintenance_respiration_factor(state_view%development_stage, rfse, parameter_status)
     if (.not. valid_table_unit_result(parameter_status, rfse)) then
       status = WOFOST_FINALIZE_RATES_TABLE_ERROR
@@ -141,6 +131,15 @@ contains
       dtsum = phenology_override%temperature_sum_increment
       dvr = phenology_override%development_rate
     else
+      call parameters%evaluate_temperature_sum_increment(forcing%average_temperature, dtsum, parameter_status)
+      if (parameter_status /= WOFOST_RATE_PARAMETER_OK) then
+        status = WOFOST_FINALIZE_RATES_TABLE_ERROR
+        return
+      end if
+      if (.not. ieee_is_finite(dtsum) .or. dtsum < 0.0_real64 .or. dtsum > 100.0_real64) then
+        status = WOFOST_FINALIZE_RATES_RESTRICTED_DTSUM
+        return
+      end if
       dvred = 1.0_real64
       if (scalars%development_daylength_mode == 1) then
         dvred = max(0.0_real64, min(1.0_real64, &
