@@ -20,11 +20,11 @@ contains
 
   subroutine limit_root_extension_by_drought_and_supply(proposed_extension_cm,minimum_extension_cm, &
        drought_reduction_fraction,extent_critical_fraction,deepest_node_root_biomass, &
-       current_root_depth_cm,deepest_node_top_depth_cm,available_root_growth,result,status)
+       current_root_depth_cm,deepest_node_top_depth_cm,available_root_growth,negligible_extension_cm,result,status)
     real(real64), intent(in) :: proposed_extension_cm,minimum_extension_cm
     real(real64), intent(in) :: drought_reduction_fraction,extent_critical_fraction
     real(real64), intent(in) :: deepest_node_root_biomass,current_root_depth_cm,deepest_node_top_depth_cm
-    real(real64), intent(in) :: available_root_growth
+    real(real64), intent(in) :: available_root_growth,negligible_extension_cm
     type(root_extension_supply_result_t), intent(out) :: result
     integer, intent(out) :: status
 
@@ -43,6 +43,7 @@ contains
     if(.not.ieee_is_finite(current_root_depth_cm).or.current_root_depth_cm<0.0_real64)return
     if(.not.ieee_is_finite(deepest_node_top_depth_cm))return
     if(.not.ieee_is_finite(available_root_growth).or.available_root_growth<0.0_real64)return
+    if(.not.ieee_is_finite(negligible_extension_cm).or.negligible_extension_cm<0.0_real64)return
 
     ! Pinned B1.11 SWDMI2RD=2:
     ! rr=max(min(rr,rrimin),rr*min(1,(1-ialpdry_day)/extentcrit))
@@ -60,6 +61,7 @@ contains
         rr=rr*result%supply_factor
       end if
     end if
+    if(rr<negligible_extension_cm)rr=0.0_real64
     result%extension_cm=rr
     status=ROOT_SUPPLY_OK
   end subroutine
