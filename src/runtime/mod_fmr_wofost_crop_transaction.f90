@@ -157,7 +157,15 @@ contains
       if (self%root_growth_carrier_present) return
     end if
     if (self%root_growth_carrier_present) then
-      if (.not. self%root_growth_carrier%ready()) return
+      if (self%root_growth_carrier%valid) then
+        if (.not. self%root_growth_carrier%ready()) return
+      else
+        ! Before the first accepted crop event the optional shadow already
+        ! exists but no accepted GRRT/GRRTPOT observation exists yet.
+        ! A receipt proves an event was consumed and therefore requires a
+        ! ready root-growth carrier.
+        if (self%receipt_present) return
+      end if
     end if
     if (self%receipt_present) then
       if (.not. self%receipt%ready()) return
@@ -361,7 +369,11 @@ contains
     if (allocated(self%potential_shadow)) then
       if (self%potential_shadow%validate() /= WOFOST_POTENTIAL_SHADOW_OK) return
       if (.not. allocated(self%root_growth_carrier)) return
-      if (self%root_growth_carrier%valid .and. .not. self%root_growth_carrier%ready()) return
+      if (self%root_growth_carrier%valid) then
+        if (.not. self%root_growth_carrier%ready()) return
+      else
+        if (self%last_consumed_event%ready()) return
+      end if
     else
       if (allocated(self%root_growth_carrier)) return
     end if
