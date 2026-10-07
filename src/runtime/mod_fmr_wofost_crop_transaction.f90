@@ -630,7 +630,11 @@ contains
     type(wofost_one_day_rate_packet_t) :: rates
     type(wofost_potential_daily_result_t) :: potential_result
     type(fmr_wofost_root_growth_carrier_t) :: candidate_growth_carrier
-    integer :: crop_status
+    type(wofost_phenology_request_t) :: phenology_request
+    type(wofost_phenology_dispatch_result_t) :: phenology_result
+    type(wofost_rate_scalar_parameters_t) :: phenology_scalars
+    real(real64) :: phenology_dtsum, phenology_dvred
+    integer :: crop_status, phenology_status, parameter_status
 
     outcome = trial_outcome_t()
     self%last_status = FMR_WOF38_INVALID_TRANSACTION_STATE
@@ -657,11 +661,62 @@ contains
       end if
 
       candidate_growth_carrier = fmr_wofost_root_growth_carrier_t()
+      phenology_result = wofost_phenology_dispatch_result_t()
+      if (self%phenology_mode /= WOFOST_PHENOLOGY_CLASSIC) then
+        phenology_request = wofost_phenology_request_t()
+        phenology_request%mode = self%phenology_mode
+        phenology_request%average_temperature_c = self%event_forcing%crop_forcing%average_temperature
+        if (self%phenology_mode == WOFOST_PHENOLOGY_SOYBEAN) then
+          phenology_request%latitude_degrees = self%event_forcing%soybean_latitude_degrees
+          phenology_request%day_of_year = self%event_forcing%soybean_day_of_year
+          if (.not. allocated(self%soybean_phenology)) then
+            self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+            return
+          end if
+          call resolve_wofost_phenology(typed_state%owner,phenology_request, &
+               soybean_parameters=self%soybean_phenology,result=phenology_result,status=phenology_status)
+        else if (self%phenology_mode == WOFOST_PHENOLOGY_VERNALISATION) then
+          if (.not. allocated(self%vernalisation_phenology)) then
+            self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+            return
+          end if
+          phenology_scalars = self%rate_parameters%scalar_view()
+          call self%rate_parameters%evaluate_temperature_sum_increment( &
+               self%event_forcing%crop_forcing%average_temperature,phenology_dtsum,parameter_status)
+          if (parameter_status /= WOFOST_RATE_PARAMETER_OK) then
+            self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+            return
+          end if
+          phenology_dvred = max(0.0_real64,min(1.0_real64, &
+               (self%event_forcing%crop_forcing%photoperiodic_daylength_hours-phenology_scalars%daylength_lower_hours)/ &
+               (phenology_scalars%daylength_upper_hours-phenology_scalars%daylength_lower_hours)))
+          phenology_request%photoperiod_factor = phenology_dvred
+          phenology_request%temperature_sum_increment = phenology_dtsum
+          phenology_request%vegetative_temperature_sum_required = phenology_scalars%vegetative_temperature_sum_required
+          call resolve_wofost_phenology(typed_state%owner,phenology_request, &
+               vernalisation_parameters=self%vernalisation_phenology,result=phenology_result,status=phenology_status)
+        else
+          self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+          return
+        end if
+        if (phenology_status /= WOFOST_PHENOLOGY_DISPATCH_OK) then
+          self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+          return
+        end if
+      end if
+
       if (self%potential_shadow_enabled) then
-        call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
-             self%event_forcing%crop_forcing, t0, t1, self%stem_area_coefficient, &
-             self%storage_area_coefficient, self%rate_parameters, self%update_parameters, &
-             self%potential_attainable_multiplier, potential_result, crop_status)
+        if (phenology_result%override_available) then
+          call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
+               self%event_forcing%crop_forcing, t0, t1, self%stem_area_coefficient, &
+               self%storage_area_coefficient, self%rate_parameters, self%update_parameters, &
+               self%potential_attainable_multiplier, potential_result, crop_status, phenology_result%rate)
+        else
+          call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
+               self%event_forcing%crop_forcing, t0, t1, self%stem_area_coefficient, &
+               self%storage_area_coefficient, self%rate_parameters, self%update_parameters, &
+               self%potential_attainable_multiplier, potential_result, crop_status)
+        end if
         if (crop_status /= WOFOST_POTENTIAL_DAILY_OK) then
           self%last_status = FMR_WOF38_POTENTIAL_ERROR
           return
@@ -676,8 +731,14 @@ contains
         return
       end if
 
-      call complete_wofost_one_day_crop_window(crop_window, self%rate_parameters, self%update_parameters, &
-           self%event_forcing%accepted_aggregates, candidate_owner, rates, complete_diagnostics, crop_status)
+      if (phenology_result%override_available) then
+        call complete_wofost_one_day_crop_window(crop_window, self%rate_parameters, self%update_parameters, &
+             self%event_forcing%accepted_aggregates, candidate_owner, rates, complete_diagnostics, crop_status, &
+             phenology_result%rate)
+      else
+        call complete_wofost_one_day_crop_window(crop_window, self%rate_parameters, self%update_parameters, &
+             self%event_forcing%accepted_aggregates, candidate_owner, rates, complete_diagnostics, crop_status)
+      end if
       if (crop_status /= WOFOST_CROP_WINDOW_OK .or. .not. complete_diagnostics%candidate_built) then
         self%last_status = FMR_WOF38_CROP_COMPLETE_ERROR
         return
@@ -685,6 +746,17 @@ contains
       if (candidate_owner%validate() /= WOFOST_CROP_OWNER_OK) then
         self%last_status = FMR_WOF38_CROP_COMPLETE_ERROR
         return
+      end if
+      if (phenology_result%vernalisation_candidate_available) then
+        if (.not. allocated(candidate_owner%vernalisation)) then
+          self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+          return
+        end if
+        candidate_owner%vernalisation = phenology_result%vernalisation%candidate_state
+        if (candidate_owner%validate() /= WOFOST_CROP_OWNER_OK) then
+          self%last_status = FMR_WOF38_PHENOLOGY_ERROR
+          return
+        end if
       end if
 
       if (self%potential_shadow_enabled) then
