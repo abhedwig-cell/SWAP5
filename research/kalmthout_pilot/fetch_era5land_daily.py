@@ -74,22 +74,33 @@ if len(days)!=expected:
             missing.append((ds,len(days.get(ds,[]))))
     raise SystemExit(f"incomplete ERA5 period: expected {expected} complete days, got {len(days)}; first missing={missing[:10]}")
 
-writer=csv.writer(sys.stdout)
-writer.writerow(["date","precip_mm","wet_hours","tmin_c","tmax_c","rad_mj_m2","vap_kpa","wind2_m_s","et0_mm_day"])
-for ds in sorted(days):
-    rows=days[ds]
+# Derive daily ET0 and attach it to every hourly record. The SWAP5 pilot
+# advances one hour at a time; ET0 is therefore a daily rate integrated over
+# 1/24 day while precipitation retains the ERA5 hourly amount.
+daily_et0={}
+for ds,rows in days.items():
     temp=[r["temperature_2m"] for r in rows]
     dew=[r["dew_point_2m"] for r in rows]
-    pr=[max(0.0,r["precipitation"]) for r in rows]
     sw=[max(0.0,r["shortwave_radiation"]) for r in rows]
     w10=[max(0.0,r["wind_speed_10m"]) for r in rows]
     tmin=min(temp); tmax=max(temp); tmean=sum(temp)/24
     ea=sum(sat_vp_kpa(v) for v in dew)/24
     rad=sum(sw)*0.0036
-    # FAO-56 wind-height conversion, z=10 m to 2 m.
     factor=4.87/math.log(67.8*10.0-5.42)
     u2=(sum(w10)/24)*factor
     doy=date.fromisoformat(ds).timetuple().tm_yday
-    et0=fao56_et0(tmin,tmax,tmean,ea,rad,u2,doy)
-    writer.writerow([ds,f"{sum(pr):.6f}",sum(1 for x in pr if x>WET_THRESHOLD_MM_H),
-                     f"{tmin:.6f}",f"{tmax:.6f}",f"{rad:.6f}",f"{ea:.6f}",f"{u2:.6f}",f"{et0:.6f}"])
+    daily_et0[ds]=fao56_et0(tmin,tmax,tmean,ea,rad,u2,doy)
+
+writer=csv.writer(sys.stdout)
+writer.writerow(["time","precip_mm_hour","temperature_c","dewpoint_c","shortwave_w_m2","wind10_m_s","et0_mm_day"])
+for i,tstamp in enumerate(h["time"]):
+    ds=tstamp[:10]
+    writer.writerow([
+        tstamp,
+        f"{max(0.0,h['precipitation'][i]):.6f}",
+        f"{h['temperature_2m'][i]:.6f}",
+        f"{h['dew_point_2m'][i]:.6f}",
+        f"{max(0.0,h['shortwave_radiation'][i]):.6f}",
+        f"{max(0.0,h['wind_speed_10m'][i]):.6f}",
+        f"{daily_et0[ds]:.6f}",
+    ])
