@@ -1,0 +1,24 @@
+name: SW431 HYD constitutive families
+on:
+  push:
+    branches: [work/swap431-hyd-hyst-closeout]
+    paths:
+      - 'src/solver/mod_b111_legacy_hydraulic_provider.f90'
+      - 'src/solver/mod_b111_extended_hydraulic_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fsi/test_b111_hydraulic_families.f90'
+      - 'tests/fsi/check_b111_hydraulic_families.py'
+      - 'tests/fsi/run_b111_hydraulic_families.sh'
+      - '.github/workflows/swap431-hydraulic-families.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  focused:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fsi/run_b111_hydraulic_families.sh
+      - run: bash tests/run-kernel.sh
