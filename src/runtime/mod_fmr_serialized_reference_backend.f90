@@ -3846,10 +3846,16 @@ contains
       if (cauchy3_status /= FMR_CAUCHY3_OK) return
       if (self%swbotb3_explicit_active) then
         if (.not.self%profile_groundwater_projection) return
-        call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-             request%base_state%pressure_head,request%base_state%ponding_depth,profile_projection)
+        select type (low3_physical => state)
+        class is (fmr_b110_physical_state_t)
+          if (low3_physical%active_nodes /= self%soil_parameters%active_nodes .or. &
+              .not. allocated(low3_physical%pressure_head)) return
+          call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection)
+        class default
+          return
+        end select
         if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
-        request%base_state%groundwater_level=profile_projection%level_cm
         allocate(low3_ztop(self%soil_parameters%active_nodes), low3_zbot(self%soil_parameters%active_nodes), &
                  low3_ksat(self%soil_parameters%active_nodes))
         do low3_i=1,self%soil_parameters%active_nodes
@@ -3858,7 +3864,7 @@ contains
           call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,low3_i,0.0_real64,low3_ksat(low3_i),low3_k_ok)
           if(.not.low3_k_ok)return
         end do
-        call evaluate_b111_explicit_cauchy_profile_flux(request%base_state%groundwater_level, &
+        call evaluate_b111_explicit_cauchy_profile_flux(profile_projection%level_cm, &
              self%swbotb3_explicit_hdrain_cm,self%swbotb3_explicit_shape_3,self%cauchy3_proposal%aquifer_total_head_cm, &
              self%legacy_swbotb3_implicit_control%external_resistance_days(),low3_ztop,low3_zbot,self%soil_parameters%dz, &
              low3_ksat,cauchy3_q4,low3_qbot,low3_gwlmean, &
