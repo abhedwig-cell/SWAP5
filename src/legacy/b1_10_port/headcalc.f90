@@ -950,7 +950,8 @@ subroutine boundtop_state_bridge(task)
    real(8) :: provider_runoff_flux
    provider_runoff_resolved = .false.
    if (provider_dynamic_top_active) then
-      if (evaluated_boundary_conditions%matrix_source_area_partition) then
+      if (evaluated_boundary_conditions%matrix_source_area_partition .or. &
+          associated(evaluation_context%macropore)) then
          call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
               provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
          if (.not.ieee_is_finite(provider_macropore_surface_area_fraction) .or. &
@@ -961,7 +962,7 @@ subroutine boundtop_state_bridge(task)
       end if
       call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
            evaluated_boundary_conditions, provider_dynamic_top_result)
-      if (evaluated_boundary_conditions%matrix_source_area_partition) then
+      if (associated(evaluation_context%macropore)) then
          call evaluation_context%macropore%set_candidate_pond_lateral( &
               provider_dynamic_top_result%macropore_pond_requested_lateral_cm)
          call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
