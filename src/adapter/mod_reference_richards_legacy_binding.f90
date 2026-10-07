@@ -112,7 +112,7 @@ contains
     class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
     type(soil_water_solve_result_t), intent(out) :: result
 
-    logical :: ok, sensitivity_capture
+    logical :: ok, sensitivity_capture, mode9_prepared
     type(a23bu_solver_history_t) :: call_history
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
     integer(int64) :: reset_bytes_before
@@ -360,9 +360,19 @@ contains
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8 .and. &
+        request%boundary%bottom_mode /= 9) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 9) then
+       route = 'simultaneous-head-flux-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head) .or. &
+           .not. ieee_is_finite(request%boundary%bottom_flux)) return
+       if (.not. ieee_is_finite(request%parameters%dz(n)) .or. request%parameters%dz(n) <= 0.0_real64) return
     end if
     if (request%boundary%bottom_mode == 8) then
        route = 'lysimeter-plate-domain-deferred'
@@ -426,5 +436,36 @@ contains
     scale = max(1.0_real64, abs(a), abs(b))
     same_real = abs(a-b) <= 16.0_real64*epsilon(1.0_real64)*scale
   end function same_real
+
+  subroutine prepare_simultaneous_head_flux_bottom(request, state, ok)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(reference_richards_state_binding_t), intent(inout) :: state
+    logical, intent(out) :: ok
+    integer :: n
+    real(real64) :: kbot, last_head, half_bottom_distance
+    real(real64), allocatable :: eval_head(:), theta_eval(:), k_eval(:), capacity_eval(:), dkdh_eval(:)
+
+    ok = .false.
+    n = request%parameters%active_nodes
+    if (n < 2) return
+    allocate(eval_head(n), theta_eval(n), k_eval(n), capacity_eval(n), dkdh_eval(n))
+    eval_head = request%base_state%pressure_head
+    eval_head(n) = request%boundary%bottom_head
+    call request%evaluation%constitutive%evaluate(eval_head, theta_eval, k_eval, capacity_eval, dkdh_eval)
+    kbot = k_eval(n)
+    if (.not. ieee_is_finite(kbot) .or. kbot <= 0.0_real64) return
+    half_bottom_distance = 0.5_real64 * request%parameters%dz(n)
+    last_head = request%boundary%bottom_head - &
+         (request%boundary%bottom_flux / kbot + 1.0_real64) * half_bottom_distance
+    if (.not. ieee_is_finite(last_head)) return
+    eval_head(n) = last_head
+    call request%evaluation%constitutive%evaluate(eval_head, theta_eval, k_eval, capacity_eval, dkdh_eval)
+    if (.not. ieee_is_finite(theta_eval(n)) .or. .not. ieee_is_finite(k_eval(n)) .or. k_eval(n) < 0.0_real64) return
+    state%h(n) = last_head
+    state%theta(n) = theta_eval(n)
+    state%hbot = request%boundary%bottom_head
+    state%qbot = request%boundary%bottom_flux
+    ok = .true.
+  end subroutine prepare_simultaneous_head_flux_bottom
 
 end module mod_reference_richards_legacy_binding
