@@ -15,6 +15,7 @@ on:
       - 'tests/fmig431/test_swap431_low3_explicit_runtime.f90'
       - 'tests/fmig431/run_swap431_low3_explicit_runtime.py'
       - 'tests/fmig431/test_swap431_low3_explicit_application.f90'
+      - 'tests/fmig431/test_swap431_low3_explicit_progress_restart.f90'
       - 'tests/fmig431/run_swap431_low3_explicit_application.py'
       - '.github/workflows/swap431-low3-explicit.yml'
 jobs:
