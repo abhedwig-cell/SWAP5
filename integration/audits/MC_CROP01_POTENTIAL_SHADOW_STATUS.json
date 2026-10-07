@@ -1,0 +1,59 @@
+{
+  "schema": "swap431.mc_crop01.potential_shadow.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "ownership": "s_pot/r_pot/m_pot are distinct potential biomass/rate/management state, while DVS/TSUM/anthesis are shared global phenology advanced by the actual branch only.",
+    "timing": "potential update executes before actual; rejected transaction must advance neither."
+  },
+  "architecture": {
+    "actual": "primary committed wofost_crop_owner_state_t",
+    "potential": "optional transactional biomass shadow",
+    "shared": [
+      "immutable crop parameters",
+      "DVS/TSUM/anthesis phenology from actual owner"
+    ],
+    "potential_owned": [
+      "organ biomass",
+      "leaf cohorts",
+      "LAIEXP",
+      "reference carryover",
+      "potential root biomass WRTPOT"
+    ],
+    "not_duplicated": [
+      "DVS",
+      "TSUM",
+      "root-water sink",
+      "hydraulic state"
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_wofost_potential_shadow_state.f90",
+    "src/crop/mod_wofost_prepare_assimilation.f90"
+  ],
+  "semantics": [
+    "Potential rate-state view is materialized using actual phenology plus shadow biomass.",
+    "Potential shadow can diverge in WRT/LAI/organ biomass without mutating actual state.",
+    "Existing assimilation routine retains the default actual RELMF behavior; an optional explicit override supports potential SWPOTRELMF policy without duplicating assimilation physics.",
+    "SWPOTRELMF=2 can pass RELMF; other potential modes can pass 1.0."
+  ],
+  "unlocked_dependencies": {
+    "SW431-CROP-ATTAINABLE": "potential RELMF policy owner now exists",
+    "SW431-CROP-ROOTGROW-BIOMASS": "WRTPOT owner now exists",
+    "SW431-CROP-ROOTGROW": "potential GRRTPOT can be produced once shadow daily rates are transactionally composed"
+  },
+  "qualification": {
+    "owner_test": "tests/fmig431/test_swap431_potential_shadow.f90",
+    "status": "READY_FOR_O0_O2_AND_TRANSACTION_COMPOSITION"
+  },
+  "remaining": [
+    "Compose potential prepare/finalize/structural evolution in the same accepted daily crop event before actual update.",
+    "Persist optional shadow only when the capability is enabled.",
+    "Expose accepted GRRTPOT and WRTPOT to SWRD2/3 root-depth owners.",
+    "Qualify reject/replay/restart and actual-vs-potential divergence.",
+    "Preserve default actual assimilation bit-for-bit when no override is present."
+  ],
+  "disposition": "OPTIONAL_SHADOW_OWNER_AND_RELMF_POLICY_IMPLEMENTED_TRANSACTION_COMPOSITION_OPEN",
+  "admission": false
+}
