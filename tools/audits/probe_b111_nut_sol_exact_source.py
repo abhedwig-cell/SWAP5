@@ -55,7 +55,7 @@ reactive_substep_needles=[
  "cfluxt=cfluxb",
 ]
 for needle in reactive_substep_needles:
-    if needle not in solute:
+    if needle not in sol:
         raise SystemExit("missing exact reactive-solute substep equation: "+needle)
 
 solute_needles=[
