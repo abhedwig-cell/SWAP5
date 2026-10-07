@@ -1097,7 +1097,6 @@ contains
       if (tile%parameters%swbotb3_explicit_shape_3 < 0.0_real64 .or. tile%parameters%swbotb3_explicit_shape_3 > 1.0_real64) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
       if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
-      if (tile%parameters%swbotb3_explicit_active .or. tile%parameters%profile_groundwater_projection) return
       if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
