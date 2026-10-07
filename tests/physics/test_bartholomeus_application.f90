@@ -51,6 +51,7 @@ program test_bartholomeus_application
   repro%tiles(1)%parameters%bartholomeus%selection%oxygen_type=FMR_OXYGEN_TYPE_REPRODUCTION
   repro%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg=0.0_real64
   if(allocated(repro%tiles(1)%base_forcing%crop_oxygen)) deallocate(repro%tiles(1)%base_forcing%crop_oxygen)
+  repro%tiles(1)%base_forcing%root_oxygen_rooted_nodes=3
   allocate(repro%tiles(1)%parameters%bartholomeus%reproduction)
   associate(rp=>repro%tiles(1)%parameters%bartholomeus%reproduction)
     rp%slope=0.0_real64
