@@ -72,6 +72,10 @@ contains
 
     case(WOFOST_PHENOLOGY_SOYBEAN)
       if(.not.present(soybean_parameters))return
+      if(.not.allocated(owner%evolution_continuation))then
+        status=WOFOST_PHENOLOGY_DISPATCH_MISSING_STATE
+        return
+      end if
       if(.not.ieee_is_finite(request%latitude_degrees).or.abs(request%latitude_degrees)>90.0_real64)return
       if(request%day_of_year<1.or.request%day_of_year>366)return
       call soybean_daily_development_rate(soybean_parameters,owner%development_stage,request%average_temperature_c, &
@@ -87,6 +91,10 @@ contains
 
     case(WOFOST_PHENOLOGY_VERNALISATION)
       if(.not.present(vernalisation_parameters))return
+      if(owner%development_stage>=1.0_real64)then
+        status=WOFOST_PHENOLOGY_DISPATCH_OK
+        return
+      end if
       if(.not.allocated(owner%vernalisation))then
         status=WOFOST_PHENOLOGY_DISPATCH_MISSING_STATE
         return
