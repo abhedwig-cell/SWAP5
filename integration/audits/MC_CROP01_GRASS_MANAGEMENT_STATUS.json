@@ -1,0 +1,110 @@
+{
+  "schema": "swap431.mc_crop01.grass_management.v1",
+  "capability_id": "SW431-CROP-GRASS",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "routines": [
+      "initialize_grass",
+      "management_event",
+      "trigger_management_event",
+      "mowing_event",
+      "update_grass_interface"
+    ],
+    "state": [
+      "FL_MOW",
+      "FL_GRZ",
+      "FL_CUTEND",
+      "ICUT",
+      "TCUT",
+      "TDELAY",
+      "TGRZ",
+      "DMHRV",
+      "DMLOSS"
+    ],
+    "source_defect": {
+      "branch": "SW_LOSSGRZ=0",
+      "witness": "management_event declares local DMLoss without initialization, assigns it only when SW_LOSSGRZ==1, then unconditionally uses DMLoss in TWGRZ=UPTGRZ+LOSSGRZ+DMLoss.",
+      "disposition": "FAIL_CLOSED_PENDING_REFERENCE_DEFECT_POLICY",
+      "no_guessed_repair": true
+    },
+    "source_defect_nonzero_storage": {
+      "witness": "management_event includes WSO in TWDM/TWLVDM, but mowing_event and grazing removal do not reduce WSO.",
+      "disposition": "FAIL_CLOSED_WSO_NONZERO",
+      "rationale": "Avoid false biomass-removal/mass claims until reference-defect policy authorizes a repair or source establishes WSO=0 as invariant."
+    }
+  },
+  "implementation": [
+    "src/crop/mod_wofost_grass_phenology.f90",
+    "src/crop/mod_wofost_grass_management_owner.f90"
+  ],
+  "ownership": {
+    "existing_crop_owner": [
+      "living root biomass",
+      "living stem biomass",
+      "living leaf cohorts",
+      "storage biomass",
+      "DVS"
+    ],
+    "grass_management_owner": [
+      "dead leaf biomass DWLV",
+      "dead stem biomass DWST",
+      "event cursor ICUT",
+      "TCUT",
+      "TDELAY",
+      "TGRZ",
+      "mow/graze/cut-end flags",
+      "daily harvest/loss receipts"
+    ],
+    "immutable_parameters": [
+      "event sequence",
+      "trigger policy/tables",
+      "residual biomass",
+      "uptake/fixed loss",
+      "loss/head tables",
+      "mowing delay table",
+      "FLTB/FSTB/SLATB"
+    ],
+    "excluded": [
+      "soil hydraulic state",
+      "grass phenology T_TSUMCUM",
+      "root-water sink"
+    ]
+  },
+  "exact_semantics": [
+    "Mowing trigger follows biomass/date policy and MXGDMOW fallback.",
+    "Mowing reset uses FLTB/FSTB at current DVS, resets dead pools and leaf cohorts, SLA(1)=SLATB(DVS), LAIEXP=LASUM.",
+    "Mowing physical removal and DMHRV/DMLOSS follow B1.11 formulas; delay is INT(AFGEN(DELAYMOWTB,DMHRV+DMLOSS)).",
+    "Grazing trigger follows biomass/date policy and MXGDGRZ fallback.",
+    "Grazing removes UPTGRZ+LOSSGRZ+extra treading proportionally from living stem, dead stem, dead leaf and living leaf cohorts; storage/root are not reduced.",
+    "Legacy DMHRV reports UPTGRZ*fraction and DMLOSS reports only extra treading*fraction. Fixed LOSSGRZ removal is therefore tracked separately for physical mass.",
+    "Dewooling after event kind 3 reuses mowing reset with DMRESTDEW and forces TDELAY=1."
+  ],
+  "qualification": {
+    "test": "tests/fmig431/test_swap431_grass_management.f90",
+    "runner": "tests/fmig431/run_swap431_grass_management.py",
+    "status": "READY_FOR_O0_O2",
+    "cases": [
+      "mowing trigger",
+      "mowing FL/FS/SLA reset",
+      "mowing harvest/loss mass",
+      "event cursor and delay",
+      "full grazing day",
+      "partial grazing closeout",
+      "physical-vs-legacy grazing accounting",
+      "SW_LOSSGRZ=0 fail closed",
+      "nonzero WSO source-envelope fail closed"
+    ]
+  },
+  "disposition": "BOUNDED_SOURCE_DEFINED_GRASS_MANAGEMENT_IMPLEMENTED_DEFECT_BRANCH_AND_TRANSACTION_OPEN",
+  "remaining": [
+    "Run strict O0/O2 owner test including WSO=0 envelope and fail-closed WSO>0 case on a full checkout.",
+    "Compose management candidate atomically with actual and optional potential crop shadows.",
+    "Persist dead biomass and management cursor/restart state.",
+    "Bind accepted H_AVERAGE forcing for mowing/grazing loss tables.",
+    "Adjudicate SW_LOSSGRZ=0 under reference-defect policy before any claim covering that selector.",
+    "Qualify retry/restart and event ordering with phenology and crop transaction."
+  ],
+  "admission": false
+}
