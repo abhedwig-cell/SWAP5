@@ -20,6 +20,8 @@ program test_swap431_hyd_runtime_reachability
        bind_b111_extended_hydraulic_provider, B111_EXT_OK
   use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t, &
        configure_b111_conductivity_power_tail, bind_b111_conductivity_power_tail, B111_POWER_OK
+  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
+       initialize_b111_linear_table_parameters, bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
@@ -33,6 +35,7 @@ program test_swap431_hyd_runtime_reachability
     call run_case(models(i),.false.)
   end do
   call run_case(1,.true.)
+  call run_linear_table_case()
   write(*,'(A)') 'SW431_HYD_RUNTIME_REACHABILITY=PASS'
 
 contains
@@ -90,6 +93,80 @@ contains
     end if
   end subroutine
 
+  subroutine run_linear_table_case()
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    real(real64) :: k0
+    integer :: active_calls
+    logical :: ok
+
+    call initialize_parameters(parameters,1,.false.)
+    call initialize_linear_table(parameters)
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'linear-table committed state init')
+    call initialize_forcing(forcing,-k0)
+    call initialize_column(column,template)
+    call initialize_config(config)
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+    observation=backend%observation()
+    call require(output%completed.and.output%committed,'linear-table runtime commit')
+    call require(output%mass%complete,'linear-table mass complete')
+    call require(abs(output%mass%residual)<=mass_tol,'linear-table hard mass')
+    call require(observation%solver_executed,'linear-table solver executed')
+    write(*,'(A,1X,ES16.8)')'SW431_HYD_LINEAR_TABLE_RUNTIME_PASS',output%mass%residual
+  end subroutine
+
+  subroutine initialize_linear_table(p)
+    type(fmr_b110_physical_parameters_t),intent(inout)::p
+    type(b110_default_mvg_parameters_t)::bp
+    real(real64),allocatable::wci(:,:),wcs(:,:),capi(:,:),caps(:,:),coni(:,:),cons(:,:)
+    real(real64)::heads(501),theta(numnod),k(numnod),cap(numnod),dk(numnod),hv(numnod)
+    type(b110_default_mvg_provider_t)::base
+    integer::j,status
+    allocate(wci(501,numnod),wcs(501,numnod),capi(501,numnod),caps(501,numnod),coni(501,numnod),cons(501,numnod))
+    call initialize_b110_default_mvg_parameters(bp,p%cofgen)
+    call bind_b110_default_mvg_provider(base,bp,dt)
+    do j=1,501
+      if(j<=100)then
+        heads(j)=-real(j-1,real64)/100.0_real64
+      else
+        heads(j)=-10.0_real64**(real(j-101,real64)/100.0_real64)
+      end if
+      hv=heads(j)
+      call base%evaluate(hv,theta,k,cap,dk)
+      wci(j,:)=theta
+      wcs(j,:)=0.0_real64
+      capi(j,:)=cap
+      caps(j,:)=0.0_real64
+      coni(j,:)=k
+      cons(j,:)=0.0_real64
+    end do
+    allocate(p%linear_hydraulic_table)
+    call initialize_b111_linear_table_parameters(p%linear_hydraulic_table,bp%cofgen,wci,wcs,capi,caps,coni,cons,status)
+    call require(status==B111_LINEAR_TABLE_OK,'linear-table configure')
+  end subroutine
+
   subroutine initialize_parameters(p,model,power)
     type(fmr_b110_physical_parameters_t),intent(out)::p
     integer,intent(in)::model
@@ -136,6 +213,7 @@ contains
     type(b111_extended_hydraulic_parameters_t),target::ep
     type(b111_extended_hydraulic_provider_t),target::ext
     type(b111_conductivity_power_tail_t)::pw
+    type(b111_linear_table_provider_t)::linear
     integer::status
 
     call initialize_b110_default_mvg_parameters(bp,p%cofgen)
@@ -150,7 +228,11 @@ contains
     call require(status==B111_EXT_OK,'extended bind')
 
     head=initial_head
-    if(p%conductivity_power_tail_active)then
+    if(allocated(p%linear_hydraulic_table))then
+      call bind_b111_linear_table_provider(linear,p%linear_hydraulic_table,dt,status)
+      call require(status==B111_LINEAR_TABLE_OK,'linear-table bind')
+      call linear%evaluate(head,theta,k,cap,dk)
+    else if(p%conductivity_power_tail_active)then
       call configure_b111_conductivity_power_tail(pw,bp%cofgen,p%hydraulic_model,status)
       call require(status==B111_POWER_OK,'power configure')
       call bind_b111_conductivity_power_tail(pw,ext,status)
