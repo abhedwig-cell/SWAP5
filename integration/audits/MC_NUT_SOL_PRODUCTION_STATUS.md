@@ -24,11 +24,11 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 - Aggregate Soil-N transport plus a one-day B1.11 mineral exchange caller and an integrated Soil-N candidate composing organic turnover, Cdissi-dependent rates, NH4/NO3 transport, nitrification and denitrification on one owner.
 - Amendments and crop residues, including distinct B1.11 OM activation
   thresholds (1e-6 and 1e-12 respectively).
-- Freundlich sorption, solute decay, pond exchange and age production.
+- Freundlich sorption, solute decay and pond exchange are composed in one source-order reactive chemical transaction. AgeTracer has a separate transaction over pond age + matrix age amount with chemical-state isolation.
 
 ## Not yet canonical admission
 
-MC-NUT01 now has transaction/event reachability candidates for all nine listed capabilities, including atomic Soil-Crop uptake/fixation and internal crop-residue return. MC-SOL01 has owner/restart candidates for sorption, decay and pond plus age-production foundation; age transport is incomplete and aquifer remains decision-blocked. None of these are canonical admissions until persisted integrated qualification is green and reviewed.
+MC-NUT01 now has transaction/event reachability candidates for all nine listed capabilities, including atomic Soil-Crop uptake/fixation, grouped amendments and internal crop-residue return. MC-SOL01 now has transaction-reachable matrix candidates for sorption, decay, pond exchange and AgeTracer (pond+matrix infiltration envelope); aquifer remains decision-blocked. None of these are canonical admissions until persisted integrated qualification is green and reviewed.
 
 ## Explicit decision boundaries
 
