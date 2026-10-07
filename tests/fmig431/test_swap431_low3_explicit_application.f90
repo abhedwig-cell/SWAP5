@@ -59,7 +59,7 @@ program test_low03_explicit_application
     call prepare_fmr_b110_default_mvg(cfg%tiles(1)%parameters,prepared)
     call require(prepared,'explicit prepared MvG authority')
   end block
-  haq_eq=-1.5_real64
+  haq_eq=-0.75_real64
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
@@ -210,7 +210,10 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=-1.5_real64-p%z
+    heads(1)=-1.25_real64
+    do k=2,numnod
+      heads(k)=heads(k-1)+p%node_distance(k)
+    end do
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
     call bind_b110_default_mvg_provider(provider,hp,T1-T0)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
