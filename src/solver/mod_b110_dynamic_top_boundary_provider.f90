@@ -89,9 +89,12 @@ contains
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
+    real(real64) :: donor_dq_dh0max, base_pond_dh_dhead
     logical :: ok, donor_ok
 
     result = b110_dynamic_top_boundary_result_t()
+    donor_dq_dh0max = 0.0_real64
+    base_pond_dh_dhead = 0.0_real64
 
     call validate_request(geometry, hydraulics, request, ok)
     if (.not. ok) then
@@ -210,6 +213,8 @@ contains
     result%runoff_potential = .true.
     p1 = k1_max/top_distance * request%step_duration_day
     p2 = 1.0_real64/(p1+1.0_real64)
+    if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) &
+         base_pond_dh_dhead = p1*p2
     h0max = p2 * (request%previous_ponding_depth_cm + q0*request%step_duration_day - &
          k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
 
@@ -218,7 +223,7 @@ contains
            (request%precipitation_rate_cm_per_day+request%irrigation_rate_cm_per_day+ &
             request%snowmelt_rate_cm_per_day)*request%macropore_surface_area_fraction*request%step_duration_day, &
            request%macropore_pond_threshold_cm,p1,request%macropore_surface_conductivity_cm_per_day, &
-           request%step_duration_day,result%macropore_pond_requested_lateral_cm,donor_ok)
+           request%step_duration_day,result%macropore_pond_requested_lateral_cm,donor_dq_dh0max,donor_ok)
       if (.not.donor_ok) then
         result%status=B110_DYN_TOP_INVALID_INPUT
         result%route='macropore-pond-donor-invalid'
@@ -237,7 +242,8 @@ contains
       result%runoff_depth_cm = 0.0_real64
       if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
         result%surface_head_derivative_available = .true.
-        result%surface_head_dpressure_head_top = p1/(1.0_real64+p1)
+        result%surface_head_dpressure_head_top = base_pond_dh_dhead * &
+             (1.0_real64-p2*donor_dq_dh0max)
       end if
     else
       ! Once the no-runoff analytical solution exceeds the ponding threshold,
@@ -259,7 +265,8 @@ contains
       result%runoff_depth_cm = restricted_linear_runoff_depth(result%candidate_ponding_depth_cm, request)
       if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
         result%surface_head_derivative_available = .true.
-        result%surface_head_dpressure_head_top = p1*p2
+        result%surface_head_dpressure_head_top = p2 * &
+             (p1-donor_dq_dh0max*base_pond_dh_dhead)
       end if
     end if
 
@@ -280,12 +287,13 @@ contains
     end if
   end subroutine evaluate_b110_dynamic_top_boundary
 
-  pure subroutine evaluate_b110_macropore_pond_donor(h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day,q_cm,ok)
+  pure subroutine evaluate_b110_macropore_pond_donor(h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day, &
+                                                        q_cm,dq_dh0max,ok)
     real(real64),intent(in)::h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day
-    real(real64),intent(out)::q_cm
+    real(real64),intent(out)::q_cm,dq_dh0max
     logical,intent(out)::ok
-    real(real64)::rsromp_day,p2,p2mp,pond_cm
-    q_cm=0.0_real64;ok=.false.
+    real(real64)::rsromp_day,p2,p2mp,pond_cm,raw_q,b,c,denom
+    q_cm=0.0_real64;dq_dh0max=0.0_real64;ok=.false.
     if(.not.all(ieee_is_finite([h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day,dt_day])))return
     if(min(h0max_cm,direct_macro_cm,threshold_cm,p1,ksmp_cm_day)<0.0_real64 .or. dt_day<=0.0_real64)return
     if(h0max_cm<=threshold_cm)then;ok=.true.;return;end if
@@ -295,9 +303,23 @@ contains
     p2=1.0_real64/(p1+1.0_real64)
     p2mp=1.0_real64/(p1+1.0_real64+dt_day/rsromp_day)
     pond_cm=(h0max_cm-threshold_cm)*p2mp/p2
-    q_cm=min(pond_cm*dt_day/rsromp_day,h0max_cm)
-    if(q_cm<1.0e-7_real64)q_cm=0.0_real64
-    ok=ieee_is_finite(q_cm).and.q_cm>=0.0_real64
+    raw_q=pond_cm*dt_day/rsromp_day
+    if(raw_q>=h0max_cm)then
+      q_cm=h0max_cm
+      dq_dh0max=1.0_real64
+    else
+      q_cm=raw_q
+      b=p1+1.0_real64
+      c=dt_day*ksmp_cm_day
+      denom=b*(h0max_cm+direct_macro_cm)+c
+      if(denom<=0.0_real64 .or. .not.ieee_is_finite(denom))return
+      dq_dh0max=b*c*(b*(direct_macro_cm+threshold_cm)+c)/(denom*denom)
+    end if
+    if(q_cm<1.0e-7_real64)then
+      q_cm=0.0_real64
+      dq_dh0max=0.0_real64
+    end if
+    ok=ieee_is_finite(q_cm).and.q_cm>=0.0_real64.and.ieee_is_finite(dq_dh0max).and.dq_dh0max>=0.0_real64
   end subroutine evaluate_b110_macropore_pond_donor
 
   subroutine validate_request(geometry, hydraulics, request, ok)
