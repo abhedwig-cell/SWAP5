@@ -269,12 +269,20 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(candidate%ready(),'FMR macropore candidate ready')
   observation=backend%observation()
   if(migmac11)then
-    call require(observation%macropore_requested_top_cm>0.0_real64,'MIGMAC11 pond-derived request active')
-    call require(abs(observation%macropore_accepted_top_cm+observation%macropore_returned_surface_cm- &
-         observation%macropore_requested_top_cm)<=1.0e-9_real64,'MIGMAC11 A9 receipt exact')
+    call require(observation%macropore_pond_requested_cm>0.0_real64,'MIGMAC11 pond-derived request active')
+    call require(abs(observation%macropore_pond_accepted_cm+observation%macropore_pond_returned_cm- &
+         observation%macropore_pond_requested_cm)<=1.0e-9_real64,'MIGMAC11 pond A9 receipt exact')
+    call require(abs((observation%macropore_pond_requested_cm-observation%macropore_pond_returned_cm)- &
+         observation%macropore_pond_accepted_cm)<=1.0e-9_real64,'MIGMAC11 net surface debit equals accepted pond inflow')
+    call require(abs(observation%macropore_requested_top_cm-observation%macropore_pond_requested_cm)<=1.0e-9_real64, &
+         'MIGMAC11 pure pond request owns aggregate top receipt')
+    call require(abs(observation%macropore_accepted_top_cm-observation%macropore_pond_accepted_cm)<=1.0e-9_real64, &
+         'MIGMAC11 pure pond accepted owns aggregate top receipt')
+    call require(abs(observation%macropore_returned_surface_cm-observation%macropore_pond_returned_cm)<=1.0e-9_real64, &
+         'MIGMAC11 pure pond return owns aggregate top receipt')
     call require(abs(result%mass%residual)<=1.0e-9_real64,'MIGMAC11 whole-column mass closure')
-    write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|REQUESTED=',observation%macropore_requested_top_cm, &
-         '|ACCEPTED=',observation%macropore_accepted_top_cm,'|RETURNED=',observation%macropore_returned_surface_cm, &
+    write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+         '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
          '|MASS=',result%mass%residual
     write(*,'(a)') 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS'
   end if
