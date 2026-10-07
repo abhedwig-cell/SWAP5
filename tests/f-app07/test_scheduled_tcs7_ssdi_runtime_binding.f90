@@ -3,6 +3,8 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, irrigation_state_t
   use mod_fmr_scheduled_irrigation_application
+  use mod_fmr_irrigation_management_restart, only: fmr_irrigation_event_restart_record_t, &
+       export_fmr_irrigation_event_restart, restore_fmr_irrigation_event_restart, FMR_IRR_MGMT_RESTART_OK
   implicit none
 
   type(scheduled_irrigation_parameters_t) :: p
@@ -10,6 +12,8 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   type(irrigation_state_t) :: s, c
   type(process_hydraulic_view_t) :: h
   type(fmr_scheduled_irrigation_application_diagnostics_t) :: d
+  type(fmr_irrigation_event_restart_record_t) :: restart_record
+  integer :: restart_status
   real(real64), allocatable :: q(:)
   real(real64), parameter :: tol = 1.0e-12_real64
   real(real64) :: duration
@@ -127,7 +131,10 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   s = irrigation_state_t()
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. c%active_event .and. abs(q(3)-0.12_real64) < tol,18)
-  s = c
+  call export_fmr_irrigation_event_restart(c,restart_record,restart_status)
+  call require(restart_status == FMR_IRR_MGMT_RESTART_OK,25)
+  call restore_fmr_irrigation_event_restart(restart_record,s,restart_status)
+  call require(restart_status == FMR_IRR_MGMT_RESTART_OK .and. s%active_event,26)
   r = scheduled_irrigation_request_t()
   r%t0 = 2600.875_real64
   r%t1 = 2601.375_real64
@@ -168,6 +175,7 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   print '(A)','MC_IRR01_SENSOR_RATE_NORMALIZATION=PASS'
   print '(A)','MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS'
   print '(A)','MC_IRR01_TCS7_RETRY_FAIL_CLOSED=PASS'
+  print '(A)','MC_IRR01_SENSOR_EVENT_RESTART=PASS'
 
 contains
   subroutine require(ok,n)
