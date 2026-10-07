@@ -58,8 +58,16 @@ program test_low03_explicit_application
        rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
   call require(status==FMR_CAUCHY3_OK,'production control')
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control)
-  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=-20.0_real64
-  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%shape_3=0.5_real64
+  ! Choose gwlmean at the profile bottom so cvalprof=0.  Set HDRain=GWL
+  ! and choose DEEPGW such that the B1.11 explicit qbot equals -conductivity0,
+  ! matching the uniform-profile top flux used by this qualification.
+  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=-100.0_real64
+  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%shape_3=0.0_real64
+  haq_eq=-100.0_real64-conductivity0*rimlay
+  call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
+       T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
+       rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
+  call require(status==FMR_CAUCHY3_OK,'explicit equilibrium temporal control')
   call app%initialize(cfg,status)
   call require(status==FMR_APP_BOOT_OK .and. app%ready(),'ordinary Cauchy bootstrap')
   call app%materialize_groundwater_context(topology,predictors,areas,context_handle,status)
