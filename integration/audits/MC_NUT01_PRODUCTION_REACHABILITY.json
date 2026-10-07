@@ -78,14 +78,15 @@
       "id": "SW431-NUT-AMEND",
       "state": "EVENT_REACHABLE_CANDIDATE",
       "evidence": [
-        "source split operator",
-        "1e-6 OM activation threshold",
-        "candidate-only exactly-once management event",
-        "restart-preserved event lineage"
+        "source-faithful amendment splitter with 1e-6 OM threshold",
+        "multiple materials grouped into one legacy-date amendment event",
+        "exact legacy trigger contract abs(TimeAmend + 1 - t1900) < 1e-3",
+        "candidate-only exactly-once Soil-N application",
+        "event identity survives restart reconstruction",
+        "volatilized NH4-N is explicit external output"
       ],
       "remaining": [
-        "production calendar delivery binding",
-        "persisted integrated qualification",
+        "persisted O0/O2 transaction qualification",
         "canonical admission"
       ]
     },
