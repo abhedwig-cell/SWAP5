@@ -95,3 +95,6 @@ cat "$BUILD/composition-o0/output.txt"
 cat "$BUILD/composition-o0/tcs7_binding_output.txt"
 echo "F_APP07_COMPOSITION_OUTPUT_SHA256=$(sha256sum "$BUILD/composition-o0/output.txt" | awk '{print $1}')"
 echo 'F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS'
+
+# Real serialized-runtime proof for the shared sensor/DCS2 single-node SSDI forcing seam.
+bash tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh
