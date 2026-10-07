@@ -36,8 +36,8 @@ for source in "${MODULE_SRC[@]}"; do
   gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj"
   objects+=("$obj")
 done
-gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_swap5_daily_pilot.f90 -o "$BUILD/pilot.o"
+gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_rutter_probe.f90 -o "$BUILD/pilot.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/pilot.o" -o "$BUILD/kalmthout_pilot"
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/swap5_daily_results.csv" | tee "$OUTDIR/run.log"
-grep -Fq 'KALMTHOUT_SWAP5_DAILY_PILOT=PASS' "$OUTDIR/run.log"
-echo "KALMTHOUT_PILOT_RUNNER=PASS"
+"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/rutter_probe_results.csv" | tee "$OUTDIR/run.log"
+grep -Fq 'KALMTHOUT_RUTTER_48H_PROBE=PASS' "$OUTDIR/run.log"
+echo "KALMTHOUT_RUTTER_PROBE_RUNNER=PASS"
