@@ -2,9 +2,9 @@
   "work_unit": "PPA-WU05-MIGMAC11",
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
-  "checkpoint_commit": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "last_reconciled_head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "canonical_reconciled_against": "integration/f-ci-canonical@19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "checkpoint_commit": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+  "last_reconciled_head": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+  "canonical_reconciled_against": "integration/f-ci-canonical@d395ca3decf03e7149dbf8d65dc9ad8946826f3a",
   "canonical_reconciliation_pr": 1089,
   "implemented": true,
   "persisted": true,
@@ -73,6 +73,12 @@
       "run_id": 37612249809,
       "head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
       "conclusion": "success"
+    },
+    "latest_admission_head": {
+      "run_id": 37613833352,
+      "head": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+      "conclusion": "success",
+      "note": "Same production-code postimage as canonical admission merge 8cd14e45; the only post-head canonical tree delta is integration/audits/SW431_LOW3_EXPLICIT_STATUS.md."
     }
   },
   "qualified_cases": [
@@ -93,9 +99,11 @@
     "MIGMAC10 bounded Boesten/Rutter/macropore preservation",
     "O0/O2 identity"
   ],
-  "test_status": "PASS on current canonical merge postimage 609cd5ee8964f0619d94bd396f53ed9fe8d8495e. GitHub Actions run 37612249809 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
-  "qualification_status": "CLOSED",
-  "next_action": "No MIGMAC11 implementation work remains. Treat the capability as closed unless later canonical changes intersect the recorded dependency surface or new regression evidence appears.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "blockers": []
+  "test_status": "PASS on final admission head 5747aa6911095c3f0a6c917c40871be6aa9c9116. GitHub Actions run 37613833352 completed successfully: production O0/O2 compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS. PR #1084 merged this workstream into integration/f-ci-canonical as 8cd14e459913f77f412e12125ccda597a841e22d; the merge differs from the qualified head only by unrelated LOW03 status documentation.",
+  "qualification_status": "CLOSED_CANONICALLY_ADMITTED",
+  "next_action": "No MIGMAC11 implementation or admission work remains. Reopen only if a later canonical change intersects the recorded production dependency surface or concrete regression evidence appears.",
+  "recovery_point": "integration/f-ci-canonical@8cd14e459913f77f412e12125ccda597a841e22d",
+  "blockers": [],
+  "canonical_admission_pr": 1084,
+  "canonical_admission_merge": "8cd14e459913f77f412e12125ccda597a841e22d"
 }
