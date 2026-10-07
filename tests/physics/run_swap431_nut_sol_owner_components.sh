@@ -76,6 +76,20 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_soil_n_transport.f90" \
     -o b111_soil_n_transport
   ./b111_soil_n_transport
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_b111_soil_organic_turnover.f90" \
+    "$root/tests/physics/test_b111_soil_organic_turnover.f90" \
+    -o b111_soil_organic_turnover
+  ./b111_soil_organic_turnover
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_soil_n_pool_state.f90" \
+    "$root/src/process/mod_b111_soil_organic_turnover.f90" \
+    "$root/src/process/mod_b111_soil_n_organic_mineralization_transfer.f90" \
+    "$root/src/process/mod_b111_soil_n_organic_turnover_transfer.f90" \
+    "$root/tests/physics/test_b111_soil_n_organic_turnover_transfer.f90" \
+    -o b111_soil_n_organic_turnover
+  ./b111_soil_n_organic_turnover
 done
 
   gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
