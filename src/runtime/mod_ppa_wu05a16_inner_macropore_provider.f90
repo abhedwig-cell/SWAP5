@@ -390,8 +390,10 @@ contains
     end if
     if(self%candidate_pond_lateral_cm>0.0_real64)then
       if(.not.self%geometry_config%valid())return
-      if(sum(request%limiter%potential_top_lateral_cm)>1.0e-14_real64)return
-      request%limiter%potential_top_lateral_cm= &
+      ! Pond-derived lateral inflow is an additional B1.11 receipt. It must
+      ! coexist with any independently configured direct top forcing rather
+      ! than making the residual callback fail closed when that forcing exists.
+      request%limiter%potential_top_lateral_cm=request%limiter%potential_top_lateral_cm+ &
            self%geometry_config%domain_fraction(:,geometry_current%top_node)*self%candidate_pond_lateral_cm
     end if
     call evaluate_macropore_rate_bundle(request,rates)
