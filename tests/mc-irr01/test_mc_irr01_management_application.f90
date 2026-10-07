@@ -109,7 +109,37 @@ program test_mc_irr01_management_application
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. flux%event_finished .and. .not.c%event%active_event,16)
   call require(abs(flux%surface_gross_rate-1.0_real64)<tol .and. abs(flux%external_inflow_amount-0.5_real64)<tol,17)
 
+
+  ! TCS2/3/4/6 can reuse the independently admitted DCS2 DVS-depth owner.
+  call setup_base(p,h,r)
+  p%policy%depth_criterion=2
+  p%policy%dcs2_knot_count=2
+  p%policy%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%dcs2_depth_cm(1:2)=[0.8_real64,1.2_real64]
+  p%policy%timing_criterion=2
+  p%policy%tcs2_knot_count=2
+  p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  r%dvs=1.0_real64
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,18)
+  call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,19)
+
+  call setup_base(p,h,r)
+  p%policy%depth_criterion=2
+  p%policy%dcs2_knot_count=2
+  p%policy%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%dcs2_depth_cm(1:2)=[1.0_real64,1.0_real64]
+  p%policy%timing_criterion=6
+  p%policy%tcs6_threshold_mm=9.0_real64
+  s=fmr_irrigation_management_state_t()
+  s%policy%weekly_day_counter=6
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%weekly_opportunity .and. policy%trigger,20)
+  call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. c%policy%weekly_day_counter==0,21)
+
   print '(A)','MC_IRR01_MANAGEMENT_APPLICATION=PASS'
+  print '(A)','MC_IRR01_TCS2346_DCS2_COMPOSITION=PASS'
   print '(A)','MC_IRR01_TCS2346_DCS1_EVENT_LIFECYCLE=PASS'
   print '(A)','MC_IRR01_MANAGEMENT_RETRY_CONTINUATION=PASS'
 

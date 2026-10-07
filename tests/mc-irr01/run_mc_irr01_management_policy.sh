@@ -23,6 +23,7 @@ for opt in 0 2; do
   grep -Fq 'MC_IRR01_MANAGEMENT_POLICY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_ROOT_ZONE_SUMMARY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_APPLICATION=PASS' "$OUT/application_output.txt"
+  grep -Fq 'MC_IRR01_TCS2346_DCS2_COMPOSITION=PASS' "$OUT/application_output.txt"
   grep -Fq 'MC_IRR01_TCS2346_DCS1_EVENT_LIFECYCLE=PASS' "$OUT/application_output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_RETRY_CONTINUATION=PASS' "$OUT/application_output.txt"
   echo "MC_IRR01_MANAGEMENT_POLICY_O${opt}=PASS"

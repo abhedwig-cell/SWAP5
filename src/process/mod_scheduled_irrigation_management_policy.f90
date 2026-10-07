@@ -25,6 +25,9 @@ module mod_scheduled_irrigation_management_policy
     integer :: dcs1_knot_count = 0
     real(real64) :: dcs1_dvs(IRR_MGMT_MAX_KNOTS) = 0.0_real64
     real(real64) :: dcs1_adjustment_mm(IRR_MGMT_MAX_KNOTS) = 0.0_real64
+    integer :: dcs2_knot_count = 0
+    real(real64) :: dcs2_dvs(IRR_MGMT_MAX_KNOTS) = 0.0_real64
+    real(real64) :: dcs2_depth_cm(IRR_MGMT_MAX_KNOTS) = 0.0_real64
     real(real64) :: rainfall_threshold_cm = 0.0_real64
     logical :: depth_limit_enabled = .false.
     real(real64) :: minimum_depth_cm = 0.0_real64
@@ -65,7 +68,7 @@ contains
     type(irrigation_management_policy_state_t), intent(out) :: candidate_state
     type(irrigation_management_policy_result_t), intent(out) :: result
     integer, intent(out) :: status
-    real(real64) :: threshold, depletion, adjustment, rain_reduction
+    real(real64) :: threshold, depletion, adjustment, rain_reduction, fixed_depth
     logical :: ok
 
     candidate_state = committed_state
@@ -124,6 +127,10 @@ contains
         result%rainfall_deducted = .true.
       end if
       result%selected_depth_cm = max(0.0_real64, request%field_capacity_deficit_cm + 0.1_real64*adjustment-rain_reduction)
+    case (2)
+      call afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, request%dvs, fixed_depth, ok)
+      if (.not. ok .or. fixed_depth <= 0.0_real64) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
+      result%selected_depth_cm = fixed_depth
     case default
       status = IRR_MGMT_INVALID_PARAMETERS
       return
@@ -169,12 +176,19 @@ contains
     case default
       return
     end select
-    if (parameters%depth_criterion /= 1) return
-    if (.not. valid_table(parameters%dcs1_dvs,parameters%dcs1_adjustment_mm,parameters%dcs1_knot_count)) return
-    if (any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)<-100.0_real64) .or. &
-        any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)>100.0_real64)) return
-    if (.not. ieee_is_finite(parameters%rainfall_threshold_cm) .or. parameters%rainfall_threshold_cm<0.0_real64 .or. &
-        parameters%rainfall_threshold_cm>1000.0_real64) return
+    select case(parameters%depth_criterion)
+    case(1)
+      if (.not. valid_table(parameters%dcs1_dvs,parameters%dcs1_adjustment_mm,parameters%dcs1_knot_count)) return
+      if (any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)<-100.0_real64) .or. &
+          any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)>100.0_real64)) return
+      if (.not. ieee_is_finite(parameters%rainfall_threshold_cm) .or. parameters%rainfall_threshold_cm<0.0_real64 .or. &
+          parameters%rainfall_threshold_cm>1000.0_real64) return
+    case(2)
+      if (.not. valid_table(parameters%dcs2_dvs,parameters%dcs2_depth_cm,parameters%dcs2_knot_count)) return
+      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<=0.0_real64)) return
+    case default
+      return
+    end select
     if (parameters%depth_limit_enabled) then
       if (.not. ieee_is_finite(parameters%minimum_depth_cm) .or. .not. ieee_is_finite(parameters%maximum_depth_cm)) return
       if (parameters%minimum_depth_cm<0.0_real64 .or. parameters%minimum_depth_cm>10.0_real64 .or. &
