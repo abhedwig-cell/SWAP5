@@ -34,22 +34,37 @@ contains
     integer, intent(out) :: status
 
     integer :: node,local_status,n
+    logical :: need_hydraulic,need_geometry
 
     forcing=crop_preemergence_daily_forcing_t()
     status=FMR_PREEMERGENCE_BINDING_INVALID_PARAMETERS
     if(.not.parameters%ready())return
     if(.not.ieee_is_finite(average_air_temperature_c))return
 
-    n=hydraulic%active_nodes
-    status=FMR_PREEMERGENCE_BINDING_INVALID_HYDRAULIC
-    if(n<=0.or..not.allocated(hydraulic%pressure_head))return
-    if(size(hydraulic%pressure_head)/=n.or.any(.not.ieee_is_finite(hydraulic%pressure_head)))return
-
-    status=FMR_PREEMERGENCE_BINDING_INVALID_GEOMETRY
-    if(size(zbotcp_cm)/=n.or.size(dz_cm)/=n)return
-    if(any(.not.ieee_is_finite(zbotcp_cm)).or.any(.not.ieee_is_finite(dz_cm)).or.any(dz_cm<=0.0_real64))return
-
     forcing%average_air_temperature_c=average_air_temperature_c
+
+    need_hydraulic=parameters%preparation_enabled.or.parameters%sowing_enabled.or. &
+         parameters%germination_mode==GERMINATION_TEMPERATURE_WATER
+    need_geometry=need_hydraulic.or.parameters%sowing_enabled
+    if(.not.need_hydraulic.and..not.parameters%sowing_enabled)then
+      status=FMR_PREEMERGENCE_BINDING_OK
+      return
+    end if
+
+    n=hydraulic%active_nodes
+    if(need_hydraulic)then
+      status=FMR_PREEMERGENCE_BINDING_INVALID_HYDRAULIC
+      if(n<=0.or..not.allocated(hydraulic%pressure_head))return
+      if(size(hydraulic%pressure_head)/=n.or.any(.not.ieee_is_finite(hydraulic%pressure_head)))return
+    else
+      n=thermal%active_nodes
+    end if
+
+    if(need_geometry)then
+      status=FMR_PREEMERGENCE_BINDING_INVALID_GEOMETRY
+      if(size(zbotcp_cm)/=n.or.size(dz_cm)/=n)return
+      if(any(.not.ieee_is_finite(zbotcp_cm)).or.any(.not.ieee_is_finite(dz_cm)).or.any(dz_cm<=0.0_real64))return
+    end if
 
     if(parameters%preparation_enabled)then
       call b111_average_pressure_head_to_depth(hydraulic%pressure_head,dz_cm, &
