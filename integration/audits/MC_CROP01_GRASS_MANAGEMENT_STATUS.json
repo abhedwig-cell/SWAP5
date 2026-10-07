@@ -1,7 +1,7 @@
 {
   "schema": "swap431.mc_crop01.grass_management.v1",
   "capability_id": "SW431-CROP-GRASS",
-  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "canonical_baseline": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
   "source_authority": {
     "member": "SWAP/wofost.f90",
     "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
@@ -84,7 +84,7 @@
   "qualification": {
     "test": "tests/fmig431/test_swap431_grass_management.f90",
     "runner": "tests/fmig431/run_swap431_grass_management.py",
-    "status": "READY_FOR_O0_O2",
+    "status": "READY_ON_CURRENT_CANONICAL",
     "cases": [
       "mowing trigger",
       "mowing FL/FS/SLA reset",
@@ -106,5 +106,9 @@
     "Adjudicate SW_LOSSGRZ=0 under reference-defect policy before any claim covering that selector.",
     "Qualify retry/restart and event ordering with phenology and crop transaction."
   ],
-  "admission": false
+  "admission": false,
+  "reconciliation": {
+    "branch": "work/swap431-crop-grass-management-r2-20261007",
+    "basis": "fresh branch from current integration/f-ci-canonical after CO2 admission"
+  }
 }
