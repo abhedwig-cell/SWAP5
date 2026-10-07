@@ -83,7 +83,7 @@ contains
 
     state=fmr_b111_soil_crop_n_state_t();status=FMR_B111_COUPLED_N_INVALID
     if(.not.soil%ready().or..not.crop%valid())return
-    if(present(last_t0).neqv.present(last_t1).or.present(last_t0).neqv.present(interval_consumed))return
+    if((present(last_t0).neqv.present(last_t1)).or.(present(last_t0).neqv.present(interval_consumed)))return
     if(present(last_t0))then
       if(.not.all(ieee_is_finite([last_t0,last_t1])).or.last_t1<=last_t0)return
       if(.not.interval_consumed)return
