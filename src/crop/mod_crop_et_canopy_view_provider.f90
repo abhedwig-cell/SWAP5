@@ -50,6 +50,7 @@ module mod_crop_et_canopy_view_provider
     logical :: crop_factor_table_consumed = .false.
     logical :: co2_forcing_consumed = .false.
     logical :: co2_table_consumed = .false.
+    logical :: resolved_co2_factor_consumed = .false.
     logical :: result_produced = .false.
   end type crop_et_canopy_diagnostics_t
 
@@ -131,12 +132,13 @@ contains
     enabled = self%initialized .and. self%co2_correction_enabled
   end function crop_et_canopy_parameters_co2_enabled
 
-  subroutine evaluate_crop_et_canopy_view(parameters, state, forcing, view, diagnostics)
+  subroutine evaluate_crop_et_canopy_view(parameters, state, forcing, view, diagnostics, resolved_co2_transpiration_factor)
     type(crop_et_canopy_parameters_t), intent(in) :: parameters
     type(crop_et_canopy_state_view_t), intent(in) :: state
     type(crop_et_canopy_forcing_t), intent(in) :: forcing
     type(crop_et_canopy_view_t), intent(out) :: view
     type(crop_et_canopy_diagnostics_t), intent(out) :: diagnostics
+    real(real64), intent(in), optional :: resolved_co2_transpiration_factor
     integer :: table_status
     real(real64) :: extinction_product, optical_depth
 
@@ -214,7 +216,15 @@ contains
     diagnostics%crop_factor_table_consumed = .true.
 
     view%co2_transpiration_factor = 1.0_real64
-    if (parameters%co2_correction_enabled) then
+    if (present(resolved_co2_transpiration_factor)) then
+      if (.not. valid_inclusive(resolved_co2_transpiration_factor, 0.0_real64, 2.0_real64)) then
+        view = crop_et_canopy_view_t()
+        diagnostics%status = CROP_ET_CANOPY_INVALID_RESULT
+        return
+      end if
+      view%co2_transpiration_factor = resolved_co2_transpiration_factor
+      diagnostics%resolved_co2_factor_consumed = .true.
+    else if (parameters%co2_correction_enabled) then
       if (.not. valid_inclusive(forcing%atmospheric_co2_ppm, 10.0_real64, 3000.0_real64)) then
         view = crop_et_canopy_view_t()
         diagnostics%status = CROP_ET_CANOPY_INVALID_CO2_FORCING
