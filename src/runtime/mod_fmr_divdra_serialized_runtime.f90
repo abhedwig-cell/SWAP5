@@ -91,14 +91,27 @@ contains
         do j=1,size(level_parameters)
           level_parameters(j)=distribution_parameter_registry(int(divdra_requests(i)%distribution_parameter_refs(j)))
         end do
-        call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
-             divdra_requests(i)%scalar_transfers,forcing_registry(forcing_index)%drainage_flux_by_level,multi_diag)
-        divdra_records(slot)%multilevel_binding=multi_diag
-        if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
-          composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
-          divdra_records(slot)%composition_status=composition_status
-          call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
-          return
+        if(divdra_requests(i)%highest_interflow_active)then
+          call fmr_bind_highest_interflow_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
+               divdra_requests(i)%scalar_transfers,divdra_requests(i)%highest_interflow_drain_bottom_cm, &
+               forcing_registry(forcing_index)%drainage_flux_by_level,topint_diag)
+          divdra_records(slot)%top_interflow_binding=topint_diag
+          if(topint_diag%status/=FMR_DIVDRA_TOPINT_OK)then
+            composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            divdra_records(slot)%composition_status=composition_status
+            call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+            return
+          end if
+        else
+          call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
+               divdra_requests(i)%scalar_transfers,forcing_registry(forcing_index)%drainage_flux_by_level,multi_diag)
+          divdra_records(slot)%multilevel_binding=multi_diag
+          if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
+            composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            divdra_records(slot)%composition_status=composition_status
+            call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+            return
+          end if
         end if
         if(allocated(divdra_requests(i)%top_layer_controls))then
           call apply_fmr_divdra_discharge_top_controls(level_parameters,hydraulic_view_registry(view_index), &
