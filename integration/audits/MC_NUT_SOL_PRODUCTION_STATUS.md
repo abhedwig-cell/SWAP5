@@ -13,6 +13,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
   rejected-overdraw rollback, and restart reconstruction.
 - Solute owner: dissolved mobile mass plus sorbed matrix, pond, aquifer storage
   and age amount are carried atomically. Chemical mass excludes age amount.
+- A combined reactive transaction now executes exact-order chemical sorption/decay/pond transfer and AgeTracer transport/production on the same accepted carrier and commits or rolls back both together.
 - Runtime now has a distinct reactive solute layout identity (`505005`) with a typed initializer and restart validator; existing mobile-only layouts reject reactive companion state.
 - Aquifer mutation is fail-closed in the current solute transaction model.
 
@@ -20,6 +21,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 
 - B1.11 fixation policy, separate from admitted WOFOST81 semantics.
 - Shared Soil-N management-event binding for amendments and crop residues: persistent event id, once-only application, duplicate rejection, and restart-preserved event lineage.
+- Coupled Soil-N/crop-N state now persists previous-day root/leaf residue DM+N and consumes that residue before the next-day Soil-N process, matching the B1.11 day ordering for ordinary senescence.
 - Soil-N source rate factors plus source-coupled mineral reaction bridges: NH4 disappearance from aggregate transport is converted into equal NO3 production, while NO3 first-order disappearance is booked as explicit external denitrification loss. Both use the interval-average transported concentration and preserve whole-N accounting.
 - Aggregate Soil-N transport plus a one-day B1.11 mineral exchange caller and an integrated Soil-N candidate composing organic turnover, Cdissi-dependent rates, NH4/NO3 transport, nitrification and denitrification on one owner.
 - Amendments and crop residues, including distinct B1.11 OM activation
