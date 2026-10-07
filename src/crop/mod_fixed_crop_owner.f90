@@ -71,7 +71,9 @@ contains
       if (.not. ieee_is_finite(self%temperature_sum_anthesis_to_maturity) .or. &
           self%temperature_sum_anthesis_to_maturity <= 0.0_real64) return
     end if
-    if (self%root_biomass_enabled .and. .not. self%root_biomass_by_dvs%ready()) return
+    if (self%root_biomass_enabled) then
+      if (.not. self%root_biomass_by_dvs%ready()) return
+    end if
     ready = .true.
   end function fixed_crop_parameters_ready
 
