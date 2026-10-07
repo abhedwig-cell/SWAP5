@@ -68,6 +68,26 @@ on:
       - 'tests/physics/test_fmr_b111_soil_n_transaction.f90'
       - 'tests/physics/run_fmr_b111_soil_n_transaction.sh'
       - 'tools/audits/extract_b111_solute_slices.py'
+      - 'src/process/mod_b111_soil_n_organic_mineralization_transfer.f90'
+      - 'src/process/mod_b111_soil_organic_turnover.f90'
+      - 'src/process/mod_b111_soil_n_organic_turnover_transfer.f90'
+      - 'src/process/mod_b111_soil_organic_dissimilation.f90'
+      - 'src/process/mod_b111_soil_n_storage_conversion.f90'
+      - 'src/process/mod_b111_soil_n_daily_exchange.f90'
+      - 'src/process/mod_b111_soil_n_daily_candidate.f90'
+      - 'src/runtime/mod_fmr_b111_soil_n_daily_transaction.f90'
+      - 'tests/physics/test_b111_soil_n_organic_mineralization_transfer.f90'
+      - 'tests/physics/test_b111_soil_organic_turnover.f90'
+      - 'tests/physics/test_b111_soil_n_organic_turnover_transfer.f90'
+      - 'tests/physics/test_b111_soil_organic_dissimilation.f90'
+      - 'tests/physics/test_b111_soil_n_organic_denitrification_chain.f90'
+      - 'tests/physics/test_b111_soil_n_storage_conversion.f90'
+      - 'tests/physics/test_b111_soil_n_daily_exchange.f90'
+      - 'tests/physics/test_b111_soil_n_daily_candidate.f90'
+      - 'tests/physics/test_fmr_b111_soil_n_daily_transaction.f90'
+      - 'tests/physics/run_fmr_b111_soil_n_daily_transaction.sh'
+      - 'src/process/mod_b111_solute_sorption_equilibrium_transfer.f90'
+      - 'tests/physics/test_b111_solute_sorption_equilibrium_transfer.f90'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -98,6 +118,8 @@ jobs:
         run: bash tests/physics/run_swap431_nut_sol_owner_components.sh
       - name: Soil-N transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_soil_n_transaction.sh
+      - name: Integrated daily Soil-N transaction
+        run: bash tests/physics/run_fmr_b111_soil_n_daily_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
       - name: Reactive solute layout restart
