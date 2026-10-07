@@ -40,6 +40,15 @@ program test_swap431_wofost_vernalisation
   if(abs(r%development_rate-0.09_real64)>tol) error stop 10
   if(.not.r%saturated_after_update.or..not.r%candidate_state%vernalised) error stop 11
   if(abs(r%candidate_state%accumulated_units-33.0_real64)>tol) error stop 12
+  if(abs(r%candidate_state%retained_rate-5.0_real64)>tol) error stop 121
+
+  ! Once saturated, pinned SAVE VERNRATE is not reassigned. It therefore
+  ! remains part of source-compatible continuation and VERN keeps advancing.
+  s=r%candidate_state
+  call evaluate_wofost_idsl2_daily_candidate(p,s,0.20_real64,5.0_real64,1.0_real64,2.0_real64,100.0_real64,r,status)
+  if(status/=WOFOST_VERN_OK.or.abs(r%vernalisation_rate-5.0_real64)>tol) error stop 122
+  if(abs(r%candidate_state%accumulated_units-38.0_real64)>tol) error stop 123
+  if(.not.r%candidate_state%vernalised) error stop 124
 
   ! At VERNDVS the source forces vernalisation immediately, keeps VERNRATE=0
   ! and VERNFAC=1, then reaches the warning condition if VERN<VERNSAT.
