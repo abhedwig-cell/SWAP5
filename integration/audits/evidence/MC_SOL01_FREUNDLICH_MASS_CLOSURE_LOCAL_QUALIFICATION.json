@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-SOL01-FREUNDLICH-MASS-CLOSURE",
+  "recorded_on": "2026-10-07",
+  "scope": "isolated B1.11 Freundlich inverse operator, nonlinear and near-linear exponents",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "postimage_before_evidence": "b780bded553f88acc0c4067feed7557b5a137884",
+  "source_blob_sha": "b87fa37ed4d14a7e60ddf135ada058002587422b",
+  "test_blob_sha": "aa99a1586e361672dafb7849f53419b1a2de77d5",
+  "runner_blob_sha": "b2c3af8be485d21010fdbadba08acc2324894c5c",
+  "source_path": "src/process/mod_b111_solute_sorption.f90",
+  "test_path": "tests/physics/test_b111_sorption_mass_closure.f90",
+  "runner": "tests/physics/run_b111_sorption_mass_closure.sh",
+  "local_replay_method": "Three exact Git blobs manually reconstructed in a local isolated source tree, with git hash-object verified against GitHub connector SHA for each blob; actual repository runner executed against those bytes. No local full-repo checkout.",
+  "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+  "flags": [
+    "-O0/-O2",
+    "-std=f2008",
+    "-ffree-line-length-none",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fcheck=all",
+    "-ffpe-trap=invalid,zero,overflow"
+  ],
+  "cases_per_optimization": 30000,
+  "frexp": [
+    2,
+    0.5,
+    1.0005
+  ],
+  "result": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "stdout_each": "B111_SORPTION_MASS_CLOSURE_PASS"
+  },
+  "pre_fix_negative_witness": "Near-linear frexp=1.0005 with total_density=0.11 failed mass closure using prior <1e-3 linear shortcut; observed residual -1.8389259114584555E-005.",
+  "claim_ceiling": "LOCAL_SOURCE_BOUND_COMPONENT_ONLY",
+  "not_proved": [
+    "whole reactive matrix substep",
+    "chemical-plus-age transaction",
+    "accepted water carrier",
+    "restart identity",
+    "canonical admission",
+    "integrated GitHub Actions qualification"
+  ],
+  "pending": [
+    "run full reactive matrix/transaction O0 O2 gate on exact complete HEAD",
+    "integrated accepted-carrier restart qualification after Actions runner capacity returns"
+  ]
+}
