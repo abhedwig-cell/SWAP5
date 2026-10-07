@@ -13,7 +13,7 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
-       fmr_solute_state_layout_known
+       FMR_SOLUTE_STATE_LAYOUT_REACTIVE_COMPARTMENTS, fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_macropore_reduction_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
@@ -52,6 +52,11 @@ contains
         if (physical%macropore%num_nodes /= physical%active_nodes) return
         if (.not. allocated(physical%salt)) return
         if (.not. physical%salt%ready(physical%active_nodes,physical%macropore%num_domains)) return
+      case (FMR_SOLUTE_STATE_LAYOUT_REACTIVE_COMPARTMENTS)
+        if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+        if (allocated(physical%macropore)) return
+        if (.not. allocated(physical%salt)) return
+        if (.not. physical%salt%reactive_ready(physical%active_nodes)) return
       case default
         return
       end select
