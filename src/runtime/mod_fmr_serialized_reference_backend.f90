@@ -2721,6 +2721,9 @@ contains
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
+       if (parameters%bottom_mode == 9) then
+         ok = ok .and. self%soil_water_selection%uses_reference() .and. .not. parameters%macropore_active
+       end if
        if (parameters%bottom_mode == 3) then
          if (parameters%swbotb3_explicit_active) then
            ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
