@@ -98,10 +98,9 @@ contains
       return
     end if
 
-    ! The residue splitter is also used standalone, where residue N is an external
-    ! Soil-N input. Here the donor crop is in the same coupled transaction, so the
-    ! same amount is an internal crop->soil transfer and must not be system input.
-    transfer%external_n_input_kg_m2=0.0_real64
+    ! The Soil-N subowner keeps this input in its own receipt so its local mass
+    ! balance closes. A higher-level coupled crop/soil transaction may reclassify
+    ! exactly this amount as an internal crop->soil transfer.
     receipt%status=B111_CRES_OK
   end subroutine
 
