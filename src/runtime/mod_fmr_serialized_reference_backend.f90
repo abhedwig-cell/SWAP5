@@ -2827,7 +2827,20 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
+           .not. parameters%tabulated_hydraulics_active
+      if (parameters%hysteresis_active) then
+        ok = ok .and. allocated(parameters%hysteresis_parameters) .and. &
+             self%soil_water_selection%uses_reference() .and. &
+             .not. parameters%conductivity_power_tail_active .and. .not. allocated(parameters%linear_hydraulic_table) .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active
+        if (ok) ok = parameters%hysteresis_parameters%active_nodes == parameters%active_nodes
+        if (ok .and. allocated(parameters%hydraulic_model)) ok = all(parameters%hydraulic_model == 1)
+      else
+        ok = ok .and. .not. allocated(parameters%hysteresis_parameters)
+      end if
        if (parameters%bottom_mode == 3) then
          if (parameters%swbotb3_explicit_active) then
            ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
@@ -3878,7 +3891,7 @@ contains
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok, rutter_trial_prepared
-    integer :: legacy_hydraulic_status, extended_hydraulic_status, power_tail_status, linear_table_status
+    integer :: legacy_hydraulic_status, extended_hydraulic_status, power_tail_status, linear_table_status, hysteresis_status
     real(real64) :: rutter_previous_ponding
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -3892,6 +3905,9 @@ contains
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     type(frost_bottom_result_t) :: frost_bottom_result
+    type(b110_default_mvg_parameters_t), target :: hysteretic_hydraulic_parameters
+    real(real64), allocatable :: hysteretic_cofgen(:,:)
+    type(b111_hysteresis_transition_t), allocatable :: hysteresis_transition(:)
     integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
@@ -4016,7 +4032,25 @@ contains
         return
       end select
     end if
-    call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    if (self%hysteresis_active) then
+      select type (hysteretic_physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(hysteretic_physical%hysteresis) .or. &
+            .not. allocated(self%hysteresis_parameters)) return
+        if (hysteretic_physical%hysteresis%active_nodes /= self%soil_parameters%active_nodes) return
+        allocate(hysteretic_cofgen(size(self%hydraulic_parameters%cofgen,1),self%soil_parameters%active_nodes))
+        hysteretic_cofgen = self%hydraulic_parameters%cofgen
+        hysteretic_cofgen(1,:) = hysteretic_physical%hysteresis%theta_r_scan
+        hysteretic_cofgen(2,:) = hysteretic_physical%hysteresis%theta_s_scan
+        hysteretic_cofgen(4,:) = hysteretic_physical%hysteresis%alpha_active
+        call initialize_b110_default_mvg_parameters(hysteretic_hydraulic_parameters, hysteretic_cofgen)
+        call bind_b110_default_mvg_provider(self%constitutive, hysteretic_hydraulic_parameters, step_duration)
+      class default
+        return
+      end select
+    else
+      call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    end if
     if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
            step_duration, self%direct_retention_slot, direct_retention_ok)
@@ -4821,6 +4855,23 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%hysteresis_active) then
+      select type (hysteretic_physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(hysteretic_physical%hysteresis) .or. .not. allocated(self%hysteresis_parameters)) return
+        allocate(hysteresis_transition(self%soil_parameters%active_nodes))
+        call advance_b111_hysteresis_accepted(self%hysteresis_parameters, hysteretic_physical%hysteresis, &
+             solve_result%candidate_state%pressure_head, solve_result%candidate_state%water_content, &
+             hysteresis_transition, hysteresis_status)
+        if (hysteresis_status /= B111_HYST_OK) return
+        do low3_i = 1, size(hysteresis_transition)
+          if (hysteresis_transition(low3_i)%head_reconstruction_required) &
+            solve_result%candidate_state%pressure_head(low3_i) = hysteresis_transition(low3_i)%corrected_head
+        end do
+      class default
+        return
+      end select
+    end if
     if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
       select type (salt_physical => state)
       class is (fmr_b110_physical_state_t)
