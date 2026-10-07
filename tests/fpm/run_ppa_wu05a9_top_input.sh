@@ -179,7 +179,14 @@ for opt in 0 2; do
       WU05_MIGMAC02_DYNAMIC=5 "$OUT/test_a9_fmr" | tee "$OUT/migmac02_two_domain.txt"
       grep -Fq 'PPA_WU05_MIGMAC02_TWO_DOMAIN_GEOMETRY_RAPID_DRAIN=PASS' "$OUT/migmac02_two_domain.txt"
     fi
-    if [[ "${WU05_MIGMAC03:-0}" == 1 ]]; then
+    if [[ "${WU05_MIGMAC11_SUITE:-0}" == 1 ]]; then
+  for case_name in active runon below partial replay; do
+    cmp "$BUILD/o0/migmac11_${case_name}.txt" "$BUILD/o2/migmac11_${case_name}.txt"
+  done
+  echo 'PPA_WU05_MIGMAC11_O0_O2_IDENTITY=PASS'
+fi
+
+if [[ "${WU05_MIGMAC03:-0}" == 1 ]]; then
       for law in 1 2 3 4; do
         WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_fmr" | tee "$OUT/peat_${law}_trial.txt"
         WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/peat_${law}_replay.txt"
@@ -287,6 +294,39 @@ for opt in 0 2; do
         WU05_MIGMAC06_KD=1 WU05_MIGMAC03_LAW="$law" WU05_MIGMAC02_DYNAMIC=1 "$OUT/test_a9_replay" | tee "$OUT/kd_${law}_replay.txt"
         grep -Fq 'PPA_WU05_MIGMAC02_DYNAMIC_ACCEPTED_RESTART=PASS' "$OUT/kd_${law}_replay.txt"
       done
+    fi
+    if [[ "${WU05_MIGMAC11_SUITE:-0}" == 1 ]]; then
+      WU05_MIGMAC11=1 WU05_MIGMAC10=1 WU05_MIGMAC02_DYNAMIC=3 \
+        "$OUT/test_a9_fmr" | tee "$OUT/migmac11_active.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS' "$OUT/migmac11_active.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_RUNON=1 WU05_MIGMAC10=1 WU05_MIGMAC02_DYNAMIC=3 \
+        "$OUT/test_a9_fmr" | tee "$OUT/migmac11_runon.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_RUNON=PASS' "$OUT/migmac11_runon.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_BELOW=1 WU05_MIGMAC10=1 WU05_MIGMAC02_DYNAMIC=3 \
+        "$OUT/test_a9_fmr" | tee "$OUT/migmac11_below.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_BELOW_THRESHOLD=PASS' "$OUT/migmac11_below.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC11_PARTIAL=1 WU05_MIGMAC10=1 WU05_MIGMAC02_DYNAMIC=3 \
+        "$OUT/test_a9_fmr" | tee "$OUT/migmac11_partial.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_PARTIAL_RETURN=PASS' "$OUT/migmac11_partial.txt"
+
+      WU05_MIGMAC11=1 WU05_MIGMAC10=1 WU05_MIGMAC02_DYNAMIC=3 \
+        "$OUT/test_a9_replay" | tee "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_REJECT_SMALLER_RETRY=PASS' "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_ROLLBACK_REPLAY=PASS' "$OUT/migmac11_replay.txt"
+      grep -Fq 'PPA_WU05_MIGMAC11_RESTART_EQUIVALENCE=PASS' "$OUT/migmac11_replay.txt"
+
+      base_req="$(sed -n 's/.*POND_REQUESTED=\([^|]*\).*/\1/p' "$OUT/migmac11_active.txt" | tail -1)"
+      runon_req="$(sed -n 's/.*POND_REQUESTED=\([^|]*\).*/\1/p' "$OUT/migmac11_runon.txt" | tail -1)"
+      python3 - "$base_req" "$runon_req" <<'PY'
+import math, sys
+base=float(sys.argv[1]); runon=float(sys.argv[2])
+if not (math.isfinite(base) and math.isfinite(runon) and base > 0.0 and runon > base):
+    raise SystemExit(f"MIGMAC11 runon pairing failed: base={base} runon={runon}")
+print(f"PPA_WU05_MIGMAC11_RUNON_PAIR=PASS|BASE={base:.17g}|RUNON={runon:.17g}")
+PY
     fi
     if [[ "${WU05_MIGMAC05:-0}" == 1 ]]; then
       for law in 5 6 7; do
