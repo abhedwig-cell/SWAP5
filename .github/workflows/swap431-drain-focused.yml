@@ -1,0 +1,23 @@
+name: SW431 drainage focused qualification
+on:
+  push:
+    branches:
+      - work/swap431-drain-signed-multilevel-20261007
+  workflow_dispatch:
+jobs:
+  focused-drainage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler
+        run: gfortran --version
+      - name: Signed and multilevel DIVDRA
+        run: bash tests/fmig431/run_swap431_drain_signed_divdra.sh
+      - name: Native DRAMET3
+        run: bash tests/fmig431/run_swap431_drain_dramet3.sh
+      - name: Discharge-layer top
+        run: bash tests/fmig431/run_swap431_drain_dislayer.sh
+      - name: Highest interflow layer
+        run: bash tests/fmig431/run_swap431_drain_top_interflow.sh
+      - name: Separate infiltration B19 reuse
+        run: bash tests/fmig431/run_swap431_drain_inf_split.sh
