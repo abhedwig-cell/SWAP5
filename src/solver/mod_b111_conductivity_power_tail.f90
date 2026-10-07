@@ -17,6 +17,7 @@ module mod_b111_conductivity_power_tail
     real(real64), allocatable :: h_power(:)
     real(real64), allocatable :: k_power(:)
     real(real64), allocatable :: exponent(:)
+    logical, allocatable :: active(:)
   contains
     procedure :: evaluate => power_evaluate
     procedure :: evaluate_demand => power_evaluate_demand
@@ -31,9 +32,10 @@ module mod_b111_conductivity_power_tail
 
 contains
 
-  subroutine configure_b111_conductivity_power_tail(provider, cofgen, status)
+  subroutine configure_b111_conductivity_power_tail(provider, cofgen, model, status)
     type(b111_conductivity_power_tail_t), intent(inout) :: provider
     real(real64), intent(in) :: cofgen(:,:)
+    integer, intent(in) :: model(:)
     integer, intent(out) :: status
     integer :: n
 
@@ -41,15 +43,17 @@ contains
     if (allocated(provider%h_power)) deallocate(provider%h_power)
     if (allocated(provider%k_power)) deallocate(provider%k_power)
     if (allocated(provider%exponent)) deallocate(provider%exponent)
+    if (allocated(provider%active)) deallocate(provider%active)
     status = B111_POWER_INVALID
     n=size(cofgen,2)
-    if (n<=0 .or. size(cofgen,1)<33) return
+    if (n<=0 .or. size(cofgen,1)<33 .or. size(model)/=n) return
     if (any(.not.ieee_is_finite(cofgen([22,23,33],:)))) return
     if (any(cofgen(22,:)>=0.0_real64) .or. any(cofgen(23,:)<=0.0_real64)) return
-    allocate(provider%h_power(n),provider%k_power(n),provider%exponent(n))
+    allocate(provider%h_power(n),provider%k_power(n),provider%exponent(n),provider%active(n))
     provider%h_power=cofgen(22,:)
     provider%k_power=cofgen(23,:)
     provider%exponent=cofgen(33,:)
+    provider%active=model==1
     status=B111_POWER_OK
   end subroutine configure_b111_conductivity_power_tail
 
@@ -135,6 +139,7 @@ contains
     integer,intent(in)::i
     real(real64),intent(in)::h
     real(real64),intent(inout)::k
+    if(.not.self%active(i))return
     if(h<B111_POWER_DRY_GUARD_CM)then
       k=B111_POWER_DRY_K_CM_PER_DAY
     else if(h<=self%h_power(i))then
@@ -146,7 +151,7 @@ contains
     class(b111_conductivity_power_tail_t),intent(in)::self
     integer,intent(in)::n
     if(.not.associated(self%base))error stop 'B1.11 power-tail provider: base not bound'
-    if(.not.allocated(self%h_power).or.size(self%h_power)/=n) &
+    if(.not.allocated(self%h_power).or..not.allocated(self%active).or.size(self%h_power)/=n.or.size(self%active)/=n) &
       error stop 'B1.11 power-tail provider: shape mismatch'
   end subroutine require_ready
 end module mod_b111_conductivity_power_tail
