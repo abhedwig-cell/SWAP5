@@ -5,6 +5,8 @@ module mod_b111_soil_n_addition
  implicit none
  private
  integer,parameter,public::B111_NADD_OK=0,B111_NADD_INVALID=1
+ real(real64),parameter,public::B111_NADD_AMENDMENT_MIN_OM=1d-6
+ real(real64),parameter,public::B111_NADD_RESIDUE_MIN_OM=1d-12
  type,public::b111_soil_n_material_t
    real(real64)::application_kg_m2=0d0
    real(real64)::application_age=0d0
@@ -21,16 +23,17 @@ module mod_b111_soil_n_addition
    real(real64)::asfa_min=0d0
    real(real64)::asfa_max=0d0
  end type
- public::build_b111_soil_n_addition_transfer
+ public::build_b111_soil_n_addition_transfer,build_b111_amendment_transfer,build_b111_residue_transfer
 contains
- subroutine build_b111_soil_n_addition_transfer(depth_m,material,p,transfer,status)
+ subroutine build_b111_soil_n_addition_transfer(depth_m,material,p,transfer,status,minimum_organic_matter_kg_m2)
   real(real64),intent(in)::depth_m
+  real(real64),intent(in),optional::minimum_organic_matter_kg_m2
   type(b111_soil_n_material_t),intent(in)::material
   type(b111_soil_n_split_parameters_t),intent(in)::p
   type(soil_n_transfer_t),intent(out)::transfer
   integer,intent(out)::status
   real(real64)::am_nh4,am_no3,am_om,age,fdpm,fhum,frpm,asfa,fasfa1,fasfa2
-  real(real64)::orgnfr,forgn1,forgn2,ff(8),organic_input,gross_n,volat_n
+  real(real64)::orgnfr,forgn1,forgn2,ff(8),organic_input,gross_n,volat_n,min_om
   transfer=soil_n_transfer_t();allocate(transfer%fom_delta_kg_m3(8));transfer%fom_delta_kg_m3=0d0
   status=B111_NADD_INVALID
   if(.not.all(ieee_is_finite([depth_m,material%application_kg_m2,material%application_age, &
@@ -44,11 +47,14 @@ contains
          material%nitrate_n_fraction,material%volatilization_fraction)>1d0)return
   if(p%nfrac_fom_min<0d0.or.p%nfrac_fom_max<=p%nfrac_fom_min.or.p%nfrac_humus<=0d0.or. &
      p%asfa_max<=p%asfa_min)return
+  min_om=B111_NADD_RESIDUE_MIN_OM
+  if(present(minimum_organic_matter_kg_m2))min_om=minimum_organic_matter_kg_m2
+  if(.not.ieee_is_finite(min_om).or.min_om<0d0)return
   am_nh4=material%ammonium_n_fraction*(1d0-material%volatilization_fraction)*material%application_kg_m2
   am_no3=material%nitrate_n_fraction*material%application_kg_m2
   volat_n=material%ammonium_n_fraction*material%volatilization_fraction*material%application_kg_m2
   am_om=material%organic_matter_fraction*material%application_kg_m2
-  if(am_om>=1d-12)then
+  if(am_om>=min_om)then
     age=material%application_age
     fdpm=exp(-.59d0*(age-.67d0))
     fhum=min(1d0,max(0d0,.137d0*(age-2.5d0)))
@@ -76,5 +82,26 @@ contains
   transfer%external_n_input_kg_m2=gross_n
   transfer%external_n_output_kg_m2=volat_n
   status=B111_NADD_OK
+ end subroutine
+
+ subroutine build_b111_amendment_transfer(depth_m,material,p,transfer,status)
+  real(real64),intent(in)::depth_m
+  type(b111_soil_n_material_t),intent(in)::material
+  type(b111_soil_n_split_parameters_t),intent(in)::p
+  type(soil_n_transfer_t),intent(out)::transfer
+  integer,intent(out)::status
+  call build_b111_soil_n_addition_transfer(depth_m,material,p,transfer,status,B111_NADD_AMENDMENT_MIN_OM)
+ end subroutine
+
+ subroutine build_b111_residue_transfer(depth_m,material,p,transfer,status)
+  real(real64),intent(in)::depth_m
+  type(b111_soil_n_material_t),intent(in)::material
+  type(b111_soil_n_split_parameters_t),intent(in)::p
+  type(soil_n_transfer_t),intent(out)::transfer
+  integer,intent(out)::status
+  type(b111_soil_n_material_t)::residue
+  residue=material
+  residue%volatilization_fraction=0d0
+  call build_b111_soil_n_addition_transfer(depth_m,residue,p,transfer,status,B111_NADD_RESIDUE_MIN_OM)
  end subroutine
 end module
