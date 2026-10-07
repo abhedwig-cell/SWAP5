@@ -1,0 +1,30 @@
+name: SWAP431 nutrient-solute owner qualification
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/crop/mod_b111_crop_n_fixation_policy.f90'
+      - 'src/process/mod_soil_n_pool_state.f90'
+      - 'tests/fwof/pp02/test_b111_crop_n_fixation_policy.f90'
+      - 'tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh'
+      - 'tests/physics/test_soil_n_pool_state.f90'
+      - 'tests/physics/run_soil_n_pool_state.sh'
+      - 'docs/decisions/ADR-0006-soil-n-owner.md'
+      - '.github/workflows/swap431-nut-sol.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: B1.11 fixation policy
+        run: bash tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh
+      - name: Soil-N pool owner
+        run: bash tests/physics/run_soil_n_pool_state.sh
