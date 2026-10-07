@@ -3,9 +3,11 @@ program test_swap431_drain_signed_divdra
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, drainage_node_transfer_t, &
        drainage_distribution_diagnostics_t, distribute_single_level_positive_divdra, distribute_single_level_signed_divdra, &
+       drainage_multilevel_diagnostics_t, distribute_multilevel_signed_divdra, &
        DRAIN_DIST_OK, DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_positive_divdra, fmr_bind_single_level_signed_divdra, &
+       fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_positive_divdra, &
+       fmr_bind_single_level_signed_divdra, fmr_bind_multilevel_signed_divdra, &
        FMR_DIVDRA_BIND_OK, FMR_DIVDRA_BIND_PROCESS_REJECTED, FMR_DIVDRA_BIND_TARGET_ALREADY_BOUND
   implicit none
   integer, parameter :: n=5
@@ -14,7 +16,11 @@ program test_swap431_drain_signed_divdra
   type(drainage_node_transfer_t) :: pos, neg
   type(drainage_distribution_diagnostics_t) :: pd, nd
   type(fmr_divdra_binding_diagnostics_t) :: bd
-  real(real64), allocatable :: q(:,:)
+  type(fmr_divdra_multilevel_binding_diagnostics_t) :: mbd
+  type(drainage_multilevel_diagnostics_t) :: md
+  type(drainage_distribution_parameters_t) :: levels(3)
+  real(real64), allocatable :: q(:,:), qmulti(:,:)
+  real(real64) :: transfers(3)
   real(real64), parameter :: scalar=0.75_real64
   real(real64), parameter :: tol=128.0_real64*epsilon(1.0_real64)
 
@@ -58,10 +64,33 @@ program test_swap431_drain_signed_divdra
   call require(bd%status==FMR_DIVDRA_BIND_TARGET_ALREADY_BOUND,'signed overwrite guard')
   call require(all(q==99._real64),'signed overwrite leaves target unchanged')
 
+
+  levels(1)=p; levels(2)=p; levels(3)=p
+  levels(1)%drain_spacing=120._real64
+  levels(2)%drain_spacing=80._real64
+  levels(3)%drain_spacing=40._real64
+  transfers=[0.8_real64,-0.4_real64,0.2_real64]
+  call distribute_multilevel_signed_divdra(levels,h,transfers,qmulti,md)
+  call require(md%status==DRAIN_DIST_OK .and. md%evaluated,'multilevel provider evaluated')
+  call require(md%active_levels==3,'multilevel active levels')
+  call require(size(qmulti,1)==3 .and. size(qmulti,2)==n,'multilevel shape')
+  call require(all(abs([sum(qmulti(1,:)),sum(qmulti(2,:)),sum(qmulti(3,:))]-transfers)<=tol), &
+       'multilevel per-level mass closure')
+  call require(md%discharge_layer_bottom_depth(1)>=md%discharge_layer_bottom_depth(2) .and. &
+       md%discharge_layer_bottom_depth(2)>=md%discharge_layer_bottom_depth(3),'multilevel nested layer bottoms')
+  deallocate(qmulti)
+  call fmr_bind_multilevel_signed_divdra(levels,h,transfers,qmulti,mbd)
+  call require(mbd%status==FMR_DIVDRA_BIND_OK .and. mbd%published,'multilevel binding publication')
+  call require(all(abs([sum(qmulti(1,:)),sum(qmulti(2,:)),sum(qmulti(3,:))]-transfers)<=tol), &
+       'multilevel binding mass closure')
+  call require(all(mbd%authoritative_scalar_transfer==transfers),'multilevel authoritative scalars')
+  deallocate(qmulti)
+
   print '(a)','SW431_DRAIN_SIGNED_POSITIVE_PRESERVATION=PASS'
   print '(a)','SW431_DRAIN_SIGNED_NEGATIVE_MASS=PASS'
   print '(a)','SW431_DRAIN_SIGNED_BINDING=PASS'
   print '(a)','SW431_DRAIN_SIGNED_FAIL_CLOSED=PASS'
+  print '(a)','SW431_DRAIN_MULTILEVEL=PASS'
   print '(a)','SW431_DRAIN_SIGNED_DIVDRA=PASS'
 contains
   subroutine require(ok,label)
