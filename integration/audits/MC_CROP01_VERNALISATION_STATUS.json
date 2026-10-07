@@ -23,7 +23,7 @@
   ],
   "qualification": {
     "runner": "tests/fmig431/run_swap431_wofost_vernalisation.py",
-    "status": "READY_FOR_O0_O2",
+    "status": "LOCAL_COMPONENT_O0_O2_PASS_OWNER_PERSISTENCE_INTEGRATION_OPEN",
     "cases": [
       "source initialization",
       "below VERNBASE",
@@ -34,11 +34,20 @@
       "owner clone",
       "production persistence export/reconstruct",
       "IDSL0/1 no hidden state"
-    ]
+    ],
+    "local_component": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_VERNALISATION=PASS"
+    }
   },
   "persistent_state": [
     "optional owner.vernalisation.accumulated_units (VERN)",
-    "optional owner.vernalisation.vernalised (FL_VERNALISED)"
+    "optional owner.vernalisation.vernalised (FL_VERNALISED)",
+    "optional owner.vernalisation.retained_rate (SAVE VERNRATE continuation)"
   ],
   "nonphysics_state": [
     "FIRST_WARNING suppression"
