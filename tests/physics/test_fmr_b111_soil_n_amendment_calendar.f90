@@ -11,6 +11,8 @@ program test_fmr_b111_soil_n_amendment_calendar
   type(fmr_b111_soil_n_state_t)::state,candidate,restarted
   type(b111_soil_n_split_parameters_t)::split
   type(b111_amendment_calendar_group_t)::g1,g2
+  type(b111_amendment_calendar_item_t)::items(3)
+  type(b111_amendment_calendar_group_t),allocatable::groups(:)
   type(b111_amendment_calendar_receipt_t)::r
   integer::status
   integer(int64)::event_id
@@ -28,6 +30,26 @@ program test_fmr_b111_soil_n_amendment_calendar
 
   split%nfrac_fom_min=0.01_real64;split%nfrac_fom_max=0.03_real64
   split%nfrac_humus=0.05_real64;split%asfa_min=0.03_real64;split%asfa_max=0.28_real64
+
+  ! Unsorted raw records: complete material records must remain intact while
+  ! sorting and adjacent dates within 1e-3 are grouped.
+  items(1)%source_time=12.0_real64
+  items(1)%material%application_kg_m2=0.30_real64
+  items(1)%material%volatilization_fraction=0.30_real64
+  items(2)%source_time=10.0005_real64
+  items(2)%material%application_kg_m2=0.20_real64
+  items(2)%material%volatilization_fraction=0.20_real64
+  items(3)%source_time=10.0_real64
+  items(3)%material%application_kg_m2=0.10_real64
+  items(3)%material%volatilization_fraction=0.10_real64
+  call build_b111_amendment_calendar(items,groups,status)
+  call check(status==FMR_B111_AMCAL_OK.and.size(groups)==2,'calendar build')
+  call check(groups(1)%event_id==1_int64.and.groups(2)%event_id==2_int64,'monotone group ids')
+  call check(size(groups(1)%materials)==2.and.size(groups(2)%materials)==1,'same-date grouping')
+  call near(groups(1)%materials(1)%application_kg_m2,0.10_real64,'sorted first dosage identity')
+  call near(groups(1)%materials(1)%volatilization_fraction,0.10_real64,'sorted first material identity')
+  call near(groups(1)%materials(2)%application_kg_m2,0.20_real64,'grouped second dosage identity')
+  call near(groups(2)%materials(1)%application_kg_m2,0.30_real64,'later dosage identity')
 
   g1%event_id=1_int64;g1%source_time=10.0_real64
   allocate(g1%materials(2))
