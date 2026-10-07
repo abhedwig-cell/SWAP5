@@ -115,6 +115,8 @@ on:
       - 'src/crop/mod_b111_crop_n_harvest_continuation.f90'
       - 'tests/fwof/pp02/test_b111_crop_n_harvest_continuation.f90'
       - 'tests/physics/test_fmr_b111_soil_crop_n_harvest_continuation.f90'
+      - 'src/runtime/mod_fmr_b111_soil_n_amendment_calendar.f90'
+      - 'tests/physics/test_fmr_b111_soil_n_amendment_calendar.f90'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
