@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "MC-NUT01",
   "branch": "work/swap431-nut-sol-binding-20261007",
-  "status": "QUALIFICATION_CANDIDATE_NOT_ADMITTED",
+  "status": "IMPLEMENTATION_CLOSED_PENDING_PERSISTED_QUALIFICATION",
   "capabilities": [
     {
       "id": "SW431-NUT-ORGANIC",
@@ -76,16 +76,16 @@
     },
     {
       "id": "SW431-NUT-AMEND",
-      "state": "EVENT_REACHABLE_CANDIDATE",
+      "state": "GROUPED_CALENDAR_EVENT_CANDIDATE",
       "evidence": [
-        "source split operator",
-        "1e-6 OM activation threshold",
-        "candidate-only exactly-once management event",
-        "restart-preserved event lineage"
+        "exact B1.11 amendment material split and 1e-6 OM threshold",
+        "same-date source events are grouped atomically",
+        "legacy TimeAmend+1 trigger is authority-gated",
+        "monotone persisted event cursor prevents duplicate/out-of-order delivery across restart",
+        "group application remains committed-to-candidate until transaction acceptance"
       ],
       "remaining": [
-        "production calendar delivery binding",
-        "persisted integrated qualification",
+        "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
@@ -98,7 +98,8 @@
         "retained dead crop N remains physical crop storage until returned",
         "harvest root/leaf/stem/storage N is converted to four persistent pending residue stores",
         "restart preserves all four pending residue pools",
-        "next Soil-N day consumes pending residue exactly once through the same residue splitter"
+        "next Soil-N day consumes pending residue exactly once through the same residue splitter",
+        "harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
       ],
       "remaining": [
         "harvest-day root/leaf/stem/storage residue continuation",
@@ -117,11 +118,11 @@
         "biological fixation booked once as external N input",
         "previous-day root/leaf residue continuation is persisted and consumed before next-day Soil-N processing",
         "whole-system transaction mass accounting and interval lineage",
-        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state"
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state",
+        "crop demand/fixation/harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
-        "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
       ]
     },
@@ -134,11 +135,11 @@
         "exact wofostnut fixation and crop-N subroutine oracles",
         "fixation booked once as external whole-system N input in coupled transaction",
         "WOFOST81 semantics unchanged",
-        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state"
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state",
+        "crop demand/fixation/harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
-        "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
       ]
     }
@@ -153,6 +154,7 @@
     "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81",
     "current-day ordinary crop senescence becomes pending residue continuation and is consumed before the next-day Soil-N process, matching B1.11 ordering",
     "retained dead crop N is persistent physical storage until explicitly returned to soil or exported; it is not booked as an immediate external sink",
-    "ordinary and harvest crop residues cross the day boundary as four persistent organ-specific pending stores and are consumed exactly once"
+    "ordinary and harvest crop residues cross the day boundary as four persistent organ-specific pending stores and are consumed exactly once",
+    "amendment groups use source-order monotone event ids; same-date materials commit atomically and cannot replay after restart"
   ]
 }
