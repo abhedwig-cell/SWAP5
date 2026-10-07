@@ -238,7 +238,7 @@ contains
       soil_prepared=soil_committed;pending_internal_n_m2=0.0_real64
       if(state%pending_root_dm_kg_ha>1.0e-8_real64.or.state%pending_leaf_dm_kg_ha>1.0e-8_real64)then
         if(.not.self%residue_return_enabled)then;self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return;end if
-        call apply_pending_residues(soil_params,soil_prepared,state,self%residue_split,self%root_residue_age, &
+        call apply_pending_residues(soil_params,soil_committed,state,self%residue_split,self%root_residue_age, &
              self%leaf_residue_age,soil_prepared,pending_internal_n_m2,status)
         if(status/=FMR_B111_COUPLED_N_OK)then;self%last_status=status;return;end if
         tol=4096.0_real64*epsilon(1.0_real64)*max(1.0_real64,pending_internal_n_m2, &
