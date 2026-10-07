@@ -338,6 +338,10 @@ contains
     oxygen_add = 0.0_real64
     oxygen_new = trial%deepest_root_oxygen_factor_integral
     if (present(deepest_root_oxygen_factor)) then
+      if (.not. trial%deepest_root_oxygen_factor_available .and. .not. same_time(trial%next_t,trial%t0)) then
+        status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
+        return
+      end if
       if (.not. ieee_is_finite(deepest_root_oxygen_factor) .or. deepest_root_oxygen_factor < 0.0_real64 .or. &
            deepest_root_oxygen_factor > 1.0_real64) then
         status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
@@ -578,6 +582,9 @@ contains
          ieee_is_finite(self%actual_root_uptake_integral) .and. &
          ieee_is_finite(self%potential_transpiration_integral) .and. self%t1 > self%t0 .and. &
          self%next_t >= self%t0 .and. self%next_t <= self%t1
+    if (.not. ready) return
+    ready = valid_optional_oxygen_integral(self%deepest_root_oxygen_factor_available, &
+         self%deepest_root_oxygen_factor_integral, self%next_t-self%t0)
   end function trial_ready
 
   pure logical function trial_complete(self) result(complete)
@@ -595,6 +602,9 @@ contains
          ieee_is_finite(self%actual_root_uptake_integral) .and. &
          ieee_is_finite(self%potential_transpiration_integral) .and. self%t1 > self%t0 .and. &
          self%covered_t >= self%t0 .and. self%covered_t <= self%t1
+    if (.not. ready) return
+    ready = valid_optional_oxygen_integral(self%deepest_root_oxygen_factor_available, &
+         self%deepest_root_oxygen_factor_integral, self%covered_t-self%t0)
   end function accepted_window_ready
 
   pure logical function accepted_window_complete(self) result(complete)
@@ -653,9 +663,10 @@ contains
          ieee_is_finite(self%actual_root_uptake_integral) .and. &
          ieee_is_finite(self%potential_transpiration_integral) .and. &
          self%actual_root_uptake_integral >= 0.0_real64 .and. &
-         self%potential_transpiration_integral >= 0.0_real64 .and. &
-         ieee_is_finite(self%deepest_root_oxygen_factor_integral) .and. &
-         self%deepest_root_oxygen_factor_integral >= 0.0_real64
+         self%potential_transpiration_integral >= 0.0_real64
+    if (.not. ready) return
+    ready = valid_optional_oxygen_integral(self%deepest_root_oxygen_factor_available, &
+         self%deepest_root_oxygen_factor_integral, self%t1-self%t0)
   end function crop_event_identity_ready
 
   pure logical function same_wofost_crop_event_identity(left, right) result(matches)
@@ -684,8 +695,27 @@ contains
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%final_revision >= 0_int64 .and. &
          ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. self%t1 > self%t0 .and. &
          ieee_is_finite(self%actual_root_uptake_integral) .and. &
-         ieee_is_finite(self%potential_transpiration_integral)
+         ieee_is_finite(self%potential_transpiration_integral) .and. &
+         self%actual_root_uptake_integral >= 0.0_real64 .and. &
+         self%potential_transpiration_integral >= 0.0_real64
+    if (.not. ready) return
+    ready = valid_optional_oxygen_integral(self%deepest_root_oxygen_factor_available, &
+         self%deepest_root_oxygen_factor_integral, self%t1-self%t0)
   end function crop_event_token_ready
+
+  pure logical function valid_optional_oxygen_integral(available, integral, duration) result(valid)
+    logical, intent(in) :: available
+    real(real64), intent(in) :: integral, duration
+    real(real64) :: tolerance
+    valid = .false.
+    if (.not. ieee_is_finite(integral) .or. .not. ieee_is_finite(duration) .or. duration < 0.0_real64) return
+    tolerance = 64.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(duration))
+    if (available) then
+      valid = integral >= 0.0_real64 .and. integral <= duration+tolerance
+    else
+      valid = abs(integral) <= tiny(1.0_real64)
+    end if
+  end function valid_optional_oxygen_integral
 
   pure logical function valid_nonnegative(value) result(valid)
     real(real64), intent(in) :: value
