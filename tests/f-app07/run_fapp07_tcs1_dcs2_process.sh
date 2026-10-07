@@ -87,3 +87,8 @@ cmp -s "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" || 
 cat "$BUILD/composition-o0/output.txt"
 echo "F_APP07_COMPOSITION_OUTPUT_SHA256=$(sha256sum "$BUILD/composition-o0/output.txt" | awk '{print $1}')"
 echo 'F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS'
+
+# MC-IRR01 reuses the independently qualified F-VQ20 TCS7/DCS2/single-node SSDI
+# science and exercises only the new production composition against the real
+# serialized FMR mass owner.
+bash tests/f-app07/run_mc_irr01_tcs7_ssdi_binding.sh
