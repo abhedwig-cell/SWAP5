@@ -272,13 +272,15 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_OK
   end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
-  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow)
+  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, &
+       root_depth_rate_parameters)
     type(wofost_crop_owner_state_t), intent(in) :: owner
     type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
+    type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_rate_parameters
     logical :: enable_shadow
-    integer :: shadow_status
+    integer :: shadow_status, root_status
 
     state = fmr_wofost_crop_transaction_state_t()
     enable_shadow = .false.
@@ -295,13 +297,29 @@ contains
       end if
       state%root_growth_carrier = fmr_wofost_root_growth_carrier_t()
     end if
+    if (present(root_depth_rate_parameters)) then
+      if (.not. root_depth_rate_parameters%ready()) then
+        state = fmr_wofost_crop_transaction_state_t()
+        return
+      end if
+      if (root_depth_rate_parameters%require_root_growth .and. .not. enable_shadow) then
+        state = fmr_wofost_crop_transaction_state_t()
+        return
+      end if
+      allocate(state%root_depth_rate)
+      call initialize_crop_root_depth_rate_state(root_depth_rate_parameters,state%root_depth_rate,root_status)
+      if (root_status /= CROP_ROOT_RATE_OK) then
+        state = fmr_wofost_crop_transaction_state_t()
+        return
+      end if
+    end if
     state%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine initialize_fmr_wofost_crop_transaction_state
 
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
-       potential_attainable_multiplier)
+       potential_attainable_multiplier, root_depth_rate_parameters)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -309,6 +327,7 @@ contains
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
     real(real64), intent(in), optional :: potential_attainable_multiplier
+    type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_rate_parameters
     logical :: enable_shadow
     real(real64) :: potential_multiplier
 
@@ -326,6 +345,10 @@ contains
     if (.not. ieee_is_finite(update_parameters%leaf_lifespan) .or. update_parameters%leaf_lifespan < 0.0_real64) return
     if (.not. ieee_is_finite(potential_multiplier) .or. potential_multiplier < 0.0_real64 .or. &
         potential_multiplier > 1.0_real64) return
+    if (present(root_depth_rate_parameters)) then
+      if (.not. root_depth_rate_parameters%ready()) return
+      if (root_depth_rate_parameters%require_root_growth .and. .not. enable_shadow) return
+    end if
 
     parameters%rate_parameters = rate_parameters
     parameters%update_parameters = update_parameters
@@ -333,6 +356,10 @@ contains
     parameters%storage_area_coefficient = storage_area_coefficient
     parameters%potential_shadow_enabled = enable_shadow
     parameters%potential_attainable_multiplier = potential_multiplier
+    if (present(root_depth_rate_parameters)) then
+      parameters%root_depth_rate_enabled = .true.
+      parameters%root_depth_rate_parameters = root_depth_rate_parameters
+    end if
     parameters%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine construct_fmr_wofost_crop_transaction_parameters
