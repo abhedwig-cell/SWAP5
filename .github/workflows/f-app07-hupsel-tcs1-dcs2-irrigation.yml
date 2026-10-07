@@ -1,18 +1,41 @@
 name: F-APP07 Hupsel TCS1 DCS2 irrigation
 
+concurrency:
+  group: f-app07-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
       - work/f-app07-hupsel-tcs1-dcs2-irrigation
+      - work/mc-irr01-management-cluster-20261007
     paths:
       - 'src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90'
       - 'tests/f-app07/**'
+      - 'tests/mc-irr01/**'
+      - 'src/process/mod_irrigation_process.f90'
+      - 'src/process/mod_irrigation_root_zone_summary.f90'
+      - 'src/process/mod_scheduled_irrigation_management_policy.f90'
+      - 'src/runtime/mod_fmr_scheduled_irrigation_application.f90'
+      - 'src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90'
+      - 'src/runtime/mod_fmr_scheduled_management_irrigation_application.f90'
+      - 'src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90'
+      - 'src/runtime/mod_fmr_irrigation_management_restart.f90'
       - 'integration/f-app/F-APP07_*'
       - '.github/workflows/f-app07-hupsel-tcs1-dcs2-irrigation.yml'
   pull_request:
     paths:
       - 'src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90'
       - 'tests/f-app07/**'
+      - 'tests/mc-irr01/**'
+      - 'src/process/mod_irrigation_process.f90'
+      - 'src/process/mod_irrigation_root_zone_summary.f90'
+      - 'src/process/mod_scheduled_irrigation_management_policy.f90'
+      - 'src/runtime/mod_fmr_scheduled_irrigation_application.f90'
+      - 'src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90'
+      - 'src/runtime/mod_fmr_scheduled_management_irrigation_application.f90'
+      - 'src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90'
+      - 'src/runtime/mod_fmr_irrigation_management_restart.f90'
       - 'integration/f-app/F-APP07_*'
       - '.github/workflows/f-app07-hupsel-tcs1-dcs2-irrigation.yml'
   workflow_dispatch:
@@ -32,3 +55,7 @@ jobs:
         run: gfortran --version
       - name: Restricted Hupsel process qualification
         run: bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh
+      - name: MC-IRR01 exact B1.11 source reconstruction
+        run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
+      - name: MC-IRR01 shared management policy
+        run: bash tests/mc-irr01/run_mc_irr01_management_policy.sh

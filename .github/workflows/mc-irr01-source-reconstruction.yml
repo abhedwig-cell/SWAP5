@@ -1,0 +1,23 @@
+name: MC-IRR01 B1.11 source reconstruction
+
+on:
+  push:
+    branches:
+      - work/mc-irr01-management-cluster-20261007
+    paths:
+      - 'tests/mc-irr01/run_mc_irr01_source_reconstruction.sh'
+      - '.github/workflows/mc-irr01-source-reconstruction.yml'
+      - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exact B1.11 irrigation decision source
+        run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
