@@ -72,6 +72,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   logical :: migmac10
   logical :: migmac10_rutter
   logical :: migmac11
+  logical :: migmac11_runon, migmac11_no_pond, migmac11_partial
   logical :: dynamic_enabled
   logical :: geometry_changes_expected,inner_route
   character(len=1) :: dynamic_flag
@@ -89,6 +90,9 @@ program test_ppa_wu05a9_fmr_top_input_trial
   migmac10=.false.
   migmac10_rutter=.false.
   migmac11=.false.
+  migmac11_runon=.false.
+  migmac11_no_pond=.false.
+  migmac11_partial=.false.
   block
     character(len=1) :: m10_flag
     character(len=1) :: rutter_flag
@@ -101,8 +105,16 @@ program test_ppa_wu05a9_fmr_top_input_trial
     if(migmac10_rutter)migmac10=.true.
     block
       character(len=1)::m11_flag
-      m11_flag='0'; call get_environment_variable('WU05_MIGMAC11',m11_flag)
-      migmac11=m11_flag=='1'
+      character(len=1)::runon_flag,no_pond_flag,partial_flag
+      m11_flag='0'; runon_flag='0'; no_pond_flag='0'; partial_flag='0'
+      call get_environment_variable('WU05_MIGMAC11',m11_flag)
+      call get_environment_variable('WU05_MIGMAC11_RUNON',runon_flag)
+      call get_environment_variable('WU05_MIGMAC11_NO_POND',no_pond_flag)
+      call get_environment_variable('WU05_MIGMAC11_PARTIAL',partial_flag)
+      migmac11_runon=runon_flag=='1'
+      migmac11_no_pond=no_pond_flag=='1'
+      migmac11_partial=partial_flag=='1'
+      migmac11=m11_flag=='1' .or. migmac11_runon .or. migmac11_no_pond .or. migmac11_partial
       if(migmac11)migmac10=.true.
     end block
   end block
@@ -118,7 +130,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(ok,'physical macropore config initialized')
   if(migmac11)then
     parameters%macropore%surface_pond_inflow_enabled=.true.
-    parameters%macropore%surface_pond_threshold_cm=1.0e-4_real64
+    parameters%macropore%surface_pond_threshold_cm=merge(1.0_real64,1.0e-4_real64,migmac11_no_pond)
     parameters%macropore%surface_macropore_conductivity_cm_per_day=3.0_real64
   end if
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
@@ -164,6 +176,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   physical%macropore%volume_domain_cp=geometry%volume_domain_cp
   physical%macropore%water_domain_cp=0.0_real64
   physical%macropore%water_domain_cp(1,numnod)=0.20_real64
+  if(migmac11_partial .and. macro_top==1) &
+       physical%macropore%water_domain_cp(1,1)=max(0.0_real64,geometry%volume_domain_cp(1,1)-5.0e-5_real64)
   if(dynamic_flag=='4' .or. dynamic_flag=='5') &
        physical%macropore%water_domain_cp=0.85_real64*geometry%volume_domain_cp
   call canonicalize_macropore_standard_storage(physical%macropore,macro_top,z,dz,storage_view,ok)
@@ -208,6 +222,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
     allocate(forcing%boesten_evaporation)
     forcing%boesten_evaporation%precipitation_rate_cm_per_day=merge(1.0_real64,1.0_real64,migmac11)
     forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.25_real64
+    if(migmac11_runon)forcing%boesten_evaporation%runon_rate_cm_per_day=5.0_real64
     forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=0.2_real64
     forcing%boesten_evaporation%ponding_max_cm=merge(2.0_real64,2.0_real64,migmac11)
     forcing%boesten_evaporation%runoff_resistance_day=1.0_real64
@@ -269,22 +284,47 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(candidate%ready(),'FMR macropore candidate ready')
   observation=backend%observation()
   if(migmac11)then
-    call require(observation%macropore_pond_requested_cm>0.0_real64,'MIGMAC11 pond-derived request active')
-    call require(abs(observation%macropore_pond_accepted_cm+observation%macropore_pond_returned_cm- &
-         observation%macropore_pond_requested_cm)<=1.0e-9_real64,'MIGMAC11 pond A9 receipt exact')
-    call require(abs((observation%macropore_pond_requested_cm-observation%macropore_pond_returned_cm)- &
-         observation%macropore_pond_accepted_cm)<=1.0e-9_real64,'MIGMAC11 net surface debit equals accepted pond inflow')
-    call require(abs(observation%macropore_requested_top_cm-observation%macropore_pond_requested_cm)<=1.0e-9_real64, &
-         'MIGMAC11 pure pond request owns aggregate top receipt')
-    call require(abs(observation%macropore_accepted_top_cm-observation%macropore_pond_accepted_cm)<=1.0e-9_real64, &
-         'MIGMAC11 pure pond accepted owns aggregate top receipt')
-    call require(abs(observation%macropore_returned_surface_cm-observation%macropore_pond_returned_cm)<=1.0e-9_real64, &
-         'MIGMAC11 pure pond return owns aggregate top receipt')
+    if(migmac11_no_pond)then
+      call require(observation%macropore_pond_requested_cm==0.0_real64,'MIGMAC11 below-threshold pond request zero')
+      call require(observation%macropore_pond_accepted_cm==0.0_real64,'MIGMAC11 below-threshold pond accepted zero')
+      call require(observation%macropore_pond_returned_cm==0.0_real64,'MIGMAC11 below-threshold pond return zero')
+      call require(observation%macropore_requested_top_cm==0.0_real64,'MIGMAC11 below-threshold aggregate request zero')
+      write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_NO_POND|MASS=',result%mass%residual
+      write(*,'(a)') 'PPA_WU05_MIGMAC11_NO_POND=PASS'
+    else
+      call require(observation%macropore_pond_requested_cm>0.0_real64,'MIGMAC11 pond-derived request active')
+      call require(abs(observation%macropore_pond_accepted_cm+observation%macropore_pond_returned_cm- &
+           observation%macropore_pond_requested_cm)<=1.0e-9_real64,'MIGMAC11 pond A9 receipt exact')
+      call require(abs((observation%macropore_pond_requested_cm-observation%macropore_pond_returned_cm)- &
+           observation%macropore_pond_accepted_cm)<=1.0e-9_real64,'MIGMAC11 net surface debit equals accepted pond inflow')
+      call require(abs(observation%macropore_requested_top_cm-observation%macropore_pond_requested_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond request owns aggregate top receipt')
+      call require(abs(observation%macropore_accepted_top_cm-observation%macropore_pond_accepted_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond accepted owns aggregate top receipt')
+      call require(abs(observation%macropore_returned_surface_cm-observation%macropore_pond_returned_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond return owns aggregate top receipt')
+      if(migmac11_partial)then
+        call require(observation%macropore_pond_accepted_cm>0.0_real64,'MIGMAC11 partial acceptance positive')
+        call require(observation%macropore_pond_returned_cm>0.0_real64,'MIGMAC11 partial return positive')
+        call require(observation%macropore_pond_accepted_cm<observation%macropore_pond_requested_cm, &
+             'MIGMAC11 partial acceptance bounded below request')
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_PARTIAL|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_PARTIAL_RETURN=PASS'
+      else if(migmac11_runon)then
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_RUNON|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_RUNON=PASS'
+      else
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS'
+      end if
+    end if
     call require(abs(result%mass%residual)<=1.0e-9_real64,'MIGMAC11 whole-column mass closure')
-    write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
-         '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
-         '|MASS=',result%mass%residual
-    write(*,'(a)') 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS'
   end if
   if(migmac10_rutter)then
     call require(observation%boesten_evaporation_evaluated,'Rutter-Boesten reduction evaluated')
@@ -311,8 +351,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(dynamic_enabled)call require(observation%macropore_inner_richards_exchange_used,'MIGMAC02 inner Richards callback used')
   if(inner_route .and. migmac10 .and. .not.migmac11)call require(observation%macropore_matrix_source_area_partition_used, &
        'MIGMAC10 residual-synchronous matrix/macro source partition used')
-  call require(observation%macropore_requested_top_cm>0.0_real64,'A9 requested top receipt positive')
-  call require(observation%macropore_accepted_top_cm>0.0_real64,'A9 accepted top receipt positive')
+  if(.not.migmac11_no_pond)then
+    call require(observation%macropore_requested_top_cm>0.0_real64,'A9 requested top receipt positive')
+    call require(observation%macropore_accepted_top_cm>0.0_real64,'A9 accepted top receipt positive')
+  end if
   call require(observation%macropore_accepted_top_cm<=observation%macropore_requested_top_cm+1.0e-12_real64, &
        'A9 accepted top bounded by request')
   call require(abs(observation%macropore_accepted_top_cm+observation%macropore_returned_surface_cm- &
