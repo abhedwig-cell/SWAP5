@@ -4,13 +4,18 @@ Status: **IMPLEMENTATION_CLOSED_PENDING_PERSISTED_QUALIFICATION**
 
 Active binding branch: `work/swap431-nut-sol-binding-20261007`
 
-## Current closeout head
+## Current closeout authority
 
-`509b2dc368f4f41c1bf31f81fbb0887bbe460e67`
+The authoritative implementation tree is the head of
+`work/swap431-nut-sol-binding-20261007`. Persisted qualification must use an
+immutable qualification branch cut from that exact tree; do not reuse the
+historical #1112 head or an older closeout SHA.
 
-MC-NUT01 and the supported MC-SOL01 capabilities have no remaining implementation gap on this branch. Remaining work is persisted O0/O2 qualification, canonical admission, and master-census reconciliation. `SW431-SALT-AQUIFER` is definitively `UNSUPPORTED_SOURCE_DEFECT` and is not remaining implementation work.
-
-Earlier qualification PR **#1112** is retained as historical evidence only; it predates the current integrated closeout head and must not be used for admission.
+MC-NUT01 and the supported MC-SOL01 capabilities have no remaining
+implementation gap on this branch. Remaining work is persisted O0/O2
+qualification, canonical admission, and master-census reconciliation.
+`SW431-SALT-AQUIFER` is definitively `UNSUPPORTED_SOURCE_DEFECT` and is not
+remaining implementation work.
 
 ## Transaction owners now present
 
