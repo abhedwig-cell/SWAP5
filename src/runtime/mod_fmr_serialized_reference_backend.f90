@@ -5668,17 +5668,33 @@ contains
     type is (fmr_b110_physical_state_t)
       select type (half => half_state)
       type is (fmr_b110_physical_state_t)
-        if (.not. allocated(full%rutter) .or. .not. allocated(half%rutter)) return
-        if (.not. full%rutter%same_source_candidate(half%rutter)) return
-        if (full%active_nodes <= 0 .or. full%active_nodes /= half%active_nodes) return
+        if (.not. allocated(full%rutter) .or. .not. allocated(half%rutter)) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=RUTTER_STATE_UNALLOCATED'; return
+        end if
+        if (.not. full%rutter%same_source_candidate(half%rutter)) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=SOURCE_CANDIDATE'; return
+        end if
+        if (full%active_nodes <= 0 .or. full%active_nodes /= half%active_nodes) then
+          write(*,'(A,2(1X,I0))') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=ACTIVE_NODES',full%active_nodes,half%active_nodes; return
+        end if
         if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head) .or. &
-            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=HYDRAULIC_ARRAY_UNALLOCATED'; return
+        end if
         n = full%active_nodes
         if (size(full%pressure_head) /= n .or. size(half%pressure_head) /= n .or. &
-            size(full%water_content) /= n .or. size(half%water_content) /= n) return
-        if (.not. associated(self%soil_parameters)) return
-        if (.not. allocated(self%soil_parameters%dz)) return
-        if (size(self%soil_parameters%dz) /= n) return
+            size(full%water_content) /= n .or. size(half%water_content) /= n) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=HYDRAULIC_ARRAY_SIZE'; return
+        end if
+        if (.not. associated(self%soil_parameters)) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=SOIL_PARAMETERS'; return
+        end if
+        if (.not. allocated(self%soil_parameters%dz)) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=DZ_UNALLOCATED'; return
+        end if
+        if (size(self%soil_parameters%dz) /= n) then
+          write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=DZ_SIZE'; return
+        end if
         value = 0.0_real64
         do i = 1, n
           local_error = abs(full%pressure_head(i) - half%pressure_head(i))
@@ -5686,10 +5702,10 @@ contains
         end do
         value = max(value, abs(full%ponding_depth - half%ponding_depth))
       class default
-        return
+        write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=HALF_TYPE'; return
       end select
     class default
-      return
+      write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=FULL_TYPE'; return
     end select
   end function fmr_rutter_temporal_error
 
