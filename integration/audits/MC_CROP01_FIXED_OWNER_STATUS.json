@@ -1,0 +1,24 @@
+{
+  "schema": "swap431.mc_crop01.fixed_owner.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-FIXED",
+    "SW431-CROP-FIXED-THERMAL"
+  ],
+  "status": "PARTIAL_SHARED_OWNER_IMPLEMENTED_SOURCE_INITIALIZATION_BLOCKER",
+  "source": {
+    "member": "SWAP/fixed.f90",
+    "sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "exact_findings": [
+      "IDEV1 DVS increment is 2/LCC",
+      "IDEV2 DTSUM=max(0,TAV-TBASE); pre-anthesis DVS increment DTSUM/TSUMEA; post-anthesis DTSUM/TSUMAM",
+      "DVS is capped at 2; LAI is AFGEN(LAITB,DVS)",
+      "optional WRT is AFGEN(WROOTTB,DVS) and GRRT/DRRT derive from the accepted WRT change"
+    ],
+    "unresolved": "The extracted read_cropfixed block reads TBASE only under IDEV2, while update_cropfixed computes DTSUM=max(0,TAV-TBASE) before the IDEV selector. Establish the source initialization/default authority for TBASE under IDEV1 before claiming source-faithful TSUM continuation."
+  },
+  "implementation": "src/crop/mod_fixed_crop_owner.f90",
+  "ownership": "One shared transactional fixed-crop state for DVS/TSUM/LAI and optional crop-owned root biomass; no duplicate owner per IDEV selector.",
+  "admission": false,
+  "next_safe_step": "Recover fixed.f90 declaration/initialization authority for TBASE and common crop-end event callsite; then qualify IDEV1/2 daily candidate, reject/replay/restart and canopy/root consumers."
+}
