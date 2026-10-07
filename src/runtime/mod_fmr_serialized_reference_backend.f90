@@ -358,6 +358,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
+    integer :: hysteresis_initial_mode = 0
     type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     logical :: tabulated_hydraulics_active = .false.
     logical :: direct_retention_active = .false.
@@ -2855,7 +2856,8 @@ contains
              .not. parameters%elasticity_active .and. .not. parameters%frost_active .and. &
              .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%drainage_response_active
-        if (ok) ok = parameters%hysteresis_parameters%active_nodes == parameters%active_nodes
+        if (ok) ok = parameters%hysteresis_parameters%active_nodes == parameters%active_nodes .and. &
+             (parameters%hysteresis_initial_mode == 1 .or. parameters%hysteresis_initial_mode == 2)
         if (ok .and. allocated(parameters%hydraulic_model)) ok = all(parameters%hydraulic_model == 1)
       else
         ok = ok .and. .not. allocated(parameters%hysteresis_parameters)
@@ -3129,6 +3131,8 @@ contains
       self%conductivity_power_tail_active = parameters%conductivity_power_tail_active
       self%hysteresis_active = parameters%hysteresis_active
       if (self%hysteresis_active) then
+        if (parameters%hysteresis_initial_mode /= 1 .and. parameters%hysteresis_initial_mode /= 2) &
+          error stop 'FMR B1.11 hysteresis initial mode must be 1 or 2'
         if (.not. allocated(parameters%hysteresis_parameters)) &
           error stop 'FMR B1.11 hysteresis active without parameters'
         if (parameters%hysteresis_parameters%active_nodes /= n) &
