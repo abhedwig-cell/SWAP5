@@ -2,13 +2,14 @@ program test_swap431_hyd_analytical
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &
        b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
-       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG
+       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &
+       B111_HYD_BIMODAL_MVG_WCK
   implicit none
-  type(b111_analytical_hydraulic_parameters_t), target :: parameters
-  type(b111_analytical_hydraulic_provider_t) :: provider
+  type(b111_analytical_hydraulic_parameters_t), target :: parameters, parameters6
+  type(b111_analytical_hydraulic_provider_t) :: provider, provider6
   real(real64) :: cofgen(16,2), head(2), theta(2), conductivity(2), capacity(2), dkdh(2)
-  real(real64) :: eps, kplus, kminus
-  integer :: model_kind(2)
+  real(real64) :: eps, kplus, kminus, cofgen6(16,1), head6(1), theta6(1), conductivity6(1), capacity6(1), dkdh6(1)
+  integer :: model_kind(2), model_kind6(1)
   logical :: available
 
   cofgen=0.0_real64
@@ -49,6 +50,19 @@ program test_swap431_hyd_analytical
   call assert_close(conductivity(2),12.0_real64,0.0_real64,'model3 saturated K')
   call assert_close(capacity(2),0.0_real64,0.0_real64,'model3 saturated C')
   call assert_close(dkdh(2),1.0e-12_real64,0.0_real64,'model3 saturated dKdh')
+
+  ! Legacy selector 6 is the WC_K representation of the same unscaled bimodal MvG family as selector 3.
+  cofgen6=cofgen(:,2:2); model_kind6=[B111_HYD_BIMODAL_MVG_WCK]
+  call initialize_b111_analytical_hydraulic_parameters(parameters6,model_kind6,cofgen6)
+  call bind_b111_analytical_hydraulic_provider(provider6,parameters6)
+  head=[-75.0_real64,-75.0_real64]
+  call provider%evaluate(head,theta,conductivity,capacity,dkdh)
+  head6=[-75.0_real64]
+  call provider6%evaluate(head6,theta6,conductivity6,capacity6,dkdh6)
+  call assert_close(theta6(1),theta(2),0.0_real64,'model6/model3 theta identity')
+  call assert_close(conductivity6(1),conductivity(2),0.0_real64,'model6/model3 K identity')
+  call assert_close(capacity6(1),capacity(2),0.0_real64,'model6/model3 C identity')
+  call assert_close(dkdh6(1),dkdh(2),0.0_real64,'model6/model3 dKdh identity')
   print '(a)','PASS swap431 hyd analytical'
 contains
   subroutine assert_close(actual,expected,tolerance,label)
