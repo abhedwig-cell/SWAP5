@@ -99,6 +99,7 @@ for opt in 0 2; do
   grep -Fq 'MC_IRR01_MANAGEMENT_SURFACE_ROUTE=PASS' "$OUT/management_routing_output.txt" || fail "management surface route O$opt"
   grep -Fq 'MC_IRR01_MANAGEMENT_SPRINKLER_ROUTE=PASS' "$OUT/management_routing_output.txt" || fail "management sprinkler route O$opt"
   grep -Fq 'MC_IRR01_MANAGEMENT_ROUTING_FAIL_CLOSED=PASS' "$OUT/management_routing_output.txt" || fail "management routing fail-closed O$opt"
+  grep -Fq 'MC_IRR01_MANAGEMENT_NO_SPRINKLER_BYPASS=PASS' "$OUT/management_routing_output.txt" || fail "management no-sprinkler-bypass O$opt"
 
   grep -Fq 'F_APP07_EXACT_ACTIVE_INTERVALS=110' "$OUT/output.txt" || fail "active interval count O$opt"
   grep -Fq 'F_APP07_SWINTER0_INTERVALS=18' "$OUT/output.txt" || fail "SWINTER0 count O$opt"
