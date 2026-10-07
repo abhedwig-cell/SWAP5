@@ -13,6 +13,7 @@ module mod_fmr_wofost_crop_transaction
        initialize_wofost_potential_shadow_from_actual, WOFOST_POTENTIAL_SHADOW_OK
   use mod_wofost_potential_shadow_daily, only: wofost_potential_daily_result_t, &
        evaluate_wofost_potential_shadow_day, WOFOST_POTENTIAL_DAILY_OK
+  use mod_crop_root_anaerobic_extension_gate, only: root_extension_allowed_by_daily_oxygen, ROOT_ANOX_GATE_OK
   use mod_wofost_two_phase_crop_window, only: wofost_two_phase_crop_window_t, &
        wofost_crop_window_begin_diagnostics_t, wofost_crop_window_complete_diagnostics_t, &
        begin_wofost_one_day_crop_window, complete_wofost_one_day_crop_window, WOFOST_CROP_WINDOW_OK
@@ -37,6 +38,8 @@ module mod_fmr_wofost_crop_transaction
   integer, parameter, public :: FMR_WOF38_CROP_COMPLETE_ERROR = 8
   integer, parameter, public :: FMR_WOF38_INVALID_TRANSACTION_STATE = 9
   integer, parameter, public :: FMR_WOF38_POTENTIAL_ERROR = 10
+  integer, parameter, public :: FMR_WOF38_MISSING_DAILY_OXYGEN = 11
+  integer, parameter, public :: FMR_WOF38_INVALID_DAILY_OXYGEN = 12
 
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_OK = 0
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE = 1
@@ -93,6 +96,8 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    logical :: anaerobic_root_growth_gate_enabled = .false.
+    real(real64) :: aeration_critical_factor = 0.0001_real64
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
   end type fmr_wofost_crop_transaction_parameters_t
@@ -115,6 +120,8 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    logical :: anaerobic_root_growth_gate_enabled = .false.
+    real(real64) :: aeration_critical_factor = 0.0001_real64
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
@@ -450,6 +457,8 @@ contains
     if (self%update_parameters%leaf_lifespan < 0.0_real64) return
     if (.not. ieee_is_finite(self%potential_attainable_multiplier)) return
     if (self%potential_attainable_multiplier < 0.0_real64 .or. self%potential_attainable_multiplier > 1.0_real64) return
+    if (.not. ieee_is_finite(self%aeration_critical_factor)) return
+    if (self%aeration_critical_factor < 0.0_real64 .or. self%aeration_critical_factor > 1.0_real64) return
     ready = .true.
   end function fmr_wofost_crop_transaction_parameters_ready
 
@@ -481,6 +490,8 @@ contains
       self%storage_area_coefficient = typed_parameters%storage_area_coefficient
       self%potential_shadow_enabled = typed_parameters%potential_shadow_enabled
       self%potential_attainable_multiplier = typed_parameters%potential_attainable_multiplier
+      self%anaerobic_root_growth_gate_enabled = typed_parameters%anaerobic_root_growth_gate_enabled
+      self%aeration_critical_factor = typed_parameters%aeration_critical_factor
       self%parameters_ready = .true.
       self%last_status = FMR_WOF38_OK
     class default
@@ -547,7 +558,8 @@ contains
     type(wofost_one_day_rate_packet_t) :: rates
     type(wofost_potential_daily_result_t) :: potential_result
     type(fmr_wofost_root_growth_carrier_t) :: candidate_growth_carrier
-    integer :: crop_status
+    integer :: crop_status, oxygen_status
+    logical :: actual_root_growth_allowed, suppress_actual_root_growth
 
     outcome = trial_outcome_t()
     self%last_status = FMR_WOF38_INVALID_TRANSACTION_STATE
@@ -593,8 +605,25 @@ contains
         return
       end if
 
+      suppress_actual_root_growth = .false.
+      if (self%anaerobic_root_growth_gate_enabled) then
+        if (.not. self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_available) then
+          self%last_status = FMR_WOF38_MISSING_DAILY_OXYGEN
+          return
+        end if
+        call root_extension_allowed_by_daily_oxygen(.true., &
+             self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_integral, &
+             self%aeration_critical_factor, actual_root_growth_allowed, oxygen_status)
+        if (oxygen_status /= ROOT_ANOX_GATE_OK) then
+          self%last_status = FMR_WOF38_INVALID_DAILY_OXYGEN
+          return
+        end if
+        suppress_actual_root_growth = .not. actual_root_growth_allowed
+      end if
+
       call complete_wofost_one_day_crop_window(crop_window, self%rate_parameters, self%update_parameters, &
-           self%event_forcing%accepted_aggregates, candidate_owner, rates, complete_diagnostics, crop_status)
+           self%event_forcing%accepted_aggregates, candidate_owner, rates, complete_diagnostics, crop_status, &
+           suppress_actual_root_growth=suppress_actual_root_growth)
       if (crop_status /= WOFOST_CROP_WINDOW_OK .or. .not. complete_diagnostics%candidate_built) then
         self%last_status = FMR_WOF38_CROP_COMPLETE_ERROR
         return
