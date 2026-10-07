@@ -1,62 +1,111 @@
 {
-  "schema_version": "1.0",
-  "work_unit": "SWAP431-MC-DRAIN01-FOUNDATION",
+  "schema_version": "2.0",
+  "work_unit": "SWAP431-MC-DRAIN01-MC-FROST01",
+  "canonical_branch": "integration/f-ci-canonical",
+  "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
+  "checkpoint_commit": "1f419f9146b3f28518d189e8b1cb52b3030919f3",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "implemented_capabilities": [
     "SW431-DRAIN-DIV-SIGNED",
-    "SW431-DRAIN-DIV-MULTI"
+    "SW431-DRAIN-DIV-MULTI",
+    "SW431-DRAIN-DISLAYER",
+    "SW431-DRAIN-INF-SPLIT",
+    "SW431-DRAIN-ALLOCATION",
+    "SW431-DRAIN-INF-LIMIT",
+    "SW431-DRAIN-DRAMET3",
+    "SW431-DRAIN-DIV-TOPINTERFLOW",
+    "SW431-FROST-DIV-MULTI",
+    "SW431-FROST-EXT-MULTI",
+    "SW431-FROST-ROOTDRAIN"
   ],
-  "scope": "Ordinary no-frost signed single-level DIVDRA plus interacting multilevel discharge-layer partitioning, wired through existing serialized DIVDRA composition/runtime. Existing positive-only API remains fail-closed for negative transfers.",
+  "scope": [
+    "Ordinary signed and interacting multilevel DIVDRA, source-faithful discharge-layer top redistribution and highest-interflow exclusion.",
+    "Native typed DRAMET3 response including OWLTAB endpoint resolution, ZBOTDR clamp, DRARES/INFRES sign dispatch, SWALLO2/3 and SWLIMINF.",
+    "Single-level SWDIVDINF production route reusing the admitted B19 partition through one explicit adapter; B19 source is unchanged.",
+    "Multilevel frost/DIVDRA reuses existing matrix frost owners; homogeneous multilevel EXTENDED_SIGNED frost admission removes only the prior single-level guard.",
+    "Root+frost+drainage remains bounded to paired root_frost/root_extraction without salt, Bartholomeus, macropores or alternate persistence owners; temporal error is max-composed from existing drainage and root-frost indicators."
+  ],
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
-    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
-  ],
-  "relevant_paths": [
-    "src/process/mod_drainage_spatial_distribution.f90",
-    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
-    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
-    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
-    "tests/fmig431/test_swap431_drain_signed_divdra.f90",
-    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
+    "docs/audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md"
   ],
   "dependency_surface": [
     "src/process/mod_drainage_spatial_distribution.f90",
+    "src/process/mod_drainage_dramet3_response.f90",
+    "src/process/mod_drainage_discharge_layer_top.f90",
+    "src/process/mod_drainage_top_interflow_distribution.f90",
+    "src/process/mod_drainage_b19_separate_infiltration_adapter.f90",
     "src/runtime/mod_fmr_divdra_runtime_binding.f90",
     "src/runtime/mod_fmr_divdra_serialized_composition.f90",
     "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "src/solver/mod_process_hydraulic_view.f90"
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
   ],
-  "invariants": [
-    "scalar transfer remains authoritative mass object",
-    "publication occurs only after process success",
-    "preallocated drainage target fails closed",
-    "serialized runtime cleans transient forcing materialization",
-    "no new persistent/restart state",
-    "B19 frost physics is not duplicated or changed"
+  "test_paths": [
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "tests/fmig431/run_swap431_drain_dramet3.sh",
+    "tests/fmig431/run_swap431_drain_dislayer.sh",
+    "tests/fmig431/run_swap431_drain_top_interflow.sh",
+    "tests/fmig431/run_swap431_drain_inf_split.sh",
+    "tests/fmig431/run_swap431_frost_divdra_multi.sh",
+    "tests/fmig431/run_swap431_frost_extended_multi.sh",
+    "tests/fmig431/run_swap431_frost_rootdrain.sh",
+    "tests/fmig431/run_swap431_drain_serialized_compile.py"
   ],
-  "current_test_state": {
-    "focused_runner": "tests/fmig431/run_swap431_drain_signed_divdra.sh",
-    "expected_optimizations": [
-      "O0",
-      "O2"
+  "test_state": {
+    "local_component_evidence": {
+      "signed_multilevel": "PASS O0/O2, identical output",
+      "dramet3": "PASS O0/O2",
+      "dislayer": "PASS O0/O2"
+    },
+    "newly_persisted_not_yet_counted": [
+      "top-interflow exact-boundary regression",
+      "INF-SPLIT B19 exact-reuse test",
+      "FROST-DIV-MULTI composition test",
+      "FROST-EXT-MULTI composition test",
+      "FROST-ROOTDRAIN owner-separation test",
+      "serialized runtime/production bootstrap compile gate"
     ],
-    "execution": "PENDING",
-    "reason": "PR-triggered broad Actions are queued; local checkout cannot resolve github.com and no source archive is materialized in the shell environment."
+    "focused_actions": {
+      "run_id": 37633697079,
+      "head": "2f8dcfb5823581a280771baff1e095a07916924a",
+      "status": "QUEUED_NOT_COUNTED_AS_TEST"
+    }
   },
-  "active_ci_observation": {
-    "run_id": 37626797140,
-    "workflow": "F-CI canonical qualification",
-    "head": "9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
-    "status": "QUEUED_NOT_COUNTED_AS_TEST"
-  },
-  "next_action": "Obtain compiler execution for the focused runner; repair any compile/test defects. Only then persist qualification evidence and reconcile census dispositions. In parallel, continue source-bound design decomposition for DRAMET3, INF-SPLIT, DISLAYER and TOPINTERFLOW without claiming closure.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
+  "invariants": [
+    "scalar drainage transfers remain authoritative mass objects",
+    "nodal publication occurs only after process success",
+    "rejected preflight does not mutate committed state",
+    "serialized materialization is transient and cleaned before return",
+    "no new persistent or restart state",
+    "B19 frost/DIVDRA algebra is reused, not duplicated or modified",
+    "root and drainage sinks keep separate owners; combined temporal acceptance uses the maximum existing normalized error"
+  ],
+  "remaining_open": [
+    {
+      "capability_id": "SW431-FROST-GW",
+      "dependency": "route-specific lower-boundary ownership; implicit mode3 and modes5/7/8 are not equivalent to a pre-resolved qbot"
+    },
+    {
+      "capability_id": "SW431-FROST-SNOW",
+      "dependency": "SW431-TEMP-SNOW sensible-temperature/snow insulation owner remains open"
+    },
+    {
+      "capability_id": "SW431-DRAIN-INF-SPLIT",
+      "dependency": "multilevel SWDIVDINF still needs source FDisInf-aware level ordering if aggregate census requires that composition",
+      "bounded_single_level_implemented": true
+    }
+  ],
+  "next_action": "Run the focused persisted O0/O2 and integrated compile gates, repair failures, then reconcile census dispositions. After drainage/frost qualification, leave only route-specific FROST-GW, TEMP-SNOW and any required multilevel SWDIVDINF ordering as explicit dependencies.",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@1f419f9146b3f28518d189e8b1cb52b3030919f3",
   "blockers": []
 }
