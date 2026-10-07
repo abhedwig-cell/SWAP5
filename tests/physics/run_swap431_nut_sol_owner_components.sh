@@ -72,6 +72,24 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_age_tracer_matrix_substep.f90" \
     -o b111_age_matrix
   ./b111_age_matrix
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_solute_compartment_state.f90" \
+    "$root/src/process/mod_b111_age_pond_exchange.f90" \
+    "$root/src/process/mod_b111_age_tracer_matrix_substep.f90" \
+    "$root/src/process/mod_b111_age_tracer_interval.f90" \
+    "$root/tests/physics/test_b111_age_pond_exchange.f90" \
+    -o b111_age_pond
+  ./b111_age_pond
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_solute_compartment_state.f90" \
+    "$root/src/process/mod_b111_age_pond_exchange.f90" \
+    "$root/src/process/mod_b111_age_tracer_matrix_substep.f90" \
+    "$root/src/process/mod_b111_age_tracer_interval.f90" \
+    "$root/tests/physics/test_b111_age_tracer_interval.f90" \
+    -o b111_age_interval
+  ./b111_age_interval
   gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
     "$root/src/process/mod_soil_n_pool_state.f90" \
     "$root/src/process/mod_b111_soil_n_addition.f90" \
