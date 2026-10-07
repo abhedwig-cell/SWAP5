@@ -7,6 +7,7 @@ TESTS=[
  'tests/fmig431/test_low03a_dep02_cauchy_temporal_operator.f90',
  'tests/fmig431/test_low03a_application.f90',
  'tests/fmig431/test_low03_explicit_application.f90',
+ 'tests/fmig431/test_low03_explicit_progress_restart.f90',
  'tests/fmig431/test_low03a_progress_restart.f90',
  'tests/fmig431/test_low03_typed_solver.f90',
  'tests/fmig431/test_fmig431_low01a_qgwl_binding.f90',
