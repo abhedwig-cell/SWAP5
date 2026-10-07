@@ -136,7 +136,7 @@
     "workflow": "SW431 HYD constitutive families",
     "run_id": 37646065725,
     "code_head": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
-    "state": "QUEUED",
+    "state": "QUEUED_AS_OF_2026_10_07_20_UTC",
     "includes": [
       "model2/3 source-oracle O0/O2",
       "model5-11 source-oracle O0/O2",
@@ -150,21 +150,29 @@
       "ROSS12 reference solver adapter preservation",
       "SWAP-009 PDI vapor source oracle O0/O2 and models 8-11 serialized thermal-state reachability"
     ],
-    "queue_observation": "Repository-wide Actions backlog observed; code-postimage focused run remains queued without runner assignment after active polling."
+    "queue_observation": "Repository-wide Actions backlog observed; code-postimage focused run remains queued without runner assignment after active polling.",
+    "previous_run": {
+      "run_id": 37638247151,
+      "job_id": 112850037145,
+      "code_head": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a",
+      "conclusion": "failure",
+      "failure": "GNU Fortran 13.3 override dummy argument naming mismatch in test_b111_hydraulic_families.f90; subsequent focused steps skipped",
+      "admission_evidence": false
+    }
   },
   "blockers": [
     "MODEL12/RIA depends on the exact corrected B1.11 MOD_RIA body. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT because MOD_RIA.f90 contains non-UTF-8 bytes; do not substitute a text-normalized or literature reconstruction.",
     "Generic SWSOPHY=1 TSPACK TABLE depends on the exact B0 sptabulated member. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT and the inspected public historical file is not byte-identical; do not use it as an admission oracle."
   ],
-  "next_action": "Wait actively for focused run 37646065725 on code postimage 851c6ad3. If green, persist bounded qualification/closeout and open canonical admission PR. Remaining MODEL12/RIA and generic TABLE stay fail-closed until binary-safe exact source materialization.",
+  "next_action": "Run 37646065725 on code postimage 851c6ad3 remains queued; inspect all steps and output markers when complete. No admission until integrated PASS; MODEL12/RIA and generic TABLE remain source-blocked.",
   "recovery_point": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
-  "last_reconciled_upstream": "integration/f-ci-canonical@4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "last_reconciled_upstream": "integration/f-ci-canonical@75114770c4d4d300f9d8037207d5498fa0e1f44e",
   "upstream_reconciliation": {
-    "from": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-    "to": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
-    "commits": 15,
+    "from": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+    "to": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
+    "commits": 11,
     "dependency_surface_intersection": false,
-    "changed_scope": "crop/root implementation and tests only",
-    "disposition": "HYD/HYST implementation and local evidence remain applicable; no scientific requalification required solely for this upstream delta"
+    "changed_scope": "crop CO2 response owner, crop ET canopy view provider, crop runtime CO2 binding and focused tests/workflow",
+    "disposition": "No intersection with enumerated HYD/HYST owner, runtime or test paths; integrated qualification still required for current code postimage"
   }
 }
