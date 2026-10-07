@@ -13,6 +13,8 @@ module mod_fmr_b111_soil_crop_n_transaction
        evaluate_b111_soil_n_daily_candidate,B111_NDAY_OK
   use mod_b111_crop_n_owner, only: b111_crop_n_state_t,b111_crop_n_forcing_t,b111_crop_n_request_t,b111_crop_n_receipt_t, &
        prepare_b111_crop_n_request,apply_b111_crop_n_day,B111_CROPN_OK
+  use mod_b111_crop_n_harvest_continuation, only: b111_crop_n_harvest_forcing_t,b111_crop_n_harvest_receipt_t, &
+       apply_b111_crop_n_harvest,B111_HARVEST_N_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t,FMR_SOIL_N_OK
   implicit none
   private
@@ -36,6 +38,10 @@ module mod_fmr_b111_soil_crop_n_transaction
     real(real64)::pending_root_n_kg_ha=0.0_real64
     real(real64)::pending_leaf_dm_kg_ha=0.0_real64
     real(real64)::pending_leaf_n_kg_ha=0.0_real64
+    real(real64)::pending_stem_dm_kg_ha=0.0_real64
+    real(real64)::pending_stem_n_kg_ha=0.0_real64
+    real(real64)::pending_storage_dm_kg_ha=0.0_real64
+    real(real64)::pending_storage_n_kg_ha=0.0_real64
   contains
     procedure::clone=>coupled_clone
     procedure,public::ready=>coupled_ready
@@ -67,7 +73,11 @@ module mod_fmr_b111_soil_crop_n_transaction
     type(b111_soil_n_split_parameters_t)::residue_split
     real(real64)::root_residue_age=0.0_real64
     real(real64)::leaf_residue_age=0.0_real64
+    real(real64)::stem_residue_age=0.0_real64
+    real(real64)::storage_residue_age=0.0_real64
     real(real64)::fra_deceased_leaf_to_soil=0.0_real64
+    type(b111_crop_n_harvest_forcing_t)::harvest_forcing
+    logical::harvest_enabled=.false.
     logical::residue_return_enabled=.false.
     type(fmr_b111_soil_crop_n_receipt_t)::last_receipt
     logical::configured=.false.
@@ -88,7 +98,8 @@ module mod_fmr_b111_soil_crop_n_transaction
 contains
 
   subroutine initialize_fmr_b111_soil_crop_n_state(soil,crop,state,status,last_t0,last_t1,interval_consumed, &
-       pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha)
+       pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha, &
+       pending_stem_dm_kg_ha,pending_stem_n_kg_ha,pending_storage_dm_kg_ha,pending_storage_n_kg_ha)
     type(fmr_b111_soil_n_state_t),intent(in)::soil
     type(b111_crop_n_state_t),intent(in)::crop
     type(fmr_b111_soil_crop_n_state_t),intent(out)::state
@@ -96,6 +107,7 @@ contains
     real(real64),intent(in),optional::last_t0,last_t1
     logical,intent(in),optional::interval_consumed
     real(real64),intent(in),optional::pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha
+    real(real64),intent(in),optional::pending_stem_dm_kg_ha,pending_stem_n_kg_ha,pending_storage_dm_kg_ha,pending_storage_n_kg_ha
 
     state=fmr_b111_soil_crop_n_state_t();status=FMR_B111_COUPLED_N_INVALID
     if(.not.soil%ready().or..not.crop%valid())return
@@ -103,6 +115,8 @@ contains
     if((present(pending_root_dm_kg_ha).or.present(pending_root_n_kg_ha).or.present(pending_leaf_dm_kg_ha).or. &
         present(pending_leaf_n_kg_ha)).and..not.(present(pending_root_dm_kg_ha).and.present(pending_root_n_kg_ha).and. &
         present(pending_leaf_dm_kg_ha).and.present(pending_leaf_n_kg_ha)))return
+    if(present(pending_stem_dm_kg_ha).neqv.present(pending_stem_n_kg_ha))return
+    if(present(pending_storage_dm_kg_ha).neqv.present(pending_storage_n_kg_ha))return
     if(present(last_t0))then
       if(.not.all(ieee_is_finite([last_t0,last_t1])).or.last_t1<=last_t0)return
       if(.not.interval_consumed)return
@@ -115,12 +129,22 @@ contains
       state%pending_root_dm_kg_ha=pending_root_dm_kg_ha;state%pending_root_n_kg_ha=pending_root_n_kg_ha
       state%pending_leaf_dm_kg_ha=pending_leaf_dm_kg_ha;state%pending_leaf_n_kg_ha=pending_leaf_n_kg_ha
     end if
+    if(present(pending_stem_dm_kg_ha))then
+      if(.not.all(ieee_is_finite([pending_stem_dm_kg_ha,pending_stem_n_kg_ha])).or. &
+         min(pending_stem_dm_kg_ha,pending_stem_n_kg_ha)<0.0_real64.or.pending_stem_n_kg_ha>pending_stem_dm_kg_ha)return
+      state%pending_stem_dm_kg_ha=pending_stem_dm_kg_ha;state%pending_stem_n_kg_ha=pending_stem_n_kg_ha
+    end if
+    if(present(pending_storage_dm_kg_ha))then
+      if(.not.all(ieee_is_finite([pending_storage_dm_kg_ha,pending_storage_n_kg_ha])).or. &
+         min(pending_storage_dm_kg_ha,pending_storage_n_kg_ha)<0.0_real64.or.pending_storage_n_kg_ha>pending_storage_dm_kg_ha)return
+      state%pending_storage_dm_kg_ha=pending_storage_dm_kg_ha;state%pending_storage_n_kg_ha=pending_storage_n_kg_ha
+    end if
     state%soil=soil;state%crop=crop;state%initialized=.true.;status=FMR_B111_COUPLED_N_OK
   end subroutine
 
   subroutine configure_fmr_b111_soil_crop_n_model(turnover,cfrac_fom,cfrac_biomass,cfrac_humus, &
        rate_environment,soil_forcing,crop_forcing,model,status,residue_split,root_residue_age,leaf_residue_age, &
-       fra_deceased_leaf_to_soil)
+       fra_deceased_leaf_to_soil,stem_residue_age,storage_residue_age,harvest_forcing)
     type(b111_organic_turnover_parameters_t),intent(in)::turnover
     real(real64),intent(in)::cfrac_fom(:),cfrac_biomass,cfrac_humus
     type(b111_soil_n_rate_environment_t),intent(in)::rate_environment
@@ -129,7 +153,8 @@ contains
     type(fmr_b111_soil_crop_n_model_t),intent(out)::model
     integer,intent(out)::status
     type(b111_soil_n_split_parameters_t),intent(in),optional::residue_split
-    real(real64),intent(in),optional::root_residue_age,leaf_residue_age,fra_deceased_leaf_to_soil
+    real(real64),intent(in),optional::root_residue_age,leaf_residue_age,fra_deceased_leaf_to_soil,stem_residue_age,storage_residue_age
+    type(b111_crop_n_harvest_forcing_t),intent(in),optional::harvest_forcing
 
     model=fmr_b111_soil_crop_n_model_t();status=FMR_B111_COUPLED_N_INVALID
     if(size(cfrac_fom)<1.or..not.all(ieee_is_finite(cfrac_fom)).or. &
@@ -140,6 +165,8 @@ contains
     if((present(residue_split).or.present(root_residue_age).or.present(leaf_residue_age).or. &
         present(fra_deceased_leaf_to_soil)).and..not.(present(residue_split).and.present(root_residue_age).and. &
         present(leaf_residue_age).and.present(fra_deceased_leaf_to_soil)))return
+    if(present(stem_residue_age).neqv.present(storage_residue_age))return
+    if(present(harvest_forcing).and..not.present(residue_split))return
     if(.not.present(residue_split))then
       if(crop_forcing%drlv_kg_ha_day/=0.0_real64.or.crop_forcing%drst_kg_ha_day/=0.0_real64.or. &
          crop_forcing%drrt_kg_ha_day/=0.0_real64)return
@@ -148,7 +175,13 @@ contains
       if(root_residue_age<0.0_real64.or.leaf_residue_age<0.0_real64.or.fra_deceased_leaf_to_soil<0.0_real64.or. &
          fra_deceased_leaf_to_soil>1.0_real64)return
       model%residue_split=residue_split;model%root_residue_age=root_residue_age;model%leaf_residue_age=leaf_residue_age
+      model%stem_residue_age=merge(stem_residue_age,root_residue_age,present(stem_residue_age))
+      model%storage_residue_age=merge(storage_residue_age,leaf_residue_age,present(storage_residue_age))
       model%fra_deceased_leaf_to_soil=fra_deceased_leaf_to_soil;model%residue_return_enabled=.true.
+      if(present(harvest_forcing))then
+        model%harvest_forcing=harvest_forcing
+        model%harvest_enabled=harvest_forcing%active
+      end if
     end if
     model%turnover=turnover;model%cfrac_fom=cfrac_fom
     model%cfrac_biomass=cfrac_biomass;model%cfrac_humus=cfrac_humus
@@ -166,6 +199,8 @@ contains
       copy%interval_consumed=self%interval_consumed;copy%last_t0=self%last_t0;copy%last_t1=self%last_t1
       copy%pending_root_dm_kg_ha=self%pending_root_dm_kg_ha;copy%pending_root_n_kg_ha=self%pending_root_n_kg_ha
       copy%pending_leaf_dm_kg_ha=self%pending_leaf_dm_kg_ha;copy%pending_leaf_n_kg_ha=self%pending_leaf_n_kg_ha
+      copy%pending_stem_dm_kg_ha=self%pending_stem_dm_kg_ha;copy%pending_stem_n_kg_ha=self%pending_stem_n_kg_ha
+      copy%pending_storage_dm_kg_ha=self%pending_storage_dm_kg_ha;copy%pending_storage_n_kg_ha=self%pending_storage_n_kg_ha
     end select
   end subroutine
 
@@ -173,20 +208,25 @@ contains
     class(fmr_b111_soil_crop_n_state_t),intent(in)::self
     ok=self%initialized.and.self%soil%ready().and.self%crop%valid().and. &
        all(ieee_is_finite([self%pending_root_dm_kg_ha,self%pending_root_n_kg_ha,self%pending_leaf_dm_kg_ha, &
-       self%pending_leaf_n_kg_ha])).and.min(self%pending_root_dm_kg_ha,self%pending_root_n_kg_ha, &
-       self%pending_leaf_dm_kg_ha,self%pending_leaf_n_kg_ha)>=0.0_real64.and. &
-       self%pending_root_n_kg_ha<=self%pending_root_dm_kg_ha.and.self%pending_leaf_n_kg_ha<=self%pending_leaf_dm_kg_ha
+       self%pending_leaf_n_kg_ha,self%pending_stem_dm_kg_ha,self%pending_stem_n_kg_ha, &
+       self%pending_storage_dm_kg_ha,self%pending_storage_n_kg_ha])).and. &
+       min(self%pending_root_dm_kg_ha,self%pending_root_n_kg_ha,self%pending_leaf_dm_kg_ha,self%pending_leaf_n_kg_ha, &
+       self%pending_stem_dm_kg_ha,self%pending_stem_n_kg_ha,self%pending_storage_dm_kg_ha,self%pending_storage_n_kg_ha)>=0.0_real64.and. &
+       self%pending_root_n_kg_ha<=self%pending_root_dm_kg_ha.and.self%pending_leaf_n_kg_ha<=self%pending_leaf_dm_kg_ha.and. &
+       self%pending_stem_n_kg_ha<=self%pending_stem_dm_kg_ha.and.self%pending_storage_n_kg_ha<=self%pending_storage_dm_kg_ha
     if(ok.and.self%interval_consumed)ok=ieee_is_finite(self%last_t0).and.ieee_is_finite(self%last_t1).and.self%last_t1>self%last_t0
   end function
 
   subroutine coupled_snapshot(self,soil,crop,last_t0,last_t1,interval_consumed,available, &
-       pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha)
+       pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha, &
+       pending_stem_dm_kg_ha,pending_stem_n_kg_ha,pending_storage_dm_kg_ha,pending_storage_n_kg_ha)
     class(fmr_b111_soil_crop_n_state_t),intent(in)::self
     type(fmr_b111_soil_n_state_t),intent(out)::soil
     type(b111_crop_n_state_t),intent(out)::crop
     real(real64),intent(out)::last_t0,last_t1
     logical,intent(out)::interval_consumed,available
     real(real64),intent(out),optional::pending_root_dm_kg_ha,pending_root_n_kg_ha,pending_leaf_dm_kg_ha,pending_leaf_n_kg_ha
+    real(real64),intent(out),optional::pending_stem_dm_kg_ha,pending_stem_n_kg_ha,pending_storage_dm_kg_ha,pending_storage_n_kg_ha
     soil=fmr_b111_soil_n_state_t();crop=b111_crop_n_state_t()
     last_t0=0.0_real64;last_t1=0.0_real64;interval_consumed=.false.;available=self%ready()
     if(available)then
@@ -195,6 +235,10 @@ contains
       if(present(pending_root_n_kg_ha))pending_root_n_kg_ha=self%pending_root_n_kg_ha
       if(present(pending_leaf_dm_kg_ha))pending_leaf_dm_kg_ha=self%pending_leaf_dm_kg_ha
       if(present(pending_leaf_n_kg_ha))pending_leaf_n_kg_ha=self%pending_leaf_n_kg_ha
+      if(present(pending_stem_dm_kg_ha))pending_stem_dm_kg_ha=self%pending_stem_dm_kg_ha
+      if(present(pending_stem_n_kg_ha))pending_stem_n_kg_ha=self%pending_stem_n_kg_ha
+      if(present(pending_storage_dm_kg_ha))pending_storage_dm_kg_ha=self%pending_storage_dm_kg_ha
+      if(present(pending_storage_n_kg_ha))pending_storage_n_kg_ha=self%pending_storage_n_kg_ha
     end if
   end subroutine
 
