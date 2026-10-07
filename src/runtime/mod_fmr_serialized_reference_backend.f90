@@ -3070,8 +3070,9 @@ contains
       if (extended_hydraulic_status /= B111_EXT_OK) &
         error stop 'FMR B1.11 extended hydraulic selector invalid or unsupported'
       self%direct_retention_active = parameters%direct_retention_active
-      if (self%direct_retention_active .and. self%legacy_hydraulic_constitutive%active()) &
-        error stop 'FMR direct-retention route is not qualified with B1.11 hydraulic models 2/3'
+      if (self%direct_retention_active .and. (self%legacy_hydraulic_constitutive%active() .or. &
+          any(self%extended_hydraulic_parameters%model >= 5))) &
+        error stop 'FMR direct-retention route is not qualified with B1.11 alternative hydraulic models'
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
       self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
