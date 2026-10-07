@@ -79,15 +79,25 @@
     "scalar transfer remains authoritative mass object",
     "publication remains last and refuses an already allocated target"
   ],
-  "next_action": "Process focused qualification run 37638162602 when a runner becomes available. Success permits MC-DRAIN01 qualified-candidate reconciliation for all eight IDs; failure reopens only the failing focused dependency surface.",
+  "next_action": "Run tests/fmig431/run_swap431_drain_serialized_compile.py against the persisted current branch when a complete repository checkout/runner is available. If it passes, reconcile the implemented drainage/frost IDs as qualification candidates. Keep SW431-FROST-GW and SW431-FROST-SNOW separate because they require distinct ownership dependencies.",
   "blockers": [
-    "Persisted integrated qualification is queued because GitHub Actions has no runner currently assigned."
+    "Current-head focused Actions run 37658401687 is queued with no runner and is not counted as evidence.",
+    "The complete serialized production dependency-closure compile has not yet run against the current postimage.",
+    "SW431-FROST-GW requires a separate lower-boundary qbot ownership/composition decision.",
+    "SW431-FROST-SNOW depends on SW431-TEMP-SNOW and a shared snow-insulated sensible-temperature owner."
   ],
-  "recovery_point": "5a52aa18a9a5b873ed137858bbba4fe1b1c0d6e6",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@985bef66fb38f27dba08fc5b0284553f74e15537",
   "qualification": {
-    "status": "INFRASTRUCTURE_PENDING",
-    "workflow_run": 37638162602,
-    "tested_head": "f29007caa919b07968926a614c84285cb57cefe3",
-    "reason": "Repository-wide GitHub Actions queue; focused-drainage job exists but has no runner assignment."
-  }
+    "status": "PENDING_INTEGRATED_COMPILE",
+    "current_head_actions_run": 37658401687,
+    "actions_status": "QUEUED_NOT_COUNTED",
+    "local_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json",
+    "required_gate": "tests/fmig431/run_swap431_drain_serialized_compile.py"
+  },
+  "last_reconciled_head": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "checkpoint_commit": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "test_status": "LOCAL_FOCUSED_CLUSTER_GREEN_O0_O2; SERIALIZED_DEPENDENCY_CLOSURE_COMPILE_PENDING",
+  "qualification_status": "PENDING_INTEGRATED_COMPILE",
+  "local_validation_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json"
 }
