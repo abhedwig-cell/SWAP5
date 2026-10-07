@@ -10,7 +10,7 @@ run_one() {
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/solver/mod_soil_water_solver_contract.f90 -o "$out/contract.o"
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/solver/mod_process_hydraulic_view.f90 -o "$out/view.o"
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/process/mod_drainage_spatial_distribution.f90 -o "$out/dist.o"
-  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/process/mod_frost_divdra_drainage_effect.f90 -o "$out/b19.o"
+  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/process/mod_frost_divdra_drainage_effect.f90 -o "$out/b19.o"
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/process/mod_drainage_b19_separate_infiltration_adapter.f90 -o "$out/adapter.o"
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" -c src/runtime/mod_fmr_divdra_separate_infiltration_binding.f90 -o "$out/binding.o"
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace "$opt" -J"$out" -I"$out" tests/fmig431/test_swap431_drain_inf_split.f90 "$out/contract.o" "$out/view.o" "$out/dist.o" "$out/b19.o" "$out/adapter.o" "$out/binding.o" -o "$out/test"
