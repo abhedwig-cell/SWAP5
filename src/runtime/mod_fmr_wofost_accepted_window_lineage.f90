@@ -563,6 +563,10 @@ contains
     if (.not. same_real_bits(token%actual_root_uptake_integral, window%actual_root_uptake_integral)) return
     if (.not. same_real_bits(token%potential_transpiration_integral, &
          window%potential_transpiration_integral)) return
+    if (token%deepest_root_oxygen_factor_available .neqv. &
+         window%deepest_root_oxygen_factor_available) return
+    if (.not. same_real_bits(token%deepest_root_oxygen_factor_integral, &
+         window%deepest_root_oxygen_factor_integral)) return
 
     window%event_delivered = .true.
     status = FMR_WOFOST_LINEAGE_OK
