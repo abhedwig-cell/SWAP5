@@ -169,9 +169,9 @@ program test_swap431_low3_explicit_progress
   call states(1)%capture_checkpoint(cp,ok)
   call restored(1)%capture_checkpoint(cp_restored,ok)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
-       forcing,cfg%numerical,T1,T1+0.125_real64,cp,continuation,candidate,diag)
+       forcing,cfg%numerical,T1,T1+1.0e-5_real64,cp,continuation,candidate,diag)
   call resumed%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,restored(1), &
-       forcing,cfg%numerical,T1,T1+0.125_real64,cp_restored,restart,other,oracle_diag)
+       forcing,cfg%numerical,T1,T1+1.0e-5_real64,cp_restored,restart,other,oracle_diag)
   if(.not.continuation%completed .or. .not.restart%completed)then
     write(*,'(a,2(1x,l1),6(1x,i0))') 'LOW03EXP_RESTART_DIAG',continuation%completed,restart%completed, &
          continuation%status,restart%status,diag%retries,diag%solver_rejections,oracle_diag%retries,oracle_diag%solver_rejections
