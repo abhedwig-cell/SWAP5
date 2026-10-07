@@ -36,7 +36,7 @@ program test_swap431_crop_rotation_owner
   call evaluate_crop_rotation_day(sched,s,120.099_real64,.false.,c,r,status)
   if(status/=CROP_ROTATION_OK.or..not.c%crop_calendar_active)error stop 8
   s=c
-  call evaluate_crop_rotation_day(sched,s,120.1_real64,.false.,c,r,status)
+  call evaluate_crop_rotation_day(sched,s,120.1001_real64,.false.,c,r,status)
   if(status/=CROP_ROTATION_OK.or.c%crop_calendar_active)error stop 9
   if(c%current_crop_index/=2.or.c%exhausted)error stop 10
 
@@ -55,7 +55,7 @@ program test_swap431_crop_rotation_owner
   if(status/=CROP_ROTATION_OK.or..not.s%crop_calendar_active.or.s%current_crop_index/=2)error stop 13
   if(.not.r%bind_crop_parameters.or.r%reset_preemergence.or.r%reset_active_crop_flags)error stop 14
 
-  call evaluate_crop_rotation_day(sched,s,150.1_real64,.false.,c,r,status)
+  call evaluate_crop_rotation_day(sched,s,150.1001_real64,.false.,c,r,status)
   if(status/=CROP_ROTATION_OK.or..not.c%exhausted.or.c%crop_calendar_active)error stop 15
 
   print '(a)','SW431_CROP_ROTATION_OWNER=PASS'
