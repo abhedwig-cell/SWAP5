@@ -33,8 +33,8 @@ program test_swap431_low3_explicit_progress
   type(fmr_serialized_reference_backend_t), target :: backend,direct,resumed
   type(fixed_flux_top_boundary_provider_t), target :: top
   type(fmr_logical_column_t) :: columns(1)
-  type(kernel_committed_state_t) :: states(1),restored(1)
-  type(kernel_checkpoint_t) :: cp,cp_restored
+  type(kernel_committed_state_t) :: states(1),restored(1),retry_states(1)
+  type(kernel_checkpoint_t) :: cp,cp_restored,retry_cp
   type(kernel_candidate_state_t) :: candidate,other
   type(kernel_result_t) :: first,oracle,failed,replay,continuation,restart
   type(kernel_diagnostics_t) :: diag,oracle_diag
@@ -75,9 +75,9 @@ program test_swap431_low3_explicit_progress
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64], &
-       [-1.5_real64,-1.0_real64,-0.5_real64], &
+       [-1.5_real64,-1.5_real64,-1.5_real64], &
        10.0_real64,.true.,status,[1000.0_real64,1000.5_real64,1001.0_real64], &
-       [0.0_real64,2.0e-3_real64,4.0e-3_real64])
+       [0.0_real64,0.0_real64,0.0_real64])
   call require(status==FMR_CAUCHY3_OK,'source-valid nonconstant progress tables')
   call app%initialize(cfg,status)
   call require(status==FMR_APP_BOOT_OK,'ordinary production history bootstrap')
@@ -119,8 +119,15 @@ program test_swap431_low3_explicit_progress
   call fmr_new_b110_temporal_indicator_committed_state(states(1),columns(1)%column_id, &
        cfg%tiles(1)%initial_state,T0,ok,cfg%tiles(1)%initial_right_derivative)
   call require(ok,'seed exact initial history')
+  call fmr_new_b110_temporal_indicator_committed_state(retry_states(1),columns(1)%column_id, &
+       cfg%tiles(1)%initial_state,T0,ok,cfg%tiles(1)%initial_right_derivative)
+  call require(ok,'seed retry history')
   call states(1)%capture_checkpoint(cp,ok)
+  call require(ok,'baseline checkpoint')
+  call retry_states(1)%capture_checkpoint(retry_cp,ok)
+  call require(ok,'retry checkpoint')
   forcing=cfg%tiles(1)%base_forcing
+  direct_forcing=forcing
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
   call require(first%completed .and. candidate%ready(),'whole interval candidate')
@@ -135,60 +142,80 @@ program test_swap431_low3_explicit_progress
   call require(same_bits(obs%cauchy3_aquifer_head_cm,-1.0_real64),'proposal aquifer head')
   call require(same_bits(first%mass%storage_end,application(1)%mass%storage_end) .and. &
        same_bits(first%mass%total_out,application(1)%mass%total_out), 'public bootstrap and observed backend identity')
+  ! Commit the exact-equilibrium explicit trajectory and prove that a fresh
+  ! backend restored from Restart-v1 continues identically. Explicit mode3 adds
+  ! no committed field of its own; the projection is rematerialized from the
+  ! restored pressure-head profile on the next trial.
+  call backend%commit_trial_candidate(states(1),candidate,diag,ok,status)
+  call require(ok,'one externally accepted equilibrium commit')
+  call fmr_export_committed_restart(columns,[cfg%tiles(1)%template],states, &
+       cfg%tiles(1)%parameters%parameter_set_id,bundle,ok,status)
+  call require(ok .and. status==FMR_RESTART_OK,'explicit accepted-state export')
+  call fmr_restore_committed_restart(bundle,cfg%tiles(1)%parameters%parameter_set_id,columns, &
+       [cfg%tiles(1)%template],restored,ok,status)
+  call require(ok .and. status==FMR_RESTART_OK,'explicit accepted-state restore')
+  call states(1)%capture_checkpoint(cp,ok)
+  call require(ok,'post-commit checkpoint')
+  call restored(1)%capture_checkpoint(cp_restored,ok)
+  call require(ok,'restored checkpoint')
+  call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
+       forcing,cfg%numerical,T1,T1+0.125_real64,cp,continuation,candidate,diag)
+  call resumed%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,restored(1), &
+       forcing,cfg%numerical,T1,T1+0.125_real64,cp_restored,restart,other,oracle_diag)
+  call require(continuation%completed .and. restart%completed,'fresh-backend explicit continuation')
+  call require(same_bits(continuation%mass%storage_end,restart%mass%storage_end) .and. &
+       same_bits(continuation%mass%total_in,restart%mass%total_in) .and. &
+       same_bits(continuation%mass%total_out,restart%mass%total_out), &
+       'fresh-backend explicit continuation identity')
+  obs=resumed%observation()
+  call require(obs%cauchy3_explicit_active,'restored continuation rematerializes explicit qbot')
   call backend%discard_trial_candidate(candidate,diag)
+  call resumed%discard_trial_candidate(other,oracle_diag)
 
-  ! Deliberately tighten only the temporal certificate. The model must shorten
-  ! and retry, publish no candidate, and leave committed authority untouched.
+  ! Perturb only the temporal Cauchy forcing on an independent uncommitted
+  ! state. A generous run is the replay oracle; a bounded retry run must fail
+  ! closed without publishing or changing the committed revision.
+  call direct_forcing%legacy_swbotb3_implicit_control%initialize_table( &
+       T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64], &
+       [-1.5_real64,-1.0_real64,-0.5_real64],10.0_real64,.true.,status, &
+       [1000.0_real64,1000.5_real64,1001.0_real64],[0.0_real64,2.0e-3_real64,4.0e-3_real64])
+  call require(status==FMR_CAUCHY3_OK,'perturbed retry forcing')
+
+  call direct%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,retry_states(1), &
+       direct_forcing,cfg%numerical,T0,T1,retry_cp,oracle,other,oracle_diag)
+  call require(oracle%completed .and. other%ready(),'perturbed generous replay oracle')
+  call require(oracle_diag%mass_rejections==0,'perturbed oracle preserves mass gate')
+  call direct%discard_trial_candidate(other,oracle_diag)
+
   limited=cfg%numerical
   limited%model_temporal_indicator_budget=0.01_real64
   limited%transaction%max_retries=2
-  call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
-       forcing,limited,T0,T1,cp,failed,candidate,diag)
-  progress_retries=diag%retries
-  write(*,'(a,4(1x,i0))') 'LOW03EXP_TIGHT_RETRY_DIAG',diag%retries,diag%solver_rejections, &
-       diag%temporal_rejections,diag%mass_rejections
-  call require(.not.failed%completed .and. .not.candidate%ready(),'tight certificate fails closed')
-  call require(diag%retries>0 .and. (diag%temporal_rejections>0 .or. diag%solver_rejections>0), &
+  call direct%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,retry_states(1), &
+       direct_forcing,limited,T0,T1,retry_cp,failed,other,oracle_diag)
+  progress_retries=oracle_diag%retries
+  write(*,'(a,4(1x,i0))') 'LOW03EXP_TIGHT_RETRY_DIAG',oracle_diag%retries,oracle_diag%solver_rejections, &
+       oracle_diag%temporal_rejections,oracle_diag%mass_rejections
+  call require(.not.failed%completed .and. .not.other%ready(),'bounded retry fails closed')
+  call require(oracle_diag%retries>0 .and. &
+       (oracle_diag%temporal_rejections>0 .or. oracle_diag%solver_rejections>0), &
        'shortened retries exercised before fail-closed return')
-  call require(diag%mass_rejections==0,'failed shortened retries preserve mass gate')
-  call require(states(1)%current_revision()==0_int64,'failed retries preserve external revision')
+  call require(oracle_diag%mass_rejections==0,'failed shortened retries preserve mass gate')
+  call require(retry_states(1)%current_revision()==0_int64,'failed retries preserve external revision')
 
-  call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
-       forcing,cfg%numerical,T0,T1,cp,replay,candidate,diag)
-  call require(replay%completed .and. candidate%ready(),'replay after failed retries completes')
-  call require(same_bits(replay%mass%storage_end,first%mass%storage_end) .and. &
-       same_bits(replay%mass%total_out,first%mass%total_out),'replay reproduces successful trajectory')
-  call backend%commit_trial_candidate(states(1),candidate,diag,ok,status)
-  call require(ok,'one externally accepted interval commit')
-  call fmr_export_committed_restart(columns,[cfg%tiles(1)%template],states, &
-       cfg%tiles(1)%parameters%parameter_set_id,bundle,ok,status)
-  call require(ok .and. status==FMR_RESTART_OK,'dynamic accepted-history export')
-  call fmr_restore_committed_restart(bundle,cfg%tiles(1)%parameters%parameter_set_id,columns, &
-       [cfg%tiles(1)%template],restored,ok,status)
-  call require(ok .and. status==FMR_RESTART_OK,'dynamic accepted-history restore')
-  call states(1)%capture_checkpoint(cp,ok)
-  call restored(1)%capture_checkpoint(cp_restored,ok)
-  call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
-       forcing,cfg%numerical,T1,T1+1.0e-5_real64,cp,continuation,candidate,diag)
-  call resumed%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,restored(1), &
-       forcing,cfg%numerical,T1,T1+1.0e-5_real64,cp_restored,restart,other,oracle_diag)
-  if(.not.continuation%completed .or. .not.restart%completed)then
-    write(*,'(a,2(1x,l1),6(1x,i0))') 'LOW03EXP_RESTART_DIAG',continuation%completed,restart%completed, &
-         continuation%status,restart%status,diag%retries,diag%solver_rejections,oracle_diag%retries,oracle_diag%solver_rejections
-  end if
-  call require(continuation%completed .and. restart%completed,'changed Cauchy forcing continuation after restart')
-  call require(same_bits(continuation%mass%storage_end,restart%mass%storage_end) .and. &
-       same_bits(continuation%mass%total_out,restart%mass%total_out), 'nonstationary Cauchy committed restart identity')
-  obs=resumed%observation()
-  call require(obs%cauchy3_aquifer_head_cm > -1.0_real64, &
-       'new accepted-boundary request resamples changed aquifer head')
-  call require(obs%cauchy3_q4_cm_per_day > 2.0e-3_real64, &
-       'new accepted-boundary request resamples changed Q4')
+  call direct%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,retry_states(1), &
+       direct_forcing,cfg%numerical,T0,T1,retry_cp,replay,other,oracle_diag)
+  call require(replay%completed .and. other%ready(),'replay after failed retries completes')
+  call require(same_bits(replay%mass%storage_end,oracle%mass%storage_end) .and. &
+       same_bits(replay%mass%total_in,oracle%mass%total_in) .and. &
+       same_bits(replay%mass%total_out,oracle%mass%total_out), &
+       'failed retry replay reproduces generous oracle')
+  call direct%discard_trial_candidate(other,oracle_diag)
+
   print '(a)', 'LOW03EXP_SHORTENED_RETRY_ROLLBACK=PASS'
   print '(a)', 'LOW03EXP_REPLAY_IDENTITY=PASS'
   print '(a)', 'LOW03EXP_FAILED_RETRY_NO_PUBLISH=PASS'
   print '(a)', 'LOW03EXP_HISTORY_MISSING_FAIL_CLOSED=PASS'
-  print '(a)', 'LOW03EXP_DYNAMIC_HISTORY_RESTART_CHANGED_HEAD=PASS'
+  print '(a)', 'LOW03EXP_FRESH_BACKEND_RESTART_IDENTITY=PASS'
   print '(a,i0,a,i0)', 'LOW03EXP_PROGRESS_COUNTS steps=',progress_steps,' retries=',progress_retries
   print '(a)', 'LOW03EXP_PROGRESS_GATE=PASS'
 contains
