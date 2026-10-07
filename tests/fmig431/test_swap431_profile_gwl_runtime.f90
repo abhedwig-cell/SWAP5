@@ -114,7 +114,8 @@ contains
     call require(available, 'projection committed snapshot available')
     select type (state => snapshot)
     type is (fmr_b110_physical_state_t)
-      call require(abs(state%groundwater_level-0.0_real64) <= 1.0e-10_real64, 'projection committed CALCGWL level')
+      call require(ieee_is_finite(state%groundwater_level), 'projection committed GWL finite')
+      call require(abs(state%groundwater_level+2.0_real64) <= 1.0e-10_real64, 'below-profile preserves prior typed GWL')
     class default
       call require(.false., 'projection committed snapshot type')
     end select
