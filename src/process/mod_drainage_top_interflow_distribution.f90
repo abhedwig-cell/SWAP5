@@ -52,7 +52,8 @@ contains
     real(real64),allocatable::lower_flux(:,:),khor(:)
     real(real64)::wlev,target_depth,profile_depth,dz_top_sat,depth_accum,kd,raw_bottom,sum_previous
     real(real64)::top_bottom_thickness,lower_first_thickness,cumulative
-    integer::levels,n,top_level,wt_node,bottom_node,i,j,sub_n,lower_count
+    integer::levels,n,top_level,wt_node,bottom_node,i,j,sub_n,lower_count,lower_start
+    real(real64)::boundary_tolerance
 
     diagnostics=drainage_top_interflow_diagnostics_t()
     levels=size(level_parameters)
@@ -160,17 +161,28 @@ contains
         return
       end if
 
-      sub_n=n-bottom_node+1
+      lower_start=bottom_node
+      boundary_tolerance=64.0_real64*epsilon(1.0_real64)*max(1.0_real64,target_depth)
+      if(lower_first_thickness<=boundary_tolerance)lower_start=bottom_node+1
+      if(lower_start>n)then
+        if(any(abs(scalar_transfer(1:lower_count))>ACTIVE_MAGNITUDE))then
+          diagnostics%status=DRAIN_TOPINT_INVALID_PARAMETERS
+          return
+        end if
+        diagnostics%evaluated=.true.
+        return
+      end if
+      sub_n=n-lower_start+1
       allocate(lower(lower_count))
       do j=1,lower_count
         lower(j)%active_nodes=sub_n
         lower(j)%drain_spacing=level_parameters(j)%drain_spacing
         allocate(lower(j)%dz(sub_n),lower(j)%zbotcp(sub_n),lower(j)%saturated_conductivity(sub_n), &
              lower(j)%horizontal_anisotropy_factor(sub_n))
-        lower(j)%dz=level_parameters(j)%dz(bottom_node:n)
-        lower(j)%dz(1)=lower_first_thickness
-        lower(j)%saturated_conductivity=level_parameters(j)%saturated_conductivity(bottom_node:n)
-        lower(j)%horizontal_anisotropy_factor=level_parameters(j)%horizontal_anisotropy_factor(bottom_node:n)
+        lower(j)%dz=level_parameters(j)%dz(lower_start:n)
+        if(lower_start==bottom_node)lower(j)%dz(1)=lower_first_thickness
+        lower(j)%saturated_conductivity=level_parameters(j)%saturated_conductivity(lower_start:n)
+        lower(j)%horizontal_anisotropy_factor=level_parameters(j)%horizontal_anisotropy_factor(lower_start:n)
         cumulative=0.0_real64
         do i=1,sub_n
           cumulative=cumulative+lower(j)%dz(i)
@@ -193,7 +205,7 @@ contains
           diagnostics%status=DRAIN_TOPINT_DISTRIBUTION_REJECTED
           return
         end if
-        drainage_flux_by_level(1,bottom_node:n)=single_result%soil_to_drain_rate
+        drainage_flux_by_level(1,lower_start:n)=single_result%soil_to_drain_rate
       else
         call distribute_multilevel_signed_divdra(lower,lower_view,scalar_transfer(1:lower_count),lower_flux,multi_diag)
         diagnostics%lower_multilevel=multi_diag
@@ -201,7 +213,7 @@ contains
           diagnostics%status=DRAIN_TOPINT_DISTRIBUTION_REJECTED
           return
         end if
-        drainage_flux_by_level(1:lower_count,bottom_node:n)=lower_flux
+        drainage_flux_by_level(1:lower_count,lower_start:n)=lower_flux
       end if
     else
       lower_count=levels-1
