@@ -3,7 +3,7 @@ program test_fmr_b111_soil_n_transaction
   use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, &
        execute_reference_interval, TX_STATUS_ACCEPTED, TX_STATUS_RETRY_EXHAUSTED, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t, soil_n_pool_state_t, soil_n_transfer_t, &
-       initialize_soil_n_pool_state, SOIL_N_OK
+       soil_n_receipt_t, initialize_soil_n_pool_state, SOIL_N_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t, fmr_b111_soil_n_model_t, &
        initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, apply_fmr_b111_soil_n_management_event, &
        FMR_SOIL_N_OK, FMR_SOIL_N_INVALID, FMR_SOIL_N_EVENT_ALREADY_CONSUMED
