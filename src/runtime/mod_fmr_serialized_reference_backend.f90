@@ -3842,6 +3842,10 @@ contains
         if(low3_status/=B111_EXPLICIT_CAUCHY_OK)return
         request%boundary%bottom_mode = 2
         request%boundary%bottom_flux = low3_qbot
+        self%last_observation%cauchy3_explicit_active = .true.
+        self%last_observation%cauchy3_explicit_qbot_cm_per_day = low3_qbot
+        self%last_observation%cauchy3_explicit_gwlmean_cm = low3_gwlmean
+        self%last_observation%cauchy3_explicit_profile_resistance_day = low3_cvalprof
       else
         request%boundary%bottom_mode = 3
         request%boundary%bottom_head = self%cauchy3_proposal%aquifer_total_head_cm
