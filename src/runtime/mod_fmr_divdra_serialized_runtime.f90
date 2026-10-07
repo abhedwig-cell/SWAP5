@@ -16,6 +16,9 @@ module mod_fmr_divdra_serialized_runtime
        fmr_bind_highest_interflow_signed_divdra, FMR_DIVDRA_TOPINT_OK
   use mod_fmr_divdra_separate_infiltration_binding, only: fmr_divdra_separate_infiltration_binding_diagnostics_t, &
        fmr_bind_single_level_separate_infiltration, FMR_DIVDRA_INF_SPLIT_OK
+  use mod_fmr_divdra_multilevel_separate_infiltration_binding, only: &
+       fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t, &
+       fmr_bind_multilevel_separate_infiltration, FMR_DIVDRA_MULTI_INF_OK
   use mod_fmr_divdra_serialized_composition, only: fmr_divdra_serialized_column_request_t, &
        fmr_divdra_serialized_binding_record_t, fmr_preflight_serialized_divdra, &
        FMR_DIVDRA_COMPOSE_OK, FMR_DIVDRA_COMPOSE_BIND_REJECTED
@@ -61,6 +64,7 @@ contains
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
     type(fmr_divdra_top_interflow_binding_diagnostics_t) :: topint_diag
     type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: inf_split_diag
+    type(fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t) :: multi_inf_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     type(drainage_distribution_parameters_t) :: single_parameter(1)
     real(real64) :: single_scalar(1)
@@ -94,7 +98,21 @@ contains
         do j=1,size(level_parameters)
           level_parameters(j)=distribution_parameter_registry(int(divdra_requests(i)%distribution_parameter_refs(j)))
         end do
-        if(divdra_requests(i)%highest_interflow_active)then
+        if(divdra_requests(i)%separate_infiltration_active)then
+          call fmr_bind_multilevel_separate_infiltration(level_parameters,hydraulic_view_registry(view_index), &
+               divdra_requests(i)%scalar_transfers,divdra_requests(i)%separate_infiltration_drain_bottom_cm_by_level, &
+               divdra_requests(i)%separate_infiltration_surface_water_level_cm_by_level, &
+               divdra_requests(i)%separate_infiltration_depth_factor, &
+               forcing_registry(forcing_index)%drainage_flux_by_level,multi_inf_diag)
+          divdra_records(slot)%multilevel_separate_infiltration_binding=multi_inf_diag
+          if(multi_inf_diag%status/=FMR_DIVDRA_MULTI_INF_OK)then
+            composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            divdra_records(slot)%composition_status=composition_status
+            deallocate(level_parameters)
+            call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+            return
+          end if
+        else if(divdra_requests(i)%highest_interflow_active)then
           call fmr_bind_highest_interflow_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
                divdra_requests(i)%scalar_transfers,divdra_requests(i)%highest_interflow_drain_bottom_cm, &
                forcing_registry(forcing_index)%drainage_flux_by_level,topint_diag)
@@ -116,7 +134,7 @@ contains
             return
           end if
         end if
-        if(allocated(divdra_requests(i)%top_layer_controls))then
+        if(allocated(divdra_requests(i)%top_layer_controls).and..not.divdra_requests(i)%separate_infiltration_active)then
           call apply_fmr_divdra_discharge_top_controls(level_parameters,hydraulic_view_registry(view_index), &
                divdra_requests(i)%scalar_transfers,divdra_requests(i)%top_layer_controls, &
                forcing_registry(forcing_index)%drainage_flux_by_level,divdra_records(slot)%top_diagnostics,top_status)
