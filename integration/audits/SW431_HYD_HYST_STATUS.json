@@ -77,6 +77,13 @@
       "corrected_wc_k_target_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
       "semantic_fix": "Kvap_func(WC,h,Temp), preserving signed negative pressure head in Kelvin relative humidity",
       "disposition": "SOURCE_BOUND_SHARED_PDI_VAPOR_OWNER_IMPLEMENTED_PENDING_INTEGRATED_QUALIFICATION"
+    },
+    "b0_import_gate": {
+      "status": "PENDING_BINARY_SAFE_IMPORT",
+      "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "member_count": 63,
+      "member_manifest_digest": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+      "implication": "Exact TABLE and MOD_RIA source bodies cannot be admitted from the current text-only path; wait for byte-preserving materialization rather than reconstructing from non-identical public text."
     }
   },
   "authority_paths": [
@@ -91,7 +98,9 @@
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
     "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
     "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
-    "reference/swap-4.3.1/patches/SWAP-011/qualification.md"
+    "reference/swap-4.3.1/patches/SWAP-011/qualification.md",
+    "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md",
+    "reference/swap-4.3.1/b0/IMPORT_GATE.md"
   ],
   "dependency_surface": [
     "src/solver/mod_b110_default_mvg_provider.f90",
@@ -144,10 +153,10 @@
     "queue_observation": "Repository-wide Actions backlog observed; code-postimage focused run remains queued without runner assignment after active polling."
   },
   "blockers": [
-    "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not materialized in repository authority.",
-    "Generic SWSOPHY=1 TSPACK TABLE exact B0 source bytes are not present; the public historical file is not byte-identical to the B0 member and cannot serve as exact admission authority."
+    "MODEL12/RIA depends on the exact corrected B1.11 MOD_RIA body. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT because MOD_RIA.f90 contains non-UTF-8 bytes; do not substitute a text-normalized or literature reconstruction.",
+    "Generic SWSOPHY=1 TSPACK TABLE depends on the exact B0 sptabulated member. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT and the inspected public historical file is not byte-identical; do not use it as an admission oracle."
   ],
-  "next_action": "Wait actively for focused run 37646065725 on code postimage 851c6ad3. If green, persist bounded qualification/closeout and open canonical admission PR. If red, inspect the focused job logs and repair before admission.",
+  "next_action": "Wait actively for focused run 37646065725 on code postimage 851c6ad3. If green, persist bounded qualification/closeout and open canonical admission PR. Remaining MODEL12/RIA and generic TABLE stay fail-closed until binary-safe exact source materialization.",
   "recovery_point": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
   "last_reconciled_upstream": "integration/f-ci-canonical@4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "upstream_reconciliation": {
