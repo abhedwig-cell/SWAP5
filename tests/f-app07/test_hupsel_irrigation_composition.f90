@@ -104,6 +104,31 @@ program test_fapp07_hupsel_irrigation_composition
   call fmr_bind_tcs1_sprinkling_to_rutter(base_rutter,scheduled,scheduled_diag,bound_rutter,d)
   if (d%status /= FMR_HUPSEL_IRR_BIND_INVALID_RATE .or. d%result_produced) error stop 22
 
+  ! Fixed sprinkling uses interception rather than the surface identity route.
+  fixed_flux = irrigation_flux_result_t()
+  fixed_flux%applied = .true.
+  fixed_flux%application_type = 0
+  fixed_flux%surface_gross_rate = 4.25_real64
+  fixed_diag = irrigation_diagnostics_t()
+  base_rutter = rutter_interval_input_t()
+  base_rutter%gross_rain_cm_per_day = 0.2_real64
+  call fmr_bind_fixed_sprinkler_to_rutter(base_rutter,fixed_flux,fixed_diag,bound_rutter,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%result_produced) error stop 23
+  if (.not. bound_rutter%surface_irrigation_is_intercepted) error stop 24
+  if (bound_rutter%surface_irrigation_cm_per_day /= 4.25_real64) error stop 25
+
+  ! Scheduled surface irrigation bypasses canopy interception and binds gross=net to the top boundary.
+  scheduled = tcs1_dcs2_sprinkling_result_t()
+  scheduled%applied = .true.
+  scheduled%gross_surface_rate_cm_per_day = 5.5_real64
+  scheduled_diag = tcs1_dcs2_sprinkling_diagnostics_t()
+  base_top = b110_dynamic_top_boundary_request_t()
+  base_top%precipitation_rate_cm_per_day = 1.25_real64
+  call fmr_bind_tcs1_surface_identity_to_dynamic_top(base_top,scheduled,scheduled_diag,bound_top,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%result_produced) error stop 26
+  if (bound_top%irrigation_rate_cm_per_day /= 5.5_real64) error stop 27
+  if (bound_top%precipitation_rate_cm_per_day /= base_top%precipitation_rate_cm_per_day) error stop 28
+
   write(*,'(A,I0)') 'F_APP07_EXACT_ACTIVE_INTERVALS=',n
   write(*,'(A,I0)') 'F_APP07_SWINTER0_INTERVALS=',n0
   write(*,'(A,I0)') 'F_APP07_SWINTER3_INTERVALS=',n3
