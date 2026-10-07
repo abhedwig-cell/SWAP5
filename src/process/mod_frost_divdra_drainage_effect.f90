@@ -22,6 +22,7 @@ module mod_frost_divdra_drainage_effect
     real(real64), allocatable :: final_nodal_sink(:)
   end type
   public :: compose_single_level_signed_frost_divdra, valid_frost_divdra_parameters
+  public :: partition_single_level_signed_divdra
 contains
   pure logical function valid_frost_divdra_parameters(p) result(ok)
     type(frost_divdra_parameters_t), intent(in) :: p
@@ -89,6 +90,29 @@ contains
       total=total+k(i)*overlap;top=bottom
     end do
   end function
+
+  pure subroutine partition_single_level_signed_divdra(distribution,groundwater,scalar,separate_infiltration, &
+       surface_water_level_cm,infiltration_depth_factor,nodal,correction,status)
+    type(drainage_distribution_parameters_t), intent(in) :: distribution
+    real(real64), intent(in) :: groundwater,scalar,surface_water_level_cm,infiltration_depth_factor
+    logical, intent(in) :: separate_infiltration
+    real(real64), allocatable, intent(out) :: nodal(:)
+    real(real64), intent(out) :: correction
+    integer, intent(out) :: status
+    type(frost_divdra_parameters_t) :: p
+    integer :: n
+
+    status=FROST_DIVDRA_INVALID;correction=0._real64
+    n=distribution%active_nodes
+    if(n<2)return
+    p%distribution=distribution
+    p%drain_bottom_cm=distribution%zbotcp(n)
+    p%separate_infiltration=separate_infiltration
+    p%surface_water_level_cm=surface_water_level_cm
+    p%infiltration_depth_factor=infiltration_depth_factor
+    if(.not.valid_parameters(p))return
+    call partition(p,distribution%saturated_conductivity,groundwater,scalar,nodal,correction,status)
+  end subroutine partition_single_level_signed_divdra
 
   pure subroutine partition(p,k,groundwater,scalar,nodal,correction,status)
     type(frost_divdra_parameters_t), intent(in) :: p
