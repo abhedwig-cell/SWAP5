@@ -1,6 +1,6 @@
 {
   "schema": "swap431.mc_crop01.fixed_runtime.v1",
-  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "canonical_baseline": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
   "capability_ids": [
     "SW431-CROP-FIXED",
     "SW431-CROP-FIXED-THERMAL"
@@ -26,7 +26,7 @@
     "component_owner": "local strict O0/O2 PASS on work/swap431-crop-fixed-owner-20261007",
     "transaction_test": "tests/fmig431/test_swap431_fixed_crop_transaction.f90",
     "transaction_runner": "tests/fmig431/run_swap431_fixed_crop_transaction.sh",
-    "transaction_status": "READY_FOR_O0_O2_FULL_REPO_GATE",
+    "transaction_status": "READY_FOR_PERSISTED_O0_O2_ON_CURRENT_CANONICAL",
     "expected_markers": [
       "SW431_CROP_FIXED_ATOMIC_TRANSACTION=PASS",
       "SW431_CROP_FIXED_END_EVENT=PASS",
@@ -39,5 +39,9 @@
     "Compose fixed root-depth/profile selection where configured, without duplicating root sink ownership."
   ],
   "disposition": "FIXED_DAILY_TRANSACTION_AND_RESTART_IMPLEMENTED_QUALIFICATION_OPEN",
-  "admission": false
+  "admission": false,
+  "reconciliation": {
+    "branch": "work/swap431-crop-fixed-runtime-r2-20261007",
+    "basis": "fresh branch from current integration/f-ci-canonical after CO2 admission"
+  }
 }
