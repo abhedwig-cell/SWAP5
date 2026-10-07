@@ -51,7 +51,7 @@ program kalmthout_swap5_daily_pilot
     ! but prescribe it directly as the atmospheric water flux. This isolates
     ! the long Richards/transaction/mass path from the still-open dynamic
     ! atmospheric-boundary problem.
-    forcing(1)%top_flux=-(precip_mm/10.0_real64)/dt_day
+    forcing(1)%top_flux=config%tiles(1)%base_forcing%top_flux-(precip_mm/10.0_real64)/dt_day
 
     call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
     if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
@@ -97,7 +97,7 @@ contains
     type(fmr_production_application_config_t),intent(out)::value
     real(real64)::conductivity0
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_tolerance=1.0_real64
+    value%numerical%transaction%temporal_tolerance=0.03_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
@@ -131,7 +131,7 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
+    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
@@ -151,7 +151,7 @@ contains
     call provider%evaluate(heads,water,conductivity,capacity,dkdh); conductivity0=conductivity(1)
     state%active_nodes=numnod; allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads; state%water_content=water; state%ponding_depth=0.0_real64; state%groundwater_level=-2.0_real64
-    base%top_flux=0.0_real64; base%top_head=H0_CM; base%bottom_flux=0.0_real64; base%bottom_head=-100.0_real64
+    base%top_flux=-conductivity0; base%top_head=H0_CM; base%bottom_flux=-conductivity0; base%bottom_head=-100.0_real64
     allocate(base%drainage_flux_by_level(2,numnod),base%subsurface_irrigation_source(numnod),base%root_extraction_sink(numnod))
     base%drainage_flux_by_level=0.0_real64; base%subsurface_irrigation_source=0.0_real64; base%root_extraction_sink=0.0_real64
   end subroutine
