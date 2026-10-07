@@ -49,6 +49,24 @@
   ],
   "production_reachability": "adaptive profile derives shared crop_root_uptake_input_t and is consumed by the existing Reference ET/root-uptake composition; no second water sink",
   "restart": "transaction clone carries the sole accepted biomass vector; derived profile/LRV are reconstructed",
-  "disposition": "ADMISSION_CANDIDATE_PENDING_O0_O2_AND_INTEGRATED_RUNTIME",
-  "claim_ceiling": "Does not include SWLRVCONSTANT override, SWRD2 supply limitation, anaerobic-growth gating, or Bartholomeus/reproduction oxygen physics."
+  "disposition": "SOURCE_ALGEBRA_VERIFIED_ADMISSION_CANDIDATE_PENDING_O0_O2_INTEGRATED_RUNTIME",
+  "claim_ceiling": "Does not include SWLRVCONSTANT override, SWRD2 supply limitation, anaerobic-growth gating, or Bartholomeus/reproduction oxygen physics.",
+  "source_equation_review": {
+    "verified_against": "pinned B1.11 update_wroot_node/update_cumdens/update_cumdens_top",
+    "exact_matches": [
+      "WRT_OLD=WRT-GRRT+DRRT",
+      "RD_OLD=RD-RR",
+      "GRRT_NEWNOD=min((WROOT_NODE(NODDRZ_OLD)/(RD_OLD+ZTOPCP(NODDRZ_OLD)))*RR,GRRT)",
+      "FGWRT old-zone growth mixture and QROTRTZ denominator",
+      "FDWRT death mixture with denominator WRT_OLD+GRRT_OLDNOD",
+      "WRTMIN per-node rooted-thickness floor",
+      "new-zone extension fraction and GRRT_NEWNOD distribution",
+      "CUMDENS normalization from accepted WROOT_NODE inventory"
+    ]
+  },
+  "remaining": [
+    "Run owner and production Reference ET/root-uptake runtime gates at O0/O2.",
+    "Persist integrated qualification and verify retry/restart with accepted daily redistribution forcing.",
+    "Preserve WRTMIN floor as source effect; never silently renormalize node inventory."
+  ]
 }
