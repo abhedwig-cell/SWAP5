@@ -3969,11 +3969,13 @@ contains
                self%boesten_evaporation_forcing%potential_pond_evaporation_cm_per_day, &
                self%boesten_evaporation_forcing%ponding_max_cm, &
                self%boesten_evaporation_forcing%runoff_resistance_day, &
-               self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity, &
-               macropore_pond_threshold=merge(self%macropore_config%surface_pond_threshold_cm,0.0_real64, &
-                    self%macropore_config%surface_pond_inflow_enabled), &
-               macropore_surface_conductivity=merge(self%macropore_config%surface_macropore_conductivity_cm_per_day, &
-                    0.0_real64,self%macropore_config%surface_pond_inflow_enabled))
+               self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          if(self%macropore_config%surface_pond_inflow_enabled)then
+            boesten_top_provider%macropore_pond_donor_active=.true.
+            boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+            boesten_top_provider%macropore_surface_conductivity= &
+                 self%macropore_config%surface_macropore_conductivity_cm_per_day
+          end if
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
           return
