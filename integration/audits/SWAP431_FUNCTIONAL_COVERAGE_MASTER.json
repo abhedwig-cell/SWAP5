@@ -16,19 +16,19 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 81,
-      "ACTIVE_MIGRATION": 123,
+      "ADMITTED": 82,
+      "ACTIVE_MIGRATION": 122,
       "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 123,
+    "open_capabilities": 122,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 123,
+    "confirmed_missing_production_entries": 122,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 127
+    "total_unresolved_capabilities": 126
   },
   "capabilities": [
     {
@@ -2864,25 +2864,29 @@
       },
       "meaning": "GWL and saturated-profile dependent explicit aquifer resistance exchange",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+        "src/solver/mod_b111_profile_groundwater_projection.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/audits/F-MIG431-LOW03-A_STATUS.json",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/SW431_LOW3_EXPLICIT_STATUS.md",
+        "GitHub Actions run 37612263087",
+        "PR #1090 merged as canonical commit 1e85f726bd5794110a60f1d2fbf22b12b72afbda"
       ],
       "production_reachability": {
-        "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement."
+        "established": true,
+        "route": "production application bootstrap -> serialized reference backend -> explicit profile Cauchy resolver",
+        "claim": "Explicit B1.11 mode-3 Cauchy route is production reachable with trial-start CALCGWL, SHAPE_3 groundwater transform, saturated profile resistance, typed aquifer/RIMLAY/Q4 ownership, and prescribed-qbot solve execution."
       },
       "restrictions": [
-        "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement."
+        "Preserves implicit LOW03-A ownership",
+        "Ordinary explicit Cauchy remains separate from coupled-groundwater application ownership",
+        "Does not admit unrelated lower-boundary selectors"
       ],
-      "remaining_dependency": [
-        "SW431-GW-PROJECTION"
-      ],
-      "active_workunit": "MC-LOW01",
+      "remaining_dependency": [],
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -2891,10 +2895,10 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
+      "coverage_gap_type": null,
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "implementation_absence_proven": false,
+      "resolution_stage": "QUALIFIED_AND_CANONICALLY_ADMITTED"
     },
     {
       "capability_id": "SW431-LOW1",

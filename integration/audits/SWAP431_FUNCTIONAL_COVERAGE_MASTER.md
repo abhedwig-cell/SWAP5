@@ -2,9 +2,9 @@
 
 Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
 
-The ledger currently contains 243 entries: 81 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE, 123 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY entries across 18 review/migration workunits.
+The ledger currently contains 243 entries: 82 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE, 122 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY entries across 18 review/migration workunits.
 
-All 123 ACTIVE_MIGRATION entries are currently marked as proven missing production implementation/binding. Four additional entries are QUALIFICATION_ONLY: the required evaluator/runtime code exists, but their source-bound runtime envelope or admission is not yet complete. Neither number is a final exhaustive missing-functionality count. Qualification-only is not admission and still blocks global coverage closure.
+All 122 ACTIVE_MIGRATION entries are currently marked as proven missing production implementation/binding. Four additional entries are QUALIFICATION_ONLY: the required evaluator/runtime code exists, but their source-bound runtime envelope or admission is not yet complete. Neither number is a final exhaustive missing-functionality count. Qualification-only is not admission and still blocks global coverage closure.
 
 Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
 
@@ -125,7 +125,6 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-ROOT-MICRO-STRESS | Microscopic oxygen/salinity reduction and stress attribution | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-ROOT-MICRO-TRED | MICRO transpiration-reduction and maximum-drought policy | MC-MICRO01 | SW431-ROOT-MICRO2, SW431-ROOT-MICRO3 |
 | SW431-CROP-ROOTGROW-SUPPLY | Minimum/root-drought-scaled extension limited by allocated root dry matter | MC-CROP01 | SW431-ROOT-DENSITY |
-| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | MC-LOW01 | SW431-GW-PROJECTION |
 | SW431-MACRO-POWM | Double convex/concave internal-catchment domain frequency distribution | MC-MACRO01 | SW431-MACRO-GEOMETRY |
 | SW431-MACRO-RUNON | External runon composition through the pond-derived macropore donor | MC-MACROSUR01 | SW431-RUNON, SW431-MACRO-POND |
 | SW431-SW-MULTILEVEL | Common secondary storage depletion limiter across multiple drain levels | MC-SW01 | SW431-SW-DRAIN-FEEDBACK, SW431-SW-SIGNED |
@@ -279,7 +278,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-LOW9 | Simultaneously imposed bottom flux and head with forced last-node head/theta/K reset | Source reader accepts independent DATE9A/HBOT9 and DATE9B/QBOT9. BoundBottom sets qbot and overwrites the final cell h/theta/K; HeadCalc solves only numnod-1 and Fluxes deliberately excludes mode9 from qbot reconstruction. No typed production mode9 route is admitted. This is a real state/flux ownership decision, not obsolete parser plumbing. | None |
-| SW431-LOW3-EXPLICIT | GWL and saturated-profile dependent explicit aquifer resistance exchange | Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement. | SW431-GW-PROJECTION |
 
 ### MC-MACRO01
 
@@ -390,7 +388,7 @@ These are individual capability decisions, not admitted implementation plans. De
 
 Run `python tools/audits/check_swap431_coverage.py` for structural/source integrity.
 Run `python tools/audits/check_swap431_coverage.py --require-closed` for a closure assertion.
-SW431-GW-PROJECTION was qualified on run 37578999251 and admitted into the master-coverage branch through PR #1085. The latter intentionally fails while the source denominator is incomplete or any ACTIVE_MIGRATION remains.
+SW431-GW-PROJECTION was qualified on run 37578999251 and admitted into the master-coverage branch through PR #1085. SW431-LOW3-EXPLICIT was qualified on current-head run 37612263087 and merged to canonical through PR #1090 (1e85f726bd5794110a60f1d2fbf22b12b72afbda). The latter intentionally fails while the source denominator is incomplete or any ACTIVE_MIGRATION remains.
 Neither command scientifically qualifies a process. Owning source/runtime gates and canonical admission remain required.
 
 No final global rejection has been invented to shrink the queue. No historical research PR is a blocker merely because it is open. The historical complete paginated snapshot records 114 open PRs and 55 merges since 2026-10-05; migration proposal reconciliation is explicit. The earlier 100-item snapshot is retained as historical evidence.
