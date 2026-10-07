@@ -142,7 +142,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(migmac10_rutter)allocate(physical%rutter)
   physical%pressure_head=heads
   physical%water_content=water
-  physical%ponding_depth=merge(0.30_real64,0.0_real64,migmac11)
+  physical%ponding_depth=merge(0.10_real64,0.0_real64,migmac11)
   physical%groundwater_level=-1000.0_real64
   call physical%macropore%initialize(nd,numnod,ok)
   call require(ok,'macropore continuation initialized')
