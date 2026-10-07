@@ -162,7 +162,7 @@ contains
 
     q0 = request%precipitation_rate_cm_per_day + request%irrigation_rate_cm_per_day + &
          request%snowmelt_rate_cm_per_day
-    if (request%macropore_surface_area_fraction >= 0.0_real64) &
+    if (request%matrix_source_area_partition .and. request%macropore_surface_area_fraction >= 0.0_real64) &
          q0 = q0 * (1.0_real64-request%macropore_surface_area_fraction)
     q0 = q0 + request%runon_rate_cm_per_day - &
          result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day
