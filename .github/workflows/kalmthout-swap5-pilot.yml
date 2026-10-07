@@ -1,8 +1,5 @@
 name: Kalmthout SWAP5 pilot
 on:
-  push:
-    branches:
-      - work/kalmthout-swap5-pilot
   workflow_dispatch:
 permissions:
   contents: read
