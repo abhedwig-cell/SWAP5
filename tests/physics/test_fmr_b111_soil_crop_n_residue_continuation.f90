@@ -84,7 +84,7 @@ program test_fmr_b111_soil_crop_n_residue_continuation
   call check(available,'day1 receipt')
   call near(receipt%pending_residue_consumed_kg_m2,0.0_real64,'day1 no prior residue')
   call near(receipt%pending_residue_created_kg_m2,1.2e-5_real64,'day1 pending residue N')
-  call near(receipt%external_crop_loss_kg_m2,3.0e-6_real64,'day1 external leaf loss')
+  call near(receipt%external_crop_loss_kg_m2,0.0_real64,'day1 retained leaf loss is not external')
 
   call snapshot_joint(committed,soil_snap,crop_snap,t0,t1,consumed,prd,pnr,pld,pnl,available)
   call check(available.and.consumed,'day1 snapshot')
@@ -93,7 +93,8 @@ program test_fmr_b111_soil_crop_n_residue_continuation
   call near(pld,2.0_real64,'pending leaf DM')
   call near(pnl,0.02_real64,'pending leaf N')
   call soil_snap%snapshot(ps,ssnap,available)
-  whole1=ssnap%nitrogen_total(ps)+(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha+pnr+pnl)*1.0e-4_real64
+  whole1=ssnap%nitrogen_total(ps)+(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha+ &
+       crop_snap%nloss_leaf_kg_ha+crop_snap%nloss_stem_kg_ha+crop_snap%nloss_root_kg_ha+pnr+pnl)*1.0e-4_real64
   call near(whole1,whole0+tx%accepted_total_in-tx%accepted_total_out,'day1 whole N closure')
 
   call initialize_fmr_b111_soil_crop_n_state(soil_snap,crop_snap,restarted,status,t0,t1,consumed,prd,pnr,pld,pnl)
@@ -108,9 +109,10 @@ program test_fmr_b111_soil_crop_n_residue_continuation
   call near(receipt%pending_residue_created_kg_m2,1.2e-5_real64,'day2 creates next residue')
   call snapshot_joint(committed,soil_snap,crop_snap,t0,t1,consumed,prd,pnr,pld,pnl,available)
   call soil_snap%snapshot(ps,ssnap,available)
-  whole2=ssnap%nitrogen_total(ps)+(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha+pnr+pnl)*1.0e-4_real64
+  whole2=ssnap%nitrogen_total(ps)+(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha+ &
+       crop_snap%nloss_leaf_kg_ha+crop_snap%nloss_stem_kg_ha+crop_snap%nloss_root_kg_ha+pnr+pnl)*1.0e-4_real64
   call near(whole2,whole1+tx%accepted_total_in-tx%accepted_total_out,'day2 whole N closure')
-  call near(tx%accepted_total_out,3.0e-6_real64,'day2 only nonreturned leaf N external')
+  call near(tx%accepted_total_out,0.0_real64,'day2 retained crop dead N is storage')
 
   print '(A)','FMR_B111_SOIL_CROP_N_RESIDUE_CONTINUATION_PASS'
 contains
