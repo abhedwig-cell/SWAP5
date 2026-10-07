@@ -82,7 +82,9 @@
         "same-date source events are grouped atomically",
         "legacy TimeAmend+1 trigger is authority-gated",
         "monotone persisted event cursor prevents duplicate/out-of-order delivery across restart",
-        "group application remains committed-to-candidate until transaction acceptance"
+        "group application remains committed-to-candidate until transaction acceptance",
+        "exact management_soil sort defect (MatNum(i)=MatNum(i)) is explicitly corrected by atomic typed-record sorting before grouping",
+        "raw unsorted amendment records are sorted and grouped into monotone calendar event ids before due-time delivery"
       ],
       "remaining": [
         "persisted O0/O2 integrated qualification",
@@ -154,6 +156,7 @@
     "current-day ordinary crop senescence becomes pending residue continuation and is consumed before the next-day Soil-N process, matching B1.11 ordering",
     "retained dead crop N is persistent physical storage until explicitly returned to soil or exported; it is not booked as an immediate external sink",
     "ordinary and harvest crop residues cross the day boundary as four persistent organ-specific pending stores and are consumed exactly once",
-    "amendment groups use source-order monotone event ids; same-date materials commit atomically and cannot replay after restart"
+    "amendment groups use source-order monotone event ids; same-date materials commit atomically and cannot replay after restart",
+    "amendment sorting moves complete typed records atomically; the B1.11 MatNum parallel-array sort defect is not copied"
   ]
 }
