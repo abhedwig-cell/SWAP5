@@ -28,6 +28,15 @@ for opt in -O0 -O2; do
     "$root/src/process/mod_solute_mobile_salt_state.f90" \
     "$root/src/process/mod_solute_compartment_state.f90" \
     "$root/src/process/mod_b111_solute_sorption.f90" \
+    "$root/src/process/mod_b111_solute_sorption_equilibrium_transfer.f90" \
+    "$root/tests/physics/test_b111_solute_sorption_equilibrium_transfer.f90" \
+    -o b111_sorp_equilibrium
+  ./b111_sorp_equilibrium
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_solute_mobile_salt_state.f90" \
+    "$root/src/process/mod_solute_compartment_state.f90" \
+    "$root/src/process/mod_b111_solute_sorption.f90" \
     "$root/src/process/mod_b111_solute_decay.f90" \
     "$root/src/process/mod_b111_solute_decay_transfer.f90" \
     "$root/tests/physics/test_b111_solute_decay_transfer.f90" \
