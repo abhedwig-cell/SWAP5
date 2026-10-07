@@ -166,6 +166,23 @@ program test_fapp07_hupsel_irrigation_composition
   if (ssdi_flux%subsurface_source(3) /= 1.0_real64) error stop 32
   if (ssdi_flux%external_inflow_amount /= 0.25_real64) error stop 33
 
+  ! TCS8 uses the same explicit sensor/event owner but triggers on water content <= threshold.
+  ssdi_p%timing_criterion = 8
+  ssdi_p%tcs8_knot_count = 2
+  ssdi_p%tcs8_dvs(1:2) = [0.0_real64,2.0_real64]
+  ssdi_p%tcs8_water_content(1:2) = [0.20_real64,0.20_real64]
+  ssdi_view%pressure_head(2) = -50.0_real64
+  ssdi_view%water_content(2) = 0.21_real64
+  ssdi_s = irrigation_state_t()
+  call fmr_evaluate_sensor_dcs2_ssdi(ssdi_p,ssdi_s,ssdi_r,ssdi_view,ssdi_c,ssdi_flux,ssdi_diag)
+  if (ssdi_diag%status /= IRRIGATION_OK .or. ssdi_flux%applied) error stop 34
+  ssdi_view%water_content(2) = 0.20_real64
+  call fmr_evaluate_sensor_dcs2_ssdi(ssdi_p,ssdi_s,ssdi_r,ssdi_view,ssdi_c,ssdi_flux,ssdi_diag)
+  if (ssdi_diag%status /= IRRIGATION_OK .or. .not. ssdi_flux%applied) error stop 35
+  if (.not. allocated(ssdi_flux%subsurface_source)) error stop 36
+  if (ssdi_flux%subsurface_source(3) /= 1.0_real64) error stop 37
+  if (ssdi_flux%external_inflow_amount /= 0.25_real64) error stop 38
+
   write(*,'(A,I0)') 'F_APP07_EXACT_ACTIVE_INTERVALS=',n
   write(*,'(A,I0)') 'F_APP07_SWINTER0_INTERVALS=',n0
   write(*,'(A,I0)') 'F_APP07_SWINTER3_INTERVALS=',n3
