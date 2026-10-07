@@ -51,7 +51,7 @@ contains
     type(drainage_multilevel_diagnostics_t)::multi_diag
     real(real64),allocatable::lower_flux(:,:),khor(:)
     real(real64)::wlev,target_depth,profile_depth,dz_top_sat,depth_accum,kd,raw_bottom,sum_previous
-    real(real64)::first_remainder,cumulative
+    real(real64)::top_bottom_thickness,lower_first_thickness,cumulative
     integer::levels,n,top_level,wt_node,bottom_node,i,j,sub_n,lower_count
 
     diagnostics=drainage_top_interflow_diagnostics_t()
@@ -72,6 +72,12 @@ contains
       return
     end if
     do i=2,levels
+      if(.not.allocated(level_parameters(i)%dz).or..not.allocated(level_parameters(i)%zbotcp).or. &
+           .not.allocated(level_parameters(i)%saturated_conductivity).or. &
+           .not.allocated(level_parameters(i)%horizontal_anisotropy_factor))then
+        diagnostics%status=DRAIN_TOPINT_INVALID_PARAMETERS
+        return
+      end if
       if(level_parameters(i)%active_nodes/=n.or.size(level_parameters(i)%dz)/=n.or. &
            any(abs(level_parameters(i)%dz-level_parameters(1)%dz)>0.0_real64).or. &
            any(abs(level_parameters(i)%zbotcp-level_parameters(1)%zbotcp)>0.0_real64).or. &
@@ -126,8 +132,9 @@ contains
         kd=kd+level_parameters(1)%dz(bottom_node)*khor(bottom_node)
       end do
       kd=kd-(depth_accum-(target_depth-wlev))*khor(bottom_node)
-      first_remainder=level_parameters(1)%dz(bottom_node)-(depth_accum-(target_depth-wlev))
-      if(kd<=0.0_real64.or.first_remainder<=0.0_real64)then
+      top_bottom_thickness=level_parameters(1)%dz(bottom_node)-(depth_accum-(target_depth-wlev))
+      lower_first_thickness=depth_accum-(target_depth-wlev)
+      if(kd<=0.0_real64.or.top_bottom_thickness<=0.0_real64.or.lower_first_thickness<0.0_real64)then
         diagnostics%status=DRAIN_TOPINT_INVALID_PARAMETERS
         return
       end if
@@ -138,7 +145,7 @@ contains
         do i=wt_node+1,bottom_node-1
           drainage_flux_by_level(top_level,i)=scalar_transfer(top_level)*level_parameters(1)%dz(i)*khor(i)/kd
         end do
-        raw_bottom=scalar_transfer(top_level)*first_remainder*khor(bottom_node)/kd
+        raw_bottom=scalar_transfer(top_level)*top_bottom_thickness*khor(bottom_node)/kd
         sum_previous=sum(drainage_flux_by_level(top_level,1:bottom_node-1))
         drainage_flux_by_level(top_level,bottom_node)=scalar_transfer(top_level)-sum_previous
         diagnostics%top_interflow_closure_correction=drainage_flux_by_level(top_level,bottom_node)-raw_bottom
@@ -161,7 +168,7 @@ contains
         allocate(lower(j)%dz(sub_n),lower(j)%zbotcp(sub_n),lower(j)%saturated_conductivity(sub_n), &
              lower(j)%horizontal_anisotropy_factor(sub_n))
         lower(j)%dz=level_parameters(j)%dz(bottom_node:n)
-        lower(j)%dz(1)=first_remainder
+        lower(j)%dz(1)=lower_first_thickness
         lower(j)%saturated_conductivity=level_parameters(j)%saturated_conductivity(bottom_node:n)
         lower(j)%horizontal_anisotropy_factor=level_parameters(j)%horizontal_anisotropy_factor(bottom_node:n)
         cumulative=0.0_real64
@@ -176,7 +183,11 @@ contains
       lower_view%pressure_head=0.0_real64
       lower_view%water_content=0.0_real64
       if(lower_count==1)then
-        call distribute_single_level_signed_divdra(lower(1),lower_view,scalar_transfer(1),single_result,single_diag)
+        if(abs(scalar_transfer(1))<=ACTIVE_MAGNITUDE)then
+          call distribute_single_level_signed_divdra(lower(1),lower_view,0.0_real64,single_result,single_diag)
+        else
+          call distribute_single_level_signed_divdra(lower(1),lower_view,scalar_transfer(1),single_result,single_diag)
+        end if
         diagnostics%lower_single=single_diag
         if(single_diag%status/=DRAIN_DIST_OK)then
           diagnostics%status=DRAIN_TOPINT_DISTRIBUTION_REJECTED
@@ -198,7 +209,11 @@ contains
         diagnostics%evaluated=.true.
         return
       else if(lower_count==1)then
-        call distribute_single_level_signed_divdra(level_parameters(1),view,scalar_transfer(1),single_result,single_diag)
+        if(abs(scalar_transfer(1))<=ACTIVE_MAGNITUDE)then
+          call distribute_single_level_signed_divdra(level_parameters(1),view,0.0_real64,single_result,single_diag)
+        else
+          call distribute_single_level_signed_divdra(level_parameters(1),view,scalar_transfer(1),single_result,single_diag)
+        end if
         diagnostics%lower_single=single_diag
         if(single_diag%status/=DRAIN_DIST_OK)then
           diagnostics%status=DRAIN_TOPINT_DISTRIBUTION_REJECTED
