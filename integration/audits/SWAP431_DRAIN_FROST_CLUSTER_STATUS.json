@@ -106,14 +106,30 @@
   "remaining_open": [
     {
       "capability_id": "SW431-FROST-GW",
-      "dependency": "Separate lower-boundary composition owner required: B1.11 BoundBottom resolves route-specific qbot for modes 3/4/5/7/8 before FrozenBounds postprocesses it; mode5/7 are candidate-head/conductivity dependent, while current SWAP5 frost admission is explicitly bottom_mode=2 only."
+      "reason": "Separate lower-boundary ownership/composition decision. B1.11 FrozenBounds consumes qbot_nonfrozen, but admitted mode3/4/5/7/8 routes do not share one source-equivalent flux-ownership seam; a generic post-hoc frost adapter would mix semantics."
     },
     {
       "capability_id": "SW431-FROST-SNOW",
-      "dependency": "Separate SW431-TEMP-SNOW owner required: B1.11 sensible-temperature route computes snow/soil-interface TeTop from snow storage before FrozenCond; current frost and thermal admission reject snow_active."
+      "reason": "Depends on the separate SW431-TEMP-SNOW thermal/snow composition. Current frost thermal admission does not establish the snow-insulated sensible-temperature owner needed for this composition."
     }
   ],
-  "next_action": "Await focused run 37638162602 on the complete MC-DRAIN01 postimage; repair any focused or integrated compile failure. If green, mark drainage capabilities qualified and reconcile census. MC-FROST01 then remains only FROST-GW and FROST-SNOW, each with a proven external owner dependency.",
+  "next_action": "Wait for GitHub Actions run 37638162602 to obtain a runner. On success, persist qualified-candidate evidence and reconcile the 11 implemented census IDs out of ACTIVE_MIGRATION; on failure, inspect the failing focused step and repair only that dependency surface. Do not broaden SW431-FROST-GW or SW431-FROST-SNOW without their separate owner decisions.",
   "recovery_point": "work/swap431-drain-signed-multilevel-20261007@f29007caa919b07968926a614c84285cb57cefe3",
-  "blockers": []
+  "blockers": [
+    "GitHub Actions run 37638162602 is queued repository-wide with no runner assigned.",
+    "SW431-FROST-GW requires a separate lower-boundary state/flux ownership design decision.",
+    "SW431-FROST-SNOW depends on SW431-TEMP-SNOW thermal/snow composition."
+  ],
+  "last_reconciled_head": "f29007caa919b07968926a614c84285cb57cefe3",
+  "implementation_status": "IMPLEMENTATION_COMPLETE_PENDING_PERSISTED_QUALIFICATION",
+  "test_status": "FOCUSED_COMPONENT_EVIDENCE_PRESENT; COMPLETE_CLUSTER_GATE_QUEUED",
+  "qualification_status": "INFRASTRUCTURE_PENDING",
+  "qualification_run": {
+    "run_id": 37638162602,
+    "workflow": "SW431 drainage focused qualification",
+    "tested_head": "f29007caa919b07968926a614c84285cb57cefe3",
+    "status": "queued",
+    "conclusion": null,
+    "rationale": "Repository-wide GitHub Actions runner queue. Job focused-drainage exists but has not been assigned a runner; no compile/test failure is observable."
+  }
 }
