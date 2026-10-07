@@ -8,7 +8,13 @@ module mod_fmr_wofost_crop_transaction
   use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
   use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t, &
        wofost_accepted_window_aggregates_t, wofost_one_day_update_parameters_t, wofost_one_day_rate_packet_t
-  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
+  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t, wofost_rate_scalar_parameters_t, WOFOST_RATE_PARAMETER_OK
+  use mod_wofost_phenology_rate_contract, only: wofost_phenology_rate_t
+  use mod_wofost_phenology_dispatch, only: wofost_phenology_request_t, wofost_phenology_dispatch_result_t, &
+       resolve_wofost_phenology, WOFOST_PHENOLOGY_CLASSIC, WOFOST_PHENOLOGY_SOYBEAN, &
+       WOFOST_PHENOLOGY_VERNALISATION, WOFOST_PHENOLOGY_DISPATCH_OK
+  use mod_wofost_soybean_phenology_factors, only: soybean_phenology_parameters_t
+  use mod_wofost_vernalisation_phenology, only: wofost_vernalisation_parameters_t
   use mod_wofost_potential_shadow_state, only: wofost_potential_shadow_state_t, &
        initialize_wofost_potential_shadow_from_actual, WOFOST_POTENTIAL_SHADOW_OK
   use mod_wofost_potential_shadow_daily, only: wofost_potential_daily_result_t, &
@@ -93,6 +99,9 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    integer :: phenology_mode = WOFOST_PHENOLOGY_CLASSIC
+    type(soybean_phenology_parameters_t), allocatable :: soybean_phenology
+    type(wofost_vernalisation_parameters_t), allocatable :: vernalisation_phenology
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
   end type fmr_wofost_crop_transaction_parameters_t
@@ -103,6 +112,8 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_one_day_forcing_t) :: crop_forcing
     type(wofost_accepted_window_aggregates_t) :: accepted_aggregates
     type(fmr_wofost_crop_event_identity_t) :: event_identity
+    real(real64) :: soybean_latitude_degrees = 0.0_real64
+    integer :: soybean_day_of_year = 1
   contains
     procedure, public :: ready => fmr_wofost_crop_event_forcing_ready
   end type fmr_wofost_crop_event_forcing_t
@@ -115,6 +126,9 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: storage_area_coefficient = 0.0_real64
     logical :: potential_shadow_enabled = .false.
     real(real64) :: potential_attainable_multiplier = 1.0_real64
+    integer :: phenology_mode = WOFOST_PHENOLOGY_CLASSIC
+    type(soybean_phenology_parameters_t), allocatable :: soybean_phenology
+    type(wofost_vernalisation_parameters_t), allocatable :: vernalisation_phenology
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
