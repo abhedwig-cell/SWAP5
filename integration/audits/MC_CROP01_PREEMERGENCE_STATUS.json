@@ -1,0 +1,54 @@
+{
+  "schema": "swap431.mc_crop01.preemergence.v1",
+  "capability_id": "SW431-CROP-SOW",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "routines": [
+      "preparation",
+      "sowing",
+      "germination"
+    ],
+    "semantics": [
+      "Preparation delays while HAVG(ZPREP)-HPREP>0 and DELAY_PREP<MAXPREPDELAY; delayed marker DVS=-0.3.",
+      "DELAY_SOW inherits DELAY_PREP at each preparation update.",
+      "Sowing delays while soil temperature is below TEMPSOW or HAVG(ZSOW)-HSOW>0 and DELAY_SOW<MAXSOWDELAY; delayed marker DVS=-0.2.",
+      "Germination mode 1 uses TSUMEMEOPT with clipped thermal increment between TBASEM and TEFFMX.",
+      "Germination mode 2 modifies the effective emergence requirement by dry/optimal/wet pressure-head branches using SWAP-derived BGERM/CGERM.",
+      "Before emergence DVS=-0.1*max(1-TSUMGERM/TSUMEMEOPT,0); at completion DVS=0."
+    ]
+  },
+  "implementation": "src/crop/mod_crop_preemergence_owner.f90",
+  "test": "tests/fmig431/test_swap431_crop_preemergence.f90",
+  "owner": {
+    "persistent": [
+      "preparation_complete",
+      "sowing_complete",
+      "germination_complete",
+      "preparation_delay_days",
+      "sowing_delay_days",
+      "germination_temperature_sum",
+      "development_stage_marker"
+    ],
+    "forcing": [
+      "average pressure head at preparation/sowing/germination depths",
+      "sowing-depth soil temperature",
+      "daily average air temperature"
+    ],
+    "excluded": [
+      "soil hydraulic state",
+      "soil heat state",
+      "active crop biomass",
+      "seasonal rotation schedule"
+    ]
+  },
+  "disposition": "SOURCE_STATE_MACHINE_IMPLEMENTED_RUNTIME_FORCING_BINDING_OPEN",
+  "remaining": [
+    "Bind h_average/depth lookup and sowing soil-temperature forcing from accepted hydrology/heat state.",
+    "Retire pre-emergence owner and initialize active crop owner atomically when germination completes.",
+    "Persist/restart delays and TSUMGERM across accepted events.",
+    "Compose with seasonal rotation owner without duplicating schedule state."
+  ],
+  "admission": false
+}
