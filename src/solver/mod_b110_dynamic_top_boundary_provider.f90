@@ -38,6 +38,7 @@ module mod_b110_dynamic_top_boundary_provider
     ! Negative preserves legacy behaviour. Otherwise apply the complementary
     ! matrix share to direct rain, irrigation and melt.
     real(real64) :: macropore_surface_area_fraction = -1.0_real64
+    logical :: matrix_source_area_partition = .false.
     real(real64) :: runon_rate_cm_per_day = 0.0_real64
     real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
     real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
