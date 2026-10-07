@@ -53,7 +53,7 @@ contains
       return
     end if
     bdenskf=bdens*kf
-    if(abs(frexp-1d0)<1d-3)then
+    if(abs(frexp-1d0)<=epsilon(1d0))then
       if(theta+bdenskf<=0d0)then
         result%status=B111_SORP_INVALID;return
       end if
