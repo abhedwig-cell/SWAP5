@@ -20,7 +20,7 @@ program test_swap431_root_oxygen_repro_response
   call evaluate_root_oxygen_reproduction_factor(p,theta,tsoil,1,factor,status)
   if(status/=ROOT_OXYGEN_REPRO_OK.or.abs(factor-1.0_real64)>tol)error stop 3
   p%intercept(6)=-1.0_real64
-  call evaluate_root_oxygen_reproduction_factor(p,theta,thetas,tsoil,1,z,zbot,dz,factor,status)
+  call evaluate_root_oxygen_reproduction_factor(p,theta,tsoil,1,factor,status)
   if(status/=ROOT_OXYGEN_REPRO_OK.or.abs(factor)>tol)error stop 4
   print '(a)','SW431_ROOT_OXYGEN_REPRO_RESPONSE=PASS'
 end program
