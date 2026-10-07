@@ -1,11 +1,11 @@
 program test_swap431_hyd_runtime_reachability
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_executor_t, kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
@@ -22,6 +22,9 @@ program test_swap431_hyd_runtime_reachability
        configure_b111_conductivity_power_tail, bind_b111_conductivity_power_tail, B111_POWER_OK
   use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
        initialize_b111_linear_table_parameters, bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
+  use mod_b111_hysteresis_state, only: initialize_b111_hysteresis, initialize_b111_hysteresis_state, B111_HYST_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   implicit none
 
@@ -36,6 +39,8 @@ program test_swap431_hyd_runtime_reachability
   end do
   call run_case(1,.true.)
   call run_linear_table_case()
+  call run_hysteresis_case(1)
+  call run_hysteresis_case(2)
   write(*,'(A)') 'SW431_HYD_RUNTIME_REACHABILITY=PASS'
 
 contains
@@ -91,6 +96,77 @@ contains
     else
       write(*,'(A,I0,1X,ES16.8)')'SW431_HYD_MODEL_RUNTIME_PASS=',model,output%mass%residual
     end if
+  end subroutine
+
+  subroutine run_hysteresis_case(mode)
+    integer,intent(in)::mode
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(kernel_committed_state_t) :: states(1), restored_states(1)
+    type(fmr_logical_column_t) :: column, columns(1)
+    type(fmr_template_t) :: template, templates(1)
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    type(fmr_committed_restart_bundle_t) :: bundle
+    class(transaction_state_t),allocatable :: restored_snapshot
+    real(real64) :: k0
+    integer :: active_calls,status
+    logical :: ok,exported,restored,available
+
+    call initialize_parameters(parameters,1,.false.)
+    parameters%hysteresis_active=.true.
+    parameters%hysteresis_initial_mode=mode
+    allocate(parameters%hysteresis_parameters)
+    call initialize_b111_hysteresis(parameters%hysteresis_parameters, &
+         spread(0.06_real64,1,numnod),spread(0.44_real64,1,numnod), &
+         spread(0.018_real64,1,numnod),spread(0.026_real64,1,numnod), &
+         spread(1.62_real64,1,numnod),spread(0.01_real64,1,numnod),status)
+    call require(status==B111_HYST_OK,'hysteresis parameter init')
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'hysteresis committed state init')
+    call initialize_forcing(forcing,-k0)
+    call initialize_column(column,template)
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
+    call initialize_config(config)
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+    observation=backend%observation()
+    call require(output%completed.and.output%committed,'hysteresis runtime commit')
+    call require(output%mass%complete,'hysteresis mass complete')
+    call require(abs(output%mass%residual)<=mass_tol,'hysteresis hard mass')
+    call require(observation%solver_executed,'hysteresis solver executed')
+
+    columns(1)=column;templates(1)=template;states(1)=committed
+    call fmr_export_committed_restart(columns,templates,states,777001_int64,bundle,exported,status)
+    call require(exported.and.status==FMR_RESTART_OK,'hysteresis restart export')
+    call fmr_restore_committed_restart(bundle,777001_int64,columns,templates,restored_states,restored,status)
+    call require(restored.and.status==FMR_RESTART_OK,'hysteresis restart restore')
+    call restored_states(1)%snapshot(restored_snapshot,available)
+    call require(available.and.allocated(restored_snapshot),'hysteresis restored snapshot')
+    select type(restored_physical=>restored_snapshot)
+    type is(fmr_b110_physical_state_t)
+      call require(allocated(restored_physical%hysteresis),'hysteresis restored state')
+      call require(all(restored_physical%hysteresis%branch==merge(1,-1,mode==1)),'hysteresis branch preserved')
+    class default
+      call require(.false.,'hysteresis restored type')
+    end select
+    write(*,'(A,I0,1X,ES16.8)')'SW431_HYST_RUNTIME_RESTART_PASS=',mode,output%mass%residual
   end subroutine
 
   subroutine run_linear_table_case()
@@ -214,6 +290,9 @@ contains
     type(b111_extended_hydraulic_provider_t),target::ext
     type(b111_conductivity_power_tail_t)::pw
     type(b111_linear_table_provider_t)::linear
+    type(b110_default_mvg_parameters_t),target::scan_bp
+    type(b110_default_mvg_provider_t),target::scan_base
+    real(real64),allocatable::scan_cofgen(:,:)
     integer::status
 
     call initialize_b110_default_mvg_parameters(bp,p%cofgen)
@@ -228,7 +307,19 @@ contains
     call require(status==B111_EXT_OK,'extended bind')
 
     head=initial_head
-    if(allocated(p%linear_hydraulic_table))then
+    if(p%hysteresis_active)then
+      call require(allocated(p%hysteresis_parameters),'hysteresis parameters present')
+      allocate(scan_cofgen(size(p%cofgen,1),numnod))
+      scan_cofgen=p%cofgen
+      if(p%hysteresis_initial_mode==1)then
+        scan_cofgen(4,:)=p%hysteresis_parameters%alpha_wet
+      else
+        scan_cofgen(4,:)=p%hysteresis_parameters%alpha_dry
+      end if
+      call initialize_b110_default_mvg_parameters(scan_bp,scan_cofgen)
+      call bind_b110_default_mvg_provider(scan_base,scan_bp,dt)
+      call scan_base%evaluate(head,theta,k,cap,dk)
+    else if(allocated(p%linear_hydraulic_table))then
       call bind_b111_linear_table_provider(linear,p%linear_hydraulic_table,dt,status)
       call require(status==B111_LINEAR_TABLE_OK,'linear-table bind')
       call linear%evaluate(head,theta,k,cap,dk)
@@ -246,6 +337,12 @@ contains
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=head;state%water_content=theta;state%ponding_depth=0.0_real64;state%groundwater_level=-999.0_real64
+    if(p%hysteresis_active)then
+      allocate(state%hysteresis)
+      call initialize_b111_hysteresis_state(p%hysteresis_parameters,p%hysteresis_initial_mode,head,theta, &
+           state%hysteresis,status)
+      call require(status==B111_HYST_OK,'hysteresis state init')
+    end if
     call fmr_new_b110_committed_state(committed,910000_int64,state,0.0_real64,ok)
   end subroutine
 
