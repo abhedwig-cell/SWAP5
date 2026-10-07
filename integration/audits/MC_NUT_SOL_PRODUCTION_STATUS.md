@@ -73,3 +73,21 @@ An atomic B1.11 Soil-N/crop-N transaction candidate now prepares crop soil deman
   exact binding HEAD at O0/O2; retain restart/layout and accepted-water-carrier
   tests, then integrated qualification. Do not admit any SOL01 capability
   before that evidence is persisted.
+
+### Follow-up focused operator qualification
+
+The nonlinear inverse correction also exposed the previous near-linear
+`abs(frexp-1)<1e-3` fast-path defect. That shortcut did not close chemical
+mass for `frexp=1.0005`; its observed regression residual was
+`-1.8389259114584555E-005`. The fast path is now restricted to exponents
+within machine epsilon of unity. Fix commit: `4593cd1039ebe8b33951d9de658d59afe66ef96a`.
+
+The exact committed Fortran source, test and runner blobs were reconstructed
+locally and each was verified with `git hash-object` against the connector
+blob SHA. The actual standalone repository runner passed at `-O0` and
+`-O2` using gfortran 14.2, with bounds/FPE checks, for 30,000 values per
+optimization (`frexp=2, 0.5, 1.0005`). Evidence:
+`integration/audits/evidence/MC_SOL01_FREUNDLICH_MASS_CLOSURE_LOCAL_QUALIFICATION.json`.
+This establishes **only** the focused partition operator. The coupled
+matrix/age substep, accepted water trace, restart, integrated O0/O2 and
+canonical admission remain unqualified on this updated binding postimage.
