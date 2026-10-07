@@ -36,7 +36,7 @@
   "state_owner": "none; both factors are stateless functions of immutable crop parameters and daily forcing",
   "qualification": {
     "runner": "tests/fmig431/run_swap431_soybean_phenology_factors.py",
-    "status": "READY_FOR_O0_O2",
+    "status": "LOCAL_O0_O2_PASS_PERSISTED_INTEGRATION_OPEN",
     "cases": [
       "temperature below Tmin",
       "temperature optimum",
@@ -51,7 +51,15 @@
       "vegetative photoperiod selector",
       "generative photoperiod mandatory",
       "anthesis clamp"
-    ]
+    ],
+    "local": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_SOY_FACTORS=PASS"
+    }
   },
   "remaining": [
     "Bind soybean daily phenology rate to the existing crop transaction/state owner without duplicating biomass state.",
