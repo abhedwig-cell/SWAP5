@@ -15,11 +15,13 @@ module mod_b111_extended_hydraulic_provider
     integer :: active_nodes = 0
     integer, allocatable :: model(:)
     real(real64), allocatable :: cofgen(:,:)
+    logical :: pdi_vapor_active = .false.
   end type
 
   type, extends(constitutive_hydraulics_provider_t), public :: b111_extended_hydraulic_provider_t
     type(b111_extended_hydraulic_parameters_t), pointer, private :: parameters => null()
     class(constitutive_hydraulics_provider_t), pointer, private :: base => null()
+    real(real64), allocatable, private :: temperature_c(:)
   contains
     procedure :: evaluate => b111_extended_evaluate
     procedure :: supports_point_conductivity => b111_extended_supports_point
@@ -32,11 +34,12 @@ module mod_b111_extended_hydraulic_provider
 
 contains
 
-  subroutine initialize_b111_extended_hydraulic_parameters(parameters, model, cofgen_input, status)
+  subroutine initialize_b111_extended_hydraulic_parameters(parameters, model, cofgen_input, status, pdi_vapor_active)
     type(b111_extended_hydraulic_parameters_t), intent(out) :: parameters
     integer, intent(in) :: model(:)
     real(real64), intent(in) :: cofgen_input(:,:)
     integer, intent(out) :: status
+    logical, intent(in), optional :: pdi_vapor_active
     integer :: i, n
 
     status = B111_EXT_INVALID_SHAPE
@@ -54,17 +57,21 @@ contains
     end do
 
     parameters%active_nodes = n
+    parameters%pdi_vapor_active = .false.
+    if (present(pdi_vapor_active)) parameters%pdi_vapor_active = pdi_vapor_active
+    if (parameters%pdi_vapor_active .and. .not. any(model >= 8 .and. model <= 11)) return
     allocate(parameters%model(n), parameters%cofgen(B111_EXT_COFGEN_REQUIRED,n))
     parameters%model = model
     parameters%cofgen = cofgen_input(1:B111_EXT_COFGEN_REQUIRED,:)
     status = B111_EXT_OK
   end subroutine
 
-  subroutine bind_b111_extended_hydraulic_provider(provider, parameters, base, status)
+  subroutine bind_b111_extended_hydraulic_provider(provider, parameters, base, status, temperature_c)
     type(b111_extended_hydraulic_provider_t), intent(out) :: provider
     type(b111_extended_hydraulic_parameters_t), target, intent(in) :: parameters
     class(constitutive_hydraulics_provider_t), target, intent(in) :: base
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: temperature_c(:)
     integer :: i
 
     nullify(provider%parameters)
@@ -79,6 +86,13 @@ contains
         if (.not. valid_node_parameters(parameters%model(i), parameters%cofgen(:,i))) return
       end if
     end do
+    if (parameters%pdi_vapor_active) then
+      if (.not. present(temperature_c)) return
+      if (size(temperature_c) /= parameters%active_nodes) return
+      if (any(.not. ieee_is_finite(temperature_c)) .or. any(temperature_c <= -273.15_real64)) return
+      allocate(provider%temperature_c(parameters%active_nodes))
+      provider%temperature_c = temperature_c
+    end if
     provider%parameters => parameters
     provider%base => base
     status = B111_EXT_OK
@@ -98,8 +112,13 @@ contains
     call self%base%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     do i = 1, n
       if (self%parameters%model(i) >= 5) then
-        call evaluate_b111_extended_one(self%parameters%model(i), self%parameters%cofgen(:,i), pressure_head(i), &
-                                        water_content(i), conductivity(i), capacity(i))
+        if (self%parameters%pdi_vapor_active .and. self%parameters%model(i) >= 8) then
+          call evaluate_b111_extended_one(self%parameters%model(i), self%parameters%cofgen(:,i), pressure_head(i), &
+                                          water_content(i), conductivity(i), capacity(i), self%temperature_c(i), .true.)
+        else
+          call evaluate_b111_extended_one(self%parameters%model(i), self%parameters%cofgen(:,i), pressure_head(i), &
+                                          water_content(i), conductivity(i), capacity(i))
+        end if
         dconductivity_dhead(i) = 0.0_real64
       end if
     end do
@@ -125,8 +144,13 @@ contains
     if (node_index < 1 .or. node_index > self%parameters%active_nodes) return
     if (.not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
     if (self%parameters%model(node_index) >= 5) then
-      call evaluate_b111_extended_one(self%parameters%model(node_index), self%parameters%cofgen(:,node_index), &
-                                      pressure_head, theta, conductivity, capacity)
+      if (self%parameters%pdi_vapor_active .and. self%parameters%model(node_index) >= 8) then
+        call evaluate_b111_extended_one(self%parameters%model(node_index), self%parameters%cofgen(:,node_index), &
+                                        pressure_head, theta, conductivity, capacity, self%temperature_c(node_index), .true.)
+      else
+        call evaluate_b111_extended_one(self%parameters%model(node_index), self%parameters%cofgen(:,node_index), &
+                                        pressure_head, theta, conductivity, capacity)
+      end if
       available = ieee_is_finite(conductivity) .and. conductivity >= 0.0_real64
     else
       call self%base%evaluate_point_conductivity(node_index, pressure_head, water_content, conductivity, available)
@@ -134,10 +158,12 @@ contains
     if (.not. available) conductivity = 0.0_real64
   end subroutine
 
-  subroutine evaluate_b111_extended_one(model, c, head, theta, conductivity, capacity)
+  subroutine evaluate_b111_extended_one(model, c, head, theta, conductivity, capacity, temperature_c, vapor_active)
     integer, intent(in) :: model
     real(real64), intent(in) :: c(:), head
     real(real64), intent(out) :: theta, conductivity, capacity
+    real(real64), intent(in), optional :: temperature_c
+    logical, intent(in), optional :: vapor_active
     real(real64) :: tr, ts, ksat, a1, lpar, n1, m1, a2, n2, m2, w1, w2
     real(real64) :: h0, ha, apar, omega_k, ah, g1, g2, g01, g02, s, s1, s2
     real(real64) :: cap1, cap2, f1, f2, t1, t2, t3, sad, dsad, bb, nn, x, xa, x0
@@ -243,11 +269,38 @@ contains
       if (model /= 11) theta=tr*sad+s*(ts-tr)
       kfilm=(h0/ha)**(apar*(1.0_real64-sad))
       conductivity=ksat*((1.0_real64-omega_k)*kcap+omega_k*kfilm)
+      if (present(vapor_active)) then
+        if (vapor_active) then
+          if (.not. present(temperature_c)) error stop 'B1.11 PDI vapor: missing temperature'
+          conductivity = conductivity + pdi_vapor_conductivity(ts, theta, head, temperature_c)
+        end if
+      end if
     end select
 
     if (.not. ieee_is_finite(theta) .or. .not. ieee_is_finite(conductivity) .or. .not. ieee_is_finite(capacity)) &
       error stop 'B1.11 extended hydraulics: non-finite result'
   end subroutine
+
+  pure real(real64) function pdi_vapor_conductivity(theta_s, water_content, head, temperature_c) result(kvap)
+    real(real64), intent(in) :: theta_s, water_content, head, temperature_c
+    real(real64), parameter :: p_v = 7.0_real64/3.0_real64
+    real(real64), parameter :: mg_r = 0.018015_real64*9.81_real64/8.314_real64
+    real(real64), parameter :: rho_w = 1000.0_real64
+    real(real64), parameter :: conv = 100.0_real64*86400.0_real64
+    real(real64) :: tk, mg_rt, da, rho_sv, f_kvap, air_filled, hr
+    kvap = 0.0_real64
+    if (head >= 0.0_real64 .or. theta_s <= 0.0_real64) return
+    air_filled = theta_s-water_content
+    if (air_filled <= 0.0_real64) return
+    tk = temperature_c+273.15_real64
+    if (tk <= 0.0_real64) return
+    mg_rt = mg_r/tk
+    da = 2.14e-5_real64*(tk/273.15_real64)**2
+    rho_sv = 1.0e-3_real64*exp(31.3716_real64-6014.79_real64/tk-7.92495e-3_real64*tk)/tk
+    f_kvap = rho_sv/rho_w*mg_rt
+    hr = exp(head/100.0_real64*mg_rt)
+    kvap = f_kvap*(air_filled**(p_v+1.0_real64)/theta_s**2)*da*hr*conv
+  end function
 
   logical function valid_node_parameters(model, c) result(ok)
     integer, intent(in) :: model

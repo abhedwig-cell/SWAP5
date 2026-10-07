@@ -74,6 +74,9 @@ for opt in 0 2; do
   for model in 2 3 5 6 7 8 9 10 11; do
     grep -Fq "SW431_HYD_MODEL_RUNTIME_PASS=$model" "$OUT/output.txt"
   done
+  for model in 8 9 10 11; do
+    grep -Fq "SW431_HYD_PDI_VAPOR_RUNTIME_PASS=$model" "$OUT/output.txt"
+  done
   grep -Fq 'SW431_HYD_POWER_RUNTIME_PASS' "$OUT/output.txt"
   grep -Fq 'SW431_HYD_LINEAR_TABLE_RUNTIME_PASS' "$OUT/output.txt"
   grep -Fq 'SW431_HYST_RUNTIME_RESTART_PASS=1' "$OUT/output.txt"

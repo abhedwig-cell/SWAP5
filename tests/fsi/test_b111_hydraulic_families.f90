@@ -38,10 +38,11 @@ program test_b111_hydraulic_families
   integer, parameter :: n=10
   integer :: model(n), status, i
   real(real64) :: c(42,n), h(n), theta(n), k(n), cap(n), dk(n)
+  real(real64) :: theta_v(n), k_v(n), cap_v(n), dk_v(n), temperature_c(n)
   type(base_provider_t), target :: base
   type(b111_legacy_hydraulic_provider_t), target :: legacy
-  type(b111_extended_hydraulic_parameters_t), target :: extp
-  type(b111_extended_hydraulic_provider_t) :: ext
+  type(b111_extended_hydraulic_parameters_t), target :: extp, extp_vapor
+  type(b111_extended_hydraulic_provider_t) :: ext, ext_vapor
 
   model=[1,2,3,5,6,7,8,9,10,11]
   h=-100.0_real64
@@ -66,6 +67,16 @@ program test_b111_hydraulic_families
 
   do i=1,n
     write(*,'(i0,1x,es24.16,3(1x,es24.16),1x,es24.16)') model(i),h(i),theta(i),k(i),cap(i),dk(i)
+  end do
+
+  temperature_c=20.0_real64
+  call initialize_b111_extended_hydraulic_parameters(extp_vapor,model,c,status,.true.)
+  if(status/=B111_EXT_OK) error stop 'extended vapor initialize failed'
+  call bind_b111_extended_hydraulic_provider(ext_vapor,extp_vapor,legacy,status,temperature_c)
+  if(status/=B111_EXT_OK) error stop 'extended vapor bind failed'
+  call ext_vapor%evaluate(h,theta_v,k_v,cap_v,dk_v)
+  do i=1,n
+    if(model(i)>=8) write(*,'(a,1x,i0,1x,3(es24.16,1x))') 'V',model(i),theta_v(i),k_v(i),k_v(i)-k(i)
   end do
 
   if(theta(1)/=0.25_real64 .or. k(1)/=1.25_real64 .or. cap(1)/=0.005_real64) error stop 'model1 preservation failed'

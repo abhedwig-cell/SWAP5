@@ -5,7 +5,8 @@ program test_swap431_hyd_runtime_reachability
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_executor_t, kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
        fmr_new_b110_committed_state
@@ -26,6 +27,8 @@ program test_swap431_hyd_runtime_reachability
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, initialize_soil_temperature_parameters, &
+       initialize_soil_temperature_state
   implicit none
 
   real(real64), parameter :: initial_head=-100.0_real64
@@ -35,9 +38,12 @@ program test_swap431_hyd_runtime_reachability
   integer :: i
 
   do i=1,size(models)
-    call run_case(models(i),.false.)
+    call run_case(models(i),.false.,.false.)
   end do
-  call run_case(1,.true.)
+  do i=8,11
+    call run_case(i,.false.,.true.)
+  end do
+  call run_case(1,.true.,.false.)
   call run_linear_table_case()
   call run_hysteresis_case(1)
   call run_hysteresis_case(2)
@@ -47,9 +53,9 @@ program test_swap431_hyd_runtime_reachability
 
 contains
 
-  subroutine run_case(model,power)
+  subroutine run_case(model,power,vapor)
     integer,intent(in)::model
-    logical,intent(in)::power
+    logical,intent(in)::power,vapor
     type(fmr_serialized_reference_backend_t) :: backend
     type(kernel_executor_t) :: transaction_control
     type(kernel_committed_state_t) :: committed
@@ -67,11 +73,11 @@ contains
     integer :: active_calls
     logical :: ok
 
-    call initialize_parameters(parameters,model,power)
+    call initialize_parameters(parameters,model,power,vapor)
     call initialize_committed_state(committed,parameters,k0,ok)
     call require(ok,'committed state init')
-    call initialize_forcing(forcing,-k0)
-    call initialize_column(column,template)
+    call initialize_forcing(forcing,-k0,vapor)
+    call initialize_column(column,template,vapor)
     call initialize_config(config)
 
     output=fmr_serialized_column_result_t()
@@ -95,6 +101,8 @@ contains
     call require(output%accepted_substeps>0,'accepted substep')
     if(power)then
       write(*,'(A,1X,ES16.8)')'SW431_HYD_POWER_RUNTIME_PASS',output%mass%residual
+    else if(vapor)then
+      write(*,'(A,I0,1X,ES16.8)')'SW431_HYD_PDI_VAPOR_RUNTIME_PASS=',model,output%mass%residual
     else
       write(*,'(A,I0,1X,ES16.8)')'SW431_HYD_MODEL_RUNTIME_PASS=',model,output%mass%residual
     end if
@@ -122,7 +130,7 @@ contains
     integer :: active_calls,status
     logical :: ok,exported,restored,available
 
-    call initialize_parameters(parameters,1,.false.)
+    call initialize_parameters(parameters,1,.false.,.false.)
     parameters%hysteresis_active=.true.
     parameters%hysteresis_initial_mode=mode
     allocate(parameters%hysteresis_parameters)
@@ -133,8 +141,8 @@ contains
     call require(status==B111_HYST_OK,'hysteresis parameter init')
     call initialize_committed_state(committed,parameters,k0,ok)
     call require(ok,'hysteresis committed state init')
-    call initialize_forcing(forcing,-k0)
-    call initialize_column(column,template)
+    call initialize_forcing(forcing,-k0,.false.)
+    call initialize_column(column,template,.false.)
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
     call initialize_config(config)
     output=fmr_serialized_column_result_t()
@@ -191,7 +199,7 @@ contains
     integer(int64) :: before_revision,after_revision
     logical :: ok,before_available,after_available
 
-    call initialize_parameters(parameters,1,.false.)
+    call initialize_parameters(parameters,1,.false.,.false.)
     parameters%hysteresis_active=.true.
     parameters%hysteresis_initial_mode=mode
     allocate(parameters%hysteresis_parameters)
@@ -204,8 +212,8 @@ contains
     call require(ok,'hysteresis reject committed init')
     ! Deliberately perturb the equilibrium forcing so full and two-half
     ! candidates diverge and temporal_tolerance=0 rejects the post-solver trial.
-    call initialize_forcing(forcing,0.0_real64)
-    call initialize_column(column,template)
+    call initialize_forcing(forcing,0.0_real64,.false.)
+    call initialize_column(column,template,.false.)
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
     call initialize_config(config)
     config%transaction%temporal_tolerance=0.0_real64
@@ -287,12 +295,12 @@ contains
     integer :: active_calls
     logical :: ok
 
-    call initialize_parameters(parameters,1,.false.)
+    call initialize_parameters(parameters,1,.false.,.false.)
     call initialize_linear_table(parameters)
     call initialize_committed_state(committed,parameters,k0,ok)
     call require(ok,'linear-table committed state init')
-    call initialize_forcing(forcing,-k0)
-    call initialize_column(column,template)
+    call initialize_forcing(forcing,-k0,.false.)
+    call initialize_column(column,template,.false.)
     call initialize_config(config)
     output=fmr_serialized_column_result_t()
     output%column_id=910000_int64
@@ -343,12 +351,13 @@ contains
     call require(status==B111_LINEAR_TABLE_OK,'linear-table configure')
   end subroutine
 
-  subroutine initialize_parameters(p,model,power)
+  subroutine initialize_parameters(p,model,power,vapor)
     type(fmr_b110_physical_parameters_t),intent(out)::p
     integer,intent(in)::model
-    logical,intent(in)::power
-    integer::j
+    logical,intent(in)::power,vapor
+    integer::j,status
     real(real64)::m1,m2
+    real(real64)::theta_sat(numnod),fq(numnod),fc(numnod),fo(numnod),distance(numnod)
 
     m1=1.0_real64-1.0_real64/1.62_real64
     m2=1.0_real64-1.0_real64/1.35_real64
@@ -367,13 +376,22 @@ contains
       p%cofgen(22,j)=-200.0_real64;p%cofgen(23,j)=default_k_at(-200.0_real64,p%cofgen(:,j))
     end do
     p%conductivity_power_tail_active=power
+    p%pdi_vapor_active=vapor
     p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%swsophy=0
     p%max_iterations=20;p%max_backtracking=8;p%min_step_duration=1.0e-9_real64
     p%compartment_balance_tolerance=mass_tol;p%total_balance_tolerance=mass_tol
     p%head_abs_tolerance=1.0e-11_real64;p%head_rel_tolerance=1.0e-11_real64;p%ponding_tolerance=1.0e-11_real64
     p%root_extraction_active=.false.;p%macropore_active=.false.;p%snow_active=.false.
     p%hysteresis_active=.false.;p%tabulated_hydraulics_active=.false.;p%elasticity_active=.false.
-    p%frost_active=.false.;p%soil_temperature_active=.false.;p%drainage_response_active=.false.
+    p%frost_active=.false.;p%soil_temperature_active=vapor;p%drainage_response_active=.false.
+    if(vapor)then
+      allocate(p%soil_temperature)
+      theta_sat=p%cofgen(2,:);fq=0.35_real64;fc=0.15_real64;fo=0.05_real64
+      distance=p%node_distance
+      where(distance<=0.0_real64) distance=max(0.5_real64*p%dz,1.0e-6_real64)
+      call initialize_soil_temperature_parameters(p%dz,distance,theta_sat,fq,fc,fo,p%soil_temperature,status)
+      call require(status==SOIL_TEMP_OK .and. p%soil_temperature%ready(),'PDI vapor thermal parameters')
+    end if
   end subroutine
 
   subroutine initialize_committed_state(committed,p,k0,ok)
@@ -393,6 +411,7 @@ contains
     type(b110_default_mvg_parameters_t),target::scan_bp
     type(b110_default_mvg_provider_t),target::scan_base
     real(real64),allocatable::scan_cofgen(:,:)
+    real(real64),target::vapor_temperature(numnod)
     integer::status
 
     call initialize_b110_default_mvg_parameters(bp,p%cofgen)
@@ -401,9 +420,14 @@ contains
     call require(status==B111_LEGACY_HYD_OK,'legacy configure')
     call bind_b111_legacy_hydraulic_provider(legacy,base,dt,status)
     call require(status==B111_LEGACY_HYD_OK,'legacy bind')
-    call initialize_b111_extended_hydraulic_parameters(ep,p%hydraulic_model,bp%cofgen,status)
+    call initialize_b111_extended_hydraulic_parameters(ep,p%hydraulic_model,bp%cofgen,status,p%pdi_vapor_active)
     call require(status==B111_EXT_OK,'extended configure')
-    call bind_b111_extended_hydraulic_provider(ext,ep,legacy,status)
+    if(p%pdi_vapor_active)then
+      vapor_temperature=20.0_real64
+      call bind_b111_extended_hydraulic_provider(ext,ep,legacy,status,vapor_temperature)
+    else
+      call bind_b111_extended_hydraulic_provider(ext,ep,legacy,status)
+    end if
     call require(status==B111_EXT_OK,'extended bind')
 
     head=initial_head
@@ -437,6 +461,11 @@ contains
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=head;state%water_content=theta;state%ponding_depth=0.0_real64;state%groundwater_level=-999.0_real64
+    if(p%pdi_vapor_active)then
+      allocate(state%soil_temperature)
+      call initialize_soil_temperature_state(vapor_temperature,state%soil_temperature,status)
+      call require(status==SOIL_TEMP_OK,'PDI vapor thermal state')
+    end if
     if(p%hysteresis_active)then
       allocate(state%hysteresis)
       call initialize_b111_hysteresis_state(p%hysteresis_parameters,p%hysteresis_initial_mode,head,theta, &
@@ -446,20 +475,27 @@ contains
     call fmr_new_b110_committed_state(committed,910000_int64,state,0.0_real64,ok)
   end subroutine
 
-  subroutine initialize_forcing(f,q)
+  subroutine initialize_forcing(f,q,vapor)
     type(fmr_b110_physical_forcing_t),intent(out)::f
     real(real64),intent(in)::q
+    logical,intent(in)::vapor
     f%top_flux=q;f%top_head=initial_head;f%bottom_flux=q;f%bottom_head=-999999.0_real64
     allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
     f%drainage_flux_by_level=0.0_real64;f%subsurface_irrigation_source=0.0_real64;f%root_extraction_sink=0.0_real64
+    if(vapor)then
+      allocate(f%soil_temperature)
+      f%soil_temperature%prescribed_surface_temperature_c=20.0_real64
+    end if
   end subroutine
 
-  subroutine initialize_column(column,template)
+  subroutine initialize_column(column,template,vapor)
     type(fmr_logical_column_t),intent(out)::column
     type(fmr_template_t),intent(out)::template
+    logical,intent(in)::vapor
     template%template_id=910001_int64;template%physics_topology_id=910002_int64
     template%vertical_layout_id=910003_int64;template%state_layout_id=910004_int64;template%solver_interface_id=910005_int64
-    template%optional_state_layout_id=0_int64;template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    template%optional_state_layout_id=merge(FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE,0_int64,vapor)
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     column%column_id=910000_int64;column%template_id=template%template_id;column%parameter_ref=1_int64
     column%state_handle=1_int64;column%forcing_handle=1_int64;column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE

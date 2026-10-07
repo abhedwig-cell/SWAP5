@@ -316,6 +316,8 @@ module mod_fmr_serialized_reference_backend
     ! B1.11 constitutive selector per active node. Absence is exact model-1 default.
     integer, allocatable :: hydraulic_model(:)
     logical :: conductivity_power_tail_active = .false.
+    ! B1.11 SWVAPOR=1 for PDI models 8-11. Temperature is owned by the trial-start thermal state.
+    logical :: pdi_vapor_active = .false.
     ! B1.11 SWSOPHY=-1 precomputed linear constitutive table. Absence keeps the analytical path.
     type(b111_linear_table_parameters_t), allocatable :: linear_hydraulic_table
     integer :: max_iterations = 8
@@ -681,6 +683,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     logical :: conductivity_power_tail_active = .false.
+    logical :: pdi_vapor_active = .false.
     logical :: linear_hydraulic_table_active = .false.
     logical :: hysteresis_active = .false.
     type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
@@ -2848,6 +2851,16 @@ contains
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%tabulated_hydraulics_active
+      if (parameters%pdi_vapor_active) then
+        ok = ok .and. allocated(parameters%hydraulic_model) .and. parameters%soil_temperature_active .and. &
+             self%soil_water_selection%uses_reference() .and. .not. parameters%conductivity_power_tail_active .and. &
+             .not. allocated(parameters%linear_hydraulic_table) .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%drainage_response_active
+        if (ok) ok = all(parameters%hydraulic_model >= 8 .and. parameters%hydraulic_model <= 11)
+      end if
       if (parameters%hysteresis_active) then
         ok = ok .and. allocated(parameters%hysteresis_parameters) .and. &
              self%soil_water_selection%uses_reference() .and. &
@@ -3121,14 +3134,24 @@ contains
         error stop 'FMR B1.11 hydraulic model selector invalid or unsupported'
       if (allocated(parameters%hydraulic_model)) then
         call initialize_b111_extended_hydraulic_parameters(self%extended_hydraulic_parameters, &
-             parameters%hydraulic_model, self%hydraulic_parameters%cofgen, extended_hydraulic_status)
+             parameters%hydraulic_model, self%hydraulic_parameters%cofgen, extended_hydraulic_status, parameters%pdi_vapor_active)
       else
         call initialize_b111_extended_hydraulic_parameters(self%extended_hydraulic_parameters, &
-             spread(1,1,n), self%hydraulic_parameters%cofgen, extended_hydraulic_status)
+             spread(1,1,n), self%hydraulic_parameters%cofgen, extended_hydraulic_status, parameters%pdi_vapor_active)
       end if
       if (extended_hydraulic_status /= B111_EXT_OK) &
         error stop 'FMR B1.11 extended hydraulic selector invalid or unsupported'
       self%conductivity_power_tail_active = parameters%conductivity_power_tail_active
+      self%pdi_vapor_active = parameters%pdi_vapor_active
+      if (self%pdi_vapor_active) then
+        if (.not. parameters%soil_temperature_active .or. .not. allocated(parameters%hydraulic_model)) &
+          error stop 'FMR B1.11 PDI vapor requires thermal state and explicit model 8-11 selector'
+        if (any(parameters%hydraulic_model < 8) .or. any(parameters%hydraulic_model > 11)) &
+          error stop 'FMR B1.11 PDI vapor first admission is restricted to models 8-11'
+        if (parameters%swkimpl /= 0 .or. parameters%frost_active .or. parameters%macropore_active .or. &
+            parameters%snow_active .or. parameters%drainage_response_active) &
+          error stop 'FMR B1.11 PDI vapor composition outside qualified K0 thermal scope'
+      end if
       self%hysteresis_active = parameters%hysteresis_active
       if (self%hysteresis_active) then
         if (parameters%hysteresis_initial_mode /= 1 .and. parameters%hysteresis_initial_mode /= 2) &
@@ -3879,7 +3902,7 @@ contains
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
-    type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
+    type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal, pdi_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
     type(micro_de_willigen_result_t) :: micro_result
     real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
@@ -4082,8 +4105,22 @@ contains
       call bind_b111_legacy_hydraulic_provider(self%legacy_hydraulic_constitutive, self%constitutive, &
            step_duration, legacy_hydraulic_status)
       if (legacy_hydraulic_status /= B111_LEGACY_HYD_OK) return
-      call bind_b111_extended_hydraulic_provider(self%extended_hydraulic_constitutive, &
-           self%extended_hydraulic_parameters, self%legacy_hydraulic_constitutive, extended_hydraulic_status)
+      if (self%pdi_vapor_active) then
+        select type (pdi_physical => state)
+        class is (fmr_b110_physical_state_t)
+          if (.not. allocated(pdi_physical%soil_temperature)) return
+          call build_soil_temperature_field_view(pdi_physical%soil_temperature, pdi_thermal, extended_hydraulic_status)
+          if (extended_hydraulic_status /= SOIL_TEMP_OK) return
+          call bind_b111_extended_hydraulic_provider(self%extended_hydraulic_constitutive, &
+               self%extended_hydraulic_parameters, self%legacy_hydraulic_constitutive, extended_hydraulic_status, &
+               pdi_thermal%temperature_c)
+        class default
+          return
+        end select
+      else
+        call bind_b111_extended_hydraulic_provider(self%extended_hydraulic_constitutive, &
+             self%extended_hydraulic_parameters, self%legacy_hydraulic_constitutive, extended_hydraulic_status)
+      end if
       if (extended_hydraulic_status /= B111_EXT_OK) return
       if (self%conductivity_power_tail_active) then
         call bind_b111_conductivity_power_tail(self%power_tail_constitutive, self%extended_hydraulic_constitutive, &

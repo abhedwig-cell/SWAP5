@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 import math, pathlib, sys
 rows=[]
+vapor_rows=[]
 for line in pathlib.Path(sys.argv[1]).read_text().splitlines():
     q=line.split()
-    rows.append((int(q[0]),*map(float,q[1:])))
+    if q[0]=="V":
+        vapor_rows.append((int(q[1]),*map(float,q[2:])))
+    else:
+        rows.append((int(q[0]),*map(float,q[1:])))
 C=[0.0]*22
 C[1]=0.06; C[2]=0.44; C[3]=12.5; C[4]=0.018; C[5]=0.45; C[6]=1.62; C[7]=1-1/C[6]
 C[13]=0.0035; C[14]=1.35; C[15]=1-1/C[14]; C[16]=0.63; C[17]=0.37
@@ -74,4 +78,27 @@ for model,h,th,k,cap,dk in rows:
       if abs(a-b)>2e-12*scale:
         raise SystemExit(f"model {model} {name} mismatch: got={a} expected={b}")
     if dk!=0.0: raise SystemExit(f"model {model} unexpected dKdh {dk}")
+
+base_by_model={model:(th,k) for model,h,th,k,cap,dk in rows}
+if [r[0] for r in vapor_rows] != [8,9,10,11]:
+    raise SystemExit(f"unexpected PDI vapor rows: {[r[0] for r in vapor_rows]}")
+mg_r=0.018015*9.81/8.314
+tk=20.0+273.15
+mg_rt=mg_r/tk
+da=2.14e-5*(tk/273.15)**2
+rho_sv=1e-3*math.exp(31.3716-6014.79/tk-7.92495e-3*tk)/tk
+f_kvap=rho_sv/1000.0*mg_rt
+conv=100.0*86400.0
+for model,theta_v,k_v,delta in vapor_rows:
+    theta0,k0=base_by_model[model]
+    air=C[2]-theta0
+    expected=f_kvap*(air**(7.0/3.0+1.0)/C[2]**2)*da*math.exp(-100.0/100.0*mg_rt)*conv
+    scale=max(1.0,abs(delta),abs(expected))
+    if abs(theta_v-theta0)>2e-12*max(1.0,abs(theta_v),abs(theta0)):
+        raise SystemExit(f"model {model} vapor changed retention")
+    if abs(delta-expected)>2e-12*scale:
+        raise SystemExit(f"model {model} vapor mismatch: got={delta} expected={expected}")
+    if abs(k_v-(k0+expected))>2e-12*max(1.0,abs(k_v),abs(k0+expected)):
+        raise SystemExit(f"model {model} total K mismatch")
+print("B111_PDI_VAPOR_SW009_ORACLE=PASS")
 print("B111_HYDRAULIC_FAMILIES_ORACLE=PASS")
