@@ -1,0 +1,25 @@
+{
+  "schema": "swap431.mc_crop01.rootgrow_dvs.v1",
+  "capability_id": "SW431-CROP-ROOTGROW-DVS",
+  "baseline": "8cd14e459913f77f412e12125ccda597a841e22d",
+  "status": "QUALIFIED_IMPLEMENTATION_PENDING_CANONICAL_ADMISSION",
+  "source_semantics": "SWRD=1: root depth = min(AFGEN(RDTB,DVS),RDM)",
+  "implemented": [
+    "B1.11-compatible endpoint-clamped linear RDTB interpolation via existing WOFOST rate-table authority",
+    "RDM maximum-depth clipping",
+    "transactional WOFOST crop-owner binding from committed development_stage"
+  ],
+  "local_qualification": {
+    "compiler": "GNU Fortran 14.2.0",
+    "component_o0_o2": "PASS",
+    "marker": "SW431_CROP_ROOTGROW_DVS_COMPONENT=PASS",
+    "profile_o0_o2": "PASS",
+    "runtime_o0_o2": "PASS"
+  },
+  "not_yet_closed": [
+    "Canonical admission on current integration/f-ci-canonical remains pending."
+  ],
+  "next_safe_step": "Qualify this exact slice on the lean current-canonical admission branch, then merge and reclassify SW431-CROP-ROOTGROW-DVS.",
+  "qualified_postimage": "290349b20609ff158f73f9af88791bbbf8973567",
+  "qualification_run": 37625061479
+}
