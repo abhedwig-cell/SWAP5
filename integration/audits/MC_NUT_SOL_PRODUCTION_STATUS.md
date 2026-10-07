@@ -39,4 +39,4 @@ bound and reviewed.
 - `SW431-SALT-AQUIFER`: exact B1.11 has a reproduced out-of-bounds SWBR
   coefficient access; see `MC_SOL01_AQUIFER_SOURCE_DECISION.md`.
 
-WOFOST81 remains unchanged and N-unlimited on its already admitted route.
+An atomic B1.11 Soil-N/crop-N transaction candidate now prepares crop soil demand, runs the Soil-N day, feeds the accepted Soil-N supply into the separate B1.11 crop-N owner, books soil uptake once as an internal transfer, books biological fixation once as external N input, and persists accepted interval lineage. WOFOST81 remains unchanged and N-unlimited on its already admitted route.
