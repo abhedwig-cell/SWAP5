@@ -74,7 +74,16 @@ program kalmthout_swap5_daily_pilot
     call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
     if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
       failures=failures+1
-      write(*,'(A,1X,A,1X,I0)') 'KALMTHOUT_DAY_FAIL',trim(ds),status
+      write(*,'(A,1X,A,1X,I0,7(1X,F12.6))') 'KALMTHOUT_DAY_FAIL',trim(ds),status, &
+           precip_mm,wet_hours,tmin,tmax,rad,vap,et0
+      if(allocated(results)) then
+        write(*,'(A,1X,I0,1X,A,3(1X,L1),4(1X,I0),3(1X,ES18.10),1X,A,1X,I0)') &
+             'KALMTHOUT_RESULT_DEBUG',size(results),trim(results(1)%admission_status), &
+             results(1)%admitted,results(1)%completed,results(1)%committed,results(1)%accepted_substeps, &
+             results(1)%solver_rejections,results(1)%temporal_rejections,results(1)%mass_rejections, &
+             results(1)%mass%residual,results(1)%mass%total_in,results(1)%mass%total_out, &
+             trim(results(1)%solver_route),results(1)%solver_status
+      end if
       exit
     end if
     max_residual=max(max_residual,abs(results(1)%mass%residual))
