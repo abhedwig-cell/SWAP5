@@ -96,6 +96,9 @@ on:
       - 'integration/audits/MC_NUT01_PRODUCTION_REACHABILITY.json'
       - 'tests/fwof/pp02/test_fmr_b111_soil_crop_n_transaction.f90'
       - 'tests/fwof/pp02/run_fmr_b111_soil_crop_n_transaction.sh'
+      - 'src/process/mod_b111_reactive_solute_substep.f90'
+      - 'tests/physics/test_b111_reactive_solute_substep.f90'
+      - 'tests/physics/run_b111_reactive_solute_substep.sh'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -134,5 +137,7 @@ jobs:
         run: bash tests/physics/run_fmr_b111_soil_crop_n_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
+      - name: Exact-order reactive solute substep
+        run: bash tests/physics/run_b111_reactive_solute_substep.sh
       - name: Reactive solute layout restart
         run: python tests/physics/run_b111_reactive_solute_restart_layout.py
