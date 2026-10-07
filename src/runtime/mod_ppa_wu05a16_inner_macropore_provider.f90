@@ -221,7 +221,10 @@ contains
     ! A pure surface-to-macropore receipt can be physically active while its
     ! same-residual matrix exchange is zero. Keep the provider active so the
     ! top receipt participates in the candidate rather than being discarded.
-    if(self%candidate_pond_lateral_cm>0.0_real64)active=.true.
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      if(rates%valid .and. rates%top_partition%valid .and. &
+         rates%top_partition%requested_total_cm>0.0_real64)active=.true.
+    end if
   end subroutine evaluate_inner_macropore_rate
 
   subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead, &
