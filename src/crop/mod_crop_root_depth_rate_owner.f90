@@ -49,6 +49,8 @@ module mod_crop_root_depth_rate_owner
     real(real64) :: potential_root_growth = 0.0_real64
     logical :: deepest_root_oxygen_factor_available = .false.
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
+    logical :: rootzone_drought_uptake_factor_available = .false.
+    real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
   end type crop_root_depth_rate_daily_forcing_t
 
   type, public :: crop_root_depth_rate_diagnostics_t
@@ -239,16 +241,23 @@ contains
 
   logical function forcing_valid(forcing) result(valid)
     type(crop_root_depth_rate_daily_forcing_t), intent(in) :: forcing
-    real(real64) :: values(5)
+    real(real64) :: values(6)
     values = [forcing%potential_transpiration, forcing%actual_root_uptake, &
               forcing%actual_root_growth, forcing%potential_root_growth, &
-              forcing%deepest_root_oxygen_factor_integral]
+              forcing%deepest_root_oxygen_factor_integral, forcing%rootzone_drought_uptake_factor_integral]
     valid = all(ieee_is_finite(values)) .and. all(values >= 0.0_real64)
     if (.not. valid) return
     if (forcing%deepest_root_oxygen_factor_available) then
       valid = forcing%deepest_root_oxygen_factor_integral <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64)
     else
       valid = abs(forcing%deepest_root_oxygen_factor_integral) <= tiny(1.0_real64)
+    end if
+    if (.not. valid) return
+    if (forcing%rootzone_drought_uptake_factor_available) then
+      valid = forcing%rootzone_drought_uptake_factor_integral <= 1.0_real64 + &
+           64.0_real64*epsilon(1.0_real64)
+    else
+      valid = abs(forcing%rootzone_drought_uptake_factor_integral) <= tiny(1.0_real64)
     end if
   end function forcing_valid
 
