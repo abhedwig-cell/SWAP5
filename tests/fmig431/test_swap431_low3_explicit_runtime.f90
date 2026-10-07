@@ -206,9 +206,7 @@ contains
     end if
     call require(ok, 'committed state initialization')
     call initialize_forcing(forcing, top_flux, bottom_flux, bottom_head)
-    if(present(explicit3))then
-      if(explicit3)call initialize_cauchy3_forcing(forcing)
-    end if
+    if(bottom_mode==3)call initialize_cauchy3_forcing(forcing)
 
     template%template_id = 440001_int64
     template%physics_topology_id = 440002_int64
