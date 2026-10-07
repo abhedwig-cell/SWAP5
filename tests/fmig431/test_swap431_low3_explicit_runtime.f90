@@ -354,7 +354,10 @@ contains
     if (parameters%swbotb3_explicit_active) then
       ! Representable freatic profile for the integrated CALCGWL prerequisite:
       ! h=z_gwl-z with z_gwl=-50 cm, so lower nodes are saturated.
-      heads = -1.5_real64 - parameters%z
+      heads(1)=-1.25_real64
+      do i=2,numnod
+        heads(i)=heads(i-1)+parameters%node_distance(i)
+      end do
     else if (hydrostatic) then
       heads(1) = h0
       do i = 2, numnod
@@ -392,7 +395,7 @@ contains
     type(fmr_b110_physical_forcing_t),intent(inout)::forcing
     integer::status
     real(real64)::date3(2),head3(2)
-    date3=[0._real64,10._real64];head3=[-1.5_real64,-1.5_real64]
+    date3=[0._real64,10._real64];head3=[-0.75_real64,-0.75_real64]
     allocate(forcing%legacy_swbotb3_implicit_control)
     call forcing%legacy_swbotb3_implicit_control%initialize_table(0._real64,0._real64,date3,head3, &
          10._real64,.true.,status)
