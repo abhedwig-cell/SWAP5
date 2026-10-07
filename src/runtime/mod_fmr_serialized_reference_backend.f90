@@ -24,7 +24,7 @@ module mod_fmr_serialized_reference_backend
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
-       FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
+       FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS, &
        FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, fmr_solute_state_layout_known
   use mod_interception_source_window_runtime, only: interception_source_window_t
@@ -69,6 +69,8 @@ module mod_fmr_serialized_reference_backend
        configure_b111_conductivity_power_tail, bind_b111_conductivity_power_tail, B111_POWER_OK
   use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
        bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
+  use mod_b111_hysteresis_state, only: b111_hysteresis_parameters_t, b111_hysteresis_state_t, &
+       b111_hysteresis_transition_t, advance_b111_hysteresis_accepted, B111_HYST_OK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -235,6 +237,7 @@ module mod_fmr_serialized_reference_backend
     type(macropore_continuation_state_t), allocatable :: macropore
     type(fmr_mobile_salt_component_t), allocatable :: salt
     type(rutter_source_state_t), allocatable :: rutter
+    type(b111_hysteresis_state_t), allocatable :: hysteresis
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -355,6 +358,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     logical :: tabulated_hydraulics_active = .false.
     logical :: direct_retention_active = .false.
     integer :: prepared_direct_retention_slot = 0
@@ -677,6 +681,8 @@ module mod_fmr_serialized_reference_backend
     logical :: direct_retention_active = .false.
     logical :: conductivity_power_tail_active = .false.
     logical :: linear_hydraulic_table_active = .false.
+    logical :: hysteresis_active = .false.
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     integer :: direct_retention_slot = 0
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
@@ -1294,6 +1300,11 @@ contains
     if (allocated(source%rutter)) then
       allocate(target%rutter)
       target%rutter = source%rutter
+    end if
+    if (allocated(target%hysteresis)) deallocate(target%hysteresis)
+    if (allocated(source%hysteresis)) then
+      allocate(target%hysteresis)
+      target%hysteresis = source%hysteresis
     end if
   end subroutine copy_b110_physical_state
 
@@ -3084,7 +3095,25 @@ contains
       if (extended_hydraulic_status /= B111_EXT_OK) &
         error stop 'FMR B1.11 extended hydraulic selector invalid or unsupported'
       self%conductivity_power_tail_active = parameters%conductivity_power_tail_active
+      self%hysteresis_active = parameters%hysteresis_active
+      if (self%hysteresis_active) then
+        if (.not. allocated(parameters%hysteresis_parameters)) &
+          error stop 'FMR B1.11 hysteresis active without parameters'
+        if (parameters%hysteresis_parameters%active_nodes /= n) &
+          error stop 'FMR B1.11 hysteresis parameter shape mismatch'
+        self%hysteresis_parameters = parameters%hysteresis_parameters
+      else if (allocated(self%hysteresis_parameters)) then
+        deallocate(self%hysteresis_parameters)
+      end if
       self%linear_hydraulic_table_active = allocated(parameters%linear_hydraulic_table)
+      if (self%hysteresis_active) then
+        if (self%legacy_hydraulic_constitutive%active() .or. any(self%extended_hydraulic_parameters%model >= 5) .or. &
+            parameters%conductivity_power_tail_active .or. allocated(parameters%linear_hydraulic_table) .or. &
+            parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. parameters%elasticity_active .or. &
+            parameters%frost_active .or. parameters%macropore_active .or. parameters%snow_active .or. &
+            parameters%soil_temperature_active .or. parameters%drainage_response_active) &
+          error stop 'FMR B1.11 hysteresis first admission requires ordinary model-1 Reference hydraulics'
+      end if
       if (self%linear_hydraulic_table_active) then
         if (self%legacy_hydraulic_constitutive%active() .or. any(self%extended_hydraulic_parameters%model >= 5)) &
           error stop 'FMR B1.11 linear table is qualified only with hydraulic model 1'
