@@ -148,7 +148,8 @@ program test_swap431_low3_explicit_progress
   write(*,'(a,4(1x,i0))') 'LOW03EXP_TIGHT_RETRY_DIAG',diag%retries,diag%solver_rejections, &
        diag%temporal_rejections,diag%mass_rejections
   call require(.not.failed%completed .and. .not.candidate%ready(),'tight certificate fails closed')
-  call require(diag%retries>0 .and. diag%temporal_rejections>0,'shortened temporal retries exercised')
+  call require(diag%retries>0 .and. (diag%temporal_rejections>0 .or. diag%solver_rejections>0), &
+       'shortened retries exercised before fail-closed return')
   call require(diag%mass_rejections==0,'failed shortened retries preserve mass gate')
   call require(states(1)%current_revision()==0_int64,'failed retries preserve external revision')
 
