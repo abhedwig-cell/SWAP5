@@ -19,6 +19,8 @@ module mod_b111_crop_n_owner
     real(real64)::nloss_leaf_kg_ha=0.0_real64
     real(real64)::nloss_stem_kg_ha=0.0_real64
     real(real64)::nloss_root_kg_ha=0.0_real64
+    real(real64)::nreturned_to_soil_total_kg_ha=0.0_real64
+    real(real64)::nexternal_harvest_total_kg_ha=0.0_real64
     real(real64)::initial_n_kg_ha=0.0_real64
   contains
     procedure::valid=>crop_n_valid
@@ -90,9 +92,10 @@ contains
 
   pure logical function crop_n_valid(self) result(ok)
     class(b111_crop_n_state_t),intent(in)::self
-    real(real64)::v(10)
+    real(real64)::v(12)
     v=[self%anlv_kg_ha,self%anst_kg_ha,self%anrt_kg_ha,self%anso_kg_ha,self%nuptake_total_kg_ha, &
-       self%nfix_total_kg_ha,self%nloss_leaf_kg_ha,self%nloss_stem_kg_ha,self%nloss_root_kg_ha,self%initial_n_kg_ha]
+       self%nfix_total_kg_ha,self%nloss_leaf_kg_ha,self%nloss_stem_kg_ha,self%nloss_root_kg_ha, &
+       self%nreturned_to_soil_total_kg_ha,self%nexternal_harvest_total_kg_ha,self%initial_n_kg_ha]
     ok=all(ieee_is_finite(v)).and.all(v>=0.0_real64)
   end function
 
@@ -100,7 +103,8 @@ contains
     class(b111_crop_n_state_t),intent(in)::self
     r=self%initial_n_kg_ha+self%nuptake_total_kg_ha+self%nfix_total_kg_ha- &
       (self%anlv_kg_ha+self%anst_kg_ha+self%anrt_kg_ha+self%anso_kg_ha)- &
-      (self%nloss_leaf_kg_ha+self%nloss_stem_kg_ha+self%nloss_root_kg_ha)
+      (self%nloss_leaf_kg_ha+self%nloss_stem_kg_ha+self%nloss_root_kg_ha)- &
+      self%nreturned_to_soil_total_kg_ha-self%nexternal_harvest_total_kg_ha
   end function
 
   subroutine prepare_b111_crop_n_request(committed,f,request)
