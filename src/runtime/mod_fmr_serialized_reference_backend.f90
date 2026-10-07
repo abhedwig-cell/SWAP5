@@ -2961,6 +2961,9 @@ contains
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
+      self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
+      self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
+      self%swbotb3_explicit_shape_3 = parameters%swbotb3_explicit_shape_3
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
