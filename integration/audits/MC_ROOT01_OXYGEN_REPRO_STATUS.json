@@ -16,7 +16,9 @@
   "implementation": [
     "src/process/mod_root_oxygen_reproduction_response.f90",
     "src/runtime/mod_fmr_bartholomeus_activation.f90",
-    "src/runtime/mod_fmr_bartholomeus_execution.f90"
+    "src/runtime/mod_fmr_bartholomeus_contract.f90",
+    "src/runtime/mod_fmr_bartholomeus_execution.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
   ],
   "ownership": {
     "persistent_state": false,
@@ -42,11 +44,10 @@
     "slope and intercept are six-term temperature/depth quadratic-bilinear polynomials",
     "factor=clamp(intercept+slope*mean_gas_filled_porosity,0,1)"
   ],
-  "disposition": "SOURCE_RESPONSE_AND_SHARED_RUNTIME_ROUTE_IMPLEMENTED_FULL_EXECUTION_QUALIFICATION_OPEN",
+  "disposition": "SOURCE_RESPONSE_SELECTOR_EXECUTOR_AND_IMMUTABLE_BINDING_IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
   "remaining": [
-    "Run consolidated execution closure O0/O2 after response-signature refactor.",
-    "Bind the immutable 6+6 coefficients and exact grid geometry from application configuration.",
-    "Wire production serialized runtime selector SWOXYGENTYPE=2 without perturbing type1.",
+    "Run the immutable binding test and consolidated full-execution closure at O0/O2.",
+    "Inject the constructed immutable type2 parameter contract from production application configuration when SWOXYGEN=2/SWOXYGENTYPE=2 is selected.",
     "Qualify mass, retry/restart, inactive/no-root dependency minimality and preservation of admitted type1."
   ],
   "admission": false,
@@ -65,10 +66,12 @@
       ]
     },
     "full_execution_test": "tests/fmig431/test_swap431_root_oxygen_repro_execution.f90",
-    "full_execution_status": "READY_AFTER_CONSOLIDATION"
+    "full_execution_status": "READY_AFTER_CONSOLIDATION",
+    "binding_test": "tests/fmig431/test_swap431_root_oxygen_repro_binding.f90"
   },
   "notes": [
     "Removed a duplicate standalone type2 executor; one shared Bartholomeus execution seam now owns type1/type2 sink composition.",
-    "Explicit geometry is carried in the immutable type2 parameter contract rather than reconstructed from layer indices."
+    "Explicit geometry is carried in the immutable type2 parameter contract rather than reconstructed from layer indices.",
+    "A fail-closed constructor now binds source OxygenSlope/OxygenIntercept plus canonical theta_s/z/dz geometry into the immutable reproduction contract and verifies exact hydraulic-owner identity."
   ]
 }
