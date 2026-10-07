@@ -1,0 +1,52 @@
+{
+  "schema": "swap431.mc_crop01.rootgrow_biomass.v1",
+  "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "semantics": [
+      "SWRD3 is rejected for simple cropgrowth croptype=1",
+      "RDM=min(RDMAX,AFGEN(RLWTB,WRTMAX))",
+      "RDPOT=min(AFGEN(RLWTB,WRTPOT),RDM)",
+      "RD=min(AFGEN(RLWTB,WRT),RDM)",
+      "initial RDPOT=RD"
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_crop_root_depth_biomass.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90"
+  ],
+  "ownership": {
+    "actual_root_biomass": "read from existing primary wofost_crop_owner_state biomass owner",
+    "potential_root_biomass": "explicit external input; not copied into the actual crop owner",
+    "root_depth": "derived/stateless",
+    "root_profile": "shared mod_crop_root_profile_static materialization",
+    "water_mass": "unchanged existing root-extraction sink owner",
+    "persistent_state_added": false
+  },
+  "qualification": {
+    "component_runner": "tests/fmig431/run_swap431_rootgrow_biomass.py",
+    "current_state": "READY_FOR_O0_O2",
+    "source_cases": [
+      "RLWTB interpolation",
+      "soil RDMAX clipping",
+      "WRTMAX crop-depth clipping",
+      "actual/potential WRT separation",
+      "owner-derived actual WRT",
+      "shared static profile production input"
+    ]
+  },
+  "disposition": "PARTIAL_IMPLEMENTATION_READY_BLOCKED_BY_POTENTIAL_BIOMASS_OWNER",
+  "admission": false,
+  "remaining_blocker": "Canonical classic crop owner has only actual biomass. Full B1.11 SWRD3 admission requires a source-faithful potential WRTPOT trajectory owner or a separately admitted equivalent. Do not alias actual WRT to WRTPOT.",
+  "preservation": [
+    "WOFOST81 untouched",
+    "SWRD1 admission untouched",
+    "root sink ownership unchanged",
+    "no root-density or oxygen-growth state introduced"
+  ]
+}
