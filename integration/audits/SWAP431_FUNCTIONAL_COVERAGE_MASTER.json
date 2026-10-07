@@ -16,19 +16,19 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 124,
+      "ADMITTED": 81,
+      "ACTIVE_MIGRATION": 123,
       "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 124,
+    "open_capabilities": 123,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 124,
+    "confirmed_missing_production_entries": 123,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 128
+    "total_unresolved_capabilities": 127
   },
   "capabilities": [
     {
@@ -12647,27 +12647,27 @@
       },
       "meaning": "Candidate profile-derived GWL including full saturation, zero crossings and absent interior table",
       "swap5_implementation_authority": [
-        "src/solver/mod_b110_smooth_freatic_projection.f90",
-        "src/solver/mod_reference_richards_state_binding.f90",
-        "src/adapter/mod_reference_richards_legacy_binding.f90",
-        "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "src/runtime/mod_macropore_standard_rate_adapter.f90"
+        "src/solver/mod_b111_profile_groundwater_projection.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
-        "integration/audits/evidence/SWAP431_GROUNDWATER_PROJECTION_PROBE.json"
+        "integration/audits/MC_LOW01_GW_PROJECTION_STATUS.md",
+        "GitHub Actions run 37578999251"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "General candidate profile-to-GWL binding absent outside bounded smooth drainage projection; existing carriers/services do not admit all source branches."
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "Opt-in value-only B1.11 profile projection is derived per trial from pressure state and published through candidate/commit ownership; below-profile absence is typed and non-blocking; smooth drainage projection retains precedence."
       },
       "restrictions": [
-        "Keep external aquifer forcing distinct; preserve bounded smooth derivative and PERCH21 ownership."
+        "Does not open legacy bottom mode 1",
+        "Does not introduce legacy 999 sentinel",
+        "Does not replace smooth directional drainage projection",
+        "Does not alter external groundwater-head ownership"
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-LOW01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12676,10 +12676,10 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false,
       "resolution_decision": "MIGRATE",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "QUALIFIED_AND_MASTER_ADMITTED",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION"
     },
     {
