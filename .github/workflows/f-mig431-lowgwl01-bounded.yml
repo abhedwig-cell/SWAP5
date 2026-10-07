@@ -1,0 +1,28 @@
+name: F-MIG431 LOWGWL01 bounded mode1
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/f-mig431-lowgwl01-p0-20261007]
+    paths:
+      - 'src/solver/mod_b111_prescribed_gwl_geometry.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fmig431/test_b111_prescribed_gwl_geometry.f90'
+      - 'tests/fmig431/run_b111_prescribed_gwl_geometry.sh'
+      - 'tests/fmig431/test_lowgwl01_feasibility.f90'
+      - 'tests/fmig431/run_lowgwl01_feasibility.py'
+      - '.github/workflows/f-mig431-lowgwl01-bounded.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: B1.11 geometry O0 O2
+        run: bash tests/fmig431/run_b111_prescribed_gwl_geometry.sh
+      - name: Bounded typed mode1 O0 O2
+        env:
+          LOWGWL01_TESTED_SHA: ${{ github.sha }}
+        run: python3 tests/fmig431/run_lowgwl01_feasibility.py
