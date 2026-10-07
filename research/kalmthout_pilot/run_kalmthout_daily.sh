@@ -2,6 +2,12 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
+
+echo "KALMTHOUT_RUTTER_OWNER_REGRESSION_BEGIN"
+bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh > /tmp/kalmthout-rutter-owner.txt
+grep -Fq "PPA_WU01_RUTTER_FMR_TRIAL_COMMIT=PASS" /tmp/kalmthout-rutter-owner.txt
+grep -Fq "PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS" /tmp/kalmthout-rutter-owner.txt
+echo "KALMTHOUT_RUTTER_OWNER_REGRESSION=PASS"
 OUTDIR="${1:-/tmp/kalmthout-swap5-pilot}"
 mkdir -p "$OUTDIR"
 python3 research/kalmthout_pilot/fetch_era5land_daily.py > "$OUTDIR/weather.csv"
