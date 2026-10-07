@@ -35,6 +35,10 @@ solute_needles=[
  "ftheta=min(1.0d0,(theta(i)/rtheta)**bexp)",
  "decact=decpotfdepth(i)*ftemp*ftheta",
  "ctrans=decact*theta(i)*cml(i)+decact*bdenskfcref(i)*((cml(i)/cref)**frexp)",
+ "csurf=(nird*cirr+nraidt*cpre)*dtsolu+csurf",
+ "cpond=csurf/(pond-qtop*dtsolu)",
+ "cfluxt=qtop*(1.0d0-armpSS)*cpond*dtsolu".toLowerCase(),
+ "csurf=csurf+cfluxt",
  "ageprod=1.0d0*0.5d0*(theta(i)+thetm1(i))",
 ]
 for needle in solute_needles:
