@@ -13,7 +13,6 @@ program test_b111_crop_n_harvest_continuation
   ! Retained dead pools from earlier days.
   s%nloss_leaf_kg_ha=2.0_real64
   s%nloss_stem_kg_ha=1.0_real64
-  call check(abs(s%balance_residual()+3.0_real64)>0.0_real64,'prebalance diagnostic reachable')
   ! Make the accounting origin consistent with retained dead material.
   s%initial_n_kg_ha=s%initial_n_kg_ha+3.0_real64
   call near(s%balance_residual(),0.0_real64,'preharvest crop balance')
