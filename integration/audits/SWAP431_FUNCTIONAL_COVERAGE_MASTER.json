@@ -16,19 +16,19 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 83,
-      "ACTIVE_MIGRATION": 121,
+      "ADMITTED": 88,
+      "ACTIVE_MIGRATION": 116,
       "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 121,
+    "open_capabilities": 116,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 121,
+    "confirmed_missing_production_entries": 116,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 125
+    "total_unresolved_capabilities": 120
   },
   "capabilities": [
     {
@@ -7306,23 +7306,25 @@
         "src/process/mod_irrigation_process.f90",
         "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required."
+        "established": true,
+        "route": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "claim": "Qualified fixed-event sprinkler-to-interception binding reusing existing fixed event state/cursor."
       },
       "restrictions": [
-        "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required."
+        "Qualified fixed-event sprinkler-to-interception binding reusing existing fixed event state/cursor.",
+        "Qualified within existing TCS1/DCS2 typed scheduling/event envelope; no claim for other TCS/DCS selectors."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -7331,13 +7333,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "resolution_decision": "MIGRATE"
     },
     {
@@ -7369,23 +7368,25 @@
         "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission."
+        "established": true,
+        "route": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+        "claim": "Qualified scheduled surface identity binding bypassing canopy interception and preserving gross=net top input."
       },
       "restrictions": [
-        "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission."
+        "Qualified scheduled surface identity binding bypassing canopy interception and preserving gross=net top input.",
+        "Qualified within existing TCS1/DCS2 typed scheduling/event envelope; no claim for other TCS/DCS selectors."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -7394,13 +7395,10 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "resolution_decision": "MIGRATE"
     },
     {
@@ -7486,22 +7484,24 @@
       "swap5_implementation_authority": [
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route."
+        "established": true,
+        "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "claim": "Qualified TCSFIX=0 scheduling policy without minimum-interval suppression or dayfix rewrite."
       },
       "restrictions": [
-        "F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route."
+        "Qualified TCSFIX=0 scheduling policy without minimum-interval suppression or dayfix rewrite.",
+        "Qualified within existing TCS1/DCS2 typed scheduling/event envelope; no claim for other TCS/DCS selectors."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -7510,9 +7510,7 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
       "source_input_names": [
         "startirr",
         "endirr",
@@ -7520,8 +7518,7 @@
       ],
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
-      ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      ]
     },
     {
       "capability_id": "SW431-IRR-LIMIT",
@@ -11649,22 +11646,24 @@
       "swap5_implementation_authority": [
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source zero-rate fallback selects daily depth as rate. Current admitted TCS1 owner requires strictly positive rate and does not implement this fallback."
+        "established": true,
+        "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "claim": "Qualified IRR_RATE=0 fallback using selected depth/day for a one-day event."
       },
       "restrictions": [
-        "Source zero-rate fallback selects daily depth as rate. Current admitted TCS1 owner requires strictly positive rate and does not implement this fallback."
+        "Qualified IRR_RATE=0 fallback using selected depth/day for a one-day event.",
+        "Qualified within existing TCS1/DCS2 typed scheduling/event envelope; no claim for other TCS/DCS selectors."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11673,14 +11672,11 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "source_input_names": [],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "source_input_names": []
     },
     {
       "capability_id": "SW431-IRR-RATE-CAP",
@@ -11703,22 +11699,24 @@
       "swap5_implementation_authority": [
         "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source temporarily raises the rate to depth/day when requested duration exceeds one day. Current admitted TCS1 owner rejects duration>1 and never performs this adaptation."
+        "established": true,
+        "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "claim": "Qualified >1-day duration normalization to depth/day while preserving selected event depth and split continuation."
       },
       "restrictions": [
-        "Source temporarily raises the rate to depth/day when requested duration exceeds one day. Current admitted TCS1 owner rejects duration>1 and never performs this adaptation."
+        "Qualified >1-day duration normalization to depth/day while preserving selected event depth and split continuation.",
+        "Qualified within existing TCS1/DCS2 typed scheduling/event envelope; no claim for other TCS/DCS selectors."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11727,14 +11725,11 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "source_input_names": [],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "source_input_names": []
     },
     {
       "capability_id": "SW431-IRR-AVAIL",
@@ -12832,80 +12827,10 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-IRR-FIXED-SPRINK",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-IRR-FREQ",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-IRR-LIMIT",
       "work_unit": "MC-IRR01",
       "dependencies": [],
       "why_open": "No DCSLIM minimum/maximum selected event depth parameters or postselection clamp.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-IRR-RATE-CAP",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "Source temporarily raises the rate to depth/day when requested duration exceeds one day. Current admitted TCS1 owner rejects duration>1 and never performs this adaptation.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-IRR-RATE-DAILY",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "Source zero-rate fallback selects daily depth as rate. Current admitted TCS1 owner requires strictly positive rate and does not implement this fallback.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-IRR-SCHED-SURF",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
