@@ -71,7 +71,7 @@ contains
     ! First run with zero top flux is intentionally not an equilibrium oracle;
     ! use a short certificate-free transaction and require bounded completion.
     q_explicit = 0.0_real64
-    call execute_case(3,q_explicit,q_explicit,-999999._real64,equilibrium_dt,.false.,.false.,output,observation,explicit3=.true.)
+    call execute_case(3,q_explicit,q_explicit,-999999._real64,equilibrium_dt,.true.,.true.,output,observation,explicit3=.true.)
     if(.not.output%completed.or..not.output%committed)then
       write(*,'(A,L1,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0)') 'LOW3_DEBUG completed=',output%completed,' committed=',output%committed, &
            ' kernel=',output%kernel_status,' solver=',output%solver_status,' solver_rej=',output%solver_rejections, &
