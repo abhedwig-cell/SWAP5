@@ -1,6 +1,9 @@
 module mod_fmr_reference_et_root_uptake_composition
+  use, intrinsic :: iso_fortran_env, only: real64
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
+  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
+  use mod_wofost_rate_table, only: wofost_rate_table_t
   use mod_reference_et_demand_process, only: reference_et_demand_result_t
   use mod_fmr_reference_et_demand_binding, only: fmr_reference_et_binding_diagnostics_t
   use mod_fmr_reference_et_ptra_root_input_binding, only: fmr_ptra_root_input_binding_diagnostics_t, &
@@ -16,6 +19,7 @@ module mod_fmr_reference_et_root_uptake_composition
   integer, parameter, public :: FMR_REFERENCE_ET_ROOT_UPTAKE_OK = 0
   integer, parameter, public :: FMR_REFERENCE_ET_ROOT_UPTAKE_PTRA_REJECTED = 1
   integer, parameter, public :: FMR_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_REJECTED = 2
+  integer, parameter, public :: FMR_REFERENCE_ET_ROOT_UPTAKE_GEOMETRY_REJECTED = 3
 
   type, public :: fmr_reference_et_root_uptake_diagnostics_t
     integer :: status = FMR_REFERENCE_ET_ROOT_UPTAKE_OK
@@ -23,6 +27,8 @@ module mod_fmr_reference_et_root_uptake_composition
     integer :: adapter_status = FMR_CROP_ROOT_ADAPTER_OK
     integer :: root_binding_status = 0
     integer :: process_status = 0
+    integer :: crop_geometry_status = WOFOST_CROP_OWNER_OK
+    logical :: crop_geometry_available = .false.
     logical :: ptra_binding_called = .false.
     logical :: ptra_bound = .false.
     logical :: root_execution_called = .false.
@@ -30,8 +36,58 @@ module mod_fmr_reference_et_root_uptake_composition
   end type fmr_reference_et_root_uptake_diagnostics_t
 
   public :: fmr_evaluate_reference_et_root_uptake
+  public :: fmr_evaluate_wofost_dvs_reference_et_root_uptake
 
 contains
+
+  subroutine fmr_evaluate_wofost_dvs_reference_et_root_uptake(committed, parameters, owner, depth_table, &
+                                                                density_table, maximum_root_depth_cm, zbotcp_cm, &
+                                                                et_result, et_diagnostics, fluxes, process_diagnostics, &
+                                                                ptra_diagnostics, adapter_diagnostics, binding_diagnostics, diagnostics)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(root_water_uptake_parameters_t), intent(in) :: parameters
+    type(wofost_crop_owner_state_t), intent(in) :: owner
+    type(wofost_rate_table_t), intent(in) :: depth_table, density_table
+    real(real64), intent(in) :: maximum_root_depth_cm, zbotcp_cm(:)
+    type(reference_et_demand_result_t), intent(in) :: et_result
+    type(fmr_reference_et_binding_diagnostics_t), intent(in) :: et_diagnostics
+    type(root_water_uptake_flux_result_t), intent(out) :: fluxes
+    type(root_water_uptake_diagnostics_t), intent(out) :: process_diagnostics
+    type(fmr_ptra_root_input_binding_diagnostics_t), intent(out) :: ptra_diagnostics
+    type(fmr_crop_root_uptake_adapter_diagnostics_t), intent(out) :: adapter_diagnostics
+    type(fmr_root_uptake_binding_diagnostics_t), intent(out) :: binding_diagnostics
+    type(fmr_reference_et_root_uptake_diagnostics_t), intent(out) :: diagnostics
+
+    type(crop_root_uptake_input_t) :: base_input
+    logical :: geometry_available
+    integer :: geometry_status
+
+    fluxes = root_water_uptake_flux_result_t()
+    process_diagnostics = root_water_uptake_diagnostics_t()
+    ptra_diagnostics = fmr_ptra_root_input_binding_diagnostics_t()
+    adapter_diagnostics = fmr_crop_root_uptake_adapter_diagnostics_t()
+    binding_diagnostics = fmr_root_uptake_binding_diagnostics_t()
+    diagnostics = fmr_reference_et_root_uptake_diagnostics_t()
+
+    call owner%derive_dvs_root_uptake_input(depth_table, density_table, maximum_root_depth_cm, zbotcp_cm, &
+         base_input, geometry_available, geometry_status)
+    diagnostics%crop_geometry_status = geometry_status
+    diagnostics%crop_geometry_available = geometry_available
+
+    if (geometry_status /= WOFOST_CROP_OWNER_OK) then
+      diagnostics%status = FMR_REFERENCE_ET_ROOT_UPTAKE_GEOMETRY_REJECTED
+      return
+    end if
+    if (owner%crop_is_emerged() .and. .not. geometry_available) then
+      diagnostics%status = FMR_REFERENCE_ET_ROOT_UPTAKE_GEOMETRY_REJECTED
+      return
+    end if
+
+    call fmr_evaluate_reference_et_root_uptake(committed, parameters, base_input, et_result, et_diagnostics, &
+         fluxes, process_diagnostics, ptra_diagnostics, adapter_diagnostics, binding_diagnostics, diagnostics)
+    diagnostics%crop_geometry_status = geometry_status
+    diagnostics%crop_geometry_available = geometry_available
+  end subroutine fmr_evaluate_wofost_dvs_reference_et_root_uptake
 
   subroutine fmr_evaluate_reference_et_root_uptake(committed, parameters, base_input, et_result, et_diagnostics, &
                                                     fluxes, process_diagnostics, ptra_diagnostics, &
