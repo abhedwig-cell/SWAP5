@@ -4,8 +4,10 @@
   "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "capability": "SW431-ROOT-DENSITY",
   "source_authority": {
-    "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
-    "blob_sha": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "snapshot": "B1.11",
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "retained_git_blob_sha": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
     "routines": [
       "initialize_rootdistribution",
       "initialize_cumdens",
@@ -35,7 +37,8 @@
       "crop total WRT",
       "water sink",
       "constant-LRV override"
-    ]
+    ],
+    "mass_invariant": "Outside explicit per-node WRTMIN floor activation, sum(root_biomass_by_node) must equal the accepted crop root-biomass total implied by WRT_OLD+GRRT-DRRT. WRTMIN may intentionally lift a node above the proportional-death result and therefore must be diagnosed separately rather than silently renormalized."
   },
   "semantics": [
     "FGWRT mixes biomass-proportional and accepted-uptake-proportional allocation of old-zone root growth",
