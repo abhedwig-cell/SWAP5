@@ -43,7 +43,7 @@ age_substep_needles=[
  "agepondm1=agepond",
 ]
 for needle in age_substep_needles:
-    if needle not in solute:
+    if needle not in sol:
         raise SystemExit("missing exact AgeTracer substep equation: "+needle)
 
 reactive_substep_needles=[
