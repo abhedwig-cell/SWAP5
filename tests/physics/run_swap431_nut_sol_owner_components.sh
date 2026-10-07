@@ -23,4 +23,10 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_solute_sorption_decay.f90" \
     -o b111_sorp_decay
   ./b111_sorp_decay
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_b111_pond_solute_exchange.f90" \
+    "$root/src/process/mod_b111_age_tracer_production.f90" \
+    "$root/tests/physics/test_b111_pond_age.f90" \
+    -o b111_pond_age
+  ./b111_pond_age
 done
