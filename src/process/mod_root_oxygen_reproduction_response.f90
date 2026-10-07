@@ -83,7 +83,7 @@ contains
 
     sum_porosity = 0.0_real64
     do i = 1, node
-      sum_porosity = sum_porosity + (saturated_water_content(i) - water_content(i)) * parameters%dz_cm(i)
+      sum_porosity = sum_porosity + (parameters%saturated_water_content(i) - water_content(i)) * parameters%dz_cm(i)
     end do
     mean_gas_filled_porosity = sum_porosity / (-parameters%zbotcp_cm(node))
 
