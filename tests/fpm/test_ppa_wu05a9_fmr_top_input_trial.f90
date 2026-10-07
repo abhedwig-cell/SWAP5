@@ -180,6 +180,12 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(ok,'checkpoint captured')
 
   call initialize_forcing(forcing)
+  if(migmac11)then
+    ! Qualify the new pond-derived receipt independently of the older direct
+    ! atmospheric macropore source. Atmospheric rain/irrigation still enter
+    ! the shared dynamic surface donor through the Boesten forcing below.
+    forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
+  end if
   if(migmac10_rutter)then
     if(allocated(forcing%macropore_top_input))deallocate(forcing%macropore_top_input)
     allocate(forcing%rutter)
@@ -286,9 +292,16 @@ program test_ppa_wu05a9_fmr_top_input_trial
          'Macropore owner receives each post-Rutter net rate once')
   end if
   if(macro_top==1)then
-  call require(observation%macropore_top_input_active,'A9 top-input route active')
+  if(migmac11)then
+    call require(.not.observation%macropore_top_input_active, &
+         'MIGMAC11 pond receipt independent of explicit top input')
+    call require(.not.observation%macropore_matrix_source_area_partition_used, &
+         'MIGMAC11 candidate area does not activate atmospheric partition')
+  else
+    call require(observation%macropore_top_input_active,'A9 top-input route active')
+  end if
   if(dynamic_enabled)call require(observation%macropore_inner_richards_exchange_used,'MIGMAC02 inner Richards callback used')
-  if(inner_route .and. migmac10)call require(observation%macropore_matrix_source_area_partition_used, &
+  if(inner_route .and. migmac10 .and. .not.migmac11)call require(observation%macropore_matrix_source_area_partition_used, &
        'MIGMAC10 residual-synchronous matrix/macro source partition used')
   call require(observation%macropore_requested_top_cm>0.0_real64,'A9 requested top receipt positive')
   call require(observation%macropore_accepted_top_cm>0.0_real64,'A9 accepted top receipt positive')
