@@ -5702,6 +5702,9 @@ contains
           value = max(value, local_error)
         end do
         value = max(value, abs(full%ponding_depth - half%ponding_depth))
+        write(*,'(A,5(1X,ES24.16))') 'KALMTHOUT_RUTTER_TEMPORAL_VALUE', value, &
+             maxval(abs(full%pressure_head)), maxval(abs(half%pressure_head)), &
+             full%ponding_depth, half%ponding_depth
       class default
         write(*,'(A)') 'KALMTHOUT_RUTTER_TEMPORAL_FAIL=HALF_TYPE'; return
       end select
