@@ -3365,9 +3365,6 @@ contains
           else if(oxygen_route==FMR_BARTHOLOMEUS_REPRODUCTION) then
             if(allocated(forcing%crop_oxygen)) return
             if(forcing%root_oxygen_rooted_nodes<0.or.forcing%root_oxygen_rooted_nodes>n) return
-            if(forcing%root_oxygen_rooted_nodes<n) then
-              if(any(abs(forcing%root_extraction_sink(forcing%root_oxygen_rooted_nodes+1:))>tiny(1.0_real64))) return
-            end if
             self%root_oxygen_rooted_nodes=forcing%root_oxygen_rooted_nodes
           else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
             return
