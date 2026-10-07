@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-DRAIN01-MC-FROST01-DEPENDENCY-CLOSEOUT",
+  "baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "branch": "work/swap431-drain-signed-multilevel-r2-20261007",
+  "source_authority": {
+    "divdra": "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "drainage": "reference/swap-4.3.1/b1_11_frost_source/SWAP/drainage.f90",
+    "frozencond": "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+    "temperature": "reference/swap-4.3.1/b1_11_frost_source/SWAP/temperature.f90"
+  },
+  "implemented_pending_qualification": {
+    "SW431-DRAIN-DIV-SIGNED": {
+      "state": "IMPLEMENTED_PERSISTED_NOT_QUALIFIED",
+      "rationale": "B1.11 non-SWDIVDINF negative transfer uses the same conductivity/transmissivity spatial partition as positive transfer. Existing positive API remains fail-closed; serialized production composition uses the signed successor."
+    },
+    "SW431-DRAIN-DIV-MULTI": {
+      "state": "IMPLEMENTED_PERSISTED_NOT_QUALIFIED",
+      "rationale": "B1.11 active-level ordering, cumulative FlowDrDisch, transmissivity-derived interacting discharge-layer bottoms and signed per-level nodal closure are implemented in the ordinary DIVDRA owner and exposed through explicit multilevel serialized requests."
+    }
+  },
+  "remaining": {
+    "SW431-DRAIN-INF-SPLIT": {
+      "dependency": "QUALIFIED SW431-DRAIN-DIV-SIGNED plus shared extraction/reuse of B19 separate-infiltration partition algebra",
+      "design_boundary": "Do not duplicate mod_frost_divdra_drainage_effect partition physics. Ordinary successor needs a shared source-faithful partition primitive with exact B19 preservation."
+    },
+    "SW431-DRAIN-DRAMET3": {
+      "dependency": "Endpoint-time ownership across trial/retry/temporal-error evaluation",
+      "design_boundary": "B1.11 evaluates OWLTAB at t1900+dt-1. Serialized advance owns t0/t1, but current drainage-response and full/half temporal-error APIs do not carry the query endpoint. Existing SWBOTB2 canonical-origin/legacy-t1900 mapping is the accepted timing pattern, but the drainage response contract must be extended explicitly."
+    },
+    "SW431-DRAIN-ALLOCATION": {
+      "dependency": "SW431-DRAIN-DRAMET3",
+      "design_boundary": "SWALLO2/3 are sign-direction suppressors inside the native DRAMET3 dispatcher, not generic EXTENDED replacement semantics."
+    },
+    "SW431-DRAIN-INF-LIMIT": {
+      "dependency": "SW431-DRAIN-DRAMET3",
+      "design_boundary": "SWLIMINF channel-depth clipping occurs before INFRES dispatch. EXTENDED cannot replace it because its independent 0.001 cm activation seam has a recorded counterexample."
+    },
+    "SW431-DRAIN-DISLAYER": {
+      "dependency": "Typed discharge-layer-top owner/resolver",
+      "design_boundary": "SWDISLAY1 consumes an absolute top. SWDISLAY2 derives a top from groundwater/drain geometry and FTOPDISLAY, then truncates and renormalizes nodal transfer. This is a post-distribution geometry operator, not the existing dmax layer construction."
+    },
+    "SW431-DRAIN-DIV-TOPINTERFLOW": {
+      "dependency": "Explicit highest-interflow spatial-layer contract",
+      "design_boundary": "B1.11 partitions the highest interflow to its physical drain bottom first, then resets the top of all lower discharge layers. This is distinct from scalar highest-response and SWDISLAY truncation."
+    },
+    "SW431-FROST-DIV-MULTI": {
+      "dependency": "QUALIFIED SW431-DRAIN-DIV-MULTI then multilevel frost composition/preservation",
+      "design_boundary": "B19 only admits one signed level; scalar multilevel response is not spatial DIVDRA."
+    },
+    "SW431-FROST-EXT-MULTI": {
+      "dependency": "Dedicated multilevel extended-frost qualification",
+      "design_boundary": "Current frost-response validator explicitly restricts extended/highest route to exactly one level, although downstream matrix frost operators are multilevel-shaped."
+    },
+    "SW431-FROST-ROOTDRAIN": {
+      "dependency": "Root/drain state-owner composition decision",
+      "design_boundary": "Current frost-drainage admission intentionally rejects root_extraction_active/root_frost. Removing that guard changes an admitted ownership envelope and requires combined mass/retry/restart qualification."
+    },
+    "SW431-FROST-GW": {
+      "dependency": "Bottom-owner composition decision for source-relevant bottom modes",
+      "design_boundary": "Current admitted frost drainage/DIVDRA envelope requires bottom_mode=2. Modes 3/4/5/7/8 have separate accepted owners and cannot be enabled by deleting a validator condition."
+    },
+    "SW431-FROST-SNOW": {
+      "dependency": "SW431-TEMP-SNOW",
+      "design_boundary": "B1.11 snow resistance changes the soil-interface temperature consumed by empirical frost. Current sensible-temperature owner rejects snow and must first acquire the snow-resistance boundary."
+    }
+  },
+  "reopen_b19": false,
+  "qualification_required": [
+    "O0/O2 compile of signed/multilevel process and serialized runtime",
+    "positive-path preservation",
+    "signed and per-level mass closure",
+    "trial reject/retry cleanup and no forcing leakage",
+    "restart unchanged because no persistent state was added",
+    "current-canonical integrated preservation"
+  ],
+  "claim_ceiling": "No census admission is claimed for the two implemented capabilities until the focused and integrated gates complete. All other listed capabilities remain open with a concrete source-bound dependency or design boundary."
+}
