@@ -84,6 +84,7 @@ module mod_wofost_grass_management_owner
     real(real64) :: removed_total_biomass=0.0_real64
     real(real64) :: harvested_biomass=0.0_real64
     real(real64) :: lost_biomass=0.0_real64
+    real(real64) :: fixed_grazing_loss_removed=0.0_real64
   end type
 
   public :: initialize_grass_management_state
@@ -290,6 +291,8 @@ contains
 
         result%harvested_biomass=parameters%grazing_uptake_per_day*event_fraction
         result%lost_biomass=extra_treading*event_fraction
+        result%fixed_grazing_loss_removed=parameters%grazing_fixed_loss_per_day*event_fraction
+        result%removed_total_biomass=removal
         result%candidate_management%grazing_day_count=committed_management%grazing_day_count+1
         if(result%candidate_management%grazing_day_count>=parameters%grazing_days.or.event_fraction<1.0_real64) &
            result%candidate_management%cut_ends_today=.true.
@@ -305,7 +308,8 @@ contains
       end if
     end select
 
-    result%removed_total_biomass=result%harvested_biomass+result%lost_biomass
+    if(result%removed_total_biomass<=0.0_real64) &
+      result%removed_total_biomass=result%harvested_biomass+result%lost_biomass
     result%candidate_management%harvest_biomass_today=result%harvested_biomass
     result%candidate_management%loss_biomass_today=result%lost_biomass
 
