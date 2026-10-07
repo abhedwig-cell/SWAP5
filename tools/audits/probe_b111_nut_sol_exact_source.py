@@ -214,4 +214,6 @@ if (ROOT/"tests/physics/run_b111_reactive_solute_substep.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_reactive_solute_substep.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_b111_age_tracer_substep.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_age_tracer_substep.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
