@@ -23,7 +23,7 @@ module mod_fmr_bartholomeus_execution
 
 contains
   subroutine fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,w_root,w_root_z0, &
-       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,reproduction_parameters)
+       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,reproduction_parameters,reproduction_rooted_nodes)
     type(fmr_bartholomeus_selection_t),intent(in)::config
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal
@@ -38,6 +38,7 @@ contains
     integer,intent(out)::status
     real(real64),allocatable,optional,intent(out)::oxygen_factors(:)
     type(root_oxygen_reproduction_parameters_t),optional,intent(in)::reproduction_parameters
+    integer,optional,intent(in)::reproduction_rooted_nodes
     type(bartholomeus_runtime_view_t)::view
     real(real64),allocatable::factors(:)
     integer::route,wmode,input_status,compose_status
@@ -61,7 +62,7 @@ contains
     end if
 
     if(route==FMR_BARTHOLOMEUS_REPRODUCTION) then
-      if(.not.present(reproduction_parameters)) then
+      if(.not.present(reproduction_parameters).or..not.present(reproduction_rooted_nodes)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
       if(.not.allocated(base_fluxes%root_extraction_sink)) then
@@ -73,7 +74,15 @@ contains
       if(reproduction_parameters%active_nodes()>size(base_fluxes%root_extraction_sink)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
-      if(reproduction_parameters%active_nodes()==0) then
+      if(reproduction_rooted_nodes<0.or.reproduction_rooted_nodes>reproduction_parameters%active_nodes()) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(reproduction_rooted_nodes<size(base_fluxes%root_extraction_sink)) then
+        if(any(abs(base_fluxes%root_extraction_sink(reproduction_rooted_nodes+1:))>tiny(1.0_real64))) then
+          status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+        end if
+      end if
+      if(reproduction_rooted_nodes==0) then
         final_fluxes=base_fluxes
         status=FMR_BARTHOLOMEUS_EXEC_OK
         return
@@ -88,11 +97,11 @@ contains
       call evaluate_root_oxygen_reproduction_profile(reproduction_parameters, &
            hydraulic%water_content(1:reproduction_parameters%active_nodes()), &
            thermal%temperature_c(1:reproduction_parameters%active_nodes()), &
-           reproduction_parameters%active_nodes(), factors, input_status)
+           reproduction_rooted_nodes, factors, input_status)
       if(input_status/=ROOT_OXYGEN_REPRO_OK) then
         status=FMR_BARTHOLOMEUS_EXEC_PHYSICS;return
       end if
-      call compose_root_sink_with_oxygen_factor(base_fluxes,reproduction_parameters%active_nodes(),factors, &
+      call compose_root_sink_with_oxygen_factor(base_fluxes,reproduction_rooted_nodes,factors, &
            final_fluxes,compose_status)
       if(compose_status/=ROOT_OXYGEN_COMPOSE_OK) then
         final_fluxes=root_water_uptake_flux_result_t()
@@ -102,7 +111,7 @@ contains
         if(allocated(oxygen_factors)) deallocate(oxygen_factors)
         allocate(oxygen_factors(size(base_fluxes%root_extraction_sink)))
         oxygen_factors=1.0_real64
-        oxygen_factors(1:reproduction_parameters%active_nodes())=factors
+        if(reproduction_rooted_nodes>0) oxygen_factors(1:reproduction_rooted_nodes)=factors
       end if
       status=FMR_BARTHOLOMEUS_EXEC_OK
       return
