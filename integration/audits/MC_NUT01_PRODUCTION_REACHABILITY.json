@@ -107,34 +107,33 @@
     },
     {
       "id": "SW431-NUT-CROP",
-      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "state": "ATOMIC_SOIL_CROP_TRANSACTION_CANDIDATE",
       "evidence": [
-        "shared B1.11 vegetative demand request",
-        "Soil-N daily candidate consumes that soil demand",
-        "actual Soil-N supply is transferred internally to a separate B1.11 crop-N owner",
-        "soil uptake is removed from system external output in the coupled transaction",
-        "crop senescence remains an explicit external output for later residue delivery",
-        "duplicate accepted interval is rejected"
+        "B1.11 vegetative crop-N demand and translocation owner",
+        "soil demand prepared before Soil-N solve",
+        "actual Soil-N supply consumed by the same crop candidate",
+        "soil uptake booked once as an internal soil-to-crop transfer",
+        "whole-system transaction mass accounting and interval lineage"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
-        "fresh-process restart qualification",
+        "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-NUT-NFIX",
-      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "state": "ATOMIC_SOIL_CROP_TRANSACTION_CANDIDATE",
       "evidence": [
-        "separate exact-source B1.11 vegetative fixation policy",
+        "separate B1.11 vegetative fixation policy",
         "strict DVSNLT and RELTR gate",
-        "storage and new-growth demand excluded",
-        "fixation enters coupled Soil-Crop N transaction as external N input",
-        "WOFOST81 semantics remain unchanged"
+        "exact wofostnut fixation and crop-N subroutine oracles",
+        "fixation booked once as external whole-system N input in coupled transaction",
+        "WOFOST81 semantics unchanged"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
-        "fresh-process restart qualification",
+        "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
       ]
     }
@@ -144,6 +143,8 @@
     "organic N is derived from FOM/Bio/Hum owner state",
     "fixation is not a Soil-N debit",
     "WOFOST81 admitted route is unchanged",
-    "no capability in this record is canonical ADMITTED until persisted qualification completes"
+    "no capability in this record is canonical ADMITTED until persisted qualification completes",
+    "soil uptake is internal to the coupled Soil-N/crop-N transaction and is never double-booked as an external loss",
+    "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81"
   ]
 }
