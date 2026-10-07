@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "checked_on": "2026-10-07",
+  "repository": "abhedwig-cell/SWAP5",
+  "run_id": 37644330458,
+  "job_id": 112871048499,
+  "job": "owner-contracts",
+  "status": "completed",
+  "conclusion": "failure",
+  "qualified_head": "56c007c236a940b97c3e9aefa4d49a4aeb6634dc",
+  "head_source": "superseded closed PR #1112",
+  "failed_step": "Exact B1.11 NUT/SOL source gate",
+  "error": "missing exact Soil-N rate equation: r1=1.0d0/(1.0d0+exp(-0.26d0*(temp-17.0d0)))-1.0d0/(1.0d0+exp(-0.77d0*(temp-41.9d0)))",
+  "completed_preceding_steps": [
+    "B1.11 fixation policy",
+    "Exact B1.11 fixation oracle",
+    "Materialize exact B1.11 solute source slices",
+    "Soil-N pool owner",
+    "SOL01 companion compartment state",
+    "Inspect exact B1.11 solute source slices"
+  ],
+  "not_executed_after_failure": [
+    "NUT/SOL owner and reaction components",
+    "Soil-N transaction rollback and restart",
+    "Integrated daily Soil-N transaction",
+    "Reactive chemical and age qualification"
+  ],
+  "claim_ceiling": "NEGATIVE_EXACT_HEAD_OLD_PR_ONLY",
+  "actions_taken": "No rerun. Failure recorded for source-bound gate reconciliation; branch's newer source and tests must be run on their own exact head.",
+  "follow_up": "Inspect byte-exact B1.11 rateconstants equation and gate normalization before considering an adjustment. Do not weaken an exact-source assertion solely to green CI."
+}
