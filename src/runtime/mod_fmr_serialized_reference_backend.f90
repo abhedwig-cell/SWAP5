@@ -973,11 +973,12 @@ contains
     if(parameters%frost_extended_response_drainage_active)then
       if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active.or. &
            parameters%frost_empirical_response_drainage_active)return
-      if(size(parameters%drainage_response_levels)/=1)return
-      if(parameters%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_EXTENDED_SIGNED)return
     end if
     has_table=.false.;has_analytic=.false.;has_empirical=.false.;has_extended=.false.
     do level=1,size(parameters%drainage_response_levels)
+      if(parameters%frost_extended_response_drainage_active)then
+        if(parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_EXTENDED_SIGNED)return
+      end if
       if(parameters%frost_empirical_response_drainage_active)then
         if(parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_LINEAR.and. &
              parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)return
