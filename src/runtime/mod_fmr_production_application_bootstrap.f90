@@ -70,6 +70,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_tile_config_t
     logical :: ordinary_prescribed_head = .false.
     logical :: ordinary_implicit_cauchy = .false.
+    logical :: ordinary_explicit_cauchy = .false.
     logical :: ordinary_lysimeter_plate = .false.
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
@@ -143,7 +144,7 @@ contains
 
     integer :: i, local_status, n
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
-    logical :: ordinary_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
+    logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
     type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
@@ -159,6 +160,7 @@ contains
 
     ordinary_head_profile = .true.
     ordinary_cauchy_profile = .true.
+    ordinary_explicit_cauchy_profile = .true.
     ordinary_lysimeter_profile = .true.
     groundwater_profile = .true.
     standalone_profile = .true.
@@ -204,9 +206,10 @@ contains
       end if
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
            .not. config%tiles(i)%ordinary_prescribed_head .and. .not. config%tiles(i)%ordinary_implicit_cauchy .and. &
-           .not. config%tiles(i)%ordinary_lysimeter_plate
+           .not. config%tiles(i)%ordinary_explicit_cauchy .and. .not. config%tiles(i)%ordinary_lysimeter_plate
       ordinary_head_profile = ordinary_head_profile .and. config%tiles(i)%ordinary_prescribed_head
       ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
+      ordinary_explicit_cauchy_profile = ordinary_explicit_cauchy_profile .and. config%tiles(i)%ordinary_explicit_cauchy
       ordinary_lysimeter_profile = ordinary_lysimeter_profile .and. config%tiles(i)%ordinary_lysimeter_plate
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
@@ -214,7 +217,8 @@ contains
     end do
     if (.not. int64_values_unique(config%tiles%tile_id)) return
     if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile .and. &
-         .not. ordinary_head_profile .and. .not. ordinary_cauchy_profile .and. .not. ordinary_lysimeter_profile) then
+         .not. ordinary_head_profile .and. .not. ordinary_cauchy_profile .and. .not. ordinary_explicit_cauchy_profile .and. &
+         .not. ordinary_lysimeter_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
@@ -265,7 +269,7 @@ contains
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
     self%ordinary_head_application = ordinary_head_profile
-    self%ordinary_cauchy_application = ordinary_cauchy_profile
+    self%ordinary_cauchy_application = ordinary_cauchy_profile .or. ordinary_explicit_cauchy_profile
     self%ordinary_lysimeter_application = ordinary_lysimeter_profile
     self%numerical = config%numerical
     self%base_salt_temporal_policy = config%base_salt_temporal_policy
@@ -1054,14 +1058,17 @@ contains
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
     if (size(tile%initial_state%pressure_head) /= tile%parameters%active_nodes .or. &
         size(tile%initial_state%water_content) /= tile%parameters%active_nodes) return
-    if (tile%ordinary_prescribed_head .and. tile%ordinary_implicit_cauchy) return
-    if (tile%ordinary_lysimeter_plate .and. (tile%ordinary_prescribed_head .or. tile%ordinary_implicit_cauchy)) return
+    if (tile%ordinary_prescribed_head .and. (tile%ordinary_implicit_cauchy .or. tile%ordinary_explicit_cauchy)) return
+    if (tile%ordinary_implicit_cauchy .and. tile%ordinary_explicit_cauchy) return
+    if (tile%ordinary_lysimeter_plate .and. (tile%ordinary_prescribed_head .or. tile%ordinary_implicit_cauchy .or. &
+        tile%ordinary_explicit_cauchy)) return
     if (tile%ordinary_lysimeter_plate) then
       if (tile%parameters%bottom_mode /= 8 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
       if (.not. ieee_is_finite(tile%base_forcing%bottom_head)) return
       if (tile%base_forcing%bottom_flux /= 0.0_real64) return
       if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb3_implicit_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_explicit_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
       if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
@@ -1078,15 +1085,35 @@ contains
       if (tile%parameters%bottom_mode /= 5) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb5_control)) return
       if (.not. tile%base_forcing%legacy_swbotb5_control%ready()) return
-      if (allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (allocated(tile%base_forcing%legacy_swbotb3_implicit_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_explicit_control)) return
       if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
       if (tile%parameters%direct_retention_active) return
       if (allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+    else if (tile%ordinary_explicit_cauchy) then
+      if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb3_explicit_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb3_explicit_control%valid()) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
+          tile%parameters%boesten_evaporation_active) return
+      if (tile%parameters%active_nodes > 1) then
+        if (any(tile%parameters%cofgen(:,2:tile%parameters%active_nodes) /= &
+             spread(tile%parameters%cofgen(:,1), 2, tile%parameters%active_nodes-1))) return
+      end if
     else if (tile%ordinary_implicit_cauchy) then
       if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
       if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb3_explicit_control)) return
       if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
           allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
@@ -1101,7 +1128,8 @@ contains
       end if
     else
       if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
-          allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+          allocated(tile%base_forcing%legacy_swbotb3_implicit_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_explicit_control)) return
     end if
     if (tile%parameters%bottom_mode == 5 .and. .not. tile%ordinary_prescribed_head) then
       if (tile%ledger_id <= 0_int64 .or. .not. tile%groundwater_datum%valid()) return
