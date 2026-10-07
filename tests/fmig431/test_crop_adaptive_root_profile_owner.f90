@@ -72,6 +72,21 @@ program test_crop_adaptive_root_profile_owner
   if(abs(s2%root_biomass_by_node(2)-(25.0_real64-20.0_real64/3.0_real64))>tol)error stop 17
   if(abs(sum(s2%root_biomass_by_node)-90.0_real64)>tol)error stop 18
 
+  ! WRTMIN is a source floor, not a renormalisation target. Force a death case
+  ! where the deepest rooted node would fall below its thickness floor and
+  ! verify the accepted inventory is lifted locally rather than rescaled.
+  p%death_adaptation_fraction=0.0_real64
+  p%minimum_root_biomass_per_cm=2.0_real64
+  f%old_rooted_nodes=2;f%rooted_nodes=2
+  f%old_root_depth_cm=20.0_real64;f%root_depth_cm=20.0_real64;f%root_depth_extension_cm=0.0_real64
+  f%root_biomass_end=40.0_real64;f%root_growth=0.0_real64;f%root_death=60.0_real64
+  f%potential_root_sink=[0.6_real64,0.3_real64,0.0_real64,0.0_real64]
+  f%root_sink_reduction=0.0_real64
+  call evaluate_adaptive_root_profile_candidate(p,s0,f,ztop,zbot,dz,s2,status)
+  if(status/=ADAPTIVE_ROOT_PROFILE_OK)error stop 181
+  if(s2%root_biomass_by_node(1)<20.0_real64-tol.or.s2%root_biomass_by_node(2)<20.0_real64-tol)error stop 182
+  if(sum(s2%root_biomass_by_node)<40.0_real64-tol)error stop 183
+
   call s1%clone(copy)
   select type(typed=>copy)
   type is(adaptive_root_profile_state_t)
