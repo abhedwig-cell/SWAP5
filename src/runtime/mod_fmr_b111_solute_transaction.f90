@@ -35,6 +35,7 @@ module mod_fmr_b111_solute_transaction
     procedure, public :: snapshot => solcomp_snapshot
     procedure, public :: age_total => solcomp_age_total
     procedure, public :: replace_companion_candidate => solcomp_replace_companion_candidate
+    procedure, public :: replace_reactive_candidate => solcomp_replace_reactive_candidate
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_solute_model_t
@@ -135,6 +136,22 @@ contains
     if(.not.self%ready().or..not.companion%valid())return
     if(size(companion%sorbed_matrix_mass)/=size(self%mobile%mass_mg_cm2).or. &
        size(companion%age_amount)/=size(self%mobile%mass_mg_cm2))return
+    self%companion=companion
+    status=FMR_SOLCOMP_OK
+  end subroutine
+
+
+  subroutine solcomp_replace_reactive_candidate(self,mobile,companion,status)
+    class(fmr_b111_solute_state_t),intent(inout)::self
+    type(mobile_salt_state_t),intent(in)::mobile
+    type(solute_compartment_state_t),intent(in)::companion
+    integer,intent(out)::status
+    status=FMR_SOLCOMP_INVALID
+    if(.not.self%ready().or..not.mobile_valid(mobile).or..not.companion%valid())return
+    if(size(mobile%mass_mg_cm2)/=size(self%mobile%mass_mg_cm2).or. &
+       size(companion%sorbed_matrix_mass)/=size(mobile%mass_mg_cm2).or. &
+       size(companion%age_amount)/=size(mobile%mass_mg_cm2))return
+    self%mobile=mobile
     self%companion=companion
     status=FMR_SOLCOMP_OK
   end subroutine
