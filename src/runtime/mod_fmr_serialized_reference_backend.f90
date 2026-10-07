@@ -510,6 +510,10 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: cauchy3_head_sample_t1900 = 0.0_real64, cauchy3_sine_phase_day = 0.0_real64
     real(real64) :: cauchy3_aquifer_head_cm = 0.0_real64
     real(real64) :: cauchy3_q4_sample_t1900 = 0.0_real64, cauchy3_q4_cm_per_day = 0.0_real64
+    logical :: cauchy3_explicit_active = .false.
+    real(real64) :: cauchy3_explicit_qbot_cm_per_day = 0.0_real64
+    real(real64) :: cauchy3_explicit_gwlmean_cm = 0.0_real64
+    real(real64) :: cauchy3_explicit_profile_resistance_day = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
