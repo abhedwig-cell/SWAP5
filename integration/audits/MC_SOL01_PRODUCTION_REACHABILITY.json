@@ -6,46 +6,43 @@
   "capabilities": [
     {
       "id": "SW431-SALT-SORPTION",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
         "explicit dissolved and sorbed persistent stores",
-        "B1.11 Freundlich forward/inverse partition",
-        "candidate-only equilibrium repartition preserving total solute mass",
-        "reactive restart layout 505005"
+        "byte-exact B1.11 Freundlich forward/inverse partition",
+        "source-order reactive matrix substep repartitions total storage after each node update",
+        "atomic reactive chemical transaction over mobile+companion state"
       ],
       "remaining": [
-        "composition with accepted mobile transport substeps",
         "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-DECAY",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
-        "B1.11 temperature/moisture/depth decay factors",
-        "decay applied to total dissolved+sorbed storage",
-        "post-decay Freundlich repartition",
-        "explicit external solute sink"
+        "byte-exact temperature/moisture/depth decay factors",
+        "decay evaluated on total dissolved+sorbed storage before repartition",
+        "explicit external decay sink",
+        "source-order reactive matrix substep and atomic transaction"
       ],
       "remaining": [
-        "substep composition with accepted mobile transport",
-        "persisted integrated qualification",
+        "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-POND",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
-        "persistent pond solute store",
-        "B1.11 rain/irrigation accumulation",
-        "candidate-only pond-to-top-node internal transfer",
-        "whole dissolved+sorbed+pond mass closure"
+        "persistent pond chemical store",
+        "byte-exact rain/irrigation accumulation and infiltration mixing",
+        "pond-to-soil transfer is internal within the source-order reactive substep",
+        "whole chemical transaction closes over pond+dissolved+sorbed stores"
       ],
       "remaining": [
-        "binding to accepted surface-water carrier and transport substeps",
-        "persisted integrated qualification",
+        "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
