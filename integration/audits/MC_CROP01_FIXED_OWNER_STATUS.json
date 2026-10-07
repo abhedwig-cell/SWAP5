@@ -1,0 +1,56 @@
+{
+  "schema": "swap431.mc_crop01.fixed_owner.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-FIXED",
+    "SW431-CROP-FIXED-THERMAL"
+  ],
+  "status": "BOUNDED_SHARED_OWNER_READY_IDEV1_TSUM_SOURCE_DEFECT",
+  "source": {
+    "member": "SWAP/fixed.f90",
+    "sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "exact_findings": [
+      "IDEV1 DVS increment is 2/LCC",
+      "IDEV2 DTSUM=max(0,TAV-TBASE); pre-anthesis DVS increment DTSUM/TSUMEA; post-anthesis DTSUM/TSUMAM",
+      "DVS is capped at 2; LAI is AFGEN(LAITB,DVS)",
+      "optional WRT is AFGEN(WROOTTB,DVS) and GRRT/DRRT derive from the accepted WRT change",
+      "Pinned fixed.f90 declares TBASE as SAVE, reads it only in IDEV2, yet update_cropfixed computes DTSUM=max(0,TAV-TBASE) for both modes.",
+      "When WRT is prescribed by WROOTTB, source sets GRRT=max(0,WRT-WRT_OLD), GRRTPOT=GRRT and DRRT=abs(min(0,WRT-WRT_OLD))."
+    ],
+    "unresolved": "Resolved as a pinned source defect for IDEV1 TSUM: no source assignment/default exists in fixed.f90. IDEV1 DVS, LAI and optional WRT remain deterministic because DVS increment is 2/LCC and LAI/WRT are DVS-table derived."
+  },
+  "implementation": "src/crop/mod_fixed_crop_owner.f90",
+  "ownership": "One shared transactional fixed-crop state for DVS/TSUM/LAI and optional crop-owned root biomass; no duplicate owner per IDEV selector.",
+  "admission": false,
+  "next_safe_step": "Compose the shared crop-end event owner for source lines 60-73, then qualify owner persistence/restart and actual canopy/root consumers. Do not invent IDEV1 TBASE.",
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_fixed_crop_owner.py",
+    "status": "LOCAL_BASE_O0_O2_PASS_GRRTPOT_DELTA_RERUN_READY_PERSISTED_EVENT_COMPOSITION_OPEN",
+    "cases": [
+      "IDEV1 2/LCC DVS",
+      "IDEV1 LAI/WRT table derivation",
+      "IDEV1 TSUM explicitly unclaimed",
+      "IDEV2 pre-anthesis TSUMEA",
+      "IDEV2 post-anthesis TSUMAM",
+      "inactive no-op"
+    ],
+    "local": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_FIXED_OWNER=PASS"
+    },
+    "delta": {
+      "change": "diagnostics.potential_root_growth = diagnostics.root_growth, matching pinned GRRTPOT=GRRT",
+      "test": "tests/fmig431/test_swap431_fixed_crop_owner.f90",
+      "status": "READY_FOR_RERUN",
+      "note": "The previous owner implementation passed strict O0/O2 before this additive diagnostic field. A later local rerun attempt was blocked by cleaned scratch inputs, not by a compiler or runtime failure."
+    }
+  },
+  "claim_ceiling": "Candidate for bounded fixed-crop phenology admission after O0/O2 and event-owner composition. IDEV1 TSUM output is excluded as undefined in pinned source. Harvest/cropend remains a separate calendar/event owner.",
+  "owner_binding": {
+    "root_growth": "actual and potential gross root-growth carriers are identical for fixed prescribed root biomass; they can feed the shared SWRD2 depth owner without a potential biomass shadow."
+  }
+}
