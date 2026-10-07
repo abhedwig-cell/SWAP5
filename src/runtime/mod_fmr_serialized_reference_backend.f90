@@ -59,6 +59,8 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
+  use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
+       evaluate_b111_profile_groundwater_projection
   use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -284,6 +286,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
     logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
     real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
     real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
@@ -687,6 +690,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
     logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
     real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
     real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
@@ -2962,6 +2966,7 @@ contains
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
       self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
+      self%profile_groundwater_projection = parameters%profile_groundwater_projection
       self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
       self%swbotb3_explicit_shape_3 = parameters%swbotb3_explicit_shape_3
       self%swkimpl = parameters%swkimpl
@@ -3694,6 +3699,7 @@ contains
     real(real64), allocatable :: low3_ztop(:), low3_zbot(:), low3_ksat(:)
     integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status, low3_status, low3_i
     logical :: low3_k_ok
+    type(b111_profile_groundwater_projection_t) :: profile_projection
     type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
     type(frost_bottom_result_t) :: frost_bottom_result
@@ -3839,6 +3845,11 @@ contains
       call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
       if (cauchy3_status /= FMR_CAUCHY3_OK) return
       if (self%swbotb3_explicit_active) then
+        if (.not.self%profile_groundwater_projection) return
+        call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+             request%base_state%pressure_head,request%base_state%ponding_depth,profile_projection)
+        if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
+        request%base_state%groundwater_level=profile_projection%level_cm
         allocate(low3_ztop(self%soil_parameters%active_nodes), low3_zbot(self%soil_parameters%active_nodes), &
                  low3_ksat(self%soil_parameters%active_nodes))
         do low3_i=1,self%soil_parameters%active_nodes
