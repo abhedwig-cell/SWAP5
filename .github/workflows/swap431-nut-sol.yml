@@ -101,6 +101,8 @@ on:
       - 'tests/physics/test_b111_reactive_solute_substep.f90'
       - 'tests/physics/test_b111_reactive_solute_substep_multinode.f90'
       - 'tests/physics/run_b111_reactive_solute_substep.sh'
+      - 'tests/physics/run_b111_sorption_mass_closure.sh'
+      - 'tests/physics/test_b111_sorption_mass_closure.f90'
       - 'src/process/mod_b111_age_tracer_substep.f90'
       - 'tests/physics/test_b111_age_tracer_substep.f90'
       - 'tests/physics/run_b111_age_tracer_substep.sh'
@@ -151,6 +153,8 @@ jobs:
         run: bash tests/physics/run_fmr_b111_soil_crop_n_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
+      - name: Nonlinear Freundlich mass-closure O0 O2
+        run: bash tests/physics/run_b111_sorption_mass_closure.sh
       - name: Exact-order reactive solute substep
         run: bash tests/physics/run_b111_reactive_solute_substep.sh
       - name: AgeTracer transport and pond continuation
