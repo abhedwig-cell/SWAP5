@@ -34,13 +34,15 @@ module mod_fmr_b111_soil_n_management_event
 
 contains
 
-  subroutine apply_fmr_b111_soil_n_management_material_event(state,event,receipt)
-    type(fmr_b111_soil_n_state_t),intent(inout)::state
+  subroutine apply_fmr_b111_soil_n_management_material_event(committed,event,candidate,receipt)
+    type(fmr_b111_soil_n_state_t),intent(in)::committed
+    type(fmr_b111_soil_n_state_t),intent(out)::candidate
     type(fmr_b111_soil_n_management_event_t),intent(in)::event
     type(fmr_b111_soil_n_management_event_receipt_t),intent(out)::receipt
     type(soil_n_transfer_t)::transfer
     integer::build_status,apply_status
 
+    candidate=committed
     receipt=fmr_b111_soil_n_management_event_receipt_t()
     receipt%event_id=event%event_id
     receipt%event_kind=event%event_kind
@@ -59,7 +61,7 @@ contains
       return
     end if
 
-    call apply_fmr_b111_soil_n_management_event(state,event%event_id,transfer,apply_status,receipt%nitrogen)
+    call apply_fmr_b111_soil_n_management_event(committed,event%event_id,transfer,candidate,apply_status,receipt%nitrogen)
     if(apply_status/=FMR_SOIL_N_OK)then
       receipt%status=FMR_B111_N_EVENT_APPLY_FAILED
       return
