@@ -1,0 +1,21 @@
+name: SWAP431 adaptive root density qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  push:
+    branches: [work/swap431-root-density-adaptive-20261007]
+    paths:
+      - 'src/crop/mod_crop_adaptive_root_profile_owner.f90'
+      - 'tests/fmig431/test_crop_adaptive_root_profile_owner.f90'
+      - 'tests/fmig431/run_crop_adaptive_root_profile_owner.py'
+      - '.github/workflows/swap431-root-density-adaptive.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Adaptive root density O0 O2
+        run: python3 tests/fmig431/run_crop_adaptive_root_profile_owner.py
