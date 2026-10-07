@@ -41,5 +41,24 @@ program test_swap431_root_oxygen_emp
   if(d%status/=ROOT_UPTAKE_OK) error stop 9
   if(maxval(abs(d%oxygen_reduction_factor-[0.0_real64,1.0_real64,1.0_real64,1.0_real64]))>tol) error stop 10
 
+  ! Force wet and dry reductions to overlap and verify B1.11 proportional
+  ! attribution of the one physical sink reduction.
+  p%hlim3l=-20.0_real64; p%hlim3h=-20.0_real64; p%hlim4=-1000.0_real64
+  p%hlim2u=-100.0_real64; p%hlim2l=-100.0_real64
+  h%pressure_head=-50.0_real64
+  call evaluate_macro_feddes_drought_uptake(p,h,q,f,d)
+  if(d%status/=ROOT_UPTAKE_OK) error stop 11
+  block
+    real(real64) :: wet, dry, sink, red, denom
+    wet=40.0_real64/90.0_real64
+    dry=950.0_real64/980.0_real64
+    sink=0.25_real64*wet*dry
+    red=0.25_real64-sink
+    denom=(1.0_real64-wet)+(1.0_real64-dry)
+    if(abs(f%root_extraction_sink(1)-sink)>tol) error stop 12
+    if(abs(d%oxygen_reduction(1)-red*(1.0_real64-wet)/denom)>tol) error stop 13
+    if(abs(d%drought_reduction(1)-red*(1.0_real64-dry)/denom)>tol) error stop 14
+  end block
+
   print '(a)','SW431_ROOT_OXYGEN_EMP_COMPONENT=PASS'
 end program
