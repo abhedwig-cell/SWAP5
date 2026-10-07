@@ -10,6 +10,8 @@ module mod_fmr_divdra_serialized_composition
   use mod_drainage_discharge_layer_top, only: drainage_discharge_layer_top_control_t, &
        drainage_discharge_layer_top_diagnostics_t
   use mod_fmr_divdra_discharge_top_binding, only: apply_fmr_divdra_discharge_top_controls, FMR_DIVDRA_TOP_OK
+  use mod_fmr_divdra_top_interflow_binding, only: fmr_divdra_top_interflow_binding_diagnostics_t, &
+       fmr_bind_highest_interflow_signed_divdra, FMR_DIVDRA_TOPINT_OK
   implicit none
   private
 
@@ -31,6 +33,8 @@ module mod_fmr_divdra_serialized_composition
     integer(int64), allocatable :: distribution_parameter_refs(:)
     real(real64), allocatable :: scalar_transfers(:)
     type(drainage_discharge_layer_top_control_t), allocatable :: top_layer_controls(:)
+    logical :: highest_interflow_active = .false.
+    real(real64) :: highest_interflow_drain_bottom_cm = 0.0_real64
   end type fmr_divdra_serialized_column_request_t
 
   type, public :: fmr_divdra_serialized_binding_record_t
@@ -42,6 +46,7 @@ module mod_fmr_divdra_serialized_composition
     logical :: multilevel = .false.
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multilevel_binding
     type(drainage_discharge_layer_top_diagnostics_t), allocatable :: top_diagnostics(:)
+    type(fmr_divdra_top_interflow_binding_diagnostics_t) :: top_interflow_binding
   end type fmr_divdra_serialized_binding_record_t
 
   public :: fmr_preflight_serialized_divdra
@@ -62,6 +67,7 @@ contains
     real(real64), allocatable :: probe(:,:)
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(fmr_divdra_top_interflow_binding_diagnostics_t) :: topint_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     type(drainage_distribution_parameters_t) :: single_parameter(1)
     real(real64) :: single_scalar(1)
@@ -167,14 +173,30 @@ contains
       end if
 
       records(slot)%multilevel=multilevel
+      if(requests(i)%highest_interflow_active.and..not.multilevel)then
+        status=FMR_DIVDRA_COMPOSE_INVALID_SHAPE
+        records(slot)%composition_status=status
+        return
+      end if
       if(multilevel)then
-        call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_views(view_index), &
-             requests(i)%scalar_transfers,probe,multi_diag)
-        records(slot)%multilevel_binding=multi_diag
-        if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
-          status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
-          records(slot)%composition_status=status
-          return
+        if(requests(i)%highest_interflow_active)then
+          call fmr_bind_highest_interflow_signed_divdra(level_parameters,hydraulic_views(view_index), &
+               requests(i)%scalar_transfers,requests(i)%highest_interflow_drain_bottom_cm,probe,topint_diag)
+          records(slot)%top_interflow_binding=topint_diag
+          if(topint_diag%status/=FMR_DIVDRA_TOPINT_OK)then
+            status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            records(slot)%composition_status=status
+            return
+          end if
+        else
+          call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_views(view_index), &
+               requests(i)%scalar_transfers,probe,multi_diag)
+          records(slot)%multilevel_binding=multi_diag
+          if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
+            status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            records(slot)%composition_status=status
+            return
+          end if
         end if
         if(allocated(requests(i)%top_layer_controls))then
           if(size(requests(i)%top_layer_controls)/=size(level_parameters))then
