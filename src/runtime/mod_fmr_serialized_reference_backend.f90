@@ -445,6 +445,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
     integer :: micro_rooted_nodes = 0
+    integer :: root_oxygen_rooted_nodes = 0
     real(real64), allocatable :: micro_root_length_density(:)
     real(real64) :: root_potential_transpiration = 0.0_real64
     real(real64) :: root_drought_reduction_total = 0.0_real64
@@ -3361,6 +3362,11 @@ contains
             self%crop_oxygen=forcing%crop_oxygen
           else if(oxygen_route==FMR_BARTHOLOMEUS_REPRODUCTION) then
             if(allocated(forcing%crop_oxygen)) return
+            if(forcing%root_oxygen_rooted_nodes<0.or.forcing%root_oxygen_rooted_nodes>n) return
+            if(forcing%root_oxygen_rooted_nodes<n) then
+              if(any(abs(forcing%root_extraction_sink(forcing%root_oxygen_rooted_nodes+1:))>tiny(1.0_real64))) return
+            end if
+            self%root_oxygen_rooted_nodes=forcing%root_oxygen_rooted_nodes
           else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
             return
           end if
@@ -4274,7 +4280,8 @@ contains
           oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root,oxygen_w_root,0.0_real64, &
-               oxygen_base,oxygen_final,oxygen_status,oxygen_factors,self%bartholomeus%reproduction)
+               oxygen_base,oxygen_final,oxygen_status,oxygen_factors,self%bartholomeus%reproduction, &
+               self%root_oxygen_rooted_nodes)
         else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
           return
         end if
