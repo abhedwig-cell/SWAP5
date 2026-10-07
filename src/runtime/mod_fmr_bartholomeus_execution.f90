@@ -23,8 +23,7 @@ module mod_fmr_bartholomeus_execution
 
 contains
   subroutine fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,w_root,w_root_z0, &
-       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,reproduction_parameters, &
-       saturated_water_content,z_cm,zbotcp_cm,dz_cm)
+       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,reproduction_parameters)
     type(fmr_bartholomeus_selection_t),intent(in)::config
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal
@@ -39,7 +38,6 @@ contains
     integer,intent(out)::status
     real(real64),allocatable,optional,intent(out)::oxygen_factors(:)
     type(root_oxygen_reproduction_parameters_t),optional,intent(in)::reproduction_parameters
-    real(real64),optional,intent(in)::saturated_water_content(:),z_cm(:),zbotcp_cm(:),dz_cm(:)
     type(bartholomeus_runtime_view_t)::view
     real(real64),allocatable::factors(:)
     integer::route,wmode,input_status,compose_status
@@ -63,38 +61,39 @@ contains
     end if
 
     if(route==FMR_BARTHOLOMEUS_REPRODUCTION) then
-      if(.not.present(reproduction_parameters) .or. .not.present(saturated_water_content) .or. &
-         .not.present(z_cm) .or. .not.present(zbotcp_cm) .or. .not.present(dz_cm)) then
+      if(.not.present(reproduction_parameters)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
       if(.not.allocated(base_fluxes%root_extraction_sink)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
-      if(size(z_cm)/=size(zbotcp_cm) .or. size(z_cm)/=size(dz_cm) .or. &
-         size(z_cm)/=size(saturated_water_content)) then
+      if(.not.reproduction_parameters%ready()) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
-      if(size(z_cm)>size(base_fluxes%root_extraction_sink)) then
+      if(reproduction_parameters%active_nodes()>size(base_fluxes%root_extraction_sink)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
-      if(size(z_cm)==0) then
+      if(reproduction_parameters%active_nodes()==0) then
         final_fluxes=base_fluxes
         status=FMR_BARTHOLOMEUS_EXEC_OK
         return
       end if
-      if(hydraulic%active_nodes<size(z_cm) .or. thermal%active_nodes<size(z_cm)) then
+      if(hydraulic%active_nodes<reproduction_parameters%active_nodes() .or. &
+         thermal%active_nodes<reproduction_parameters%active_nodes()) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
       if(.not.allocated(hydraulic%water_content) .or. .not.allocated(thermal%temperature_c)) then
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
       end if
       call evaluate_root_oxygen_reproduction_profile(reproduction_parameters, &
-           hydraulic%water_content(1:size(z_cm)), saturated_water_content, &
-           thermal%temperature_c(1:size(z_cm)), size(z_cm), z_cm, zbotcp_cm, dz_cm, factors, input_status)
+           hydraulic%water_content(1:reproduction_parameters%active_nodes()), &
+           thermal%temperature_c(1:reproduction_parameters%active_nodes()), &
+           reproduction_parameters%active_nodes(), factors, input_status)
       if(input_status/=ROOT_OXYGEN_REPRO_OK) then
         status=FMR_BARTHOLOMEUS_EXEC_PHYSICS;return
       end if
-      call compose_root_sink_with_oxygen_factor(base_fluxes,size(z_cm),factors,final_fluxes,compose_status)
+      call compose_root_sink_with_oxygen_factor(base_fluxes,reproduction_parameters%active_nodes(),factors, &
+           final_fluxes,compose_status)
       if(compose_status/=ROOT_OXYGEN_COMPOSE_OK) then
         final_fluxes=root_water_uptake_flux_result_t()
         status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
@@ -103,7 +102,7 @@ contains
         if(allocated(oxygen_factors)) deallocate(oxygen_factors)
         allocate(oxygen_factors(size(base_fluxes%root_extraction_sink)))
         oxygen_factors=1.0_real64
-        oxygen_factors(1:size(z_cm))=factors
+        oxygen_factors(1:reproduction_parameters%active_nodes())=factors
       end if
       status=FMR_BARTHOLOMEUS_EXEC_OK
       return
