@@ -28,6 +28,11 @@
       "witness": "management_event declares local DMLoss without initialization, assigns it only when SW_LOSSGRZ==1, then unconditionally uses DMLoss in TWGRZ=UPTGRZ+LOSSGRZ+DMLoss.",
       "disposition": "FAIL_CLOSED_PENDING_REFERENCE_DEFECT_POLICY",
       "no_guessed_repair": true
+    },
+    "source_defect_nonzero_storage": {
+      "witness": "management_event includes WSO in TWDM/TWLVDM, but mowing_event and grazing removal do not reduce WSO.",
+      "disposition": "FAIL_CLOSED_WSO_NONZERO",
+      "rationale": "Avoid false biomass-removal/mass claims until reference-defect policy authorizes a repair or source establishes WSO=0 as invariant."
     }
   },
   "implementation": [
@@ -88,12 +93,13 @@
       "full grazing day",
       "partial grazing closeout",
       "physical-vs-legacy grazing accounting",
-      "SW_LOSSGRZ=0 fail closed"
+      "SW_LOSSGRZ=0 fail closed",
+      "nonzero WSO source-envelope fail closed"
     ]
   },
   "disposition": "BOUNDED_SOURCE_DEFINED_GRASS_MANAGEMENT_IMPLEMENTED_DEFECT_BRANCH_AND_TRANSACTION_OPEN",
   "remaining": [
-    "Run strict O0/O2 owner test on a full checkout.",
+    "Run strict O0/O2 owner test including WSO=0 envelope and fail-closed WSO>0 case on a full checkout.",
     "Compose management candidate atomically with actual and optional potential crop shadows.",
     "Persist dead biomass and management cursor/restart state.",
     "Bind accepted H_AVERAGE forcing for mowing/grazing loss tables.",
