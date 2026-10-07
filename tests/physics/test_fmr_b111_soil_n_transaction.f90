@@ -5,7 +5,8 @@ program test_fmr_b111_soil_n_transaction
   use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t, soil_n_pool_state_t, soil_n_transfer_t, &
        initialize_soil_n_pool_state, SOIL_N_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t, fmr_b111_soil_n_model_t, &
-       initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, FMR_SOIL_N_OK
+       initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, apply_fmr_b111_soil_n_management_event, &
+       FMR_SOIL_N_OK, FMR_SOIL_N_EVENT_ALREADY_CONSUMED
   implicit none
 
   type(soil_n_inventory_parameters_t) :: params, snapshot_params
@@ -16,6 +17,7 @@ program test_fmr_b111_soil_n_transaction
   class(transaction_state_t), allocatable :: committed
   type(transaction_policy_t) :: policy
   type(transaction_result_t) :: result
+  type(soil_n_receipt_t) :: event_receipt
   logical :: available
   integer :: status
 
@@ -67,6 +69,25 @@ program test_fmr_b111_soil_n_transaction
   call check(available, 'post-reject snapshot')
   call check(abs(snapshot%nitrate_n_kg_m2 - 3.4_real64) < 1.0e-12_real64, 'rollback identity')
 
+  ! Once-only management event state is part of the persistent owner.
+  rate = soil_n_transfer_t()
+  allocate(rate%fom_delta_kg_m3(2))
+  rate%fom_delta_kg_m3 = 0.0_real64
+  rate%ammonium_n_delta_kg_m2 = 0.1_real64
+  rate%external_n_input_kg_m2 = 0.1_real64
+  call apply_event_on_committed(committed, 42_8, rate, status, event_receipt)
+  call check(status == FMR_SOIL_N_OK, 'management event accepted')
+  call apply_event_on_committed(committed, 42_8, rate, status, event_receipt)
+  call check(status == FMR_SOIL_N_EVENT_ALREADY_CONSUMED, 'duplicate event rejected')
+  call snapshot_committed(committed, snapshot_params, snapshot, available)
+  call check(available, 'event snapshot')
+  call check(abs(snapshot%ammonium_n_kg_m2 - 2.1_real64) < 1.0e-12_real64, 'event applied once')
+
+  call initialize_fmr_b111_soil_n_state(snapshot_params, snapshot, initial, status)
+  call check(status == FMR_SOIL_N_OK, 'event restart inventory')
+  ! Reconstructed inventory alone is insufficient to infer event lineage; production
+  ! restart serializers must therefore carry the transaction state, not rebuild it
+  ! only from nutrient concentrations.
   print '(A)', 'FMR_B111_SOIL_N_TRANSACTION_PASS'
 
 contains
@@ -83,6 +104,20 @@ contains
     class default
       p = soil_n_inventory_parameters_t()
       s = soil_n_pool_state_t()
+    end select
+  end subroutine
+
+  subroutine apply_event_on_committed(state,event_id,transfer,status,receipt)
+    class(transaction_state_t),allocatable,intent(inout)::state
+    integer(kind=8),intent(in)::event_id
+    type(soil_n_transfer_t),intent(in)::transfer
+    integer,intent(out)::status
+    type(soil_n_receipt_t),intent(out)::receipt
+    status=FMR_SOIL_N_INVALID
+    receipt=soil_n_receipt_t()
+    select type(state)
+    type is(fmr_b111_soil_n_state_t)
+      call apply_fmr_b111_soil_n_management_event(state,event_id,transfer,status,receipt)
     end select
   end subroutine
 
