@@ -59,6 +59,7 @@ COMPOSITION_SRC=(
   src/process/mod_irrigation_root_zone_summary.f90
   src/process/mod_scheduled_irrigation_management_policy.f90
   src/runtime/mod_fmr_scheduled_management_irrigation_application.f90
+  src/runtime/mod_fmr_irrigation_management_restart.f90
   src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90
   src/process/mod_rutter_interception_process.f90
   src/process/mod_restricted_surface_evaporation.f90
@@ -89,6 +90,7 @@ for opt in 0 2; do
   grep -Fq 'MC_IRR01_TCS7_RUNTIME_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "TCS7 runtime binding O$opt"
   grep -Fq 'MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "SSDI binding O$opt"
   grep -Fq 'MC_IRR01_AVAIL_SENSOR_POLICY=PASS' "$OUT/tcs7_binding_output.txt" || fail "availability sensor policy O$opt"
+  grep -Fq 'MC_IRR01_SENSOR_EVENT_RESTART=PASS' "$OUT/tcs7_binding_output.txt" || fail "sensor restart O$opt"
 
   gfortran "${COMP[@]}" -Werror -pedantic-errors -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/f-app07/test_mc_irr01_management_routing.f90 -o "$OUT/test_management_routing.o" || fail "management routing oracle compile O$opt"
