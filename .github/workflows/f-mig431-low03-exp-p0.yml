@@ -1,0 +1,18 @@
+name: F-MIG431-LOW03-EXP-P0 provider qualification
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_legacy_explicit_cauchy_bottom_boundary_provider.f90'
+      - 'tests/fmig431/test_low03_explicit_provider.f90'
+      - 'tests/fmig431/run_low03_explicit_provider.sh'
+      - '.github/workflows/f-mig431-low03-exp-p0.yml'
+  workflow_dispatch:
+jobs:
+  provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: O0/O2 source-bound provider qualification
+        run: bash tests/fmig431/run_low03_explicit_provider.sh
