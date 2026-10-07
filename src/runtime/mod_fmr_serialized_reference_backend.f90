@@ -682,6 +682,7 @@ module mod_fmr_serialized_reference_backend
     integer, allocatable :: micro_horizon_first_node(:)
     real(real64), allocatable :: micro_root_length_density(:)
     integer :: micro_rooted_nodes = 0
+    integer :: root_oxygen_rooted_nodes = 0
     type(root_compensation_config_t) :: root_compensation
     type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
     type(frost_drainage_config_t) :: frost_drainage
@@ -3160,6 +3161,7 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol
     self%forcing_admitted = .false.
+    self%root_oxygen_rooted_nodes = 0
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
     self%cauchy3_proposal = fmr_cauchy3_proposal_t()
