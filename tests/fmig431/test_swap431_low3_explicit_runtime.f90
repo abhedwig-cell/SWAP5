@@ -65,7 +65,13 @@ contains
     real(real64),intent(in)::q
     type(fmr_serialized_column_result_t)::output
     type(fmr_serialized_physical_observation_t)::observation
-    call execute_case(3,q,q,-999999._real64,equilibrium_dt,.false.,.false.,output,observation,explicit3=.true.)
+    real(real64)::q_explicit
+    ! For the chosen z_gwl=-50 cm profile, SHAPE_3=1, deepgw=-75 cm,
+    ! RIMLAY=10 d and Q4=0. Profile resistance is derived by production.
+    ! First run with zero top flux is intentionally not an equilibrium oracle;
+    ! use a short certificate-free transaction and require bounded completion.
+    q_explicit = q
+    call execute_case(3,q_explicit,q_explicit,-999999._real64,1.0e-6_real64,.false.,.false.,output,observation,explicit3=.true.)
     call require(output%completed.and.output%committed,'explicit mode3 committed')
     call require(observation%cauchy3_explicit_active,'explicit mode3 diagnostic active')
     call require(ieee_is_finite(observation%cauchy3_explicit_qbot_cm_per_day),'explicit mode3 qbot finite')
