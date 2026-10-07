@@ -1681,11 +1681,16 @@ contains
                                                                macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active, macropore_active, rutter_active) result(matches)
+                                                               boesten_evaporation_active, macropore_active, rutter_active, &
+                                                               hysteresis_active) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, macropore_active, rutter_active
-    if (black_evaporation_active .and. boesten_evaporation_active) then
+    logical, intent(in) :: hysteresis_active
+    if ((black_evaporation_active .and. boesten_evaporation_active) .or. &
+        (hysteresis_active .and. (temporal_history_enabled .or. macropore_reduction_enabled .or. &
+         fixed_weir_surface_water_active .or. black_evaporation_active .or. boesten_evaporation_active .or. &
+         macropore_active .or. rutter_active))) then
       matches = .false.
       return
     end if
@@ -1719,7 +1724,8 @@ contains
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
-           (allocated(state%rutter) .eqv. rutter_active)
+           (allocated(state%rutter) .eqv. rutter_active) .and. &
+           (allocated(state%hysteresis) .eqv. hysteresis_active)
     class default
       matches = .false.
     end select
@@ -1770,7 +1776,7 @@ contains
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
                                                            model%boesten_evaporation_active, model%macropore_active, &
-                                                           model%rutter_active)) return
+                                                           model%rutter_active, parameters%hysteresis_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -3978,7 +3984,7 @@ contains
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
                                                            self%boesten_evaporation_active, self%macropore_active, &
-                                                           self%rutter_active)) return
+                                                           self%rutter_active, self%hysteresis_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     rutter_trial_prepared = .false.
