@@ -24,6 +24,7 @@ module mod_wofost_vernalisation_phenology
   type, public :: wofost_vernalisation_state_t
     real(real64) :: accumulated_units = 0.0_real64 ! VERN
     logical :: vernalised = .false.                 ! FL_VERNALISED
+    real(real64) :: retained_rate = 0.0_real64      ! SAVE VERNRATE continuation
   contains
     procedure, public :: validate => wofost_vernalisation_state_validate
   end type wofost_vernalisation_state_t
@@ -58,6 +59,7 @@ contains
     class(wofost_vernalisation_state_t), intent(in) :: self
     status = WOFOST_VERN_INVALID_STATE
     if (.not. ieee_is_finite(self%accumulated_units) .or. self%accumulated_units < 0.0_real64) return
+    if (.not. ieee_is_finite(self%retained_rate) .or. self%retained_rate < 0.0_real64) return
     status = WOFOST_VERN_OK
   end function wofost_vernalisation_state_validate
 
@@ -93,12 +95,16 @@ contains
     if (.not. ieee_is_finite(temperature_sum_increment) .or. temperature_sum_increment < 0.0_real64) return
     if (.not. ieee_is_finite(vegetative_tsum_required) .or. vegetative_tsum_required <= 0.0_real64) return
 
-    rate = 0.0_real64
+    rate = committed%retained_rate
     factor = 1.0_real64
 
-    ! Literal pinned B1.11 update_dvs_rate(), IDSL=2.
+    ! Literal pinned B1.11 update_dvs_rate(), IDSL=2. VERNRATE is SAVE.
+    ! It is reset to zero only while the source enters the not-vernalised
+    ! branch, otherwise the last value remains available to the outer daily
+    ! VERN update.
     if (development_stage < 1.0_real64) then
       if (.not. committed%vernalised) then
+        rate = 0.0_real64
         if (development_stage < parameters%critical_development_stage) then
           call parameters%temperature_rate%evaluate(average_temperature_c, rate, table_status)
           if (table_status /= WOFOST_RATE_TABLE_OK .or. .not. ieee_is_finite(rate) .or. rate < 0.0_real64) then
@@ -125,6 +131,7 @@ contains
 
     result%vernalisation_rate = rate
     result%vernalisation_factor = factor
+    result%candidate_state%retained_rate = rate
 
     ! Pinned B1.11 outer WOFOST task update occurs after potential and actual
     ! crop updates and advances VERN exactly once per daily event.
