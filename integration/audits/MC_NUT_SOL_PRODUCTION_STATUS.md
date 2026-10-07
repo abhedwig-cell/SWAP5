@@ -18,7 +18,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 ## Source-bound operators present
 
 - B1.11 fixation policy, separate from admitted WOFOST81 semantics.
-- Soil-N nitrification/denitrification transfers and source rate factors.
+- Soil-N source rate factors and a source-coupled nitrification bridge: NH4 disappearance from the aggregate transport step is converted into the equal NO3 production transfer using the interval-average NH4 concentration. Denitrification remains bound to the NO3 transport first-order loss contract rather than being admitted as an independent shortcut.
 - Aggregate Soil-N transport.
 - Amendments and crop residues, including distinct B1.11 OM activation
   thresholds (1e-6 and 1e-12 respectively).
