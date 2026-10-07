@@ -58,12 +58,26 @@ program test_crop_adaptive_root_profile_owner
   if(maxval(abs(s2%root_biomass_by_node-s1%root_biomass_by_node))>tol)error stop 13
   if(maxval(abs(s0%root_biomass_by_node-[75.0_real64,25.0_real64,0.0_real64,0.0_real64]))>tol)error stop 14
 
+  ! Death-only branch: FDWRT=1 allocates death by positive accepted stress reduction.
+  p%growth_adaptation_fraction=0.0_real64
+  p%death_adaptation_fraction=1.0_real64
+  f%old_rooted_nodes=2;f%rooted_nodes=2
+  f%old_root_depth_cm=20.0_real64;f%root_depth_cm=20.0_real64;f%root_depth_extension_cm=0.0_real64
+  f%root_biomass_end=90.0_real64;f%root_growth=0.0_real64;f%root_death=10.0_real64
+  f%potential_root_sink=[0.6_real64,0.3_real64,0.0_real64,0.0_real64]
+  f%root_sink_reduction=[0.1_real64,0.2_real64,0.0_real64,0.0_real64]
+  call evaluate_adaptive_root_profile_candidate(p,s0,f,ztop,zbot,dz,s2,status)
+  if(status/=ADAPTIVE_ROOT_PROFILE_OK)error stop 15
+  if(abs(s2%root_biomass_by_node(1)-(75.0_real64-10.0_real64/3.0_real64))>tol)error stop 16
+  if(abs(s2%root_biomass_by_node(2)-(25.0_real64-20.0_real64/3.0_real64))>tol)error stop 17
+  if(abs(sum(s2%root_biomass_by_node)-90.0_real64)>tol)error stop 18
+
   call s1%clone(copy)
   select type(typed=>copy)
   type is(adaptive_root_profile_state_t)
-    if(maxval(abs(typed%root_biomass_by_node-s1%root_biomass_by_node))>tol)error stop 15
+    if(maxval(abs(typed%root_biomass_by_node-s1%root_biomass_by_node))>tol)error stop 19
   class default
-    error stop 16
+    error stop 20
   end select
 
   print '(a)','SW431_ROOT_DENSITY_ADAPTIVE=PASS'
