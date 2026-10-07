@@ -111,6 +111,11 @@ on:
       - 'tests/physics/test_b111_age_tracer_interval.f90'
       - 'tests/physics/test_fmr_b111_age_tracer_transaction.f90'
       - 'tests/physics/run_fmr_b111_age_tracer_transaction.sh'
+      - 'src/process/mod_b111_reactive_solute_substep.f90'
+      - 'src/runtime/mod_fmr_b111_reactive_solute_transaction.f90'
+      - 'tests/physics/test_b111_reactive_solute_substep.f90'
+      - 'tests/physics/test_fmr_b111_reactive_solute_transaction.f90'
+      - 'tests/physics/run_fmr_b111_reactive_solute_transaction.sh'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -149,6 +154,8 @@ jobs:
         run: bash tests/physics/run_fmr_b111_soil_crop_n_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
+      - name: Source-order reactive solute transaction
+        run: bash tests/physics/run_fmr_b111_reactive_solute_transaction.sh
       - name: AgeTracer transaction
         run: bash tests/physics/run_fmr_b111_age_tracer_transaction.sh
       - name: Reactive solute layout restart
