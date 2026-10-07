@@ -33,6 +33,8 @@ module mod_fmr_b111_solute_transaction
     procedure :: clone => solcomp_clone
     procedure, public :: ready => solcomp_ready
     procedure, public :: snapshot => solcomp_snapshot
+    procedure, public :: age_total => solcomp_age_total
+    procedure, public :: replace_companion_candidate => solcomp_replace_companion_candidate
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_solute_model_t
@@ -116,6 +118,25 @@ contains
     mobile=mobile_salt_state_t();companion=solute_compartment_state_t()
     available=self%ready()
     if(available)then;mobile=self%mobile;companion=self%companion;end if
+  end subroutine
+
+
+  real(real64) function solcomp_age_total(self) result(value)
+    class(fmr_b111_solute_state_t),intent(in)::self
+    value=0.0_real64
+    if(self%ready())value=sum(self%companion%age_amount)+self%companion%pond_age_amount
+  end function
+
+  subroutine solcomp_replace_companion_candidate(self,companion,status)
+    class(fmr_b111_solute_state_t),intent(inout)::self
+    type(solute_compartment_state_t),intent(in)::companion
+    integer,intent(out)::status
+    status=FMR_SOLCOMP_INVALID
+    if(.not.self%ready().or..not.companion%valid())return
+    if(size(companion%sorbed_matrix_mass)/=size(self%mobile%mass_mg_cm2).or. &
+       size(companion%age_amount)/=size(self%mobile%mass_mg_cm2))return
+    self%companion=companion
+    status=FMR_SOLCOMP_OK
   end subroutine
 
   subroutine solcomp_advance(self,state,t0,t1,outcome)
