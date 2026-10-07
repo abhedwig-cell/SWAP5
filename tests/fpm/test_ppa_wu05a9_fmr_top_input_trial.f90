@@ -118,7 +118,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(ok,'physical macropore config initialized')
   if(migmac11)then
     parameters%macropore%surface_pond_inflow_enabled=.true.
-    parameters%macropore%surface_pond_threshold_cm=0.05_real64
+    parameters%macropore%surface_pond_threshold_cm=1.0e-4_real64
     parameters%macropore%surface_macropore_conductivity_cm_per_day=3.0_real64
   end if
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
