@@ -3848,7 +3848,7 @@ contains
         call fmr_evaluate_legacy_explicit_cauchy_bottom_boundary_controlled(self%legacy_swbotb3_explicit_control, &
              physical_control%groundwater_level,self%cauchy3_proposal%aquifer_total_head_cm, &
              self%legacy_swbotb3_implicit_control%external_resistance_days(),cauchy3_q4,explicit_zbotcp,explicit_ztopcp, &
-             self%soil_parameters%dz,self%trusted_parameter_source%cofgen(3,:),explicit_cauchy3_result,explicit_cauchy3_status)
+             self%soil_parameters%dz,self%hydraulic_parameters%cofgen(3,:),explicit_cauchy3_result,explicit_cauchy3_status)
       class default
         return
       end select
