@@ -1,0 +1,20 @@
+name: SW431 Drain Signed Multilevel Qualification
+on:
+  push:
+    branches:
+      - work/swap431-drain-signed-multilevel-r2-20261007
+    paths:
+      - 'src/process/mod_drainage_spatial_distribution.f90'
+      - 'src/runtime/mod_fmr_divdra_runtime_binding.f90'
+      - 'tests/fmig431/test_swap431_drain_signed_divdra.f90'
+      - 'tests/fmig431/run_swap431_drain_signed_divdra.sh'
+      - '.github/workflows/swap431-drain-signed-multilevel.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_swap431_drain_signed_divdra.sh
+      - run: git diff --check integration/f-ci-canonical...HEAD
