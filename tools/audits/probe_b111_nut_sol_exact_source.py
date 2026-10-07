@@ -73,6 +73,23 @@ for needle in nfix_needles:
     if needle not in nut:
         raise SystemExit("missing exact N-fixation equation: "+needle)
 
+crop_n_owner_needles=[
+ "ndeml=max(nmaxlv*wlv-anlv,0.0d0)",
+ "ndems=max(nmaxst*wst-anst,0.0d0)",
+ "ndemr=max(nmaxrt*wrt-anrt,0.0d0)",
+ "ndemso=max(nmaxso*wso-anso,0.0d0)/tcnt",
+ "atnrt=max((atnlv+atnst)*fntrt,anrt-wrt*rnfrt)",
+ "rnulv=(ndeml/ndemto)*(nuptr+nfixtr)",
+ "rnust=(ndems/ndemto)*(nuptr+nfixtr)",
+ "rnurt=(ndemr/ndemto)*(nuptr+nfixtr)",
+ "rnldlv=rnflv*drlv",
+ "rnldrt=rnfrt*drrt",
+ "rnldst=rnfst*drst",
+]
+for needle in crop_n_owner_needles:
+    if needle not in nut:
+        raise SystemExit("missing exact B1.11 crop-N owner equation: "+needle)
+
 addition_needles=[
  "am_nh4=nh4nfrac(matno)*(1.0d0-volafrac(im))*amend(im)",
  "am_no3=no3nfrac(matno)*amend(im)",
@@ -163,6 +180,8 @@ if (ROOT/"tests/physics/run_fmr_b111_soil_n_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_n_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_soil_n_daily_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_n_daily_transaction.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
