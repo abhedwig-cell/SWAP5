@@ -1,0 +1,83 @@
+{
+  "schema": "swap431.mc_crop01.seasonal_lifecycle.v1",
+  "capabilities": [
+    "SW431-CROP-ROTATION",
+    "SW431-CROP-SOW"
+  ],
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "rotation": {
+      "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+      "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+      "routines": [
+        "croprotation",
+        "find_active_crop",
+        "cropemergence"
+      ]
+    },
+    "preemergence": {
+      "member": "SWAP/MOD_cropdevelopment.f90",
+      "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+      "routines": [
+        "preparation",
+        "sowing",
+        "germination"
+      ]
+    }
+  },
+  "implementation": [
+    "src/crop/mod_crop_rotation_owner.f90",
+    "src/crop/mod_crop_preemergence_owner.f90",
+    "src/crop/mod_crop_seasonal_lifecycle_owner.f90"
+  ],
+  "ownership": {
+    "persistent": [
+      "rotation cursor/calendar state",
+      "optional pre-emergence delay/progress state",
+      "bound crop key",
+      "crop_emerged",
+      "crop_harvested"
+    ],
+    "emitted_events": [
+      "bind crop parameters",
+      "reset crop owner",
+      "start crop emergence",
+      "retire crop owner"
+    ],
+    "excluded": [
+      "soil hydraulic/thermal state",
+      "crop biomass",
+      "crop internal phenology",
+      "root-water sink"
+    ]
+  },
+  "timing": [
+    "season start uses abs(time-cropstart)<1e-3",
+    "active crop lookup preserves B1.11 +/-0.1 day calendar window",
+    "pre-emergence completion produced by today's task-3 update becomes emergence on the next lifecycle day",
+    "all pre-emergence selectors already complete immediately after season initialization allow same-call emergence",
+    "crop-end receipt is required before leaving an active crop calendar; missing harvest fails closed"
+  ],
+  "qualification": {
+    "test": "tests/fmig431/test_swap431_crop_seasonal_lifecycle.f90",
+    "runner": "tests/fmig431/run_swap431_crop_seasonal_lifecycle.py",
+    "status": "READY_FOR_STRICT_O0_O2",
+    "cases": [
+      "two crops with fallow",
+      "temperature-sum germination one-day emergence lag",
+      "harvest receipt retirement",
+      "missing harvest fail-closed",
+      "immediate next-season emergence",
+      "same-checkpoint determinism",
+      "wrong parameter key rejection"
+    ]
+  },
+  "disposition": "SHARED_SEASONAL_LIFECYCLE_OWNER_IMPLEMENTED_RUNTIME_TRANSACTION_COMPOSITION_OPEN",
+  "remaining": [
+    "Wrap this lifecycle owner in the application transaction so rotation/pre-emergence state, crop-owner start/retire request and soil-state preservation publish atomically.",
+    "Bind the exact hydraulic/thermal pre-emergence forcing seam from work/swap431-crop-preemergence-20261007.",
+    "Qualify rejected season-boundary transitions and fresh-process restart before/after fallow and emergence.",
+    "Bind crop_key to immutable fixed/classic/soy/grass parameter sets exactly once per season."
+  ],
+  "admission": false
+}
