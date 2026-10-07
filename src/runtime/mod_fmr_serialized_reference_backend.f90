@@ -861,6 +861,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_c_drain_salt_matches_trial
   public :: fmr_soil_salt_boundary_matches_trial
   public :: fmr_new_b110_committed_state
+  public :: fmr_new_b110_sol01_committed_state
   public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_initialize_mobile_salt_profile
   public :: fmr_initialize_sol01_companion
@@ -1524,6 +1525,28 @@ contains
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
+
+  subroutine fmr_new_b110_sol01_committed_state(committed,lineage_id,state,initial_time,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_sol01_state_t),intent(in)::state
+    real(real64),intent(in)::initial_time
+    logical,intent(out)::ok
+    class(transaction_state_t),allocatable::carrier
+    ok=.false.
+    if(state%active_nodes<=0)return
+    if(.not.allocated(state%salt))return
+    if(.not.state%salt%ready(state%active_nodes))return
+    if(.not.state%solute_companion%ready(state%active_nodes))return
+    if(allocated(state%macropore))return
+    allocate(fmr_b110_sol01_state_t::carrier)
+    select type(typed_carrier=>carrier)
+    type is(fmr_b110_sol01_state_t)
+      call copy_b110_physical_state(state,typed_carrier)
+      typed_carrier%solute_companion=state%solute_companion
+    end select
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_sol01_committed_state
 
   subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
     type(kernel_committed_state_t),intent(out)::committed
