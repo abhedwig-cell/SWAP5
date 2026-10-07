@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-NUT01",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "qualification": {
+    "scope": [
+      "B1.11 NH4->NO3 nitrification coupling",
+      "B1.11 NO3->external-N denitrification coupling"
+    ],
+    "compiler": "GNU Fortran 14.2.0",
+    "modes": ["-O0", "-O2"],
+    "flags": [
+      "-std=f2008",
+      "-ffree-line-length-none",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fcheck=all",
+      "-ffpe-trap=invalid,zero,overflow"
+    ],
+    "result": "PASS",
+    "stdout_each_mode": "LOCAL_MINERAL_BRIDGES_PASS"
+  },
+  "contracts": [
+    "nitrification uses interval-average water fraction, source rate constant and transported NH4 average concentration",
+    "nitrified N is an internal NH4 debit / equal NO3 credit",
+    "denitrification uses interval-average water fraction, source rate constant and transported NO3 average concentration",
+    "denitrified N is an external whole-system N output",
+    "no committed-state mutation is performed by these transfer builders"
+  ],
+  "integrated_github_qualification": {
+    "pr": 1112,
+    "run_id": 37644330458,
+    "status_at_record": "QUEUED"
+  }
+}
