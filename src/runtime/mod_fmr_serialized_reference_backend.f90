@@ -65,6 +65,8 @@ module mod_fmr_serialized_reference_backend
   use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
        b111_extended_hydraulic_provider_t, initialize_b111_extended_hydraulic_parameters, &
        bind_b111_extended_hydraulic_provider, B111_EXT_OK
+  use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t, &
+       configure_b111_conductivity_power_tail, bind_b111_conductivity_power_tail, B111_POWER_OK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -308,6 +310,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swsophy = 0
     ! B1.11 constitutive selector per active node. Absence is exact model-1 default.
     integer, allocatable :: hydraulic_model(:)
+    logical :: conductivity_power_tail_active = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -663,8 +666,10 @@ module mod_fmr_serialized_reference_backend
     type(b111_legacy_hydraulic_provider_t), pointer :: legacy_hydraulic_constitutive => null()
     type(b111_extended_hydraulic_parameters_t), pointer :: extended_hydraulic_parameters => null()
     type(b111_extended_hydraulic_provider_t), pointer :: extended_hydraulic_constitutive => null()
+    type(b111_conductivity_power_tail_t), pointer :: power_tail_constitutive => null()
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
+    logical :: conductivity_power_tail_active = .false.
     integer :: direct_retention_slot = 0
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
     type(b110_root_sink_provider_t), pointer :: root_sink => null()
@@ -2998,7 +3003,7 @@ contains
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
-    integer :: n, legacy_hydraulic_status, extended_hydraulic_status
+    integer :: n, legacy_hydraulic_status, extended_hydraulic_status, power_tail_status
     logical :: micro_tables_ok
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
@@ -3010,6 +3015,7 @@ contains
       if (.not. associated(self%legacy_hydraulic_constitutive)) allocate(self%legacy_hydraulic_constitutive)
       if (.not. associated(self%extended_hydraulic_parameters)) allocate(self%extended_hydraulic_parameters)
       if (.not. associated(self%extended_hydraulic_constitutive)) allocate(self%extended_hydraulic_constitutive)
+      if (.not. associated(self%power_tail_constitutive)) allocate(self%power_tail_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3069,9 +3075,19 @@ contains
       end if
       if (extended_hydraulic_status /= B111_EXT_OK) &
         error stop 'FMR B1.11 extended hydraulic selector invalid or unsupported'
+      self%conductivity_power_tail_active = parameters%conductivity_power_tail_active
+      if (self%conductivity_power_tail_active) then
+        if (self%legacy_hydraulic_constitutive%active() .or. any(self%extended_hydraulic_parameters%model >= 5)) &
+          error stop 'FMR B1.11 power tail is qualified only with hydraulic model 1'
+        if (parameters%ksatexm_extension_active) &
+          error stop 'FMR B1.11 power tail is not qualified with KSATEXM'
+        call configure_b111_conductivity_power_tail(self%power_tail_constitutive, &
+             self%hydraulic_parameters%cofgen, power_tail_status)
+        if (power_tail_status /= B111_POWER_OK) error stop 'FMR B1.11 power-tail parameters invalid'
+      end if
       self%direct_retention_active = parameters%direct_retention_active
       if (self%direct_retention_active .and. (self%legacy_hydraulic_constitutive%active() .or. &
-          any(self%extended_hydraulic_parameters%model >= 5))) &
+          any(self%extended_hydraulic_parameters%model >= 5) .or. self%conductivity_power_tail_active)) &
         error stop 'FMR direct-retention route is not qualified with B1.11 alternative hydraulic models'
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
@@ -3806,7 +3822,7 @@ contains
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok, rutter_trial_prepared
-    integer :: legacy_hydraulic_status, extended_hydraulic_status
+    integer :: legacy_hydraulic_status, extended_hydraulic_status, power_tail_status
     real(real64) :: rutter_previous_ponding
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -3956,6 +3972,11 @@ contains
       call bind_b111_extended_hydraulic_provider(self%extended_hydraulic_constitutive, &
            self%extended_hydraulic_parameters, self%legacy_hydraulic_constitutive, extended_hydraulic_status)
       if (extended_hydraulic_status /= B111_EXT_OK) return
+      if (self%conductivity_power_tail_active) then
+        call bind_b111_conductivity_power_tail(self%power_tail_constitutive, self%extended_hydraulic_constitutive, &
+             power_tail_status)
+        if (power_tail_status /= B111_POWER_OK) return
+      end if
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
@@ -4460,6 +4481,9 @@ contains
       if (self%direct_retention_active) then
         call bind_frost_constitutive_provider(self%frost_constitutive, self%direct_retention_constitutive, &
              frost_factors, frost_provider_status)
+      else if (self%conductivity_power_tail_active) then
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%power_tail_constitutive, &
+             frost_factors, frost_provider_status)
       else if (self%legacy_hydraulic_constitutive%active() .or. &
                any(self%extended_hydraulic_parameters%model >= 5)) then
         call bind_frost_constitutive_provider(self%frost_constitutive, self%extended_hydraulic_constitutive, &
@@ -4475,6 +4499,8 @@ contains
       request%evaluation%constitutive => self%frost_constitutive
     else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
+    else if (self%conductivity_power_tail_active) then
+      request%evaluation%constitutive => self%power_tail_constitutive
     else if (self%legacy_hydraulic_constitutive%active() .or. &
              any(self%extended_hydraulic_parameters%model >= 5)) then
       request%evaluation%constitutive => self%extended_hydraulic_constitutive
