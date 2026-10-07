@@ -2,8 +2,8 @@
   "work_unit": "PPA-WU05-MIGMAC11",
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
-  "checkpoint_commit": "87b025be61ab47b6c9feb90883ab26cb86129c17",
-  "last_reconciled_head": "87b025be61ab47b6c9feb90883ab26cb86129c17",
+  "checkpoint_commit": "92796c42b4106b5c935382ebd5af76a185486b47",
+  "last_reconciled_head": "92796c42b4106b5c935382ebd5af76a185486b47",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -14,7 +14,14 @@
     "macropore_exchange_provider_t candidate pond handoff",
     "B1.11 dynamic top boundary optional pond donor parameters"
   ],
-  "invariants_affected": [7, 13, 22, 23, 29, 30],
+  "invariants_affected": [
+    7,
+    13,
+    22,
+    23,
+    29,
+    30
+  ],
   "relevant_paths": [
     "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
     "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
@@ -36,7 +43,9 @@
     "tests/fpm/test_ppa_wu05a9_fmr_top_input_trial.f90",
     ".github/workflows/ppa-wu05-migmac11-pond-donor.yml"
   ],
-  "evidence_paths": ["docs/audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md"],
+  "evidence_paths": [
+    "docs/audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md"
+  ],
   "dependency_surface": [
     "dynamic top boundary contract",
     "HeadCalc residual callback",
@@ -44,9 +53,9 @@
     "macropore candidate/commit bookkeeping",
     "surface ponding mass accounting"
   ],
-  "test_status": "Production O0/O2 compile and MIGMAC01-09 preservation passed at 9d8271e671ee7a7db817a4cc7119689752c85760. Active pond route remains failing; latest failure exposed inner callback shape mismatch and repair is persisted at checkpoint.",
+  "test_status": "Production O0/O2 compile and MIGMAC01-09 preservation previously passed. Active pond route debugging consolidated: distinct PndmxMp/KsMpSs binding, shape-safe callback, independent lateral receipt, candidate area partition, pure top receipt support. Next gate must establish active route end-to-end.",
   "qualification_status": "IN_PROGRESS",
-  "next_action": "Run focused qualification from checkpoint 87b025be; if active pond route passes, prove returned-surface closure then run runon paired case and retry/restart.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@87b025be61ab47b6c9feb90883ab26cb86129c17",
+  "next_action": "Run focused active-pond qualification; on PASS add runon paired case, returned-surface mass witness, reject/retry and restart before broad preservation.",
+  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@92796c42b4106b5c935382ebd5af76a185486b47",
   "blockers": []
 }
