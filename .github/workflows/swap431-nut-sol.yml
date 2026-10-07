@@ -103,6 +103,9 @@ on:
       - 'src/process/mod_b111_age_tracer_substep.f90'
       - 'tests/physics/test_b111_age_tracer_substep.f90'
       - 'tests/physics/run_b111_age_tracer_substep.sh'
+      - 'src/runtime/mod_fmr_b111_reactive_solute_transaction.f90'
+      - 'tests/physics/test_fmr_b111_reactive_solute_transaction.f90'
+      - 'tests/physics/run_fmr_b111_reactive_solute_transaction.sh'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -145,5 +148,7 @@ jobs:
         run: bash tests/physics/run_b111_reactive_solute_substep.sh
       - name: AgeTracer transport and pond continuation
         run: bash tests/physics/run_b111_age_tracer_substep.sh
+      - name: Atomic reactive chemistry and AgeTracer transaction
+        run: bash tests/physics/run_fmr_b111_reactive_solute_transaction.sh
       - name: Reactive solute layout restart
         run: python tests/physics/run_b111_reactive_solute_restart_layout.py
