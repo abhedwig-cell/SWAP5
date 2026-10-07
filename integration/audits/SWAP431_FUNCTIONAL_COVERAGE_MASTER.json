@@ -17,18 +17,18 @@
     "capabilities": 243,
     "dispositions": {
       "ADMITTED": 83,
-      "ACTIVE_MIGRATION": 121,
+      "ACTIVE_MIGRATION": 120,
       "SUPERSEDED": 14,
-      "REJECTED": 1,
+      "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 121,
+    "open_capabilities": 120,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 121,
+    "confirmed_missing_production_entries": 120,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 125
+    "total_unresolved_capabilities": 124
   },
   "capabilities": [
     {
@@ -7857,25 +7857,27 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough",
-      "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
-      ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [],
+      "current_disposition": "REJECTED",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_SOL01_AQUIFER_SOURCE_DECISION.md",
+        "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json"
       ],
       "production_reachability": {
         "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
+        "route": null,
+        "claim": "Definitive source-defect exclusion: exact B1.11 SWBR indexes a nodal storage coefficient out of bounds and the input contract provides no aquifer bulk-density parameter needed to define rho_b*KFSAT+POROS. Bottom-soil BDENS is not documented as aquifer density, so SWAP5 does not invent that physical assumption."
       },
       "restrictions": [
-        "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "Literal SWBR=1 source is bounds-invalid at the aquifer update.",
+        "KFSAT is an aquifer adsorption coefficient but no aquifer bulk-density parameter exists in the source input contract.",
+        "No source authority establishes bottom-soil BDENS as aquifer bulk density; a numnod substitution would be a new model assumption."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-SOL01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -7884,14 +7886,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "closed_foundation_authorities": [
-        "SW431-SALT-TRANSPORT"
-      ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "coverage_gap_type": null,
+      "implementation_absence_proven": false,
+      "decision_authority": "MC-SOL01 source-defect disposition, 2026-10-07; proposed for canonical review"
     },
     {
       "capability_id": "SW431-SALT-POND",
