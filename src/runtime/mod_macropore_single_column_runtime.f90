@@ -337,14 +337,11 @@ contains
           real(real64)::candidate_pond_lateral_cm
           candidate_pond_lateral_cm=request%evaluation%macropore%candidate_pond_lateral()
           if(candidate_pond_lateral_cm>0.0_real64)then
-            if(sum(rate_template_attempt%limiter%potential_top_lateral_cm)>1.0e-14_real64)then
-              result%status=MACRO_RUNTIME_FAILED
-              return
-            end if
             rate_template_attempt%limiter%potential_top_lateral_cm= &
+                 rate_template_attempt%limiter%potential_top_lateral_cm+ &
                  geometry_config%domain_fraction(:,geometry%top_node)*candidate_pond_lateral_cm
             result%requested_top_input_cm=sum(rate_template_attempt%limiter%potential_top_vertical_cm)+ &
-                 candidate_pond_lateral_cm
+                 sum(rate_template_attempt%limiter%potential_top_lateral_cm)
           end if
         end block
       end if
@@ -365,7 +362,18 @@ contains
             end if
             rate_template_attempt%limiter%potential_top_vertical_cm=candidate_top_vertical
             rate_template_attempt%limiter%potential_top_lateral_cm=candidate_top_lateral
-            result%requested_top_input_cm=sum(candidate_top_vertical)+sum(candidate_top_lateral)
+            if(associated(request%evaluation%macropore))then
+              block
+                real(real64)::candidate_pond_lateral_cm
+                candidate_pond_lateral_cm=request%evaluation%macropore%candidate_pond_lateral()
+                if(candidate_pond_lateral_cm>0.0_real64) &
+                     rate_template_attempt%limiter%potential_top_lateral_cm= &
+                     rate_template_attempt%limiter%potential_top_lateral_cm+ &
+                     geometry_config%domain_fraction(:,geometry%top_node)*candidate_pond_lateral_cm
+              end block
+            end if
+            result%requested_top_input_cm=sum(rate_template_attempt%limiter%potential_top_vertical_cm)+ &
+                 sum(rate_template_attempt%limiter%potential_top_lateral_cm)
           end if
         end if
       end if
