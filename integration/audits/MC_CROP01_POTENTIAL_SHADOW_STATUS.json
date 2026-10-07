@@ -1,6 +1,6 @@
 {
   "schema": "swap431.mc_crop01.potential_shadow.v1",
-  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "canonical_baseline": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
   "source_authority": {
     "member": "SWAP/wofost.f90",
     "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
@@ -53,11 +53,13 @@
   "qualification": {
     "component_runner": "tests/fmig431/run_swap431_potential_shadow.py",
     "atomic_transaction_gate": "tests/fmig431/run_swap431_potential_shadow_transaction.sh",
-    "status": "READY_FOR_O0_O2_PERSISTED_QUALIFICATION"
+    "status": "PERSISTED_QUALIFICATION_QUEUED_ON_CURRENT_CANONICAL",
+    "current_run_id": 37683668963,
+    "current_head": "3a20ed4fbb3cc708588e18594ef9e634b1e160cc",
+    "second_event_restart": "tests/fmig431/run_swap431_potential_shadow_transaction.sh now compares continuous vs reconstructed execution through a second accepted event"
   },
   "remaining": [
-    "Run component and atomic transaction O0/O2 gates.",
-    "Qualify post-event export/reconstruct and continuation across a second accepted event.",
+    "Pass current lean O0/O2 component, daily trajectory and atomic transaction/restart gate.",
     "Compose accepted WRTPOT and GRRTPOT into SWRD3 and SWRD2 depth owners.",
     "Keep potential shadow opt-in."
   ],
@@ -70,5 +72,9 @@
     "persistence": "production persistence view carries optional shadow and root-growth carrier",
     "pre_event_restart": "shadow restart is valid before the first receipt while root-growth carrier is intentionally unavailable",
     "post_event_invariant": "a shadow-enabled state with a receipt requires a ready root-growth carrier"
+  },
+  "reconciliation": {
+    "branch": "work/swap431-crop-potential-shadow-r2-20261007",
+    "basis": "fresh branch from current integration/f-ci-canonical after CO2 admission"
   }
 }
