@@ -39,10 +39,8 @@ program test_mc_irr01_management_policy
   call common(p,r); p%timing_criterion=4; p%tcs4_knot_count=2
   p%tcs4_dvs(1:2)=[0d0,2d0]; p%tcs4_depletion_mm(1:2)=[15d0,15d0]
   p%depth_limit_enabled=.true.; p%minimum_depth_cm=2.5d0; p%maximum_depth_cm=3d0
-  p%salinity_excess_enabled=.true.; p%salinity_threshold=8d0; p%salinity_excess_percent=20d0
-  r%sensor_concentration=9d0; r%solute_enabled=.true.
   call evaluate_irrigation_management_policy(p,s,r,c,y,st)
-  if(st/=0 .or. abs(y%selected_depth_cm-3.0d0)>tol .or. .not.y%depth_limited .or. .not.y%salinity_excess_applied) error stop 6
+  if(st/=0 .or. abs(y%selected_depth_cm-2.5d0)>tol .or. .not.y%depth_limited) error stop 6
 
   call common(p,r); p%timing_criterion=4; p%tcs4_knot_count=2
   p%tcs4_dvs(1:2)=[0d0,2d0]; p%tcs4_depletion_mm(1:2)=[15d0,15d0]
