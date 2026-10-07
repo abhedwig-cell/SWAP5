@@ -1,7 +1,7 @@
 program test_fapp07_hupsel_irrigation_composition
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_irrigation_process, only: irrigation_flux_result_t, irrigation_diagnostics_t, &
-       IRRIGATION_APPLICATION_SURFACE
+       IRRIGATION_APPLICATION_SPRINKLER, IRRIGATION_APPLICATION_SURFACE
   use mod_tcs1_dcs2_sprinkling_irrigation_process, only: tcs1_dcs2_sprinkling_result_t, &
        tcs1_dcs2_sprinkling_diagnostics_t
   use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t
@@ -96,13 +96,43 @@ program test_fapp07_hupsel_irrigation_composition
   if (n /= 110 .or. n0 /= 18 .or. n3 /= 92) error stop 20
   if (max_error /= 0.0_real64) error stop 21
 
+  ! MC-IRR01 fixed sprinkler route: fixed-event lifecycle is reused, but gross water is intercepted.
+  fixed_flux = irrigation_flux_result_t()
+  fixed_flux%applied = .true.
+  fixed_flux%application_type = IRRIGATION_APPLICATION_SPRINKLER
+  fixed_flux%surface_gross_rate = 7.5_real64
+  fixed_diag = irrigation_diagnostics_t()
+  base_rutter = rutter_interval_input_t()
+  base_rutter%gross_rain_cm_per_day = 0.4_real64
+  call fmr_bind_fixed_sprinkling_to_rutter(base_rutter,fixed_flux,fixed_diag,bound_rutter,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%result_produced) error stop 22
+  if (.not. d%rutter_interception_enabled .or. .not. bound_rutter%surface_irrigation_is_intercepted) error stop 23
+  if (abs(bound_rutter%surface_irrigation_cm_per_day-7.5_real64) > epsilon(1.0_real64)) error stop 24
+  if (abs(bound_rutter%gross_rain_cm_per_day-base_rutter%gross_rain_cm_per_day) > epsilon(1.0_real64)) error stop 25
+
+  ! MC-IRR01 scheduled surface route: same accepted TCS1 event bypasses canopy interception.
+  scheduled = tcs1_dcs2_sprinkling_result_t()
+  scheduled%applied = .true.
+  scheduled%gross_surface_rate_cm_per_day = 6.25_real64
+  scheduled_diag = tcs1_dcs2_sprinkling_diagnostics_t()
+  base_top = b110_dynamic_top_boundary_request_t()
+  base_top%precipitation_rate_cm_per_day = 0.75_real64
+  call fmr_bind_tcs1_surface_identity_to_dynamic_top(base_top,scheduled,scheduled_diag,bound_top,d)
+  if (d%status /= FMR_HUPSEL_IRR_BIND_OK .or. .not. d%result_produced) error stop 26
+  if (d%rutter_interception_enabled .or. .not. d%net_irrigation_bound) error stop 27
+  if (abs(bound_top%irrigation_rate_cm_per_day-6.25_real64) > epsilon(1.0_real64)) error stop 28
+  if (abs(bound_top%precipitation_rate_cm_per_day-base_top%precipitation_rate_cm_per_day) > epsilon(1.0_real64)) error stop 29
+
+  print '(A)','MC_IRR01_FIXED_SPRINKLER_INTERCEPTION_ROUTE=PASS'
+  print '(A)','MC_IRR01_SCHEDULED_SURFACE_BYPASS_ROUTE=PASS'
+
   ! Invalid gross scheduled irrigation must fail closed.
   scheduled = tcs1_dcs2_sprinkling_result_t()
   scheduled%applied = .true.
   scheduled%gross_surface_rate_cm_per_day = -1.0_real64
   scheduled_diag = tcs1_dcs2_sprinkling_diagnostics_t()
   call fmr_bind_tcs1_sprinkling_to_rutter(base_rutter,scheduled,scheduled_diag,bound_rutter,d)
-  if (d%status /= FMR_HUPSEL_IRR_BIND_INVALID_RATE .or. d%result_produced) error stop 22
+  if (d%status /= FMR_HUPSEL_IRR_BIND_INVALID_RATE .or. d%result_produced) error stop 30
 
   write(*,'(A,I0)') 'F_APP07_EXACT_ACTIVE_INTERVALS=',n
   write(*,'(A,I0)') 'F_APP07_SWINTER0_INTERVALS=',n0
