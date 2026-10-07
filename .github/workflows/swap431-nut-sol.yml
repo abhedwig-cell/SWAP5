@@ -36,6 +36,25 @@ on:
       - 'src/process/mod_b111_solute_decay.f90'
       - 'src/process/mod_b111_pond_solute_exchange.f90'
       - 'src/process/mod_b111_age_tracer_production.f90'
+      - 'src/process/mod_b111_soil_n_nitrification_coupling.f90'
+      - 'src/process/mod_b111_soil_n_denitrification_coupling.f90'
+      - 'src/process/mod_b111_pond_solute_transfer.f90'
+      - 'src/process/mod_b111_age_tracer_transfer.f90'
+      - 'src/process/mod_b111_solute_decay_transfer.f90'
+      - 'src/runtime/mod_fmr_b111_soil_n_management_event.f90'
+      - 'src/runtime/mod_fmr_b111_solute_transaction.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'tests/physics/test_b111_soil_n_nitrification_coupling.f90'
+      - 'tests/physics/test_b111_soil_n_denitrification_coupling.f90'
+      - 'tests/physics/test_fmr_b111_soil_n_management_event.f90'
+      - 'tests/physics/test_b111_pond_solute_transfer.f90'
+      - 'tests/physics/test_b111_age_tracer_transfer.f90'
+      - 'tests/physics/test_b111_solute_decay_transfer.f90'
+      - 'integration/audits/MC_SOL01_AQUIFER_SOURCE_DECISION.md'
+      - 'integration/audits/MC_NUT_SOL_PRODUCTION_STATUS.md'
+      - 'integration/audits/evidence/MC_NUT01_MINERAL_REACTION_LOCAL_QUALIFICATION.json'
       - 'src/runtime/mod_fmr_b111_soil_n_transaction.f90'
       - 'tests/physics/test_soil_n_reaction_transfer.f90'
       - 'tests/physics/test_b111_soil_n_rate_factors.f90'
@@ -79,3 +98,5 @@ jobs:
         run: bash tests/physics/run_swap431_nut_sol_owner_components.sh
       - name: Soil-N transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_soil_n_transaction.sh
+      - name: Reactive solute transaction rollback and restart
+        run: bash tests/physics/run_fmr_b111_solute_transaction.sh
