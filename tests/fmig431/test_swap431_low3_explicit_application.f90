@@ -209,6 +209,7 @@ contains
     real(real64),intent(out)::k0
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
+    integer::k
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
     heads(1)=-1.25_real64
     do k=2,numnod
