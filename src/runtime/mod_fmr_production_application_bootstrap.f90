@@ -1107,6 +1107,7 @@ contains
           tile%parameters%boesten_evaporation_active) return
     else if (tile%ordinary_implicit_cauchy) then
       if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (tile%parameters%swbotb3_explicit_active .or. tile%parameters%profile_groundwater_projection) return
       if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
       if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
       if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
