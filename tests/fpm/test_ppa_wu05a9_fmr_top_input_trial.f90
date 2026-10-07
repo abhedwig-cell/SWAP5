@@ -66,7 +66,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   real(real64),allocatable :: conductivity(:),entry_head(:),sorp_fac_parallel(:),ksat_horizontal(:),cdarcy(:,:)
   integer,allocatable :: potential_bottom(:)
   real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
-  real(real64) :: macro_before, macro_after
+  real(real64) :: macro_before, macro_after, trial_dt
   logical :: ok, did_commit, available
   logical :: probe_ok
   logical :: migmac10
@@ -118,6 +118,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
       if(migmac11)migmac10=.true.
     end block
   end block
+  trial_dt=dt
+  if(migmac11)trial_dt=dt/32.0_real64
   dynamic_enabled=dynamic_flag=='1' .or. dynamic_flag=='2' .or. dynamic_flag=='4' .or. dynamic_flag=='5'
   geometry_changes_expected=dynamic_flag=='1'
   inner_route=dynamic_enabled .or. dynamic_flag=='3'
@@ -125,7 +127,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(dynamic_flag=='5')nd=2
   call initialize_parameters(parameters)
   call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
-  call bind_b110_default_mvg_provider(hyd,hp,dt)
+  call bind_b110_default_mvg_provider(hyd,hp,trial_dt)
   call initialize_macropore_config(parameters,ok)
   call require(ok,'physical macropore config initialized')
   if(migmac11)then
@@ -177,7 +179,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   physical%macropore%water_domain_cp=0.0_real64
   physical%macropore%water_domain_cp(1,numnod)=0.20_real64
   if(migmac11_partial .and. macro_top==1) &
-       physical%macropore%water_domain_cp(1,1)=max(0.0_real64,geometry%volume_domain_cp(1,1)-1.0e-3_real64)
+       physical%macropore%water_domain_cp(1,1)=max(0.0_real64,geometry%volume_domain_cp(1,1)-1.0e-5_real64)
   if(dynamic_flag=='4' .or. dynamic_flag=='5') &
        physical%macropore%water_domain_cp=0.85_real64*geometry%volume_domain_cp
   call canonicalize_macropore_standard_storage(physical%macropore,macro_top,z,dz,storage_view,ok)
@@ -203,7 +205,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(migmac10_rutter)then
     if(allocated(forcing%macropore_top_input))deallocate(forcing%macropore_top_input)
     allocate(forcing%rutter)
-    call initialize_interception_window(508010_int64,0.0_real64,dt,dt,rutter_window,rutter_status)
+    call initialize_interception_window(508010_int64,0.0_real64,trial_dt,trial_dt,rutter_window,rutter_status)
     call require(rutter_status==0,'Rutter source window initialized')
     forcing%rutter%prepared=.true.
     forcing%rutter%source_window=rutter_window
@@ -275,7 +277,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call backend%configure_macropore_policy(policy,ok)
   call require(ok,'macropore policy configured independently')
 
-  call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,dt,checkpoint, &
+  call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,trial_dt,checkpoint, &
        result,candidate,diagnostics)
   write(error_unit,'(*(g0))') 'PPA_WU05A9_FMR_DIAG|STATUS=',result%status,'|COMPLETED=',result%completed, &
        '|ADMISSION_REJECTIONS=',diagnostics%admission_rejections,'|TRANSACTION_CALLS=',diagnostics%transaction_calls, &
@@ -413,7 +415,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
     if(migmac10_rutter)then
       call require(allocated(s%rutter),'postcommit Rutter source state present')
       call require(s%rutter%source_window_initialized(),'postcommit Rutter source window initialized')
-      call require(abs(s%rutter%accepted_until()-dt)<=1.0e-14_real64,'Rutter source progress committed to endpoint')
+      call require(abs(s%rutter%accepted_until()-trial_dt)<=1.0e-14_real64,'Rutter source progress committed to endpoint')
     end if
     if(constitutive_flag=='7') &
          call require(all(s%macropore%dynamic_volume_cp(3::3)==0.0_real64),'MIGMAC05 accepted rigid interfaces zero')
