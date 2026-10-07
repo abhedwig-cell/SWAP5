@@ -44,7 +44,7 @@ contains
       select case (template%solute_state_layout_id)
       case (FMR_SOLUTE_STATE_LAYOUT_NONE)
         select type (sol01 => physical)
-        type is (fmr_b110_sol01_state_t)
+        class is (fmr_b110_sol01_state_t)
           ! SOL01 state requires explicit solute layout identity even if a
           ! partially constructed object happens not to carry dissolved salt.
           return
@@ -53,7 +53,7 @@ contains
         if (allocated(physical%salt)) return
       case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
         select type (sol01 => physical)
-        type is (fmr_b110_sol01_state_t)
+        class is (fmr_b110_sol01_state_t)
           ! Never reinterpret persistent sorbed/pond stores as the legacy
           ! dissolved-only restart topology.
           return
