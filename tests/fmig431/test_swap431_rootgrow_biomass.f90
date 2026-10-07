@@ -4,11 +4,14 @@ program test_swap431_rootgrow_biomass
   use mod_crop_root_depth_biomass
   use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
   use mod_wofost_actual_biomass_state, only: wofost_actual_biomass_state_t
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
   implicit none
 
   type(wofost_rate_table_t) :: table
   type(crop_root_depth_biomass_result_t) :: result
   type(wofost_crop_owner_state_t) :: owner
+  type(crop_root_uptake_input_t) :: root_input
+  type(wofost_rate_table_t) :: density_table
   integer :: status
   logical :: available
   real(real64), parameter :: tol=1.0e-12_real64
@@ -16,6 +19,8 @@ program test_swap431_rootgrow_biomass
   call construct_wofost_rate_table([0.0_real64,100.0_real64,300.0_real64], &
        [10.0_real64,50.0_real64,150.0_real64],table,status)
   if(status/=WOFOST_RATE_TABLE_OK) error stop 1
+  call construct_wofost_rate_table([0.0_real64,1.0_real64],[1.0_real64,1.0_real64],density_table,status)
+  if(status/=WOFOST_RATE_TABLE_OK) error stop 101
 
   ! Literal B1.11 SWRD3: RDM=min(RDMAX,AFGEN(RLWTB,WRTMAX));
   ! RD=min(AFGEN(RLWTB,WRT),RDM); RDPOT likewise with WRTPOT.
@@ -43,6 +48,13 @@ program test_swap431_rootgrow_biomass
   call owner%derive_biomass_root_depth(table,120.0_real64,300.0_real64,200.0_real64,result,available,status)
   if(status/=WOFOST_CROP_OWNER_OK.or..not.available) error stop 10
   if(abs(result%actual_root_depth_cm-30.0_real64)>tol.or.abs(result%potential_root_depth_cm-100.0_real64)>tol) error stop 11
+
+  call owner%derive_biomass_root_uptake_input(table,density_table,120.0_real64,300.0_real64,200.0_real64, &
+       [-10.0_real64,-20.0_real64,-30.0_real64,-40.0_real64],root_input,available,status)
+  if(status/=WOFOST_CROP_OWNER_OK.or..not.available) error stop 13
+  if(root_input%rooted_nodes/=3) error stop 14
+  if(size(root_input%cumulative_root_fraction)/=4) error stop 15
+  if(abs(root_input%cumulative_root_fraction(4)-1.0_real64)>tol) error stop 16
 
   owner%crop_emerged=.false.
   deallocate(owner%biomass)
