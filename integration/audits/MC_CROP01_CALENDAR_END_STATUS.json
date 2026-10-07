@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.mc_crop01.calendar_end.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "owner_role": "shared stateless crop-end event resolver",
+  "source_authority": [
+    {
+      "member": "SWAP/fixed.f90",
+      "sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+      "semantics": [
+        "SWHARV=0: end when abs(T1900-CROPEND-1)<0.1",
+        "SWHARV=1: end when DVS>=DVSEND or same calendar condition"
+      ]
+    },
+    {
+      "member": "SWAP/wofost.f90",
+      "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "semantics": [
+        "SW_HARV=0: same calendar end",
+        "SW_HARV=1 for SWWOFOST 1/2: DVS>=DVSEND or same calendar end"
+      ]
+    }
+  ],
+  "implementation": "src/crop/mod_crop_calendar_end_event.f90",
+  "qualification": "tests/fmig431/test_swap431_crop_calendar_end.f90",
+  "ownership": {
+    "persistent_state": false,
+    "event_publication": "resolver only; accepted lifecycle/event publication remains runtime transaction responsibility",
+    "consumers": [
+      "fixed crop",
+      "classic annual WOFOST",
+      "soybean",
+      "future rotation owner"
+    ]
+  },
+  "disposition": "SOURCE_COMPONENT_COMPLETE_RUNTIME_EVENT_COMPOSITION_OPEN",
+  "admission": false
+}
