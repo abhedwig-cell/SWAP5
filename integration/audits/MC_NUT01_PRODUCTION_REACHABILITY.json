@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-NUT01",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "status": "QUALIFICATION_CANDIDATE_NOT_ADMITTED",
+  "capabilities": [
+    {
+      "id": "SW431-NUT-ORGANIC",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "B1.11 FOM/Bio/Hum analytical turnover candidate",
+        "accepted mass-consistent Nminer reference correction",
+        "Cdissi/Bio_av/Hum_av source bookkeeping",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": ["persisted O0/O2 integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-MINERAL",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "single NH4/NO3 owner",
+        "B1.11 mass-concentration storage conversion including NH4 sorption",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": ["persisted O0/O2 integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-NITRIF",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "exact source rate factor",
+        "interval-average NH4 coupling",
+        "internal NH4 debit / equal NO3 credit",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": ["persisted integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-DENIT",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "Cdissi-dependent respiration factor",
+        "interval-average NO3 coupling",
+        "explicit external N output",
+        "organic-to-denitrification chain",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": ["persisted integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-TRANSPORT",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "typed Wofost_SoilWaterN analytical transport",
+        "daily demand/supply-limited NH4/NO3 caller",
+        "mass receipts and integrated one-day Soil-N transaction"
+      ],
+      "remaining": [
+        "exact byte-pinned management_soil caller oracle",
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-AMEND",
+      "state": "EVENT_REACHABLE_CANDIDATE",
+      "evidence": [
+        "source split operator",
+        "1e-6 OM activation threshold",
+        "candidate-only exactly-once management event",
+        "restart-preserved event lineage"
+      ],
+      "remaining": ["production calendar delivery binding", "persisted integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-RESIDUE",
+      "state": "EVENT_REACHABLE_CANDIDATE",
+      "evidence": [
+        "source split operator",
+        "1e-12 OM activation threshold",
+        "zero volatilization",
+        "candidate-only exactly-once management event",
+        "restart-preserved event lineage"
+      ],
+      "remaining": ["crop residue delivery binding", "persisted integrated qualification", "canonical admission"]
+    },
+    {
+      "id": "SW431-NUT-CROP",
+      "state": "OWNER_OUTPUT_AVAILABLE_NOT_BOUND",
+      "evidence": [
+        "daily owner produces bounded total soil N supply",
+        "WOFOST81 admitted route deliberately remains N-unlimited and unchanged"
+      ],
+      "remaining": [
+        "separate B1.11 crop consumer transaction",
+        "accepted supply lineage",
+        "crop/soil atomic coupling or explicit two-owner receipt contract",
+        "persisted qualification"
+      ]
+    },
+    {
+      "id": "SW431-NUT-NFIX",
+      "state": "SOURCE_POLICY_QUALIFICATION_CANDIDATE",
+      "evidence": [
+        "separate B1.11 vegetative fixation policy",
+        "strict DVSNLT and RELTR gate",
+        "exact wofofstnut authority oracle",
+        "WOFOST81 semantics unchanged"
+      ],
+      "remaining": [
+        "B1.11 crop owner application binding",
+        "fixation external-input receipt",
+        "restart/retry production qualification"
+      ]
+    }
+  ],
+  "global_invariants": [
+    "rejected trials do not mutate committed Soil-N state",
+    "organic N is derived from FOM/Bio/Hum owner state",
+    "fixation is not a Soil-N debit",
+    "WOFOST81 admitted route is unchanged",
+    "no capability in this record is canonical ADMITTED until persisted qualification completes"
+  ]
+}
