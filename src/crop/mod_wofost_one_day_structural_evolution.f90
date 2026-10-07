@@ -40,6 +40,8 @@ module mod_wofost_one_day_structural_evolution
   type, public :: wofost_accepted_window_aggregates_t
     real(real64) :: actual_root_uptake = 0.0_real64
     real(real64) :: potential_transpiration = 0.0_real64
+    logical :: deepest_root_oxygen_factor_available = .false.
+    real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
   end type wofost_accepted_window_aggregates_t
 
   type, public :: wofost_one_day_update_parameters_t
@@ -351,6 +353,14 @@ contains
     if (.not. valid) return
     valid = aggregates%actual_root_uptake >= 0.0_real64 .and. &
          aggregates%potential_transpiration >= 0.0_real64
+    if (.not. valid) return
+    if (aggregates%deepest_root_oxygen_factor_available) then
+      valid = ieee_is_finite(aggregates%deepest_root_oxygen_factor_integral) .and. &
+           aggregates%deepest_root_oxygen_factor_integral >= 0.0_real64 .and. &
+           aggregates%deepest_root_oxygen_factor_integral <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64)
+    else
+      valid = abs(aggregates%deepest_root_oxygen_factor_integral) <= tiny(1.0_real64)
+    end if
   end function valid_aggregates
 
   logical function valid_parameters(parameters) result(valid)
