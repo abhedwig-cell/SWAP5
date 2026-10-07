@@ -22,6 +22,8 @@ module mod_fmr_drainage_response_binding
        evaluate_empirical_interflow_response, INTERFLOW_OK
   use mod_drainage_extended_exchange, only: extended_drainage_parameters_t, extended_drainage_control_t, &
        extended_drainage_result_t, extended_drainage_diagnostics_t, evaluate_extended_drainage_exchange, EXT_DRAIN_OK
+  use mod_drainage_dramet3_response, only: drainage_dramet3_parameters_t, drainage_dramet3_result_t, &
+       drainage_dramet3_diagnostics_t, evaluate_drainage_dramet3_response, DRAIN_DRAMET3_OK
   use mod_drainage_multilevel_aggregation, only: drainage_level_exchange_t, drainage_multilevel_aggregate_t, &
        drainage_multilevel_diagnostics_t, aggregate_drainage_levels, DRAINAGE_AGGREGATION_OK
   implicit none
@@ -36,6 +38,7 @@ module mod_fmr_drainage_response_binding
   integer, parameter, public :: FMR_DRAIN_VARIANT_ERNST_IPOS5 = 7
   integer, parameter, public :: FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW = 8
   integer, parameter, public :: FMR_DRAIN_VARIANT_EXTENDED_SIGNED = 9
+  integer, parameter, public :: FMR_DRAIN_VARIANT_DRAMET3 = 10
 
   integer, parameter, public :: FMR_DRAIN_BIND_OK = 0
   integer, parameter, public :: FMR_DRAIN_BIND_INVALID_CONFIGURATION = 1
@@ -61,6 +64,7 @@ module mod_fmr_drainage_response_binding
     type(ernst_ipos5_prepared_t) :: ernst_ipos5_prepared
     type(empirical_interflow_parameters_t) :: empirical
     type(extended_drainage_parameters_t) :: extended
+    type(drainage_dramet3_parameters_t) :: dramet3
   end type fmr_drainage_response_level_parameters_t
 
   ! Interval control is deliberately separate from immutable parameters.
@@ -120,6 +124,8 @@ contains
         if (controls(i)%drain_head_supplied) return
         if (.not. controls(i)%resolved_surface_water_head_supplied .or. &
             .not. ieee_is_finite(controls(i)%resolved_surface_water_head_cm)) return
+      case (FMR_DRAIN_VARIANT_DRAMET3)
+        if (controls(i)%drain_head_supplied .or. controls(i)%resolved_surface_water_head_supplied) return
       case (FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, &
             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, &
             FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5)
@@ -139,12 +145,13 @@ contains
     valid = fmr_drainage_response_configuration_status(parameters, controls, active_nodes) == FMR_DRAIN_BIND_OK
   end function fmr_drainage_response_configuration_valid
 
-  subroutine evaluate_fmr_drainage_response_bottom_lumped(parameters, controls, hydraulic_view, qdra, diagnostics)
+  subroutine evaluate_fmr_drainage_response_bottom_lumped(parameters, controls, hydraulic_view, qdra, diagnostics, evaluation_time)
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
     type(fmr_drainage_response_level_control_t), intent(in) :: controls(:)
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(out) :: qdra(:,:)
     type(fmr_drainage_response_diagnostics_t), intent(out) :: diagnostics
+    real(real64), intent(in), optional :: evaluation_time
 
     type(drainage_level_exchange_t), allocatable :: exchanges(:)
     logical :: view_ok
@@ -170,7 +177,8 @@ contains
 
     allocate(exchanges(size(parameters)), diagnostics%level(size(parameters)))
     do i = 1, size(parameters)
-      call evaluate_one_level(i, parameters(i), controls(i), hydraulic_view, exchanges(i), diagnostics%level(i), status)
+      call evaluate_one_level(i, parameters(i), controls(i), hydraulic_view, exchanges(i), diagnostics%level(i), status, &
+           evaluation_time)
       if (status /= FMR_DRAIN_BIND_OK) then
         diagnostics%status = status
         qdra = 0.0_real64
@@ -195,7 +203,7 @@ contains
     diagnostics%evaluated = .true.
   end subroutine evaluate_fmr_drainage_response_bottom_lumped
 
-  subroutine evaluate_one_level(level_index, parameters, control, hydraulic_view, exchange, diagnostic, status)
+  subroutine evaluate_one_level(level_index, parameters, control, hydraulic_view, exchange, diagnostic, status, evaluation_time)
     integer, intent(in) :: level_index
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters
     type(fmr_drainage_response_level_control_t), intent(in) :: control
@@ -203,6 +211,7 @@ contains
     type(drainage_level_exchange_t), intent(out) :: exchange
     type(fmr_drainage_response_level_diagnostics_t), intent(out) :: diagnostic
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: evaluation_time
 
     type(drainage_control_t) :: linear_control
     type(drainage_transfer_t) :: linear_result
@@ -221,6 +230,8 @@ contains
     type(extended_drainage_control_t) :: extended_control
     type(extended_drainage_result_t) :: extended_result
     type(extended_drainage_diagnostics_t) :: extended_diag
+    type(drainage_dramet3_result_t) :: dramet3_result
+    type(drainage_dramet3_diagnostics_t) :: dramet3_diag
 
     exchange = drainage_level_exchange_t()
     diagnostic = fmr_drainage_response_level_diagnostics_t()
@@ -302,6 +313,19 @@ contains
            extended_diag%activation_boundary .or. extended_diag%control_head_branch_boundary .or. &
            extended_diag%sign_resistance_boundary .or. extended_diag%surface_resistance_boundary .or. &
            extended_diag%power_activation_boundary)
+
+    case (FMR_DRAIN_VARIANT_DRAMET3)
+      if (.not. present(evaluation_time)) then
+        diagnostic%binding_status = FMR_DRAIN_BIND_INVALID_CONFIGURATION
+        status = FMR_DRAIN_BIND_INVALID_CONFIGURATION
+        return
+      end if
+      call evaluate_drainage_dramet3_response(parameters%dramet3, hydraulic_view, evaluation_time, &
+           dramet3_result, dramet3_diag)
+      diagnostic%process_status = dramet3_diag%status
+      if (dramet3_diag%status /= DRAIN_DRAMET3_OK) return
+      call bind_result(dramet3_result%signed_soil_to_drain_rate, dramet3_result%derivative_defined, &
+           dramet3_result%dq_dgroundwater_level, dramet3_diag%branch_boundary)
 
     case default
       diagnostic%binding_status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT

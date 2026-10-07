@@ -1,0 +1,21 @@
+name: SW431 DRAMET3 qualification
+on:
+  push:
+    branches:
+      - work/swap431-dramet3-20261007
+    paths:
+      - 'src/process/mod_drainage_dramet3_response.f90'
+      - 'src/runtime/mod_fmr_drainage_response_binding.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fmig431/test_swap431_dramet3.f90'
+      - 'tests/fmig431/run_swap431_dramet3.py'
+      - '.github/workflows/swap431-dramet3.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: python3 tests/fmig431/run_swap431_dramet3.py
+      - run: git diff --check ${GITHUB_SHA}^ ${GITHUB_SHA}

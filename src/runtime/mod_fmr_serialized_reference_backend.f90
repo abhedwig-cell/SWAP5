@@ -4143,7 +4143,7 @@ contains
         call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
         if(.not.hydraulic_view_ok)return
         call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
-             hydraulic_start,self%qdra,self%drainage_response_diagnostics)
+             hydraulic_start,self%qdra,self%drainage_response_diagnostics, t1)
         self%drainage_response_evaluations=self%drainage_response_evaluations+1
         self%last_observation%drainage_response_evaluations=self%drainage_response_evaluations
         self%last_observation%drainage_response=self%drainage_response_diagnostics
@@ -4398,7 +4398,7 @@ contains
         self%last_observation%drainage_projected_groundwater_level = projected_groundwater_level
       end if
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
-           hydraulic_start, self%qdra, self%drainage_response_diagnostics)
+           hydraulic_start, self%qdra, self%drainage_response_diagnostics, t1)
       self%drainage_response_evaluations = self%drainage_response_evaluations + 1
       self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
       self%last_observation%drainage_response = self%drainage_response_diagnostics
