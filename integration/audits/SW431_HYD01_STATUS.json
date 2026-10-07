@@ -1,0 +1,137 @@
+{
+  "schema": "swap5.workunit_status.v1",
+  "workstream": "F-MIG431-HYD",
+  "work_unit": "SW431-HYD01",
+  "date": "2026-10-07",
+  "branch": "work/sw431-hyd01-extended-constitutive",
+  "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "phase": "AUTHORITY_RECONCILED_IMPLEMENTATION_PENDING",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "scope": {
+    "primary": "MC-HYD01 remaining SWAP 4.3.1/B1.11 hydraulic constitutive coverage",
+    "successor": "MC-HYST01 after stateless hydraulic families",
+    "candidate_ids": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL5",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-MODEL7",
+      "SW431-HYD-MODEL8",
+      "SW431-HYD-MODEL9",
+      "SW431-HYD-MODEL10",
+      "SW431-HYD-MODEL11",
+      "SW431-HYD-MODEL12",
+      "SW431-HYD-TABLE",
+      "SW431-HYD-POWER",
+      "SW431-HYD-VAPOR",
+      "SW431-HYD-LINEAR-TABLE",
+      "SW431-HYD-RIA-VAPOR",
+      "SW431-HYST1",
+      "SW431-HYST2"
+    ]
+  },
+  "reconciliation": {
+    "census_records_found_in_canonical_repository": false,
+    "current_production_authority": "src/solver/mod_b110_default_mvg_provider.f90",
+    "current_documented_profile": "F-SI09 SWSOPHY=0 SWKIMPL=0 default analytical MvG; other hydraulic families excluded",
+    "reference_selector_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
+    "b111_snapshot": "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "b111_wc_k_corrected_sha256": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+    "b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+  },
+  "semantic_decomposition": {
+    "model2": {
+      "family": "exponential test relation",
+      "source_status": "readswap explicitly describes model 2 as for testing",
+      "planned_disposition": "evaluate TEST_ONLY / non-production disposition rather than create a production family automatically"
+    },
+    "model3": {
+      "family": "bimodal MvG",
+      "state": "stateless constitutive parameters"
+    },
+    "models5_7": {
+      "family": "extended MvG",
+      "axes": ["unimodal_or_bimodal", "scaled_or_unscaled"],
+      "state": "stateless constitutive parameters"
+    },
+    "models8_11": {
+      "family": "PDI",
+      "axes": ["unimodal_or_bimodal", "scaled_or_unscaled", "vapor_off_or_on"],
+      "state": "stateless constitutive parameters when vapor is off; temperature-dependent conductivity addend when vapor is on"
+    },
+    "model12": {
+      "family": "RIA",
+      "state": "separate RIA parameter authority; optional temperature-dependent vapor conductivity"
+    },
+    "power": {
+      "family": "conductivity dry-tail modifier",
+      "state": "parameter modifier, not a separate retention family"
+    },
+    "table": {
+      "family": "legacy SWSOPHY=1 user-supplied TSPACK hydraulics",
+      "state": "immutable table data",
+      "note": "distinct from the generated default-MvG F-TAB02 acceleration provider"
+    },
+    "linear_table": {
+      "family": "legacy SWSOPHY=-1 preprocessed piecewise-linear constitutive representation",
+      "state": "immutable intercept/slope table data"
+    },
+    "hysteresis": {
+      "family": "one stateful MvG scanning-curve owner",
+      "selectors": {
+        "SWHYST1": "initial main wetting branch",
+        "SWHYST2": "initial main drying branch"
+      },
+      "persistent_candidate_state": ["per-node branch index", "per-node scanning alpha", "per-node theta_r", "per-node theta_s"],
+      "source_reversal_rule": "(hm1-h)/indeks > tau with -1000 < h < -10",
+      "requirement": "transaction, rollback, retry and restart qualification mandatory"
+    }
+  },
+  "known_blockers": {
+    "pdi_vapor": "F-PDI-VT scientific correction is qualified but not formally admitted because exact raw historical B0/B1.11 bytes remain non-materializable in the current platform session; do not build production vapor semantics on the demonstrated Celsius/Kelvin defect.",
+    "legacy_table_dropin": "F-TAB01 demonstrated the historical SWSOPHY=1 endpoint-capacity semantics are not a drop-in equivalent of current default MvG.",
+    "generated_table_provider": "F-TAB02 is a separate generated default-MvG K0 representation and does not close generic SWSOPHY=1 or SWSOPHY=-1 compatibility."
+  },
+  "affected_invariants": [3,4,7,13,22,23,25,27],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/architecture/invariants.md",
+    "docs/architecture/legacy-migration-hydraulic.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/verification/principles.md",
+    "docs/science/soil-hydraulic-constitutive-relations.md",
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/readswap.f90",
+    "reference/swap-4.3.1/patches/SWAP-009",
+    "reference/swap-4.3.1/patches/SWAP-010",
+    "reference/swap-4.3.1/patches/SWAP-011"
+  ],
+  "relevant_paths": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_frost_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "tests/fsi",
+    "integration/audits"
+  ],
+  "dependency_surface": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_reference_richards_legacy_binding.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_frost_hydraulic_provider.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/patches/SWAP-009",
+    "reference/swap-4.3.1/patches/SWAP-010",
+    "reference/swap-4.3.1/patches/SWAP-011"
+  ],
+  "next_action": "Implement one typed K0 no-vapor extended constitutive owner for the shared model 5-11 family, using exact corrected B1.11 value semantics, then run independent source-oracle and O0/O2 branch gates before production reachability work.",
+  "recovery_point": "Start from this branch and baseline; no production source has been modified yet."
+}
