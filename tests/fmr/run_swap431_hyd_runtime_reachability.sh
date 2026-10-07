@@ -17,6 +17,7 @@ MODULE_SRC=(
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
+  src/kernel/mod_kernel_committed_persistence.f90
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
@@ -41,6 +42,7 @@ MODULE_SRC=(
   src/solver/mod_b111_extended_hydraulic_provider.f90
   src/solver/mod_b111_conductivity_power_tail.f90
   src/solver/mod_b111_linear_table_provider.f90
+  src/solver/mod_b111_hysteresis_state.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
@@ -51,6 +53,8 @@ MODULE_SRC=(
   src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_restart_state_contract.f90
+  src/runtime/mod_fmr_committed_restart.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
@@ -72,6 +76,8 @@ for opt in 0 2; do
   done
   grep -Fq 'SW431_HYD_POWER_RUNTIME_PASS' "$OUT/output.txt"
   grep -Fq 'SW431_HYD_LINEAR_TABLE_RUNTIME_PASS' "$OUT/output.txt"
+  grep -Fq 'SW431_HYST_RUNTIME_RESTART_PASS=1' "$OUT/output.txt"
+  grep -Fq 'SW431_HYST_RUNTIME_RESTART_PASS=2' "$OUT/output.txt"
   cat "$OUT/output.txt"
 done
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
