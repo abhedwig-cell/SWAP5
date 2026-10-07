@@ -58,6 +58,7 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -282,6 +283,9 @@ module mod_fmr_serialized_reference_backend
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
@@ -678,6 +682,9 @@ module mod_fmr_serialized_reference_backend
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: max_iterations = 8
