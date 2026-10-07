@@ -26,8 +26,6 @@ jobs:
         run: bash tests/fmig431/run_swap431_drain_inf_split.sh
       - name: Multilevel separate infiltration
         run: bash tests/fmig431/run_swap431_drain_inf_split_multi.sh
-      - name: Multilevel separate infiltration
-        run: bash tests/fmig431/run_swap431_drain_inf_split_multi.sh
       - name: Multilevel frost DIVDRA
         run: bash tests/fmig431/run_swap431_frost_divdra_multi.sh
       - name: Multilevel extended drainage frost
