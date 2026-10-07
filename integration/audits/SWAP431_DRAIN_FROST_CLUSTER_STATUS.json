@@ -5,7 +5,7 @@
   "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "1f419f9146b3f28518d189e8b1cb52b3030919f3",
+  "checkpoint_commit": "418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -76,9 +76,16 @@
       "serialized runtime/production bootstrap compile gate"
     ],
     "focused_actions": {
-      "run_id": 37633697079,
-      "head": "2f8dcfb5823581a280771baff1e095a07916924a",
+      "run_id": 37636262134,
+      "head": "418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
       "status": "QUEUED_NOT_COUNTED_AS_TEST"
+    },
+    "canonical_reconciliation": {
+      "canonical_head": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+      "branch_merge_base": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+      "canonical_delta_commits": 15,
+      "dependency_surface_intersection": [],
+      "conclusion": "DISJOINT_CROP_ROOT_DELTA_NO_DRAIN_FROST_REQUALIFICATION_TRIGGER"
     }
   },
   "invariants": [
@@ -106,6 +113,6 @@
     }
   ],
   "next_action": "Run the focused persisted O0/O2 and integrated compile gates, repair failures, then reconcile census dispositions. After drainage/frost qualification, leave only route-specific FROST-GW, TEMP-SNOW and any required multilevel SWDIVDINF ordering as explicit dependencies.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@1f419f9146b3f28518d189e8b1cb52b3030919f3",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
   "blockers": []
 }
