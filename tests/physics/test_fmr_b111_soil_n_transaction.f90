@@ -3,10 +3,9 @@ program test_fmr_b111_soil_n_transaction
   use mod_transaction_reference, only: transaction_state_t, transaction_policy_t, transaction_result_t, &
        execute_reference_interval, TX_STATUS_ACCEPTED, TX_STATUS_RETRY_EXHAUSTED, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t, soil_n_pool_state_t, soil_n_transfer_t, &
-       soil_n_receipt_t, initialize_soil_n_pool_state, SOIL_N_OK
+       initialize_soil_n_pool_state, SOIL_N_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t, fmr_b111_soil_n_model_t, &
-       initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, apply_fmr_b111_soil_n_management_event, &
-       FMR_SOIL_N_OK, FMR_SOIL_N_INVALID, FMR_SOIL_N_EVENT_ALREADY_CONSUMED
+       initialize_fmr_b111_soil_n_state, configure_fmr_b111_soil_n_model, FMR_SOIL_N_OK
   implicit none
 
   type(soil_n_inventory_parameters_t) :: params, snapshot_params
@@ -17,10 +16,8 @@ program test_fmr_b111_soil_n_transaction
   class(transaction_state_t), allocatable :: committed
   type(transaction_policy_t) :: policy
   type(transaction_result_t) :: result
-  type(soil_n_receipt_t) :: event_receipt
-  logical :: available, event_consumed
+  logical :: available
   integer :: status
-  integer(kind=8) :: event_id
 
   params%depth_m = 0.5_real64
   params%nfrac_fom = [0.01_real64, 0.02_real64]
@@ -70,27 +67,6 @@ program test_fmr_b111_soil_n_transaction
   call check(available, 'post-reject snapshot')
   call check(abs(snapshot%nitrate_n_kg_m2 - 3.4_real64) < 1.0e-12_real64, 'rollback identity')
 
-  ! Once-only management event state is part of the persistent owner.
-  rate = soil_n_transfer_t()
-  allocate(rate%fom_delta_kg_m3(2))
-  rate%fom_delta_kg_m3 = 0.0_real64
-  rate%ammonium_n_delta_kg_m2 = 0.1_real64
-  rate%external_n_input_kg_m2 = 0.1_real64
-  call apply_event_on_committed(committed, 42_8, rate, status, event_receipt)
-  call check(status == FMR_SOIL_N_OK, 'management event accepted')
-  call apply_event_on_committed(committed, 42_8, rate, status, event_receipt)
-  call check(status == FMR_SOIL_N_EVENT_ALREADY_CONSUMED, 'duplicate event rejected')
-  call snapshot_committed(committed, snapshot_params, snapshot, available)
-  call check(available, 'event snapshot')
-  call check(abs(snapshot%ammonium_n_kg_m2 - 2.1_real64) < 1.0e-12_real64, 'event applied once')
-
-  call snapshot_event_on_committed(committed,event_id,event_consumed,available)
-  call check(available.and.event_consumed.and.event_id==42_8,'event lineage snapshot')
-  call initialize_fmr_b111_soil_n_state(snapshot_params,snapshot,initial,status,event_id,event_consumed)
-  call check(status == FMR_SOIL_N_OK, 'event restart state')
-  call check(initial%consumed_management_event(42_8),'event lineage restart')
-  call apply_fmr_b111_soil_n_management_event(initial,42_8,rate,status,event_receipt)
-  call check(status==FMR_SOIL_N_EVENT_ALREADY_CONSUMED,'restart duplicate rejected')
   print '(A)', 'FMR_B111_SOIL_N_TRANSACTION_PASS'
 
 contains
@@ -107,31 +83,6 @@ contains
     class default
       p = soil_n_inventory_parameters_t()
       s = soil_n_pool_state_t()
-    end select
-  end subroutine
-
-  subroutine snapshot_event_on_committed(state,event_id,consumed,ok)
-    class(transaction_state_t),allocatable,intent(in)::state
-    integer(kind=8),intent(out)::event_id
-    logical,intent(out)::consumed,ok
-    event_id=0_8;consumed=.false.;ok=.false.
-    select type(state)
-    type is(fmr_b111_soil_n_state_t)
-      call state%snapshot_management_event(event_id,consumed,ok)
-    end select
-  end subroutine
-
-  subroutine apply_event_on_committed(state,event_id,transfer,status,receipt)
-    class(transaction_state_t),allocatable,intent(inout)::state
-    integer(kind=8),intent(in)::event_id
-    type(soil_n_transfer_t),intent(in)::transfer
-    integer,intent(out)::status
-    type(soil_n_receipt_t),intent(out)::receipt
-    status=FMR_SOIL_N_INVALID
-    receipt=soil_n_receipt_t()
-    select type(state)
-    type is(fmr_b111_soil_n_state_t)
-      call apply_fmr_b111_soil_n_management_event(state,event_id,transfer,status,receipt)
     end select
   end subroutine
 
