@@ -3,7 +3,8 @@ import pathlib,re,subprocess,tempfile,os,shlex
 R=pathlib.Path(__file__).resolve().parents[2]
 TESTS=[
  R/'tests/fmig431/test_swap431_potential_shadow.f90',
- R/'tests/fmig431/test_swap431_potential_shadow_daily.f90'
+ R/'tests/fmig431/test_swap431_potential_shadow_daily.f90',
+ R/'tests/fmig431/test_swap431_potential_shadow_pre_event_restart.f90'
 ]
 FC=shlex.split(os.environ.get('FC','gfortran'))
 mods={}
@@ -43,6 +44,7 @@ with tempfile.TemporaryDirectory(prefix='swap431-potential-shadow-') as td:
             combined.append(x.stdout)
         outs[opt]=''.join(combined)
 if outs['O0']!=outs['O2']:raise SystemExit('O0/O2 output drift')
-for marker in ('SW431_CROP_POTENTIAL_SHADOW=PASS','SW431_CROP_POTENTIAL_SHADOW_DAILY=PASS'):
+for marker in ('SW431_CROP_POTENTIAL_SHADOW=PASS','SW431_CROP_POTENTIAL_SHADOW_DAILY=PASS',
+               'SW431_CROP_POTENTIAL_SHADOW_PRE_EVENT_RESTART=PASS'):
     if marker not in outs['O0']:raise SystemExit('missing '+marker)
 print('SW431_CROP_POTENTIAL_SHADOW_O0_O2=PASS')
