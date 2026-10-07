@@ -51,25 +51,24 @@
     "SW431-CROP-ROOTGROW": "GRRTPOT is now an explicit trial result from the potential shadow daily evaluator; SWRD2 can gate potential extension without deriving gross growth from net biomass change."
   },
   "qualification": {
-    "runner": "tests/fmig431/run_swap431_potential_shadow.py",
-    "owner_test": "tests/fmig431/test_swap431_potential_shadow.f90",
-    "daily_test": "tests/fmig431/test_swap431_potential_shadow_daily.f90",
-    "status": "READY_FOR_O0_O2_FULL_REPO_COMPILE",
-    "required_claims": [
-      "actual owner unchanged",
-      "shared DVS/TSUM unchanged",
-      "potential biomass divergence",
-      "GRRTPOT is gross not net",
-      "SWPOTRELMF policy changes potential PGASS/growth only"
-    ]
+    "component_runner": "tests/fmig431/run_swap431_potential_shadow.py",
+    "atomic_transaction_gate": "tests/fmig431/run_swap431_potential_shadow_transaction.sh",
+    "status": "READY_FOR_O0_O2_PERSISTED_QUALIFICATION"
   },
   "remaining": [
-    "Run full dependency-closure O0/O2 qualification.",
-    "Embed optional shadow in the atomic daily crop transaction so rejection/replay advances neither actual nor potential.",
-    "Persist/restart optional shadow only when enabled.",
-    "Bind accepted GRRTPOT/WRTPOT to SWRD2/SWRD3 root-depth owners.",
-    "Verify no-output configuration allocates no mandatory potential state."
+    "Run component and atomic transaction O0/O2 gates.",
+    "Qualify post-event export/reconstruct and continuation across a second accepted event.",
+    "Compose accepted WRTPOT and GRRTPOT into SWRD3 and SWRD2 depth owners.",
+    "Keep potential shadow opt-in."
   ],
-  "disposition": "OPTIONAL_SHADOW_DAILY_SOURCE_COMPOSITION_IMPLEMENTED_ATOMIC_TRANSACTION_OPEN",
-  "admission": false
+  "disposition": "OPTIONAL_POTENTIAL_TRAJECTORY_FULL_TRANSACTION_IMPLEMENTED_QUALIFICATION_OPEN",
+  "admission": false,
+  "transaction": {
+    "ordering": "potential candidate first, actual candidate second",
+    "publication": "actual owner, optional potential shadow, GRRT/GRRTPOT carrier and event receipt share one trial state and one kernel commit",
+    "rollback": "existing F-WOF38 rollback applies to all together",
+    "persistence": "production persistence view carries optional shadow and root-growth carrier",
+    "pre_event_restart": "shadow restart is valid before the first receipt while root-growth carrier is intentionally unavailable",
+    "post_event_invariant": "a shadow-enabled state with a receipt requires a ready root-growth carrier"
+  }
 }
