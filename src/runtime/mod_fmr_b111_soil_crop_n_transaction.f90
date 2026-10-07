@@ -108,6 +108,8 @@ contains
     if(any(cfrac_fom<0.0_real64).or.cfrac_biomass<0.0_real64.or.cfrac_humus<0.0_real64)return
     if(abs(soil_forcing%dt_day-1.0_real64)>64.0_real64*epsilon(1.0_real64))return
     if(abs(crop_forcing%delt_day-1.0_real64)>64.0_real64*epsilon(1.0_real64))return
+    if(crop_forcing%drlv_kg_ha_day/=0.0_real64.or.crop_forcing%drst_kg_ha_day/=0.0_real64.or. &
+       crop_forcing%drrt_kg_ha_day/=0.0_real64)return
     model%turnover=turnover;model%cfrac_fom=cfrac_fom
     model%cfrac_biomass=cfrac_biomass;model%cfrac_humus=cfrac_humus
     model%rate_environment=rate_environment;model%soil_forcing=soil_forcing;model%crop_forcing=crop_forcing
@@ -220,9 +222,8 @@ contains
 
       self%last_receipt%internal_soil_to_crop_kg_m2=soil_uptake_m2
       self%last_receipt%external_fixation_input_kg_m2=self%last_receipt%crop_process%fixation_kg_ha*1.0e-4_real64
-      self%last_receipt%external_crop_loss_kg_m2=self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64
-      external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2+ &
-           self%last_receipt%external_crop_loss_kg_m2
+      self%last_receipt%external_crop_loss_kg_m2=0.0_real64
+      external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2
       if(external_out<0.0_real64.and.abs(external_out)<=tol)external_out=0.0_real64
       if(external_out<0.0_real64)return
 
