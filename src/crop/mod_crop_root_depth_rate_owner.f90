@@ -5,6 +5,7 @@ module mod_crop_root_depth_rate_owner
   use mod_wofost_rate_table, only: wofost_rate_table_t
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
+  use mod_crop_root_anaerobic_extension_gate, only: root_extension_allowed_by_daily_oxygen, ROOT_ANOX_GATE_OK
   implicit none
   private
 
@@ -26,6 +27,8 @@ module mod_crop_root_depth_rate_owner
     real(real64) :: negligible_transpiration = 0.0_real64
     real(real64) :: negligible_root_growth = 0.0_real64
     real(real64) :: negligible_extension = 0.0_real64
+    logical :: anaerobic_extension_gate_enabled = .false.
+    real(real64) :: aeration_critical_factor = 0.0001_real64
   contains
     procedure, public :: ready => crop_root_depth_rate_parameters_ready
   end type crop_root_depth_rate_parameters_t
@@ -44,6 +47,8 @@ module mod_crop_root_depth_rate_owner
     real(real64) :: actual_root_uptake = 0.0_real64
     real(real64) :: actual_root_growth = 0.0_real64
     real(real64) :: potential_root_growth = 0.0_real64
+    logical :: deepest_root_oxygen_factor_available = .false.
+    real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
   end type crop_root_depth_rate_daily_forcing_t
 
   type, public :: crop_root_depth_rate_diagnostics_t
@@ -73,6 +78,8 @@ contains
     if (.not. ieee_is_finite(self%negligible_transpiration) .or. self%negligible_transpiration < 0.0_real64) return
     if (.not. ieee_is_finite(self%negligible_root_growth) .or. self%negligible_root_growth < 0.0_real64) return
     if (.not. ieee_is_finite(self%negligible_extension) .or. self%negligible_extension < 0.0_real64) return
+    if (.not. ieee_is_finite(self%aeration_critical_factor) .or. self%aeration_critical_factor < 0.0_real64 .or. &
+         self%aeration_critical_factor > 1.0_real64) return
     ready = .true.
   end function crop_root_depth_rate_parameters_ready
 
@@ -120,6 +127,8 @@ contains
     integer, intent(out) :: status
 
     real(real64) :: rrpot, rr, ratio
+    logical :: oxygen_allows_actual_extension
+    integer :: oxygen_status
 
     candidate = committed
     diagnostics = crop_root_depth_rate_diagnostics_t()
@@ -141,6 +150,19 @@ contains
 
     diagnostics%potential_extension_allowed = forcing%potential_transpiration >= parameters%negligible_transpiration
     diagnostics%actual_extension_allowed = diagnostics%potential_extension_allowed
+    if (parameters%anaerobic_extension_gate_enabled) then
+      if (.not. forcing%deepest_root_oxygen_factor_available) then
+        status = CROP_ROOT_RATE_INVALID_FORCING
+        return
+      end if
+      call root_extension_allowed_by_daily_oxygen(.true., forcing%deepest_root_oxygen_factor_integral, &
+           parameters%aeration_critical_factor, oxygen_allows_actual_extension, oxygen_status)
+      if (oxygen_status /= ROOT_ANOX_GATE_OK) then
+        status = CROP_ROOT_RATE_INVALID_FORCING
+        return
+      end if
+      diagnostics%actual_extension_allowed = diagnostics%actual_extension_allowed .and. oxygen_allows_actual_extension
+    end if
     if (parameters%require_root_growth) then
       diagnostics%potential_extension_allowed = diagnostics%potential_extension_allowed .and. &
            forcing%potential_root_growth >= parameters%negligible_root_growth
@@ -217,10 +239,17 @@ contains
 
   logical function forcing_valid(forcing) result(valid)
     type(crop_root_depth_rate_daily_forcing_t), intent(in) :: forcing
-    real(real64) :: values(4)
+    real(real64) :: values(5)
     values = [forcing%potential_transpiration, forcing%actual_root_uptake, &
-              forcing%actual_root_growth, forcing%potential_root_growth]
+              forcing%actual_root_growth, forcing%potential_root_growth, &
+              forcing%deepest_root_oxygen_factor_integral]
     valid = all(ieee_is_finite(values)) .and. all(values >= 0.0_real64)
+    if (.not. valid) return
+    if (forcing%deepest_root_oxygen_factor_available) then
+      valid = forcing%deepest_root_oxygen_factor_integral <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64)
+    else
+      valid = abs(forcing%deepest_root_oxygen_factor_integral) <= tiny(1.0_real64)
+    end if
   end function forcing_valid
 
 end module mod_crop_root_depth_rate_owner
