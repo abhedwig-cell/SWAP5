@@ -67,7 +67,7 @@ program kalmthout_swap5_daily_pilot
     forcing(1)%rutter%process=rp
     forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=et0/10.0_real64
     forcing(1)%rutter%potential_pond_evaporation_cm_per_day=et0/10.0_real64
-    forcing(1)%rutter%ponding_max_cm=1.0_real64
+    forcing(1)%rutter%ponding_max_cm=100.0_real64
     forcing(1)%rutter%runoff_resistance_day=0.1_real64
     forcing(1)%rutter%runoff_exponent=1.0_real64
 
