@@ -97,6 +97,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
+   real(8), allocatable             :: mode1_provider_head(:)
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
@@ -267,6 +268,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
    call prepare_reference_workspace_for_solve(fsi_ws, numnod)
    allocate(provider_macropore_exchange(numnod),provider_macropore_dqdh(numnod))
+   if (provider_constitutive_active .and. swbotb == 1) allocate(mode1_provider_head(numnod))
    provider_macropore_exchange=0.0d0
    provider_macropore_dqdh=0.0d0
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
@@ -717,9 +719,21 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
 !           derive vertical flux profile in order to find state%qbot as a lower boundary condition for the saturated part of the soil system
             fsi_ws%vertical_flux(1) = state%qtop
-            do i = NN+1, numnod
-               state%theta(i) = cofgen(2,i)
-            end do
+            if (provider_constitutive_active) then
+               call refresh_mode1_saturated_provider()
+               state%theta(NN+1:numnod) = fsi_ws%provider_theta(NN+1:numnod)
+               state%k(NN+1:numnod) = fsi_ws%provider_k(NN+1:numnod)
+               do i = NN+1, numnod
+                  if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
+                  state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), &
+                       i,state%h(i-1),0.0d0)
+               end do
+               state%kmean(numnod+1) = state%k(numnod)
+            else
+               do i = NN+1, numnod
+                  state%theta(i) = cofgen(2,i)
+               end do
+            end if
             do i = 1, numnod
               fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
             end do
@@ -794,6 +808,17 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+subroutine refresh_mode1_saturated_provider()
+   if (.not. provider_constitutive_active) return
+   if (swbotb /= 1 .or. state%fllowgwl .or. NN <= 0 .or. NN >= numnod) return
+   mode1_provider_head = state%h(1:numnod)
+   mode1_provider_head(NN+1:numnod) = 0.0d0
+   ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+   call evaluation_context%constitutive%evaluate_demand(mode1_provider_head, &
+        CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+        fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+end subroutine refresh_mode1_saturated_provider
 
 logical function pond_balance_option_allows()
    if (swmacro == 0) then
@@ -1160,11 +1185,20 @@ subroutine vector_F(iTask)
 
    ! for bottom BC, continued
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      state%theta(NN) = watcon(NN,state%h(NN))
-      state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
-      ! in case of static macropores FrArMtrx < 1
-      if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
-      state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
+      if (provider_constitutive_active) then
+         call refresh_mode1_saturated_provider()
+         state%theta(NN) = fsi_ws%provider_theta(NN)
+         state%k(NN) = fsi_ws%provider_k(NN)
+         if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+         state%kmean(NN+1) = hcomean(swkmean, state%k(NN), fsi_ws%provider_k(NN+1), &
+              grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
+      else
+         state%theta(NN) = watcon(NN,state%h(NN))
+         state%k(NN) = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
+         if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+         state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), &
+              grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
+      end if
       fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
       fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
