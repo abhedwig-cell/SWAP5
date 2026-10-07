@@ -89,9 +89,9 @@ module mod_fmr_serialized_reference_backend
        build_soil_temperature_field_view
   use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
   use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters, &
-       matches_bartholomeus_hydraulic_owner
+       matches_bartholomeus_hydraulic_owner, matches_reproduction_hydraulic_owner
   use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
-       FMR_BARTHOLOMEUS_DISABLED
+       FMR_BARTHOLOMEUS_DISABLED, FMR_BARTHOLOMEUS_REPRODUCTION
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
