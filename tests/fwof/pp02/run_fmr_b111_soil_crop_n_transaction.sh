@@ -20,6 +20,8 @@ for OPT in O0 O2; do
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/process/mod_b111_soil_n_daily_candidate.f90" -o "$BUILD/candidate_$OPT.o"
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/crop/mod_b111_crop_n_fixation_policy.f90" -o "$BUILD/nfix_$OPT.o"
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/crop/mod_b111_crop_n_owner.f90" -o "$BUILD/crop_$OPT.o"
+  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/process/mod_b111_soil_n_addition.f90" -o "$BUILD/addition_$OPT.o"
+  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/process/mod_b111_crop_residue_return.f90" -o "$BUILD/residue_$OPT.o"
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/runtime/mod_fmr_b111_soil_n_transaction.f90" -o "$BUILD/soilstate_$OPT.o"
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/runtime/mod_fmr_b111_soil_crop_n_transaction.f90" -o "$BUILD/model_$OPT.o"
   gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" "$ROOT/tests/fwof/pp02/test_b111_crop_n_owner.f90" \
@@ -29,6 +31,12 @@ for OPT in O0 O2; do
     "$BUILD/tx_$OPT.o" "$BUILD/pool_$OPT.o" "$BUILD/org_$OPT.o" "$BUILD/orgn_$OPT.o" "$BUILD/orgtx_$OPT.o" \
     "$BUILD/diss_$OPT.o" "$BUILD/rates_$OPT.o" "$BUILD/storage_$OPT.o" "$BUILD/transport_$OPT.o" \
     "$BUILD/exchange_$OPT.o" "$BUILD/candidate_$OPT.o" "$BUILD/nfix_$OPT.o" "$BUILD/crop_$OPT.o" \
-    "$BUILD/soilstate_$OPT.o" "$BUILD/model_$OPT.o" -o "$BUILD/coupled_test_$OPT"
+    "$BUILD/addition_$OPT.o" "$BUILD/residue_$OPT.o" "$BUILD/soilstate_$OPT.o" "$BUILD/model_$OPT.o" -o "$BUILD/coupled_test_$OPT"
   "$BUILD/coupled_test_$OPT"
+  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" "$ROOT/tests/fwof/pp02/test_fmr_b111_soil_crop_n_residue_transaction.f90" \
+    "$BUILD/tx_$OPT.o" "$BUILD/pool_$OPT.o" "$BUILD/org_$OPT.o" "$BUILD/orgn_$OPT.o" "$BUILD/orgtx_$OPT.o" \
+    "$BUILD/diss_$OPT.o" "$BUILD/rates_$OPT.o" "$BUILD/storage_$OPT.o" "$BUILD/transport_$OPT.o" \
+    "$BUILD/exchange_$OPT.o" "$BUILD/candidate_$OPT.o" "$BUILD/nfix_$OPT.o" "$BUILD/crop_$OPT.o" \
+    "$BUILD/addition_$OPT.o" "$BUILD/residue_$OPT.o" "$BUILD/soilstate_$OPT.o" "$BUILD/model_$OPT.o" -o "$BUILD/residue_test_$OPT"
+  "$BUILD/residue_test_$OPT"
 done
