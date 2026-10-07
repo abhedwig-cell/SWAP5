@@ -229,7 +229,7 @@ contains
     if (node_index < 1 .or. node_index > self%parameters%active_nodes) return
     if (.not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
     conductivity = b110_hconduc(self%parameters%cofgen(:,node_index), pressure_head, water_content, &
-         self%parameters%ksatexm_extension_enabled)
+         self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
       conductivity = 0.0_real64
       return
@@ -288,7 +288,7 @@ contains
                theta_local = self%parameters%cofgen(2,i) + &
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
           if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
                capacity(i) = self%parameters%specific_elastic_storage(i)
@@ -311,7 +311,7 @@ contains
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           if (need_theta) water_content(i) = theta_local
           if (need_k) conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
        end if
        if (need_capacity) then
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
