@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-SOL01",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "status": "QUALIFICATION_CANDIDATE_NOT_ADMITTED",
+  "capabilities": [
+    {
+      "id": "SW431-SALT-SORPTION",
+      "state": "OWNER_REACHABLE_CANDIDATE",
+      "evidence": [
+        "explicit dissolved and sorbed persistent stores",
+        "B1.11 Freundlich forward/inverse partition",
+        "candidate-only equilibrium repartition preserving total solute mass",
+        "reactive restart layout 505005"
+      ],
+      "remaining": [
+        "composition with accepted mobile transport substeps",
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-SALT-DECAY",
+      "state": "OWNER_REACHABLE_CANDIDATE",
+      "evidence": [
+        "B1.11 temperature/moisture/depth decay factors",
+        "decay applied to total dissolved+sorbed storage",
+        "post-decay Freundlich repartition",
+        "explicit external solute sink"
+      ],
+      "remaining": [
+        "substep composition with accepted mobile transport",
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-SALT-POND",
+      "state": "OWNER_REACHABLE_CANDIDATE",
+      "evidence": [
+        "persistent pond solute store",
+        "B1.11 rain/irrigation accumulation",
+        "candidate-only pond-to-top-node internal transfer",
+        "whole dissolved+sorbed+pond mass closure"
+      ],
+      "remaining": [
+        "binding to accepted surface-water carrier and transport substeps",
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-AGE-TRACER",
+      "state": "PRODUCTION_FOUNDATION_ONLY",
+      "evidence": [
+        "persistent age amount store distinct from chemical mass",
+        "B1.11 zero-order age production",
+        "candidate-only production transfer leaves chemical mass unchanged",
+        "reactive restart layout persists age amount"
+      ],
+      "remaining": [
+        "AgeTracer-specific pond age state",
+        "advective/dispersive age transport",
+        "root/drainage/bottom age export",
+        "accepted water-carrier composition",
+        "persisted integrated qualification"
+      ]
+    },
+    {
+      "id": "SW431-SALT-AQUIFER",
+      "state": "SOURCE_DEFECT_DECISION_REQUIRED",
+      "evidence": [
+        "persistent aquifer mass store exists",
+        "reactive restart layout persists aquifer mass",
+        "process mutation is fail-closed",
+        "exact B1.11 SWBR out-of-bounds defect is reproduced"
+      ],
+      "remaining": [
+        "explicit physical aquifer storage/coefficient decision",
+        "corrected breakthrough/decay model",
+        "mass-conservative signed drainage qualification"
+      ]
+    }
+  ],
+  "global_invariants": [
+    "existing MOBILE_DISSOLVED and MOBILE_DISSOLVED_MACROPORE layouts reject reactive companion state",
+    "reactive stores use distinct layout 505005",
+    "age amount is excluded from chemical mass",
+    "aquifer process mutation is fail-closed",
+    "rejected candidates leave all committed reactive stores unchanged",
+    "no capability in this record is canonical ADMITTED until persisted qualification completes"
+  ]
+}
