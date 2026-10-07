@@ -6,52 +6,53 @@
   "capabilities": [
     {
       "id": "SW431-SALT-SORPTION",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "REACTIVE_SUBSTEP_CANDIDATE",
       "evidence": [
         "explicit dissolved and sorbed persistent stores",
         "B1.11 Freundlich forward/inverse partition",
-        "candidate-only equilibrium repartition preserving total solute mass",
+        "exact-order reactive matrix substep updates total storage then repartitions",
         "reactive restart layout 505005"
       ],
       "remaining": [
-        "composition with accepted mobile transport substeps",
         "persisted O0/O2 integrated qualification",
+        "multi-node reactive transport oracle",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-DECAY",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "REACTIVE_SUBSTEP_CANDIDATE",
       "evidence": [
         "B1.11 temperature/moisture/depth decay factors",
-        "decay applied to total dissolved+sorbed storage",
-        "post-decay Freundlich repartition",
-        "explicit external solute sink"
+        "decay acts on total dissolved+sorbed storage before repartition",
+        "explicit external decay mass output",
+        "exact-order reactive matrix substep"
       ],
       "remaining": [
-        "substep composition with accepted mobile transport",
-        "persisted integrated qualification",
+        "persisted O0/O2 integrated qualification",
+        "multi-node reactive transport oracle",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-POND",
-      "state": "OWNER_REACHABLE_CANDIDATE",
+      "state": "REACTIVE_SUBSTEP_CANDIDATE",
       "evidence": [
         "persistent pond solute store",
-        "B1.11 rain/irrigation accumulation",
-        "candidate-only pond-to-top-node internal transfer",
-        "whole dissolved+sorbed+pond mass closure"
+        "rain and irrigation are explicit external inputs",
+        "pond-to-matrix infiltration is internal transfer",
+        "exact source qtop<0 pond mixing order",
+        "reactive matrix substep"
       ],
       "remaining": [
-        "binding to accepted surface-water carrier and transport substeps",
+        "accepted hydraulic pond/water carrier binding",
         "persisted integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-AGE-TRACER",
-      "state": "PRODUCTION_FOUNDATION_ONLY",
+      "state": "PRODUCTION_AND_RESTART_OWNER_PARTIAL",
       "evidence": [
         "persistent age amount store distinct from chemical mass",
         "B1.11 zero-order age production",
@@ -59,10 +60,10 @@
         "reactive restart layout persists age amount"
       ],
       "remaining": [
-        "AgeTracer-specific pond age state",
+        "full B1.11 Agepond/Agepondm1 state",
         "advective/dispersive age transport",
-        "root/drainage/bottom age export",
-        "accepted water-carrier composition",
+        "root/drainage/bottom age export accounting",
+        "effluent-age cumulative diagnostics",
         "persisted integrated qualification"
       ]
     },
