@@ -32,6 +32,18 @@ residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
 orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
 
+reactive_substep_needles=[
+ "cfluxt=qtop*(1.0d0-armpss)*cpond*dtsolu",
+ "ctrans=decact*theta(i)*cml(i)+decact*bdenskfcref(i)*((cml(i)/cref)**frexp)",
+ "crot=tscf*qrot(i)*cml(i)/dz(i)",
+ "cmsy(i)=cmsy(i)+(cfluxb-cfluxt)/dz(i)+(-ctrans-crot-cdrtot)*dtsolu",
+ "cml(i)=cmsy(i)/(theta(i)+dummy)",
+ "cfluxt=cfluxb",
+]
+for needle in reactive_substep_needles:
+    if needle not in solute:
+        raise SystemExit("missing exact reactive-solute substep equation: "+needle)
+
 solute_needles=[
  "cmsy(i)=(theta(i)*cml(i)+bdenskfcref(i)*(cml(i)/cref)**frexp)",
  "cml(i)=cmsy(i)/(theta(i)+bdenskf(i))",
@@ -184,4 +196,6 @@ if (ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_b111_reactive_solute_substep.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_reactive_solute_substep.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
