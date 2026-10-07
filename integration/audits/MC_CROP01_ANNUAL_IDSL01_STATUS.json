@@ -1,0 +1,110 @@
+{
+  "schema": "swap431.mc_crop01.annual_idsl01.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-ANNUAL",
+    "SW431-CROP-WOF-OTHER"
+  ],
+  "disposition": "QUALIFICATION_ONLY_SOURCE_ENVELOPE_REMAINS",
+  "implementation_authority": [
+    "src/crop/mod_wofost_prepare_assimilation.f90",
+    "src/crop/mod_wofost_finalize_rates.f90",
+    "src/crop/mod_wofost_two_phase_crop_window.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
+  ],
+  "existing_qualification": {
+    "transaction": {
+      "authority": "F-WOF38",
+      "qualified": true,
+      "evidence": "integration/f-wof/F-WOF38_STATUS.json",
+      "claims": [
+        "same-checkpoint replay",
+        "rollback no owner/receipt mutation",
+        "one atomic owner+receipt revision",
+        "duplicate event no extra advancement",
+        "failed evolution no mutation",
+        "fixed one-day policy"
+      ]
+    },
+    "lifecycle": {
+      "authority": "F-WOF39",
+      "qualified": true,
+      "evidence": "integration/f-wof/F-WOF39_STATUS.json",
+      "claims": [
+        "matching receipt retirement only",
+        "idempotent replay",
+        "owner/receipt revision unchanged"
+      ]
+    },
+    "restart": {
+      "authority": "F-WOF41",
+      "qualified": true,
+      "evidence": "integration/f-wof/F-WOF41_STATUS.json",
+      "claims": [
+        "production owner persistence API",
+        "two separate OS processes",
+        "fresh reconstruction",
+        "stale receipt rejection",
+        "later event continuation",
+        "continuous versus restarted endpoint exact",
+        "O0/O2 external representation identity",
+        "negative payloads fail closed"
+      ]
+    },
+    "preservation": {
+      "authority": "F-CI89/F-WOF-PP03",
+      "qualified": true,
+      "claims": [
+        "legacy classic WOFOST runtime preserved while WOFOST81 admitted additively",
+        "F-WOF38 and F-WOF39 current-contract preservation O0/O2"
+      ]
+    }
+  },
+  "b111_exact_source_findings": {
+    "source_member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "actual_assimilation": [
+      "EFFC=FCO2EFF*EFF",
+      "AMAX=FCO2AMAX*AFGEN(AMAXTB,DVS)*AFGEN(TMPFTB,TAVD)",
+      "TOTASS uses actual LAI",
+      "gross assimilation is multiplied by AFGEN(TMNFTB,TMNR)",
+      "actual PGASS is multiplied by RELMF"
+    ],
+    "state": [
+      "seven-day running minimum-temperature history",
+      "actual crop biomass and DVS are accepted crop state"
+    ],
+    "idsl01": "Current source review and production code agree on thermal IDSL0 and bounded linear long-day IDSL1 before anthesis; exact literal update_dvs_rate block still requires persisted source-envelope gate."
+  },
+  "claim_ceiling": {
+    "includes": [
+      "classic SWWOFOST=1 actual crop",
+      "SWCROPSNM=0",
+      "IDSL0",
+      "IDSL1 once literal source gate passes"
+    ],
+    "excludes": [
+      "potential SWPOTRELMF=2 trajectory",
+      "IDSL2 vernalisation",
+      "SWWOFOST=2 soybean",
+      "SWWOFOST=3 grass management",
+      "crop rotation",
+      "sowing/germination",
+      "Soil-N",
+      "WOFOST81 replacement"
+    ]
+  },
+  "remaining_gate": [
+    "Literal B1.11 actual-crop daily equation comparison against current classic production modules at O0/O2.",
+    "IDSL1 DLC/DLO boundary and anthesis transition cases against exact B1.11 update_dvs_rate source."
+  ],
+  "implementation_gap": false,
+  "restart_gap": false,
+  "transaction_gap": false,
+  "lifecycle_gap": false,
+  "admission": false
+}
