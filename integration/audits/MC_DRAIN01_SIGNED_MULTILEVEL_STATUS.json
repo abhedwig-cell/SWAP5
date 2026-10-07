@@ -86,7 +86,7 @@
     "SW431-FROST-GW requires a separate lower-boundary qbot ownership/composition decision.",
     "SW431-FROST-SNOW depends on SW431-TEMP-SNOW and a shared snow-insulated sensible-temperature owner."
   ],
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@985bef66fb38f27dba08fc5b0284553f74e15537",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@437678a6b588d1139225bd358113788d139c026e",
   "qualification": {
     "status": "PENDING_INTEGRATED_COMPILE",
     "current_head_actions_run": 37658401687,
@@ -94,9 +94,9 @@
     "local_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json",
     "required_gate": "tests/fmig431/run_swap431_drain_serialized_compile.py"
   },
-  "last_reconciled_head": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "last_reconciled_head": "437678a6b588d1139225bd358113788d139c026e",
   "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
-  "checkpoint_commit": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "checkpoint_commit": "437678a6b588d1139225bd358113788d139c026e",
   "test_status": "LOCAL_FOCUSED_CLUSTER_GREEN_O0_O2; SERIALIZED_DEPENDENCY_CLOSURE_COMPILE_PENDING",
   "qualification_status": "PENDING_INTEGRATED_COMPILE",
   "local_validation_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json"
