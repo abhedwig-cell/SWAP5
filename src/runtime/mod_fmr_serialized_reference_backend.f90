@@ -2414,6 +2414,19 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
+    if (parameters%hysteresis_active) then
+      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS .or. &
+          template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS) then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
       if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
