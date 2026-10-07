@@ -101,7 +101,7 @@ contains
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
-    value%numerical%max_committed_substeps=512
+    value%numerical%max_committed_substeps=10000
     value%numerical%progress_tolerance=0.0_real64
     allocate(value%tiles(1))
     value%tiles(1)%tile_id=5977505689750_int64
@@ -131,7 +131,7 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
+    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
