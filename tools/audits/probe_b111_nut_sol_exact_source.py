@@ -32,6 +32,20 @@ residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
 orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
 
+age_substep_needles=[
+ "agesurf=(nird*ageirr+nraidt*agepre)*dtsolu+pondm1*agepondm1",
+ "agepond=agesurf/(pond-qtop*dtsolu)",
+ "agefluxb=(q(i+1)*agemlav+thetav*dispr*(ageml(i+1)-ageml(i))/disnod(i+1))*dtsolu",
+ "agerot=qrot(i)*ageml(i)/dz(i)",
+ "ageprod=1.0d0*0.5d0*(theta(i)+thetm1(i))",
+ "agemsy(i)=agemsy(i)+(agefluxb-agefluxt)/dz(i)+(-agerot-agedrtot+ageprod)*dtsolu",
+ "ageml(i)=agemsy(i)/theta(i)",
+ "agepondm1=agepond",
+]
+for needle in age_substep_needles:
+    if needle not in solute:
+        raise SystemExit("missing exact AgeTracer substep equation: "+needle)
+
 reactive_substep_needles=[
  "cfluxt=qtop*(1.0d0-armpss)*cpond*dtsolu",
  "ctrans=decact*theta(i)*cml(i)+decact*bdenskfcref(i)*((cml(i)/cref)**frexp)",
@@ -198,4 +212,6 @@ if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_b111_reactive_solute_substep.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_reactive_solute_substep.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_b111_age_tracer_substep.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_age_tracer_substep.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
