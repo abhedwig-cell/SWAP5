@@ -3,6 +3,8 @@ module mod_wofost_crop_owner_state
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t
   use mod_wofost_actual_biomass_state, only: wofost_actual_biomass_state_t, WOFOST_BIOMASS_STATE_OK
+  use mod_wofost_rate_table, only: wofost_rate_table_t
+  use mod_crop_root_depth_dvs, only: evaluate_crop_root_depth_dvs, CROP_ROOT_DEPTH_DVS_OK
   implicit none
   private
 
@@ -15,6 +17,7 @@ module mod_wofost_crop_owner_state
   integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_CONTINUATION = 6
   integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_REFERENCE_COMPATIBILITY = 7
   integer, parameter, public :: WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE = 8
+  integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_ROOT_DEPTH = 9
 
   type, public :: wofost_common_evolution_continuation_t
     real(real64) :: temperature_sum = 0.0_real64
@@ -44,6 +47,7 @@ module mod_wofost_crop_owner_state
     procedure, public :: current_development_stage => wofost_current_development_stage
     procedure, public :: evolution_continuation_available => wofost_evolution_continuation_available
     procedure, public :: read_actual_root_biomass => wofost_read_actual_root_biomass
+    procedure, public :: derive_dvs_root_depth => wofost_derive_dvs_root_depth
     procedure, public :: derive_actual_leaf_area_index => wofost_derive_actual_leaf_area_index
   end type wofost_crop_owner_state_t
 
@@ -196,6 +200,30 @@ contains
     value = self%biomass%actual_root_biomass()
     available = .true.
   end subroutine wofost_read_actual_root_biomass
+
+  subroutine wofost_derive_dvs_root_depth(self, table, maximum_root_depth_cm, value, available, status)
+    class(wofost_crop_owner_state_t), intent(in) :: self
+    type(wofost_rate_table_t), intent(in) :: table
+    real(real64), intent(in) :: maximum_root_depth_cm
+    real(real64), intent(out) :: value
+    logical, intent(out) :: available
+    integer, intent(out) :: status
+    integer :: local_status
+
+    value = 0.0_real64
+    available = .false.
+    status = self%validate()
+    if (status /= WOFOST_CROP_OWNER_OK) return
+    if (.not. self%crop_emerged) return
+
+    call evaluate_crop_root_depth_dvs(table, self%development_stage, maximum_root_depth_cm, value, local_status)
+    if (local_status /= CROP_ROOT_DEPTH_DVS_OK) then
+      value = 0.0_real64
+      status = WOFOST_CROP_OWNER_INVALID_ROOT_DEPTH
+      return
+    end if
+    available = .true.
+  end subroutine wofost_derive_dvs_root_depth
 
   subroutine wofost_derive_actual_leaf_area_index(self, stem_area_coefficient, storage_area_coefficient, value, status)
     class(wofost_crop_owner_state_t), intent(in) :: self

@@ -1,0 +1,23 @@
+{
+  "schema": "swap431.mc_crop01.rootgrow_dvs.v1",
+  "capability_id": "SW431-CROP-ROOTGROW-DVS",
+  "baseline": "8cd14e459913f77f412e12125ccda597a841e22d",
+  "status": "PARTIAL_IMPLEMENTATION_TYPED_DEPTH_RESOLVER",
+  "source_semantics": "SWRD=1: root depth = min(AFGEN(RDTB,DVS),RDM)",
+  "implemented": [
+    "B1.11-compatible endpoint-clamped linear RDTB interpolation via existing WOFOST rate-table authority",
+    "RDM maximum-depth clipping",
+    "transactional WOFOST crop-owner binding from committed development_stage"
+  ],
+  "local_qualification": {
+    "compiler": "GNU Fortran 14.2.0",
+    "component_o0_o2": "PASS",
+    "marker": "SW431_CROP_ROOTGROW_DVS_COMPONENT=PASS"
+  },
+  "not_yet_closed": [
+    "No depth-to-rooted-node/cumulative-root-fraction materialization is yet bound to the shared crop root-uptake input seam.",
+    "SW431-CROP-ROOTGROW-DVS therefore remains ACTIVE_MIGRATION.",
+    "SW431-ROOT-DENSITY is a distinct accepted-state biomass distribution capability and is not implied by this resolver."
+  ],
+  "next_safe_step": "Define and qualify the depth-to-profile materialization contract against soil node geometry, then bind the resulting rooted_nodes/cumulative_root_fraction into the existing shared crop root-uptake input."
+}
