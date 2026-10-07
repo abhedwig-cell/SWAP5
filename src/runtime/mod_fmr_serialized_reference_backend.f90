@@ -2718,6 +2718,12 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
        if (parameters%bottom_mode == 3) then
+         if (parameters%swbotb3_explicit_active) then
+           ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
+                ieee_is_finite(parameters%swbotb3_explicit_shape_3) .and. &
+                parameters%swbotb3_explicit_shape_3 >= 0.0_real64 .and. &
+                parameters%swbotb3_explicit_shape_3 <= 1.0_real64 .and. parameters%prepared_default_mvg_available
+         end if
          ! Admission precedes configure_parameters()/prepare_interval(). The
          ! immutable forcing-owned Cauchy control is therefore validated in
          ! prepare_interval, not through stale model-local state here.
