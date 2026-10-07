@@ -61,6 +61,7 @@ COMPOSITION_SRC=(
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90
+  src/runtime/mod_fmr_scheduled_irrigation_application.f90
 )
 COMP=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
@@ -75,12 +76,22 @@ for opt in 0 2; do
   gfortran "${COMP[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT"     -c tests/f-app07/test_hupsel_irrigation_composition.f90 -o "$OUT/test.o" || fail "composition oracle compile O$opt"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test" || fail "composition link O$opt"
   "$OUT/test" "$BUILD/irrigation.csv" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "composition runtime O$opt"; }
+
+  gfortran "${COMP[@]}" -Werror -pedantic-errors -O"$opt" -J "$OUT" -I "$OUT" \
+    -c tests/f-app07/test_scheduled_tcs7_ssdi_runtime_binding.f90 -o "$OUT/test_tcs7_binding.o" || fail "TCS7 binding oracle compile O$opt"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_tcs7_binding.o" -o "$OUT/test_tcs7_binding" || fail "TCS7 binding link O$opt"
+  "$OUT/test_tcs7_binding" > "$OUT/tcs7_binding_output.txt" 2>&1 || { cat "$OUT/tcs7_binding_output.txt" >&2; fail "TCS7 binding runtime O$opt"; }
+  grep -Fq 'MC_IRR01_TCS7_RUNTIME_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "TCS7 runtime binding O$opt"
+  grep -Fq 'MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "SSDI binding O$opt"
+
   grep -Fq 'F_APP07_EXACT_ACTIVE_INTERVALS=110' "$OUT/output.txt" || fail "active interval count O$opt"
   grep -Fq 'F_APP07_SWINTER0_INTERVALS=18' "$OUT/output.txt" || fail "SWINTER0 count O$opt"
   grep -Fq 'F_APP07_SWINTER3_INTERVALS=92' "$OUT/output.txt" || fail "SWINTER3 count O$opt"
   grep -Fq 'F_APP07_IRRIGATION_RUTTER_DYNAMIC_TOP_COMPOSITION=PASS' "$OUT/output.txt" || fail "composition marker O$opt"
 done
 cmp -s "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" || { diff -u "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" >&2 || true; fail "composition O0/O2 drift"; }
+cmp -s "$BUILD/composition-o0/tcs7_binding_output.txt" "$BUILD/composition-o2/tcs7_binding_output.txt" || { diff -u "$BUILD/composition-o0/tcs7_binding_output.txt" "$BUILD/composition-o2/tcs7_binding_output.txt" >&2 || true; fail "TCS7 binding O0/O2 drift"; }
 cat "$BUILD/composition-o0/output.txt"
+cat "$BUILD/composition-o0/tcs7_binding_output.txt"
 echo "F_APP07_COMPOSITION_OUTPUT_SHA256=$(sha256sum "$BUILD/composition-o0/output.txt" | awk '{print $1}')"
 echo 'F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS'
