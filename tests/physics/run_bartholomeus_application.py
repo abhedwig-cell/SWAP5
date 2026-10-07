@@ -48,6 +48,7 @@ with tempfile.TemporaryDirectory(prefix='c3a-application-') as folder:
    print(output,flush=True)
    completed.check_returncode()
    if 'PPA_WU05C3A_APPLICATION_CHAIN=PASS' not in output:raise RuntimeError('missing actual application marker')
+   if 'SW431_ROOT_OXYGEN_REPRO_APPLICATION=PASS' not in output:raise RuntimeError('missing type2 application marker')
    result['runs'][opt][test]=output.splitlines()
 result['status']='LOCAL_APPLICATION_GATES_PASS'
 pathlib.Path(os.environ.get('C3A_RESULT','c3a_application_result.json')).write_text(json.dumps(result,indent=2)+'\n')
