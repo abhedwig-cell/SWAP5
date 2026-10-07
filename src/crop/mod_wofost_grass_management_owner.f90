@@ -38,6 +38,10 @@ module mod_wofost_grass_management_owner
     real(real64) :: grazing_residual_biomass=0.0_real64
     integer :: grazing_days=0
     logical :: grazing_loss_enabled=.false.
+    ! Pinned B1.11 management_event uses local DMLoss uninitialised when
+    ! SW_LOSSGRZ=0. This typed migration therefore supports only the
+    ! source-defined SW_LOSSGRZ=1 branch until a reference-defect disposition
+    ! explicitly authorizes a repair.
     type(wofost_rate_table_t) :: grazing_treading_loss_fraction_by_head
     real(real64) :: dewooling_residual_biomass=0.0_real64
     type(wofost_rate_table_t) :: leaf_partition_by_dvs
@@ -119,9 +123,8 @@ contains
       if(.not.self%mowing_loss_fraction_by_head%ready())return
     end if
     if(.not.self%mowing_delay_by_removed_biomass%ready())return
-    if(self%grazing_loss_enabled)then
-      if(.not.self%grazing_treading_loss_fraction_by_head%ready())return
-    end if
+    if(.not.self%grazing_loss_enabled)return
+    if(.not.self%grazing_treading_loss_fraction_by_head%ready())return
     ready=.true.
   end function
 
@@ -381,9 +384,11 @@ contains
 
     ! Source resets to one active cohort, SLA(1)=AFGEN(SLATB,DVS),
     ! all leaf ages/dead pools to zero, and LAIEXP=LASUM.
+    wlv=crop%biomass%living_leaf_biomass()
+    crop%biomass%leaf_biomass=0.0_real64
+    crop%biomass%leaf_biomass(1)=wlv
     crop%biomass%specific_leaf_area=0.0_real64
     crop%biomass%specific_leaf_area(1)=sla
-    if(n>1)crop%biomass%leaf_biomass(2:n)=0.0_real64
     crop%biomass%leaf_age=0.0_real64
     crop%biomass%exponential_leaf_area_index=crop%biomass%leaf_area_sum()
 
