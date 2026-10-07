@@ -22,18 +22,18 @@
     "persistent_state": false,
     "parameters": [
       "OxygenSlope(6)",
-      "OxygenIntercept(6)"
+      "OxygenIntercept(6)",
+      "saturated_water_content(:)",
+      "z_cm(:)",
+      "zbotcp_cm(:)",
+      "dz_cm(:)"
     ],
     "forcing": [
-      "theta(:)",
-      "thetas(:)",
-      "tsoil(:)",
-      "z(:)",
-      "zbotcp(:)",
-      "dz(:)"
+      "theta(:) from committed hydraulic view",
+      "tsoil(:) from soil-temperature view"
     ],
     "result": "one multiplicative oxygen reduction factor per rooted node",
-    "water_mass": "must multiply the existing single root-extraction sink; no second sink owner"
+    "water_mass": "single existing root_extraction_sink; type1 and type2 share mod_root_uptake_oxygen_composition"
   },
   "exact_semantics": [
     "local gas-filled porosity=max(0,thetas(node)-theta(node)); below 1e-10 returns zero",
@@ -42,11 +42,12 @@
     "slope and intercept are six-term temperature/depth quadratic-bilinear polynomials",
     "factor=clamp(intercept+slope*mean_gas_filled_porosity,0,1)"
   ],
-  "disposition": "SOURCE_RESPONSE_AND_RUNTIME_ROUTE_IMPLEMENTED_LOCAL_COMPONENT_PASS_FULL_EXECUTION_OPEN",
+  "disposition": "SOURCE_RESPONSE_AND_SHARED_RUNTIME_ROUTE_IMPLEMENTED_FULL_EXECUTION_QUALIFICATION_OPEN",
   "remaining": [
-    "Run full execution closure O0/O2 and verify base sink * reproduction factor plus fail-closed missing inputs.",
-    "Bind source 6+6 coefficients and geometry carriers from production crop/grid configuration.",
-    "Qualify mass, retry/restart, inactive/no-root dependency minimality and preservation of admitted type1 Bartholomeus."
+    "Run consolidated execution closure O0/O2 after response-signature refactor.",
+    "Bind the immutable 6+6 coefficients and exact grid geometry from application configuration.",
+    "Wire production serialized runtime selector SWOXYGENTYPE=2 without perturbing type1.",
+    "Qualify mass, retry/restart, inactive/no-root dependency minimality and preservation of admitted type1."
   ],
   "admission": false,
   "qualification": {
@@ -64,6 +65,10 @@
       ]
     },
     "full_execution_test": "tests/fmig431/test_swap431_root_oxygen_repro_execution.f90",
-    "full_execution_status": "READY_FOR_FULL_DEPENDENCY_CLOSURE"
-  }
+    "full_execution_status": "READY_AFTER_CONSOLIDATION"
+  },
+  "notes": [
+    "Removed a duplicate standalone type2 executor; one shared Bartholomeus execution seam now owns type1/type2 sink composition.",
+    "Explicit geometry is carried in the immutable type2 parameter contract rather than reconstructed from layer indices."
+  ]
 }
