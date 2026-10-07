@@ -34,8 +34,8 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   real(real64)::t0,t1,prd,pnr,pld,pnl,psd,psn,pod,pon,whole0,whole1,whole2
 
   p%depth_m=0.5_real64
-  p%nfrac_fom=[0.03_real64,0.01_real64,0.03_real64,0.01_real64, &
-               0.03_real64,0.01_real64,0.03_real64,0.01_real64]
+  p%nfrac_fom=[0.08_real64,0.01_real64,0.08_real64,0.01_real64, &
+               0.08_real64,0.01_real64,0.08_real64,0.01_real64]
   p%nfrac_biomass=0.04_real64;p%nfrac_humus=0.05_real64
   call initialize_soil_n_pool_state(p,[1d0,1d0,1d0,1d0,1d0,1d0,1d0,1d0], &
        5.0_real64,10.0_real64,0.1_real64,0.1_real64,spool,status)
@@ -54,7 +54,7 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   tp%ratecon_bio=0.01_real64;tp%ratecon_hum=0.003_real64
   tp%asfa_bio=0.1_real64;tp%asfa_hum=0.2_real64
 
-  split%nfrac_fom_min=0.01_real64;split%nfrac_fom_max=0.03_real64
+  split%nfrac_fom_min=0.01_real64;split%nfrac_fom_max=0.08_real64
   split%nfrac_humus=0.05_real64;split%asfa_min=0.03_real64;split%asfa_max=0.28_real64
 
   sf%dt_day=1.0_real64;sf%wfrac_t=0.45_real64;sf%wfrac_t0=0.45_real64
