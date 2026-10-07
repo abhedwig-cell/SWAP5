@@ -862,6 +862,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_committed_state
   public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_initialize_mobile_salt_profile
+  public :: fmr_initialize_reactive_solute_profile
   public :: fmr_base_salt_temporal_policy_t
   public :: fmr_mobile_dispersion_matches_hydraulic_owner
   public :: fmr_new_b110_macropore_reduction_committed_state
@@ -1451,6 +1452,43 @@ contains
     if(status/=SOLUTE_OK)return
     allocate(state%salt)
     call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+  end subroutine
+
+
+  subroutine fmr_initialize_reactive_solute_profile(state,node_thickness_cm,concentration_mg_cm3, &
+       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status)
+    type(fmr_b110_physical_state_t),intent(inout)::state
+    real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:),sorbed_mass_mg_cm2(:)
+    real(real64),intent(in)::pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day(:)
+    integer,intent(out)::status
+    type(mobile_salt_state_t)::initialized
+    integer::n
+
+    status=SOLUTE_INVALID
+    if(allocated(state%salt).or.allocated(state%macropore))return
+    if(.not.allocated(state%water_content))return
+    n=state%active_nodes
+    if(n<=0.or.size(state%water_content)/=n.or.size(node_thickness_cm)/=n.or. &
+       size(concentration_mg_cm3)/=n.or.size(sorbed_mass_mg_cm2)/=n.or.size(age_amount_cm_day)/=n)return
+    if(.not.all(ieee_is_finite(sorbed_mass_mg_cm2)).or..not.all(ieee_is_finite(age_amount_cm_day)))return
+    if(.not.ieee_is_finite(pond_mass_mg_cm2).or..not.ieee_is_finite(aquifer_mass_mg_cm2))return
+    if(any(sorbed_mass_mg_cm2<0.0_real64).or.any(age_amount_cm_day<0.0_real64).or. &
+       pond_mass_mg_cm2<0.0_real64.or.aquifer_mass_mg_cm2<0.0_real64)return
+
+    call initialize_mobile_salt_state(node_thickness_cm,state%water_content,concentration_mg_cm3,initialized,status)
+    if(status/=SOLUTE_OK)return
+    allocate(state%salt)
+    call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+    state%salt%sorbed_mass_mg_cm2=sorbed_mass_mg_cm2
+    state%salt%pond_mass_mg_cm2=pond_mass_mg_cm2
+    state%salt%aquifer_mass_mg_cm2=aquifer_mass_mg_cm2
+    state%salt%age_amount_cm_day=age_amount_cm_day
+    if(.not.state%salt%reactive_ready(n))then
+      deallocate(state%salt)
+      status=SOLUTE_INVALID
+      return
+    end if
+    status=SOLUTE_OK
   end subroutine
 
   subroutine fmr_configure_base_salt_temporal_policy(self,policy,ok)
