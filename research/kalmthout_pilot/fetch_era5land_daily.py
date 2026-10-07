@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+import csv, json, math, sys, urllib.parse, urllib.request
+from datetime import date
+
+LAT=51.350606
+LON=4.403689
+ELEVATION_M=25.0
+START="2024-01-01"
+END="2026-10-01"
+WET_THRESHOLD_MM_H=0.05
+
+params={
+    "latitude":LAT,"longitude":LON,
+    "start_date":START,"end_date":END,
+    "hourly":"temperature_2m,dew_point_2m,precipitation,shortwave_radiation,wind_speed_10m",
+    "models":"era5_land","timezone":"UTC"
+}
+url="https://archive-api.open-meteo.com/v1/archive?"+urllib.parse.urlencode(params)
+print("KALMTHOUT_METEO_SOURCE_URL",url,file=sys.stderr)
+with urllib.request.urlopen(url, timeout=120) as r:
+    payload=json.load(r)
+h=payload.get("hourly",{})
+required=["time","temperature_2m","dew_point_2m","precipitation","shortwave_radiation","wind_speed_10m"]
+for k in required:
+    if k not in h:
+        raise SystemExit(f"missing hourly field {k}: {payload}")
+n=len(h["time"])
+if any(len(h[k])!=n for k in required):
+    raise SystemExit("hourly arrays have inconsistent lengths")
+
+def sat_vp_kpa(t):
+    return 0.6108*math.exp(17.27*t/(t+237.3))
+
+def ra_mj_m2_day(day_of_year, lat_deg):
+    phi=math.radians(lat_deg)
+    dr=1+0.033*math.cos(2*math.pi*day_of_year/365)
+    delta=0.409*math.sin(2*math.pi*day_of_year/365-1.39)
+    x=-math.tan(phi)*math.tan(delta)
+    x=max(-1,min(1,x))
+    ws=math.acos(x)
+    return (24*60/math.pi)*0.0820*dr*(ws*math.sin(phi)*math.sin(delta)+math.cos(phi)*math.cos(delta)*math.sin(ws))
+
+def fao56_et0(tmin,tmax,tmean,ea,rs,u2,doy):
+    es=(sat_vp_kpa(tmin)+sat_vp_kpa(tmax))/2
+    delta=4098*sat_vp_kpa(tmean)/((tmean+237.3)**2)
+    p=101.3*((293-0.0065*ELEVATION_M)/293)**5.26
+    gamma=0.000665*p
+    ra=ra_mj_m2_day(doy,LAT)
+    rso=(0.75+2e-5*ELEVATION_M)*ra
+    rns=(1-0.23)*rs
+    sigma=4.903e-9
+    rs_rso=min(1.0,rs/rso) if rso>0 else 0.0
+    rnl=sigma*(((tmax+273.16)**4+(tmin+273.16)**4)/2)*(0.34-0.14*math.sqrt(max(ea,0)))*(1.35*rs_rso-0.35)
+    rn=rns-rnl
+    num=0.408*delta*rn + gamma*(900/(tmean+273))*u2*max(es-ea,0)
+    den=delta + gamma*(1+0.34*u2)
+    return max(0.0,num/den) if den>0 else 0.0
+
+days={}
+for i,tstamp in enumerate(h["time"]):
+    d=tstamp[:10]
+    vals={k:h[k][i] for k in required if k!="time"}
+    if any(v is None for v in vals.values()):
+        continue
+    days.setdefault(d,[]).append(vals)
+
+expected=(date.fromisoformat(END)-date.fromisoformat(START)).days+1
+if len(days)!=expected:
+    missing=[]
+    cur=date.fromisoformat(START)
+    for j in range(expected):
+        ds=date.fromordinal(cur.toordinal()+j).isoformat()
+        if ds not in days or len(days[ds])!=24:
+            missing.append((ds,len(days.get(ds,[]))))
+    raise SystemExit(f"incomplete ERA5-Land period: expected {expected} complete days, got {len(days)}; first missing={missing[:10]}")
+
+writer=csv.writer(sys.stdout)
+writer.writerow(["date","precip_mm","wet_hours","tmin_c","tmax_c","rad_mj_m2","vap_kpa","wind2_m_s","et0_mm_day"])
+for ds in sorted(days):
+    rows=days[ds]
+    temp=[r["temperature_2m"] for r in rows]
+    dew=[r["dew_point_2m"] for r in rows]
+    pr=[max(0.0,r["precipitation"]) for r in rows]
+    sw=[max(0.0,r["shortwave_radiation"]) for r in rows]
+    w10=[max(0.0,r["wind_speed_10m"]) for r in rows]
+    tmin=min(temp); tmax=max(temp); tmean=sum(temp)/24
+    ea=sum(sat_vp_kpa(v) for v in dew)/24
+    rad=sum(sw)*0.0036
+    # FAO-56 wind-height conversion, z=10 m to 2 m.
+    factor=4.87/math.log(67.8*10.0-5.42)
+    u2=(sum(w10)/24)*factor
+    doy=date.fromisoformat(ds).timetuple().tm_yday
+    et0=fao56_et0(tmin,tmax,tmean,ea,rad,u2,doy)
+    writer.writerow([ds,f"{sum(pr):.6f}",sum(1 for x in pr if x>WET_THRESHOLD_MM_H),
+                     f"{tmin:.6f}",f"{tmax:.6f}",f"{rad:.6f}",f"{ea:.6f}",f"{u2:.6f}",f"{et0:.6f}"])
