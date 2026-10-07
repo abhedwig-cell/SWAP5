@@ -70,7 +70,6 @@ module mod_fmr_b111_soil_crop_n_transaction
     type(b111_soil_n_rate_environment_t)::rate_environment
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
     type(b111_crop_n_forcing_t)::crop_forcing
-    type(b111_crop_n_harvest_receipt_t)::harvest_receipt
     type(b111_soil_n_split_parameters_t)::residue_split
     real(real64)::root_residue_age=0.0_real64
     real(real64)::leaf_residue_age=0.0_real64
@@ -264,11 +263,12 @@ contains
     type(soil_n_pool_state_t)::soil_committed,soil_prepared,soil_candidate
     type(b111_crop_n_state_t)::crop_candidate,harvest_candidate
     type(b111_crop_n_forcing_t)::crop_forcing
+    type(b111_crop_n_harvest_receipt_t)::harvest_receipt
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
     logical::available
     integer::status
     real(real64)::soil_uptake_m2,crop_uptake_m2,tol,external_out,pending_internal_n_m2,new_pending_n_m2, &
-         ordinary_pending_n_m2
+         ordinary_pending_n_m2,ordinary_root_return_n_ha,ordinary_leaf_return_n_ha
 
     outcome=trial_outcome_t();self%last_receipt=fmr_b111_soil_crop_n_receipt_t()
     self%last_status=FMR_B111_COUPLED_N_INVALID
@@ -322,6 +322,21 @@ contains
       if(self%last_receipt%crop_process%status/=B111_CROPN_OK)then
         self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return
       end if
+      ordinary_root_return_n_ha=self%crop_forcing%rnfrt*self%crop_forcing%drrt_kg_ha_day*self%crop_forcing%delt_day
+      ordinary_leaf_return_n_ha=self%fra_deceased_leaf_to_soil*self%crop_forcing%rnflv* &
+           self%crop_forcing%drlv_kg_ha_day*self%crop_forcing%delt_day
+      tol=4096.0_real64*epsilon(1.0_real64)*max(1.0_real64,ordinary_root_return_n_ha,ordinary_leaf_return_n_ha)
+      if(ordinary_root_return_n_ha>crop_candidate%nloss_root_kg_ha+tol.or. &
+         ordinary_leaf_return_n_ha>crop_candidate%nloss_leaf_kg_ha+tol)then
+        self%last_status=FMR_B111_COUPLED_N_TRANSFER_MISMATCH;return
+      end if
+      crop_candidate%nloss_root_kg_ha=max(0.0_real64,crop_candidate%nloss_root_kg_ha-ordinary_root_return_n_ha)
+      crop_candidate%nloss_leaf_kg_ha=max(0.0_real64,crop_candidate%nloss_leaf_kg_ha-ordinary_leaf_return_n_ha)
+      crop_candidate%nreturned_to_soil_total_kg_ha=crop_candidate%nreturned_to_soil_total_kg_ha+ &
+           ordinary_root_return_n_ha+ordinary_leaf_return_n_ha
+      if(abs(crop_candidate%balance_residual())>tol)then
+        self%last_status=FMR_B111_COUPLED_N_TRANSFER_MISMATCH;return
+      end if
       if(self%harvest_enabled)then
         call apply_b111_crop_n_harvest(crop_candidate,self%harvest_forcing,harvest_candidate,harvest_receipt)
         if(harvest_receipt%status/=B111_HARVEST_N_OK)then
@@ -360,22 +375,22 @@ contains
 
       self%last_receipt%internal_soil_to_crop_kg_m2=soil_uptake_m2
       self%last_receipt%external_fixation_input_kg_m2=self%last_receipt%crop_process%fixation_kg_ha*1.0e-4_real64
-      ordinary_pending_n_m2=(self%crop_forcing%rnfrt*self%crop_forcing%drrt_kg_ha_day+ &
-           self%fra_deceased_leaf_to_soil*self%crop_forcing%rnflv*self%crop_forcing%drlv_kg_ha_day)* &
-           self%crop_forcing%delt_day*1.0e-4_real64
+      ordinary_pending_n_m2=(ordinary_root_return_n_ha+ordinary_leaf_return_n_ha)*1.0e-4_real64
       new_pending_n_m2=(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+state%pending_stem_n_kg_ha+ &
            state%pending_storage_n_kg_ha)*1.0e-4_real64
       self%last_receipt%pending_residue_created_kg_m2=new_pending_n_m2
-      self%last_receipt%external_crop_loss_kg_m2=max(0.0_real64,self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64- &
-           ordinary_pending_n_m2)+harvest_receipt%external_harvest_n_kg_ha*1.0e-4_real64
+      self%last_receipt%external_crop_loss_kg_m2=harvest_receipt%external_harvest_n_kg_ha*1.0e-4_real64
+      if(ordinary_pending_n_m2>new_pending_n_m2+tol)then
+        self%last_status=FMR_B111_COUPLED_N_TRANSFER_MISMATCH;return
+      end if
       external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2+ &
            self%last_receipt%external_crop_loss_kg_m2
       if(external_out<0.0_real64.and.abs(external_out)<=tol)external_out=0.0_real64
       if(external_out<0.0_real64)return
 
       outcome%solver_ok=.true.
-      outcome%mass_in=self%last_receipt%soil_process%owner_receipt%external_n_input_kg_m2+ &
-           self%last_receipt%external_fixation_input_kg_m2
+      outcome%mass_in=max(0.0_real64,self%last_receipt%soil_process%owner_receipt%external_n_input_kg_m2- &
+           pending_internal_n_m2)+self%last_receipt%external_fixation_input_kg_m2
       outcome%mass_out=external_out
       outcome%mass_accounting_complete=.true.
       outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE
@@ -467,6 +482,7 @@ contains
       call state%soil%snapshot(params,inventory,available)
       if(available)value=inventory%nitrogen_total(params)+ &
            (state%crop%anlv_kg_ha+state%crop%anst_kg_ha+state%crop%anrt_kg_ha+state%crop%anso_kg_ha+ &
+           state%crop%nloss_leaf_kg_ha+state%crop%nloss_stem_kg_ha+state%crop%nloss_root_kg_ha+ &
            state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+state%pending_stem_n_kg_ha+ &
            state%pending_storage_n_kg_ha)*1.0e-4_real64
     end select
