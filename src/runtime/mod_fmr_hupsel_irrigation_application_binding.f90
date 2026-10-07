@@ -29,6 +29,7 @@ module mod_fmr_hupsel_irrigation_application_binding
     logical :: result_produced = .false.
   end type fmr_hupsel_irrigation_binding_diagnostics_t
 
+  public :: fmr_evaluate_sensor_dcs2_ssdi
   public :: fmr_evaluate_tcs7_dcs2_ssdi
   public :: fmr_bind_fixed_surface_irrigation_identity_to_dynamic_top
   public :: fmr_bind_fixed_sprinkler_to_rutter
@@ -38,8 +39,8 @@ module mod_fmr_hupsel_irrigation_application_binding
 
 contains
 
-  subroutine fmr_evaluate_tcs7_dcs2_ssdi(parameters, committed_state, request, hydraulic_view, &
-                                          candidate_state, flux, diagnostics)
+  subroutine fmr_evaluate_sensor_dcs2_ssdi(parameters, committed_state, request, hydraulic_view, &
+                                            candidate_state, flux, diagnostics)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
     type(irrigation_state_t), intent(in) :: committed_state
     type(scheduled_irrigation_request_t), intent(in) :: request
@@ -57,6 +58,27 @@ contains
       diagnostics%status = FMR_HUPSEL_IRR_BIND_UNSUPPORTED_APPLICATION
       return
     end if
+  end subroutine fmr_evaluate_sensor_dcs2_ssdi
+
+  subroutine fmr_evaluate_tcs7_dcs2_ssdi(parameters, committed_state, request, hydraulic_view, &
+                                          candidate_state, flux, diagnostics)
+    type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    type(irrigation_state_t), intent(in) :: committed_state
+    type(scheduled_irrigation_request_t), intent(in) :: request
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    type(irrigation_state_t), intent(out) :: candidate_state
+    type(irrigation_flux_result_t), intent(out) :: flux
+    type(irrigation_diagnostics_t), intent(out) :: diagnostics
+
+    if (parameters%timing_criterion /= 7) then
+      candidate_state = committed_state
+      flux = irrigation_flux_result_t()
+      diagnostics = irrigation_diagnostics_t()
+      diagnostics%status = FMR_HUPSEL_IRR_BIND_UNSUPPORTED_APPLICATION
+      return
+    end if
+    call fmr_evaluate_sensor_dcs2_ssdi(parameters, committed_state, request, hydraulic_view, &
+                                       candidate_state, flux, diagnostics)
   end subroutine fmr_evaluate_tcs7_dcs2_ssdi
 
   subroutine fmr_bind_fixed_surface_irrigation_identity_to_dynamic_top(base_request, flux, upstream, &
