@@ -3756,13 +3756,20 @@ contains
         return
       end select
       rutter_process_result = self%rutter_forcing%result
+      ! Legacy SWKIMPL=0 evaluates the top-node conductivity from the accepted
+      ! trial-start state and keeps it fixed throughout Newton.  The dynamic
+      ! head boundary must receive the same fixed conductivity so its analytic
+      ! surface-head derivative is available when rainfall creates ponding.
+      call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters, 1, &
+           physical_rutter_top_head(state), fixed_top_conductivity, fixed_top_conductivity_ok)
+      if (.not. fixed_top_conductivity_ok) return
       call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
            self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
            rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
            self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
            self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day, &
            self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
-           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent, fixed_top_conductivity)
       rutter_trial_prepared = .true.
     end if
     effective_bottom_mode = self%bottom_mode
@@ -5991,5 +5998,16 @@ contains
     end do
     value = y_table(size(y_table))
   end function afgen_pairs
+
+  real(real64) function physical_rutter_top_head(state) result(head)
+    class(canonical_state_t), intent(in) :: state
+    head = 0.0_real64
+    select type (physical => state)
+    class is (fmr_b110_physical_state_t)
+      if (physical%active_nodes > 0 .and. allocated(physical%pressure_head)) then
+        if (size(physical%pressure_head) >= physical%active_nodes) head = physical%pressure_head(1)
+      end if
+    end select
+  end function physical_rutter_top_head
 
 end module mod_fmr_serialized_reference_backend
