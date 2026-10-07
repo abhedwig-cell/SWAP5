@@ -10,8 +10,17 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 PROVIDER = ROOT / "src/crop/mod_b111_nfixation_policy.f90"
 
-bundle = ROOT / "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
-with tarfile.open(fileobj=io.BytesIO(base64.b64decode(bundle.read_bytes())), mode="r:gz") as archive:
+AUTHORITY_COMMIT = "4e4da22bdea9fa5e5861d6d5726eddd425d20805"
+AUTHORITY_PATH = "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+bundle = ROOT / AUTHORITY_PATH
+if bundle.exists():
+    encoded = bundle.read_bytes()
+else:
+    subprocess.run(["git", "fetch", "--depth=1", "origin", AUTHORITY_COMMIT],
+                   cwd=ROOT, check=True, capture_output=True)
+    encoded = subprocess.run(["git", "show", f"{AUTHORITY_COMMIT}:{AUTHORITY_PATH}"],
+                             cwd=ROOT, check=True, capture_output=True).stdout
+with tarfile.open(fileobj=io.BytesIO(base64.b64decode(encoded)), mode="r:gz") as archive:
     source = archive.extractfile("SWAP/wofostnut.f90").read().decode("latin1")
 
 start = source.index("      ndeml =", source.index("   subroutine demand_wofost_nut"))
