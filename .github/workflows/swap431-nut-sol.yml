@@ -100,3 +100,5 @@ jobs:
         run: bash tests/physics/run_fmr_b111_soil_n_transaction.sh
       - name: Reactive solute transaction rollback and restart
         run: bash tests/physics/run_fmr_b111_solute_transaction.sh
+      - name: Reactive solute layout restart
+        run: python tests/physics/run_b111_reactive_solute_restart_layout.py
