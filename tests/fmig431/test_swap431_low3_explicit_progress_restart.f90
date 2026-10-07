@@ -85,11 +85,11 @@ program test_swap431_low3_explicit_progress
   if(status/=FMR_APP_BOOT_OK .or. .not.allocated(application) .or. .not.application(1)%committed)then
     write(*,'(a,1x,i0,1x,l1)') 'LOW03EXP_PROGRESS_APP_STATUS',status,allocated(application)
     if(allocated(application))then
-      write(*,'(a,1x,l1,1x,l1,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,es24.16,1x,a)') &
+      write(*,'(a,1x,l1,1x,l1,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,a)') &
            'LOW03EXP_PROGRESS_APP_DIAG',application(1)%completed,application(1)%committed, &
            application(1)%kernel_status,application(1)%commit_status,application(1)%accepted_substeps, &
            application(1)%solver_rejections,application(1)%temporal_rejections,application(1)%mass_rejections, &
-           application(1)%max_temporal_indicator,trim(application(1)%admission_status)
+           trim(application(1)%admission_status)
     end if
   end if
   call require(status==FMR_APP_BOOT_OK .and. application(1)%committed,'whole application interval commits')
