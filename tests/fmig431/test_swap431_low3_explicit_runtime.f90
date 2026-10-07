@@ -10,7 +10,7 @@ program test_fmr44r_serialized_prescribed_qbot_runtime
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
-       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_execute_serialized_resolved_physical_column
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
@@ -287,6 +287,13 @@ contains
     parameters%elasticity_active = .false.
     parameters%frost_active = .false.
     parameters%soil_temperature_active = .false.
+    if(bottom_mode==3)then
+      block
+        logical::prepared
+        call prepare_fmr_b110_default_mvg(parameters,prepared)
+        call require(prepared,'mode3 prepared MvG')
+      end block
+    end if
   end subroutine initialize_parameters
 
   subroutine initialize_committed(committed, parameters, hydrostatic, ok)
