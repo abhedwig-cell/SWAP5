@@ -333,7 +333,11 @@ contains
 
     call initialize_b110_default_mvg_parameters(hp, parameters%cofgen)
     call bind_b110_default_mvg_provider(provider, hp, merge(upward_dt,equilibrium_dt,hydrostatic))
-    if (hydrostatic) then
+    if (parameters%swbotb3_explicit_active) then
+      ! Representable freatic profile for the integrated CALCGWL prerequisite:
+      ! h=z_gwl-z with z_gwl=-50 cm, so lower nodes are saturated.
+      heads = -50.0_real64 - parameters%z
+    else if (hydrostatic) then
       heads(1) = h0
       do i = 2, numnod
         heads(i) = heads(i-1) + parameters%node_distance(i)
