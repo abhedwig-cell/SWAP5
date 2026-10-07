@@ -45,6 +45,7 @@ module mod_fixed_crop_owner
 
   type, public :: fixed_crop_daily_diagnostics_t
     real(real64) :: temperature_sum_increment = 0.0_real64
+    logical :: temperature_sum_source_defined = .true.
     real(real64) :: development_increment = 0.0_real64
     real(real64) :: root_growth = 0.0_real64
     real(real64) :: root_death = 0.0_real64
@@ -152,15 +153,21 @@ contains
     status = FIXED_CROP_INVALID_FORCING
     if (.not. ieee_is_finite(forcing%average_temperature_c)) return
 
-    ! B1.11 fixed.f90 always accumulates TSUM from max(0,TAV-TBASE),
-    ! including IDEV=1 where DVS itself advances by the calendar clock.
-    dtsum = max(0.0_real64, forcing%average_temperature_c - parameters%base_temperature_c)
     if (parameters%development_mode == FIXED_CROP_IDEV_CALENDAR) then
+      ! Pinned B1.11 source defect: TBASE is declared SAVE and used to update
+      ! TSUM, but read_cropfixed does not assign it under IDEV=1. DVS itself is
+      ! fully defined as 2/LCC. Do not invent a TBASE default here.
+      dtsum = 0.0_real64
+      diagnostics%temperature_sum_source_defined = .false.
       dvr = 2.0_real64 / real(parameters%lifecycle_days, real64)
-    else if (committed%development_stage < 1.0_real64) then
-      dvr = dtsum / parameters%temperature_sum_emergence_to_anthesis
     else
-      dvr = dtsum / parameters%temperature_sum_anthesis_to_maturity
+      dtsum = max(0.0_real64, forcing%average_temperature_c - parameters%base_temperature_c)
+      diagnostics%temperature_sum_source_defined = .true.
+      if (committed%development_stage < 1.0_real64) then
+      dvr = dtsum / parameters%temperature_sum_emergence_to_anthesis
+      else
+        dvr = dtsum / parameters%temperature_sum_anthesis_to_maturity
+      end if
     end if
 
     candidate%development_stage = min(committed%development_stage + dvr, 2.0_real64)
