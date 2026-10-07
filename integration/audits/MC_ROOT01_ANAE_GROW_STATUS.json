@@ -2,13 +2,19 @@
   "schema": "swap431.mc_root01.anaerobic_gate.v1",
   "capability_id": "SW431-ROOT-ANAE-GROW",
   "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
-  "disposition": "PARTIAL_SOURCE_GATE_IMPLEMENTED_DAILY_STRESS_CARRIER_OPEN",
+  "disposition": "PARTIAL_SOURCE_GATE_IMPLEMENTED_TWO_ACTUAL_CONSUMERS_DAILY_STRESS_CARRIER_OPEN",
   "source_authority": {
     "member": "SWAP/MOD_cropdevelopment.f90",
     "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
     "source_probe_run": 37627316000,
     "source_probe_job": 112812304452,
-    "equation": "if (SWWRTNONOX == 1 .and. IALPWET_DAY < AERATECRIT) FL_ROOTEXTENSION = .FALSE."
+    "equation": "if (SWWRTNONOX == 1 .and. IALPWET_DAY < AERATECRIT) FL_ROOTEXTENSION = .FALSE.",
+    "additional_callsite": {
+      "member": "SWAP/wofost.f90",
+      "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "equation": "if (.NOT. potential .AND. SWRD==3 .AND. SWWRTNONOX==1 .AND. IALPWET_DAY<AERATECRIT) GRRT=0",
+      "meaning": "For SWRD3 the same daily oxygen gate suppresses actual root biomass growth, which then affects RLWTB-derived actual root depth."
+    }
   },
   "implementation": [
     "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
@@ -27,12 +33,16 @@
     "gate": "stateless",
     "root_depth_state": "existing/parallel SWRD2 rate owner, not duplicated here",
     "oxygen_state": "none",
-    "required_input": "accepted daily deepest-root oxygen factor IALPWET_DAY"
+    "required_input": "accepted daily deepest-root oxygen factor IALPWET_DAY",
+    "required_consumers": [
+      "SWRD2 actual depth extension gate",
+      "SWRD3 actual root biomass growth gate"
+    ]
   },
   "exact_boundary": "strict less-than; equality with AERATECRIT permits extension",
   "remaining": [
     "Provide accepted daily aggregation/carrier for oxygen factor at NODDRZ.",
-    "Compose gate into SWRD2 actual extension only after that accepted daily carrier exists.",
+    "Compose the same strict-threshold gate into SWRD2 actual extension and SWRD3 actual GRRT only; potential trajectories remain ungated by this actual stress signal.",
     "Qualify retry/restart so daily oxygen aggregation is accepted-state derived rather than trial leakage."
   ],
   "admission": false
