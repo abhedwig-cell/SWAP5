@@ -52,19 +52,21 @@
     },
     {
       "id": "SW431-AGE-TRACER",
-      "state": "PRODUCTION_AND_RESTART_OWNER_PARTIAL",
+      "state": "AGE_SUBSTEP_CANDIDATE",
       "evidence": [
         "persistent age amount store distinct from chemical mass",
+        "persistent Agepondm1 continuation in reactive restart layout",
         "B1.11 zero-order age production",
-        "candidate-only production transfer leaves chemical mass unchanged",
-        "reactive restart layout persists age amount"
+        "B1.11 pond age carry-over and infiltration transfer",
+        "age advection/dispersion transport",
+        "root, drainage and bottom age export/input bookkeeping",
+        "candidate-only update leaves chemical mass unchanged"
       ],
       "remaining": [
-        "full B1.11 Agepond/Agepondm1 state",
-        "advective/dispersive age transport",
-        "root/drainage/bottom age export accounting",
-        "effluent-age cumulative diagnostics",
-        "persisted integrated qualification"
+        "effluent-age cumulative diagnostics (icAgetop/icAgerot/icAgedra/icAgebot and Agegwl1m)",
+        "accepted hydraulic carrier binding",
+        "persisted integrated qualification",
+        "canonical admission"
       ]
     },
     {
