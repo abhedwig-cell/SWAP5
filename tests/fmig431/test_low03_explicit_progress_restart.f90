@@ -290,17 +290,15 @@ contains
     real(real64),intent(in)::gwl
     real(real64),intent(out)::cprof
     integer::node,i
-    real(real64)::bottom,ztop,zbot,sat
+    real(real64)::ztop,zbot,sat
     node=p%active_nodes
-    bottom=0.0_real64
-    do i=1,p%active_nodes
-      ztop=bottom
-      zbot=bottom-p%dz(i)
-      if(gwl>ztop .and. node>1)node=node-1
-      bottom=zbot
+    do
+      ztop=-sum(p%dz(1:node-1))
+      if(.not.(gwl>ztop .and. node>1))exit
+      node=node-1
     end do
-    bottom=-sum(p%dz(1:node))
-    sat=gwl-bottom
+    zbot=-sum(p%dz(1:node))
+    sat=gwl-zbot
     cprof=sat/p%cofgen(3,node)
     do i=node+1,p%active_nodes
       cprof=cprof+p%dz(i)/p%cofgen(3,i)
