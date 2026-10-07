@@ -9,7 +9,7 @@ module mod_fmr_divdra_serialized_runtime
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_positive_divdra, FMR_DIVDRA_BIND_OK
+       fmr_bind_single_level_signed_divdra, FMR_DIVDRA_BIND_OK
   use mod_fmr_divdra_serialized_composition, only: fmr_divdra_serialized_column_request_t, &
        fmr_divdra_serialized_binding_record_t, fmr_preflight_serialized_divdra, &
        FMR_DIVDRA_COMPOSE_OK, FMR_DIVDRA_COMPOSE_BIND_REJECTED
@@ -79,7 +79,7 @@ contains
       parameter_index = int(divdra_requests(i)%distribution_parameter_ref)
       view_index = int(divdra_requests(i)%hydraulic_view_ref)
 
-      call fmr_bind_single_level_positive_divdra(distribution_parameter_registry(parameter_index), &
+      call fmr_bind_single_level_signed_divdra(distribution_parameter_registry(parameter_index), &
            hydraulic_view_registry(view_index), divdra_requests(i)%scalar_transfer, &
            forcing_registry(forcing_index)%drainage_flux_by_level, bind_diag)
       divdra_records(slot)%binding = bind_diag
