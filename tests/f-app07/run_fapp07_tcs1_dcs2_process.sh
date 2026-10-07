@@ -7,9 +7,10 @@ mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "F_APP07_FAIL $*" >&2; exit 1; }
 
+POLICY=src/process/mod_irrigation_management_policy.f90
 SRC=src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90
 TEST=tests/f-app07/test_tcs1_dcs2_sprinkling_process.f90
-[[ -f "$SRC" && -f "$TEST" ]] || fail "missing source/test"
+[[ -f "$POLICY" && -f "$SRC" && -f "$TEST" ]] || fail "missing source/test"
 
 grep -Fq 'pure subroutine evaluate_tcs1_dcs2_sprinkling_interval' "$SRC" || fail "missing pure process"
 if grep -Eiq 'open[[:space:]]*\(|read[[:space:]]*\(|write[[:space:]]*\(' "$SRC"; then
@@ -22,9 +23,10 @@ fi
 COMMON=(-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$POLICY" -o "$OUT/policy.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$SRC" -o "$OUT/process.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o"
-  gfortran -O"$opt" "$OUT/process.o" "$OUT/test.o" -o "$OUT/test"
+  gfortran -O"$opt" "$OUT/policy.o" "$OUT/process.o" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt"; }
   grep -Fq 'F_APP07_TCS1_DCS2_HUPSEL_PROCESS=PASS' "$OUT/output.txt" || fail "missing Hupsel marker O$opt"
   grep -Fq 'F_APP07_TCS1_DCS2_SPLIT_REPLAY=PASS' "$OUT/output.txt" || fail "missing split marker O$opt"
@@ -55,6 +57,7 @@ COMPOSITION_SRC=(
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_irrigation_process.f90
+  src/process/mod_irrigation_management_policy.f90
   src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90
   src/process/mod_rutter_interception_process.f90
   src/process/mod_restricted_surface_evaporation.f90
