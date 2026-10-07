@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "SW431-HYD-HYST",
   "branch": "work/swap431-hyd-hyst-closeout",
   "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "checkpoint_commit": "26649b17f059b785b801d533b2ddb88840090630",
+  "code_postimage": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a",
   "implemented": true,
   "persisted": true,
-  "tested": "LOCAL_COMPONENT_O0_O2_PASS__INTEGRATED_ACTION_QUEUED",
+  "tested": "LOCAL_COMPONENT_O0_O2_PASS__INTEGRATED_CURRENT_CODE_RUN_QUEUED",
   "qualified": false,
   "scope": {
     "implemented": [
@@ -21,7 +21,8 @@
       "SW431-HYD-MODEL11_NO_VAPOR",
       "SW431-HYD-POWER",
       "SW431-HYD-LINEAR-TABLE",
-      "SW431-HYST_STATE_OWNER_CORE"
+      "SW431-HYST1",
+      "SW431-HYST2"
     ],
     "open": [
       "SW431-HYD-MODEL8_VAPOR",
@@ -30,26 +31,48 @@
       "SW431-HYD-MODEL11_VAPOR",
       "SW431-HYD-MODEL12_RIA",
       "SW431-HYD-TABLE",
-      "SW431-HYD-RIA-VAPOR",
-      "SW431-HYST1_APPLICATION_RESTART",
-      "SW431-HYST2_APPLICATION_RESTART"
+      "SW431-HYD-RIA-VAPOR"
     ]
   },
   "decomposition": {
     "model2": "exponential test relation owner",
     "model3": "bimodal MvG owner",
     "model5_7": "extended MvG truncation/bimodality family",
-    "model8_11": "PDI value family; no-vapor slice implemented; vapor kept separate",
-    "hysteresis": "one stateful reversal/scanning-curve owner; HYST1/HYST2 differ by initial branch only"
+    "model8_11": "PDI value family; no-vapor slice implemented; vapor is a separate corrected-reference dependency",
+    "power": "orthogonal default-MvG dry conductivity tail",
+    "linear_table": "SWSOPHY=-1 immutable intercept/slope owner, distinct from generic TSPACK TABLE",
+    "hysteresis": "one stateful reversal/scanning-curve owner; HYST1/HYST2 differ only by initial branch identity"
   },
   "local_evidence": {
     "compiler": "GNU Fortran 14.2.0",
+    "model2_3": "source-oracle O0/O2 PASS on persisted component harness",
     "model5_11_compile": "PASS",
     "model5_11_o0_o2": "PASS_BYTE_IDENTICAL",
     "model5_11_independent_oracle": "35/35 exact within floating output",
-    "hysteresis_state_o0_o2": "PASS",
-    "linear_table_o0_o2": "PASS",
-    "power_tail_o0_o2": "PASS"
+    "hysteresis_state_o0_o2": "PASS_BYTE_IDENTICAL",
+    "linear_table_o0_o2": "PASS_BYTE_IDENTICAL",
+    "power_tail_o0_o2": "PASS",
+    "hysteresis_transaction_design": "continuation state is cloned with trial state; mutation occurs only after SW_SOLVE_CONVERGED, never inside Newton evaluation",
+    "hysteresis_restart": "production restart layout and HYST1/HYST2 runtime/restart markers implemented",
+    "hysteresis_rejection": "production post-solver rollback test added for both initial modes; integrated execution pending queued run"
+  },
+  "source_reconciliation": {
+    "b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "generic_table": {
+      "b0_member_sha256": "bd7c58107c866580b0a30fd4ff2fa9aa022ab9aa970e87ce6886ba99e44a94b9",
+      "b0_member_bytes": 198627,
+      "public_historical_blob": "SWAP-model/SWAP@c22bd832... src/soil/sptabulated.f90",
+      "public_blob_text_bytes_observed": 198714,
+      "public_blob_sha256_observed": "cf79c406d67b8ced8bb55bb5de2d3893fc58f24bb30266366969374a9cb15862",
+      "disposition": "NOT_EXACT_B0_AUTHORITY__DO_NOT_USE_AS_ADMISSION_ORACLE"
+    },
+    "ria": {
+      "b111_target_sha256": "673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a",
+      "disposition": "EXACT_CORRECTED_SOURCE_BODY_NOT_MATERIALIZED__FAIL_CLOSED"
+    },
+    "pdi_vapor": {
+      "disposition": "SEPARATE_CONFIRMED_CELSIUS_KELVIN_DEFECT__REQUIRES_CORRECTED_REFERENCE_ADMISSION_BEFORE_PRODUCTION_MIGRATION"
+    }
   },
   "authority_paths": [
     "AGENTS.md",
@@ -65,19 +88,22 @@
     "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
     "reference/swap-4.3.1/patches/SWAP-011/qualification.md"
   ],
-  "relevant_paths": [
+  "dependency_surface": [
     "src/solver/mod_b110_default_mvg_provider.f90",
     "src/solver/mod_b111_legacy_hydraulic_provider.f90",
     "src/solver/mod_b111_extended_hydraulic_provider.f90",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "tests/fsi/run_b111_hydraulic_families.sh",
     "src/solver/mod_b111_conductivity_power_tail.f90",
     "src/solver/mod_b111_linear_table_provider.f90",
     "src/solver/mod_b111_hysteresis_state.f90",
-    "tests/fsi/run_b111_power_tail.sh",
-    "tests/fsi/run_b111_linear_table_provider.sh",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "tests/fsi/run_b111_hydraulic_families.sh",
     "tests/fsi/run_b111_hysteresis_state.sh",
+    "tests/fsi/run_b111_linear_table_provider.sh",
     "tests/fmr/run_swap431_hyd_runtime_reachability.sh",
+    "tests/fmr/test_swap431_hyd_runtime_reachability.f90",
     ".github/workflows/swap431-hydraulic-families.yml"
   ],
   "invariants_affected": [
@@ -92,18 +118,10 @@
     25,
     27
   ],
-  "next_action": "Wait actively for current-head focused run while implementing/qualifying HYST accepted-step and restart binding; then create bounded admission/closeout for stateless HYD cluster.",
-  "blockers": [
-    "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not unpacked in the repository; hash/patch qualification authority exists but implementation must not be reconstructed from prose.",
-    "PDI VAPOR has a separately confirmed Celsius/Kelvin source defect; production migration requires corrected-reference disposition rather than copying legacy behavior.",
-    "Generic SWSOPHY=1 TSPACK TABLE remains distinct from generated F-TAB02 and is not covered by LINEAR-TABLE.",
-    "HYST1/HYST2 require accepted-step production binding and restart persistence before capability admission."
-  ],
-  "recovery_point": "26649b17f059b785b801d533b2ddb88840090630",
   "integrated_qualification": {
     "workflow": "SW431 HYD constitutive families",
-    "current_head_run_id": 37632630660,
-    "current_head": "26649b17f059b785b801d533b2ddb88840090630",
+    "run_id": 37638247514,
+    "code_head": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a",
     "state": "QUEUED",
     "includes": [
       "model2/3 source-oracle O0/O2",
@@ -111,9 +129,18 @@
       "POWER O0/O2",
       "LINEAR-TABLE O0/O2",
       "HYST state-owner O0/O2",
-      "serialized production reachability + hard mass for models2/3/5-11, POWER, LINEAR-TABLE",
+      "serialized production reachability and hard mass",
+      "HYST1/HYST2 restart roundtrip",
+      "HYST1/HYST2 rejected-trial rollback",
       "F-SI39 KSATEXM preservation",
       "ROSS12 reference solver adapter preservation"
     ]
-  }
+  },
+  "blockers": [
+    "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not materialized in repository authority.",
+    "PDI VAPOR has a separately confirmed Celsius/Kelvin defect and cannot be copied from legacy without corrected-reference admission.",
+    "Generic SWSOPHY=1 TSPACK TABLE exact B0 source bytes are not present; the public historical file is not byte-identical to the B0 member and cannot serve as exact admission authority."
+  ],
+  "next_action": "Actively await run 37638247514. If green, persist qualification/closeout for the implemented HYD/HYST slice without broadening RIA, VAPOR or generic TSPACK TABLE.",
+  "recovery_point": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a"
 }
