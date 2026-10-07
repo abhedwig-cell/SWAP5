@@ -1,6 +1,7 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_fmr_micro_mvg_table_binding, only: fmr_micro_horizon_map_valid
   use mod_fmr_serialized_reference_backend, only: fmr_frost_response_drainage_configuration_valid, &
        fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
   use mod_root_uptake_compensation, only: ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
@@ -167,6 +168,14 @@ contains
       if (.not. tile_config_valid(config%tiles(i), n, i)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
+      end if
+      if (allocated(config%tiles(i)%parameters%micro_de_willigen)) then
+        if (config%numerical%transaction%temporal_mode /= TX_TEMPORAL_MODEL_CERTIFICATE .or. &
+            config%tiles(i)%template%numerical_continuation_layout_id /= &
+            FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
       end if
       if(allocated(config%tiles(i)%parameters%mobile_dispersion))then
         if(.not.config%base_salt_temporal_policy%transport%valid())then
@@ -837,6 +846,33 @@ contains
     if (tile%parameters%active_nodes <= 0) return
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
         tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8) return
+    if (allocated(tile%parameters%micro_de_willigen)) then
+      if (allocated(tile%parameters%micro_horizon_first_node)) then
+        if (.not. fmr_micro_horizon_map_valid(tile%parameters%micro_horizon_first_node, &
+            tile%parameters%active_nodes)) return
+      end if
+      if (.not. tile%parameters%root_extraction_active) return
+      if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
+      if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF .or. tile%parameters%root_salinity_active .or. &
+          tile%parameters%root_frost%active .or. allocated(tile%parameters%bartholomeus)) return
+      if (tile%parameters%micro_de_willigen%oxygen_mode /= 0) return
+      if (tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active .or. &
+          tile%parameters%ksatexm_extension_active .or. tile%parameters%frost_active .or. &
+          tile%parameters%soil_temperature_active .or. tile%parameters%snow_active .or. &
+          tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+      if (.not. allocated(tile%base_forcing%micro_root_length_density)) return
+      if (tile%base_forcing%micro_rooted_nodes < 0 .or. &
+          tile%base_forcing%micro_rooted_nodes > tile%parameters%active_nodes) return
+      if (size(tile%base_forcing%micro_root_length_density) /= tile%parameters%active_nodes) return
+      if (any(.not. ieee_is_finite(tile%base_forcing%micro_root_length_density))) return
+      if (any(tile%base_forcing%micro_root_length_density < 0.0_real64)) return
+      if (.not. allocated(tile%base_forcing%root_extraction_sink)) return
+      if (any(tile%base_forcing%root_extraction_sink /= 0.0_real64)) return
+    else
+      if (allocated(tile%parameters%micro_horizon_first_node)) return
+      if (allocated(tile%base_forcing%micro_root_length_density) .or. &
+          tile%base_forcing%micro_rooted_nodes /= 0) return
+    end if
 
     select case (tile%template%solute_state_layout_id)
     case (FMR_SOLUTE_STATE_LAYOUT_NONE)
@@ -878,7 +914,9 @@ contains
       if(tile%parameters%soil_temperature_active.and..not.tile%parameters%root_frost%active.and. &
            .not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) return
       if(tile%parameters%root_extraction_active) then
-        if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+        if (allocated(tile%parameters%micro_de_willigen)) then
+          if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+        else if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
           if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
         else
           if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &

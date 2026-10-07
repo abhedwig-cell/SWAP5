@@ -1,0 +1,44 @@
+name: PPA MICRO02 standalone de Willigen
+on:
+  push:
+    branches: [work/ppa-micro02-de-willigen-20261006]
+    paths:
+      - .github/workflows/ppa-micro02-de-willigen.yml
+      - src/process/mod_root_micro_de_willigen_process.f90
+      - src/runtime/mod_fmr_micro_mvg_table_binding.f90
+      - tests/physics/test_ppa_micro02_de_willigen.f90
+      - tests/physics/run_ppa_micro02_de_willigen.py
+      - tests/physics/test_ppa_micro02_source_oracle.f90
+      - tests/physics/run_ppa_micro02_source_oracle.py
+permissions:
+  contents: read
+jobs:
+  standalone-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test O0/O2 process and real hydraulic sampling
+        shell: bash
+        env:
+          MICRO02_RESULT: micro02-result.json
+        run: |
+          set -euo pipefail
+          python3 tests/physics/run_ppa_micro02_de_willigen.py | tee micro02-replay.log
+      - name: Compare corrected literal B1.11 nonlinear source
+        shell: bash
+        env:
+          MICRO02_ORACLE_RESULT: micro02-oracle-result.json
+        run: |
+          set -euo pipefail
+          python3 tests/physics/run_ppa_micro02_source_oracle.py | tee micro02-oracle-replay.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-micro02-standalone
+          path: |
+            micro02-result.json
+            micro02-replay.log
+            micro02-oracle-result.json
+            micro02-oracle-replay.log
+          if-no-files-found: error

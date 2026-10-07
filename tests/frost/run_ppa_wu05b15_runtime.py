@@ -2,11 +2,13 @@
 """Fresh whole-module B15 runtime; one full configuration per process."""
 import argparse,os,pathlib,re,shutil,subprocess
 ROOT=pathlib.Path(__file__).resolve().parents[2]
-assert subprocess.check_output(["git","rev-parse","HEAD:src"],cwd=ROOT,text=True).strip()=="ab1849e155cfe4aadb838075c3e402985bc4e0f5"
 a=argparse.ArgumentParser();a.add_argument('--route',choices=['normal','low_air'],required=True)
 a.add_argument('--opts',nargs='+',type=int,choices=[0,2],default=[0,2]);a.add_argument('--build',type=pathlib.Path)
+a.add_argument('--micro-successor',action='store_true',help='Require the exact MICRO02-06 successor source tree')
 args=a.parse_args()
-prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'
+source='ac822aafd5403547a2c7ffad5c3ba02c9fa36496' if args.micro_successor else 'ab1849e155cfe4aadb838075c3e402985bc4e0f5'
+assert subprocess.check_output(["git","rev-parse","HEAD:src"],cwd=ROOT,text=True).strip()==source
+prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else'')
 BUILD=args.build or pathlib.Path(os.environ.get('TMPDIR','/tmp'))/prefix
 assert BUILD.name.startswith(prefix) and BUILD.is_absolute(),'owned B15 build directory required'
 BUILD.mkdir(parents=True,exist_ok=True)
@@ -53,4 +55,3 @@ if all((BUILD/f'o{o}'/'output.txt').exists()for o in [0,2]):
  assert (BUILD/'o0/output.txt').read_bytes()==(BUILD/'o2/output.txt').read_bytes()
  print(f'PPA_WU05B15_{args.route.upper()}_O0_O2_IDENTITY=PASS',flush=True)
 print('BUILD='+str(BUILD),flush=True)
-
