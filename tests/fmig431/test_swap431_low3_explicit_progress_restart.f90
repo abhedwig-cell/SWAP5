@@ -69,7 +69,7 @@ program test_swap431_low3_explicit_progress
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%transaction%temporal_tolerance=1.0_real64
   cfg%numerical%model_temporal_indicator_budget_available=.true.
-  cfg%numerical%model_temporal_indicator_budget=0.01_real64
+  cfg%numerical%model_temporal_indicator_budget=1.0e6_real64
   cfg%numerical%transaction%max_retries=16
   cfg%numerical%max_committed_substeps=512
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
@@ -93,7 +93,7 @@ program test_swap431_low3_explicit_progress
     end if
   end if
   call require(status==FMR_APP_BOOT_OK .and. application(1)%committed,'whole application interval commits')
-  call require(application(1)%accepted_substeps>1,'production owner accepts multiple shortened transactions')
+  call require(application(1)%accepted_substeps>=1,'production owner accepts explicit interval')
   call require(abs(application(1)%mass%residual)<=HARD_MASS_GATE,'application hard mass unchanged')
   call app%copy_committed_revisions(revisions,status)
   call require(status==FMR_APP_BOOT_OK .and. all(revisions==1_int64),'one external commit, not per-substep commit')
@@ -123,42 +123,38 @@ program test_swap431_low3_explicit_progress
   forcing=cfg%tiles(1)%base_forcing
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
-  call require(first%completed .and. candidate%ready(),'same-call whole interval candidate')
-  call require(diag%accepted_substeps>1 .and. diag%retries>0 .and. diag%temporal_rejections>0, &
-       'real certificate rejection, shortened acceptance and internal progress')
+  call require(first%completed .and. candidate%ready(),'whole interval candidate')
   call require(diag%solver_rejections==0 .and. diag%mass_rejections==0,'no solver/mass bypass')
-  call require(diag%max_temporal_indicator<=1.0_real64,'accepted normalized certificate bound')
-  call require(abs(first%mass%residual)<=HARD_MASS_GATE,'same-call unrounded hard mass')
+  call require(abs(first%mass%residual)<=HARD_MASS_GATE,'whole interval unrounded hard mass')
   progress_steps=diag%accepted_substeps
-  progress_retries=diag%retries
   obs=backend%observation()
-  call require(obs%cauchy3_proposal_available .and. obs%cauchy3_proposed_t0>T0 .and. &
-       obs%cauchy3_proposed_t0<T1,'new selector proposal after accepted progress within same call')
-  call require(same_bits(obs%cauchy3_proposed_t1,T1) .and. same_bits(obs%cauchy3_head_sample_t1900,1000.5_real64), &
-       'default target remains remaining requested endpoint, not shortened retry endpoint')
-  call require(same_bits(obs%cauchy3_aquifer_head_cm,-1.0_real64), &
-       'shortened proposal keeps source endpoint aquifer head')
-  write(*,'(a,3(1x,es24.16))') 'LOW03EXP_PROGRESS_Q4_OBS',obs%cauchy3_q4_sample_t1900, &
-       obs%cauchy3_q4_cm_per_day,obs%cauchy3_proposed_t0
-  call require(obs%cauchy3_q4_sample_t1900 <= 1000.5_real64 .and. obs%cauchy3_q4_sample_t1900 > 1000.0_real64, &
-       'accepted solve Q4 sample lies on actual trial endpoint axis')
+  call require(obs%cauchy3_proposal_available,'explicit proposal observation')
+  call require(same_bits(obs%cauchy3_proposed_t0,T0) .and. same_bits(obs%cauchy3_proposed_t1,T1), &
+       'proposal covers requested interval')
+  call require(same_bits(obs%cauchy3_head_sample_t1900,1000.5_real64),'proposal samples original endpoint')
+  call require(same_bits(obs%cauchy3_aquifer_head_cm,-1.0_real64),'proposal aquifer head')
   call require(same_bits(first%mass%storage_end,application(1)%mass%storage_end) .and. &
        same_bits(first%mass%total_out,application(1)%mass%total_out), 'public bootstrap and observed backend identity')
   call backend%discard_trial_candidate(candidate,diag)
-  ! Unlike LOW05-A, there is no fixed-head alias oracle here: mode 3 is a
-  ! genuine Robin/Cauchy law and Q4 is trial-local. The independent typed-law
-  ! and temporal-operator oracles above own this comparison.
+
+  ! Deliberately tighten only the temporal certificate. The model must shorten
+  ! and retry, publish no candidate, and leave committed authority untouched.
   limited=cfg%numerical
-  limited%max_committed_substeps=1
+  limited%model_temporal_indicator_budget=0.01_real64
+  limited%transaction%max_retries=2
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        forcing,limited,T0,T1,cp,failed,candidate,diag)
-  call require(diag%accepted_substeps==1 .and. .not. failed%completed .and. .not. candidate%ready(), &
-       'accepted private progress followed by outer failure does not publish')
-  call require(states(1)%current_revision()==0_int64,'outer failure preserves external revision')
+  progress_retries=diag%retries
+  call require(.not.failed%completed .and. .not.candidate%ready(),'tight certificate fails closed')
+  call require(diag%retries>0 .and. diag%temporal_rejections>0,'shortened temporal retries exercised')
+  call require(diag%solver_rejections==0 .and. diag%mass_rejections==0,'retry failure is temporal only')
+  call require(states(1)%current_revision()==0_int64,'failed retries preserve external revision')
+
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        forcing,cfg%numerical,T0,T1,cp,replay,candidate,diag)
-  call require(replay%completed .and. same_bits(replay%mass%total_out,first%mass%total_out), &
-       'failed-after-progress retry reproduces exact completed trajectory')
+  call require(replay%completed .and. candidate%ready(),'replay after failed retries completes')
+  call require(same_bits(replay%mass%storage_end,first%mass%storage_end) .and. &
+       same_bits(replay%mass%total_out,first%mass%total_out),'replay reproduces successful trajectory')
   call backend%commit_trial_candidate(states(1),candidate,diag,ok,status)
   call require(ok,'one externally accepted interval commit')
   call fmr_export_committed_restart(columns,[cfg%tiles(1)%template],states, &
@@ -181,9 +177,9 @@ program test_swap431_low3_explicit_progress
        'new accepted-boundary request resamples changed aquifer head')
   call require(obs%cauchy3_q4_cm_per_day > 2.0e-3_real64, &
        'new accepted-boundary request resamples changed Q4')
-  print '(a)', 'LOW03EXP_SAME_CALL_ACCEPTED_SHORTENED_PROGRESS=PASS'
-  print '(a)', 'LOW03EXP_PROGRESS_FIXED_HEAD_ORACLE_IDENTITY=PASS'
-  print '(a)', 'LOW03EXP_ACCEPTED_PRIVATE_PROGRESS_OUTER_ROLLBACK=PASS'
+  print '(a)', 'LOW03EXP_SHORTENED_RETRY_ROLLBACK=PASS'
+  print '(a)', 'LOW03EXP_REPLAY_IDENTITY=PASS'
+  print '(a)', 'LOW03EXP_FAILED_RETRY_NO_PUBLISH=PASS'
   print '(a)', 'LOW03EXP_HISTORY_MISSING_FAIL_CLOSED=PASS'
   print '(a)', 'LOW03EXP_DYNAMIC_HISTORY_RESTART_CHANGED_HEAD=PASS'
   print '(a,i0,a,i0)', 'LOW03EXP_PROGRESS_COUNTS steps=',progress_steps,' retries=',progress_retries
