@@ -93,18 +93,18 @@ contains
       result%timing_threshold = threshold
       depletion = threshold * (request%total_available_water_cm-request%stress_to_wilting_available_cm)
       if (depletion > request%total_available_water_cm) depletion = request%total_available_water_cm
-      result%trigger = request%actual_available_water_cm < request%total_available_water_cm-depletion
+      result%trigger = request%actual_available_water_cm <= request%total_available_water_cm-depletion
     case (3)
       call afgen(parameters%tcs3_dvs, parameters%tcs3_fraction, parameters%tcs3_knot_count, request%dvs, threshold, ok)
       if (.not. ok) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
       result%timing_threshold = threshold
       depletion = threshold * request%total_available_water_cm
-      result%trigger = request%actual_available_water_cm < request%total_available_water_cm-depletion
+      result%trigger = request%actual_available_water_cm <= request%total_available_water_cm-depletion
     case (4)
       call afgen(parameters%tcs4_dvs, parameters%tcs4_depletion_mm, parameters%tcs4_knot_count, request%dvs, threshold, ok)
       if (.not. ok) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
       result%timing_threshold = threshold
-      result%trigger = request%total_available_water_cm-request%actual_available_water_cm > 0.1_real64*threshold
+      result%trigger = request%total_available_water_cm-request%actual_available_water_cm >= 0.1_real64*threshold
     case (6)
       candidate_state%weekly_day_counter = committed_state%weekly_day_counter + 1
       if (candidate_state%weekly_day_counter >= 7) then
