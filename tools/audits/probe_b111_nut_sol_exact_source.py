@@ -48,6 +48,18 @@ solute_needles=[
  "cfluxt=qtop*(1.0d0-armpSS)*cpond*dtsolu".lower(),
  "csurf=csurf+cfluxt",
  "ageprod=1.0d0*0.5d0*(theta(i)+thetm1(i))",
+ "agesurf=(nird*ageirr+nraidt*agepre)*dtsolu+pondm1*agepondm1",
+ "agepond=agesurf/(pond-qtop*dtsolu)",
+ "agefluxt=qtop*(1.0d0-armpSS)*agepond*dtsolu".lower(),
+ "agemlav=inpola(i+1)*ageml(i)+inpolb(i)*ageml(i+1)",
+ "thetav=inpola(i+1)*theta(i)+inpolb(i)*theta(i+1)",
+ "vpore=abs(q(i+1))/thetav",
+ "diffus=ddif*(thetav**2.33d0)/(thetsl(layer(i))**2)",
+ "dispr=diffus+ldis(layer(i))*vpore+0.5d0*dtsolu*vpore*vpore",
+ "agefluxb=(q(i+1)*agemlav+thetav*dispr*(ageml(i+1)-ageml(i))/disnod(i+1))*dtsolu",
+ "agerot=qrot(i)*ageml(i)/dz(i)",
+ "agemsy(i)=agemsy(i)+(agefluxb-agefluxt)/dz(i)+(-agerot-agedrtot+ageprod)*dtsolu",
+ "ageml(i)=agemsy(i)/theta(i)",
 ]
 for needle in solute_needles:
     if needle not in sol:
@@ -184,4 +196,6 @@ if (ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_age_tracer_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_age_tracer_transaction.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
