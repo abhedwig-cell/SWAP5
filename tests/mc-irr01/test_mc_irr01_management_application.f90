@@ -130,6 +130,32 @@ program test_mc_irr01_management_application
   p%policy%dcs2_knot_count=2
   p%policy%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
   p%policy%dcs2_depth_cm(1:2)=[1.0_real64,1.0_real64]
+  p%policy%timing_criterion=3
+  p%policy%tcs3_knot_count=2
+  p%policy%tcs3_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%tcs3_fraction(1:2)=[0.25_real64,0.25_real64]
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,22)
+  call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,23)
+
+  call setup_base(p,h,r)
+  p%policy%depth_criterion=2
+  p%policy%dcs2_knot_count=2
+  p%policy%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%dcs2_depth_cm(1:2)=[1.0_real64,1.0_real64]
+  p%policy%timing_criterion=4
+  p%policy%tcs4_knot_count=2
+  p%policy%tcs4_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%tcs4_depletion_mm(1:2)=[10.0_real64,10.0_real64]
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,24)
+  call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,25)
+
+  call setup_base(p,h,r)
+  p%policy%depth_criterion=2
+  p%policy%dcs2_knot_count=2
+  p%policy%dcs2_dvs(1:2)=[0.0_real64,2.0_real64]
+  p%policy%dcs2_depth_cm(1:2)=[1.0_real64,1.0_real64]
   p%policy%timing_criterion=6
   p%policy%tcs6_threshold_mm=9.0_real64
   s=fmr_irrigation_management_state_t()
