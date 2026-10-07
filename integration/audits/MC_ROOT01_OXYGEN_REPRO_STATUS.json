@@ -1,0 +1,48 @@
+{
+  "schema": "swap431.mc_root01.oxygen_repro.v1",
+  "capability_id": "SW431-ROOT-OXYGEN-REPRO",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "response_member": "SWAP/oxygenstress.f90",
+    "response_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "selector_member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "selector_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "selector": "SWOXYGEN=2, SWOXYGENTYPE=2",
+    "parameters": {
+      "oxygenslope": "6 values, source read range [-1e4,1e4]",
+      "oxygenintercept": "6 values, source read range [-1e3,1e3]"
+    }
+  },
+  "implementation": "src/process/mod_root_oxygen_reproduction_response.f90",
+  "ownership": {
+    "persistent_state": false,
+    "parameters": [
+      "OxygenSlope(6)",
+      "OxygenIntercept(6)"
+    ],
+    "forcing": [
+      "theta(:)",
+      "thetas(:)",
+      "tsoil(:)",
+      "z(:)",
+      "zbotcp(:)",
+      "dz(:)"
+    ],
+    "result": "one multiplicative oxygen reduction factor per rooted node",
+    "water_mass": "must multiply the existing single root-extraction sink; no second sink owner"
+  },
+  "exact_semantics": [
+    "local gas-filled porosity=max(0,thetas(node)-theta(node)); below 1e-10 returns zero",
+    "profile mean uses raw sum((thetas-theta)*dz)/(-zbotcp(node))",
+    "soil temperature is C+273 and depth is -z*0.01 m",
+    "slope and intercept are six-term temperature/depth quadratic-bilinear polynomials",
+    "factor=clamp(intercept+slope*mean_gas_filled_porosity,0,1)"
+  ],
+  "disposition": "SOURCE_RESPONSE_IMPLEMENTED_TYPED_PARAMETER_AND_SINK_COMPOSITION_OPEN",
+  "remaining": [
+    "Add typed construction/validation of the 6+6 source coefficients to production activation.",
+    "Bind profile factors into the existing root-water-uptake stress product for SWOXYGEN=2/SWOXYGENTYPE=2.",
+    "Qualify node profile, mass, retry/restart and preservation of admitted type1 Bartholomeus."
+  ],
+  "admission": false
+}
