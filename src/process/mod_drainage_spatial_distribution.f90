@@ -110,7 +110,7 @@ contains
       return
     end if
 
-    if (scalar_transfer == 0.0_real64) then
+    if (.not. (scalar_transfer < 0.0_real64) .and. .not. (scalar_transfer > 0.0_real64)) then
       diagnostics%evaluated = .true.
       diagnostics%zero_transfer = .true.
       return
@@ -272,11 +272,11 @@ contains
         diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS
         return
       end if
-      if (any(level_parameters(level)%dz /= level_parameters(1)%dz) .or. &
-          any(level_parameters(level)%zbotcp /= level_parameters(1)%zbotcp) .or. &
-          any(level_parameters(level)%saturated_conductivity /= level_parameters(1)%saturated_conductivity) .or. &
-          any(level_parameters(level)%horizontal_anisotropy_factor /= &
-              level_parameters(1)%horizontal_anisotropy_factor)) then
+      if (any(abs(level_parameters(level)%dz-level_parameters(1)%dz)>0.0_real64) .or. &
+          any(abs(level_parameters(level)%zbotcp-level_parameters(1)%zbotcp)>0.0_real64) .or. &
+          any(abs(level_parameters(level)%saturated_conductivity-level_parameters(1)%saturated_conductivity)>0.0_real64) .or. &
+          any(abs(level_parameters(level)%horizontal_anisotropy_factor- &
+              level_parameters(1)%horizontal_anisotropy_factor)>0.0_real64)) then
         diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS
         return
       end if
