@@ -32,8 +32,8 @@
     "src/crop/mod_wofost_potential_shadow_state.f90",
     "src/crop/mod_wofost_potential_shadow_daily.f90",
     "src/crop/mod_wofost_prepare_assimilation.f90",
-    "src/crop/mod_wofost_finalize_rates.f90",
-    "src/crop/mod_wofost_one_day_structural_evolution.f90"
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/crop/mod_wofost_finalize_rates.f90"
   ],
   "semantics": [
     "Potential rate-state view is materialized using actual phenology plus shadow biomass.",
@@ -41,7 +41,9 @@
     "Existing assimilation routine retains the default actual RELMF behavior; an optional explicit override supports potential SWPOTRELMF policy without duplicating assimilation physics.",
     "SWPOTRELMF=2 can pass RELMF; other potential modes can pass 1.0.",
     "The shared one-day rate packet now exposes trial-only gross_root_growth_rate, populated from source GRRT before root death; accepted state still uses root_net_growth_rate.",
-    "Potential daily wrapper runs the existing production prepare/rate/structural equations with RELTR=1 and explicit potential RELMF policy, then absorbs only biomass/reference carryover and discards temporary phenology changes."
+    "Potential daily wrapper runs the existing production prepare/rate/structural equations with RELTR=1 and explicit potential RELMF policy, then absorbs only biomass/reference carryover and discards temporary phenology changes.",
+    "Daily shadow wrapper runs the same classic assimilation/rate/structural modules with RELTR=1 and explicit potential RELMF policy, then discards temporary DVS/TSUM/anthesis changes and accepts only potential biomass/reference continuation.",
+    "The shared rate packet now exposes gross_root_growth_rate as trial-only source GRRT; potential wrapper publishes this as GRRTPOT while WRTPOT is the accepted shadow root biomass."
   ],
   "unlocked_dependencies": {
     "SW431-CROP-ATTAINABLE": "potential RELMF policy owner now exists",
@@ -49,23 +51,25 @@
     "SW431-CROP-ROOTGROW": "GRRTPOT is now an explicit trial result from the potential shadow daily evaluator; SWRD2 can gate potential extension without deriving gross growth from net biomass change."
   },
   "qualification": {
+    "runner": "tests/fmig431/run_swap431_potential_shadow.py",
     "owner_test": "tests/fmig431/test_swap431_potential_shadow.f90",
-    "status": "IMPLEMENTATION_READY_FULL_PRODUCTION_CLOSURE_REQUIRED",
-    "required": [
-      "O0/O2 build of full classic dependency closure",
-      "default actual path preservation with optional RELMF argument absent",
-      "potential RELMF=1 versus RELMF selector divergence",
-      "gross GRRTPOT versus net GWRT distinction",
-      "actual DVS/TSUM unchanged by potential shadow evaluation",
-      "transaction reject/replay/restart of actual+optional-shadow pair"
+    "daily_test": "tests/fmig431/test_swap431_potential_shadow_daily.f90",
+    "status": "READY_FOR_O0_O2_FULL_REPO_COMPILE",
+    "required_claims": [
+      "actual owner unchanged",
+      "shared DVS/TSUM unchanged",
+      "potential biomass divergence",
+      "GRRTPOT is gross not net",
+      "SWPOTRELMF policy changes potential PGASS/growth only"
     ]
   },
   "remaining": [
-    "Compose actual owner plus optional potential shadow atomically in one crop transaction state; neither may advance on rejection.",
-    "Persist optional shadow only when the classic potential capability is enabled.",
-    "Bind accepted GRRTPOT/WRTPOT into SWRD2/SWRD3 root-depth owners.",
-    "Run full closure O0/O2 and restart/preservation gates before admission."
+    "Run full dependency-closure O0/O2 qualification.",
+    "Embed optional shadow in the atomic daily crop transaction so rejection/replay advances neither actual nor potential.",
+    "Persist/restart optional shadow only when enabled.",
+    "Bind accepted GRRTPOT/WRTPOT to SWRD2/SWRD3 root-depth owners.",
+    "Verify no-output configuration allocates no mandatory potential state."
   ],
-  "disposition": "POTENTIAL_OWNER_DAILY_EVALUATOR_RELMF_AND_GRRTPOT_IMPLEMENTED_ATOMIC_TRANSACTION_OPEN",
+  "disposition": "OPTIONAL_SHADOW_DAILY_SOURCE_COMPOSITION_IMPLEMENTED_ATOMIC_TRANSACTION_OPEN",
   "admission": false
 }
