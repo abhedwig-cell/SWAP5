@@ -3,10 +3,10 @@
   "workstream": "SW431-HYD-HYST",
   "branch": "work/swap431-hyd-hyst-closeout",
   "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "checkpoint_commit": "bf20714805d7ad0769d69c4f893a60dc0adfc5fb",
+  "checkpoint_commit": "26649b17f059b785b801d533b2ddb88840090630",
   "implemented": true,
   "persisted": true,
-  "tested": "LOCAL_COMPONENT_PARTIAL",
+  "tested": "LOCAL_COMPONENT_O0_O2_PASS__INTEGRATED_ACTION_QUEUED",
   "qualified": false,
   "scope": {
     "implemented": [
@@ -18,7 +18,10 @@
       "SW431-HYD-MODEL8_NO_VAPOR",
       "SW431-HYD-MODEL9_NO_VAPOR",
       "SW431-HYD-MODEL10_NO_VAPOR",
-      "SW431-HYD-MODEL11_NO_VAPOR"
+      "SW431-HYD-MODEL11_NO_VAPOR",
+      "SW431-HYD-POWER",
+      "SW431-HYD-LINEAR-TABLE",
+      "SW431-HYST_STATE_OWNER_CORE"
     ],
     "open": [
       "SW431-HYD-MODEL8_VAPOR",
@@ -27,11 +30,9 @@
       "SW431-HYD-MODEL11_VAPOR",
       "SW431-HYD-MODEL12_RIA",
       "SW431-HYD-TABLE",
-      "SW431-HYD-POWER",
-      "SW431-HYD-LINEAR-TABLE",
       "SW431-HYD-RIA-VAPOR",
-      "SW431-HYST1",
-      "SW431-HYST2"
+      "SW431-HYST1_APPLICATION_RESTART",
+      "SW431-HYST2_APPLICATION_RESTART"
     ]
   },
   "decomposition": {
@@ -45,7 +46,10 @@
     "compiler": "GNU Fortran 14.2.0",
     "model5_11_compile": "PASS",
     "model5_11_o0_o2": "PASS_BYTE_IDENTICAL",
-    "model5_11_independent_oracle": "35/35 exact within floating output"
+    "model5_11_independent_oracle": "35/35 exact within floating output",
+    "hysteresis_state_o0_o2": "PASS",
+    "linear_table_o0_o2": "PASS",
+    "power_tail_o0_o2": "PASS"
   },
   "authority_paths": [
     "AGENTS.md",
@@ -66,7 +70,15 @@
     "src/solver/mod_b111_legacy_hydraulic_provider.f90",
     "src/solver/mod_b111_extended_hydraulic_provider.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "tests/fsi/run_b111_hydraulic_families.sh"
+    "tests/fsi/run_b111_hydraulic_families.sh",
+    "src/solver/mod_b111_conductivity_power_tail.f90",
+    "src/solver/mod_b111_linear_table_provider.f90",
+    "src/solver/mod_b111_hysteresis_state.f90",
+    "tests/fsi/run_b111_power_tail.sh",
+    "tests/fsi/run_b111_linear_table_provider.sh",
+    "tests/fsi/run_b111_hysteresis_state.sh",
+    "tests/fmr/run_swap431_hyd_runtime_reachability.sh",
+    ".github/workflows/swap431-hydraulic-families.yml"
   ],
   "invariants_affected": [
     3,
@@ -80,7 +92,28 @@
     25,
     27
   ],
-  "next_action": "Complete focused persisted qualification, then migrate POWER/TABLE or stateful hysteresis depending dependency order.",
-  "blockers": [],
-  "recovery_point": "bf20714805d7ad0769d69c4f893a60dc0adfc5fb"
+  "next_action": "Wait actively for current-head focused run while implementing/qualifying HYST accepted-step and restart binding; then create bounded admission/closeout for stateless HYD cluster.",
+  "blockers": [
+    "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not unpacked in the repository; hash/patch qualification authority exists but implementation must not be reconstructed from prose.",
+    "PDI VAPOR has a separately confirmed Celsius/Kelvin source defect; production migration requires corrected-reference disposition rather than copying legacy behavior.",
+    "Generic SWSOPHY=1 TSPACK TABLE remains distinct from generated F-TAB02 and is not covered by LINEAR-TABLE.",
+    "HYST1/HYST2 require accepted-step production binding and restart persistence before capability admission."
+  ],
+  "recovery_point": "26649b17f059b785b801d533b2ddb88840090630",
+  "integrated_qualification": {
+    "workflow": "SW431 HYD constitutive families",
+    "current_head_run_id": 37632630660,
+    "current_head": "26649b17f059b785b801d533b2ddb88840090630",
+    "state": "QUEUED",
+    "includes": [
+      "model2/3 source-oracle O0/O2",
+      "model5-11 source-oracle O0/O2",
+      "POWER O0/O2",
+      "LINEAR-TABLE O0/O2",
+      "HYST state-owner O0/O2",
+      "serialized production reachability + hard mass for models2/3/5-11, POWER, LINEAR-TABLE",
+      "F-SI39 KSATEXM preservation",
+      "ROSS12 reference solver adapter preservation"
+    ]
+  }
 }
