@@ -32,6 +32,7 @@ residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
 orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
 management=packed("SWAP/management_soil.f90")
+cropgrowth=packed("SWAP/cropgrowth.f90")
 
 age_substep_needles=[
  "agesurf=(nird*ageirr+nraidt*agepre)*dtsolu+pondm1*agepondm1",
@@ -116,6 +117,23 @@ crop_n_owner_needles=[
 for needle in crop_n_owner_needles:
     if needle not in nut:
         raise SystemExit("missing exact B1.11 crop-N owner equation: "+needle)
+
+crop_orchestration_needles=[
+ "ndemto=max(0.0d0,(ndeml+ndems+ndemr))",
+ "nlimit=insw(dvs-dvsnlt,insw(reltr-0.01d0,0.0d0,1.0d0),0.d0)",
+ "ndemandsoil=(1.d0-nfixf)*ndemto*nlimit",
+ "ndemandbiofix=nfixf*ndemto*nlimit",
+ "nuptr=(max(0.d0,min(ndemandsoil,nsupplysoil)))/delt",
+ "nfixtr=(max(0.d0,ndemandbiofix))/delt",
+ "harlosorm_rt=wrt",
+ "harlosnit_rt=anrt",
+ "harlosnit_dwlv=fraharlosorm_lv*nlossl",
+ "inlossr=inlossr+harlosnit_rt",
+ "anrt=anrt-harlosnit_rt",
+]
+for needle in crop_orchestration_needles:
+    if needle not in cropgrowth:
+        raise SystemExit("missing exact B1.11 crop orchestration equation: "+needle)
 
 addition_needles=[
  "am_nh4=nh4nfrac(matno)*(1.0d0-volafrac(im))*amend(im)",
