@@ -1,0 +1,45 @@
+{
+  "schema": "swap431.mc_crop01.phenology_composed.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-SOY",
+    "SW431-CROP-VERNALISATION",
+    "SW431-CROP-WOF-OTHER"
+  ],
+  "architecture": {
+    "default_classic": "no override; existing IDSL0/1 finalizer remains authoritative",
+    "soybean": "one typed daily phenology override shared by potential and actual branches",
+    "vernalisation": "one typed daily override before anthesis plus optional VERN continuation on existing crop owner; after anthesis falls back to ordinary TSUMAM branch"
+  },
+  "implementation": [
+    "src/crop/mod_wofost_phenology_rate_contract.f90",
+    "src/crop/mod_wofost_phenology_dispatch.f90",
+    "src/crop/mod_wofost_soybean_phenology_factors.f90",
+    "src/crop/mod_wofost_vernalisation_phenology.f90",
+    "src/crop/mod_wofost_finalize_rates.f90",
+    "src/crop/mod_wofost_two_phase_crop_window.f90",
+    "src/crop/mod_wofost_potential_shadow_daily.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "invariants": [
+    "No classic DTSMTB dependency is evaluated when a phenology override is present.",
+    "Potential and actual use the identical resolved daily phenology rate.",
+    "Temporary potential DVS/TSUM remains discarded; actual owner alone advances shared phenology.",
+    "IDSL2 VERN state is accepted only after potential and actual crop candidates succeed.",
+    "Soybean astronomy requires explicit latitude and day-of-year event forcing; classic DAYLP is not substituted."
+  ],
+  "qualification": {
+    "component_test": "tests/fmig431/test_swap431_wofost_phenology_dispatch.f90",
+    "runner": "tests/fmig431/run_swap431_wofost_phenology_dispatch.py",
+    "status": "READY_FOR_O0_O2_FULL_REPO_GATE"
+  },
+  "remaining": [
+    "Run strict O0/O2 dependency-closure gate.",
+    "Add full F-WOF38 transaction fixtures for soybean and IDSL2 including reject/replay/restart.",
+    "Qualify soybean anthesis and IDSL2 VERNDVS/saturation transitions with potential shadow enabled and disabled.",
+    "Preserve classic F-WOF38/39/41 output identity when phenology_mode=CLASSIC."
+  ],
+  "disposition": "SHARED_SOYBEAN_IDSL2_TRANSACTION_SEAM_IMPLEMENTED_QUALIFICATION_OPEN",
+  "admission": false
+}
