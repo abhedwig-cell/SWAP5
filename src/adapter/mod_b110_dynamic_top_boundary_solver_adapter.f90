@@ -30,6 +30,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      logical :: macropore_pond_donor_active = .false.
      real(real64) :: macropore_pond_threshold = 0.0_real64
      real(real64) :: macropore_surface_conductivity = 0.0_real64
+     logical :: matrix_source_area_partition = .false.
    contains
      procedure :: evaluate => b110_dynamic_solver_top_evaluate
   end type b110_dynamic_top_boundary_solver_provider_t
@@ -102,7 +103,7 @@ contains
     b110_request%irrigation_rate_cm_per_day = self%irrigation_rate
     b110_request%snowmelt_rate_cm_per_day = self%snowmelt_rate
     b110_request%macropore_surface_area_fraction = requested%macropore_surface_area_fraction
-    b110_request%matrix_source_area_partition = requested%matrix_source_area_partition
+    b110_request%matrix_source_area_partition = self%matrix_source_area_partition
     b110_request%runon_rate_cm_per_day = self%runon_rate
     b110_request%potential_bare_soil_evaporation_cm_per_day = self%potential_bare_soil_evaporation
     b110_request%potential_pond_evaporation_cm_per_day = self%potential_pond_evaporation
