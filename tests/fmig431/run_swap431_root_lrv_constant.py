@@ -65,7 +65,7 @@ with tempfile.TemporaryDirectory(prefix='swap431-lrv-') as td:
                '-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
         # component
         objs=[]
-        for p in closure(component):
+        for p in closure(component)[:-1]:
             o=b/(p.stem+'_c.o');subprocess.run(FC+flags+['-c',str(p),'-o',str(o)],check=True);objs.append(str(o))
         co=b/'component.o';subprocess.run(FC+flags+['-c',str(component),'-o',str(co)],check=True);objs.append(str(co))
         exe=b/'component';subprocess.run(FC+flags+objs+['-o',str(exe)],check=True)
