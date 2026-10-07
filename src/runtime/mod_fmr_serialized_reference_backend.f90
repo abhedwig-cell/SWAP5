@@ -60,6 +60,8 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t, &
+       configure_b111_legacy_hydraulic_provider, bind_b111_legacy_hydraulic_provider, B111_LEGACY_HYD_OK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -301,6 +303,8 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
+    ! B1.11 constitutive selector per active node. Absence is exact model-1 default.
+    integer, allocatable :: hydraulic_model(:)
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -653,6 +657,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b111_legacy_hydraulic_provider_t), pointer :: legacy_hydraulic_constitutive => null()
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     integer :: direct_retention_slot = 0
@@ -2988,7 +2993,7 @@ contains
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
-    integer :: n
+    integer :: n, legacy_hydraulic_status
     logical :: micro_tables_ok
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
@@ -2997,6 +3002,7 @@ contains
       if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
       nullify(self%hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%legacy_hydraulic_constitutive)) allocate(self%legacy_hydraulic_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3036,7 +3042,20 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
+      if (allocated(parameters%hydraulic_model)) then
+        if (size(parameters%hydraulic_model) /= n) &
+          error stop 'FMR B1.11 hydraulic model selector shape mismatch'
+        call configure_b111_legacy_hydraulic_provider(self%legacy_hydraulic_constitutive, &
+             self%hydraulic_parameters%cofgen, parameters%hydraulic_model, legacy_hydraulic_status)
+      else
+        call configure_b111_legacy_hydraulic_provider(self%legacy_hydraulic_constitutive, &
+             self%hydraulic_parameters%cofgen, spread(1,1,n), legacy_hydraulic_status)
+      end if
+      if (legacy_hydraulic_status /= B111_LEGACY_HYD_OK) &
+        error stop 'FMR B1.11 hydraulic model selector invalid or unsupported'
       self%direct_retention_active = parameters%direct_retention_active
+      if (self%direct_retention_active .and. self%legacy_hydraulic_constitutive%active()) &
+        error stop 'FMR direct-retention route is not qualified with B1.11 hydraulic models 2/3'
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
       self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
@@ -3770,6 +3789,7 @@ contains
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
     logical :: direct_retention_ok, rutter_trial_prepared
+    integer :: legacy_hydraulic_status
     real(real64) :: rutter_previous_ponding
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
@@ -3907,12 +3927,15 @@ contains
         return
       end select
     end if
+    call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
            step_duration, self%direct_retention_slot, direct_retention_ok)
       if (.not. direct_retention_ok) return
-    else
-      call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+    else if (self%legacy_hydraulic_constitutive%active()) then
+      call bind_b111_legacy_hydraulic_provider(self%legacy_hydraulic_constitutive, self%constitutive, &
+           step_duration, legacy_hydraulic_status)
+      if (legacy_hydraulic_status /= B111_LEGACY_HYD_OK) return
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
@@ -4417,6 +4440,9 @@ contains
       if (self%direct_retention_active) then
         call bind_frost_constitutive_provider(self%frost_constitutive, self%direct_retention_constitutive, &
              frost_factors, frost_provider_status)
+      else if (self%legacy_hydraulic_constitutive%active()) then
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%legacy_hydraulic_constitutive, &
+             frost_factors, frost_provider_status)
       else
         call bind_frost_constitutive_provider(self%frost_constitutive, self%constitutive, frost_factors, &
              frost_provider_status)
@@ -4428,6 +4454,8 @@ contains
       request%evaluation%constitutive => self%frost_constitutive
     else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
+    else if (self%legacy_hydraulic_constitutive%active()) then
+      request%evaluation%constitutive => self%legacy_hydraulic_constitutive
     else
       request%evaluation%constitutive => self%constitutive
     end if
