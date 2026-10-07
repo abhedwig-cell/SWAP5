@@ -89,12 +89,13 @@ contains
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
-    real(real64) :: donor_dq_dh0max, base_pond_dh_dhead
+    real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm
     logical :: ok, donor_ok
 
     result = b110_dynamic_top_boundary_result_t()
     donor_dq_dh0max = 0.0_real64
     base_pond_dh_dhead = 0.0_real64
+    direct_macro_input_cm = 0.0_real64
 
     call validate_request(geometry, hydraulics, request, ok)
     if (.not. ok) then
@@ -219,9 +220,13 @@ contains
          k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
 
     if (request%macropore_pond_donor_active .and. request%macropore_surface_area_fraction > 0.0_real64) then
-      call evaluate_b110_macropore_pond_donor(max(0.0_real64,h0max), &
+      ! Candidate macropore area is required for the pond donor, but direct
+      ! atmospheric macro input exists only when that independent source is
+      ! actually enabled. Do not infer direct-source ownership from geometry.
+      if (request%matrix_source_area_partition) direct_macro_input_cm = &
            (request%precipitation_rate_cm_per_day+request%irrigation_rate_cm_per_day+ &
-            request%snowmelt_rate_cm_per_day)*request%macropore_surface_area_fraction*request%step_duration_day, &
+            request%snowmelt_rate_cm_per_day)*request%macropore_surface_area_fraction*request%step_duration_day
+      call evaluate_b110_macropore_pond_donor(max(0.0_real64,h0max), direct_macro_input_cm, &
            request%macropore_pond_threshold_cm,p1,request%macropore_surface_conductivity_cm_per_day, &
            request%step_duration_day,result%macropore_pond_requested_lateral_cm,donor_dq_dh0max,donor_ok)
       if (.not.donor_ok) then
