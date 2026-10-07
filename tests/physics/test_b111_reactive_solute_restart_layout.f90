@@ -23,7 +23,7 @@ program test_b111_reactive_solute_restart_layout
   state%water_content=[0.2_real64,0.3_real64]
   call fmr_initialize_reactive_solute_profile(state,[10.0_real64,20.0_real64], &
        [1.0_real64,2.0_real64],[0.5_real64,0.75_real64],0.4_real64,0.25_real64, &
-       [3.0_real64,4.0_real64],status)
+       [3.0_real64,4.0_real64],status,age_pond_previous_concentration_day=7.5_real64)
   call check(status==0,'reactive initializer')
   call check(state%salt%reactive_ready(2),'reactive ready')
   call check(.not.state%salt%ready(2),'mobile-only ready rejects reactive payload')
@@ -67,6 +67,8 @@ program test_b111_reactive_solute_restart_layout
     call check(snapshot%salt%pond_mass_mg_cm2==state%salt%pond_mass_mg_cm2,'pond restart identity')
     call check(snapshot%salt%aquifer_mass_mg_cm2==state%salt%aquifer_mass_mg_cm2,'aquifer restart identity')
     call check(all(snapshot%salt%age_amount_cm_day==state%salt%age_amount_cm_day),'age restart identity')
+    call check(snapshot%salt%age_pond_previous_concentration_day==state%salt%age_pond_previous_concentration_day, &
+         'age pond continuation restart identity')
   class default
     call check(.false.,'wrong restored physical type')
   end select
