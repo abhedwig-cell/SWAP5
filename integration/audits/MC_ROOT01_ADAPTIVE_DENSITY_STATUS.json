@@ -1,0 +1,59 @@
+{
+  "schema": "swap431.mc_root01.adaptive_density_owner.v1",
+  "capability_id": "SW431-ROOT-DENSITY",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "routines": [
+      "update_wroot_node",
+      "update_cumdens",
+      "update_cumdens_top",
+      "finalize_wroot_node"
+    ],
+    "exact_owner_findings": [
+      "WROOT_NODE(:) is accepted node root-biomass inventory, not a derived cumulative fraction.",
+      "WRT_OLD=WRT-GRRT+DRRT and RD_OLD=RD-RR reconstruct previous accepted totals/depth.",
+      "GRRT is split into GRRT_OLDNOD and GRRT_NEWNOD; new-node growth depends on root-extension geometry.",
+      "Existing-node growth mixes proportional biomass allocation and positive actual extraction distribution with FGWRT.",
+      "Root death mixes proportional biomass removal and positive stress reduction distribution with FDWRT, subject to WRTMIN.",
+      "CUMDENS is derived by normalizing WROOT_NODE inventory; CUMDENS_TOP is then a consumer view.",
+      "LRV_NODE and oxygen root-density views are derived in finalize_wroot_node; SWLRVCONSTANT may override LRV but does not replace WROOT_NODE ownership."
+    ]
+  },
+  "required_owner": {
+    "persistent": [
+      "WROOT_NODE(:)",
+      "rooted-node/depth geometry needed to interpret inventory across extension"
+    ],
+    "accepted_daily_inputs": [
+      "GRRT",
+      "DRRT",
+      "RR",
+      "potential root extraction by node",
+      "stress reduction by node"
+    ],
+    "parameters": [
+      "FGWRT",
+      "FDWRT",
+      "WRTMIN",
+      "SRL"
+    ],
+    "derived_views": [
+      "normalized cumulative root density",
+      "top-of-node cumulative density",
+      "LRV_NODE",
+      "WROOT_NODE_TOP"
+    ]
+  },
+  "interaction_dependencies": [
+    "SWRD2/SWRD3 root-depth accepted geometry",
+    "daily accepted root extraction/stress integrals",
+    "crop root biomass growth/death"
+  ],
+  "disposition": "INDEPENDENT_MAJOR_STATEFUL_CAPABILITY",
+  "reason": "Cannot be represented by the admitted static root-profile resolver, constant-LRV resolver, supplied cumulative root fractions, or the water sink owner without losing accepted biomass redistribution state and timing.",
+  "admission": false
+}
