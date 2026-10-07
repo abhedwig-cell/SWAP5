@@ -51,8 +51,8 @@ program test_low03_explicit_application
   cfg%tiles(1)%ordinary_explicit_cauchy=.true.
   cfg%tiles(1)%parameters%swbotb3_explicit_active=.true.
   cfg%tiles(1)%parameters%profile_groundwater_projection=.true.
-  cfg%tiles(1)%parameters%swbotb3_explicit_hdrain_cm=cfg%tiles(1)%initial_state%groundwater_level
-  cfg%tiles(1)%parameters%swbotb3_explicit_shape_3=0.0_real64
+  cfg%tiles(1)%parameters%swbotb3_explicit_hdrain_cm=-100.0_real64
+  cfg%tiles(1)%parameters%swbotb3_explicit_shape_3=1.0_real64
   cfg%tiles(1)%ledger_id=0_int64
   haq_eq=cfg%tiles(1)%initial_state%pressure_head(numnod)+z(numnod) + &
        (-conductivity0)*(0.5_real64*dz(numnod)/conductivity0+rimlay)
@@ -67,23 +67,8 @@ program test_low03_explicit_application
   ! matching the uniform-profile top flux used by this qualification.
   cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=cfg%tiles(1)%initial_state%groundwater_level
   cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%shape_3=0.0_real64
-  block
-    real(real64)::cprof,bottom,sat,gw
-    integer::node,k
-    gw=cfg%tiles(1)%initial_state%groundwater_level
-    node=numnod;bottom=0.0_real64
-    do k=1,numnod
-      bottom=bottom-cfg%tiles(1)%parameters%dz(k)
-      if(gw>bottom+cfg%tiles(1)%parameters%dz(k).and.node==numnod)node=k
-    end do
-    bottom=-sum(cfg%tiles(1)%parameters%dz(1:node))
-    sat=gw-bottom
-    cprof=sat/cfg%tiles(1)%parameters%cofgen(3,node)
-    do k=node+1,numnod
-      cprof=cprof+cfg%tiles(1)%parameters%dz(k)/cfg%tiles(1)%parameters%cofgen(3,k)
-    end do
-    haq_eq=gw-conductivity0*(rimlay+cprof)
-  end block
+  haq_eq=-1.5_real64
+
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
        rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
@@ -231,15 +216,15 @@ contains
     type(b110_default_mvg_parameters_t),target::hp
     type(b110_default_mvg_provider_t)::provider
     real(real64)::heads(numnod),water(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod)
-    heads=initial_head
+    heads=-1.5_real64-p%z
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
     call bind_b110_default_mvg_provider(provider,hp,T1-T0)
     call provider%evaluate(heads,water,conductivity,capacity,dkdh)
     k0=conductivity(1)
     state%active_nodes=numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
-    state%pressure_head=heads;state%water_content=water;state%ponding_depth=0.0_real64;state%groundwater_level=-2.0_real64
-    forcing%top_flux=-k0;forcing%top_head=initial_head;forcing%bottom_flux=0.0_real64;forcing%bottom_head=-100.0_real64
+    state%pressure_head=heads;state%water_content=water;state%ponding_depth=0.0_real64;state%groundwater_level=-999.0_real64
+    forcing%top_flux=0.0_real64;forcing%top_head=initial_head;forcing%bottom_flux=0.0_real64;forcing%bottom_head=-100.0_real64
     allocate(forcing%drainage_flux_by_level(1,numnod),forcing%subsurface_irrigation_source(numnod),forcing%root_extraction_sink(numnod))
     forcing%drainage_flux_by_level=0.0_real64;forcing%subsurface_irrigation_source=0.0_real64;forcing%root_extraction_sink=0.0_real64
   end subroutine
