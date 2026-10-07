@@ -99,6 +99,19 @@ program test_lowgwl01_feasibility
   print '(a)','F-MIG431-LOWGWL01_BELOW_PROFILE_TYPED=PASS'
 
   request%boundary%bottom_head=-42.0_real64
+  request%base_state%pressure_head=-42.0_real64-p%z
+  call hydraulic%evaluate(request%base_state%pressure_head,request%base_state%water_content,k,cap,dkdh)
+  call initialize_reference_state_binding(state,request)
+  call headcalc(worker,rawws,history,state,request%evaluation,request%boundary,request%numerical, &
+                request%physical,request%step_duration,p)
+  if (worker%control%request_dt_reduction .or. state%fldecdt) error stop 'raw in-profile provider route requested retry'
+  if (state%fllowgwl) error stop 'raw in-profile route misclassified below profile'
+  if (abs(state%qbot)>1.0e-10_real64) error stop 'raw in-profile hydrostatic qbot'
+  if (maxval(abs(state%h-request%base_state%pressure_head))>1.0e-10_real64) error stop 'raw in-profile head reconstruction'
+  if (maxval(abs(state%theta(5:n)-cof(2,5:n)))>1.0e-12_real64) error stop 'raw in-profile saturated theta'
+  if (worker%diagnostics%constitutive_evaluations<=0) error stop 'raw in-profile provider not used'
+  print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_PROVIDER_RAW=PASS'
+
   call solver%solve(request,ws,result)
   if (result%status/=SW_SOLVE_FAILED) error stop 'in-profile mode1 must remain fail-closed'
   if (trim(result%diagnostics%route)/='mode1-inprofile-deferred') error stop 'wrong in-profile guard'
