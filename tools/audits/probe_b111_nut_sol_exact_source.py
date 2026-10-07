@@ -110,6 +110,20 @@ for needle in watern_needles:
     if needle not in watern:
         raise SystemExit("missing exact Soil-N transport equation: "+needle)
 
+organic_turnover_needles=[
+ "fom_t(fn)=fom_t0(fn)*exp(-rateconfom(fn)*dt)",
+ "p1=(1.0d0-asfabio)*rateconbio",
+ "p2=asfabio*rateconhum",
+ "p3=asfahum*rateconbio",
+ "p4=(1.0d0-asfahum)*rateconhum",
+ "p5=dsqrt((p1-p4)**2+4*p2*p3)",
+ "eval1=-(p1+p4+p5)/2.d0",
+ "eval2=-(p1+p4-p5)/2.d0",
+]
+for needle in organic_turnover_needles:
+    if needle not in orgmat:
+        raise SystemExit("missing exact organic-turnover equation: "+needle)
+
 # Fail closed on the B1.11 organic-N inconsistency. The earlier balance
 # accumulator uses Bio + Hum incorporation, while the later Nminer expression
 # subtracts the Bio incorporation term twice. This is evidence for a reference
@@ -121,6 +135,16 @@ orgmat_needles=[
 for needle in orgmat_needles:
     if needle not in orgmat:
         raise SystemExit("organic-N source inconsistency witness missing: "+needle)
+
+balance=packed("SWAP/wofost_soil_balancecheck.f90") if "SWAP/wofost_soil_balancecheck.f90" in members else ""
+if balance:
+    correction_needles=[
+      "out_orgn=nfom_min+nbio_min+nhum_min",
+      "nh4_miner=nminer*dz_wsn",
+    ]
+    for needle in correction_needles:
+        if needle not in balance:
+            raise SystemExit("organic-N reference-correction balance witness missing: "+needle)
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
