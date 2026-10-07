@@ -66,7 +66,7 @@ contains
     type(root_water_uptake_flux_result_t), intent(out) :: fluxes
     type(root_water_uptake_diagnostics_t), intent(out) :: diagnostics
 
-    real(real64) :: hlim3, hlim2, alpdry, alpwet, qpotential, drought_sink
+    real(real64) :: hlim3, hlim2, alpdry, alpwet, qpotential, drought_sink, total_reduction, alpha_total
     integer :: node, n
 
     fluxes = root_water_uptake_flux_result_t()
@@ -139,8 +139,19 @@ contains
       diagnostics%oxygen_reduction_factor(node) = alpwet
       drought_sink = qpotential * alpdry
       fluxes%root_extraction_sink(node) = drought_sink * alpwet
-      diagnostics%drought_reduction(node) = qpotential - drought_sink
-      diagnostics%oxygen_reduction(node) = drought_sink - fluxes%root_extraction_sink(node)
+
+      ! Preserve B1.11 rootextraction stress attribution. The physical sink is
+      ! the product of active factors, while the total reduction is apportioned
+      ! in proportion to each stress deficit rather than by evaluation order.
+      total_reduction = qpotential - fluxes%root_extraction_sink(node)
+      alpha_total = (1.0_real64 - alpwet) + (1.0_real64 - alpdry)
+      if (abs(total_reduction) <= tiny(1.0_real64)) then
+        diagnostics%drought_reduction(node) = 0.0_real64
+        diagnostics%oxygen_reduction(node) = 0.0_real64
+      else if (alpha_total > 0.0_real64) then
+        diagnostics%drought_reduction(node) = total_reduction * (1.0_real64 - alpdry) / alpha_total
+        diagnostics%oxygen_reduction(node) = total_reduction * (1.0_real64 - alpwet) / alpha_total
+      end if
     end do
 
     diagnostics%potential_uptake_total = sum(diagnostics%potential_root_sink)
