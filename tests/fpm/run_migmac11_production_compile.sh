@@ -2,14 +2,14 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05-perch20-restart-${GITHUB_RUN_ID:-local}-$$"
+BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/ppa-wu05a26-backend-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
-fail(){ echo "PPA_WU05_PERCH20_FAIL $*" >&2; exit 1; }
+fail(){ echo "PPA_WU05A26_BACKEND_FAIL $*" >&2; exit 1; }
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace)
 MODULE_SRC=(
-  tests/fsi/ppa_wu05a18_andelst_headcalc_stubs.f90
+  tests/fsi/fsi04_real_headcalc_stubs.f90
   src/solver/mod_soil_water_accepted_step_direction_contract.f90
   src/transaction/mod_accepted_trajectory_directional_sensitivity.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
@@ -17,6 +17,7 @@ MODULE_SRC=(
   src/transaction/mod_transaction_reference.f90
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/transaction/mod_fkt_temporal_indicator_history.f90
+  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
@@ -34,8 +35,6 @@ MODULE_SRC=(
   src/process/macropore/mod_rfm_preferential_router.f90
   src/process/macropore/mod_rfm_surface_event_age.f90
   src/runtime/mod_rfm_physical_state.f90
-  src/runtime/mod_rfm_runtime_configuration.f90
-  src/runtime/mod_rfm_surface_forcing.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_rossfast_d3r_table_kernel.f90
   src/solver/mod_rossfast_d3r_table_provider.f90
@@ -55,31 +54,8 @@ MODULE_SRC=(
   src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
-  src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
   src/process/mod_soil_temperature_contract.f90
-  src/physics/oxygen/mod_oxygen_macro_zero_depth.f90
-  src/physics/oxygen/mod_oxygen_scalar_bracket.f90
-  src/physics/oxygen/mod_bartholomeus_micro.f90
-  src/physics/oxygen/mod_bartholomeus_macro.f90
-  src/physics/oxygen/mod_bartholomeus_response.f90
-  src/physics/oxygen/mod_bartholomeus_profile_response.f90
-  src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90
-  src/physics/oxygen/mod_bartholomeus_temperature.f90
-  src/physics/oxygen/mod_bartholomeus_microbial.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90
-  src/process/mod_bartholomeus_runtime_input.f90
-  src/physics/oxygen/mod_bartholomeus_parameter_contract.f90
-  src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90
-  src/physics/oxygen/mod_bartholomeus_response_assembly.f90
-  src/physics/oxygen/mod_bartholomeus_factor_provider.f90
-  src/process/mod_root_water_uptake_process.f90
-  src/process/mod_root_uptake_oxygen_composition.f90
-  src/runtime/mod_fmr_bartholomeus_activation.f90
-  src/runtime/mod_fmr_bartholomeus_contract.f90
-  src/crop/mod_crop_bartholomeus_input.f90
-  src/runtime/mod_fmr_bartholomeus_execution.f90
   src/process/mod_restricted_soil_temperature.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_linear_solver.f90
@@ -104,6 +80,7 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a5_top_partition.f90
   src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90
   src/runtime/mod_fmr_macropore_top_input.f90
+  src/process/macropore/mod_macropore_dynamic_shrinkage.f90
   src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90
   src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90
   src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90
@@ -114,20 +91,30 @@ MODULE_SRC=(
   src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90
   src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90
   src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90
-  src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90
   src/process/macropore/mod_macropore_standard_storage.f90
   src/runtime/mod_macropore_standard_rate_adapter.f90
-  src/solver/mod_macropore_exchange_overlay_provider.f90
   src/process/macropore/mod_macropore_covering_layer_input.f90
   src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90
+  src/solver/mod_macropore_exchange_overlay_provider.f90
   src/runtime/mod_macropore_single_column_runtime.f90
   src/runtime/mod_fmr_macropore_configuration.f90
+  src/runtime/mod_rfm_runtime_configuration.f90
+  src/runtime/mod_rfm_surface_forcing.f90
+  src/process/macropore/mod_rfm_surface_sorptivity.f90
+  src/runtime/mod_fmr_rfm_activation_binding.f90
+  src/runtime/mod_rfm_wall_hydraulic_history_binding.f90
+  src/process/macropore/mod_rfm_endpoint_release.f90
+  src/runtime/mod_rfm_whole_column_candidate_ledger.f90
+  src/runtime/mod_rfm_ic_storage_geometry.f90
+  src/runtime/mod_rfm_ic_hydrostatic_head.f90
+  src/runtime/mod_rfm_production_candidate_composer.f90
+  src/runtime/mod_rfm_live_trial_preparer.f90
+  src/runtime/mod_rfm_matrix_source_provider.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
-  src/runtime/mod_fmr_committed_restart.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
@@ -136,14 +123,11 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj" || fail "compile O$opt $source"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
-    tests/fpm/test_ppa_wu05_perch20_restart_lifecycle.f90 -o "$OUT/test.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_migmac11_pond_donor.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" | tee "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_CLONE_ISOLATION=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_LAYOUT_FAIL_CLOSED=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_RESTART_EXACT=PASS' "$OUT/out.txt"
-  grep -Fq 'PPA_WU05_PERCH20_RESTART_GATE=PASS' "$OUT/out.txt"
+  grep -Fq 'MIGMAC11_POND_DONOR_B111=PASS' "$OUT/out.txt" || fail "missing O$opt marker"
+  echo "MIGMAC11_PRODUCTION_COMPILE_O${opt}=PASS"
 done
-cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
-echo "PPA_WU05_PERCH20_O0_O2_IDENTITY=PASS"
+cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt" || fail 'O0/O2 semantic drift'
+echo 'MIGMAC11_PRODUCTION_COMPILE=PASS'

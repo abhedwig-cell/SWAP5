@@ -47,6 +47,10 @@ module mod_soil_water_solver_contract
      ! Mode3 head is external total head; flux is independent extra qbot.
      real(real64) :: bottom_external_resistance_days = 0.0_real64
      logical :: bottom_include_half_cell = .true.
+     ! Optional candidate macro surface-area fraction for source-aware dynamic
+     ! top boundaries. Negative preserves the existing unpartitioned route.
+     real(real64) :: macropore_surface_area_fraction = -1.0_real64
+     logical :: matrix_source_area_partition = .false.
   end type soil_water_boundary_conditions_t
 
   type, public :: soil_water_physical_config_t
@@ -79,6 +83,7 @@ module mod_soil_water_solver_contract
      real(real64) :: ponded_water_evaporation = 0.0_real64
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
+     real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
      logical :: surface_head_derivative_available = .false.
      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
      logical :: carries_surface_mass_terms = .false.
@@ -129,6 +134,8 @@ module mod_soil_water_solver_contract
    contains
      procedure(macropore_rate_evaluate_ifc), deferred :: evaluate_rate
      procedure(macropore_derivative_evaluate_ifc), deferred :: evaluate_derivative
+     procedure :: set_candidate_pond_lateral => default_set_candidate_pond_lateral
+     procedure :: candidate_pond_lateral => default_candidate_pond_lateral
      procedure :: permits_source_freezing => default_macropore_source_freezing
   end type macropore_exchange_provider_t
 
@@ -281,13 +288,15 @@ module mod_soil_water_solver_contract
        type(soil_water_top_boundary_result_t), intent(out) :: result
      end subroutine dynamic_top_boundary_evaluate_ifc
 
-     subroutine macropore_rate_evaluate_ifc(self, pressure_head, water_content, exchange_flux, active)
+     subroutine macropore_rate_evaluate_ifc(self, pressure_head, water_content, exchange_flux, active, &
+                                              surface_area_fraction)
        import :: macropore_exchange_provider_t, real64
        class(macropore_exchange_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head(:)
        real(real64), intent(in) :: water_content(:)
        real(real64), intent(out) :: exchange_flux(:)
        logical, intent(out) :: active
+       real(real64), intent(out), optional :: surface_area_fraction
      end subroutine macropore_rate_evaluate_ifc
 
      subroutine macropore_derivative_evaluate_ifc(self, pressure_head, water_content, capacity, &
@@ -313,6 +322,16 @@ module mod_soil_water_solver_contract
   end interface
 
 contains
+
+  subroutine default_set_candidate_pond_lateral(self, amount_cm)
+    class(macropore_exchange_provider_t), intent(inout) :: self
+    real(real64), intent(in) :: amount_cm
+  end subroutine default_set_candidate_pond_lateral
+
+  real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+    class(macropore_exchange_provider_t), intent(in) :: self
+    amount_cm=0.0_real64
+  end function default_candidate_pond_lateral
 
   logical function default_macropore_source_freezing(self) result(permitted)
     class(macropore_exchange_provider_t),intent(in)::self

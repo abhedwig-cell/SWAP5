@@ -41,6 +41,22 @@ program test_ppa_wu05a16_rfm_matrix_share_rebinding
   call require(abs(base_result%runoff_depth_cm)<=TOL,'A16 base runoff')
   call require(abs(base_result%net_potential_surface_flux_cm_per_day-8.0_real64)<=TOL,'A16 base supply')
 
+  ! B1.11's direct matrix surface source is the complement of the candidate
+  ! macro area share. Runon remains a separate, unpartitioned owner.
+  base_request%irrigation_rate_cm_per_day=2.0_real64
+  base_request%snowmelt_rate_cm_per_day=1.0_real64
+  base_request%runon_rate_cm_per_day=0.2_real64
+  base_request%macropore_surface_area_fraction=0.2_real64
+  call evaluate_b110_dynamic_top_boundary(geometry,hp,base_request,base_result)
+  call require(base_result%status==B110_DYN_TOP_AVAILABLE,'A16 area split available')
+  call require(abs(base_result%net_potential_surface_flux_cm_per_day-9.0_real64)<=TOL, &
+       'A16 complementary matrix source and unpartitioned runon')
+  call require(abs((8.0_real64+2.0_real64+1.0_real64)*0.2_real64 + &
+       (8.0_real64+2.0_real64+1.0_real64)*0.8_real64-11.0_real64)<=TOL, &
+       'A16 matrix plus macro source closure')
+  print '(a)', 'PPA_WU05A16_SOURCE_AREA_PARTITION=PASS'
+
+  call make_request(base_request,8.0_real64,h_top,theta_top,fixed_ktop)
   receipt%status=RFM_SURFACE_COMPOSITION_AVAILABLE
   receipt%effective_supply_cm_per_day=8.0_real64
   receipt%matrix_supply_cm_per_day=MATRIX_SHARE

@@ -52,6 +52,11 @@ print("PPA_WU04B_ATOMIC_PAIR_STATIC=PASS")
 print("PPA_WU04B_NO_SECOND_MASS_OWNER_STATIC=PASS")
 PY
 
+# The original admission gate pins a historical work-unit file delta.
+# Preservation reruns exercise the same physics/lifecycle gates on later work.
+if [[ "${WU04B_PRESERVATION_ONLY:-0}" == "1" ]]; then
+  echo "PPA_WU04B_MODE=PRESERVATION_ONLY_NO_ADMISSION_DELTA_CLAIM"
+else
 git fetch origin integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical
 mapfile -t source_delta < <(git diff --name-only origin/integration/f-ci-canonical...HEAD -- src | sort)
 cat > "$BUILD/expected-src.txt" <<'EOF'
@@ -70,6 +75,7 @@ cmp -s "$BUILD/expected-src.txt" "$BUILD/actual-src.txt" || {
   fail "production delta escaped preregistration"
 }
 echo "PPA_WU04B_PREREGISTERED_PRODUCTION_DELTA=PASS"
+fi
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
@@ -167,7 +173,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
@@ -224,4 +230,8 @@ echo 'PPA_WU04B_PPA_WU03_PRESERVATION=PASS'
 git diff --check
 cat "$BUILD/o0/b_process.txt"
 cat "$BUILD/o0/b_runtime.txt"
-echo 'PPA-WU04-B BOESTEN ADMISSION QUALIFICATION PASS'
+if [[ "${WU04B_PRESERVATION_ONLY:-0}" == "1" ]]; then
+  echo 'PPA-WU04-B BOESTEN PRESERVATION PASS'
+else
+  echo 'PPA-WU04-B BOESTEN ADMISSION QUALIFICATION PASS'
+fi

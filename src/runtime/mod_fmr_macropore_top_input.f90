@@ -16,6 +16,18 @@ module mod_fmr_macropore_top_input
   end type fmr_macropore_top_input_forcing_t
 
   public :: prepare_fmr_macropore_top_input
+  public :: fmr_macropore_pond_donor_request_t, evaluate_fmr_macropore_pond_donor
+
+  type, public :: fmr_macropore_pond_donor_request_t
+    real(real64) :: no_macro_ponding_depth_cm = 0.0_real64
+    real(real64) :: direct_macro_input_cm = 0.0_real64
+    real(real64) :: threshold_cm = 0.0_real64
+    real(real64) :: surface_conductance_step = 0.0_real64
+    real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64
+    real(real64) :: step_duration_day = 0.0_real64
+  contains
+    procedure, public :: valid => fmr_macropore_pond_donor_request_valid
+  end type fmr_macropore_pond_donor_request_t
 
 contains
 
@@ -99,5 +111,46 @@ contains
 
     ok = .true.
   end subroutine prepare_fmr_macropore_top_input
+
+  pure logical function fmr_macropore_pond_donor_request_valid(self) result(ok)
+    class(fmr_macropore_pond_donor_request_t), intent(in) :: self
+    real(real64) :: values(6)
+
+    values = [self%no_macro_ponding_depth_cm, self%direct_macro_input_cm, self%threshold_cm, &
+         self%surface_conductance_step, self%macropore_surface_conductivity_cm_per_day, self%step_duration_day]
+    ok = all(ieee_is_finite(values)) .and. all(values >= 0.0_real64)
+    if (.not. ok) return
+    ok = self%step_duration_day > 0.0_real64
+  end function fmr_macropore_pond_donor_request_valid
+
+  pure subroutine evaluate_fmr_macropore_pond_donor(request, requested_lateral_cm, ok)
+    type(fmr_macropore_pond_donor_request_t), intent(in) :: request
+    real(real64), intent(out) :: requested_lateral_cm
+    logical, intent(out) :: ok
+    real(real64) :: rsromp_day, p2, p2mp, pond_cm
+
+    requested_lateral_cm = 0.0_real64
+    ok = .false.
+    if (.not. request%valid()) return
+    if (request%no_macro_ponding_depth_cm <= request%threshold_cm) then
+      ok = .true.
+      return
+    end if
+    if (request%macropore_surface_conductivity_cm_per_day <= 0.0_real64) return
+
+    ! Exact B1.11 boundtop.f90:156-163 algebra. direct_macro_input_cm is
+    ! (net rain + net irrigation + melt) * ArMpSs * dt.
+    rsromp_day = (request%no_macro_ponding_depth_cm + request%direct_macro_input_cm) / &
+         request%macropore_surface_conductivity_cm_per_day
+    if (rsromp_day <= 0.0_real64 .or. .not. ieee_is_finite(rsromp_day)) return
+    p2 = 1.0_real64/(request%surface_conductance_step + 1.0_real64)
+    p2mp = 1.0_real64/(request%surface_conductance_step + 1.0_real64 + &
+         request%step_duration_day/rsromp_day)
+    pond_cm = (request%no_macro_ponding_depth_cm-request%threshold_cm)*p2mp/p2
+    requested_lateral_cm = min(pond_cm*request%step_duration_day/rsromp_day, &
+         request%no_macro_ponding_depth_cm)
+    if (requested_lateral_cm < 1.0e-7_real64) requested_lateral_cm = 0.0_real64
+    ok = ieee_is_finite(requested_lateral_cm) .and. requested_lateral_cm >= 0.0_real64
+  end subroutine evaluate_fmr_macropore_pond_donor
 
 end module mod_fmr_macropore_top_input

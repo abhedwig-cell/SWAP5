@@ -21,6 +21,9 @@ module mod_fmr_macropore_configuration
     logical :: covering_parameters_available = .false.
     real(real64) :: covering_minimum_polygon_diameter_cm = 0.0_real64
     real(real64) :: covering_ksat_cm_per_day = 0.0_real64
+    logical :: surface_pond_inflow_enabled = .false.
+    real(real64) :: surface_pond_threshold_cm = 0.0_real64
+    real(real64) :: surface_macropore_conductivity_cm_per_day = 0.0_real64
   contains
     procedure, public :: valid_for_nodes => fmr_macropore_config_valid_for_nodes
   end type fmr_macropore_physical_config_t

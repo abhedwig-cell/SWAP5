@@ -58,9 +58,13 @@ module mod_macropore_single_column_runtime
     real(real64) :: requested_top_input_cm=0.0_real64
     real(real64) :: accepted_top_input_cm=0.0_real64
     real(real64) :: returned_surface_cm=0.0_real64
+    real(real64) :: pond_requested_top_input_cm=0.0_real64
+    real(real64) :: pond_accepted_top_input_cm=0.0_real64
+    real(real64) :: pond_returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: covered_internal_transfer_cm=0.0_real64
     logical :: inner_richards_exchange_used=.false.
+    logical :: matrix_source_area_partition_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
     real(real64) :: inner_final_exchange_rate_cm_per_day=0.0_real64
     integer :: source_reduction_attempts=0
@@ -127,7 +131,7 @@ contains
     real(real64),allocatable::geometry_return(:,:)
     type(fmr_macropore_top_input_forcing_t)::top_input_local
     type(covering_layer_input_request_t)::covering_request
-    real(real64)::numerator,denominator,dt
+    real(real64)::numerator,denominator,dt,candidate_pond_lateral_cm
     logical::ok,can_reduce
     integer::iter,nd,n
     type(macropore_reduction_continuation_t)::reduction_attempt,reduction_next
@@ -289,6 +293,16 @@ contains
         request=base_request
         request%physical%macropore_active=.true.
         request%evaluation%macropore=>inner_provider
+        ! Keep direct atmospheric input and the macro top receipt on the same
+        ! residual candidate geometry. HeadCalc asks this provider for the
+        ! candidate area before evaluating the dynamic top boundary.
+        if(associated(request%evaluation%dynamic_top_boundary))then
+          ! The dynamic top provider itself decides whether the candidate macro
+          ! surface fraction changes the atmospheric matrix source. Do not infer
+          ! that physical option from geometry existence alone.
+          if(top_input_local%supplied)request%boundary%matrix_source_area_partition=.true.
+        end if
+        result%matrix_source_area_partition_used=request%boundary%matrix_source_area_partition
         call solver%solve(request,workspace,corrector)
         result%matrix_result=corrector
         result%source_reduction_attempts=result%source_reduction_attempts+1
@@ -320,6 +334,17 @@ contains
       end if
 
       result%matrix_result=corrector
+      candidate_pond_lateral_cm=0.0_real64
+      if(associated(request%evaluation%macropore)) &
+           candidate_pond_lateral_cm=request%evaluation%macropore%candidate_pond_lateral()
+      result%pond_requested_top_input_cm=candidate_pond_lateral_cm
+      if(candidate_pond_lateral_cm>0.0_real64)then
+        rate_template_attempt%limiter%potential_top_lateral_cm= &
+             rate_template_attempt%limiter%potential_top_lateral_cm+ &
+             geometry_config%domain_fraction(:,geometry%top_node)*candidate_pond_lateral_cm
+        result%requested_top_input_cm=sum(rate_template_attempt%limiter%potential_top_vertical_cm)+ &
+             sum(rate_template_attempt%limiter%potential_top_lateral_cm)
+      end if
       if(present(shrinkage_config))then
         if(shrinkage_config%enabled)then
           call inner_provider%evaluate_trial_geometry(corrector%candidate_state%water_content,geometry,ok, &
@@ -337,7 +362,12 @@ contains
             end if
             rate_template_attempt%limiter%potential_top_vertical_cm=candidate_top_vertical
             rate_template_attempt%limiter%potential_top_lateral_cm=candidate_top_lateral
-            result%requested_top_input_cm=sum(candidate_top_vertical)+sum(candidate_top_lateral)
+            if(candidate_pond_lateral_cm>0.0_real64) &
+                 rate_template_attempt%limiter%potential_top_lateral_cm= &
+                 rate_template_attempt%limiter%potential_top_lateral_cm+ &
+                 geometry_config%domain_fraction(:,geometry%top_node)*candidate_pond_lateral_cm
+            result%requested_top_input_cm=sum(rate_template_attempt%limiter%potential_top_vertical_cm)+ &
+                 sum(rate_template_attempt%limiter%potential_top_lateral_cm)
           end if
         end if
       end if
@@ -431,6 +461,12 @@ contains
 
       result%accepted_top_input_cm=raw_rates%top_partition%accepted_total_cm
       result%returned_surface_cm=receipt%returned_surface_cm
+      call split_pond_top_receipt(raw_rates%top_partition,geometry_config%domain_fraction(:,geometry%top_node), &
+           result%pond_requested_top_input_cm,result%pond_accepted_top_input_cm,result%pond_returned_surface_cm,ok)
+      if(.not.ok)then
+        result%status=MACRO_RUNTIME_FAILED
+        return
+      end if
       result%rapid_external_outflow_cm=receipt%rapid_external_outflow_cm
       if(abs(result%accepted_top_input_cm+result%returned_surface_cm-result%requested_top_input_cm)> &
          policy%internal_exchange_tolerance_cm)then
@@ -647,5 +683,42 @@ contains
     request%external_outflow_rate(1,:)=rates%rapid_outflow_cp_cm/dt
     ok=request%valid()
   end subroutine prepare_vertical_request
+
+
+  subroutine split_pond_top_receipt(top,domain_fraction,pond_requested_cm,pond_accepted_cm,pond_returned_cm,ok)
+    use mod_ppa_wu05a5_top_partition, only: macropore_top_partition_result_t
+    type(macropore_top_partition_result_t),intent(in)::top
+    real(real64),intent(in)::domain_fraction(:),pond_requested_cm
+    real(real64),intent(out)::pond_accepted_cm,pond_returned_cm
+    logical,intent(out)::ok
+    real(real64)::requested_i,accepted_i,pond_i,share
+    integer::i
+
+    pond_accepted_cm=0.0_real64
+    pond_returned_cm=0.0_real64
+    ok=.false.
+    if(.not.top%valid .or. pond_requested_cm<0.0_real64)return
+    if(size(domain_fraction)/=top%num_domains)return
+    if(any(domain_fraction<0.0_real64))return
+    if(abs(sum(domain_fraction)-1.0_real64)>1.0e-12_real64)return
+    if(pond_requested_cm==0.0_real64)then
+      ok=.true.
+      return
+    end if
+    do i=1,top%num_domains
+      requested_i=top%requested_vertical_cm(i)+top%requested_lateral_cm(i)
+      accepted_i=top%accepted_vertical_cm(i)+top%accepted_lateral_cm(i)
+      pond_i=domain_fraction(i)*pond_requested_cm
+      if(pond_i<0.0_real64 .or. pond_i>requested_i+1.0e-12_real64)return
+      if(requested_i>1.0e-30_real64)then
+        share=min(1.0_real64,max(0.0_real64,pond_i/requested_i))
+        pond_accepted_cm=pond_accepted_cm+share*accepted_i
+      end if
+    end do
+    pond_accepted_cm=min(pond_requested_cm,max(0.0_real64,pond_accepted_cm))
+    pond_returned_cm=max(0.0_real64,pond_requested_cm-pond_accepted_cm)
+    if(pond_returned_cm>top%returned_surface_cm+1.0e-10_real64)return
+    ok=.true.
+  end subroutine split_pond_top_receipt
 
 end module mod_macropore_single_column_runtime

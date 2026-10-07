@@ -1,5 +1,6 @@
 module mod_ppa_wu05a16_inner_macropore_provider
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_soil_water_solver_contract, only: macropore_exchange_provider_t, soil_water_physical_state_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t, copy_macropore_continuation_state
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, macropore_geometry_result_t, &
@@ -33,6 +34,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
     real(real64) :: step_duration=0.0_real64
     real(real64) :: accepted_ponding_depth=0.0_real64
     real(real64) :: accepted_groundwater_level=0.0_real64
+    real(real64) :: candidate_pond_lateral_cm=0.0_real64
     integer :: bottom_boundary_mode=1
     logical :: covering_layer_enabled=.false.
     real(real64) :: covering_minimum_polygon_diameter_cm=0.0_real64
@@ -43,14 +45,40 @@ module mod_ppa_wu05a16_inner_macropore_provider
     procedure, public :: evaluate_derivative => evaluate_inner_macropore_derivative
     procedure, public :: evaluate_trial_geometry => evaluate_inner_trial_geometry
     procedure, public :: permits_source_freezing => inner_permits_source_freezing
+    procedure, public :: set_candidate_pond_lateral => inner_set_candidate_pond_lateral
+    procedure, public :: candidate_pond_lateral => inner_candidate_pond_lateral
   end type ppa_wu05a16_inner_macropore_provider_t
 
 contains
 
+  subroutine inner_set_candidate_pond_lateral(self,amount_cm)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
+    real(real64),intent(in)::amount_cm
+    if(ieee_is_finite(amount_cm) .and. amount_cm>=0.0_real64)then
+      self%candidate_pond_lateral_cm=amount_cm
+    else
+      self%candidate_pond_lateral_cm=0.0_real64
+    end if
+  end subroutine inner_set_candidate_pond_lateral
+
+  real(real64) function inner_candidate_pond_lateral(self) result(amount_cm)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    amount_cm=self%candidate_pond_lateral_cm
+  end function inner_candidate_pond_lateral
+
   logical function inner_permits_source_freezing(self) result(permitted)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     permitted=.true.
-    if(.not.self%configured .or. .not.self%shrinkage%enabled)return
+    if(.not.self%configured)return
+    ! A pond-derived B1.11 receipt is residual-synchronous: its amount is
+    ! recomputed from candidate ponding inside the Newton residual. Freezing
+    ! macropore sources while that receipt is active would let the residual
+    ! change while the macropore Jacobian/source contribution is held stale.
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      permitted=.false.
+      return
+    end if
+    if(.not.self%shrinkage%enabled)return
     permitted=all(self%shrinkage%theta_crack==0.0_real64) .and. &
          all(self%accepted_macro%dynamic_volume_cp==0.0_real64)
   end function inner_permits_source_freezing
@@ -113,6 +141,12 @@ contains
     if(present(shrinkage))self%shrinkage=shrinkage
     self%top_input=fmr_macropore_top_input_forcing_t()
     if(present(top_input))self%top_input=top_input
+    if(present(geometry_config))then
+      if(.not.geometry_config%valid())return
+      self%geometry_config=geometry_config
+    else if(self%top_input%supplied)then
+      return
+    end if
     if(self%shrinkage%enabled)then
       if(.not.present(geometry_config) .or. .not.present(accepted_matrix_theta) .or. .not.present(matrix_area_fraction))return
       if(.not.geometry_config%valid())return
@@ -127,6 +161,7 @@ contains
     self%step_duration=step_duration
     self%accepted_ponding_depth=accepted_ponding_depth
     self%accepted_groundwater_level=accepted_groundwater_level
+    self%candidate_pond_lateral_cm=0.0_real64
     self%bottom_boundary_mode=1
     if(present(bottom_boundary_mode))self%bottom_boundary_mode=bottom_boundary_mode
     self%covering_layer_enabled=.false.
@@ -146,11 +181,12 @@ contains
     ok=.true.
   end subroutine configure_inner_macropore_provider
 
-  subroutine evaluate_inner_macropore_rate(self,pressure_head,water_content,exchange_flux,active)
+  subroutine evaluate_inner_macropore_rate(self,pressure_head,water_content,exchange_flux,active,surface_area_fraction)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     real(real64),intent(in)::pressure_head(:),water_content(:)
     real(real64),intent(out)::exchange_flux(:)
     logical,intent(out)::active
+    real(real64),intent(out),optional::surface_area_fraction
 
     type(macropore_rate_bundle_request_t)::request
     type(macropore_rate_bundle_result_t)::rates
@@ -161,13 +197,21 @@ contains
     integer::cover_node
     logical::ok
 
-    exchange_flux=0.0_real64
     active=.false.
+    if(present(surface_area_fraction))surface_area_fraction=-1.0_real64
     if(.not.self%configured)return
-    call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
-    if(.not.ok)return
     if(size(exchange_flux)/=self%accepted_macro%num_nodes)return
-    exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    exchange_flux=0.0_real64
+    call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok, &
+         surface_area_fraction)
+    if(.not.ok)return
+    if(allocated(rates%qexc_to_matrix_rate))then
+      if(size(rates%qexc_to_matrix_rate,2)/=size(exchange_flux))return
+      exchange_flux=sum(rates%qexc_to_matrix_rate,dim=1)
+    else
+      ! A valid pure top receipt need not allocate a matrix-exchange bundle.
+      if(self%candidate_pond_lateral_cm<=0.0_real64)return
+    end if
     if(self%covering_layer_enabled)then
       cover_node=self%geometry%top_node-1
       covering%top_node=self%geometry%top_node
@@ -183,6 +227,13 @@ contains
       exchange_flux(cover_node)=exchange_flux(cover_node)-sum(covered_cm)/self%step_duration
     end if
     active=maxval(abs(exchange_flux))>1.0e-14_real64
+    ! A pure surface-to-macropore receipt can be physically active while its
+    ! same-residual matrix exchange is zero. Keep the provider active so the
+    ! top receipt participates in the candidate rather than being discarded.
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      if(rates%valid .and. rates%top_partition%valid .and. &
+         rates%top_partition%requested_total_cm>0.0_real64)active=.true.
+    end if
   end subroutine evaluate_inner_macropore_rate
 
   subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead, &
@@ -213,6 +264,15 @@ contains
 
     call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
     if(.not.ok)return
+    if(.not.allocated(rates%qexc_to_matrix_rate))then
+      ! A pure top receipt has no matrix exchange and therefore no exchange
+      ! Jacobian contribution. It remains active through evaluate_rate.
+      if(self%candidate_pond_lateral_cm>0.0_real64)then
+        derivative_available=.true.
+        active=.true.
+      end if
+      return
+    end if
     call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative)
     if(.not.derivative%valid)return
     if(size(dexchange_dhead)/=self%accepted_macro%num_nodes)return
@@ -291,7 +351,8 @@ contains
     call derive_dynamic_surface_area(self%geometry_config,self%shrinkage%surface_crack_area_node,geometry_current,ok)
   end subroutine evaluate_inner_trial_geometry
 
-  subroutine evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
+  subroutine evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok, &
+                                    surface_area_fraction)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     real(real64),intent(in)::pressure_head(:),water_content(:)
     type(macropore_rate_bundle_request_t),intent(out)::request
@@ -302,9 +363,11 @@ contains
     type(macropore_standard_storage_view_t)::view_current
     real(real64),allocatable::geometry_return(:,:),top_vertical(:),top_lateral(:)
     logical,intent(out)::ok
+    real(real64),intent(out),optional::surface_area_fraction
     integer::n
 
     ok=.false.
+    if(present(surface_area_fraction))surface_area_fraction=-1.0_real64
     n=self%accepted_macro%num_nodes
     if(size(pressure_head)/=n .or. size(water_content)/=n)return
 
@@ -317,6 +380,16 @@ contains
 
     call self%evaluate_trial_geometry(water_content,geometry_current,ok,pressure_head)
     if(.not.ok)return
+    if(present(surface_area_fraction))then
+      if(geometry_current%surface_area_fraction>=0.0_real64)then
+        surface_area_fraction=geometry_current%surface_area_fraction
+      else
+        surface_area_fraction=sum(geometry_current%volume_domain_cp(:,geometry_current%top_node))/ &
+             self%dz(geometry_current%top_node)
+      end if
+      if(.not.ieee_is_finite(surface_area_fraction) .or. surface_area_fraction<0.0_real64 .or. &
+         surface_area_fraction>1.0_real64)return
+    end if
     view_current=self%accepted_view
     if(self%shrinkage%enabled)then
       call derive_macropore_standard_storage_view(self%accepted_macro,geometry_current%top_node,self%z,self%dz,view_current)
@@ -326,12 +399,20 @@ contains
     call prepare_standard_macropore_rate_request(self%rate_template,self%accepted_macro,geometry_current,view_current, &
          matrix,self%z,self%dz,self%step_duration,request,matrix_view,ok)
     if(.not.ok)return
-    if(self%shrinkage%enabled .and. self%top_input%supplied)then
+    if(self%top_input%supplied)then
       call prepare_fmr_macropore_top_input(self%top_input,self%geometry_config,geometry_current,self%step_duration, &
            top_vertical,top_lateral,ok)
       if(.not.ok)return
       request%limiter%potential_top_vertical_cm=top_vertical
       request%limiter%potential_top_lateral_cm=top_lateral
+    end if
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      if(.not.self%geometry_config%valid())return
+      ! Pond-derived lateral inflow is an additional B1.11 receipt. It must
+      ! coexist with any independently configured direct top forcing rather
+      ! than making the residual callback fail closed when that forcing exists.
+      request%limiter%potential_top_lateral_cm=request%limiter%potential_top_lateral_cm+ &
+           self%geometry_config%domain_fraction(:,geometry_current%top_node)*self%candidate_pond_lateral_cm
     end if
     call evaluate_macropore_rate_bundle(request,rates)
     ok=rates%valid

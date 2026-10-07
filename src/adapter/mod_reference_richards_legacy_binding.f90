@@ -350,6 +350,11 @@ contains
        route = 'explicit-macropore-provider-required'
        return
     end if
+    if (request%physical%macropore_active .and. request%boundary%matrix_source_area_partition .and. &
+        request%boundary%top_mode /= FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+       route = 'matrix-source-partition-requires-dynamic-top'
+       return
+    end if
     if (request%numerical%conductivity_implicit_mode /= 0) then
        route = 'legacy-implicit-k-deferred'
        return

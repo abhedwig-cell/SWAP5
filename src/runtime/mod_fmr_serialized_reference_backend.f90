@@ -22,7 +22,9 @@ module mod_fmr_serialized_reference_backend
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
-       FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
        FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, fmr_solute_state_layout_known
   use mod_interception_source_window_runtime, only: interception_source_window_t
@@ -266,6 +268,13 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure :: clone => fmr_b110_boesten_evaporation_state_clone
   end type fmr_b110_boesten_evaporation_state_t
+
+  ! MIGMAC10 explicitly composes the atomic Boesten SPEV/SAEV pair with the
+  ! existing macropore continuation carried by the physical parent state.
+  type, extends(fmr_b110_boesten_evaporation_state_t), public :: fmr_b110_boesten_macropore_state_t
+  contains
+    procedure :: clone => fmr_b110_boesten_macropore_state_clone
+  end type fmr_b110_boesten_macropore_state_t
 
   ! PPA-WU05-A20 dedicated RFM optional physical-state carrier.
   ! Carrier/checkpoint semantics are admitted separately from live execution.
@@ -524,9 +533,13 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_requested_top_cm = 0.0_real64
     real(real64) :: macropore_accepted_top_cm = 0.0_real64
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_pond_requested_cm = 0.0_real64
+    real(real64) :: macropore_pond_accepted_cm = 0.0_real64
+    real(real64) :: macropore_pond_returned_cm = 0.0_real64
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
     logical :: macropore_inner_richards_exchange_used = .false.
+    logical :: macropore_matrix_source_area_partition_used = .false.
     real(real64) :: macropore_inner_initial_exchange_rate_cm_per_day = 0.0_real64
     real(real64) :: macropore_inner_final_exchange_rate_cm_per_day = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
@@ -605,6 +618,11 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: boesten_empirical_demand = 0.0_real64
     real(real64) :: boesten_candidate_spev = 0.0_real64
     real(real64) :: boesten_candidate_saev = 0.0_real64
+    real(real64) :: rutter_net_rain_rate_cm_per_day = 0.0_real64
+    real(real64) :: rutter_net_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: boesten_wetting_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_top_rain_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_top_irrigation_rate_cm_per_day = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
@@ -846,6 +864,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
+  public :: fmr_new_b110_boesten_macropore_committed_state
   public :: fmr_new_b110_rfm_committed_state
 
 contains
@@ -1365,6 +1384,17 @@ contains
     end select
   end subroutine fmr_b110_boesten_evaporation_state_clone
 
+  subroutine fmr_b110_boesten_macropore_state_clone(self, copy)
+    class(fmr_b110_boesten_macropore_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_boesten_macropore_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_boesten_macropore_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%boesten_evaporation = self%boesten_evaporation
+    end select
+  end subroutine fmr_b110_boesten_macropore_state_clone
+
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     available = self%temporal_history%available(self%active_nodes)
@@ -1591,14 +1621,37 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
+  subroutine fmr_new_b110_boesten_macropore_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(boesten_evaporation_state_t), intent(in) :: boesten_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. allocated(state%macropore) .or. .not. state%macropore%ready()) return
+    if (state%macropore%num_nodes /= state%active_nodes) return
+    if (.not. ieee_is_finite(boesten_state%spev) .or. boesten_state%spev < 0.0_real64 .or. &
+        .not. ieee_is_finite(boesten_state%saev) .or. boesten_state%saev < 0.0_real64) return
+    allocate(fmr_b110_boesten_macropore_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_boesten_macropore_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%boesten_evaporation = boesten_state
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_boesten_macropore_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
                                                                macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active, rutter_active) result(matches)
+                                                               boesten_evaporation_active, macropore_active, rutter_active) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
-    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, rutter_active
+    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, macropore_active, rutter_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
@@ -1623,7 +1676,12 @@ contains
     type is (fmr_b110_boesten_evaporation_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active .and. &
-           .not. rutter_active
+           .not. macropore_active .and. .not. allocated(state%macropore) .and. .not. rutter_active
+    type is (fmr_b110_boesten_macropore_state_t)
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active .and. &
+           macropore_active .and. allocated(state%macropore) .and. state%macropore%ready() .and. &
+           state%macropore%num_nodes == state%active_nodes .and. (allocated(state%rutter) .eqv. rutter_active)
     type is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
@@ -1668,6 +1726,7 @@ contains
     model%soil_temperature_active = parameters%soil_temperature_active
     model%black_evaporation_active = parameters%black_evaporation_active
     model%boesten_evaporation_active = parameters%boesten_evaporation_active
+    model%macropore_active = parameters%macropore_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
@@ -1677,7 +1736,8 @@ contains
                                                            model%macropore_reduction_continuation_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
-                                                           model%boesten_evaporation_active, model%rutter_active)) return
+                                                           model%boesten_evaporation_active, model%macropore_active, &
+                                                           model%rutter_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -2107,6 +2167,7 @@ contains
     logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
     integer :: salt_active_domains
     logical :: rutter_snapshot_available
+    logical :: composed_rutter_boesten_macro
     integer :: rutter_prepare_status
     real(real64) :: rutter_source_origin, rutter_sink_total, rutter_scale
     real(real64) :: rutter_rain_amount, rutter_total_input, rutter_surface_output, rutter_storage_change, rutter_residual
@@ -2245,7 +2306,10 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
-    self%model%rutter_active = template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+    composed_rutter_boesten_macro = &
+         template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
+    self%model%rutter_active = template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER .or. &
+         composed_rutter_boesten_macro
     if (self%model%rutter_active) then
       ! Preserve the independently qualified layouts; no combined Rutter/salt profile.
       if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
@@ -2254,8 +2318,10 @@ contains
       end if
       if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
           parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
-          parameters%snow_active .or. parameters%soil_temperature_active .or. parameters%macropore_active .or. &
-          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          (parameters%macropore_active .neqv. composed_rutter_boesten_macro) .or. &
+          parameters%black_evaporation_active .or. &
+          (parameters%boesten_evaporation_active .neqv. composed_rutter_boesten_macro) .or. &
           parameters%drainage_response_active .or. parameters%elasticity_active .or. &
           parameters%direct_retention_active .or. allocated(parameters%bartholomeus) .or. &
           (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7) .or. &
@@ -2318,7 +2384,9 @@ contains
       end if
     end if
     if (parameters%macropore_active) then
-      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
+      if ((template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
           (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
            template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION) .or. &
           (template%numerical_continuation_layout_id == FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION .and. &
@@ -2331,7 +2399,9 @@ contains
         diagnostics%admission_rejections = 1
         return
       end if
-    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_MACROPORE) then
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -2352,7 +2422,9 @@ contains
         return
       end if
     else if (parameters%boesten_evaporation_active) then
-      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .or. &
+      if ((template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
           parameters%snow_active .or. parameters%soil_temperature_active .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
@@ -2363,7 +2435,9 @@ contains
         return
       end if
     else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
-             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) then
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -2415,7 +2489,7 @@ contains
         return
       end if
       select type (rutter_physical => accepted_snapshot)
-      type is (fmr_b110_physical_state_t)
+      class is (fmr_b110_physical_state_t)
         if (.not. allocated(rutter_physical%rutter)) then
           call reject_backend_trial(result, candidate, diagnostics)
           return
@@ -2711,7 +2785,7 @@ contains
              self%soil_water_selection%uses_reference() .and. &
              .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%black_evaporation_active .and. &
-             .not. parameters%boesten_evaporation_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%drainage_response_active .and. &
              .not. self%fixed_weir_surface_water_active .and. &
              parameters%macropore%valid_for_nodes(parameters%active_nodes)
       else
@@ -3160,9 +3234,10 @@ contains
         if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
             .not. forcing%rutter%source_window%valid()) return
         if (allocated(forcing%snow) .or. allocated(forcing%black_evaporation) .or. &
-            allocated(forcing%boesten_evaporation) .or. allocated(forcing%rfm_surface) .or. &
+            (allocated(forcing%boesten_evaporation) .and. .not. self%boesten_evaporation_active) .or. &
+            allocated(forcing%rfm_surface) .or. &
             allocated(forcing%macropore_top_input) .or. self%snow_active .or. &
-            self%black_evaporation_active .or. self%boesten_evaporation_active .or. &
+            self%black_evaporation_active .or. &
             forcing%top_flux /= 0.0_real64) return
         time_tol = 64.0_real64 * epsilon(1.0_real64) * &
              max(1.0_real64, abs(interval%t0), abs(interval%t1))
@@ -3377,8 +3452,10 @@ contains
         if (.not. all(ieee_is_finite(boesten_values))) return
         if (any(boesten_values(1:8) < 0.0_real64)) return
         if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) return
-        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
-            forcing%boesten_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        ! Runon is an admitted shared-surface source for the B1.11 dynamic
+        ! top boundary. It must not be reclassified as direct macropore input.
+        ! Snowmelt remains outside this bounded Boesten envelope here.
+        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64) return
         self%boesten_evaporation_forcing = forcing%boesten_evaporation
       else
         if (allocated(forcing%boesten_evaporation)) return
@@ -3475,7 +3552,7 @@ contains
         if (.not. self%macropore_active) return
         if (.not. forcing%macropore_top_input%valid()) return
         if (forcing%macropore_top_input%supplied) then
-          if (self%snow_active .or. self%black_evaporation_active .or. self%boesten_evaporation_active .or. &
+          if (self%snow_active .or. self%black_evaporation_active .or. &
               self%fixed_weir_surface_water_active) return
         end if
         self%macropore_top_input_forcing = forcing%macropore_top_input
@@ -3672,6 +3749,7 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(rutter_interval_result_t) :: rutter_process_result
+    type(fmr_macropore_top_input_forcing_t) :: macro_top_input_trial
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
     type(rfm_live_trial_prepare_result_t) :: rfm_live
     type(soil_water_top_boundary_result_t) :: rfm_preflight
@@ -3683,6 +3761,8 @@ contains
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: surface_external_exchange_cm
+    real(real64) :: macropore_pond_requested_cm, macropore_pond_accepted_cm, macropore_pond_returned_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
@@ -3708,6 +3788,9 @@ contains
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
+    macropore_pond_requested_cm = 0.0_real64
+    macropore_pond_accepted_cm = 0.0_real64
+    macropore_pond_returned_cm = 0.0_real64
     rfm_preferential_input_cm = 0.0_real64
     rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
@@ -3769,7 +3852,8 @@ contains
                                                            self%macropore_reduction_continuation_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
-                                                           self%boesten_evaporation_active, self%rutter_active)) return
+                                                           self%boesten_evaporation_active, self%macropore_active, &
+                                                           self%rutter_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     rutter_trial_prepared = .false.
@@ -3777,13 +3861,16 @@ contains
     if (self%rutter_active) then
       if (.not. allocated(self%rutter_forcing) .or. .not. self%rutter_forcing%prepared) return
       select type (rutter_physical => state)
-      type is (fmr_b110_physical_state_t)
+      class is (fmr_b110_physical_state_t)
         if (.not. allocated(rutter_physical%rutter)) return
         rutter_previous_ponding = rutter_physical%ponding_depth
       class default
         return
       end select
       rutter_process_result = self%rutter_forcing%result
+      self%last_observation%rutter_net_rain_rate_cm_per_day = rutter_process_result%net_rain_cm_per_day
+      self%last_observation%rutter_net_irrigation_rate_cm_per_day = &
+           rutter_process_result%net_surface_irrigation_cm_per_day
       call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
            self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
            rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
@@ -4002,12 +4089,18 @@ contains
 
       if (self%boesten_evaporation_active) then
         select type (boesten_physical => state)
-        type is (fmr_b110_boesten_evaporation_state_t)
+        class is (fmr_b110_boesten_evaporation_state_t)
           boesten_process_forcing = boesten_evaporation_forcing_t()
           boesten_process_forcing%potential_bare_soil_evaporation = &
                self%boesten_evaporation_forcing%potential_bare_soil_evaporation_cm_per_day
-          boesten_process_forcing%wetting_rate = self%boesten_evaporation_forcing%precipitation_rate_cm_per_day + &
-               self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
+          if (self%rutter_active) then
+            boesten_process_forcing%wetting_rate = rutter_process_result%net_rain_cm_per_day + &
+                 rutter_process_result%net_surface_irrigation_cm_per_day
+          else
+            boesten_process_forcing%wetting_rate = self%boesten_evaporation_forcing%precipitation_rate_cm_per_day + &
+                 self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
+          end if
+          self%last_observation%boesten_wetting_rate_cm_per_day = boesten_process_forcing%wetting_rate
           boesten_process_forcing%surface_is_ponded = &
                boesten_physical%ponding_depth > BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
           call evaluate_boesten_evaporation_reduction(self%boesten_evaporation_parameters, &
@@ -4032,6 +4125,13 @@ contains
                self%boesten_evaporation_forcing%ponding_max_cm, &
                self%boesten_evaporation_forcing%runoff_resistance_day, &
                self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          boesten_top_provider%matrix_source_area_partition = self%macropore_top_input_forcing%supplied
+          if(self%macropore_config%surface_pond_inflow_enabled)then
+            boesten_top_provider%macropore_pond_donor_active=.true.
+            boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+            boesten_top_provider%macropore_surface_conductivity= &
+                 self%macropore_config%surface_macropore_conductivity_cm_per_day
+          end if
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
           return
@@ -4372,6 +4472,15 @@ contains
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (self%rutter_active) then
       if (.not. rutter_trial_prepared) return
+      if (self%boesten_evaporation_active) then
+        call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
+             rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
+             self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
+             boesten_result%empirical_bare_soil_evaporation_demand, &
+             self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
+             self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+      end if
       request%evaluation%dynamic_top_boundary => rutter_top_provider
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
@@ -4417,6 +4526,16 @@ contains
 
     if (self%macropore_active) then
       if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
+      macro_top_input_trial = self%macropore_top_input_forcing
+      if (self%rutter_active) then
+        macro_top_input_trial%supplied = .true.
+        macro_top_input_trial%net_rain_rate_cm_per_day = rutter_process_result%net_rain_cm_per_day
+        macro_top_input_trial%net_irrigation_rate_cm_per_day = rutter_process_result%net_surface_irrigation_cm_per_day
+        macro_top_input_trial%melt_rate_cm_per_day = self%rutter_forcing%snowmelt_rate_cm_per_day
+      end if
+      self%last_observation%macropore_top_rain_rate_cm_per_day = macro_top_input_trial%net_rain_rate_cm_per_day
+      self%last_observation%macropore_top_irrigation_rate_cm_per_day = &
+           macro_top_input_trial%net_irrigation_rate_cm_per_day
       select type (physical_macro => state)
       type is (fmr_b110_macropore_reduction_state_t)
         if(self%accepted_water_flux_trace_enabled.or. &
@@ -4431,7 +4550,7 @@ contains
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
+               top_input=macro_top_input_trial, reduction_accepted=physical_macro%reduction_continuation, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
                covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
                shrinkage_config=self%macropore_config%shrinkage, &
@@ -4440,7 +4559,7 @@ contains
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, reduction_accepted=physical_macro%reduction_continuation, &
+               top_input=macro_top_input_trial, reduction_accepted=physical_macro%reduction_continuation, &
                shrinkage_config=self%macropore_config%shrinkage, &
                matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
@@ -4459,7 +4578,7 @@ contains
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, &
+               top_input=macro_top_input_trial, &
                covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
                covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
                shrinkage_config=self%macropore_config%shrinkage, &
@@ -4468,7 +4587,7 @@ contains
           call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
                self%macropore_config%geometry, self%macropore_config%rate_template, &
                self%macropore_config%history_template, self%macropore_policy, macropore_result, &
-               top_input=self%macropore_top_input_forcing, &
+               top_input=macro_top_input_trial, &
                shrinkage_config=self%macropore_config%shrinkage, &
                matrix_area_fraction=self%macropore_config%matrix_area_fraction)
         end if
@@ -4476,18 +4595,38 @@ contains
         return
       end select
       solve_result = macropore_result%matrix_result
-      self%last_observation%macropore_top_input_active = self%macropore_top_input_forcing%supplied
+      macropore_pond_requested_cm=macropore_result%pond_requested_top_input_cm
+      macropore_pond_accepted_cm=macropore_result%pond_accepted_top_input_cm
+      macropore_pond_returned_cm=macropore_result%pond_returned_surface_cm
+      if (macropore_pond_requested_cm>0.0_real64) then
+        if(macropore_pond_accepted_cm<0.0_real64 .or. macropore_pond_returned_cm<0.0_real64 .or. &
+           abs(macropore_pond_accepted_cm+macropore_pond_returned_cm-macropore_pond_requested_cm)>1.0e-10_real64)return
+        if(macropore_pond_accepted_cm>macropore_result%accepted_top_input_cm+1.0e-10_real64 .or. &
+           macropore_pond_returned_cm>macropore_result%returned_surface_cm+1.0e-10_real64)return
+        ! All capacity-rejected top water returns to the shared surface donor.
+        ! Only the pond-derived accepted share is internal surface-to-macropore
+        ! redistribution; direct accepted atmospheric macro input remains an
+        ! external inflow in the transaction ledger below.
+        solve_result%candidate_state%ponding_depth=solve_result%candidate_state%ponding_depth+ &
+             macropore_result%returned_surface_cm
+      end if
+      self%last_observation%macropore_top_input_active = macro_top_input_trial%supplied
       self%last_observation%macropore_requested_top_cm = macropore_result%requested_top_input_cm
       self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
+      self%last_observation%macropore_pond_requested_cm = macropore_pond_requested_cm
+      self%last_observation%macropore_pond_accepted_cm = macropore_pond_accepted_cm
+      self%last_observation%macropore_pond_returned_cm = macropore_pond_returned_cm
       self%last_observation%macropore_rapid_drain_active = self%macropore_config%rate_template%rapid%enabled
       self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       self%last_observation%macropore_inner_richards_exchange_used = macropore_result%inner_richards_exchange_used
+      self%last_observation%macropore_matrix_source_area_partition_used = &
+           macropore_result%matrix_source_area_partition_used
       self%last_observation%macropore_inner_initial_exchange_rate_cm_per_day = &
            macropore_result%inner_initial_exchange_rate_cm_per_day
       self%last_observation%macropore_inner_final_exchange_rate_cm_per_day = &
            macropore_result%inner_final_exchange_rate_cm_per_day
-      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm-macropore_pond_accepted_cm
       macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
       if (.not. ieee_is_finite(macropore_rapid_outflow_cm) .or. macropore_rapid_outflow_cm < 0.0_real64) return
@@ -4597,7 +4736,7 @@ contains
 
     if (self%boesten_evaporation_active) then
       select type (boesten_physical => state)
-      type is (fmr_b110_boesten_evaporation_state_t)
+      class is (fmr_b110_boesten_evaporation_state_t)
         if (boesten_result%status /= BOESTEN_EVAP_AVAILABLE) return
         boesten_physical%boesten_evaporation = boesten_result%candidate_state
       class default
@@ -4675,7 +4814,24 @@ contains
         return
       end select
     end if
-    call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
+    ! The transaction ledger owns exchanges across the outer model boundary.
+    ! In dynamic-top mode qtop is the internal surface-to-matrix exchange, while
+    ! ponding is committed storage. Reconstruct the accepted external surface
+    ! exchange from the final surface storage change and qtop; HeadCalc has
+    ! already enforced the independent pond-balance equation.
+    surface_external_exchange_cm = -solve_result%top_flux*step_duration
+    if (request%boundary%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+      ! Final pond storage already contains any capacity return. Add the
+      ! accepted pond-to-macropore transfer back when reconstructing the outer
+      ! surface exchange, because that accepted share moved internally from
+      ! pond storage into macropore storage and is not an external macro input.
+      surface_external_exchange_cm = solve_result%candidate_state%ponding_depth - &
+           request%base_state%ponding_depth - solve_result%top_flux*step_duration + &
+           macropore_pond_accepted_cm
+    end if
+    if (self%snow_active) surface_external_exchange_cm = -self%base_top_flux*step_duration
+    if (.not. ieee_is_finite(surface_external_exchange_cm)) return
+    call account_external_fluxes(self, step_duration, surface_external_exchange_cm, solve_result%bottom_flux, &
          snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
          outcome%mass_in, outcome%mass_out)
     if(self%rfm_configuration%enabled)then
@@ -5119,20 +5275,19 @@ contains
     if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
   end subroutine record_top_sensible_boundary_sample
 
-  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
-                                     macropore_accepted_top_cm, macropore_rapid_outflow_cm, total_in, total_out)
+  subroutine account_external_fluxes(self, step_duration, surface_external_exchange_cm, bottom_flux, &
+                                     snow_event_applied, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
+                                     total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, macropore_accepted_top_cm, &
+    real(real64), intent(in) :: step_duration, surface_external_exchange_cm, bottom_flux, macropore_accepted_top_cm, &
          macropore_rapid_outflow_cm
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
-    real(real64) :: value, external_top_flux
-    external_top_flux = solver_top_flux
-    if (self%snow_active) external_top_flux = self%base_top_flux
-    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration + &
+    real(real64) :: value
+    total_in = max(0.0_real64, surface_external_exchange_cm) + max(0.0_real64, bottom_flux) * step_duration + &
          macropore_accepted_top_cm
-    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration + &
+    total_out = max(0.0_real64, -surface_external_exchange_cm) + max(0.0_real64, -bottom_flux) * step_duration + &
          macropore_rapid_outflow_cm
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration

@@ -23,8 +23,15 @@ def visit(source):
     visiting.remove(source)
     seen.add(source)
     ordered.append(source)
-for source in sys.argv[1:]:
-    if pathlib.Path(source).name == "mod_fmr_serialized_reference_backend.f90":
+arguments = sys.argv[1:]
+complete = "--all" in arguments
+# A runner's explicit module provider (including its legacy test stubs) wins.
+if complete:
+    for source in (arg for arg in arguments if arg != "--all"):
+        for name in re.findall(r"^\s*module\s+(\w+)\s*$", (root / source).read_text(), re.M | re.I):
+            modules[name.lower()] = source
+for source in (arg for arg in arguments if arg != "--all"):
+    if complete or pathlib.Path(source).name == "mod_fmr_serialized_reference_backend.f90":
         visit(source)
     elif source not in seen:
         seen.add(source)
