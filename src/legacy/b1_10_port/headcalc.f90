@@ -18,6 +18,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
+   use mod_b111_prescribed_gwl_geometry, only: b111_prescribed_gwl_geometry_t, classify_b111_prescribed_gwl_geometry, &
+        B111_GWL_GEOM_IN_PROFILE, B111_GWL_GEOM_BELOW_PROFILE
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
@@ -64,6 +66,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(a23bu_solver_history_t), pointer :: hist
    type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
    type(reference_richards_state_binding_t), target :: local_state_binding
+   type(b111_prescribed_gwl_geometry_t) :: prescribed_gwl_geometry
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
@@ -332,22 +335,29 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (legacy_state_binding) call publish_legacy_state(state)
          return
       else
-         NN = 0
-         do while (grid_z(NN+1) > state%gwlinp .AND. NN < numnod)
-            NN = NN + 1
-         end do
-         if (grid_z(NN+1) < (state%gwlinp+nihil)) then
-!           groundwater within soil profile
-            if ((grid_z(NN)-state%gwlinp) < 1.0d-4 .AND. (NN > 0)) then
-!              difference state%gwlinp with node to small to calculate gradient properly
-               state%gwlinp = grid_z(NN)
-               NN     = NN-1
-            end if
+         if (explicit_geometry) then
+            call classify_b111_prescribed_gwl_geometry(parameter_set%z, state%gwlinp, nihil, prescribed_gwl_geometry)
          else
-!           groundwater below soil profile
-            state%fllowgwl = .TRUE.
-            state%hbot     = state%gwlinp - grid_z(numnod) + 0.5d0*grid_dz(numnod)
+            call classify_b111_prescribed_gwl_geometry(legacy_z(1:numnod), state%gwlinp, nihil, prescribed_gwl_geometry)
          end if
+         if (.not. prescribed_gwl_geometry%valid) then
+            state%fldecdt=.true.
+            ctx%control%request_dt_reduction=.true.
+            return
+         end if
+         NN = prescribed_gwl_geometry%unsaturated_nodes
+         state%gwlinp = prescribed_gwl_geometry%effective_gwl_cm
+         select case (prescribed_gwl_geometry%status)
+         case (B111_GWL_GEOM_IN_PROFILE)
+            state%fllowgwl = .FALSE.
+         case (B111_GWL_GEOM_BELOW_PROFILE)
+            state%fllowgwl = .TRUE.
+            state%hbot = state%gwlinp - grid_z(numnod) + 0.5d0*grid_dz(numnod)
+         case default
+            state%fldecdt=.true.
+            ctx%control%request_dt_reduction=.true.
+            return
+         end select
       end if
 
    else
