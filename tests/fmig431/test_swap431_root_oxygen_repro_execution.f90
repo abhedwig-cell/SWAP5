@@ -47,17 +47,28 @@ program test_swap431_root_oxygen_repro_execution
   wroot=0.0_real64
   wrootz0=0.0_real64
 
+  ! Rooted support is dynamic forcing, not immutable geometry. A nonzero sink
+  ! outside the supplied rooted extent must fail closed.
   call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
-       base,final,status,factors,repro)
-  if(status/=FMR_BARTHOLOMEUS_EXEC_OK) error stop 1
-  if(maxval(abs(final%root_extraction_sink-[0.3_real64,0.2_real64]))>tol) error stop 2
-  if(abs(final%actual_uptake_total-0.5_real64)>tol) error stop 3
-  if(size(factors)/=2.or.maxval(abs(factors-0.5_real64))>tol) error stop 4
+       base,final,status,factors,repro,1)
+  if(status/=FMR_BARTHOLOMEUS_EXEC_INPUT) error stop 1
+
+  call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
+       base,final,status,factors,repro,2)
+  if(status/=FMR_BARTHOLOMEUS_EXEC_OK) error stop 11
+  if(maxval(abs(final%root_extraction_sink-[0.3_real64,0.2_real64]))>tol) error stop 12
+  if(abs(final%actual_uptake_total-0.5_real64)>tol) error stop 13
+  if(size(factors)/=2.or.maxval(abs(factors-0.5_real64))>tol) error stop 14
 
   ! Type2 fails closed when its explicit geometry/parameter inputs are absent.
   call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
        base,final,status)
-  if(status/=FMR_BARTHOLOMEUS_EXEC_INPUT) error stop 5
+  if(status/=FMR_BARTHOLOMEUS_EXEC_INPUT) error stop 15
+
+  ! Supplying the immutable response object without rooted support is also invalid.
+  call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
+       base,final,status,factors,repro)
+  if(status/=FMR_BARTHOLOMEUS_EXEC_INPUT) error stop 16
 
   print '(a)','SW431_ROOT_OXYGEN_REPRO_EXECUTION=PASS'
 end program
