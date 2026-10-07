@@ -26,6 +26,7 @@ module mod_fmr_b111_soil_n_transaction
     procedure, public :: snapshot => soil_n_snapshot
     procedure, public :: consumed_management_event => soil_n_consumed_management_event
     procedure, public :: snapshot_management_event => soil_n_snapshot_management_event
+    procedure, public :: replace_inventory_candidate => soil_n_replace_inventory_candidate
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_soil_n_model_t
@@ -143,6 +144,18 @@ contains
     if(.not.available)return
     event_id=self%last_management_event_id
     consumed=self%management_event_consumed
+  end subroutine
+
+
+  subroutine soil_n_replace_inventory_candidate(self,inventory,status)
+    class(fmr_b111_soil_n_state_t),intent(inout)::self
+    type(soil_n_pool_state_t),intent(in)::inventory
+    integer,intent(out)::status
+    status=FMR_SOIL_N_INVALID
+    if(.not.self%ready().or..not.inventory%valid())return
+    if(size(inventory%fom_kg_m3)/=size(self%params%nfrac_fom))return
+    self%inventory=inventory
+    status=FMR_SOIL_N_OK
   end subroutine
 
   subroutine apply_fmr_b111_soil_n_management_event(committed,event_id,transfer,candidate,status,receipt)
