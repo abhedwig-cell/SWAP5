@@ -58,5 +58,17 @@
     "Persist/restart the rotation cursor across fallow and season boundaries.",
     "Qualify two crops separated by fallow, rejected boundary transition, replay and restart on both sides."
   ],
-  "admission": false
+  "admission": false,
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_crop_rotation_owner.py",
+    "local": {
+      "compiler": "gfortran 14.2.0",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_ROTATION_OWNER=PASS"
+    },
+    "integration": "OPEN"
+  }
 }
