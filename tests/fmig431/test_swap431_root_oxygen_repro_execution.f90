@@ -17,7 +17,7 @@ program test_swap431_root_oxygen_repro_execution
   type(root_oxygen_reproduction_parameters_t) :: repro
   type(root_water_uptake_flux_result_t) :: base, final
   real(real64), allocatable :: factors(:)
-  real(real64) :: wroot(2), wrootz0(2), thetas(2), z(2), zbot(2), dz(2)
+  real(real64) :: wroot(2), wrootz0(2)
   integer :: status
   real(real64), parameter :: tol=1.0e-12_real64
 
@@ -40,15 +40,15 @@ program test_swap431_root_oxygen_repro_execution
   repro%slope=0.0_real64
   repro%intercept=0.0_real64
   repro%intercept(6)=0.5_real64
-  thetas=0.40_real64
-  z=[-5.0_real64,-15.0_real64]
-  zbot=[-10.0_real64,-20.0_real64]
-  dz=10.0_real64
+  repro%saturated_water_content=0.40_real64
+  repro%z_cm=[-5.0_real64,-15.0_real64]
+  repro%zbotcp_cm=[-10.0_real64,-20.0_real64]
+  repro%dz_cm=10.0_real64
   wroot=0.0_real64
   wrootz0=0.0_real64
 
   call fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,wroot,wrootz0,0.0_real64, &
-       base,final,status,factors,repro,thetas,z,zbot,dz)
+       base,final,status,factors,repro)
   if(status/=FMR_BARTHOLOMEUS_EXEC_OK) error stop 1
   if(maxval(abs(final%root_extraction_sink-[0.3_real64,0.2_real64]))>tol) error stop 2
   if(abs(final%actual_uptake_total-0.5_real64)>tol) error stop 3
