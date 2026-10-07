@@ -24,7 +24,7 @@
   "next_safe_step": "Compose the shared crop-end event owner for source lines 60-73, then qualify owner persistence/restart and actual canopy/root consumers. Do not invent IDEV1 TBASE.",
   "qualification": {
     "runner": "tests/fmig431/run_swap431_fixed_crop_owner.py",
-    "status": "READY_FOR_O0_O2",
+    "status": "LOCAL_O0_O2_PASS_PERSISTED_EVENT_COMPOSITION_OPEN",
     "cases": [
       "IDEV1 2/LCC DVS",
       "IDEV1 LAI/WRT table derivation",
@@ -32,7 +32,15 @@
       "IDEV2 pre-anthesis TSUMEA",
       "IDEV2 post-anthesis TSUMAM",
       "inactive no-op"
-    ]
+    ],
+    "local": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_FIXED_OWNER=PASS"
+    }
   },
   "claim_ceiling": "Candidate for bounded fixed-crop phenology admission after O0/O2 and event-owner composition. IDEV1 TSUM output is excluded as undefined in pinned source. Harvest/cropend remains a separate calendar/event owner."
 }
