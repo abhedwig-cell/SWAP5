@@ -4,6 +4,7 @@ module mod_crop_adaptive_root_profile_owner
   use mod_transaction_reference, only: transaction_state_t
   use mod_wofost_rate_table, only: wofost_rate_table_t
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
   implicit none
   private
 
@@ -30,6 +31,7 @@ module mod_crop_adaptive_root_profile_owner
     procedure, public :: validate => adaptive_root_profile_validate
     procedure, public :: cumulative_root_fraction => adaptive_root_profile_cumulative
     procedure, public :: root_length_density => adaptive_root_profile_lrv
+    procedure, public :: derive_root_uptake_input => adaptive_root_profile_derive_input
   end type adaptive_root_profile_state_t
 
   type, public :: adaptive_root_profile_daily_forcing_t
@@ -243,6 +245,40 @@ contains
     cumulative(rooted_nodes+1)=1.0_real64
     status=ADAPTIVE_ROOT_PROFILE_OK
   end subroutine adaptive_root_profile_cumulative
+
+  subroutine adaptive_root_profile_derive_input(self, rooted_nodes, active_nodes, input, status)
+    class(adaptive_root_profile_state_t), intent(in) :: self
+    integer, intent(in) :: rooted_nodes, active_nodes
+    type(crop_root_uptake_input_t), intent(out) :: input
+    integer, intent(out) :: status
+    real(real64), allocatable :: cumulative(:)
+    integer :: local_status
+
+    input = crop_root_uptake_input_t()
+    status = self%validate()
+    if (status /= ADAPTIVE_ROOT_PROFILE_OK) return
+    if (active_nodes /= size(self%root_biomass_by_node) .or. rooted_nodes < 0 .or. rooted_nodes > active_nodes) then
+      status = ADAPTIVE_ROOT_PROFILE_INVALID_GEOMETRY
+      return
+    end if
+    input%crop_emerged = .true.
+    input%potential_transpiration = 0.0_real64
+    input%rooted_nodes = rooted_nodes
+    if (rooted_nodes > 0) then
+      call self%cumulative_root_fraction(rooted_nodes,cumulative,local_status)
+      if(local_status/=ADAPTIVE_ROOT_PROFILE_OK)then
+        status=local_status;return
+      end if
+      input%cumulative_root_fraction=cumulative
+    end if
+    call validate_crop_root_uptake_input(input,active_nodes,local_status)
+    if(local_status/=CROP_ROOT_INPUT_OK)then
+      input=crop_root_uptake_input_t()
+      status=ADAPTIVE_ROOT_PROFILE_INVALID_RESULT
+      return
+    end if
+    status=ADAPTIVE_ROOT_PROFILE_OK
+  end subroutine adaptive_root_profile_derive_input
 
   subroutine adaptive_root_profile_lrv(self, rooted_nodes, dz_cm, parameters, lrv, status)
     class(adaptive_root_profile_state_t), intent(in) :: self
