@@ -13,9 +13,16 @@
   "implementation": [
     "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
   ],
-  "qualification": [
-    "tests/fmig431/test_swap431_root_anaerobic_gate.f90"
-  ],
+  "qualification": {
+    "local": {
+      "compiler": "gfortran",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_ROOT_ANAE_GROW_GATE=PASS"
+    },
+    "persisted_composition": "OPEN"
+  },
   "ownership": {
     "gate": "stateless",
     "root_depth_state": "existing/parallel SWRD2 rate owner, not duplicated here",
