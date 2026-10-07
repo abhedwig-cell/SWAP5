@@ -236,6 +236,9 @@ contains
       config%transaction%max_retries = 8
       config%model_temporal_indicator_budget_available = .true.
       config%model_temporal_indicator_budget = qualification_head_budget
+      if (present(explicit3)) then
+        if (explicit3) config%model_temporal_indicator_budget = 1.0e6_real64
+      end if
     else
       config%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
       config%transaction%temporal_tolerance = 1.0e-6_real64
