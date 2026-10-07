@@ -9,6 +9,8 @@ EXPECTED={
  "SWAP/solute.f90":"2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
  "SWAP/wofost_soil_rateconstants.f90":"0d869c9acbf290b731c2e7344a0a9df7413eba4da44dcd48d124da994f4adcc6",
  "SWAP/wofostnut.f90":"071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+ "SWAP/wofost_soil_amendments.f90":"157caa9b6feafcd16f9505099874f0a8f56bc81618667d5acdafc17e40735df9",
+ "SWAP/wofost_soil_cropresidues.f90":"1f5d61e97d4a5d1dae7be604f0ed67ce5a780471d7db35236dbb0dc27d1ff8e9",
 }
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode="r:gz") as a:
     members={name:a.extractfile(name).read() for name in EXPECTED}
@@ -23,6 +25,8 @@ def packed(name):
 sol=packed("SWAP/solute.f90")
 rate=packed("SWAP/wofost_soil_rateconstants.f90")
 nut=packed("SWAP/wofostnut.f90")
+amend=packed("SWAP/wofost_soil_amendments.f90")
+residue=packed("SWAP/wofost_soil_cropresidues.f90")
 
 solute_needles=[
  "cmsy(i)=(theta(i)*cml(i)+bdenskfcref(i)*(cml(i)/cref)**frexp)",
@@ -64,6 +68,25 @@ nfix_needles=[
 for needle in nfix_needles:
     if needle not in nut:
         raise SystemExit("missing exact N-fixation equation: "+needle)
+
+addition_needles=[
+ "am_nh4=nh4nfrac(matno)*(1.0d0-volafrac(im))*amend(im)",
+ "am_no3=no3nfrac(matno)*amend(im)",
+ "fdpm=exp(-0.59d0*(age-0.67d0))",
+ "fhum=min(1.0d0,max(0.0d0,0.137d0*(age-2.5d0)))",
+ "asfa=0.25d0/(1.0d0+exp(-2.7d0*(age-2.0d0)))+0.03d0",
+]
+for needle in addition_needles:
+    if needle not in amend:
+        raise SystemExit("missing exact amendment equation: "+needle)
+residue_needles=[
+ "am_nh4=xnh4nfrac*xamend",
+ "am_no3=xno3nfrac*xamend",
+ "fdpm=exp(-0.59d0*(age-0.67d0))",
+]
+for needle in residue_needles:
+    if needle not in residue:
+        raise SystemExit("missing exact residue equation: "+needle)
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
