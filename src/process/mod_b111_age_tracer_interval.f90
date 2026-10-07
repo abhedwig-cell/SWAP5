@@ -81,9 +81,9 @@ contains
     candidate=matrix_state
     receipt%age_after=sum(candidate%age_amount)+candidate%pond_age_amount
     receipt%external_age_input=receipt%surface%rain_age_input+receipt%surface%irrigation_age_input+ &
-         receipt%matrix%bottom_input
+         receipt%matrix%bottom_input+receipt%matrix%drainage_input
     receipt%external_age_output=receipt%matrix%top_output+receipt%matrix%bottom_output+ &
-         receipt%matrix%root_output+receipt%matrix%drainage_net_output
+         receipt%matrix%root_output+receipt%matrix%drainage_output
     receipt%age_production=receipt%matrix%age_production
     expected=receipt%age_before+receipt%external_age_input-receipt%external_age_output+receipt%age_production
     receipt%balance_residual=receipt%age_after-expected
