@@ -69,7 +69,16 @@ contains
   logical function inner_permits_source_freezing(self) result(permitted)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     permitted=.true.
-    if(.not.self%configured .or. .not.self%shrinkage%enabled)return
+    if(.not.self%configured)return
+    ! A pond-derived B1.11 receipt is residual-synchronous: its amount is
+    ! recomputed from candidate ponding inside the Newton residual. Freezing
+    ! macropore sources while that receipt is active would let the residual
+    ! change while the macropore Jacobian/source contribution is held stale.
+    if(self%candidate_pond_lateral_cm>0.0_real64)then
+      permitted=.false.
+      return
+    end if
+    if(.not.self%shrinkage%enabled)return
     permitted=all(self%shrinkage%theta_crack==0.0_real64) .and. &
          all(self%accepted_macro%dynamic_volume_cp==0.0_real64)
   end function inner_permits_source_freezing
