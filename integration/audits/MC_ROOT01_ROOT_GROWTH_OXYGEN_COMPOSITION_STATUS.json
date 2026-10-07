@@ -1,0 +1,72 @@
+{
+  "schema": "swap431.mc_root01.root_growth_oxygen_composition.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-ROOTGROW",
+    "SW431-CROP-ROOTGROW-WATER",
+    "SW431-CROP-ROOTGROW-BIOMASS",
+    "SW431-ROOT-ANAE-GROW"
+  ],
+  "source_authority": {
+    "cropdevelopment": {
+      "member": "SWAP/MOD_cropdevelopment.f90",
+      "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+    },
+    "integral": {
+      "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/integral.f90",
+      "git_blob_sha": "5ac8aa46dd1d2298644a0d9ae581200a70433261"
+    },
+    "wofost": {
+      "member": "SWAP/wofost.f90",
+      "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+    }
+  },
+  "accepted_carriers": {
+    "water": [
+      "IQROT_DAY from accepted actual root-uptake integral",
+      "IPTRA_DAY from accepted potential-transpiration integral"
+    ],
+    "oxygen": "IALPWET_DAY = sum(alpwetnoddrz*dt) across accepted subintervals only",
+    "crop_growth": [
+      "GRRT actual gross root allocation",
+      "GRRTPOT potential gross root allocation from optional shadow",
+      "WRT primary actual crop biomass",
+      "WRTPOT optional potential shadow biomass"
+    ]
+  },
+  "implementation": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/crop/mod_crop_root_anaerobic_extension_gate.f90",
+    "src/crop/mod_wofost_two_phase_crop_window.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/crop/mod_crop_root_depth_rate_owner.f90",
+    "src/runtime/mod_fmr_root_depth_rate_daily_binding.f90",
+    "src/crop/mod_crop_root_depth_biomass.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/runtime/mod_fmr_biomass_root_depth_binding.f90"
+  ],
+  "semantics": [
+    "Optional oxygen carrier is trial-local until accepted certificate admission; rejected trial contribution is discarded.",
+    "Event token/identity/persistence includes oxygen availability and exact integral, so forcing changes cannot replay under the same receipt.",
+    "SWRD2 potential depth is not oxygen-gated; actual depth is blocked only when SWWRTNONOX is enabled and IALPWET_DAY<AERATECRIT.",
+    "SWRD3 actual GRRT is zeroed at the source-equivalent rate/state seam; root death remains active, so net root change becomes -DRRT.",
+    "SWRD3 potential crop remains ungated by actual oxygen stress.",
+    "SWRD3 WRT and WRTPOT are read from primary owner and optional shadow respectively; no geometry-owned biomass copy.",
+    "SWRD2 GRRT/GRRTPOT and water/oxygen daily forcing are assembled from committed crop receipt plus accepted window, not trial state."
+  ],
+  "qualification": {
+    "lineage_test": "tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90",
+    "swrd2_gate_test": "tests/fmig431/test_swap431_root_growth_oxygen_composition.f90",
+    "status": "READY_FOR_O0_O2_INTEGRATED_QUALIFICATION"
+  },
+  "remaining": [
+    "Run F-WOF34 oxygen-lineage regression at O0/O2 on a full checkout.",
+    "Run SWRD2 gate test and existing potential-shadow transaction tests together.",
+    "Add one integrated SWRD3 case proving suppressed actual GRRT reduces actual WRT/RD while WRTPOT/RDPOT continue.",
+    "Persist restart on either side of an oxygen-gated accepted crop event.",
+    "Compose SWDMI2RD=2 supply limiter and adaptive root-density accepted forcing after this carrier layer."
+  ],
+  "disposition": "SHARED_ACCEPTED_CARRIERS_AND_SWRD2_SWRD3_OXYGEN_COMPOSITION_IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
+  "admission": false
+}
