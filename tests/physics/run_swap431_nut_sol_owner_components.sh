@@ -29,4 +29,10 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_pond_age.f90" \
     -o b111_pond_age
   ./b111_pond_age
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_soil_n_pool_state.f90" \
+    "$root/src/process/mod_b111_soil_n_addition.f90" \
+    "$root/tests/physics/test_b111_soil_n_addition.f90" \
+    -o b111_soil_n_addition
+  ./b111_soil_n_addition
 done
