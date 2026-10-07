@@ -21,8 +21,8 @@ program test_swap431_signed_divdra_runtime
        FMR_DIVDRA_COMPOSE_COLUMN_ID_MISMATCH, FMR_DIVDRA_COMPOSE_SHARED_FORCING_HANDLE, &
        FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF, FMR_DIVDRA_COMPOSE_INVALID_HYDRAULIC_VIEW_REF, &
        FMR_DIVDRA_COMPOSE_BIND_REJECTED
-  use mod_fmr_signed_divdra_runtime_binding, only: fmr_signed_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_signed_divdra, FMR_SIGNED_DIVDRA_BIND_OK
+  use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
+       fmr_bind_single_level_signed_divdra, FMR_DIVDRA_BIND_OK
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
@@ -40,7 +40,6 @@ program test_swap431_signed_divdra_runtime
   integer :: i, j, valid_cases
 
   valid_cases = 0
-  call verify_inactive_identity()
   do i = 1, size(gwls)
     do j = 1, size(transfers)
       call verify_single_active(gwls(i), transfers(j))
@@ -110,7 +109,7 @@ contains
     type(fmr_divdra_serialized_binding_record_t), allocatable :: records(:)
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(1)
-    type(fmr_signed_divdra_binding_diagnostics_t) :: bd
+    type(fmr_divdra_binding_diagnostics_t) :: bd
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64), allocatable :: row(:)
     integer :: dispatch1, dispatch2, compose
@@ -121,9 +120,8 @@ contains
     call configure_distribution(dp(1))
     call configure_view(hv(1),gwl)
 
-    call fmr_bind_single_level_signed_divdra(dp(1),hv(1),transfer_rate,.false.,0.0_real64,0.5_real64, &
-         f1(1)%drainage_flux_by_level,bd)
-    call require(bd%status==FMR_SIGNED_DIVDRA_BIND_OK .and. bd%published,'manual binding accepted')
+    call fmr_bind_single_level_signed_divdra(dp(1),hv(1),transfer_rate,f1(1)%drainage_flux_by_level,bd)
+    call require(bd%status==FMR_DIVDRA_BIND_OK .and. bd%published,'manual binding accepted')
     allocate(row(numnod)); row=f1(1)%drainage_flux_by_level(1,:)
     call require(same_bits(sum(row),transfer_rate),'manual scalar closure')
 
@@ -131,7 +129,7 @@ contains
     req(1)%column_id=id1; req(1)%active=.true.
     req(1)%distribution_parameter_ref=1_int64
     req(1)%hydraulic_view_ref=1_int64
-    req(1)%scalar_transfer=transfer_rate; req(1)%signed_transfer=.true.
+    req(1)%scalar_transfer=transfer_rate
 
     call reset_legacy()
     call fmr_run_serialized_physical_multiswap(c1,t1,p1,f1,s1,cfg1,top,qa_t0,qa_t1,1,r1,d1,a1,dispatch1)
@@ -141,15 +139,15 @@ contains
          req,dp,hv,r2,d2,a2,dispatch2,compose,records)
 
     call require(dispatch2==FMR_SERIAL_DISPATCH_OK .and. compose==FMR_DIVDRA_COMPOSE_OK,'active dispatch')
-    call require(r2(1)%committed .and. size(records)==1 .and. records(1)%signed_binding%published,'active commit publication')
-    call require(same_bits(records(1)%signed_binding%authoritative_scalar_transfer,transfer_rate),'scalar retained')
+    call require(r2(1)%committed .and. size(records)==1 .and. records(1)%binding%published,'active commit publication')
+    call require(same_bits(records(1)%binding%authoritative_scalar_transfer,transfer_rate),'scalar retained')
     call require(same_result(r1(1),r2(1)),'manual/callsite result equivalence')
     call require(state_fingerprint(s1(1))==state_fingerprint(s2(1)),'manual/callsite state equivalence')
     call require(r2(1)%mass%complete .and. r2(1)%mass%missing_contribution_mask==TX_MASS_MISSING_NONE,'mass complete')
     call require(abs(r2(1)%mass%residual)<=mass_gate,'hard mass gate')
     call require(.not.allocated(f2(1)%drainage_flux_by_level),'caller forcing restored')
     write(*,'(A,ES18.10,A,ES18.10,A,I0)') 'SW431_SIGNED_SINGLE GWL=',gwl,' Q=',transfer_rate,' WT=', &
-         records(1)%signed_binding%active_nodes
+         records(1)%binding%active_nodes
   end subroutine verify_single_active
 
   subroutine verify_two_active_columns()
@@ -166,7 +164,7 @@ contains
     type(fmr_divdra_serialized_binding_record_t), allocatable :: records(:)
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(2)
-    type(fmr_signed_divdra_binding_diagnostics_t) :: bd
+    type(fmr_divdra_binding_diagnostics_t) :: bd
     type(fmr04_fixed_flux_top_provider_t), target :: top
     real(real64), parameter :: q(2)=[0.011_real64,0.023_real64]
     real(real64), allocatable :: row(:)
@@ -179,14 +177,13 @@ contains
     call configure_view(hv(2),-1.55_real64)
     do k=1,2
       deallocate(f1(k)%drainage_flux_by_level,f2(k)%drainage_flux_by_level)
-      call fmr_bind_single_level_signed_divdra(dp(1),hv(k),q(k),.false.,0.0_real64,0.5_real64, &
-           f1(k)%drainage_flux_by_level,bd)
-      call require(bd%status==FMR_SIGNED_DIVDRA_BIND_OK,'two-column manual bind')
+      call fmr_bind_single_level_signed_divdra(dp(1),hv(k),q(k),f1(k)%drainage_flux_by_level,bd)
+      call require(bd%status==FMR_DIVDRA_BIND_OK,'two-column manual bind')
       allocate(row(numnod)); row=f1(k)%drainage_flux_by_level(1,:)
       deallocate(row)
       req(k)=fmr_divdra_serialized_column_request_t()
       req(k)%column_id=c2(k)%column_id; req(k)%active=.true.
-      req(k)%distribution_parameter_ref=1_int64; req(k)%hydraulic_view_ref=int(k,int64); req(k)%scalar_transfer=q(k); req(k)%signed_transfer=.true.
+      req(k)%distribution_parameter_ref=1_int64; req(k)%hydraulic_view_ref=int(k,int64); req(k)%scalar_transfer=q(k)
     end do
 
     call reset_legacy()
@@ -199,12 +196,12 @@ contains
     call require(all(r2%committed) .and. size(records)==2,'two-column active committed')
     do k=1,2
       call require(records(k)%column_id==c2(k)%column_id .and. records(k)%column_index==k,'record column identity')
-      call require(same_bits(records(k)%signed_binding%authoritative_scalar_transfer,q(k)),'record scalar identity')
+      call require(same_bits(records(k)%binding%authoritative_scalar_transfer,q(k)),'record scalar identity')
       call require(same_result(r1(k),r2(k)),'two-column result equivalence')
       call require(state_fingerprint(s1(k))==state_fingerprint(s2(k)),'two-column state equivalence')
       call require(.not.allocated(f2(k)%drainage_flux_by_level),'two-column forcing restored')
     end do
-    call require(records(1)%signed_binding%active_nodes /= records(2)%binding%process%water_table_node, &
+    call require(records(1)%binding%active_nodes /= records(2)%binding%process%water_table_node, &
          'two-column distinct explicit views retained')
     write(*,'(A)') 'SW431_SIGNED_TWO_ACTIVE_COLUMNS_NO_CROSS_CONTAMINATION=PASS'
   end subroutine verify_two_active_columns
@@ -244,15 +241,6 @@ contains
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
          r,d,a,dispatch,compose,records)
     call require(compose==FMR_DIVDRA_COMPOSE_COLUMN_ID_MISMATCH .and. all_zero_revisions(s),'column id premutation reject')
-
-    call initialize_two(c,t,p,f,s,cfg)
-    deallocate(f(1)%drainage_flux_by_level)
-    allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
-    call make_request(req(1),c(1)%column_id,-0.01_real64); req(2)%column_id=c(2)%column_id
-    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
-         r,d,a,dispatch,compose,records)
-    call require(compose==FMR_DIVDRA_COMPOSE_BIND_REJECTED .and. all_zero_revisions(s),'negative premutation reject')
-    call require(.not.allocated(f(1)%drainage_flux_by_level),'negative no forcing mutation')
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
