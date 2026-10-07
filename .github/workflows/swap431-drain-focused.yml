@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - work/swap431-drain-signed-multilevel-20261007
+    paths:
+      - .github/workflows/swap431-drain-focused.yml
   workflow_dispatch:
 jobs:
   focused-drainage:
