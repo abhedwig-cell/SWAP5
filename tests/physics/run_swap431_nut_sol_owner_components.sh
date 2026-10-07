@@ -76,6 +76,13 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_soil_n_transport.f90" \
     -o b111_soil_n_transport
   ./b111_soil_n_transport
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_b111_soil_n_transport.f90" \
+    "$root/src/process/mod_b111_soil_n_daily_exchange.f90" \
+    "$root/tests/physics/test_b111_soil_n_daily_exchange.f90" \
+    -o b111_soil_n_daily_exchange
+  ./b111_soil_n_daily_exchange
   gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
     "$root/src/process/mod_b111_soil_organic_turnover.f90" \
     "$root/tests/physics/test_b111_soil_organic_turnover.f90" \
