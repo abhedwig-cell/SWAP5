@@ -3821,8 +3821,8 @@ contains
       if (self%profile_groundwater_projection .and. .not. self%drainage_qbot_smooth_freatic_projection) then
         call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z, self%soil_parameters%node_distance, &
              physical%pressure_head, physical%ponding_depth, profile_projection)
-        if (.not. profile_projection%valid .or. .not. profile_projection%level_present) return
-        request%base_state%groundwater_level = profile_projection%level_cm
+        if (.not. profile_projection%valid) return
+        if (profile_projection%level_present) request%base_state%groundwater_level = profile_projection%level_cm
       end if
       if (self%macropore_active) then
         if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore_config)) return
@@ -4440,8 +4440,8 @@ contains
     else if (self%profile_groundwater_projection) then
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z, self%soil_parameters%node_distance, &
            solve_result%candidate_state%pressure_head, solve_result%candidate_state%ponding_depth, profile_projection)
-      if (.not. profile_projection%valid .or. .not. profile_projection%level_present) return
-      solve_result%candidate_state%groundwater_level = profile_projection%level_cm
+      if (.not. profile_projection%valid) return
+      if (profile_projection%level_present) solve_result%candidate_state%groundwater_level = profile_projection%level_cm
     end if
     if (self%soil_water_selection%uses_rossfast()) then
       call self%soil_water_selection%temporal_certificate_snapshot(rossfast_certificate_available, &
