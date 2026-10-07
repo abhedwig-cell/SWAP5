@@ -48,6 +48,7 @@ module mod_fixed_crop_owner
     logical :: temperature_sum_source_defined = .true.
     real(real64) :: development_increment = 0.0_real64
     real(real64) :: root_growth = 0.0_real64
+    real(real64) :: potential_root_growth = 0.0_real64
     real(real64) :: root_death = 0.0_real64
     logical :: candidate_built = .false.
   end type fixed_crop_daily_diagnostics_t
@@ -188,6 +189,8 @@ contains
         return
       end if
       diagnostics%root_growth = max(0.0_real64, candidate%root_biomass - old_root)
+      ! Pinned B1.11 fixed.f90 publishes GRRTPOT=GRRT for prescribed root biomass.
+      diagnostics%potential_root_growth = diagnostics%root_growth
       diagnostics%root_death = abs(min(0.0_real64, candidate%root_biomass - old_root))
     end if
 
