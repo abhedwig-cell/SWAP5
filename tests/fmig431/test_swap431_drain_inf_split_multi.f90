@@ -8,7 +8,7 @@ program test_swap431_drain_inf_split_multi
   use mod_drainage_multilevel_separate_infiltration, only: drainage_multilevel_separate_infiltration_result_t, &
        distribute_multilevel_separate_infiltration_b19, DRAIN_MULTI_INF_OK
   use mod_fmr_divdra_multilevel_separate_infiltration_binding, only: &
-       fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t, &
+       fmr_divdra_multi_inf_binding_diagnostics_t, &
        fmr_bind_multilevel_separate_infiltration, FMR_DIVDRA_MULTI_INF_OK, &
        FMR_DIVDRA_MULTI_INF_TARGET_ALREADY_BOUND
   implicit none
@@ -20,7 +20,7 @@ program test_swap431_drain_inf_split_multi
   type(drainage_b19_separate_infiltration_parameters_t) :: p
   type(drainage_b19_separate_infiltration_result_t) :: direct
   type(drainage_multilevel_diagnostics_t) :: ordinary_diag
-  type(fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t) :: bind_diag
+  type(fmr_divdra_multi_inf_binding_diagnostics_t) :: bind_diag
   real(real64),allocatable :: ordinary(:,:),published(:,:)
   real(real64) :: scalar(nlev),bottom(nlev),water(nlev)
   real(real64),parameter :: factor=.35_real64,tol=1024._real64*epsilon(1._real64)
