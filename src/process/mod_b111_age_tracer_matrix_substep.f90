@@ -29,7 +29,8 @@ module mod_b111_age_tracer_matrix_substep
     real(real64)::bottom_input=0.0_real64
     real(real64)::bottom_output=0.0_real64
     real(real64)::root_output=0.0_real64
-    real(real64)::drainage_net_output=0.0_real64
+    real(real64)::drainage_input=0.0_real64
+    real(real64)::drainage_output=0.0_real64
     real(real64)::balance_residual=0.0_real64
   end type
 
@@ -103,13 +104,14 @@ contains
       do level=1,size(qdra,1)
         if(qdra(level,i)>0.0_real64)then
           drain_flux=drain_flux+qdra(level,i)*c(i)*dt
+          receipt%drainage_output=receipt%drainage_output+qdra(level,i)*c(i)*dt
         else
           drain_flux=drain_flux+qdra(level,i)*drain_age*dt
+          receipt%drainage_input=receipt%drainage_input-qdra(level,i)*drain_age*dt
         end if
       end do
       production=0.5_real64*(theta_end(i)+theta_start(i))*dt*dz(i)
       receipt%root_output=receipt%root_output+root_flux
-      receipt%drainage_net_output=receipt%drainage_net_output+drain_flux
       receipt%age_production=receipt%age_production+production
 
       if(n==1)then
@@ -131,7 +133,7 @@ contains
 
     receipt%age_after=sum(candidate%age_amount)
     expected=receipt%age_before+receipt%top_input-receipt%top_output+receipt%bottom_input-receipt%bottom_output- &
-         receipt%root_output-receipt%drainage_net_output+receipt%age_production
+         receipt%root_output+receipt%drainage_input-receipt%drainage_output+receipt%age_production
     receipt%balance_residual=receipt%age_after-expected
     scale=max(1.0_real64,abs(receipt%age_before),abs(receipt%age_after),abs(expected))
     tol=4096.0_real64*epsilon(1.0_real64)*scale
