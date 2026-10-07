@@ -4,11 +4,14 @@ program test_swap431_soybean_phenology_factors
   implicit none
 
   type(soybean_phenology_parameters_t) :: p
-  real(real64) :: f, dayl, popt, pcrt, alpha, p0, p1, p2, expected
+  real(real64) :: f, dayl, popt, pcrt, alpha, p0, p1, p2, expected, dtsum, dvr
+  logical :: anthesis_candidate, anthesis_triggered
   integer :: status
   real(real64), parameter :: tol=2.0e-12_real64
 
   p%maturity_group=4.0_real64
+  p%maximum_vegetative_development_rate=0.10_real64
+  p%maximum_generative_development_rate=0.08_real64
   p%minimum_development_temperature_c=5.0_real64
   p%optimum_development_temperature_c=25.0_real64
   p%maximum_development_temperature_c=40.0_real64
@@ -54,6 +57,27 @@ program test_swap431_soybean_phenology_factors
   p2=(16.0_real64-12.0_real64)/(16.0_real64-10.0_real64)
   expected=(p1*(p2**p0))**alpha
   if(abs(f-expected)>tol) error stop 14
+
+  ! Exact B1.11 soybean daily-rate assembly.
+  p%apply_photoperiod_in_vegetative_phase=.false.
+  call soybean_daily_development_rate(p,0.20_real64,25.0_real64,0.0_real64,100,.false., &
+       dtsum,dvr,anthesis_candidate,anthesis_triggered,status)
+  if(status/=SOY_PHENOLOGY_OK.or.abs(dtsum-25.0_real64)>tol.or.abs(dvr-0.10_real64)>tol) error stop 15
+  if(anthesis_candidate.or.anthesis_triggered) error stop 16
+
+  p%apply_photoperiod_in_vegetative_phase=.true.
+  p%optimum_photoperiod_hours=13.0_real64
+  p%critical_photoperiod_hours=16.0_real64
+  call soybean_daily_development_rate(p,0.95_real64,25.0_real64,0.0_real64,100,.false., &
+       dtsum,dvr,anthesis_candidate,anthesis_triggered,status)
+  if(status/=SOY_PHENOLOGY_OK.or.abs(dvr-0.05_real64)>tol) error stop 17
+  if(.not.anthesis_candidate.or..not.anthesis_triggered) error stop 18
+
+  ! Generative phase always applies photoperiod in B1.11.
+  call soybean_daily_development_rate(p,1.20_real64,25.0_real64,0.0_real64,100,.true., &
+       dtsum,dvr,anthesis_candidate,anthesis_triggered,status)
+  if(status/=SOY_PHENOLOGY_OK.or.abs(dvr-0.08_real64)>tol) error stop 19
+  if(.not.anthesis_candidate.or.anthesis_triggered) error stop 20
 
   print '(a)','SW431_CROP_SOY_FACTORS=PASS'
 end program
