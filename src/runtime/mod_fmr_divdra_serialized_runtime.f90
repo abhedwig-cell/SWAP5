@@ -12,6 +12,8 @@ module mod_fmr_divdra_serialized_runtime
        fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_signed_divdra, &
        fmr_bind_multilevel_signed_divdra, FMR_DIVDRA_BIND_OK
   use mod_fmr_divdra_discharge_top_binding, only: apply_fmr_divdra_discharge_top_controls, FMR_DIVDRA_TOP_OK
+  use mod_fmr_divdra_top_interflow_binding, only: fmr_divdra_top_interflow_binding_diagnostics_t, &
+       fmr_bind_highest_interflow_signed_divdra, FMR_DIVDRA_TOPINT_OK
   use mod_fmr_divdra_serialized_composition, only: fmr_divdra_serialized_column_request_t, &
        fmr_divdra_serialized_binding_record_t, fmr_preflight_serialized_divdra, &
        FMR_DIVDRA_COMPOSE_OK, FMR_DIVDRA_COMPOSE_BIND_REJECTED
@@ -55,6 +57,7 @@ contains
 
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(fmr_divdra_top_interflow_binding_diagnostics_t) :: topint_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     type(drainage_distribution_parameters_t) :: single_parameter(1)
     real(real64) :: single_scalar(1)
