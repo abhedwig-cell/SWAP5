@@ -863,6 +863,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_committed_state
   public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_initialize_mobile_salt_profile
+  public :: fmr_initialize_sol01_companion
   public :: fmr_base_salt_temporal_policy_t
   public :: fmr_mobile_dispersion_matches_hydraulic_owner
   public :: fmr_new_b110_macropore_reduction_committed_state
@@ -1440,6 +1441,22 @@ contains
     allocate(state%salt)
     call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
   end subroutine
+
+  subroutine fmr_initialize_sol01_companion(state,sorbed_matrix_mass,pond_mass,status)
+    type(fmr_b110_sol01_state_t),intent(inout)::state
+    real(real64),intent(in)::sorbed_matrix_mass(:),pond_mass
+    integer,intent(out)::status
+    type(solute_sorbed_pond_state_t)::initialized
+    status=SOLSP_INVALID
+    if(state%active_nodes<=0)return
+    if(.not.allocated(state%salt))return
+    if(.not.state%salt%ready(state%active_nodes))return
+    if(allocated(state%macropore))return
+    if(size(sorbed_matrix_mass)/=state%active_nodes)return
+    call initialize_solute_sorbed_pond_state(sorbed_matrix_mass,pond_mass,initialized,status)
+    if(status/=SOLSP_OK)return
+    state%solute_companion=initialized
+  end subroutine fmr_initialize_sol01_companion
 
   subroutine fmr_configure_base_salt_temporal_policy(self,policy,ok)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
