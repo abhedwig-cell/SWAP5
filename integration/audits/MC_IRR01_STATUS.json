@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "092414caef767619dac9bfac61a1018e9b130b9f",
+  "checkpoint_commit": "9131385b2eda3ddbbc461016ff6de61380ac64b1",
   "last_reconciled_head": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "last_reconciled_upstream": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "implemented": true,
@@ -53,7 +53,7 @@
     23,
     29
   ],
-  "next_action": "Qualify the new src/runtime TCS7/DCS2 SSDI owner with F-APP07 composition; on success admit SW431-IRR-TCS7 and SW431-IRR-SSDI, then continue TCS8 and depletion-family infrastructure.",
+  "next_action": "Qualify shared TCS7/TCS8 sensor-to-DCS2 SSDI runtime composition. Admit TCS7/SSDI on inherited F-VQ20 science plus current runtime gate. Admit TCS8 only if current process qualification and source-binding evidence are sufficient; otherwise retain as implemented pending literal B1.11 oracle.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -80,6 +80,14 @@
       "tested": false,
       "qualified": false,
       "source_science": "F-VQ20 exact production blob c0755c1e0d0b7ca1a35e73cf26158c29e9940aec"
+    },
+    "tcs8_sensor_candidate": {
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "theory_binding": "SWAP 4.3.1 theory equation 11.6: theta_sensor <= theta_min",
+      "source_authority": "B1.11 SWAP/irrigation.f90 hash 65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"
     }
   }
 }
