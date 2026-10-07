@@ -8,11 +8,15 @@ on:
     paths:
       - 'src/crop/mod_b111_crop_n_fixation_policy.f90'
       - 'src/process/mod_soil_n_pool_state.f90'
+      - 'src/process/mod_solute_compartment_state.f90'
       - 'tests/fwof/pp02/test_b111_crop_n_fixation_policy.f90'
       - 'tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh'
       - 'tests/physics/test_soil_n_pool_state.f90'
       - 'tests/physics/run_soil_n_pool_state.sh'
+      - 'tests/physics/test_solute_compartment_state.f90'
+      - 'tests/physics/run_solute_compartment_state.sh'
       - 'docs/decisions/ADR-0006-soil-n-owner.md'
+      - 'docs/decisions/ADR-0007-solute-compartment-ownership.md'
       - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
       - 'tools/audits/probe_b111_nfix_policy.py'
       - 'tools/audits/extract_b111_solute_slices.py'
@@ -37,5 +41,7 @@ jobs:
         run: python tools/audits/extract_b111_solute_slices.py
       - name: Soil-N pool owner
         run: bash tests/physics/run_soil_n_pool_state.sh
+      - name: SOL01 companion compartment state
+        run: bash tests/physics/run_solute_compartment_state.sh
       - name: Inspect exact B1.11 solute source slices
         run: python tools/audits/extract_b111_solute_slices.py
