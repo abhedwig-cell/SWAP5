@@ -124,6 +124,19 @@ for needle in organic_turnover_needles:
     if needle not in orgmat:
         raise SystemExit("missing exact organic-turnover equation: "+needle)
 
+organic_dissimilation_needles=[
+ "rhs_bio=(bio_t-bio_t0)/dt-fom2bio/dt/dz_wsn",
+ "rhs_hum=(hum_t-hum_t0)/dt-fom2hum/dt/dz_wsn",
+ "bio_av=(p4*rhs_bio+p2*rhs_hum)/(p2*p3-p1*p4)",
+ "hum_av=(p3*rhs_bio+p1*rhs_hum)/(p2*p3-p1*p4)",
+ "cdissi=cdissi+cfracbio*dt*dz_wsn*(1.0d0-asfabio-asfahum)*rateconbio*bio_av",
+ "cfrachelp_placeholder"
+]
+organic_dissimilation_needles.remove("cfrachelp_placeholder")
+for needle in organic_dissimilation_needles:
+    if needle not in orgmat:
+        raise SystemExit("missing exact organic-dissimilation equation: "+needle)
+
 # Fail closed on the B1.11 organic-N inconsistency. The earlier balance
 # accumulator uses Bio + Hum incorporation, while the later Nminer expression
 # subtracts the Bio incorporation term twice. This is evidence for a reference
