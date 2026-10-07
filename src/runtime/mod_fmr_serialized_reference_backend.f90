@@ -3861,7 +3861,7 @@ contains
         call evaluate_b111_explicit_cauchy_profile_flux(request%base_state%groundwater_level, &
              self%swbotb3_explicit_hdrain_cm,self%swbotb3_explicit_shape_3,self%cauchy3_proposal%aquifer_total_head_cm, &
              self%legacy_swbotb3_implicit_control%external_resistance_days(),low3_ztop,low3_zbot,self%soil_parameters%dz, &
-             low3_ksat,self%legacy_swbotb3_implicit_control%half_cell_enabled(),cauchy3_q4,low3_qbot,low3_gwlmean, &
+             low3_ksat,cauchy3_q4,low3_qbot,low3_gwlmean, &
              low3_cvalprof,low3_status)
         if(low3_status/=B111_EXPLICIT_CAUCHY_OK)return
         request%boundary%bottom_mode = 2

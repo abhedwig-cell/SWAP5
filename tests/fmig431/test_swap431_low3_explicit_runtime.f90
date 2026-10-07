@@ -70,8 +70,8 @@ contains
     ! RIMLAY=10 d and Q4=0. Profile resistance is derived by production.
     ! First run with zero top flux is intentionally not an equilibrium oracle;
     ! use a short certificate-free transaction and require bounded completion.
-    q_explicit = q
-    call execute_case(3,q_explicit,q_explicit,-999999._real64,1.0e-6_real64,.false.,.false.,output,observation,explicit3=.true.)
+    q_explicit = 0.0_real64
+    call execute_case(3,q_explicit,q_explicit,-999999._real64,equilibrium_dt,.false.,.false.,output,observation,explicit3=.true.)
     if(.not.output%completed.or..not.output%committed)then
       write(*,'(A,L1,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0)') 'LOW3_DEBUG completed=',output%completed,' committed=',output%committed, &
            ' kernel=',output%kernel_status,' solver=',output%solver_status,' solver_rej=',output%solver_rejections, &
@@ -350,7 +350,7 @@ contains
     if (parameters%swbotb3_explicit_active) then
       ! Representable freatic profile for the integrated CALCGWL prerequisite:
       ! h=z_gwl-z with z_gwl=-50 cm, so lower nodes are saturated.
-      heads = -50.0_real64 - parameters%z
+      heads = -1.5_real64 - parameters%z
     else if (hydrostatic) then
       heads(1) = h0
       do i = 2, numnod
@@ -388,7 +388,7 @@ contains
     type(fmr_b110_physical_forcing_t),intent(inout)::forcing
     integer::status
     real(real64)::date3(2),head3(2)
-    date3=[0._real64,10._real64];head3=[-75._real64,-75._real64]
+    date3=[0._real64,10._real64];head3=[-1.5_real64,-1.5_real64]
     allocate(forcing%legacy_swbotb3_implicit_control)
     call forcing%legacy_swbotb3_implicit_control%initialize_table(0._real64,0._real64,date3,head3, &
          10._real64,.true.,status)

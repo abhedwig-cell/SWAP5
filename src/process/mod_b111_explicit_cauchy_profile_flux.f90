@@ -9,11 +9,10 @@ module mod_b111_explicit_cauchy_profile_flux
   public :: evaluate_b111_explicit_cauchy_profile_flux
 contains
   pure subroutine evaluate_b111_explicit_cauchy_profile_flux(gwl_cm,hdrain_cm,shape_3,deepgw_cm,rimlay_day, &
-       ztopcp_cm,zbotcp_cm,dz_cm,ksat_cm_per_day,include_profile_resistance,q4_cm_per_day,qbot_cm_per_day, &
+       ztopcp_cm,zbotcp_cm,dz_cm,ksat_cm_per_day,q4_cm_per_day,qbot_cm_per_day, &
        gwlmean_cm,cvalprof_day,status)
     real(real64),intent(in)::gwl_cm,hdrain_cm,shape_3,deepgw_cm,rimlay_day
     real(real64),intent(in)::ztopcp_cm(:),zbotcp_cm(:),dz_cm(:),ksat_cm_per_day(:),q4_cm_per_day
-    logical,intent(in)::include_profile_resistance
     real(real64),intent(out)::qbot_cm_per_day,gwlmean_cm,cvalprof_day
     integer,intent(out)::status
     integer::n,node,nodnumgwl
@@ -27,21 +26,19 @@ contains
     if(any(dz_cm<=0._real64).or.any(ksat_cm_per_day<=0._real64).or.rimlay_day<0._real64)return
     gwlmean_cm=hdrain_cm+shape_3*(gwl_cm-hdrain_cm)
     if(.not.ieee_is_finite(gwlmean_cm))return
-    if(include_profile_resistance)then
-      node=n
-      do while(gwlmean_cm>ztopcp_cm(node).and.node>1)
-        node=node-1
-      end do
-      nodnumgwl=node
-      satnodgwl=gwlmean_cm-zbotcp_cm(nodnumgwl)
-      if(.not.ieee_is_finite(satnodgwl).or.satnodgwl<0._real64.or.satnodgwl>dz_cm(nodnumgwl))then
-        status=B111_EXPLICIT_CAUCHY_GWL_OUTSIDE_PROFILE;return
-      end if
-      cvalprof_day=satnodgwl/ksat_cm_per_day(nodnumgwl)
-      do node=nodnumgwl+1,n
-        cvalprof_day=cvalprof_day+dz_cm(node)/ksat_cm_per_day(node)
-      end do
+    node=n
+    do while(gwlmean_cm>ztopcp_cm(node).and.node>1)
+      node=node-1
+    end do
+    nodnumgwl=node
+    satnodgwl=gwlmean_cm-zbotcp_cm(nodnumgwl)
+    if(.not.ieee_is_finite(satnodgwl).or.satnodgwl<0._real64.or.satnodgwl>dz_cm(nodnumgwl))then
+      status=B111_EXPLICIT_CAUCHY_GWL_OUTSIDE_PROFILE;return
     end if
+    cvalprof_day=satnodgwl/ksat_cm_per_day(nodnumgwl)
+    do node=nodnumgwl+1,n
+      cvalprof_day=cvalprof_day+dz_cm(node)/ksat_cm_per_day(node)
+    end do
     denom=rimlay_day+cvalprof_day
     if(.not.ieee_is_finite(denom).or.denom<=0._real64)return
     qbot_cm_per_day=(deepgw_cm-gwlmean_cm)/denom+q4_cm_per_day
