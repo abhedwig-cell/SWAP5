@@ -12,7 +12,7 @@ module mod_fmr_divdra_multilevel_separate_infiltration_binding
   integer,parameter,public :: FMR_DIVDRA_MULTI_INF_PROCESS_REJECTED=2
   integer,parameter,public :: FMR_DIVDRA_MULTI_INF_INVALID_RESULT=3
 
-  type,public :: fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t
+  type,public :: fmr_divdra_multi_inf_binding_diagnostics_t
     integer :: status=FMR_DIVDRA_MULTI_INF_OK
     integer :: process_status=DRAIN_MULTI_INF_OK
     logical :: process_evaluated=.false.
@@ -34,11 +34,11 @@ contains
     real(real64),intent(in)::scalar_transfer(:),drain_bottom_cm(:),surface_water_level_cm(:)
     real(real64),intent(in)::infiltration_depth_factor
     real(real64),allocatable,intent(inout)::drainage_flux_by_level(:,:)
-    type(fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t),intent(out)::diagnostics
+    type(fmr_divdra_multi_inf_binding_diagnostics_t),intent(out)::diagnostics
     type(drainage_multilevel_separate_infiltration_result_t)::process_result
     integer::levels,n
 
-    diagnostics=fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t()
+    diagnostics=fmr_divdra_multi_inf_binding_diagnostics_t()
     diagnostics%authoritative_scalar_transfer=scalar_transfer
     if(allocated(drainage_flux_by_level))then
       diagnostics%status=FMR_DIVDRA_MULTI_INF_TARGET_ALREADY_BOUND
