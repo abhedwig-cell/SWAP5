@@ -36,6 +36,7 @@ on:
       - 'src/process/mod_b111_solute_decay.f90'
       - 'src/process/mod_b111_pond_solute_exchange.f90'
       - 'src/process/mod_b111_age_tracer_production.f90'
+      - 'src/runtime/mod_fmr_b111_soil_n_transaction.f90'
       - 'tests/physics/test_soil_n_reaction_transfer.f90'
       - 'tests/physics/test_b111_soil_n_rate_factors.f90'
       - 'tests/physics/test_b111_soil_n_addition.f90'
@@ -45,6 +46,8 @@ on:
       - 'tests/physics/test_b111_solute_sorption_decay.f90'
       - 'tests/physics/test_b111_pond_age.f90'
       - 'tests/physics/run_swap431_nut_sol_owner_components.sh'
+      - 'tests/physics/test_fmr_b111_soil_n_transaction.f90'
+      - 'tests/physics/run_fmr_b111_soil_n_transaction.sh'
       - 'tools/audits/extract_b111_solute_slices.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
@@ -74,3 +77,5 @@ jobs:
         run: python tools/audits/probe_b111_nut_sol_exact_source.py
       - name: NUT/SOL owner and reaction components
         run: bash tests/physics/run_swap431_nut_sol_owner_components.sh
+      - name: Soil-N transaction rollback and restart
+        run: bash tests/physics/run_fmr_b111_soil_n_transaction.sh
