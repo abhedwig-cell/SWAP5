@@ -62,7 +62,8 @@ module mod_fmr_serialized_reference_backend
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
   use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &
        b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
-       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG
+       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &
+       B111_HYD_BIMODAL_MVG_WCK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -2793,7 +2794,8 @@ contains
       if (allocated(parameters%hydraulic_model_kind)) then
         ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
              all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
-                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG) .and. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &
              self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
              .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
              .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
