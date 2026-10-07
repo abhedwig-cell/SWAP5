@@ -75,7 +75,8 @@ contains
   pure logical function valid_state(state) result(ok)
     type(fmr_irrigation_management_state_t), intent(in) :: state
     ok = .false.
-    if (state%policy%weekly_day_counter < 0 .or. state%policy%weekly_day_counter > 366) return
+    if (state%policy%weekly_day_counter < 0) return
+    if (state%policy%weekly_day_counter > 6 .and. state%policy%weekly_day_counter /= 366) return
     if (state%event%next_fixed_event_index < 1) return
     if (state%event%active_event) then
       if (.not. ieee_is_finite(state%event%active_event_start) .or. &
