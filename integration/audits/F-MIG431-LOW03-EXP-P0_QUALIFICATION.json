@@ -1,7 +1,7 @@
 {
   "work_unit": "F-MIG431-LOW03-EXP-P0",
   "capability": "ordinary explicit SWBOTB=3, SwBotb3Impl=0",
-  "disposition": "REPAIRED_QUALIFIED_PENDING_ADMISSION",
+  "disposition": "REPAIRED_QUALIFIED_ADMITTED",
   "baseline": "19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
   "qualified_code_head": "61a63bd4f5a00ca465dab0243e58b42e6d88d6d3",
   "qualification_run": 37612263087,
@@ -57,5 +57,14 @@
     ]
   },
   "supersedes": "draft PR #1088 implementation path; retains its source reconstruction intent but replaces stored-GWL trial semantics with source-faithful profile projection",
-  "canonical_admitted": false
+  "canonical_admitted": true,
+  "admission_pr": 1090,
+  "canonical_merge": "1e85f726bd5794110a60f1d2fbf22b12b72afbda",
+  "canonical_status_record": "integration/audits/SW431_LOW3_EXPLICIT_STATUS.md",
+  "additional_post_admission_qualification": {
+    "run": 37612263087,
+    "job": 112762086766,
+    "code_head": "61a63bd4f5a00ca465dab0243e58b42e6d88d6d3",
+    "note": "Stronger converged O0/O2 qualification executed on the exact PR #1090 code head before its merge commit; confirms component law, CALCGWL projection, production bootstrap, runtime mass, implicit preservation, retry/rollback/replay, missing-history rejection and fresh-backend restart identity."
+  }
 }
