@@ -99,6 +99,53 @@ program test_fapp07_tcs1_dcs2_sprinkling
   call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
   call require(d%status == TCS1_DCS2_INVALID_PARAMETERS .and. .not. y%applied,24)
 
+  ! MC-IRR01 shared policy: TCSFIX=0 does not suppress a valid trigger.
+  call setup_hupsel(p)
+  p%minimum_interval_enabled = .false.
+  p%source_rate_adaptation_enabled = .true.
+  p%rate_cm_per_day = 0.0_real64
+  s = tcs1_dcs2_sprinkling_state_t(); s%dayfix = 0
+  call setup_request(r,330.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 331.0_real64
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. d%interval_gate_passed .and. y%event_finished,25)
+  call require(d%zero_rate_daily_fallback .and. abs(y%gross_surface_rate_cm_per_day-2.0_real64) < tol,26)
+  call require(abs(y%event_duration_day-1.0_real64) < tol .and. abs(y%external_inflow_amount_cm-2.0_real64) < tol,27)
+  call require(c%dayfix == 0,28)
+
+  ! DCSLIM is post-selection, before the source zero-rate daily fallback.
+  call setup_hupsel(p)
+  p%source_rate_adaptation_enabled = .true.
+  p%rate_cm_per_day = 0.0_real64
+  p%depth_limits_enabled = .true.
+  p%minimum_depth_cm = 2.5_real64
+  p%maximum_depth_cm = 3.0_real64
+  s = tcs1_dcs2_sprinkling_state_t()
+  call setup_request(r,340.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 341.0_real64
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. d%minimum_depth_applied,29)
+  call require(abs(d%selected_depth_cm-2.5_real64) < tol .and. abs(y%event_depth_cm-2.5_real64) < tol,30)
+  call require(abs(y%gross_surface_rate_cm_per_day-2.5_real64) < tol .and. abs(y%external_inflow_amount_cm-2.5_real64) < tol,31)
+
+  ! A configured positive rate that would take more than one day is raised to depth/day.
+  call setup_hupsel(p)
+  p%source_rate_adaptation_enabled = .true.
+  p%rate_cm_per_day = 1.0_real64
+  s = tcs1_dcs2_sprinkling_state_t()
+  call setup_request(r,350.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 351.0_real64
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. d%long_duration_rate_cap,32)
+  call require(abs(y%gross_surface_rate_cm_per_day-2.0_real64) < tol .and. &
+               abs(y%event_duration_day-1.0_real64) < tol .and. &
+               abs(y%external_inflow_amount_cm-2.0_real64) < tol,33)
+
+  print '(A)','MC_IRR01_FREQUENCY_POLICY=PASS'
+  print '(A)','MC_IRR01_DEPTH_LIMIT_POLICY=PASS'
+  print '(A)','MC_IRR01_ZERO_RATE_DAILY_FALLBACK=PASS'
+  print '(A)','MC_IRR01_LONG_DURATION_RATE_CAP=PASS'
+
   print '(A)','F_APP07_TCS1_DCS2_HUPSEL_PROCESS=PASS'
   print '(A)','F_APP07_TCS1_DCS2_SPLIT_REPLAY=PASS'
   print '(A)','F_APP07_TCSFIX_DAYFIX=PASS'
