@@ -1,6 +1,8 @@
 name: SWAP431 crop rootgrow DVS qualification
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
   push:
     branches: [work/swap431-crop-root-cluster-20261007]
     paths:
