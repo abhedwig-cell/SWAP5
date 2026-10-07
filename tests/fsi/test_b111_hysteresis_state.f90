@@ -12,6 +12,8 @@ program test_b111_hysteresis_state
        [1.6_real64],[1.0_real64],status)
   if (status /= B111_HYST_OK) error stop 1
   h=-100.0_real64; theta=0.25_real64
+  call initialize_b111_hysteresis_state(p,1,h,theta,s,status)
+  if (status /= B111_HYST_OK .or. s%branch(1) /= B111_HYST_WETTING) error stop 2
   call initialize_b111_hysteresis_state(p,2,h,theta,s,status)
   if (status /= B111_HYST_OK .or. s%branch(1) /= B111_HYST_DRYING) error stop 2
   h=-50.0_real64; theta=0.30_real64
