@@ -243,7 +243,7 @@ contains
     real(real64), allocatable :: bottom_depth(:), bottom_thickness(:), helper_flow(:)
     integer, allocatable :: sequence(:), bottom_node(:)
     real(real64) :: wlev, dz_top_sat, kd_hor, kd_ver, saturated_depth
-    real(real64) :: khor_avg, kver_avg, fac_aniso, depth_accum, target_depth
+    real(real64) :: khor_avg, kver_avg, fac_aniso
     real(real64) :: raw_bottom, sum_previous, tmp_r
     integer :: n, levels, level, i, j, wt_node, active_count, idr, jdr, tmp_i
 
