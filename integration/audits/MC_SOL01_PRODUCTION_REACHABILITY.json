@@ -6,53 +6,58 @@
   "capabilities": [
     {
       "id": "SW431-SALT-SORPTION",
-      "state": "REACTIVE_SUBSTEP_CANDIDATE",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
       "evidence": [
         "explicit dissolved and sorbed persistent stores",
         "B1.11 Freundlich forward/inverse partition",
         "exact-order reactive matrix substep updates total storage then repartitions",
         "reactive restart layout 505005",
-        "two-node internal dispersive transfer preserves total reactive mass while re-establishing per-node Freundlich equilibrium"
+        "two-node internal dispersive transfer preserves total reactive mass while re-establishing per-node Freundlich equilibrium",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically"
       ],
       "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
         "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-DECAY",
-      "state": "REACTIVE_SUBSTEP_CANDIDATE",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
       "evidence": [
         "B1.11 temperature/moisture/depth decay factors",
         "decay acts on total dissolved+sorbed storage before repartition",
         "explicit external decay mass output",
         "exact-order reactive matrix substep",
-        "multi-node reactive transport oracle coexists with exact-order decay/repartition semantics"
+        "multi-node reactive transport oracle coexists with exact-order decay/repartition semantics",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically"
       ],
       "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
         "persisted O0/O2 integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-SALT-POND",
-      "state": "REACTIVE_SUBSTEP_CANDIDATE",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
       "evidence": [
         "persistent pond solute store",
         "rain and irrigation are explicit external inputs",
         "pond-to-matrix infiltration is internal transfer",
         "exact source qtop<0 pond mixing order",
-        "reactive matrix substep"
+        "reactive matrix substep",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically"
       ],
       "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
         "accepted hydraulic pond/water carrier binding",
-        "persisted integrated qualification",
         "canonical admission"
       ]
     },
     {
       "id": "SW431-AGE-TRACER",
-      "state": "AGE_SUBSTEP_CANDIDATE",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
       "evidence": [
         "persistent age amount store distinct from chemical mass",
         "persistent Agepondm1 continuation in reactive restart layout",
@@ -60,12 +65,13 @@
         "B1.11 pond age carry-over and infiltration transfer",
         "age advection/dispersion transport",
         "root, drainage and bottom age export/input bookkeeping",
-        "candidate-only update leaves chemical mass unchanged"
+        "candidate-only update leaves chemical mass unchanged",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically"
       ],
       "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
         "effluent-age cumulative diagnostics (icAgetop/icAgerot/icAgedra/icAgebot and Agegwl1m)",
         "accepted hydraulic carrier binding",
-        "persisted integrated qualification",
         "canonical admission"
       ]
     },
