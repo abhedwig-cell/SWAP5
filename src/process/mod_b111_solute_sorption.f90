@@ -37,8 +37,9 @@ contains
   subroutine b111_sorption_partition_total(theta,bdens,kf,cref,frexp,total_density,initial_c,result)
     real(real64),intent(in)::theta,bdens,kf,cref,frexp,total_density,initial_c
     type(b111_sorption_result_t),intent(out)::result
-    real(real64),parameter::rer=1d-3,vsmall=1d-15
-    real(real64)::c,old,dummy,bdenskf
+    real(real64),parameter::vsmall=1d-15
+    real(real64)::c,lo,hi,bdenskf,scale
+    type(b111_sorption_result_t)::probe
     integer::iter
     result=b111_sorption_result_t()
     if(.not.all(ieee_is_finite([theta,bdens,kf,cref,frexp,total_density,initial_c])))then
@@ -60,22 +61,43 @@ contains
       call b111_sorption_storage_from_concentration(theta,bdens,kf,cref,frexp,c,result)
       return
     end if
-    c=max(initial_c,vsmall)
-    do iter=1,100000
-      old=c
-      dummy=bdenskf*(c/cref)**(frexp-1d0)
-      if(theta+dummy<=0d0.or..not.ieee_is_finite(dummy))then
+    ! Legacy fixed-point stopping at rer=1e-3 is not a mass-closure
+    ! certificate. Solve the monotone Freundlich storage relation with a
+    ! bracket so that dissolved+sorbed equals total within roundoff.
+    lo=0d0
+    hi=max(initial_c,total_density/max(theta+bdenskf,vsmall),vsmall)
+    do iter=1,1024
+      call b111_sorption_storage_from_concentration(theta,bdens,kf,cref,frexp,hi,probe)
+      if(probe%status/=B111_SORP_OK)then
         result%status=B111_SORP_INVALID;return
       end if
-      c=total_density/(theta+dummy)
-      if(.not.ieee_is_finite(c).or.c<=0d0)then
+      if(probe%total_density>=total_density)exit
+      if(hi>=huge(hi)/2d0)then
+        result%status=B111_SORP_NOCONV;return
+      end if
+      hi=hi*2d0
+    end do
+    if(probe%total_density<total_density)then
+      result%status=B111_SORP_NOCONV;return
+    end if
+    scale=max(1d0,abs(total_density))
+    do iter=1,256
+      c=lo+0.5d0*(hi-lo)
+      call b111_sorption_storage_from_concentration(theta,bdens,kf,cref,frexp,c,probe)
+      if(probe%status/=B111_SORP_OK)then
         result%status=B111_SORP_INVALID;return
       end if
-      if(abs(c-old)<rer*c)then
-        call b111_sorption_storage_from_concentration(theta,bdens,kf,cref,frexp,c,result)
+      if(abs(probe%total_density-total_density)<=32d0*epsilon(1d0)*scale)then
+        result=probe
         result%iterations=iter
         return
       end if
+      if(probe%total_density>total_density)then
+        hi=c
+      else
+        lo=c
+      end if
+      if(hi<=lo.or.c==lo.or.c==hi)exit
     end do
     result%status=B111_SORP_NOCONV
   end subroutine
