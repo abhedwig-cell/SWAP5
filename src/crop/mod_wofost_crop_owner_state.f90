@@ -4,6 +4,7 @@ module mod_wofost_crop_owner_state
   use mod_transaction_reference, only: transaction_state_t
   use mod_wofost_actual_biomass_state, only: wofost_actual_biomass_state_t, WOFOST_BIOMASS_STATE_OK
   use mod_wofost_rate_table, only: wofost_rate_table_t
+  use mod_wofost_vernalisation_phenology, only: wofost_vernalisation_state_t, WOFOST_VERN_OK
   use mod_crop_root_depth_dvs, only: evaluate_crop_root_depth_dvs, CROP_ROOT_DEPTH_DVS_OK
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
@@ -22,6 +23,7 @@ module mod_wofost_crop_owner_state
   integer, parameter, public :: WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE = 8
   integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_ROOT_DEPTH = 9
   integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_ROOT_PROFILE = 10
+  integer, parameter, public :: WOFOST_CROP_OWNER_INVALID_VERNALISATION = 11
 
   type, public :: wofost_common_evolution_continuation_t
     real(real64) :: temperature_sum = 0.0_real64
@@ -43,6 +45,7 @@ module mod_wofost_crop_owner_state
     real(real64) :: development_stage = 0.0_real64
     type(wofost_actual_biomass_state_t), allocatable :: biomass
     type(wofost_common_evolution_continuation_t), allocatable :: evolution_continuation
+    type(wofost_vernalisation_state_t), allocatable :: vernalisation
     type(wofost_b110_reference_compatibility_t), allocatable :: b110_reference_compatibility
     type(wofost_vernalisation_state_t), allocatable :: vernalisation
   contains
@@ -51,6 +54,7 @@ module mod_wofost_crop_owner_state
     procedure, public :: crop_is_emerged => wofost_crop_is_emerged
     procedure, public :: current_development_stage => wofost_current_development_stage
     procedure, public :: evolution_continuation_available => wofost_evolution_continuation_available
+    procedure, public :: vernalisation_available => wofost_vernalisation_available
     procedure, public :: read_actual_root_biomass => wofost_read_actual_root_biomass
     procedure, public :: derive_dvs_root_depth => wofost_derive_dvs_root_depth
     procedure, public :: derive_dvs_root_uptake_input => wofost_derive_dvs_root_uptake_input
@@ -75,6 +79,10 @@ contains
       if (allocated(self%evolution_continuation)) then
         allocate(typed_copy%evolution_continuation)
         typed_copy%evolution_continuation = self%evolution_continuation
+      end if
+      if (allocated(self%vernalisation)) then
+        allocate(typed_copy%vernalisation)
+        typed_copy%vernalisation = self%vernalisation
       end if
       if (allocated(self%b110_reference_compatibility)) then
         allocate(typed_copy%b110_reference_compatibility)
@@ -124,6 +132,13 @@ contains
           return
         end if
       end if
+      if (allocated(self%vernalisation)) then
+        vernalisation_status = self%vernalisation%validate()
+        if (vernalisation_status /= WOFOST_VERN_OK) then
+          status = WOFOST_CROP_OWNER_INVALID_VERNALISATION
+          return
+        end if
+      end if
       if (allocated(self%b110_reference_compatibility)) then
         compatibility_status = self%b110_reference_compatibility%validate()
         if (compatibility_status /= WOFOST_CROP_OWNER_OK) then
@@ -141,6 +156,10 @@ contains
         return
       end if
       if (allocated(self%evolution_continuation)) then
+        status = WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE
+        return
+      end if
+      if (allocated(self%vernalisation)) then
         status = WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE
         return
       end if
@@ -205,6 +224,11 @@ contains
     class(wofost_crop_owner_state_t), intent(in) :: self
     value = allocated(self%evolution_continuation)
   end function wofost_evolution_continuation_available
+
+  logical function wofost_vernalisation_available(self) result(value)
+    class(wofost_crop_owner_state_t), intent(in) :: self
+    value = allocated(self%vernalisation)
+  end function wofost_vernalisation_available
 
   subroutine wofost_read_actual_root_biomass(self, value, available, status)
     class(wofost_crop_owner_state_t), intent(in) :: self
