@@ -2,9 +2,9 @@
   "work_unit": "PPA-WU05-MIGMAC11",
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
-  "checkpoint_commit": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "last_reconciled_head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "canonical_reconciled_against": "integration/f-ci-canonical@19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "checkpoint_commit": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+  "last_reconciled_head": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+  "canonical_reconciled_against": "integration/f-ci-canonical@d395ca3decf03e7149dbf8d65dc9ad8946826f3a",
   "canonical_reconciliation_pr": 1089,
   "implemented": true,
   "persisted": true,
@@ -73,6 +73,11 @@
       "run_id": 37612249809,
       "head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
       "conclusion": "success"
+    },
+    "latest_canonical_postimage": {
+      "run_id": 37613833352,
+      "head": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
+      "conclusion": "success"
     }
   },
   "qualified_cases": [
@@ -93,9 +98,9 @@
     "MIGMAC10 bounded Boesten/Rutter/macropore preservation",
     "O0/O2 identity"
   ],
-  "test_status": "PASS on current canonical merge postimage 609cd5ee8964f0619d94bd396f53ed9fe8d8495e. GitHub Actions run 37612249809 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
+  "test_status": "PASS on latest canonical merge postimage 5747aa6911095c3f0a6c917c40871be6aa9c9116. GitHub Actions run 37613833352 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
   "qualification_status": "CLOSED",
-  "next_action": "No MIGMAC11 implementation work remains. Treat the capability as closed unless later canonical changes intersect the recorded dependency surface or new regression evidence appears.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
+  "next_action": "No MIGMAC11 implementation work remains. Capability is CLOSED and qualified on the latest reconciled canonical postimage; reopen only for dependency-surface changes or concrete regression evidence.",
+  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@5747aa6911095c3f0a6c917c40871be6aa9c9116",
   "blockers": []
 }
