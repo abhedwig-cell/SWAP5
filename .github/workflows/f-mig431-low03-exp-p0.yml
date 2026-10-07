@@ -16,3 +16,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: O0/O2 source-bound provider qualification
         run: bash tests/fmig431/run_low03_explicit_provider.sh
+      - name: Serialized backend compile witness
+        run: |
+          bash tests/ross/run_ross12_serialized_production_wiring.sh
