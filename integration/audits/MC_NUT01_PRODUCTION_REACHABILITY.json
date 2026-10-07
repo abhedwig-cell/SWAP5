@@ -13,7 +13,10 @@
         "Cdissi/Bio_av/Hum_av source bookkeeping",
         "integrated one-day Soil-N transaction"
       ],
-      "remaining": ["persisted O0/O2 integrated qualification", "canonical admission"]
+      "remaining": [
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-MINERAL",
@@ -23,7 +26,10 @@
         "B1.11 mass-concentration storage conversion including NH4 sorption",
         "integrated one-day Soil-N transaction"
       ],
-      "remaining": ["persisted O0/O2 integrated qualification", "canonical admission"]
+      "remaining": [
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-NITRIF",
@@ -34,7 +40,10 @@
         "internal NH4 debit / equal NO3 credit",
         "integrated one-day Soil-N transaction"
       ],
-      "remaining": ["persisted integrated qualification", "canonical admission"]
+      "remaining": [
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-DENIT",
@@ -46,7 +55,10 @@
         "organic-to-denitrification chain",
         "integrated one-day Soil-N transaction"
       ],
-      "remaining": ["persisted integrated qualification", "canonical admission"]
+      "remaining": [
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-TRANSPORT",
@@ -71,7 +83,11 @@
         "candidate-only exactly-once management event",
         "restart-preserved event lineage"
       ],
-      "remaining": ["production calendar delivery binding", "persisted integrated qualification", "canonical admission"]
+      "remaining": [
+        "production calendar delivery binding",
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-RESIDUE",
@@ -83,35 +99,43 @@
         "candidate-only exactly-once management event",
         "restart-preserved event lineage"
       ],
-      "remaining": ["crop residue delivery binding", "persisted integrated qualification", "canonical admission"]
+      "remaining": [
+        "crop residue delivery binding",
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
     },
     {
       "id": "SW431-NUT-CROP",
-      "state": "OWNER_OUTPUT_AVAILABLE_NOT_BOUND",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
-        "daily owner produces bounded total soil N supply",
-        "WOFOST81 admitted route deliberately remains N-unlimited and unchanged"
+        "shared B1.11 vegetative demand request",
+        "Soil-N daily candidate consumes that soil demand",
+        "actual Soil-N supply is transferred internally to a separate B1.11 crop-N owner",
+        "soil uptake is removed from system external output in the coupled transaction",
+        "crop senescence remains an explicit external output for later residue delivery",
+        "duplicate accepted interval is rejected"
       ],
       "remaining": [
-        "separate B1.11 crop consumer transaction",
-        "accepted supply lineage",
-        "crop/soil atomic coupling or explicit two-owner receipt contract",
-        "persisted qualification"
+        "persisted O0/O2 coupled qualification",
+        "fresh-process restart qualification",
+        "canonical admission"
       ]
     },
     {
       "id": "SW431-NUT-NFIX",
-      "state": "SOURCE_POLICY_QUALIFICATION_CANDIDATE",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
-        "separate B1.11 vegetative fixation policy",
+        "separate exact-source B1.11 vegetative fixation policy",
         "strict DVSNLT and RELTR gate",
-        "exact wofofstnut authority oracle",
-        "WOFOST81 semantics unchanged"
+        "storage and new-growth demand excluded",
+        "fixation enters coupled Soil-Crop N transaction as external N input",
+        "WOFOST81 semantics remain unchanged"
       ],
       "remaining": [
-        "B1.11 crop owner application binding",
-        "fixation external-input receipt",
-        "restart/retry production qualification"
+        "persisted O0/O2 coupled qualification",
+        "fresh-process restart qualification",
+        "canonical admission"
       ]
     }
   ],
