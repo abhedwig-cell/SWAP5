@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail-closed exact B1.11 equation gate for MC-NUT01 / MC-SOL01."""
-import base64, hashlib, io, subprocess, tarfile
+import base64, hashlib, io, re, subprocess, tarfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -83,6 +83,9 @@ addition_needles=[
 for needle in addition_needles:
     if needle not in amend:
         raise SystemExit("missing exact amendment equation: "+needle)
+amend_raw=members["SWAP/wofost_soil_amendments.f90"].decode("latin1").lower()
+if not re.search(r"am_om\s*(?:>=|\.ge\.)\s*1(?:\.0+)?d-?6",amend_raw):
+    raise SystemExit("missing exact amendment 1e-6 OM threshold")
 residue_needles=[
  "am_nh4=xnh4nfrac*xamend",
  "am_no3=xno3nfrac*xamend",
@@ -91,6 +94,9 @@ residue_needles=[
 for needle in residue_needles:
     if needle not in residue:
         raise SystemExit("missing exact residue equation: "+needle)
+residue_raw=members["SWAP/wofost_soil_cropresidues.f90"].decode("latin1").lower()
+if not re.search(r"am_om\s*(?:>=|\.ge\.)\s*1(?:\.0+)?d-?12",residue_raw):
+    raise SystemExit("missing exact residue 1e-12 OM threshold")
 
 watern_needles=[
  "wfrac_av=half*(wfrac_t+wfrac_t0)",
@@ -118,4 +124,8 @@ for needle in orgmat_needles:
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_soil_n_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_n_transaction.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
