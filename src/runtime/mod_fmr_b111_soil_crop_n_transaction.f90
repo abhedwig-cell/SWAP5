@@ -389,8 +389,8 @@ contains
       if(external_out<0.0_real64)return
 
       outcome%solver_ok=.true.
-      outcome%mass_in=max(0.0_real64,self%last_receipt%soil_process%owner_receipt%external_n_input_kg_m2- &
-           pending_internal_n_m2)+self%last_receipt%external_fixation_input_kg_m2
+      outcome%mass_in=self%last_receipt%soil_process%owner_receipt%external_n_input_kg_m2+ &
+           self%last_receipt%external_fixation_input_kg_m2
       outcome%mass_out=external_out
       outcome%mass_accounting_complete=.true.
       outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE
