@@ -16,9 +16,13 @@ s=p.read_text(encoding='utf-8')
 
 # Add observation variables to the generated Fortran declaration payload.
 anchor="  integer(kind=8) :: crop_revision_before\n"
-insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot
-  type(fmr_wofost_root_growth_carrier_t) :: root_growth_snapshot
-  logical :: shadow_available, growth_available
+insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot, restored_shadow
+  type(fmr_wofost_root_growth_carrier_t) :: root_growth_snapshot, restored_growth
+  type(fmr_wofost_crop_transaction_persistence_t) :: potential_persistence
+  type(fmr_wofost_crop_transaction_state_t) :: restored_potential_state
+  type(wofost_crop_owner_state_t) :: restored_potential_owner
+  logical :: shadow_available, growth_available, persistence_ok, reconstructed_ok, restored_available
+  integer :: persistence_status
 """
 if s.count(anchor)!=1:
     raise SystemExit(f'decl anchor count={s.count(anchor)}')
@@ -93,6 +97,26 @@ insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 committe
     call require(shadow_available .and. shadow_snapshot%active, 'SW431 committed shadow available')
     call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
     call require(growth_available .and. root_growth_snapshot%ready(), 'SW431 committed GRRT/GRRTPOT carrier available')
+    call export_fmr_wofost_crop_transaction_persistence(tx,potential_persistence,persistence_ok,persistence_status)
+    call require(persistence_ok .and. persistence_status==FMR_WOFOST_CROP_PERSISTENCE_OK, &
+         'SW431 post-event potential persistence export')
+    call reconstruct_fmr_wofost_crop_transaction_from_persistence(potential_persistence,restored_potential_state, &
+         reconstructed_ok,persistence_status)
+    call require(reconstructed_ok .and. persistence_status==FMR_WOFOST_CROP_PERSISTENCE_OK, &
+         'SW431 post-event potential persistence reconstruct')
+    call restored_potential_state%snapshot_owner(restored_potential_owner,restored_available)
+    call require(restored_available .and. same_owner(restored_potential_owner,crop_snapshot_owner), &
+         'SW431 restored actual owner exact')
+    call restored_potential_state%snapshot_potential_shadow(restored_shadow,restored_available)
+    call require(restored_available .and. restored_shadow%active, 'SW431 restored potential shadow available')
+    call restored_potential_state%snapshot_root_growth(restored_growth,restored_available)
+    call require(restored_available .and. restored_growth%ready(), 'SW431 restored GRRT/GRRTPOT available')
+    call require(bitwise_equal(restored_growth%actual_gross_root_growth,root_growth_snapshot%actual_gross_root_growth), &
+         'SW431 restored GRRT exact')
+    call require(bitwise_equal(restored_growth%potential_gross_root_growth,root_growth_snapshot%potential_gross_root_growth), &
+         'SW431 restored GRRTPOT exact')
+    call require(restored_potential_state%receipt_ready() .and. restored_potential_state%consumed_event(event_identity), &
+         'SW431 restored receipt exact')
 """
 if s.count(anchor)!=1:
     raise SystemExit(f'commit anchor count={s.count(anchor)}')
@@ -114,7 +138,8 @@ s=s.replace(anchor,insert,1)
 # Add visible markers.
 anchor="""  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
 """
-insert="""  print '(a)', 'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS'
+insert="""  print '(a)', 'SW431_POTENTIAL_SHADOW_POST_EVENT_RESTART=PASS'
+  print '(a)', 'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS'
   print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
 """
 if s.count(anchor)!=1:
@@ -132,6 +157,7 @@ p.write_text(s,encoding='utf-8')
 PY
 
 bash "$TMP" | tee "$OUT"
+grep -Fq 'SW431_POTENTIAL_SHADOW_POST_EVENT_RESTART=PASS' "$OUT"
 grep -Fq 'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS' "$OUT"
 grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_O0=PASS' "$OUT"
 grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_O2=PASS' "$OUT"
