@@ -29,6 +29,23 @@ for opt in -O0 -O2; do
     "$root/tests/physics/test_b111_pond_age.f90" \
     -o b111_pond_age
   ./b111_pond_age
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_solute_mobile_salt_state.f90" \
+    "$root/src/process/mod_solute_compartment_state.f90" \
+    "$root/src/process/mod_b111_pond_solute_exchange.f90" \
+    "$root/src/process/mod_b111_pond_solute_transfer.f90" \
+    "$root/tests/physics/test_b111_pond_solute_transfer.f90" \
+    -o b111_pond_transfer
+  ./b111_pond_transfer
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_solute_compartment_state.f90" \
+    "$root/src/process/mod_b111_age_tracer_production.f90" \
+    "$root/src/process/mod_b111_age_tracer_transfer.f90" \
+    "$root/tests/physics/test_b111_age_tracer_transfer.f90" \
+    -o b111_age_transfer
+  ./b111_age_transfer
   gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
     "$root/src/process/mod_soil_n_pool_state.f90" \
     "$root/src/process/mod_b111_soil_n_addition.f90" \
