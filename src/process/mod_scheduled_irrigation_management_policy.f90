@@ -29,9 +29,6 @@ module mod_scheduled_irrigation_management_policy
     logical :: depth_limit_enabled = .false.
     real(real64) :: minimum_depth_cm = 0.0_real64
     real(real64) :: maximum_depth_cm = huge(0.0_real64)
-    logical :: salinity_excess_enabled = .false.
-    real(real64) :: salinity_threshold = 0.0_real64
-    real(real64) :: salinity_excess_percent = 0.0_real64
   end type irrigation_management_policy_parameters_t
 
   type, public :: irrigation_management_policy_state_t
@@ -45,8 +42,6 @@ module mod_scheduled_irrigation_management_policy
     real(real64) :: actual_available_water_cm = 0.0_real64
     real(real64) :: field_capacity_deficit_cm = 0.0_real64
     real(real64) :: rainfall_cm = 0.0_real64
-    logical :: solute_enabled = .false.
-    real(real64) :: sensor_concentration = 0.0_real64
   end type irrigation_management_policy_request_t
 
   type, public :: irrigation_management_policy_result_t
@@ -56,7 +51,6 @@ module mod_scheduled_irrigation_management_policy
     logical :: weekly_opportunity = .false.
     logical :: rainfall_deducted = .false.
     logical :: depth_limited = .false.
-    logical :: salinity_excess_applied = .false.
   end type irrigation_management_policy_result_t
 
   public :: evaluate_irrigation_management_policy
@@ -142,11 +136,6 @@ contains
       result%selected_depth_cm = min(result%selected_depth_cm, parameters%maximum_depth_cm)
     end if
 
-    if (parameters%salinity_excess_enabled .and. request%solute_enabled .and. &
-        request%sensor_concentration > parameters%salinity_threshold) then
-      result%selected_depth_cm = result%selected_depth_cm*(1.0_real64+0.01_real64*parameters%salinity_excess_percent)
-      result%salinity_excess_applied = .true.
-    end if
   end subroutine evaluate_irrigation_management_policy
 
   pure logical function valid_request(request)
@@ -154,7 +143,7 @@ contains
     valid_request = ieee_is_finite(request%dvs) .and. ieee_is_finite(request%total_available_water_cm) .and. &
       ieee_is_finite(request%stress_to_wilting_available_cm) .and. ieee_is_finite(request%actual_available_water_cm) .and. &
       ieee_is_finite(request%field_capacity_deficit_cm) .and. ieee_is_finite(request%rainfall_cm) .and. &
-      ieee_is_finite(request%sensor_concentration) .and. request%total_available_water_cm >= 0.0_real64 .and. &
+      request%total_available_water_cm >= 0.0_real64 .and. &
       request%stress_to_wilting_available_cm >= 0.0_real64 .and. request%rainfall_cm >= 0.0_real64
   end function valid_request
 
@@ -190,12 +179,6 @@ contains
       if (.not. ieee_is_finite(parameters%minimum_depth_cm) .or. .not. ieee_is_finite(parameters%maximum_depth_cm)) return
       if (parameters%minimum_depth_cm<0.0_real64 .or. parameters%minimum_depth_cm>10.0_real64 .or. &
           parameters%maximum_depth_cm<parameters%minimum_depth_cm .or. parameters%maximum_depth_cm>1.0e6_real64) return
-    end if
-    if (parameters%salinity_excess_enabled) then
-      if (.not. ieee_is_finite(parameters%salinity_threshold) .or. parameters%salinity_threshold<0.0_real64 .or. &
-          parameters%salinity_threshold>100.0_real64) return
-      if (.not. ieee_is_finite(parameters%salinity_excess_percent) .or. parameters%salinity_excess_percent<0.0_real64 .or. &
-          parameters%salinity_excess_percent>100.0_real64) return
     end if
     valid_parameters=.true.
   end function valid_parameters
