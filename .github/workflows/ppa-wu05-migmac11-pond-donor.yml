@@ -1,7 +1,7 @@
 name: MIGMAC11 pond donor qualification
 on:
   push:
-    branches: [work/ppa-wu05-migmac11-pond-donor]
+    branches: [work/ppa-wu05-migmac11-pond-donor, work/ppa-wu05-migmac11-qual]
   workflow_dispatch:
 permissions:
   contents: read
