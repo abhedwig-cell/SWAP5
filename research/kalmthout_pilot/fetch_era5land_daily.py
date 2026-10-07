@@ -13,7 +13,7 @@ params={
     "latitude":LAT,"longitude":LON,
     "start_date":START,"end_date":END,
     "hourly":"temperature_2m,dew_point_2m,precipitation,shortwave_radiation,wind_speed_10m",
-    "models":"era5_land","timezone":"UTC"
+    "models":"era5","timezone":"UTC","wind_speed_unit":"ms"
 }
 url="https://archive-api.open-meteo.com/v1/archive?"+urllib.parse.urlencode(params)
 print("KALMTHOUT_METEO_SOURCE_URL",url,file=sys.stderr)
