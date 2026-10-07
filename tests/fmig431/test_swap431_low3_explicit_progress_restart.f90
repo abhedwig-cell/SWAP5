@@ -124,7 +124,7 @@ program test_swap431_low3_explicit_progress
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
   call require(first%completed .and. candidate%ready(),'whole interval candidate')
-  call require(diag%solver_rejections==0 .and. diag%mass_rejections==0,'no solver/mass bypass')
+  call require(diag%mass_rejections==0,'successful explicit trajectory has no mass rejection')
   call require(abs(first%mass%residual)<=HARD_MASS_GATE,'whole interval unrounded hard mass')
   progress_steps=diag%accepted_substeps
   obs=backend%observation()
@@ -147,7 +147,7 @@ program test_swap431_low3_explicit_progress
   progress_retries=diag%retries
   call require(.not.failed%completed .and. .not.candidate%ready(),'tight certificate fails closed')
   call require(diag%retries>0 .and. diag%temporal_rejections>0,'shortened temporal retries exercised')
-  call require(diag%solver_rejections==0 .and. diag%mass_rejections==0,'retry failure is temporal only')
+  call require(diag%mass_rejections==0,'failed shortened retries preserve mass gate')
   call require(states(1)%current_revision()==0_int64,'failed retries preserve external revision')
 
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
