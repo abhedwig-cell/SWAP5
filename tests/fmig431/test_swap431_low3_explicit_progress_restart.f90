@@ -16,7 +16,7 @@ program test_swap431_low3_explicit_progress
   use mod_fixed_flux_top_boundary_provider
   use mod_fmr_runtime_core, only: fmr_logical_column_t
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
-       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state
+       fmr_serialized_physical_observation_t, fmr_new_b110_committed_state, prepare_fmr_b110_default_mvg
   use mod_fmr_groundwater_head_forcing_adapter
   use mod_canonical_contracts, only: canonical_forcing_t
   use mod_groundwater_topology_composition, only: groundwater_topology_t
@@ -54,6 +54,11 @@ program test_swap431_low3_explicit_progress
   cfg%tiles(1)%parameters%profile_groundwater_projection=.true.
   cfg%tiles(1)%parameters%swbotb3_explicit_hdrain_cm=-100.0_real64
   cfg%tiles(1)%parameters%swbotb3_explicit_shape_3=1.0_real64
+  block
+    logical :: prepared
+    call prepare_fmr_b110_default_mvg(cfg%tiles(1)%parameters,prepared)
+    call require(prepared,'explicit progress prepared MvG authority')
+  end block
   cfg%tiles(1)%ledger_id=0_int64
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   allocate(cfg%tiles(1)%initial_right_derivative(numnod))
@@ -64,7 +69,7 @@ program test_swap431_low3_explicit_progress
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%transaction%temporal_tolerance=1.0_real64
   cfg%numerical%model_temporal_indicator_budget_available=.true.
-  cfg%numerical%model_temporal_indicator_budget=0.002_real64
+  cfg%numerical%model_temporal_indicator_budget=0.01_real64
   cfg%numerical%transaction%max_retries=16
   cfg%numerical%max_committed_substeps=512
   allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
