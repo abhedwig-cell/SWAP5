@@ -966,9 +966,6 @@ subroutine boundtop_state_bridge(task)
               provider_dynamic_top_result%macropore_pond_requested_lateral_cm)
          call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
               provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
-         if (provider_dynamic_top_result%macropore_pond_requested_lateral_cm>0.0d0 .and. &
-             .not.provider_macropore_rate_active) &
-              error stop 'HeadCalc: pond-derived macropore request unavailable'
       end if
       if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
            error stop 'HeadCalc: dynamic top-boundary provider unavailable'
