@@ -29,6 +29,7 @@ module mod_fmr_runtime_core
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_MACROPORE = 505001_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER = 505003_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS = 431101_int64
 
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_NONE = 0_int64
   integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED = 505003_int64
