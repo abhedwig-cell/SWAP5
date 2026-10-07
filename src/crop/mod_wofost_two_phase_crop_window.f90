@@ -14,6 +14,7 @@ module mod_wofost_two_phase_crop_window
        WOFOST_PREPARE_ASSIMILATION_OK
   use mod_wofost_finalize_rates, only: wofost_finalize_rate_forcing_t, &
        finalize_wofost_one_day_rates, WOFOST_FINALIZE_RATES_OK
+  use mod_wofost_phenology_rate_contract, only: wofost_phenology_rate_t
   implicit none
   private
 
@@ -154,7 +155,7 @@ contains
   end subroutine begin_wofost_one_day_crop_window
 
   subroutine complete_wofost_one_day_crop_window(window, rate_parameters, &
-       update_parameters, accepted_aggregates, candidate, rates, diagnostics, status)
+       update_parameters, accepted_aggregates, candidate, rates, diagnostics, status, phenology_override)
     type(wofost_two_phase_crop_window_t), intent(in) :: window
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
@@ -163,6 +164,7 @@ contains
     type(wofost_one_day_rate_packet_t), intent(out) :: rates
     type(wofost_crop_window_complete_diagnostics_t), intent(out) :: diagnostics
     integer, intent(out) :: status
+    type(wofost_phenology_rate_t), intent(in), optional :: phenology_override
 
     integer :: component_status
 
@@ -177,9 +179,15 @@ contains
 
     if (window%crop_active()) then
       diagnostics%phase_b_evaluated = .true.
-      call finalize_wofost_one_day_rates(window%rate_state_view, rate_parameters, &
-           window%prepared_assimilation, accepted_aggregates, window%phase_b_forcing, &
-           rates, component_status)
+      if (present(phenology_override)) then
+        call finalize_wofost_one_day_rates(window%rate_state_view, rate_parameters, &
+             window%prepared_assimilation, accepted_aggregates, window%phase_b_forcing, &
+             rates, component_status, phenology_override)
+      else
+        call finalize_wofost_one_day_rates(window%rate_state_view, rate_parameters, &
+             window%prepared_assimilation, accepted_aggregates, window%phase_b_forcing, &
+             rates, component_status)
+      end if
       diagnostics%phase_b_status = component_status
       if (component_status /= WOFOST_FINALIZE_RATES_OK) then
         rates = wofost_one_day_rate_packet_t()
