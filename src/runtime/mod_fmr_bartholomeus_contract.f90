@@ -13,9 +13,61 @@ module mod_fmr_bartholomeus_contract
     real(real64) :: specific_root_length_m_kg = 0.0_real64
     type(root_oxygen_reproduction_parameters_t), allocatable :: reproduction
   end type
+  integer, parameter, public :: FMR_REPRO_BIND_OK=0
+  integer, parameter, public :: FMR_REPRO_BIND_INVALID_INPUT=1
+  integer, parameter, public :: FMR_REPRO_BIND_INVALID_RESULT=2
   public :: valid_fmr_bartholomeus_parameters, matches_bartholomeus_hydraulic_owner, &
-       matches_reproduction_hydraulic_owner
+       matches_reproduction_hydraulic_owner, construct_fmr_reproduction_oxygen_parameters
 contains
+  subroutine construct_fmr_reproduction_oxygen_parameters(slope,intercept,cofgen,z_cm,dz_cm,parameters,status)
+    real(real64),intent(in)::slope(6),intercept(6),cofgen(:,:),z_cm(:),dz_cm(:)
+    type(fmr_bartholomeus_parameters_t),intent(out)::parameters
+    integer,intent(out)::status
+    integer::i,n
+    real(real64)::bottom
+
+    parameters=fmr_bartholomeus_parameters_t()
+    status=FMR_REPRO_BIND_INVALID_INPUT
+    n=size(dz_cm)
+    if(n<=0.or.size(z_cm)/=n.or.size(cofgen,1)<2.or.size(cofgen,2)/=n)return
+    if(any(.not.ieee_is_finite(slope)).or.any(.not.ieee_is_finite(intercept)))return
+    if(any(.not.ieee_is_finite(z_cm)).or.any(.not.ieee_is_finite(dz_cm)).or.any(dz_cm<=0.0_real64))return
+    if(any(.not.ieee_is_finite(cofgen(2,:))).or.any(cofgen(2,:)<=0.0_real64).or.any(cofgen(2,:)>1.0_real64))return
+
+    parameters%selection%oxygen_mode=FMR_OXYGEN_BARTHOLOMEUS
+    parameters%selection%oxygen_type=FMR_OXYGEN_TYPE_REPRODUCTION
+    parameters%selection%hydraulic_waterfilm_mode=FMR_HYDRAULICS_ANALYTICAL_MVG
+    allocate(parameters%reproduction)
+    parameters%reproduction%slope=slope
+    parameters%reproduction%intercept=intercept
+    parameters%reproduction%saturated_water_content=cofgen(2,:)
+    parameters%reproduction%z_cm=z_cm
+    parameters%reproduction%dz_cm=dz_cm
+    allocate(parameters%reproduction%zbotcp_cm(n))
+    bottom=0.0_real64
+    do i=1,n
+      bottom=bottom-dz_cm(i)
+      parameters%reproduction%zbotcp_cm(i)=bottom
+    end do
+
+    if(.not.parameters%reproduction%ready())then
+      parameters=fmr_bartholomeus_parameters_t()
+      status=FMR_REPRO_BIND_INVALID_RESULT
+      return
+    end if
+    if(.not.valid_fmr_bartholomeus_parameters(parameters,n))then
+      parameters=fmr_bartholomeus_parameters_t()
+      status=FMR_REPRO_BIND_INVALID_RESULT
+      return
+    end if
+    if(.not.matches_reproduction_hydraulic_owner(parameters,cofgen,z_cm,dz_cm))then
+      parameters=fmr_bartholomeus_parameters_t()
+      status=FMR_REPRO_BIND_INVALID_RESULT
+      return
+    end if
+    status=FMR_REPRO_BIND_OK
+  end subroutine construct_fmr_reproduction_oxygen_parameters
+
   logical function matches_bartholomeus_hydraulic_owner(parameters,cofgen,dz_cm) result(ok)
     type(fmr_bartholomeus_parameters_t),intent(in)::parameters
     real(real64),intent(in)::cofgen(:,:),dz_cm(:)
