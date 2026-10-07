@@ -74,8 +74,8 @@ program test_fmr_b111_reactive_water_carrier
   policy%temporal_tolerance=1.0e-12_real64
   call execute_reference_interval(model,committed,trace%t0,trace%t1,policy,tx)
   call check(tx%status==TX_STATUS_ACCEPTED,'accepted-water reactive transaction')
-  call near(tx%accepted_total_in,0.1_real64,'bottom seepage chemical input')
-  call near(tx%accepted_total_out,0.0_real64,'no chemical output')
+  call near(tx%accepted_total_in,0.0_real64,'no chemical input')
+  call near(tx%accepted_total_out,0.1_real64,'accepted downward bottom chemical export')
 
   print '(A)','FMR_B111_REACTIVE_WATER_CARRIER_PASS'
 contains
