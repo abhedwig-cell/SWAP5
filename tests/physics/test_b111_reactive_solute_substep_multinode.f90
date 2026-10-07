@@ -63,6 +63,34 @@ program test_b111_reactive_solute_substep_multinode
   call near(cs%sorbed_matrix_mass(1),0.5_real64*cm%mass_mg_cm2(1),'node1 Freundlich equilibrium')
   call near(cs%sorbed_matrix_mass(2),0.5_real64*cm%mass_mg_cm2(2),'node2 Freundlich equilibrium')
 
+  ! Nonlinear Freundlich (frexp=2): diffusion remains internal, but the
+  ! sorbed:dissolved ratio now changes with the candidate concentration.
+  call initialize_solute_compartment_state([1.0_real64,4.0_real64],0.0_real64,0.0_real64, &
+       [0.0_real64,0.0_real64],s,status)
+  call check(status==SOLCOMP_OK,'nonlinear companion init')
+  f%frexp=2.0_real64
+  before=sum(m%mass_mg_cm2)+s%solute_total()
+  call advance_b111_reactive_solute_substep(m,s,f,cm,cs,r)
+  call check(r%status==B111_REACTIVE_OK,'nonlinear multinode reactive substep')
+  call near(sum(cm%mass_mg_cm2)+cs%solute_total(),before,'nonlinear conservation')
+  call near(cs%sorbed_matrix_mass(1),cm%concentration_mg_cm3(1)**2, &
+       'nonlinear node1 partition')
+  call near(cs%sorbed_matrix_mass(2),cm%concentration_mg_cm3(2)**2, &
+       'nonlinear node2 partition')
+  call check(abs(cm%concentration_mg_cm3(1)-1.0_real64)>1.0e-8_real64, &
+       'nonlinear concentration changes')
+
+  ! An overdraw must return the unchanged committed stores, including pond
+  ! and aquifer, instead of publishing any partial node advance.
+  f%root_sink_cm_day=[1000.0_real64,0.0_real64]
+  f%tscf=1.0_real64
+  call advance_b111_reactive_solute_substep(m,s,f,cm,cs,r)
+  call check(r%status==B111_REACTIVE_NEGATIVE,'nonlinear overdraw rejected')
+  call near(sum(cm%mass_mg_cm2),sum(m%mass_mg_cm2),'rejected dissolved rollback')
+  call near(sum(cs%sorbed_matrix_mass),sum(s%sorbed_matrix_mass),'rejected sorbed rollback')
+  call near(cs%pond_mass,s%pond_mass,'rejected pond rollback')
+  call near(cs%aquifer_mass,s%aquifer_mass,'rejected aquifer rollback')
+
   print '(A)','B111_REACTIVE_SOLUTE_SUBSTEP_MULTINODE_PASS'
 contains
   subroutine near(x,y,label)
