@@ -42,3 +42,34 @@ bound and reviewed.
   coefficient access; see `MC_SOL01_AQUIFER_SOURCE_DECISION.md`.
 
 An atomic B1.11 Soil-N/crop-N transaction candidate now prepares crop soil demand, runs the Soil-N day, feeds the accepted Soil-N supply into the separate B1.11 crop-N owner, books soil uptake once as an internal transfer, books biological fixation once as external N input, and persists accepted interval lineage. WOFOST81 remains unchanged and N-unlimited on its already admitted route.
+
+## 2026-10-07 nonlinear reactive SOL qualification recovery
+
+- Canonical CI fanout fix was merged independently via PR #1116, merge
+  `7e35749e8348f6d4ef0b35b96c8b06cb216ea036`. This does not qualify SOL.
+- The matrix reactive substep, the combined chemical/age transaction and
+  the accepted water-carrier adapter predate this update on the binding branch.
+- A previously uncovered nonlinear Freundlich conflict was found: the
+  inverse partition used a 1e-3 relative iterate stopping criterion while
+  whole-chemical mass closure requires roundoff-scale closure. This could
+  reject otherwise physically valid nonlinear substeps as unbalanced.
+- The nonlinear inversion now uses a monotone bracket/bisection, retains
+  the linear fast path, and returns NOCONV rather than silently admitting a
+  result outside the mass tolerance. Current code recovery commit:
+  `31db12cb1ebd5e2de89e6cd1b55e7ab400665834`.
+- The multi-node test now checks `frexp=2`, total chemical conservation,
+  concentration-dependent sorbed storage and rejected overdraw rollback.
+  Test recovery commit: `d9078c6ce88fbc36fd83d7f93b11b0934f124361`.
+- Locally exercised the **isolated mathematical bisection algorithm** on
+  10,000 nonlinear storage values, O0 and O2, with bounds/FPE checks. This
+  is **not** a compile/test of the committed Fortran module or integrated
+  transaction. The repository was accessed via the GitHub connector because
+  local GitHub DNS access was unavailable.
+- Existing qualification run `37644330458` remains queued and covers an
+  outdated pre-binding postimage; do not count it as qualification for these
+  commits. No new Actions run was started.
+- Required next gate: run `tests/physics/run_b111_reactive_solute_substep.sh`
+  and `tests/physics/run_fmr_b111_reactive_solute_transaction.sh` on the
+  exact binding HEAD at O0/O2; retain restart/layout and accepted-water-carrier
+  tests, then integrated qualification. Do not admit any SOL01 capability
+  before that evidence is persisted.
