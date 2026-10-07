@@ -18,13 +18,17 @@
       "disposition": "IMPLEMENTED_SOURCE_EQUIVALENT"
     },
     "potential": {
-      "implementation_authority": "work/swap431-crop-potential-shadow-20261007",
-      "semantics": "Optional classic potential crop shadow uses the existing assimilation physics with explicit potential multiplier policy. SWPOTRELMF=2 maps to RELMF; the uncorrected potential policy maps to 1.0. Shadow state commits atomically with actual crop and event receipt.",
-      "disposition": "IMPLEMENTED_UPSTREAM_NOT_YET_CANONICAL"
+      "implementation": [
+        "src/crop/mod_wofost_potential_shadow_state.f90",
+        "src/crop/mod_wofost_potential_shadow_daily.f90",
+        "src/crop/mod_wofost_prepare_assimilation.f90"
+      ],
+      "semantics": "Optional classic potential shadow uses the same assimilation physics with explicit potential attainable multiplier: pass 1.0 for SWPOTRELMF=1 and RELMF for SWPOTRELMF=2.",
+      "disposition": "IMPLEMENTED_ON_POTENTIAL_SHADOW_BRANCH_TRANSACTION_QUALIFICATION_OPEN"
     }
   },
   "owner_rule": "Do not emulate SWPOTRELMF=2 by reusing or overwriting the accepted actual crop trajectory.",
-  "disposition": "ACTUAL_AND_POTENTIAL_SEMANTICS_IMPLEMENTED_INTEGRATION_QUALIFICATION_OPEN",
+  "disposition": "ACTUAL_AND_POTENTIAL_POLICY_IMPLEMENTED_CROSS_BRANCH_QUALIFICATION_OPEN",
   "admission": false,
-  "remaining": "Qualify the potential-shadow atomic transaction/source gate, then record the selector mapping as controlling admission evidence."
+  "remaining": "Qualify the potential-shadow atomic transaction and source trajectories, then compose the selector policy into admitted runtime. Do not alias actual and potential biomass."
 }
