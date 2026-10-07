@@ -56,12 +56,16 @@ COMPOSITION_SRC=(
   src/solver/mod_process_hydraulic_view.f90
   src/process/mod_irrigation_availability_policy.f90
   src/process/mod_irrigation_process.f90
+  src/process/mod_irrigation_root_zone_summary.f90
+  src/process/mod_scheduled_irrigation_management_policy.f90
+  src/runtime/mod_fmr_scheduled_management_irrigation_application.f90
   src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90
   src/process/mod_rutter_interception_process.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90
+  src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90
   src/runtime/mod_fmr_scheduled_irrigation_application.f90
 )
 COMP=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -86,6 +90,14 @@ for opt in 0 2; do
   grep -Fq 'MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS' "$OUT/tcs7_binding_output.txt" || fail "SSDI binding O$opt"
   grep -Fq 'MC_IRR01_AVAIL_SENSOR_POLICY=PASS' "$OUT/tcs7_binding_output.txt" || fail "availability sensor policy O$opt"
 
+  gfortran "${COMP[@]}" -Werror -pedantic-errors -O"$opt" -J "$OUT" -I "$OUT" \
+    -c tests/f-app07/test_mc_irr01_management_routing.f90 -o "$OUT/test_management_routing.o" || fail "management routing oracle compile O$opt"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_management_routing.o" -o "$OUT/test_management_routing" || fail "management routing link O$opt"
+  "$OUT/test_management_routing" > "$OUT/management_routing_output.txt" 2>&1 || { cat "$OUT/management_routing_output.txt" >&2; fail "management routing runtime O$opt"; }
+  grep -Fq 'MC_IRR01_MANAGEMENT_SURFACE_ROUTE=PASS' "$OUT/management_routing_output.txt" || fail "management surface route O$opt"
+  grep -Fq 'MC_IRR01_MANAGEMENT_SPRINKLER_ROUTE=PASS' "$OUT/management_routing_output.txt" || fail "management sprinkler route O$opt"
+  grep -Fq 'MC_IRR01_MANAGEMENT_ROUTING_FAIL_CLOSED=PASS' "$OUT/management_routing_output.txt" || fail "management routing fail-closed O$opt"
+
   grep -Fq 'F_APP07_EXACT_ACTIVE_INTERVALS=110' "$OUT/output.txt" || fail "active interval count O$opt"
   grep -Fq 'F_APP07_SWINTER0_INTERVALS=18' "$OUT/output.txt" || fail "SWINTER0 count O$opt"
   grep -Fq 'F_APP07_SWINTER3_INTERVALS=92' "$OUT/output.txt" || fail "SWINTER3 count O$opt"
@@ -93,8 +105,10 @@ for opt in 0 2; do
 done
 cmp -s "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" || { diff -u "$BUILD/composition-o0/output.txt" "$BUILD/composition-o2/output.txt" >&2 || true; fail "composition O0/O2 drift"; }
 cmp -s "$BUILD/composition-o0/tcs7_binding_output.txt" "$BUILD/composition-o2/tcs7_binding_output.txt" || { diff -u "$BUILD/composition-o0/tcs7_binding_output.txt" "$BUILD/composition-o2/tcs7_binding_output.txt" >&2 || true; fail "TCS7 binding O0/O2 drift"; }
+cmp -s "$BUILD/composition-o0/management_routing_output.txt" "$BUILD/composition-o2/management_routing_output.txt" || { diff -u "$BUILD/composition-o0/management_routing_output.txt" "$BUILD/composition-o2/management_routing_output.txt" >&2 || true; fail "management routing O0/O2 drift"; }
 cat "$BUILD/composition-o0/output.txt"
 cat "$BUILD/composition-o0/tcs7_binding_output.txt"
+cat "$BUILD/composition-o0/management_routing_output.txt"
 echo "F_APP07_COMPOSITION_OUTPUT_SHA256=$(sha256sum "$BUILD/composition-o0/output.txt" | awk '{print $1}')"
 echo 'F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS'
 
