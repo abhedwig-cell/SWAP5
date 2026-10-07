@@ -3,7 +3,7 @@
   "work_unit": "MC-DRAIN01-SIGNED-MULTILEVEL",
   "repository": "abhedwig-cell/SWAP5",
   "canonical_branch": "integration/f-ci-canonical",
-  "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
   "implemented": true,
   "persisted": true,
@@ -11,7 +11,13 @@
   "qualified": false,
   "capabilities": [
     "SW431-DRAIN-DIV-SIGNED",
-    "SW431-DRAIN-DIV-MULTI"
+    "SW431-DRAIN-DIV-MULTI",
+    "SW431-DRAIN-DISLAYER",
+    "SW431-DRAIN-INF-SPLIT",
+    "SW431-DRAIN-ALLOCATION",
+    "SW431-DRAIN-INF-LIMIT",
+    "SW431-DRAIN-DRAMET3",
+    "SW431-DRAIN-DIV-TOPINTERFLOW"
   ],
   "source_authority": {
     "member": "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
@@ -38,11 +44,23 @@
     "src/process/mod_drainage_spatial_distribution.f90",
     "src/runtime/mod_fmr_divdra_runtime_binding.f90",
     "src/runtime/mod_fmr_divdra_serialized_composition.f90",
-    "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "src/process/mod_drainage_dramet3_response.f90",
+    "src/runtime/mod_fmr_drainage_response_binding.f90",
+    "src/process/mod_drainage_discharge_layer_top.f90",
+    "src/process/mod_drainage_top_interflow_distribution.f90",
+    "src/process/mod_drainage_b19_separate_infiltration_adapter.f90",
+    "src/process/mod_drainage_multilevel_separate_infiltration.f90",
+    "src/runtime/mod_fmr_divdra_multilevel_separate_infiltration_binding.f90"
   ],
   "test_paths": [
-    "tests/fmig431/test_swap431_drain_signed_divdra.f90",
-    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "tests/fmig431/run_swap431_drain_dramet3.sh",
+    "tests/fmig431/run_swap431_drain_dislayer.sh",
+    "tests/fmig431/run_swap431_drain_top_interflow.sh",
+    "tests/fmig431/run_swap431_drain_inf_split.sh",
+    "tests/fmig431/run_swap431_drain_inf_split_multi.sh",
+    "tests/fmig431/run_swap431_drain_serialized_compile.py"
   ],
   "local_test": {
     "compiler": "GNU Fortran 14.2.0",
@@ -61,7 +79,15 @@
     "scalar transfer remains authoritative mass object",
     "publication remains last and refuses an already allocated target"
   ],
-  "next_action": "Implement native DRAMET3 response/resolver with allocation and channel infiltration limit, then compose SWDIVDINF using the admitted B19 algebra without duplicating frost physics.",
-  "blockers": [],
-  "recovery_point": "f66c75caab4d94cd0d9b63517cd08a8fe86e338f"
+  "next_action": "Process focused qualification run 37638162602 when a runner becomes available. Success permits MC-DRAIN01 qualified-candidate reconciliation for all eight IDs; failure reopens only the failing focused dependency surface.",
+  "blockers": [
+    "Persisted integrated qualification is queued because GitHub Actions has no runner currently assigned."
+  ],
+  "recovery_point": "5a52aa18a9a5b873ed137858bbba4fe1b1c0d6e6",
+  "qualification": {
+    "status": "INFRASTRUCTURE_PENDING",
+    "workflow_run": 37638162602,
+    "tested_head": "f29007caa919b07968926a614c84285cb57cefe3",
+    "reason": "Repository-wide GitHub Actions queue; focused-drainage job exists but has no runner assignment."
+  }
 }
