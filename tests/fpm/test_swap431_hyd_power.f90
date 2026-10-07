@@ -34,8 +34,7 @@ program test_swap431_hyd_power
   if (abs(kbase-kpower)<=1.0e-14_real64) error stop 'power-disabled preservation not discriminated'
 
   ! The demand-specific provider path must carry the same power-tail option.
-  cofgen=c(1:24)
-  cofgen=reshape(cofgen,[24,1])
+  cofgen(:,1)=c(1:24)
   call initialize_b110_default_mvg_parameters(parameters,cofgen,enable_conductivity_power_tail=.true.)
   call bind_b110_default_mvg_provider(provider,parameters,1.0_real64)
   heads=[h]; water=0.0_real64; conductivity=0.0_real64; capacity=0.0_real64; dkdh=0.0_real64
