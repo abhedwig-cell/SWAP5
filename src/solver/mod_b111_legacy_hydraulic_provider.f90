@@ -148,7 +148,7 @@ contains
     real(real64), intent(in) :: pressure_head, water_content
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: available
-    real(real64) :: dummy_theta, dummy_capacity
+    real(real64) :: relsat
 
     conductivity = 0.0_real64
     available = .false.
@@ -159,12 +159,12 @@ contains
     case (1)
       call self%base%evaluate_point_conductivity(node_index, pressure_head, water_content, conductivity, available)
     case (2)
-      dummy_theta = water_content
-      call evaluate_model2(self%cofgen(:,node_index), pressure_head, dummy_theta, conductivity, dummy_capacity)
+      relsat = (water_content-self%cofgen(1,node_index)) / &
+           (self%cofgen(2,node_index)-self%cofgen(1,node_index))
+      conductivity = self%cofgen(3,node_index)*relsat
       available = ieee_is_finite(conductivity) .and. conductivity >= 0.0_real64
     case (3)
-      dummy_theta = water_content
-      call evaluate_model3(self%cofgen(:,node_index), pressure_head, dummy_theta, conductivity, dummy_capacity)
+      call model3_conductivity(self%cofgen(:,node_index), pressure_head, water_content, conductivity)
       available = ieee_is_finite(conductivity) .and. conductivity >= 0.0_real64
     end select
   end subroutine b111_legacy_hydraulic_point_conductivity
@@ -220,7 +220,19 @@ contains
       s2 = 1.0_real64
     end if
 
+    call model3_conductivity(c, h, theta, conductivity)
+  end subroutine evaluate_model3
+
+  pure subroutine model3_conductivity(c, h, theta, conductivity)
+    real(real64), intent(in) :: c(:), h, theta
+    real(real64), intent(out) :: conductivity
+    real(real64) :: s1, s2, term1, term2, relsat, omega2
+
+    omega2 = 1.0_real64-c(16)
+    relsat = (theta-c(1))/(c(2)-c(1))
     if (relsat < 1.0_real64) then
+      s1 = (1.0_real64+abs(c(4)*h)**c(6))**(-c(7))
+      s2 = (1.0_real64+abs(c(13)*h)**c(14))**(-c(15))
       term1 = c(16)*c(4)*(1.0_real64-s1**(1.0_real64/c(7)))**c(7)
       term2 = omega2*c(13)*(1.0_real64-s2**(1.0_real64/c(15)))**c(15)
       conductivity = c(3)*(c(16)*s1+omega2*s2)**c(5) * &
@@ -228,6 +240,6 @@ contains
     else
       conductivity = c(3)
     end if
-  end subroutine evaluate_model3
+  end subroutine model3_conductivity
 
 end module mod_b111_legacy_hydraulic_provider
