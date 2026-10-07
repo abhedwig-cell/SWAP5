@@ -30,13 +30,13 @@ The ordered B1.11 corrections include SWAP-009, SWAP-010 and SWAP-011. In partic
 | MODEL5 | Truncated/scaled unimodal MvG. Implemented in the extended K0 family. |
 | MODEL6 | Basic bimodal MvG. Implemented in the extended K0 family. |
 | MODEL7 | Truncated/scaled bimodal MvG. Implemented with the corrected B1.11/SWAP-010 capacity expression. |
-| MODEL8 | PDI unimodal. No-vapor value path implemented; vapor remains a separate capability. |
-| MODEL9 | Truncated PDI unimodal. No-vapor value path implemented; vapor remains separate. |
-| MODEL10 | PDI bimodal. No-vapor value path implemented; vapor remains separate. |
-| MODEL11 | Truncated PDI bimodal. No-vapor value path implemented; vapor remains separate. |
+| MODEL8 | PDI unimodal. Value path plus the shared SWAP-009-corrected vapor owner implemented. |
+| MODEL9 | Truncated PDI unimodal. Value path plus the same shared vapor owner implemented. |
+| MODEL10 | PDI bimodal. Value path plus the same shared vapor owner implemented. |
+| MODEL11 | Truncated PDI bimodal. Value path plus the same shared vapor owner implemented. |
 | MODEL12 | RIA/de Rooij constitutive family. Still open. This is a genuinely different relation, not a parameterization of MvG/PDI. |
 | POWER | Orthogonal dry-end conductivity power tail in the default-MvG branch. Implemented as a conductivity-only wrapper. |
-| VAPOR | Orthogonal PDI vapor-conductivity contribution for MODEL8-11. Still open and deliberately excluded from the implemented K0 family. |
+| VAPOR | Orthogonal PDI vapor-conductivity contribution for MODEL8-11. Implemented once as a shared SWAP-009-corrected K0 owner, with trial-start soil temperature supplied by the existing thermal-state owner. |
 | RIA-VAPOR | Vapor contribution inside MODEL12/RIA. Still open with MODEL12. |
 | TABLE | Historical `SWSOPHY=1` TSPACK value/derivative representation. Still open as generic external-table compatibility. |
 | LINEAR-TABLE | Historical `SWSOPHY=-1` precomputed intercept/slope representation (`fl_use_tables`). Implemented as its own immutable typed owner and kept distinct from TSPACK. |
@@ -53,7 +53,7 @@ The underlying immutable `cofgen` authority remains parameter-owned. The new wra
 
 POWER applies only to default-MvG nodes, matching the B1.11 dispatch order. It is not silently applied to MODEL2/3 or MODEL5-12. The first admission is K0/`SWKIMPL=0`; derivative/`SWKIMPL=1` remains separate.
 
-The MODEL8-11 implementation is explicitly no-vapor. This avoids silently swallowing the separate temperature-dependent vapor contract and the known PDI vapor-temperature defect investigated by F-PDI-VT.
+The MODEL8-11 family now has a single optional PDI-vapor layer. Its formula is source-bound to admitted SWAP-009, including the corrected signed pressure head in the Kelvin relative-humidity term. The provider receives an immutable temperature frame copied from the current trial-start soil-temperature state. It does not own or advance temperature. The first production scope remains K0/`SWKIMPL=0` and excludes frost, macropore, snow and drainage-response composition.
 
 ## TABLE is not F-TAB02
 
@@ -97,10 +97,10 @@ Implemented on this work branch, pending persisted integrated qualification of t
 - MODEL5;
 - MODEL6;
 - MODEL7;
-- MODEL8 no-vapor;
-- MODEL9 no-vapor;
-- MODEL10 no-vapor;
-- MODEL11 no-vapor;
+- MODEL8, including the shared PDI-vapor option;
+- MODEL9, including the shared PDI-vapor option;
+- MODEL10, including the shared PDI-vapor option;
+- MODEL11, including the shared PDI-vapor option;
 - POWER on default-MvG K0;
 - LINEAR-TABLE (`SWSOPHY=-1`);
 - HYST1 and HYST2 through one stateful accepted-step owner, explicit optional-state layout and restart roundtrip.
@@ -110,11 +110,10 @@ The HYST production gate additionally contains a post-solver rejection/rollback 
 Still open as distinct capability families:
 
 - MODEL12/RIA;
-- PDI VAPOR;
 - RIA VAPOR;
 - generic TSPACK TABLE (`SWSOPHY=1`).
 
-No claim is made for `SWKIMPL=1`, generic external tables, vapor-temperature semantics, RIA, or hysteretic restart until their own evidence exists.
+No claim is made for `SWKIMPL=1`, generic external tables or RIA. PDI vapor is bounded to the SWAP-009-corrected models 8-11 K0 route with the existing soil-temperature state as temperature authority.
 
 ## Source-recovery boundary for remaining families
 
@@ -122,4 +121,4 @@ The public historical `sptabulated.f90` lineage is not byte-identical to the B0 
 
 MODEL12 remains similarly fail-closed until the exact corrected `MOD_RIA.f90` body associated with B1.11 target SHA-256 `673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a` is materialized. The RIA literature or a separately maintained fitter is scientific background, not a substitute source oracle.
 
-PDI vapor remains downstream of the separately confirmed Celsius/Kelvin defect. The no-vapor MODEL8-11 admission ceiling must not be widened to vapor until a corrected-reference production contract is admitted.
+SWAP-009 is admitted reference authority and is included in B1.11. It corrects the PDI vapor call from `Kvap_func(WC,abs(h),Temp)` to `Kvap_func(WC,h,Temp)`. The branch implementation uses that corrected signed-head Kelvin term through one shared models 8-11 owner. Local GNU Fortran 14.2 execution is O0/O2 byte-identical; persisted integrated production qualification remains pending.

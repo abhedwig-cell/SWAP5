@@ -3,10 +3,10 @@
   "workstream": "SW431-HYD-HYST",
   "branch": "work/swap431-hyd-hyst-closeout",
   "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "code_postimage": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a",
+  "code_postimage": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
   "implemented": true,
   "persisted": true,
-  "tested": "LOCAL_COMPONENT_O0_O2_PASS__INTEGRATED_CURRENT_CODE_RUN_QUEUED",
+  "tested": "LOCAL_COMPONENT_O0_O2_PASS_INCLUDING_SW009_PDI_VAPOR__INTEGRATED_CURRENT_CODE_RUN_QUEUED",
   "qualified": false,
   "scope": {
     "implemented": [
@@ -22,13 +22,13 @@
       "SW431-HYD-POWER",
       "SW431-HYD-LINEAR-TABLE",
       "SW431-HYST1",
-      "SW431-HYST2"
-    ],
-    "open": [
+      "SW431-HYST2",
       "SW431-HYD-MODEL8_VAPOR",
       "SW431-HYD-MODEL9_VAPOR",
       "SW431-HYD-MODEL10_VAPOR",
-      "SW431-HYD-MODEL11_VAPOR",
+      "SW431-HYD-MODEL11_VAPOR"
+    ],
+    "open": [
       "SW431-HYD-MODEL12_RIA",
       "SW431-HYD-TABLE",
       "SW431-HYD-RIA-VAPOR"
@@ -38,7 +38,7 @@
     "model2": "exponential test relation owner",
     "model3": "bimodal MvG owner",
     "model5_7": "extended MvG truncation/bimodality family",
-    "model8_11": "PDI value family; no-vapor slice implemented; vapor is a separate corrected-reference dependency",
+    "model8_11": "PDI value family with one shared SWAP-009-corrected vapor owner; vapor temperature is read from the immutable trial-start soil-temperature state",
     "power": "orthogonal default-MvG dry conductivity tail",
     "linear_table": "SWSOPHY=-1 immutable intercept/slope owner, distinct from generic TSPACK TABLE",
     "hysteresis": "one stateful reversal/scanning-curve owner; HYST1/HYST2 differ only by initial branch identity"
@@ -54,7 +54,8 @@
     "power_tail_o0_o2": "PASS",
     "hysteresis_transaction_design": "continuation state is cloned with trial state; mutation occurs only after SW_SOLVE_CONVERGED, never inside Newton evaluation",
     "hysteresis_restart": "production restart layout and HYST1/HYST2 runtime/restart markers implemented",
-    "hysteresis_rejection": "production post-solver rollback test added for both initial modes; integrated execution pending queued run"
+    "hysteresis_rejection": "production post-solver rollback test added for both initial modes; integrated execution pending queued run",
+    "pdi_vapor_local": "shared models 8-11 provider compiled and executed with GNU Fortran 14.2; O0/O2 byte-identical; K(vapor)-K(no-vapor) matches the SWAP-009 Kelvin formulation"
   },
   "source_reconciliation": {
     "b111_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
@@ -71,7 +72,11 @@
       "disposition": "EXACT_CORRECTED_SOURCE_BODY_NOT_MATERIALIZED__FAIL_CLOSED"
     },
     "pdi_vapor": {
-      "disposition": "SEPARATE_CONFIRMED_CELSIUS_KELVIN_DEFECT__REQUIRES_CORRECTED_REFERENCE_ADMISSION_BEFORE_PRODUCTION_MIGRATION"
+      "swap009_status": "ADMITTED_IN_B1.6_AND_INCLUDED_IN_B1.11",
+      "patch_sha256": "43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66",
+      "corrected_wc_k_target_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+      "semantic_fix": "Kvap_func(WC,h,Temp), preserving signed negative pressure head in Kelvin relative humidity",
+      "disposition": "SOURCE_BOUND_SHARED_PDI_VAPOR_OWNER_IMPLEMENTED_PENDING_INTEGRATED_QUALIFICATION"
     }
   },
   "authority_paths": [
@@ -120,8 +125,8 @@
   ],
   "integrated_qualification": {
     "workflow": "SW431 HYD constitutive families",
-    "run_id": 37638247514,
-    "code_head": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a",
+    "run_id": 37646065725,
+    "code_head": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
     "state": "QUEUED",
     "includes": [
       "model2/3 source-oracle O0/O2",
@@ -133,17 +138,17 @@
       "HYST1/HYST2 restart roundtrip",
       "HYST1/HYST2 rejected-trial rollback",
       "F-SI39 KSATEXM preservation",
-      "ROSS12 reference solver adapter preservation"
+      "ROSS12 reference solver adapter preservation",
+      "SWAP-009 PDI vapor source oracle O0/O2 and models 8-11 serialized thermal-state reachability"
     ],
     "queue_observation": "Repository-wide Actions backlog observed; code-postimage focused run remains queued without runner assignment after active polling."
   },
   "blockers": [
     "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not materialized in repository authority.",
-    "PDI VAPOR has a separately confirmed Celsius/Kelvin defect and cannot be copied from legacy without corrected-reference admission.",
     "Generic SWSOPHY=1 TSPACK TABLE exact B0 source bytes are not present; the public historical file is not byte-identical to the B0 member and cannot serve as exact admission authority."
   ],
-  "next_action": "Wait for focused run 37638247514 on code postimage 68ab625d. If green, persist bounded qualification/closeout and open canonical admission PR. If red, inspect the focused job logs and repair before admission.",
-  "recovery_point": "2d9db1ee9dd6187a2903fca40d0c92b289d77d42",
+  "next_action": "Wait actively for focused run 37646065725 on code postimage 851c6ad3. If green, persist bounded qualification/closeout and open canonical admission PR. If red, inspect the focused job logs and repair before admission.",
+  "recovery_point": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
   "last_reconciled_upstream": "integration/f-ci-canonical@4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "upstream_reconciliation": {
     "from": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
