@@ -22,7 +22,7 @@ for name,raw in members.items():
         raise SystemExit(f"{name} sha mismatch: {got}")
 
 def packed(name):
-    return "".join(members[name].decode("latin1").lower().split())
+    return "".join(members[name].decode("latin1").lower().split()).replace(chr(38),"")
 
 sol=packed("SWAP/solute.f90")
 rate=packed("SWAP/wofost_soil_rateconstants.f90")
