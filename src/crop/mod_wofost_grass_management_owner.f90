@@ -218,6 +218,15 @@ contains
     living_leaf=committed_crop%biomass%living_leaf_biomass()
     living_stem=committed_crop%biomass%stem_biomass
     living_storage=committed_crop%biomass%storage_biomass
+    ! Pinned B1.11 management_event includes WSO in TWDM, but mowing_event
+    ! and grazing removal do not reduce WSO. That branch is not mass-defined
+    ! for nonzero storage biomass. Grass management therefore fails closed
+    ! outside the source-consistent WSO=0 envelope rather than inventing a
+    ! storage-removal repair.
+    if(abs(living_storage)>256.0_real64*epsilon(1.0_real64))then
+      status=GRASS_MGMT_INVALID_CROP
+      return
+    end if
     living_above=living_stem+living_leaf+living_storage
     total_above=living_above+committed_management%dead_stem_biomass+committed_management%dead_leaf_biomass
     if(total_above<=0.0_real64)then;status=GRASS_MGMT_OK;return;end if
