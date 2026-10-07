@@ -209,10 +209,15 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_mobile_salt_component_t
     real(real64), allocatable :: mass_mg_cm2(:)
     real(real64), allocatable :: macro_mass_mg_cm2(:,:)
+    real(real64), allocatable :: sorbed_mass_mg_cm2(:)
+    real(real64) :: pond_mass_mg_cm2 = 0.0_real64
+    real(real64) :: aquifer_mass_mg_cm2 = 0.0_real64
+    real(real64), allocatable :: age_amount_cm_day(:)
     integer(int64) :: cdrain_source_id = 0_int64
     integer(int64) :: cdrain_revision = -1_int64
   contains
     procedure, public :: ready => fmr_mobile_salt_ready
+    procedure, public :: reactive_ready => fmr_reactive_salt_ready
   end type fmr_mobile_salt_component_t
 
   type, extends(canonical_state_t), public :: fmr_b110_physical_state_t
@@ -1283,6 +1288,8 @@ contains
     if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
         (self%cdrain_source_id /= 0_int64 .and. &
         (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
+    if (allocated(self%sorbed_mass_mg_cm2) .or. allocated(self%age_amount_cm_day)) return
+    if (self%pond_mass_mg_cm2 /= 0.0_real64 .or. self%aquifer_mass_mg_cm2 /= 0.0_real64) return
     if (active_nodes <= 0) return
     if (.not. allocated(self%mass_mg_cm2)) return
     if (size(self%mass_mg_cm2) /= active_nodes) return
@@ -1298,6 +1305,28 @@ contains
     end if
     ready = .true.
   end function fmr_mobile_salt_ready
+
+  logical function fmr_reactive_salt_ready(self,active_nodes) result(ready)
+    class(fmr_mobile_salt_component_t), intent(in) :: self
+    integer, intent(in) :: active_nodes
+    ready = .false.
+    if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
+        (self%cdrain_source_id /= 0_int64 .and. &
+        (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
+    if (active_nodes <= 0 .or. allocated(self%macro_mass_mg_cm2)) return
+    if (.not. allocated(self%mass_mg_cm2) .or. .not. allocated(self%sorbed_mass_mg_cm2) .or. &
+        .not. allocated(self%age_amount_cm_day)) return
+    if (size(self%mass_mg_cm2) /= active_nodes .or. size(self%sorbed_mass_mg_cm2) /= active_nodes .or. &
+        size(self%age_amount_cm_day) /= active_nodes) return
+    if (.not. all(ieee_is_finite(self%mass_mg_cm2)) .or. &
+        .not. all(ieee_is_finite(self%sorbed_mass_mg_cm2)) .or. &
+        .not. all(ieee_is_finite(self%age_amount_cm_day))) return
+    if (any(self%mass_mg_cm2 < 0.0_real64) .or. any(self%sorbed_mass_mg_cm2 < 0.0_real64) .or. &
+        any(self%age_amount_cm_day < 0.0_real64)) return
+    if (.not. ieee_is_finite(self%pond_mass_mg_cm2) .or. self%pond_mass_mg_cm2 < 0.0_real64) return
+    if (.not. ieee_is_finite(self%aquifer_mass_mg_cm2) .or. self%aquifer_mass_mg_cm2 < 0.0_real64) return
+    ready = .true.
+  end function fmr_reactive_salt_ready
 
   subroutine fmr_b110_state_clone(self, copy)
     class(fmr_b110_physical_state_t), intent(in) :: self
