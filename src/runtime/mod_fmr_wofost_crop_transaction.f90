@@ -482,10 +482,12 @@ contains
 
   logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
+    type(wofost_rate_scalar_parameters_t) :: rate_scalars
 
     ready = .false.
     if (.not. self%initialized) return
     if (.not. self%rate_parameters%ready()) return
+    rate_scalars = self%rate_parameters%scalar_view()
     if (.not. ieee_is_finite(self%stem_area_coefficient)) return
     if (self%stem_area_coefficient < 0.0_real64) return
     if (.not. ieee_is_finite(self%storage_area_coefficient)) return
@@ -502,7 +504,7 @@ contains
     case(WOFOST_PHENOLOGY_SOYBEAN)
       if (.not. allocated(self%soybean_phenology) .or. allocated(self%vernalisation_phenology)) return
       if (.not. self%soybean_phenology%ready()) return
-      if (self%rate_parameters%scalar_view()%development_daylength_mode /= 0) return
+      if (rate_scalars%development_daylength_mode /= 0) return
     case(WOFOST_PHENOLOGY_VERNALISATION)
       if (.not. allocated(self%vernalisation_phenology) .or. allocated(self%soybean_phenology)) return
       if (.not. self%vernalisation_phenology%ready()) return
