@@ -139,7 +139,7 @@ program test_swap431_low3_explicit_progress
   call require(obs%cauchy3_proposed_t0>=T0 .and. obs%cauchy3_proposed_t0<T1 .and. &
        same_bits(obs%cauchy3_proposed_t1,T1),'proposal remains within requested interval')
   call require(same_bits(obs%cauchy3_head_sample_t1900,1000.5_real64),'proposal samples original endpoint')
-  call require(same_bits(obs%cauchy3_aquifer_head_cm,-1.0_real64),'proposal aquifer head')
+  call require(same_bits(obs%cauchy3_aquifer_head_cm,-1.5_real64),'equilibrium proposal aquifer head')
   call require(same_bits(first%mass%storage_end,application(1)%mass%storage_end) .and. &
        same_bits(first%mass%total_out,application(1)%mass%total_out), 'public bootstrap and observed backend identity')
   ! Commit the exact-equilibrium explicit trajectory and prove that a fresh
