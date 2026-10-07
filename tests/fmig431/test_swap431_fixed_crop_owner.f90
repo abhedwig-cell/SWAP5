@@ -33,6 +33,7 @@ program test_swap431_fixed_crop_owner
   if(abs(d%development_increment-0.2_real64)>tol.or.abs(d%temperature_sum_increment)>tol) error stop 7
   if(abs(c%leaf_area_index-1.0_real64)>tol) error stop 8
   if(abs(c%root_biomass-14.0_real64)>tol.or.abs(d%root_growth-4.0_real64)>tol) error stop 9
+  if(abs(d%potential_root_growth-d%root_growth)>tol) error stop 91
 
   ! IDEV=2 pre-anthesis.
   p%development_mode=FIXED_CROP_IDEV_THERMAL
