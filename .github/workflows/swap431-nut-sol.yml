@@ -107,6 +107,9 @@ on:
       - 'src/runtime/mod_fmr_b111_reactive_solute_transaction.f90'
       - 'tests/physics/test_fmr_b111_reactive_solute_transaction.f90'
       - 'tests/physics/run_fmr_b111_reactive_solute_transaction.sh'
+      - 'src/runtime/mod_fmr_b111_reactive_water_carrier.f90'
+      - 'tests/physics/test_fmr_b111_reactive_water_carrier.f90'
+      - 'tests/physics/run_fmr_b111_reactive_water_carrier.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
@@ -153,3 +156,5 @@ jobs:
         run: bash tests/physics/run_fmr_b111_reactive_solute_transaction.sh
       - name: Reactive solute layout restart
         run: python tests/physics/run_b111_reactive_solute_restart_layout.py
+      - name: Accepted water carrier to reactive transaction
+        run: python tests/physics/run_fmr_b111_reactive_water_carrier.py
