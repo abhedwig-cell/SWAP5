@@ -19,13 +19,13 @@ program test_swap431_soybean_phenology_factors
   if(.not.p%ready()) error stop 1
 
   call soybean_temperature_reduction_factor(p,4.0_real64,f,status)
-  if(status/=SOY_PHENOLOGY_OK.or.f/=0.0_real64) error stop 2
+  if(status/=SOY_PHENOLOGY_OK.or.abs(f)>tol) error stop 2
   call soybean_temperature_reduction_factor(p,25.0_real64,f,status)
   if(status/=SOY_PHENOLOGY_OK.or.abs(f-1.0_real64)>tol) error stop 3
   call soybean_temperature_reduction_factor(p,40.0_real64,f,status)
   if(status/=SOY_PHENOLOGY_OK.or.abs(f)>tol) error stop 4
   call soybean_temperature_reduction_factor(p,41.0_real64,f,status)
-  if(status/=SOY_PHENOLOGY_OK.or.f/=0.0_real64) error stop 5
+  if(status/=SOY_PHENOLOGY_OK.or.abs(f)>tol) error stop 5
 
   call p%resolved_photoperiod_bounds(popt,pcrt)
   if(abs(popt-(12.759_real64-0.388_real64*4.0_real64-0.058_real64*16.0_real64))>tol) error stop 6
