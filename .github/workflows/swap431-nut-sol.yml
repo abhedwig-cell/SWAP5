@@ -99,6 +99,9 @@ on:
       - 'src/process/mod_b111_crop_residue_return.f90'
       - 'tests/physics/test_b111_crop_residue_return.f90'
       - 'tests/fwof/pp02/test_fmr_b111_soil_crop_n_residue_transaction.f90'
+      - 'src/process/mod_b111_soil_n_amendment_group.f90'
+      - 'src/runtime/mod_fmr_b111_soil_n_amendment_group.f90'
+      - 'tests/physics/test_fmr_b111_soil_n_amendment_group.f90'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
 
