@@ -1,0 +1,23 @@
+name: SW431 Drain Multilevel Qualification
+on:
+  push:
+    branches:
+      - work/swap431-drain-multilevel-20261007
+    paths:
+      - 'src/process/mod_drainage_multilevel_distribution.f90'
+      - 'tests/fmig431/swap431_multilevel_legacy_globals.f90'
+      - 'tests/fmig431/test_swap431_drain_multilevel.f90'
+      - 'tests/fmig431/run_swap431_drain_multilevel.sh'
+      - '.github/workflows/swap431-drain-multilevel.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler
+        run: gfortran --version
+      - name: O0 O2 source parity
+        run: bash tests/fmig431/run_swap431_drain_multilevel.sh
+      - name: Whitespace
+        run: git diff --check integration/f-ci-canonical...HEAD
