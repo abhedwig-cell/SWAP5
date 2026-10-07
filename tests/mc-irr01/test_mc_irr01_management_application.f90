@@ -1,8 +1,9 @@
 program test_mc_irr01_management_application
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
-  use mod_irrigation_process, only: IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SSDI
-  use mod_scheduled_irrigation_management_policy, only: IRR_MGMT_OK
+  use mod_irrigation_process, only: irrigation_flux_result_t, IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SSDI
+  use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_result_t
+  use mod_irrigation_root_zone_summary, only: irrigation_root_zone_summary_t
   use mod_fmr_scheduled_management_irrigation_application
   implicit none
 
