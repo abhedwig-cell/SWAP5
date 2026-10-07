@@ -243,7 +243,10 @@ contains
     column%forcing_handle=1_int64
     column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     template%template_id=column%template_id
+    template%physics_topology_id=1_int64
+    template%vertical_layout_id=1_int64
     template%state_layout_id=layout_id
+    template%solver_interface_id=1_int64
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BASE
     template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
