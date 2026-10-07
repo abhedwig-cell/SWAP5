@@ -1,7 +1,7 @@
 {
   "schema": "swap431.mc_root01.oxygen_repro.v1",
   "capability_id": "SW431-ROOT-OXYGEN-REPRO",
-  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "canonical_baseline": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
   "source_authority": {
     "response_member": "SWAP/oxygenstress.f90",
     "response_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
@@ -44,7 +44,7 @@
     "slope and intercept are six-term temperature/depth quadratic-bilinear polynomials",
     "factor=clamp(intercept+slope*mean_gas_filled_porosity,0,1)"
   ],
-  "disposition": "SOURCE_RESPONSE_SELECTOR_EXECUTOR_AND_IMMUTABLE_BINDING_IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
+  "disposition": "SOURCE_RESPONSE_SELECTOR_EXECUTOR_AND_BINDING_RECONCILED_INTEGRATED_QUALIFICATION_OPEN",
   "remaining": [
     "Run the immutable binding test and consolidated full-execution closure at O0/O2.",
     "Inject the constructed immutable type2 parameter contract from production application configuration when SWOXYGEN=2/SWOXYGENTYPE=2 is selected.",
@@ -66,12 +66,18 @@
       ]
     },
     "full_execution_test": "tests/fmig431/test_swap431_root_oxygen_repro_execution.f90",
-    "full_execution_status": "READY_AFTER_CONSOLIDATION",
-    "binding_test": "tests/fmig431/test_swap431_root_oxygen_repro_binding.f90"
+    "full_execution_status": "READY_ON_CURRENT_CANONICAL",
+    "binding_test": "tests/fmig431/test_swap431_root_oxygen_repro_binding.f90",
+    "binding_status": "READY_ON_CURRENT_CANONICAL"
   },
   "notes": [
     "Removed a duplicate standalone type2 executor; one shared Bartholomeus execution seam now owns type1/type2 sink composition.",
     "Explicit geometry is carried in the immutable type2 parameter contract rather than reconstructed from layer indices.",
     "A fail-closed constructor now binds source OxygenSlope/OxygenIntercept plus canonical theta_s/z/dz geometry into the immutable reproduction contract and verifies exact hydraulic-owner identity."
-  ]
+  ],
+  "reconciliation": {
+    "branch": "work/swap431-root-oxygen-repro-r2-20261007",
+    "basis": "fresh branch from current integration/f-ci-canonical after CO2 admission",
+    "stale_test_fixed": "test_swap431_root_oxygen_repro_response.f90 now uses immutable geometry API consistently"
+  }
 }
