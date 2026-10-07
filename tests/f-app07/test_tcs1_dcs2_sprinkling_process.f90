@@ -99,6 +99,42 @@ program test_fapp07_tcs1_dcs2_sprinkling
   call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
   call require(d%status == TCS1_DCS2_INVALID_PARAMETERS .and. .not. y%applied,24)
 
+  ! TCSFIX=0: the stress opportunity is not suppressed by dayfix and dayfix is not rewritten.
+  call setup_hupsel(p)
+  p%minimum_interval_enabled = .false.
+  s = tcs1_dcs2_sprinkling_state_t(); s%dayfix = 0
+  call setup_request(r,330.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 330.0_real64 + event_duration
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. d%interval_gate_passed .and. y%applied,25)
+  call require(c%dayfix == 0,26)
+
+  ! Legacy IRR_RATE=0 fallback spreads the selected depth uniformly over one day.
+  call setup_hupsel(p)
+  p%rate_cm_per_day = 0.0_real64
+  p%minimum_interval_enabled = .false.
+  s = tcs1_dcs2_sprinkling_state_t()
+  call setup_request(r,340.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 341.0_real64
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. y%event_finished,27)
+  call require(abs(y%event_duration_day-1.0_real64) < tol .and. &
+               abs(y%gross_surface_rate_cm_per_day-2.0_real64) < tol,28)
+  call require(abs(y%external_inflow_amount_cm-2.0_real64) < tol,29)
+
+  ! A configured rate implying >1 day is raised to depth/day, preserving event depth.
+  call setup_hupsel(p)
+  p%rate_cm_per_day = 1.0_real64
+  p%minimum_interval_enabled = .false.
+  s = tcs1_dcs2_sprinkling_state_t()
+  call setup_request(r,350.0_real64,1.5_real64,0.4_real64,0.2_real64,0.0_real64)
+  r%t1 = 351.0_real64
+  call evaluate_tcs1_dcs2_sprinkling_interval(p,s,r,c,y,d)
+  call require(d%status == TCS1_DCS2_OK .and. y%event_finished,30)
+  call require(abs(y%event_duration_day-1.0_real64) < tol .and. &
+               abs(y%gross_surface_rate_cm_per_day-2.0_real64) < tol,31)
+  call require(abs(y%external_inflow_amount_cm-2.0_real64) < tol,32)
+
   print '(A)','F_APP07_TCS1_DCS2_HUPSEL_PROCESS=PASS'
   print '(A)','F_APP07_TCS1_DCS2_SPLIT_REPLAY=PASS'
   print '(A)','F_APP07_TCSFIX_DAYFIX=PASS'
