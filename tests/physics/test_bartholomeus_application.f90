@@ -4,6 +4,7 @@ program test_bartholomeus_application
   use MOD_grid, only: numnod,z,dz,disnod
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
+  use mod_fmr_bartholomeus_activation, only: FMR_OXYGEN_TYPE_REPRODUCTION
   use mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_b110_default_mvg_provider
