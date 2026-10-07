@@ -6,11 +6,13 @@ module mod_fmr_bartholomeus_activation
   integer,parameter,public::FMR_OXYGEN_OFF=0
   integer,parameter,public::FMR_OXYGEN_BARTHOLOMEUS=2
   integer,parameter,public::FMR_OXYGEN_TYPE_BARTHOLOMEUS=1
+  integer,parameter,public::FMR_OXYGEN_TYPE_REPRODUCTION=2
   integer,parameter,public::FMR_HYDRAULICS_ANALYTICAL_MVG=0
 
   integer,parameter,public::FMR_BARTHOLOMEUS_DISABLED=0
   integer,parameter,public::FMR_BARTHOLOMEUS_ACTIVE=1
   integer,parameter,public::FMR_BARTHOLOMEUS_UNSUPPORTED=2
+  integer,parameter,public::FMR_BARTHOLOMEUS_REPRODUCTION=3
 
   type,public::fmr_bartholomeus_selection_t
     integer::oxygen_mode=FMR_OXYGEN_OFF
@@ -31,6 +33,10 @@ contains
        config%oxygen_type==FMR_OXYGEN_TYPE_BARTHOLOMEUS .and. &
        config%hydraulic_waterfilm_mode==FMR_HYDRAULICS_ANALYTICAL_MVG) then
       route=FMR_BARTHOLOMEUS_ACTIVE;return
+    end if
+    if(config%oxygen_mode==FMR_OXYGEN_BARTHOLOMEUS .and. &
+       config%oxygen_type==FMR_OXYGEN_TYPE_REPRODUCTION) then
+      route=FMR_BARTHOLOMEUS_REPRODUCTION;return
     end if
     route=FMR_BARTHOLOMEUS_UNSUPPORTED
   end subroutine
