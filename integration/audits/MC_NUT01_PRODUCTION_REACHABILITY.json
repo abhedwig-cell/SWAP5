@@ -100,7 +100,8 @@
         "restart-preserved event lineage"
       ],
       "remaining": [
-        "crop residue delivery binding",
+        "persist previous-day crop-residue continuation (root all, selected leaf fraction)",
+        "consume pending residues before next-day Soil-N process",
         "persisted integrated qualification",
         "canonical admission"
       ]
@@ -113,9 +114,11 @@
         "soil demand prepared before Soil-N solve",
         "actual Soil-N supply consumed by the same crop candidate",
         "soil uptake booked once as an internal soil-to-crop transfer",
-        "whole-system transaction mass accounting and interval lineage"
+        "whole-system transaction mass accounting and interval lineage",
+        "coupled route is fail-closed for nonzero senescence until previous-day residue continuation is persisted"
       ],
       "remaining": [
+        "persist previous-day root/leaf residue continuation and apply before next-day Soil-N process",
         "persisted O0/O2 coupled qualification",
         "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
@@ -145,6 +148,7 @@
     "WOFOST81 admitted route is unchanged",
     "no capability in this record is canonical ADMITTED until persisted qualification completes",
     "soil uptake is internal to the coupled Soil-N/crop-N transaction and is never double-booked as an external loss",
-    "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81"
+    "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81",
+    "current-day crop senescence is not fed into same-day Soil-N; B1.11 previous-day residue ordering remains fail-closed until continuation state is implemented"
   ]
 }
