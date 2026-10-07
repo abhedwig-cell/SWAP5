@@ -39,7 +39,7 @@ The ordered B1.11 corrections include SWAP-009, SWAP-010 and SWAP-011. In partic
 | VAPOR | Orthogonal PDI vapor-conductivity contribution for MODEL8-11. Still open and deliberately excluded from the implemented K0 family. |
 | RIA-VAPOR | Vapor contribution inside MODEL12/RIA. Still open with MODEL12. |
 | TABLE | Historical `SWSOPHY=1` TSPACK value/derivative representation. Still open as generic external-table compatibility. |
-| LINEAR-TABLE | Historical `SWSOPHY=-1` precomputed intercept/slope representation (`fl_use_tables`). Still open and distinct from TSPACK. |
+| LINEAR-TABLE | Historical `SWSOPHY=-1` precomputed intercept/slope representation (`fl_use_tables`). Implemented as its own immutable typed owner and kept distinct from TSPACK. |
 
 MODEL4 is not part of this open census slice; it is the ordinary untruncated MvG relation already represented by the admitted analytical owner.
 
@@ -61,7 +61,7 @@ The old `SWSOPHY=1` route accepts externally supplied table values and evaluates
 
 F-TAB02 is an internally generated, immutable, default-MvG-equivalent K0 representation with bounded production qualification. Its records explicitly exclude generic user tables and legacy `SWSOPHY=1`. Therefore F-TAB02 evidence may inform interpolation architecture, but it cannot close SW431-HYD-TABLE.
 
-The legacy `SWSOPHY=-1` route is different again. It reads precomputed intercept/slope arrays and dispatches direct linear segments with the legacy head-bin indexing. It should become a small immutable typed linear-table owner if migrated; it must not be conflated with TSPACK or generated K0 tables.
+The legacy `SWSOPHY=-1` route is different again. It reads precomputed intercept/slope arrays and dispatches direct linear segments with the legacy head-bin indexing. That route is now implemented as a small immutable typed linear-table owner; it is not conflated with TSPACK or generated K0 tables.
 
 ## HYST1/HYST2 state decomposition
 
@@ -80,7 +80,7 @@ On reversal the branch index changes sign and the active scanning-curve paramete
 
 Therefore hysteresis cannot be migrated as a stateless selector or parameter choice.
 
-The target owner must persist, per active hysteretic node, at least:
+The implemented target owner persists, per active hysteretic node:
 
 - current wetting/drying branch index;
 - current scanning-curve residual/saturated water-content state or an equivalent lossless parameterization;
@@ -90,7 +90,7 @@ The update belongs at accepted-step transition, not during an uncommitted Newton
 
 ## Current claim ceiling
 
-Implemented on this work branch, pending persisted integrated qualification:
+Implemented on this work branch, pending persisted integrated qualification of the current code postimage:
 
 - MODEL2;
 - MODEL3;
@@ -101,15 +101,25 @@ Implemented on this work branch, pending persisted integrated qualification:
 - MODEL9 no-vapor;
 - MODEL10 no-vapor;
 - MODEL11 no-vapor;
-- POWER on default-MvG K0.
+- POWER on default-MvG K0;
+- LINEAR-TABLE (`SWSOPHY=-1`);
+- HYST1 and HYST2 through one stateful accepted-step owner, explicit optional-state layout and restart roundtrip.
 
-Still open:
+The HYST production gate additionally contains a post-solver rejection/rollback test for both initial modes. That test is part of the current queued integrated qualification and must pass before admission.
+
+Still open as distinct capability families:
 
 - MODEL12/RIA;
 - PDI VAPOR;
 - RIA VAPOR;
-- generic TSPACK TABLE;
-- LINEAR-TABLE;
-- HYST1/HYST2 stateful owner.
+- generic TSPACK TABLE (`SWSOPHY=1`).
 
 No claim is made for `SWKIMPL=1`, generic external tables, vapor-temperature semantics, RIA, or hysteretic restart until their own evidence exists.
+
+## Source-recovery boundary for remaining families
+
+The public historical `sptabulated.f90` lineage is not byte-identical to the B0 member pinned by this project: B0 is 198627 bytes with SHA-256 `bd7c58107c866580b0a30fd4ff2fa9aa022ab9aa970e87ce6886ba99e44a94b9`, while the inspected public historical blob materializes as 198714 bytes and hashes to `cf79c406d67b8ced8bb55bb5de2d3893fc58f24bb30266366969374a9cb15862`. It therefore cannot be promoted to the exact B1.11 TABLE oracle.
+
+MODEL12 remains similarly fail-closed until the exact corrected `MOD_RIA.f90` body associated with B1.11 target SHA-256 `673a76b899562e22a11dfc815b2e2d74d513d2ee21798aa85d52a631a35c9b3a` is materialized. The RIA literature or a separately maintained fitter is scientific background, not a substitute source oracle.
+
+PDI vapor remains downstream of the separately confirmed Celsius/Kelvin defect. The no-vapor MODEL8-11 admission ceiling must not be widened to vapor until a corrected-reference production contract is admitted.
