@@ -8,12 +8,14 @@
   ],
   "source_authority": {
     "member": "SWAP/MOD_cropdevelopment.f90",
-    "sha256": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
     "equations": [
       "RDPOT += min(RDM-RDPOT,RRI) when transpiration and required potential-root-growth gates permit",
       "RD += min(RDM-RD,RRI) when transpiration and required actual-root-growth gates permit",
       "SWDMI2RD=1 scales the accepted actual increment by IQROT_DAY/IPTRA_DAY before the SMALL cutoff"
-    ]
+    ],
+    "git_blob_sha": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "note": "The previous status accidentally placed the retained Git blob id in the sha256 field. Scientific source content is unchanged."
   },
   "owner": {
     "type": "crop_root_depth_rate_state_t",
