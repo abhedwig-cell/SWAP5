@@ -1,0 +1,30 @@
+{
+  "schema": "swap431.mc_crop01.attainable.v1",
+  "capability_id": "SW431-CROP-ATTAINABLE",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "actual": "r_act%pgass = r_act%pgass * p%relmf",
+    "potential": "if (p%sw_potrelmf == 2) r_pot%pgass = r_pot%pgass * p%relmf"
+  },
+  "current_equivalence": {
+    "actual": {
+      "implementation": "src/crop/mod_wofost_prepare_assimilation.f90",
+      "parameter": "wofost_rate_scalar_parameters_t%attainable_yield_multiplier",
+      "semantics": "actual_pgass is always multiplied by attainable_yield_multiplier after TMNFTB correction",
+      "disposition": "IMPLEMENTED_SOURCE_EQUIVALENT"
+    },
+    "potential": {
+      "implementation": null,
+      "semantics": "requires distinct potential crop assimilation/biomass trajectory with selector-controlled RELMF",
+      "disposition": "MISSING_POTENTIAL_TRAJECTORY_OWNER"
+    }
+  },
+  "owner_rule": "Do not emulate SWPOTRELMF=2 by reusing or overwriting the accepted actual crop trajectory.",
+  "disposition": "PARTIAL_EQUIVALENCE_ACTUAL_CLOSED_POTENTIAL_OWNER_OPEN",
+  "admission": false,
+  "remaining": "Establish the classic potential-production companion owner/trajectory, then bind SWPOTRELMF selector and qualify actual/potential divergence plus restart."
+}
