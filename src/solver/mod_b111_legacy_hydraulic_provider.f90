@@ -201,7 +201,7 @@ contains
   pure subroutine evaluate_model3(c, h, theta, conductivity, capacity)
     real(real64), intent(in) :: c(:), h
     real(real64), intent(out) :: theta, conductivity, capacity
-    real(real64) :: s1, s2, term1, term2, relsat, omega2
+    real(real64) :: s1, s2, relsat, omega2
 
     omega2 = 1.0_real64-c(16)
     if (h < 0.0_real64) then
