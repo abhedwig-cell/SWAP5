@@ -276,19 +276,6 @@ contains
          same_storage(left%source_progress%aggregate, right%source_progress%aggregate) .and. &
          same_storage(left%source_progress%accepted_until, right%source_progress%accepted_until) .and. &
          same_window_parameter_records(left%parameters,right%parameters)
-    if (.not. source_same_candidate) then
-      write(*,'(A,2(1X,L1),2(1X,I0),6(1X,ES24.16),1X,L1)') 'KALMTHOUT_RUTTER_CANDIDATE_MISMATCH', &
-           same_storage(self%canopy%canopy_storage_cm,other%canopy%canopy_storage_cm), &
-           left%schema == right%schema .and. left%source_progress%schema == right%source_progress%schema, &
-           left%source_progress%id,right%source_progress%id, &
-           left%source_progress%t0-right%source_progress%t0, &
-           left%source_progress%t1-right%source_progress%t1, &
-           left%source_progress%aggregate-right%source_progress%aggregate, &
-           left%source_progress%accepted_until-right%source_progress%accepted_until, &
-           self%canopy%canopy_storage_cm-other%canopy%canopy_storage_cm, &
-           max(abs(self%canopy%canopy_storage_cm),abs(other%canopy%canopy_storage_cm)), &
-           same_window_parameter_records(left%parameters,right%parameters)
-    end if
   end function source_same_candidate
 
   pure function make_window_parameters(input) result(parameters)
