@@ -17,4 +17,8 @@ for OPT in O0 O2; do
     "$BUILD/mobile_$OPT.o" "$BUILD/comp_$OPT.o" "$BUILD/sorp_$OPT.o" "$BUILD/decay_$OPT.o" "$BUILD/pond_$OPT.o" "$BUILD/reactive_$OPT.o" \
     -o "$BUILD/test_$OPT"
   "$BUILD/test_$OPT"
+  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" "$ROOT/tests/physics/test_b111_reactive_solute_substep_multinode.f90" \
+    "$BUILD/mobile_$OPT.o" "$BUILD/comp_$OPT.o" "$BUILD/sorp_$OPT.o" "$BUILD/decay_$OPT.o" "$BUILD/pond_$OPT.o" "$BUILD/reactive_$OPT.o" \
+    -o "$BUILD/multinode_$OPT"
+  "$BUILD/multinode_$OPT"
 done
