@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MC-DRAIN01-MC-FROST01",
+  "kind": "LOCAL_FOCUSED_VALIDATION",
+  "tested_production_head": "c374a0a296128457cd33c8eb1e64cab8af128d78",
+  "canonical_head": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "compiler": "GNU Fortran 14.2.0",
+  "optimizations": [
+    "O0",
+    "O2"
+  ],
+  "qualification": false,
+  "results": [
+    {
+      "capabilities": [
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI"
+      ],
+      "result": "PASS",
+      "o0_o2_identical": true,
+      "scope": "Exact changed spatial-distribution and binding modules; signed mass closure, nested multilevel discharge layers, positive-only API preservation and overwrite fail-closed."
+    },
+    {
+      "capabilities": [
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "result": "PASS",
+      "o0_o2_identical": true,
+      "scope": "Exact top-interflow process module; physical top-level bottom, lower-layer exclusion, inactive fallback and per-level mass closure."
+    },
+    {
+      "capabilities": [
+        "SW431-DRAIN-INF-SPLIT"
+      ],
+      "result": "PASS",
+      "o0_o2_identical": true,
+      "scope": "Current adapter/binding plus unchanged admitted B19 partition; exact B19 neutral reuse, mass closure, overwrite guard and positive-transfer rejection. Inherited B19 compiler warnings were non-fatal, new adapter/binding code remained strict."
+    },
+    {
+      "capabilities": [
+        "SW431-DRAIN-INF-SPLIT",
+        "SW431-DRAIN-DIV-MULTI"
+      ],
+      "result": "PASS",
+      "o0_o2_identical": true,
+      "scope": "Current multilevel INF-SPLIT adapter/binding after 63-character identifier repair; FDisInf effective-spacing ordering, exact B19 negative-row reuse and per-level mass closure."
+    },
+    {
+      "capabilities": [
+        "SW431-FROST-DIV-MULTI"
+      ],
+      "result": "PASS",
+      "o0_o2_identical": true,
+      "scope": "Multilevel signed proposal composed through existing normal and guarded low-air frost owners; no B19 source modification."
+    },
+    {
+      "capabilities": [
+        "SW431-FROST-EXT-MULTI"
+      ],
+      "result": "PASS_BOUNDED_COMPOSITION",
+      "o0_o2_identical": true,
+      "scope": "Two-level EXTENDED_SIGNED response matrix composed through the existing frost drainage owner; actual branch validator independently inspected to accept all EXTENDED_SIGNED levels. Existing extended response physics is inherited, not requalified here.",
+      "output_sha256": "b3b793b403775c77b29f3e5b34a9288e9e9a81c6a689c9f974882d4eb5c2a2d1"
+    },
+    {
+      "capabilities": [
+        "SW431-FROST-ROOTDRAIN"
+      ],
+      "result": "PASS_BOUNDED_OWNER_COMPOSITION",
+      "o0_o2_identical": true,
+      "scope": "Drainage and empirical root-frost sinks remain distinct owners with separate mass closure; actual production bootstrap inspected to require paired root_extraction_active/root_frost. Full root-uptake chain is inherited.",
+      "output_sha256": "fd88612d01cdfd42bfdf4254e2d1dface72d9d33fbf406a7e1eec1da8ece2780"
+    },
+    {
+      "capabilities": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-INF-LIMIT"
+      ],
+      "result": "INHERITED_LOCAL_PASS_UNCHANGED_DEPENDENCY_SURFACE",
+      "scope": "Versioned branch status already records O0/O2 DRAMET3 PASS; no post-checkpoint change intersects mod_drainage_dramet3_response.f90 or its response binding."
+    },
+    {
+      "capabilities": [
+        "SW431-DRAIN-DISLAYER"
+      ],
+      "result": "INHERITED_LOCAL_PASS_UNCHANGED_DEPENDENCY_SURFACE",
+      "scope": "Versioned branch status already records O0/O2 DISLAYER PASS; no post-checkpoint change intersects its process/binding path."
+    }
+  ],
+  "compiler_findings": [
+    "Fixed an actual Fortran compile defect: fmr_divdra_multilevel_separate_infiltration_binding_diagnostics_t exceeded the standard 63-character identifier limit; renamed to fmr_divdra_multi_inf_binding_diagnostics_t across binding, serialized composition/runtime and test.",
+    "Focused INF-SPLIT and frost/root runners no longer apply -Werror to unchanged admitted helper modules with pre-existing compare-real/static-analysis warnings; new migration code remains strict."
+  ],
+  "production_reachability": [
+    "Serialized DIVDRA request/materialization has explicit signed and multilevel paths with preflight and cleanup.",
+    "Frost response validation now accepts multiple EXTENDED_SIGNED levels rather than the prior size==1 restriction.",
+    "Production bootstrap permits frost drainage with roots only when root_extraction_active and root_frost.active are paired; salt/Bartholomeus/macropore exclusions remain."
+  ],
+  "uncompleted_gate": {
+    "name": "serialized production dependency-closure compile",
+    "runner": "tests/fmig431/run_swap431_drain_serialized_compile.py",
+    "reason": "Local environment has no repository checkout/network path to materialize the complete dependency closure; current-head GitHub Actions focused run 37658401687 is queued with no runner and is not counted as tested.",
+    "status": "PENDING_INFRASTRUCTURE"
+  },
+  "source_bound_remaining": [
+    {
+      "capability_id": "SW431-FROST-GW",
+      "reason": "FrozenBounds consumes one already-resolved qbot_nonfrozen. Modes 3/4/5/7/8 have distinct admitted/source ownership seams; a common frost post-adapter would mix state/flux ownership and needs a separate lower-boundary design decision."
+    },
+    {
+      "capability_id": "SW431-FROST-SNOW",
+      "reason": "B1.11 snow modifies TeTop at the soil-snow interface before the thermal solve and FrozenCond. Current snow/frost composition therefore depends on SW431-TEMP-SNOW and a shared sensible-temperature owner, not drainage physics."
+    }
+  ]
+}
