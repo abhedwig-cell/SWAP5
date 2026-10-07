@@ -553,6 +553,17 @@ contains
       self%storage_area_coefficient = typed_parameters%storage_area_coefficient
       self%potential_shadow_enabled = typed_parameters%potential_shadow_enabled
       self%potential_attainable_multiplier = typed_parameters%potential_attainable_multiplier
+      self%phenology_mode = typed_parameters%phenology_mode
+      if (allocated(self%soybean_phenology)) deallocate(self%soybean_phenology)
+      if (allocated(self%vernalisation_phenology)) deallocate(self%vernalisation_phenology)
+      if (allocated(typed_parameters%soybean_phenology)) then
+        allocate(self%soybean_phenology)
+        self%soybean_phenology = typed_parameters%soybean_phenology
+      end if
+      if (allocated(typed_parameters%vernalisation_phenology)) then
+        allocate(self%vernalisation_phenology)
+        self%vernalisation_phenology = typed_parameters%vernalisation_phenology
+      end if
       self%parameters_ready = .true.
       self%last_status = FMR_WOF38_OK
     class default
