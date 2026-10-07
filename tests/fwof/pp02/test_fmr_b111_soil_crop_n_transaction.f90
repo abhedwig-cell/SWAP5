@@ -19,7 +19,7 @@ program test_fmr_b111_soil_crop_n_transaction
   type(b111_soil_n_exchange_forcing_t)::sf
   type(b111_soil_n_rate_environment_t)::env
   type(b111_crop_n_forcing_t)::cf
-  type(fmr_b111_soil_crop_n_state_t)::initial
+  type(fmr_b111_soil_crop_n_state_t)::initial,restarted
   type(fmr_b111_soil_crop_n_model_t)::model
   type(fmr_b111_soil_crop_n_receipt_t)::receipt
   class(transaction_state_t),allocatable::committed
@@ -132,6 +132,19 @@ program test_fmr_b111_soil_crop_n_transaction
   soil_after=soil_snap%nitrogen_total(ps)
   crop_after=(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha)*1.0e-4_real64
   call near(soil_after+crop_after,n0,'duplicate rollback identity')
+
+  ! Fresh-state reconstruction must preserve interval lineage as persistent state.
+  call initialize_fmr_b111_soil_crop_n_state(soil_snap_state,crop_snap,restarted,status,t0r,t1r,consumed)
+  call check(status==FMR_B111_COUPLED_N_OK.and.restarted%ready(),'restart reconstruction')
+  deallocate(committed)
+  allocate(committed,source=restarted)
+  call execute_reference_interval(model,committed,0.0_real64,1.0_real64,policy,tx)
+  call check(tx%status==TX_STATUS_RETRY_EXHAUSTED,'restart duplicate interval rejected')
+  call snapshot_coupled(committed,soil_snap_state,crop_snap,t0r,t1r,consumed,available)
+  call soil_snap_state%snapshot(ps,soil_snap,available)
+  soil_after=soil_snap%nitrogen_total(ps)
+  crop_after=(crop_snap%anlv_kg_ha+crop_snap%anst_kg_ha+crop_snap%anrt_kg_ha+crop_snap%anso_kg_ha)*1.0e-4_real64
+  call near(soil_after+crop_after,n0,'restart duplicate rollback identity')
 
   print '(A)','FMR_B111_SOIL_CROP_N_TRANSACTION_PASS'
 contains
