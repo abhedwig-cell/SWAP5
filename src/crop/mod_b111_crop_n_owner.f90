@@ -70,6 +70,9 @@ module mod_b111_crop_n_owner
     real(real64)::soil_uptake_kg_ha=0.0_real64
     real(real64)::storage_uptake_kg_ha=0.0_real64
     real(real64)::loss_kg_ha=0.0_real64
+    real(real64)::leaf_loss_kg_ha=0.0_real64
+    real(real64)::stem_loss_kg_ha=0.0_real64
+    real(real64)::root_loss_kg_ha=0.0_real64
     real(real64)::balance_residual_kg_ha=0.0_real64
   end type
 
@@ -182,7 +185,10 @@ contains
     candidate%nloss_root_kg_ha=committed%nloss_root_kg_ha+rnldrt*f%delt_day
     receipt%soil_uptake_kg_ha=nuptr*f%delt_day
     receipt%storage_uptake_kg_ha=rnso*f%delt_day
-    receipt%loss_kg_ha=(rnldlv+rnldst+rnldrt)*f%delt_day
+    receipt%leaf_loss_kg_ha=rnldlv*f%delt_day
+    receipt%stem_loss_kg_ha=rnldst*f%delt_day
+    receipt%root_loss_kg_ha=rnldrt*f%delt_day
+    receipt%loss_kg_ha=receipt%leaf_loss_kg_ha+receipt%stem_loss_kg_ha+receipt%root_loss_kg_ha
     receipt%balance_residual_kg_ha=candidate%balance_residual()
 
     scale=max(1.0_real64,candidate%initial_n_kg_ha+candidate%nuptake_total_kg_ha+candidate%nfix_total_kg_ha)
