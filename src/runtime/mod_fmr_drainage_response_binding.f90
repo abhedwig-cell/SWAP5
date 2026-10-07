@@ -22,6 +22,8 @@ module mod_fmr_drainage_response_binding
        evaluate_empirical_interflow_response, INTERFLOW_OK
   use mod_drainage_extended_exchange, only: extended_drainage_parameters_t, extended_drainage_control_t, &
        extended_drainage_result_t, extended_drainage_diagnostics_t, evaluate_extended_drainage_exchange, EXT_DRAIN_OK
+  use mod_drainage_dramet3_response, only: drainage_dramet3_parameters_t, drainage_dramet3_control_t, &
+       drainage_dramet3_result_t, drainage_dramet3_diagnostics_t, evaluate_drainage_dramet3_response, DRAMET3_OK
   use mod_drainage_multilevel_aggregation, only: drainage_level_exchange_t, drainage_multilevel_aggregate_t, &
        drainage_multilevel_diagnostics_t, aggregate_drainage_levels, DRAINAGE_AGGREGATION_OK
   implicit none
@@ -36,6 +38,7 @@ module mod_fmr_drainage_response_binding
   integer, parameter, public :: FMR_DRAIN_VARIANT_ERNST_IPOS5 = 7
   integer, parameter, public :: FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW = 8
   integer, parameter, public :: FMR_DRAIN_VARIANT_EXTENDED_SIGNED = 9
+  integer, parameter, public :: FMR_DRAIN_VARIANT_DRAMET3 = 10
 
   integer, parameter, public :: FMR_DRAIN_BIND_OK = 0
   integer, parameter, public :: FMR_DRAIN_BIND_INVALID_CONFIGURATION = 1
@@ -61,6 +64,7 @@ module mod_fmr_drainage_response_binding
     type(ernst_ipos5_prepared_t) :: ernst_ipos5_prepared
     type(empirical_interflow_parameters_t) :: empirical
     type(extended_drainage_parameters_t) :: extended
+    type(drainage_dramet3_parameters_t) :: dramet3
   end type fmr_drainage_response_level_parameters_t
 
   ! Interval control is deliberately separate from immutable parameters.
@@ -70,6 +74,8 @@ module mod_fmr_drainage_response_binding
     real(real64) :: drain_head = 0.0_real64
     logical :: resolved_surface_water_head_supplied = .false.
     real(real64) :: resolved_surface_water_head_cm = 0.0_real64
+    logical :: dramet3_sample_time_supplied = .false.
+    real(real64) :: dramet3_sample_time_t1900 = 0.0_real64
   end type fmr_drainage_response_level_control_t
 
   type, public :: fmr_drainage_response_level_diagnostics_t
@@ -117,13 +123,18 @@ contains
         if (.not. controls(i)%drain_head_supplied .or. .not. ieee_is_finite(controls(i)%drain_head)) return
         if (controls(i)%resolved_surface_water_head_supplied) return
       case (FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
-        if (controls(i)%drain_head_supplied) return
+        if (controls(i)%drain_head_supplied .or. controls(i)%dramet3_sample_time_supplied) return
         if (.not. controls(i)%resolved_surface_water_head_supplied .or. &
             .not. ieee_is_finite(controls(i)%resolved_surface_water_head_cm)) return
+      case (FMR_DRAIN_VARIANT_DRAMET3)
+        if (controls(i)%drain_head_supplied .or. controls(i)%resolved_surface_water_head_supplied) return
+        if (.not. controls(i)%dramet3_sample_time_supplied .or. &
+            .not. ieee_is_finite(controls(i)%dramet3_sample_time_t1900)) return
       case (FMR_DRAIN_VARIANT_TABULATED, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, &
             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, &
             FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5)
-        if (controls(i)%drain_head_supplied .or. controls(i)%resolved_surface_water_head_supplied) return
+        if (controls(i)%drain_head_supplied .or. controls(i)%resolved_surface_water_head_supplied .or. &
+            controls(i)%dramet3_sample_time_supplied) return
       case default
         status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
         return
@@ -221,6 +232,9 @@ contains
     type(extended_drainage_control_t) :: extended_control
     type(extended_drainage_result_t) :: extended_result
     type(extended_drainage_diagnostics_t) :: extended_diag
+    type(drainage_dramet3_control_t) :: dramet3_control
+    type(drainage_dramet3_result_t) :: dramet3_result
+    type(drainage_dramet3_diagnostics_t) :: dramet3_diag
 
     exchange = drainage_level_exchange_t()
     diagnostic = fmr_drainage_response_level_diagnostics_t()
@@ -302,6 +316,16 @@ contains
            extended_diag%activation_boundary .or. extended_diag%control_head_branch_boundary .or. &
            extended_diag%sign_resistance_boundary .or. extended_diag%surface_resistance_boundary .or. &
            extended_diag%power_activation_boundary)
+
+    case (FMR_DRAIN_VARIANT_DRAMET3)
+      dramet3_control%sample_time_t1900=control%dramet3_sample_time_t1900
+      call evaluate_drainage_dramet3_response(parameters%dramet3,hydraulic_view,dramet3_control, &
+           dramet3_result,dramet3_diag)
+      diagnostic%process_status=dramet3_diag%status
+      if(dramet3_diag%status/=DRAMET3_OK)return
+      call bind_result(dramet3_result%signed_soil_to_drain_rate,dramet3_result%derivative_defined, &
+           dramet3_result%dq_dgroundwater_level,dramet3_diag%sign_boundary .or. &
+           dramet3_diag%infiltration_limit_boundary)
 
     case default
       diagnostic%binding_status = FMR_DRAIN_BIND_UNSUPPORTED_VARIANT
