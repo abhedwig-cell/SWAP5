@@ -264,13 +264,17 @@ contains
     call export_rutter_source_restart(self%window, self, left, left_status)
     call export_rutter_source_restart(other%window, other, right, right_status)
     if (left_status /= RUTTER_WINDOW_OK .or. right_status /= RUTTER_WINDOW_OK) return
-    source_same_candidate = self%canopy%canopy_storage_cm == other%canopy%canopy_storage_cm .and. &
+    ! Full/half temporal replay reaches the same source candidate through
+    ! different floating-point arithmetic paths. Source identity remains exact,
+    ! while continuous scalar state uses the module's existing roundoff-aware
+    ! comparison rather than requiring bit identity.
+    source_same_candidate = same_storage(self%canopy%canopy_storage_cm, other%canopy%canopy_storage_cm) .and. &
          left%schema == right%schema .and. left%source_progress%schema == right%source_progress%schema .and. &
          left%source_progress%id == right%source_progress%id .and. &
-         left%source_progress%t0 == right%source_progress%t0 .and. &
-         left%source_progress%t1 == right%source_progress%t1 .and. &
-         left%source_progress%aggregate == right%source_progress%aggregate .and. &
-         left%source_progress%accepted_until == right%source_progress%accepted_until .and. &
+         same_storage(left%source_progress%t0, right%source_progress%t0) .and. &
+         same_storage(left%source_progress%t1, right%source_progress%t1) .and. &
+         same_storage(left%source_progress%aggregate, right%source_progress%aggregate) .and. &
+         same_storage(left%source_progress%accepted_until, right%source_progress%accepted_until) .and. &
          same_window_parameter_records(left%parameters,right%parameters)
   end function source_same_candidate
 
