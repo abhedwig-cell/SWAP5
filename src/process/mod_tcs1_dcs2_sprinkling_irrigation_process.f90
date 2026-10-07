@@ -1,6 +1,8 @@
 module mod_tcs1_dcs2_sprinkling_irrigation_process
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_irrigation_management_policy, only: irrigation_event_policy_t, irrigation_event_shape_t, &
+       irrigation_interval_gate, resolve_irrigation_event_shape, IRR_POLICY_OK
   implicit none
   private
 
@@ -25,6 +27,11 @@ module mod_tcs1_dcs2_sprinkling_irrigation_process
     real(real64) :: depth_dvs(TCS1_DCS2_MAX_KNOTS) = 0.0_real64
     real(real64) :: depth_cm(TCS1_DCS2_MAX_KNOTS) = 0.0_real64
     integer :: minimum_interval_days = 0
+    logical :: minimum_interval_enabled = .true.
+    logical :: depth_limits_enabled = .false.
+    real(real64) :: minimum_depth_cm = 0.0_real64
+    real(real64) :: maximum_depth_cm = huge(1.0_real64)
+    logical :: source_rate_adaptation_enabled = .false.
   end type tcs1_dcs2_sprinkling_parameters_t
 
   type, public :: tcs1_dcs2_sprinkling_state_t
@@ -32,6 +39,8 @@ module mod_tcs1_dcs2_sprinkling_irrigation_process
     logical :: active_event = .false.
     real(real64) :: active_event_start = 0.0_real64
     real(real64) :: active_event_end = 0.0_real64
+    real(real64) :: active_event_rate_cm_per_day = 0.0_real64
+    real(real64) :: active_event_depth_cm = 0.0_real64
   end type tcs1_dcs2_sprinkling_state_t
 
   type, public :: tcs1_dcs2_sprinkling_request_t
@@ -71,6 +80,12 @@ module mod_tcs1_dcs2_sprinkling_irrigation_process
     real(real64) :: interpolated_trel = 0.0_real64
     real(real64) :: transpiration_ratio = 1.0_real64
     real(real64) :: interpolated_depth_cm = 0.0_real64
+    real(real64) :: selected_depth_cm = 0.0_real64
+    real(real64) :: effective_rate_cm_per_day = 0.0_real64
+    logical :: minimum_depth_applied = .false.
+    logical :: maximum_depth_applied = .false.
+    logical :: zero_rate_daily_fallback = .false.
+    logical :: long_duration_rate_cap = .false.
   end type tcs1_dcs2_sprinkling_diagnostics_t
 
   public :: evaluate_tcs1_dcs2_sprinkling_interval
@@ -87,6 +102,8 @@ contains
     type(tcs1_dcs2_sprinkling_diagnostics_t), intent(out) :: diagnostics
     real(real64) :: threshold, depth, duration, event_end, effective_t1
     logical :: ok, finishes_at_event_end
+    type(irrigation_event_policy_t) :: event_policy
+    type(irrigation_event_shape_t) :: event_shape
 
     candidate_state = committed_state
     result = tcs1_dcs2_sprinkling_result_t()
@@ -134,7 +151,7 @@ contains
 
       effective_t1 = request%t1
       if (finishes_at_event_end) effective_t1 = event_end
-      call apply_event(parameters%rate_cm_per_day, duration, effective_t1-request%t0, result)
+      call apply_event(committed_state%active_event_rate_cm_per_day, duration, effective_t1-request%t0, result)
       result%event_remains_active = .not. finishes_at_event_end
       if (finishes_at_event_end) then
         result%event_finished = .true.
@@ -183,7 +200,8 @@ contains
       return
     end if
 
-    if (committed_state%dayfix < parameters%minimum_interval_days) then
+    call build_event_policy(parameters, event_policy)
+    if (.not. irrigation_interval_gate(event_policy, committed_state%dayfix)) then
       call advance_dayfix_without_event(parameters, candidate_state)
       return
     end if
@@ -197,11 +215,19 @@ contains
     end if
     diagnostics%interpolated_depth_cm = depth
 
-    duration = depth / parameters%rate_cm_per_day
-    if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64 .or. duration > 1.0_real64) then
+    call resolve_irrigation_event_shape(event_policy, depth, parameters%rate_cm_per_day, event_shape)
+    if (event_shape%status /= IRR_POLICY_OK) then
       diagnostics%status = TCS1_DCS2_INVALID_PARAMETERS
       return
     end if
+    depth = event_shape%selected_depth_cm
+    duration = event_shape%event_duration_day
+    diagnostics%selected_depth_cm = depth
+    diagnostics%effective_rate_cm_per_day = event_shape%effective_rate_cm_per_day
+    diagnostics%minimum_depth_applied = event_shape%minimum_depth_applied
+    diagnostics%maximum_depth_applied = event_shape%maximum_depth_applied
+    diagnostics%zero_rate_daily_fallback = event_shape%zero_rate_daily_fallback
+    diagnostics%long_duration_rate_cap = event_shape%long_duration_rate_cap
     event_end = request%t0 + duration
     finishes_at_event_end = same_time(request%t1, event_end)
     if (request%t1 > event_end .and. .not. finishes_at_event_end) then
@@ -212,14 +238,16 @@ contains
       return
     end if
 
-    candidate_state%dayfix = 1
+    if (parameters%minimum_interval_enabled) candidate_state%dayfix = 1
     candidate_state%active_event = .true.
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
+    candidate_state%active_event_rate_cm_per_day = event_shape%effective_rate_cm_per_day
+    candidate_state%active_event_depth_cm = depth
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
-    call apply_event(parameters%rate_cm_per_day, duration, effective_t1-request%t0, result)
+    call apply_event(event_shape%effective_rate_cm_per_day, duration, effective_t1-request%t0, result)
     result%event_depth_cm = depth
     result%event_started = .true.
     result%event_remains_active = .not. finishes_at_event_end
@@ -232,6 +260,7 @@ contains
   pure subroutine advance_dayfix_without_event(parameters, state)
     type(tcs1_dcs2_sprinkling_parameters_t), intent(in) :: parameters
     type(tcs1_dcs2_sprinkling_state_t), intent(inout) :: state
+    if (.not. parameters%minimum_interval_enabled) return
     if (state%dayfix < parameters%minimum_interval_days) state%dayfix = state%dayfix + 1
   end subroutine advance_dayfix_without_event
 
@@ -253,10 +282,15 @@ contains
     if (.not. valid_state) return
     if (state%active_event) then
       valid_state = ieee_is_finite(state%active_event_start) .and. ieee_is_finite(state%active_event_end) .and. &
-                    state%active_event_end > state%active_event_start
+                    state%active_event_end > state%active_event_start .and. &
+                    ieee_is_finite(state%active_event_rate_cm_per_day) .and. &
+                    state%active_event_rate_cm_per_day > 0.0_real64 .and. &
+                    ieee_is_finite(state%active_event_depth_cm) .and. state%active_event_depth_cm > 0.0_real64
     else
       valid_state = abs(state%active_event_start) <= epsilon(1.0_real64) .and. &
-                    abs(state%active_event_end) <= epsilon(1.0_real64)
+                    abs(state%active_event_end) <= epsilon(1.0_real64) .and. &
+                    abs(state%active_event_rate_cm_per_day) <= epsilon(1.0_real64) .and. &
+                    abs(state%active_event_depth_cm) <= epsilon(1.0_real64)
     end if
   end function valid_state
 
@@ -265,8 +299,15 @@ contains
 
     valid_parameters = .false.
     if (.not. parameters%enabled) return
-    if (.not. ieee_is_finite(parameters%rate_cm_per_day) .or. parameters%rate_cm_per_day <= 0.0_real64) return
+    if (.not. ieee_is_finite(parameters%rate_cm_per_day) .or. parameters%rate_cm_per_day < 0.0_real64) return
+    if (.not. parameters%source_rate_adaptation_enabled .and. parameters%rate_cm_per_day <= 0.0_real64) return
     if (parameters%minimum_interval_days < 1) return
+    if (parameters%depth_limits_enabled) then
+      if (.not. ieee_is_finite(parameters%minimum_depth_cm) .or. &
+          .not. ieee_is_finite(parameters%maximum_depth_cm)) return
+      if (parameters%minimum_depth_cm < 0.0_real64 .or. &
+          parameters%maximum_depth_cm < parameters%minimum_depth_cm) return
+    end if
     if (.not. valid_table(parameters%threshold_dvs, parameters%threshold_trel, parameters%threshold_knot_count)) return
     if (.not. valid_table(parameters%depth_dvs, parameters%depth_cm, parameters%depth_knot_count)) return
     if (any(parameters%threshold_trel(1:parameters%threshold_knot_count) < 0.0_real64) .or. &
@@ -274,6 +315,19 @@ contains
     if (any(parameters%depth_cm(1:parameters%depth_knot_count) <= 0.0_real64)) return
     valid_parameters = .true.
   end function valid_parameters
+
+  pure subroutine build_event_policy(parameters, policy)
+    type(tcs1_dcs2_sprinkling_parameters_t), intent(in) :: parameters
+    type(irrigation_event_policy_t), intent(out) :: policy
+
+    policy = irrigation_event_policy_t()
+    policy%minimum_interval_enabled = parameters%minimum_interval_enabled
+    policy%minimum_interval_days = parameters%minimum_interval_days
+    policy%depth_limits_enabled = parameters%depth_limits_enabled
+    policy%minimum_depth_cm = parameters%minimum_depth_cm
+    policy%maximum_depth_cm = parameters%maximum_depth_cm
+    policy%source_rate_adaptation_enabled = parameters%source_rate_adaptation_enabled
+  end subroutine build_event_policy
 
   pure logical function valid_request(request)
     type(tcs1_dcs2_sprinkling_request_t), intent(in) :: request
@@ -355,5 +409,7 @@ contains
     state%active_event = .false.
     state%active_event_start = 0.0_real64
     state%active_event_end = 0.0_real64
+    state%active_event_rate_cm_per_day = 0.0_real64
+    state%active_event_depth_cm = 0.0_real64
   end subroutine clear_active_event
 end module mod_tcs1_dcs2_sprinkling_irrigation_process
