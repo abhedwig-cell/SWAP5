@@ -31,11 +31,11 @@ with tempfile.TemporaryDirectory(prefix='lowgwl01-feasibility-') as folder:
         exe=build/TEST.stem
         subprocess.run(FC+LINK+flags+objects+['-o',str(exe)],check=True,capture_output=True,text=True)
         public=subprocess.run([str(exe)],capture_output=True,text=True)
-        markers=['F-MIG431-LOWGWL01_BELOW_PROFILE_TYPED=PASS','F-MIG431-LOWGWL01_IN_PROFILE_FAIL_CLOSED=PASS']
+        markers=['F-MIG431-LOWGWL01_BELOW_PROFILE_TYPED=PASS','F-MIG431-LOWGWL01_IN_PROFILE_PROVIDER_RAW=PASS','F-MIG431-LOWGWL01_IN_PROFILE_FAIL_CLOSED=PASS']
         if public.returncode!=0 or any(m not in public.stdout for m in markers):
             raise RuntimeError('bounded mode1 gate failed: '+public.stdout+'\n'+public.stderr)
         result['runs'][opt]={'markers':markers,'geometry':'8 exact active nodes; below-profile GWLEVEL=-100 cm; in-profile GWLEVEL=-42 cm rejected'}
-        print(opt+' LOWGWL01_BELOW_PROFILE=PASS IN_PROFILE_FAIL_CLOSED=PASS',flush=True)
+        print(opt+' LOWGWL01_BELOW_PROFILE=PASS IN_PROFILE_PROVIDER_RAW=PASS IN_PROFILE_FAIL_CLOSED=PASS',flush=True)
 if result['runs']['O0']!=result['runs']['O2']:raise RuntimeError('optimization-dependent finding')
 result['status']='BOUNDED_BELOW_PROFILE_QUALIFIED';result['o0_o2_identity']=True
 pathlib.Path(os.environ.get('LOWGWL01_RESULT','lowgwl01_feasibility_result.json')).write_text(json.dumps(result,indent=2)+'\n')
