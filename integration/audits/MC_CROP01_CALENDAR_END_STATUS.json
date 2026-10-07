@@ -21,7 +21,16 @@
     }
   ],
   "implementation": "src/crop/mod_crop_calendar_end_event.f90",
-  "qualification": "tests/fmig431/test_swap431_crop_calendar_end.f90",
+  "qualification": {
+    "local": {
+      "compiler": "gfortran",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_CALENDAR_END=PASS"
+    },
+    "persisted_integration": "OPEN"
+  },
   "ownership": {
     "persistent_state": false,
     "event_publication": "resolver only; accepted lifecycle/event publication remains runtime transaction responsibility",
