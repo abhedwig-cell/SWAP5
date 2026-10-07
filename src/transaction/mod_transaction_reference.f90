@@ -405,6 +405,11 @@ contains
 
       if (.not. mass_ok) then
         result%mass_rejections = result%mass_rejections + 1
+        write(*,'(A,1X,I0,1X,ES24.16,2(1X,I0),5(1X,L1),2(1X,ES24.16))') &
+             'KALMTHOUT_TX_MASS_REJECT',retry_index,attempt_dt,full_missing_mask,accepted_missing_mask, &
+             storage_start_complete,full_storage_end_complete,full_outcome%mass_accounting_complete, &
+             storage_end_complete,half1_outcome%mass_accounting_complete.and.half2_outcome%mass_accounting_complete, &
+             full_mass_residual,half_mass_residual
         if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
