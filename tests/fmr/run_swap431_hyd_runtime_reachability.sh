@@ -78,6 +78,8 @@ for opt in 0 2; do
   grep -Fq 'SW431_HYD_LINEAR_TABLE_RUNTIME_PASS' "$OUT/output.txt"
   grep -Fq 'SW431_HYST_RUNTIME_RESTART_PASS=1' "$OUT/output.txt"
   grep -Fq 'SW431_HYST_RUNTIME_RESTART_PASS=2' "$OUT/output.txt"
+  grep -Fq 'SW431_HYST_ROLLBACK_PASS=1' "$OUT/output.txt"
+  grep -Fq 'SW431_HYST_ROLLBACK_PASS=2' "$OUT/output.txt"
   cat "$OUT/output.txt"
 done
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
