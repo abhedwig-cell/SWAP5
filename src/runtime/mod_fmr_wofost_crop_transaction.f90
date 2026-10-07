@@ -360,11 +360,14 @@ contains
     status = FMR_WOF38_OK
   end subroutine construct_fmr_wofost_crop_transaction_parameters
 
-  subroutine prepare_fmr_wofost_crop_event_forcing(window, crop_forcing, forcing, status)
+  subroutine prepare_fmr_wofost_crop_event_forcing(window, crop_forcing, forcing, status, &
+       soybean_latitude_degrees, soybean_day_of_year)
     type(fmr_wofost_accepted_window_t), intent(in) :: window
     type(wofost_one_day_forcing_t), intent(in) :: crop_forcing
     type(fmr_wofost_crop_event_forcing_t), intent(out) :: forcing
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: soybean_latitude_degrees
+    integer, intent(in), optional :: soybean_day_of_year
     type(fmr_wofost_crop_event_token_t) :: token
     type(wofost_accepted_window_aggregates_t) :: aggregates
     logical :: available
@@ -379,6 +382,11 @@ contains
 
     forcing%crop_forcing = crop_forcing
     forcing%accepted_aggregates = aggregates
+    if (present(soybean_latitude_degrees)) forcing%soybean_latitude_degrees = soybean_latitude_degrees
+    if (present(soybean_day_of_year)) forcing%soybean_day_of_year = soybean_day_of_year
+    if (.not. ieee_is_finite(forcing%soybean_latitude_degrees) .or. &
+        abs(forcing%soybean_latitude_degrees) > 90.0_real64) return
+    if (forcing%soybean_day_of_year < 1 .or. forcing%soybean_day_of_year > 366) return
     forcing%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine prepare_fmr_wofost_crop_event_forcing
@@ -525,6 +533,8 @@ contains
     if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
     if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
     if (self%accepted_aggregates%potential_transpiration < 0.0_real64) return
+    if (.not. ieee_is_finite(self%soybean_latitude_degrees) .or. abs(self%soybean_latitude_degrees) > 90.0_real64) return
+    if (self%soybean_day_of_year < 1 .or. self%soybean_day_of_year > 366) return
     ready = .true.
   end function fmr_wofost_crop_event_forcing_ready
 
