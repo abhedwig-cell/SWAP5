@@ -72,6 +72,14 @@ contains
     ! use a short certificate-free transaction and require bounded completion.
     q_explicit = q
     call execute_case(3,q_explicit,q_explicit,-999999._real64,1.0e-6_real64,.false.,.false.,output,observation,explicit3=.true.)
+    if(.not.output%completed.or..not.output%committed)then
+      write(*,'(A,L1,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0)') 'LOW3_DEBUG completed=',output%completed,' committed=',output%committed, &
+           ' kernel=',output%kernel_status,' solver=',output%solver_status,' solver_rej=',output%solver_rejections, &
+           ' temporal_rej=',output%temporal_rejections,' mass_rej=',output%mass_rejections
+      write(*,'(A,A,A,L1,A,L1,A,ES26.17E3)') 'LOW3_DEBUG admission=',trim(output%admission_status), &
+           ' solver_executed=',observation%solver_executed,' explicit=',observation%cauchy3_explicit_active, &
+           ' qbot=',observation%cauchy3_explicit_qbot_cm_per_day
+    end if
     call require(output%completed.and.output%committed,'explicit mode3 committed')
     call require(observation%cauchy3_explicit_active,'explicit mode3 diagnostic active')
     call require(ieee_is_finite(observation%cauchy3_explicit_qbot_cm_per_day),'explicit mode3 qbot finite')
