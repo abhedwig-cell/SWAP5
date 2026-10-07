@@ -101,7 +101,7 @@ program test_lowgwl01_feasibility
   request%boundary%bottom_head=-42.0_real64
   call solver%solve(request,ws,result)
   if (result%status/=SW_SOLVE_FAILED) error stop 'in-profile mode1 must remain fail-closed'
-  if (trim(result%diagnostics%route)/='prescribed-gwl-below-profile-domain-deferred') error stop 'wrong in-profile guard'
+  if (trim(result%diagnostics%route)/='mode1-inprofile-deferred') error stop 'wrong in-profile guard'
   if (allocated(result%candidate_state%pressure_head)) error stop 'in-profile rejection emitted candidate'
   print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_FAIL_CLOSED=PASS'
 
