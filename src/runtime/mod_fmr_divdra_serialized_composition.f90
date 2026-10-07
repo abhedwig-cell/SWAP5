@@ -145,6 +145,7 @@ contains
           records(slot)%composition_status=status
           return
         end if
+        if(allocated(level_parameters))deallocate(level_parameters)
         allocate(level_parameters(size(requests(i)%distribution_parameter_refs)))
         do j=1,size(level_parameters)
           if(requests(i)%distribution_parameter_refs(j)<1_int64.or. &
