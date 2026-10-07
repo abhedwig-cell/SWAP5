@@ -49,4 +49,12 @@ done
     "$root/tests/physics/test_b111_soil_n_nitrification_coupling.f90" \
     -o b111_nitrif_coupling
   ./b111_nitrif_coupling
+
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_soil_n_pool_state.f90" \
+    "$root/src/process/mod_soil_n_reaction_transfer.f90" \
+    "$root/src/process/mod_b111_soil_n_denitrification_coupling.f90" \
+    "$root/tests/physics/test_b111_soil_n_denitrification_coupling.f90" \
+    -o b111_denitrif_coupling
+  ./b111_denitrif_coupling
 done
