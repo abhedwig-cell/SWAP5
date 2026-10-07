@@ -112,8 +112,10 @@ contains
       receipt%drainage_net_output=receipt%drainage_net_output+drain_flux
       receipt%age_production=receipt%age_production+production
 
-      if(i==1)then
-        candidate%age_amount(i)=before_i+(merge(face_flux(i),bottom_flux,n>1)-top_flux)-root_flux-drain_flux+production
+      if(n==1)then
+        candidate%age_amount(i)=before_i+bottom_flux-top_flux-root_flux-drain_flux+production
+      else if(i==1)then
+        candidate%age_amount(i)=before_i+face_flux(i)-top_flux-root_flux-drain_flux+production
       else if(i==n)then
         candidate%age_amount(i)=before_i+bottom_flux-face_flux(i-1)-root_flux-drain_flux+production
       else
