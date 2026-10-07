@@ -952,8 +952,8 @@ contains
     if(tile%parameters%frost_drainage%active)then
       if(.not.tile%parameters%frost_drainage%valid())return
       if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
-      if(tile%parameters%frost_bottom%active.or.tile%parameters%root_extraction_active.or. &
-           tile%parameters%root_frost%active.or. &
+      if(tile%parameters%frost_bottom%active.or. &
+           (tile%parameters%root_extraction_active.neqv.tile%parameters%root_frost%active).or. &
            (tile%parameters%drainage_response_active.and..not.tile%parameters%frost_response_drainage_active))return
       if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt))return
       if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen))return
