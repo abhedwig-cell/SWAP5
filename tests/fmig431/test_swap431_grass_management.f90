@@ -110,6 +110,13 @@ program test_swap431_grass_management
   if(status/=GRASS_MGMT_OK) error stop 23
   if(r%candidate_management%event_index/=3.or.r%candidate_management%grazing_active) error stop 24
 
+  ! B1.11 TWDM includes WSO while management removal leaves WSO untouched.
+  ! Fail closed for nonzero storage rather than reporting a false mass removal.
+  crop%biomass%storage_biomass=1.0_real64
+  call evaluate_grass_management_day(p,m1,crop,f,r,status)
+  if(status/=GRASS_MGMT_INVALID_CROP) error stop 241
+  crop%biomass%storage_biomass=0.0_real64
+
   ! B1.11 local DMLoss is undefined for SW_LOSSGRZ=0. Fail closed rather
   ! than silently adopting a zero initialization.
   invalid_p=p
