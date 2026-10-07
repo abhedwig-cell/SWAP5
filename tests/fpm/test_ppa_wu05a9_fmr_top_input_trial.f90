@@ -253,6 +253,13 @@ program test_ppa_wu05a9_fmr_top_input_trial
   config%transaction%retry_scale=0.5_real64
   config%transaction%max_retries=4
   config%max_committed_substeps=16
+  if(migmac11)then
+    ! Pond onset can be a sharper temporal transition than the historical A9
+    ! fixture. Preserve the same full-versus-two-half acceptance tolerance and
+    ! give the transactional controller enough refinement budget to resolve it.
+    config%transaction%max_retries=12
+    config%max_committed_substeps=256
+  end if
   config%progress_tolerance=0.0_real64
 
   policy%enabled=.true.
