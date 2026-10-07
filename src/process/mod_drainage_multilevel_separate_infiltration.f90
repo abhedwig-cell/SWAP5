@@ -40,8 +40,8 @@ contains
 
     type(drainage_distribution_parameters_t),allocatable::effective(:)
     type(drainage_b19_separate_infiltration_parameters_t)::p
-    real(real64),allocatable::base_flux(:,:),khor(:),kver(:)
-    real(real64)::wlev,dz_top_sat,kd_hor,kd_ver,sat_depth,khor_avg,kver_avg,fac_aniso,minimum_factor
+    real(real64),allocatable::base_flux(:,:)
+    real(real64)::wlev,dz_top_sat,fac_aniso,minimum_factor
     integer::levels,n,i,wt_node
 
     result=drainage_multilevel_separate_infiltration_result_t()
@@ -69,47 +69,21 @@ contains
     result%fdisinf=1.0_real64
     result%authoritative_scalar_transfer=scalar_transfer
 
-    ! B1.11 DIVDRA paragraph 4-6: determine the profile anisotropy once, then
-    ! let negative separate-infiltration levels participate in ordering and
-    ! FlowDrDisch with FDisInf*Lspacing rather than raw Lspacing.
-    wlev=-min(view%groundwater_level,0.0_real64)
-    if(.not.allocated(level_parameters(1)%zbotcp).or..not.allocated(level_parameters(1)%dz).or. &
-         .not.allocated(level_parameters(1)%saturated_conductivity).or. &
-         .not.allocated(level_parameters(1)%horizontal_anisotropy_factor))then
-      result%status=DRAIN_MULTI_INF_INVALID_PARAMETERS
+    ! Reuse the already admitted multilevel validator/geometry first. This
+    ! avoids a second parameter-validity implementation in the SWDIVDINF adapter.
+    call distribute_multilevel_signed_divdra(level_parameters,view,scalar_transfer,base_flux,result%multilevel)
+    if(result%multilevel%status/=DRAIN_DIST_OK.or..not.allocated(base_flux))then
+      result%status=DRAIN_MULTI_INF_BASE_REJECTED
       return
     end if
-    if(wlev>=-level_parameters(1)%zbotcp(n))then
+    fac_aniso=result%multilevel%profile_anisotropy_factor
+    wlev=-min(view%groundwater_level,0.0_real64)
+    wt_node=result%multilevel%water_table_node
+    if(wt_node<1.or.wt_node>n.or.fac_aniso<=0.0_real64)then
       result%status=DRAIN_MULTI_INF_INVALID_HYDRAULIC_VIEW
       return
     end if
-    wt_node=1
-    do while(wlev>-level_parameters(1)%zbotcp(wt_node)+SMALL)
-      wt_node=wt_node+1
-      if(wt_node>n)then
-        result%status=DRAIN_MULTI_INF_INVALID_HYDRAULIC_VIEW
-        return
-      end if
-    end do
     dz_top_sat=-level_parameters(1)%zbotcp(wt_node)-wlev
-    allocate(khor(n),kver(n))
-    khor=level_parameters(1)%saturated_conductivity*level_parameters(1)%horizontal_anisotropy_factor
-    kver=level_parameters(1)%saturated_conductivity
-    kd_hor=dz_top_sat*khor(wt_node)
-    kd_ver=dz_top_sat/kver(wt_node)
-    sat_depth=dz_top_sat
-    do i=wt_node+1,n
-      kd_hor=kd_hor+level_parameters(1)%dz(i)*khor(i)
-      kd_ver=kd_ver+level_parameters(1)%dz(i)/kver(i)
-      sat_depth=sat_depth+level_parameters(1)%dz(i)
-    end do
-    if(kd_hor<=0.0_real64.or.kd_ver<=0.0_real64.or.sat_depth<=0.0_real64)then
-      result%status=DRAIN_MULTI_INF_INVALID_PARAMETERS
-      return
-    end if
-    khor_avg=kd_hor/sat_depth
-    kver_avg=sat_depth/kd_ver
-    fac_aniso=sqrt(kver_avg/khor_avg)
 
     do i=1,levels
       if(scalar_transfer(i)<-SMALL)then
@@ -123,6 +97,7 @@ contains
       end if
     end do
 
+    if(allocated(base_flux))deallocate(base_flux)
     call distribute_multilevel_signed_divdra(effective,view,scalar_transfer,base_flux,result%multilevel)
     if(result%multilevel%status/=DRAIN_DIST_OK.or..not.allocated(base_flux))then
       result%status=DRAIN_MULTI_INF_BASE_REJECTED
