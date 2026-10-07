@@ -91,13 +91,14 @@
     },
     {
       "id": "SW431-NUT-RESIDUE",
-      "state": "ATOMIC_PREVIOUS_DAY_RESIDUE_CONTINUATION_CANDIDATE",
+      "state": "ATOMIC_FOUR_ORGAN_RESIDUE_CONTINUATION_CANDIDATE",
       "evidence": [
-        "source split operator with 1e-12 OM activation threshold and zero volatilization",
-        "root death pending DM+N persisted across restart",
-        "selected leaf-death fraction pending DM+N persisted across restart",
-        "pending residues consumed before next-day Soil-N processes",
-        "internal pending-residue N is conserved across crop and Soil-N owners"
+        "exact B1.11 crop-residue split and 1e-12 OM threshold",
+        "ordinary root/leaf residue creation is persisted across day boundary",
+        "retained dead crop N remains physical crop storage until returned",
+        "harvest root/leaf/stem/storage N is converted to four persistent pending residue stores",
+        "restart preserves all four pending residue pools",
+        "next Soil-N day consumes pending residue exactly once through the same residue splitter"
       ],
       "remaining": [
         "harvest-day root/leaf/stem/storage residue continuation",
@@ -115,10 +116,10 @@
         "soil uptake booked once as an internal soil-to-crop transfer",
         "biological fixation booked once as external N input",
         "previous-day root/leaf residue continuation is persisted and consumed before next-day Soil-N processing",
-        "whole-system transaction mass accounting and interval lineage"
+        "whole-system transaction mass accounting and interval lineage",
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state"
       ],
       "remaining": [
-        "harvest-day residue/harvest-loss continuation",
         "persisted O0/O2 coupled qualification",
         "exact byte-pinned cropgrowth orchestration oracle",
         "canonical admission"
@@ -132,7 +133,8 @@
         "strict DVSNLT and RELTR gate",
         "exact wofostnut fixation and crop-N subroutine oracles",
         "fixation booked once as external whole-system N input in coupled transaction",
-        "WOFOST81 semantics unchanged"
+        "WOFOST81 semantics unchanged",
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
@@ -149,6 +151,8 @@
     "no capability in this record is canonical ADMITTED until persisted qualification completes",
     "soil uptake is internal to the coupled Soil-N/crop-N transaction and is never double-booked as an external loss",
     "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81",
-    "current-day ordinary crop senescence becomes pending residue continuation and is consumed before the next-day Soil-N process, matching B1.11 ordering"
+    "current-day ordinary crop senescence becomes pending residue continuation and is consumed before the next-day Soil-N process, matching B1.11 ordering",
+    "retained dead crop N is persistent physical storage until explicitly returned to soil or exported; it is not booked as an immediate external sink",
+    "ordinary and harvest crop residues cross the day boundary as four persistent organ-specific pending stores and are consumed exactly once"
   ]
 }
