@@ -2,13 +2,13 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "a6bc2dcc9f146dba7b3d1dd4e0280a4bd908f30b",
+  "checkpoint_commit": "888cda48ffb4c4169dc54c23d9dd11666071068d",
   "last_reconciled_head": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "last_reconciled_upstream": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "scope": [
     "SW431-IRR-FIXED-SPRINK",
     "SW431-IRR-SCHED-SURF",
@@ -53,7 +53,8 @@
     23,
     29
   ],
-  "next_action": "Run existing F-APP07 O0/O2 process and composition qualification against persisted postimage, fix failures, then update coverage dispositions only for evidence-supported capabilities.",
+  "next_action": "Admit the five qualified capabilities in the master coverage ledger, then continue dependency-first with TCS7/SSDI runtime binding and the shared sensor/depletion trigger infrastructure.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
-  "blockers": []
+  "blockers": [],
+  "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
 }
