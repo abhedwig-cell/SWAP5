@@ -13,7 +13,7 @@ program test_fmr_b111_soil_n_management_event
 
   type(soil_n_inventory_parameters_t)::p,ps
   type(soil_n_pool_state_t)::s,ss
-  type(fmr_b111_soil_n_state_t)::state,restarted
+  type(fmr_b111_soil_n_state_t)::state,restarted,candidate
   type(fmr_b111_soil_n_management_event_t)::event
   type(fmr_b111_soil_n_management_event_receipt_t)::receipt
   integer::status
@@ -48,13 +48,17 @@ program test_fmr_b111_soil_n_management_event
   event%material%nitrate_n_fraction=0.01_real64
   event%material%volatilization_fraction=0.25_real64
 
-  call apply_fmr_b111_soil_n_management_material_event(state,event,receipt)
-  call check(receipt%status==FMR_B111_N_EVENT_OK,'amendment accepted')
+  call apply_fmr_b111_soil_n_management_material_event(state,event,candidate,receipt)
+  call check(receipt%status==FMR_B111_N_EVENT_OK,'amendment candidate')
   call state%snapshot(ps,ss,available)
-  call check(available,'amendment snapshot')
+  call check(available,'committed snapshot before amendment commit')
+  call near(ss%nitrogen_total(ps),0.0_real64,'candidate-only no committed mutation')
+  state=candidate
+  call state%snapshot(ps,ss,available)
+  call check(available,'amendment committed snapshot')
   n_after_amend=ss%nitrogen_total(ps)
 
-  call apply_fmr_b111_soil_n_management_material_event(state,event,receipt)
+  call apply_fmr_b111_soil_n_management_material_event(state,event,candidate,receipt)
   call check(receipt%status==FMR_B111_N_EVENT_APPLY_FAILED,'duplicate amendment rejected')
   call state%snapshot(ps,ss,available)
   call near(ss%nitrogen_total(ps),n_after_amend,'duplicate no mutation')
@@ -63,16 +67,17 @@ program test_fmr_b111_soil_n_management_event
   call check(available.and.consumed.and.event_id==1001_int64,'event lineage persisted')
   call initialize_fmr_b111_soil_n_state(ps,ss,restarted,status,event_id,consumed)
   call check(status==FMR_SOIL_N_OK,'restart init')
-  call apply_fmr_b111_soil_n_management_material_event(restarted,event,receipt)
+  call apply_fmr_b111_soil_n_management_material_event(restarted,event,candidate,receipt)
   call check(receipt%status==FMR_B111_N_EVENT_APPLY_FAILED,'restart duplicate rejected')
 
   event%event_id=1002_int64
   event%event_kind=FMR_B111_N_EVENT_RESIDUE
   event%material%volatilization_fraction=0.9_real64
   event%material%application_kg_m2=0.4_real64
-  call apply_fmr_b111_soil_n_management_material_event(restarted,event,receipt)
-  call check(receipt%status==FMR_B111_N_EVENT_OK,'residue accepted')
+  call apply_fmr_b111_soil_n_management_material_event(restarted,event,candidate,receipt)
+  call check(receipt%status==FMR_B111_N_EVENT_OK,'residue candidate')
   call near(receipt%nitrogen%external_n_output_kg_m2,0.0_real64,'residue volatilization forced zero')
+  restarted=candidate
   call restarted%snapshot(ps,ss,available)
   call check(available,'residue snapshot')
   n_after_residue=ss%nitrogen_total(ps)
