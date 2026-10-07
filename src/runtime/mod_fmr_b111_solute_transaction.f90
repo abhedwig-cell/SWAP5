@@ -41,7 +41,6 @@ module mod_fmr_b111_solute_transaction
     real(real64), allocatable :: water_content(:)
     type(fmr_b111_solute_transfer_rate_t) :: rate
     logical :: configured=.false.
-    logical :: allow_aquifer_change=.false.
     integer :: last_status=FMR_SOLCOMP_INVALID
   contains
     procedure :: advance => solcomp_advance
@@ -132,6 +131,11 @@ contains
     type is(fmr_b111_solute_state_t)
       if(.not.state%ready())return
       if(size(state%mobile%mass_mg_cm2)/=size(self%node_thickness_cm))return
+      scale=max(1d0,maxval(abs(state%mobile%concentration_mg_cm3)), &
+           maxval(abs(state%mobile%mass_mg_cm2/(self%water_content*self%node_thickness_cm))))
+      tol=1024d0*epsilon(1d0)*scale
+      if(any(abs(state%mobile%concentration_mg_cm3- &
+           state%mobile%mass_mg_cm2/(self%water_content*self%node_thickness_cm))>tol))return
       before=sum(state%mobile%mass_mg_cm2)+state%companion%solute_total()
       state%mobile%mass_mg_cm2=state%mobile%mass_mg_cm2+self%rate%mobile_delta_per_day*dt
       state%companion%sorbed_matrix_mass=state%companion%sorbed_matrix_mass+self%rate%sorbed_delta_per_day*dt
