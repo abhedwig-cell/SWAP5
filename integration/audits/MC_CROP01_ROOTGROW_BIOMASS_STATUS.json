@@ -22,7 +22,7 @@
   ],
   "ownership": {
     "actual_root_biomass": "read from existing primary wofost_crop_owner_state biomass owner",
-    "potential_root_biomass": "explicit external input; not copied into the actual crop owner",
+    "potential_root_biomass": "Available from optional potential WOFOST shadow owner on work/swap431-crop-potential-shadow-20261007; remains distinct from actual WRT.",
     "root_depth": "derived/stateless",
     "root_profile": "shared mod_crop_root_profile_static materialization",
     "water_mass": "unchanged existing root-extraction sink owner",
@@ -40,9 +40,9 @@
       "shared static profile production input"
     ]
   },
-  "disposition": "IMPLEMENTED_SWRD3_RESOLVER_UPSTREAM_WRTPOT_OWNER_EXISTS_INTEGRATION_QUALIFICATION_OPEN",
+  "disposition": "SWRD3_RESOLVER_AND_WRTPOT_OWNER_AVAILABLE_COMPOSITION_OPEN",
   "admission": false,
-  "remaining_blocker": "No missing WRTPOT owner remains. Full SWRD3 admission now depends on composing the accepted potential shadow root biomass with RLWTB and qualifying transaction/restart/source trajectories.",
+  "remaining_blocker": "WRTPOT owner now exists on the potential-shadow branch. Remaining gate is typed cross-branch composition into SWRD3 root-depth/profile consumers plus atomic transaction/restart qualification.",
   "preservation": [
     "WOFOST81 untouched",
     "SWRD1 admission untouched",
