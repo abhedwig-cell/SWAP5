@@ -37,8 +37,8 @@ program kalmthout_swap5_daily_pilot
   open(UNIT_MET,file=trim(met_path),status='old',action='read',iostat=ios); call require(ios==0,'open weather')
   open(UNIT_OUT,file=trim(out_path),status='replace',action='write',iostat=ios); call require(ios==0,'open output')
   read(UNIT_MET,'(A)',iostat=ios) line; call require(ios==0,'read weather header')
-  write(UNIT_OUT,'(A)') 'time,precip_mm_12h,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm'
-  dt_day=0.5_real64
+  write(UNIT_OUT,'(A)') 'time,precip_mm_hour,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm'
+  dt_day=1.0_real64/24.0_real64
 
   day_index=0; failures=0; max_residual=0.0_real64
   total_precip=0.0_real64; total_et0=0.0_real64; total_in=0.0_real64; total_out=0.0_real64
@@ -53,7 +53,7 @@ program kalmthout_swap5_daily_pilot
     forcing(1)=config%tiles(1)%base_forcing
     allocate(forcing(1)%rutter)
     call initialize_interception_window(int(1000000+day_index,int64),t0,t1,precip_mm/10.0_real64,window,wstatus)
-    call require(wstatus==INTWIN_OK,'12h precipitation source window')
+    call require(wstatus==INTWIN_OK,'hourly precipitation source window')
     rp%gross_rain_cm_per_day=(precip_mm/10.0_real64)/dt_day
     rp%surface_irrigation_cm_per_day=0.0_real64
     rp%surface_irrigation_is_intercepted=.false.
@@ -100,9 +100,9 @@ program kalmthout_swap5_daily_pilot
   close(UNIT_MET); close(UNIT_OUT)
   call app%close(status); call require(status==FMR_APP_BOOT_OK,'clean close')
   call require(failures==0,'no failed days')
-  call require(day_index==2010,'complete 12-hour forcing 2024-01-01 through 2026-10-01')
+  call require(day_index==24120,'complete hourly forcing 2024-01-01 through 2026-10-01')
   call require(max_residual<=HARD_MASS_GATE,'hard mass gate')
-  write(*,'(A,I0)') 'KALMTHOUT_WINDOWS=',day_index
+  write(*,'(A,I0)') 'KALMTHOUT_HOURS=',day_index
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_PRECIP_MM=',total_precip
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_ET0_MM=',total_et0
   write(*,'(A,ES18.10)') 'KALMTHOUT_MAX_MASS_RESIDUAL_CM=',max_residual
