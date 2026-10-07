@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - work/f-app07-hupsel-tcs1-dcs2-irrigation
+      - work/mc-irr01-management-cluster-20261007
     paths:
       - 'src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90'
       - 'tests/f-app07/**'
