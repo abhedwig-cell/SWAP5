@@ -98,6 +98,7 @@ on:
       - 'tests/fwof/pp02/run_fmr_b111_soil_crop_n_transaction.sh'
       - 'src/process/mod_b111_reactive_solute_substep.f90'
       - 'tests/physics/test_b111_reactive_solute_substep.f90'
+      - 'tests/physics/test_b111_reactive_solute_substep_multinode.f90'
       - 'tests/physics/run_b111_reactive_solute_substep.sh'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
