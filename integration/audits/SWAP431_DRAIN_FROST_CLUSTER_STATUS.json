@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MC-DRAIN01-FOUNDATION",
+  "baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "branch": "work/swap431-drain-signed-multilevel-r2-20261007",
+  "checkpoint_commit": null,
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implemented_capabilities": [
+    "SW431-DRAIN-DIV-SIGNED",
+    "SW431-DRAIN-DIV-MULTI"
+  ],
+  "scope": "Ordinary no-frost signed single-level DIVDRA plus interacting multilevel discharge-layer partitioning, wired through existing serialized DIVDRA composition/runtime. Existing positive-only API remains fail-closed for negative transfers.",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
+  ],
+  "relevant_paths": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "tests/fmig431/test_swap431_drain_signed_divdra.f90",
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+  ],
+  "dependency_surface": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_process_hydraulic_view.f90"
+  ],
+  "invariants": [
+    "scalar transfer remains authoritative mass object",
+    "publication occurs only after process success",
+    "preallocated drainage target fails closed",
+    "serialized runtime cleans transient forcing materialization",
+    "no new persistent/restart state",
+    "B19 frost physics is not duplicated or changed"
+  ],
+  "current_test_state": {
+    "focused_runner": "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "expected_optimizations": [
+      "O0",
+      "O2"
+    ],
+    "execution": "PENDING_ON_CURRENT_CANONICAL",
+    "reason": "Replayed unchanged drainage postimage onto current canonical after verifying the intervening delta is crop-only and outside the recorded drainage dependency surface."
+  },
+  "active_ci_observation": {
+    "status": "NO_CURRENT_HEAD_RUN_STARTED"
+  },
+  "next_action": "Obtain compiler execution for the focused runner; repair any compile/test defects. Only then persist qualification evidence and reconcile census dispositions. In parallel, continue source-bound design decomposition for DRAMET3, INF-SPLIT, DISLAYER and TOPINTERFLOW without claiming closure.",
+  "recovery_point": "work/swap431-drain-signed-multilevel-r2-20261007",
+  "blockers": [],
+  "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878"
+}
