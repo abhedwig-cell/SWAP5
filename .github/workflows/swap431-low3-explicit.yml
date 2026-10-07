@@ -6,9 +6,12 @@ on:
     paths:
       - 'src/process/mod_b111_explicit_cauchy_profile_flux.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/solver/mod_b111_profile_groundwater_projection.f90'
       - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
       - 'tests/fmig431/test_b111_explicit_cauchy_profile_flux.f90'
       - 'tests/fmig431/run_b111_explicit_cauchy_profile_flux.sh'
+      - 'tests/fmig431/test_b111_profile_groundwater_projection.f90'
+      - 'tests/fmig431/run_b111_profile_groundwater_projection.sh'
       - 'tests/fmig431/test_swap431_low3_explicit_runtime.f90'
       - 'tests/fmig431/run_swap431_low3_explicit_runtime.py'
       - 'tests/fmig431/test_swap431_low3_explicit_application.f90'
@@ -24,6 +27,8 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y gfortran
       - name: Component source oracle O0 O2
         run: bash tests/fmig431/run_b111_explicit_cauchy_profile_flux.sh
+      - name: CALCGWL profile projection O0 O2
+        run: bash tests/fmig431/run_b111_profile_groundwater_projection.sh
       - name: Transactional runtime and implicit preservation O0 O2
         run: python3 tests/fmig431/run_swap431_low3_explicit_runtime.py
       - name: Production bootstrap explicit application O0 O2
