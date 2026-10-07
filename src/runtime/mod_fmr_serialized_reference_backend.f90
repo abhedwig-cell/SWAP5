@@ -3354,8 +3354,10 @@ contains
         if (.not. all(ieee_is_finite(boesten_values))) return
         if (any(boesten_values(1:8) < 0.0_real64)) return
         if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) return
-        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
-            forcing%boesten_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        ! Runon is an admitted shared-surface source for the B1.11 dynamic
+        ! top boundary. It must not be reclassified as direct macropore input.
+        ! Snowmelt remains outside this bounded Boesten envelope here.
+        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64) return
         self%boesten_evaporation_forcing = forcing%boesten_evaporation
       else
         if (allocated(forcing%boesten_evaporation)) return
