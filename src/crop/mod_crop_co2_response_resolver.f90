@@ -13,6 +13,7 @@ module mod_crop_co2_response_resolver
   type, public :: crop_co2_response_parameters_t
     private
     logical :: initialized = .false.
+    logical :: enabled = .false.
     type(wofost_rate_table_t) :: efficiency_by_co2
     type(wofost_rate_table_t) :: amax_by_co2
     type(wofost_rate_table_t) :: transpiration_by_co2
@@ -32,37 +33,51 @@ module mod_crop_co2_response_resolver
 
 contains
 
-  subroutine construct_crop_co2_response_parameters(co2_ppm, efficiency_factor, amax_factor, transpiration_factor, &
-                                                     parameters, status)
-    real(real64), intent(in) :: co2_ppm(:), efficiency_factor(:), amax_factor(:), transpiration_factor(:)
+  subroutine construct_crop_co2_response_parameters(efficiency_co2_ppm, efficiency_factor, &
+                                                     amax_co2_ppm, amax_factor, &
+                                                     transpiration_co2_ppm, transpiration_factor, &
+                                                     enabled, parameters, status)
+    real(real64), intent(in) :: efficiency_co2_ppm(:), efficiency_factor(:)
+    real(real64), intent(in) :: amax_co2_ppm(:), amax_factor(:)
+    real(real64), intent(in) :: transpiration_co2_ppm(:), transpiration_factor(:)
+    logical, intent(in) :: enabled
     type(crop_co2_response_parameters_t), intent(out) :: parameters
     integer, intent(out) :: status
     integer :: table_status
 
     parameters = crop_co2_response_parameters_t()
     status = CROP_CO2_RESPONSE_INVALID_TABLE
-    if (size(co2_ppm) < 1) return
-    if (size(efficiency_factor) /= size(co2_ppm) .or. size(amax_factor) /= size(co2_ppm) .or. &
-        size(transpiration_factor) /= size(co2_ppm)) return
-    if (.not. all(ieee_is_finite(co2_ppm)) .or. any(co2_ppm <= 0.0_real64)) return
-    if (.not. all(ieee_is_finite(efficiency_factor)) .or. any(efficiency_factor < 0.0_real64)) return
-    if (.not. all(ieee_is_finite(amax_factor)) .or. any(amax_factor < 0.0_real64)) return
-    if (.not. all(ieee_is_finite(transpiration_factor)) .or. any(transpiration_factor < 0.0_real64)) return
+    if (.not. enabled) then
+      parameters%enabled = .false.
+      parameters%initialized = .true.
+      status = CROP_CO2_RESPONSE_OK
+      return
+    end if
+    if (.not. valid_response_table(efficiency_co2_ppm, efficiency_factor)) return
+    if (.not. valid_response_table(amax_co2_ppm, amax_factor)) return
+    if (.not. valid_response_table(transpiration_co2_ppm, transpiration_factor)) return
 
-    call construct_wofost_rate_table(co2_ppm, efficiency_factor, parameters%efficiency_by_co2, table_status)
+    call construct_wofost_rate_table(efficiency_co2_ppm, efficiency_factor, parameters%efficiency_by_co2, table_status)
     if (table_status /= WOFOST_RATE_TABLE_OK) return
-    call construct_wofost_rate_table(co2_ppm, amax_factor, parameters%amax_by_co2, table_status)
+    call construct_wofost_rate_table(amax_co2_ppm, amax_factor, parameters%amax_by_co2, table_status)
     if (table_status /= WOFOST_RATE_TABLE_OK) return
-    call construct_wofost_rate_table(co2_ppm, transpiration_factor, parameters%transpiration_by_co2, table_status)
+    call construct_wofost_rate_table(transpiration_co2_ppm, transpiration_factor, parameters%transpiration_by_co2, table_status)
     if (table_status /= WOFOST_RATE_TABLE_OK) return
 
+    parameters%enabled = .true.
     parameters%initialized = .true.
     status = CROP_CO2_RESPONSE_OK
   end subroutine construct_crop_co2_response_parameters
 
   logical function crop_co2_response_parameters_ready(self) result(ready)
     class(crop_co2_response_parameters_t), intent(in) :: self
-    ready = self%initialized .and. self%efficiency_by_co2%ready() .and. self%amax_by_co2%ready() .and. &
+    ready = .false.
+    if (.not. self%initialized) return
+    if (.not. self%enabled) then
+      ready = .true.
+      return
+    end if
+    ready = self%efficiency_by_co2%ready() .and. self%amax_by_co2%ready() .and. &
             self%transpiration_by_co2%ready()
   end function crop_co2_response_parameters_ready
 
@@ -76,6 +91,11 @@ contains
     response = crop_co2_response_t()
     status = CROP_CO2_RESPONSE_INVALID_TABLE
     if (.not. parameters%ready()) return
+    if (.not. parameters%enabled) then
+      response%atmospheric_co2_ppm = 0.0_real64
+      status = CROP_CO2_RESPONSE_OK
+      return
+    end if
     status = CROP_CO2_RESPONSE_INVALID_FORCING
     if (.not. ieee_is_finite(atmospheric_co2_ppm) .or. atmospheric_co2_ppm <= 0.0_real64) return
 
@@ -104,5 +124,18 @@ contains
     end if
     status = CROP_CO2_RESPONSE_OK
   end subroutine evaluate_crop_co2_response
+
+  logical function valid_response_table(x, y) result(valid)
+    real(real64), intent(in) :: x(:), y(:)
+    integer :: i
+    valid = .false.
+    if (size(x) < 1 .or. size(y) /= size(x)) return
+    if (.not. all(ieee_is_finite(x)) .or. any(x <= 0.0_real64)) return
+    if (.not. all(ieee_is_finite(y)) .or. any(y < 0.0_real64)) return
+    do i = 2, size(x)
+      if (x(i) <= x(i-1)) return
+    end do
+    valid = .true.
+  end function valid_response_table
 
 end module mod_crop_co2_response_resolver
