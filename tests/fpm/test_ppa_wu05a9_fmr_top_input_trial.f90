@@ -133,7 +133,7 @@ program test_ppa_wu05a9_fmr_top_input_trial
   if(migmac11)then
     parameters%macropore%surface_pond_inflow_enabled=.true.
     parameters%macropore%surface_pond_threshold_cm=merge(1.0_real64,1.0e-4_real64,migmac11_no_pond)
-    parameters%macropore%surface_macropore_conductivity_cm_per_day=merge(30.0_real64,3.0_real64,migmac11_partial)
+    parameters%macropore%surface_macropore_conductivity_cm_per_day=merge(3000.0_real64,3.0_real64,migmac11_partial)
   end if
   call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
   call require(all(abs(parameters%macropore%matrix_area_fraction- &
@@ -178,8 +178,14 @@ program test_ppa_wu05a9_fmr_top_input_trial
   physical%macropore%volume_domain_cp=geometry%volume_domain_cp
   physical%macropore%water_domain_cp=0.0_real64
   physical%macropore%water_domain_cp(1,numnod)=0.20_real64
-  if(migmac11_partial .and. macro_top==1) &
-       physical%macropore%water_domain_cp(1,1)=max(0.0_real64,geometry%volume_domain_cp(1,1)-1.0e-8_real64)
+  if(migmac11_partial .and. macro_top==1)then
+    ! A9 capacity is total domain storage, not only the surface compartment.
+    ! Leave only a tiny total residual capacity so the pond receipt must be
+    ! partly accepted and the remainder returned to the shared surface donor.
+    physical%macropore%water_domain_cp=geometry%volume_domain_cp
+    physical%macropore%water_domain_cp(1,1)=max(0.0_real64, &
+         physical%macropore%water_domain_cp(1,1)-1.0e-8_real64)
+  end if
   if(dynamic_flag=='4' .or. dynamic_flag=='5') &
        physical%macropore%water_domain_cp=0.85_real64*geometry%volume_domain_cp
   call canonicalize_macropore_standard_storage(physical%macropore,macro_top,z,dz,storage_view,ok)
