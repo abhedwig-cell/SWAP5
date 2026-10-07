@@ -225,7 +225,7 @@ contains
     if (.not. int64_values_unique(config%tiles%tile_id)) return
     if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile .and. &
          .not. ordinary_head_profile .and. .not. ordinary_cauchy_profile .and. .not. ordinary_explicit_cauchy_profile .and. &
-         .not. ordinary_lysimeter_profile) then
+         .not. ordinary_lysimeter_profile .and. .not. ordinary_simultaneous_head_flux_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
