@@ -1,0 +1,43 @@
+{
+  "schema": "swap431.mc_crop01.fixed_runtime.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capability_ids": [
+    "SW431-CROP-FIXED",
+    "SW431-CROP-FIXED-THERMAL"
+  ],
+  "implementation": [
+    "src/crop/mod_fixed_crop_owner.f90",
+    "src/crop/mod_crop_calendar_end_event.f90",
+    "src/runtime/mod_fmr_fixed_crop_transaction.f90"
+  ],
+  "transaction": {
+    "source_event": "existing accepted daily F-WOF lineage identity",
+    "publication": "fixed owner + consumed event receipt in one kernel candidate/commit",
+    "replay": "same checkpoint/event yields replay-equivalent candidate",
+    "rollback": "committed owner and receipt unchanged",
+    "crop_end": "shared source-bound crop-end resolver applied after daily DVS update",
+    "persistence": "owner + receipt export/reconstruct"
+  },
+  "bounded_source_rule": {
+    "IDEV1": "DVS/LAI/optional WRT supported; pinned source leaves TBASE unassigned so IDEV1 TSUM is explicitly outside the claim",
+    "IDEV2": "TSUMEA/TSUMAM and DVS/LAI/optional WRT deterministic"
+  },
+  "qualification": {
+    "component_owner": "local strict O0/O2 PASS on work/swap431-crop-fixed-owner-20261007",
+    "transaction_test": "tests/fmig431/test_swap431_fixed_crop_transaction.f90",
+    "transaction_runner": "tests/fmig431/run_swap431_fixed_crop_transaction.sh",
+    "transaction_status": "READY_FOR_O0_O2_FULL_REPO_GATE",
+    "expected_markers": [
+      "SW431_CROP_FIXED_ATOMIC_TRANSACTION=PASS",
+      "SW431_CROP_FIXED_END_EVENT=PASS",
+      "SW431_CROP_FIXED_RESTART=PASS"
+    ]
+  },
+  "remaining": [
+    "Execute full O0/O2 transaction gate.",
+    "Bind rotation crop_key to immutable fixed parameter set at season start.",
+    "Compose fixed root-depth/profile selection where configured, without duplicating root sink ownership."
+  ],
+  "disposition": "FIXED_DAILY_TRANSACTION_AND_RESTART_IMPLEMENTED_QUALIFICATION_OPEN",
+  "admission": false
+}
