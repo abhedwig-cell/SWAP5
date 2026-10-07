@@ -9,6 +9,8 @@ module mod_fmr_bartholomeus_execution
   use mod_bartholomeus_factor_provider, only: evaluate_bartholomeus_factors_from_state
   use mod_fmr_bartholomeus_activation
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t
+  use mod_root_oxygen_reproduction_response, only: root_oxygen_reproduction_parameters_t, &
+       evaluate_root_oxygen_reproduction_profile, ROOT_OXYGEN_REPRO_OK
   use mod_root_uptake_oxygen_composition, only: compose_root_sink_with_oxygen_factor, ROOT_OXYGEN_COMPOSE_OK
   implicit none
   private
@@ -21,7 +23,8 @@ module mod_fmr_bartholomeus_execution
 
 contains
   subroutine fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,w_root,w_root_z0, &
-       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors)
+       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,reproduction_parameters, &
+       saturated_water_content,z_cm,zbotcp_cm,dz_cm)
     type(fmr_bartholomeus_selection_t),intent(in)::config
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal
@@ -35,6 +38,8 @@ contains
     type(root_water_uptake_flux_result_t),intent(out)::final_fluxes
     integer,intent(out)::status
     real(real64),allocatable,optional,intent(out)::oxygen_factors(:)
+    type(root_oxygen_reproduction_parameters_t),optional,intent(in)::reproduction_parameters
+    real(real64),optional,intent(in)::saturated_water_content(:),z_cm(:),zbotcp_cm(:),dz_cm(:)
     type(bartholomeus_runtime_view_t)::view
     real(real64),allocatable::factors(:)
     integer::route,wmode,input_status,compose_status
@@ -53,8 +58,55 @@ contains
       status=FMR_BARTHOLOMEUS_EXEC_OK
       return
     end if
-    if(route/=FMR_BARTHOLOMEUS_ACTIVE) then
+    if(route/=FMR_BARTHOLOMEUS_ACTIVE .and. route/=FMR_BARTHOLOMEUS_REPRODUCTION) then
       status=FMR_BARTHOLOMEUS_EXEC_UNSUPPORTED;return
+    end if
+
+    if(route==FMR_BARTHOLOMEUS_REPRODUCTION) then
+      if(.not.present(reproduction_parameters) .or. .not.present(saturated_water_content) .or. &
+         .not.present(z_cm) .or. .not.present(zbotcp_cm) .or. .not.present(dz_cm)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(.not.allocated(base_fluxes%root_extraction_sink)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(size(z_cm)/=size(zbotcp_cm) .or. size(z_cm)/=size(dz_cm) .or. &
+         size(z_cm)/=size(saturated_water_content)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(size(z_cm)>size(base_fluxes%root_extraction_sink)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(size(z_cm)==0) then
+        final_fluxes=base_fluxes
+        status=FMR_BARTHOLOMEUS_EXEC_OK
+        return
+      end if
+      if(hydraulic%active_nodes<size(z_cm) .or. thermal%active_nodes<size(z_cm)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(.not.allocated(hydraulic%water_content) .or. .not.allocated(thermal%temperature_c)) then
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      call evaluate_root_oxygen_reproduction_profile(reproduction_parameters, &
+           hydraulic%water_content(1:size(z_cm)), saturated_water_content, &
+           thermal%temperature_c(1:size(z_cm)), size(z_cm), z_cm, zbotcp_cm, dz_cm, factors, input_status)
+      if(input_status/=ROOT_OXYGEN_REPRO_OK) then
+        status=FMR_BARTHOLOMEUS_EXEC_PHYSICS;return
+      end if
+      call compose_root_sink_with_oxygen_factor(base_fluxes,size(z_cm),factors,final_fluxes,compose_status)
+      if(compose_status/=ROOT_OXYGEN_COMPOSE_OK) then
+        final_fluxes=root_water_uptake_flux_result_t()
+        status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
+      end if
+      if(present(oxygen_factors)) then
+        if(allocated(oxygen_factors)) deallocate(oxygen_factors)
+        allocate(oxygen_factors(size(base_fluxes%root_extraction_sink)))
+        oxygen_factors=1.0_real64
+        oxygen_factors(1:size(z_cm))=factors
+      end if
+      status=FMR_BARTHOLOMEUS_EXEC_OK
+      return
     end if
 
     ! No extraction requires no oxygen physics or current owner views.
