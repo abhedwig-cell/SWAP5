@@ -44,7 +44,7 @@ contains
     status = B111_LEGACY_HYD_INVALID_SHAPE
     n = size(model)
     if (n <= 0 .or. size(cofgen,2) /= n .or. size(cofgen,1) < 17) return
-    if (any(model < 1) .or. any(model > 3)) then
+    if (any(model < 1) .or. any(model > 11) .or. any(model == 4)) then
       status = B111_LEGACY_HYD_UNSUPPORTED_MODEL
       return
     end if
@@ -110,7 +110,7 @@ contains
       case (3)
         call evaluate_model3(self%cofgen(:,i), pressure_head(i), water_content(i), conductivity(i), capacity(i))
       case default
-        error stop 'B1.11 legacy hydraulic provider: unsupported configured model'
+        cycle
       end select
       if (pressure_head(i) > -1.0_real64 .and. capacity(i) < floor_capacity) capacity(i) = floor_capacity
       dconductivity_dhead(i) = 0.0_real64
@@ -132,7 +132,7 @@ contains
     call self%base%evaluate_water_content_increment(pressure_head, previous_pressure_head, water_content, &
          previous_water_content, increment)
     do i = 1, size(increment)
-      if (self%model(i) /= 1) increment(i) = water_content(i)-previous_water_content(i)
+      if (self%model(i) == 2 .or. self%model(i) == 3) increment(i) = water_content(i)-previous_water_content(i)
     end do
   end subroutine b111_legacy_hydraulic_storage_increment
 
@@ -166,13 +166,15 @@ contains
     case (3)
       call model3_conductivity(self%cofgen(:,node_index), pressure_head, water_content, conductivity)
       available = ieee_is_finite(conductivity) .and. conductivity >= 0.0_real64
+    case default
+      call self%base%evaluate_point_conductivity(node_index, pressure_head, water_content, conductivity, available)
     end select
   end subroutine b111_legacy_hydraulic_point_conductivity
 
   logical function b111_legacy_hydraulic_active(self) result(active)
     class(b111_legacy_hydraulic_provider_t), intent(in) :: self
     active = allocated(self%model)
-    if (active) active = any(self%model /= 1)
+    if (active) active = any(self%model == 2) .or. any(self%model == 3)
   end function b111_legacy_hydraulic_active
 
   subroutine require_ready(self, n)
