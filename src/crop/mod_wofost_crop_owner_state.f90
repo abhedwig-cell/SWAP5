@@ -54,6 +54,7 @@ module mod_wofost_crop_owner_state
     procedure, public :: read_actual_root_biomass => wofost_read_actual_root_biomass
     procedure, public :: derive_dvs_root_depth => wofost_derive_dvs_root_depth
     procedure, public :: derive_biomass_root_depth => wofost_derive_biomass_root_depth
+    procedure, public :: derive_biomass_root_uptake_input => wofost_derive_biomass_root_uptake_input
     procedure, public :: derive_dvs_root_uptake_input => wofost_derive_dvs_root_uptake_input
     procedure, public :: derive_actual_leaf_area_index => wofost_derive_actual_leaf_area_index
   end type wofost_crop_owner_state_t
@@ -269,6 +270,56 @@ contains
 
     available = .true.
   end subroutine wofost_derive_biomass_root_depth
+
+  subroutine wofost_derive_biomass_root_uptake_input(self, depth_table, density_table, soil_maximum_root_depth_cm, &
+                                                        maximum_root_biomass, potential_root_biomass, zbotcp_cm, &
+                                                        input, available, status)
+    class(wofost_crop_owner_state_t), intent(in) :: self
+    type(wofost_rate_table_t), intent(in) :: depth_table, density_table
+    real(real64), intent(in) :: soil_maximum_root_depth_cm, maximum_root_biomass, potential_root_biomass
+    real(real64), intent(in) :: zbotcp_cm(:)
+    type(crop_root_uptake_input_t), intent(out) :: input
+    logical, intent(out) :: available
+    integer, intent(out) :: status
+
+    type(crop_root_depth_biomass_result_t) :: depths
+    real(real64), allocatable :: cumulative(:)
+    integer :: rooted_nodes, local_status, contract_status
+    logical :: depth_available
+
+    input = crop_root_uptake_input_t()
+    available = .false.
+    status = self%validate()
+    if (status /= WOFOST_CROP_OWNER_OK) return
+    if (.not. self%crop_emerged) return
+
+    call self%derive_biomass_root_depth(depth_table, soil_maximum_root_depth_cm, maximum_root_biomass, &
+         potential_root_biomass, depths, depth_available, local_status)
+    if (local_status /= WOFOST_CROP_OWNER_OK .or. .not. depth_available) then
+      status = WOFOST_CROP_OWNER_INVALID_ROOT_DEPTH
+      return
+    end if
+
+    call materialize_static_root_profile(density_table, zbotcp_cm, depths%maximum_root_depth_cm, &
+         depths%actual_root_depth_cm, rooted_nodes, cumulative, local_status)
+    if (local_status /= CROP_ROOT_PROFILE_OK) then
+      status = WOFOST_CROP_OWNER_INVALID_ROOT_PROFILE
+      return
+    end if
+
+    input%crop_emerged = .true.
+    input%potential_transpiration = 0.0_real64
+    input%rooted_nodes = rooted_nodes
+    if (allocated(cumulative)) input%cumulative_root_fraction = cumulative
+
+    call validate_crop_root_uptake_input(input, size(zbotcp_cm), contract_status)
+    if (contract_status /= CROP_ROOT_INPUT_OK) then
+      input = crop_root_uptake_input_t()
+      status = WOFOST_CROP_OWNER_INVALID_ROOT_PROFILE
+      return
+    end if
+    available = .true.
+  end subroutine wofost_derive_biomass_root_uptake_input
 
   subroutine wofost_derive_dvs_root_uptake_input(self, depth_table, density_table, maximum_root_depth_cm, &
                                                     zbotcp_cm, input, available, status)
