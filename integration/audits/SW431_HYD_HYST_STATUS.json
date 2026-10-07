@@ -134,13 +134,23 @@
       "HYST1/HYST2 rejected-trial rollback",
       "F-SI39 KSATEXM preservation",
       "ROSS12 reference solver adapter preservation"
-    ]
+    ],
+    "queue_observation": "Repository-wide Actions backlog observed; code-postimage focused run remains queued without runner assignment after active polling."
   },
   "blockers": [
     "MODEL12/RIA exact corrected B1.11 MOD_RIA source body is not materialized in repository authority.",
     "PDI VAPOR has a separately confirmed Celsius/Kelvin defect and cannot be copied from legacy without corrected-reference admission.",
     "Generic SWSOPHY=1 TSPACK TABLE exact B0 source bytes are not present; the public historical file is not byte-identical to the B0 member and cannot serve as exact admission authority."
   ],
-  "next_action": "Actively await run 37638247514. If green, persist qualification/closeout for the implemented HYD/HYST slice without broadening RIA, VAPOR or generic TSPACK TABLE.",
-  "recovery_point": "68ab625daa1c1d87bd76584bf4d4c11bed1c5e5a"
+  "next_action": "Wait for focused run 37638247514 on code postimage 68ab625d. If green, persist bounded qualification/closeout and open canonical admission PR. If red, inspect the focused job logs and repair before admission.",
+  "recovery_point": "2d9db1ee9dd6187a2903fca40d0c92b289d77d42",
+  "last_reconciled_upstream": "integration/f-ci-canonical@4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "upstream_reconciliation": {
+    "from": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+    "to": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+    "commits": 15,
+    "dependency_surface_intersection": false,
+    "changed_scope": "crop/root implementation and tests only",
+    "disposition": "HYD/HYST implementation and local evidence remain applicable; no scientific requalification required solely for this upstream delta"
+  }
 }
