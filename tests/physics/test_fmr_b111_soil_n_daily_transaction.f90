@@ -56,13 +56,11 @@ program test_fmr_b111_soil_n_daily_transaction
   call check(available,'process receipt')
   call near(tx%accepted_total_out,process%owner_receipt%external_n_output_kg_m2,'process transaction receipt identity')
 
-  ! An impossible denitrification candidate must not mutate the accepted day-1 state.
+  ! The B1.11 owner is deliberately a one-day model. A half-day trial is
+  ! rejected before process mutation and must leave the accepted day-1 state intact.
   n_before=n_after
-  env%denitrification_ref_per_day=1000.0_real64
-  call configure_fmr_b111_soil_n_daily_model(tp,[0.45_real64],0.50_real64,0.55_real64,env,xf,model,status)
-  call check(status==FMR_B111_NDAY_OK,'reject model configure')
-  call execute_reference_interval(model,committed,1.0_real64,2.0_real64,policy,tx)
-  call check(tx%status==TX_STATUS_RETRY_EXHAUSTED,'impossible daily candidate rejected')
+  call execute_reference_interval(model,committed,1.0_real64,1.5_real64,policy,tx)
+  call check(tx%status==TX_STATUS_RETRY_EXHAUSTED,'non-daily candidate rejected')
   call snapshot_state(committed,ps,snap,available)
   call check(available,'post-reject snapshot')
   call near(snap%nitrogen_total(ps),n_before,'rejected trial rollback identity')
