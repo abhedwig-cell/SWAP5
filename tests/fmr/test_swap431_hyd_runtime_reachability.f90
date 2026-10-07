@@ -41,6 +41,8 @@ program test_swap431_hyd_runtime_reachability
   call run_linear_table_case()
   call run_hysteresis_case(1)
   call run_hysteresis_case(2)
+  call run_hysteresis_rejection_case(1)
+  call run_hysteresis_rejection_case(2)
   write(*,'(A)') 'SW431_HYD_RUNTIME_REACHABILITY=PASS'
 
 contains
@@ -167,6 +169,104 @@ contains
       call require(.false.,'hysteresis restored type')
     end select
     write(*,'(A,I0,1X,ES16.8)')'SW431_HYST_RUNTIME_RESTART_PASS=',mode,output%mass%residual
+  end subroutine
+
+  subroutine run_hysteresis_rejection_case(mode)
+    integer,intent(in)::mode
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    class(transaction_state_t),allocatable :: before_state,after_state
+    real(real64) :: k0
+    integer :: active_calls,status
+    integer(int64) :: before_revision,after_revision
+    logical :: ok,before_available,after_available
+
+    call initialize_parameters(parameters,1,.false.)
+    parameters%hysteresis_active=.true.
+    parameters%hysteresis_initial_mode=mode
+    allocate(parameters%hysteresis_parameters)
+    call initialize_b111_hysteresis(parameters%hysteresis_parameters, &
+         spread(0.06_real64,1,numnod),spread(0.44_real64,1,numnod), &
+         spread(0.018_real64,1,numnod),spread(0.026_real64,1,numnod), &
+         spread(1.62_real64,1,numnod),spread(0.01_real64,1,numnod),status)
+    call require(status==B111_HYST_OK,'hysteresis reject parameter init')
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'hysteresis reject committed init')
+    ! Deliberately perturb the equilibrium forcing so full and two-half
+    ! candidates diverge and temporal_tolerance=0 rejects the post-solver trial.
+    call initialize_forcing(forcing,0.0_real64)
+    call initialize_column(column,template)
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
+    call initialize_config(config)
+    config%transaction%temporal_tolerance=0.0_real64
+    config%transaction%max_retries=0
+    config%max_committed_substeps=1
+
+    before_revision=committed%current_revision()
+    call committed%snapshot(before_state,before_available)
+    call require(before_available.and.allocated(before_state),'hysteresis reject pre snapshot')
+
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+
+    call require(.not.output%committed,'hysteresis rejected trial not committed')
+    after_revision=committed%current_revision()
+    call committed%snapshot(after_state,after_available)
+    call require(after_available.and.allocated(after_state),'hysteresis reject post snapshot')
+    call require(after_revision==before_revision,'hysteresis rejection revision unchanged')
+    call require_hysteresis_identity(before_state,after_state)
+    write(*,'(A,I0)')'SW431_HYST_ROLLBACK_PASS=',mode
+  end subroutine
+
+  subroutine require_hysteresis_identity(left_state,right_state)
+    class(transaction_state_t),allocatable,intent(in)::left_state,right_state
+    select type(left=>left_state)
+    type is(fmr_b110_physical_state_t)
+      select type(right=>right_state)
+      type is(fmr_b110_physical_state_t)
+        call require(allocated(left%hysteresis).and.allocated(right%hysteresis),'hysteresis rollback state allocated')
+        call require(left%hysteresis%active_nodes==right%hysteresis%active_nodes,'hysteresis rollback node identity')
+        call require(all(left%hysteresis%branch==right%hysteresis%branch),'hysteresis rollback branch identity')
+        call require(all(transfer(left%hysteresis%theta_r_scan,0_int64,size(left%hysteresis%theta_r_scan)) == &
+             transfer(right%hysteresis%theta_r_scan,0_int64,size(right%hysteresis%theta_r_scan))), &
+             'hysteresis rollback theta-r identity')
+        call require(all(transfer(left%hysteresis%theta_s_scan,0_int64,size(left%hysteresis%theta_s_scan)) == &
+             transfer(right%hysteresis%theta_s_scan,0_int64,size(right%hysteresis%theta_s_scan))), &
+             'hysteresis rollback theta-s identity')
+        call require(all(transfer(left%hysteresis%alpha_active,0_int64,size(left%hysteresis%alpha_active)) == &
+             transfer(right%hysteresis%alpha_active,0_int64,size(right%hysteresis%alpha_active))), &
+             'hysteresis rollback alpha identity')
+        call require(all(transfer(left%hysteresis%accepted_head,0_int64,size(left%hysteresis%accepted_head)) == &
+             transfer(right%hysteresis%accepted_head,0_int64,size(right%hysteresis%accepted_head))), &
+             'hysteresis rollback head-history identity')
+        call require(all(transfer(left%hysteresis%accepted_theta,0_int64,size(left%hysteresis%accepted_theta)) == &
+             transfer(right%hysteresis%accepted_theta,0_int64,size(right%hysteresis%accepted_theta))), &
+             'hysteresis rollback theta-history identity')
+      class default
+        call require(.false.,'hysteresis rollback right type')
+      end select
+    class default
+      call require(.false.,'hysteresis rollback left type')
+    end select
   end subroutine
 
   subroutine run_linear_table_case()
