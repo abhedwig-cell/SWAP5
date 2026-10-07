@@ -1,8 +1,13 @@
 program test_swap431_hyd_power
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_b110_default_mvg_provider, only: b110_hconduc
+  use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_CONDUCTIVITY, CONSTITUTIVE_DEMAND_CAPACITY
+  use mod_b110_default_mvg_provider, only: b110_hconduc, b110_default_mvg_parameters_t, &
+       b110_default_mvg_provider_t, initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
-  real(real64) :: c(42), h, theta, kbase, kpower, expected, relsat, term1
+  type(b110_default_mvg_parameters_t), target :: parameters
+  type(b110_default_mvg_provider_t) :: provider
+  real(real64) :: c(42), cofgen(24,1), h, theta, kbase, kpower, expected, relsat, term1
+  real(real64) :: heads(1), water(1), conductivity(1), capacity(1), dkdh(1)
   c=0.0_real64
   c(1)=0.05_real64; c(2)=0.45_real64; c(3)=10.0_real64
   c(4)=0.02_real64; c(5)=0.5_real64; c(6)=2.0_real64; c(7)=0.5_real64
@@ -27,6 +32,18 @@ program test_swap431_hyd_power
 
   kbase=b110_hconduc(c,h,theta,.false.)
   if (abs(kbase-kpower)<=1.0e-14_real64) error stop 'power-disabled preservation not discriminated'
+
+  ! The demand-specific provider path must carry the same power-tail option.
+  cofgen=c(1:24)
+  cofgen=reshape(cofgen,[24,1])
+  call initialize_b110_default_mvg_parameters(parameters,cofgen,enable_conductivity_power_tail=.true.)
+  call bind_b110_default_mvg_provider(provider,parameters,1.0_real64)
+  heads=[h]; water=0.0_real64; conductivity=0.0_real64; capacity=0.0_real64; dkdh=0.0_real64
+  call provider%evaluate_demand(heads,CONSTITUTIVE_DEMAND_CONDUCTIVITY+CONSTITUTIVE_DEMAND_CAPACITY, &
+       water,conductivity,capacity,dkdh)
+  call assert_close(conductivity(1),expected,1.0e-13_real64,'demand K+capacity power tail')
+  call provider%evaluate_demand(heads,CONSTITUTIVE_DEMAND_CONDUCTIVITY,water,conductivity,capacity,dkdh)
+  call assert_close(conductivity(1),expected,1.0e-13_real64,'demand K power tail')
   print '(a)','PASS swap431 hyd power'
 contains
   subroutine assert_close(actual,expected,tolerance,label)
