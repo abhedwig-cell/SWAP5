@@ -149,7 +149,7 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_fluxes_t, &
-       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK
+       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK, SOLUTE_INVALID
   use mod_solute_mobile_advection_dispersion, only: mobile_dispersion_physics_t, mobile_transport_receipt_t, &
        advance_mobile_advection_dispersion
   use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t, fmr_base_salt_normalized_error
