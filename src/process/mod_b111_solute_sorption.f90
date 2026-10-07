@@ -97,7 +97,7 @@ contains
       else
         lo=c
       end if
-      if(hi<=lo.or.c==lo.or.c==hi)exit
+      if(hi<=lo)exit
     end do
     result%status=B111_SORP_NOCONV
   end subroutine
