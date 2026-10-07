@@ -145,29 +145,31 @@ contains
     consumed=self%management_event_consumed
   end subroutine
 
-  subroutine apply_fmr_b111_soil_n_management_event(state,event_id,transfer,status,receipt)
-    type(fmr_b111_soil_n_state_t),intent(inout)::state
+  subroutine apply_fmr_b111_soil_n_management_event(committed,event_id,transfer,candidate,status,receipt)
+    type(fmr_b111_soil_n_state_t),intent(in)::committed
     integer(int64),intent(in)::event_id
     type(soil_n_transfer_t),intent(in)::transfer
+    type(fmr_b111_soil_n_state_t),intent(out)::candidate
     integer,intent(out)::status
     type(soil_n_receipt_t),intent(out)::receipt
-    type(soil_n_pool_state_t)::candidate
+    type(soil_n_pool_state_t)::inventory_candidate
 
+    candidate=committed
     receipt=soil_n_receipt_t()
     status=FMR_SOIL_N_INVALID
-    if(.not.state%ready().or.event_id<=0_int64)return
-    if(state%consumed_management_event(event_id))then
+    if(.not.committed%ready().or.event_id<=0_int64)return
+    if(committed%consumed_management_event(event_id))then
       status=FMR_SOIL_N_EVENT_ALREADY_CONSUMED
       return
     end if
-    call apply_soil_n_transfer(state%params,state%inventory,transfer,candidate,receipt)
+    call apply_soil_n_transfer(committed%params,committed%inventory,transfer,inventory_candidate,receipt)
     if(receipt%status/=SOIL_N_OK)then
       status=FMR_SOIL_N_TRANSFER_FAILED
       return
     end if
-    state%inventory=candidate
-    state%last_management_event_id=event_id
-    state%management_event_consumed=.true.
+    candidate%inventory=inventory_candidate
+    candidate%last_management_event_id=event_id
+    candidate%management_event_consumed=.true.
     status=FMR_SOIL_N_OK
   end subroutine
 
