@@ -213,6 +213,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: pond_mass_mg_cm2 = 0.0_real64
     real(real64) :: aquifer_mass_mg_cm2 = 0.0_real64
     real(real64), allocatable :: age_amount_cm_day(:)
+    real(real64) :: pond_age_amount_cm2_day = 0.0_real64
     integer(int64) :: cdrain_source_id = 0_int64
     integer(int64) :: cdrain_revision = -1_int64
   contains
@@ -1326,6 +1327,7 @@ contains
         any(self%age_amount_cm_day < 0.0_real64)) return
     if (.not. ieee_is_finite(self%pond_mass_mg_cm2) .or. self%pond_mass_mg_cm2 < 0.0_real64) return
     if (.not. ieee_is_finite(self%aquifer_mass_mg_cm2) .or. self%aquifer_mass_mg_cm2 < 0.0_real64) return
+    if (.not. ieee_is_finite(self%pond_age_amount_cm2_day) .or. self%pond_age_amount_cm2_day < 0.0_real64) return
     ready = .true.
   end function fmr_reactive_salt_ready
 
@@ -1443,6 +1445,7 @@ contains
     type(fmr_b110_physical_state_t),intent(inout)::state
     real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:)
     integer,intent(out)::status
+    real(real64),intent(in),optional::pond_age_amount_cm2_day
     type(mobile_salt_state_t)::initialized
     status=MACRO_SALT_INVALID
     if(allocated(state%salt).or.allocated(state%macropore))return
@@ -1456,7 +1459,7 @@ contains
 
 
   subroutine fmr_initialize_reactive_solute_profile(state,node_thickness_cm,concentration_mg_cm3, &
-       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status)
+       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status,pond_age_amount_cm2_day)
     type(fmr_b110_physical_state_t),intent(inout)::state
     real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:),sorbed_mass_mg_cm2(:)
     real(real64),intent(in)::pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day(:)
@@ -1483,6 +1486,7 @@ contains
     state%salt%pond_mass_mg_cm2=pond_mass_mg_cm2
     state%salt%aquifer_mass_mg_cm2=aquifer_mass_mg_cm2
     state%salt%age_amount_cm_day=age_amount_cm_day
+    if(present(pond_age_amount_cm2_day))state%salt%pond_age_amount_cm2_day=pond_age_amount_cm2_day
     if(.not.state%salt%reactive_ready(n))then
       deallocate(state%salt)
       status=SOLUTE_INVALID
