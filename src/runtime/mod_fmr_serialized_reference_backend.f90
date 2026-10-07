@@ -3081,8 +3081,13 @@ contains
           error stop 'FMR B1.11 power tail is qualified only with hydraulic model 1'
         if (parameters%ksatexm_extension_active) &
           error stop 'FMR B1.11 power tail is not qualified with KSATEXM'
-        call configure_b111_conductivity_power_tail(self%power_tail_constitutive, &
-             self%hydraulic_parameters%cofgen, power_tail_status)
+        if (allocated(parameters%hydraulic_model)) then
+          call configure_b111_conductivity_power_tail(self%power_tail_constitutive, &
+               self%hydraulic_parameters%cofgen, parameters%hydraulic_model, power_tail_status)
+        else
+          call configure_b111_conductivity_power_tail(self%power_tail_constitutive, &
+               self%hydraulic_parameters%cofgen, spread(1,1,n), power_tail_status)
+        end if
         if (power_tail_status /= B111_POWER_OK) error stop 'FMR B1.11 power-tail parameters invalid'
       end if
       self%direct_retention_active = parameters%direct_retention_active
