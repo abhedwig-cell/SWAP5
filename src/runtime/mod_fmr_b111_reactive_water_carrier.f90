@@ -5,6 +5,8 @@ module mod_fmr_b111_reactive_water_carrier
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
   use mod_b111_age_tracer_substep, only: b111_age_tracer_substep_forcing_t
+  use mod_fmr_b111_reactive_solute_transaction, only: fmr_b111_reactive_solute_model_t, &
+       configure_fmr_b111_reactive_solute_model, FMR_B111_REACTIVE_OK
   implicit none
   private
 
@@ -46,6 +48,7 @@ module mod_fmr_b111_reactive_water_carrier
   end type
 
   public::build_fmr_b111_reactive_forcing_from_accepted_trace
+  public::configure_fmr_b111_reactive_model_from_accepted_trace
 
 contains
 
@@ -165,6 +168,34 @@ contains
     age%dispersivity_cm=static%dispersivity_cm
     age%molecular_diffusion_cm2_day=static%molecular_diffusion_cm2_day
 
+    status=FMR_B111_WATER_CARRIER_OK
+  end subroutine
+
+  subroutine configure_fmr_b111_reactive_model_from_accepted_trace(trace,static,model,status, &
+       closure_tolerance_cm_day)
+    type(fmr_water_flux_substep_trace_t),intent(in)::trace
+    type(fmr_b111_reactive_static_forcing_t),intent(in)::static
+    type(fmr_b111_reactive_solute_model_t),intent(out)::model
+    integer,intent(out)::status
+    real(real64),intent(in),optional::closure_tolerance_cm_day
+    type(b111_reactive_solute_substep_forcing_t)::chemical
+    type(b111_age_tracer_substep_forcing_t)::age
+    integer::carrier_status,model_status
+
+    model=fmr_b111_reactive_solute_model_t()
+    status=FMR_B111_WATER_CARRIER_INVALID
+    if(present(closure_tolerance_cm_day))then
+      call build_fmr_b111_reactive_forcing_from_accepted_trace(trace,static,chemical,age,carrier_status, &
+           closure_tolerance_cm_day)
+    else
+      call build_fmr_b111_reactive_forcing_from_accepted_trace(trace,static,chemical,age,carrier_status)
+    end if
+    if(carrier_status/=FMR_B111_WATER_CARRIER_OK)then
+      status=carrier_status
+      return
+    end if
+    call configure_fmr_b111_reactive_solute_model(chemical,age,model,model_status)
+    if(model_status/=FMR_B111_REACTIVE_OK)return
     status=FMR_B111_WATER_CARRIER_OK
   end subroutine
 
