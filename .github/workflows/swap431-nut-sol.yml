@@ -20,6 +20,15 @@ on:
       - 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
       - 'tools/audits/probe_b111_nfix_policy.py'
       - 'tools/audits/extract_b111_solute_slices.py'
+      - 'src/process/mod_soil_n_reaction_transfer.f90'
+      - 'src/process/mod_b111_soil_n_rate_factors.f90'
+      - 'src/process/mod_solute_compartment_state.f90'
+      - 'src/process/mod_solute_sorption_transfer.f90'
+      - 'tests/physics/test_soil_n_reaction_transfer.f90'
+      - 'tests/physics/test_b111_soil_n_rate_factors.f90'
+      - 'tests/physics/test_solute_compartment_state.f90'
+      - 'tests/physics/test_solute_sorption_transfer.f90'
+      - 'tests/physics/run_swap431_nut_sol_owner_components.sh'
       - 'tools/audits/extract_b111_solute_slices.py'
       - '.github/workflows/swap431-nut-sol.yml'
   workflow_dispatch:
@@ -45,3 +54,5 @@ jobs:
         run: bash tests/physics/run_solute_compartment_state.sh
       - name: Inspect exact B1.11 solute source slices
         run: python tools/audits/extract_b111_solute_slices.py
+      - name: NUT/SOL owner and reaction components
+        run: bash tests/physics/run_swap431_nut_sol_owner_components.sh
