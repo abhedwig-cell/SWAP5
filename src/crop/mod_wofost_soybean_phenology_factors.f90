@@ -47,7 +47,9 @@ contains
         self%optimum_development_temperature_c >= self%maximum_development_temperature_c) return
     call self%resolved_photoperiod_bounds(popt, pcrt)
     if (.not. ieee_is_finite(popt) .or. .not. ieee_is_finite(pcrt)) return
-    if (popt < 0.0_real64 .or. pcrt > 24.0_real64 .or. pcrt <= popt) return
+    ! PCRT may legitimately exceed 24 h when derived from maturity group; it
+    ! is a response threshold, not an astronomical daylength observation.
+    if (popt < 0.0_real64 .or. pcrt <= popt) return
     ready = .true.
   end function soybean_phenology_parameters_ready
 
