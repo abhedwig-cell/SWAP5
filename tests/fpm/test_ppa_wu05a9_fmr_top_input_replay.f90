@@ -259,7 +259,11 @@ contains
     real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
     integer :: commit_status, persistence_status, k, crack_node, rutter_status, negative_case, restart_status
     integer(int64), parameter :: lineage=505801_int64, layout_id=505001_int64
-    real(real64), parameter :: fmr_dt=1.0e-3_real64
+    real(real64), parameter :: fmr_dt_base=1.0e-3_real64
+    real(real64) :: fmr_dt
+
+    fmr_dt=fmr_dt_base
+    if(migmac11)fmr_dt=fmr_dt_base/32.0_real64
 
     fparams%parameter_set_id=lineage
     fparams%active_nodes=numnod
