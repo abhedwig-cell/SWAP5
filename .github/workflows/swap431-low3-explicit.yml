@@ -1,0 +1,25 @@
+name: SWAP431 LOW3 explicit qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/swap431-low3-explicit-20261007]
+    paths:
+      - 'src/process/mod_b111_explicit_cauchy_profile_flux.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fmig431/test_b111_explicit_cauchy_profile_flux.f90'
+      - 'tests/fmig431/run_b111_explicit_cauchy_profile_flux.sh'
+      - 'tests/fmig431/test_swap431_low3_explicit_runtime.f90'
+      - 'tests/fmig431/run_swap431_low3_explicit_runtime.py'
+      - '.github/workflows/swap431-low3-explicit.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Component source oracle O0 O2
+        run: bash tests/fmig431/run_b111_explicit_cauchy_profile_flux.sh
+      - name: Transactional runtime and implicit preservation O0 O2
+        run: python3 tests/fmig431/run_swap431_low3_explicit_runtime.py
