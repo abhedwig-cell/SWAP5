@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
-  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
+  "last_reconciled_upstream": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": false,
@@ -29,18 +29,21 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 80,
-      "ACTIVE_MIGRATION": 126,
+      "ADMITTED": 83,
+      "ACTIVE_MIGRATION": 121,
       "SUPERSEDED": 14,
       "REJECTED": 1,
-      "NOT_APPLICABLE": 20
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 126,
+    "open_capabilities": 121,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 122,
-    "other_unresolved_source_admission_reviews": 4
+    "confirmed_missing_production_entries": 121,
+    "other_unresolved_source_admission_reviews": 4,
+    "qualification_only_capabilities": 4,
+    "total_unresolved_capabilities": 125
   },
-  "next_action": "Continue semantic routine/branch census; MC-LOW01 now owns general candidate GWL derivation before explicit mode-3 exchange. Remaining seepage and annual-crop qualification gates persist.",
+  "next_action": "Continue source-bound production-gap reduction from current canonical; LOW3-EXPLICIT and ordinary matrix RUNON are closed. Avoid duplicating MICRO/frost/MIGMAC parallel owners.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -69,7 +72,7 @@
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "128 active entries: 124 missing implementations/bindings plus four existing-route qualification gates. Semantic denominator completeness remains unproven."
+    "125 unresolved capabilities: 121 missing production implementations/bindings plus 4 qualification/source-admission reviews. Semantic denominator completeness remains unproven."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",

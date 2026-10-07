@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "canonical_head": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
   "coverage_closed": false,
   "closure_statement": null,
   "denominator_basis": "Executable B1.11 source, not historical SWAP5 gap labels. Source-invalid/future combinations excluded explicitly. Bound admitted capabilities are split from source-relevant envelope remainder.",
@@ -16,19 +16,19 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 82,
-      "ACTIVE_MIGRATION": 122,
+      "ADMITTED": 83,
+      "ACTIVE_MIGRATION": 121,
       "SUPERSEDED": 14,
       "REJECTED": 1,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 122,
+    "open_capabilities": 121,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 122,
+    "confirmed_missing_production_entries": 121,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 126
+    "total_unresolved_capabilities": 125
   },
   "capabilities": [
     {
@@ -1081,25 +1081,26 @@
       },
       "meaning": "Externally supplied lateral water entering soil surface",
       "swap5_implementation_authority": [
+        "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
         "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
         "src/adapter/mod_b110_production_soil_water_task2.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
-        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
-        "integration/audits/production_physics_application_envelope_gap_register.json"
+        "integration/audits/SWAP431_RUNON_REPAIR_STATUS.json",
+        "tests/fapp/test_ppa_wu03_common_forcing_adapter.f90"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Typed dynamic-top process includes runon, but current legacy production task2 reachability rejects swrunon /= 0 and common-forcing ingestion rejects nonzero runon. A qualified process field is not a production application binding."
+        "established": true,
+        "route": "PPA-WU03 common forcing / legacy Task2 -> existing dynamic-top provider",
+        "claim": "Finite nonnegative external runon is carried unchanged into the existing dynamic-top surface donor; legacy Task2 passes its existing runon carrier without creating a separate macropore or routing owner."
       },
       "restrictions": [
-        "Legacy MOD_runon is time/amount forcing preparation, not a lateral-routing model. Boundtop adds the resulting flux after macro rain/irrigation partition. Preserve that distinction.",
-        "This finding does not exclude a separately qualified caller supplying pre-resolved net top flux; no such replacement envelope has yet closed this capability."
+        "Ordinary matrix surface runon only",
+        "Does not admit macropore pond/runon composition, snowmelt ingestion, nonlinear runoff exponent, or runon generation/routing physics"
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-SUR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -1108,13 +1109,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS",
+      "coverage_gap_type": null,
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-PONDING"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "QUALIFIED_AND_CANONICALLY_REACHABLE"
     },
     {
       "capability_id": "SW431-TEMP-SENSIBLE",
