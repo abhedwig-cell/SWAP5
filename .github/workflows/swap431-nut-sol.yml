@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - integration/f-ci-canonical
+      - qualification/swap431-nut-sol-base-20261007
     paths:
       - 'src/crop/mod_b111_crop_n_fixation_policy.f90'
       - 'src/process/mod_soil_n_pool_state.f90'
