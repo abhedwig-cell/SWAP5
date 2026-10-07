@@ -2807,8 +2807,19 @@ contains
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active
       end if
       if (parameters%conductivity_power_tail_active) then
+        ! HYD-POWER is admitted first as a narrow default-MvG / Reference-Richards
+        ! constitutive extension. Broader optional-physics compositions require
+        ! separate evidence and therefore fail closed here.
         ok = ok .and. .not. allocated(parameters%hydraulic_model_kind) .and. &
-             .not. parameters%direct_retention_active .and. .not. parameters%elasticity_active .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%root_extraction_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &
+             .not. parameters%boesten_evaporation_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%snow_active .and. .not. self%rfm_configuration%enabled .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
              all(ieee_is_finite(parameters%cofgen(22:23,:))) .and. &
              all(parameters%cofgen(22,:) < 0.0_real64) .and. &
              all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &
