@@ -8,6 +8,7 @@ on:
       - 'src/solver/mod_b111_conductivity_power_tail.f90'
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'src/solver/mod_b111_hysteresis_state.f90'
+      - 'src/solver/mod_b111_linear_table_provider.f90'
       - 'tests/fsi/test_b111_hydraulic_families.f90'
       - 'tests/fsi/check_b111_hydraulic_families.py'
       - 'tests/fsi/run_b111_hydraulic_families.sh'
@@ -15,6 +16,8 @@ on:
       - 'tests/fsi/run_b111_power_tail.sh'
       - 'tests/fsi/test_b111_hysteresis_state.f90'
       - 'tests/fsi/run_b111_hysteresis_state.sh'
+      - 'tests/fsi/test_b111_linear_table_provider.f90'
+      - 'tests/fsi/run_b111_linear_table_provider.sh'
       - 'tests/fmr/test_swap431_hyd_runtime_reachability.f90'
       - 'tests/fmr/run_swap431_hyd_runtime_reachability.sh'
       - '.github/workflows/swap431-hydraulic-families.yml'
@@ -31,6 +34,7 @@ jobs:
       - run: bash tests/fsi/run_b111_hydraulic_families.sh
       - run: bash tests/fsi/run_b111_power_tail.sh
       - run: bash tests/fsi/run_b111_hysteresis_state.sh
+      - run: bash tests/fsi/run_b111_linear_table_provider.sh
       - run: bash tests/fmr/run_swap431_hyd_runtime_reachability.sh
       - run: bash tests/fsi/run_fsi39_b110_ksatexm.sh
       - run: bash tests/ross/run_ross12_soil_water_solver_adapter.sh
