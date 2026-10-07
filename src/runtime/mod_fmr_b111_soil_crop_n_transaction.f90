@@ -70,6 +70,7 @@ module mod_fmr_b111_soil_crop_n_transaction
     type(b111_soil_n_rate_environment_t)::rate_environment
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
     type(b111_crop_n_forcing_t)::crop_forcing
+    type(b111_crop_n_harvest_receipt_t)::harvest_receipt
     type(b111_soil_n_split_parameters_t)::residue_split
     real(real64)::root_residue_age=0.0_real64
     real(real64)::leaf_residue_age=0.0_real64
@@ -261,12 +262,13 @@ contains
     type(trial_outcome_t),intent(out)::outcome
     type(soil_n_inventory_parameters_t)::soil_params
     type(soil_n_pool_state_t)::soil_committed,soil_prepared,soil_candidate
-    type(b111_crop_n_state_t)::crop_candidate
+    type(b111_crop_n_state_t)::crop_candidate,harvest_candidate
     type(b111_crop_n_forcing_t)::crop_forcing
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
     logical::available
     integer::status
-    real(real64)::soil_uptake_m2,crop_uptake_m2,tol,external_out,pending_internal_n_m2,new_pending_n_m2
+    real(real64)::soil_uptake_m2,crop_uptake_m2,tol,external_out,pending_internal_n_m2,new_pending_n_m2, &
+         ordinary_pending_n_m2
 
     outcome=trial_outcome_t();self%last_receipt=fmr_b111_soil_crop_n_receipt_t()
     self%last_status=FMR_B111_COUPLED_N_INVALID
@@ -282,14 +284,17 @@ contains
       call state%soil%snapshot(soil_params,soil_committed,available)
       if(.not.available.or.size(self%cfrac_fom)/=size(soil_committed%fom_kg_m3))return
       soil_prepared=soil_committed;pending_internal_n_m2=0.0_real64
-      if(state%pending_root_dm_kg_ha>1.0e-8_real64.or.state%pending_leaf_dm_kg_ha>1.0e-8_real64)then
+      if(state%pending_root_dm_kg_ha>1.0e-8_real64.or.state%pending_leaf_dm_kg_ha>1.0e-8_real64.or. &
+         state%pending_stem_dm_kg_ha>1.0e-8_real64.or.state%pending_storage_dm_kg_ha>1.0e-8_real64)then
         if(.not.self%residue_return_enabled)then;self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return;end if
         call apply_pending_residues(soil_params,soil_committed,state,self%residue_split,self%root_residue_age, &
-             self%leaf_residue_age,soil_prepared,pending_internal_n_m2,status)
+             self%leaf_residue_age,self%stem_residue_age,self%storage_residue_age,soil_prepared,pending_internal_n_m2,status)
         if(status/=FMR_B111_COUPLED_N_OK)then;self%last_status=status;return;end if
         tol=4096.0_real64*epsilon(1.0_real64)*max(1.0_real64,pending_internal_n_m2, &
-             (state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64)
-        if(abs(pending_internal_n_m2-(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64)>tol)then
+             (state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+state%pending_stem_n_kg_ha+ &
+              state%pending_storage_n_kg_ha)*1.0e-4_real64)
+        if(abs(pending_internal_n_m2-(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+ &
+             state%pending_stem_n_kg_ha+state%pending_storage_n_kg_ha)*1.0e-4_real64)>tol)then
           self%last_status=FMR_B111_COUPLED_N_TRANSFER_MISMATCH;return
         end if
         self%last_receipt%pending_residue_consumed_kg_m2=pending_internal_n_m2
@@ -317,6 +322,16 @@ contains
       if(self%last_receipt%crop_process%status/=B111_CROPN_OK)then
         self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return
       end if
+      if(self%harvest_enabled)then
+        call apply_b111_crop_n_harvest(crop_candidate,self%harvest_forcing,harvest_candidate,harvest_receipt)
+        if(harvest_receipt%status/=B111_HARVEST_N_OK)then
+          self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return
+        end if
+        crop_candidate=harvest_candidate
+      else
+        harvest_receipt=b111_crop_n_harvest_receipt_t()
+        harvest_receipt%status=B111_HARVEST_N_OK
+      end if
 
       soil_uptake_m2=self%last_receipt%soil_process%exchange%nsupply_total_kg_m2_day
       crop_uptake_m2=self%last_receipt%crop_process%soil_uptake_kg_ha*1.0e-4_real64
@@ -329,17 +344,30 @@ contains
         self%last_status=FMR_B111_COUPLED_N_SOIL_FAILED;return
       end if
       state%crop=crop_candidate
-      state%pending_root_dm_kg_ha=self%crop_forcing%drrt_kg_ha_day*self%crop_forcing%delt_day
-      state%pending_root_n_kg_ha=self%crop_forcing%rnfrt*self%crop_forcing%drrt_kg_ha_day*self%crop_forcing%delt_day
-      state%pending_leaf_dm_kg_ha=self%fra_deceased_leaf_to_soil*self%crop_forcing%drlv_kg_ha_day*self%crop_forcing%delt_day
-      state%pending_leaf_n_kg_ha=self%fra_deceased_leaf_to_soil*self%crop_forcing%rnflv*self%crop_forcing%drlv_kg_ha_day*self%crop_forcing%delt_day
+      state%pending_root_dm_kg_ha=self%crop_forcing%drrt_kg_ha_day*self%crop_forcing%delt_day+ &
+           harvest_receipt%root_residue_dm_kg_ha
+      state%pending_root_n_kg_ha=self%crop_forcing%rnfrt*self%crop_forcing%drrt_kg_ha_day*self%crop_forcing%delt_day+ &
+           harvest_receipt%root_residue_n_kg_ha
+      state%pending_leaf_dm_kg_ha=self%fra_deceased_leaf_to_soil*self%crop_forcing%drlv_kg_ha_day*self%crop_forcing%delt_day+ &
+           harvest_receipt%leaf_residue_dm_kg_ha
+      state%pending_leaf_n_kg_ha=self%fra_deceased_leaf_to_soil*self%crop_forcing%rnflv*self%crop_forcing%drlv_kg_ha_day* &
+           self%crop_forcing%delt_day+harvest_receipt%leaf_residue_n_kg_ha
+      state%pending_stem_dm_kg_ha=harvest_receipt%stem_residue_dm_kg_ha
+      state%pending_stem_n_kg_ha=harvest_receipt%stem_residue_n_kg_ha
+      state%pending_storage_dm_kg_ha=harvest_receipt%storage_residue_dm_kg_ha
+      state%pending_storage_n_kg_ha=harvest_receipt%storage_residue_n_kg_ha
       state%last_t0=t0;state%last_t1=t1;state%interval_consumed=.true.
 
       self%last_receipt%internal_soil_to_crop_kg_m2=soil_uptake_m2
       self%last_receipt%external_fixation_input_kg_m2=self%last_receipt%crop_process%fixation_kg_ha*1.0e-4_real64
-      new_pending_n_m2=(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64
+      ordinary_pending_n_m2=(self%crop_forcing%rnfrt*self%crop_forcing%drrt_kg_ha_day+ &
+           self%fra_deceased_leaf_to_soil*self%crop_forcing%rnflv*self%crop_forcing%drlv_kg_ha_day)* &
+           self%crop_forcing%delt_day*1.0e-4_real64
+      new_pending_n_m2=(state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+state%pending_stem_n_kg_ha+ &
+           state%pending_storage_n_kg_ha)*1.0e-4_real64
       self%last_receipt%pending_residue_created_kg_m2=new_pending_n_m2
-      self%last_receipt%external_crop_loss_kg_m2=max(0.0_real64,self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64-new_pending_n_m2)
+      self%last_receipt%external_crop_loss_kg_m2=max(0.0_real64,self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64- &
+           ordinary_pending_n_m2)+harvest_receipt%external_harvest_n_kg_ha*1.0e-4_real64
       external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2+ &
            self%last_receipt%external_crop_loss_kg_m2
       if(external_out<0.0_real64.and.abs(external_out)<=tol)external_out=0.0_real64
@@ -358,12 +386,12 @@ contains
   end subroutine
 
 
-  subroutine apply_pending_residues(params,committed,state,split,root_age,leaf_age,candidate,internal_n,status)
+  subroutine apply_pending_residues(params,committed,state,split,root_age,leaf_age,stem_age,storage_age,candidate,internal_n,status)
     type(soil_n_inventory_parameters_t),intent(in)::params
     type(soil_n_pool_state_t),intent(in)::committed
     type(fmr_b111_soil_crop_n_state_t),intent(in)::state
     type(b111_soil_n_split_parameters_t),intent(in)::split
-    real(real64),intent(in)::root_age,leaf_age
+    real(real64),intent(in)::root_age,leaf_age,stem_age,storage_age
     type(soil_n_pool_state_t),intent(out)::candidate
     real(real64),intent(out)::internal_n
     integer,intent(out)::status
@@ -398,6 +426,30 @@ contains
       internal_n=internal_n+receipt%external_n_input_kg_m2
       current=next
     end if
+    if(state%pending_stem_dm_kg_ha>1.0e-8_real64)then
+      material=b111_soil_n_material_t()
+      material%application_kg_m2=state%pending_stem_dm_kg_ha*1.0e-4_real64
+      material%application_age=stem_age;material%organic_matter_fraction=1.0_real64
+      material%organic_n_fraction=state%pending_stem_n_kg_ha/state%pending_stem_dm_kg_ha
+      call build_b111_residue_transfer(params%depth_m,material,split,transfer,build_status)
+      if(build_status/=B111_NADD_OK)return
+      call apply_soil_n_transfer(params,current,transfer,next,receipt)
+      if(receipt%status/=SOIL_N_OK)return
+      internal_n=internal_n+receipt%external_n_input_kg_m2
+      current=next
+    end if
+    if(state%pending_storage_dm_kg_ha>1.0e-8_real64)then
+      material=b111_soil_n_material_t()
+      material%application_kg_m2=state%pending_storage_dm_kg_ha*1.0e-4_real64
+      material%application_age=storage_age;material%organic_matter_fraction=1.0_real64
+      material%organic_n_fraction=state%pending_storage_n_kg_ha/state%pending_storage_dm_kg_ha
+      call build_b111_residue_transfer(params%depth_m,material,split,transfer,build_status)
+      if(build_status/=B111_NADD_OK)return
+      call apply_soil_n_transfer(params,current,transfer,next,receipt)
+      if(receipt%status/=SOIL_N_OK)return
+      internal_n=internal_n+receipt%external_n_input_kg_m2
+      current=next
+    end if
     candidate=current
     status=FMR_B111_COUPLED_N_OK
   end subroutine
@@ -415,7 +467,8 @@ contains
       call state%soil%snapshot(params,inventory,available)
       if(available)value=inventory%nitrogen_total(params)+ &
            (state%crop%anlv_kg_ha+state%crop%anst_kg_ha+state%crop%anrt_kg_ha+state%crop%anso_kg_ha+ &
-           state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha)*1.0e-4_real64
+           state%pending_root_n_kg_ha+state%pending_leaf_n_kg_ha+state%pending_stem_n_kg_ha+ &
+           state%pending_storage_n_kg_ha)*1.0e-4_real64
     end select
   end function
 
