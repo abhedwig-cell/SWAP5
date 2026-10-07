@@ -91,17 +91,16 @@
     },
     {
       "id": "SW431-NUT-RESIDUE",
-      "state": "EVENT_REACHABLE_CANDIDATE",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
       "evidence": [
-        "source split operator",
-        "1e-12 OM activation threshold",
-        "zero volatilization",
-        "candidate-only exactly-once management event",
-        "restart-preserved event lineage"
+        "source-faithful residue splitter with 1e-12 OM threshold and zero volatilization",
+        "root senescence and configured leaf fraction converted from crop DM/N losses",
+        "Soil-N subowner books residue input locally for balance closure",
+        "coupled Soil-Crop transaction reclassifies the same amount as internal crop-to-soil transfer",
+        "only non-returned crop N leaves the whole system"
       ],
       "remaining": [
-        "crop residue delivery binding",
-        "persisted integrated qualification",
+        "persisted O0/O2 coupled qualification",
         "canonical admission"
       ]
     },
@@ -113,7 +112,8 @@
         "soil demand prepared before Soil-N solve",
         "actual Soil-N supply consumed by the same crop candidate",
         "soil uptake booked once as an internal soil-to-crop transfer",
-        "whole-system transaction mass accounting and interval lineage"
+        "whole-system transaction mass accounting and interval lineage",
+        "crop senescence can return internally to Soil-N through the residue route"
       ],
       "remaining": [
         "persisted O0/O2 coupled qualification",
