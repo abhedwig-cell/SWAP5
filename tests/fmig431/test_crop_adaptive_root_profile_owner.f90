@@ -37,9 +37,10 @@ program test_crop_adaptive_root_profile_owner
 
   call evaluate_adaptive_root_profile_candidate(p,s0,f,ztop,zbot,dz,s1,status)
   if(status/=ADAPTIVE_ROOT_PROFILE_OK)error stop 4
-  ! Source split: 6.25 kg goes to new extension from node-2 density;
-  ! remaining 3.75 kg goes to old nodes by accepted extraction 0.5:0.1.
-  if(maxval(abs(s1%root_biomass_by_node-[78.125_real64,25.625_real64,6.25_real64,0.0_real64]))>tol)error stop 5
+  ! Source split uses the biomass density at the old deepest rooted node.
+  ! Here (25 kg / 10 cm) * 5 cm = 12.5 kg, capped by GRRT=10 kg,
+  ! so all new growth goes to the newly rooted extension.
+  if(maxval(abs(s1%root_biomass_by_node-[75.0_real64,25.0_real64,10.0_real64,0.0_real64]))>tol)error stop 5
   if(abs(sum(s1%root_biomass_by_node)-110.0_real64)>tol)error stop 6
 
   call s1%cumulative_root_fraction(3,cum,status)
@@ -48,7 +49,7 @@ program test_crop_adaptive_root_profile_owner
 
   call s1%root_length_density(3,dz,p,lrv,status)
   if(status/=ADAPTIVE_ROOT_PROFILE_OK)error stop 9
-  if(abs(lrv(1)-78.125_real64*100.0_real64/1.0e7_real64)>tol)error stop 10
+  if(abs(lrv(1)-75.0_real64*100.0_real64/1.0e7_real64)>tol)error stop 10
   if(any(lrv(4:4)/=0.0_real64))error stop 11
 
   ! Same checkpoint + forcing is deterministic and does not mutate committed state.
