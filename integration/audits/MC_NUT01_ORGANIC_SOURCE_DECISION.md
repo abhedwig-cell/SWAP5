@@ -1,61 +1,87 @@
-# MC-NUT01 organic-N source decision boundary
+# MC-NUT01 organic-N source reference correction
 
-Status: SOURCE_DEFECT_DECISION_REQUIRED  
+Status: **ACCEPTED_REFERENCE_CORRECTION**  
 Date: 2026-10-07
 
 ## Scope
 
-This record concerns B1.11 `SWAP/wofost_soil_orgmatn.f90` and the
+This record concerns exact B1.11 `SWAP/wofost_soil_orgmatn.f90` and the
 `SW431-NUT-ORGANIC` dependency of the Soil-N migration.
 
-## Finding
+## Source defect
 
-The organic-matter routine contains two formulas that purport to book the
-nitrogen released from FOM transformation.
-
-The detailed balance accumulator `NFOM_min` subtracts nitrogen incorporated
-into both the biomass and humus destinations:
+The detailed FOM nitrogen balance accumulator `NFOM_min` subtracts nitrogen
+incorporated into both destination pools:
 
 `NFracFOM - AsfaFOM_Bio*NFracBio - AsfaFOM_Hum*NFracHum`.
 
-Later, the scalar `Nminer` that feeds the mineral-N transport instead
-subtracts the biomass term twice:
+The later scalar `Nminer`, which feeds mineral-N transport, instead subtracts
+the biomass term twice:
 
 `NFracFOM - AsfaFOM_Bio*NFracBio - AsfaFOM_Bio*NFracBio`.
 
-These expressions are not generally equivalent. The public SWAP source family
-contains the same discrepancy. The exact B1.11 authority is fail-closed checked
-by `tools/audits/probe_b111_nut_sol_exact_source.py`, including the exact
-member SHA-256.
+The exact B1.11 authority contains both expressions; the public source family
+corroborates the same discrepancy.
 
-## Consequence
+## Decisive balance evidence
 
-SWAP5 must not silently choose one formula while claiming literal B1.11
-preservation.
+B1.11 `Wofost_SoilBalanceCheck` defines organic-N output as:
 
-The Soil-N owner, amendment/residue split, mineral-N transport and reaction
-interfaces can be implemented independently. Production admission of organic
-turnover/mineralisation requires an explicit reference decision choosing one
-of:
+`Out_orgN = NFOM_min + NBio_min + NHum_min`.
 
-1. literal preservation of the later `Nminer` expression;
-2. a qualified reference correction using the internally balanced
-   `NFOM_min` expression;
-3. another explicitly derived mass-conservative replacement with its own
-   source/reference qualification.
+The same balance routine defines mineral-N input from organic turnover as:
 
-Whichever route is selected must preserve one authoritative FOM/Bio/Hum
-state, produce one mineral-N transfer receipt, and close total nitrogen mass.
+`NH4_miner = Nminer * dz_WSN`.
+
+Whole-system nitrogen conservation therefore requires the mineral-N receipt
+from organic turnover to equal the organic-N loss booked by the authoritative
+organic pool balances.
+
+## Decision
+
+SWAP5 treats the duplicated Bio term in the later `Nminer` FOM expression as
+a source defect and uses the mass-consistent reference correction:
+
+`Nminer = (NFOM_min + NBio_min + NHum_min) / dz_WSN`.
+
+Equivalently, the production owner may book the interval amount directly as:
+
+`NH4_miner = NFOM_min + NBio_min + NHum_min`.
+
+This correction is preferred over re-evaluating a second scalar formula because
+the FOM/Bio/Hum owner already determines the exact persistent organic-N loss.
+
+## Required implementation contract
+
+- FOM, Bio and Hum remain the single authoritative organic-matter stores.
+- Organic N is derived from those stores and immutable N fractions.
+- The organic-turnover candidate computes the new OM stores first.
+- The mineral-N transfer is derived from the resulting loss of organic N.
+- Positive organic-N loss becomes an equal NH4-N credit.
+- Negative organic-N loss is immobilisation and becomes an equal NH4-N debit.
+- The Soil-N owner applies OM deltas and mineral-N transfer atomically.
+- Insufficient NH4 for immobilisation rejects the candidate without mutation.
+- Restart persists the OM stores and mineral pools; `Nminer` itself is derived,
+  not persistent state.
+
+## Qualification requirement
+
+Exact-source qualification must continue to retain the two conflicting B1.11
+expressions as a defect witness, and additionally prove that the selected
+reference correction closes:
+
+`organic N change + mineral N change = 0`
+
+for turnover-only intervals, before external additions, crop uptake,
+denitrification or boundary transport are applied.
 
 ## Nonclaims
 
-- This record does not classify the intended scientific formulation by itself.
-- No organic-turnover production route is admitted here.
-- Existing WOFOST81 crop-N admission is unchanged.
-- The separately identified SWBR aquifer bounds defect is unrelated.
+- This decision does not yet admit the full organic turnover operator.
+- Existing WOFOST81 crop-N semantics remain unchanged.
+- The SWBR aquifer source defect remains a separate unresolved decision.
 
-## Next safe work
+## Next work
 
-Continue the independent mineral-N transport/reaction and SOL01 owner slices.
-Do not bind `SW431-NUT-ORGANIC` into production until the reference decision
-is explicit and qualified.
+Port/qualify the FOM/Bio/Hum turnover candidate and derive its NH4
+mineralisation/immobilisation transfer from the owner-level organic-N change.
