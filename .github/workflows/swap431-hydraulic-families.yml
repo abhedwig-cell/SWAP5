@@ -25,4 +25,5 @@ jobs:
       - run: gfortran --version
       - run: bash tests/fsi/run_b111_hydraulic_families.sh
       - run: bash tests/fsi/run_b111_power_tail.sh
-      - run: bash tests/run-kernel.sh
+      - run: bash tests/fsi/run_fsi39_b110_ksatexm.sh
+      - run: bash tests/ross/run_ross12_soil_water_solver_adapter.sh
