@@ -1,10 +1,16 @@
 # MC-NUT01 / MC-SOL01 production successor
 
-Status: **IN_PROGRESS**
+Status: **IMPLEMENTATION_CLOSED_PENDING_PERSISTED_QUALIFICATION**
 
 Active binding branch: `work/swap431-nut-sol-binding-20261007`
 
-Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`.
+## Current closeout head
+
+`509b2dc368f4f41c1bf31f81fbb0887bbe460e67`
+
+MC-NUT01 and the supported MC-SOL01 capabilities have no remaining implementation gap on this branch. Remaining work is persisted O0/O2 qualification, canonical admission, and master-census reconciliation. `SW431-SALT-AQUIFER` is definitively `UNSUPPORTED_SOURCE_DEFECT` and is not remaining implementation work.
+
+Earlier qualification PR **#1112** is retained as historical evidence only; it predates the current integrated closeout head and must not be used for admission.
 
 ## Transaction owners now present
 
@@ -21,6 +27,8 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 
 - B1.11 fixation policy, separate from admitted WOFOST81 semantics.
 - Shared Soil-N management-event binding for amendments and crop residues: persistent event id, once-only application, duplicate rejection, and restart-preserved event lineage.
+- B1.11 grouped amendment calendar binding: sorted source-order groups, same-date atomic materials, exact `TimeAmend+1` trigger and monotone restart cursor.
+- Ordinary and harvest crop residue continuation: retained dead crop N remains storage; root/leaf/stem/storage harvest residues persist separately and are consumed once by the next Soil-N day.
 - Coupled Soil-N/crop-N state now persists previous-day root/leaf residue DM+N and consumes that residue before the next-day Soil-N process, matching the B1.11 day ordering for ordinary senescence.
 - Soil-N source rate factors plus source-coupled mineral reaction bridges: NH4 disappearance from aggregate transport is converted into equal NO3 production, while NO3 first-order disappearance is booked as explicit external denitrification loss. Both use the interval-average transported concentration and preserve whole-N accounting.
 - Aggregate Soil-N transport plus a one-day B1.11 mineral exchange caller and an integrated Soil-N candidate composing organic turnover, Cdissi-dependent rates, NH4/NO3 transport, nitrification and denitrification on one owner.
@@ -38,8 +46,7 @@ bound and reviewed.
 ## Explicit decision boundaries
 
 - `SW431-NUT-ORGANIC`: the exact-source inconsistency is resolved by an accepted mass-consistent reference correction; production qualification still has to admit the integrated daily route. See `MC_NUT01_ORGANIC_SOURCE_DECISION.md`.
-- `SW431-SALT-AQUIFER`: exact B1.11 has a reproduced out-of-bounds SWBR
-  coefficient access; see `MC_SOL01_AQUIFER_SOURCE_DECISION.md`.
+- `SW431-SALT-AQUIFER`: definitive `UNSUPPORTED_SOURCE_DEFECT`; exact B1.11 has a reproduced out-of-bounds SWBR coefficient access and no defensible aquifer bulk-density parameterization. See `MC_SOL01_AQUIFER_SOURCE_DECISION.md`.
 
 An atomic B1.11 Soil-N/crop-N transaction candidate now prepares crop soil demand, runs the Soil-N day, feeds the accepted Soil-N supply into the separate B1.11 crop-N owner, books soil uptake once as an internal transfer, books biological fixation once as external N input, and persists accepted interval lineage. WOFOST81 remains unchanged and N-unlimited on its already admitted route.
 
