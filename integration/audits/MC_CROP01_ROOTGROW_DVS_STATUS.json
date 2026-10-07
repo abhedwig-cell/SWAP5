@@ -2,7 +2,7 @@
   "schema": "swap431.mc_crop01.rootgrow_dvs.v1",
   "capability_id": "SW431-CROP-ROOTGROW-DVS",
   "baseline": "8cd14e459913f77f412e12125ccda597a841e22d",
-  "status": "QUALIFIED_IMPLEMENTATION_PENDING_CANONICAL_ADMISSION",
+  "status": "QUALIFIED_ON_CURRENT_CANONICAL_PENDING_MERGE",
   "source_semantics": "SWRD=1: root depth = min(AFGEN(RDTB,DVS),RDM)",
   "implemented": [
     "B1.11-compatible endpoint-clamped linear RDTB interpolation via existing WOFOST rate-table authority",
@@ -17,9 +17,17 @@
     "runtime_o0_o2": "PASS"
   },
   "not_yet_closed": [
-    "Canonical admission on current integration/f-ci-canonical remains pending."
+    "Canonical merge remains pending."
   ],
-  "next_safe_step": "Qualify this exact slice on the lean current-canonical admission branch, then merge and reclassify SW431-CROP-ROOTGROW-DVS.",
+  "next_safe_step": "Open and merge a current-canonical admission PR, then reclassify SW431-CROP-ROOTGROW-DVS in the master ledger.",
   "qualified_postimage": "290349b20609ff158f73f9af88791bbbf8973567",
-  "qualification_run": 37625061479
+  "qualification_run": 37625061479,
+  "admission_postimage": "ac8a2a4f1009824549f5f8a3a45c77e21ce97ed6",
+  "admission_qualification_run": 37625949077,
+  "evidence": [
+    "DVS root depth AFGEN/RDM component O0/O2 PASS",
+    "Static RDCTB profile materialization O0/O2 PASS",
+    "Production WOFOST owner -> ET PTRA -> root uptake O0/O2 PASS"
+  ],
+  "production_route": "wofost crop owner -> derive_dvs_root_uptake_input -> reference ET/root uptake composition -> shared root uptake process"
 }
