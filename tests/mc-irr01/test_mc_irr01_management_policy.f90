@@ -70,6 +70,25 @@ program test_mc_irr01_management_policy
   call evaluate_irrigation_management_policy(p,s,r,c,y,st)
   if(st/=IRR_MGMT_OK .or. y%trigger) error stop 11
 
+  ! Source/theory boundaries are inclusive for TCS2/3/4.
+  call common(p,r); p%timing_criterion=2; p%tcs2_knot_count=2
+  p%tcs2_dvs(1:2)=[0d0,2d0]; p%tcs2_fraction(1:2)=[0.5d0,0.5d0]
+  r%actual_available_water_cm=8d0
+  call evaluate_irrigation_management_policy(p,s,r,c,y,st)
+  if(st/=IRR_MGMT_OK .or. .not.y%trigger) error stop 12
+
+  call common(p,r); p%timing_criterion=3; p%tcs3_knot_count=2
+  p%tcs3_dvs(1:2)=[0d0,2d0]; p%tcs3_fraction(1:2)=[0.2d0,0.2d0]
+  r%actual_available_water_cm=8d0
+  call evaluate_irrigation_management_policy(p,s,r,c,y,st)
+  if(st/=IRR_MGMT_OK .or. .not.y%trigger) error stop 13
+
+  call common(p,r); p%timing_criterion=4; p%tcs4_knot_count=2
+  p%tcs4_dvs(1:2)=[0d0,2d0]; p%tcs4_depletion_mm(1:2)=[20d0,20d0]
+  r%actual_available_water_cm=8d0
+  call evaluate_irrigation_management_policy(p,s,r,c,y,st)
+  if(st/=IRR_MGMT_OK .or. .not.y%trigger) error stop 14
+
   print '(A)','MC_IRR01_MANAGEMENT_POLICY=PASS'
   print '(A)','MC_IRR01_ROOT_ZONE_SUMMARY=PASS'
 contains
