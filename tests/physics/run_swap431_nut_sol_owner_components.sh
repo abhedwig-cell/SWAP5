@@ -17,4 +17,10 @@ for opt in -O0 -O2; do
 
   gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow     "$root/src/process/mod_solute_mobile_salt_state.f90"     "$root/src/process/mod_solute_compartment_state.f90"     "$root/src/process/mod_solute_sorption_transfer.f90"     "$root/tests/physics/test_solute_sorption_transfer.f90"     -o solute_sorption
   ./solute_sorption
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_b111_solute_sorption.f90" \
+    "$root/src/process/mod_b111_solute_decay.f90" \
+    "$root/tests/physics/test_b111_solute_sorption_decay.f90" \
+    -o b111_sorp_decay
+  ./b111_sorp_decay
 done
