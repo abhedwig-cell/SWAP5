@@ -3,9 +3,11 @@
   "workstream": "PPA-WU05 macropore migration",
   "baseline": "work/ppa-wu05-migmac10-envelope-preservation@11e46f70ccea1a135eda757a2507a752bac1dba8",
   "checkpoint_commit": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "last_reconciled_head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
-  "canonical_reconciled_against": "integration/f-ci-canonical@19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "last_reconciled_head": "8cd14e459913f77f412e12125ccda597a841e22d",
+  "canonical_reconciled_against": "integration/f-ci-canonical@8cd14e459913f77f412e12125ccda597a841e22d",
   "canonical_reconciliation_pr": 1089,
+  "canonical_admission_pr": 1084,
+  "canonical_admission_commit": "8cd14e459913f77f412e12125ccda597a841e22d",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -35,7 +37,8 @@
     "src/runtime/mod_macropore_single_column_runtime.f90",
     "src/runtime/mod_fmr_macropore_configuration.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "src/runtime/mod_fmr_macropore_top_input.f90"
+    "src/runtime/mod_fmr_macropore_top_input.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
   ],
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90",
@@ -61,7 +64,8 @@
     "A9 top inflow limiter",
     "macropore candidate/commit bookkeeping",
     "surface ponding mass accounting",
-    "serialized Reference backend composition"
+    "serialized Reference backend composition",
+    "production application composition wiring"
   ],
   "qualification_runs": {
     "pre_reconcile": {
@@ -73,8 +77,14 @@
       "run_id": 37612249809,
       "head": "609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
       "conclusion": "success"
+    },
+    "admitted_canonical_postimage": {
+      "run_id": 37615105739,
+      "head": "8cd14e459913f77f412e12125ccda597a841e22d",
+      "conclusion": "success"
     }
   },
+  "post_qualification_reconciliation": "The delta from 609cd5ee8964f0619d94bd396f53ed9fe8d8495e to the PR #1084 admitted head touched src/runtime/mod_fmr_serialized_reference_backend.f90 and src/runtime/mod_fmr_production_application_bootstrap.f90 through later canonical composition work. Because that intersects the recorded MIGMAC11 dependency surface, the lean qualification branch was fast-forwarded to admitted canonical 8cd14e459913f77f412e12125ccda597a841e22d and the full MIGMAC11 workflow was rerun. Run 37615105739 passed all four gates, closing that evidence gap.",
   "qualified_cases": [
     "production compile O0/O2",
     "active pond above PndmxMp",
@@ -93,9 +103,9 @@
     "MIGMAC10 bounded Boesten/Rutter/macropore preservation",
     "O0/O2 identity"
   ],
-  "test_status": "PASS on current canonical merge postimage 609cd5ee8964f0619d94bd396f53ed9fe8d8495e. GitHub Actions run 37612249809 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
+  "test_status": "PASS on admitted canonical postimage 8cd14e459913f77f412e12125ccda597a841e22d. GitHub Actions run 37615105739 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS.",
   "qualification_status": "CLOSED",
-  "next_action": "No MIGMAC11 implementation work remains. Treat the capability as closed unless later canonical changes intersect the recorded dependency surface or new regression evidence appears.",
-  "recovery_point": "work/ppa-wu05-migmac11-pond-donor@609cd5ee8964f0619d94bd396f53ed9fe8d8495e",
+  "next_action": "No MIGMAC11 implementation or qualification work remains. Treat the capability as closed unless a later canonical change intersects the recorded dependency surface or new regression evidence appears.",
+  "recovery_point": "integration/f-ci-canonical@8cd14e459913f77f412e12125ccda597a841e22d",
   "blockers": []
 }
