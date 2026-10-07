@@ -213,6 +213,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: pond_mass_mg_cm2 = 0.0_real64
     real(real64) :: aquifer_mass_mg_cm2 = 0.0_real64
     real(real64), allocatable :: age_amount_cm_day(:)
+    real(real64) :: age_pond_previous_concentration_day = 0.0_real64
     integer(int64) :: cdrain_source_id = 0_int64
     integer(int64) :: cdrain_revision = -1_int64
   contains
@@ -1290,7 +1291,8 @@ contains
         (self%cdrain_source_id /= 0_int64 .and. &
         (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
     if (allocated(self%sorbed_mass_mg_cm2) .or. allocated(self%age_amount_cm_day)) return
-    if (self%pond_mass_mg_cm2 /= 0.0_real64 .or. self%aquifer_mass_mg_cm2 /= 0.0_real64) return
+    if (self%pond_mass_mg_cm2 /= 0.0_real64 .or. self%aquifer_mass_mg_cm2 /= 0.0_real64 .or. &
+        self%age_pond_previous_concentration_day /= 0.0_real64) return
     if (active_nodes <= 0) return
     if (.not. allocated(self%mass_mg_cm2)) return
     if (size(self%mass_mg_cm2) /= active_nodes) return
@@ -1326,6 +1328,8 @@ contains
         any(self%age_amount_cm_day < 0.0_real64)) return
     if (.not. ieee_is_finite(self%pond_mass_mg_cm2) .or. self%pond_mass_mg_cm2 < 0.0_real64) return
     if (.not. ieee_is_finite(self%aquifer_mass_mg_cm2) .or. self%aquifer_mass_mg_cm2 < 0.0_real64) return
+    if (.not. ieee_is_finite(self%age_pond_previous_concentration_day) .or. &
+        self%age_pond_previous_concentration_day < 0.0_real64) return
     ready = .true.
   end function fmr_reactive_salt_ready
 
@@ -1456,11 +1460,13 @@ contains
 
 
   subroutine fmr_initialize_reactive_solute_profile(state,node_thickness_cm,concentration_mg_cm3, &
-       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status)
+       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status, &
+       age_pond_previous_concentration_day)
     type(fmr_b110_physical_state_t),intent(inout)::state
     real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:),sorbed_mass_mg_cm2(:)
     real(real64),intent(in)::pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day(:)
     integer,intent(out)::status
+    real(real64),intent(in),optional::age_pond_previous_concentration_day
     type(mobile_salt_state_t)::initialized
     integer::n
 
@@ -1483,6 +1489,12 @@ contains
     state%salt%pond_mass_mg_cm2=pond_mass_mg_cm2
     state%salt%aquifer_mass_mg_cm2=aquifer_mass_mg_cm2
     state%salt%age_amount_cm_day=age_amount_cm_day
+    if(present(age_pond_previous_concentration_day))then
+      if(.not.ieee_is_finite(age_pond_previous_concentration_day).or.age_pond_previous_concentration_day<0.0_real64)then
+        deallocate(state%salt);status=SOLUTE_INVALID;return
+      end if
+      state%salt%age_pond_previous_concentration_day=age_pond_previous_concentration_day
+    end if
     if(.not.state%salt%reactive_ready(n))then
       deallocate(state%salt)
       status=SOLUTE_INVALID
