@@ -1,0 +1,35 @@
+{
+  "schema": "swap431.mc_root01.oxygen_empirical.v1",
+  "capability_id": "SW431-ROOT-OXYGEN-EMP",
+  "canonical_baseline": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
+  "source_authority": {
+    "member": "SWAP/rootextraction.f90",
+    "semantics": [
+      "HLIM2U applies through the upper-layer boundary; HLIM2L below it.",
+      "ALPWET is zero for h>HLIM1, linear for HLIM2<h<=HLIM1, and one for h<=HLIM2.",
+      "Physical node sink remains one product of potential sink, ALPDRY and ALPWET.",
+      "Total reduction is attributed between wet and dry stress in proportion to (1-ALPWET) and (1-ALPDRY)."
+    ]
+  },
+  "implementation": "src/process/mod_root_water_uptake_process.f90",
+  "tests": [
+    "tests/fmig431/test_swap431_root_oxygen_emp.f90",
+    "tests/fmig431/test_swap431_root_oxygen_emp_runtime.f90"
+  ],
+  "qualification": {
+    "component_runner": "tests/fmig431/run_swap431_root_oxygen_emp.py",
+    "runtime_runner": "tests/fmig431/run_swap431_root_oxygen_emp_runtime.py",
+    "status": "READY_ON_CURRENT_CANONICAL",
+    "stale_runs": [
+      37639386217,
+      37641722460
+    ]
+  },
+  "ownership": {
+    "water_mass": "existing single root_extraction_sink",
+    "persistent_state_added": false,
+    "stress_factors": "diagnostics/forcing only"
+  },
+  "disposition": "SOURCE_IMPLEMENTED_CURRENT_CANONICAL_PERSISTED_QUALIFICATION_OPEN",
+  "admission": false
+}
