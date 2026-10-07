@@ -54,21 +54,8 @@ program test_low03_explicit_application
   cfg%tiles(1)%parameters%swbotb3_explicit_hdrain_cm=-100.0_real64
   cfg%tiles(1)%parameters%swbotb3_explicit_shape_3=1.0_real64
   cfg%tiles(1)%ledger_id=0_int64
-  haq_eq=cfg%tiles(1)%initial_state%pressure_head(numnod)+z(numnod) + &
-       (-conductivity0)*(0.5_real64*dz(numnod)/conductivity0+rimlay)
-  allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
-  call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
-       T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
-       rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
-  call require(status==FMR_CAUCHY3_OK,'production control')
-  allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control)
-  ! Choose gwlmean at the profile bottom so cvalprof=0.  Set HDRain=GWL
-  ! and choose DEEPGW such that the B1.11 explicit qbot equals -conductivity0,
-  ! matching the uniform-profile top flux used by this qualification.
-  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=cfg%tiles(1)%initial_state%groundwater_level
-  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%shape_3=0.0_real64
   haq_eq=-1.5_real64
-
+  allocate(cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control)
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
        rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
@@ -122,7 +109,9 @@ program test_low03_explicit_application
   call require(result(1)%mass%complete,'mass accounting complete')
   call require(trial%completed .and. candidate%ready(),'backend trial')
   print '(a)', 'LOW03EXP_ORDINARY_APPLICATION_MASS=PASS'
-  call require(obs%bottom_flux==obs%bottom_flux,'explicit qbot finite')
+  call require(obs%cauchy3_explicit_active,'explicit mode3 diagnostic active')
+  call require(abs(obs%cauchy3_explicit_qbot_cm_per_day)<=1.0e-14_real64,'explicit qbot equilibrium')
+  call require(obs%cauchy3_explicit_profile_resistance_day>=0.0_real64,'explicit profile resistance finite')
   print '(a)', 'LOW03EXP_GROUNDWATER_OWNER_SEPARATION=PASS'
   call require(obs%cauchy3_proposal_available,'proposal observation')
   call require(same_bits(obs%cauchy3_proposed_t0,T0) .and. same_bits(obs%cauchy3_proposed_t1,T1), &
@@ -154,7 +143,7 @@ program test_low03_explicit_application
     case(7)
       bad%tiles(1)%ordinary_prescribed_head=.true.
     case(8)
-      bad%tiles(1)%parameters%cofgen(3,2)=bad%tiles(1)%parameters%cofgen(3,2)*0.9_real64
+      bad%tiles(1)%parameters%swbotb3_explicit_shape_3=1.5_real64
     end select
     call badapp%initialize(bad,status)
     call require(status/=FMR_APP_BOOT_OK .and. .not. badapp%ready(),'unsupported profile fail closed')
