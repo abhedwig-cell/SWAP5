@@ -5,8 +5,9 @@
     "SW431-CROP-ANNUAL",
     "SW431-CROP-WOF-OTHER"
   ],
-  "disposition": "QUALIFICATION_ONLY_SOURCE_ENVELOPE_REMAINS",
+  "disposition": "SOURCE_ENVELOPE_COMPONENT_COMPLETE_PENDING_PERSISTED_O0O2_AND_COMPOSITION",
   "implementation_authority": [
+    "src/crop/mod_wofost_classic_phenology_rate.f90",
     "src/crop/mod_wofost_prepare_assimilation.f90",
     "src/crop/mod_wofost_finalize_rates.f90",
     "src/crop/mod_wofost_two_phase_crop_window.f90",
@@ -78,7 +79,7 @@
       "seven-day running minimum-temperature history",
       "actual crop biomass and DVS are accepted crop state"
     ],
-    "idsl01": "Current source review and production code agree on thermal IDSL0 and bounded linear long-day IDSL1 before anthesis; exact literal update_dvs_rate block still requires persisted source-envelope gate."
+    "idsl01": "Pinned B1.11 update_dvs_rate has been recovered directly from the authority bundle. IDSL0 and IDSL1 are now factored into mod_wofost_classic_phenology_rate and the production classic finalizer calls that resolver."
   },
   "claim_ceiling": {
     "includes": [
@@ -99,12 +100,25 @@
     ]
   },
   "remaining_gate": [
-    "Literal B1.11 actual-crop daily equation comparison against current classic production modules at O0/O2.",
-    "IDSL1 DLC/DLO boundary and anthesis transition cases against exact B1.11 update_dvs_rate source."
+    "Run O0/O2 source-bound IDSL0/1 resolver plus current classic finalizer composition on persisted head.",
+    "Compose the shared crop-end event owner into the classic transaction path and preserve F-WOF38/39/41 evidence."
   ],
   "implementation_gap": false,
   "restart_gap": false,
   "transaction_gap": false,
   "lifecycle_gap": false,
-  "admission": false
+  "admission": false,
+  "source_equation_binding": {
+    "implementation": "src/crop/mod_wofost_classic_phenology_rate.f90",
+    "production_consumer": "src/crop/mod_wofost_finalize_rates.f90",
+    "exact_semantics": [
+      "DTSUM remains AFGEN(DTSMTB,TAV) in the existing production finalizer.",
+      "IDSL0 vegetative DVR=DTSUM/TSUMEA.",
+      "IDSL1 vegetative DVRED=clamp((DAYLP-DLC)/(DLO-DLC)); DVR=DVRED*DTSUM/TSUMEA.",
+      "Generative DVR=DTSUM/TSUMAM for both IDSL0 and IDSL1.",
+      "Existing structural owner retains the exact anthesis crossing clamp to DVS=1."
+    ],
+    "test": "tests/fmig431/test_swap431_classic_idsl01.f90",
+    "runner": "tests/fmig431/run_swap431_classic_idsl01.py"
+  }
 }
