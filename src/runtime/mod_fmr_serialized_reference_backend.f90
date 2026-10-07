@@ -5219,6 +5219,7 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    write(*,'(A,1X,L1,1X,I0)') 'KALMTHOUT_TEMPORAL_ROUTE_RUTTER', self%rutter_active, self%bottom_mode
     if(self%frost_divdra_active)then
       value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
       return
