@@ -13,10 +13,12 @@ module mod_fmr_restart_state_contract
        FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
+       FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_SORBED_POND, &
        fmr_solute_state_layout_known
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
        fmr_b110_macropore_reduction_state_t, &
        fmr_b110_fixed_weir_surface_water_state_t, fmr_b110_black_evaporation_state_t, &
+       fmr_b110_sol01_state_t, &
        fmr_b110_boesten_evaporation_state_t, fmr_b110_boesten_macropore_state_t
   implicit none
   private
@@ -52,6 +54,16 @@ contains
         if (physical%macropore%num_nodes /= physical%active_nodes) return
         if (.not. allocated(physical%salt)) return
         if (.not. physical%salt%ready(physical%active_nodes,physical%macropore%num_domains)) return
+      case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_SORBED_POND)
+        if (allocated(physical%macropore)) return
+        if (.not. allocated(physical%salt)) return
+        if (.not. physical%salt%ready(physical%active_nodes)) return
+        select type (sol01 => physical)
+        type is (fmr_b110_sol01_state_t)
+          if (.not. sol01%solute_companion%ready(sol01%active_nodes)) return
+        class default
+          return
+        end select
       case default
         return
       end select
