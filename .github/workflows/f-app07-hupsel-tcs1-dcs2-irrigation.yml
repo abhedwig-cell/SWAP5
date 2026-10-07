@@ -1,5 +1,9 @@
 name: F-APP07 Hupsel TCS1 DCS2 irrigation
 
+concurrency:
+  group: f-app07-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
