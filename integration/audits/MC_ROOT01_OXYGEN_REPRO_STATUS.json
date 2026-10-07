@@ -13,7 +13,11 @@
       "oxygenintercept": "6 values, source read range [-1e3,1e3]"
     }
   },
-  "implementation": "src/process/mod_root_oxygen_reproduction_response.f90",
+  "implementation": [
+    "src/process/mod_root_oxygen_reproduction_response.f90",
+    "src/runtime/mod_fmr_bartholomeus_activation.f90",
+    "src/runtime/mod_fmr_bartholomeus_execution.f90"
+  ],
   "ownership": {
     "persistent_state": false,
     "parameters": [
@@ -38,11 +42,28 @@
     "slope and intercept are six-term temperature/depth quadratic-bilinear polynomials",
     "factor=clamp(intercept+slope*mean_gas_filled_porosity,0,1)"
   ],
-  "disposition": "SOURCE_RESPONSE_IMPLEMENTED_TYPED_PARAMETER_AND_SINK_COMPOSITION_OPEN",
+  "disposition": "SOURCE_RESPONSE_AND_RUNTIME_ROUTE_IMPLEMENTED_LOCAL_COMPONENT_PASS_FULL_EXECUTION_OPEN",
   "remaining": [
-    "Add typed construction/validation of the 6+6 source coefficients to production activation.",
-    "Bind profile factors into the existing root-water-uptake stress product for SWOXYGEN=2/SWOXYGENTYPE=2.",
-    "Qualify node profile, mass, retry/restart and preservation of admitted type1 Bartholomeus."
+    "Run full execution closure O0/O2 and verify base sink * reproduction factor plus fail-closed missing inputs.",
+    "Bind source 6+6 coefficients and geometry carriers from production crop/grid configuration.",
+    "Qualify mass, retry/restart, inactive/no-root dependency minimality and preservation of admitted type1 Bartholomeus."
   ],
-  "admission": false
+  "admission": false,
+  "qualification": {
+    "local": {
+      "compiler": "gfortran 14.2.0",
+      "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "activation_O0": "PASS",
+      "activation_O2": "PASS",
+      "response_O0": "PASS",
+      "response_O2": "PASS",
+      "output_identity": "PASS",
+      "markers": [
+        "SW431_ROOT_OXYGEN_REPRO_ACTIVATION=PASS",
+        "SW431_ROOT_OXYGEN_REPRO_RESPONSE=PASS"
+      ]
+    },
+    "full_execution_test": "tests/fmig431/test_swap431_root_oxygen_repro_execution.f90",
+    "full_execution_status": "READY_FOR_FULL_DEPENDENCY_CLOSURE"
+  }
 }
