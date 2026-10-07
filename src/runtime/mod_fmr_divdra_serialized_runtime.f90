@@ -9,7 +9,8 @@ module mod_fmr_divdra_serialized_runtime
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_positive_divdra, FMR_DIVDRA_BIND_OK
+       fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_signed_divdra, &
+       fmr_bind_multilevel_signed_divdra, FMR_DIVDRA_BIND_OK
   use mod_fmr_divdra_serialized_composition, only: fmr_divdra_serialized_column_request_t, &
        fmr_divdra_serialized_binding_record_t, fmr_preflight_serialized_divdra, &
        FMR_DIVDRA_COMPOSE_OK, FMR_DIVDRA_COMPOSE_BIND_REJECTED
@@ -52,7 +53,9 @@ contains
     type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
 
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
-    integer :: i, forcing_index, parameter_index, view_index, slot
+    type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
+    integer :: i, j, forcing_index, parameter_index, view_index, slot
 
     allocate(results(0), diagnostics(0))
     aggregate = fmr_aggregate_diagnostics_t()
@@ -76,18 +79,34 @@ contains
       if (.not. divdra_requests(i)%active) cycle
       slot = slot + 1
       forcing_index = int(columns(i)%forcing_handle)
-      parameter_index = int(divdra_requests(i)%distribution_parameter_ref)
       view_index = int(divdra_requests(i)%hydraulic_view_ref)
-
-      call fmr_bind_single_level_positive_divdra(distribution_parameter_registry(parameter_index), &
-           hydraulic_view_registry(view_index), divdra_requests(i)%scalar_transfer, &
-           forcing_registry(forcing_index)%drainage_flux_by_level, bind_diag)
-      divdra_records(slot)%binding = bind_diag
-      if (bind_diag%status /= FMR_DIVDRA_BIND_OK) then
-        composition_status = FMR_DIVDRA_COMPOSE_BIND_REJECTED
-        divdra_records(slot)%composition_status = composition_status
-        call cleanup_materialized_divdra(columns, divdra_requests, forcing_registry)
-        return
+      if(divdra_records(slot)%multilevel)then
+        allocate(level_parameters(size(divdra_requests(i)%distribution_parameter_refs)))
+        do j=1,size(level_parameters)
+          level_parameters(j)=distribution_parameter_registry(int(divdra_requests(i)%distribution_parameter_refs(j)))
+        end do
+        call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
+             divdra_requests(i)%scalar_transfers,forcing_registry(forcing_index)%drainage_flux_by_level,multi_diag)
+        divdra_records(slot)%multilevel_binding=multi_diag
+        deallocate(level_parameters)
+        if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
+          composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          divdra_records(slot)%composition_status=composition_status
+          call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+          return
+        end if
+      else
+        parameter_index = int(divdra_requests(i)%distribution_parameter_ref)
+        call fmr_bind_single_level_signed_divdra(distribution_parameter_registry(parameter_index), &
+             hydraulic_view_registry(view_index), divdra_requests(i)%scalar_transfer, &
+             forcing_registry(forcing_index)%drainage_flux_by_level, bind_diag)
+        divdra_records(slot)%binding = bind_diag
+        if (bind_diag%status /= FMR_DIVDRA_BIND_OK) then
+          composition_status = FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          divdra_records(slot)%composition_status = composition_status
+          call cleanup_materialized_divdra(columns, divdra_requests, forcing_registry)
+          return
+        end if
       end if
     end do
 
