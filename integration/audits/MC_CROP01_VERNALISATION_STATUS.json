@@ -1,0 +1,52 @@
+{
+  "schema": "swap431.mc_crop01.vernalisation.v1",
+  "capability_id": "SW431-CROP-VERNALISATION",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "disposition": "SOURCE_COMPONENT_COMPLETE_OWNER_INTEGRATION_OPEN",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "exact_bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "semantics": [
+      "IDSL2 uses the same DLO/DLC photoperiod reduction as IDSL1 before anthesis.",
+      "If not vernalised and DVS<VERNDVS, VERNRATE=AFGEN(VERNRTB,TAV) and VERNFAC=clamp((VERN-VERNBASE)/(VERNSAT-VERNBASE)).",
+      "If not vernalised and DVS>=VERNDVS, FL_VERNALISED is forced true and VERNFAC remains 1.",
+      "DVR=VERNFAC*DVRED*DTSUM/TSUMEA.",
+      "After potential/actual crop updates, VERN advances once by VERNRATE and saturation can set FL_VERNALISED.",
+      "FIRST_WARNING changes only warning emission, not crop physics."
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_wofost_vernalisation_phenology.f90"
+  ],
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_wofost_vernalisation.py",
+    "status": "READY_FOR_O0_O2",
+    "cases": [
+      "below VERNBASE",
+      "committed-state factor ordering",
+      "same-day saturation",
+      "forced VERNDVS",
+      "warning condition"
+    ]
+  },
+  "persistent_state": [
+    "VERN accumulated_units",
+    "FL_VERNALISED vernalised"
+  ],
+  "nonphysics_state": [
+    "FIRST_WARNING suppression"
+  ],
+  "remaining": [
+    "Confirm crop-start initialization values for VERN/FL_VERNALISED from pinned source and bind into wofost_crop_owner persistence.",
+    "Extend the classic rate parameter selector from IDSL0/1 to IDSL2 without perturbing admitted IDSL0/1.",
+    "Compose one daily accepted event so VERN advances exactly once after potential and actual branches.",
+    "Qualify reject/replay/restart and anthesis transition."
+  ],
+  "admission": false,
+  "preservation": [
+    "IDSL0/1 unchanged",
+    "WOFOST81 unchanged",
+    "no water-mass ownership change"
+  ]
+}
