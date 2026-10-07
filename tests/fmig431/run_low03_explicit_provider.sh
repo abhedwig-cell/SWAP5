@@ -9,3 +9,5 @@ for opt in 0 2; do
  "$d/t"
  rm -rf "$d"; trap - EXIT
 done
+
+# Serialized binding is compiled by canonical qualification; this focused gate remains the independent pure source oracle.
