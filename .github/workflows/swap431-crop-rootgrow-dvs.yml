@@ -1,0 +1,31 @@
+name: SWAP431 crop rootgrow DVS qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/swap431-crop-rootgrow-dvs-20261007, work/swap431-crop-rootgrow-dvs-admission-20261007]
+    paths:
+      - 'src/crop/mod_crop_root_depth_dvs.f90'
+      - 'src/crop/mod_crop_root_profile_static.f90'
+      - 'src/crop/mod_wofost_crop_owner_state.f90'
+      - 'src/runtime/mod_fmr_reference_et_root_uptake_composition.f90'
+      - 'tests/fmig431/test_crop_root_depth_dvs.f90'
+      - 'tests/fmig431/run_crop_root_depth_dvs.sh'
+      - 'tests/fmig431/test_crop_rootgrow_dvs_profile.f90'
+      - 'tests/fmig431/run_crop_rootgrow_dvs_profile.py'
+      - 'tests/fmig431/test_crop_rootgrow_dvs_runtime.f90'
+      - 'tests/fmig431/run_crop_rootgrow_dvs_runtime.py'
+      - '.github/workflows/swap431-crop-rootgrow-dvs.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: DVS depth O0 O2
+        run: bash tests/fmig431/run_crop_root_depth_dvs.sh
+      - name: Static root profile O0 O2
+        run: python3 tests/fmig431/run_crop_rootgrow_dvs_profile.py
+      - name: Production ET root uptake O0 O2
+        run: python3 tests/fmig431/run_crop_rootgrow_dvs_runtime.py
