@@ -200,10 +200,10 @@ program test_ppa_wu05a9_fmr_top_input_trial
   end if
   if(migmac10)then
     allocate(forcing%boesten_evaporation)
-    forcing%boesten_evaporation%precipitation_rate_cm_per_day=merge(25.0_real64,1.0_real64,migmac11)
+    forcing%boesten_evaporation%precipitation_rate_cm_per_day=merge(1.0_real64,1.0_real64,migmac11)
     forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.25_real64
     forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=0.2_real64
-    forcing%boesten_evaporation%ponding_max_cm=merge(0.20_real64,2.0_real64,migmac11)
+    forcing%boesten_evaporation%ponding_max_cm=merge(2.0_real64,2.0_real64,migmac11)
     forcing%boesten_evaporation%runoff_resistance_day=1.0_real64
     forcing%boesten_evaporation%runoff_exponent=1.0_real64
   end if
