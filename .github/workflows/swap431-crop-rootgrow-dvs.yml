@@ -2,7 +2,7 @@ name: SWAP431 crop rootgrow DVS qualification
 on:
   workflow_dispatch:
   push:
-    branches: [work/swap431-crop-rootgrow-dvs-20261007]
+    branches: [work/swap431-crop-rootgrow-dvs-20261007, work/swap431-crop-rootgrow-dvs-admission-20261007]
     paths:
       - 'src/crop/mod_crop_root_depth_dvs.f90'
       - 'src/crop/mod_crop_root_profile_static.f90'
