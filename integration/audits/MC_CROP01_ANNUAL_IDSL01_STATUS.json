@@ -100,8 +100,9 @@
     ]
   },
   "remaining_gate": [
-    "Run O0/O2 source-bound IDSL0/1 resolver plus current classic finalizer composition on persisted head.",
-    "Compose the shared crop-end event owner into the classic transaction path and preserve F-WOF38/39/41 evidence."
+    "Run the literal production comparator at O0/O2 when runner capacity or a full local checkout is available.",
+    "Combine that result with existing F-WOF38/39/41 transaction, lifecycle and restart evidence.",
+    "Keep SWPOTRELMF=2, IDSL2, soybean, grass and Soil-N outside this annual claim."
   ],
   "implementation_gap": false,
   "restart_gap": false,
@@ -120,5 +121,22 @@
     ],
     "test": "tests/fmig431/test_swap431_classic_idsl01.f90",
     "runner": "tests/fmig431/run_swap431_classic_idsl01.py"
+  },
+  "literal_source_gate": {
+    "test": "tests/fmig431/test_swap431_annual_idsl01_source_envelope.f90",
+    "runner": "tests/fmig431/run_swap431_annual_idsl01_source_envelope.py",
+    "status": "READY_FOR_O0_O2",
+    "production_under_test": [
+      "mod_wofost_rate_parameters",
+      "mod_wofost_finalize_rates"
+    ],
+    "cases": [
+      "IDSL0 daylength independent",
+      "IDSL1 DLC zero",
+      "IDSL1 interior linear reduction",
+      "IDSL1 DLO full",
+      "generative daylength independent",
+      "IDSL2 remains fail-closed on admitted path"
+    ]
   }
 }
