@@ -180,7 +180,8 @@ contains
     call initialize_parameters(parameters, bottom_mode)
     if(present(explicit3))then
       if(explicit3)then
-        parameters%swbotb3_explicit_active=.true.;parameters%swbotb3_explicit_hdrain_cm=-100._real64
+        parameters%swbotb3_explicit_active=.true.;parameters%profile_groundwater_projection=.true.
+        parameters%swbotb3_explicit_hdrain_cm=-100._real64
         parameters%swbotb3_explicit_shape_3=1._real64
       end if
     end if
