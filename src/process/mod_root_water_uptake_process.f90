@@ -20,6 +20,11 @@ module mod_root_water_uptake_process
     real(real64) :: hlim4 = 0.0_real64
     real(real64) :: adcrl = 0.0_real64
     real(real64) :: adcrh = 0.0_real64
+    logical :: empirical_oxygen_enabled = .false.
+    integer :: upper_layer_bottom_node = 0
+    real(real64) :: hlim1 = 0.0_real64
+    real(real64) :: hlim2u = 0.0_real64
+    real(real64) :: hlim2l = 0.0_real64
   end type root_water_uptake_parameters_t
 
   type, public :: root_water_uptake_request_t
@@ -41,9 +46,12 @@ module mod_root_water_uptake_process
     real(real64) :: critical_pressure_head = 0.0_real64
     real(real64) :: potential_uptake_total = 0.0_real64
     real(real64) :: drought_reduction_total = 0.0_real64
+    real(real64) :: oxygen_reduction_total = 0.0_real64
     real(real64), allocatable :: potential_root_sink(:)
     real(real64), allocatable :: drought_reduction(:)
     real(real64), allocatable :: drought_reduction_factor(:)
+    real(real64), allocatable :: oxygen_reduction(:)
+    real(real64), allocatable :: oxygen_reduction_factor(:)
     logical :: mass_is_reconciliation_only = .true.
   end type root_water_uptake_diagnostics_t
 
@@ -58,7 +66,7 @@ contains
     type(root_water_uptake_flux_result_t), intent(out) :: fluxes
     type(root_water_uptake_diagnostics_t), intent(out) :: diagnostics
 
-    real(real64) :: hlim3, alpdry, qpotential
+    real(real64) :: hlim3, hlim2, alpdry, alpwet, qpotential, drought_sink
     integer :: node, n
 
     fluxes = root_water_uptake_flux_result_t()
@@ -78,10 +86,14 @@ contains
     allocate(diagnostics%potential_root_sink(n))
     allocate(diagnostics%drought_reduction(n))
     allocate(diagnostics%drought_reduction_factor(n))
+    allocate(diagnostics%oxygen_reduction(n))
+    allocate(diagnostics%oxygen_reduction_factor(n))
     fluxes%root_extraction_sink = 0.0_real64
     diagnostics%potential_root_sink = 0.0_real64
     diagnostics%drought_reduction = 0.0_real64
     diagnostics%drought_reduction_factor = 1.0_real64
+    diagnostics%oxygen_reduction = 0.0_real64
+    diagnostics%oxygen_reduction_factor = 1.0_real64
 
     ! Preserve the legacy early-exit ordering. Neither route needs current
     ! hydraulic state or a root-distribution array.
@@ -111,16 +123,30 @@ contains
       qpotential = (request%cumulative_root_fraction(node+1) - &
                     request%cumulative_root_fraction(node)) * request%potential_transpiration
       alpdry = drought_reduction_factor(hydraulic_view%pressure_head(node), hlim3, parameters%hlim4)
+      alpwet = 1.0_real64
+      if (parameters%empirical_oxygen_enabled) then
+        hlim2 = parameters%hlim2u
+        if (node > parameters%upper_layer_bottom_node) hlim2 = parameters%hlim2l
+        if (hydraulic_view%pressure_head(node) <= parameters%hlim1 .and. &
+            hydraulic_view%pressure_head(node) > hlim2) then
+          alpwet = (parameters%hlim1 - hydraulic_view%pressure_head(node)) / (parameters%hlim1 - hlim2)
+        end if
+        if (hydraulic_view%pressure_head(node) > parameters%hlim1) alpwet = 0.0_real64
+      end if
 
       diagnostics%potential_root_sink(node) = qpotential
       diagnostics%drought_reduction_factor(node) = alpdry
-      fluxes%root_extraction_sink(node) = qpotential * alpdry
-      diagnostics%drought_reduction(node) = qpotential - fluxes%root_extraction_sink(node)
+      diagnostics%oxygen_reduction_factor(node) = alpwet
+      drought_sink = qpotential * alpdry
+      fluxes%root_extraction_sink(node) = drought_sink * alpwet
+      diagnostics%drought_reduction(node) = qpotential - drought_sink
+      diagnostics%oxygen_reduction(node) = drought_sink - fluxes%root_extraction_sink(node)
     end do
 
     diagnostics%potential_uptake_total = sum(diagnostics%potential_root_sink)
     fluxes%actual_uptake_total = sum(fluxes%root_extraction_sink)
     diagnostics%drought_reduction_total = sum(diagnostics%drought_reduction)
+    diagnostics%oxygen_reduction_total = sum(diagnostics%oxygen_reduction)
   end subroutine evaluate_macro_feddes_drought_uptake
 
   pure logical function valid_parameters(parameters) result(valid)
@@ -135,6 +161,13 @@ contains
     if (.not. ieee_is_finite(parameters%adcrh)) return
     if (parameters%adcrh <= parameters%adcrl) return
     if (parameters%hlim4 >= parameters%hlim3l .or. parameters%hlim4 >= parameters%hlim3h) return
+    if (parameters%empirical_oxygen_enabled) then
+      if (parameters%upper_layer_bottom_node < 0 .or. &
+          parameters%upper_layer_bottom_node > parameters%active_nodes) return
+      if (.not. ieee_is_finite(parameters%hlim1) .or. .not. ieee_is_finite(parameters%hlim2u) .or. &
+          .not. ieee_is_finite(parameters%hlim2l)) return
+      if (parameters%hlim1 <= parameters%hlim2u .or. parameters%hlim1 <= parameters%hlim2l) return
+    end if
     valid = .true.
   end function valid_parameters
 
