@@ -7,6 +7,7 @@ module mod_wofost_crop_owner_state
   use mod_crop_root_depth_dvs, only: evaluate_crop_root_depth_dvs, CROP_ROOT_DEPTH_DVS_OK
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
+  use mod_wofost_vernalisation_phenology, only: wofost_vernalisation_state_t, WOFOST_VERN_OK
   implicit none
   private
 
@@ -43,6 +44,7 @@ module mod_wofost_crop_owner_state
     type(wofost_actual_biomass_state_t), allocatable :: biomass
     type(wofost_common_evolution_continuation_t), allocatable :: evolution_continuation
     type(wofost_b110_reference_compatibility_t), allocatable :: b110_reference_compatibility
+    type(wofost_vernalisation_state_t), allocatable :: vernalisation
   contains
     procedure :: clone => wofost_crop_owner_clone
     procedure, public :: validate => wofost_crop_owner_validate
@@ -78,6 +80,10 @@ contains
         allocate(typed_copy%b110_reference_compatibility)
         typed_copy%b110_reference_compatibility = self%b110_reference_compatibility
       end if
+      if (allocated(self%vernalisation)) then
+        allocate(typed_copy%vernalisation)
+        typed_copy%vernalisation = self%vernalisation
+      end if
     class default
       error stop 'WOFOST crop owner state: clone allocation failure'
     end select
@@ -85,7 +91,7 @@ contains
 
   integer function wofost_crop_owner_validate(self) result(status)
     class(wofost_crop_owner_state_t), intent(in) :: self
-    integer :: biomass_status, continuation_status, compatibility_status
+    integer :: biomass_status, continuation_status, compatibility_status, vernalisation_status
 
     status = WOFOST_CROP_OWNER_OK
 
@@ -111,6 +117,13 @@ contains
           return
         end if
       end if
+      if (allocated(self%vernalisation)) then
+        vernalisation_status = self%vernalisation%validate()
+        if (vernalisation_status /= WOFOST_VERN_OK) then
+          status = WOFOST_CROP_OWNER_INVALID_CONTINUATION
+          return
+        end if
+      end if
       if (allocated(self%b110_reference_compatibility)) then
         compatibility_status = self%b110_reference_compatibility%validate()
         if (compatibility_status /= WOFOST_CROP_OWNER_OK) then
@@ -132,6 +145,10 @@ contains
         return
       end if
       if (allocated(self%b110_reference_compatibility)) then
+        status = WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE
+        return
+      end if
+      if (allocated(self%vernalisation)) then
         status = WOFOST_CROP_OWNER_INACTIVE_OPTIONAL_STATE
         return
       end if
