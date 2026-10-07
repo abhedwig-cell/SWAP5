@@ -24,6 +24,15 @@ program test_swap431_low9_application
   call app%initialize(cfg,status)
   call require(status==FMR_APP_BOOT_OK .and. app%ready(),'mode9 bootstrap admitted')
   call app%run_standalone(t0,t1,result,status)
+  if(status/=FMR_APP_BOOT_OK)then
+    write(*,'(a,1x,i0,1x,l1)') 'LOW9_APP_DIAG status allocated=',status,allocated(result)
+    if(allocated(result))then
+      if(size(result)>0)write(*,'(a,1x,l1,1x,l1,1x,l1,1x,i0,1x,i0,1x,i0,1x,i0,1x,i0,1x,es24.16)') &
+           'LOW9_APP_RESULT',result(1)%admitted,result(1)%completed,result(1)%committed,result(1)%kernel_status, &
+           result(1)%solver_status,result(1)%solver_rejections,result(1)%temporal_rejections,result(1)%mass_rejections, &
+           result(1)%mass%residual
+    end if
+  end if
   call require(status==FMR_APP_BOOT_OK,'mode9 standalone status')
   call require(size(result)==1 .and. result(1)%completed .and. result(1)%committed,'mode9 transaction committed')
   call require(result(1)%mass%complete .and. abs(result(1)%mass%residual)<=mass_tol,'mode9 hard mass closure')
