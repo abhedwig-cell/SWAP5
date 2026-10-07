@@ -13,6 +13,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
   rejected-overdraw rollback, and restart reconstruction.
 - Solute owner: dissolved mobile mass plus sorbed matrix, pond, aquifer storage
   and age amount are carried atomically. Chemical mass excludes age amount.
+- Runtime now has a distinct reactive solute layout identity (`505005`) with a typed initializer and restart validator; existing mobile-only layouts reject reactive companion state.
 - Aquifer mutation is fail-closed in the current solute transaction model.
 
 ## Source-bound operators present
@@ -27,7 +28,7 @@ Frozen qualification PR: **#1112** at `56c007c236a940b97c3e9aefa4d49a4aeb6634dc`
 
 ## Not yet canonical admission
 
-These owners/operators are not by themselves proof of application-level
+These owners/operators and the new reactive carrier layout are not by themselves proof of application-level
 production reachability. Census capabilities remain open until the relevant
 runtime/application route, restart identity and persisted qualification are
 bound and reviewed.
