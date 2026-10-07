@@ -5,7 +5,7 @@
   "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "checkpoint_commit": "437678a6b588d1139225bd358113788d139c026e",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -114,24 +114,24 @@
     }
   ],
   "next_action": "Run tests/fmig431/run_swap431_drain_serialized_compile.py against the persisted current branch when a complete repository checkout/runner is available. If it passes, reconcile the implemented drainage/frost IDs as qualification candidates. Keep SW431-FROST-GW and SW431-FROST-SNOW separate because they require distinct ownership dependencies.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@985bef66fb38f27dba08fc5b0284553f74e15537",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@437678a6b588d1139225bd358113788d139c026e",
   "blockers": [
     "Current-head focused Actions run 37658401687 is queued with no runner and is not counted as evidence.",
     "The complete serialized production dependency-closure compile has not yet run against the current postimage.",
     "SW431-FROST-GW requires a separate lower-boundary qbot ownership/composition decision.",
     "SW431-FROST-SNOW depends on SW431-TEMP-SNOW and a shared snow-insulated sensible-temperature owner."
   ],
-  "last_reconciled_head": "985bef66fb38f27dba08fc5b0284553f74e15537",
+  "last_reconciled_head": "437678a6b588d1139225bd358113788d139c026e",
   "implementation_status": "IMPLEMENTATION_COMPLETE_PENDING_PERSISTED_QUALIFICATION",
   "test_status": "LOCAL_FOCUSED_CLUSTER_GREEN_O0_O2; SERIALIZED_DEPENDENCY_CLOSURE_COMPILE_PENDING",
   "qualification_status": "PENDING_INTEGRATED_COMPILE",
   "qualification_run": {
-    "run_id": 37638162602,
+    "run_id": 37658401687,
     "workflow": "SW431 drainage focused qualification",
-    "tested_head": "f29007caa919b07968926a614c84285cb57cefe3",
+    "tested_head": "c374a0a296128457cd33c8eb1e64cab8af128d78",
     "status": "queued",
     "conclusion": null,
-    "rationale": "Repository-wide GitHub Actions runner queue. Job focused-drainage exists but has not been assigned a runner; no compile/test failure is observable."
+    "rationale": "Focused workflow remains queued without runner. Production code is unchanged from c374a0a296128457cd33c8eb1e64cab8af128d78 through current branch head; later commits are status/evidence only."
   },
   "local_validation_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json",
   "qualification": {
