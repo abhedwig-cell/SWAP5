@@ -12,6 +12,8 @@ on:
       - 'tests/fsi/run_b111_hydraulic_families.sh'
       - 'tests/fsi/test_b111_power_tail.f90'
       - 'tests/fsi/run_b111_power_tail.sh'
+      - 'tests/fmr/test_swap431_hyd_runtime_reachability.f90'
+      - 'tests/fmr/run_swap431_hyd_runtime_reachability.sh'
       - '.github/workflows/swap431-hydraulic-families.yml'
   workflow_dispatch:
 permissions:
@@ -25,5 +27,6 @@ jobs:
       - run: gfortran --version
       - run: bash tests/fsi/run_b111_hydraulic_families.sh
       - run: bash tests/fsi/run_b111_power_tail.sh
+      - run: bash tests/fmr/run_swap431_hyd_runtime_reachability.sh
       - run: bash tests/fsi/run_fsi39_b110_ksatexm.sh
       - run: bash tests/ross/run_ross12_soil_water_solver_adapter.sh
