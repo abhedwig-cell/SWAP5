@@ -93,6 +93,8 @@ program test_swap431_grass_management
   if(abs(r%harvested_biomass-10.0_real64)>tol) error stop 20
   if(abs(r%lost_biomass-5.0_real64)>tol) error stop 21
   fixed_grazing_loss=p%grazing_fixed_loss_per_day
+  if(abs(r%fixed_grazing_loss_removed-fixed_grazing_loss)>tol) error stop 211
+  if(abs(r%removed_total_biomass-(r%harvested_biomass+r%lost_biomass+fixed_grazing_loss))>tol) error stop 212
   after_total=r%candidate_crop%biomass%stem_biomass+r%candidate_crop%biomass%living_leaf_biomass()+ &
        r%candidate_crop%biomass%storage_biomass+r%candidate_management%dead_leaf_biomass+ &
        r%candidate_management%dead_stem_biomass
