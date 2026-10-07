@@ -14,7 +14,8 @@
       "IDEV2 DTSUM=max(0,TAV-TBASE); pre-anthesis DVS increment DTSUM/TSUMEA; post-anthesis DTSUM/TSUMAM",
       "DVS is capped at 2; LAI is AFGEN(LAITB,DVS)",
       "optional WRT is AFGEN(WROOTTB,DVS) and GRRT/DRRT derive from the accepted WRT change",
-      "Pinned fixed.f90 declares TBASE as SAVE, reads it only in IDEV2, yet update_cropfixed computes DTSUM=max(0,TAV-TBASE) for both modes."
+      "Pinned fixed.f90 declares TBASE as SAVE, reads it only in IDEV2, yet update_cropfixed computes DTSUM=max(0,TAV-TBASE) for both modes.",
+      "When WRT is prescribed by WROOTTB, source sets GRRT=max(0,WRT-WRT_OLD), GRRTPOT=GRRT and DRRT=abs(min(0,WRT-WRT_OLD))."
     ],
     "unresolved": "Resolved as a pinned source defect for IDEV1 TSUM: no source assignment/default exists in fixed.f90. IDEV1 DVS, LAI and optional WRT remain deterministic because DVS increment is 2/LCC and LAI/WRT are DVS-table derived."
   },
@@ -42,5 +43,8 @@
       "marker": "SW431_CROP_FIXED_OWNER=PASS"
     }
   },
-  "claim_ceiling": "Candidate for bounded fixed-crop phenology admission after O0/O2 and event-owner composition. IDEV1 TSUM output is excluded as undefined in pinned source. Harvest/cropend remains a separate calendar/event owner."
+  "claim_ceiling": "Candidate for bounded fixed-crop phenology admission after O0/O2 and event-owner composition. IDEV1 TSUM output is excluded as undefined in pinned source. Harvest/cropend remains a separate calendar/event owner.",
+  "owner_binding": {
+    "root_growth": "actual and potential gross root-growth carriers are identical for fixed prescribed root biomass; they can feed the shared SWRD2 depth owner without a potential biomass shadow."
+  }
 }
