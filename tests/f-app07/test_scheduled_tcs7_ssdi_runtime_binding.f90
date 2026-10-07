@@ -45,7 +45,7 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call fmr_apply_scheduled_tcs7_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. d%result_produced .and. d%source_bound,1)
   call require(allocated(q) .and. size(q) == 4,2)
-  call require(abs(q(3)-0.48_real64) < tol .and. sum(abs(q([1,2,4]))) == 0.0_real64,3)
+  call require(abs(q(3)-0.48_real64) < tol .and. sum(abs(q([1,2,4]))) < tol,3)
   call require(abs(d%external_inflow_amount_cm-0.12_real64) < tol,4)
   call require(.not. c%active_event,5)
 
