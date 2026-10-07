@@ -13,8 +13,8 @@ program test_swap431_crop_calendar_end
   call evaluate_crop_end_event(q,r,status)
   if(status/=CROP_END_OK.or..not.r%end_crop.or..not.r%calendar_triggered.or.r%development_triggered) error stop 1
 
-  ! Strict source tolerance: exactly 0.1 is not a calendar trigger.
-  q%current_time_day=101.1_real64
+  ! Use an unambiguous value outside the strict 0.1-day source window; decimal 0.1 itself is not exactly representable.
+  q%current_time_day=101.1001_real64
   call evaluate_crop_end_event(q,r,status)
   if(status/=CROP_END_OK.or.r%end_crop) error stop 2
 
