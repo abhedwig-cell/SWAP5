@@ -60,6 +60,9 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &
+       b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
+       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -291,6 +294,9 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: dz(:)
     real(real64), allocatable :: node_distance(:)
     real(real64), allocatable :: cofgen(:,:)
+    ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.
+    integer, allocatable :: hydraulic_model_kind(:)
+    logical :: conductivity_power_tail_active = .false.
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
@@ -651,8 +657,11 @@ module mod_fmr_serialized_reference_backend
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
+    type(b111_analytical_hydraulic_parameters_t), pointer :: analytical_hydraulic_parameters => null()
     type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()
+    logical :: analytical_hydraulics_active = .false.
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     integer :: direct_retention_slot = 0
@@ -1158,7 +1167,8 @@ contains
 
     if (parameters%elasticity_active) then
       if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
-          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return
+          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &
+          parameters%conductivity_power_tail_active .or. allocated(parameters%hydraulic_model_kind)) return
       if (any(.not. ieee_is_finite(parameters%cofgen(24,:)))) return
       if (any(parameters%cofgen(24,:) < 0.0_real64)) return
     end if
@@ -1177,10 +1187,12 @@ contains
     if (parameters%elasticity_active) then
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
     else
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
-           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+           enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
     end if
     parameters%prepared_default_mvg_available = .true.
 
@@ -1210,6 +1222,8 @@ contains
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
     if (parameters%prepared_default_mvg%elastic_storage_active .neqv. parameters%elasticity_active) return
+    if (parameters%prepared_default_mvg%conductivity_power_tail_enabled .neqv. &
+        parameters%conductivity_power_tail_active) return
     if (parameters%elasticity_active) then
       if (.not. allocated(parameters%prepared_default_mvg%specific_elastic_storage)) return
       if (size(parameters%prepared_default_mvg%specific_elastic_storage) /= parameters%active_nodes) return
@@ -2776,6 +2790,28 @@ contains
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
+      if (allocated(parameters%hydraulic_model_kind)) then
+        ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
+             all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG) .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
+             .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%snow_active .and. &
+             .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active
+      end if
+      if (parameters%conductivity_power_tail_active) then
+        ok = ok .and. .not. allocated(parameters%hydraulic_model_kind) .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%elasticity_active .and. &
+             all(ieee_is_finite(parameters%cofgen(22:23,:))) .and. &
+             all(parameters%cofgen(22,:) < 0.0_real64) .and. &
+             all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &
+             all(parameters%cofgen(23,:) > 0.0_real64)
+      end if
       if (parameters%macropore_active) then
         ! Admission precedes configure_parameters(). Validate the immutable
         ! production config from the parameter carrier here; configure_parameters
@@ -2996,7 +3032,9 @@ contains
       if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
       if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
       nullify(self%hydraulic_parameters)
+      if (.not. associated(self%analytical_hydraulic_parameters)) allocate(self%analytical_hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%analytical_constitutive)) allocate(self%analytical_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3028,13 +3066,20 @@ contains
           if (parameters%elasticity_active) then
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
                  enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
           else
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
-                 enable_ksatexm_extension=parameters%ksatexm_extension_active)
+                 enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
           end if
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
+      end if
+      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind)
+      if (self%analytical_hydraulics_active) then
+        call initialize_b111_analytical_hydraulic_parameters(self%analytical_hydraulic_parameters, &
+             parameters%hydraulic_model_kind, parameters%cofgen)
       end if
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
@@ -3907,7 +3952,9 @@ contains
         return
       end select
     end if
-    if (self%direct_retention_active) then
+    if (self%analytical_hydraulics_active) then
+      call bind_b111_analytical_hydraulic_provider(self%analytical_constitutive, self%analytical_hydraulic_parameters)
+    else if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
            step_duration, self%direct_retention_slot, direct_retention_ok)
       if (.not. direct_retention_ok) return
@@ -4426,6 +4473,8 @@ contains
         return
       end if
       request%evaluation%constitutive => self%frost_constitutive
+    else if (self%analytical_hydraulics_active) then
+      request%evaluation%constitutive => self%analytical_constitutive
     else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
     else
