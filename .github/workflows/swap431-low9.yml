@@ -1,0 +1,20 @@
+name: SWAP431 LOW9 typed solver qualification
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/swap431-low9-20261007]
+    paths:
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fmig431/test_swap431_low9_solver.f90'
+      - 'tests/fmig431/run_swap431_low9_solver.py'
+      - '.github/workflows/swap431-low9.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: LOW9 O0 O2 typed solver
+        run: python3 tests/fmig431/run_swap431_low9_solver.py
