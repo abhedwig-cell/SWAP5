@@ -17,6 +17,11 @@ module mod_fmr_b111_soil_n_amendment_calendar
   integer,parameter,public::FMR_B111_AMCAL_DUPLICATE=5
   integer,parameter,public::FMR_B111_AMCAL_OUT_OF_ORDER=6
 
+  type,public::b111_amendment_calendar_item_t
+    real(real64)::source_time=0.0_real64
+    type(b111_soil_n_material_t)::material
+  end type
+
   type,public::b111_amendment_calendar_group_t
     integer(int64)::event_id=0_int64
     real(real64)::source_time=0.0_real64
@@ -31,9 +36,59 @@ module mod_fmr_b111_soil_n_amendment_calendar
     type(soil_n_receipt_t)::nitrogen
   end type
 
-  public::apply_b111_amendment_calendar_group
+  public::build_b111_amendment_calendar,apply_b111_amendment_calendar_group
 
 contains
+
+  subroutine build_b111_amendment_calendar(items,groups,status)
+    type(b111_amendment_calendar_item_t),intent(in)::items(:)
+    type(b111_amendment_calendar_group_t),allocatable,intent(out)::groups(:)
+    integer,intent(out)::status
+    type(b111_amendment_calendar_item_t),allocatable::sorted(:)
+    type(b111_amendment_calendar_item_t)::tmp
+    integer,allocatable::first(:),count(:)
+    integer::i,j,g,ng
+
+    if(allocated(groups))deallocate(groups)
+    status=FMR_B111_AMCAL_INVALID
+    if(size(items)<1)return
+    allocate(sorted(size(items)))
+    sorted=items
+    do i=1,size(sorted)
+      if(.not.ieee_is_finite(sorted(i)%source_time))return
+    end do
+
+    ! Reference correction: swap complete typed records, not parallel fields.
+    do i=1,size(sorted)-1
+      do j=i+1,size(sorted)
+        if(sorted(i)%source_time>sorted(j)%source_time)then
+          tmp=sorted(i);sorted(i)=sorted(j);sorted(j)=tmp
+        end if
+      end do
+    end do
+
+    allocate(first(size(sorted)),count(size(sorted)))
+    first=0;count=0
+    ng=1;first(1)=1;count(1)=1
+    do i=2,size(sorted)
+      if(sorted(i)%source_time-sorted(i-1)%source_time<1.0e-3_real64)then
+        count(ng)=count(ng)+1
+      else
+        ng=ng+1;first(ng)=i;count(ng)=1
+      end if
+    end do
+
+    allocate(groups(ng))
+    do g=1,ng
+      groups(g)%event_id=int(g,int64)
+      groups(g)%source_time=sorted(first(g))%source_time
+      allocate(groups(g)%materials(count(g)))
+      do j=1,count(g)
+        groups(g)%materials(j)=sorted(first(g)+j-1)%material
+      end do
+    end do
+    status=FMR_B111_AMCAL_OK
+  end subroutine
 
   subroutine apply_b111_amendment_calendar_group(committed,evaluation_time,depth_m,split,group,candidate,receipt)
     type(fmr_b111_soil_n_state_t),intent(in)::committed
