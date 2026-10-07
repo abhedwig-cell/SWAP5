@@ -46,7 +46,7 @@ contains
     type(b111_crop_n_harvest_forcing_t),intent(in)::f
     type(b111_crop_n_state_t),intent(out)::candidate
     type(b111_crop_n_harvest_receipt_t),intent(out)::receipt
-    real(real64)::before,after,removed,residue_n,scale,tol
+    real(real64)::before,removed,residue_n,scale,tol
     real(real64)::leaf_dead_n,stem_dead_n,storage_dead_n
 
     candidate=committed
@@ -90,9 +90,10 @@ contains
     removed=before-(candidate%anlv_kg_ha+candidate%anst_kg_ha+candidate%anrt_kg_ha+candidate%anso_kg_ha)+ &
          leaf_dead_n+stem_dead_n+storage_dead_n
     receipt%external_harvest_n_kg_ha=max(0.0_real64,removed-residue_n)
+    candidate%nreturned_to_soil_total_kg_ha=committed%nreturned_to_soil_total_kg_ha+residue_n
+    candidate%nexternal_harvest_total_kg_ha=committed%nexternal_harvest_total_kg_ha+receipt%external_harvest_n_kg_ha
     after=candidate%anlv_kg_ha+candidate%anst_kg_ha+candidate%anrt_kg_ha+candidate%anso_kg_ha
-    receipt%balance_residual_kg_ha=before+committed%nloss_leaf_kg_ha+committed%nloss_stem_kg_ha - &
-         (after+candidate%nloss_leaf_kg_ha+candidate%nloss_stem_kg_ha+residue_n+receipt%external_harvest_n_kg_ha)
+    receipt%balance_residual_kg_ha=candidate%balance_residual()
 
     scale=max(1.0_real64,before,residue_n)
     tol=4096.0_real64*epsilon(1.0_real64)*scale
