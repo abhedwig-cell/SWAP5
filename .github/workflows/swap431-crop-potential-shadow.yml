@@ -1,0 +1,32 @@
+name: SWAP431 potential crop shadow qualification
+on:
+  push:
+    branches: [work/swap431-crop-potential-shadow-r2-20261007]
+    paths:
+      - 'src/crop/mod_wofost_potential_shadow_state.f90'
+      - 'src/crop/mod_wofost_potential_shadow_daily.f90'
+      - 'src/crop/mod_wofost_prepare_assimilation.f90'
+      - 'src/crop/mod_wofost_finalize_rates.f90'
+      - 'src/crop/mod_wofost_one_day_structural_evolution.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'tests/fmig431/run_swap431_potential_shadow.py'
+      - 'tests/fmig431/run_swap431_potential_shadow_daily.py'
+      - 'tests/fmig431/run_swap431_potential_shadow_transaction.sh'
+      - 'tests/fmig431/test_swap431_potential_shadow*.f90'
+      - 'tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh'
+      - '.github/workflows/swap431-crop-potential-shadow.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Potential shadow component O0 O2
+        run: python3 tests/fmig431/run_swap431_potential_shadow.py
+      - name: Potential shadow daily trajectory O0 O2
+        run: python3 tests/fmig431/run_swap431_potential_shadow_daily.py
+      - name: Atomic actual plus potential transaction and restart
+        run: bash tests/fmig431/run_swap431_potential_shadow_transaction.sh
