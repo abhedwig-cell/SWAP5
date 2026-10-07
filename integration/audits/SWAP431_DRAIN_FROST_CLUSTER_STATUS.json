@@ -5,10 +5,10 @@
   "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "f29007caa919b07968926a614c84285cb57cefe3",
+  "checkpoint_commit": "985bef66fb38f27dba08fc5b0284553f74e15537",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "implemented_capabilities": [
     "SW431-DRAIN-DIV-SIGNED",
@@ -113,17 +113,18 @@
       "reason": "Depends on the separate SW431-TEMP-SNOW thermal/snow composition. Current frost thermal admission does not establish the snow-insulated sensible-temperature owner needed for this composition."
     }
   ],
-  "next_action": "Wait for GitHub Actions run 37638162602 to obtain a runner. On success, persist qualified-candidate evidence and reconcile the 11 implemented census IDs out of ACTIVE_MIGRATION; on failure, inspect the failing focused step and repair only that dependency surface. Do not broaden SW431-FROST-GW or SW431-FROST-SNOW without their separate owner decisions.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@f29007caa919b07968926a614c84285cb57cefe3",
+  "next_action": "Run tests/fmig431/run_swap431_drain_serialized_compile.py against the persisted current branch when a complete repository checkout/runner is available. If it passes, reconcile the implemented drainage/frost IDs as qualification candidates. Keep SW431-FROST-GW and SW431-FROST-SNOW separate because they require distinct ownership dependencies.",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@985bef66fb38f27dba08fc5b0284553f74e15537",
   "blockers": [
-    "GitHub Actions run 37638162602 is queued repository-wide with no runner assigned.",
-    "SW431-FROST-GW requires a separate lower-boundary state/flux ownership design decision.",
-    "SW431-FROST-SNOW depends on SW431-TEMP-SNOW thermal/snow composition."
+    "Current-head focused Actions run 37658401687 is queued with no runner and is not counted as evidence.",
+    "The complete serialized production dependency-closure compile has not yet run against the current postimage.",
+    "SW431-FROST-GW requires a separate lower-boundary qbot ownership/composition decision.",
+    "SW431-FROST-SNOW depends on SW431-TEMP-SNOW and a shared snow-insulated sensible-temperature owner."
   ],
-  "last_reconciled_head": "f29007caa919b07968926a614c84285cb57cefe3",
+  "last_reconciled_head": "985bef66fb38f27dba08fc5b0284553f74e15537",
   "implementation_status": "IMPLEMENTATION_COMPLETE_PENDING_PERSISTED_QUALIFICATION",
-  "test_status": "FOCUSED_COMPONENT_EVIDENCE_PRESENT; COMPLETE_CLUSTER_GATE_QUEUED",
-  "qualification_status": "INFRASTRUCTURE_PENDING",
+  "test_status": "LOCAL_FOCUSED_CLUSTER_GREEN_O0_O2; SERIALIZED_DEPENDENCY_CLOSURE_COMPILE_PENDING",
+  "qualification_status": "PENDING_INTEGRATED_COMPILE",
   "qualification_run": {
     "run_id": 37638162602,
     "workflow": "SW431 drainage focused qualification",
@@ -131,5 +132,13 @@
     "status": "queued",
     "conclusion": null,
     "rationale": "Repository-wide GitHub Actions runner queue. Job focused-drainage exists but has not been assigned a runner; no compile/test failure is observable."
+  },
+  "local_validation_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json",
+  "qualification": {
+    "status": "PENDING_INTEGRATED_COMPILE",
+    "current_head_actions_run": 37658401687,
+    "actions_status": "QUEUED_NOT_COUNTED",
+    "local_evidence": "integration/audits/evidence/SWAP431_DRAIN_FROST_LOCAL_VALIDATION_20261007.json",
+    "required_gate": "tests/fmig431/run_swap431_drain_serialized_compile.py"
   }
 }
