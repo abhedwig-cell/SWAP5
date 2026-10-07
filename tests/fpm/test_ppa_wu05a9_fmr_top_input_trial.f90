@@ -284,6 +284,8 @@ program test_ppa_wu05a9_fmr_top_input_trial
   call require(candidate%ready(),'FMR macropore candidate ready')
   observation=backend%observation()
   if(migmac11)then
+    call require(observation%macropore_inner_richards_exchange_used, &
+         'MIGMAC11 residual-synchronous inner Richards route used')
     if(migmac11_no_pond)then
       call require(observation%macropore_pond_requested_cm==0.0_real64,'MIGMAC11 below-threshold pond request zero')
       call require(observation%macropore_pond_accepted_cm==0.0_real64,'MIGMAC11 below-threshold pond accepted zero')
