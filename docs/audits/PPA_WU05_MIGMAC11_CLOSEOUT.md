@@ -1,41 +1,57 @@
 # PPA-WU05-MIGMAC11 closeout
 
-Status: CLOSED  
-Qualified reconciliation postimage: `609cd5ee8964f0619d94bd396f53ed9fe8d8495e`  
-Final admission head: `5747aa6911095c3f0a6c917c40871be6aa9c9116`  
-Canonical admission merge: `8cd14e459913f77f412e12125ccda597a841e22d`  
-Reconciliation PR: #1089  
+Status: CLOSED AND CANONICALLY ADMITTED  
+Final qualified production postimage: `5747aa6911095c3f0a6c917c40871be6aa9c9116`  
+Latest intersecting canonical parent: `d395ca3decf03e7149dbf8d65dc9ad8946826f3a`  
+Canonical reconciliation PR: #1092  
+Final qualification run: `37613833352`  
 Admission PR: #1084  
-Final qualification run: `37613833352`
+Canonical admission commit: `8cd14e459913f77f412e12125ccda597a841e22d`
 
 ## Admitted capability
 
-This closeout admits the bounded B1.11 surface-to-macropore donor composition implemented by MIGMAC11:
+MIGMAC11 closes the bounded B1.11 surface-to-macropore donor chain:
 
-- residual-synchronous candidate macropore area;
-- ponding threshold `PndmxMp`;
-- dedicated `KsMpSs` surface-to-macropore conductance;
-- pond-derived lateral inflow;
-- runon in the shared surface donor;
-- independent direct-atmospheric macropore source ownership;
-- A9 capacity limiting, redistribution and returned surface water;
-- shared surface/macropore water bookkeeping;
-- transaction, replay and restart semantics.
+- candidate macropore area is evaluated residual-synchronously;
+- `PndmxMp` and dedicated `KsMpSs` govern pond-derived lateral inflow;
+- runon remains part of the shared surface donor and is not a direct macropore source;
+- direct rain, irrigation and melt are area-partitioned only when the independent direct macropore top source is actually active;
+- A9 limits and redistributes the requested receipt and returns capacity-rejected water to the same surface donor;
+- pond-specific requested, accepted and returned amounts are kept separate from external direct top inflow in the transaction ledger;
+- accepted pond transfer is an internal surface-to-macropore redistribution, not a second external water input.
 
-The source authority is `reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90`. Runon is not a separate direct macropore source. Candidate area does not by itself activate direct rain/irrigation/melt partitioning.
+The source authority is `reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90`.
 
-## Acceptance evidence
+## Final qualification
 
-Run `37612249809` on the current-canonical merge postimage passed the production O0/O2 compile witness and the consolidated MIGMAC11 suite. The suite demonstrated active ponding, below-threshold zero transfer, runon composition, partial capacity return, changing candidate area, exact requested/accepted/returned identities, hard whole-column mass closure, retry/rollback/replay/restart behaviour and O0/O2 identity.
+Run `37613833352` passed on `5747aa6911095c3f0a6c917c40871be6aa9c9116` after reconciliation with canonical LOW3 changes. All workflow stages passed:
 
-The same run passed the inherited MIGMAC01-09 source/runtime envelope and MIGMAC10 bounded composition gate. The immediately preceding focused workstream qualification, run `37603291412`, also passed before canonical reconciliation.
+- production runtime compilation at O0 and O2;
+- active pond receipt above threshold;
+- paired runon case, with runon increasing the shared pond donor without direct runon macropore booking;
+- below-threshold/no-pond zero receipt;
+- partial A9 capacity acceptance with positive returned surface water;
+- expanding and shrinking candidate-area cases;
+- `requested = accepted + returned`;
+- net surface debit from pond transfer equals accepted pond-derived macropore inflow;
+- hard whole-column mass closure;
+- reject/smaller-retry identity;
+- rollback/replay identity;
+- restart continuation equivalence;
+- MIGMAC01-09 source/runtime preservation;
+- MIGMAC10 bounded Boesten/Rutter/macropore preservation;
+- O0/O2 identity.
 
-After the later LOW03 canonical composition changed the shared serialized backend, the full MIGMAC11 gate was repeated on final admission head `5747aa6911095c3f0a6c917c40871be6aa9c9116`. Run `37613833352` passed production O0/O2 compilation, the complete focused MIGMAC11 suite, MIGMAC01-09 preservation and MIGMAC10 bounded composition. PR #1084 then merged into `integration/f-ci-canonical` as `8cd14e459913f77f412e12125ccda597a841e22d`. The only tree delta between that qualified head and the admission merge is unrelated LOW03 status documentation, so the admitted production code is the qualified production postimage.
+The preceding focused qualification run `37603291412` and first canonical-merge qualification run `37612249809` also passed and remain supporting evidence.
 
-## Canonical reconciliation
+## Canonical admission
 
-The workstream had diverged from current canonical. Delta inspection found only one overlap on the recorded MIGMAC11 production dependency surface: `src/runtime/mod_fmr_serialized_reference_backend.f90`, where canonical had admitted MICRO/root-uptake additions. PR #1089 merged current canonical cleanly into the MIGMAC11 branch. The full focused and preservation qualification then passed on the resulting two-parent postimage.
+PR #1084 was admitted as canonical merge `8cd14e459913f77f412e12125ccda597a841e22d`.
+
+The exact delta from the final qualified production head `5747aa6911095c3f0a6c917c40871be6aa9c9116` to that canonical admission consists only of `integration/audits/SW431_LOW3_EXPLICIT_STATUS.md`. No production file, test owner, or recorded MIGMAC11 dependency changed. The final qualification therefore transfers directly to the canonical admission postimage under the repository's dependency-aware preservation rule.
 
 ## Claim ceiling
 
-This closeout does not claim arbitrary future macropore combinations or unrelated surface-water functionality. It admits the source-faithful B1.11 donor chain and preservation surface actually exercised above. Reopen only if a later change intersects the recorded dependency surface or a concrete regression is demonstrated.
+This closure admits the source-faithful B1.11 surface/macropore donor chain and the preservation envelope explicitly exercised above. It does not widen unrelated macropore, surface-water or forcing capabilities.
+
+Reopen MIGMAC11 only when a later canonical change intersects the recorded dependency surface or concrete regression evidence appears.
