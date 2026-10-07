@@ -5,7 +5,7 @@
     "SW431-CROP-FIXED",
     "SW431-CROP-FIXED-THERMAL"
   ],
-  "status": "PARTIAL_SHARED_OWNER_IMPLEMENTED_SOURCE_INITIALIZATION_BLOCKER",
+  "status": "BOUNDED_SHARED_OWNER_READY_IDEV1_TSUM_SOURCE_DEFECT",
   "source": {
     "member": "SWAP/fixed.f90",
     "sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
@@ -13,12 +13,26 @@
       "IDEV1 DVS increment is 2/LCC",
       "IDEV2 DTSUM=max(0,TAV-TBASE); pre-anthesis DVS increment DTSUM/TSUMEA; post-anthesis DTSUM/TSUMAM",
       "DVS is capped at 2; LAI is AFGEN(LAITB,DVS)",
-      "optional WRT is AFGEN(WROOTTB,DVS) and GRRT/DRRT derive from the accepted WRT change"
+      "optional WRT is AFGEN(WROOTTB,DVS) and GRRT/DRRT derive from the accepted WRT change",
+      "Pinned fixed.f90 declares TBASE as SAVE, reads it only in IDEV2, yet update_cropfixed computes DTSUM=max(0,TAV-TBASE) for both modes."
     ],
-    "unresolved": "The extracted read_cropfixed block reads TBASE only under IDEV2, while update_cropfixed computes DTSUM=max(0,TAV-TBASE) before the IDEV selector. Establish the source initialization/default authority for TBASE under IDEV1 before claiming source-faithful TSUM continuation."
+    "unresolved": "Resolved as a pinned source defect for IDEV1 TSUM: no source assignment/default exists in fixed.f90. IDEV1 DVS, LAI and optional WRT remain deterministic because DVS increment is 2/LCC and LAI/WRT are DVS-table derived."
   },
   "implementation": "src/crop/mod_fixed_crop_owner.f90",
   "ownership": "One shared transactional fixed-crop state for DVS/TSUM/LAI and optional crop-owned root biomass; no duplicate owner per IDEV selector.",
   "admission": false,
-  "next_safe_step": "Recover fixed.f90 declaration/initialization authority for TBASE and common crop-end event callsite; then qualify IDEV1/2 daily candidate, reject/replay/restart and canopy/root consumers."
+  "next_safe_step": "Compose the shared crop-end event owner for source lines 60-73, then qualify owner persistence/restart and actual canopy/root consumers. Do not invent IDEV1 TBASE.",
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_fixed_crop_owner.py",
+    "status": "READY_FOR_O0_O2",
+    "cases": [
+      "IDEV1 2/LCC DVS",
+      "IDEV1 LAI/WRT table derivation",
+      "IDEV1 TSUM explicitly unclaimed",
+      "IDEV2 pre-anthesis TSUMEA",
+      "IDEV2 post-anthesis TSUMAM",
+      "inactive no-op"
+    ]
+  },
+  "claim_ceiling": "Candidate for bounded fixed-crop phenology admission after O0/O2 and event-owner composition. IDEV1 TSUM output is excluded as undefined in pinned source. Harvest/cropend remains a separate calendar/event owner."
 }
