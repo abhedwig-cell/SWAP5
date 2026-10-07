@@ -65,7 +65,7 @@ contains
     call initialize_config(config)
 
     output=fmr_serialized_column_result_t()
-    output%column_id=910000_int64+int(model,int64)+merge(100_int64,0_int64,power)
+    output%column_id=910000_int64
     output%requested_t0=0.0_real64
     output%requested_t1=dt
     diagnostic=fmr_column_diagnostics_t()
