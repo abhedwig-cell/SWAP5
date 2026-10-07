@@ -230,6 +230,12 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
 
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_sol01_state_t
+    type(solute_sorbed_pond_state_t) :: solute_companion
+  contains
+    procedure :: clone => fmr_b110_sol01_state_clone
+  end type fmr_b110_sol01_state_t
+
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_macropore_reduction_state_t
     type(macropore_reduction_continuation_t) :: reduction_continuation
   contains
@@ -1308,6 +1314,17 @@ contains
       call copy_b110_physical_state(self, typed_copy)
     end select
   end subroutine fmr_b110_state_clone
+
+  subroutine fmr_b110_sol01_state_clone(self, copy)
+    class(fmr_b110_sol01_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_sol01_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_sol01_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%solute_companion = self%solute_companion
+    end select
+  end subroutine fmr_b110_sol01_state_clone
 
   subroutine fmr_b110_macropore_reduction_state_clone(self, copy)
     class(fmr_b110_macropore_reduction_state_t), intent(in) :: self
