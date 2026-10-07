@@ -173,6 +173,17 @@ contains
                request%step_duration * result%unrounded_mass_balance_residual
        end if
 
+       ! Bounded SWBOTB=1 below-profile route owns qbot inside HeadCalc.
+       ! bottom_head carries prescribed GWLEVEL here, not lower-face HBOT5.
+       if (request%boundary%bottom_mode == 1 .and. .not. ws%state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = request%step_duration * result%unrounded_mass_balance_residual
+       end if
+
        ! SWBOTB=2 prescribes qbot directly. For an accepted solve the final
        ! unrounded compartment residual vector is already the exact vector used
        ! by HeadCalc's total-balance convergence criterion. Preserve that exact
@@ -233,7 +244,11 @@ contains
        result%candidate_state%pressure_head = ws%state_binding%h
        result%candidate_state%water_content = ws%state_binding%theta
        result%candidate_state%ponding_depth = ws%state_binding%pond
-       result%candidate_state%groundwater_level = ws%state_binding%gwl
+       if (request%boundary%bottom_mode == 1) then
+          result%candidate_state%groundwater_level = ws%state_binding%gwlinp
+       else
+          result%candidate_state%groundwater_level = ws%state_binding%gwl
+       end if
        result%top_flux = ws%state_binding%qtop
        result%bottom_flux = ws%state_binding%qbot
        result%diagnostics%nonlinear_iterations = ws%legacy_worker%diagnostics%nonlinear_iterations
@@ -365,9 +380,23 @@ contains
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8 .and. &
+        request%boundary%bottom_mode /= 1) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 1) then
+       route = 'prescribed-gwl-below-profile-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (any(.not. ieee_is_finite(request%parameters%z)) .or. &
+           any(.not. ieee_is_finite(request%parameters%dz)) .or. &
+           any(.not. ieee_is_finite(request%parameters%node_distance))) return
+       if (any(request%parameters%dz <= 0.0_real64) .or. any(request%parameters%node_distance <= 0.0_real64)) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head)) return
+       if (request%boundary%bottom_head >= request%parameters%z(n)) return
+       if (any(.not. ieee_is_finite(request%base_state%pressure_head))) return
     end if
     if (request%boundary%bottom_mode == 8) then
        route = 'lysimeter-plate-domain-deferred'
