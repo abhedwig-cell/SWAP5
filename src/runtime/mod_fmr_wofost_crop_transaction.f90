@@ -43,6 +43,7 @@ module mod_fmr_wofost_crop_transaction
   integer, parameter, public :: FMR_WOF38_CROP_COMPLETE_ERROR = 8
   integer, parameter, public :: FMR_WOF38_INVALID_TRANSACTION_STATE = 9
   integer, parameter, public :: FMR_WOF38_POTENTIAL_ERROR = 10
+  integer, parameter, public :: FMR_WOF38_PHENOLOGY_ERROR = 11
 
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_OK = 0
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE = 1
@@ -292,7 +293,7 @@ contains
 
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
-       potential_attainable_multiplier)
+       potential_attainable_multiplier, phenology_mode, soybean_phenology, vernalisation_phenology)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -300,14 +301,21 @@ contains
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
     real(real64), intent(in), optional :: potential_attainable_multiplier
+    integer, intent(in), optional :: phenology_mode
+    type(soybean_phenology_parameters_t), intent(in), optional :: soybean_phenology
+    type(wofost_vernalisation_parameters_t), intent(in), optional :: vernalisation_phenology
     logical :: enable_shadow
+    integer :: resolved_phenology_mode
     real(real64) :: potential_multiplier
+    type(wofost_rate_scalar_parameters_t) :: rate_scalars
 
     parameters = fmr_wofost_crop_transaction_parameters_t()
     enable_shadow = .false.
     if (present(enable_potential_shadow)) enable_shadow = enable_potential_shadow
     potential_multiplier = 1.0_real64
     if (present(potential_attainable_multiplier)) potential_multiplier = potential_attainable_multiplier
+    resolved_phenology_mode = WOFOST_PHENOLOGY_CLASSIC
+    if (present(phenology_mode)) resolved_phenology_mode = phenology_mode
     status = FMR_WOF38_INVALID_PARAMETERS
     if (.not. rate_parameters%ready()) return
     if (.not. ieee_is_finite(stem_area_coefficient) .or. stem_area_coefficient < 0.0_real64) return
@@ -317,6 +325,21 @@ contains
     if (.not. ieee_is_finite(update_parameters%leaf_lifespan) .or. update_parameters%leaf_lifespan < 0.0_real64) return
     if (.not. ieee_is_finite(potential_multiplier) .or. potential_multiplier < 0.0_real64 .or. &
         potential_multiplier > 1.0_real64) return
+    rate_scalars = rate_parameters%scalar_view()
+    select case(resolved_phenology_mode)
+    case(WOFOST_PHENOLOGY_CLASSIC)
+      if (present(soybean_phenology) .or. present(vernalisation_phenology)) return
+    case(WOFOST_PHENOLOGY_SOYBEAN)
+      if (.not. present(soybean_phenology) .or. present(vernalisation_phenology)) return
+      if (.not. soybean_phenology%ready()) return
+      if (rate_scalars%development_daylength_mode /= 0) return
+    case(WOFOST_PHENOLOGY_VERNALISATION)
+      if (.not. present(vernalisation_phenology) .or. present(soybean_phenology)) return
+      if (.not. vernalisation_phenology%ready()) return
+      if (rate_scalars%development_daylength_mode /= 1) return
+    case default
+      return
+    end select
 
     parameters%rate_parameters = rate_parameters
     parameters%update_parameters = update_parameters
@@ -324,6 +347,15 @@ contains
     parameters%storage_area_coefficient = storage_area_coefficient
     parameters%potential_shadow_enabled = enable_shadow
     parameters%potential_attainable_multiplier = potential_multiplier
+    parameters%phenology_mode = resolved_phenology_mode
+    if (present(soybean_phenology)) then
+      allocate(parameters%soybean_phenology)
+      parameters%soybean_phenology = soybean_phenology
+    end if
+    if (present(vernalisation_phenology)) then
+      allocate(parameters%vernalisation_phenology)
+      parameters%vernalisation_phenology = vernalisation_phenology
+    end if
     parameters%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine construct_fmr_wofost_crop_transaction_parameters
