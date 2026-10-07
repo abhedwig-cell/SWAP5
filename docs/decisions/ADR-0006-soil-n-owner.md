@@ -23,15 +23,24 @@ rollback/restart ambiguous.
 SWAP5 uses one persistent transactional **Soil-N owner** for the B1.11
 soil-nutrient migration.
 
-The owner contains the authoritative accepted inventories for:
+The owner follows the B1.11 SoilManagement aggregation rather than the general
+nodal solute grid. Its authoritative accepted state contains:
 
-- mineral ammonium;
-- mineral nitrate;
-- the source-required organic nitrogen pools.
+- one SoilManagement depth `dz_WSN`;
+- `FOM(1:nf)` fresh-organic-matter pools;
+- the biomass organic-matter pool;
+- the humus organic-matter pool;
+- mineral ammonium N;
+- mineral nitrate N.
+
+Organic nitrogen is not duplicated as a second mutable state. It is derived
+from the accepted organic-matter pools, their immutable N fractions, and the
+owned SoilManagement depth. This keeps the organic-matter process equations
+and the nitrogen mass ledger consistent.
 
 All soil-N process modules are pure or candidate-producing operators. They do
-not commit stores directly. They emit explicit pool deltas plus separately
-booked external inputs and outputs. One owner applies the combined transfer
+not commit stores directly. They emit explicit FOM/Bio/Hum and mineral-N deltas
+plus separately booked external N inputs and outputs. One owner applies the combined transfer
 atomically, verifies non-negative stores and verifies whole-owner mass closure
 before the candidate can be committed.
 
@@ -64,10 +73,13 @@ carry physical history.
 
 ## Solute separation
 
-The existing mobile-salt owner remains a separate conserved constituent owner.
-It is not reused as a nitrogen inventory merely because both have transport.
-The two owners may consume the same accepted water-flux carrier, but neither
-owns water and neither silently transfers mass to the other.
+The existing mobile-salt owner remains a separate conserved constituent owner
+on the nodal soil-water grid. It is not reused as the WOFOST Soil-N inventory
+merely because both have transport. B1.11 `Wofost_SoilWaterN` advances the
+aggregated SoilManagement NH4/NO3 concentrations using aggregated water-flux
+receipts, while the general solute model advances nodal mobile constituent
+mass. The two routes may consume water information from the same accepted
+hydraulic trajectory, but they do not share a mutable solute store.
 
 ## Consequences
 
