@@ -1,0 +1,49 @@
+{
+  "schema": "swap431.mc_crop01.grass_phenology.v1",
+  "capability_id": "SW431-CROP-GRASS",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "disposition": "PHENOLOGY_SOURCE_COMPONENT_COMPLETE_MANAGEMENT_OWNER_OPEN",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "semantics": [
+      "SWWOFOST=3 uses DTSUM=max(0,TAV) and DVR=2/366.",
+      "SWTSUM=0 enables development unconditionally.",
+      "SWTSUM=1 enables when TSUM+DTSUM>=200.",
+      "SWTSUM=2 increments T_TSUMCUM on days with TSOIL(NODTSUM)>=TEMPTSUM and enables when T_TSUMCUM>=T_TEMPTSUM.",
+      "Cold days do not reset T_TSUMCUM in the pinned source."
+    ]
+  },
+  "implementation": "src/crop/mod_wofost_grass_phenology.f90",
+  "persistent_state": [
+    "T_TSUMCUM only for SWTSUM=2"
+  ],
+  "excluded_management_state": [
+    "TDLAY",
+    "ICUT",
+    "TCUT",
+    "TGRZ",
+    "FL_GRZ",
+    "FL_MOW",
+    "FL_CUTEND",
+    "biomass-removal and harvest/loss accounting"
+  ],
+  "qualification": {
+    "runner": "tests/fmig431/run_swap431_grass_phenology.py",
+    "local": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_GRASS_PHENOLOGY=PASS"
+    },
+    "persisted_integration": "OPEN"
+  },
+  "remaining": [
+    "Bind this phenology activation into the existing crop owner/transaction without duplicating biomass state.",
+    "Implement the independent grass management owner for mowing/grazing/dewooling, delay, counters, biomass removal, losses and harvest accounting.",
+    "Qualify restart/event timing across management boundaries."
+  ],
+  "admission": false
+}
