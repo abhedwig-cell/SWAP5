@@ -255,6 +255,15 @@ contains
 
     call evaluate_current_rates(self,pressure_head,water_content,request,rates,matrix_view,matrix,ok)
     if(.not.ok)return
+    if(.not.allocated(rates%qexc_to_matrix_rate))then
+      ! A pure top receipt has no matrix exchange and therefore no exchange
+      ! Jacobian contribution. It remains active through evaluate_rate.
+      if(self%candidate_pond_lateral_cm>0.0_real64)then
+        derivative_available=.true.
+        active=.true.
+      end if
+      return
+    end if
     call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative)
     if(.not.derivative%valid)return
     if(size(dexchange_dhead)/=self%accepted_macro%num_nodes)return
