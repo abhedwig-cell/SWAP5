@@ -3814,6 +3814,16 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
+      ! MC-LOW01: CALCGWL is a derived profile view, not an ordinary mode-2
+      ! Richards input owner. Re-derive the solve-local GWL from the pressure
+      ! profile so accepted publication cannot feed a stale/derived value back
+      ! into sibling or retry solves.
+      if (self%profile_groundwater_projection .and. .not. self%drainage_qbot_smooth_freatic_projection) then
+        call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z, self%soil_parameters%node_distance, &
+             physical%pressure_head, physical%ponding_depth, profile_projection)
+        if (.not. profile_projection%valid .or. .not. profile_projection%level_present) return
+        request%base_state%groundwater_level = profile_projection%level_cm
+      end if
       if (self%macropore_active) then
         if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore_config)) return
         if (.not. physical%macropore%ready()) return
