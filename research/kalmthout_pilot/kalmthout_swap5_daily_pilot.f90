@@ -1,6 +1,7 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
+  use mod_transaction_reference, only: TX_TEMPORAL_NONE
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
@@ -97,7 +98,8 @@ contains
     type(fmr_production_application_config_t),intent(out)::value
     real(real64)::conductivity0
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_tolerance=1.0_real64
+    value%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
+    value%numerical%transaction%temporal_tolerance=0.0_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
