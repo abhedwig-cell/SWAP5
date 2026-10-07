@@ -179,6 +179,9 @@ contains
         if (self%receipt_present) return
       end if
     end if
+    if (self%root_depth_rate_present) then
+      if (self%root_depth_rate%validate() /= CROP_ROOT_RATE_OK) return
+    end if
     if (self%receipt_present) then
       if (.not. self%receipt%ready()) return
     else
@@ -206,6 +209,10 @@ contains
         view%root_growth_carrier = state%root_growth_carrier
         view%root_growth_carrier_present = .true.
       end if
+    end if
+    if (allocated(state%root_depth_rate)) then
+      view%root_depth_rate = state%root_depth_rate
+      view%root_depth_rate_present = .true.
     end if
     if (state%last_consumed_event%ready()) then
       call export_wofost_crop_event_identity_persistence(state%last_consumed_event, view%receipt, receipt_exported)
@@ -242,6 +249,10 @@ contains
       state%potential_shadow = view%potential_shadow
       allocate(state%root_growth_carrier)
       state%root_growth_carrier = view%root_growth_carrier
+    end if
+    if (view%root_depth_rate_present) then
+      allocate(state%root_depth_rate)
+      state%root_depth_rate = view%root_depth_rate
     end if
     if (view%receipt_present) then
       call reconstruct_wofost_crop_event_identity_from_persistence(view%receipt, state%last_consumed_event, receipt_status)
