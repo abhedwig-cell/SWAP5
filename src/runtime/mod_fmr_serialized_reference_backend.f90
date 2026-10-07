@@ -160,6 +160,9 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
   use mod_fmr_legacy_cauchy_bottom_boundary_provider, only: fmr_cauchy3_control_t, fmr_cauchy3_proposal_t, &
        FMR_CAUCHY3_OK
+  use mod_fmr_legacy_explicit_cauchy_bottom_boundary_provider, only: fmr_explicit_cauchy3_control_t, &
+       fmr_explicit_cauchy3_result_t, fmr_evaluate_legacy_explicit_cauchy_bottom_boundary_controlled, &
+       FMR_EXPLICIT_CAUCHY3_OK
   implicit none
   private
   public :: fmr_frost_response_drainage_configuration_valid
@@ -420,6 +423,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_head = 0.0_real64
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
+    type(fmr_explicit_cauchy3_control_t), allocatable :: legacy_swbotb3_explicit_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     type(fmr_c_drain_salt_forcing_t), allocatable :: c_drain_salt
@@ -618,6 +622,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
+    type(fmr_explicit_cauchy3_control_t), allocatable :: legacy_swbotb3_explicit_control
     type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
@@ -3056,6 +3061,7 @@ contains
     self%cauchy3_proposal = fmr_cauchy3_proposal_t()
     if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
     if (allocated(self%legacy_swbotb3_implicit_control)) deallocate(self%legacy_swbotb3_implicit_control)
+    if (allocated(self%legacy_swbotb3_explicit_control)) deallocate(self%legacy_swbotb3_explicit_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
     self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
@@ -3270,6 +3276,14 @@ contains
         allocate(self%legacy_swbotb5_control)
         self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
       end if
+      if (allocated(forcing%legacy_swbotb3_explicit_control)) then
+        if (self%bottom_mode /= 3 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb3_implicit_control) .or. allocated(forcing%legacy_swbotb5_control) .or. &
+            allocated(forcing%legacy_swbotb2_control) .or. allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb3_explicit_control%valid()) return
+        allocate(self%legacy_swbotb3_explicit_control)
+        self%legacy_swbotb3_explicit_control = forcing%legacy_swbotb3_explicit_control
+      end if
       if (allocated(forcing%legacy_swbotb3_implicit_control)) then
         if (self%bottom_mode /= 3 .or. .not. self%soil_water_selection%uses_reference()) return
         if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
@@ -3278,7 +3292,8 @@ contains
         allocate(self%legacy_swbotb3_implicit_control)
         self%legacy_swbotb3_implicit_control = forcing%legacy_swbotb3_implicit_control
       end if
-      if (self%bottom_mode == 3 .and. .not. allocated(self%legacy_swbotb3_implicit_control)) return
+      if (self%bottom_mode == 3 .and. .not. allocated(self%legacy_swbotb3_implicit_control) .and. &
+          .not. allocated(self%legacy_swbotb3_explicit_control)) return
       if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
         if (allocated(forcing%legacy_swbotb2_control)) return
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
