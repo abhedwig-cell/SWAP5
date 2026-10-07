@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+TMP="$ROOT/tests/fwof/.run_swap431_potential_shadow_tx_$$.sh"
+OUT="${TMPDIR:-/tmp}/swap431-potential-shadow-tx-$$.out"
+trap 'rm -f "$TMP" "$OUT"' EXIT
+
+cp "$ROOT/tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh" "$TMP"
+
+python3 - "$TMP" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1])
+s=p.read_text(encoding='utf-8')
+
+# Add observation variables to the generated Fortran declaration payload.
+anchor="  integer(kind=8) :: crop_revision_before\n"
+insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot, restored_shadow
+  type(fmr_wofost_root_growth_carrier_t) :: root_growth_snapshot, restored_growth
+  type(fmr_wofost_crop_transaction_persistence_t) :: potential_persistence
+  type(fmr_wofost_crop_transaction_state_t) :: restored_potential_state
+  type(wofost_crop_owner_state_t) :: restored_potential_owner
+  logical :: shadow_available, growth_available, persistence_ok, reconstructed_ok, restored_available
+  integer :: persistence_status
+  type(fmr_crop_root_growth_views_t) :: root_views
+  integer :: root_bind_status
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'decl anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Enable the optional potential shadow for the exact same F-WOF38 transaction.
+old="""  call construct_fmr_wofost_crop_transaction_parameters(bundle, update_parameters, 0.005_real64, 0.002_real64, &
+       crop_parameters, crop_status)
+"""
+new="""  call construct_fmr_wofost_crop_transaction_parameters(bundle, update_parameters, 0.005_real64, 0.002_real64, &
+       crop_parameters, crop_status, enable_potential_shadow=.true., potential_attainable_multiplier=0.5_real64)
+"""
+if s.count(old)!=1:
+    raise SystemExit(f'parameter anchor count={s.count(old)}')
+s=s.replace(old,new,1)
+
+old="""  call initialize_fmr_wofost_crop_transaction_state(seed, crop_initial_state, crop_status)
+"""
+new="""  call initialize_fmr_wofost_crop_transaction_state(seed, crop_initial_state, crop_status, &
+       enable_potential_shadow=.true.)
+"""
+if s.count(old)!=1:
+    raise SystemExit(f'init anchor count={s.count(old)}')
+s=s.replace(old,new,1)
+
+# Precommit: shadow is present but root-growth carrier is intentionally unavailable.
+anchor="""    call require(.not. tx%receipt_ready(), 'F-WOF38 no committed event receipt before publication')
+"""
+insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 potential shadow enabled before publication')
+    call tx%snapshot_potential_shadow(shadow_snapshot, shadow_available)
+    call require(shadow_available .and. shadow_snapshot%active, 'SW431 precommit shadow snapshot available')
+    call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
+    call require(.not. growth_available, 'SW431 precommit root growth unavailable before accepted event')
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'precommit anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Candidate from accepted event: receipt + shadow + actual/potential gross root growth are one candidate.
+anchor="""    call require(tx%consumed_event(event_identity), 'F-WOF38 first candidate consumes matching event')
+"""
+insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 candidate potential shadow enabled')
+    call tx%snapshot_potential_shadow(shadow_snapshot, shadow_available)
+    call require(shadow_available .and. shadow_snapshot%active, 'SW431 candidate shadow snapshot available')
+    call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
+    call require(growth_available .and. root_growth_snapshot%ready(), 'SW431 candidate GRRT/GRRTPOT carrier ready')
+    call require(root_growth_snapshot%actual_gross_root_growth >= 0.0_real64, 'SW431 candidate GRRT nonnegative')
+    call require(root_growth_snapshot%potential_gross_root_growth >= 0.0_real64, 'SW431 candidate GRRTPOT nonnegative')
+    call build_fmr_crop_root_growth_views(tx,aggregates,root_views,root_bind_status)
+    call require(root_bind_status==FMR_CROP_ROOT_BIND_OK, 'SW431 candidate root binding status')
+    call require(root_views%swrd2_available .and. root_views%swrd3_available, 'SW431 candidate SWRD2/SWRD3 views available')
+    call require(bitwise_equal(root_views%swrd2%potential_transpiration,aggregates%potential_transpiration), &
+         'SW431 SWRD2 IPTRA exact')
+    call require(bitwise_equal(root_views%swrd2%actual_root_uptake,aggregates%actual_root_uptake), &
+         'SW431 SWRD2 IQROT exact')
+    call require(bitwise_equal(root_views%swrd2%actual_root_growth,root_growth_snapshot%actual_gross_root_growth), &
+         'SW431 SWRD2 GRRT exact')
+    call require(bitwise_equal(root_views%swrd2%potential_root_growth,root_growth_snapshot%potential_gross_root_growth), &
+         'SW431 SWRD2 GRRTPOT exact')
+    call require(bitwise_equal(root_views%potential_root_biomass,shadow_snapshot%root_biomass()), &
+         'SW431 SWRD3 WRTPOT exact')
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'candidate anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Rollback must leave the committed shadow and carrier at pre-event state.
+anchor="""    call require(.not. tx%receipt_ready(), 'F-WOF38 rollback leaves receipt uncommitted')
+"""
+insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 rollback preserves enabled shadow')
+    call tx%snapshot_potential_shadow(shadow_snapshot, shadow_available)
+    call require(shadow_available .and. shadow_snapshot%active, 'SW431 rollback preserves pre-event shadow')
+    call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
+    call require(.not. growth_available, 'SW431 rollback leaves GRRT/GRRTPOT unpublished')
+    call build_fmr_crop_root_growth_views(tx,aggregates,root_views,root_bind_status)
+    call require(root_bind_status==FMR_CROP_ROOT_BIND_MISSING_POTENTIAL .and. .not.root_views%swrd2_available, &
+         'SW431 rollback cannot publish accepted SWRD2 growth forcing')
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'rollback anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Commit publishes owner, shadow, carrier and receipt in the one existing revision.
+anchor="""    call require(tx%consumed_event(event_identity), 'F-WOF38 committed receipt matches event')
+"""
+insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 committed shadow enabled')
+    call tx%snapshot_potential_shadow(shadow_snapshot, shadow_available)
+    call require(shadow_available .and. shadow_snapshot%active, 'SW431 committed shadow available')
+    call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
+    call require(growth_available .and. root_growth_snapshot%ready(), 'SW431 committed GRRT/GRRTPOT carrier available')
+    call build_fmr_crop_root_growth_views(tx,aggregates,root_views,root_bind_status)
+    call require(root_bind_status==FMR_CROP_ROOT_BIND_OK .and. root_views%swrd2_available .and. &
+         root_views%swrd3_available, 'SW431 committed root views available')
+    call export_fmr_wofost_crop_transaction_persistence(tx,potential_persistence,persistence_ok,persistence_status)
+    call require(persistence_ok .and. persistence_status==FMR_WOFOST_CROP_PERSISTENCE_OK, &
+         'SW431 post-event potential persistence export')
+    call reconstruct_fmr_wofost_crop_transaction_from_persistence(potential_persistence,restored_potential_state, &
+         reconstructed_ok,persistence_status)
+    call require(reconstructed_ok .and. persistence_status==FMR_WOFOST_CROP_PERSISTENCE_OK, &
+         'SW431 post-event potential persistence reconstruct')
+    call restored_potential_state%snapshot_owner(restored_potential_owner,restored_available)
+    call require(restored_available .and. same_owner(restored_potential_owner,crop_snapshot_owner), &
+         'SW431 restored actual owner exact')
+    call restored_potential_state%snapshot_potential_shadow(restored_shadow,restored_available)
+    call require(restored_available .and. restored_shadow%active, 'SW431 restored potential shadow available')
+    call restored_potential_state%snapshot_root_growth(restored_growth,restored_available)
+    call require(restored_available .and. restored_growth%ready(), 'SW431 restored GRRT/GRRTPOT available')
+    call require(bitwise_equal(restored_growth%actual_gross_root_growth,root_growth_snapshot%actual_gross_root_growth), &
+         'SW431 restored GRRT exact')
+    call require(bitwise_equal(restored_growth%potential_gross_root_growth,root_growth_snapshot%potential_gross_root_growth), &
+         'SW431 restored GRRTPOT exact')
+    call require(restored_potential_state%receipt_ready() .and. restored_potential_state%consumed_event(event_identity), &
+         'SW431 restored receipt exact')
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'commit anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Failed crop evolution must publish neither shadow nor root-growth observation.
+anchor="""    call require(.not. tx%receipt_ready(), 'F-WOF38 crop failure receipt unchanged')
+"""
+insert=anchor+"""    call require(tx%potential_shadow_enabled(), 'SW431 failed trial keeps configured shadow')
+    call tx%snapshot_potential_shadow(shadow_snapshot, shadow_available)
+    call require(shadow_available .and. shadow_snapshot%active, 'SW431 failed trial keeps pre-event shadow')
+    call tx%snapshot_root_growth(root_growth_snapshot, growth_available)
+    call require(.not. growth_available, 'SW431 failed trial publishes no GRRT/GRRTPOT')
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'failure anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+# Add visible markers.
+anchor="""  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
+"""
+insert="""  print '(a)', 'SW431_CROP_ROOT_TRANSACTION_BINDING=PASS'
+  print '(a)', 'SW431_POTENTIAL_SHADOW_POST_EVENT_RESTART=PASS'
+  print '(a)', 'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS'
+  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
+"""
+if s.count(anchor)!=1:
+    raise SystemExit(f'final marker anchor count={s.count(anchor)}')
+s=s.replace(anchor,insert,1)
+
+marker_anchor="""    'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS' \
+"""
+if marker_anchor in s:
+    s=s.replace(marker_anchor,"""    'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS' \
+    'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS' \
+""",1)
+
+p.write_text(s,encoding='utf-8')
+PY
+
+bash "$TMP" | tee "$OUT"
+grep -Fq 'SW431_CROP_ROOT_TRANSACTION_BINDING=PASS' "$OUT"
+grep -Fq 'SW431_POTENTIAL_SHADOW_POST_EVENT_RESTART=PASS' "$OUT"
+grep -Fq 'SW431_POTENTIAL_SHADOW_ATOMIC_TRANSACTION=PASS' "$OUT"
+grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_O0=PASS' "$OUT"
+grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_O2=PASS' "$OUT"
+grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_O0_O2_OUTPUT_IDENTITY=PASS' "$OUT"
+echo 'SW431_POTENTIAL_SHADOW_TRANSACTION_GATE PASS'
