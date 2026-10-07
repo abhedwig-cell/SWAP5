@@ -1,0 +1,61 @@
+{
+  "work_unit": "F-MIG431-LOW03-EXP-P0",
+  "capability": "ordinary explicit SWBOTB=3, SwBotb3Impl=0",
+  "disposition": "REPAIRED_QUALIFIED_PENDING_ADMISSION",
+  "baseline": "19d7ce86f71c7fa5fd3ed2c65a91dc705921f714",
+  "qualified_code_head": "61a63bd4f5a00ca465dab0243e58b42e6d88d6d3",
+  "qualification_run": 37612263087,
+  "qualification_job": 112762086766,
+  "source_authority": {
+    "manifest": "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "boundbottom_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "semantics": [
+      "B1.11 explicit mode3 materializes qbot from a trial-local groundwater level",
+      "groundwater level is reconstructed from the current pressure-head profile through CALCGWL-compatible projection",
+      "gwlmean = hdrain + shape_3*(gwl-hdrain)",
+      "strict gwlmean > ztopcp(node) source boundary is preserved",
+      "profile resistance uses saturated fraction of crossing node plus full deeper nodes",
+      "qbot = (deepgw-gwlmean)/(rimlay+cvalprof) + qbot4"
+    ]
+  },
+  "design": {
+    "profile_groundwater_projection": "src/solver/mod_b111_profile_groundwater_projection.f90",
+    "explicit_profile_flux": "src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+    "runtime_binding": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "application_profile": "ordinary_explicit_cauchy",
+    "solver_route": "existing bottom_mode=2 explicit flux after trial-local materialization",
+    "new_committed_state": false,
+    "restart_schema_change": false,
+    "new_mass_owner": false
+  },
+  "qualification": {
+    "component_o0_o2": true,
+    "calcgwl_projection_o0_o2": true,
+    "serialized_runtime_o0_o2": true,
+    "production_bootstrap_o0_o2": true,
+    "hard_mass_closure": true,
+    "implicit_mode3_preserved": true,
+    "nearby_bottom_mode_fail_closed": true,
+    "shortened_retry_rollback": true,
+    "replay_identity": true,
+    "failed_retry_no_publish": true,
+    "missing_history_fail_closed": true,
+    "fresh_backend_restart_identity": true,
+    "markers": [
+      "SW431-LOW3-EXPLICIT-COMPONENT=PASS",
+      "SW431-LOW3-PROFILE-GWL=PASS",
+      "SW431_LOW3_EXPLICIT_RUNTIME=PASS",
+      "SW431_LOW3_IMPLICIT_PRESERVATION=PASS",
+      "LOW03EXP_APPLICATION_GATE=PASS",
+      "LOW03EXP_SHORTENED_RETRY_ROLLBACK=PASS",
+      "LOW03EXP_REPLAY_IDENTITY=PASS",
+      "LOW03EXP_FAILED_RETRY_NO_PUBLISH=PASS",
+      "LOW03EXP_HISTORY_MISSING_FAIL_CLOSED=PASS",
+      "LOW03EXP_FRESH_BACKEND_RESTART_IDENTITY=PASS",
+      "LOW03EXP_PROGRESS_GATE=PASS",
+      "SW431_LOW3_EXPLICIT_APPLICATION_O0_O2=PASS"
+    ]
+  },
+  "supersedes": "draft PR #1088 implementation path; retains its source reconstruction intent but replaces stored-GWL trial semantics with source-faithful profile projection",
+  "canonical_admitted": false
+}
