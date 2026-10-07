@@ -12,14 +12,19 @@
       "GRRT_NEEDED=(WROOT_NODE(NODDRZ)/(RD+ZTOPCP(NODDRZ)))*RR",
       "if GRRT_NEEDED>GRRT then RR=RR*(GRRT/GRRT_NEEDED)",
       "if RR<SMALL then RR=0"
-    ]
+    ],
+    "semantic_correction": {
+      "IALPDRY_DAY": "accepted daily integral of ALPDRYNODRTZ, with ALPDRYNODRTZ=1-QREDDRYSUM/PTRA",
+      "meaning": "1=no drought reduction, 0=maximum drought reduction",
+      "effect": "SWDMI2RD=2 promotes extension as drought stress increases; RRIMIN is the no-drought minimum, subject to root-growth supply."
+    }
   },
   "implementation": "src/crop/mod_crop_root_extension_supply_limit.f90",
   "ownership": "stateless resolver; does not own root depth, node biomass, drought history or crop biomass growth",
   "required_inputs": [
     "accepted proposed RR",
     "RRIMIN",
-    "IALPDRY_DAY",
+    "IALPDRY_DAY accepted daily drought uptake factor integral (1=no drought, 0=max drought)",
     "EXTENTCRIT",
     "WROOT_NODE(NODDRZ)",
     "RD",
@@ -39,10 +44,11 @@
       "O0": "PASS",
       "O2": "PASS",
       "output_identity": "PASS",
-      "marker": "SW431_CROP_ROOTGROW_SUPPLY=PASS"
+      "marker": "SW431_CROP_ROOTGROW_SUPPLY=PASS",
+      "semantic_retest_required": true
     },
     "persisted_composition": "OPEN"
   },
-  "disposition": "SOURCE_RESOLVER_COMPLETE_DEPENDENT_OWNER_COMPOSITION_OPEN",
+  "disposition": "SOURCE_RESOLVER_SEMANTICS_CORRECTED_REQUALIFICATION_AND_DEPENDENT_COMPOSITION_OPEN",
   "admission": false
 }
