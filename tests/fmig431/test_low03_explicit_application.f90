@@ -61,9 +61,25 @@ program test_low03_explicit_application
   ! Choose gwlmean at the profile bottom so cvalprof=0.  Set HDRain=GWL
   ! and choose DEEPGW such that the B1.11 explicit qbot equals -conductivity0,
   ! matching the uniform-profile top flux used by this qualification.
-  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=-100.0_real64
+  cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%hdrain_cm=cfg%tiles(1)%initial_state%groundwater_level
   cfg%tiles(1)%base_forcing%legacy_swbotb3_explicit_control%shape_3=0.0_real64
-  haq_eq=-100.0_real64-conductivity0*rimlay
+  block
+    real(real64)::cprof,bottom,sat,gw
+    integer::node,k
+    gw=cfg%tiles(1)%initial_state%groundwater_level
+    node=numnod;bottom=0.0_real64
+    do k=1,numnod
+      bottom=bottom-cfg%tiles(1)%parameters%dz(k)
+      if(gw>bottom+cfg%tiles(1)%parameters%dz(k).and.node==numnod)node=k
+    end do
+    bottom=-sum(cfg%tiles(1)%parameters%dz(1:node))
+    sat=gw-bottom
+    cprof=sat/cfg%tiles(1)%parameters%cofgen(3,node)
+    do k=node+1,numnod
+      cprof=cprof+cfg%tiles(1)%parameters%dz(k)/cfg%tiles(1)%parameters%cofgen(3,k)
+    end do
+    haq_eq=gw-conductivity0*(rimlay+cprof)
+  end block
   call cfg%tiles(1)%base_forcing%legacy_swbotb3_implicit_control%initialize_table( &
        T0,1000.0_real64,[1000.0_real64,1000.5_real64,1001.0_real64],[haq_eq,haq_eq,haq_eq], &
        rimlay,.true.,status,[1000.0_real64,1001.0_real64],[0.0_real64,0.0_real64])
