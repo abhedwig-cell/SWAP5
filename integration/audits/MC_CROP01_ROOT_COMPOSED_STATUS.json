@@ -1,0 +1,39 @@
+{
+  "schema": "swap431.mc_crop01.root_composed.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "sources": [
+    "work/swap431-crop-potential-shadow-20261007",
+    "work/swap431-crop-rootgrow-rate-20261007",
+    "work/swap431-rootgrow-biomass-20261007"
+  ],
+  "implementation": [
+    "src/crop/mod_crop_root_depth_rate_owner.f90",
+    "src/crop/mod_crop_root_depth_biomass.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/runtime/mod_fmr_crop_root_growth_binding.f90"
+  ],
+  "binding": {
+    "SWRD2": [
+      "accepted IPTRA",
+      "accepted IQROT",
+      "accepted GRRT",
+      "accepted GRRTPOT"
+    ],
+    "SWRD3": [
+      "actual WRT from primary crop owner",
+      "WRTPOT from optional potential shadow"
+    ],
+    "publication": "all crop-side values originate from one fmr_wofost_crop_transaction_state_t candidate/commit"
+  },
+  "transaction_gate": "tests/fmig431/run_swap431_crop_root_composed.sh",
+  "qualification_status": "READY_FOR_O0_O2_FULL_REPO_GATE",
+  "rollback_rule": "pre-event or rolled-back transaction has no accepted root-growth carrier and therefore cannot publish SWRD2 growth forcing",
+  "disposition": "CROSS_BRANCH_ROOT_INPUT_COMPOSITION_IMPLEMENTED_QUALIFICATION_OPEN",
+  "remaining": [
+    "Run the composed O0/O2 gate.",
+    "Place SWRD2 root-depth state itself under the owning higher-level accepted daily transaction.",
+    "Use SWRD3 typed views directly in root-profile/root-uptake composition.",
+    "Add restart of root-depth state once the combined daily owner is chosen."
+  ],
+  "admission": false
+}
