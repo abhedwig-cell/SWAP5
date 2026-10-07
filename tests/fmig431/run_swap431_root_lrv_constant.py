@@ -45,7 +45,9 @@ def closure(text_path, generated=None):
         src=text if text is not None else pathlib.Path(p).read_text()
         for n in re.findall(r'^\s*use\s*(?:,\s*non_intrinsic\s*)?(?:::)?\s*(\w+)',src,re.M|re.I):
             q=mods.get(n.lower())
-            if q is not None: visit(q)
+            if q is not None:
+                if pathlib.Path(q) != pathlib.Path(p):
+                    visit(q)
             elif n.lower() not in intr: raise RuntimeError('missing '+n+' from '+key)
         vis.remove(key);seen.add(key);order.append(pathlib.Path(p))
     if generated is None: visit(text_path)
