@@ -51,19 +51,20 @@
     },
     {
       "id": "SW431-AGE-TRACER",
-      "state": "PRODUCTION_FOUNDATION_ONLY",
+      "state": "MATRIX_TRANSPORT_CANDIDATE",
       "evidence": [
-        "persistent age amount store distinct from chemical mass",
-        "B1.11 zero-order age production",
-        "candidate-only production transfer leaves chemical mass unchanged",
-        "reactive restart layout persists age amount"
+        "persistent nodal age amount plus persistent pond-age amount",
+        "zero-order B1.11 ageing production",
+        "matrix convective/dispersive single-substep transport",
+        "root, lateral-drainage and bottom age export receipts",
+        "age balance closes independently from chemical solute mass",
+        "reactive restart layout persists nodal and pond age state"
       ],
       "remaining": [
-        "AgeTracer-specific pond age state",
-        "advective/dispersive age transport",
-        "root/drainage/bottom age export",
-        "accepted water-carrier composition",
-        "persisted integrated qualification"
+        "pond-age surface coupling to accepted pond water",
+        "full accepted-water substep composition",
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
       ]
     },
     {
