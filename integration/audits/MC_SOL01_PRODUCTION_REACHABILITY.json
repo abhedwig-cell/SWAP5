@@ -11,11 +11,11 @@
         "explicit dissolved and sorbed persistent stores",
         "B1.11 Freundlich forward/inverse partition",
         "exact-order reactive matrix substep updates total storage then repartitions",
-        "reactive restart layout 505005"
+        "reactive restart layout 505005",
+        "two-node internal dispersive transfer preserves total reactive mass while re-establishing per-node Freundlich equilibrium"
       ],
       "remaining": [
         "persisted O0/O2 integrated qualification",
-        "multi-node reactive transport oracle",
         "canonical admission"
       ]
     },
@@ -26,11 +26,11 @@
         "B1.11 temperature/moisture/depth decay factors",
         "decay acts on total dissolved+sorbed storage before repartition",
         "explicit external decay mass output",
-        "exact-order reactive matrix substep"
+        "exact-order reactive matrix substep",
+        "multi-node reactive transport oracle coexists with exact-order decay/repartition semantics"
       ],
       "remaining": [
         "persisted O0/O2 integrated qualification",
-        "multi-node reactive transport oracle",
         "canonical admission"
       ]
     },
