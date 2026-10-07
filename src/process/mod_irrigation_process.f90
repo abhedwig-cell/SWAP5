@@ -243,7 +243,7 @@ contains
     candidate_state%active_event_index = event_index
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
-    candidate_state%active_event_rate_cm_per_day = effective_rate
+    candidate_state%active_event_rate_cm_per_day = 0.0_real64
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
