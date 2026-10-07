@@ -47,10 +47,14 @@ module mod_irrigation_process
     integer :: active_nodes = 0
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
+    integer :: timing_criterion = 7
     real(real64) :: irr_rate_cm_per_day = 0.0_real64
     integer :: tcs7_knot_count = 0
     real(real64) :: tcs7_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: tcs7_pressure_head(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs8_knot_count = 0
+    real(real64) :: tcs8_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs8_water_content(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     integer :: dcs2_knot_count = 0
     real(real64) :: dcs2_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: dcs2_depth_cm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
@@ -340,14 +344,29 @@ contains
       return
     end if
 
-    call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
-                          request%dvs, threshold, ok)
-    if (.not. ok) then
+    select case (parameters%timing_criterion)
+    case (7)
+      call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
+                            request%dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+    case (8)
+      call restricted_afgen(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count, &
+                            request%dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%water_content(parameters%sensor_node) > threshold) return
+    case default
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
-    end if
-    diagnostics%interpolated_threshold = threshold
-    if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+    end select
     diagnostics%triggered = .true.
 
     call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
@@ -456,7 +475,16 @@ contains
     if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
     if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
-    if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
+    select case (parameters%timing_criterion)
+    case (7)
+      if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
+    case (8)
+      if (.not. valid_table(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count)) return
+      if (any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) < 0.0_real64) .or. &
+          any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) > 1.0_real64)) return
+    case default
+      return
+    end select
     if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
     if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
     valid_scheduled_parameters = .true.
@@ -490,7 +518,14 @@ contains
     if (.not. allocated(hydraulic_view%water_content)) return
     if (size(hydraulic_view%pressure_head) /= hydraulic_view%active_nodes) return
     if (size(hydraulic_view%water_content) /= hydraulic_view%active_nodes) return
-    if (.not. ieee_is_finite(hydraulic_view%pressure_head(parameters%sensor_node))) return
+    select case (parameters%timing_criterion)
+    case (7)
+      if (.not. ieee_is_finite(hydraulic_view%pressure_head(parameters%sensor_node))) return
+    case (8)
+      if (.not. ieee_is_finite(hydraulic_view%water_content(parameters%sensor_node))) return
+    case default
+      return
+    end select
     valid_scheduled_hydraulic_view = .true.
   end function valid_scheduled_hydraulic_view
 
