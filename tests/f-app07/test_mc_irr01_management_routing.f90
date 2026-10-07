@@ -8,7 +8,8 @@ program test_mc_irr01_management_routing
   use mod_fmr_scheduled_management_irrigation_application
   use mod_fmr_scheduled_management_irrigation_routing
   use mod_fmr_hupsel_irrigation_application_binding, only: fmr_hupsel_irrigation_binding_diagnostics_t, &
-       FMR_HUPSEL_IRR_BIND_OK, FMR_HUPSEL_IRR_BIND_UPSTREAM_REJECTED
+       FMR_HUPSEL_IRR_BIND_OK, FMR_HUPSEL_IRR_BIND_UPSTREAM_REJECTED, &
+       FMR_HUPSEL_IRR_BIND_UNSUPPORTED_APPLICATION
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t
   use mod_rutter_interception_process, only: rutter_interval_input_t
   implicit none
@@ -50,6 +51,10 @@ program test_mc_irr01_management_routing
   call require(abs(bound_rutter%surface_irrigation_cm_per_day-flux%surface_gross_rate)<tol,8)
   call require(abs(bound_rutter%gross_rain_cm_per_day-base_rutter%gross_rain_cm_per_day)<tol,9)
 
+  ! A sprinkler event may never use the surface-bypass wrapper.
+  call fmr_bind_management_surface_to_dynamic_top(base_top,flux,mdiag,bound_top,bdiag)
+  call require(bdiag%status==FMR_HUPSEL_IRR_BIND_UNSUPPORTED_APPLICATION .and. .not.bdiag%result_produced,12)
+
   ! Rejected management evaluation may not be converted into an application route.
   call setup(p,h,r)
   r%t1=r%t0
@@ -61,6 +66,7 @@ program test_mc_irr01_management_routing
   print '(A)','MC_IRR01_MANAGEMENT_SURFACE_ROUTE=PASS'
   print '(A)','MC_IRR01_MANAGEMENT_SPRINKLER_ROUTE=PASS'
   print '(A)','MC_IRR01_MANAGEMENT_ROUTING_FAIL_CLOSED=PASS'
+  print '(A)','MC_IRR01_MANAGEMENT_NO_SPRINKLER_BYPASS=PASS'
 
 contains
 
