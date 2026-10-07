@@ -1,10 +1,10 @@
 # PPA-WU05-MIGMAC11 closeout
 
 Status: CLOSED  
-Qualified postimage: `609cd5ee8964f0619d94bd396f53ed9fe8d8495e`  
-Canonical parent: `19d7ce86f71c7fa5fd3ed2c65a91dc705921f714`  
+Qualified postimage: `5747aa6911095c3f0a6c917c40871be6aa9c9116`  
+Canonical parent: `d395ca3decf03e7149dbf8d65dc9ad8946826f3a`  
 Reconciliation PR: #1089  
-Qualification run: `37612249809`
+Latest qualification run: `37613833352`
 
 ## Admitted capability
 
@@ -24,13 +24,13 @@ The source authority is `reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f
 
 ## Acceptance evidence
 
-Run `37612249809` on the current-canonical merge postimage passed the production O0/O2 compile witness and the consolidated MIGMAC11 suite. The suite demonstrated active ponding, below-threshold zero transfer, runon composition, partial capacity return, changing candidate area, exact requested/accepted/returned identities, hard whole-column mass closure, retry/rollback/replay/restart behaviour and O0/O2 identity.
+Run `37613833352` on the latest current-canonical merge postimage passed the production O0/O2 compile witness and the consolidated MIGMAC11 suite. The suite demonstrated active ponding, below-threshold zero transfer, runon composition, partial capacity return, changing candidate area, exact requested/accepted/returned identities, hard whole-column mass closure, retry/rollback/replay/restart behaviour and O0/O2 identity.
 
-The same run passed the inherited MIGMAC01-09 source/runtime envelope and MIGMAC10 bounded composition gate. The immediately preceding focused workstream qualification, run `37603291412`, also passed before canonical reconciliation.
+The same run passed the inherited MIGMAC01-09 source/runtime envelope and MIGMAC10 bounded composition gate. Earlier successful gates include focused workstream run `37603291412` and canonical-postimage run `37612673865`; the latest run supersedes them for current-head closure.
 
 ## Canonical reconciliation
 
-The workstream had diverged from current canonical. Delta inspection found only one overlap on the recorded MIGMAC11 production dependency surface: `src/runtime/mod_fmr_serialized_reference_backend.f90`, where canonical had admitted MICRO/root-uptake additions. PR #1089 merged current canonical cleanly into the MIGMAC11 branch. The full focused and preservation qualification then passed on the resulting two-parent postimage.
+The workstream had diverged from current canonical. Delta inspection found only one overlap on the recorded MIGMAC11 production dependency surface: `src/runtime/mod_fmr_serialized_reference_backend.f90`, where canonical had admitted MICRO/root-uptake additions. PR #1089 merged current canonical cleanly into the MIGMAC11 branch. A later canonical LOW03/Cauchy admission again intersected the shared serialized backend; that newer canonical was reconciled into the branch at `5747aa6911095c3f0a6c917c40871be6aa9c9116`. The full focused and preservation qualification then passed again on run `37613833352`.
 
 ## Claim ceiling
 
