@@ -6,7 +6,7 @@ program test_swap431_crop_co2_response
   use mod_fmr_crop_co2_response_binding
   implicit none
 
-  type(crop_co2_response_parameters_t) :: response_parameters
+  type(crop_co2_response_parameters_t) :: response_parameters, disabled_parameters
   type(crop_co2_response_t) :: response
   type(wofost_one_day_forcing_t) :: base_forcing, crop_forcing
   type(crop_et_canopy_parameters_t) :: canopy_parameters
@@ -17,9 +17,9 @@ program test_swap431_crop_co2_response
   integer :: status
   real(real64), parameter :: tol=1.0e-12_real64
 
-  call construct_crop_co2_response_parameters([400.0_real64,600.0_real64], &
-       [1.0_real64,1.2_real64],[1.0_real64,1.4_real64],[1.0_real64,0.8_real64], &
-       response_parameters,status)
+  call construct_crop_co2_response_parameters([400.0_real64,600.0_real64], [1.0_real64,1.2_real64], &
+       [350.0_real64,500.0_real64,650.0_real64], [0.9_real64,1.2_real64,1.5_real64], &
+       [300.0_real64,700.0_real64], [1.0_real64,0.8_real64], .true., response_parameters,status)
   if(status/=CROP_CO2_RESPONSE_OK) error stop 1
 
   call construct_crop_et_canopy_parameters(0.5_real64,0.8_real64, &
@@ -56,13 +56,28 @@ program test_swap431_crop_co2_response
   if(.not.canopy_diagnostics%resolved_co2_factor_consumed) error stop 11
   if(canopy_diagnostics%co2_table_consumed.or.canopy_diagnostics%co2_forcing_consumed) error stop 12
 
-  ! Endpoint behavior follows the same AFGEN substrate used by classic WOFOST.
+  ! Each AFGEN table has its own independent CO2 knot vector.
   call evaluate_crop_co2_response(response_parameters,300.0_real64,response,status)
   if(status/=CROP_CO2_RESPONSE_OK.or.abs(response%efficiency_factor-1.0_real64)>tol.or. &
-       abs(response%amax_factor-1.0_real64)>tol.or.abs(response%transpiration_factor-1.0_real64)>tol) error stop 13
+       abs(response%amax_factor-0.9_real64)>tol.or.abs(response%transpiration_factor-1.0_real64)>tol) error stop 13
   call evaluate_crop_co2_response(response_parameters,700.0_real64,response,status)
   if(status/=CROP_CO2_RESPONSE_OK.or.abs(response%efficiency_factor-1.2_real64)>tol.or. &
-       abs(response%amax_factor-1.4_real64)>tol.or.abs(response%transpiration_factor-0.8_real64)>tol) error stop 14
+       abs(response%amax_factor-1.5_real64)>tol.or.abs(response%transpiration_factor-0.8_real64)>tol) error stop 14
+
+  ! Disabled response is forcing-independent and resolves neutral factors.
+  call construct_crop_co2_response_parameters([1.0_real64],[1.0_real64],[1.0_real64],[1.0_real64], &
+       [1.0_real64],[1.0_real64],.false.,disabled_parameters,status)
+  if(status/=CROP_CO2_RESPONSE_OK) error stop 15
+  call evaluate_crop_co2_response(disabled_parameters,-999.0_real64,response,status)
+  if(status/=CROP_CO2_RESPONSE_OK.or.abs(response%efficiency_factor-1.0_real64)>tol.or. &
+       abs(response%amax_factor-1.0_real64)>tol.or.abs(response%transpiration_factor-1.0_real64)>tol) error stop 16
+
+  ! Inactive crop does not consume or validate atmospheric CO2.
+  canopy_state%crop_emerged=.false.
+  call fmr_bind_crop_co2_response(response_parameters,-999.0_real64,base_forcing,canopy_parameters,canopy_state, &
+       crop_forcing,canopy_view,response,canopy_diagnostics,diagnostics)
+  if(diagnostics%status/=FMR_CROP_CO2_BINDING_OK.or.diagnostics%response_resolved) error stop 17
+  if(.not.diagnostics%canopy_view_bound.or.canopy_view%co2_transpiration_factor/=1.0_real64) error stop 18
 
   print '(a)','SW431_CROP_CO2_RESPONSE=PASS'
 end program test_swap431_crop_co2_response
