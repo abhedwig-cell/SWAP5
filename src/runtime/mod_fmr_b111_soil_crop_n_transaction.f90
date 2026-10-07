@@ -3,13 +3,16 @@ module mod_fmr_b111_soil_crop_n_transaction
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t,transaction_model_t,trial_outcome_t, &
        TX_MASS_MISSING_NONE,TX_MASS_MISSING_UNSPECIFIED
-  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t
+  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t, &
+       apply_soil_n_transfer,SOIL_N_OK
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t
   use mod_b111_soil_n_daily_exchange, only: b111_soil_n_exchange_forcing_t
   use mod_b111_soil_n_daily_candidate, only: b111_soil_n_rate_environment_t,b111_soil_n_daily_candidate_result_t, &
        evaluate_b111_soil_n_daily_candidate,B111_NDAY_OK
   use mod_b111_crop_n_owner, only: b111_crop_n_state_t,b111_crop_n_forcing_t,b111_crop_n_request_t,b111_crop_n_receipt_t, &
        prepare_b111_crop_n_request,apply_b111_crop_n_day,B111_CROPN_OK
+  use mod_b111_crop_residue_return, only: b111_crop_residue_return_forcing_t,b111_crop_residue_return_receipt_t, &
+       build_b111_crop_residue_return,B111_CRES_OK
   use mod_fmr_b111_soil_n_transaction, only: fmr_b111_soil_n_state_t,FMR_SOIL_N_OK
   implicit none
   private
@@ -44,6 +47,8 @@ module mod_fmr_b111_soil_crop_n_transaction
     real(real64)::internal_soil_to_crop_kg_m2=0.0_real64
     real(real64)::external_fixation_input_kg_m2=0.0_real64
     real(real64)::external_crop_loss_kg_m2=0.0_real64
+    real(real64)::internal_crop_residue_return_kg_m2=0.0_real64
+    type(b111_crop_residue_return_receipt_t)::residue
   end type
 
   type,extends(transaction_model_t),public::fmr_b111_soil_crop_n_model_t
@@ -55,6 +60,8 @@ module mod_fmr_b111_soil_crop_n_transaction
     type(b111_soil_n_rate_environment_t)::rate_environment
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
     type(b111_crop_n_forcing_t)::crop_forcing
+    type(b111_crop_residue_return_forcing_t)::residue_template
+    logical::residue_return_active=.false.
     type(fmr_b111_soil_crop_n_receipt_t)::last_receipt
     logical::configured=.false.
     integer::last_status=FMR_B111_COUPLED_N_INVALID
@@ -93,7 +100,7 @@ contains
   end subroutine
 
   subroutine configure_fmr_b111_soil_crop_n_model(turnover,cfrac_fom,cfrac_biomass,cfrac_humus, &
-       rate_environment,soil_forcing,crop_forcing,model,status)
+       rate_environment,soil_forcing,crop_forcing,model,status,residue_return)
     type(b111_organic_turnover_parameters_t),intent(in)::turnover
     real(real64),intent(in)::cfrac_fom(:),cfrac_biomass,cfrac_humus
     type(b111_soil_n_rate_environment_t),intent(in)::rate_environment
@@ -101,6 +108,7 @@ contains
     type(b111_crop_n_forcing_t),intent(in)::crop_forcing
     type(fmr_b111_soil_crop_n_model_t),intent(out)::model
     integer,intent(out)::status
+    type(b111_crop_residue_return_forcing_t),intent(in),optional::residue_return
 
     model=fmr_b111_soil_crop_n_model_t();status=FMR_B111_COUPLED_N_INVALID
     if(size(cfrac_fom)<1.or..not.all(ieee_is_finite(cfrac_fom)).or. &
@@ -111,6 +119,10 @@ contains
     model%turnover=turnover;model%cfrac_fom=cfrac_fom
     model%cfrac_biomass=cfrac_biomass;model%cfrac_humus=cfrac_humus
     model%rate_environment=rate_environment;model%soil_forcing=soil_forcing;model%crop_forcing=crop_forcing
+    if(present(residue_return))then
+      model%residue_template=residue_return
+      model%residue_return_active=.true.
+    end if
     model%configured=.true.;model%last_status=FMR_B111_COUPLED_N_OK;status=FMR_B111_COUPLED_N_OK
   end subroutine
 
@@ -160,13 +172,16 @@ contains
     real(real64),intent(in)::t0,t1
     type(trial_outcome_t),intent(out)::outcome
     type(soil_n_inventory_parameters_t)::soil_params
-    type(soil_n_pool_state_t)::soil_committed,soil_candidate
+    type(soil_n_pool_state_t)::soil_committed,soil_candidate,soil_with_residue
     type(b111_crop_n_state_t)::crop_candidate
     type(b111_crop_n_forcing_t)::crop_forcing
     type(b111_soil_n_exchange_forcing_t)::soil_forcing
+    type(b111_crop_residue_return_forcing_t)::residue_forcing
+    type(soil_n_transfer_t)::residue_transfer
+    type(soil_n_receipt_t)::residue_owner_receipt
     logical::available
     integer::status
-    real(real64)::soil_uptake_m2,crop_uptake_m2,tol,external_out
+    real(real64)::soil_uptake_m2,crop_uptake_m2,tol,external_out,crop_loss_m2
 
     outcome=trial_outcome_t();self%last_receipt=fmr_b111_soil_crop_n_receipt_t()
     self%last_status=FMR_B111_COUPLED_N_INVALID
@@ -205,6 +220,25 @@ contains
         self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return
       end if
 
+      if(self%residue_return_active)then
+        residue_forcing=self%residue_template
+        residue_forcing%depth_m=soil_params%depth_m
+        residue_forcing%root_dm_loss_kg_ha=crop_forcing%drrt_kg_ha_day*crop_forcing%delt_day
+        residue_forcing%leaf_dm_loss_kg_ha=crop_forcing%drlv_kg_ha_day*crop_forcing%delt_day
+        residue_forcing%root_n_loss_kg_ha=self%last_receipt%crop_process%root_loss_kg_ha
+        residue_forcing%leaf_n_loss_kg_ha=self%last_receipt%crop_process%leaf_loss_kg_ha
+        call build_b111_crop_residue_return(residue_forcing,residue_transfer,self%last_receipt%residue)
+        if(self%last_receipt%residue%status/=B111_CRES_OK)then
+          self%last_status=FMR_B111_COUPLED_N_CROP_FAILED;return
+        end if
+        call apply_soil_n_transfer(soil_params,soil_candidate,residue_transfer,soil_with_residue,residue_owner_receipt)
+        if(residue_owner_receipt%status/=SOIL_N_OK)then
+          self%last_status=FMR_B111_COUPLED_N_SOIL_FAILED;return
+        end if
+        soil_candidate=soil_with_residue
+        self%last_receipt%internal_crop_residue_return_kg_m2=self%last_receipt%residue%internal_n_return_kg_m2
+      end if
+
       soil_uptake_m2=self%last_receipt%soil_process%exchange%nsupply_total_kg_m2_day
       crop_uptake_m2=self%last_receipt%crop_process%soil_uptake_kg_ha*1.0e-4_real64
       tol=4096.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(soil_uptake_m2),abs(crop_uptake_m2))
@@ -220,7 +254,11 @@ contains
 
       self%last_receipt%internal_soil_to_crop_kg_m2=soil_uptake_m2
       self%last_receipt%external_fixation_input_kg_m2=self%last_receipt%crop_process%fixation_kg_ha*1.0e-4_real64
-      self%last_receipt%external_crop_loss_kg_m2=self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64
+      crop_loss_m2=self%last_receipt%crop_process%loss_kg_ha*1.0e-4_real64
+      self%last_receipt%external_crop_loss_kg_m2=crop_loss_m2-self%last_receipt%internal_crop_residue_return_kg_m2
+      if(self%last_receipt%external_crop_loss_kg_m2<0.0_real64.and. &
+         abs(self%last_receipt%external_crop_loss_kg_m2)<=tol)self%last_receipt%external_crop_loss_kg_m2=0.0_real64
+      if(self%last_receipt%external_crop_loss_kg_m2<0.0_real64)return
       external_out=self%last_receipt%soil_process%owner_receipt%external_n_output_kg_m2-soil_uptake_m2+ &
            self%last_receipt%external_crop_loss_kg_m2
       if(external_out<0.0_real64.and.abs(external_out)<=tol)external_out=0.0_real64
