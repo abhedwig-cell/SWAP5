@@ -1,0 +1,48 @@
+{
+  "schema": "swap431.mc_root01.rootgrow_supply.v1",
+  "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "source_probe_run": 37627316000,
+    "source_probe_job": 112812304452,
+    "equations": [
+      "RR=max(min(RR,RRIMIN),RR*min(1,(1-IALPDRY_DAY)/EXTENTCRIT))",
+      "GRRT_NEEDED=(WROOT_NODE(NODDRZ)/(RD+ZTOPCP(NODDRZ)))*RR",
+      "if GRRT_NEEDED>GRRT then RR=RR*(GRRT/GRRT_NEEDED)",
+      "if RR<SMALL then RR=0"
+    ]
+  },
+  "implementation": "src/crop/mod_crop_root_extension_supply_limit.f90",
+  "ownership": "stateless resolver; does not own root depth, node biomass, drought history or crop biomass growth",
+  "required_inputs": [
+    "accepted proposed RR",
+    "RRIMIN",
+    "IALPDRY_DAY",
+    "EXTENTCRIT",
+    "WROOT_NODE(NODDRZ)",
+    "RD",
+    "ZTOPCP(NODDRZ)",
+    "accepted GRRT",
+    "SMALL"
+  ],
+  "dependencies": [
+    "SW431-ROOT-DENSITY",
+    "SWRD2 accepted root-depth owner",
+    "accepted daily drought/root-growth carriers"
+  ],
+  "qualification": {
+    "local": {
+      "compiler": "gfortran",
+      "flags": "-Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_ROOTGROW_SUPPLY=PASS"
+    },
+    "persisted_composition": "OPEN"
+  },
+  "disposition": "SOURCE_RESOLVER_COMPLETE_DEPENDENT_OWNER_COMPOSITION_OPEN",
+  "admission": false
+}
