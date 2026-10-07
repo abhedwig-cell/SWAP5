@@ -16,6 +16,7 @@ module mod_b110_default_mvg_provider
      real(real64), allocatable :: cofgen(:,:)
      logical :: ksatexm_extension_enabled = .false.
      logical :: elastic_storage_active = .false.
+     logical :: conductivity_power_tail_enabled = .false.
      real(real64), allocatable :: specific_elastic_storage(:)
   end type b110_default_mvg_parameters_t
 
@@ -38,12 +39,14 @@ module mod_b110_default_mvg_provider
 contains
 
   subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension, &
-                                                      enable_elastic_storage, specific_elastic_storage_input)
+                                                      enable_elastic_storage, specific_elastic_storage_input, &
+                                                      enable_conductivity_power_tail)
     type(b110_default_mvg_parameters_t), intent(out) :: parameters
     real(real64), intent(in) :: cofgen_input(:,:)
     logical, intent(in), optional :: enable_ksatexm_extension
     logical, intent(in), optional :: enable_elastic_storage
     real(real64), intent(in), optional :: specific_elastic_storage_input(:)
+    logical, intent(in), optional :: enable_conductivity_power_tail
     integer :: i, n
     real(real64) :: h105, t105, c105, a, b, alfa
 
@@ -55,8 +58,12 @@ contains
     if (present(enable_ksatexm_extension)) parameters%ksatexm_extension_enabled = enable_ksatexm_extension
     parameters%elastic_storage_active = .false.
     if (present(enable_elastic_storage)) parameters%elastic_storage_active = enable_elastic_storage
+    parameters%conductivity_power_tail_enabled = .false.
+    if (present(enable_conductivity_power_tail)) parameters%conductivity_power_tail_enabled = enable_conductivity_power_tail
     if (parameters%elastic_storage_active .and. parameters%ksatexm_extension_enabled) &
          error stop 'B1.10 default MvG provider: elastic storage with KSATEXM is not qualified'
+    if (parameters%elastic_storage_active .and. parameters%conductivity_power_tail_enabled) &
+         error stop 'B1.11 MvG power tail: elastic storage combination is not qualified'
     if (parameters%elastic_storage_active) then
        if (.not. present(specific_elastic_storage_input)) &
             error stop 'B1.10 default MvG provider: elastic storage active without values'
@@ -77,6 +84,13 @@ contains
          cofgen_input(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:)
 
     do i = 1, n
+       if (parameters%conductivity_power_tail_enabled) then
+          if (.not. ieee_is_finite(parameters%cofgen(22,i)) .or. parameters%cofgen(22,i) >= 0.0_real64 .or. &
+              parameters%cofgen(22,i) > parameters%cofgen(9,i)) &
+               error stop 'B1.11 MvG power tail: invalid h_power'
+          if (.not. ieee_is_finite(parameters%cofgen(23,i)) .or. parameters%cofgen(23,i) <= 0.0_real64) &
+               error stop 'B1.11 MvG power tail: invalid k_power'
+       end if
        if (parameters%ksatexm_extension_enabled .and. parameters%cofgen(10,i) > parameters%cofgen(3,i)) then
           if (.not. ieee_is_finite(parameters%cofgen(10,i)) .or. parameters%cofgen(10,i) <= 0.0_real64) &
                error stop 'B1.11 KSATEXM provider: invalid ksatexm'
@@ -162,7 +176,7 @@ contains
     theta = b110_watcon(parameters%cofgen(:,node_index), pressure_head)
     if (.not. ieee_is_finite(theta)) return
     conductivity = b110_hconduc(parameters%cofgen(:,node_index), pressure_head, theta, &
-         parameters%ksatexm_extension_enabled)
+         parameters%ksatexm_extension_enabled, parameters%conductivity_power_tail_enabled)
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
        conductivity = 0.0_real64
        return
@@ -264,7 +278,7 @@ contains
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           water_content(i) = theta_local
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
        end do
        return
     case (CONSTITUTIVE_DEMAND_CONDUCTIVITY + CONSTITUTIVE_DEMAND_CAPACITY)
@@ -330,7 +344,7 @@ contains
           capacity(i) = self%parameters%specific_elastic_storage(i)
        end if
        conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i), &
-            self%parameters%ksatexm_extension_enabled)
+            self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
     end do
     ! swkimpl=1 is deliberately not admitted by F-SI09. The common interface reserves this output.
     dconductivity_dhead = 0.0_real64
@@ -473,13 +487,16 @@ contains
     end if
   end function b110_moiscap
 
-  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension) result(hconduc)
+  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension, enable_power_tail) result(hconduc)
     real(real64), intent(in) :: c(:), head, theta
     logical, intent(in) :: enable_ksatexm_extension
+    logical, intent(in), optional :: enable_power_tail
     real(real64) :: relsat, term1, term2, se
-    logical :: ksatexm_applied
+    logical :: ksatexm_applied, power_tail
     relsat = (theta-c(1))/c(25)
     ksatexm_applied = .false.
+    power_tail = .false.
+    if (present(enable_power_tail)) power_tail = enable_power_tail
     if (enable_ksatexm_extension .and. c(10) > c(3) .and. relsat > c(11)) then
        term1 = (relsat-c(11))/(1.0_real64-c(11))
        hconduc = term1*c(10) + (1.0_real64-term1)*c(12)
@@ -489,6 +506,8 @@ contains
           hconduc = B110_HCON_VSMALL
        else if (relsat > (1.0_real64-1.0e-6_real64)) then
           hconduc = c(3)
+       else if (power_tail .and. head <= c(22)) then
+          hconduc = c(23)*(abs(c(22))/abs(head))**c(33)
        else
           term1 = (1.0_real64-relsat**c(32))**c(7)
           hconduc = c(3)*(relsat**c(5))*(1.0_real64-term1)**2
@@ -499,6 +518,8 @@ contains
        else
           if (head >= c(9)) then
              hconduc = c(3)
+          else if (power_tail .and. head <= c(22)) then
+             hconduc = c(23)*(abs(c(22))/abs(head))**c(33)
           else
              se = ((1.0_real64 + abs(c(4)*head)**c(6))**(-c(7)))/c(28)
              term1 = (1.0_real64-(se*c(28))**c(32))**c(7)
