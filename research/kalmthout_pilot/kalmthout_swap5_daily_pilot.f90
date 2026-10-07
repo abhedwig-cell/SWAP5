@@ -97,7 +97,7 @@ contains
     type(fmr_production_application_config_t),intent(out)::value
     real(real64)::conductivity0
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_tolerance=0.03_real64
+    value%numerical%transaction%temporal_tolerance=0.0_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
