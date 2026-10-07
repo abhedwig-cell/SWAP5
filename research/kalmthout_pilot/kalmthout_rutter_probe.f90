@@ -12,7 +12,7 @@ program kalmthout_rutter_probe
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  real(real64), parameter :: HARD_MASS_GATE=1.0e-8_real64
+  real(real64), parameter :: HARD_MASS_GATE=1.0e-6_real64
   real(real64), parameter :: H0_CM=-75.0_real64
   integer, parameter :: UNIT_MET=10, UNIT_OUT=20
   character(len=256) :: met_path, out_path, line, ds
@@ -121,7 +121,7 @@ contains
     value%numerical%transaction%temporal_tolerance=0.03_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
-    value%numerical%transaction%max_retries=30
+    value%numerical%transaction%max_retries=20
     value%numerical%max_committed_substeps=10000
     value%numerical%progress_tolerance=0.0_real64
     allocate(value%tiles(1))
