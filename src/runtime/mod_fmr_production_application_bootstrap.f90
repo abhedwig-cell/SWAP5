@@ -72,6 +72,7 @@ module mod_fmr_production_application_bootstrap
     logical :: ordinary_implicit_cauchy = .false.
     logical :: ordinary_explicit_cauchy = .false.
     logical :: ordinary_lysimeter_plate = .false.
+    logical :: ordinary_simultaneous_head_flux = .false.
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
@@ -101,6 +102,7 @@ module mod_fmr_production_application_bootstrap
     logical :: ordinary_head_application = .false.
     logical :: ordinary_cauchy_application = .false.
     logical :: ordinary_lysimeter_application = .false.
+    logical :: ordinary_simultaneous_head_flux_application = .false.
     logical :: direct_retention_owner_active = .false.
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
@@ -144,7 +146,8 @@ contains
 
     integer :: i, local_status, n
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
-    logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
+    logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, &
+         ordinary_simultaneous_head_flux_profile, direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
     type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
@@ -162,6 +165,7 @@ contains
     ordinary_cauchy_profile = .true.
     ordinary_explicit_cauchy_profile = .true.
     ordinary_lysimeter_profile = .true.
+    ordinary_simultaneous_head_flux_profile = .true.
     groundwater_profile = .true.
     standalone_profile = .true.
     prescribed_qbot_profile = .true.
@@ -206,11 +210,14 @@ contains
       end if
       groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
            .not. config%tiles(i)%ordinary_prescribed_head .and. .not. config%tiles(i)%ordinary_implicit_cauchy .and. &
-           .not. config%tiles(i)%ordinary_explicit_cauchy .and. .not. config%tiles(i)%ordinary_lysimeter_plate
+           .not. config%tiles(i)%ordinary_explicit_cauchy .and. .not. config%tiles(i)%ordinary_lysimeter_plate .and. &
+           .not. config%tiles(i)%ordinary_simultaneous_head_flux
       ordinary_head_profile = ordinary_head_profile .and. config%tiles(i)%ordinary_prescribed_head
       ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
       ordinary_explicit_cauchy_profile = ordinary_explicit_cauchy_profile .and. config%tiles(i)%ordinary_explicit_cauchy
       ordinary_lysimeter_profile = ordinary_lysimeter_profile .and. config%tiles(i)%ordinary_lysimeter_plate
+      ordinary_simultaneous_head_flux_profile = ordinary_simultaneous_head_flux_profile .and. &
+           config%tiles(i)%ordinary_simultaneous_head_flux
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
@@ -271,6 +278,7 @@ contains
     self%ordinary_head_application = ordinary_head_profile
     self%ordinary_cauchy_application = ordinary_cauchy_profile .or. ordinary_explicit_cauchy_profile
     self%ordinary_lysimeter_application = ordinary_lysimeter_profile
+    self%ordinary_simultaneous_head_flux_application = ordinary_simultaneous_head_flux_profile
     self%numerical = config%numerical
     self%base_salt_temporal_policy = config%base_salt_temporal_policy
 
@@ -509,6 +517,19 @@ contains
           return
         end if
         if (allocated(effective_forcing(i)%legacy_swbotb5_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (self%ordinary_simultaneous_head_flux_application) then
+        if (.not. ieee_is_finite(effective_forcing(i)%bottom_head) .or. &
+            .not. ieee_is_finite(effective_forcing(i)%bottom_flux)) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
+            allocated(effective_forcing(i)%legacy_swbotb3_implicit_control) .or. &
+            allocated(effective_forcing(i)%legacy_swbotb2_control) .or. &
+            allocated(effective_forcing(i)%legacy_swbotb4_qgwl_control)) then
           status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
           return
         end if
@@ -1061,7 +1082,22 @@ contains
     if (tile%ordinary_prescribed_head .and. (tile%ordinary_implicit_cauchy .or. tile%ordinary_explicit_cauchy)) return
     if (tile%ordinary_implicit_cauchy .and. tile%ordinary_explicit_cauchy) return
     if (tile%ordinary_lysimeter_plate .and. (tile%ordinary_prescribed_head .or. tile%ordinary_implicit_cauchy .or. &
-        tile%ordinary_explicit_cauchy)) return
+        tile%ordinary_explicit_cauchy .or. tile%ordinary_simultaneous_head_flux)) return
+    if (tile%ordinary_simultaneous_head_flux .and. (tile%ordinary_prescribed_head .or. tile%ordinary_implicit_cauchy .or. &
+        tile%ordinary_explicit_cauchy .or. tile%ordinary_lysimeter_plate)) return
+    if (tile%ordinary_simultaneous_head_flux) then
+      if (tile%parameters%bottom_mode /= 9 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (.not. ieee_is_finite(tile%base_forcing%bottom_head) .or. .not. ieee_is_finite(tile%base_forcing%bottom_flux)) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_implicit_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%macropore_active .or. tile%parameters%direct_retention_active .or. &
+          tile%parameters%ksatexm_extension_active .or. tile%parameters%elasticity_active .or. &
+          tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+    end if
     if (tile%ordinary_lysimeter_plate) then
       if (tile%parameters%bottom_mode /= 8 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
       if (.not. ieee_is_finite(tile%base_forcing%bottom_head)) return
@@ -1177,6 +1213,7 @@ contains
     self%ordinary_head_application = .false.
     self%ordinary_cauchy_application = .false.
     self%ordinary_lysimeter_application = .false.
+    self%ordinary_simultaneous_head_flux_application = .false.
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap
