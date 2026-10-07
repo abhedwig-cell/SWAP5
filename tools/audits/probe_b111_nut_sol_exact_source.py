@@ -167,10 +167,16 @@ amendment_calendar_needles=[
  "if(abs(timeamend(isme)+1.0d0-t1900).lt.1.d-3)then",
  "callwofost_soilamendents",
  "isme=isme+1",
+ "matnum(i)=matnum(i)",
 ]
 for needle in amendment_calendar_needles:
     if needle not in management:
         raise SystemExit("missing exact amendment calendar equation: "+needle)
+
+amendment_calendar_decision=(ROOT/"integration/audits/MC_NUT01_AMENDMENT_CALENDAR_SOURCE_DECISION.md").read_text().lower()
+for needle in ["accepted_reference_correction","complete typed amendment records atomically"]:
+    if needle not in amendment_calendar_decision:
+        raise SystemExit("amendment calendar reference-correction contract missing: "+needle)
 
 watern_needles=[
  "wfrac_av=half*(wfrac_t+wfrac_t0)",
