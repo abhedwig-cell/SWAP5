@@ -1,0 +1,147 @@
+{
+  "work_unit": "MC-HYD01 / MC-HYST01",
+  "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
+  "canonical_reconciled_against": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "branch": "work/swap431-hydraulic-coverage-20261007",
+  "pull_request": 1103,
+  "checkpoint_head": "f7db94c78943c21518ca41f30bb9557385626aac",
+  "phase": "IMPLEMENTED_PENDING_INTEGRATED_QUALIFICATION",
+  "authority": [
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
+    "reference/swap-4.3.1/patches/SWAP-009",
+    "reference/swap-4.3.1/patches/SWAP-010",
+    "reference/swap-4.3.1/patches/SWAP-011",
+    "reference/swap-4.3.1/patches/SWAP-012",
+    "docs/architecture/legacy-migration-hydraulic.md",
+    "docs/science/soil-hydraulic-constitutive-relations.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "semantic_families": [
+    {
+      "owner": "b111_analytical_hydraulic_provider_t",
+      "kind": "stateless analytical",
+      "capabilities": [
+        "SW431-HYD-MODEL2"
+      ],
+      "disposition": "IMPLEMENTED_NARROW_PRODUCTION_ROUTE",
+      "note": "Exponential retention/conductivity family."
+    },
+    {
+      "owner": "b111_analytical_hydraulic_provider_t",
+      "kind": "stateless analytical bimodal MvG",
+      "capabilities": [
+        "SW431-HYD-MODEL3",
+        "SW431-HYD-MODEL6"
+      ],
+      "disposition": "IMPLEMENTED_NARROW_PRODUCTION_ROUTE",
+      "note": "MODEL6 is the WC_K representation of the same unscaled bimodal MvG constitutive family; bit-identity is an explicit test."
+    },
+    {
+      "owner": "b111_scaled_mvg_family",
+      "kind": "scaled finite-dry-end MvG",
+      "capabilities": [
+        "SW431-HYD-MODEL5",
+        "SW431-HYD-MODEL7"
+      ],
+      "disposition": "SOURCE_PINNED_PARTIAL_NOT_ADMITTED",
+      "note": "SWAP-010/SWAP-011 establish scaled retention/capacity/conductivity algebra, but exact dry-bound branch behavior is not yet fully source-extracted in this workstream. No production claim."
+    },
+    {
+      "owner": "b111_pdi_family",
+      "kind": "PDI unimodal/bimodal scaled/unscaled",
+      "capabilities": [
+        "SW431-HYD-MODEL8",
+        "SW431-HYD-MODEL9",
+        "SW431-HYD-MODEL10",
+        "SW431-HYD-MODEL11",
+        "SW431-HYD-VAPOR"
+      ],
+      "disposition": "GROUPED_NOT_ADMITTED",
+      "note": "One family with structural variants; vapor is a compositional conductivity term, not a standalone Richards owner."
+    },
+    {
+      "owner": "b111_ria_family",
+      "kind": "RIA",
+      "capabilities": [
+        "SW431-HYD-MODEL12",
+        "SW431-HYD-RIA-VAPOR"
+      ],
+      "disposition": "GROUPED_NOT_ADMITTED",
+      "note": "RIA base law plus optional vapor contribution."
+    },
+    {
+      "owner": "tabulated_hydraulics_provider",
+      "kind": "tabulated constitutive relation",
+      "capabilities": [
+        "SW431-HYD-TABLE",
+        "SW431-HYD-LINEAR-TABLE"
+      ],
+      "disposition": "GROUPED_NOT_ADMITTED",
+      "note": "Selectors encode representation/preprocessing differences; they should not become separate production components."
+    },
+    {
+      "owner": "b110_default_mvg_provider_t",
+      "kind": "default MvG conductivity extension",
+      "capabilities": [
+        "SW431-HYD-POWER"
+      ],
+      "disposition": "IMPLEMENTED_NARROW_PRODUCTION_ROUTE",
+      "note": "H_POWER/K_POWER dry conductivity tail belongs to existing MvG owner; retention is unchanged."
+    },
+    {
+      "owner": "stateful_hysteresis_component",
+      "kind": "history-dependent scanning curves",
+      "capabilities": [
+        "SW431-HYST1",
+        "SW431-HYST2"
+      ],
+      "disposition": "GROUPED_STATEFUL_NOT_ADMITTED",
+      "note": "Initial wetting/drying are initialization modes of one stateful component. Historical node state must be candidate/commit/restart owned; stateless parameter migration is prohibited."
+    }
+  ],
+  "implemented_scope": {
+    "capabilities": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-POWER"
+    ],
+    "production_route": "Serialized FMR -> Reference Richards, SWKIMPL=0, SWSOPHY=0",
+    "exclusions": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope.",
+    "statefulness": "All four implemented scopes are stateless constitutive physics. Existing transaction state remains authoritative; no new restart state is introduced."
+  },
+  "evidence": {
+    "focused": [
+      "tests/fpm/test_swap431_hyd_analytical.f90",
+      "tests/fpm/run_swap431_hyd_analytical.sh",
+      "tests/fpm/test_swap431_hyd_power.f90",
+      "tests/fpm/run_swap431_hyd_power.sh"
+    ],
+    "production": [
+      "tests/fpm/test_swap431_hyd_serialized_runtime.f90",
+      "tests/fpm/run_ppa_wu05a8_real_richards.sh"
+    ],
+    "local_result": "Analytical MODEL2/MODEL3 provider passed O0 -fcheck=all and O2 before persistence; MODEL6 identity and later runtime/power changes require persisted integrated confirmation.",
+    "pending_runs": [
+      "F-CI canonical qualification",
+      "F-SI39 B1.11 KSATEXM preservation",
+      "PPA-WU01 production application bootstrap"
+    ],
+    "queue_note": "Relevant PR runs were still queued at this checkpoint because of repository-wide runner load."
+  },
+  "invariants": [
+    "Reference Richards remains the production numerical owner.",
+    "Residual/Jacobian semantics are not widened: new coverage is admitted only for SWKIMPL=0.",
+    "Unqualified compositions fail closed.",
+    "Trial execution may not mutate committed state.",
+    "Mass closure and replay identity are required by the serialized runtime qualification.",
+    "Hysteresis cannot be represented as immutable parameters because accepted-history state affects later constitutive evaluation."
+  ],
+  "blockers": [
+    "Integrated compile/runtime qualification has not yet completed on the persisted branch head.",
+    "Full exact B1.11 source extraction for scaled dry-bound, PDI, RIA, tabulated interpolation and hysteresis state transitions remains necessary before those families can be implemented/admitted."
+  ],
+  "next_action": "Complete integrated qualification for MODEL2/MODEL3/MODEL6/POWER, repair any compiler/runtime failures, then continue source-bound implementation of scaled MvG/table/PDI/RIA and finally stateful hysteresis."
+}
