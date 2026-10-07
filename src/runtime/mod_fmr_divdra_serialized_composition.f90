@@ -5,7 +5,7 @@ module mod_fmr_divdra_serialized_composition
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_positive_divdra, FMR_DIVDRA_BIND_OK
+       fmr_bind_single_level_signed_divdra, FMR_DIVDRA_BIND_OK
   implicit none
   private
 
@@ -126,7 +126,7 @@ contains
         probe = forcing_registry(forcing_index)%drainage_flux_by_level
       end if
 
-      call fmr_bind_single_level_positive_divdra(distribution_parameters(parameter_index), hydraulic_views(view_index), &
+      call fmr_bind_single_level_signed_divdra(distribution_parameters(parameter_index), hydraulic_views(view_index), &
            requests(i)%scalar_transfer, probe, bind_diag)
       records(slot)%binding = bind_diag
       if (bind_diag%status /= FMR_DIVDRA_BIND_OK) then
