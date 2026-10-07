@@ -2,7 +2,7 @@ name: SW431 drainage focused qualification
 on:
   push:
     branches:
-      - work/swap431-drain-signed-multilevel-20261007
+      - work/swap431-drain-frost-closeout-20261007
     paths:
       - .github/workflows/swap431-drain-focused.yml
   workflow_dispatch:
@@ -23,3 +23,5 @@ jobs:
         run: bash tests/fmig431/run_swap431_drain_top_interflow.sh
       - name: Separate infiltration B19 reuse
         run: bash tests/fmig431/run_swap431_drain_inf_split.sh
+      - name: Frost multilevel DIVDRA composition
+        run: bash tests/fmig431/run_swap431_frost_divdra_multi.sh
