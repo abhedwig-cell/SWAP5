@@ -4,6 +4,7 @@ program test_bartholomeus_application
   use MOD_grid, only: numnod,z,dz,disnod
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
+  use mod_fmr_bartholomeus_activation, only: FMR_OXYGEN_TYPE_REPRODUCTION
   use mod_fmr_production_application_bootstrap
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_b110_default_mvg_provider
@@ -18,8 +19,8 @@ program test_bartholomeus_application
   use mod_fmr_committed_restart
   implicit none
   real(real64),parameter::T0=5100.1875_real64,T1=T0+1.0e-5_real64,HARD_MASS_GATE=1.0e-12_real64
-  type(fmr_production_application_config_t)::cfg,off,bad
-  type(fmr_production_application_bootstrap_t)::app,offapp,badapp
+  type(fmr_production_application_config_t)::cfg,off,bad,repro
+  type(fmr_production_application_bootstrap_t)::app,offapp,badapp,reproapp
   type(fmr_serialized_column_result_t),allocatable::a(:),b(:),rejected(:)
   type(fmr_serialized_reference_backend_t)::backend,resumed
   type(fixed_flux_top_boundary_provider_t),target::top
@@ -31,7 +32,7 @@ program test_bartholomeus_application
   type(kernel_diagnostics_t)::diag,diag2
   type(fmr_serialized_physical_observation_t)::obs
   type(fmr_committed_restart_bundle_t)::bundle
-  real(real64)::k
+  real(real64)::k,bottom
   logical::ok
   integer::status,i
   call initialize_application_config(cfg,-75.0_real64,k)
@@ -42,6 +43,32 @@ program test_bartholomeus_application
   call require(status==FMR_APP_BOOT_OK,'actual production application admission')
   call offapp%initialize(off,status)
   call require(status==FMR_APP_BOOT_OK,'OFF application admission')
+
+  ! Type2 reproduction function uses the same production root-sink seam, but
+  ! owns immutable slope/intercept + grid geometry and must not require the
+  ! type1 crop_oxygen forcing.
+  repro=cfg
+  repro%tiles(1)%parameters%bartholomeus%selection%oxygen_type=FMR_OXYGEN_TYPE_REPRODUCTION
+  repro%tiles(1)%parameters%bartholomeus%specific_root_length_m_kg=0.0_real64
+  if(allocated(repro%tiles(1)%base_forcing%crop_oxygen)) deallocate(repro%tiles(1)%base_forcing%crop_oxygen)
+  repro%tiles(1)%base_forcing%root_oxygen_rooted_nodes=3
+  allocate(repro%tiles(1)%parameters%bartholomeus%reproduction)
+  associate(rp=>repro%tiles(1)%parameters%bartholomeus%reproduction)
+    rp%slope=0.0_real64
+    rp%intercept=0.0_real64
+    rp%intercept(6)=0.5_real64
+    rp%saturated_water_content=repro%tiles(1)%parameters%cofgen(2,:)
+    rp%z_cm=repro%tiles(1)%parameters%z
+    rp%dz_cm=repro%tiles(1)%parameters%dz
+    allocate(rp%zbotcp_cm(numnod))
+    bottom=0.0_real64
+    do i=1,numnod
+      bottom=bottom-repro%tiles(1)%parameters%dz(i)
+      rp%zbotcp_cm(i)=bottom
+    end do
+  end associate
+  call reproapp%initialize(repro,status)
+  call require(status==FMR_APP_BOOT_OK,'type2 reproduction application admission')
   call app%run_standalone(T0,T1,a,status)
   if(status/=FMR_APP_BOOT_OK) print *, 'APP_REJECT status/kernel=',status,a(1)%kernel_status
   call require(status==FMR_APP_BOOT_OK .and. a(1)%committed,'active application commits')
@@ -49,9 +76,14 @@ program test_bartholomeus_application
   call offapp%run_standalone(T0,T1,b,status)
   call require(status==FMR_APP_BOOT_OK .and. b(1)%committed,'OFF application commits')
   call require(abs(b(1)%mass%residual)<=HARD_MASS_GATE,'OFF hard unrounded water balance')
+  call reproapp%run_standalone(T0,T1,rejected,status)
+  call require(status==FMR_APP_BOOT_OK .and. rejected(1)%committed,'type2 reproduction application commits')
+  call require(abs(rejected(1)%mass%residual)<=HARD_MASS_GATE,'type2 reproduction hard unrounded water balance')
   call app%close(status)
   call offapp%close(status)
+  call reproapp%close(status)
   print '(a)','C3A_ACTUAL_APPLICATION_ACTIVE_OFF_MASS=PASS'
+  print '(a)','SW431_ROOT_OXYGEN_REPRO_APPLICATION=PASS'
 
   columns(1)%column_id=cfg%tiles(1)%tile_id
   columns(1)%template_id=cfg%tiles(1)%template%template_id
