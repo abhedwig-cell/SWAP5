@@ -5,7 +5,7 @@
   "last_reconciled_upstream": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
   "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
   "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
+  "checkpoint_commit": "f29007caa919b07968926a614c84285cb57cefe3",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -28,7 +28,8 @@
     "Native typed DRAMET3 response including OWLTAB endpoint resolution, ZBOTDR clamp, DRARES/INFRES sign dispatch, SWALLO2/3 and SWLIMINF.",
     "Single-level SWDIVDINF production route reusing the admitted B19 partition through one explicit adapter; B19 source is unchanged.",
     "Multilevel frost/DIVDRA reuses existing matrix frost owners; homogeneous multilevel EXTENDED_SIGNED frost admission removes only the prior single-level guard.",
-    "Root+frost+drainage remains bounded to paired root_frost/root_extraction without salt, Bartholomeus, macropores or alternate persistence owners; temporal error is max-composed from existing drainage and root-frost indicators."
+    "Root+frost+drainage remains bounded to paired root_frost/root_extraction without salt, Bartholomeus, macropores or alternate persistence owners; temporal error is max-composed from existing drainage and root-frost indicators.",
+    "Multilevel SWDIVDINF preserves B1.11 FDisInf-aware ordering through effective spacing while negative rows reuse the admitted B19 partition exactly."
   ],
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
@@ -48,7 +49,9 @@
     "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
     "src/runtime/mod_fmr_drainage_response_binding.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_drainage_multilevel_separate_infiltration.f90",
+    "src/runtime/mod_fmr_divdra_multilevel_separate_infiltration_binding.f90"
   ],
   "test_paths": [
     "tests/fmig431/run_swap431_drain_signed_divdra.sh",
@@ -59,7 +62,9 @@
     "tests/fmig431/run_swap431_frost_divdra_multi.sh",
     "tests/fmig431/run_swap431_frost_extended_multi.sh",
     "tests/fmig431/run_swap431_frost_rootdrain.sh",
-    "tests/fmig431/run_swap431_drain_serialized_compile.py"
+    "tests/fmig431/run_swap431_drain_serialized_compile.py",
+    "tests/fmig431/run_swap431_drain_inf_split_multi.sh",
+    "tests/fmig431/test_swap431_drain_inf_split_multi.f90"
   ],
   "test_state": {
     "local_component_evidence": {
@@ -73,11 +78,12 @@
       "FROST-DIV-MULTI composition test",
       "FROST-EXT-MULTI composition test",
       "FROST-ROOTDRAIN owner-separation test",
-      "serialized runtime/production bootstrap compile gate"
+      "serialized runtime/production bootstrap compile gate",
+      "multilevel SWDIVDINF FDisInf ordering plus exact B19 negative-row reuse"
     ],
     "focused_actions": {
-      "run_id": 37636262134,
-      "head": "418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
+      "run_id": 37638162602,
+      "head": "f29007caa919b07968926a614c84285cb57cefe3",
       "status": "QUEUED_NOT_COUNTED_AS_TEST"
     },
     "canonical_reconciliation": {
@@ -100,19 +106,14 @@
   "remaining_open": [
     {
       "capability_id": "SW431-FROST-GW",
-      "dependency": "route-specific lower-boundary ownership; implicit mode3 and modes5/7/8 are not equivalent to a pre-resolved qbot"
+      "dependency": "Separate lower-boundary composition owner required: B1.11 BoundBottom resolves route-specific qbot for modes 3/4/5/7/8 before FrozenBounds postprocesses it; mode5/7 are candidate-head/conductivity dependent, while current SWAP5 frost admission is explicitly bottom_mode=2 only."
     },
     {
       "capability_id": "SW431-FROST-SNOW",
-      "dependency": "SW431-TEMP-SNOW sensible-temperature/snow insulation owner remains open"
-    },
-    {
-      "capability_id": "SW431-DRAIN-INF-SPLIT",
-      "dependency": "multilevel SWDIVDINF still needs source FDisInf-aware level ordering if aggregate census requires that composition",
-      "bounded_single_level_implemented": true
+      "dependency": "Separate SW431-TEMP-SNOW owner required: B1.11 sensible-temperature route computes snow/soil-interface TeTop from snow storage before FrozenCond; current frost and thermal admission reject snow_active."
     }
   ],
-  "next_action": "Run the focused persisted O0/O2 and integrated compile gates, repair failures, then reconcile census dispositions. After drainage/frost qualification, leave only route-specific FROST-GW, TEMP-SNOW and any required multilevel SWDIVDINF ordering as explicit dependencies.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@418e64f27ad4c2c31e6d84d2ce677f9f5733d9fe",
+  "next_action": "Await focused run 37638162602 on the complete MC-DRAIN01 postimage; repair any focused or integrated compile failure. If green, mark drainage capabilities qualified and reconcile census. MC-FROST01 then remains only FROST-GW and FROST-SNOW, each with a proven external owner dependency.",
+  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@f29007caa919b07968926a614c84285cb57cefe3",
   "blockers": []
 }
