@@ -74,9 +74,8 @@ if len(days)!=expected:
             missing.append((ds,len(days.get(ds,[]))))
     raise SystemExit(f"incomplete ERA5 period: expected {expected} complete days, got {len(days)}; first missing={missing[:10]}")
 
-# Derive daily ET0 and attach it to every hourly record. The SWAP5 pilot
-# advances one hour at a time; ET0 is therefore a daily rate integrated over
-# 1/24 day while precipitation retains the ERA5 hourly amount.
+# Derive daily ET0, then aggregate ERA5 into 12-hour forcing windows.
+# The half-day span matches the qualified PPA-WU01 Rutter production exercise.
 daily_et0={}
 for ds,rows in days.items():
     temp=[r["temperature_2m"] for r in rows]
@@ -92,15 +91,15 @@ for ds,rows in days.items():
     daily_et0[ds]=fao56_et0(tmin,tmax,tmean,ea,rad,u2,doy)
 
 writer=csv.writer(sys.stdout)
-writer.writerow(["time","precip_mm_hour","temperature_c","dewpoint_c","shortwave_w_m2","wind10_m_s","et0_mm_day"])
-for i,tstamp in enumerate(h["time"]):
-    ds=tstamp[:10]
-    writer.writerow([
-        tstamp,
-        f"{max(0.0,h['precipitation'][i]):.6f}",
-        f"{h['temperature_2m'][i]:.6f}",
-        f"{h['dew_point_2m'][i]:.6f}",
-        f"{max(0.0,h['shortwave_radiation'][i]):.6f}",
-        f"{max(0.0,h['wind_speed_10m'][i]):.6f}",
-        f"{daily_et0[ds]:.6f}",
-    ])
+writer.writerow(["time","precip_mm_12h","tmean_c","dewmean_c","shortwave_mj_m2_12h","wind10_m_s","et0_mm_day"])
+for ds in sorted(days):
+    rows=days[ds]
+    for block in range(2):
+        chunk=rows[12*block:12*(block+1)]
+        tstamp=f"{ds}T{12*block:02d}:00"
+        precip=sum(max(0.0,r["precipitation"]) for r in chunk)
+        tmean=sum(r["temperature_2m"] for r in chunk)/12
+        dewmean=sum(r["dew_point_2m"] for r in chunk)/12
+        rad=sum(max(0.0,r["shortwave_radiation"]) for r in chunk)*0.0036
+        wind=sum(max(0.0,r["wind_speed_10m"]) for r in chunk)/12
+        writer.writerow([tstamp,f"{precip:.6f}",f"{tmean:.6f}",f"{dewmean:.6f}",f"{rad:.6f}",f"{wind:.6f}",f"{daily_et0[ds]:.6f}"])
