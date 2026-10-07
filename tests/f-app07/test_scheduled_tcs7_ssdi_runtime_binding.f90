@@ -74,6 +74,24 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. d%result_produced .and. d%source_bound,10)
   call require(abs(q(3)-0.48_real64) < tol .and. abs(d%external_inflow_amount_cm-0.12_real64) < tol,11)
 
+  ! DCSLIM is applied to the selected DCS2 depth before sensor salinity surplus.
+  p%depth_limit_enabled = .true.
+  p%minimum_depth_cm = 0.20_real64
+  p%maximum_depth_cm = 0.30_real64
+  p%salinity_excess_enabled = .true.
+  p%salinity_threshold = 8.0_real64
+  p%salinity_excess_percent = 50.0_real64
+  r%solute_enabled = .true.
+  r%sensor_concentration = 9.0_real64
+  r%t1 = r%t0 + 0.625_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. abs(d%external_inflow_amount_cm-0.30_real64) < tol,21)
+  call require(abs(q(3)-0.48_real64) < tol,22)
+
+  p%depth_limit_enabled = .false.
+  r%solute_enabled = .false.
+
   ! Sensor salinity excess increases the selected event depth before duration normalization.
   p%salinity_excess_enabled = .true.
   p%salinity_threshold = 8.0_real64
@@ -119,6 +137,7 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
 
   print '(A)','MC_IRR01_TCS7_RUNTIME_BINDING=PASS'
   print '(A)','MC_IRR01_TCS8_RUNTIME_BINDING=PASS'
+  print '(A)','MC_IRR01_SENSOR_DCSLIM_BEFORE_SALINITY=PASS'
   print '(A)','MC_IRR01_SENSOR_SALINITY_EXCESS=PASS'
   print '(A)','MC_IRR01_SENSOR_RATE_NORMALIZATION=PASS'
   print '(A)','MC_IRR01_RESTRICTED_SINGLE_NODE_SSDI_BINDING=PASS'

@@ -55,6 +55,9 @@ module mod_irrigation_process
     integer :: tcs8_knot_count = 0
     real(real64) :: tcs8_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: tcs8_water_content(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    logical :: depth_limit_enabled = .false.
+    real(real64) :: minimum_depth_cm = 0.0_real64
+    real(real64) :: maximum_depth_cm = huge(0.0_real64)
     logical :: salinity_excess_enabled = .false.
     real(real64) :: salinity_threshold = 0.0_real64
     real(real64) :: salinity_excess_percent = 0.0_real64
@@ -117,6 +120,7 @@ module mod_irrigation_process
     logical :: triggered = .false.
     real(real64) :: interpolated_threshold = 0.0_real64
     real(real64) :: interpolated_depth = 0.0_real64
+    logical :: depth_limited = .false.
     logical :: salinity_excess_applied = .false.
     logical :: external_inflow_is_reconciliation_only = .true.
   end type irrigation_diagnostics_t
@@ -390,6 +394,12 @@ contains
       return
     end if
 
+    if (parameters%depth_limit_enabled) then
+      if (depth < parameters%minimum_depth_cm .or. depth > parameters%maximum_depth_cm) diagnostics%depth_limited = .true.
+      depth = max(depth, parameters%minimum_depth_cm)
+      depth = min(depth, parameters%maximum_depth_cm)
+    end if
+
     if (parameters%salinity_excess_enabled .and. request%solute_enabled .and. &
         request%sensor_concentration > parameters%salinity_threshold) then
       depth = depth * (1.0_real64 + 0.01_real64*parameters%salinity_excess_percent)
@@ -504,6 +514,10 @@ contains
     end select
     if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
     if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    if (parameters%depth_limit_enabled) then
+      if (.not. ieee_is_finite(parameters%minimum_depth_cm) .or. .not. ieee_is_finite(parameters%maximum_depth_cm)) return
+      if (parameters%minimum_depth_cm < 0.0_real64 .or. parameters%maximum_depth_cm < parameters%minimum_depth_cm) return
+    end if
     if (parameters%salinity_excess_enabled) then
       if (.not. ieee_is_finite(parameters%salinity_threshold) .or. parameters%salinity_threshold < 0.0_real64 .or. &
           parameters%salinity_threshold > 100.0_real64) return
