@@ -27,7 +27,6 @@ program test_lowgwl01_feasibility
   type(a23bu_solver_history_t) :: history
   real(real64) :: cof(24,n), k(n), cap(n), dkdh(n)
   real(real64), target :: drainage(1,n), irrigation(n), roots(n)
-  character(len=32) :: route
   integer :: i
   interface
     subroutine headcalc(worker,fsi_workspace,history,state_binding,evaluation_context,boundary_conditions, &
@@ -45,7 +44,6 @@ program test_lowgwl01_feasibility
       type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
     end subroutine
   end interface
-  call get_command_argument(1,route)
   p%active_nodes=n
   allocate(p%z(n),p%dz(n),p%node_distance(n))
   do i=1,n
@@ -69,30 +67,42 @@ program test_lowgwl01_feasibility
   allocate(request%base_state%pressure_head(n),request%base_state%water_content(n))
   request%base_state%pressure_head=-100.0_real64-p%z
   call hydraulic%evaluate(request%base_state%pressure_head,request%base_state%water_content,k,cap,dkdh)
-  request%base_state%groundwater_level=-100.0_real64
+  request%base_state%groundwater_level=-999.0_real64
   request%boundary%bottom_mode=1
   request%boundary%bottom_head=-100.0_real64
+  request%boundary%bottom_flux=0.0_real64
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
+  request%boundary%top_flux=0.0_real64
   request%step_duration=0.125_real64
   request%numerical%max_iterations=8
   request%numerical%max_backtracking=4
   request%numerical%conductivity_implicit_mode=0
   request%numerical%conductivity_mean_method=1
   request%numerical%head_abs_tolerance=1.0e-12_real64
+  request%numerical%head_rel_tolerance=1.0e-12_real64
+  request%numerical%ponding_tolerance=1.0e-12_real64
   request%numerical%compartment_balance_tolerance=1.0e-12_real64
   request%numerical%total_balance_tolerance=1.0e-12_real64
   request%evaluation%constitutive=>hydraulic
   request%evaluation%source_sink=>sources
   request%evaluation%top_boundary=>top
-  if (trim(route)=='raw-below') then
-    call initialize_reference_state_binding(state,request)
-    call headcalc(worker,rawws,history,state,request%evaluation,request%boundary,request%numerical, &
-                  request%physical,request%step_duration,p)
-    error stop 'Unexpected raw mode1 completion: inspect selection debt'
-  end if
+
   call solver%solve(request,ws,result)
-  if (result%status/=SW_SOLVE_FAILED) error stop 'mode1 must remain unadmitted'
-  if (trim(result%diagnostics%route)/='legacy-bottom-mode-deferred') error stop 'wrong fail-closed reason'
-  if (allocated(result%candidate_state%pressure_head)) error stop 'rejected mode emitted candidate'
-  print '(a)', 'F-MIG431-LOWGWL01_TYPED_MODE1_FAIL_CLOSED=PASS'
+  if (result%status/=SW_SOLVE_CONVERGED) error stop 'below-profile mode1 did not converge'
+  if (.not.allocated(result%candidate_state%pressure_head)) error stop 'below-profile mode1 missing candidate'
+  if (result%candidate_state%active_nodes/=n) error stop 'below-profile mode1 candidate shape'
+  if (abs(result%candidate_state%groundwater_level+100.0_real64)>1.0e-12_real64) error stop 'prescribed GWL publication'
+  if (.not.result%native_balance_rate_residual_available .or. .not.result%integrated_mass_balance_residual_available) &
+       error stop 'below-profile mode1 mass residual missing'
+  if (abs(result%integrated_mass_balance_residual_cm)>1.0e-10_real64) error stop 'below-profile mode1 mass residual'
+  if (abs(result%bottom_flux)>1.0e-10_real64) error stop 'hydrostatic below-profile qbot'
+  print '(a)','F-MIG431-LOWGWL01_BELOW_PROFILE_TYPED=PASS'
+
+  request%boundary%bottom_head=-42.0_real64
+  call solver%solve(request,ws,result)
+  if (result%status/=SW_SOLVE_FAILED) error stop 'in-profile mode1 must remain fail-closed'
+  if (trim(result%diagnostics%route)/='prescribed-gwl-below-profile-domain-deferred') error stop 'wrong in-profile guard'
+  if (allocated(result%candidate_state%pressure_head)) error stop 'in-profile rejection emitted candidate'
+  print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_FAIL_CLOSED=PASS'
+
 end program
