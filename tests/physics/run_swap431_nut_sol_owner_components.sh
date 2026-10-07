@@ -42,11 +42,11 @@ for opt in -O0 -O2; do
   ./b111_soil_n_transport
 done
 
-
-for OPT in O0 O2; do
-  FLAGS=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow "-$OPT")
-  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" -c "$ROOT/src/process/mod_b111_soil_n_nitrification_coupling.f90" -o "$BUILD/nitrif_coupling_$OPT.o"
-  gfortran "${FLAGS[@]}" -J"$BUILD" -I"$BUILD" "$ROOT/tests/physics/test_b111_soil_n_nitrification_coupling.f90" \
-    "$BUILD/soil_n_pool_$OPT.o" "$BUILD/soil_n_reaction_$OPT.o" "$BUILD/nitrif_coupling_$OPT.o" -o "$BUILD/test_nitrif_coupling_$OPT"
-  "$BUILD/test_nitrif_coupling_$OPT"
+  gfortran "$opt" -std=f2008 -ffree-line-length-none -fcheck=all -ffpe-trap=invalid,zero,overflow \
+    "$root/src/process/mod_soil_n_pool_state.f90" \
+    "$root/src/process/mod_soil_n_reaction_transfer.f90" \
+    "$root/src/process/mod_b111_soil_n_nitrification_coupling.f90" \
+    "$root/tests/physics/test_b111_soil_n_nitrification_coupling.f90" \
+    -o b111_nitrif_coupling
+  ./b111_nitrif_coupling
 done
