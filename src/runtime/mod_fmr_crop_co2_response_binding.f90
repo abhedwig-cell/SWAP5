@@ -48,6 +48,20 @@ contains
     canopy_diagnostics = crop_et_canopy_diagnostics_t()
     diagnostics = fmr_crop_co2_binding_diagnostics_t()
 
+    if (.not. canopy_state%crop_emerged) then
+      canopy_forcing%atmospheric_co2_ppm = 0.0_real64
+      call evaluate_crop_et_canopy_view(canopy_parameters, canopy_state, canopy_forcing, canopy_view, &
+                                        canopy_diagnostics)
+      diagnostics%canopy_status = canopy_diagnostics%status
+      if (canopy_diagnostics%status /= CROP_ET_CANOPY_OK .or. .not. canopy_diagnostics%result_produced) then
+        diagnostics%status = FMR_CROP_CO2_BINDING_ET_REJECTED
+        return
+      end if
+      diagnostics%canopy_view_bound = .true.
+      diagnostics%status = FMR_CROP_CO2_BINDING_OK
+      return
+    end if
+
     call evaluate_crop_co2_response(parameters, atmospheric_co2_ppm, response, status)
     diagnostics%response_status = status
     if (status /= CROP_CO2_RESPONSE_OK) then
