@@ -196,6 +196,8 @@ if (ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_soil_crop_n_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_solute_transaction.sh")],cwd=ROOT,check=True)
+if (ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh").exists():
+    subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_age_tracer_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_age_tracer_transaction.sh")],cwd=ROOT,check=True)
 print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
