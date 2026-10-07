@@ -1,0 +1,46 @@
+{
+  "schema": "swap431.mc_crop01.rootgrow_rate.v1",
+  "branch": "work/swap431-crop-rootgrow-rate-20261007",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "capabilities": [
+    "SW431-CROP-ROOTGROW",
+    "SW431-CROP-ROOTGROW-WATER"
+  ],
+  "source_authority": {
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "equations": [
+      "RDPOT += min(RDM-RDPOT,RRI) when transpiration and required potential-root-growth gates permit",
+      "RD += min(RDM-RD,RRI) when transpiration and required actual-root-growth gates permit",
+      "SWDMI2RD=1 scales the accepted actual increment by IQROT_DAY/IPTRA_DAY before the SMALL cutoff"
+    ]
+  },
+  "owner": {
+    "type": "crop_root_depth_rate_state_t",
+    "persistent_fields": [
+      "actual_root_depth_cm",
+      "potential_root_depth_cm"
+    ],
+    "excluded": [
+      "NODDRZ",
+      "RDM",
+      "WRT",
+      "WRTPOT",
+      "root density",
+      "water sink"
+    ],
+    "retry": "candidate is pure from committed state plus accepted daily forcing; committed state is not mutated",
+    "restart": "clone preserves exactly actual and potential root depth"
+  },
+  "current_reachability": {
+    "static_profile": "implemented from accepted actual depth into existing root-profile contract",
+    "accepted_water_aggregates": "actual uptake and potential transpiration already exist in WOFOST accepted-window aggregates",
+    "blocker": "Detailed-crop B1.11 potential extension requires GRRTPOT. Current canonical WOFOST owner/transaction does not yet expose the source potential-companion root-growth rate as an accepted carrier."
+  },
+  "disposition": "BOUNDED_OWNER_IMPLEMENTED_PRODUCTION_BINDING_HELD_ON_POTENTIAL_ROOT_GROWTH_CARRIER",
+  "excluded_scope": [
+    "SWDMI2RD=2 supply limitation",
+    "SWWRTNONOX anaerobic gate",
+    "adaptive root-density redistribution"
+  ]
+}
