@@ -294,16 +294,14 @@ contains
         ! residual candidate geometry. HeadCalc asks this provider for the
         ! candidate area before evaluating the dynamic top boundary.
         if(associated(request%evaluation%dynamic_top_boundary))then
-          if(top_input_local%supplied .or. geometry%surface_area_fraction>=0.0_real64) &
-               request%boundary%matrix_source_area_partition=.true.
+          ! The dynamic top provider itself decides whether the candidate macro
+          ! surface fraction changes the atmospheric matrix source. Do not infer
+          ! that physical option from geometry existence alone.
+          if(top_input_local%supplied)request%boundary%matrix_source_area_partition=.true.
         end if
         result%matrix_source_area_partition_used=request%boundary%matrix_source_area_partition
         call solver%solve(request,workspace,corrector)
         result%matrix_result=corrector
-        if(corrector%status/=SW_SOLVE_CONVERGED .and. associated(request%evaluation%macropore))then
-          write(*,'(*(g0))') 'MIGMAC11_SOLVE_DIAG|STATUS=',corrector%status,'|RETRY=',corrector%retry_advised, &
-               '|ROUTE=',trim(corrector%diagnostics%route),'|POND_REQ=',request%evaluation%macropore%candidate_pond_lateral()
-        end if
         result%source_reduction_attempts=result%source_reduction_attempts+1
         result%corrector_solves=result%corrector_solves+1
         result%outer_iterations=0
