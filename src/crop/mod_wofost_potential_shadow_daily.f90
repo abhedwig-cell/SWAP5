@@ -17,6 +17,7 @@ module mod_wofost_potential_shadow_daily
        WOFOST_PREPARE_ASSIMILATION_OK
   use mod_wofost_finalize_rates, only: wofost_finalize_rate_forcing_t, &
        finalize_wofost_one_day_rates, WOFOST_FINALIZE_RATES_OK
+  use mod_wofost_phenology_rate_contract, only: wofost_phenology_rate_t
   implicit none
   private
 
@@ -43,7 +44,7 @@ contains
 
   subroutine evaluate_wofost_potential_shadow_day(actual_owner, committed_shadow, forcing, t0, t1, &
        stem_area_coefficient, storage_area_coefficient, rate_parameters, update_parameters, &
-       potential_attainable_multiplier, result, status)
+       potential_attainable_multiplier, result, status, phenology_override)
     type(wofost_crop_owner_state_t), intent(in) :: actual_owner
     type(wofost_potential_shadow_state_t), intent(in) :: committed_shadow
     type(wofost_one_day_forcing_t), intent(in) :: forcing
@@ -54,6 +55,7 @@ contains
     real(real64), intent(in) :: potential_attainable_multiplier
     type(wofost_potential_daily_result_t), intent(out) :: result
     integer, intent(out) :: status
+    type(wofost_phenology_rate_t), intent(in), optional :: phenology_override
 
     type(wofost_crop_owner_state_t) :: materialized, prepared, evolved
     type(wofost_one_day_window_context_t) :: context
@@ -123,8 +125,13 @@ contains
 
     phase_b%average_temperature = forcing%average_temperature
     phase_b%photoperiodic_daylength_hours = forcing%photoperiodic_daylength_hours
-    call finalize_wofost_one_day_rates(view, rate_parameters, assimilation, potential_aggregates, phase_b, &
-         rates, component_status)
+    if (present(phenology_override)) then
+      call finalize_wofost_one_day_rates(view, rate_parameters, assimilation, potential_aggregates, phase_b, &
+           rates, component_status, phenology_override)
+    else
+      call finalize_wofost_one_day_rates(view, rate_parameters, assimilation, potential_aggregates, phase_b, &
+           rates, component_status)
+    end if
     if (component_status /= WOFOST_FINALIZE_RATES_OK) then
       status = WOFOST_POTENTIAL_DAILY_RATE_ERROR
       return
