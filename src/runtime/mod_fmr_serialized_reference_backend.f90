@@ -3660,6 +3660,7 @@ contains
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: surface_external_exchange_cm
     real(real64) :: macropore_pond_requested_cm, macropore_pond_accepted_cm, macropore_pond_returned_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
@@ -4663,7 +4664,19 @@ contains
         return
       end select
     end if
-    call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
+    ! The transaction ledger owns exchanges across the outer model boundary.
+    ! In dynamic-top mode qtop is the internal surface-to-matrix exchange, while
+    ! ponding is committed storage. Reconstruct the accepted external surface
+    ! exchange from the final surface storage change and qtop; HeadCalc has
+    ! already enforced the independent pond-balance equation.
+    surface_external_exchange_cm = -solve_result%top_flux*step_duration
+    if (request%boundary%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+      surface_external_exchange_cm = solve_result%candidate_state%ponding_depth - &
+           request%base_state%ponding_depth - solve_result%top_flux*step_duration
+    end if
+    if (self%snow_active) surface_external_exchange_cm = -self%base_top_flux*step_duration
+    if (.not. ieee_is_finite(surface_external_exchange_cm)) return
+    call account_external_fluxes(self, step_duration, surface_external_exchange_cm, solve_result%bottom_flux, &
          snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
          outcome%mass_in, outcome%mass_out)
     if(self%rfm_configuration%enabled)then
@@ -5107,20 +5120,19 @@ contains
     if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
   end subroutine record_top_sensible_boundary_sample
 
-  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
-                                     macropore_accepted_top_cm, macropore_rapid_outflow_cm, total_in, total_out)
+  subroutine account_external_fluxes(self, step_duration, surface_external_exchange_cm, bottom_flux, &
+                                     snow_event_applied, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
+                                     total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux, macropore_accepted_top_cm, &
+    real(real64), intent(in) :: step_duration, surface_external_exchange_cm, bottom_flux, macropore_accepted_top_cm, &
          macropore_rapid_outflow_cm
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
-    real(real64) :: value, external_top_flux
-    external_top_flux = solver_top_flux
-    if (self%snow_active) external_top_flux = self%base_top_flux
-    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration + &
+    real(real64) :: value
+    total_in = max(0.0_real64, surface_external_exchange_cm) + max(0.0_real64, bottom_flux) * step_duration + &
          macropore_accepted_top_cm
-    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration + &
+    total_out = max(0.0_real64, -surface_external_exchange_cm) + max(0.0_real64, -bottom_flux) * step_duration + &
          macropore_rapid_outflow_cm
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
