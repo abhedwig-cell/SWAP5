@@ -113,9 +113,25 @@ program test_lowgwl01_feasibility
   print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_PROVIDER_RAW=PASS'
 
   call solver%solve(request,ws,result)
-  if (result%status/=SW_SOLVE_FAILED) error stop 'in-profile mode1 must remain fail-closed'
-  if (trim(result%diagnostics%route)/='mode1-inprofile-deferred') error stop 'wrong in-profile guard'
-  if (allocated(result%candidate_state%pressure_head)) error stop 'in-profile rejection emitted candidate'
-  print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_FAIL_CLOSED=PASS'
+  if (result%status/=SW_SOLVE_CONVERGED) error stop 'in-profile mode1 did not converge'
+  if (.not.allocated(result%candidate_state%pressure_head)) error stop 'in-profile mode1 missing candidate'
+  if (result%candidate_state%active_nodes/=n) error stop 'in-profile candidate lost saturated nodes'
+  if (abs(result%candidate_state%groundwater_level+42.0_real64)>1.0e-12_real64) error stop 'in-profile prescribed GWL publication'
+  if (maxval(abs(result%candidate_state%pressure_head-request%base_state%pressure_head))>1.0e-10_real64) &
+       error stop 'in-profile public head reconstruction'
+  if (maxval(abs(result%candidate_state%water_content(5:n)-cof(2,5:n)))>1.0e-12_real64) &
+       error stop 'in-profile public saturated theta'
+  if (abs(result%bottom_flux)>1.0e-10_real64) error stop 'in-profile hydrostatic qbot'
+  if (.not.result%native_balance_rate_residual_available .or. .not.result%integrated_mass_balance_residual_available) &
+       error stop 'in-profile mass residual missing'
+  if (abs(result%integrated_mass_balance_residual_cm)>1.0e-10_real64) error stop 'in-profile mass residual'
+  print '(a)','F-MIG431-LOWGWL01_IN_PROFILE_TYPED=PASS'
+
+  request%boundary%bottom_head=p%z(1)-5.0e-5_real64
+  call solver%solve(request,ws,result)
+  if (result%status/=SW_SOLVE_FAILED) error stop 'high-GWL mode1 must remain fail-closed'
+  if (trim(result%diagnostics%route)/='mode1-high-gwl-deferred') error stop 'wrong high-GWL guard'
+  if (allocated(result%candidate_state%pressure_head)) error stop 'high-GWL rejection emitted candidate'
+  print '(a)','F-MIG431-LOWGWL01_HIGH_GWL_FAIL_CLOSED=PASS'
 
 end program
