@@ -5,6 +5,12 @@ module mod_fmr_legacy_explicit_cauchy_bottom_boundary_provider
   private
   integer, parameter, public :: FMR_EXPLICIT_CAUCHY3_OK=0
   integer, parameter, public :: FMR_EXPLICIT_CAUCHY3_INVALID=1
+  type, public :: fmr_explicit_cauchy3_control_t
+    real(real64) :: hdrain_cm=0.0_real64
+    real(real64) :: shape_3=1.0_real64
+  contains
+    procedure, public :: valid => explicit_cauchy3_control_valid
+  end type
   type, public :: fmr_explicit_cauchy3_result_t
     logical :: available=.false.
     integer :: groundwater_node=0
@@ -13,7 +19,25 @@ module mod_fmr_legacy_explicit_cauchy_bottom_boundary_provider
     real(real64) :: qbot_cm_per_day=0.0_real64
   end type
   public :: fmr_evaluate_legacy_explicit_cauchy_bottom_boundary
+  public :: fmr_evaluate_legacy_explicit_cauchy_bottom_boundary_controlled
 contains
+  pure logical function explicit_cauchy3_control_valid(self) result(ok)
+    class(fmr_explicit_cauchy3_control_t),intent(in)::self
+    ok=ieee_is_finite(self%hdrain_cm).and.ieee_is_finite(self%shape_3)
+  end function
+  pure subroutine fmr_evaluate_legacy_explicit_cauchy_bottom_boundary_controlled(control,gwl_cm,deepgw_cm,rimlay_days, &
+       qbot4_cm_per_day,zbotcp_cm,ztopcp_cm,dz_cm,ksat_cm_per_day,result,status)
+    type(fmr_explicit_cauchy3_control_t),intent(in)::control
+    real(real64),intent(in)::gwl_cm,deepgw_cm,rimlay_days,qbot4_cm_per_day
+    real(real64),intent(in)::zbotcp_cm(:),ztopcp_cm(:),dz_cm(:),ksat_cm_per_day(:)
+    type(fmr_explicit_cauchy3_result_t),intent(out)::result
+    integer,intent(out)::status
+    if(.not.control%valid())then
+      result=fmr_explicit_cauchy3_result_t();status=FMR_EXPLICIT_CAUCHY3_INVALID;return
+    end if
+    call fmr_evaluate_legacy_explicit_cauchy_bottom_boundary(control%hdrain_cm,gwl_cm,control%shape_3,deepgw_cm, &
+         rimlay_days,qbot4_cm_per_day,zbotcp_cm,ztopcp_cm,dz_cm,ksat_cm_per_day,result,status)
+  end subroutine
   pure subroutine fmr_evaluate_legacy_explicit_cauchy_bottom_boundary(hdrain_cm,gwl_cm,shape_3,deepgw_cm,rimlay_days, &
        qbot4_cm_per_day,zbotcp_cm,ztopcp_cm,dz_cm,ksat_cm_per_day,result,status)
     real(real64),intent(in)::hdrain_cm,gwl_cm,shape_3,deepgw_cm,rimlay_days,qbot4_cm_per_day
