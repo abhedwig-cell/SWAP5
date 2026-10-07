@@ -12,6 +12,7 @@ EXPECTED={
  "SWAP/wofost_soil_amendments.f90":"157caa9b6feafcd16f9505099874f0a8f56bc81618667d5acdafc17e40735df9",
  "SWAP/wofost_soil_cropresidues.f90":"1f5d61e97d4a5d1dae7be604f0ed67ce5a780471d7db35236dbb0dc27d1ff8e9",
  "SWAP/wofost_soil_watern.f90":"b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
+ "SWAP/wofost_soil_orgmatn.f90":"85146e95249b41ed9b5202b507cb1647784592a313e36e75010da9bbf9a733f6",
 }
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode="r:gz") as a:
     members={name:a.extractfile(name).read() for name in EXPECTED}
@@ -29,6 +30,7 @@ nut=packed("SWAP/wofostnut.f90")
 amend=packed("SWAP/wofost_soil_amendments.f90")
 residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
+orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
 
 solute_needles=[
  "cmsy(i)=(theta(i)*cml(i)+bdenskfcref(i)*(cml(i)/cref)**frexp)",
@@ -101,6 +103,18 @@ watern_needles=[
 for needle in watern_needles:
     if needle not in watern:
         raise SystemExit("missing exact Soil-N transport equation: "+needle)
+
+# Fail closed on the B1.11 organic-N inconsistency. The earlier balance
+# accumulator uses Bio + Hum incorporation, while the later Nminer expression
+# subtracts the Bio incorporation term twice. This is evidence for a reference
+# decision, not permission to guess which expression should own production.
+orgmat_needles=[
+ "nfom_min=nfom_min+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_hum(fn)*nfrachum)*help",
+ "nminer=nminer+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_bio(fn)*nfracbio)*help",
+]
+for needle in orgmat_needles:
+    if needle not in orgmat:
+        raise SystemExit("organic-N source inconsistency witness missing: "+needle)
 
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
