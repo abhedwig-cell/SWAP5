@@ -404,7 +404,7 @@ contains
     status=GRASS_MGMT_INVALID_CROP
     if(.not.finite_nonnegative(amount))return
     if(.not.allocated(crop%biomass%leaf_biomass))then
-      if(amount==0.0_real64)status=GRASS_MGMT_OK
+      if(abs(amount)<=tiny(1.0_real64))status=GRASS_MGMT_OK
       return
     end if
     remaining=amount
