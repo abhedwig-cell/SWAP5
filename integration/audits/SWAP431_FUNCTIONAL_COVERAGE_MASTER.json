@@ -7312,12 +7312,13 @@
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
         "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
-        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+        "integration/audits/MC_IRR01_STATUS.json"
       ],
       "production_reachability": {
         "established": true,
         "route": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
-        "claim": "Qualified fixed-event sprinkler-to-interception binding reusing existing fixed event state/cursor."
+        "claim": "MC-IRR01 first shared management slice qualified in F-APP07 run 37625736830; preserves admitted TCS1 default and exact 110-interval composition."
       },
       "restrictions": [
         "Qualified fixed-event sprinkler-to-interception binding reusing existing fixed event state/cursor.",
@@ -7374,12 +7375,13 @@
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
         "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
-        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+        "integration/audits/MC_IRR01_STATUS.json"
       ],
       "production_reachability": {
         "established": true,
-        "route": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
-        "claim": "Qualified scheduled surface identity binding bypassing canopy interception and preserving gross=net top input."
+        "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+        "claim": "MC-IRR01 first shared management slice qualified in F-APP07 run 37625736830; preserves admitted TCS1 default and exact 110-interval composition."
       },
       "restrictions": [
         "Qualified scheduled surface identity binding bypassing canopy interception and preserving gross=net top input.",
@@ -7489,12 +7491,13 @@
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+        "integration/audits/MC_IRR01_STATUS.json"
       ],
       "production_reachability": {
         "established": true,
         "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
-        "claim": "Qualified TCSFIX=0 scheduling policy without minimum-interval suppression or dayfix rewrite."
+        "claim": "MC-IRR01 first shared management slice qualified in F-APP07 run 37625736830; preserves admitted TCS1 default and exact 110-interval composition."
       },
       "restrictions": [
         "Qualified TCSFIX=0 scheduling policy without minimum-interval suppression or dayfix rewrite.",
@@ -11651,12 +11654,13 @@
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+        "integration/audits/MC_IRR01_STATUS.json"
       ],
       "production_reachability": {
         "established": true,
         "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
-        "claim": "Qualified IRR_RATE=0 fallback using selected depth/day for a one-day event."
+        "claim": "MC-IRR01 first shared management slice qualified in F-APP07 run 37625736830; preserves admitted TCS1 default and exact 110-interval composition."
       },
       "restrictions": [
         "Qualified IRR_RATE=0 fallback using selected depth/day for a one-day event.",
@@ -11704,12 +11708,13 @@
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+        "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+        "integration/audits/MC_IRR01_STATUS.json"
       ],
       "production_reachability": {
         "established": true,
         "route": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
-        "claim": "Qualified >1-day duration normalization to depth/day while preserving selected event depth and split continuation."
+        "claim": "MC-IRR01 first shared management slice qualified in F-APP07 run 37625736830; preserves admitted TCS1 default and exact 110-interval composition."
       },
       "restrictions": [
         "Qualified >1-day duration normalization to depth/day while preserving selected event depth and split continuation.",
