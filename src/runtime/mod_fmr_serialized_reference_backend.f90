@@ -513,6 +513,9 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: macropore_requested_top_cm = 0.0_real64
     real(real64) :: macropore_accepted_top_cm = 0.0_real64
     real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_pond_requested_cm = 0.0_real64
+    real(real64) :: macropore_pond_accepted_cm = 0.0_real64
+    real(real64) :: macropore_pond_returned_cm = 0.0_real64
     logical :: macropore_rapid_drain_active = .false.
     real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
     logical :: macropore_inner_richards_exchange_used = .false.
@@ -3657,7 +3660,7 @@ contains
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
     real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
-    real(real64) :: macropore_pond_requested_cm, macropore_pond_returned_cm
+    real(real64) :: macropore_pond_requested_cm, macropore_pond_accepted_cm, macropore_pond_returned_cm
     real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
@@ -3681,6 +3684,7 @@ contains
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
     macropore_pond_requested_cm = 0.0_real64
+    macropore_pond_accepted_cm = 0.0_real64
     macropore_pond_returned_cm = 0.0_real64
     rfm_preferential_input_cm = 0.0_real64
     rfm_deep_receipt_cm = 0.0_real64
@@ -4440,18 +4444,28 @@ contains
         return
       end select
       solve_result = macropore_result%matrix_result
-      if (associated(request%evaluation%macropore)) &
-           macropore_pond_requested_cm=request%evaluation%macropore%candidate_pond_lateral()
+      macropore_pond_requested_cm=macropore_result%pond_requested_top_input_cm
+      macropore_pond_accepted_cm=macropore_result%pond_accepted_top_input_cm
+      macropore_pond_returned_cm=macropore_result%pond_returned_surface_cm
       if (macropore_pond_requested_cm>0.0_real64) then
-        macropore_pond_returned_cm=macropore_result%returned_surface_cm
-        if(macropore_pond_returned_cm<0.0_real64 .or. &
-           macropore_pond_returned_cm>macropore_pond_requested_cm+1.0e-12_real64)return
-        solve_result%candidate_state%ponding_depth=solve_result%candidate_state%ponding_depth+macropore_pond_returned_cm
+        if(macropore_pond_accepted_cm<0.0_real64 .or. macropore_pond_returned_cm<0.0_real64 .or. &
+           abs(macropore_pond_accepted_cm+macropore_pond_returned_cm-macropore_pond_requested_cm)>1.0e-10_real64)return
+        if(macropore_pond_accepted_cm>macropore_result%accepted_top_input_cm+1.0e-10_real64 .or. &
+           macropore_pond_returned_cm>macropore_result%returned_surface_cm+1.0e-10_real64)return
+        ! All capacity-rejected top water returns to the shared surface donor.
+        ! Only the pond-derived accepted share is internal surface-to-macropore
+        ! redistribution; direct accepted atmospheric macro input remains an
+        ! external inflow in the transaction ledger below.
+        solve_result%candidate_state%ponding_depth=solve_result%candidate_state%ponding_depth+ &
+             macropore_result%returned_surface_cm
       end if
       self%last_observation%macropore_top_input_active = macro_top_input_trial%supplied
       self%last_observation%macropore_requested_top_cm = macropore_result%requested_top_input_cm
       self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
       self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
+      self%last_observation%macropore_pond_requested_cm = macropore_pond_requested_cm
+      self%last_observation%macropore_pond_accepted_cm = macropore_pond_accepted_cm
+      self%last_observation%macropore_pond_returned_cm = macropore_pond_returned_cm
       self%last_observation%macropore_rapid_drain_active = self%macropore_config%rate_template%rapid%enabled
       self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       self%last_observation%macropore_inner_richards_exchange_used = macropore_result%inner_richards_exchange_used
@@ -4461,7 +4475,7 @@ contains
            macropore_result%inner_initial_exchange_rate_cm_per_day
       self%last_observation%macropore_inner_final_exchange_rate_cm_per_day = &
            macropore_result%inner_final_exchange_rate_cm_per_day
-      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm-macropore_pond_accepted_cm
       macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
       if (.not. ieee_is_finite(macropore_rapid_outflow_cm) .or. macropore_rapid_outflow_cm < 0.0_real64) return
