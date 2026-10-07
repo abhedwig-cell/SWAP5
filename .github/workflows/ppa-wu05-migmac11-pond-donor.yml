@@ -17,9 +17,7 @@ jobs:
         run: bash tests/fpm/run_migmac11_production_compile.sh
       - name: MIGMAC11 focused qualification suite
         run: WU05A9_ONLY=1 WU05_MIGMAC11_SUITE=1 bash tests/fpm/run_ppa_wu05a9_top_input.sh
-      - name: Preserve A9 top input
-        run: bash tests/fpm/run_ppa_wu05a9_top_input.sh
-      - name: Preserve MIGMAC02 dynamic shrinkage
-        run: bash tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
-      - name: Preserve MIGMAC09 source runtime
+      - name: Preserve MIGMAC01-09 source/runtime envelope
         run: bash tests/fpm/run_ppa_wu05_migmac09_reference_runtime.sh
+      - name: Preserve MIGMAC10 bounded composition
+        run: WU05_MIGMAC10_RUTTER=1 WU05_MIGMAC02_DYNAMIC=2 WU05_MIGMAC10=1 WU05A9_ONLY=1 bash tests/fpm/run_ppa_wu05a9_top_input.sh
