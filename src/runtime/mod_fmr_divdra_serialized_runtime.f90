@@ -11,6 +11,7 @@ module mod_fmr_divdra_serialized_runtime
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
        fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_signed_divdra, &
        fmr_bind_multilevel_signed_divdra, FMR_DIVDRA_BIND_OK
+  use mod_fmr_divdra_discharge_top_binding, only: apply_fmr_divdra_discharge_top_controls, FMR_DIVDRA_TOP_OK
   use mod_fmr_divdra_serialized_composition, only: fmr_divdra_serialized_column_request_t, &
        fmr_divdra_serialized_binding_record_t, fmr_preflight_serialized_divdra, &
        FMR_DIVDRA_COMPOSE_OK, FMR_DIVDRA_COMPOSE_BIND_REJECTED
@@ -55,7 +56,9 @@ contains
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
-    integer :: i, j, forcing_index, parameter_index, view_index, slot
+    type(drainage_distribution_parameters_t) :: single_parameter(1)
+    real(real64) :: single_scalar(1)
+    integer :: i, j, forcing_index, parameter_index, view_index, slot, top_status
 
     allocate(results(0), diagnostics(0))
     aggregate = fmr_aggregate_diagnostics_t()
@@ -88,13 +91,25 @@ contains
         call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_view_registry(view_index), &
              divdra_requests(i)%scalar_transfers,forcing_registry(forcing_index)%drainage_flux_by_level,multi_diag)
         divdra_records(slot)%multilevel_binding=multi_diag
-        deallocate(level_parameters)
         if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
           composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
           divdra_records(slot)%composition_status=composition_status
           call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
           return
         end if
+        if(allocated(divdra_requests(i)%top_layer_controls))then
+          call apply_fmr_divdra_discharge_top_controls(level_parameters,hydraulic_view_registry(view_index), &
+               divdra_requests(i)%scalar_transfers,divdra_requests(i)%top_layer_controls, &
+               forcing_registry(forcing_index)%drainage_flux_by_level,divdra_records(slot)%top_diagnostics,top_status)
+          if(top_status/=FMR_DIVDRA_TOP_OK)then
+            composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            divdra_records(slot)%composition_status=composition_status
+            deallocate(level_parameters)
+            call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+            return
+          end if
+        end if
+        deallocate(level_parameters)
       else
         parameter_index = int(divdra_requests(i)%distribution_parameter_ref)
         call fmr_bind_single_level_signed_divdra(distribution_parameter_registry(parameter_index), &
@@ -106,6 +121,19 @@ contains
           divdra_records(slot)%composition_status = composition_status
           call cleanup_materialized_divdra(columns, divdra_requests, forcing_registry)
           return
+        end if
+        if(allocated(divdra_requests(i)%top_layer_controls))then
+          single_parameter(1)=distribution_parameter_registry(parameter_index)
+          single_scalar(1)=divdra_requests(i)%scalar_transfer
+          call apply_fmr_divdra_discharge_top_controls(single_parameter,hydraulic_view_registry(view_index),single_scalar, &
+               divdra_requests(i)%top_layer_controls,forcing_registry(forcing_index)%drainage_flux_by_level, &
+               divdra_records(slot)%top_diagnostics,top_status)
+          if(top_status/=FMR_DIVDRA_TOP_OK)then
+            composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+            divdra_records(slot)%composition_status=composition_status
+            call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+            return
+          end if
         end if
       end if
     end do
