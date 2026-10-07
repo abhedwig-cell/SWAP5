@@ -14,9 +14,12 @@ module mod_wofost_soybean_phenology_factors
 
   type, public :: soybean_phenology_parameters_t
     real(real64) :: maturity_group = 0.0_real64                  ! MG
+    real(real64) :: maximum_vegetative_development_rate = 0.0_real64 ! DVRMAX1
+    real(real64) :: maximum_generative_development_rate = 0.0_real64 ! DVRMAX2
     real(real64) :: minimum_development_temperature_c = 0.0_real64 ! TMINDVR
     real(real64) :: optimum_development_temperature_c = 0.0_real64 ! TOPTDVR
     real(real64) :: maximum_development_temperature_c = 0.0_real64 ! TMAXDVR
+    logical :: apply_photoperiod_in_vegetative_phase = .true.      ! SWRFPHOTOVEG=1
     logical :: derive_photoperiod_from_maturity_group = .true.    ! SWPHENODAYL=0
     real(real64) :: optimum_photoperiod_hours = 0.0_real64        ! POPT
     real(real64) :: critical_photoperiod_hours = 0.0_real64       ! PCRT
@@ -28,6 +31,7 @@ module mod_wofost_soybean_phenology_factors
   public :: soybean_temperature_reduction_factor
   public :: soybean_photoperiod_reduction_factor
   public :: soybean_astronomic_daylength_hours
+  public :: soybean_daily_development_rate
 
 contains
 
@@ -38,6 +42,12 @@ contains
     ready = .false.
     if (.not. ieee_is_finite(self%maturity_group) .or. self%maturity_group < 0.1_real64 .or. &
         self%maturity_group > 9.0_real64) return
+    if (.not. ieee_is_finite(self%maximum_vegetative_development_rate) .or. &
+        self%maximum_vegetative_development_rate < 0.0_real64 .or. &
+        self%maximum_vegetative_development_rate > 1.0_real64) return
+    if (.not. ieee_is_finite(self%maximum_generative_development_rate) .or. &
+        self%maximum_generative_development_rate < 0.0_real64 .or. &
+        self%maximum_generative_development_rate > 1.0_real64) return
     if (.not. ieee_is_finite(self%minimum_development_temperature_c) .or. &
         .not. ieee_is_finite(self%optimum_development_temperature_c) .or. &
         .not. ieee_is_finite(self%maximum_development_temperature_c)) return
@@ -187,5 +197,67 @@ contains
     end if
     status = SOY_PHENOLOGY_OK
   end subroutine soybean_photoperiod_reduction_factor
+
+  subroutine soybean_daily_development_rate(parameters, development_stage, average_temperature_c, &
+                                             latitude_degrees, day_of_year, anthesis_reached, &
+                                             temperature_sum_increment, development_rate, &
+                                             candidate_anthesis_reached, anthesis_triggered, status)
+    type(soybean_phenology_parameters_t), intent(in) :: parameters
+    real(real64), intent(in) :: development_stage, average_temperature_c, latitude_degrees
+    integer, intent(in) :: day_of_year
+    logical, intent(in) :: anthesis_reached
+    real(real64), intent(out) :: temperature_sum_increment, development_rate
+    logical, intent(out) :: candidate_anthesis_reached, anthesis_triggered
+    integer, intent(out) :: status
+
+    real(real64) :: ftemp, fphoto, daylength_hours
+    integer :: local_status
+
+    temperature_sum_increment = 0.0_real64
+    development_rate = 0.0_real64
+    candidate_anthesis_reached = anthesis_reached
+    anthesis_triggered = .false.
+    status = SOY_PHENOLOGY_INVALID_PARAMETERS
+    if (.not. parameters%ready()) return
+    status = SOY_PHENOLOGY_INVALID_FORCING
+    if (.not. ieee_is_finite(development_stage) .or. development_stage < 0.0_real64) return
+    if (.not. ieee_is_finite(average_temperature_c)) return
+
+    ! B1.11 update_dvs_rate, SWWOFOST=2.
+    temperature_sum_increment = max(0.0_real64, average_temperature_c)
+
+    call soybean_temperature_reduction_factor(parameters, average_temperature_c, ftemp, local_status)
+    if (local_status /= SOY_PHENOLOGY_OK) then
+      status = local_status
+      return
+    end if
+    call soybean_photoperiod_reduction_factor(parameters, latitude_degrees, day_of_year, &
+         fphoto, daylength_hours, local_status)
+    if (local_status /= SOY_PHENOLOGY_OK) then
+      status = local_status
+      return
+    end if
+
+    if (development_stage < 1.0_real64) then
+      development_rate = parameters%maximum_vegetative_development_rate * ftemp
+      if (parameters%apply_photoperiod_in_vegetative_phase) development_rate = development_rate * fphoto
+    else
+      development_rate = parameters%maximum_generative_development_rate * fphoto * ftemp
+    end if
+
+    ! Exact B1.11 anthesis crossing rule shared by SWWOFOST=1/2.
+    if (development_stage + development_rate >= 1.0_real64 .and. .not. anthesis_reached) then
+      candidate_anthesis_reached = .true.
+      anthesis_triggered = .true.
+      development_rate = 1.0_real64 - development_stage
+    end if
+
+    if (.not. ieee_is_finite(development_rate) .or. development_rate < 0.0_real64) then
+      development_rate = 0.0_real64
+      status = SOY_PHENOLOGY_INVALID_RESULT
+      return
+    end if
+    status = SOY_PHENOLOGY_OK
+  end subroutine soybean_daily_development_rate
 
 end module mod_wofost_soybean_phenology_factors
