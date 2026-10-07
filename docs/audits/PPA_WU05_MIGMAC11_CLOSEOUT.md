@@ -1,10 +1,12 @@
 # PPA-WU05-MIGMAC11 closeout
 
 Status: CLOSED  
-Qualified postimage: `609cd5ee8964f0619d94bd396f53ed9fe8d8495e`  
-Canonical parent: `19d7ce86f71c7fa5fd3ed2c65a91dc705921f714`  
+Qualified reconciliation postimage: `609cd5ee8964f0619d94bd396f53ed9fe8d8495e`  
+Final admission head: `5747aa6911095c3f0a6c917c40871be6aa9c9116`  
+Canonical admission merge: `8cd14e459913f77f412e12125ccda597a841e22d`  
 Reconciliation PR: #1089  
-Qualification run: `37612249809`
+Admission PR: #1084  
+Final qualification run: `37613833352`
 
 ## Admitted capability
 
@@ -27,6 +29,8 @@ The source authority is `reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f
 Run `37612249809` on the current-canonical merge postimage passed the production O0/O2 compile witness and the consolidated MIGMAC11 suite. The suite demonstrated active ponding, below-threshold zero transfer, runon composition, partial capacity return, changing candidate area, exact requested/accepted/returned identities, hard whole-column mass closure, retry/rollback/replay/restart behaviour and O0/O2 identity.
 
 The same run passed the inherited MIGMAC01-09 source/runtime envelope and MIGMAC10 bounded composition gate. The immediately preceding focused workstream qualification, run `37603291412`, also passed before canonical reconciliation.
+
+After the later LOW03 canonical composition changed the shared serialized backend, the full MIGMAC11 gate was repeated on final admission head `5747aa6911095c3f0a6c917c40871be6aa9c9116`. Run `37613833352` passed production O0/O2 compilation, the complete focused MIGMAC11 suite, MIGMAC01-09 preservation and MIGMAC10 bounded composition. PR #1084 then merged into `integration/f-ci-canonical` as `8cd14e459913f77f412e12125ccda597a841e22d`. The only tree delta between that qualified head and the admission merge is unrelated LOW03 status documentation, so the admitted production code is the qualified production postimage.
 
 ## Canonical reconciliation
 
