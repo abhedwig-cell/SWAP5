@@ -25,6 +25,7 @@ module mod_fmr_b111_soil_n_transaction
     procedure, public :: ready => soil_n_ready
     procedure, public :: snapshot => soil_n_snapshot
     procedure, public :: consumed_management_event => soil_n_consumed_management_event
+    procedure, public :: snapshot_management_event => soil_n_snapshot_management_event
   end type
 
   type, extends(transaction_model_t), public :: fmr_b111_soil_n_model_t
@@ -47,11 +48,13 @@ module mod_fmr_b111_soil_n_transaction
 
 contains
 
-  subroutine initialize_fmr_b111_soil_n_state(params, inventory, state, status)
+  subroutine initialize_fmr_b111_soil_n_state(params, inventory, state, status, last_management_event_id, management_event_consumed)
     type(soil_n_inventory_parameters_t), intent(in) :: params
     type(soil_n_pool_state_t), intent(in) :: inventory
     type(fmr_b111_soil_n_state_t), intent(out) :: state
     integer, intent(out) :: status
+    integer(int64), intent(in), optional :: last_management_event_id
+    logical, intent(in), optional :: management_event_consumed
 
     state = fmr_b111_soil_n_state_t()
     status = FMR_SOIL_N_INVALID
@@ -59,6 +62,13 @@ contains
     if (size(params%nfrac_fom) /= size(inventory%fom_kg_m3)) return
     state%params = params
     state%inventory = inventory
+    if (present(last_management_event_id) .neqv. present(management_event_consumed)) return
+    if (present(last_management_event_id)) then
+      if (management_event_consumed .and. last_management_event_id <= 0_int64) return
+      if (.not. management_event_consumed .and. last_management_event_id /= 0_int64) return
+      state%last_management_event_id = last_management_event_id
+      state%management_event_consumed = management_event_consumed
+    end if
     state%initialized = .true.
     status = FMR_SOIL_N_OK
   end subroutine
@@ -121,6 +131,19 @@ contains
     integer(int64),intent(in)::event_id
     consumed=self%management_event_consumed.and.event_id>0_int64.and.self%last_management_event_id==event_id
   end function
+
+
+  subroutine soil_n_snapshot_management_event(self,event_id,consumed,available)
+    class(fmr_b111_soil_n_state_t),intent(in)::self
+    integer(int64),intent(out)::event_id
+    logical,intent(out)::consumed,available
+    event_id=0_int64
+    consumed=.false.
+    available=self%ready()
+    if(.not.available)return
+    event_id=self%last_management_event_id
+    consumed=self%management_event_consumed
+  end subroutine
 
   subroutine apply_fmr_b111_soil_n_management_event(state,event_id,transfer,status,receipt)
     type(fmr_b111_soil_n_state_t),intent(inout)::state
