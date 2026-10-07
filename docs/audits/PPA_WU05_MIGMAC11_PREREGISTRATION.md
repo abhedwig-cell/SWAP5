@@ -57,7 +57,12 @@ PR #1084 was subsequently admitted as canonical merge
 qualified production head to that admission was
 `integration/audits/SW431_LOW3_EXPLICIT_STATUS.md`, outside the recorded
 MIGMAC11 dependency surface. No additional production requalification was
-therefore required.
+required for admission transfer.
+
+A dedicated exact-postimage rerun was nevertheless executed directly on canonical admission commit
+`8cd14e459913f77f412e12125ccda597a841e22d`. Run `37615105739` passed
+production O0/O2 compilation, the consolidated MIGMAC11 focused suite,
+MIGMAC01-09 preservation and MIGMAC10 bounded composition.
 
 ## Closure
 

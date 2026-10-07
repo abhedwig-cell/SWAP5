@@ -84,6 +84,12 @@
       "run_id": 37613833352,
       "head": "5747aa6911095c3f0a6c917c40871be6aa9c9116",
       "conclusion": "success"
+    },
+    "exact_admitted_canonical_postimage": {
+      "run_id": 37615105739,
+      "head": "8cd14e459913f77f412e12125ccda597a841e22d",
+      "conclusion": "success",
+      "note": "Full MIGMAC11 workflow rerun directly on the exact admitted canonical commit; production compile, focused suite, MIGMAC01-09 preservation and MIGMAC10 bounded composition all passed."
     }
   },
   "qualified_cases": [
@@ -104,7 +110,7 @@
     "MIGMAC10 bounded Boesten/Rutter/macropore preservation",
     "O0/O2 identity"
   ],
-  "test_status": "PASS on final canonical-reconciled production postimage 5747aa6911095c3f0a6c917c40871be6aa9c9116. GitHub Actions run 37613833352 completed successfully: production compile, focused MIGMAC11 qualification suite, MIGMAC01-09 preservation, and MIGMAC10 bounded composition all PASS. Canonical admission 8cd14e459913f77f412e12125ccda597a841e22d differs from the qualified head only by integration/audits/SW431_LOW3_EXPLICIT_STATUS.md, outside the recorded MIGMAC11 dependency surface.",
+  "test_status": "PASS on final canonical-reconciled production postimage 5747aa6911095c3f0a6c917c40871be6aa9c9116 in run 37613833352, and independently PASS on the exact canonical admission commit 8cd14e459913f77f412e12125ccda597a841e22d in run 37615105739. Both runs completed production compile, focused MIGMAC11 qualification, MIGMAC01-09 preservation, and MIGMAC10 bounded composition successfully.",
   "qualification_status": "CLOSED_CANONICALLY_ADMITTED",
   "next_action": "No MIGMAC11 implementation or admission work remains. Reopen only if later canonical changes intersect the recorded dependency surface or new regression evidence appears.",
   "recovery_point": "integration/f-ci-canonical@8cd14e459913f77f412e12125ccda597a841e22d",

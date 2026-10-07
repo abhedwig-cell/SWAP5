@@ -48,7 +48,7 @@ The preceding focused qualification run `37603291412` and first canonical-merge 
 
 PR #1084 was admitted as canonical merge `8cd14e459913f77f412e12125ccda597a841e22d`.
 
-The exact delta from the final qualified production head `5747aa6911095c3f0a6c917c40871be6aa9c9116` to that canonical admission consists only of `integration/audits/SW431_LOW3_EXPLICIT_STATUS.md`. No production file, test owner, or recorded MIGMAC11 dependency changed. The final qualification therefore transfers directly to the canonical admission postimage under the repository's dependency-aware preservation rule.
+The exact delta from the final qualified production head `5747aa6911095c3f0a6c917c40871be6aa9c9116` to that canonical admission consists only of `integration/audits/SW431_LOW3_EXPLICIT_STATUS.md`. No production file, test owner, or recorded MIGMAC11 dependency changed. The final qualification therefore transfers directly to the canonical admission postimage under the repository's dependency-aware preservation rule.\n\nAs an additional exact-postimage check, run `37615105739` reran the complete MIGMAC11 workflow directly on canonical admission commit `8cd14e459913f77f412e12125ccda597a841e22d`. Production compile, the focused MIGMAC11 suite, MIGMAC01-09 preservation and MIGMAC10 bounded composition all passed.
 
 ## Claim ceiling
 
