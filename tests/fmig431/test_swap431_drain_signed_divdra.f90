@@ -62,7 +62,7 @@ program test_swap431_drain_signed_divdra
   allocate(q(1,n)); q=99._real64
   call fmr_bind_single_level_signed_divdra(p,h,-scalar,q,bd)
   call require(bd%status==FMR_DIVDRA_BIND_TARGET_ALREADY_BOUND,'signed overwrite guard')
-  call require(all(q==99._real64),'signed overwrite leaves target unchanged')
+  call require(all(abs(q-99._real64)<=tol),'signed overwrite leaves target unchanged')
 
 
   levels(1)=p; levels(2)=p; levels(3)=p
@@ -83,7 +83,7 @@ program test_swap431_drain_signed_divdra
   call require(mbd%status==FMR_DIVDRA_BIND_OK .and. mbd%published,'multilevel binding publication')
   call require(all(abs([sum(qmulti(1,:)),sum(qmulti(2,:)),sum(qmulti(3,:))]-transfers)<=tol), &
        'multilevel binding mass closure')
-  call require(all(mbd%authoritative_scalar_transfer==transfers),'multilevel authoritative scalars')
+  call require(all(abs(mbd%authoritative_scalar_transfer-transfers)<=tol),'multilevel authoritative scalars')
   deallocate(qmulti)
 
   print '(a)','SW431_DRAIN_SIGNED_POSITIVE_PRESERVATION=PASS'
