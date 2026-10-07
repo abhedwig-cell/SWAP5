@@ -1,0 +1,21 @@
+name: SWAP431 crop rootgrow rate qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  push:
+    branches: [work/swap431-crop-rootgrow-rate-20261007]
+    paths:
+      - 'src/crop/mod_crop_root_depth_rate_owner.f90'
+      - 'tests/fmig431/test_crop_root_depth_rate_owner.f90'
+      - 'tests/fmig431/run_crop_root_depth_rate_owner.py'
+      - '.github/workflows/swap431-crop-rootgrow-rate.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Shared SWRD2 base and water-scaled owner O0 O2
+        run: python3 tests/fmig431/run_crop_root_depth_rate_owner.py
