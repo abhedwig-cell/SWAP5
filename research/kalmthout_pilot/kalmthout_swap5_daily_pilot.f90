@@ -1,7 +1,6 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: TX_TEMPORAL_NONE
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
@@ -20,7 +19,7 @@ program kalmthout_swap5_daily_pilot
   type(fmr_b110_physical_forcing_t), allocatable :: forcing(:)
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   integer :: ios,status,day_index,failures
-  real(real64) :: precip_mm,temp_c,dew_c,shortwave_w_m2,wind10,et0,t0,t1,max_residual,dt_day
+  real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day
   real(real64) :: total_precip,total_et0,total_in,total_out
 
   call get_command_argument(1,met_path)
@@ -34,8 +33,8 @@ program kalmthout_swap5_daily_pilot
   open(UNIT_MET,file=trim(met_path),status='old',action='read',iostat=ios); call require(ios==0,'open weather')
   open(UNIT_OUT,file=trim(out_path),status='replace',action='write',iostat=ios); call require(ios==0,'open output')
   read(UNIT_MET,'(A)',iostat=ios) line; call require(ios==0,'read weather header')
-  write(UNIT_OUT,'(A)') 'time,precip_mm_hour,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm'
-  dt_day=1.0_real64/24.0_real64
+  write(UNIT_OUT,'(A)') 'time,precip_mm_12h,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm'
+  dt_day=0.5_real64
 
   day_index=0; failures=0; max_residual=0.0_real64
   total_precip=0.0_real64; total_et0=0.0_real64; total_in=0.0_real64; total_out=0.0_real64
@@ -43,7 +42,7 @@ program kalmthout_swap5_daily_pilot
     read(UNIT_MET,'(A)',iostat=ios) line
     if(ios<0) exit
     call require(ios==0,'read weather row')
-    read(line,*,iostat=ios) ds,precip_mm,temp_c,dew_c,shortwave_w_m2,wind10,et0
+    read(line,*,iostat=ios) ds,precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
     call require(ios==0,'parse weather row')
     day_index=day_index+1; t0=real(day_index-1,real64)*dt_day; t1=real(day_index,real64)*dt_day
     allocate(forcing(1))
@@ -58,7 +57,7 @@ program kalmthout_swap5_daily_pilot
     if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
       failures=failures+1
       write(*,'(A,1X,A,1X,I0,6(1X,F12.6))') 'KALMTHOUT_HOUR_FAIL',trim(ds),status, &
-           precip_mm,temp_c,dew_c,shortwave_w_m2,wind10,et0
+           precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
       if(allocated(results)) then
         write(*,'(A,1X,I0,1X,A,3(1X,L1),4(1X,I0),3(1X,ES18.10),1X,A,1X,I0)') &
              'KALMTHOUT_RESULT_DEBUG',size(results),trim(results(1)%admission_status), &
@@ -83,9 +82,9 @@ program kalmthout_swap5_daily_pilot
   close(UNIT_MET); close(UNIT_OUT)
   call app%close(status); call require(status==FMR_APP_BOOT_OK,'clean close')
   call require(failures==0,'no failed days')
-  call require(day_index==24120,'complete hourly 2024-01-01 through 2026-10-01')
+  call require(day_index==2010,'complete 12-hour forcing 2024-01-01 through 2026-10-01')
   call require(max_residual<=HARD_MASS_GATE,'hard mass gate')
-  write(*,'(A,I0)') 'KALMTHOUT_HOURS=',day_index
+  write(*,'(A,I0)') 'KALMTHOUT_WINDOWS=',day_index
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_PRECIP_MM=',total_precip
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_ET0_MM=',total_et0
   write(*,'(A,ES18.10)') 'KALMTHOUT_MAX_MASS_RESIDUAL_CM=',max_residual
@@ -98,8 +97,7 @@ contains
     type(fmr_production_application_config_t),intent(out)::value
     real(real64)::conductivity0
     value%initial_time=0.0_real64
-    value%numerical%transaction%temporal_mode=TX_TEMPORAL_NONE
-    value%numerical%transaction%temporal_tolerance=0.0_real64
+    value%numerical%transaction%temporal_tolerance=0.03_real64
     value%numerical%transaction%mass_tolerance=HARD_MASS_GATE
     value%numerical%transaction%retry_scale=0.5_real64
     value%numerical%transaction%max_retries=20
