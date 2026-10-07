@@ -43,12 +43,23 @@
       "seasonal rotation schedule"
     ]
   },
-  "disposition": "SOURCE_STATE_MACHINE_IMPLEMENTED_RUNTIME_FORCING_BINDING_OPEN",
+  "disposition": "SOURCE_STATE_MACHINE_LOCAL_O0_O2_PASS_RUNTIME_FORCING_BINDING_OPEN",
   "remaining": [
     "Bind h_average/depth lookup and sowing soil-temperature forcing from accepted hydrology/heat state.",
     "Retire pre-emergence owner and initialize active crop owner atomically when germination completes.",
     "Persist/restart delays and TSUMGERM across accepted events.",
     "Compose with seasonal rotation owner without duplicating schedule state."
   ],
-  "admission": false
+  "admission": false,
+  "qualification": {
+    "local": {
+      "compiler": "gfortran 14.2.0",
+      "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+      "O0": "PASS",
+      "O2": "PASS",
+      "output_identity": "PASS",
+      "marker": "SW431_CROP_PREEMERGENCE=PASS"
+    },
+    "integration": "OPEN"
+  }
 }
