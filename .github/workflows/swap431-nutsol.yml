@@ -1,0 +1,20 @@
+name: SWAP431 nutrient fixation qualification
+on:
+  pull_request:
+    paths:
+      - 'src/crop/mod_b111_nfixation_policy.f90'
+      - 'tests/fwof/pp02/test_b111_nfixation_policy.f90'
+      - 'tests/fwof/pp02/run_b111_nfixation_policy.sh'
+      - 'tools/audits/probe_swap431_b111_nfix_policy.py'
+      - 'integration/audits/MC_NUT_SOL_OWNER_DECISION.md'
+      - 'integration/audits/MC_NUT_SOL_STATUS.json'
+      - '.github/workflows/swap431-nutsol.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: B1.11 fixation policy and literal source oracle
+        run: bash tests/fwof/pp02/run_b111_nfixation_policy.sh
