@@ -65,5 +65,15 @@ program test_swap431_potential_shadow
     error stop 17
   end select
 
+  ! A transaction snapshot must own an independent biomass allocation.
+  shadow%biomass%root_biomass=35.0_real64
+  select type(t=>copy)
+  type is(wofost_potential_shadow_state_t)
+    if(abs(t%root_biomass()-27.0_real64)>tol) error stop 18
+  class default
+    error stop 19
+  end select
+  if(abs(actual%biomass%root_biomass-20.0_real64)>tol) error stop 20
+
   print '(a)','SW431_CROP_POTENTIAL_SHADOW=PASS'
 end program
