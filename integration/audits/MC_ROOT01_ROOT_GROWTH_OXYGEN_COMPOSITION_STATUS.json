@@ -76,5 +76,12 @@
     "regression_commit": "aa413e3cdbb8c66635433feb77a4e5e17d4a552d",
     "local_evidence": "Focused reconstructed-module strict gfortran O0/O2 PASS; old guard fails new regression. Not integrated production/restart qualification.",
     "admission": false
+  },
+  "supply_composition_fail_closed_fix": {
+    "commit": "b7ad2eb259c0aefb09cd11777ae5093127d262d3",
+    "finding": "On a valid base growth candidate followed by missing accepted drought forcing, evaluate_swrd2_supply_limited_candidate returned an error but left the OUT candidate equal to the unscaled growth trial rather than the committed input.",
+    "correction": "Only publish base_candidate on an accepted no-extension path or after successfully evaluating supply limitation. Error paths preserve committed_depth as the output candidate.",
+    "qualification": "CODE_REVIEW_ONLY_NOT_YET_O0_O2_TESTED",
+    "required_test": "Accepted SWRD2 root-growth candidate with unavailable drought carrier must return FMR_ROOT_SUPPLY_MISSING_DROUGHT and candidate depths identical to committed state; preserve no-growth successful path."
   }
 }
