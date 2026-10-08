@@ -1,0 +1,57 @@
+{
+  "schema": "swap431.crop_physical_lifecycle_contract.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "CROP-PHYSICAL-LIFE01",
+  "baseline": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
+  "authority": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/crop/mod_crop_rotation_lifecycle_preflight.f90",
+    "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90"
+  ],
+  "admitted_inherited": [
+    "PR #1130 calendar selector",
+    "PR #1131 calendar trial/accept checkpoint",
+    "PR #1132 exact committed receipt derived publication",
+    "PR #1134 nonmutating lifecycle preflight"
+  ],
+  "scope": "Source-backed physical crop lifecycle handoff contract only; no new physical behavior admitted",
+  "transition_order": [
+    "At accepted time boundary: independently validate preflight and source calendar; do not mutate committed physical crop or lifecycle flags",
+    "Create candidate on clone of current committed crop-owner state; source-specific preparation/sowing/germination decisions use declared hydraulic/thermal values and documented precedence",
+    "Never infer emergence merely from calendar ENTER: emergence requires validated preparation, sowing, germination and corresponding source conditions",
+    "At accepted emergence initialize new crop owner and root extraction consistently; at accepted harvest handle crop teardown/reset once",
+    "Publish crop-owner revision and associated calendar/receipt lifecycle only following one matching accepted F-KT event; reject/retry must leave original owner, calendar and window unchanged",
+    "Persist a single coherent physical crop identity, lifecycle flags, calendar checkpoint and consumed-event lineage for restart; reconstruct and validate before resuming"
+  ],
+  "source_constraints": {
+    "calendar_sequence": "Following crop begins >=0.5 source day after former crop end",
+    "season_initialization": "Simulation start inside existing growing season requires SWINCO=3 compatibility branch",
+    "source_tolerances": "0.1 day active crop selection, 0.001 day exact cropstart flag; not proof of arbitrary scheduler rounding",
+    "physical_inputs": "Hydraulic pressure head, soil temperature and workability owner to be reconciled before sowing/germination binding"
+  },
+  "invariants": [
+    "F-KT is sole physical commit owner",
+    "Reject/retry cannot modify committed crop state, crop flags, calendar, accepted window or consumed receipt",
+    "Do not reopen accepted root-uptake, MICRO, transport or hydraulic state interfaces without respective owning workstream reconciliation",
+    "Restart after accepted event has exactly same following crop identity, owner state and event consumption",
+    "No double harvest, double sow, duplicated physical evolution or repeated root initialization on replay"
+  ],
+  "test_matrix": [
+    "two crops separated by fallow",
+    "start within season and SWINCO rejection/acceptance",
+    "preparation, sowing and germination gated by frozen physical forcing",
+    "delayed emergence and later root initialization",
+    "harvest/reset and following crop identity",
+    "rejected and retried physical trial zero mutation",
+    "stale revision and mismatched committed receipt fail closed",
+    "checkpoint restart before and after each boundary reproduces successor",
+    "O0/O2 and exact-head F-CI preservation"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "next_action": "Reconcile exact F-KT crop transaction state snapshot/owner and hydraulic/thermal forcing contract, then build smallest read-only source-conditioned action proposal with deterministic unit tests before any physical publication."
+}
