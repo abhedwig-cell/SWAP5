@@ -181,7 +181,7 @@ for needle in amendment_calendar_needles:
         raise SystemExit("missing exact B1.11 amendment calendar witness: "+needle)
 if "matnum(i)=matnum(i)" in management:
     raise SystemExit("unexpected public sorting defect in exact B1.11 management")
-if not re.search(r"if\\(smedate\\(i-1\\)>smedate\\(i\\)\\)then", management):
+if "if(smedate(i-1)>smedate(i))then" not in management:
     raise SystemExit("missing exact B1.11 unsorted-date guard")
 
 watern_needles=[
