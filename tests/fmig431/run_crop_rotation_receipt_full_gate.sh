@@ -201,17 +201,18 @@ if src.count('for OPT in 0 2; do') != 1:
     raise SystemExit('F-WOF38 compilation loop anchor missing')
 src = src.replace('for OPT in 0 2; do', dependency_order + '\nfor OPT in 0 2; do', 1)
 src = src.replace('-Werror -fcheck=all', '-Werror -Wno-error=compare-reals -fcheck=all')
-# Strictly diagnostic: report the rejected F-KT status before the existing assertion.
+# Strictly diagnostic: report the rejected F-KT status and rejection cause.
 diagnostic = "    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')"
 if src.count(diagnostic) != 1:
     raise SystemExit('physical donor status diagnostic anchor drift')
-src = src.replace(diagnostic, "    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\n" +
-    "      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed\n    "      print *, 'FWOF38_TX_DIAG=', diagnostics%solver_rejections, diagnostics%temporal_rejections, &\n" +
-    "           diagnostics%mass_rejections, diagnostics%temporal_certificate_unavailable_rejections\n" +
-    "      print *, 'FWOF38_TX_COUNTS=', diagnostics%attempts, diagnostics%retries, &\n" +
-    "           diagnostics%accepted_substeps, result%mass%missing_contribution_mask\n" +
-" +
-    "    end if\n" + diagnostic, 1)
+src = src.replace(diagnostic, """    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then
+      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed
+      print *, 'FWOF38_TX_DIAG=', diagnostics%solver_rejections, diagnostics%temporal_rejections, &
+           diagnostics%mass_rejections, diagnostics%temporal_certificate_unavailable_rejections
+      print *, 'FWOF38_TX_COUNTS=', diagnostics%attempts, diagnostics%retries, &
+           diagnostics%accepted_substeps, result%mass%missing_contribution_mask
+    end if
+""" + diagnostic, 1)
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
