@@ -1,16 +1,14 @@
 # SWAP431 functional coverage master: recoverable review
 
-Baseline: `78acf56f931763d2e1d4924b3dea0742f231d2e8`. Status: IN_PROGRESS. **Coverage is not closed; the denominator is not yet declared exhaustive.**
+Status: IN_PROGRESS. **Coverage is not closed and the 243-entry denominator is not declared exhaustive.**
 
-The ledger currently contains 243 entries: 82 bounded ADMITTED, 14 SUPERSEDED, 1 REJECTED, 20 NOT_APPLICABLE, 122 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY entries across 18 review/migration workunits.
+The machine-readable authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`. Its latest canonical reconciliation pins `10345ab164f6778174c2fe8d0f08233a491fa4d7`.
 
-All 122 ACTIVE_MIGRATION entries are currently marked as proven missing production implementation/binding. Four additional entries are QUALIFICATION_ONLY: the required evaluator/runtime code exists, but their source-bound runtime envelope or admission is not yet complete. Neither number is a final exhaustive missing-functionality count. Qualification-only is not admission and still blocks global coverage closure.
+**2026-10-08 crop/root admission delta:** five formerly ACTIVE_MIGRATION entries are now ADMITTED: `SW431-ROOT-OXYGEN-EMP` (#1127), `SW431-ROOT-DENSITY` (#1125), `SW431-CROP-ROOTGROW-BIOMASS` (#1125), `SW431-CROP-ROOTGROW-WATER` (#1125), and `SW431-ROOT-LRV-CONSTANT` (#1128). Exact scientific and F-CI run IDs are recorded per capability in the JSON. The conservative remaining ACTIVE_MIGRATION count in that historical ledger is 113; this is **not** a statement that 113 distinct production implementations are absent today. Earlier counts in this markdown are superseded by the JSON's summary.
 
-Admitted SWAP5 replacement foundations are listed separately and do not count as proof of literal B1.11 branch coverage.
+Admission is distinct from implementation, testing, preservation and source-envelope completeness. Other root/MICRO workunits, including Bartholomeus oxygen, MICRO variants and crop annual/rotation, retain their own owner reviews. Prior admitted SWAP5 foundations do not automatically prove all literal B1.11 branches.
 
-The machine authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`.
-The exact source bundle and input-reader census are in `integration/audits/evidence/`.
-The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
+The exact source bundle and input-reader census are in `integration/audits/evidence/`. The source findings and exclusion reasoning are in `SWAP431_SOURCE_REVIEW.md`.
 
 ## Qualification-only queue
 
