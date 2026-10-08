@@ -77,6 +77,16 @@ import sys
 p=Path(sys.argv[1])
 s=p.read_text(encoding='utf-8')
 
+# The historical F-WOF34 dummy donor specifies a complete single inflow
+# and storage delta, but predates explicit mass-completeness publication.
+# Keep modern fail-closed production accounting; update only the generated
+# *test* donor's receipt to state what its conserved physics already proves.
+mass_anchor="    outcome%solver_ok = .true.\\n    outcome%mass_in = transfer_mass\\n"
+mass_new=mass_anchor+"    outcome%mass_accounting_complete = .true.\\n    outcome%missing_mass_contribution_mask = 0\\n"
+if s.count(mass_anchor)!=1:
+    raise SystemExit("F-WOF34 physical donor mass authority anchor changed")
+s=s.replace(mass_anchor,mass_new,1)
+
 # The frozen F-WOF38 generated program does not import this newer
 # optional potential-shadow type, even though the implementation is compiled.
 use_anchor="  use mod_fmr_wofost_crop_transaction\n"
