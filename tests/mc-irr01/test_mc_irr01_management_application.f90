@@ -112,6 +112,9 @@ program test_mc_irr01_management_application
   call require(abs(flux%surface_gross_rate-1.0_real64)<tol .and. abs(flux%external_inflow_amount-0.5_real64)<tol,17)
 
 
+  ! The prior continuation used an active committed input s; only its candidate c
+  ! was cleared at event completion. Start independent DCS2 cases from fresh authority.
+  s=fmr_irrigation_management_state_t()
   ! TCS2/3/4/6 can reuse the independently admitted DCS2 DVS-depth owner.
   call setup_base(p,h,r)
   p%policy%depth_criterion=2
