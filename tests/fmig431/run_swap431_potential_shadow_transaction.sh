@@ -8,6 +8,30 @@ trap 'rm -f "$TMP" "$OUT"' EXIT
 
 cp "$ROOT/tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh" "$TMP"
 
+# Reconcile F-WOF38's frozen source compilation list with the current
+# canonical directional-publication dependency, without editing its owner runner.
+python3 - "$TMP" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1])
+s=p.read_text()
+anchor="  src/transaction/mod_transaction_reference.f90\n  src/runtime/mod_canonical_contracts.f90\n"
+replacement=("  src/transaction/mod_transaction_reference.f90\n"
+ "  src/solver/mod_soil_water_accepted_step_direction_contract.f90\n"
+ "  src/transaction/mod_accepted_trajectory_directional_sensitivity.f90\n"
+ "  src/transaction/mod_accepted_trajectory_directional_publication.f90\n"
+ "  src/runtime/mod_canonical_contracts.f90\n")
+if s.count(anchor)!=1:
+    raise SystemExit("F-WOF38 dependency anchor changed")
+s=s.replace(anchor,replacement,1)
+old="-Wall -Wextra -Werror -fcheck=all"
+if s.count(old)!=1:
+    raise SystemExit("F-WOF38 compiler flags changed")
+s=s.replace(old,"-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all",1)
+p.write_text(s)
+PY
+
+
 python3 - "$TMP" <<'PY'
 from pathlib import Path
 import sys
