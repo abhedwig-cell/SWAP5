@@ -1,0 +1,30 @@
+{
+  "schema": "swap431.crop_continuation_prototype.v1",
+  "canonical_base": "6cef5580daa7387e241a88c6a7216c265557c307",
+  "workstream": "MC-CROP01",
+  "relationship": "successor experiment to draft #1137",
+  "scope": "Pure candidate of per-crop preparation, sowing and germination continuation with revision/duplicate guards; no F-KT binding, no emergence publication, no physical restart",
+  "local_checks": {
+    "compiler": "gfortran",
+    "flags": [
+      "-O0 -fcheck=all -Wall -Wextra",
+      "-O2 -fcheck=all -Wall -Wextra"
+    ],
+    "result": "PASS with type-compatible locally recreated dependency declarations, not full repository source",
+    "qualification": "NOT QUALIFIED: persisted exact-head repository compilation, lifecycle owner integration and F-CI preservation missing"
+  },
+  "limitations": [
+    "Integer event token is local candidate only, NOT accepted event identity",
+    "No forcing provenance or validation against actual F-KT accepted receipt",
+    "No lifecycle continuation persistence in physical crop owner",
+    "No harvest/reset, root initialization, physical acceptance or SWINCO=3 semantics",
+    "No claims on crop mass balance or restart equivalence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": "LOCAL_ISOLATED_STUB_DEPENDENCIES",
+  "qualified": false,
+  "preserved": false,
+  "admitted": false,
+  "next_action": "Run actual repository O0/O2 compile of production dependencies and test; replace scalar event token with validated F-KT accepted event identity within crop-owner transaction; then add lifecycle checkpoint, forcing provenance, cross-boundary restart and preservation before admission."
+}
