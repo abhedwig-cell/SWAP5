@@ -90,7 +90,7 @@ f34_module = f34_module.replace(
 """
 if s.count(donor_anchor)!=1:
     raise SystemExit("F-WOF38 generator anchor changed")
-s=s.replace(donor_anchor,donor_anchor+"\\n"+donor_code,1)
+s=s.replace(donor_anchor,donor_anchor+"\n"+donor_code,1)
 
 # The frozen F-WOF38 generated program does not import this newer
 # optional potential-shadow type, even though the implementation is compiled.
