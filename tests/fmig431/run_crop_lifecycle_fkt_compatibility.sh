@@ -45,7 +45,7 @@ s=s.replace('COMMON=(-std=f2008',hook+'\nCOMMON=(-std=f2008',1)
 s=s.replace(' -Werror -fcheck=all', ' -Werror -Wno-error=compare-reals -fcheck=all', 1)
 Path(sys.argv[2]).write_text(s)
 PY
-CROP_FKT_ROOT="$ROOT" bash "$BUILD/runner.sh" > "$BUILD/out"
+CROP_FKT_ROOT="$ROOT" bash "$BUILD/runner.sh" > "$BUILD/out" 2>&1 || { tail -n 160 "$BUILD/out" >&2; exit 1; }
 grep -Fq 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_RECEIPT_COHERENCE=PASS' "$BUILD/out"
