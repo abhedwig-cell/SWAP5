@@ -184,3 +184,27 @@ discrepancies remain open. No Action was requested.
 The source-bound Soil-N organic witnesses were corrected against the independent byte-exact B1.11 archive audit: organic FOM turnover includes an explicit `-1.d0` factor, and the historical defective `Nminer` expression multiplies the FOM mass change `(FOM_t0(fn)-FOM_t(fn))`, not a free `help` token. Numeric D-literal spelling is normalized only lexically for these witnesses. Commits: `0b7c843f5b07bc8964138acd31b1021944be7087`, `045dee6522ab36f4ec6d2f746881dd7369b0ddc1`.
 
 **Qualification ceiling:** These edits are source-oracle repairs informed by the previously recorded exact-source audit. Full `probe_b111_nut_sol_exact_source.py` replay and combined O0/O2 have not been executed for this postimage, because the local shell has `gfortran` but no DNS route to GitHub; the GitHub connector can read/write the repository independently. No new Actions run was requested. Any further mismatch must be verified against the archive's actual bytes, never accepted on the strength of textual resemblance alone. The amendment-calendar semantic decision remains open and no NUT/SOL capability is admitted.
+
+## 2026-10-08 local execution boundary and regex regression
+
+A local compiler and Git are available. Direct `github.com` and
+`api.github.com` DNS requests from the local shell failed. GitHub connector
+access is functional, but its read response is not an automatically mounted
+local filesystem. Accordingly, a **full** local source-archive replay or
+integrated O0/O2 test on the current branch was **not** executed here.
+
+A concrete latent bug was repaired in the source gate: the raw regular
+expressions for normalized Fortran D-literals and the assignment diagnostic
+were double-escaped, preventing actual normalization. The corrected gate was
+re-read at Git blob `c85e98a8c5b493301b61505b7cf34a66ce9ffb96`.
+A local Python smoke test of the corrected normalizer passed seven focused
+inputs, including nonzero decimals, near-linear exponents, negative literals,
+identifier boundaries, and the `0.d-3` predicate. This is **lexical-only**
+evidence, not an archive-source PASS.
+
+A regression script is committed at
+`tests/physics/test_b111_source_literal_normalization.py`, commit
+`51c0d3f7d39dcd8dae69c49db2b23ef68864b35a`. It extracts only the
+pure normalization function AST from the gate so it does not require the
+full B1.11 bundle to run. No new GitHub Actions run was requested. Preserve
+the source-policy decision for NUT-AMEND and do not upgrade any disposition.
