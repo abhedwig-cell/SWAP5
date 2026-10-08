@@ -169,4 +169,9 @@ replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  
 
   print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
 """)
+replace_one("    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')", """    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then
+      print *, 'SW431_FKT_PHYSICAL_FAILURE status=', result%status, ' completed=', result%completed
+      print *, 'SW431_FKT_PHYSICAL_FAILURE t0=', t0, ' t1=', t1, ' revision=', state%current_revision()
+    end if
+    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')""")
 p.write_text(s)
