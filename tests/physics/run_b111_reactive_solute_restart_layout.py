@@ -4,9 +4,10 @@ import os,pathlib,re,shlex,subprocess,tempfile
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 FC=shlex.split(os.environ.get("FC","gfortran"))
 TEST=ROOT/"tests/physics/test_b111_reactive_solute_restart_layout.f90"
+EXTRA=[ROOT/"tests/fsi/fsi04_real_headcalc_stubs.f90"]
 
 modules={}
-for p in (ROOT/"src").rglob("*.f90"):
+for p in list((ROOT/"src").rglob("*.f90"))+EXTRA:
     text=p.read_text()
     for name in re.findall(r"^\s*module\s+(\w+)\s*$",text,re.M|re.I):
         modules[name.lower()]=p
@@ -40,7 +41,7 @@ with tempfile.TemporaryDirectory(prefix="swap431-reactive-layout-") as folder:
     for opt in ("O0","O2"):
         build=pathlib.Path(folder)/opt
         build.mkdir()
-        flags=["-"+opt,"-std=f2008","-ffree-line-length-none","-fcheck=all","-fbacktrace",
+        flags=["-"+opt,"-std=f2008","-ffree-line-length-none","-fopenmp","-fcheck=all","-fbacktrace",
                "-ffpe-trap=invalid,zero,overflow","-J"+str(build),"-I"+str(build)]
         objects=[]
         for p in sources:
