@@ -314,7 +314,7 @@ for observation,expr in [
     idx=s.index(key)
     start=s.rfind(needle,0,idx)
     if start<0:raise SystemExit("missing observation assertion")
-    s=s[:start]+"    "+observation+"="+expr+"\\n"+s[start:]
+    s=s[:start]+"    "+observation+"="+expr+"\n"+s[start:]
 
 p.write_text(s,encoding='utf-8')
 PY
