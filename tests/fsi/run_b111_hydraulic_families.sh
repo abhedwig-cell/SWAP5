@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-b111-hyd"
 rm -rf "$BUILD"; mkdir -p "$BUILD"; cd "$BUILD"
+python3 "$ROOT/tests/fsi/test_b111_hydraulic_oracle_fail_closed.py"
 COMMON=(-std=f2018 -ffree-line-length-none)
 SOURCES=(
   "$ROOT/src/solver/mod_soil_water_solver_contract.f90"
