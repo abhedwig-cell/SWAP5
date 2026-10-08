@@ -27,8 +27,8 @@
   "preserved": false,
   "admitted": false,
   "next_action": "Run actual repository O0/O2 compile of production dependencies and test; replace scalar event token with validated F-KT accepted event identity within crop-owner transaction; then add lifecycle checkpoint, forcing provenance, cross-boundary restart and preservation before admission.",
-  "postimage": "abfcae368e40c980e7be112aa2ba58e169505c80",
+  "postimage": "d1fa02bc4a03a02d286838b84e4a18dd841f93d7",
   "test_runner": "tests/fmig431/run_crop_lifecycle_continuation.sh",
   "test_execution": "NOT RUN on persisted postimage; actual module compile and O0/O2 pending",
-  "test_added": "Reject preserves whole continuation value, stale revision and duplicate token; runner compiles actual repository modules when checkout is available"
+  "test_added": "Stale revision, duplicate token, rejected input snapshot, missing germination after sowing; exact module runner is present but has not run on persisted postimage"
 }
