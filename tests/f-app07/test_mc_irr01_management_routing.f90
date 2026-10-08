@@ -100,7 +100,8 @@ contains
     h%active_nodes=3
     allocate(h%pressure_head(3),h%water_content(3))
     h%pressure_head=-100.0_real64
-    h%water_content=[0.25_real64,0.30_real64,0.99_real64]
+    ! Ensure TCS2 is strictly below the trigger boundary (not exactly equal).
+    h%water_content=[0.24_real64,0.30_real64,0.99_real64]
 
     r=fmr_irrigation_management_request_t()
     r%t0=100.0_real64
