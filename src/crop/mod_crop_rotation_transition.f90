@@ -78,7 +78,7 @@ contains
     status=ROT_TRANS_INVALID
     if(.not.committed%ready().or..not.candidate%valid) return
     if(candidate%origin_revision/=committed%revision.or. &
-       candidate%origin_time/=committed%committed_time) then
+       transfer(candidate%origin_time,0_int64)/=transfer(committed%committed_time,0_int64)) then
       status=ROT_TRANS_STALE
       return
     end if
