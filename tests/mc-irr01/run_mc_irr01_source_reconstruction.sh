@@ -14,7 +14,8 @@ SRC="$(find "$BUILD" -type f -path '*/SWAP/irrigation.f90' -print -quit)"
 test -n "$SRC"
 test "$(sha256sum "$SRC" | awk '{print $1}')" = "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"
 for token in RAWTAB TAWTAB DWATAB IRGTHRESHOLD TCRITAB DCSLIM SWCIRRTHRES F_IRR_AVAIL; do
-  grep -Fq "$token" "$SRC" || { echo "MC_IRR01_SOURCE_TOKEN_MISSING=$token" >&2; exit 1; }
+  # Fortran identifiers are case-insensitive; the pinned source spells these in lower case.
+  grep -Fiq "$token" "$SRC" || { echo "MC_IRR01_SOURCE_TOKEN_MISSING=$token" >&2; exit 1; }
 done
 
 # Pin decision operators and postselection order from the exact B1.11 authority.
