@@ -2,8 +2,8 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t,transaction_policy_t,transaction_result_t, &
        execute_reference_interval,TX_STATUS_ACCEPTED,TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t,soil_n_transfer_t, &
-       initialize_soil_n_pool_state,SOIL_N_OK
+  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t, &
+       apply_soil_n_transfer,initialize_soil_n_pool_state,SOIL_N_OK
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t
   use mod_b111_soil_n_addition, only: b111_soil_n_split_parameters_t, b111_soil_n_material_t, &
        build_b111_residue_transfer
@@ -34,6 +34,8 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   integer::status,diagnostic_status,k
   type(b111_soil_n_material_t)::diagnostic_material
   type(soil_n_transfer_t)::diagnostic_transfer
+  type(soil_n_pool_state_t)::diagnostic_current,diagnostic_next
+  type(soil_n_receipt_t)::diagnostic_receipt
   real(real64)::residue_dm(4),residue_n(4),residue_age(4)
   logical::available,consumed
   real(real64)::t0,t1,prd,pnr,pld,pnl,psd,psn,pod,pon,whole0,whole1,whole2
@@ -128,6 +130,7 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   residue_dm=[prd,pld,psd,pod]
   residue_n=[pnr,pnl,psn,pon]
   residue_age=[1.57_real64,0.99_real64,1.57_real64,0.99_real64]
+  diagnostic_current=ssnap
   do k=1,4
     diagnostic_material=b111_soil_n_material_t()
     diagnostic_material%application_kg_m2=residue_dm(k)*1.0e-4_real64
@@ -137,6 +140,11 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
     call build_b111_residue_transfer(ps%depth_m,diagnostic_material,split,diagnostic_transfer,diagnostic_status)
     print '(A,I0,A,ES14.6,A,I0)', 'postharvest material=',k, &
          ' organic_N_fraction=',diagnostic_material%organic_n_fraction,' build_status=',diagnostic_status
+    if(diagnostic_status==0)then
+      call apply_soil_n_transfer(ps,diagnostic_current,diagnostic_transfer,diagnostic_next,diagnostic_receipt)
+      print '(A,I0,A,I0)', 'postharvest transfer=',k,' receipt_status=',diagnostic_receipt%status
+      if(diagnostic_receipt%status==SOIL_N_OK)diagnostic_current=diagnostic_next
+    end if
   end do
   deallocate(committed);allocate(committed,source=restarted)
   select type(committed)
