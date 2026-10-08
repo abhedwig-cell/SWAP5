@@ -95,9 +95,12 @@ contains
     if (size(conductivity) /= n .or. size(dconductivity_dhead) /= n) return
     status = FROST_EFFECT_INVALID_HYDRAULICS
     do i = 1, n
-      if (.not. ieee_is_finite(factor(i)) .or. factor(i) < 0.0_real64 .or. factor(i) > 1.0_real64) return
-      if (.not. ieee_is_finite(conductivity(i)) .or. conductivity(i) < 0.0_real64 .or. &
-          .not. ieee_is_finite(dconductivity_dhead(i))) return
+      ! Fortran .or. does not guarantee short-circuiting. Reject NaNs before comparisons.
+      if (.not. ieee_is_finite(factor(i))) return
+      if (.not. ieee_is_finite(conductivity(i))) return
+      if (.not. ieee_is_finite(dconductivity_dhead(i))) return
+      if (factor(i) < 0.0_real64 .or. factor(i) > 1.0_real64) return
+      if (conductivity(i) < 0.0_real64) return
     end do
     conductivity = conductivity * factor + FROST_LEGACY_RESIDUAL_K_CM_PER_DAY * (1.0_real64 - factor)
     dconductivity_dhead = dconductivity_dhead * factor
