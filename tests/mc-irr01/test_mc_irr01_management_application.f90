@@ -1,5 +1,6 @@
 program test_mc_irr01_management_application
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_irrigation_process, only: irrigation_flux_result_t, IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SSDI
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_result_t
@@ -211,6 +212,20 @@ program test_mc_irr01_management_application
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. flux%event_finished,28)
   call require(abs(flux%surface_gross_rate-0.5_real64)<tol .and. abs(flux%external_inflow_amount-0.5_real64)<tol,29)
+
+  ! NaN must reject as an interval error, not trap in ordered comparison.
+  s=fmr_irrigation_management_state_t()
+  call setup_base(p,h,r)
+  r%t0=ieee_value(0.0_real64,ieee_quiet_nan)
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_INVALID_INTERVAL,32)
+  call require(.not.c%event%active_event .and. .not.flux%applied,33)
+  r%t0=100.0_real64
+  r%t1=ieee_value(0.0_real64,ieee_quiet_nan)
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_INVALID_INTERVAL,34)
+  call require(.not.c%event%active_event .and. .not.flux%applied,35)
+  print '(A)','MC_IRR01_NONFINITE_INTERVAL=PASS'
 
   print '(A)','MC_IRR01_AVAIL_MANAGEMENT_POLICY=PASS'
   print '(A)','MC_IRR01_MANAGEMENT_APPLICATION=PASS'
