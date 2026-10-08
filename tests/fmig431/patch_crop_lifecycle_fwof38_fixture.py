@@ -18,6 +18,16 @@ replace_one('  integer(kind=8) :: crop_revision_before\n',
   type(fmr_wofost_crop_event_identity_persistence_t) :: artificial_receipt
   type(fmr_wofost_crop_event_identity_t) :: artificial_identity
   integer :: artificial_receipt_status
+  type(kernel_committed_state_t) :: lifecycle_committed
+  type(kernel_checkpoint_t) :: lifecycle_checkpoint
+  type(kernel_candidate_state_t) :: lifecycle_candidate
+  type(kernel_result_t) :: lifecycle_result
+  type(kernel_diagnostics_t) :: lifecycle_diag
+  type(fmr_wofost_crop_event_forcing_t) :: lifecycle_forcing
+  type(crop_daily_lifecycle_candidate_t) :: lifecycle_plan
+  type(crop_germination_candidate_t) :: lifecycle_germination
+  class(transaction_state_t), allocatable :: lifecycle_candidate_snapshot
+  logical :: lifecycle_checkpoint_ok
 ''')
 anchor="  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"
 replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')
@@ -66,6 +76,57 @@ replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transact
   lifecycle_view%receipt%final_revision=lifecycle_view%receipt%final_revision+1
   call require(.not.lifecycle_view%ready(), 'stale physical receipt rejects lifecycle persistence')
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_RECEIPT_COHERENCE=PASS'
+  ! One opt-in F-KT trial: candidate and receipt must remain on the
+  ! unpublished trial while accepted owner/persistence remains unchanged.
+  lifecycle_seed%germinated=.false.
+  lifecycle_seed%sown=.false.
+  lifecycle_seed%prepared=.false.
+  call initialize_fmr_wofost_crop_transaction_state(seed,lifecycle_state,crop_status, &
+       lifecycle_initial=lifecycle_seed)
+  call require(crop_status==FMR_WOF38_OK,'optional lifecycle initial owner')
+  lifecycle_plan%valid=.true.
+  lifecycle_plan%prepared=.true.
+  lifecycle_plan%sown=.true.
+  lifecycle_plan%germination_evaluated=.true.
+  lifecycle_germination%valid=.true.
+  lifecycle_germination%complete=.false.
+  lifecycle_germination%next_temperature_sum=2.0_real64
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_OK.and.lifecycle_forcing%ready(), &
+       'opt-in event forcing ready')
+  call setup_crop_kernel_committed(lifecycle_state,lifecycle_committed,3831_int64,100.0_real64)
+  call lifecycle_committed%capture_checkpoint(lifecycle_checkpoint,lifecycle_checkpoint_ok)
+  call require(lifecycle_checkpoint_ok,'lifecycle checkpoint')
+  call crop_kernel%advance_interval(crop_parameters,lifecycle_committed,lifecycle_forcing,crop_config, &
+       100.0_real64,101.0_real64,lifecycle_result,lifecycle_candidate,lifecycle_diag,lifecycle_checkpoint)
+  call require(lifecycle_result%status==CANONICAL_STATUS_COMPLETED.and.lifecycle_candidate%ready(), &
+       'opt-in physical FKT lifecycle trial')
+  call lifecycle_candidate%snapshot(lifecycle_candidate_snapshot,lifecycle_available)
+  call require(lifecycle_available,'opt-in lifecycle candidate snapshot')
+  select type (tx=>lifecycle_candidate_snapshot)
+  type is (fmr_wofost_crop_transaction_state_t)
+    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)
+    call require(lifecycle_available.and.lifecycle_replayed%revision==5_8.and. &
+         lifecycle_replayed%prepared.and.lifecycle_replayed%sown.and. &
+         .not.lifecycle_replayed%emerged.and.tx%receipt_ready(), &
+         'lifecycle and physical receipt in one candidate')
+  class default
+    call require(.false.,'opt-in lifecycle candidate type')
+  end select
+  call lifecycle_committed%snapshot(lifecycle_candidate_snapshot,lifecycle_available)
+  call require(lifecycle_available,'committed snapshot remains available')
+  select type (tx=>lifecycle_candidate_snapshot)
+  type is (fmr_wofost_crop_transaction_state_t)
+    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)
+    call require(lifecycle_available.and.lifecycle_replayed%revision==4_8.and. &
+         .not.tx%receipt_ready(),'reject leaves physical and lifecycle original')
+  class default
+    call require(.false.,'unchanged committed lifecycle type')
+  end select
+  print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ATOMIC_TRIAL=PASS'
+
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS'
 """
 replace_one(anchor,replacement)
