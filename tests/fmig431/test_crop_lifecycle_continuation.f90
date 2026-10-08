@@ -50,7 +50,8 @@ program test_crop_lifecycle_continuation
   call propose_crop_lifecycle_continuation(accepted,plan,germination,1_int64,events(3),candidate,status)
   if(status/=CROP_CONT_INVALID.or.candidate%revision/=accepted%revision) error stop 6
   if(candidate%revision/=accepted%revision) error stop 7
-  if(candidate%germination_temperature_sum/=accepted%germination_temperature_sum) error stop 8
+  if(transfer(candidate%germination_temperature_sum,0_int64)/= &
+       transfer(accepted%germination_temperature_sum,0_int64)) error stop 8
   plan%valid=.true.
   plan%germinated=.false.
   plan%emergence_eligible=.false.
