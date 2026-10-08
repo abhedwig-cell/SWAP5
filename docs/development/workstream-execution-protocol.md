@@ -91,7 +91,7 @@ Stop after a checkpoint only when at least one of the following applies:
 
 - a real scientific, architectural, governance or dependency blocker has been reached;
 - the next action is not authorized by the current work-unit scope;
-- a tool or execution environment has failed or been interrupted;
+- all applicable execution and repository-access alternatives have been tried or ruled out, and a concrete external tool/environment blocker prevents safe continuation;
 - the remaining runtime appears insufficient to start the next expensive operation safely;
 - the user explicitly requested a stop or review boundary.
 
@@ -255,3 +255,11 @@ Before such a gate starts, answer all three questions with a concrete repository
 3. What is the single next incomplete action?
 
 If those answers are not yet available, create the checkpoint first.
+
+## Autonomous recovery and local-first work
+
+Choose work order by dependencies, risk and likelihood of qualified closure. Continue after intermediate compiler failures, commits and focused tests where time and safe execution permit. Larger architecture changes are allowed when source-backed, documented and tested against existing invariants and preservation requirements.
+
+Prefer available local Git, Python, gfortran and focused O0/O2 tests for iteration. Use GitHub Actions sparingly for necessary persisted integrated qualification, reusing valid exact-postimage evidence. A local DNS failure does not imply the connected GitHub repository tools are unavailable. A missing checkout does not imply missing source. Independently use supported exact-ref GitHub file, tree and blob retrieval and consult the source locations in `reference/swap-4.3.1/README.md`. Do not ask for historical archives until the documented repository paths, recovered sources and manifests have been checked.
+
+If a required execution route fails, attempt alternative supported routes and continue independent work. A blocker report must identify the specific failed method, actual error, alternatives attempted and precise remaining dependency. Do not claim a local run occurred without evidence. Report meaningful closures and irreducible blockers rather than every intermediate step. Platform execution limits remain real; preserve a recovery point when they prevent continued work.
