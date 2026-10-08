@@ -37,5 +37,11 @@ program test_crop_lifecycle_continuation
   if(status/=CROP_CONT_INVALID.or.candidate%revision/=accepted%revision) error stop 6
   if(candidate%last_event_identity/=accepted%last_event_identity) error stop 7
   if(candidate%germination_temperature_sum/=accepted%germination_temperature_sum) error stop 8
+  plan%valid=.true.
+  plan%germinated=.false.
+  plan%emergence_eligible=.false.
+  plan%germination_evaluated=.false.
+  call propose_crop_lifecycle_continuation(accepted,plan,germination,1_int64,12_int64,candidate,status)
+  if(status/=CROP_CONT_INVALID.or.candidate%revision/=accepted%revision) error stop 9
   print '(A)', 'SW431_CROP_LIFECYCLE_CONTINUATION=PASS'
 end program
