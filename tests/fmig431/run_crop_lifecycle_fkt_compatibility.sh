@@ -25,7 +25,7 @@ assert s.count(anchor)==1
 s=s.replace(anchor,extra,1)
 # The generated F-WOF38 test fixture is modified only in this temporary
 # wrapper. The frozen historical test and original runner remain unchanged.
-hook="""python3 - "$BUILD/fwof38_atomic.f90" <<'PY_LIFE'
+hook=r"""python3 - "$BUILD/fwof38_atomic.f90" <<'PY_LIFE'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1])
@@ -81,7 +81,7 @@ p.write_text(s)
 PY_LIFE
 """
 assert s.count('COMMON=(-std=f2008')==1
-s=s.replace('COMMON=(-std=f2008',hook+'\\nCOMMON=(-std=f2008',1)
+s=s.replace('COMMON=(-std=f2008',hook+'\nCOMMON=(-std=f2008',1)
 Path(sys.argv[2]).write_text(s)
 PY
 CROP_FKT_ROOT="$ROOT" bash "$BUILD/runner.sh" > "$BUILD/out"
