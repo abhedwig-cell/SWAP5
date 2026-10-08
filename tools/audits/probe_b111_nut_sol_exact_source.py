@@ -216,7 +216,7 @@ organic_turnover_needles=[
  "eval2=-(p1+p4-p5)/2.d0",
 ]
 for needle in organic_turnover_needles:
-    if needle not in orgmat:
+    if normalize_fortran_d_literals(needle) not in normalize_fortran_d_literals(orgmat):
         raise SystemExit("missing exact organic-turnover equation: "+needle)
 
 organic_dissimilation_needles=[
@@ -229,7 +229,7 @@ organic_dissimilation_needles=[
 ]
 organic_dissimilation_needles.remove("cfrachelp_placeholder")
 for needle in organic_dissimilation_needles:
-    if needle not in orgmat:
+    if normalize_fortran_d_literals(needle) not in normalize_fortran_d_literals(orgmat):
         raise SystemExit("missing exact organic-dissimilation equation: "+needle)
 
 # Fail closed on the B1.11 organic-N inconsistency. The earlier balance
@@ -241,7 +241,7 @@ orgmat_needles=[
  "nminer=nminer+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_bio(fn)*nfracbio)*(fom_t0(fn)-fom_t(fn))",
 ]
 for needle in orgmat_needles:
-    if needle not in orgmat:
+    if normalize_fortran_d_literals(needle) not in normalize_fortran_d_literals(orgmat):
         raise SystemExit("organic-N source inconsistency witness missing: "+needle)
 
 decision=(ROOT/"integration/audits/MC_NUT01_ORGANIC_SOURCE_DECISION.md").read_text().lower()
