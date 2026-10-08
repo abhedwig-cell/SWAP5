@@ -42,17 +42,22 @@
     "receipt_workflow_conclusion": "success",
     "canonical_fci_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302751",
     "canonical_fci_workflow_conclusion": "success",
-    "tested_case": "unready kernel does not alter calendar crop/revision/time",
-    "missing_cases": [
+    "tested_case": "Historical initial unready-kernel and invalid-calendar guards; supplemented by exact-head F-WOF38/F-WOF39 committed event, retirement, duplicate receipt, derived checkpoint replay O0/O2 gates in latest_evidence.",
+    "initial_precommit_only_gaps": [
       "matching committed receipt acceptance and atomic publication",
       "missing or mismatched receipt no-mutation",
       "duplicate receipt strict no-op",
       "reject/retry",
       "physical committed state bit-exact invariance",
       "restart successor equivalence"
+    ],
+    "scope_limits_after_admission": [
+      "Checkpoint-value replay is not durable serialized physical restart",
+      "Physical crop state unchanged checked at owner/revision/receipt boundaries; no broader bit-exact physical serialization claim",
+      "Full sowing, germination, harvest and multi-crop rotation execution remain separate"
     ]
   },
-  "next_action": "Reconcile admitted MC-CROP01 receipt bridge into master coverage; preserve full physical crop rotation/harvest/sowing/durable restart as non-admitted successor scope.",
+  "next_action": "Preserve admitted derived receipt bridge; reconcile MC-CROP01 successor against active crop owner PRs and B1.11 source before bounded implementation; no duplicate calendar selector/transition.",
   "latest_evidence": {
     "head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
     "receipt_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314002",
