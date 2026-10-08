@@ -53,3 +53,22 @@ typed calendar tests prove that:
 
 This correction changes no amendment chemistry; the exact B1.11 material split
 and volatilisation equations remain separately source-gated.
+
+## 2026-10-08 source provenance review pending
+
+The earlier text above is **not sufficient evidence of B1.11 equivalence**.
+The NUT/SOL authority archive is a subset, not a full historical source tree.
+The qualification failure in run `37726458263` proves only that
+`SWAP/cropgrowth.f90` is not an archive member, not that GitHub lacks the file.
+The SWAP-model/SWAP GitHub tree has `src/crop/cropgrowth.f90` and
+`src/crop/management_soil.f90`, but its `main` ref is corroboration only.
+
+An additional source audit indicates that the archived management implementation
+may reject unsorted dates and use the strict expression
+`smedate(isme)-smedate(isme-1) < 0.d-3`, which would invalidate the
+claimed B1.11 sorting/grouping oracle above. **Until this discrepancy is
+replayed against SHA-pinned exact-source bytes, treat the calendar-equivalence
+claim and the purported MatNum defect as disputed, not admitted authority.**
+Do not loosen the source gate to accommodate the original claim. Typed
+exactly-once event state remains an implementation candidate; its equivalence
+and any deliberate reference correction require an explicit decision.
