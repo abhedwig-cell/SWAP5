@@ -299,22 +299,21 @@ for old,new in [
 ]:
     if old not in s: raise SystemExit("missing generated observation "+old)
     s=s.replace(old,new)
-for observation,expr in [
- ("root_growth_ready","root_growth_snapshot%ready()"),
- ("restored_growth_ready","restored_growth%ready()"),
- ("restored_receipt_ready","restored_potential_state%receipt_ready()"),
- ("restored_event_consumed","restored_potential_state%consumed_event(event_identity)")
-]:
-    # Materialize before the associated require; every snapshot call precedes it.
-    needle="    call require("
-    key={"root_growth_ready":"growth_available .and. root_growth_ready",
-         "restored_growth_ready":"restored_available .and. restored_growth_ready",
-         "restored_receipt_ready":"restored_receipt_ready .and. restored_event_consumed",
-         "restored_event_consumed":"restored_receipt_ready .and. restored_event_consumed"}[observation]
-    idx=s.index(key)
-    start=s.rfind(needle,0,idx)
-    if start<0:raise SystemExit("missing observation assertion")
-    s=s[:start]+"    "+observation+"="+expr+"\n"+s[start:]
+# Every assertion must use its own freshly sampled state, including the
+# second (committed) observation of the same root-growth snapshot variable.
+observations = [
+ ("growth_available .and. root_growth_ready", "root_growth_ready=root_growth_snapshot%ready()"),
+ ("restored_available .and. restored_growth_ready", "restored_growth_ready=restored_growth%ready()"),
+ ("restored_receipt_ready .and. restored_event_consumed",
+  "restored_receipt_ready=restored_potential_state%receipt_ready()\n"
+  "    restored_event_consumed=restored_potential_state%consumed_event(event_identity)")
+]
+for token,statement in observations:
+    matching=[line for line in s.splitlines() if "call require(" in line and token in line]
+    if not matching:
+        raise SystemExit("missing generated assertion "+token)
+    for line in matching:
+        s=s.replace(line,"    "+statement+"\n"+line,1)
 
 p.write_text(s,encoding='utf-8')
 PY
