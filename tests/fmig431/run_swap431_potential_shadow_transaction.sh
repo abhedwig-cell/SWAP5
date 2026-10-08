@@ -73,8 +73,8 @@ s=p.read_text(encoding='utf-8')
 
 # The frozen F-WOF38 generated program does not import this newer
 # optional potential-shadow type, even though the implementation is compiled.
-use_anchor="  use mod_fmr_wofost_crop_transaction\\n"
-use_insert=use_anchor+"  use mod_wofost_potential_shadow_state, only: wofost_potential_shadow_state_t\\n"
+use_anchor="  use mod_fmr_wofost_crop_transaction\n"
+use_insert=use_anchor+"  use mod_wofost_potential_shadow_state, only: wofost_potential_shadow_state_t\n"
 if s.count(use_anchor)!=1:
     raise SystemExit(f'potential-shadow type import anchor count={s.count(use_anchor)}')
 s=s.replace(use_anchor,use_insert,1)
