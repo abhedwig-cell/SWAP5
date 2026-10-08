@@ -90,6 +90,11 @@ s=s.replace(use_anchor,use_insert,1)
 physical_anchor="    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')"
 physical_probe=("    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\n"
  "      print *, 'SW431_PHYSICAL_DONOR_STATUS=',result%status,' COMPLETED=',result%completed\n"
+ "      print *, 'SW431_DONOR_COUNTS=',diagnostics%attempts,diagnostics%retries, &\n"
+ "        diagnostics%solver_rejections,diagnostics%temporal_rejections,diagnostics%mass_rejections\n"
+ "      print *, 'SW431_DONOR_AUTHORITY=',diagnostics%admission_rejections, &\n"
+ "        diagnostics%checkpoint_rejections,diagnostics%time_origin_rejections\n"
+ "      print *, 'SW431_DONOR_PROGRESS=',result%completed_t,diagnostics%accepted_substeps\n"
  "    end if\n"+physical_anchor)
 if s.count(physical_anchor)!=1:
     raise SystemExit("F-WOF38 physical donor assert anchor changed")
