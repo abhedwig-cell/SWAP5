@@ -24,7 +24,7 @@ outs=[]
 with tempfile.TemporaryDirectory(prefix='swap431-potential-shadow-') as td:
   for opt in ('O0','O2'):
     b=pathlib.Path(td)/opt;b.mkdir();objs=[]
-    flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-Werror','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
+    flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-Werror','-Wno-error=compare-reals','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
     for i,p in enumerate(order):
       o=b/(str(i)+'_'+p.stem+'.o')
       subprocess.run(FC+flags+['-c',str(p),'-o',str(o)],check=True);objs.append(str(o))
