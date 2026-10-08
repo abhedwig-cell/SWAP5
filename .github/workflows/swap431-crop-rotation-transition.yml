@@ -1,0 +1,16 @@
+name: SWAP431 crop rotation transition qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_rotation_transition.f90'
+      - 'tests/fmig431/test_crop_rotation_transition.f90'
+      - 'tests/fmig431/run_crop_rotation_transition.sh'
+      - '.github/workflows/swap431-crop-rotation-transition.yml'
+jobs:
+  transition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict O0 O2 trial accept checkpoint replay
+        run: bash tests/fmig431/run_crop_rotation_transition.sh
