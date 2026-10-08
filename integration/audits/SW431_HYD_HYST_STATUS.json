@@ -3,7 +3,7 @@
   "workstream": "SW431-HYD-HYST",
   "branch": "work/swap431-hyd-hyst-closeout",
   "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "code_postimage": "846c1eb93a178a4419c90ac67c5d573d1d6eaafd",
+  "code_postimage": "d975cf80d631532dcfcb99b574f463df5e3ad383",
   "implemented": true,
   "persisted": true,
   "tested": "LOCAL_COMPONENT_O0_O2_PASS_INCLUDING_SW009_PDI_VAPOR__INTEGRATED_CURRENT_CODE_RUN_QUEUED",
@@ -138,7 +138,7 @@
     "workflow": "SW431 HYD constitutive families",
     "run_id": 37646065725,
     "code_head": "851c6ad375b34f84495d6d2ea28e1854d13f0d45",
-    "state": "FAILED_ON_OLDER_SHA_PENDING_NEW_HEAD_QUALIFICATION",
+    "state": "AWAITING_EXACT_POSTIMAGE_FOCUSED_GATE",
     "includes": [
       "model2/3 source-oracle O0/O2",
       "model5-11 source-oracle O0/O2",
@@ -176,8 +176,8 @@
     "MODEL12/RIA depends on the exact corrected B1.11 MOD_RIA body. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT because MOD_RIA.f90 contains non-UTF-8 bytes; do not substitute a text-normalized or literature reconstruction.",
     "Generic SWSOPHY=1 TSPACK TABLE depends on the exact B0 sptabulated member. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT and the inspected public historical file is not byte-identical; do not use it as an admission oracle."
   ],
-  "next_action": "Obtain executable full source tree using connector-mediated materialization or network-capable checkout, run focused local O0/O2 gates, then single persisted integrated qualification on exact code postimage. Prior focused actions 37638247151 and 37646065725 failed on old code SHA.",
-  "recovery_point": "846c1eb93a178a4419c90ac67c5d573d1d6eaafd",
+  "next_action": "Run local focused HYD chain when full source tree materialized; verify fail-closed oracle regression and Fortran O0/O2. Use only one integrated Actions gate against the final code postimage; do not infer success from prior failed runs.",
+  "recovery_point": "d975cf80d631532dcfcb99b574f463df5e3ad383",
   "last_reconciled_upstream": "integration/f-ci-canonical@7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
   "upstream_reconciliation": {
     "from": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
@@ -187,5 +187,5 @@
     "changed_scope": "crop CO2 implementation/test/workflow plus PPA-WU05-A26 workflow-only update",
     "disposition": "HYD/HYST declared dependency paths untouched. Focused run 37646065725 remains the admission gate."
   },
-  "test_hardening": "Independent Python hydraulic/PDI vapor oracle rejects omitted/reordered models, empty rows and nonfinite NaN/Inf constitutive or vapor values. A prior comparison could silently pass NaNs because NaN > tolerance is false. Code committed at 846c1eb9; integrated verification not yet established."
+  "test_hardening": "Oracle rejects missing/reordered outputs, NaN/Inf, and blank lines. New executable regression tests in tests/fsi/test_b111_hydraulic_oracle_fail_closed.py are wired into run_b111_hydraulic_families.sh at d975cf80; success not yet measured on full code postimage."
 }
