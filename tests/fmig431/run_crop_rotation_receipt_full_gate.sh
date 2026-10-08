@@ -177,6 +177,29 @@ if src.count(old) != 1:
     raise SystemExit(f'F-WOF39 runtime diagnostic anchor count={src.count(old)}')
 src = src.replace(old, new, 1)
 
+dependency_order = '''# Current canonical module dependency closure
+mapfile -t SOURCES < <(python3 - "$ROOT" "${SOURCES[@]}" <<'PYMOD'
+import pathlib,re,sys
+root=pathlib.Path(sys.argv[1]); modules={}
+for p in (root/'src').rglob('*.f90'):
+    for n in re.findall(r'^\\s*module\\s+(?!procedure\\b|function\\b|subroutine\\b)(\\w+)',p.read_text(),re.M|re.I): modules[n.lower()]=p
+order=[];seen=set();active=set()
+def visit(p):
+    if p in seen:return
+    if p in active:raise RuntimeError('cycle '+str(p))
+    active.add(p)
+    for n in re.findall(r'^\\s*use\\s*(?:,\\s*non_intrinsic\\s*)?(?:::)?\\s*(\\w+)',p.read_text(),re.M|re.I):
+        q=modules.get(n.lower())
+        if q is not None and q!=p:visit(q)
+    active.remove(p);seen.add(p);order.append(p)
+for arg in sys.argv[2:]:visit(root/arg)
+for p in order:print(p.relative_to(root))
+PYMOD
+)
+'''
+if src.count('for OPT in 0 2; do') != 1:
+    raise SystemExit('F-WOF38 compilation loop anchor missing')
+src = src.replace('for OPT in 0 2; do', dependency_order + '\nfor OPT in 0 2; do', 1)
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
