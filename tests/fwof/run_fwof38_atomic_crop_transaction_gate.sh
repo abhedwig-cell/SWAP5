@@ -428,12 +428,14 @@ SOURCES=(
   src/kernel/mod_kernel_transactions.f90
   src/crop/mod_wofost_actual_biomass_state.f90
   src/crop/mod_wofost_crop_owner_state.f90
+  src/crop/mod_wofost_potential_shadow_state.f90
   src/crop/mod_wofost_one_day_structural_evolution.f90
   src/crop/mod_wofost_one_day_rate_state_view.f90
   src/crop/mod_wofost_rate_table.f90
   src/crop/mod_wofost_rate_parameters.f90
   src/crop/mod_wofost_prepare_assimilation.f90
   src/crop/mod_wofost_finalize_rates.f90
+  src/crop/mod_wofost_potential_shadow_daily.f90
   src/crop/mod_wofost_two_phase_crop_window.f90
   src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
   src/runtime/mod_fmr_wofost_crop_transaction.f90
