@@ -205,9 +205,9 @@ src = src.replace('-Werror -fcheck=all', '-Werror -Wno-error=compare-reals -fche
 diagnostic = "    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')"
 if src.count(diagnostic) != 1:
     raise SystemExit('physical donor status diagnostic anchor drift')
-src = src.replace(diagnostic, "    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\\n" +
-    "      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed\\n" +
-    "    end if\\n" + diagnostic, 1)
+src = src.replace(diagnostic, "    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\n" +
+    "      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed\n" +
+    "    end if\n" + diagnostic, 1)
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
