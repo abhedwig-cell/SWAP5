@@ -759,9 +759,9 @@ contains
          same_time(left%t0, right%t0) .and. same_time(left%t1, right%t1) .and. &
          same_real_bits(left%actual_root_uptake_integral, right%actual_root_uptake_integral) .and. &
          same_real_bits(left%potential_transpiration_integral, right%potential_transpiration_integral) .and. &
-         left%deepest_root_oxygen_factor_available .eqv. right%deepest_root_oxygen_factor_available .and. &
+         (left%deepest_root_oxygen_factor_available .eqv. right%deepest_root_oxygen_factor_available) .and. &
          same_real_bits(left%deepest_root_oxygen_factor_integral, right%deepest_root_oxygen_factor_integral) .and. &
-         left%rootzone_drought_uptake_factor_available .eqv. right%rootzone_drought_uptake_factor_available .and. &
+         (left%rootzone_drought_uptake_factor_available .eqv. right%rootzone_drought_uptake_factor_available) .and. &
          same_real_bits(left%rootzone_drought_uptake_factor_integral, right%rootzone_drought_uptake_factor_integral)
   end function same_wofost_crop_event_identity
 
