@@ -41,8 +41,9 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   real(real64)::t0,t1,prd,pnr,pld,pnl,psd,psn,pod,pon,whole0,whole1,whole2
 
   p%depth_m=0.5_real64
-  p%nfrac_fom=[0.08_real64,0.01_real64,0.08_real64,0.01_real64, &
-               0.08_real64,0.01_real64,0.08_real64,0.01_real64]
+  ! Inventory mass weights must match the residue splitter FOM fractions.
+  p%nfrac_fom=[0.10_real64,0.01_real64,0.10_real64,0.01_real64, &
+               0.10_real64,0.01_real64,0.10_real64,0.01_real64]
   p%nfrac_biomass=0.04_real64;p%nfrac_humus=0.05_real64
   call initialize_soil_n_pool_state(p,[1d0,1d0,1d0,1d0,1d0,1d0,1d0,1d0], &
        5.0_real64,10.0_real64,0.1_real64,0.1_real64,spool,status)
