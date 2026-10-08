@@ -72,3 +72,35 @@ claim and the purported MatNum defect as disputed, not admitted authority.**
 Do not loosen the source gate to accommodate the original claim. Typed
 exactly-once event state remains an implementation candidate; its equivalence
 and any deliberate reference correction require an explicit decision.
+
+## 2026-10-08 verified GitHub corroboration, explicit discrepancy
+
+Read the live `SWAP-model/SWAP` `main` source through the GitHub connector:
+
+- `src/crop/management_soil.f90`, Git blob
+  `e890863a953be3d6c34a602fd08b052d86196c95`, lines 153-159:
+  sort is present and `MatNum(i) = MatNum(i)` really is a no-op;
+- same file, line 183:
+  `if(smedate(isme)-smedate(isme-1).lt.0.d-3)then`;
+- line 360 uses `abs(TimeAmend(isme)+1-t1900)<1.d-3` for **application timing**, not grouping;
+- `src/crop/cropgrowth.f90`, Git blob
+  `41e407a952c9654c1babf0840da17aaecbb7e3c5`, lines 1923-1936
+  confirms separate soil demand and biological fixation expressions.
+
+The live SWAP5 candidate in
+`src/runtime/mod_fmr_b111_soil_n_amendment_calendar.f90`
+(Git blob `8dfba45096cb3fb360c3367d5ab9d9973d9ec526`)
+**groups events within `1e-3`**, unlike the corroborating source's
+strict `<0.d-3`. For chronologically sorted finite dates the latter
+cannot group even equal dates; the conditions are not semantically equivalent.
+The `1e-3` margin at application time must not be misread as the grouping
+criterion. The preceding document sections asserting B1.11 `1e-3`
+grouping are therefore **withdrawn as an equivalence claim**.
+
+This proves an inconsistency against an identified public SWAP blob,
+**not yet byte-exact B1.11**. No code-level grouping change or accepted
+reference correction has been authorized by this corroboration alone.
+Qualification of SW431-NUT-AMEND remains blocked on a separately SHA-pinned
+B1.11 management source and an explicit choice between literal source
+semantics and corrected grouped-event behaviour. The typed exactly-once
+management-event candidate remains present and unadmitted.
