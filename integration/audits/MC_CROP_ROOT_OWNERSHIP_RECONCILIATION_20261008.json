@@ -99,7 +99,7 @@
     "Separately qualify MICRO absolute LRV with the existing MICRO sink owner.",
     "Complete seasonal crop lifecycle owner composition and source-specific annual/soy/grass/fixed, preemergence and vernalization gates."
   ],
-  "next_action": "Central regie/owning workstreams reconcile the two SWRD3 drafts and root-growth composition branches before any scientific integration. Re-read current canonical and changed PR heads; test only postimages and affected dependency surfaces.",
+  "next_action": "Rebase/recompose the wider unified root-growth branch around the #1113 SWRD3 actual/potential/max-depth contract, after verifying the latest potential-shadow owner and current canonical change surface. Qualify O0/O2 and rollback/restart before admission.",
   "recovery_point": {
     "branch": "work/swap431-crop-root-ownership-reconcile-20261008",
     "base": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
@@ -109,5 +109,16 @@
     "No independently free large crop/root implementation slice established from current authority; overlapping active branches must be resolved before source modification.",
     "No O0/O2 or integrated preservation executed in this documentation-only work unit."
   ],
-  "actions_dispatched": 0
+  "actions_dispatched": 0,
+  "swrd3_semantic_adjudication": {
+    "checked_heads": {
+      "1111": "ecb663f8d14995bc69baafbd98f0ee9048d82fb8",
+      "1113": "4925f7aeea656f9216eab235d5a47027a22e940b"
+    },
+    "same_path": "src/crop/mod_crop_root_depth_biomass.f90",
+    "different_api": true,
+    "source_resolution": "Prefer the PR #1113 semantic model as integration basis, subject to source-verified WRTMAX and potential WRTPOT owner: it independently derives maximum RDM from RLWTB(WRTMAX), and actual and potential root depth from WRT and WRTpot. PR #1111 exposes only a single biomass/depth evaluator and does not itself establish potential depth or biomass-limited crop maximum RDM.",
+    "integration_rule": "Do not merge #1111 and #1113 independently. Cross-check the full implementation and callers of #1113 with the newer unified root-growth composition and potential-shadow branches before choosing final interface; preserve single primary biomass owner and static root-profile materialization.",
+    "outstanding": "No byte-exact reference or O0/O2 test of the composed postimage performed here; this is source-comment/code semantics adjudication, not admission."
+  }
 }
