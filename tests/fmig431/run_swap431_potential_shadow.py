@@ -32,7 +32,7 @@ with tempfile.TemporaryDirectory(prefix='swap431-potential-shadow-') as td:
         combined=[]
         for ti,test in enumerate(TESTS):
             objs=[]
-            flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-Werror',
+            flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-Werror','-Wno-error=compare-reals',
                    '-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(b),'-I'+str(b)]
             for i,p in enumerate(closure(test)):
                 o=b/(f'{ti}_{i}_'+p.stem+'.o')
