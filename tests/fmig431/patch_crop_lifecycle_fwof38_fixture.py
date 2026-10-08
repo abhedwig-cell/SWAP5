@@ -81,7 +81,7 @@ replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transact
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS'
 """
 replace_one(anchor,replacement)
-replace_one("  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n",""""  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')
+replace_one("  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n","""  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')
   ! One opt-in F-KT trial: candidate and receipt must remain on the
   ! unpublished trial while accepted owner/persistence remains unchanged.
   lifecycle_seed%germinated=.false.
