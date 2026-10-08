@@ -32,8 +32,10 @@ contains
     logical :: retired, current_time_available
     accepted=.false.
     status=CROP_ROT_RECEIPT_INVALID
-    if(.not.calendar%ready().or..not.calendar_state%ready()) return
-    if(.not.committed_crop%ready().or..not.committed_crop%time_is_bound()) return
+    if(.not.calendar%ready()) return
+    if(.not.calendar_state%ready()) return
+    if(.not.committed_crop%ready()) return
+    if(.not.committed_crop%time_is_bound()) return
     call committed_crop%current_time(target_time,current_time_available)
     if(.not.current_time_available) return
     if(target_time<=calendar_state%time()) then
