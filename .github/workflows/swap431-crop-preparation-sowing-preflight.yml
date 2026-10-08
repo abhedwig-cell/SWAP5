@@ -1,0 +1,16 @@
+name: SWAP431 crop preparation sowing preflight
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_preparation_sowing_preflight.f90'
+      - 'tests/fmig431/test_crop_preparation_sowing_preflight.f90'
+      - 'tests/fmig431/run_crop_preparation_sowing_preflight.sh'
+      - '.github/workflows/swap431-crop-preparation-sowing-preflight.yml'
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict O0 O2 source-conditioned preflight
+        run: bash tests/fmig431/run_crop_preparation_sowing_preflight.sh
