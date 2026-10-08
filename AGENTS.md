@@ -58,6 +58,8 @@ Older `docs/architecture/implementation-status.md`, `D3a_IMPLEMENTATION_STATUS_M
 
 For a material work unit, maintain a recoverable Git state before expensive or timeout-sensitive work. Follow `docs/development/workstream-execution-protocol.md`.
 
+For operational continuity, use local shell/Git/Python/gfortran and focused tests when available, with GitHub connector access as an independent fallback. A local DNS or checkout failure is not evidence that the repository or legacy sources are unavailable. Follow the recovery ladder and local-first qualification rules in `docs/development/workstream-execution-protocol.md`. Work autonomously across meaningful phases, including justified shared-architecture changes with explicit contracts and preservation gates.
+
 A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
 
 For connector-mediated repository work, use the retrieval order `status first -> exact ref -> relevant delta -> bounded files -> search only if needed`. Treat a search result as a locator rather than branch authority unless the search is explicitly scoped to the pinned target ref; re-read located paths at the exact target SHA before relying on them. Do not perform broad repository recovery when a valid status record and unchanged dependency surface make it unnecessary.
