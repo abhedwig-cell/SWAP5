@@ -101,7 +101,7 @@ f34_module=f34_module.replace(method_anchor,
 end_anchor="end module mod_fwof34_test_model"
 if f34_module.count(end_anchor)!=1:
     raise SystemExit("F-WOF34 module boundary changed")
-status_routine=\'''  subroutine fwof34_storage_accounting_status(self,state,complete,missing_mask)
+status_routine='''  subroutine fwof34_storage_accounting_status(self,state,complete,missing_mask)
     class(fwof34_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
     logical, intent(out) :: complete
@@ -118,7 +118,7 @@ status_routine=\'''  subroutine fwof34_storage_accounting_status(self,state,comp
     end select
   end subroutine fwof34_storage_accounting_status
 
-\'''
+'''
 f34_module=f34_module.replace(end_anchor,status_routine+end_anchor,1)
 """
 if s.count(donor_anchor)!=1:
