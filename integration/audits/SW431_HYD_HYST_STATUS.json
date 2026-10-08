@@ -3,7 +3,7 @@
   "workstream": "SW431-HYD-HYST",
   "branch": "work/swap431-hyd-hyst-closeout",
   "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "code_postimage": "55408cfc153da423c11d568b408038b96b960ab5",
+  "code_postimage": "846c1eb93a178a4419c90ac67c5d573d1d6eaafd",
   "implemented": true,
   "persisted": true,
   "tested": "LOCAL_COMPONENT_O0_O2_PASS_INCLUDING_SW009_PDI_VAPOR__INTEGRATED_CURRENT_CODE_RUN_QUEUED",
@@ -176,8 +176,8 @@
     "MODEL12/RIA depends on the exact corrected B1.11 MOD_RIA body. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT because MOD_RIA.f90 contains non-UTF-8 bytes; do not substitute a text-normalized or literature reconstruction.",
     "Generic SWSOPHY=1 TSPACK TABLE depends on the exact B0 sptabulated member. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT and the inspected public historical file is not byte-identical; do not use it as an admission oracle."
   ],
-  "next_action": "Locate the automatically triggered focused workflow run for commit 55408cfc or manually dispatch one only after confirming no duplicate run. Exact B0 archive bytes remain needed for RIA/TABLE, notwithstanding the now available binary-safe create_blob API.",
-  "recovery_point": "55408cfc153da423c11d568b408038b96b960ab5",
+  "next_action": "Obtain executable full source tree using connector-mediated materialization or network-capable checkout, run focused local O0/O2 gates, then single persisted integrated qualification on exact code postimage. Prior focused actions 37638247151 and 37646065725 failed on old code SHA.",
+  "recovery_point": "846c1eb93a178a4419c90ac67c5d573d1d6eaafd",
   "last_reconciled_upstream": "integration/f-ci-canonical@7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
   "upstream_reconciliation": {
     "from": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
@@ -187,5 +187,5 @@
     "changed_scope": "crop CO2 implementation/test/workflow plus PPA-WU05-A26 workflow-only update",
     "disposition": "HYD/HYST declared dependency paths untouched. Focused run 37646065725 remains the admission gate."
   },
-  "test_hardening": "check_b111_hydraulic_families.py now fails closed on missing or reordered MODEL1/2/3/5/6/7/8/9/10/11 rows, preventing vacuous oracle PASS; persisted in 55408cfc"
+  "test_hardening": "Independent Python hydraulic/PDI vapor oracle rejects omitted/reordered models, empty rows and nonfinite NaN/Inf constitutive or vapor values. A prior comparison could silently pass NaNs because NaN > tolerance is false. Code committed at 846c1eb9; integrated verification not yet established."
 }
