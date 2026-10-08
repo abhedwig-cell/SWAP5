@@ -37,6 +37,7 @@ module mod_fmr_reference_et_root_uptake_composition
 
   public :: fmr_evaluate_reference_et_root_uptake
   public :: fmr_evaluate_wofost_dvs_reference_et_root_uptake
+  public :: fmr_evaluate_wofost_biomass_reference_et_root_uptake
 
 contains
 
@@ -88,6 +89,55 @@ contains
     diagnostics%crop_geometry_status = geometry_status
     diagnostics%crop_geometry_available = geometry_available
   end subroutine fmr_evaluate_wofost_dvs_reference_et_root_uptake
+
+  subroutine fmr_evaluate_wofost_biomass_reference_et_root_uptake(committed, parameters, owner, depth_table, &
+                                                                    density_table, maximum_root_depth_cm, zbotcp_cm, &
+                                                                    et_result, et_diagnostics, fluxes, process_diagnostics, &
+                                                                    ptra_diagnostics, adapter_diagnostics, binding_diagnostics, diagnostics)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(root_water_uptake_parameters_t), intent(in) :: parameters
+    type(wofost_crop_owner_state_t), intent(in) :: owner
+    type(wofost_rate_table_t), intent(in) :: depth_table, density_table
+    real(real64), intent(in) :: maximum_root_depth_cm, zbotcp_cm(:)
+    type(reference_et_demand_result_t), intent(in) :: et_result
+    type(fmr_reference_et_binding_diagnostics_t), intent(in) :: et_diagnostics
+    type(root_water_uptake_flux_result_t), intent(out) :: fluxes
+    type(root_water_uptake_diagnostics_t), intent(out) :: process_diagnostics
+    type(fmr_ptra_root_input_binding_diagnostics_t), intent(out) :: ptra_diagnostics
+    type(fmr_crop_root_uptake_adapter_diagnostics_t), intent(out) :: adapter_diagnostics
+    type(fmr_root_uptake_binding_diagnostics_t), intent(out) :: binding_diagnostics
+    type(fmr_reference_et_root_uptake_diagnostics_t), intent(out) :: diagnostics
+
+    type(crop_root_uptake_input_t) :: base_input
+    logical :: geometry_available
+    integer :: geometry_status
+
+    fluxes = root_water_uptake_flux_result_t()
+    process_diagnostics = root_water_uptake_diagnostics_t()
+    ptra_diagnostics = fmr_ptra_root_input_binding_diagnostics_t()
+    adapter_diagnostics = fmr_crop_root_uptake_adapter_diagnostics_t()
+    binding_diagnostics = fmr_root_uptake_binding_diagnostics_t()
+    diagnostics = fmr_reference_et_root_uptake_diagnostics_t()
+
+    call owner%derive_biomass_root_uptake_input(depth_table, density_table, maximum_root_depth_cm, zbotcp_cm, &
+         base_input, geometry_available, geometry_status)
+    diagnostics%crop_geometry_status = geometry_status
+    diagnostics%crop_geometry_available = geometry_available
+
+    if (geometry_status /= WOFOST_CROP_OWNER_OK) then
+      diagnostics%status = FMR_REFERENCE_ET_ROOT_UPTAKE_GEOMETRY_REJECTED
+      return
+    end if
+    if (owner%crop_is_emerged() .and. .not. geometry_available) then
+      diagnostics%status = FMR_REFERENCE_ET_ROOT_UPTAKE_GEOMETRY_REJECTED
+      return
+    end if
+
+    call fmr_evaluate_reference_et_root_uptake(committed, parameters, base_input, et_result, et_diagnostics, &
+         fluxes, process_diagnostics, ptra_diagnostics, adapter_diagnostics, binding_diagnostics, diagnostics)
+    diagnostics%crop_geometry_status = geometry_status
+    diagnostics%crop_geometry_available = geometry_available
+  end subroutine fmr_evaluate_wofost_biomass_reference_et_root_uptake
 
   subroutine fmr_evaluate_reference_et_root_uptake(committed, parameters, base_input, et_result, et_diagnostics, &
                                                     fluxes, process_diagnostics, ptra_diagnostics, &
