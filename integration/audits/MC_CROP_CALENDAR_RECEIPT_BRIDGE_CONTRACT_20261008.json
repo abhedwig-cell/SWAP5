@@ -35,7 +35,7 @@
     "O0/O2 and canonical preservation"
   ],
   "qualification": "QUALIFIED_BOUNDED_O0_O2_FCI",
-  "admission": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "admission": "CANONICALLY_ADMITTED_BOUNDED_DERIVED_STATE",
   "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
   "evidence": {
     "receipt_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302612",
@@ -52,7 +52,7 @@
       "restart successor equivalence"
     ]
   },
-  "next_action": "Verify unchanged scientific dependency surface and mergeability; admit bounded receipt bridge on canonical, then update master/canonical coverage. Full physical crop restart remains open.",
+  "next_action": "Reconcile admitted MC-CROP01 receipt bridge into master coverage; preserve full physical crop rotation/harvest/sowing/durable restart as non-admitted successor scope.",
   "latest_evidence": {
     "head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
     "receipt_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314002",
@@ -62,5 +62,12 @@
     "scope": "Derived calendar checkpoint and retired accepted-window cache only; not physical sow/harvest/rotation or durable serialized restart.",
     "root_cause": "Frozen F-WOF34 toy donor lacked explicit mass accounting; generated toy fixture corrected without changing production F-KT."
   },
-  "blockers": []
+  "blockers": [],
+  "canonical_admission": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1132",
+    "merge_commit": "b37b4217fda096307059ebed41ad7bd1e2ff1676",
+    "qualified_science_head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
+    "qualification_basis": "Source/tests unchanged after qualified head; only audit metadata changed before merge.",
+    "scope": "Matching committed F-KT crop-event receipt atomically publishes derived calendar checkpoint and retires source accepted-window cache."
+  }
 }
