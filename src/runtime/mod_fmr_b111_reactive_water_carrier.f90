@@ -209,12 +209,13 @@ contains
        .not.allocated(s%bulk_density).or..not.allocated(s%kf))return
     if(any([size(s%temperature_c),size(s%gampar),size(s%rtheta),size(s%bexp),size(s%decpot), &
        size(s%fdepth),size(s%bulk_density),size(s%kf)]/=n))return
-    if(n>1)then
-      if(.not.allocated(s%face_left_weight).or..not.allocated(s%face_right_weight).or. &
-         .not.allocated(s%face_distance_cm).or..not.allocated(s%theta_sat_left).or..not.allocated(s%dispersivity_cm))return
-      if(any([size(s%face_left_weight),size(s%face_right_weight),size(s%face_distance_cm), &
-         size(s%theta_sat_left),size(s%dispersivity_cm)]/=n-1))return
-    end if
+    ! Even a one-node column carries explicitly allocated zero-length faces.
+    ! Never assign unallocated static face arrays into reactive forcing.
+    if(.not.allocated(s%face_left_weight).or..not.allocated(s%face_right_weight).or. &
+       .not.allocated(s%face_distance_cm).or..not.allocated(s%theta_sat_left).or. &
+       .not.allocated(s%dispersivity_cm))return
+    if(any([size(s%face_left_weight),size(s%face_right_weight),size(s%face_distance_cm), &
+       size(s%theta_sat_left),size(s%dispersivity_cm)]/=n-1))return
     if(.not.all(ieee_is_finite(s%dz_cm)).or.any(s%dz_cm<=0.0_real64))return
     if(.not.all(ieee_is_finite(s%temperature_c)).or..not.all(ieee_is_finite(s%gampar)).or. &
        .not.all(ieee_is_finite(s%rtheta)).or..not.all(ieee_is_finite(s%bexp)).or. &
