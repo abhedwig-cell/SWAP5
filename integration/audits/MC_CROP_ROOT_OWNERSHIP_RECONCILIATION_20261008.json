@@ -99,7 +99,7 @@
     "Separately qualify MICRO absolute LRV with the existing MICRO sink owner.",
     "Complete seasonal crop lifecycle owner composition and source-specific annual/soy/grass/fixed, preemergence and vernalization gates."
   ],
-  "next_action": "Use unified branch as single integration candidate, reconcile its 17-behind canonical delta before testing; run existing tests/fmig431 and F-WOF O0/O2 then atomic restart/rollback and preservation. Do not independently merge #1111, #1113, #1114, #1115.",
+  "next_action": "Construct one exact postimage rooted on current canonical that includes the unified root growth composition, verifying tree/commit lineage. Then run declared O0/O2 qualification and CO2 preservation before proposing admission. No physics replacement of #1113 is needed.",
   "recovery_point": {
     "branch": "work/swap431-crop-root-ownership-reconcile-20261008",
     "base": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
@@ -133,5 +133,31 @@
     "qualification": "Not tested: local git cannot resolve github.com DNS, and connector-readable source alone is not byte-verified runnable checkout. No qualification claims.",
     "local_failure": "git ls-remote https://github.com/abhedwig-cell/SWAP5.git: Could not resolve host: github.com",
     "next_gate": "Use unified branch as single integration candidate, reconcile its 17-behind canonical delta before testing; run existing tests/fmig431 and F-WOF O0/O2 then atomic restart/rollback and preservation. Do not independently merge #1111, #1113, #1114, #1115."
+  },
+  "canonical_delta_20261008": {
+    "canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "unified_head": "3e9e72ff8c8a0d4a58e83a56e4f29b1e421fb138",
+    "canonical_ahead_commits": 17,
+    "unified_ahead_commits": 53,
+    "canonical_changed_paths": [
+      ".github/workflows/ppa-wu05a26-live-trial-preparer.yml",
+      ".github/workflows/swap431-crop-co2.yml",
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md",
+      "integration/audits/MC_CROP01_CO2_STATUS.json",
+      "reference/swap-4.3.1/README.md",
+      "src/crop/mod_crop_co2_response_resolver.f90",
+      "src/crop/mod_crop_et_canopy_view_provider.f90",
+      "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+      "tests/fmig431/run_swap431_crop_co2_response.py",
+      "tests/fmig431/test_swap431_crop_co2_response.f90"
+    ],
+    "finding": "No file-path overlap between the 11 canonical delta paths and 33 unified worktree delta paths. This permits conflict-minimal recomposition but not automatic scientific evidence carry-forward. Crop CO2 shared runtime behavior is a preservation dependency even without a direct file conflict.",
+    "local_execution": {
+      "gfortran_available": true,
+      "git_remote_dns": "fatal: unable to access 'https://github.com/abhedwig-cell/SWAP5.git/': Could not resolve host: github.com",
+      "tests_run": false
+    },
+    "next_action": "Construct one exact postimage rooted on current canonical that includes the unified root growth composition, verifying tree/commit lineage. Then run declared O0/O2 qualification and CO2 preservation before proposing admission. No physics replacement of #1113 is needed."
   }
 }
