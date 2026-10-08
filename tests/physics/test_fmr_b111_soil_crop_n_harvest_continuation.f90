@@ -54,7 +54,9 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   tp%ratecon_bio=0.01_real64;tp%ratecon_hum=0.003_real64
   tp%asfa_bio=0.1_real64;tp%asfa_hum=0.2_real64
 
-  split%nfrac_fom_min=0.01_real64;split%nfrac_fom_max=0.08_real64
+  ! Leaf harvest residue has 5 kg N per 50 kg DM (fraction 0.10).
+  ! Admit that test input within the explicitly supplied FOM split range.
+  split%nfrac_fom_min=0.01_real64;split%nfrac_fom_max=0.10_real64
   split%nfrac_humus=0.05_real64;split%asfa_min=0.03_real64;split%asfa_max=0.28_real64
 
   sf%dt_day=1.0_real64;sf%wfrac_t=0.45_real64;sf%wfrac_t0=0.45_real64
