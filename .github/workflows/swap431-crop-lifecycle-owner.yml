@@ -10,6 +10,7 @@ on:
       - tests/fmig431/run_crop_lifecycle_continuation.sh
       - tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
       - tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py
+      - tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh
       - .github/workflows/swap431-crop-lifecycle-owner.yml
 jobs:
   lifecycle-owner-o0-o2:
@@ -24,3 +25,5 @@ jobs:
         run: bash tests/fmig431/run_crop_lifecycle_continuation.sh
       - name: Existing F-WOF38 transaction and opt-in persistence O0 O2
         run: bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
+      - name: Cross-preserve B19 and MICRO on actual crop postimage
+        run: bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh
