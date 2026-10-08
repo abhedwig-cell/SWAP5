@@ -34,7 +34,9 @@ program test_swap431_potential_shadow_pre_event_restart
   if(owner%validate()/=WOFOST_CROP_OWNER_OK) error stop 1
 
   call initialize_fmr_wofost_crop_transaction_state(owner,state,status,enable_potential_shadow=.true.)
-  if(status/=FMR_WOF38_OK.or..not.state%ready().or..not.state%potential_shadow_enabled()) error stop 2
+  if(status/=FMR_WOF38_OK) error stop 2
+  if(.not.state%ready()) error stop 2
+  if(.not.state%potential_shadow_enabled()) error stop 2
 
   ! Before the first accepted daily event, no GRRT/GRRTPOT receipt exists.
   call state%snapshot_root_growth(growth,available)
@@ -42,13 +44,16 @@ program test_swap431_potential_shadow_pre_event_restart
   if(state%receipt_ready()) error stop 4
 
   call export_fmr_wofost_crop_transaction_persistence(state,view,ok,status)
-  if(.not.ok.or.status/=FMR_WOFOST_CROP_PERSISTENCE_OK.or..not.view%ready()) error stop 5
+  if(.not.ok.or.status/=FMR_WOFOST_CROP_PERSISTENCE_OK) error stop 5
+  if(.not.view%ready()) error stop 5
   if(.not.view%potential_shadow_present.or..not.view%root_growth_carrier_present) error stop 6
   if(view%root_growth_carrier%valid.or.view%receipt_present) error stop 7
 
   call reconstruct_fmr_wofost_crop_transaction_from_persistence(view,restored,ok,status)
-  if(.not.ok.or.status/=FMR_WOFOST_CROP_PERSISTENCE_OK.or..not.restored%ready()) error stop 8
-  if(.not.restored%potential_shadow_enabled().or.restored%receipt_ready()) error stop 9
+  if(.not.ok.or.status/=FMR_WOFOST_CROP_PERSISTENCE_OK) error stop 8
+  if(.not.restored%ready()) error stop 8
+  if(.not.restored%potential_shadow_enabled()) error stop 9
+  if(restored%receipt_ready()) error stop 9
 
   call restored%snapshot_potential_shadow(shadow,available)
   if(.not.available.or..not.shadow%active) error stop 10

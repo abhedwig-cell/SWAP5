@@ -59,7 +59,8 @@ program test_swap431_potential_shadow
   call shadow%clone(copy)
   select type(t=>copy)
   type is(wofost_potential_shadow_state_t)
-    if(.not.t%active.or.abs(t%root_biomass()-27.0_real64)>tol) error stop 16
+    if(.not.t%active) error stop 16
+    if(abs(t%root_biomass()-27.0_real64)>tol) error stop 16
   class default
     error stop 17
   end select
