@@ -276,7 +276,9 @@ for path in "$SW" "$REF_ADAPTER" "$ROSS_ADAPTER"; do
 done
 echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 
-# B19/MICRO current-target preservation with an explicit MC-ROOT01 source exception.
+# B19/MICRO current-target preservation with explicit qualified MC-ROOT01 source exceptions.
+# Root uptake process exception is restricted to the Feddes oxygen candidate
+# and must be accompanied by exact-head empirical oxygen qualification.
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
@@ -300,6 +302,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_root_depth_supply_composition.f90 ) ;;
       src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 ) ;;
       src/runtime/mod_fmr_wofost_crop_transaction.f90 ) ;;
+      src/process/mod_root_water_uptake_process.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
