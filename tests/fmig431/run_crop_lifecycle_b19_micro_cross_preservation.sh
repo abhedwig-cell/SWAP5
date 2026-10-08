@@ -36,7 +36,18 @@ MICRO03_RESULT="${TMPDIR:-/tmp}/crop-micro03-$$.json" \
 B19_BUILD="$(mktemp -d "${TMPDIR:-/tmp}/ppa-wu05b19-low-air-runtime-XXXXXX")"
 trap 'rm -rf "$B19_BUILD"' EXIT
 python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build "$B19_BUILD"
-python3 tests/frost/run_ppa_wu05b19_qualification.py --workers 2 --cases 1 --build "$B19_BUILD"
+# The historical B19 runner uses an immutable preregistration tree that
+# predates the canonical integration baseline. Execute its unchanged compiled
+# source oracle directly on the current exact source tree instead.
+for opt in 0 2; do
+  GFORTRAN_UNBUFFERED_ALL=y "$B19_BUILD/o$opt/test" 1 8192 > "$B19_BUILD/o$opt/case-1.log" 2> "$B19_BUILD/o$opt/case-1.err"
+  grep -Fq 'B19_CASE_1_RUNTIME=PASS' "$B19_BUILD/o$opt/case-1.log"
+  grep -Fq 'B19_APPLICATION=PASS' "$B19_BUILD/o$opt/case-1.log"
+  test "$(grep -c B19_FINE_COMPARISON "$B19_BUILD/o$opt/case-1.log")" = 1
+  echo "SW431_CROP_B19_O${opt}_CASE1=PASS"
+done
+cmp "$B19_BUILD/o0/case-1.log" "$B19_BUILD/o2/case-1.log"
+echo 'SW431_CROP_B19_O0_O2_BYTE_IDENTITY=PASS'
 echo 'SW431_CROP_B19_CURRENT_SOURCE_RUNTIME_CASE1=PASS'
 git diff --check
 echo 'SW431_CROP_B19_MICRO_CROSS_PRESERVATION=PASS'
