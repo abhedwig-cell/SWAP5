@@ -90,6 +90,10 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   r%t1 = r%t0 + 0.625_real64
   s = irrigation_state_t()
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  if (d%status /= FMR_SCHEDULED_IRR_OK .or. abs(d%external_inflow_amount_cm-0.30_real64) >= tol) then
+    write(*,'(A,I0,A,ES24.16,A,L1,A,L1)') 'MC_IRR01_LIMIT_SALINITY_DIAGNOSTIC status=',d%status, &
+      ' amount_cm=',d%external_inflow_amount_cm,' active=',c%active_event,' bound=',d%source_bound
+  end if
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. abs(d%external_inflow_amount_cm-0.30_real64) < tol,21)
   call require(abs(q(3)-0.48_real64) < tol,22)
 
