@@ -99,7 +99,7 @@
     "Separately qualify MICRO absolute LRV with the existing MICRO sink owner.",
     "Complete seasonal crop lifecycle owner composition and source-specific annual/soy/grass/fixed, preemergence and vernalization gates."
   ],
-  "next_action": "Rebase/recompose the wider unified root-growth branch around the #1113 SWRD3 actual/potential/max-depth contract, after verifying the latest potential-shadow owner and current canonical change surface. Qualify O0/O2 and rollback/restart before admission.",
+  "next_action": "Use unified branch as single integration candidate, reconcile its 17-behind canonical delta before testing; run existing tests/fmig431 and F-WOF O0/O2 then atomic restart/rollback and preservation. Do not independently merge #1111, #1113, #1114, #1115.",
   "recovery_point": {
     "branch": "work/swap431-crop-root-ownership-reconcile-20261008",
     "base": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
@@ -120,5 +120,18 @@
     "source_resolution": "Prefer the PR #1113 semantic model as integration basis, subject to source-verified WRTMAX and potential WRTPOT owner: it independently derives maximum RDM from RLWTB(WRTMAX), and actual and potential root depth from WRT and WRTpot. PR #1111 exposes only a single biomass/depth evaluator and does not itself establish potential depth or biomass-limited crop maximum RDM.",
     "integration_rule": "Do not merge #1111 and #1113 independently. Cross-check the full implementation and callers of #1113 with the newer unified root-growth composition and potential-shadow branches before choosing final interface; preserve single primary biomass owner and static root-profile materialization.",
     "outstanding": "No byte-exact reference or O0/O2 test of the composed postimage performed here; this is source-comment/code semantics adjudication, not admission."
+  },
+  "unified_integration_reconciliation": {
+    "unified_head": "3e9e72ff8c8a0d4a58e83a56e4f29b1e421fb138",
+    "potential_shadow_head": "852ca3dd132df9627221683bd685f7ea211b97da",
+    "swrd3_head": "4925f7aeea656f9216eab235d5a47027a22e940b",
+    "verified_same_blob": {
+      "file": "src/crop/mod_crop_root_depth_biomass.f90",
+      "sha": "4d9f4ffed0d56b1d8f0615e9e66354b5eb617c65"
+    },
+    "finding": "SWRD3 #1113 exact resolver blob is already in the unified root-growth/oxygen composition branch. Reimplementing or cherry-picking it would be redundant. Unified branch also carries potential-shadow state/daily logic, SWRD2 rate owner, adaptive-density owner, source oxygen gate, accepted water/oxygen lineage and binding composition.",
+    "qualification": "Not tested: local git cannot resolve github.com DNS, and connector-readable source alone is not byte-verified runnable checkout. No qualification claims.",
+    "local_failure": "git ls-remote https://github.com/abhedwig-cell/SWAP5.git: Could not resolve host: github.com",
+    "next_gate": "Use unified branch as single integration candidate, reconcile its 17-behind canonical delta before testing; run existing tests/fmig431 and F-WOF O0/O2 then atomic restart/rollback and preservation. Do not independently merge #1111, #1113, #1114, #1115."
   }
 }
