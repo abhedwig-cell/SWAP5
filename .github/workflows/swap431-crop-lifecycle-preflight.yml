@@ -1,0 +1,16 @@
+name: SWAP431 crop lifecycle preflight O0 O2
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_rotation_lifecycle_preflight.f90'
+      - 'tests/fmig431/test_crop_lifecycle_preflight.f90'
+      - 'tests/fmig431/run_crop_lifecycle_preflight.sh'
+      - '.github/workflows/swap431-crop-lifecycle-preflight.yml'
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-bound read-only preflight O0 O2
+        run: bash tests/fmig431/run_crop_lifecycle_preflight.sh
