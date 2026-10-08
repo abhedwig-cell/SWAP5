@@ -20,13 +20,16 @@ contains
     integer, intent(out) :: status
 
     status = IRR_AVAIL_INVALID
-    if (.not. ieee_is_finite(rate) .or. .not. ieee_is_finite(duration)) return
+    if (.not. ieee_is_finite(rate)) return
+    if (.not. ieee_is_finite(duration)) return
     if (rate < 0.0_real64 .or. duration < 0.0_real64) return
     if (.not. enabled) then
       status = IRR_AVAIL_OK
       return
     end if
-    if (.not. ieee_is_finite(fraction) .or. fraction < 0.0_real64 .or. fraction > 1.0_real64) return
+    ! Fortran need not short-circuit .or.; do not compare NaN under FPE traps.
+    if (.not. ieee_is_finite(fraction)) return
+    if (fraction < 0.0_real64 .or. fraction > 1.0_real64) return
 
     ! Literal B1.11 postselection TASK=4 semantics:
     !   gird = gird * f_irr_avail
