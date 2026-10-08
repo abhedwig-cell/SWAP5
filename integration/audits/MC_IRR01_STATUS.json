@@ -3,8 +3,8 @@
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "b08e795f6c067cc2fed9895dfb4c6001bb0547c2",
-  "last_reconciled_head": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "last_reconciled_upstream": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
+  "last_reconciled_head": "3e8414d8e2dae8e761e8b0f0dd58c43a0a86bf0c",
+  "last_reconciled_upstream": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -32,7 +32,12 @@
     "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
     "tests/f-app07/test_scheduled_tcs7_ssdi_runtime_binding.f90",
     "tests/mc-irr01/run_mc_irr01_management_policy.sh",
-    "tests/mc-irr01/run_mc_irr01_source_reconstruction.sh"
+    "tests/mc-irr01/run_mc_irr01_source_reconstruction.sh",
+    "tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh",
+    "tests/f-app07/test_mc_irr01_sensor_ssdi_runtime_mass.f90",
+    "src/process/mod_irrigation_availability_policy.f90",
+    "src/runtime/mod_fmr_irrigation_management_restart.f90",
+    ".github/workflows/f-app07-hupsel-tcs1-dcs2-irrigation.yml"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -59,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Wait actively for the current combined F-APP07 qualification. It must pass exact B1.11 source reconstruction, existing TCS1 preservation, TCS7/TCS8 sensor SSDI, salinity/rate normalization, and TCS2/3/4/6+DCS1 management application before expanding census admissions. Availability remains separate.",
+  "next_action": "Run existing tests/mc-irr01/run_mc_irr01_source_reconstruction.sh, tests/mc-irr01/run_mc_irr01_management_policy.sh, tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh and tests/f-app07/run_fapp07_tcs1_dcs2_process.sh at O0/O2 against one byte-verified persisted postimage; record logs/checksums. Reconcile changes since canonical d2fdd2bb before opening an admission PR. Do not credit additional coverage without the integrated mass/retry/restart qualification.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -124,5 +129,16 @@
       ],
       "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90"
     }
+  },
+  "reconciliation_20261008": {
+    "canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "work_head": "3e8414d8e2dae8e761e8b0f0dd58c43a0a86bf0c",
+    "pr": 1097,
+    "pr_draft": true,
+    "branches_diverged": true,
+    "pr_workflow_runs_at_head": 0,
+    "qualification_gap": "F-APP07 workflow runs source, process and management policy but does not invoke standalone sensor/SSDI exact-mass runtime runner",
+    "local_execution": "unavailable in this session: local git DNS resolution failed; no exact-postimage local O0/O2 results",
+    "status": "reconciled not qualified for additional capabilities"
   }
 }
