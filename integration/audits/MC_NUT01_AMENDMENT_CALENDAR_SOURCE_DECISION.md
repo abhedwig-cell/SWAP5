@@ -1,6 +1,6 @@
 # MC-NUT01 amendment calendar source correction
 
-Status: **ACCEPTED_REFERENCE_CORRECTION**
+Status: **SOURCE_POLICY_RECONCILIATION_REQUIRED**
 
 Date: 2026-10-07
 
@@ -123,3 +123,31 @@ The same management defect/predicate is present on both public `main` and
 `v4.2.0`. This strengthens corroboration but is **not** proof that the
 separately supplied B1.11 bundle has these identical bytes. No rewrite of
 SWAP5 calendar or change in admission state follows from this comparison.
+
+## 2026-10-08 byte-exact B1.11 archive adjudication
+
+The repository-bound tarball `SWAP431_B111_AUTHORITY.tar.gz.b64`
+(Git blob `8d5d088f31d1101b7224395e5413c1e1fac643d9`) was
+independently extracted and checked. Its `SWAP/management_soil.f90` member
+has SHA-256 `0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b`.
+This is **not** the same source as public `SWAP-model/SWAP` `main` or
+`v4.2.0` examined above.
+
+The exact B1.11 management member rejects unsorted dates using
+`if (smedate(i-1) > smedate(i)) then` followed by `swap_error`. It
+**does not contain** the public source's `MatNum(i)=MatNum(i)` sort bug.
+It contains `if (smedate(isme)-smedate(isme-1) < 0.d-3) then`.
+That is strictly zero, and cannot hold after accepted ascending-date input.
+The `1.d-3` tolerance occurs instead in the later application-time trigger.
+
+Therefore the original claims in the opening sections of this document
+about a B1.11 sorting defect and `1e-3` event grouping are **superseded**
+for the exact B1.11 authority. They must not be used as qualification or
+as a rationale for an already accepted reference correction. SWAP5's typed
+atomic sorting and near-date grouping are a **proposed semantic divergence**
+requiring an explicit policy decision. Existing transaction/event/restart
+candidates are preserved without upgrading NUT-AMEND admission.
+
+Independent investigation is recorded in the local audit
+`MC_NUT_SOL_B111_SOURCE_AUDIT_20261008.md`; the SHA-pinned source manifest
+and fail-closed probe must be updated and replayed before qualification.
