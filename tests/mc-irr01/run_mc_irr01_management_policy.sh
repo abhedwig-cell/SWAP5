@@ -25,6 +25,10 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_management_restart.f90 -o "$OUT/test_restart.o"
   gfortran -O"$opt" "$OUT/solver.o" "$OUT/view.o" "$OUT/policy.o" "$OUT/availability.o" "$OUT/rootzone.o" "$OUT/irrigation.o" "$OUT/application.o" "$OUT/restart.o" "$OUT/test_restart.o" -o "$OUT/test_restart"
   "$OUT/test_restart" > "$OUT/restart_output.txt" 2>&1 || { cat "$OUT/restart_output.txt" >&2; exit 1; }
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_availability_nonfinite.f90 -o "$OUT/test_availability_nonfinite.o"
+  gfortran -O"$opt" "$OUT/availability.o" "$OUT/test_availability_nonfinite.o" -o "$OUT/test_availability_nonfinite"
+  "$OUT/test_availability_nonfinite" > "$OUT/nonfinite_output.txt" 2>&1 || { cat "$OUT/nonfinite_output.txt" >&2; exit 1; }
+  grep -Fq 'MC_IRR01_AVAILABILITY_NONFINITE=PASS' "$OUT/nonfinite_output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_POLICY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_ROOT_ZONE_SUMMARY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_APPLICATION=PASS' "$OUT/application_output.txt"
@@ -37,6 +41,7 @@ for opt in 0 2; do
   grep -Fq 'MC_IRR01_MANAGEMENT_RESTART_FAIL_CLOSED=PASS' "$OUT/restart_output.txt"
   echo "MC_IRR01_MANAGEMENT_POLICY_O${opt}=PASS"
 done
+cmp -s "$BUILD/o0/nonfinite_output.txt" "$BUILD/o2/nonfinite_output.txt"
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 cmp -s "$BUILD/o0/application_output.txt" "$BUILD/o2/application_output.txt"
 cmp -s "$BUILD/o0/restart_output.txt" "$BUILD/o2/restart_output.txt"
