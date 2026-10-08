@@ -88,9 +88,42 @@ f34_module = f34_module.replace(
     "    outcome%mass_accounting_complete = .true.\\n"
     "    outcome%missing_mass_contribution_mask = 0\\n", 1)
 """
+# Bounded test donor also needs an explicit storage-completeness contract.
+# Its single water state is fully inventoried by fwof34_storage.
+storage_code="""f34_module=f34_module.replace(
+    "  use, intrinsic :: iso_fortran_env, only: real64",
+    "  use, intrinsic :: iso_fortran_env, only: real64, int64",1)
+method_anchor="    procedure :: storage => fwof34_storage\\n"
+if f34_module.count(method_anchor)!=1:
+    raise SystemExit("F-WOF34 storage type binding changed")
+f34_module=f34_module.replace(method_anchor,
+    method_anchor+"    procedure :: storage_accounting_status => fwof34_storage_accounting_status\\n",1)
+end_anchor="end module mod_fwof34_test_model"
+if f34_module.count(end_anchor)!=1:
+    raise SystemExit("F-WOF34 module boundary changed")
+status_routine=\'''  subroutine fwof34_storage_accounting_status(self,state,complete,missing_mask)
+    class(fwof34_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    complete=.false.
+    missing_mask=1_int64
+    if (.not. same_type_as(self,self)) return
+    select type(state)
+    type is(fwof34_state_t)
+      complete=.true.
+      missing_mask=0_int64
+    class default
+      return
+    end select
+  end subroutine fwof34_storage_accounting_status
+
+\'''
+f34_module=f34_module.replace(end_anchor,status_routine+end_anchor,1)
+"""
 if s.count(donor_anchor)!=1:
     raise SystemExit("F-WOF38 generator anchor changed")
-s=s.replace(donor_anchor,donor_anchor+"\n"+donor_code,1)
+s=s.replace(donor_anchor,donor_anchor+"\n"+donor_code+"\n"+storage_code,1)
 
 # The frozen F-WOF38 generated program does not import this newer
 # optional potential-shadow type, even though the implementation is compiled.
