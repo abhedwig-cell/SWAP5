@@ -1,0 +1,66 @@
+{
+  "schema": "swap431.crop_calendar_receipt_binding.v1",
+  "canonical_baseline": "ff2116b72403d7da4df616c694b4973c23c11c25",
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "component": "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90",
+  "admitted_dependencies": [
+    "src/crop/mod_crop_rotation_calendar.f90",
+    "src/crop/mod_crop_rotation_transition.f90",
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
+  ],
+  "allowed_publication": "Only derived crop-calendar checkpoint and retired accepted-window cache after matching committed crop-event receipt",
+  "never_mutate": [
+    "F-KT committed crop physical state",
+    "F-KT kernel/checkpoint",
+    "hydraulic state/forcing",
+    "crop owner",
+    "transport/state-owner interfaces"
+  ],
+  "fail_closed": [
+    "invalid calendar",
+    "unready/unbound committed kernel",
+    "nonforward current time",
+    "invalid calendar transition",
+    "missing/mismatched committed event receipt",
+    "duplicate window retirement",
+    "stale accept"
+  ],
+  "test_requirements": [
+    "accepted matching event -> calendar/window publication once",
+    "mismatched/absent receipt -> both unchanged",
+    "duplicate receipt -> no calendar time/revision advance",
+    "reject/retry -> candidate/no changes",
+    "physical committed state unchanged bit-exact",
+    "restart on physical crop checkpoint plus calendar snapshot -> same successor",
+    "O0/O2 and canonical preservation"
+  ],
+  "qualification": "QUALIFIED_BOUNDED_O0_O2_FCI",
+  "admission": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
+  "evidence": {
+    "receipt_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302612",
+    "receipt_workflow_conclusion": "success",
+    "canonical_fci_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302751",
+    "canonical_fci_workflow_conclusion": "success",
+    "tested_case": "unready kernel does not alter calendar crop/revision/time",
+    "missing_cases": [
+      "matching committed receipt acceptance and atomic publication",
+      "missing or mismatched receipt no-mutation",
+      "duplicate receipt strict no-op",
+      "reject/retry",
+      "physical committed state bit-exact invariance",
+      "restart successor equivalence"
+    ]
+  },
+  "next_action": "Verify unchanged scientific dependency surface and mergeability; admit bounded receipt bridge on canonical, then update master/canonical coverage. Full physical crop restart remains open.",
+  "latest_evidence": {
+    "head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
+    "receipt_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314002",
+    "receipt": "PASS_O0_O2_POSITIVE_NEGATIVE_REPLAY",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314299",
+    "fci": "PASS",
+    "scope": "Derived calendar checkpoint and retired accepted-window cache only; not physical sow/harvest/rotation or durable serialized restart.",
+    "root_cause": "Frozen F-WOF34 toy donor lacked explicit mass accounting; generated toy fixture corrected without changing production F-KT."
+  },
+  "blockers": []
+}
