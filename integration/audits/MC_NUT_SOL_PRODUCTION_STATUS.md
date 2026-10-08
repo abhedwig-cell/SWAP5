@@ -178,3 +178,9 @@ A three-case local lexical smoke test passed. This is not a replay of the
 complete exact B1.11 archive probe, and it is not O0/O2 integrated
 qualification. Full archive replay and any remaining source-equation
 discrepancies remain open. No Action was requested.
+
+## 2026-10-08 source-oracle reconciliation checkpoint
+
+The source-bound Soil-N organic witnesses were corrected against the independent byte-exact B1.11 archive audit: organic FOM turnover includes an explicit `-1.d0` factor, and the historical defective `Nminer` expression multiplies the FOM mass change `(FOM_t0(fn)-FOM_t(fn))`, not a free `help` token. Numeric D-literal spelling is normalized only lexically for these witnesses. Commits: `0b7c843f5b07bc8964138acd31b1021944be7087`, `045dee6522ab36f4ec6d2f746881dd7369b0ddc1`.
+
+**Qualification ceiling:** These edits are source-oracle repairs informed by the previously recorded exact-source audit. Full `probe_b111_nut_sol_exact_source.py` replay and combined O0/O2 have not been executed for this postimage, because the local shell has `gfortran` but no DNS route to GitHub; the GitHub connector can read/write the repository independently. No new Actions run was requested. Any further mismatch must be verified against the archive's actual bytes, never accepted on the strength of textual resemblance alone. The amendment-calendar semantic decision remains open and no NUT/SOL capability is admitted.
