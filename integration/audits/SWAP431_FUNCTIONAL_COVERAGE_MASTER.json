@@ -16,19 +16,19 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 83,
-      "ACTIVE_MIGRATION": 120,
+      "ADMITTED": 85,
+      "ACTIVE_MIGRATION": 118,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 120,
+    "open_capabilities": 118,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 120,
+    "confirmed_missing_production_entries": 118,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 124
+    "total_unresolved_capabilities": 122
   },
   "capabilities": [
     {
@@ -8387,22 +8387,26 @@
       "meaning": "Time-varying CO2 crop response and forcing",
       "swap5_implementation_authority": [
         "src/crop/mod_wofost_prepare_assimilation.f90",
-        "src/crop/mod_wofost81_prepare_assimilation.f90"
+        "src/crop/mod_wofost81_prepare_assimilation.f90",
+        "src/crop/mod_crop_co2_response_resolver.f90",
+        "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+        "src/crop/mod_crop_et_canopy_view_provider.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
+        "integration/audits/MC_CROP01_CO2_STATUS.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner."
+        "established": true,
+        "route": "src/crop/mod_crop_co2_response_resolver.f90 + src/runtime/mod_fmr_crop_co2_response_binding.f90 + src/crop/mod_crop_et_canopy_view_provider.f90",
+        "claim": "Bounded canonical admission 75114770c4d4d300f9d8037207d5498fa0e1f44e; original missing-production statement superseded for admitted selector."
       },
       "restrictions": [
-        "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner."
+        "Only bounded canonical admission on 75114770c4d4d300f9d8037207d5498fa0e1f44e; do not infer unadmitted selectors or broader crop/ET routes."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8414,17 +8418,22 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "CANONICALLY_ADMITTED_BOUNDED",
+      "workunit_stage": "CANONICAL_ADMISSION",
+      "implementation_absence_proven": false,
       "source_input_names": [
         "co2year"
       ],
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "resolution_decision": "MIGRATE",
+      "canonical_admission": {
+        "sha": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
+        "qualification_run": 37637780221,
+        "reconciliation_checked_against": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8"
+      }
     },
     {
       "capability_id": "SW431-CROP-ROTATION",
@@ -11891,20 +11900,25 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Prescribed DVS-table root depth with soil-depth cap",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_root_depth_dvs.f90",
+        "src/crop/mod_crop_root_profile_static.f90",
+        "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+      ],
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md"
+        "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
+        "integration/audits/MC_CROP01_ROOTGROW_DVS_STATUS.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping."
+        "established": true,
+        "route": "src/crop/mod_crop_root_depth_dvs.f90 + src/crop/mod_crop_root_profile_static.f90 + src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+        "claim": "Bounded canonical admission 4dc02866825c6bcd24de81944c2b39e5fb0ca878; original missing-production statement superseded for admitted selector."
       },
       "restrictions": [
-        "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping."
+        "Only bounded canonical admission on 4dc02866825c6bcd24de81944c2b39e5fb0ca878; do not infer unadmitted selectors or broader crop/ET routes."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -11916,14 +11930,19 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "CANONICALLY_ADMITTED_BOUNDED",
+      "workunit_stage": "CANONICAL_ADMISSION",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "source_input_names": [],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "canonical_admission": {
+        "sha": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+        "qualification_run": 37625663326,
+        "reconciliation_checked_against": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8"
+      }
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
@@ -14580,6 +14599,20 @@
       "evidence": "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
       "closes": "SW431-FROST-DIVDRA",
       "canonical_merge": "811ad186fa8f06386c73baa6abd8e19307cc8dc5"
+    },
+    {
+      "workunit": "MC-CROP01",
+      "capability_id": "SW431-CROP-CO2",
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "evidence": "integration/audits/MC_CROP01_CO2_STATUS.json",
+      "canonical_admission_sha": "75114770c4d4d300f9d8037207d5498fa0e1f44e"
+    },
+    {
+      "workunit": "MC-CROP01",
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "status": "CANONICAL_ADMITTED_CLOSED",
+      "evidence": "integration/audits/MC_CROP01_ROOTGROW_DVS_STATUS.json",
+      "canonical_admission_sha": "4dc02866825c6bcd24de81944c2b39e5fb0ca878"
     }
   ],
   "initial_canonical_head": "ca856e88e582d468a6f40971ce1f2a75e5089c40",
@@ -14669,5 +14702,14 @@
         "regression_risk": 3
       }
     }
-  ]
+  ],
+  "latest_partial_reconciliation": {
+    "checked_canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "date": "2026-10-08",
+    "scope": [
+      "SW431-CROP-CO2",
+      "SW431-CROP-ROOTGROW-DVS"
+    ],
+    "warning": "Remaining ledger rows and denominator not yet exhaustively reconciled. canonical_head top-level remains the original full-census snapshot authority."
+  }
 }
