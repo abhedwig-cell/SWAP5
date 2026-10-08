@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Dependency-closed O0 O2 precommit fail closed
         run: python3 tests/fmig431/run_crop_rotation_receipt_precommit.py
       - name: Committed event positive and replay O0 O2
