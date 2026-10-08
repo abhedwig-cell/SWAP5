@@ -85,6 +85,16 @@ if s.count(use_anchor)!=1:
     raise SystemExit(f'potential-shadow type import anchor count={s.count(use_anchor)}')
 s=s.replace(use_anchor,use_insert,1)
 
+# Attribute failure of the historical physical donor before the shadow
+# candidate: do not alter numerical tolerances or completion assertions.
+physical_anchor="    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')"
+physical_probe=("    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\\n"
+ "      print *, 'SW431_PHYSICAL_DONOR_STATUS=',result%status,' COMPLETED=',result%completed\\n"
+ "    end if\\n"+physical_anchor)
+if s.count(physical_anchor)!=1:
+    raise SystemExit("F-WOF38 physical donor assert anchor changed")
+s=s.replace(physical_anchor,physical_probe,1)
+
 # Add observation variables to the generated Fortran declaration payload.
 anchor="  integer(kind=8) :: crop_revision_before\n"
 insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot, restored_shadow
