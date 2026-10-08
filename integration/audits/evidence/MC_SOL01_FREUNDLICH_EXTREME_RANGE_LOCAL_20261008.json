@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-SOL01",
+  "scope": "Focused standalone Freundlich inverse stress test, not reactive substep qualification",
+  "source_path": "src/process/mod_b111_solute_sorption.f90",
+  "source_blob_sha": "b87fa37ed4d14a7e60ddf135ada058002587422b",
+  "test_path": "tests/physics/test_b111_sorption_extreme_range.f90",
+  "compiler": "GNU Fortran 14.2.0",
+  "flags": [
+    "-std=f2008",
+    "-ffree-line-length-none",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fcheck=all",
+    "-ffpe-trap=invalid,zero,overflow"
+  ],
+  "local_result": {
+    "O0": "SORPTION_EXTREMES_PASS 40000",
+    "O2": "SORPTION_EXTREMES_PASS 40000"
+  },
+  "exponents": [
+    0.5,
+    1.0005,
+    2,
+    4
+  ],
+  "total_density_range": [
+    1e-10,
+    10000
+  ],
+  "source_identity": "Local original production source git hash-object matched GitHub blob SHA",
+  "limits": [
+    "The locally compiled test is equivalent source logic to the committed test but was not independently blob-verified against its GitHub postimage.",
+    "Full reactive substep, age, restart, accepted water carrier and source bundle not executed.",
+    "No persisted integrated qualification or canonical admission."
+  ],
+  "actions_runs_created": 0
+}
