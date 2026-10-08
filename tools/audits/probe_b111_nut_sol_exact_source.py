@@ -206,7 +206,7 @@ for needle in watern_needles:
         raise SystemExit("missing exact Soil-N transport equation: "+needle)
 
 organic_turnover_needles=[
- "fom_t(fn)=fom_t0(fn)*exp(-rateconfom(fn)*dt)",
+ "fom_t(fn)=fom_t0(fn)*exp(-1.d0*rateconfom(fn)*dt)",
  "p1=(1.0d0-asfabio)*rateconbio",
  "p2=asfabio*rateconhum",
  "p3=asfahum*rateconbio",
@@ -238,7 +238,7 @@ for needle in organic_dissimilation_needles:
 # decision, not permission to guess which expression should own production.
 orgmat_needles=[
  "nfom_min=nfom_min+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_hum(fn)*nfrachum)*help",
- "nminer=nminer+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_bio(fn)*nfracbio)*help",
+ "nminer=nminer+(nfracfom(fn)-asfafom_bio(fn)*nfracbio-asfafom_bio(fn)*nfracbio)*(fom_t0(fn)-fom_t(fn))",
 ]
 for needle in orgmat_needles:
     if needle not in orgmat:
