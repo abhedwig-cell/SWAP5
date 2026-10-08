@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "c7ab174fe9e91e79eaa7be73cdd35739b209ee3f",
-  "last_reconciled_head": "96d128246c71e7caa3b443dd01497ab43d8dc76f",
+  "checkpoint_commit": "01c25bf7cbc399f2f9454cdfc7179350d8357329",
+  "last_reconciled_head": "694f47635b7942f95c90cf0dc49b1cc0f9ecd338",
   "last_reconciled_upstream": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
   "implemented": true,
   "persisted": true,
@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Run complete persisted owner F-APP07 O0/O2 chain, inspect explicit nonfinite request/interval markers, verify production water mass, restart/retry, then reconcile canonical and qualify before admission. No new exact-head workflow result recorded as of this checkpoint.",
+  "next_action": "Canonical reconciliation: isolate MC-IRR01 files from divergent master coverage branch, resolve shared top-boundary/interception conflicts, perform canonical-preservation gates, then seek admission. Owner exact-head run 37768355395 is successful; do not repeat it on metadata-only successors.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -90,34 +90,37 @@
     "tcs7_ssdi_runtime_binding": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "owner": "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
-      "source_science": "F-VQ20 exact production blob c0755c1e0d0b7ca1a35e73cf26158c29e9940aec"
+      "source_science": "F-VQ20 exact production blob c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+      "owner_workflow_pass": true
     },
     "tcs8_sensor_candidate": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "theory_binding": "SWAP theory equation 11.6 and B1.11 source authority",
-      "owner": "src/process/mod_irrigation_process.f90"
+      "owner": "src/process/mod_irrigation_process.f90",
+      "owner_workflow_pass": true
     },
     "sensor_salinity_rate": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "scope": [
         "SW431-IRR-SALTEXCESS",
         "SW431-IRR-RATE-DAILY",
         "SW431-IRR-RATE-CAP"
-      ]
+      ],
+      "owner_workflow_pass": true
     },
     "root_zone_management_application": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "scope": [
         "SW431-IRR-TCS2",
@@ -127,24 +130,26 @@
         "SW431-IRR-DCS1",
         "SW431-IRR-LIMIT"
       ],
-      "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90"
+      "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+      "owner_workflow_pass": true
     },
     "availability_finite_guard": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "paths": [
         "src/process/mod_irrigation_availability_policy.f90",
         "tests/mc-irr01/test_mc_irr01_availability_nonfinite.f90",
         "tests/mc-irr01/run_mc_irr01_management_policy.sh"
       ],
-      "notes": "NaN finite check precedes ordered comparisons under -ffpe-trap=invalid; do not promote until same-postimage O0/O2 pass."
+      "notes": "NaN finite check precedes ordered comparisons under -ffpe-trap=invalid; do not promote until same-postimage O0/O2 pass.",
+      "owner_workflow_pass": true
     },
     "management_nonfinite_guard": {
       "implemented": true,
       "persisted": true,
-      "tested": false,
+      "tested": true,
       "qualified": false,
       "paths": [
         "src/process/mod_scheduled_irrigation_management_policy.f90",
@@ -152,7 +157,8 @@
         "tests/mc-irr01/test_mc_irr01_management_policy.f90",
         "tests/mc-irr01/test_mc_irr01_management_application.f90"
       ],
-      "notes": "Finite requests and interval endpoints validated before ordered comparisons; six-field rejected-candidate weekly state preservation covered by new regression cases. Full postimage O0/O2 pending."
+      "notes": "Finite requests and interval endpoints validated before ordered comparisons; six-field rejected-candidate weekly state preservation covered by new regression cases. Full postimage O0/O2 pending.",
+      "owner_workflow_pass": true
     }
   },
   "reconciliation_20261008": {
@@ -162,8 +168,15 @@
     "pr_draft": true,
     "branches_diverged": true,
     "pr_workflow_runs_at_head": 0,
-    "qualification_gap": "No full PR-postimage qualification run; recently added nonfinite request and interval tests must pass under -ffpe-trap=invalid at O0/O2.",
+    "qualification_gap": "Owner O0/O2 workflow PASSED on 694f476; canonical composition/admission still unqualified.",
     "local_execution": "Local Git clone inaccessible: DNS could not resolve github.com. No full exact-postimage O0/O2 qualification recorded.",
-    "status": "reconciled not qualified for additional capabilities"
+    "status": "owner qualified; canonical not admitted"
+  },
+  "qualified_owner_postimage": {
+    "sha": "694f47635b7942f95c90cf0dc49b1cc0f9ecd338",
+    "run_id": 37768355395,
+    "job_id": 113281436898,
+    "conclusion": "success",
+    "evidence": "integration/audits/MC_IRR01_COMBINED_OWNER_QUALIFICATION_20261008.json"
   }
 }
