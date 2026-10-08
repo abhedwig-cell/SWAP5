@@ -1,0 +1,16 @@
+name: SWAP431 crop rotation committed receipt qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_crop_rotation_receipt_binding.f90'
+      - 'tests/fmig431/test_crop_rotation_receipt_precommit.f90'
+      - 'tests/fmig431/run_crop_rotation_receipt_precommit.py'
+      - '.github/workflows/swap431-crop-rotation-receipt.yml'
+jobs:
+  receipt:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependency-closed O0 O2 precommit fail closed
+        run: python3 tests/fmig431/run_crop_rotation_receipt_precommit.py
