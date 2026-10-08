@@ -1,0 +1,40 @@
+{
+  "schema": "swap431.root_fci_joint_qualification.v1",
+  "date": "2026-10-08",
+  "work_unit": "MC-CROP01/MC-ROOT01 + F-CI scoped preservation",
+  "qualified_head": "8b252c392d429d2ead79765ce0cf0beffc53997e",
+  "canonical_baseline": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+  "workflow_evidence": [
+    {
+      "run_id": 37749300540,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success",
+      "jobs_passed": 15,
+      "jobs_failed": 0
+    },
+    {
+      "run_id": 37749300537,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "run_id": 37749300460,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    }
+  ],
+  "claim": "B19/MICRO moving preservation repair and inherited SWRD1/CO2 suites qualified on this exact postimage.",
+  "not_qualified": [
+    "SWRD2 and SWRD3 integrated O0/O2",
+    "potential shadow transaction and continuation",
+    "adaptive-density production binding",
+    "reject/retry/restart across root-growth event",
+    "full scientific admission"
+  ],
+  "recovery_point": {
+    "branch": "work/swap431-root-fci-joint-gate-20261008",
+    "head": "8b252c392d429d2ead79765ce0cf0beffc53997e"
+  },
+  "actions_manually_dispatched": 0,
+  "admission": false
+}
