@@ -128,8 +128,11 @@ for needle in rate_needles:
     raise SystemExit("missing exact Soil-N rate equation: "+needle+
                      "; exact bundled source assignments: "+repr(matches[:12]))
 
+## Exact B1.11 writes its DVS/RELTR gate as subtraction comparisons.
+# This witness checks that source form; do not claim bitwise numerical
+# equivalence to direct floating-point relational comparisons.
 nfix_needles=[
- "if(dvs.lt.dvsnlt.and.reltr.gt.0.01d0)then",
+ "if(dvs-dvsnlt<0.d0.and.reltr-0.01d0>0.d0)then",
  "ndemandbiofix=nfixf*ndemto",
 ]
 for needle in nfix_needles:
