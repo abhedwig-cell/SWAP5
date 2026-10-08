@@ -52,15 +52,16 @@
       "restart successor equivalence"
     ]
   },
-  "next_action": "Reconcile current qualified F-WOF38/F-WOF39 accepted-event fixture and physical trial status with current F-KT API; build a valid committed event only through accepted model semantics, then rerun positive O0/O2 and F-CI exact head.",
+  "next_action": "Diagnose CANONICAL_STATUS_TRANSACTION_FAILED via runtime transaction diagnostics and qualified F-WOF34 temporal/mass model contract; do not relax numerical tolerances or infer bridge success.",
   "latest_evidence": {
-    "head": "15059c9163a1fa39a25f05f3e1fa43c300e3fcaa",
-    "owning_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37794550486",
+    "head": "cf02e32869a1c40426cee77438abe4b3f9e1b485",
+    "owning_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37795501185",
     "outcome": "failure",
     "negative_O0_O2": "pass",
-    "dependency_compile": "pass after current source module closure and narrow existing compare-reals compiler warning exception",
-    "positive_fixture": "F-WOF38 physical trial completes assertion fails before crop calendar receipt bridge executes",
-    "conclusion": "No positive calendar bridge acceptance, restart, or admission inference permitted"
+    "physical_trial_status": 2,
+    "physical_trial_completed": false,
+    "status_meaning": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "interpretation": "Current F-KT interval transaction rejected historical F-WOF34 physical donor; bridge assertions not reached."
   },
   "blockers": [
     "F-WOF38 historical physical donor trial does not complete against current canonical in extended derived fixture; diagnose current F-KT solver/model setup/reference ownership, do not relax physics acceptance",
