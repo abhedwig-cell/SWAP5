@@ -18,13 +18,13 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_irrigation_management_restart.f90 -o "$OUT/restart.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_management_policy.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "$OUT/solver.o" "$OUT/view.o" "$OUT/policy.o" "$OUT/availability.o" "$OUT/rootzone.o" "$OUT/irrigation.o" "$OUT/application.o" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt"
+  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_management_application.f90 -o "$OUT/test_application.o"
   gfortran -O"$opt" "$OUT/solver.o" "$OUT/view.o" "$OUT/policy.o" "$OUT/availability.o" "$OUT/rootzone.o" "$OUT/irrigation.o" "$OUT/application.o" "$OUT/test_application.o" -o "$OUT/test_application"
-  "$OUT/test_application" > "$OUT/application_output.txt"
+  "$OUT/test_application" > "$OUT/application_output.txt" 2>&1 || { cat "$OUT/application_output.txt" >&2; exit 1; }
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_management_restart.f90 -o "$OUT/test_restart.o"
   gfortran -O"$opt" "$OUT/solver.o" "$OUT/view.o" "$OUT/policy.o" "$OUT/availability.o" "$OUT/rootzone.o" "$OUT/irrigation.o" "$OUT/application.o" "$OUT/restart.o" "$OUT/test_restart.o" -o "$OUT/test_restart"
-  "$OUT/test_restart" > "$OUT/restart_output.txt"
+  "$OUT/test_restart" > "$OUT/restart_output.txt" 2>&1 || { cat "$OUT/restart_output.txt" >&2; exit 1; }
   grep -Fq 'MC_IRR01_MANAGEMENT_POLICY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_ROOT_ZONE_SUMMARY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_APPLICATION=PASS' "$OUT/application_output.txt"
