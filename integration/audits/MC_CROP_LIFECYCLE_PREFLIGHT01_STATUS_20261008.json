@@ -17,8 +17,8 @@
   ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "admitted": false,
   "scope": "Read-only scheduling classification of crop enter/exit/switch/none from accepted calendar checkpoint and forward simulation time; no physical lifecycle event, no owner mutation, no durable restart.",
   "invariants": [
@@ -26,6 +26,13 @@
     "Do not infer sowing, emergence or harvest execution from schedule classification",
     "No new crop owner, kernel or transport interface"
   ],
-  "next_action": "Run source-closed O0/O2, inspect exact-head preservation and qualify bounded functionality before admission",
-  "recovery_point": "f12a0382d7202a6e17ef5834c03647e32b12c63e"
+  "next_action": "Admit only read-only lifecycle preflight and update source delta. Physical crop lifecycle remains open.",
+  "recovery_point": "f12a0382d7202a6e17ef5834c03647e32b12c63e",
+  "qualified_head": "d47e0243ba6535f09a96879948153d0154d687a3",
+  "evidence": {
+    "o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37807796333",
+    "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37807796649",
+    "o0_o2_result": "PASS",
+    "fci_result": "PASS"
+  }
 }
