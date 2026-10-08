@@ -15,6 +15,9 @@ replace_one('  integer(kind=8) :: crop_revision_before\n',
   type(fmr_wofost_crop_transaction_persistence_t) :: lifecycle_view
   logical :: lifecycle_available, lifecycle_exported, lifecycle_reconstructed
   integer :: lifecycle_persistence_status
+  type(fmr_wofost_crop_event_identity_persistence_t) :: artificial_receipt
+  type(fmr_wofost_crop_event_identity_t) :: artificial_identity
+  integer :: artificial_receipt_status
 ''')
 anchor="  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"
 replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')
@@ -46,6 +49,23 @@ replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transact
        .and. lifecycle_replayed%crop_identity==lifecycle_seed%crop_identity &
        .and. lifecycle_replayed%germination_temperature_sum==lifecycle_seed%germination_temperature_sum, &
        'lifecycle owner persisted restart equivalence')
+  ! Restore validation must reject a lifecycle event with no matching receipt.
+  artificial_receipt%valid=.true.
+  artificial_receipt%lineage_id=91
+  artificial_receipt%final_revision=10
+  artificial_receipt%t0=0.0_real64
+  artificial_receipt%t1=1.0_real64
+  call reconstruct_wofost_crop_event_identity_from_persistence(artificial_receipt,artificial_identity, &
+       artificial_receipt_status)
+  call require(artificial_receipt_status==FMR_WOFOST_LINEAGE_OK, 'artificial valid receipt')
+  lifecycle_view%lifecycle%last_event_identity=artificial_identity
+  call require(.not.lifecycle_view%ready(), 'orphan lifecycle identity rejects persistence')
+  lifecycle_view%receipt_present=.true.
+  lifecycle_view%receipt=artificial_receipt
+  call require(lifecycle_view%ready(), 'matching physical and lifecycle receipt permits persistence')
+  lifecycle_view%receipt%final_revision=lifecycle_view%receipt%final_revision+1
+  call require(.not.lifecycle_view%ready(), 'stale physical receipt rejects lifecycle persistence')
+  print '(a)', 'SW431_CROP_FKT_LIFECYCLE_RECEIPT_COHERENCE=PASS'
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS'
 """
 replace_one(anchor,replacement)
