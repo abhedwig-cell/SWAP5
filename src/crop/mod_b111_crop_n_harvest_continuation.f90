@@ -92,7 +92,6 @@ contains
     receipt%external_harvest_n_kg_ha=max(0.0_real64,removed-residue_n)
     candidate%nreturned_to_soil_total_kg_ha=committed%nreturned_to_soil_total_kg_ha+residue_n
     candidate%nexternal_harvest_total_kg_ha=committed%nexternal_harvest_total_kg_ha+receipt%external_harvest_n_kg_ha
-    after=candidate%anlv_kg_ha+candidate%anst_kg_ha+candidate%anrt_kg_ha+candidate%anso_kg_ha
     receipt%balance_residual_kg_ha=candidate%balance_residual()
 
     scale=max(1.0_real64,before,residue_n)
