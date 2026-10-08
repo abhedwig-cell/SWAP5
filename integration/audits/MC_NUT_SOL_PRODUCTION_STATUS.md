@@ -141,3 +141,25 @@ The current bundle demonstrably does not contain `SWAP/cropgrowth.f90`; source-o
 ## 2026-10-08 source-location correction
 
 GitHub tree inspection confirms `cropgrowth.f90` and `management_soil.f90` are available in `SWAP-model/SWAP` at `src/crop/` on `main` (Git blobs `41e407a952c9654c1babf0840da17aaecbb7e3c5` and `e890863a953be3d6c34a602fd08b052d86196c95`). The NUT/SOL CI `KeyError` does **not** mean the files are missing from GitHub. It means `SWAP/cropgrowth.f90` was not a member of the workstream's **partial** `SWAP431_B111_AUTHORITY.tar.gz.b64` evidence bundle. Public SWAP `main` must not silently replace exact B1.11 source authority; its presence proves a GitHub location, not byte identity with B1.11. Qualification must either acquire/pin the matching B1.11 source revision and its hashes, or scope the exact-source probe to the B1.11 files already byte-pinned while leaving crop-orchestration qualification explicitly open. No capability admission is inferred from this discovery.
+
+## 2026-10-08 exact B1.11 authority resolution
+
+The missing-`cropgrowth.f90` error in run `37726458263` resulted from
+an incorrect **archive membership assumption**, not missing historical
+sources. Independent extraction of the pinned 63-member authority bundle
+identifies crop demand/fixation/harvest expressions in the present
+`SWAP/wofostnut.f90` (SHA-256
+`071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2`).
+The exact archive's `SWAP/management_soil.f90` SHA-256 is
+`0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b`.
+Its unsorted-date rejection and strict zero grouping differ materially
+from public SWAP source and from the proposed SWAP5 tolerant-grouping
+calendar. The original `ACCEPTED_REFERENCE_CORRECTION` calendar claim
+is suspended in `MC_NUT01_AMENDMENT_CALENDAR_SOURCE_DECISION.md` pending
+a distinct source-policy decision. No new Actions run was started.
+
+The exact-source probe still requires carefully bounded correction of its
+literal needles and archive manifest before it can qualify any integrated
+NUT/SOL scope. In particular, no fallback to mutable public `main` is
+permitted; `1.d0`/`1.0d0` normalization may preserve numeric meaning,
+but the physical predicate `<0.d-3` may not be normalized into `<1e-3`.
