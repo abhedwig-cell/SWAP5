@@ -10,8 +10,8 @@ def replace_one(a,b):
 # complete mass contribution certificate now required by F-KT. Repair only
 # the disposable combined test fixture, never its frozen source.
 replace_one('    outcome%mass_in = transfer_mass',
-            '    outcome%mass_in = transfer_mass\\n'
-            '    outcome%mass_accounting_complete = .true.\\n'
+            '    outcome%mass_in = transfer_mass\n'
+            '    outcome%mass_accounting_complete = .true.\n'
             '    outcome%missing_mass_contribution_mask = 0_8')
 replace_one('  use mod_fmr_wofost_crop_transaction\n',
             '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n  use mod_crop_lifecycle_daily_composition\n  use mod_crop_germination_preflight\n')
