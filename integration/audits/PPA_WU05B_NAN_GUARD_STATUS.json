@@ -18,7 +18,8 @@
   "test_paths": [
     "tests/frost/run_frost_invalid_input_preservation.sh",
     "tests/frost/run_ppa_wu05b_frost_effect.sh",
-    "tests/frost/run_ppa_wu05b_frost_runtime.sh"
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+    "tests/frost/test_invalid_parameter_guard.f90"
   ],
   "local_focused_test": {
     "command": "bash tests/frost/run_frost_invalid_input_preservation.sh",
@@ -27,16 +28,18 @@
       "O2"
     ],
     "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
-    "result": "PASS",
+    "result": "PASS (2026-10-08, exact four blob identities, O0/O2 identical outputs)",
     "postimage_file_identities": [
       "0dd5b541af936d292d23575f798c3cdd5be19c47",
+      "79a9a1dbd21f331077a53a423023221abe80435d",
       "02eeaac0f934d8e06432bc40c6e2ceb24e97ab1e",
       "a33e28b61147d665736831f23948eaac2939a20a"
     ]
   },
-  "next_action": "Run existing complete frost provider/runtime-preservation against pinned branch, reconcile preservation, then independent canonical admission decision; no new Actions run has been started.",
+  "next_action": "Run existing provider and integrated frost runtime preservation; focused test is not substitute. Compare upstream before admission; keep PR draft.",
   "recovery_point": "PR #1119 draft at ddc027296e463cff114b1cd947da6218453dff52",
   "blockers": [
-    "Complete local source dependency tree unavailable via shell DNS; focused source and tests available through GitHub connector."
-  ]
+    "Full provider test needs src/solver/mod_soil_water_solver_contract.f90 and src/solver/mod_frost_hydraulic_provider.f90 plus driver, not yet present in local filesystem. GitHub connector can read exact-ref files but shell network DNS is unavailable; automated bridge to filesystem not available through connector."
+  ],
+  "last_verified_pr_head": "db0b5ac12e33a6879324bee71e2d066339d9c805"
 }
