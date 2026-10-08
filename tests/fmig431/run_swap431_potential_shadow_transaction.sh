@@ -81,8 +81,8 @@ s=p.read_text(encoding='utf-8')
 # and storage delta, but predates explicit mass-completeness publication.
 # Keep modern fail-closed production accounting; update only the generated
 # *test* donor's receipt to state what its conserved physics already proves.
-mass_anchor="    outcome%solver_ok = .true.\\n    outcome%mass_in = transfer_mass\\n"
-mass_new=mass_anchor+"    outcome%mass_accounting_complete = .true.\\n    outcome%missing_mass_contribution_mask = 0\\n"
+mass_anchor="    outcome%solver_ok = .true.\n    outcome%mass_in = transfer_mass\n"
+mass_new=mass_anchor+"    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = 0\n"
 if s.count(mass_anchor)!=1:
     raise SystemExit("F-WOF34 physical donor mass authority anchor changed")
 s=s.replace(mass_anchor,mass_new,1)
