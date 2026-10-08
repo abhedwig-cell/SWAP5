@@ -179,5 +179,32 @@
       "observation": "Canonical currently includes MC_CROP01_ROOTGROW_DVS_STATUS.json and typed production paths; recorded successful O0/O2 run 37625663326 for merge postimage. Status still says ADMISSION_READY; confirm later explicit admission before canonically marking closed.",
       "admitted": "REQUIRES_EXPLICIT_ADMISSION_VERIFICATION"
     }
-  ]
+  ],
+  "master_ledger_reconciliation": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "commit": "7215321589cd333448779db9122157ac99cdd55d",
+    "partial_admitted_corrections": [
+      "SW431-CROP-CO2",
+      "SW431-CROP-ROOTGROW-DVS"
+    ],
+    "new_counts": {
+      "admitted": 85,
+      "active_migration": 118,
+      "qualification_only": 4,
+      "total_unresolved": 122
+    },
+    "scope_limit": "Two verified canonical admission commits only; 243-row denominator remains provisional."
+  },
+  "swr3_duplicate_resolution": {
+    "prs": [
+      1111,
+      1113
+    ],
+    "same_file": "src/crop/mod_crop_root_depth_biomass.f90",
+    "sha_1111": "ecb663f8d14995bc69baafbd98f0ee9048d82fb8",
+    "sha_1113": "4925f7aeea656f9216eab235d5a47027a22e940b",
+    "finding": "Confirmed conflicting public subroutine signatures and result semantics under same module name. #1111 resolves only actual root depth from actual biomass; #1113 resolves crop maximum and actual/potential root depth with distinct WRTMAX/WRT/WRTPOT inputs. Not identical replacements.",
+    "decision": "Retain both draft; do not merge either until one source-correct consolidated owner is chosen and actual/potential WRT ownership, missing potential-biomass trajectory, profile/runtime gates are qualified. Avoid same-file parallel admission.",
+    "source_bounded": "No claim of full B1.11 source equivalence or qualification made from file comparison alone."
+  }
 }
