@@ -5,6 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[2]
 FC=shlex.split(os.environ.get("FC","gfortran"))
 TEST=ROOT/"tests/physics/test_fmr_b111_reactive_water_carrier.f90"
 EXTRA=[ROOT/"tests/fsi/fsi04_real_headcalc_stubs.f90"]
+LEGACY_HEAD=ROOT/"src/legacy/b1_10_port/headcalc.f90"
 
 modules={}
 for p in list((ROOT/"src").rglob("*.f90"))+EXTRA:
@@ -32,6 +33,8 @@ def visit(p):
 
 visit(TEST)
 sources=[p for p in ordered if p!=TEST]
+if any(p.name=="mod_reference_richards_legacy_binding.f90" for p in sources):
+    sources.append(LEGACY_HEAD)
 with tempfile.TemporaryDirectory(prefix="swap431-reactive-water-carrier-") as folder:
     for opt in ("O0","O2"):
         build=pathlib.Path(folder)/opt;build.mkdir()
