@@ -3,6 +3,18 @@ on:
   workflow_dispatch:
   pull_request:
     branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_root_depth_dvs.f90'
+      - 'src/crop/mod_crop_root_profile_static.f90'
+      - 'src/crop/mod_wofost_crop_owner_state.f90'
+      - 'src/runtime/mod_fmr_reference_et_root_uptake_composition.f90'
+      - 'tests/fmig431/test_crop_root_depth_dvs.f90'
+      - 'tests/fmig431/run_crop_root_depth_dvs.sh'
+      - 'tests/fmig431/test_crop_rootgrow_dvs_profile.f90'
+      - 'tests/fmig431/run_crop_rootgrow_dvs_profile.py'
+      - 'tests/fmig431/test_crop_rootgrow_dvs_runtime.f90'
+      - 'tests/fmig431/run_crop_rootgrow_dvs_runtime.py'
+      - '.github/workflows/swap431-crop-rootgrow-dvs.yml'
   push:
     branches: [work/swap431-crop-root-cluster-20261007]
     paths:
