@@ -134,7 +134,10 @@ contains
         cmlav=f%face_left_weight(i)*candidate_mobile%concentration_mg_cm3(i)+ &
              f%face_right_weight(i)*candidate_mobile%concentration_mg_cm3(i+1)
         thetav=f%face_left_weight(i)*f%theta(i)+f%face_right_weight(i)*f%theta(i+1)
-        if(thetav<=0.0_real64)return
+        if(thetav<=0.0_real64)then
+          candidate_mobile=committed_mobile;candidate_companion=committed_companion
+          return
+        end if
         vpore=abs(f%q_face_up_cm_day(i+1))/thetav
         diffus=f%molecular_diffusion_cm2_day*(thetav**2.33_real64)/(f%theta_sat_left(i)**2)
         dispr=diffus+f%dispersivity_cm(i)*vpore+0.5_real64*f%dt_day*vpore*vpore
@@ -155,7 +158,10 @@ contains
       total_density=(candidate_mobile%mass_mg_cm2(i)+candidate_companion%sorbed_matrix_mass(i))/f%dz_cm(i)
       call evaluate_b111_solute_decay(f%temperature_active,f%temperature_c(i),f%gampar(i),f%theta(i), &
            f%rtheta(i),f%bexp(i),f%decpot(i),f%fdepth(i),total_density,decay)
-      if(decay%status/=B111_DECAY_OK)return
+      if(decay%status/=B111_DECAY_OK)then
+        candidate_mobile=committed_mobile;candidate_companion=committed_companion
+        return
+      end if
       ctrans=decay%transformation_density_rate
       receipt%decay_output_mg_cm2=receipt%decay_output_mg_cm2+ctrans*f%dt_day*f%dz_cm(i)
 
