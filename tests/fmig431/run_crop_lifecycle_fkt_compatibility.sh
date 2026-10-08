@@ -25,7 +25,7 @@ assert s.count(anchor)==1
 s=s.replace(anchor,extra,1)
 # The generated F-WOF38 test fixture is modified only in this temporary
 # wrapper. The frozen historical test and original runner remain unchanged.
-hook='python3 "$ROOT/tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py" "$BUILD/fwof38_atomic.f90"\\n'
+hook='python3 "$ROOT/tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py" "$BUILD/fwof38_atomic.f90"\n'
 assert s.count('COMMON=(-std=f2008')==1
 s=s.replace('COMMON=(-std=f2008',hook+'\nCOMMON=(-std=f2008',1)
 Path(sys.argv[2]).write_text(s)
