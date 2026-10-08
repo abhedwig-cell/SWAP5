@@ -1,0 +1,51 @@
+{
+  "schema": "swap431.crop_physical_handoff_reconciliation.v1",
+  "work_unit": "MC-CROP01-PHYSICAL-HANDOFF",
+  "canonical_base": "6cef5580daa7387e241a88c6a7216c265557c307",
+  "status": "SOURCE_AND_OWNER_RECONCILED_UNIMPLEMENTED",
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "admitted_inherited": [
+    "PR #1130 calendar selector",
+    "PR #1131 calendar checkpoint trial/accept",
+    "PR #1132 committed-receipt derived-state retirement",
+    "PR #1134 lifecycle classifier",
+    "PR #1135 source-conditioned prep/sow/germination pure candidates",
+    "PR #1136 daily ordered pure candidate composition"
+  ],
+  "ownership": {
+    "physical": "src/runtime/mod_fmr_wofost_crop_transaction.f90:fmr_wofost_crop_transaction_state_t and F-KT committed carrier",
+    "physical_restart": "src/runtime/mod_fmr_wofost_crop_transaction.f90:fmr_wofost_crop_transaction_persistence_t",
+    "derived_calendar": "src/crop/mod_crop_rotation_transition.f90:crop_rotation_checkpoint_t",
+    "derived_receipt": "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90",
+    "lifecycle_candidates": "src/crop/mod_crop_lifecycle_daily_composition.f90"
+  },
+  "verified_missing_fields": [
+    "fmr_wofost_crop_transaction_persistence_t includes physical crop owner, potential shadow/root growth and event receipt, but not calendar checkpoint, crop rotation identity, fl_prep/fl_sow/fl_germ, delay_prep/delay_sow, tsumgerm, harvest/reset flags or source forcing provenance",
+    "The existing F-KT committed crop-event forcing does not itself expose source h_average(zprep,zsow,zgerm), soil temperature nodsow, or SWHEA eligibility; lifecycle candidates are currently caller-provided and cannot serve as acceptance authority"
+  ],
+  "acceptance_design": [
+    "Define exactly one lifecycle continuation carried by the F-KT-owned physical crop transaction state, including phase and delayed-day progress; no independent mutable crop owner",
+    "Use F-KT candidate clone, never modify accepted physical state from preflight proposals",
+    "Source hydrothermal forcing must be typed and proven to belong to the accepted interval before physical candidate creation",
+    "Event identity and continuation revision must be bound to exactly one committed physical event; avoid double progress on retry/replay",
+    "Only after physical F-KT acceptance reconcile derived calendar/window publication; independently validate their restart snapshot against reconstructed physical crop receipt"
+  ],
+  "unsafe_shortcuts": [
+    "Do not treat a successful pure daily composition as committed emergence",
+    "Do not serialize the calendar alone and describe this as physical restart",
+    "Do not attach lifecycle flags to external mutable singleton state",
+    "Do not directly overwrite the preexisting physical crop owner or accepted hydraulic/transport interfaces"
+  ],
+  "test_plan": [
+    "complete clone/reject/retry invariance for prep/sow/germination counters and flags",
+    "two crop periods with fallow plus delayed emergence and one-shot harvest/reset",
+    "SWINCO=3 initial mid-season state and explicit incompatible initial condition rejection",
+    "source forcing provenance, missing heat and mismatched event fail closed",
+    "end-to-end owner persistence and calendar receipt replay across restart before and after committed event",
+    "O0/O2 plus exact-head F-CI preservation"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "next_safe_action": "Create owner-approved lifecycle continuation type and persistence contract in the owning F-WOF38 crop transaction module only after source-owner review, then exercise actual committed event tests; no speculative physical publish."
+}
