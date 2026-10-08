@@ -17,11 +17,13 @@ program test_mc_irr01_management_application
   type(fmr_irrigation_management_diagnostics_t) :: d
   real(real64), parameter :: tol=1.0e-12_real64
 
+  ! Choose unambiguous trigger-side samples; the strict B1.11 equality
+  ! boundaries are covered separately by the policy test.
   call setup_base(p,h,r)
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger .and. flux%event_finished,1)
   call require(abs(flux%surface_gross_rate-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,2)
@@ -30,7 +32,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=3
   p%policy%tcs3_knot_count=2
   p%policy%tcs3_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs3_fraction(1:2)=[0.25_real64,0.25_real64]
+  p%policy%tcs3_fraction(1:2)=[0.20_real64,0.20_real64]
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,3)
 
@@ -38,7 +40,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=4
   p%policy%tcs4_knot_count=2
   p%policy%tcs4_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs4_depletion_mm(1:2)=[10.0_real64,10.0_real64]
+  p%policy%tcs4_depletion_mm(1:2)=[9.0_real64,9.0_real64]
   p%policy%depth_limit_enabled=.true.
   p%policy%minimum_depth_cm=1.5_real64
   p%policy%maximum_depth_cm=3.0_real64
@@ -51,7 +53,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=4
   p%policy%tcs4_knot_count=2
   p%policy%tcs4_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs4_depletion_mm(1:2)=[10.0_real64,10.0_real64]
+  p%policy%tcs4_depletion_mm(1:2)=[9.0_real64,9.0_real64]
   p%policy%rainfall_threshold_cm=0.5_real64
   r%rainfall_cm=0.6_real64
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
@@ -70,7 +72,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   p%application_type=IRRIGATION_APPLICATION_SSDI
   p%single_ssdi_node=2
   p%rate_cm_per_day=4.0_real64
@@ -84,7 +86,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   p%rate_cm_per_day=4.0_real64
   r%t1=r%t0+1.0_real64
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
@@ -96,7 +98,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   p%rate_cm_per_day=0.0_real64
   r%t1=r%t0+0.5_real64
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
@@ -119,7 +121,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   r%dvs=1.0_real64
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,18)
@@ -133,7 +135,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=3
   p%policy%tcs3_knot_count=2
   p%policy%tcs3_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs3_fraction(1:2)=[0.25_real64,0.25_real64]
+  p%policy%tcs3_fraction(1:2)=[0.20_real64,0.20_real64]
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,22)
   call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,23)
@@ -146,7 +148,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=4
   p%policy%tcs4_knot_count=2
   p%policy%tcs4_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs4_depletion_mm(1:2)=[10.0_real64,10.0_real64]
+  p%policy%tcs4_depletion_mm(1:2)=[9.0_real64,9.0_real64]
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. policy%trigger,24)
   call require(abs(d%selected_depth_cm-1.0_real64)<tol .and. abs(flux%external_inflow_amount-1.0_real64)<tol,25)
@@ -173,7 +175,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   p%rate_cm_per_day=4.0_real64
   r%availability_scaling_enabled=.true.
   r%availability_fraction=0.5_real64
@@ -190,7 +192,7 @@ program test_mc_irr01_management_application
   p%policy%timing_criterion=2
   p%policy%tcs2_knot_count=2
   p%policy%tcs2_dvs(1:2)=[0.0_real64,2.0_real64]
-  p%policy%tcs2_fraction(1:2)=[0.5_real64,0.5_real64]
+  p%policy%tcs2_fraction(1:2)=[0.4_real64,0.4_real64]
   p%rate_cm_per_day=0.0_real64
   r%availability_scaling_enabled=.true.
   r%availability_fraction=0.5_real64
