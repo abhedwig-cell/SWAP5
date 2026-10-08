@@ -148,6 +148,34 @@ if s.count(physical_anchor)!=1:
     raise SystemExit("F-WOF38 physical donor assert anchor changed")
 s=s.replace(physical_anchor,physical_probe,1)
 
+# Keep the generated legacy test compilable at O2 without muting warnings:
+# explicitly evaluate observations before combining logical predicates.
+for old,new in [
+ ("growth_available .and. root_growth_snapshot%ready()",
+  "growth_available .and. root_growth_ready"),
+ ("restored_available .and. restored_growth%ready()",
+  "restored_available .and. restored_growth_ready"),
+ ("restored_potential_state%receipt_ready() .and. restored_potential_state%consumed_event(event_identity)",
+  "restored_receipt_ready .and. restored_event_consumed")
+]:
+    if old not in s: raise SystemExit("missing generated observation "+old)
+    s=s.replace(old,new)
+for observation,expr in [
+ ("root_growth_ready","root_growth_snapshot%ready()"),
+ ("restored_growth_ready","restored_growth%ready()"),
+ ("restored_receipt_ready","restored_potential_state%receipt_ready()"),
+ ("restored_event_consumed","restored_potential_state%consumed_event(event_identity)")
+]:
+    # Materialize before the associated require; every snapshot call precedes it.
+    needle="    call require("
+    key={"root_growth_ready":"growth_available .and. root_growth_ready",
+         "restored_growth_ready":"restored_available .and. restored_growth_ready",
+         "restored_receipt_ready":"restored_receipt_ready .and. restored_event_consumed",
+         "restored_event_consumed":"restored_receipt_ready .and. restored_event_consumed"}[observation]
+    idx=s.index(key)
+    start=s.rfind(needle,0,idx)
+    if start<0:raise SystemExit("missing observation assertion")
+    s=s[:start]+"    "+observation+"="+expr+"\\n"+s[start:]
 # Add observation variables to the generated Fortran declaration payload.
 anchor="  integer(kind=8) :: crop_revision_before\n"
 insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot, restored_shadow
@@ -155,7 +183,7 @@ insert=anchor+"""  type(wofost_potential_shadow_state_t) :: shadow_snapshot, res
   type(fmr_wofost_crop_transaction_persistence_t) :: potential_persistence
   type(fmr_wofost_crop_transaction_state_t) :: restored_potential_state
   type(wofost_crop_owner_state_t) :: restored_potential_owner
-  logical :: shadow_available, growth_available, persistence_ok, reconstructed_ok, restored_available
+  logical :: shadow_available, growth_available, persistence_ok, reconstructed_ok, restored_available\n  logical :: root_growth_ready, restored_growth_ready, restored_receipt_ready, restored_event_consumed
   integer :: persistence_status
 """
 if s.count(anchor)!=1:
