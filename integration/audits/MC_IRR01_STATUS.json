@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "b08e795f6c067cc2fed9895dfb4c6001bb0547c2",
-  "last_reconciled_head": "3e8414d8e2dae8e761e8b0f0dd58c43a0a86bf0c",
+  "checkpoint_commit": "c7ab174fe9e91e79eaa7be73cdd35739b209ee3f",
+  "last_reconciled_head": "c7ab174fe9e91e79eaa7be73cdd35739b209ee3f",
   "last_reconciled_upstream": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
   "implemented": true,
   "persisted": true,
@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Run tests/f-app07/run_fapp07_tcs1_dcs2_process.sh (includes sensor/SSDI mass runtime O0/O2 transitively), tests/mc-irr01/run_mc_irr01_source_reconstruction.sh, and tests/mc-irr01/run_mc_irr01_management_policy.sh against a byte-verified persisted postimage; record evidence and reconcile canonical drift before admission. Do not dispatch duplicate Actions runs.",
+  "next_action": "On persisted head c7ab174f or verified descendant run existing F-APP07 pipeline (source reconstruction, process/composition, management including NaN guard, transitive SSDI mass) at O0/O2; fix specific failures; reconcile against canonical d2fdd2bb and qualify dependency changes before admission. Recheck moving HEAD before tests.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -128,6 +128,18 @@
         "SW431-IRR-LIMIT"
       ],
       "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90"
+    },
+    "availability_finite_guard": {
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "paths": [
+        "src/process/mod_irrigation_availability_policy.f90",
+        "tests/mc-irr01/test_mc_irr01_availability_nonfinite.f90",
+        "tests/mc-irr01/run_mc_irr01_management_policy.sh"
+      ],
+      "notes": "NaN finite check precedes ordered comparisons under -ffpe-trap=invalid; do not promote until same-postimage O0/O2 pass."
     }
   },
   "reconciliation_20261008": {
@@ -137,8 +149,8 @@
     "pr_draft": true,
     "branches_diverged": true,
     "pr_workflow_runs_at_head": 0,
-    "qualification_gap": "Mass gate is already transitively invoked by tests/f-app07/run_fapp07_tcs1_dcs2_process.sh; no duplicate workflow step is needed. The latest head has no recorded qualification run and the expanded implementation remains unqualified.",
-    "local_execution": "unavailable in this session: local git DNS resolution failed; no exact-postimage local O0/O2 results",
+    "qualification_gap": "Existing transitive SSDI mass gate is covered by F-APP07 runner. New availability finite-guard regression is wired into management runner but lacks persisted full-postimage O0/O2 evidence.",
+    "local_execution": "Local Git clone inaccessible: DNS could not resolve github.com. No full exact-postimage O0/O2 qualification recorded.",
     "status": "reconciled not qualified for additional capabilities"
   }
 }
