@@ -119,6 +119,10 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   deallocate(committed);allocate(committed,source=restarted)
 
   call execute_reference_interval(model,committed,1.0_real64,2.0_real64,policy,tx)
+  if(tx%status/=TX_STATUS_ACCEPTED)then
+    print '(A,I0,A,I0)','postharvest diagnostic tx=',tx%status, &
+         ' coupled_owner=',model%last_status_code()
+  end if
   call check(tx%status==TX_STATUS_ACCEPTED,'postharvest day accepted')
   call model%snapshot_receipt(receipt,available)
   call check(available,'postharvest receipt')
