@@ -104,3 +104,22 @@ Qualification of SW431-NUT-AMEND remains blocked on a separately SHA-pinned
 B1.11 management source and an explicit choice between literal source
 semantics and corrected grouped-event behaviour. The typed exactly-once
 management-event candidate remains present and unadmitted.
+
+## 2026-10-08 independent tagged-source corroboration
+
+The upstream repository also exposes a fixed release ref `v4.2.0`, not only
+mutable `main`. Reading that tag directly gives exact Git blobs:
+
+- `SWAP-model/SWAP@v4.2.0:src/management_soil.f90`, blob
+  `926245c9fa05423be10933669cd65c1ceb9997c9`:
+  line 130 contains `MatNum(i)=MatNum(i)`, line 155 has the strict
+  `smedate(isme)-smedate(isme-1)<0.d-3` grouping predicate, and line
+  332 has a distinct `1.d-3` application-time tolerance.
+- `SWAP-model/SWAP@v4.2.0:src/cropgrowth.f90`, blob
+  `6c2248cedbef805ab8c0c198ad630a7b990f32ff`:
+  lines 1746-1747 contain distinct soil-demand and fixation expressions.
+
+The same management defect/predicate is present on both public `main` and
+`v4.2.0`. This strengthens corroboration but is **not** proof that the
+separately supplied B1.11 bundle has these identical bytes. No rewrite of
+SWAP5 calendar or change in admission state follows from this comparison.
