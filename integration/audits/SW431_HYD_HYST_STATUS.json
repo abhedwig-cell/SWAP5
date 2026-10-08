@@ -83,7 +83,9 @@
       "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
       "member_count": 63,
       "member_manifest_digest": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
-      "implication": "Exact TABLE and MOD_RIA source bodies cannot be admitted from the current text-only path; wait for byte-preserving materialization rather than reconstructing from non-identical public text."
+      "implication": "Exact TABLE and MOD_RIA source bodies cannot be admitted from the current text-only path; wait for byte-preserving materialization rather than reconstructing from non-identical public text.",
+      "binary_safe_git_capability": "GitHub connector create_blob supports base64 byte-preserving blobs, with create_tree/create_commit/update_ref available; source byte acquisition and verification are not yet fulfilled.",
+      "source_access": "No matching canonical SWAP.ZIP or SWAP_4.3.1.zip in currently accessible Project/Library file search; existing authoritative archive SHA-256 and member manifest do not supply source bytes."
     }
   },
   "authority_paths": [
@@ -167,13 +169,14 @@
       "failed_step": "bash tests/fsi/run_b111_hydraulic_families.sh",
       "cause": "gfortran 13.3 rejected stale test override dummy names h and node; corrected names pressure_head and node_index already present in branch after 851c6ad; no downstream steps ran",
       "admission_evidence": false
-    }
+    },
+    "next_run_discovery": "GitHub connector exposes job lookup only by run_id, no repository workflow-run listing/dispatch. No positive PASS on fresh SHA can be claimed from empty commit status and PR-triggered workflow-run lookup."
   },
   "blockers": [
     "MODEL12/RIA depends on the exact corrected B1.11 MOD_RIA body. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT because MOD_RIA.f90 contains non-UTF-8 bytes; do not substitute a text-normalized or literature reconstruction.",
     "Generic SWSOPHY=1 TSPACK TABLE depends on the exact B0 sptabulated member. B0 source materialization is explicitly PENDING_BINARY_SAFE_IMPORT and the inspected public historical file is not byte-identical; do not use it as an admission oracle."
   ],
-  "next_action": "Fresh push at 55408cfc triggers focused workflow; locate and inspect its run, do not use failed 37646065725 for evidence. Complete integrated qualification before admission.",
+  "next_action": "Locate the automatically triggered focused workflow run for commit 55408cfc or manually dispatch one only after confirming no duplicate run. Exact B0 archive bytes remain needed for RIA/TABLE, notwithstanding the now available binary-safe create_blob API.",
   "recovery_point": "55408cfc153da423c11d568b408038b96b960ab5",
   "last_reconciled_upstream": "integration/f-ci-canonical@7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
   "upstream_reconciliation": {
