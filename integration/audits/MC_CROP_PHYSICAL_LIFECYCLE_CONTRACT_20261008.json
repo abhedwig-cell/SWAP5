@@ -53,5 +53,23 @@
   "tested": false,
   "qualified": false,
   "admitted": false,
-  "next_action": "Reconcile exact F-KT crop transaction state snapshot/owner and hydraulic/thermal forcing contract, then build smallest read-only source-conditioned action proposal with deterministic unit tests before any physical publication."
+  "next_action": "Implement isolated pure preflight evaluation of typed, explicitly provided preparation/sowing/temperature status as source-conditional candidate only, or first establish missing aggregate forcing and restart owner; no direct F-KT mutation or lifecycle flag persistence until contract is reconciled.",
+  "reconciled_current_owner": {
+    "canonical_head": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
+    "physical_crop_state": "src/runtime/mod_fmr_wofost_crop_transaction.f90: fmr_wofost_crop_transaction_state_t owns crop owner, optional potential shadow/root growth and last consumed event",
+    "physical_persistence": "fmr_wofost_crop_transaction_persistence_t carries owner/optional shadows/root growth/last receipt but not calendar or lifecycle prep/sow/germination flags",
+    "source_forcing_gap": "fmr_wofost_crop_event_forcing_t carries accepted crop daily forcing/event identity, not the B1.11 h_average(zprep/zsow/zgerm), nodsow soil temperature, tav, or SWHEA eligibility as typed lifecycle inputs",
+    "current_owner_boundary": "wofost_crop_owner_state_t is transaction state, crop emergence/phenology; a separate mutable physical lifecycle owner must not be invented or published from a preflight decision",
+    "source_paths": [
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:preparation(task 1..3)",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:sowing(task 1..3)",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:germination(task 1..3)"
+    ]
+  },
+  "source_condition_details": {
+    "preparation": "swprep=0 defaults done at start; swprep=1 checks h_average(zprep)-hprep > 0; delay increments and postpones until maxprepdelay, else progresses",
+    "sowing": "swsow=0 defaults done at start; swsow=1 requires SWHEA=1; checks tsoil(nodsow)<tempsow OR h_average(zsow)-hsow>0, delayed to maxsowdelay; delay_sow starts from delay_prep",
+    "germination": "swgerm=0 defaults done; swgerm=1 temperature sum; swgerm=2 adds pressure-head-dependent tsumemesub and weather tav; tsumgerm advances once per source day, must not advance on rejected trial",
+    "ordering": "Crop emergence requires fl_prep AND fl_sow AND fl_germ after previous-day check; initialization and daily progression have distinct task modes. On source cropstart flags reset, but that does not authorize direct physical SWAP5 mutation."
+  }
 }
