@@ -91,6 +91,21 @@ program test_b111_reactive_solute_substep_multinode
   call near(cs%pond_mass,s%pond_mass,'rejected pond rollback')
   call near(cs%aquifer_mass,s%aquifer_mass,'rejected aquifer rollback')
 
+  ! A zero-weight interface fails after pond input was evaluated. The
+  ! rejected candidate must not expose even that earlier pond mutation.
+  f%root_sink_cm_day=0.0_real64
+  f%tscf=0.0_real64
+  f%face_left_weight=0.0_real64
+  f%face_right_weight=0.0_real64
+  f%rain_rate_cm_day=0.1_real64
+  f%rain_c_mg_cm3=2.0_real64
+  call advance_b111_reactive_solute_substep(m,s,f,cm,cs,r)
+  call check(r%status/=B111_REACTIVE_OK,'zero-weight interface rejected')
+  call near(sum(cm%mass_mg_cm2),sum(m%mass_mg_cm2),'interface rejected dissolved rollback')
+  call near(sum(cs%sorbed_matrix_mass),sum(s%sorbed_matrix_mass),'interface rejected sorbed rollback')
+  call near(cs%pond_mass,s%pond_mass,'interface rejected pond rollback')
+  call near(cs%aquifer_mass,s%aquifer_mass,'interface rejected aquifer rollback')
+
   print '(A)','B111_REACTIVE_SOLUTE_SUBSTEP_MULTINODE_PASS'
 contains
   subroutine near(x,y,label)
