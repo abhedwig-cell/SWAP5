@@ -1,0 +1,16 @@
+name: SWAP431 crop germination preflight
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_germination_preflight.f90'
+      - 'tests/fmig431/test_crop_germination_preflight.f90'
+      - 'tests/fmig431/run_crop_germination_preflight.sh'
+      - '.github/workflows/swap431-crop-germination-preflight.yml'
+jobs:
+  germination:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict O0 O2 thermal hydraulic germination
+        run: bash tests/fmig431/run_crop_germination_preflight.sh

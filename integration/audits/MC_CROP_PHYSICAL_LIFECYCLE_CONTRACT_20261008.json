@@ -1,0 +1,109 @@
+{
+  "schema": "swap431.crop_physical_lifecycle_contract.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "CROP-PHYSICAL-LIFE01",
+  "baseline": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
+  "authority": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/crop/mod_crop_rotation_lifecycle_preflight.f90",
+    "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90"
+  ],
+  "admitted_inherited": [
+    "PR #1130 calendar selector",
+    "PR #1131 calendar trial/accept checkpoint",
+    "PR #1132 exact committed receipt derived publication",
+    "PR #1134 nonmutating lifecycle preflight"
+  ],
+  "scope": "Source-backed physical crop lifecycle handoff contract only; no new physical behavior admitted",
+  "transition_order": [
+    "At accepted time boundary: independently validate preflight and source calendar; do not mutate committed physical crop or lifecycle flags",
+    "Create candidate on clone of current committed crop-owner state; source-specific preparation/sowing/germination decisions use declared hydraulic/thermal values and documented precedence",
+    "Never infer emergence merely from calendar ENTER: emergence requires validated preparation, sowing, germination and corresponding source conditions",
+    "At accepted emergence initialize new crop owner and root extraction consistently; at accepted harvest handle crop teardown/reset once",
+    "Publish crop-owner revision and associated calendar/receipt lifecycle only following one matching accepted F-KT event; reject/retry must leave original owner, calendar and window unchanged",
+    "Persist a single coherent physical crop identity, lifecycle flags, calendar checkpoint and consumed-event lineage for restart; reconstruct and validate before resuming"
+  ],
+  "source_constraints": {
+    "calendar_sequence": "Following crop begins >=0.5 source day after former crop end",
+    "season_initialization": "Simulation start inside existing growing season requires SWINCO=3 compatibility branch",
+    "source_tolerances": "0.1 day active crop selection, 0.001 day exact cropstart flag; not proof of arbitrary scheduler rounding",
+    "physical_inputs": "Hydraulic pressure head, soil temperature and workability owner to be reconciled before sowing/germination binding"
+  },
+  "invariants": [
+    "F-KT is sole physical commit owner",
+    "Reject/retry cannot modify committed crop state, crop flags, calendar, accepted window or consumed receipt",
+    "Do not reopen accepted root-uptake, MICRO, transport or hydraulic state interfaces without respective owning workstream reconciliation",
+    "Restart after accepted event has exactly same following crop identity, owner state and event consumption",
+    "No double harvest, double sow, duplicated physical evolution or repeated root initialization on replay"
+  ],
+  "test_matrix": [
+    "two crops separated by fallow",
+    "start within season and SWINCO rejection/acceptance",
+    "preparation, sowing and germination gated by frozen physical forcing",
+    "delayed emergence and later root initialization",
+    "harvest/reset and following crop identity",
+    "rejected and retried physical trial zero mutation",
+    "stale revision and mismatched committed receipt fail closed",
+    "checkpoint restart before and after each boundary reproduces successor",
+    "O0/O2 and exact-head F-CI preservation"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "next_action": "Admit only qualified pure preparation/sowing/germination proposals after overlap check; physical lifecycle transaction owner, germination event publication, harvest and durable restart remain unimplemented.",
+  "reconciled_current_owner": {
+    "canonical_head": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
+    "physical_crop_state": "src/runtime/mod_fmr_wofost_crop_transaction.f90: fmr_wofost_crop_transaction_state_t owns crop owner, optional potential shadow/root growth and last consumed event",
+    "physical_persistence": "fmr_wofost_crop_transaction_persistence_t carries owner/optional shadows/root growth/last receipt but not calendar or lifecycle prep/sow/germination flags",
+    "source_forcing_gap": "fmr_wofost_crop_event_forcing_t carries accepted crop daily forcing/event identity, not the B1.11 h_average(zprep/zsow/zgerm), nodsow soil temperature, tav, or SWHEA eligibility as typed lifecycle inputs",
+    "current_owner_boundary": "wofost_crop_owner_state_t is transaction state, crop emergence/phenology; a separate mutable physical lifecycle owner must not be invented or published from a preflight decision",
+    "source_paths": [
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:preparation(task 1..3)",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:sowing(task 1..3)",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:germination(task 1..3)"
+    ]
+  },
+  "source_condition_details": {
+    "preparation": "swprep=0 defaults done at start; swprep=1 checks h_average(zprep)-hprep > 0; delay increments and postpones until maxprepdelay, else progresses",
+    "sowing": "swsow=0 defaults done at start; swsow=1 requires SWHEA=1; checks tsoil(nodsow)<tempsow OR h_average(zsow)-hsow>0, delayed to maxsowdelay; delay_sow starts from delay_prep",
+    "germination": "swgerm=0 defaults done; swgerm=1 temperature sum; swgerm=2 adds pressure-head-dependent tsumemesub and weather tav; tsumgerm advances once per source day, must not advance on rejected trial",
+    "ordering": "Crop emergence requires fl_prep AND fl_sow AND fl_germ after previous-day check; initialization and daily progression have distinct task modes. On source cropstart flags reset, but that does not authorize direct physical SWAP5 mutation."
+  },
+  "slices": {
+    "preparation_sowing": {
+      "component": "src/crop/mod_crop_preparation_sowing_preflight.f90",
+      "tests": [
+        "tests/fmig431/test_crop_preparation_sowing_preflight.f90",
+        "tests/fmig431/run_crop_preparation_sowing_preflight.sh"
+      ],
+      "implemented": true,
+      "persisted": true,
+      "local_equivalent_O0_O2": "PASS; exact persisted head qualification pending",
+      "qualified": true,
+      "admitted": false,
+      "limits": "Explicit h-average and temperature inputs; daily candidate only, no physical crop owner, no lifecycle flags published, no germination or restart.",
+      "tested": true,
+      "qualified_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37817324619"
+    },
+    "germination": {
+      "component": "src/crop/mod_crop_germination_preflight.f90",
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": true,
+      "admitted": false,
+      "qualified_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37817324391",
+      "scope": "Pure mode 0/1/2 temperature and hydraulic daily candidate, no physical state publication"
+    }
+  },
+  "preservation": {
+    "head": "2c2e59e9b140da854bb659be28c4a56279d23647",
+    "result": "PASS",
+    "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37817324469"
+  }
+}
