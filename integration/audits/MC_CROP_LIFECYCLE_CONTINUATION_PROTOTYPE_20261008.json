@@ -3,7 +3,7 @@
   "canonical_base": "6cef5580daa7387e241a88c6a7216c265557c307",
   "workstream": "MC-CROP01",
   "relationship": "successor experiment to draft #1137",
-  "scope": "Pure candidate of per-crop preparation, sowing and germination continuation with revision/duplicate guards; no F-KT binding, no emergence publication, no physical restart",
+  "scope": "CANONICALLY_ADMITTED_BOUNDED: source-ordered prep/sow/germination lifecycle continuation with exact F-KT accepted-event identity, optional F-WOF38 transaction-state trial candidate, clone, receipt-coherent persistence/reconstruction. No source-verified hydrothermal forcing, physical emergence, harvest/reset, crop succession or whole-system serialized restart.",
   "local_checks": {
     "compiler": "gfortran",
     "flags": [
@@ -14,27 +14,37 @@
     "qualification": "NOT QUALIFIED: persisted exact-head repository compilation, lifecycle owner integration and F-CI preservation missing"
   },
   "limitations": [
-    "Integer event token is local candidate only, NOT accepted event identity",
-    "No forcing provenance or validation against actual F-KT accepted receipt",
-    "No lifecycle continuation persistence in physical crop owner",
-    "No harvest/reset, root initialization, physical acceptance or SWINCO=3 semantics",
-    "No claims on crop mass balance or restart equivalence"
+    "B1.11 hydrothermal forcing provenance and source hydraulic/thermal mapping are not yet bound",
+    "Source previous-day emergence event, physical crop/root initialization not implemented",
+    "Harvest/root-extraction reset, fallow and following crop identity are not implemented",
+    "SWINCO=3 in-season physical initialization and unified calendar+owner serialized whole-system restart are not qualified",
+    "B19 physical cross-preservation covers source immutability and bounded case1, not complete frost matrix or all combinations"
   ],
   "implemented": true,
   "persisted": true,
-  "tested": "LOCAL_ISOLATED_STUB_DEPENDENCIES",
-  "qualified": false,
-  "preserved": false,
-  "admitted": false,
-  "next_action": "Run exact-head F-KT owner compatibility and lifecycle candidate O0/O2; repair compile/module paths; then implement verified hydrothermal provenance and atomic accepted lifecycle progression, harvest/reset and coherent restart; preserve B19+MICRO before admission.",
-  "postimage": "895cc1ab252d0bfcf5aad0e073cd5ce233865aec",
-  "test_runner": "tests/fmig431/run_crop_lifecycle_continuation.sh",
-  "test_execution": "UNQUALIFIED successor. Existing test runner requires update to compile transitive F-KT lineage modules before it is runnable with actual SWAP5 code",
-  "test_added": "Stale revision, duplicate token, rejected input snapshot, missing germination after sowing; exact module runner is present but has not run on persisted postimage",
-  "provisional_integer_event_token_removed": true,
-  "event_identity": "fmr_wofost_crop_event_identity_t exact identity, same_wofost_crop_event_identity",
-  "integration_persistence": "Optional lifecycle continuation now carried by actual F-WOF38 transaction_state clone, export/reconstruct persistence and snapshot; no accepted physical progression or forcing binding yet",
-  "qualification_runner": "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
-  "local_o0_o2": "NOT RUN on exact persisted F-KT owner postimage; dependency-local prototype success is not production qualification",
-  "preservation_failure": "previous canonical F-CI run 37834168959 failed B19+MICRO source gate on older head"
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "admitted": true,
+  "next_action": "MC-CROP01 PHYSICAL-LIFE successor: accepted hydrothermal forcing provenance and previous-day emergence then root initialization; harvest/fallow/reset; whole-system crop/calendar/event restart and remaining source envelope O0/O2 and F-CI.",
+  "postimage": "68dc0ce5441f53b953fb50210514030517a35e5b",
+  "test_execution": "PASS exact-head SWAP5 O0/O2 native Fortran and frozen F-WOF38 owner composition; not local stub evidence",
+  "event_identity": "Opaque fmr_wofost_crop_event_identity_t stored with physical receipt, bit-exact match required for persisted lifecycle receipt",
+  "integration_persistence": "Opt-in lifecycle owned by F-WOF38 crop transaction state; trial clone, F-KT candidate admission and owner export/reconstruct available; rejects orphan/mismatched event identity",
+  "qualification_runner": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+  "local_o0_o2": "Legacy isolated prototype evidence only; authoritative qualification is GitHub exact-head owner run",
+  "preservation_failure": "Historical failed moving-current runs on unqualified prototype superseded by exact-head successful F-CI run 37851493061, which requires the cross-preservation gate.",
+  "qualification": {
+    "scientific_head": "68dc0ce5441f53b953fb50210514030517a35e5b",
+    "owner_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851492515",
+    "owner_result": "SUCCESS",
+    "fci_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851493061",
+    "fci_result": "SUCCESS",
+    "scope": "O0/O2 lifecycle+F-WOF38 trial/receipt/persistence, MICRO02 and MICRO03-06 regression including changed forcing/restart, unchanged exact B19/MICRO shared production blobs, B19 current-source case1 O0/O2 byte identity; not exhaustive B19 scenario matrix"
+  },
+  "admission": {
+    "pr": 1138,
+    "merge_commit": "7296f0f8ac09c0a3313133e2c898e7e53fd17e6d",
+    "scope": "bounded physical owner lifecycle continuation with guard-gated B19/MICRO dependency preservation"
+  }
 }
