@@ -151,9 +151,11 @@ program test_fwof34_accepted_window_runtime_lineage
   type(fmr_wofost_trial_contribution_t) :: rejected_trial, trial0, trial1, probe_trial
   type(fmr_wofost_accepted_interval_certificate_t) :: certificate0, certificate1, invalid_certificate
   type(fmr_wofost_crop_event_token_t) :: token1, token2
+  type(fmr_wofost_crop_event_identity_t) :: identity1, identity2
+  type(fmr_wofost_crop_event_identity_persistence_t) :: identity_view
   type(wofost_accepted_window_aggregates_t) :: aggregates1, aggregates2
   integer :: status
-  logical :: ok, available
+  logical :: ok, available, exported
 
   call setup_committed(committed, 3401_int64, 0.0_real64)
   call setup_solver(parameters, forcing, config)
@@ -175,7 +177,8 @@ program test_fwof34_accepted_window_runtime_lineage
   call begin_wofost_trial_contribution(checkpoint0, 0.4_real64, rejected_trial, status)
   call require(status == FMR_WOFOST_LINEAGE_OK, 'begin rejected trial scratch')
   call accumulate_wofost_trial_process_rate(rejected_trial, 0.0_real64, 0.4_real64, &
-       1000.0_real64, 2000.0_real64, status)
+       1000.0_real64, 2000.0_real64, status, deepest_root_oxygen_factor=0.95_real64, &
+       rootzone_drought_uptake_factor=0.05_real64)
   call require(status == FMR_WOFOST_LINEAGE_OK .and. rejected_trial%complete(), 'fill rejected trial scratch')
   call discard_wofost_trial_contribution(rejected_trial)
   call require(.not. rejected_trial%ready(), 'discard clears rejected trial scratch')
@@ -199,11 +202,43 @@ program test_fwof34_accepted_window_runtime_lineage
   call discard_wofost_trial_contribution(probe_trial)
   print '(a)', 'FWOF34_TRIAL_SUBINTERVAL_GAP_OVERLAP_REJECTED=PASS'
 
+  ! Once an optional daily factor is present for a trial, every contiguous
+  ! subinterval must carry it. Late activation and early omission both fail closed.
+  call begin_wofost_trial_contribution(checkpoint0,0.4_real64,probe_trial,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'begin oxygen completeness probe')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.0_real64,0.2_real64,1.0_real64,2.0_real64,status, &
+       deepest_root_oxygen_factor=0.5_real64)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'oxygen first subinterval')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.2_real64,0.4_real64,1.0_real64,2.0_real64,status)
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'missing oxygen continuation rejected')
+  call discard_wofost_trial_contribution(probe_trial)
+
+  call begin_wofost_trial_contribution(checkpoint0,0.4_real64,probe_trial,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'begin drought completeness probe')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.0_real64,0.2_real64,1.0_real64,2.0_real64,status, &
+       rootzone_drought_uptake_factor=0.8_real64)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'drought first subinterval')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.2_real64,0.4_real64,1.0_real64,2.0_real64,status)
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'missing drought continuation rejected')
+  call discard_wofost_trial_contribution(probe_trial)
+
+  call begin_wofost_trial_contribution(checkpoint0,0.4_real64,probe_trial,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'begin late carrier probe')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.0_real64,0.2_real64,1.0_real64,2.0_real64,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK,'carrier-free first subinterval')
+  call accumulate_wofost_trial_process_rate(probe_trial,0.2_real64,0.4_real64,1.0_real64,2.0_real64,status, &
+       deepest_root_oxygen_factor=0.5_real64)
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'late oxygen activation rejected')
+  call discard_wofost_trial_contribution(probe_trial)
+  print '(a)', 'FWOF34_DAILY_FACTOR_PARTIAL_COVERAGE_FAILS_CLOSED=PASS'
+
   call begin_wofost_trial_contribution(checkpoint0, 0.4_real64, trial0, status)
   call require(status == FMR_WOFOST_LINEAGE_OK, 'begin accepted interval zero')
-  call accumulate_wofost_trial_process_rate(trial0, 0.0_real64, 0.2_real64, 2.0_real64, 4.0_real64, status)
+  call accumulate_wofost_trial_process_rate(trial0, 0.0_real64, 0.2_real64, 2.0_real64, 4.0_real64, status, &
+       deepest_root_oxygen_factor=0.25_real64, rootzone_drought_uptake_factor=0.8_real64)
   call require(status == FMR_WOFOST_LINEAGE_OK, 'accepted interval zero first process substep')
-  call accumulate_wofost_trial_process_rate(trial0, 0.2_real64, 0.4_real64, 3.0_real64, 5.0_real64, status)
+  call accumulate_wofost_trial_process_rate(trial0, 0.2_real64, 0.4_real64, 3.0_real64, 5.0_real64, status, &
+       deepest_root_oxygen_factor=0.75_real64, rootzone_drought_uptake_factor=0.6_real64)
   call require(status == FMR_WOFOST_LINEAGE_OK .and. trial0%complete(), 'accepted interval zero complete process coverage')
 
   call advance_and_commit(kernel, model, parameters, forcing, config, committed, checkpoint0, &
@@ -221,9 +256,11 @@ program test_fwof34_accepted_window_runtime_lineage
   call require(ok, 'second F-KT checkpoint')
   call begin_wofost_trial_contribution(checkpoint1, 1.0_real64, trial1, status)
   call require(status == FMR_WOFOST_LINEAGE_OK, 'begin accepted interval one')
-  call accumulate_wofost_trial_process_rate(trial1, 0.4_real64, 0.7_real64, 1.0_real64, 2.0_real64, status)
+  call accumulate_wofost_trial_process_rate(trial1, 0.4_real64, 0.7_real64, 1.0_real64, 2.0_real64, status, &
+       deepest_root_oxygen_factor=0.5_real64, rootzone_drought_uptake_factor=0.4_real64)
   call require(status == FMR_WOFOST_LINEAGE_OK, 'second interval first process substep')
-  call accumulate_wofost_trial_process_rate(trial1, 0.7_real64, 1.0_real64, 2.0_real64, 3.0_real64, status)
+  call accumulate_wofost_trial_process_rate(trial1, 0.7_real64, 1.0_real64, 2.0_real64, 3.0_real64, status, &
+       deepest_root_oxygen_factor=1.0_real64, rootzone_drought_uptake_factor=0.2_real64)
   call require(status == FMR_WOFOST_LINEAGE_OK .and. trial1%complete(), 'second interval process coverage complete')
 
   call admit_wofost_accepted_trial(window, certificate0, trial1, status)
@@ -245,6 +282,12 @@ program test_fwof34_accepted_window_runtime_lineage
   call require(status == FMR_WOFOST_LINEAGE_OK .and. available .and. token1%ready(), 'prepare complete crop event delivery')
   call require_close(aggregates1%actual_root_uptake, 1.9_real64, 2.0e-15_real64, 'accepted IQROT integral excludes rejected trial')
   call require_close(aggregates1%potential_transpiration, 3.3_real64, 2.0e-15_real64, 'accepted IPTRA integral excludes rejected trial')
+  call require(aggregates1%deepest_root_oxygen_factor_available,'accepted IALPWET carrier available')
+  call require_close(aggregates1%deepest_root_oxygen_factor_integral,0.65_real64,2.0e-15_real64, &
+       'accepted IALPWET_DAY integral excludes rejected trial')
+  call require(aggregates1%rootzone_drought_uptake_factor_available,'accepted IALPDRY carrier available')
+  call require_close(aggregates1%rootzone_drought_uptake_factor_integral,0.46_real64,2.0e-15_real64, &
+       'accepted IALPDRY_DAY integral excludes rejected trial')
 
   call prepare_wofost_crop_event_delivery(window, aggregates2, token2, available, status)
   call require(status == FMR_WOFOST_LINEAGE_OK .and. available .and. token2%ready(), 'repeat prepare is allowed before delivery commit')
@@ -252,7 +295,28 @@ program test_fwof34_accepted_window_runtime_lineage
        'retry aggregate IQROT bitwise identity')
   call require(bitwise_equal(aggregates1%potential_transpiration, aggregates2%potential_transpiration), &
        'retry aggregate IPTRA bitwise identity')
+  call require(aggregates1%deepest_root_oxygen_factor_available .eqv. aggregates2%deepest_root_oxygen_factor_available, &
+       'retry oxygen availability identity')
+  call require(bitwise_equal(aggregates1%deepest_root_oxygen_factor_integral,aggregates2%deepest_root_oxygen_factor_integral), &
+       'retry IALPWET_DAY bitwise identity')
+  call require(aggregates1%rootzone_drought_uptake_factor_available .eqv. &
+       aggregates2%rootzone_drought_uptake_factor_available,'retry drought availability identity')
+  call require(bitwise_equal(aggregates1%rootzone_drought_uptake_factor_integral, &
+       aggregates2%rootzone_drought_uptake_factor_integral),'retry IALPDRY_DAY bitwise identity')
   print '(a)', 'FWOF34_FROZEN_AGGREGATE_RETRY_BITWISE_IDENTITY=PASS'
+
+  call identify_wofost_crop_event(token1,identity1,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK.and.identity1%ready(),'identify daily-factor crop event')
+  call export_wofost_crop_event_identity_persistence(identity1,identity_view,exported)
+  call require(exported.and.identity_view%ready(),'export daily-factor identity')
+  call require(identity_view%deepest_root_oxygen_factor_available,'persisted IALPWET availability')
+  call require_close(identity_view%deepest_root_oxygen_factor_integral,0.65_real64,2.0e-15_real64,'persisted IALPWET_DAY')
+  call require(identity_view%rootzone_drought_uptake_factor_available,'persisted IALPDRY availability')
+  call require_close(identity_view%rootzone_drought_uptake_factor_integral,0.46_real64,2.0e-15_real64,'persisted IALPDRY_DAY')
+  call reconstruct_wofost_crop_event_identity_from_persistence(identity_view,identity2,status)
+  call require(status==FMR_WOFOST_LINEAGE_OK.and.identity2%ready(),'reconstruct daily-factor identity')
+  call require(same_wofost_crop_event_identity(identity1,identity2),'daily-factor identity exact roundtrip')
+  print '(a)', 'FWOF34_DAILY_FACTOR_IDENTITY_PERSISTENCE=PASS'
 
   ! Independently prepared event tokens must both authorize identical copies of
   ! the same completed window. This proves deterministic token replay without

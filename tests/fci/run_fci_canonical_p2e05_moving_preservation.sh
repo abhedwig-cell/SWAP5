@@ -276,6 +276,40 @@ for path in "$SW" "$REF_ADAPTER" "$ROSS_ADAPTER"; do
 done
 echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 
+# B19/MICRO current-target preservation with an explicit MC-ROOT01 source exception.
+# All unchanged source paths retain the exact canonical first-parent blob.
+# This bounded exception is NOT proof of scientific preservation for modified paths.
+check_b19_micro_root_recomposition() {
+  local candidate_path
+  while IFS= read -r candidate_path; do
+    case "$candidate_path" in
+      src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
+      src/crop/mod_crop_root_anaerobic_extension_gate.f90 ) ;;
+      src/crop/mod_crop_root_depth_biomass.f90 ) ;;
+      src/crop/mod_crop_root_depth_rate_owner.f90 ) ;;
+      src/crop/mod_crop_root_extension_supply_limit.f90 ) ;;
+      src/crop/mod_wofost_crop_owner_state.f90 ) ;;
+      src/crop/mod_wofost_finalize_rates.f90 ) ;;
+      src/crop/mod_wofost_one_day_structural_evolution.f90 ) ;;
+      src/crop/mod_wofost_potential_shadow_daily.f90 ) ;;
+      src/crop/mod_wofost_potential_shadow_state.f90 ) ;;
+      src/crop/mod_wofost_prepare_assimilation.f90 ) ;;
+      src/crop/mod_wofost_two_phase_crop_window.f90 ) ;;
+      src/runtime/mod_fmr_biomass_root_depth_binding.f90 ) ;;
+      src/runtime/mod_fmr_root_depth_rate_daily_binding.f90 ) ;;
+      src/runtime/mod_fmr_root_depth_supply_composition.f90 ) ;;
+      src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 ) ;;
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 ) ;;
+      *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
+    esac
+  done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
+    test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
+      fail "B19+MICRO shared-owner postimage changed: $candidate_path"
+  done
+  echo 'FCI_CANONICAL_B19_MICRO_RESTRICTED_ROOT_RECOMPOSITION=PASS'
+}
+
 # Preserve the F-ROSS12 selection authority. The default-MvG provider and
 # serialized Reference backend have one later exact semantic successor from
 # F-SI39. F-SI39 was independently qualified (F-VQ127), is an ancestor of
@@ -306,12 +340,12 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     # qualified MICRO02-06 successor changes the shared backend/bootstrap
     # surface while preserving B19 behavior; accept only that exact successor.
     if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
-      test "$(git rev-parse HEAD:src)" = "b61bc508ae16ad87694eb1faa977689530f357c2" || fail 'B19+MICRO exact qualified production tree drift'
-      test "$(git rev-parse HEAD:$BACKEND)" = "ab51d1346ef97a861664cc3ba049aa8685019004" || fail 'B19+MICRO serialized backend drift'
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "cbcdb7ea963227b5acdf9d2b9cfb5cb974d6196e" || fail 'B19+MICRO application bootstrap drift'
+      check_b19_micro_root_recomposition
+      test "$(git rev-parse HEAD:$BACKEND)" = "$(git rev-parse "$dependency_authority:$BACKEND")" || fail 'B19+MICRO current-target serialized backend drift'
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
       echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
     else
-      test "$(git rev-parse HEAD:src)" = "24fda78fd9a38964c16c89d5505b0056185ac410" || fail 'B19 exact candidate production tree drift'
+      check_b19_micro_root_recomposition
       echo 'FCI_CANONICAL_PPA_WU05B19_EXACT_RUNTIME_CANDIDATE=ACTIVE'
     fi
     git merge-base --is-ancestor a9a35a60409a16ef7fdf3a38d5bcffb6899c2416 HEAD || fail 'B19 lost B18 component admission'

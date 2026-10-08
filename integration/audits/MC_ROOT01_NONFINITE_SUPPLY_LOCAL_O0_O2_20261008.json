@@ -1,0 +1,27 @@
+{
+  "schema": "swap431.mc_root01.nonfinite_supply_repair.local_o0_o2.v1",
+  "date": "2026-10-08",
+  "head_scientific_patch": "53628a853f7385f56421f7a6832c2cf0756d45a7",
+  "test_commit": "cee153a96a6ec6c65ff929151da67d6e7ad64775",
+  "scope": "Two exact-blobs production modules plus new local edge regression and preexisting combined oxygen/supply regression",
+  "source_blobs": {
+    "src/crop/mod_crop_root_extension_supply_limit.f90": "677ca2766e18d47cf908d81c146eacce77977162",
+    "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "7f4503648a4979b200764b94e90a4605e5355410",
+    "tests/fmig431/test_root_invalid_edge_local.f90": "2c2e9630763cc6384d3d43e9c8b8e2c86a156277",
+    "tests/fmig431/test_swap431_root_anox_supply_combined.f90": "e29f213ec41138b8eecd9324eb2ead23decbccff"
+  },
+  "defect": "Fortran logical OR does not short circuit: ordered comparison on quiet NaN under -ffpe-trap=invalid raises SIGFPE before returning ROOT_SUPPLY_INVALID_INPUT.",
+  "fix": "Preflight all nine real inputs for finiteness before performing any ordered comparisons; leave accepted numerical formula and valid input policy unchanged.",
+  "local_compile": "gfortran O0 and O2 -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+  "observed": {
+    "before": "edge test O0 SIGFPE",
+    "after_edge_O0": "ROOT_INVALID_EDGE_LOCAL=PASS",
+    "after_edge_O2": "ROOT_INVALID_EDGE_LOCAL=PASS",
+    "existing_regression_O0": "ROOT_ANOX_SUPPLY_COMBINED=PASS",
+    "existing_regression_O2": "ROOT_ANOX_SUPPLY_COMBINED=PASS"
+  },
+  "preservation": "Existing bounded component gate preserved at O0/O2. No coupled whole-column, restart, transactional or WOFOST preservation claimed.",
+  "qualification": "TESTED_COMPONENT_ONLY",
+  "admission": false,
+  "actions_dispatched": 0
+}

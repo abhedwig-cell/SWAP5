@@ -1,0 +1,46 @@
+name: SWAP431 unified root-growth transaction qualification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/swap431-root-unified-transaction.yml'
+      - 'src/crop/**'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_biomass_root_depth_binding.f90'
+      - 'src/runtime/mod_fmr_root_depth_rate_daily_binding.f90'
+      - 'src/runtime/mod_fmr_root_depth_supply_composition.f90'
+      - 'tests/fmig431/run_swap431_potential_shadow*.py'
+      - 'tests/fmig431/run_swap431_potential_shadow_transaction.sh'
+      - 'tests/fmig431/run_swap431_swrd3_oxygen_composition.py'
+      - 'tests/fmig431/run_swap431_root_supply_fail_closed.py'
+      - 'tests/fmig431/test_swap431_*'
+      - 'tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: swap431-root-transaction-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler and source identity
+        run: |
+          gfortran --version
+          git rev-parse HEAD
+          git status --porcelain
+      - name: Potential shadow component and pre-event restart O0/O2
+        run: python3 tests/fmig431/run_swap431_potential_shadow.py
+      - name: Potential shadow production daily O0/O2
+        run: python3 tests/fmig431/run_swap431_potential_shadow_daily.py
+      - name: Actual and potential SWRD3 oxygen O0/O2
+        run: python3 tests/fmig431/run_swap431_swrd3_oxygen_composition.py
+      - name: SWRD2 fail-closed supply O0/O2
+        run: python3 tests/fmig431/run_swap431_root_supply_fail_closed.py
+      - name: Atomic WOFOST transaction rollback and post-event restart O0/O2
+        run: bash tests/fmig431/run_swap431_potential_shadow_transaction.sh

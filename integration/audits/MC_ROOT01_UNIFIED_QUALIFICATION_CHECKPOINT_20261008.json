@@ -1,0 +1,39 @@
+{
+  "schema": "swap431.mc_root01.unified_qualification_checkpoint.v1",
+  "date": "2026-10-08",
+  "work_unit": "MC-ROOT01 unified root scientific qualification",
+  "postimage": "db6371445ac9016bcf48ba40fa141b87cfce0af3",
+  "base": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+  "science_postimage": "8b252c392d429d2ead79765ce0cf0beffc53997e",
+  "workflow": ".github/workflows/swap431-root-unified-transaction.yml",
+  "run_id": 37751141863,
+  "run_status_at_checkpoint": "queued",
+  "covered_gates": [
+    "potential shadow components and pre-event restart O0/O2",
+    "potential shadow daily O0/O2",
+    "SWRD3 actual/potential oxygen O0/O2",
+    "SWRD2 supply fail-closed O0/O2",
+    "F-WOF38-based atomic crop transaction reject/retry, post-event persistence reconstruction O0/O2"
+  ],
+  "previous_evidence": {
+    "fci_run": 37749300540,
+    "fci_result": "success",
+    "swrd1_run": 37749300537,
+    "co2_run": 37749300460
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "actions_manual_dispatches": 0,
+  "blockers": [
+    "Await exact-postimage scientific gate outcome; if failed inspect first failing stage and repair within owner scope.",
+    "Production-wide adaptive root-density and full coupled Richards preservation are not independently claimed by this gate."
+  ],
+  "next_action": "Read run 37751141863, repair first failing test or source defect, re-run only on changed exact postimage, then add targeted adaptive-density and production preservation gates before proposing admission.",
+  "recovery_point": {
+    "branch": "work/swap431-root-fci-joint-gate-20261008",
+    "commit": "db6371445ac9016bcf48ba40fa141b87cfce0af3"
+  }
+}
