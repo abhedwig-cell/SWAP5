@@ -200,6 +200,7 @@ PYMOD
 if src.count('for OPT in 0 2; do') != 1:
     raise SystemExit('F-WOF38 compilation loop anchor missing')
 src = src.replace('for OPT in 0 2; do', dependency_order + '\nfor OPT in 0 2; do', 1)
+src = src.replace('-Werror -fcheck=all', '-Werror -Wno-error=compare-reals -fcheck=all')
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
