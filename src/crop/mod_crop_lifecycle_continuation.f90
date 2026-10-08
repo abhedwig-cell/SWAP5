@@ -3,6 +3,8 @@ module mod_crop_lifecycle_continuation
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
   use mod_crop_germination_preflight, only: crop_germination_candidate_t
+  use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_crop_event_identity_t, &
+       same_wofost_crop_event_identity
   implicit none
   private
   integer, parameter, public :: CROP_CONT_OK=0, CROP_CONT_INVALID=1, CROP_CONT_STALE=2, &
@@ -11,7 +13,7 @@ module mod_crop_lifecycle_continuation
     logical :: valid=.false.
     integer(int64) :: revision=0_int64
     integer(int64) :: crop_identity=0_int64
-    integer(int64) :: last_event_identity=0_int64
+    type(fmr_wofost_crop_event_identity_t) :: last_event_identity
     logical :: prepared=.false., sown=.false., germinated=.false., emerged=.false., harvested=.false.
     integer :: preparation_delay=0, sowing_delay=0
     real(real64) :: germination_temperature_sum=0.0_real64
@@ -24,7 +26,7 @@ contains
     class(crop_lifecycle_continuation_t), intent(in) :: self
     ok=.false.
     if(.not.self%valid.or.self%revision<0_int64.or.self%crop_identity<=0_int64) return
-    if(self%last_event_identity<0_int64.or.self%preparation_delay<0.or.self%sowing_delay<0) return
+    if(self%preparation_delay<0.or.self%sowing_delay<0) return
     if(.not.ieee_is_finite(self%germination_temperature_sum)) return
     if(self%germination_temperature_sum<0.0_real64) return
     if(self%sown.and..not.self%prepared) return
@@ -40,7 +42,8 @@ contains
     type(crop_lifecycle_continuation_t), intent(in) :: current
     type(crop_daily_lifecycle_candidate_t), intent(in) :: plan
     type(crop_germination_candidate_t), intent(in) :: germination
-    integer(int64), intent(in) :: expected_revision,event_identity
+    integer(int64), intent(in) :: expected_revision
+    type(fmr_wofost_crop_event_identity_t), intent(in) :: event_identity
     type(crop_lifecycle_continuation_t), intent(out) :: candidate
     integer, intent(out) :: status
     candidate=current
@@ -50,8 +53,8 @@ contains
       status=CROP_CONT_STALE
       return
     end if
-    if(event_identity<=0_int64) return
-    if(event_identity==current%last_event_identity) then
+    if(.not.event_identity%ready()) return
+    if(same_wofost_crop_event_identity(event_identity,current%last_event_identity)) then
       status=CROP_CONT_DUPLICATE
       return
     end if
