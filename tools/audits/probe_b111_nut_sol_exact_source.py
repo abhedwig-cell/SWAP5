@@ -94,7 +94,15 @@ rate_needles=[
 ]
 for needle in rate_needles:
     if needle not in rate:
-        raise SystemExit("missing exact Soil-N rate equation: "+needle)
+        # Preserve the fail-closed match. A readable source snippet helps
+        # distinguish a changed B1.11 equation from a formatting-only oracle
+        # mismatch, without substituting public SWAP or weakening the gate.
+        raw=members["SWAP/wofost_soil_rateconstants.f90"].decode("latin1")
+        term=needle.split("=",1)[0]
+        matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
+                 if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
+        raise SystemExit("missing exact Soil-N rate equation: "+needle+
+                         "; exact bundled source assignments: "+repr(matches[:12]))
 
 nfix_needles=[
  "if(dvs.lt.dvsnlt.and.reltr.gt.0.01d0)then",
