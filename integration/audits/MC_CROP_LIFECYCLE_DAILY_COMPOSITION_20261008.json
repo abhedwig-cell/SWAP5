@@ -18,8 +18,8 @@
   "scope": "Pure source-ordered daily lifecycle candidate composition; no physical mutation or event publication",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "admitted": false,
   "guards": [
     "no germination consumption before prep and sow complete",
@@ -27,5 +27,16 @@
     "idempotent candidate replay",
     "no F-KT/crop owner/transport/restart changes"
   ],
-  "next_action": "Run focused O0/O2 on persisted head; then exact-head F-CI preservation and bounded admission if passed. Physical event and restart remain open."
+  "next_action": "Admit bounded pure composition after exact-head and overlap verification; physical event publication, harvest and restart still open.",
+  "qualification": {
+    "scientific_head": "fa92e90d4ddd182dcbec03ef737458c328d863e2",
+    "o0_o2": {
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37819942899",
+      "result": "PASS"
+    },
+    "fci": {
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37819942924",
+      "result": "PASS"
+    }
+  }
 }
