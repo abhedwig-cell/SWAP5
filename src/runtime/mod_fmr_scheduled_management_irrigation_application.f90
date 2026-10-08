@@ -91,7 +91,16 @@ contains
     root_summary = irrigation_root_zone_summary_t()
     diagnostics = fmr_irrigation_management_diagnostics_t()
 
-    if (.not. ieee_is_finite(request%t0) .or. .not. ieee_is_finite(request%t1) .or. request%t1 <= request%t0) then
+    ! Fortran is not required to short-circuit .or.; gate NaN before comparison.
+    if (.not. ieee_is_finite(request%t0)) then
+      diagnostics%status = FMR_IRR_MGMT_APP_INVALID_INTERVAL
+      return
+    end if
+    if (.not. ieee_is_finite(request%t1)) then
+      diagnostics%status = FMR_IRR_MGMT_APP_INVALID_INTERVAL
+      return
+    end if
+    if (request%t1 <= request%t0) then
       diagnostics%status = FMR_IRR_MGMT_APP_INVALID_INTERVAL
       return
     end if
