@@ -117,6 +117,13 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
        model,status,split,1.57_real64,0.99_real64,0.0_real64,1.57_real64,0.99_real64)
   call check(status==FMR_B111_COUPLED_N_OK,'postharvest model config')
   deallocate(committed);allocate(committed,source=restarted)
+  select type(committed)
+  type is(fmr_b111_soil_crop_n_state_t)
+    print '(A,L1,A,L1)','postharvest input ready=',committed%ready(), &
+         ' duplicate=',committed%consumed_interval(1.0_real64,2.0_real64)
+  class default
+    error stop 'unexpected postharvest state type'
+  end select
 
   call execute_reference_interval(model,committed,1.0_real64,2.0_real64,policy,tx)
   if(tx%status/=TX_STATUS_ACCEPTED)then
