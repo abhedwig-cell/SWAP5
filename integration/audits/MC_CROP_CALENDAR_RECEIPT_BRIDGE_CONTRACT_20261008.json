@@ -1,0 +1,40 @@
+{
+  "schema": "swap431.crop_calendar_receipt_binding.v1",
+  "canonical_baseline": "ff2116b72403d7da4df616c694b4973c23c11c25",
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "component": "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90",
+  "admitted_dependencies": [
+    "src/crop/mod_crop_rotation_calendar.f90",
+    "src/crop/mod_crop_rotation_transition.f90",
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
+  ],
+  "allowed_publication": "Only derived crop-calendar checkpoint and retired accepted-window cache after matching committed crop-event receipt",
+  "never_mutate": [
+    "F-KT committed crop physical state",
+    "F-KT kernel/checkpoint",
+    "hydraulic state/forcing",
+    "crop owner",
+    "transport/state-owner interfaces"
+  ],
+  "fail_closed": [
+    "invalid calendar",
+    "unready/unbound committed kernel",
+    "nonforward current time",
+    "invalid calendar transition",
+    "missing/mismatched committed event receipt",
+    "duplicate window retirement",
+    "stale accept"
+  ],
+  "test_requirements": [
+    "accepted matching event -> calendar/window publication once",
+    "mismatched/absent receipt -> both unchanged",
+    "duplicate receipt -> no calendar time/revision advance",
+    "reject/retry -> candidate/no changes",
+    "physical committed state unchanged bit-exact",
+    "restart on physical crop checkpoint plus calendar snapshot -> same successor",
+    "O0/O2 and canonical preservation"
+  ],
+  "qualification": "NOT_RUN",
+  "admission": "DRAFT_UNADMITTED",
+  "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution"
+}
