@@ -61,3 +61,5 @@ jobs:
         run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
       - name: MC-IRR01 shared management policy
         run: bash tests/mc-irr01/run_mc_irr01_management_policy.sh
+      - name: MC-IRR01 sensor and SSDI authoritative mass
+        run: bash tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh
