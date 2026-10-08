@@ -77,15 +77,20 @@ import sys
 p=Path(sys.argv[1])
 s=p.read_text(encoding='utf-8')
 
-# The historical F-WOF34 dummy donor specifies a complete single inflow
-# and storage delta, but predates explicit mass-completeness publication.
-# Keep modern fail-closed production accounting; update only the generated
-# *test* donor's receipt to state what its conserved physics already proves.
-mass_anchor="    outcome%solver_ok = .true.\n    outcome%mass_in = transfer_mass\n"
-mass_new=mass_anchor+"    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = 0\n"
-if s.count(mass_anchor)!=1:
-    raise SystemExit("F-WOF34 physical donor mass authority anchor changed")
-s=s.replace(mass_anchor,mass_new,1)
+# Patch the F-WOF34 donor in the generated runner's f34_module, not the
+# F-WOF33 program held in the variable s.
+donor_anchor="f34_module = f34.split(marker, 1)[0].rstrip() + '\\n\\n'"
+donor_code="""f34_mass_anchor = "    outcome%solver_ok = .true.\\n    outcome%mass_in = transfer_mass\\n"
+if f34_module.count(f34_mass_anchor) != 1:
+    raise SystemExit("F-WOF34 donor mass anchor changed")
+f34_module = f34_module.replace(
+    f34_mass_anchor, f34_mass_anchor +
+    "    outcome%mass_accounting_complete = .true.\\n"
+    "    outcome%missing_mass_contribution_mask = 0\\n", 1)
+"""
+if s.count(donor_anchor)!=1:
+    raise SystemExit("F-WOF38 generator anchor changed")
+s=s.replace(donor_anchor,donor_anchor+"\\n"+donor_code,1)
 
 # The frozen F-WOF38 generated program does not import this newer
 # optional potential-shadow type, even though the implementation is compiled.
