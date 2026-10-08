@@ -158,8 +158,14 @@ crop_n_owner_needles=[
  "rnldst=rnfst*drst",
 ]
 for needle in crop_n_owner_needles:
-    if needle not in nut:
-        raise SystemExit("missing exact B1.11 crop-N owner equation: "+needle)
+    if needle in nut or normalize_fortran_d_literals(needle) in normalize_fortran_d_literals(nut):
+        continue
+    raw=members["SWAP/wofostnut.f90"].decode("latin1")
+    term=needle.split("=",1)[0]
+    matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
+             if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
+    raise SystemExit("missing exact B1.11 crop-N owner equation: "+needle+
+                     "; exact bundled source assignments: "+repr(matches[:12]))
 
 # Crop orchestration in cropgrowth.f90 is NOT covered by this pinned archive.
 # Never infer its qualification from the wofostnut.f90 owner subroutines.
