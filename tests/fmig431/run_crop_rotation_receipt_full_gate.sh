@@ -213,6 +213,50 @@ src = src.replace(diagnostic, """    if (result%status /= CANONICAL_STATUS_COMPL
            diagnostics%accepted_substeps, result%mass%missing_contribution_mask
     end if
 """ + diagnostic, 1)
+# The frozen F-WOF34 toy model predates mandatory explicit mass-completeness
+# reporting. Adapt only the generated fixture; production owners stay intact.
+mass_patch = r'''
+old = "  use, intrinsic :: iso_fortran_env, only: real64\n"
+new = "  use, intrinsic :: iso_fortran_env, only: real64, int64\n"
+if f34_module.count(old) != 1: raise SystemExit('FWO34 toy real kind anchor drift')
+f34_module = f34_module.replace(old, new, 1)
+old = "  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t\n"
+new = "  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, &\n       TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED\n"
+if f34_module.count(old) != 1: raise SystemExit('FWO34 toy transaction import drift')
+f34_module = f34_module.replace(old, new, 1)
+old = "    procedure :: temporal_error => fwof34_temporal_error\n"
+new = old + "    procedure :: storage_accounting_status => fwof34_storage_accounting_status\n"
+if f34_module.count(old) != 1: raise SystemExit('FWO34 toy storage status binding drift')
+f34_module = f34_module.replace(old, new, 1)
+old = "    outcome%mass_in = transfer_mass\n"
+new = old + "    outcome%mass_accounting_complete = .true.\n    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE\n"
+if f34_module.count(old) != 1: raise SystemExit('FWO34 toy process mass evidence drift')
+f34_module = f34_module.replace(old, new, 1)
+old = "end module mod_fwof34_test_model"
+new = """  subroutine fwof34_storage_accounting_status(self, state, complete, missing_mask)
+    class(fwof34_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    if (self%flux_rate < 0.0_real64) return
+    select type (state)
+    type is (fwof34_state_t)
+      complete = .true.
+      missing_mask = TX_MASS_MISSING_NONE
+    class default
+      complete = .false.
+    end select
+  end subroutine fwof34_storage_accounting_status
+
+""" + old
+if f34_module.count(old) != 1: raise SystemExit('FWO34 toy module footer drift')
+f34_module = f34_module.replace(old, new, 1)
+'''
+if src.count("s = f33\n") != 1:
+    raise SystemExit('F-WOF38 donor toy model materialization anchor drift')
+src = src.replace("s = f33\n", mass_patch + "\ns = f33\n", 1)
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
