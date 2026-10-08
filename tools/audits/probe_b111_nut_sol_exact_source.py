@@ -179,8 +179,14 @@ addition_needles=[
  "asfa=0.25d0/(1.0d0+exp(-2.7d0*(age-2.0d0)))+0.03d0",
 ]
 for needle in addition_needles:
-    if needle not in amend:
-        raise SystemExit("missing exact amendment equation: "+needle)
+    if needle in amend or normalize_fortran_d_literals(needle) in normalize_fortran_d_literals(amend):
+        continue
+    raw=members["SWAP/wofost_soil_amendments.f90"].decode("latin1")
+    term=needle.split("=",1)[0]
+    matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
+             if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
+    raise SystemExit("missing exact amendment equation: "+needle+
+                     "; exact bundled source assignments: "+repr(matches[:12]))
 amend_raw=members["SWAP/wofost_soil_amendments.f90"].decode("latin1").lower()
 if not re.search(r"am_om\s*(?:>=|\.ge\.)\s*1(?:\.0+)?d-?6",amend_raw):
     raise SystemExit("missing exact amendment 1e-6 OM threshold")
