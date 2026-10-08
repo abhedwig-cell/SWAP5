@@ -4,6 +4,8 @@ rows=[]
 vapor_rows=[]
 for line in pathlib.Path(sys.argv[1]).read_text().splitlines():
     q=line.split()
+    if not q:
+        continue
     if q[0]=="V":
         vapor_rows.append((int(q[1]),*map(float,q[2:])))
     else:
@@ -72,6 +74,8 @@ def calc(model,h):
     return th,ks*((1-ok)*kc+ok*(h0/ha)**(apar*(1-sad))),cp
 
 for model,h,th,k,cap,dk in rows:
+    if not all(math.isfinite(v) for v in (h,th,k,cap,dk)):
+        raise SystemExit(f"model {model} non-finite hydraulic output")
     exp=(0.25,1.25,0.005) if model==1 else (m2(h) if model==2 else calc(model,h))
     for name,a,b in zip(("theta","K","C"),(th,k,cap),exp):
       scale=max(1.0,abs(a),abs(b))
@@ -95,6 +99,8 @@ rho_sv=1e-3*math.exp(31.3716-6014.79/tk-7.92495e-3*tk)/tk
 f_kvap=rho_sv/1000.0*mg_rt
 conv=100.0*86400.0
 for model,theta_v,k_v,delta in vapor_rows:
+    if not all(math.isfinite(v) for v in (theta_v,k_v,delta)):
+        raise SystemExit(f"model {model} non-finite vapor output")
     theta0,k0=base_by_model[model]
     air=C[2]-theta0
     expected=f_kvap*(air**(7.0/3.0+1.0)/C[2]**2)*da*math.exp(-100.0/100.0*mg_rt)*conv
