@@ -206,7 +206,11 @@ diagnostic = "    call require(result%status == CANONICAL_STATUS_COMPLETED .and.
 if src.count(diagnostic) != 1:
     raise SystemExit('physical donor status diagnostic anchor drift')
 src = src.replace(diagnostic, "    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\n" +
-    "      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed\n" +
+    "      print *, 'FWOF38_PHYSICAL_TRIAL_STATUS=', result%status, ' COMPLETED=', result%completed\n    "      print *, 'FWOF38_TX_DIAG=', diagnostics%solver_rejections, diagnostics%temporal_rejections, &\n" +
+    "           diagnostics%mass_rejections, diagnostics%temporal_certificate_unavailable_rejections\n" +
+    "      print *, 'FWOF38_TX_COUNTS=', diagnostics%attempts, diagnostics%retries, &\n" +
+    "           diagnostics%accepted_substeps, result%mass%missing_contribution_mask\n" +
+" +
     "    end if\n" + diagnostic, 1)
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
