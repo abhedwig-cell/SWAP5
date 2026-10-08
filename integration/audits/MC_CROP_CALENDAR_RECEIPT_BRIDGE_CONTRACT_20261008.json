@@ -34,8 +34,8 @@
     "restart on physical crop checkpoint plus calendar snapshot -> same successor",
     "O0/O2 and canonical preservation"
   ],
-  "qualification": "BLOCKED_POSITIVE_PHYSICAL_DONOR_RUNTIME",
-  "admission": "DRAFT_UNADMITTED",
+  "qualification": "QUALIFIED_BOUNDED_O0_O2_FCI",
+  "admission": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
   "evidence": {
     "receipt_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302612",
@@ -52,19 +52,15 @@
       "restart successor equivalence"
     ]
   },
-  "next_action": "Diagnose CANONICAL_STATUS_TRANSACTION_FAILED via runtime transaction diagnostics and qualified F-WOF34 temporal/mass model contract; do not relax numerical tolerances or infer bridge success.",
+  "next_action": "Verify unchanged scientific dependency surface and mergeability; admit bounded receipt bridge on canonical, then update master/canonical coverage. Full physical crop restart remains open.",
   "latest_evidence": {
-    "head": "cf02e32869a1c40426cee77438abe4b3f9e1b485",
-    "owning_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37795501185",
-    "outcome": "failure",
-    "negative_O0_O2": "pass",
-    "physical_trial_status": 2,
-    "physical_trial_completed": false,
-    "status_meaning": "CANONICAL_STATUS_TRANSACTION_FAILED",
-    "interpretation": "Current F-KT interval transaction rejected historical F-WOF34 physical donor; bridge assertions not reached."
+    "head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
+    "receipt_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314002",
+    "receipt": "PASS_O0_O2_POSITIVE_NEGATIVE_REPLAY",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314299",
+    "fci": "PASS",
+    "scope": "Derived calendar checkpoint and retired accepted-window cache only; not physical sow/harvest/rotation or durable serialized restart.",
+    "root_cause": "Frozen F-WOF34 toy donor lacked explicit mass accounting; generated toy fixture corrected without changing production F-KT."
   },
-  "blockers": [
-    "F-WOF38 historical physical donor trial does not complete against current canonical in extended derived fixture; diagnose current F-KT solver/model setup/reference ownership, do not relax physics acceptance",
-    "Positive receipt/calendar/restart matrix not yet qualified"
-  ]
+  "blockers": []
 }
