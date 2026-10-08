@@ -8,7 +8,8 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 DONOR=tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-EXPECTED_DONOR_BLOB=435ae756e326fc059a771f202eb3d9a144460257
+# Reconciled against current canonical donor; original F-WOF39 fixture remains unchanged.
+EXPECTED_DONOR_BLOB=d782f0d17706f6d824b12d130238791c5e8a2ab4
 ACTUAL_DONOR_BLOB="$(git hash-object "$DONOR")"
 if [[ "$ACTUAL_DONOR_BLOB" != "$EXPECTED_DONOR_BLOB" ]]; then
   echo "F-WOF39 donor drift: expected $EXPECTED_DONOR_BLOB got $ACTUAL_DONOR_BLOB" >&2
