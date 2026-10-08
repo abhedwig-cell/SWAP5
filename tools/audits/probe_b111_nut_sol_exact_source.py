@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Fail-closed exact B1.11 equation gate for MC-NUT01 / MC-SOL01."""
-import base64, hashlib, io, re, subprocess, tarfile
+import argparse, base64, hashlib, io, re, subprocess, tarfile
 from pathlib import Path
 
+parser=argparse.ArgumentParser(description="Verify SHA-pinned B1.11 source witnesses")
+parser.add_argument("--source-only",action="store_true",
+                    help="Verify exact archived source without invoking Fortran tests")
+args=parser.parse_args()
 ROOT=Path(__file__).resolve().parents[2]
 BUNDLE=ROOT/"integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
 EXPECTED={
@@ -252,6 +256,10 @@ for needle in [
     if needle not in decision:
         raise SystemExit("organic-N reference-correction decision contract missing: "+needle)
 
+print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_WITNESSES_PASS")
+if args.source_only:
+    raise SystemExit(0)
+
 subprocess.run(["bash",str(ROOT/"tests/physics/run_swap431_nut_sol_owner_components.sh")],cwd=ROOT,check=True)
 subprocess.run(["bash",str(ROOT/"tests/fwof/pp02/run_b111_crop_n_fixation_policy.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_soil_n_transaction.sh").exists():
@@ -268,4 +276,4 @@ if (ROOT/"tests/physics/run_b111_age_tracer_substep.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_b111_age_tracer_substep.sh")],cwd=ROOT,check=True)
 if (ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh").exists():
     subprocess.run(["bash",str(ROOT/"tests/physics/run_fmr_b111_reactive_solute_transaction.sh")],cwd=ROOT,check=True)
-print("SWAP431_B111_NUT_SOL_EXACT_SOURCE_PASS")
+print("SWAP431_B111_NUT_SOL_SOURCE_AND_COMPONENTS_PASS")
