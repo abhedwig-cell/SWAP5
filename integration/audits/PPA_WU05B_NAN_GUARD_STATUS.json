@@ -1,0 +1,42 @@
+{
+  "schema": "swap5.frost_invalid_guard.status.v1",
+  "work_unit": "PPA-WU05B-NAN-GUARD",
+  "baseline": "7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
+  "checkpoint_commit": "ddc027296e463cff114b1cd947da6218453dff52",
+  "last_reconciled_upstream": "7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "admitted": false,
+  "relevant_paths": [
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost/test_frost_invalid_input_preservation.f90",
+    "tests/frost/test_invalid_parameter_guard.f90",
+    "tests/frost/run_frost_invalid_input_preservation.sh"
+  ],
+  "test_paths": [
+    "tests/frost/run_frost_invalid_input_preservation.sh",
+    "tests/frost/run_ppa_wu05b_frost_effect.sh",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh"
+  ],
+  "local_focused_test": {
+    "command": "bash tests/frost/run_frost_invalid_input_preservation.sh",
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "result": "PASS",
+    "postimage_file_identities": [
+      "0dd5b541af936d292d23575f798c3cdd5be19c47",
+      "02eeaac0f934d8e06432bc40c6e2ceb24e97ab1e",
+      "a33e28b61147d665736831f23948eaac2939a20a"
+    ]
+  },
+  "next_action": "Run existing complete frost provider/runtime-preservation against pinned branch, reconcile preservation, then independent canonical admission decision; no new Actions run has been started.",
+  "recovery_point": "PR #1119 draft at ddc027296e463cff114b1cd947da6218453dff52",
+  "blockers": [
+    "Complete local source dependency tree unavailable via shell DNS; focused source and tests available through GitHub connector."
+  ]
+}
