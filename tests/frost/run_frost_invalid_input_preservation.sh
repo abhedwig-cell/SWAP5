@@ -6,7 +6,7 @@ trap 'rm -rf "$BUILD"' EXIT
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   mkdir -p "$OUT"
-  for test in test_ppa_wu05b_frost_effect test_frost_invalid_input_preservation; do
+  for test in test_ppa_wu05b_frost_effect test_frost_invalid_input_preservation test_invalid_parameter_guard; do
     gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror \
       -fcheck=all -ffpe-trap=invalid,zero,overflow -O"$opt" \
       -J "$OUT" -I "$OUT" \
@@ -16,6 +16,7 @@ for opt in 0 2; do
   done
   grep -Fxq 'PPA-WU05B frost effect: PASS' "$OUT/output.txt"
   grep -Fxq 'FROST_INVALID_INPUT_PRESERVATION=PASS' "$OUT/output.txt"
+  grep -Fxq 'INVALID_PARAMETER_GUARD=PASS' "$OUT/output.txt"
   cat "$OUT/output.txt"
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
