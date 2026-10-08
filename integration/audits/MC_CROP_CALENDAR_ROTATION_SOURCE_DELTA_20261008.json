@@ -29,8 +29,8 @@
   "delta": [
     {
       "capability": "SW431-CROP-ROTATION",
-      "status": "OPEN_SOURCE_BOUND_EXECUTION_GAP",
-      "requires": "Explicit typed ordered crop schedule, active crop lookup, start/stop/harvest lifecycle, committed transition and restart representation before canonical admission"
+      "status": "DERIVED_CLOCK_ADMITTED_PHYSICAL_ROTATION_OPEN",
+      "requires": "No duplicate admitted selector/transition/receipt. Remaining physical crop owner, sow/harvest, and serialized restart coupling."
     },
     {
       "capability": "SW431-CROP-SOW",
@@ -59,5 +59,28 @@
     "Reconcile transport/state owner/hydraulic forcing and preexisting WOFOST81 lifecycle before production binding",
     "Qualify calendar and sowing/fixed/thermal independently and admit only after F-CI moving preservation"
   ],
-  "disposition": "DOCUMENTED_OPEN; no new scientific production implementation; preserve active owner workstreams and no Actions rerun"
+  "disposition": "DOCUMENTED_OPEN; no new scientific production implementation; preserve active owner workstreams and no Actions rerun",
+  "post_pr1132_reconciliation": {
+    "canonical": "9c01f3cea1f8f29140a26c1535dcc0ec956a780b",
+    "admitted_prs": [
+      1130,
+      1131,
+      1132
+    ],
+    "admitted_scope": "calendar selector, trial/accept checkpoint transition, committed-receipt derived calendar/window publication",
+    "source_review": "B1.11 MOD_cropdevelopment.f90 croprotation/find_active_crop/cropemergence lines 180-449",
+    "still_open": [
+      "start inside season SWINCO=3 policy and state reconstruction",
+      "preparation/sowing/germination conditional on hydraulic and thermal state",
+      "crop physical owner initialization, harvest/reset, root extraction initialization",
+      "serialized physical crop/calendar restart across crops"
+    ],
+    "source_guards": [
+      "adjacent crop separation >= 0.5 days",
+      "initial TSTART inside growing season requires SWINCO=3",
+      "crop selection uses 0.1 day tolerance and cropstart marker 0.001 day",
+      "new crop resets prep/sow/germ/emergence/harvest in legacy; SWAP5 must not mutate committed owner before accepted event"
+    ],
+    "next_safe_step": "Nonmutating source-bound lifecycle preflight and explicit owner transaction/restart contract; no duplicate selector/calendar/receipt implementation"
+  }
 }
