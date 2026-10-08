@@ -13,6 +13,30 @@ replace_one('    outcome%mass_in = transfer_mass',
             '    outcome%mass_in = transfer_mass\n'
             '    outcome%mass_accounting_complete = .true.\n'
             '    outcome%missing_mass_contribution_mask = 0_8')
+# Current transaction core also requires explicit storage provenance.
+# Repair the disposable toy's method rather than altering production science.
+replace_one('    procedure :: temporal_error => fwof34_temporal_error',
+            '    procedure :: temporal_error => fwof34_temporal_error\\n'
+            '    procedure :: storage_accounting_status => fwof34_storage_accounting_status')
+replace_one('  real(real64) function fwof34_storage(self, state) result(value)',
+'''  subroutine fwof34_storage_accounting_status(self, state, complete, missing_mask)
+    class(fwof34_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(kind=8), intent(out) :: missing_mask
+    complete = .false.
+    missing_mask = 1_8
+    if (.not. same_type_as(self,self)) return
+    select type(state)
+    type is (fwof34_state_t)
+      complete = .true.
+      missing_mask = 0_8
+    class default
+      return
+    end select
+  end subroutine fwof34_storage_accounting_status
+
+  real(real64) function fwof34_storage(self, state) result(value)''')
 replace_one('  use mod_fmr_wofost_crop_transaction\n',
             '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n  use mod_crop_lifecycle_daily_composition\n  use mod_crop_germination_preflight\n')
 replace_one('  integer(kind=8) :: crop_revision_before\n',
