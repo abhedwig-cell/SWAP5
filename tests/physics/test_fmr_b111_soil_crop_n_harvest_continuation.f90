@@ -2,9 +2,11 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t,transaction_policy_t,transaction_result_t, &
        execute_reference_interval,TX_STATUS_ACCEPTED,TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t,initialize_soil_n_pool_state,SOIL_N_OK
+  use mod_soil_n_pool_state, only: soil_n_inventory_parameters_t,soil_n_pool_state_t,soil_n_transfer_t, &
+       initialize_soil_n_pool_state,SOIL_N_OK
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t
-  use mod_b111_soil_n_addition, only: b111_soil_n_split_parameters_t
+  use mod_b111_soil_n_addition, only: b111_soil_n_split_parameters_t, b111_soil_n_material_t, &
+       build_b111_residue_transfer
   use mod_b111_soil_n_daily_exchange, only: b111_soil_n_exchange_forcing_t
   use mod_b111_soil_n_daily_candidate, only: b111_soil_n_rate_environment_t
   use mod_b111_crop_n_owner, only: b111_crop_n_state_t,b111_crop_n_forcing_t,initialize_b111_crop_n_state,B111_CROPN_OK
@@ -29,7 +31,10 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   class(transaction_state_t),allocatable::committed
   type(transaction_policy_t)::policy
   type(transaction_result_t)::tx
-  integer::status
+  integer::status,diagnostic_status,k
+  type(b111_soil_n_material_t)::diagnostic_material
+  type(soil_n_transfer_t)::diagnostic_transfer
+  real(real64)::residue_dm(4),residue_n(4),residue_age(4)
   logical::available,consumed
   real(real64)::t0,t1,prd,pnr,pld,pnl,psd,psn,pod,pon,whole0,whole1,whole2
 
@@ -118,6 +123,21 @@ program test_fmr_b111_soil_crop_n_harvest_continuation
   call configure_fmr_b111_soil_crop_n_model(tp,spread(0.45_real64,1,8),0.50_real64,0.55_real64,env,sf,cf2, &
        model,status,split,1.57_real64,0.99_real64,0.0_real64,1.57_real64,0.99_real64)
   call check(status==FMR_B111_COUPLED_N_OK,'postharvest model config')
+  ! Diagnostic-only, replicate the four source-bound material builds without
+  ! changing any accepted soil/crop state or relaxing the production contract.
+  residue_dm=[prd,pld,psd,pod]
+  residue_n=[pnr,pnl,psn,pon]
+  residue_age=[1.57_real64,0.99_real64,1.57_real64,0.99_real64]
+  do k=1,4
+    diagnostic_material=b111_soil_n_material_t()
+    diagnostic_material%application_kg_m2=residue_dm(k)*1.0e-4_real64
+    diagnostic_material%application_age=residue_age(k)
+    diagnostic_material%organic_matter_fraction=1.0_real64
+    diagnostic_material%organic_n_fraction=residue_n(k)/residue_dm(k)
+    call build_b111_residue_transfer(ps%depth_m,diagnostic_material,split,diagnostic_transfer,diagnostic_status)
+    print '(A,I0,A,ES14.6,A,I0)', 'postharvest material=',k, &
+         ' organic_N_fraction=',diagnostic_material%organic_n_fraction,' build_status=',diagnostic_status
+  end do
   deallocate(committed);allocate(committed,source=restarted)
   select type(committed)
   type is(fmr_b111_soil_crop_n_state_t)
