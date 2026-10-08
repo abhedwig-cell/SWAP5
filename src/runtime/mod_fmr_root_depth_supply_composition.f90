@@ -84,8 +84,8 @@ contains
       return
     end if
 
-    candidate=base_candidate
     if(.not.diagnostics%base%actual_extension_allowed .or. diagnostics%base%actual_extension_before_scaling_cm<=0.0_real64)then
+      candidate=base_candidate
       status=FMR_ROOT_SUPPLY_OK
       return
     end if
@@ -111,6 +111,7 @@ contains
     end if
     diagnostics%supply_evaluated=.true.
 
+    candidate=base_candidate
     candidate%actual_root_depth_cm=committed_depth%actual_root_depth_cm+diagnostics%supply%extension_cm
     if(candidate%validate()/=CROP_ROOT_RATE_OK.or. &
          candidate%actual_root_depth_cm>candidate%potential_root_depth_cm+ &
