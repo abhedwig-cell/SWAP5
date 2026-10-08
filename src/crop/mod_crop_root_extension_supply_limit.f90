@@ -32,6 +32,16 @@ contains
 
     result=root_extension_supply_result_t()
     status=ROOT_SUPPLY_INVALID_INPUT
+    ! Fortran .or. does not guarantee short-circuit evaluation under invalid traps.
+    if(.not.ieee_is_finite(proposed_extension_cm))return
+    if(.not.ieee_is_finite(minimum_extension_cm))return
+    if(.not.ieee_is_finite(daily_drought_uptake_factor))return
+    if(.not.ieee_is_finite(extent_critical_fraction))return
+    if(.not.ieee_is_finite(deepest_node_root_biomass))return
+    if(.not.ieee_is_finite(current_root_depth_cm))return
+    if(.not.ieee_is_finite(deepest_node_top_depth_cm))return
+    if(.not.ieee_is_finite(available_root_growth))return
+    if(.not.ieee_is_finite(negligible_extension_cm))return
     if(.not.ieee_is_finite(proposed_extension_cm).or.proposed_extension_cm<0.0_real64)return
     if(.not.ieee_is_finite(minimum_extension_cm).or.minimum_extension_cm<0.0_real64)return
     if(.not.ieee_is_finite(daily_drought_uptake_factor).or. &
