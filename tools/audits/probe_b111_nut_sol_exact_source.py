@@ -133,8 +133,13 @@ nfix_needles=[
  "ndemandbiofix=nfixf*ndemto",
 ]
 for needle in nfix_needles:
-    if needle not in nut:
-        raise SystemExit("missing exact N-fixation equation: "+needle)
+    if needle in nut or normalize_fortran_d_literals(needle) in normalize_fortran_d_literals(nut):
+        continue
+    raw=members["SWAP/wofostnut.f90"].decode("latin1")
+    term="dvsnlt" if "dvsnlt" in needle else "ndemandbiofix"
+    matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1) if term in line.lower()]
+    raise SystemExit("missing exact N-fixation equation: "+needle+
+                     "; exact bundled source lines: "+repr(matches[:20]))
 
 crop_n_owner_needles=[
  "ndeml=max(nmaxlv*wlv-anlv,0.0d0)",
