@@ -1,0 +1,16 @@
+name: SWAP431 crop rotation calendar selector qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_rotation_calendar.f90'
+      - 'tests/fmig431/test_crop_rotation_calendar.f90'
+      - 'tests/fmig431/run_crop_rotation_calendar.sh'
+      - '.github/workflows/swap431-crop-rotation-calendar.yml'
+jobs:
+  calendar-selector:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: O0 O2 standalone calendar selector qualification
+        run: bash tests/fmig431/run_crop_rotation_calendar.sh
