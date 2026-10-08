@@ -53,10 +53,15 @@
   "qualification": {
     "component_runner": "tests/fmig431/run_swap431_potential_shadow.py",
     "atomic_transaction_gate": "tests/fmig431/run_swap431_potential_shadow_transaction.sh",
-    "status": "PERSISTED_QUALIFICATION_QUEUED_ON_CURRENT_CANONICAL",
-    "current_run_id": 37683668963,
-    "current_head": "3a20ed4fbb3cc708588e18594ef9e634b1e160cc",
-    "second_event_restart": "tests/fmig431/run_swap431_potential_shadow_transaction.sh now compares continuous vs reconstructed execution through a second accepted event"
+    "status": "POST_0325630_O2_COMPILER_FAILURE_FIXED_IN_F14B2F1_NEW_RUN_UNVERIFIED",
+    "current_head": "f14b2f1725b88b8ba32a0f79119e9553f3520200",
+    "second_event_restart": "tests/fmig431/run_swap431_potential_shadow_transaction.sh now compares continuous vs reconstructed execution through a second accepted event",
+    "last_verified_failed_run": {
+      "run_id": 37706940713,
+      "postimage": "0325630893ff2549c8a917572096b9d8f2c905b5",
+      "failure": "O2 -Werror=function-elimination in test_swap431_potential_shadow.f90; daily and transaction steps skipped"
+    },
+    "next_gate": "Verify CI on f14b2f1: component O0/O2, daily O0/O2, atomic transaction and second-event restart; no PASS/admission until all gates pass"
   },
   "remaining": [
     "Pass current lean O0/O2 component, daily trajectory and atomic transaction/restart gate.",
