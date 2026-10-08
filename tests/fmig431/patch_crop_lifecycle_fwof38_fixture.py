@@ -6,6 +6,13 @@ def replace_one(a,b):
     global s
     assert s.count(a)==1, (a[:80],s.count(a))
     s=s.replace(a,b,1)
+# The historical F-WOF34 toy donor reported a flux but lacked the
+# complete mass contribution certificate now required by F-KT. Repair only
+# the disposable combined test fixture, never its frozen source.
+replace_one('    outcome%mass_in = transfer_mass',
+            '    outcome%mass_in = transfer_mass\\n'
+            '    outcome%mass_accounting_complete = .true.\\n'
+            '    outcome%missing_mass_contribution_mask = 0_8')
 replace_one('  use mod_fmr_wofost_crop_transaction\n',
             '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n  use mod_crop_lifecycle_daily_composition\n  use mod_crop_germination_preflight\n')
 replace_one('  integer(kind=8) :: crop_revision_before\n',
