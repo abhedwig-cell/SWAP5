@@ -18,6 +18,10 @@ When starting material work:
 
 If repository state and chat context disagree, repository state wins.
 
+## Autonomous execution across chats
+
+For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; exact-head scientific plus F-CI preservation; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
+
 ## Read first
 
 For most work, start here:
