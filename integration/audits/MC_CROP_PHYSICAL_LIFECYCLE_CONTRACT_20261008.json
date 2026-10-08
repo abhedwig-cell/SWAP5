@@ -53,7 +53,7 @@
   "tested": false,
   "qualified": false,
   "admitted": false,
-  "next_action": "Develop source-bound transactionally accepted physical lifecycle publication and coherent crop owner/calendar restart, with hydraulic/thermal forcing provenance and reject/retry controls.",
+  "next_action": "Source-backed hydrothermal forcing provenance, daily physical emergence and root initialization, harvest/root-extraction reset and following crop, SWINCO=3, full owner/calendar checkpoint restart. Do not reopen bounded admitted #1138.",
   "reconciled_current_owner": {
     "canonical_head": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
     "physical_crop_state": "src/runtime/mod_fmr_wofost_crop_transaction.f90: fmr_wofost_crop_transaction_state_t owns crop owner, optional potential shadow/root growth and last consumed event",
@@ -111,5 +111,15 @@
     "merge_commit": "c9cc5f539a4a2243326dff4e26450c480fa6c832",
     "qualified_source_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
     "scope": "Read-only preparation, sowing and germination candidate classification only. Full physical crop lifecycle not admitted."
-  }
+  },
+  "bounded_owner_admission": {
+    "pr": 1138,
+    "scientific_head": "68dc0ce5441f53b953fb50210514030517a35e5b",
+    "merge_commit": "7296f0f8ac09c0a3313133e2c898e7e53fd17e6d",
+    "audit": "integration/audits/MC_CROP_LIFECYCLE_CONTINUATION_PROTOTYPE_20261008.json",
+    "scope": "Opt-in F-KT-owned preparation/sowing/germination continuation trial, exact crop-event lineage, clone/persistence/reconstruct and bounded B19/MICRO cross-preservation only",
+    "qualified_o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851492515",
+    "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851493061"
+  },
+  "full_physical_lifecycle_status": "OPEN_UNIMPLEMENTED_NOT_QUALIFIED"
 }
