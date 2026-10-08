@@ -1,5 +1,6 @@
 program test_mc_irr01_management_policy
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_scheduled_irrigation_management_policy
   use mod_irrigation_root_zone_summary
@@ -11,7 +12,7 @@ program test_mc_irr01_management_policy
   type(irrigation_root_zone_parameters_t)::rzp
   type(irrigation_root_zone_summary_t)::rz
   type(process_hydraulic_view_t)::h
-  integer::st
+  integer::st,nonfinite_status
   real(real64),parameter::tol=1e-12_real64
 
   call common(p,r)
@@ -105,6 +106,31 @@ program test_mc_irr01_management_policy
   r%actual_available_water_cm=8d0-10d0*epsilon(1d0)
   call evaluate_irrigation_management_policy(p,s,r,c,y,st)
   if(st/=IRR_MGMT_OK .or. .not.y%trigger) error stop 17
+
+  ! Every nonfinite request field rejects without mutating accepted weekly state.
+  do st=1,6
+    call common(p,r)
+    p%timing_criterion=6
+    p%tcs6_threshold_mm=10d0
+    s%weekly_day_counter=6
+    select case(st)
+    case(1)
+      r%dvs=ieee_value(0d0,ieee_quiet_nan)
+    case(2)
+      r%total_available_water_cm=ieee_value(0d0,ieee_quiet_nan)
+    case(3)
+      r%stress_to_wilting_available_cm=ieee_value(0d0,ieee_quiet_nan)
+    case(4)
+      r%actual_available_water_cm=ieee_value(0d0,ieee_quiet_nan)
+    case(5)
+      r%field_capacity_deficit_cm=ieee_value(0d0,ieee_quiet_nan)
+    case(6)
+      r%rainfall_cm=ieee_value(0d0,ieee_quiet_nan)
+    end select
+    call evaluate_irrigation_management_policy(p,s,r,c,y,nonfinite_status)
+    if(nonfinite_status/=IRR_MGMT_INVALID_REQUEST .or. c%weekly_day_counter/=6 .or. y%trigger) error stop 18
+  end do
+  print '(A)','MC_IRR01_NONFINITE_REQUEST=PASS'
 
   print '(A)','MC_IRR01_MANAGEMENT_POLICY=PASS'
   print '(A)','MC_IRR01_ROOT_ZONE_SUMMARY=PASS'
