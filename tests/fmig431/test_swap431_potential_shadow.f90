@@ -13,6 +13,7 @@ program test_swap431_potential_shadow
   logical :: available
   integer :: status
   real(real64), parameter :: tol=1.0e-12_real64
+  real(real64) :: cloned_root_biomass
 
   actual%crop_emerged=.true.
   actual%development_stage=0.4_real64
@@ -59,7 +60,8 @@ program test_swap431_potential_shadow
   call shadow%clone(copy)
   select type(t=>copy)
   type is(wofost_potential_shadow_state_t)
-    if(.not.t%active.or.abs(t%root_biomass()-27.0_real64)>tol) error stop 16
+    cloned_root_biomass=t%root_biomass()
+    if(.not.t%active.or.abs(cloned_root_biomass-27.0_real64)>tol) error stop 16
   class default
     error stop 17
   end select
