@@ -16,7 +16,7 @@ replace_one('    outcome%mass_in = transfer_mass',
 # Current transaction core also requires explicit storage provenance.
 # Repair the disposable toy's method rather than altering production science.
 replace_one('    procedure :: temporal_error => fwof34_temporal_error',
-            '    procedure :: temporal_error => fwof34_temporal_error\\n'
+            '    procedure :: temporal_error => fwof34_temporal_error\n'
             '    procedure :: storage_accounting_status => fwof34_storage_accounting_status')
 replace_one('  real(real64) function fwof34_storage(self, state) result(value)',
 '''  subroutine fwof34_storage_accounting_status(self, state, complete, missing_mask)
