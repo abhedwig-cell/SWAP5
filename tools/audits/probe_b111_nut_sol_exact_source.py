@@ -15,7 +15,10 @@ EXPECTED={
  "SWAP/wofost_soil_orgmatn.f90":"85146e95249b41ed9b5202b507cb1647784592a313e36e75010da9bbf9a733f6",
 }
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode="r:gz") as a:
-    members={name:a.extractfile(name).read() for name in EXPECTED}
+    # The calendar and crop orchestration witnesses also come from this exact archive.
+    # They were previously referenced without being extracted (KeyError).
+    source_names=(*EXPECTED, "SWAP/management_soil.f90", "SWAP/cropgrowth.f90")
+    members={name:a.extractfile(name).read() for name in source_names}
 for name,raw in members.items():
     got=hashlib.sha256(raw).hexdigest()
     if got!=EXPECTED[name]:
