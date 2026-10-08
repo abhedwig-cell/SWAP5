@@ -34,7 +34,7 @@
     "restart on physical crop checkpoint plus calendar snapshot -> same successor",
     "O0/O2 and canonical preservation"
   ],
-  "qualification": "PARTIAL_O0_O2_NEGATIVE_ONLY",
+  "qualification": "BLOCKED_POSITIVE_PHYSICAL_DONOR_RUNTIME",
   "admission": "DRAFT_UNADMITTED",
   "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
   "evidence": {
@@ -52,5 +52,18 @@
       "restart successor equivalence"
     ]
   },
-  "next_action": "Add positive committed event fixture and deterministic accept/reject/retry/restart matrix; run O0/O2 and exact-head F-CI preservation before admission."
+  "next_action": "Reconcile current qualified F-WOF38/F-WOF39 accepted-event fixture and physical trial status with current F-KT API; build a valid committed event only through accepted model semantics, then rerun positive O0/O2 and F-CI exact head.",
+  "latest_evidence": {
+    "head": "15059c9163a1fa39a25f05f3e1fa43c300e3fcaa",
+    "owning_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37794550486",
+    "outcome": "failure",
+    "negative_O0_O2": "pass",
+    "dependency_compile": "pass after current source module closure and narrow existing compare-reals compiler warning exception",
+    "positive_fixture": "F-WOF38 physical trial completes assertion fails before crop calendar receipt bridge executes",
+    "conclusion": "No positive calendar bridge acceptance, restart, or admission inference permitted"
+  },
+  "blockers": [
+    "F-WOF38 historical physical donor trial does not complete against current canonical in extended derived fixture; diagnose current F-KT solver/model setup/reference ownership, do not relax physics acceptance",
+    "Positive receipt/calendar/restart matrix not yet qualified"
+  ]
 }
