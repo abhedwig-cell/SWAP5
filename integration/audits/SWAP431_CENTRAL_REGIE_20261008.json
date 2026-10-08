@@ -90,7 +90,7 @@
       "prs": [
         1104
       ],
-      "reason": "Apparently non-draft DVS admission PR but GitHub reports mergeable=false; verify whether this capability was already admitted via another canonical commit before trying PR admission."
+      "reason": "Canonical contains DVS qualification record and production paths, although PR1104 remains open and unmergeable. Perform explicit admission trace before reimplementation/merge; do not classify implementation as missing."
     },
     {
       "priority": 2,
@@ -167,5 +167,17 @@
     "Master SWAP431 ledger is present on draft PR1072, absent from pinned canonical; no canonical master denominator yet",
     "Selected open PRs are draft, have conflicting shared sources, or lack verified exact-head qualification; no admission claimed"
   ],
-  "canonical_mutated": false
+  "canonical_mutated": false,
+  "canonical_verified_capabilities": [
+    {
+      "id": "SW431-CROP-CO2",
+      "observation": "Implementation files and admission commit 75114770 exist in canonical; canonical admission yes. MC_CROP01_CO2_STATUS.json is stale and still says ADMISSION_READY/admission=false; treat later canonical commit as controlling.",
+      "admitted": true
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW-DVS",
+      "observation": "Canonical currently includes MC_CROP01_ROOTGROW_DVS_STATUS.json and typed production paths; recorded successful O0/O2 run 37625663326 for merge postimage. Status still says ADMISSION_READY; confirm later explicit admission before canonically marking closed.",
+      "admitted": "REQUIRES_EXPLICIT_ADMISSION_VERIFICATION"
+    }
+  ]
 }
