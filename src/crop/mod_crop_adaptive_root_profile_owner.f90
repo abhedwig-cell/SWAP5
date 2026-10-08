@@ -134,7 +134,7 @@ contains
     status = committed%validate()
     if (status /= ADAPTIVE_ROOT_PROFILE_OK) return
     n = size(committed%root_biomass_by_node)
-    if (.not. geometry_valid(n,ztopcp_cm,zbotcp_cm,dz_cm,forcing)) then
+    if (.not. geometry_valid(n,ztopcp_cm,zbotcp_cm,dz_cm)) then
       status = ADAPTIVE_ROOT_PROFILE_INVALID_GEOMETRY
       return
     end if
@@ -325,10 +325,9 @@ contains
     valid=.true.
   end function forcing_valid
 
-  logical function geometry_valid(n,ztopcp_cm,zbotcp_cm,dz_cm,forcing) result(valid)
+  logical function geometry_valid(n,ztopcp_cm,zbotcp_cm,dz_cm) result(valid)
     integer, intent(in) :: n
     real(real64), intent(in) :: ztopcp_cm(:),zbotcp_cm(:),dz_cm(:)
-    type(adaptive_root_profile_daily_forcing_t), intent(in) :: forcing
     integer :: i
     valid=.false.
     if(size(ztopcp_cm)/=n.or.size(zbotcp_cm)/=n.or.size(dz_cm)/=n)return
