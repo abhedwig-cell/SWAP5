@@ -303,6 +303,8 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 ) ;;
       src/runtime/mod_fmr_wofost_crop_transaction.f90 ) ;;
       src/process/mod_root_water_uptake_process.f90 ) ;;
+      src/crop/mod_crop_root_length_density_constant.f90 ) ;;
+      src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)

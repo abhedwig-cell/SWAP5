@@ -1,0 +1,22 @@
+name: SWAP431 root constant LRV qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  push:
+    branches: [work/swap431-root-lrv-constant-20261007]
+    paths:
+      - 'src/crop/mod_crop_root_length_density_constant.f90'
+      - 'src/runtime/mod_fmr_micro_constant_lrv_binding.f90'
+      - 'tests/fmig431/test_swap431_root_lrv_constant.f90'
+      - 'tests/fmig431/run_swap431_root_lrv_constant.py'
+      - '.github/workflows/swap431-root-lrv-constant.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Constant absolute LRV component and production MICRO
+        run: python3 tests/fmig431/run_swap431_root_lrv_constant.py
