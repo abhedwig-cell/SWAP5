@@ -28,6 +28,39 @@ old="-Wall -Wextra -Werror -fcheck=all"
 if s.count(old)!=1:
     raise SystemExit("F-WOF38 compiler flags changed")
 s=s.replace(old,"-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all",1)
+# Resolve the transitive modules in the frozen F-WOF38 source list. The
+# legacy script predated several new canonical state/crop modules.
+start=s.index("SOURCES=(\\n")
+end=s.index("\\n)\\n",start)+3
+if start<0 or end<3:
+    raise SystemExit("F-WOF38 source-list boundary changed")
+import re
+root=Path(__file__).resolve().parents[2]
+module_paths={}
+for source in sorted((root/"src").rglob("*.f90")):
+    for name in re.findall(r"^\\s*module\\s+(?!procedure\\b)(\\w+)",source.read_text(),re.M|re.I):
+        if name.lower() in module_paths:
+            raise SystemExit("duplicate module "+name)
+        module_paths[name.lower()]=source
+original=[root/line.strip() for line in s[start:end].splitlines()[1:-1]]
+ordered=[]
+visited=set()
+active=set()
+intrinsic={"iso_fortran_env","iso_c_binding","ieee_arithmetic","omp_lib"}
+def visit(path):
+    path=Path(path)
+    if path in visited: return
+    if path in active: raise SystemExit("cycle "+str(path))
+    active.add(path)
+    for name in re.findall(r"^\\s*use\\s*(?:,\\s*(?:non_intrinsic|intrinsic)\\s*)?(?:::)?\\s*(\\w+)",path.read_text(),re.M|re.I):
+        key=name.lower()
+        if key in module_paths: visit(module_paths[key])
+        elif key not in intrinsic: raise SystemExit("unresolved "+name+" in "+str(path))
+    active.remove(path)
+    visited.add(path)
+    ordered.append(path.relative_to(root).as_posix())
+for source in original: visit(source)
+s=s[:start]+"SOURCES=(\\n"+"\\n".join("  "+name for name in ordered)+"\\n)\\n"+s[end:]
 p.write_text(s)
 PY
 
