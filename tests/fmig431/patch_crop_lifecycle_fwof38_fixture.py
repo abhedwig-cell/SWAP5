@@ -6,9 +6,9 @@ def replace_one(a,b):
     global s
     assert s.count(a)==1, (a[:80],s.count(a))
     s=s.replace(a,b,1)
-replace_one('  use mod_fmr_wofost_crop_transaction\\n',
-            '  use mod_fmr_wofost_crop_transaction\\n  use mod_crop_lifecycle_continuation\\n')
-replace_one('  integer(kind=8) :: crop_revision_before\\n',
+replace_one('  use mod_fmr_wofost_crop_transaction\n',
+            '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n')
+replace_one('  integer(kind=8) :: crop_revision_before\n',
 '''  integer(kind=8) :: crop_revision_before
   type(crop_lifecycle_continuation_t) :: lifecycle_seed, lifecycle_replayed
   type(fmr_wofost_crop_transaction_state_t) :: lifecycle_state, lifecycle_restored
@@ -16,7 +16,7 @@ replace_one('  integer(kind=8) :: crop_revision_before\\n',
   logical :: lifecycle_available, lifecycle_exported, lifecycle_reconstructed
   integer :: lifecycle_persistence_status
 ''')
-anchor="  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\\n"
+anchor="  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"
 replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')
   ! Independent opt-in lifecycle state exercises physical F-KT owner
   ! persistence, without mutating the primary frozen crop fixture.
