@@ -168,8 +168,10 @@ contains
     if(present(stem_residue_age).neqv.present(storage_residue_age))return
     if(present(harvest_forcing).and..not.present(residue_split))return
     if(.not.present(residue_split))then
-      if(crop_forcing%drlv_kg_ha_day/=0.0_real64.or.crop_forcing%drst_kg_ha_day/=0.0_real64.or. &
-         crop_forcing%drrt_kg_ha_day/=0.0_real64)return
+      if(.not.all(ieee_is_finite([crop_forcing%drlv_kg_ha_day, &
+         crop_forcing%drst_kg_ha_day,crop_forcing%drrt_kg_ha_day])))return
+      if(any(abs([crop_forcing%drlv_kg_ha_day,crop_forcing%drst_kg_ha_day, &
+         crop_forcing%drrt_kg_ha_day])>0.0_real64))return
     else
       if(.not.all(ieee_is_finite([root_residue_age,leaf_residue_age,fra_deceased_leaf_to_soil])))return
       if(root_residue_age<0.0_real64.or.leaf_residue_age<0.0_real64.or.fra_deceased_leaf_to_soil<0.0_real64.or. &
