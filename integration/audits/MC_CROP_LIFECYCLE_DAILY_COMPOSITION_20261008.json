@@ -20,14 +20,14 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "guards": [
     "no germination consumption before prep and sow complete",
     "missing germination candidate rejects once prerequisites satisfied",
     "idempotent candidate replay",
     "no F-KT/crop owner/transport/restart changes"
   ],
-  "next_action": "Admit bounded pure composition after exact-head and overlap verification; physical event publication, harvest and restart still open.",
+  "next_action": "Reconcile physical lifecycle handoff with F-KT accepted owner and typed forcing provenance; keep harvest/reset/restart open.",
   "qualification": {
     "scientific_head": "fa92e90d4ddd182dcbec03ef737458c328d863e2",
     "o0_o2": {
@@ -38,5 +38,11 @@
       "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37819942924",
       "result": "PASS"
     }
+  },
+  "admission": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1136",
+    "merge_commit": "23bbe07cc0177ebda00b79d9036bde8fa9af2b39",
+    "qualified_scientific_head": "fa92e90d4ddd182dcbec03ef737458c328d863e2",
+    "scope": "Read-only daily composition from already qualified preparation/sowing and germination candidate data; no physical crop-state mutation, harvest or serialized restart."
   }
 }
