@@ -86,7 +86,7 @@ contains
     type(b111_sorption_result_t)::sorp,partition
     type(b111_decay_result_t)::decay
     real(real64)::cfluxt,cfluxb,cmlav,thetav,diffus,vpore,dispr,ctrans,crot,cdrtot
-    real(real64)::total_density,new_density,expected_sorbed,scale,tol,q,mass
+    real(real64)::total_density,new_density,expected_sorbed,scale,tol,q
     integer::i,level,n,nlev
 
     candidate_mobile=committed_mobile
