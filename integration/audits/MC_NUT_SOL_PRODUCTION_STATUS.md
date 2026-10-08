@@ -208,3 +208,9 @@ A regression script is committed at
 pure normalization function AST from the gate so it does not require the
 full B1.11 bundle to run. No new GitHub Actions run was requested. Preserve
 the source-policy decision for NUT-AMEND and do not upgrade any disposition.
+
+## 2026-10-08 local replay plumbing checkpoint
+
+Direct local DNS lookup for github.com/api.github.com/raw.githubusercontent.com remains unavailable; no local repository checkout or authority tarball is mounted. GitHub connector can read/write individual repository paths, but its content is not exported into the local shell automatically. The existing local independent source audit at `/mnt/data/MC_NUT_SOL_B111_SOURCE_AUDIT_20261008.md` documents the exact B1.11 source member hashes and known lexical/semantic discrepancies. This is not an exact-head full-suite PASS.
+
+The exact-source gate now accepts `--source-only`, which checks its pinned archive and witness equations without invoking the expensive O0/O2 Fortran suites. On default invocation the original full testing path remains; its success marker is now `SWAP431_B111_NUT_SOL_SOURCE_AND_COMPONENTS_PASS` and the source-only marker is distinct. Commit `d9a0faff89a47cc63f910be0cddcc7d935bd2aad`. The new execution mode remains untested end-to-end without the archive bytes. No Actions run was created, and no capability was admitted.
