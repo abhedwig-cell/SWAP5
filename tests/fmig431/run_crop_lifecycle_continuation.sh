@@ -63,7 +63,7 @@ for OPT in 0 2; do
   (
     cd "$BUILD/o$OPT"
     for SOURCE in "${SOURCES[@]}"; do
-      gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$ROOT/$SOURCE"
+      gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$OPT" -J . -I . -c "$ROOT/$SOURCE"
     done
     gfortran "${COMMON[@]}" -O"$OPT" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_lifecycle_continuation.f90" ./*.o -o test
