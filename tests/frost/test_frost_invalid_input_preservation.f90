@@ -28,7 +28,7 @@ contains
   subroutine require_failure(expected)
     integer, intent(in) :: expected
     if (status /= expected) error stop 'unexpected invalid-input status'
-    if (any(k /= before_k)) error stop 'invalid input mutated conductivity'
-    if (any(dk /= before_dk)) error stop 'invalid input mutated derivative'
+    if (any(abs(k-before_k) > 0.0_real64)) error stop 'invalid input mutated conductivity'
+    if (any(abs(dk-before_dk) > 0.0_real64)) error stop 'invalid input mutated derivative'
   end subroutine
 end program
