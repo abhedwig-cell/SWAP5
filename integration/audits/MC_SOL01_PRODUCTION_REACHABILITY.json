@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-SOL01",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "status": "IMPLEMENTATION_CLOSED_PENDING_PERSISTED_QUALIFICATION",
+  "capabilities": [
+    {
+      "id": "SW431-SALT-SORPTION",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "explicit dissolved and sorbed persistent stores",
+        "B1.11 Freundlich forward/inverse partition",
+        "exact-order reactive matrix substep updates total storage then repartitions",
+        "reactive restart layout 505005",
+        "two-node internal dispersive transfer preserves total reactive mass while re-establishing per-node Freundlich equilibrium",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically",
+        "reactive model can now be configured directly from accepted serialized water-flux substep traces"
+      ],
+      "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-SALT-DECAY",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "B1.11 temperature/moisture/depth decay factors",
+        "decay acts on total dissolved+sorbed storage before repartition",
+        "explicit external decay mass output",
+        "exact-order reactive matrix substep",
+        "multi-node reactive transport oracle coexists with exact-order decay/repartition semantics",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically",
+        "reactive model can now be configured directly from accepted serialized water-flux substep traces"
+      ],
+      "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-SALT-POND",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "persistent pond solute store",
+        "rain and irrigation are explicit external inputs",
+        "pond-to-matrix infiltration is internal transfer",
+        "exact source qtop<0 pond mixing order",
+        "reactive matrix substep",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically",
+        "accepted water trace now carries pond start/end depth and binds directly into the reactive pond forcing",
+        "face fluxes are reconstructed by the same continuity helper used by the admitted mobile-salt route"
+      ],
+      "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-AGE-TRACER",
+      "state": "ATOMIC_REACTIVE_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "persistent age amount store distinct from chemical mass",
+        "persistent Agepondm1 continuation in reactive restart layout",
+        "B1.11 zero-order age production",
+        "B1.11 pond age carry-over and infiltration transfer",
+        "age advection/dispersion transport",
+        "root, drainage and bottom age export/input bookkeeping",
+        "candidate-only update leaves chemical mass unchanged",
+        "combined reactive chemistry+AgeTracer transaction commits or rolls back all reactive state atomically",
+        "accepted water trace supplies theta start/end, root/drainage sinks, pond start/end and reconstructed vertical face fluxes",
+        "Agepondm1 continuation is persistent; icAge*/Agegwl1m are derived reporting diagnostics and not future-state owners"
+      ],
+      "remaining": [
+        "persisted O0/O2 atomic reactive qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-SALT-AQUIFER",
+      "state": "UNSUPPORTED_SOURCE_DEFECT",
+      "evidence": [
+        "exact B1.11 SWBR out-of-bounds coefficient access reproduced under bounds checking",
+        "KFSAT is documented as aquifer adsorption coefficient (L3/M)",
+        "POROS and DAQUIF are aquifer properties",
+        "no aquifer bulk-density parameter exists in the SWBR input contract",
+        "bottom-soil bulk density is not documented as the aquifer bulk density",
+        "reactive runtime keeps aquifer mutation fail-closed"
+      ],
+      "remaining": [],
+      "disposition_record": "integration/audits/MC_SOL01_AQUIFER_SOURCE_DECISION.md"
+    }
+  ],
+  "global_invariants": [
+    "existing MOBILE_DISSOLVED and MOBILE_DISSOLVED_MACROPORE layouts reject reactive companion state",
+    "reactive stores use distinct layout 505005",
+    "age amount is excluded from chemical mass",
+    "aquifer process mutation is fail-closed",
+    "rejected candidates leave all committed reactive stores unchanged",
+    "no capability in this record is canonical ADMITTED until persisted qualification completes",
+    "SW431-SALT-AQUIFER is a definitive unsupported/source-defect disposition and no longer counts as remaining implementation work",
+    "reactive SOL01 forcing is derived from accepted serialized water-flux substep traces and does not own water",
+    "Agepondm1 is persistent because it affects future evolution; icAge*/Agegwl1m are reporting diagnostics, not restart state"
+  ]
+}

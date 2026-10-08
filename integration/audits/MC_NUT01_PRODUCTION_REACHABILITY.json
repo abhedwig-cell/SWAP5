@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-NUT01",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "status": "IMPLEMENTATION_CLOSED_PENDING_PERSISTED_QUALIFICATION",
+  "capabilities": [
+    {
+      "id": "SW431-NUT-ORGANIC",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "B1.11 FOM/Bio/Hum analytical turnover candidate",
+        "accepted mass-consistent Nminer reference correction",
+        "Cdissi/Bio_av/Hum_av source bookkeeping",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": [
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-MINERAL",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "single NH4/NO3 owner",
+        "B1.11 mass-concentration storage conversion including NH4 sorption",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": [
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-NITRIF",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "exact source rate factor",
+        "interval-average NH4 coupling",
+        "internal NH4 debit / equal NO3 credit",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": [
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-DENIT",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "Cdissi-dependent respiration factor",
+        "interval-average NO3 coupling",
+        "explicit external N output",
+        "organic-to-denitrification chain",
+        "integrated one-day Soil-N transaction"
+      ],
+      "remaining": [
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-TRANSPORT",
+      "state": "TRANSACTION_REACHABLE_CANDIDATE",
+      "evidence": [
+        "typed Wofost_SoilWaterN analytical transport",
+        "daily demand/supply-limited NH4/NO3 caller",
+        "mass receipts and integrated one-day Soil-N transaction",
+        "management_soil daily caller and amendment timing are checked directly from exact B1.11 authority bundle"
+      ],
+      "remaining": [
+        "persisted integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-AMEND",
+      "state": "GROUPED_CALENDAR_EVENT_CANDIDATE",
+      "evidence": [
+        "exact B1.11 amendment material split and 1e-6 OM threshold",
+        "same-date source events are grouped atomically",
+        "legacy TimeAmend+1 trigger is authority-gated",
+        "monotone persisted event cursor prevents duplicate/out-of-order delivery across restart",
+        "group application remains committed-to-candidate until transaction acceptance",
+        "exact management_soil sort defect (MatNum(i)=MatNum(i)) is explicitly corrected by atomic typed-record sorting before grouping",
+        "raw unsorted amendment records are sorted and grouped into monotone calendar event ids before due-time delivery"
+      ],
+      "remaining": [
+        "persisted O0/O2 integrated qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-RESIDUE",
+      "state": "ATOMIC_FOUR_ORGAN_RESIDUE_CONTINUATION_CANDIDATE",
+      "evidence": [
+        "exact B1.11 crop-residue split and 1e-12 OM threshold",
+        "ordinary root/leaf residue creation is persisted across day boundary",
+        "retained dead crop N remains physical crop storage until returned",
+        "harvest root/leaf/stem/storage N is converted to four persistent pending residue stores",
+        "restart preserves all four pending residue pools",
+        "next Soil-N day consumes pending residue exactly once through the same residue splitter",
+        "harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
+      ],
+      "remaining": [
+        "persisted O0/O2 coupled qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-CROP",
+      "state": "ATOMIC_SOIL_CROP_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "B1.11 vegetative crop-N demand and translocation owner",
+        "soil demand prepared before Soil-N solve",
+        "actual Soil-N supply consumed by the same crop candidate",
+        "soil uptake booked once as an internal soil-to-crop transfer",
+        "biological fixation booked once as external N input",
+        "previous-day root/leaf residue continuation is persisted and consumed before next-day Soil-N processing",
+        "whole-system transaction mass accounting and interval lineage",
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state",
+        "crop demand/fixation/harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
+      ],
+      "remaining": [
+        "persisted O0/O2 coupled qualification",
+        "canonical admission"
+      ]
+    },
+    {
+      "id": "SW431-NUT-NFIX",
+      "state": "ATOMIC_SOIL_CROP_TRANSACTION_CANDIDATE",
+      "evidence": [
+        "separate B1.11 vegetative fixation policy",
+        "strict DVSNLT and RELTR gate",
+        "exact wofostnut fixation and crop-N subroutine oracles",
+        "fixation booked once as external whole-system N input in coupled transaction",
+        "WOFOST81 semantics unchanged",
+        "crop owner now preserves retained-dead N and four-organ harvest residue continuation in the atomic Soil-N/crop-N state",
+        "crop demand/fixation/harvest orchestration is now checked directly from exact B1.11 cropgrowth.f90 authority"
+      ],
+      "remaining": [
+        "persisted O0/O2 coupled qualification",
+        "canonical admission"
+      ]
+    }
+  ],
+  "global_invariants": [
+    "rejected trials do not mutate committed Soil-N state",
+    "organic N is derived from FOM/Bio/Hum owner state",
+    "fixation is not a Soil-N debit",
+    "WOFOST81 admitted route is unchanged",
+    "no capability in this record is canonical ADMITTED until persisted qualification completes",
+    "soil uptake is internal to the coupled Soil-N/crop-N transaction and is never double-booked as an external loss",
+    "B1.11 biological fixation is an external coupled-system N input and remains separate from WOFOST81",
+    "current-day ordinary crop senescence becomes pending residue continuation and is consumed before the next-day Soil-N process, matching B1.11 ordering",
+    "retained dead crop N is persistent physical storage until explicitly returned to soil or exported; it is not booked as an immediate external sink",
+    "ordinary and harvest crop residues cross the day boundary as four persistent organ-specific pending stores and are consumed exactly once",
+    "amendment groups use source-order monotone event ids; same-date materials commit atomically and cannot replay after restart",
+    "amendment sorting moves complete typed records atomically; the B1.11 MatNum parallel-array sort defect is not copied"
+  ]
+}

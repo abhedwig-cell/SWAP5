@@ -25,4 +25,5 @@ An ADR records:
 | [ADR-0002](ADR-0002-transactional-time-stepping.md) | Transactional time stepping | Accepted |
 | [ADR-0003](ADR-0003-worker-owned-scratch.md) | Worker-owned scratch | Accepted |
 | [ADR-0004](ADR-0004-multiswap-execution-templates.md) | MultiSWAP execution templates | Accepted |
-| [ADR-0005](ADR-0005-reference-baseline-chain.md) | B0/B1/B2 reference baseline chain | Accepted |
+| [ADR-0005](ADR-0005-reference-baseline-chain.md) | B0/B1/B2 reference baseline chain | Accepted |\n| [ADR-0006](ADR-0006-soil-n-owner.md) | One transactional Soil-N owner and separate crop fixation input | Accepted |
+| [ADR-0007](ADR-0007-solute-compartment-ownership.md) | Explicit SOL01 compartment ownership beyond conservative mobile salt | Accepted |

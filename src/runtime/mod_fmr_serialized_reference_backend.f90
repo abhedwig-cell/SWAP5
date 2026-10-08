@@ -149,7 +149,7 @@ module mod_fmr_serialized_reference_backend
   use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
   use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_fluxes_t, &
-       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK
+       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK, SOLUTE_INVALID
   use mod_solute_mobile_advection_dispersion, only: mobile_dispersion_physics_t, mobile_transport_receipt_t, &
        advance_mobile_advection_dispersion
   use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t, fmr_base_salt_normalized_error
@@ -209,10 +209,16 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_mobile_salt_component_t
     real(real64), allocatable :: mass_mg_cm2(:)
     real(real64), allocatable :: macro_mass_mg_cm2(:,:)
+    real(real64), allocatable :: sorbed_mass_mg_cm2(:)
+    real(real64) :: pond_mass_mg_cm2 = 0.0_real64
+    real(real64) :: aquifer_mass_mg_cm2 = 0.0_real64
+    real(real64), allocatable :: age_amount_cm_day(:)
+    real(real64) :: age_pond_previous_concentration_day = 0.0_real64
     integer(int64) :: cdrain_source_id = 0_int64
     integer(int64) :: cdrain_revision = -1_int64
   contains
     procedure, public :: ready => fmr_mobile_salt_ready
+    procedure, public :: reactive_ready => fmr_reactive_salt_ready
   end type fmr_mobile_salt_component_t
 
   type, extends(canonical_state_t), public :: fmr_b110_physical_state_t
@@ -465,6 +471,7 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_water_flux_substep_trace_t
     real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
+    real(real64) :: pond_start = 0.0_real64, pond_end = 0.0_real64
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
@@ -857,6 +864,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_committed_state
   public :: fmr_initialize_mobile_macro_salt_profile
   public :: fmr_initialize_mobile_salt_profile
+  public :: fmr_initialize_reactive_solute_profile
   public :: fmr_base_salt_temporal_policy_t
   public :: fmr_mobile_dispersion_matches_hydraulic_owner
   public :: fmr_new_b110_macropore_reduction_committed_state
@@ -1283,6 +1291,9 @@ contains
     if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
         (self%cdrain_source_id /= 0_int64 .and. &
         (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
+    if (allocated(self%sorbed_mass_mg_cm2) .or. allocated(self%age_amount_cm_day)) return
+    if (self%pond_mass_mg_cm2 /= 0.0_real64 .or. self%aquifer_mass_mg_cm2 /= 0.0_real64 .or. &
+        self%age_pond_previous_concentration_day /= 0.0_real64) return
     if (active_nodes <= 0) return
     if (.not. allocated(self%mass_mg_cm2)) return
     if (size(self%mass_mg_cm2) /= active_nodes) return
@@ -1298,6 +1309,30 @@ contains
     end if
     ready = .true.
   end function fmr_mobile_salt_ready
+
+  logical function fmr_reactive_salt_ready(self,active_nodes) result(ready)
+    class(fmr_mobile_salt_component_t), intent(in) :: self
+    integer, intent(in) :: active_nodes
+    ready = .false.
+    if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
+        (self%cdrain_source_id /= 0_int64 .and. &
+        (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
+    if (active_nodes <= 0 .or. allocated(self%macro_mass_mg_cm2)) return
+    if (.not. allocated(self%mass_mg_cm2) .or. .not. allocated(self%sorbed_mass_mg_cm2) .or. &
+        .not. allocated(self%age_amount_cm_day)) return
+    if (size(self%mass_mg_cm2) /= active_nodes .or. size(self%sorbed_mass_mg_cm2) /= active_nodes .or. &
+        size(self%age_amount_cm_day) /= active_nodes) return
+    if (.not. all(ieee_is_finite(self%mass_mg_cm2)) .or. &
+        .not. all(ieee_is_finite(self%sorbed_mass_mg_cm2)) .or. &
+        .not. all(ieee_is_finite(self%age_amount_cm_day))) return
+    if (any(self%mass_mg_cm2 < 0.0_real64) .or. any(self%sorbed_mass_mg_cm2 < 0.0_real64) .or. &
+        any(self%age_amount_cm_day < 0.0_real64)) return
+    if (.not. ieee_is_finite(self%pond_mass_mg_cm2) .or. self%pond_mass_mg_cm2 < 0.0_real64) return
+    if (.not. ieee_is_finite(self%aquifer_mass_mg_cm2) .or. self%aquifer_mass_mg_cm2 < 0.0_real64) return
+    if (.not. ieee_is_finite(self%age_pond_previous_concentration_day) .or. &
+        self%age_pond_previous_concentration_day < 0.0_real64) return
+    ready = .true.
+  end function fmr_reactive_salt_ready
 
   subroutine fmr_b110_state_clone(self, copy)
     class(fmr_b110_physical_state_t), intent(in) :: self
@@ -1422,6 +1457,51 @@ contains
     if(status/=SOLUTE_OK)return
     allocate(state%salt)
     call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+  end subroutine
+
+
+  subroutine fmr_initialize_reactive_solute_profile(state,node_thickness_cm,concentration_mg_cm3, &
+       sorbed_mass_mg_cm2,pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day,status, &
+       age_pond_previous_concentration_day)
+    type(fmr_b110_physical_state_t),intent(inout)::state
+    real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:),sorbed_mass_mg_cm2(:)
+    real(real64),intent(in)::pond_mass_mg_cm2,aquifer_mass_mg_cm2,age_amount_cm_day(:)
+    integer,intent(out)::status
+    real(real64),intent(in),optional::age_pond_previous_concentration_day
+    type(mobile_salt_state_t)::initialized
+    integer::n
+
+    status=SOLUTE_INVALID
+    if(allocated(state%salt).or.allocated(state%macropore))return
+    if(.not.allocated(state%water_content))return
+    n=state%active_nodes
+    if(n<=0.or.size(state%water_content)/=n.or.size(node_thickness_cm)/=n.or. &
+       size(concentration_mg_cm3)/=n.or.size(sorbed_mass_mg_cm2)/=n.or.size(age_amount_cm_day)/=n)return
+    if(.not.all(ieee_is_finite(sorbed_mass_mg_cm2)).or..not.all(ieee_is_finite(age_amount_cm_day)))return
+    if(.not.ieee_is_finite(pond_mass_mg_cm2).or..not.ieee_is_finite(aquifer_mass_mg_cm2))return
+    if(any(sorbed_mass_mg_cm2<0.0_real64).or.any(age_amount_cm_day<0.0_real64).or. &
+       pond_mass_mg_cm2<0.0_real64.or.aquifer_mass_mg_cm2<0.0_real64)return
+
+    call initialize_mobile_salt_state(node_thickness_cm,state%water_content,concentration_mg_cm3,initialized,status)
+    if(status/=SOLUTE_OK)return
+    allocate(state%salt)
+    call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+    state%salt%sorbed_mass_mg_cm2=sorbed_mass_mg_cm2
+    state%salt%pond_mass_mg_cm2=pond_mass_mg_cm2
+    state%salt%aquifer_mass_mg_cm2=aquifer_mass_mg_cm2
+    state%salt%age_amount_cm_day=age_amount_cm_day
+    if(present(age_pond_previous_concentration_day))then
+      if(.not.ieee_is_finite(age_pond_previous_concentration_day).or.age_pond_previous_concentration_day<0.0_real64)then
+        deallocate(state%salt);status=SOLUTE_INVALID;return
+      end if
+      state%salt%age_pond_previous_concentration_day=age_pond_previous_concentration_day
+    end if
+    if(.not.state%salt%reactive_ready(n))then
+      deallocate(state%salt)
+      status=SOLUTE_INVALID
+      return
+    end if
+    status=SOLUTE_OK
   end subroutine
 
   subroutine fmr_configure_base_salt_temporal_policy(self,policy,ok)
@@ -5102,6 +5182,8 @@ contains
     step%t1 = t1
     step%top_flux = solve_result%top_flux
     step%bottom_flux = solve_result%bottom_flux
+    step%pond_start = request%base_state%ponding_depth
+    step%pond_end = solve_result%candidate_state%ponding_depth
     step%water_start = request%base_state%water_content
     step%water_end = solve_result%candidate_state%water_content
     step%subsurface_source = self%qssdi
@@ -5174,7 +5256,9 @@ contains
     do i=1,size(steps)
       n = 0
       if (allocated(steps(i)%water_start)) n=size(steps(i)%water_start)
-      if (n <= 0 .or. .not. allocated(steps(i)%water_end) .or. &
+      if (n <= 0 .or. .not. ieee_is_finite(steps(i)%pond_start) .or. .not. ieee_is_finite(steps(i)%pond_end) .or. &
+          steps(i)%pond_start<0.0_real64 .or. steps(i)%pond_end<0.0_real64 .or. &
+          .not. allocated(steps(i)%water_end) .or. &
           .not. allocated(steps(i)%subsurface_source) .or. .not. allocated(steps(i)%drainage_sink) .or. &
           .not. allocated(steps(i)%drainage_sink_by_level) .or. .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
           .not. allocated(steps(i)%macropore_matrix_exchange_domain) .or. &
