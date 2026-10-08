@@ -214,3 +214,26 @@ the source-policy decision for NUT-AMEND and do not upgrade any disposition.
 Direct local DNS lookup for github.com/api.github.com/raw.githubusercontent.com remains unavailable; no local repository checkout or authority tarball is mounted. GitHub connector can read/write individual repository paths, but its content is not exported into the local shell automatically. The existing local independent source audit at `/mnt/data/MC_NUT_SOL_B111_SOURCE_AUDIT_20261008.md` documents the exact B1.11 source member hashes and known lexical/semantic discrepancies. This is not an exact-head full-suite PASS.
 
 The exact-source gate now accepts `--source-only`, which checks its pinned archive and witness equations without invoking the expensive O0/O2 Fortran suites. On default invocation the original full testing path remains; its success marker is now `SWAP431_B111_NUT_SOL_SOURCE_AND_COMPONENTS_PASS` and the source-only marker is distinct. Commit `d9a0faff89a47cc63f910be0cddcc7d935bd2aad`. The new execution mode remains untested end-to-end without the archive bytes. No Actions run was created, and no capability was admitted.
+
+## 2026-10-08 reactive partial-candidate rollback closeout candidate
+
+A concrete reject/rollback flaw was found in the source-bound reactive
+matrix substep: after pond inputs are staged, an invalid zero-weight
+inter-node interface returned without restoring the companion candidate;
+a decay-operator failure during sequential node processing could likewise
+return partially advanced state. The committed inputs were intent(in) and
+not mutated, but the returned rejected candidate was not clean.
+
+Fixed both exits to restore the full committed mobile+companion candidate.
+Commit: `57311affe7d3b05a78273bbcaef7f92962d321ec`.
+
+Extended the existing multinode O0/O2 runner test to exercise an invalid
+zero-weight interface after nonzero pond rain input and verify dissolved,
+sorbed, pond, and aquifer candidate rollback. Test commit:
+`bb6d843c6376995cea06ff7fd805446863ed79b8`.
+
+This is a **persisted implementation and regression-test candidate**, not
+an executed full-substep PASS. No Actions job was started. The targeted
+`tests/physics/run_b111_reactive_solute_substep.sh` must be run on the
+latest persisted binding SHA and its outcome recorded before SOL01 can
+advance to qualified status.
