@@ -13,11 +13,12 @@ EXPECTED={
  "SWAP/wofost_soil_cropresidues.f90":"1f5d61e97d4a5d1dae7be604f0ed67ce5a780471d7db35236dbb0dc27d1ff8e9",
  "SWAP/wofost_soil_watern.f90":"b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
  "SWAP/wofost_soil_orgmatn.f90":"85146e95249b41ed9b5202b507cb1647784592a313e36e75010da9bbf9a733f6",
+ "SWAP/management_soil.f90":"0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b",
 }
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode="r:gz") as a:
-    # The calendar and crop orchestration witnesses also come from this exact archive.
-    # They were previously referenced without being extracted (KeyError).
-    source_names=(*EXPECTED, "SWAP/management_soil.f90", "SWAP/cropgrowth.f90")
+    # Only byte-pinned members of the exact B1.11 archive are gated here.
+    # The distinct cropgrowth member is not present: no equivalent claim.
+    source_names=tuple(EXPECTED)
     available=set(a.getnames())
     missing=sorted(set(source_names)-available)
     if missing:
@@ -45,7 +46,7 @@ residue=packed("SWAP/wofost_soil_cropresidues.f90")
 watern=packed("SWAP/wofost_soil_watern.f90")
 orgmat=packed("SWAP/wofost_soil_orgmatn.f90")
 management=packed("SWAP/management_soil.f90")
-cropgrowth=packed("SWAP/cropgrowth.f90")
+
 
 age_substep_needles=[
  "agesurf=(nird*ageirr+nraidt*agepre)*dtsolu+pondm1*agepondm1",
@@ -139,26 +140,9 @@ for needle in crop_n_owner_needles:
     if needle not in nut:
         raise SystemExit("missing exact B1.11 crop-N owner equation: "+needle)
 
-crop_orchestration_needles=[
- "ndemto=max(0.0d0,(ndeml+ndems+ndemr))",
- "nlimit=insw(dvs-dvsnlt,insw(reltr-0.01d0,0.0d0,1.0d0),0.d0)",
- "ndemandsoil=(1.d0-nfixf)*ndemto*nlimit",
- "ndemandbiofix=nfixf*ndemto*nlimit",
- "nuptr=(max(0.d0,min(ndemandsoil,nsupplysoil)))/delt",
- "nfixtr=(max(0.d0,ndemandbiofix))/delt",
- "harlosorm_rt=wrt",
- "harlosnit_rt=anrt",
- "inlossr=rnldrt*delt",
- "inlossl=fradeceasedlvtosoil*rnldlv*delt",
- "nlossldeceasedlvtosoil=nlossldeceasedlvtosoil+inlossl",
- "nlossl=nlossl-inlossl",
- "harlosnit_dwlv=fraharlosorm_lv*nlossl",
- "inlossr=inlossr+harlosnit_rt",
- "anrt=anrt-harlosnit_rt",
-]
-for needle in crop_orchestration_needles:
-    if needle not in cropgrowth:
-        raise SystemExit("missing exact B1.11 crop orchestration equation: "+needle)
+# Crop orchestration in cropgrowth.f90 is NOT covered by this pinned archive.
+# Never infer its qualification from the wofostnut.f90 owner subroutines.
+# Full crop orchestration requires its own exact B1.11 source and oracle.
 
 addition_needles=[
  "am_nh4=nh4nfrac(matno)*(1.0d0-volafrac(im))*amend(im)",
@@ -185,23 +169,20 @@ residue_raw=members["SWAP/wofost_soil_cropresidues.f90"].decode("latin1").lower(
 if not re.search(r"am_om\s*(?:>=|\.ge\.)\s*1(?:\.0+)?d-?12",residue_raw):
     raise SystemExit("missing exact residue 1e-12 OM threshold")
 
+# Exact B1.11 management explicitly rejects unsorted dates. Its strict
+# <0.d-3 grouping predicate is not equivalent to the proposed SWAP5
+# <1e-3 near-date grouping. Assert the historical witnesses but DO NOT
+# claim amendment-calendar production equivalence from this source gate.
 amendment_calendar_needles=[
- "if(smedate(isme)-smedate(isme-1).lt.0.d-3)then",
- "nuamend(j)=nuamend(j)+1",
- "timeamend(j)=smedate(isme)",
- "if(abs(timeamend(isme)+1.0d0-t1900).lt.1.d-3)then",
- "callwofost_soilamendents",
- "isme=isme+1",
- "matnum(i)=matnum(i)",
+ "if(smedate(isme)-smedate(isme-1)<0.d-3)then",
 ]
 for needle in amendment_calendar_needles:
     if needle not in management:
-        raise SystemExit("missing exact amendment calendar equation: "+needle)
-
-amendment_calendar_decision=(ROOT/"integration/audits/MC_NUT01_AMENDMENT_CALENDAR_SOURCE_DECISION.md").read_text().lower()
-for needle in ["accepted_reference_correction","complete typed amendment records atomically"]:
-    if needle not in amendment_calendar_decision:
-        raise SystemExit("amendment calendar reference-correction contract missing: "+needle)
+        raise SystemExit("missing exact B1.11 amendment calendar witness: "+needle)
+if "matnum(i)=matnum(i)" in management:
+    raise SystemExit("unexpected public sorting defect in exact B1.11 management")
+if not re.search(r"if\\(smedate\\(i-1\\)>smedate\\(i\\)\\)then", management):
+    raise SystemExit("missing exact B1.11 unsorted-date guard")
 
 watern_needles=[
  "wfrac_av=half*(wfrac_t+wfrac_t0)",
