@@ -37,6 +37,8 @@ program test_fmr_b111_reactive_water_carrier
   allocate(trace%macropore_matrix_exchange_domain(0,1))
 
   static%dz_cm=[10.0_real64]
+  allocate(static%face_left_weight(0),static%face_right_weight(0),static%face_distance_cm(0), &
+       static%theta_sat_left(0),static%dispersivity_cm(0))
   static%cseep_mg_cm3=1.0_real64
   static%cdrain_mg_cm3=0.0_real64
   static%tscf=0.0_real64
