@@ -1,0 +1,25 @@
+name: SWAP431 empirical root oxygen qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  push:
+    branches: [work/swap431-root-oxygen-emp-20261007]
+    paths:
+      - 'src/process/mod_root_water_uptake_process.f90'
+      - 'tests/fmig431/test_swap431_root_oxygen_emp.f90'
+      - 'tests/fmig431/run_swap431_root_oxygen_emp.py'
+      - 'tests/fmig431/test_swap431_root_oxygen_emp_runtime.f90'
+      - 'tests/fmig431/run_swap431_root_oxygen_emp_runtime.py'
+      - '.github/workflows/swap431-root-oxygen-emp.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Exact empirical oxygen component O0 O2
+        run: python3 tests/fmig431/run_swap431_root_oxygen_emp.py
+      - name: Committed production root binding O0 O2
+        run: python3 tests/fmig431/run_swap431_root_oxygen_emp_runtime.py
