@@ -24,7 +24,10 @@ module mod_fmr_wofost_crop_transaction
        same_wofost_crop_event_identity, crop_event_identity_matches_interval, FMR_WOFOST_LINEAGE_OK, &
        export_wofost_crop_event_identity_persistence, &
        reconstruct_wofost_crop_event_identity_from_persistence
-  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t, &
+       propose_crop_lifecycle_continuation, CROP_CONT_OK
+  use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
+  use mod_crop_germination_preflight, only: crop_germination_candidate_t
   implicit none
   private
 
@@ -41,6 +44,7 @@ module mod_fmr_wofost_crop_transaction
   integer, parameter, public :: FMR_WOF38_POTENTIAL_ERROR = 10
   integer, parameter, public :: FMR_WOF38_MISSING_DAILY_OXYGEN = 11
   integer, parameter, public :: FMR_WOF38_INVALID_DAILY_OXYGEN = 12
+  integer, parameter, public :: FMR_WOF38_LIFECYCLE_REJECTED = 13
 
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_OK = 0
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE = 1
@@ -113,6 +117,10 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_one_day_forcing_t) :: crop_forcing
     type(wofost_accepted_window_aggregates_t) :: accepted_aggregates
     type(fmr_wofost_crop_event_identity_t) :: event_identity
+    logical :: lifecycle_requested = .false.
+    integer(kind=8) :: lifecycle_expected_revision = -1_8
+    type(crop_daily_lifecycle_candidate_t) :: lifecycle_plan
+    type(crop_germination_candidate_t) :: lifecycle_germination
   contains
     procedure, public :: ready => fmr_wofost_crop_event_forcing_ready
   end type fmr_wofost_crop_event_forcing_t
@@ -365,11 +373,15 @@ contains
     status = FMR_WOF38_OK
   end subroutine construct_fmr_wofost_crop_transaction_parameters
 
-  subroutine prepare_fmr_wofost_crop_event_forcing(window, crop_forcing, forcing, status)
+  subroutine prepare_fmr_wofost_crop_event_forcing(window, crop_forcing, forcing, status, &
+       lifecycle_plan, lifecycle_germination, lifecycle_expected_revision)
     type(fmr_wofost_accepted_window_t), intent(in) :: window
     type(wofost_one_day_forcing_t), intent(in) :: crop_forcing
     type(fmr_wofost_crop_event_forcing_t), intent(out) :: forcing
     integer, intent(out) :: status
+    type(crop_daily_lifecycle_candidate_t), intent(in), optional :: lifecycle_plan
+    type(crop_germination_candidate_t), intent(in), optional :: lifecycle_germination
+    integer(kind=8), intent(in), optional :: lifecycle_expected_revision
     type(fmr_wofost_crop_event_token_t) :: token
     type(wofost_accepted_window_aggregates_t) :: aggregates
     logical :: available
@@ -382,6 +394,18 @@ contains
     call identify_wofost_crop_event(token, forcing%event_identity, lineage_status)
     if (lineage_status /= FMR_WOFOST_LINEAGE_OK .or. .not. forcing%event_identity%ready()) return
 
+    if (present(lifecycle_plan) .or. present(lifecycle_germination) .or. &
+         present(lifecycle_expected_revision)) then
+      status = FMR_WOF38_LIFECYCLE_REJECTED
+      if (.not. present(lifecycle_plan) .or. .not. present(lifecycle_germination) .or. &
+           .not. present(lifecycle_expected_revision)) return
+      if (.not. lifecycle_plan%valid) return
+      if (lifecycle_expected_revision < 0_8) return
+      forcing%lifecycle_plan = lifecycle_plan
+      forcing%lifecycle_germination = lifecycle_germination
+      forcing%lifecycle_expected_revision = lifecycle_expected_revision
+      forcing%lifecycle_requested = .true.
+    end if
     forcing%crop_forcing = crop_forcing
     forcing%accepted_aggregates = aggregates
     forcing%initialized = .true.
@@ -533,6 +557,10 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (.not. self%event_identity%ready()) return
+    if (self%lifecycle_requested) then
+      if (.not. self%lifecycle_plan%valid) return
+      if (self%lifecycle_expected_revision < 0_8) return
+    end if
     if (.not. ieee_is_finite(self%accepted_aggregates%actual_root_uptake)) return
     if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
     if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
@@ -631,7 +659,8 @@ contains
     type(wofost_one_day_rate_packet_t) :: rates
     type(wofost_potential_daily_result_t) :: potential_result
     type(fmr_wofost_root_growth_carrier_t) :: candidate_growth_carrier
-    integer :: crop_status, oxygen_status
+    type(crop_lifecycle_continuation_t) :: candidate_lifecycle
+    integer :: crop_status, oxygen_status, lifecycle_status
     logical :: actual_root_growth_allowed, suppress_actual_root_growth
 
     outcome = trial_outcome_t()
@@ -658,6 +687,15 @@ contains
         return
       end if
 
+      if (self%event_forcing%lifecycle_requested) then
+        self%last_status = FMR_WOF38_LIFECYCLE_REJECTED
+        if (.not. allocated(typed_state%lifecycle)) return
+        call propose_crop_lifecycle_continuation(typed_state%lifecycle, &
+             self%event_forcing%lifecycle_plan, self%event_forcing%lifecycle_germination, &
+             self%event_forcing%lifecycle_expected_revision, self%event_forcing%event_identity, &
+             candidate_lifecycle, lifecycle_status)
+        if (lifecycle_status /= CROP_CONT_OK) return
+      end if
       candidate_growth_carrier = fmr_wofost_root_growth_carrier_t()
       if (self%potential_shadow_enabled) then
         call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
@@ -722,6 +760,7 @@ contains
         typed_state%root_growth_carrier = candidate_growth_carrier
       end if
       typed_state%last_consumed_event = self%event_forcing%event_identity
+      if (self%event_forcing%lifecycle_requested) typed_state%lifecycle = candidate_lifecycle
       typed_state%initialized = .true.
       outcome%solver_ok = .true.
       outcome%mass_accounting_complete = .true.
