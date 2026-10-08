@@ -159,6 +159,8 @@ contains
 
   logical function fmr_wofost_crop_transaction_persistence_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_persistence_t), intent(in) :: self
+    type(fmr_wofost_crop_event_identity_t) :: lifecycle_receipt
+    integer :: lifecycle_receipt_status
     ready = .false.
     if (.not. self%valid) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
@@ -181,6 +183,14 @@ contains
     end if
     if (self%lifecycle_present) then
       if (.not. self%lifecycle%ready()) return
+      if (self%lifecycle%last_event_identity%ready()) then
+        if (.not. self%receipt_present) return
+        if (.not. self%receipt%ready()) return
+        call reconstruct_wofost_crop_event_identity_from_persistence(self%receipt, lifecycle_receipt, &
+             lifecycle_receipt_status)
+        if (lifecycle_receipt_status /= FMR_WOFOST_LINEAGE_OK) return
+        if (.not. same_wofost_crop_event_identity(self%lifecycle%last_event_identity,lifecycle_receipt)) return
+      end if
     else
       if (self%lifecycle%valid) return
     end if
@@ -413,6 +423,11 @@ contains
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
     if (allocated(self%lifecycle)) then
       if (.not. self%lifecycle%ready()) return
+      if (self%lifecycle%last_event_identity%ready()) then
+        if (.not. self%last_consumed_event%ready()) return
+        if (.not. same_wofost_crop_event_identity(self%lifecycle%last_event_identity, &
+             self%last_consumed_event)) return
+      end if
     end if
     if (allocated(self%potential_shadow)) then
       if (self%potential_shadow%validate() /= WOFOST_POTENTIAL_SHADOW_OK) return
