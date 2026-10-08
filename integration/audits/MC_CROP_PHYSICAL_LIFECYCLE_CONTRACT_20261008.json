@@ -53,7 +53,7 @@
   "tested": false,
   "qualified": false,
   "admitted": false,
-  "next_action": "Admit only qualified pure preparation/sowing/germination proposals after overlap check; physical lifecycle transaction owner, germination event publication, harvest and durable restart remain unimplemented.",
+  "next_action": "Develop source-bound transactionally accepted physical lifecycle publication and coherent crop owner/calendar restart, with hydraulic/thermal forcing provenance and reject/retry controls.",
   "reconciled_current_owner": {
     "canonical_head": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
     "physical_crop_state": "src/runtime/mod_fmr_wofost_crop_transaction.f90: fmr_wofost_crop_transaction_state_t owns crop owner, optional potential shadow/root growth and last consumed event",
@@ -83,7 +83,7 @@
       "persisted": true,
       "local_equivalent_O0_O2": "PASS; exact persisted head qualification pending",
       "qualified": true,
-      "admitted": false,
+      "admitted": true,
       "limits": "Explicit h-average and temperature inputs; daily candidate only, no physical crop owner, no lifecycle flags published, no germination or restart.",
       "tested": true,
       "qualified_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
@@ -95,7 +95,7 @@
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "admitted": false,
+      "admitted": true,
       "qualified_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
       "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37817324391",
       "scope": "Pure mode 0/1/2 temperature and hydraulic daily candidate, no physical state publication"
@@ -105,5 +105,11 @@
     "head": "2c2e59e9b140da854bb659be28c4a56279d23647",
     "result": "PASS",
     "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37817324469"
+  },
+  "canonical_admission": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1135",
+    "merge_commit": "c9cc5f539a4a2243326dff4e26450c480fa6c832",
+    "qualified_source_head": "2c2e59e9b140da854bb659be28c4a56279d23647",
+    "scope": "Read-only preparation, sowing and germination candidate classification only. Full physical crop lifecycle not admitted."
   }
 }
