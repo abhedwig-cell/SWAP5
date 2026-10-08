@@ -103,3 +103,31 @@ optimization (`frexp=2, 0.5, 1.0005`). Evidence:
 This establishes **only** the focused partition operator. The coupled
 matrix/age substep, accepted water trace, restart, integrated O0/O2 and
 canonical admission remain unqualified on this updated binding postimage.
+
+## 2026-10-08 legacy qualification failure reconciliation
+
+Superseded PR #1112 qualification run `37644330458` completed **FAILED**. The
+first six content steps succeeded; exact B1.11 NUT/SOL source gate rejected
+its expected temperature-dependent `r1` equation, so subsequent integrated
+qualification steps did not execute. The negative evidence is preserved at
+`integration/audits/evidence/MC_NUT_SOL_OLD_QUALIFICATION_RUN_37644330458.json`.
+It qualifies neither the old PR nor the substantially expanded binding HEAD.
+
+Source-gate review identified an additional deterministic defect: the script
+referenced `SWAP/management_soil.f90` and `SWAP/cropgrowth.f90` but did not
+extract them into its `members` map. Fixed at commit
+`62e2d2f6b51969def0752e0b0ec00f7f9427967d`. The gate still checks
+pinned SHA-256 for its previously pinned set of B1.11 source files; the two
+additional files are read from the same repository-bound authority archive.
+
+The temperature-rate equation mismatch is **not** waived or rewritten on
+speculation. The fail-closed error now includes line-numbered assignments
+from the archive's exact `wofost_soil_rateconstants.f90` to distinguish a
+text-oracle formatting mismatch from real physical disagreement. Diagnostic
+commit: `9470de377a69b3e6a039eb2b3e21337a609539cb`.
+
+No fresh full-head qualification was executed for this recovery increment.
+The next safe test is to execute the exact-source probe on the current
+binding postimage, inspect any printed exact-source equation, and only then
+change equation matching or physical code with a justified oracle. No
+capability status was upgraded to ADMITTED.
