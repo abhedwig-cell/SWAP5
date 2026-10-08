@@ -341,8 +341,8 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     # surface while preserving B19 behavior; accept only that exact successor.
     if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
       check_b19_micro_root_recomposition
-      test "$(git rev-parse HEAD:$BACKEND)" = "ab51d1346ef97a861664cc3ba049aa8685019004" || fail 'B19+MICRO serialized backend drift'
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "cbcdb7ea963227b5acdf9d2b9cfb5cb974d6196e" || fail 'B19+MICRO application bootstrap drift'
+      test "$(git rev-parse HEAD:$BACKEND)" = "$(git rev-parse "$dependency_authority:$BACKEND")" || fail 'B19+MICRO current-target serialized backend drift'
+      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
       echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
     else
       check_b19_micro_root_recomposition
