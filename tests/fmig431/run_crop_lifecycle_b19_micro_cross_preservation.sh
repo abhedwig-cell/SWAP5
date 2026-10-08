@@ -33,7 +33,7 @@ MICRO03_RESULT="${TMPDIR:-/tmp}/crop-micro03-$$.json" \
 # Historical B19 admission verifier pins an older application-bootstrap blob
 # and is not a moving-current source check. Preserve exact unchanged shared
 # production blobs above and execute a bounded current-head B19 O0/O2 case.
-B19_BUILD="$(mktemp -d)"
+B19_BUILD="$(mktemp -d "${TMPDIR:-/tmp}/ppa-wu05b19-low-air-runtime-XXXXXX")"
 trap 'rm -rf "$B19_BUILD"' EXIT
 python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build "$B19_BUILD"
 python3 tests/frost/run_ppa_wu05b19_qualification.py --workers 2 --cases 1 --build "$B19_BUILD"
