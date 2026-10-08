@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-CENTRAL-REGIE",
+  "date": "2026-10-08",
+  "canonical_branch": "integration/f-ci-canonical",
+  "pinned_canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+  "state": "PERSISTED_RECONCILIATION_CHECKPOINT_NOT_QUALIFIED",
+  "scope": "Coordination and deduplication; no scientific source or canonical admission changes",
+  "authority": {
+    "protocol": "docs/development/workstream-execution-protocol.md",
+    "master_ledger_candidate": "PR #1072 work/swap431-master-coverage-20261006",
+    "master_ledger_canonical": false,
+    "master_status_snapshot": {
+      "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
+      "capabilities": 243,
+      "admitted": 83,
+      "active_migration": 121,
+      "superseded": 14,
+      "rejected": 1,
+      "not_applicable": 20,
+      "qualification_only": 4,
+      "open_workunits": 18
+    },
+    "warning": "These are PR #1072 working-branch counts, not verified fresh canonical counts; never promote them as current-admitted without per-capability exact-head reconciliation."
+  },
+  "canonical_recent_changes": [
+    {
+      "sha": "75114770c4d4d300f9d8037207d5498fa0e1f44",
+      "scope": "MC-CROP01 shared B1.11 CO2 response owner admitted"
+    },
+    {
+      "sha": "7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
+      "scope": "A26 workflow trigger scope, not physical qualification"
+    },
+    {
+      "sha": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+      "scope": "Operational recovery/protocol merge #1118; no new scientific admission inferred"
+    }
+  ],
+  "overlap_clusters": [
+    {
+      "prs": [
+        1111,
+        1113
+      ],
+      "capability": "SWRD3 biomass root-depth",
+      "action": "Choose single authoritative implementation; assess different WRT/WRTPOT input semantics, then close or supersede duplicate; do not merge both blindly."
+    },
+    {
+      "prs": [
+        1104,
+        1114,
+        1115,
+        1110,
+        1108
+      ],
+      "capability": "Shared crop root geometry, uptake and runtime composition",
+      "action": "Reconcile against existing canonical DVS geometry; isolate SWRD2, adaptive density, oxygen Feddes, MICRO LRV as distinct physical capabilities while checking shared runtime owner collisions."
+    },
+    {
+      "prs": [
+        1098,
+        1117
+      ],
+      "capability": "NUT/SOL shared source/owners",
+      "action": "PR1117 consolidates qualification, not automatically admitted; check source and restart gates, avoid transplanting independent production changes twice."
+    },
+    {
+      "prs": [
+        1073,
+        1074,
+        1075,
+        1076
+      ],
+      "capability": "MICRO stacked qualification",
+      "action": "Topological admission order and per-head evidence; no flat independent merges."
+    },
+    {
+      "prs": [
+        990,
+        995
+      ],
+      "capability": "transaction storage-accounting fix",
+      "action": "Prefer current-canonical reconciled replacement only after exact checks."
+    }
+  ],
+  "integration_queue": [
+    {
+      "priority": 1,
+      "prs": [
+        1104
+      ],
+      "reason": "Apparently non-draft DVS admission PR but GitHub reports mergeable=false; verify whether this capability was already admitted via another canonical commit before trying PR admission."
+    },
+    {
+      "priority": 2,
+      "prs": [
+        1120
+      ],
+      "reason": "CI trigger hygiene, low physics risk; verify shared dependency filter parity and exact PR checks before merge."
+    },
+    {
+      "priority": 3,
+      "prs": [
+        1097,
+        1083
+      ],
+      "reason": "Irrigation and runon changes have shared runtime/surface interfaces; verify current branch postimages and owner gates; do not equate implemented with admitted."
+    },
+    {
+      "priority": 4,
+      "prs": [
+        1111,
+        1113,
+        1114,
+        1115,
+        1110,
+        1108
+      ],
+      "reason": "Crop/root overlap and shared geometry composition requires owner consolidation before qualification or admission."
+    },
+    {
+      "priority": 5,
+      "prs": [
+        1103,
+        1117,
+        1073,
+        1074,
+        1075,
+        1076
+      ],
+      "reason": "HYD/HYST, NUT/SOL, MICRO have high cross-component coupling; retain parallel scientific workstream ownership, integrate only with explicit qualification."
+    }
+  ],
+  "status_semantics": {
+    "implemented": "Source behavior present in implementation, possibly only a draft working tree",
+    "persisted": "Versioned retrievable commit and recovery record",
+    "tested": "Named gate actually passed against persisted postimage",
+    "qualified": "All scope-specific gates completed with versioned evidence",
+    "preserved": "Previously admitted behavior retained on relevant tested dependency surface",
+    "canonically_admitted": "Explicit canonical integration/acceptance on integration/f-ci-canonical; draft PR is not admission"
+  },
+  "checks": {
+    "repository_files_read": [
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md",
+      "docs/development/knowledge-map.md",
+      "reference/swap-4.3.1/README.md",
+      "docs/status-a/CURRENT_STATUS.md",
+      "docs/status-a/FUTURE_SCOPE.md",
+      "docs/development/workstreams.md"
+    ],
+    "master_status_read_from_pr1072": true,
+    "open_pr_index_reviewed": true,
+    "selected_changed_file_lists_reviewed": true,
+    "local_compilation_run": false,
+    "integrated_qualification_run": false,
+    "admissions_performed": false
+  },
+  "next_safe_steps": [
+    "Compare latest admission commits and per-capability authority to every PR1072 ledger row; recompute denominator on current canonical",
+    "Fetch branch exact-head recovery/qualification records and workflow results for candidates; check unchanged dependencies and preserve earlier admissions",
+    "Consolidate 1111/1113 duplicate SWRD3 ownership and current DVS integration before selecting production admission sequence",
+    "Do not initiate Actions when exact-head workflow already exists; require explicit acceptance gate before canonical merge"
+  ],
+  "blockers": [
+    "Master SWAP431 ledger is present on draft PR1072, absent from pinned canonical; no canonical master denominator yet",
+    "Selected open PRs are draft, have conflicting shared sources, or lack verified exact-head qualification; no admission claimed"
+  ],
+  "canonical_mutated": false
+}
