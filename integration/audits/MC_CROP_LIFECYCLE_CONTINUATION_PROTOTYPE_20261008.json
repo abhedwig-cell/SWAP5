@@ -1,0 +1,40 @@
+{
+  "schema": "swap431.crop_continuation_prototype.v1",
+  "canonical_base": "6cef5580daa7387e241a88c6a7216c265557c307",
+  "workstream": "MC-CROP01",
+  "relationship": "successor experiment to draft #1137",
+  "scope": "Pure candidate of per-crop preparation, sowing and germination continuation with revision/duplicate guards; no F-KT binding, no emergence publication, no physical restart",
+  "local_checks": {
+    "compiler": "gfortran",
+    "flags": [
+      "-O0 -fcheck=all -Wall -Wextra",
+      "-O2 -fcheck=all -Wall -Wextra"
+    ],
+    "result": "PASS with type-compatible locally recreated dependency declarations, not full repository source",
+    "qualification": "NOT QUALIFIED: persisted exact-head repository compilation, lifecycle owner integration and F-CI preservation missing"
+  },
+  "limitations": [
+    "Integer event token is local candidate only, NOT accepted event identity",
+    "No forcing provenance or validation against actual F-KT accepted receipt",
+    "No lifecycle continuation persistence in physical crop owner",
+    "No harvest/reset, root initialization, physical acceptance or SWINCO=3 semantics",
+    "No claims on crop mass balance or restart equivalence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": "LOCAL_ISOLATED_STUB_DEPENDENCIES",
+  "qualified": false,
+  "preserved": false,
+  "admitted": false,
+  "next_action": "Run exact-head F-KT owner compatibility and lifecycle candidate O0/O2; repair compile/module paths; then implement verified hydrothermal provenance and atomic accepted lifecycle progression, harvest/reset and coherent restart; preserve B19+MICRO before admission.",
+  "postimage": "895cc1ab252d0bfcf5aad0e073cd5ce233865aec",
+  "test_runner": "tests/fmig431/run_crop_lifecycle_continuation.sh",
+  "test_execution": "UNQUALIFIED successor. Existing test runner requires update to compile transitive F-KT lineage modules before it is runnable with actual SWAP5 code",
+  "test_added": "Stale revision, duplicate token, rejected input snapshot, missing germination after sowing; exact module runner is present but has not run on persisted postimage",
+  "provisional_integer_event_token_removed": true,
+  "event_identity": "fmr_wofost_crop_event_identity_t exact identity, same_wofost_crop_event_identity",
+  "integration_persistence": "Optional lifecycle continuation now carried by actual F-WOF38 transaction_state clone, export/reconstruct persistence and snapshot; no accepted physical progression or forcing binding yet",
+  "qualification_runner": "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+  "local_o0_o2": "NOT RUN on exact persisted F-KT owner postimage; dependency-local prototype success is not production qualification",
+  "preservation_failure": "previous canonical F-CI run 37834168959 failed B19+MICRO source gate on older head"
+}

@@ -282,6 +282,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
+  local crop_lifecycle_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -310,11 +311,22 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_preparation_sowing_preflight.f90 ) ;;
       src/crop/mod_crop_germination_preflight.f90 ) ;;
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
+      src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_lifecycle_changed )); then
+    # This source is admitted to the restricted B19/MICRO candidate surface
+    # ONLY after its full exact-head F-KT O0/O2 plus actual MICRO02/03/05/06
+    # and B19 current-source O0/O2 cross-preservation gate has succeeded.
+    # No unconditional source allowlisting or modification of frozen physics.
+    test -f tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'missing qualified lifecycle B19/MICRO cross-preservation gate'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'lifecycle B19/MICRO cross-preservation failed'
+  fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
       fail "B19+MICRO shared-owner postimage changed: $candidate_path"
