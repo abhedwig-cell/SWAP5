@@ -26,9 +26,11 @@
   "qualified": false,
   "preserved": false,
   "admitted": false,
-  "next_action": "Run actual repository O0/O2 compile of production dependencies and test; replace scalar event token with validated F-KT accepted event identity within crop-owner transaction; then add lifecycle checkpoint, forcing provenance, cross-boundary restart and preservation before admission.",
-  "postimage": "d1fa02bc4a03a02d286838b84e4a18dd841f93d7",
+  "next_action": "Resolve real module dependency compilation, commit accepted lifecycle in F-KT transaction state and persistence atomically; never treat this identity-only proposal as full physical lifecycle",
+  "postimage": "0fd5e893179468c0473553a938450b5178c9e1ee",
   "test_runner": "tests/fmig431/run_crop_lifecycle_continuation.sh",
-  "test_execution": "NOT RUN on persisted postimage; actual module compile and O0/O2 pending",
-  "test_added": "Stale revision, duplicate token, rejected input snapshot, missing germination after sowing; exact module runner is present but has not run on persisted postimage"
+  "test_execution": "UNQUALIFIED successor. Existing test runner requires update to compile transitive F-KT lineage modules before it is runnable with actual SWAP5 code",
+  "test_added": "Stale revision, duplicate token, rejected input snapshot, missing germination after sowing; exact module runner is present but has not run on persisted postimage",
+  "provisional_integer_event_token_removed": true,
+  "event_identity": "fmr_wofost_crop_event_identity_t exact identity, same_wofost_crop_event_identity"
 }
