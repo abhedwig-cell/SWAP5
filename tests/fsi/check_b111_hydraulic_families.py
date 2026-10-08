@@ -79,6 +79,11 @@ for model,h,th,k,cap,dk in rows:
         raise SystemExit(f"model {model} {name} mismatch: got={a} expected={b}")
     if dk!=0.0: raise SystemExit(f"model {model} unexpected dKdh {dk}")
 
+expected_models=[1,2,3,5,6,7,8,9,10,11]
+observed_models=[model for model,h,th,k,cap,dk in rows]
+if observed_models != expected_models:
+    raise SystemExit(f"incomplete or reordered hydraulic family coverage: {observed_models}")
+
 base_by_model={model:(th,k) for model,h,th,k,cap,dk in rows}
 if [r[0] for r in vapor_rows] != [8,9,10,11]:
     raise SystemExit(f"unexpected PDI vapor rows: {[r[0] for r in vapor_rows]}")
