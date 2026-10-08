@@ -38,3 +38,6 @@ with tempfile.TemporaryDirectory(prefix='swap431-crop-rotation-receipt-') as td:
         outputs.append(x.stdout)
 if outputs[0]!=outputs[1]: raise SystemExit('O0/O2 output drift')
 print('SW431_CROP_ROTATION_RECEIPT_PRECOMMIT_O0_O2=PASS')
+
+# Positive committed-event fixture inherited from F-WOF38/F-WOF39 source authority.
+subprocess.run(['bash',str(R/'tests/fmig431/run_crop_rotation_receipt_full_gate.sh')],check=True)
