@@ -77,3 +77,7 @@ SWAP-003 and SWAP-004 remain outside the admitted B1 line.
 Production kernel/runtime code must not depend on implementation structures in this subtree. Reference-build and verification tooling may use it to reproduce B0 and construct qualified B1 snapshots.
 
 Legacy B1 evidence does not replace the transaction-aware unrounded B2 mass-accounting gate. SWAP5 reference qualification remains fail-closed until the relevant integrated B2 reference contracts are satisfied.
+
+## Source discovery for resumed work
+
+Pin the exact Git ref. Check `b0/`, `b1_10_source/`, `b1_11_frost_source/SWAP/`, `recovered/`, `snapshots/`, `patches/` and `frost-corrections/` before reporting that historical source is absent. Use `b1-manifest.yml` for identity and the owning work-unit evidence for corrections. A local DNS failure does not prevent use of a connected GitHub file reader. Verify B0 archive byte identity separately from an unpacked source tree.

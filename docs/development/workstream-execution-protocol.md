@@ -91,7 +91,7 @@ Stop after a checkpoint only when at least one of the following applies:
 
 - a real scientific, architectural, governance or dependency blocker has been reached;
 - the next action is not authorized by the current work-unit scope;
-- a tool or execution environment has failed or been interrupted;
+- all applicable execution and repository-access alternatives have been tried or ruled out, and a concrete external tool/environment blocker prevents safe continuation;
 - the remaining runtime appears insufficient to start the next expensive operation safely;
 - the user explicitly requested a stop or review boundary.
 
@@ -255,3 +255,32 @@ Before such a gate starts, answer all three questions with a concrete repository
 3. What is the single next incomplete action?
 
 If those answers are not yet available, create the checkpoint first.
+
+## Autonomous recovery and local-first work
+
+Choose work order by dependencies, risk and likelihood of qualified closure. Continue after intermediate compiler failures, commits and focused tests where time and safe execution permit. Larger architecture changes are allowed when source-backed, documented and tested against existing invariants and preservation requirements.
+
+Prefer available local Git, Python, gfortran and focused O0/O2 tests for iteration. Use GitHub Actions sparingly for necessary persisted integrated qualification, reusing valid exact-postimage evidence. A local DNS failure does not imply the connected GitHub repository tools are unavailable. A missing checkout does not imply missing source. Independently use supported exact-ref GitHub file, tree and blob retrieval and consult the source locations in `reference/swap-4.3.1/README.md`. Do not ask for historical archives until the documented repository paths, recovered sources and manifests have been checked.
+
+If a required execution route fails, attempt alternative supported routes and continue independent work. A blocker report must identify the specific failed method, actual error, alternatives attempted and precise remaining dependency. Do not claim a local run occurred without evidence. Report meaningful closures and irreducible blockers rather than every intermediate step. Platform execution limits remain real; preserve a recovery point when they prevent continued work.
+
+
+## Byte-verified local test recovery
+
+When local Git or DNS fails, use the connected GitHub repository interface to retrieve exact-ref files. Reading content through a connector does not by itself place files into the local execution environment.
+
+For a bounded local test:
+
+1. Pin the target commit and fetch the existing source files, test drivers and runner from that exact ref.
+2. Transfer files to a local tree. Preserve CRLF, trailing whitespace and raw bytes where required.
+3. Verify Git blob identity and any available SHA-256 manifest before calling the reconstruction byte-exact.
+4. Run the existing repository test at O0 and O2 with its prescribed compiler flags. Keep additional diagnostic smoke tests separate from official evidence.
+5. Broaden to provider and runtime dependencies only after recording the focused gate outcome.
+
+Distinguish readable source, byte-verified local source, focused tests, integrated preservation, qualification and canonical admission. A successful focused test never substitutes for a required integrated gate. When code changes, check the tested commit and relevant dependency surface before carrying evidence forward.
+
+## GitHub Actions scheduling hygiene
+
+Check existing queued, running and completed qualification for the exact PR head before starting another run. A draft PR may trigger workflows automatically. Do not create duplicate runs just to check runner availability.
+
+When reducing workload, inspect pull_request and push path filters, shared dependencies, workflow_dispatch, concurrency and owning admission requirements. Narrow unrelated triggers only where the declared dependency surface remains covered. Do not weaken numerical thresholds or remove mandatory preservation. Document an unverified queue improvement as expected rather than measured.
