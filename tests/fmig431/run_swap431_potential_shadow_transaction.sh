@@ -88,9 +88,9 @@ s=s.replace(use_anchor,use_insert,1)
 # Attribute failure of the historical physical donor before the shadow
 # candidate: do not alter numerical tolerances or completion assertions.
 physical_anchor="    call require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'F-WOF38 physical trial completes')"
-physical_probe=("    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\\n"
- "      print *, 'SW431_PHYSICAL_DONOR_STATUS=',result%status,' COMPLETED=',result%completed\\n"
- "    end if\\n"+physical_anchor)
+physical_probe=("    if (result%status /= CANONICAL_STATUS_COMPLETED .or. .not. result%completed) then\n"
+ "      print *, 'SW431_PHYSICAL_DONOR_STATUS=',result%status,' COMPLETED=',result%completed\n"
+ "    end if\n"+physical_anchor)
 if s.count(physical_anchor)!=1:
     raise SystemExit("F-WOF38 physical donor assert anchor changed")
 s=s.replace(physical_anchor,physical_probe,1)
