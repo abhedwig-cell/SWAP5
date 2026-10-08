@@ -131,3 +131,9 @@ The next safe test is to execute the exact-source probe on the current
 binding postimage, inspect any printed exact-source equation, and only then
 change equation matching or physical code with a justified oracle. No
 capability status was upgraded to ADMITTED.
+
+## 2026-10-08 exact-head qualification #1117 outcome
+
+Run `37726458263` on binding head `b57e5729d73088affbe9256f06c847678f5c66c9` **FAILED** in the exact-source gate before integrated physics tests. Its exception was `KeyError: filename 'SWAP/cropgrowth.f90' not found` while extracting the declared additional members. This is a missing exact-authority source, not a demonstrated physics regression and not a PASS. The gate was repaired to fail with an explicit missing-source inventory (`845bb53a65a5b0c58984f35015cf99c70b8adce4`), but no successor gate was run.
+
+The current bundle demonstrably does not contain `SWAP/cropgrowth.f90`; source-oracle qualification for crop orchestration cannot be completed by merely widening the lookup dictionary. Supply a byte-exact, separately hash-pinned B1.11 cropgrowth source authority and verify all required management/crop members before rerunning integrated qualification. Keep all NUT/SOL capabilities unadmitted, and avoid new Actions until the source bundle boundary is resolved locally.
