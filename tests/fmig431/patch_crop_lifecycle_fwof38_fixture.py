@@ -81,7 +81,58 @@ replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transact
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS'
 """
 replace_one(anchor,replacement)
-replace_one("  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n","  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n  ! One opt-in F-KT trial: candidate and receipt must remain on the\n  ! unpublished trial while accepted owner/persistence remains unchanged.\n  lifecycle_seed%germinated=.false.\n  lifecycle_seed%germination_temperature_sum=0.0_real64\n  lifecycle_seed%sown=.false.\n  lifecycle_seed%prepared=.false.\n  call initialize_fmr_wofost_crop_transaction_state(seed,lifecycle_state,crop_status, &\n       lifecycle_initial=lifecycle_seed)\n  call require(crop_status==FMR_WOF38_OK,'optional lifecycle initial owner')\n  lifecycle_plan%valid=.true.\n  lifecycle_plan%prepared=.true.\n  lifecycle_plan%sown=.true.\n  lifecycle_plan%germination_evaluated=.true.\n  lifecycle_germination%valid=.true.\n  lifecycle_germination%complete=.false.\n  lifecycle_germination%next_temperature_sum=2.0_real64\n  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &\n       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &\n       lifecycle_expected_revision=4_8)\n  call require(crop_status==FMR_WOF38_OK.and.lifecycle_forcing%ready(), &\n       'opt-in event forcing ready')\n  call setup_crop_kernel_committed(lifecycle_state,lifecycle_committed,3831_int64,100.0_real64)\n  call lifecycle_committed%capture_checkpoint(lifecycle_checkpoint,lifecycle_checkpoint_ok)\n  call require(lifecycle_checkpoint_ok,'lifecycle checkpoint')\n  call crop_kernel%advance_interval(crop_parameters,lifecycle_committed,lifecycle_forcing,crop_config, &\n       100.0_real64,101.0_real64,lifecycle_result,lifecycle_candidate,lifecycle_diag,lifecycle_checkpoint)\n  call require(lifecycle_result%status==CANONICAL_STATUS_COMPLETED.and.lifecycle_candidate%ready(), &\n       'opt-in physical FKT lifecycle trial')\n  call lifecycle_candidate%snapshot(lifecycle_candidate_snapshot,lifecycle_available)\n  call require(lifecycle_available,'opt-in lifecycle candidate snapshot')\n  select type (tx=>lifecycle_candidate_snapshot)\n  type is (fmr_wofost_crop_transaction_state_t)\n    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)\n    call require(lifecycle_available.and.lifecycle_replayed%revision==5_8.and. &\n         lifecycle_replayed%prepared.and.lifecycle_replayed%sown.and. &\n         .not.lifecycle_replayed%emerged.and.tx%receipt_ready(), &\n         'lifecycle and physical receipt in one candidate')\n  class default\n    call require(.false.,'opt-in lifecycle candidate type')\n  end select\n  call lifecycle_committed%snapshot(lifecycle_candidate_snapshot,lifecycle_available)\n  call require(lifecycle_available,'committed snapshot remains available')\n  select type (tx=>lifecycle_candidate_snapshot)\n  type is (fmr_wofost_crop_transaction_state_t)\n    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)\n    call require(lifecycle_available.and.lifecycle_replayed%revision==4_8.and. &\n         .not.tx%receipt_ready(),'reject leaves physical and lifecycle original')\n  class default\n    call require(.false.,'unchanged committed lifecycle type')\n  end select\n  ! Commit exactly one accepted F-KT candidate. The physical receipt and
+replace_one("  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n",""""  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')
+  ! One opt-in F-KT trial: candidate and receipt must remain on the
+  ! unpublished trial while accepted owner/persistence remains unchanged.
+  lifecycle_seed%germinated=.false.
+  lifecycle_seed%germination_temperature_sum=0.0_real64
+  lifecycle_seed%sown=.false.
+  lifecycle_seed%prepared=.false.
+  call initialize_fmr_wofost_crop_transaction_state(seed,lifecycle_state,crop_status, &
+       lifecycle_initial=lifecycle_seed)
+  call require(crop_status==FMR_WOF38_OK,'optional lifecycle initial owner')
+  lifecycle_plan%valid=.true.
+  lifecycle_plan%prepared=.true.
+  lifecycle_plan%sown=.true.
+  lifecycle_plan%germination_evaluated=.true.
+  lifecycle_germination%valid=.true.
+  lifecycle_germination%complete=.false.
+  lifecycle_germination%next_temperature_sum=2.0_real64
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_OK.and.lifecycle_forcing%ready(), &
+       'opt-in event forcing ready')
+  call setup_crop_kernel_committed(lifecycle_state,lifecycle_committed,3831_int64,100.0_real64)
+  call lifecycle_committed%capture_checkpoint(lifecycle_checkpoint,lifecycle_checkpoint_ok)
+  call require(lifecycle_checkpoint_ok,'lifecycle checkpoint')
+  call crop_kernel%advance_interval(crop_parameters,lifecycle_committed,lifecycle_forcing,crop_config, &
+       100.0_real64,101.0_real64,lifecycle_result,lifecycle_candidate,lifecycle_diag,lifecycle_checkpoint)
+  call require(lifecycle_result%status==CANONICAL_STATUS_COMPLETED.and.lifecycle_candidate%ready(), &
+       'opt-in physical FKT lifecycle trial')
+  call lifecycle_candidate%snapshot(lifecycle_candidate_snapshot,lifecycle_available)
+  call require(lifecycle_available,'opt-in lifecycle candidate snapshot')
+  select type (tx=>lifecycle_candidate_snapshot)
+  type is (fmr_wofost_crop_transaction_state_t)
+    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)
+    call require(lifecycle_available.and.lifecycle_replayed%revision==5_8.and. &
+         lifecycle_replayed%prepared.and.lifecycle_replayed%sown.and. &
+         .not.lifecycle_replayed%emerged.and.tx%receipt_ready(), &
+         'lifecycle and physical receipt in one candidate')
+  class default
+    call require(.false.,'opt-in lifecycle candidate type')
+  end select
+  call lifecycle_committed%snapshot(lifecycle_candidate_snapshot,lifecycle_available)
+  call require(lifecycle_available,'committed snapshot remains available')
+  select type (tx=>lifecycle_candidate_snapshot)
+  type is (fmr_wofost_crop_transaction_state_t)
+    call tx%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)
+    call require(lifecycle_available.and.lifecycle_replayed%revision==4_8.and. &
+         .not.tx%receipt_ready(),'reject leaves physical and lifecycle original')
+  class default
+    call require(.false.,'unchanged committed lifecycle type')
+  end select
+  ! Commit exactly one accepted F-KT candidate. The physical receipt and
   ! continuation must survive owner persistence and fresh reconstruction.
   crop_revision_before=lifecycle_committed%current_revision()
   call crop_kernel%commit_candidate(lifecycle_committed,lifecycle_candidate,lifecycle_diag, &
@@ -114,5 +165,6 @@ replace_one("  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')\n"," 
        .not.lifecycle_replayed%germinated.and..not.lifecycle_replayed%emerged, &
        'accepted crop lifecycle restart successor')
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ACCEPT_RESTART=PASS'
-  print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ATOMIC_TRIAL=PASS'\n")
+  print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ATOMIC_TRIAL=PASS'
+""")
 p.write_text(s)
