@@ -163,3 +163,18 @@ literal needles and archive manifest before it can qualify any integrated
 NUT/SOL scope. In particular, no fallback to mutable public `main` is
 permitted; `1.d0`/`1.0d0` normalization may preserve numeric meaning,
 but the physical predicate `<0.d-3` may not be normalized into `<1e-3`.
+
+
+## 2026-10-08 restricted rate oracle repair
+
+The source gate now accepts only equivalent decimal spellings of Fortran
+D-exponent *integer-valued* literals (e.g., `1.0d0` versus `1.d0`).
+It does not change powers, coefficients, arithmetic operations, or physical
+predicates; the archived source SHA validation still precedes comparison.
+The previous double-escaped rate-assignment diagnostic was also corrected.
+Commit: `77ab26bcb310a059a004432251d295efdc146a12`.
+
+A three-case local lexical smoke test passed. This is not a replay of the
+complete exact B1.11 archive probe, and it is not O0/O2 integrated
+qualification. Full archive replay and any remaining source-equation
+discrepancies remain open. No Action was requested.
