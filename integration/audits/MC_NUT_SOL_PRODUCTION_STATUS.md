@@ -237,3 +237,30 @@ an executed full-substep PASS. No Actions job was started. The targeted
 `tests/physics/run_b111_reactive_solute_substep.sh` must be run on the
 latest persisted binding SHA and its outcome recorded before SOL01 can
 advance to qualified status.
+
+## 2026-10-08 reactive substep consolidation checkpoint
+
+Live binding PR #1117 remained open and draft at review; binding HEAD before
+this increment was `ca15dccd69d3c5749e943afb74eadc0f290f6a7e`.
+The rollback repair `57311affe7d3b05a78273bbcaef7f92962d321ec`
+and invalid-interface regression `bb6d843c6376995cea06ff7fd805446863ed79b8`
+remain present. Removed an unused `mass` local from the reactive substep
+under the strict `-Wall -Wextra -Werror` runner, at commit
+`d35766afeb17c35e515940a661e3bb174c8cee4e`.
+
+The local focus directory `/mnt/data/swap5_focus` contains the exact
+sorption operator and focused test binaries, not the complete seven-module
+reactive substep dependency closure. The existing sorption O0/O2 executables
+were run again and both printed `B111_SORPTION_MASS_CLOSURE_PASS`.
+Direct local GitHub DNS still fails; GitHub connector operations work but
+do not mount raw blobs into the local shell. Therefore the *reactive substep*
+O0/O2 test, atomic chemistry/age transaction, accepted water carrier and
+restart tests **have not** been run on this updated branch head. No
+qualification or admission claim, and no additional GitHub Actions run.
+
+Next cohesive gate: reconstruct the dependency closure, then run
+`run_b111_reactive_solute_substep.sh`,
+`run_fmr_b111_reactive_solute_transaction.sh`,
+`run_fmr_b111_reactive_water_carrier.py` and
+`run_b111_reactive_solute_restart_layout.py` at one exact head; only
+after all PASS persist qualification and reconcile canonical.
