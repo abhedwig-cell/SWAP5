@@ -95,6 +95,15 @@ for needle in solute_needles:
     if needle not in sol:
         raise SystemExit("missing exact solute equation: "+needle)
 
+def normalize_fortran_d_literals(text):
+    """Normalize ONLY equivalent decimal spellings in D-exponent literals.
+
+    No algebraic transformations, rounding, changed operators, or source
+    substitution are permitted. The byte SHA is verified before this step.
+    """
+    return re.sub(r"(?<![\\w.])([0-9]+)\\.(0*)d([+-]?[0-9]+)\\b",
+                  lambda m: m.group(1) + ".d" + m.group(3), text)
+
 rate_needles=[
  "r1=1.0d0/(1.0d0+exp(-0.26d0*(temp-17.0d0)))-1.0d0/(1.0d0+exp(-0.77d0*(temp-41.9d0)))",
  "r2=1.0d0/(1.0d0+exp(-0.26d0*(temp_ref-17.0d0)))-1.0d0/(1.0d0+exp(-0.77d0*(temp_ref-41.9d0)))",
@@ -104,16 +113,16 @@ rate_needles=[
  "red_resp=cdissi/(cdissihalf+cdissi)",
 ]
 for needle in rate_needles:
-    if needle not in rate:
-        # Preserve the fail-closed match. A readable source snippet helps
-        # distinguish a changed B1.11 equation from a formatting-only oracle
-        # mismatch, without substituting public SWAP or weakening the gate.
-        raw=members["SWAP/wofost_soil_rateconstants.f90"].decode("latin1")
-        term=needle.split("=",1)[0]
-        matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
-                 if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
-        raise SystemExit("missing exact Soil-N rate equation: "+needle+
-                         "; exact bundled source assignments: "+repr(matches[:12]))
+    if needle in rate:
+        continue
+    if normalize_fortran_d_literals(needle) in normalize_fortran_d_literals(rate):
+        continue
+    raw=members["SWAP/wofost_soil_rateconstants.f90"].decode("latin1")
+    term=needle.split("=",1)[0]
+    matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
+             if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
+    raise SystemExit("missing exact Soil-N rate equation: "+needle+
+                     "; exact bundled source assignments: "+repr(matches[:12]))
 
 nfix_needles=[
  "if(dvs.lt.dvsnlt.and.reltr.gt.0.01d0)then",
