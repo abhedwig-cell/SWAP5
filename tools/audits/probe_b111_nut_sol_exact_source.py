@@ -101,7 +101,7 @@ def normalize_fortran_d_literals(text):
     No algebraic transformations, rounding, changed operators, or source
     substitution are permitted. The byte SHA is verified before this step.
     """
-    return re.sub(r"(?<![\\w.])([0-9]+)\\.(0*)d([+-]?[0-9]+)\\b",
+    return re.sub(r"(?<![\w.])([0-9]+)\.(0*)d([+-]?[0-9]+)\b",
                   lambda m: m.group(1) + ".d" + m.group(3), text)
 
 rate_needles=[
@@ -120,7 +120,7 @@ for needle in rate_needles:
     raw=members["SWAP/wofost_soil_rateconstants.f90"].decode("latin1")
     term=needle.split("=",1)[0]
     matches=[(n,line.strip()) for n,line in enumerate(raw.splitlines(),1)
-             if re.search(r"\\b"+re.escape(term)+r"\\s*=",line,re.I)]
+             if re.search(r"\b"+re.escape(term)+r"\s*=",line,re.I)]
     raise SystemExit("missing exact Soil-N rate equation: "+needle+
                      "; exact bundled source assignments: "+repr(matches[:12]))
 
