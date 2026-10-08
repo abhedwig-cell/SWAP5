@@ -309,6 +309,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_rotation_lifecycle_preflight.f90 ) ;;
       src/crop/mod_crop_preparation_sowing_preflight.f90 ) ;;
       src/crop/mod_crop_germination_preflight.f90 ) ;;
+      src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;

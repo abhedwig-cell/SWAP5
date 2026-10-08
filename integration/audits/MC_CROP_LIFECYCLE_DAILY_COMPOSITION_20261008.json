@@ -1,0 +1,42 @@
+{
+  "schema": "swap431.crop_lifecycle_daily_composition.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "cadefcc323b8830c9f4500a7fc8dd3442fb8e44e",
+  "authority": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "integration/audits/MC_CROP_PHYSICAL_LIFECYCLE_CONTRACT_20261008.json"
+  ],
+  "files": [
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "tests/fmig431/test_crop_lifecycle_daily_composition.f90",
+    "tests/fmig431/run_crop_lifecycle_daily_composition.sh"
+  ],
+  "dependency_surface": [
+    "src/crop/mod_crop_preparation_sowing_preflight.f90",
+    "src/crop/mod_crop_germination_preflight.f90"
+  ],
+  "scope": "Pure source-ordered daily lifecycle candidate composition; no physical mutation or event publication",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "admitted": false,
+  "guards": [
+    "no germination consumption before prep and sow complete",
+    "missing germination candidate rejects once prerequisites satisfied",
+    "idempotent candidate replay",
+    "no F-KT/crop owner/transport/restart changes"
+  ],
+  "next_action": "Admit bounded pure composition after exact-head and overlap verification; physical event publication, harvest and restart still open.",
+  "qualification": {
+    "scientific_head": "fa92e90d4ddd182dcbec03ef737458c328d863e2",
+    "o0_o2": {
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37819942899",
+      "result": "PASS"
+    },
+    "fci": {
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37819942924",
+      "result": "PASS"
+    }
+  }
+}
