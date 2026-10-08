@@ -24,6 +24,12 @@ replacement=("  src/transaction/mod_transaction_reference.f90\n"
 if s.count(anchor)!=1:
     raise SystemExit("F-WOF38 dependency anchor changed")
 s=s.replace(anchor,replacement,1)
+# The legacy runner redirects assertions into a temporary file and deletes it
+# on exit; retain failure diagnostics by printing them before exit.
+output_anchor="./test > output.txt 2>&1"
+if s.count(output_anchor)!=1:
+    raise SystemExit("F-WOF38 test-output anchor changed")
+s=s.replace(output_anchor,"./test > output.txt 2>&1 || { cat output.txt >&2; exit 1; }",1)
 old="-Wall -Wextra -Werror -fcheck=all"
 if s.count(old)!=1:
     raise SystemExit("F-WOF38 compiler flags changed")
