@@ -68,5 +68,13 @@
     "Compose SWDMI2RD=2 supply limiter and adaptive root-density accepted forcing after this carrier layer."
   ],
   "disposition": "SHARED_ACCEPTED_CARRIERS_AND_SWRD2_SWRD3_OXYGEN_COMPOSITION_IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
-  "admission": false
+  "admission": false,
+  "local_component_reconciliation": {
+    "case": "SWDMI2RD=2 RRIMIN > proposed RR",
+    "finding": "Previously rejected by an input guard although pinned B1.11 uses min(RR,RRIMIN), which permits this case",
+    "production_fix_commit": "1e9a90fd4078f72cfd0e7e20cf79136c8a3a24ca",
+    "regression_commit": "aa413e3cdbb8c66635433feb77a4e5e17d4a552d",
+    "local_evidence": "Focused reconstructed-module strict gfortran O0/O2 PASS; old guard fails new regression. Not integrated production/restart qualification.",
+    "admission": false
+  }
 }
