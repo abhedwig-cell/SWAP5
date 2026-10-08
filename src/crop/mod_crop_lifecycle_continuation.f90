@@ -68,7 +68,9 @@ contains
     if(current%prepared.and..not.plan%prepared) return
     if(current%sown.and..not.plan%sown) return
     if(current%germinated.and..not.plan%germinated) return
-    ! No caller may silently omit the germination proposal after sowing.\n    if(plan%prepared.and.plan%sown.and..not.plan%germination_evaluated) return\n    if(plan%germination_evaluated) then
+    ! No caller may silently omit the germination proposal after sowing.
+    if(plan%prepared.and.plan%sown.and..not.plan%germination_evaluated) return
+    if(plan%germination_evaluated) then
       if(.not.(plan%prepared.and.plan%sown)) return
       if(.not.germination%valid) return
       if(plan%germinated.neqv.germination%complete) return
