@@ -29,6 +29,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "$OUT/availability.o" "$OUT/test_availability_nonfinite.o" -o "$OUT/test_availability_nonfinite"
   "$OUT/test_availability_nonfinite" > "$OUT/nonfinite_output.txt" 2>&1 || { cat "$OUT/nonfinite_output.txt" >&2; exit 1; }
   grep -Fq 'MC_IRR01_AVAILABILITY_NONFINITE=PASS' "$OUT/nonfinite_output.txt"
+  grep -Fq 'MC_IRR01_NONFINITE_REQUEST=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_POLICY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_ROOT_ZONE_SUMMARY=PASS' "$OUT/output.txt"
   grep -Fq 'MC_IRR01_MANAGEMENT_APPLICATION=PASS' "$OUT/application_output.txt"
