@@ -28,9 +28,10 @@ with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode
               "the NUT/SOL gate without a separately SHA-pinned exact authority"
         )
     members={name:a.extractfile(name).read() for name in source_names}
-for name,raw in members.items():
+for name,expected_sha in EXPECTED.items():
+    raw=members[name]
     got=hashlib.sha256(raw).hexdigest()
-    if got!=EXPECTED[name]:
+    if got!=expected_sha:
         raise SystemExit(f"{name} sha mismatch: {got}")
 
 def packed(name):
