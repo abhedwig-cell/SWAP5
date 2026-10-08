@@ -57,7 +57,8 @@ program test_fmr_b111_solute_transaction
   call near(companion_snapshot%aquifer_mass,0.25_real64,'aquifer unchanged')
 
   call initialize_fmr_b111_solute_state(mobile_snapshot,companion_snapshot,initial,status)
-  call check(status==FMR_SOLCOMP_OK.and.initial%ready(),'restart reconstruction')
+  call check(status==FMR_SOLCOMP_OK,'restart reconstruction status')
+  call check(initial%ready(),'restart reconstruction')
 
   rate%aquifer_delta_per_day=0.1_real64
   call configure_fmr_b111_solute_model(dz,theta,rate,model,status)
