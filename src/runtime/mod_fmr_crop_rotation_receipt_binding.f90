@@ -29,12 +29,13 @@ contains
     type(crop_rotation_candidate_t) :: candidate
     real(real64) :: target_time
     integer :: trial_status, retirement_status
-    logical :: retired
+    logical :: retired, current_time_available
     accepted=.false.
     status=CROP_ROT_RECEIPT_INVALID
     if(.not.calendar%ready().or..not.calendar_state%ready()) return
     if(.not.committed_crop%ready().or..not.committed_crop%time_is_bound()) return
-    target_time=committed_crop%current_time()
+    call committed_crop%current_time(target_time,current_time_available)
+    if(.not.current_time_available) return
     if(target_time<=calendar_state%time()) then
       status=CROP_ROT_RECEIPT_TIME
       return
