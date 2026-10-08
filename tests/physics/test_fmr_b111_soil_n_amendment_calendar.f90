@@ -32,7 +32,10 @@ program test_fmr_b111_soil_n_amendment_calendar
   split%nfrac_humus=0.05_real64;split%asfa_min=0.03_real64;split%asfa_max=0.28_real64
 
   ! Unsorted raw records: complete material records must remain intact while
-  ! sorting and adjacent dates within 1e-3 are grouped.
+  ! SWAP5 proposed corrected grouping (NOT literal B1.11 source-equivalence):
+  ! sort complete records and group nearby dates within 1e-3.
+  ! Public SWAP management_soil.f90 has a distinct strict <0.d-3 grouping
+  ! condition; exact B1.11 grouping authority remains pending.
   items(1)%source_time=12.0_real64
   items(1)%material%application_kg_m2=0.30_real64
   items(1)%material%volatilization_fraction=0.30_real64
@@ -45,7 +48,7 @@ program test_fmr_b111_soil_n_amendment_calendar
   call build_b111_amendment_calendar(items,groups,status)
   call check(status==FMR_B111_AMCAL_OK.and.size(groups)==2,'calendar build')
   call check(groups(1)%event_id==1_int64.and.groups(2)%event_id==2_int64,'monotone group ids')
-  call check(size(groups(1)%materials)==2.and.size(groups(2)%materials)==1,'same-date grouping')
+  call check(size(groups(1)%materials)==2.and.size(groups(2)%materials)==1,'SWAP5 proposed near-date grouping')
   call near(groups(1)%materials(1)%application_kg_m2,0.10_real64,'sorted first dosage identity')
   call near(groups(1)%materials(1)%volatilization_fraction,0.10_real64,'sorted first material identity')
   call near(groups(1)%materials(2)%application_kg_m2,0.20_real64,'grouped second dosage identity')
