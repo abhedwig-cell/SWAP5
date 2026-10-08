@@ -34,7 +34,6 @@ contains
     status=ROOT_SUPPLY_INVALID_INPUT
     if(.not.ieee_is_finite(proposed_extension_cm).or.proposed_extension_cm<0.0_real64)return
     if(.not.ieee_is_finite(minimum_extension_cm).or.minimum_extension_cm<0.0_real64)return
-    if(minimum_extension_cm>proposed_extension_cm)return
     if(.not.ieee_is_finite(daily_drought_uptake_factor).or. &
        daily_drought_uptake_factor<0.0_real64.or.daily_drought_uptake_factor>1.0_real64)return
     if(.not.ieee_is_finite(extent_critical_fraction).or.extent_critical_fraction<=0.0_real64.or. &
