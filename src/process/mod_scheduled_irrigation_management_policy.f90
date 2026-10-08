@@ -147,10 +147,16 @@ contains
 
   pure logical function valid_request(request)
     type(irrigation_management_policy_request_t), intent(in) :: request
-    valid_request = ieee_is_finite(request%dvs) .and. ieee_is_finite(request%total_available_water_cm) .and. &
-      ieee_is_finite(request%stress_to_wilting_available_cm) .and. ieee_is_finite(request%actual_available_water_cm) .and. &
-      ieee_is_finite(request%field_capacity_deficit_cm) .and. ieee_is_finite(request%rainfall_cm) .and. &
-      request%total_available_water_cm >= 0.0_real64 .and. &
+    valid_request = .false.
+    ! Fortran logical evaluation is not required to short-circuit. Keep ordered
+    ! comparisons separate from finite checks under -ffpe-trap=invalid.
+    if (.not. ieee_is_finite(request%dvs)) return
+    if (.not. ieee_is_finite(request%total_available_water_cm)) return
+    if (.not. ieee_is_finite(request%stress_to_wilting_available_cm)) return
+    if (.not. ieee_is_finite(request%actual_available_water_cm)) return
+    if (.not. ieee_is_finite(request%field_capacity_deficit_cm)) return
+    if (.not. ieee_is_finite(request%rainfall_cm)) return
+    valid_request = request%total_available_water_cm >= 0.0_real64 .and. &
       request%stress_to_wilting_available_cm >= 0.0_real64 .and. request%rainfall_cm >= 0.0_real64
   end function valid_request
 
