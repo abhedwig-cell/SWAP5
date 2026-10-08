@@ -18,6 +18,15 @@ with tarfile.open(fileobj=io.BytesIO(base64.b64decode(BUNDLE.read_bytes())),mode
     # The calendar and crop orchestration witnesses also come from this exact archive.
     # They were previously referenced without being extracted (KeyError).
     source_names=(*EXPECTED, "SWAP/management_soil.f90", "SWAP/cropgrowth.f90")
+    available=set(a.getnames())
+    missing=sorted(set(source_names)-available)
+    if missing:
+        raise SystemExit(
+            "exact B1.11 authority bundle missing required source members: "
+            + ", ".join(missing)
+            + "; cannot claim crop/management source equivalence or pass "
+              "the NUT/SOL gate without a separately SHA-pinned exact authority"
+        )
     members={name:a.extractfile(name).read() for name in source_names}
 for name,raw in members.items():
     got=hashlib.sha256(raw).hexdigest()
