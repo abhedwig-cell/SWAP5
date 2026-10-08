@@ -135,7 +135,8 @@ program test_fmr_b111_soil_crop_n_transaction
 
   ! Fresh-state reconstruction must preserve interval lineage as persistent state.
   call initialize_fmr_b111_soil_crop_n_state(soil_snap_state,crop_snap,restarted,status,t0r,t1r,consumed)
-  call check(status==FMR_B111_COUPLED_N_OK.and.restarted%ready(),'restart reconstruction')
+  call check(status==FMR_B111_COUPLED_N_OK,'restart reconstruction status')
+  call check(restarted%ready(),'restart reconstruction')
   deallocate(committed)
   allocate(committed,source=restarted)
   call execute_reference_interval(model,committed,0.0_real64,1.0_real64,policy,tx)
