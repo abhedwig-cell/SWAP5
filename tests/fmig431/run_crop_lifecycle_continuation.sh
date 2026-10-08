@@ -7,6 +7,14 @@ for OPT in 0 2; do
   mkdir -p "$BUILD/o$OPT"
   gfortran -O"$OPT" -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all \
     -J"$BUILD/o$OPT" -I"$BUILD/o$OPT" \
+    "$ROOT/src/transaction/mod_transaction_reference.f90" \
+    "$ROOT/src/runtime/mod_canonical_contracts.f90" \
+    "$ROOT/src/runtime/mod_canonical_interval_runtime.f90" \
+    "$ROOT/src/kernel/mod_kernel_transactions.f90" \
+    "$ROOT/src/crop/mod_wofost_actual_biomass_state.f90" \
+    "$ROOT/src/crop/mod_wofost_crop_owner_state.f90" \
+    "$ROOT/src/crop/mod_wofost_one_day_structural_evolution.f90" \
+    "$ROOT/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90" \
     "$ROOT/src/crop/mod_crop_preparation_sowing_preflight.f90" \
     "$ROOT/src/crop/mod_crop_germination_preflight.f90" \
     "$ROOT/src/crop/mod_crop_lifecycle_daily_composition.f90" \
