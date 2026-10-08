@@ -28,6 +28,11 @@ program test_swap431_root_anox_supply_combined
     5._real64,20._real64,-10._real64,0.5_real64,1.01_real64,r,status)
   if(status/=ROOT_SUPPLY_OK.or.abs(r%extension_cm)>tol) error stop 8
 
+  ! B1.11 min(RR, RRIMIN) permits RRIMIN above the proposed RR.
+  call limit_root_extension_by_drought_and_supply(1._real64,2._real64,1._real64,0.5_real64, &
+    5._real64,20._real64,-10._real64,10._real64,0.01_real64,r,status)
+  if(status/=ROOT_SUPPLY_OK.or.abs(r%extension_cm-1._real64)>tol) error stop 11
+
   do i=1,100
     call root_extension_allowed_by_daily_oxygen(.false.,0.2_real64,0.4_real64,allowed,status)
     if(status/=ROOT_ANOX_GATE_OK.or..not.allowed) error stop 9
