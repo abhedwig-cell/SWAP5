@@ -34,7 +34,23 @@
     "restart on physical crop checkpoint plus calendar snapshot -> same successor",
     "O0/O2 and canonical preservation"
   ],
-  "qualification": "NOT_RUN",
+  "qualification": "PARTIAL_O0_O2_NEGATIVE_ONLY",
   "admission": "DRAFT_UNADMITTED",
-  "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution"
+  "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
+  "evidence": {
+    "receipt_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302612",
+    "receipt_workflow_conclusion": "success",
+    "canonical_fci_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302751",
+    "canonical_fci_workflow_conclusion": "success",
+    "tested_case": "unready kernel does not alter calendar crop/revision/time",
+    "missing_cases": [
+      "matching committed receipt acceptance and atomic publication",
+      "missing or mismatched receipt no-mutation",
+      "duplicate receipt strict no-op",
+      "reject/retry",
+      "physical committed state bit-exact invariance",
+      "restart successor equivalence"
+    ]
+  },
+  "next_action": "Add positive committed event fixture and deterministic accept/reject/retry/restart matrix; run O0/O2 and exact-head F-CI preservation before admission."
 }
