@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-10-08",
+  "scope": "focused sorption mass-closure replay",
+  "branch": "work/swap431-nut-sol-binding-20261007",
+  "source": "src/process/mod_b111_solute_sorption.f90",
+  "source_blob": "b87fa37ed4d14a7e60ddf135ada058002587422b",
+  "test": "tests/physics/test_b111_sorption_mass_closure.f90",
+  "test_blob": "aa99a1586e361672dafb7849f53419b1a2de77d5",
+  "verification": "Local git hash-object matches both current GitHub connector blobs",
+  "compiler": "gfortran",
+  "flags": "-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+  "optimization": {
+    "O0": "PASS",
+    "O2": "PASS"
+  },
+  "cases_per_optimization": 30000,
+  "exponents": [
+    2,
+    0.5,
+    1.0005
+  ],
+  "stdout": "B111_SORPTION_MASS_CLOSURE_PASS",
+  "ceiling": "FOCUSED_COMPONENT_TEST_ONLY",
+  "not_tested": [
+    "full exact-source gate",
+    "combined reactive substep",
+    "atomic chemical-age transaction",
+    "restart",
+    "canonical admission"
+  ],
+  "actions": "No GitHub Actions run"
+}
