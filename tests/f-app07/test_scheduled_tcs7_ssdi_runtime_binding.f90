@@ -151,7 +151,7 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   p%irr_rate_cm_per_day = 0.48_real64
   r = scheduled_irrigation_request_t()
   r%t0 = 2700.0_real64
-  r%t1 = 2700.125_real64
+  r%t1 = 2700.0625_real64
   r%dvs = 1.0_real64
   r%selection_opportunity = .true.; r%irrigation_enabled = .true.; r%schedule_enabled = .true.
   r%crop_emerged = .true.; r%irrigation_window_open = .true.
@@ -160,7 +160,15 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   h%water_content(2) = 0.20_real64
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. c%active_event,21)
-  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.03_real64) < tol,22)
+  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.015_real64) < tol,22)
+  ! Availability halves the duration (0.25 -> 0.125 day). The persisted rate
+  ! must remain 0.24 cm/day for the second half, without reapplying availability.
+  s = c
+  r%t0 = 2700.0625_real64
+  r%t1 = 2700.125_real64
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,27)
+  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.015_real64) < tol,28)
 
   ! Zero-rate fallback keeps the one-day duration and scales only the generated rate.
   p%irr_rate_cm_per_day = 0.0_real64
