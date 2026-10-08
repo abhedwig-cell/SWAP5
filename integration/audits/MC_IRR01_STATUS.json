@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Run existing tests/mc-irr01/run_mc_irr01_source_reconstruction.sh, tests/mc-irr01/run_mc_irr01_management_policy.sh, tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh and tests/f-app07/run_fapp07_tcs1_dcs2_process.sh at O0/O2 against one byte-verified persisted postimage; record logs/checksums. Reconcile changes since canonical d2fdd2bb before opening an admission PR. Do not credit additional coverage without the integrated mass/retry/restart qualification.",
+  "next_action": "Run tests/f-app07/run_fapp07_tcs1_dcs2_process.sh (includes sensor/SSDI mass runtime O0/O2 transitively), tests/mc-irr01/run_mc_irr01_source_reconstruction.sh, and tests/mc-irr01/run_mc_irr01_management_policy.sh against a byte-verified persisted postimage; record evidence and reconcile canonical drift before admission. Do not dispatch duplicate Actions runs.",
   "recovery_point": "work/mc-irr01-management-cluster-20261007",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -137,7 +137,7 @@
     "pr_draft": true,
     "branches_diverged": true,
     "pr_workflow_runs_at_head": 0,
-    "qualification_gap": "F-APP07 workflow runs source, process and management policy but does not invoke standalone sensor/SSDI exact-mass runtime runner",
+    "qualification_gap": "Mass gate is already transitively invoked by tests/f-app07/run_fapp07_tcs1_dcs2_process.sh; no duplicate workflow step is needed. The latest head has no recorded qualification run and the expanded implementation remains unqualified.",
     "local_execution": "unavailable in this session: local git DNS resolution failed; no exact-postimage local O0/O2 results",
     "status": "reconciled not qualified for additional capabilities"
   }
