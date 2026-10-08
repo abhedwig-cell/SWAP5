@@ -7,7 +7,8 @@ program test_crop_rotation_calendar
  logical :: active,begins
  call initialize_crop_calendar([100.0_real64,200.0_real64], &
       [150.0_real64,240.0_real64],c,stat)
- call req(stat==CROP_CAL_OK.and.c%size()==2,'initialize')
+ call req(stat==CROP_CAL_OK,'initialize')
+ call req(c%size()==2,'size')
  call c%select_at(100.0_real64,idx,active,begins,stat)
  call req(stat==CROP_CAL_OK.and.idx==1.and.active.and.begins,'first start')
  call c%select_at(150.0_real64,idx,active,begins,stat)
