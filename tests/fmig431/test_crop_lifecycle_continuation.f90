@@ -31,5 +31,11 @@ program test_crop_lifecycle_continuation
   germination%complete=.true.
   call propose_crop_lifecycle_continuation(accepted,plan,germination,1_int64,10_int64,candidate,status)
   if(status/=CROP_CONT_OK.or..not.candidate%germinated.or.candidate%emerged) error stop 5
-  print *, 'PASS crop lifecycle continuation proposal'
+  ! A rejected proposal must preserve the entire accepted snapshot.
+  plan%valid=.false.
+  call propose_crop_lifecycle_continuation(accepted,plan,germination,1_int64,11_int64,candidate,status)
+  if(status/=CROP_CONT_INVALID.or.candidate%revision/=accepted%revision) error stop 6
+  if(candidate%last_event_identity/=accepted%last_event_identity) error stop 7
+  if(candidate%germination_temperature_sum/=accepted%germination_temperature_sum) error stop 8
+  print '(A)', 'SW431_CROP_LIFECYCLE_CONTINUATION=PASS'
 end program
