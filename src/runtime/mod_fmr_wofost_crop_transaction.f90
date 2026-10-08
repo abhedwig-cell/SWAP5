@@ -24,6 +24,7 @@ module mod_fmr_wofost_crop_transaction
        same_wofost_crop_event_identity, crop_event_identity_matches_interval, FMR_WOFOST_LINEAGE_OK, &
        export_wofost_crop_event_identity_persistence, &
        reconstruct_wofost_crop_event_identity_from_persistence
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
   implicit none
   private
 
@@ -61,6 +62,7 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_potential_shadow_state_t), allocatable :: potential_shadow
     type(fmr_wofost_root_growth_carrier_t), allocatable :: root_growth_carrier
     type(fmr_wofost_crop_event_identity_t) :: last_consumed_event
+    type(crop_lifecycle_continuation_t), allocatable :: lifecycle
   contains
     procedure :: clone => fmr_wofost_crop_transaction_clone
     procedure, public :: ready => fmr_wofost_crop_transaction_state_ready
@@ -69,6 +71,7 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: snapshot_potential_shadow => fmr_wofost_crop_transaction_snapshot_potential_shadow
     procedure, public :: snapshot_root_growth => fmr_wofost_crop_transaction_snapshot_root_growth
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
+    procedure, public :: snapshot_lifecycle => fmr_wofost_crop_transaction_snapshot_lifecycle
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
   end type fmr_wofost_crop_transaction_state_t
 
@@ -82,6 +85,8 @@ module mod_fmr_wofost_crop_transaction
     logical :: root_growth_carrier_present = .false.
     type(fmr_wofost_root_growth_carrier_t) :: root_growth_carrier
     logical :: receipt_present = .false.
+    logical :: lifecycle_present = .false.
+    type(crop_lifecycle_continuation_t) :: lifecycle
     type(fmr_wofost_crop_event_identity_persistence_t) :: receipt
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_persistence_ready
@@ -174,6 +179,11 @@ contains
         if (self%receipt_present) return
       end if
     end if
+    if (self%lifecycle_present) then
+      if (.not. self%lifecycle%ready()) return
+    else
+      if (self%lifecycle%valid) return
+    end if
     if (self%receipt_present) then
       if (.not. self%receipt%ready()) return
     else
@@ -194,6 +204,10 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
     if (.not. state%ready()) return
     view%owner = state%owner
+    if (allocated(state%lifecycle)) then
+      view%lifecycle = state%lifecycle
+      view%lifecycle_present = .true.
+    end if
     if (allocated(state%potential_shadow)) then
       view%potential_shadow = state%potential_shadow
       view%potential_shadow_present = .true.
@@ -232,6 +246,10 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
     if (.not. view%ready()) return
     state%owner = view%owner
+    if (view%lifecycle_present) then
+      allocate(state%lifecycle)
+      state%lifecycle = view%lifecycle
+    end if
     if (view%potential_shadow_present) then
       allocate(state%potential_shadow)
       state%potential_shadow = view%potential_shadow
@@ -256,11 +274,12 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_OK
   end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
-  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow)
+  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, lifecycle_initial)
     type(wofost_crop_owner_state_t), intent(in) :: owner
     type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
+    type(crop_lifecycle_continuation_t), intent(in), optional :: lifecycle_initial
     logical :: enable_shadow
     integer :: shadow_status
 
@@ -270,6 +289,11 @@ contains
     status = FMR_WOF38_INVALID_OWNER
     if (owner%validate() /= WOFOST_CROP_OWNER_OK) return
     state%owner = owner
+    if (present(lifecycle_initial)) then
+      if (.not. lifecycle_initial%ready()) return
+      allocate(state%lifecycle)
+      state%lifecycle = lifecycle_initial
+    end if
     if (enable_shadow) then
       allocate(state%potential_shadow, state%root_growth_carrier)
       call initialize_wofost_potential_shadow_from_actual(owner, state%potential_shadow, shadow_status)
@@ -372,6 +396,10 @@ contains
         typed_copy%root_growth_carrier = self%root_growth_carrier
       end if
       typed_copy%last_consumed_event = self%last_consumed_event
+      if (allocated(self%lifecycle)) then
+        allocate(typed_copy%lifecycle)
+        typed_copy%lifecycle = self%lifecycle
+      end if
     class default
       error stop 'F-WOF38 crop transaction clone allocation failure'
     end select
@@ -383,6 +411,9 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if (allocated(self%lifecycle)) then
+      if (.not. self%lifecycle%ready()) return
+    end if
     if (allocated(self%potential_shadow)) then
       if (self%potential_shadow%validate() /= WOFOST_POTENTIAL_SHADOW_OK) return
       if (.not. allocated(self%root_growth_carrier)) return
@@ -406,6 +437,15 @@ contains
     available = self%ready()
     if (available) owner = self%owner
   end subroutine fmr_wofost_crop_transaction_snapshot_owner
+
+  subroutine fmr_wofost_crop_transaction_snapshot_lifecycle(self, lifecycle, available)
+    class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+    type(crop_lifecycle_continuation_t), intent(out) :: lifecycle
+    logical, intent(out) :: available
+    lifecycle = crop_lifecycle_continuation_t()
+    available = self%ready() .and. allocated(self%lifecycle)
+    if (available) lifecycle = self%lifecycle
+  end subroutine fmr_wofost_crop_transaction_snapshot_lifecycle
 
   logical function fmr_wofost_crop_transaction_potential_shadow_enabled(self) result(enabled)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
