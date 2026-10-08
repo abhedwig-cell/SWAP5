@@ -182,11 +182,20 @@ program test_mc_irr01_management_application
   p%rate_cm_per_day=4.0_real64
   r%availability_scaling_enabled=.true.
   r%availability_fraction=0.5_real64
-  r%t1=r%t0+0.125_real64
+  r%t1=r%t0+0.0625_real64
   call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
   call require(d%status==FMR_IRR_MGMT_APP_OK .and. d%availability_applied .and. c%event%active_event,26)
-  call require(abs(flux%surface_gross_rate-2.0_real64)<tol .and. abs(flux%external_inflow_amount-0.25_real64)<tol,27)
+  call require(abs(flux%surface_gross_rate-2.0_real64)<tol .and. abs(flux%external_inflow_amount-0.125_real64)<tol,27)
+  ! Post-selection availability shortens the selected event from 0.25 to
+  ! 0.125 day; continuation uses the persisted scaled rate exactly once.
+  s=c
+  r%t0=r%t1
+  r%t1=r%t0+0.0625_real64
+  call fmr_evaluate_scheduled_management_irrigation(p,s,r,h,c,flux,policy,summary,d)
+  call require(d%status==FMR_IRR_MGMT_APP_OK .and. .not.c%event%active_event,30)
+  call require(abs(flux%surface_gross_rate-2.0_real64)<tol .and. abs(flux%external_inflow_amount-0.125_real64)<tol,31)
 
+  s=fmr_irrigation_management_state_t()
   call setup_base(p,h,r)
   p%policy%depth_criterion=2
   p%policy%dcs2_knot_count=2
