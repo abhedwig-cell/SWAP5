@@ -46,7 +46,7 @@
     "Trusted reconstruction requires separately persisted original identity; no byte-oriented codec is provided.",
     "Do not admit while frozen kernel/backend F-CI postimage checks are not superseded by accepted complete preservation."
   ],
-  "next_action": "Review and implement an explicit exact-source successor condition in current F-CI preserving old authorities; add missing end-to-end commit rejection and mass/restart cases before declaring qualification; do not merge #1160 while F-CI fails.",
+  "next_action": "Decide and implement separately reviewed canonical preservation successor after proving remaining commit-reject/retry + mass/restart invariants. Do not merge on the strength of source-pinned candidate science alone.",
   "current_exact_head_runs": [
     {
       "name": "B110 owner O0/O2",
@@ -87,5 +87,32 @@
   "frozen_source_identity": {
     "kernel": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
     "backend": "b218ac657db52612bc12da671716c97430200f0a"
+  },
+  "source_exact_successor": {
+    "candidate_gate": "tests/fci/run_crop_fkt_b110_exact_source_successor.sh",
+    "baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+    "kernel_blob": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+    "backend_blob": "b218ac657db52612bc12da671716c97430200f0a",
+    "allowed_source_delta": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_crop_certified_sowing_source.f90",
+      "src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90"
+    ],
+    "reference_tree_unchanged": true,
+    "does_not_modify_frozen_fci": true,
+    "gate_result": "NOT_EXECUTED_ON_THIS_NEW_COMMIT",
+    "admission": "BLOCKED UNTIL exact-head scientific plus transitive current canonical F-CI successor accepted"
+  },
+  "qualification_latest": {
+    "scientific_head": "4126bd7cd41f6c14127829e6455afa39edb4d1cd",
+    "owner_run": 37940490172,
+    "owner_result": "success",
+    "micro_b19_run": 37940489638,
+    "micro_b19_result": "success",
+    "fci_run": 37940490277,
+    "fci_result": "failure",
+    "fci_reason": "intentional unchanged hash gate on src/kernel/mod_kernel_transactions.f90",
+    "new_gate_commit": "1469f12784d2822dab47c644667b25044cf78470"
   }
 }
