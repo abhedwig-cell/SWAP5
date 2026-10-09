@@ -1,0 +1,51 @@
+{
+  "workstream": "research/kalmthout_pilot",
+  "work_unit": "KALMTHOUT-PILOT-OFFICIAL-20261009",
+  "baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "canonical_admission": false,
+  "official_domain": {
+    "crs": "EPSG:32631",
+    "total_extent": [579980.0, 5674020.0, 619980.0, 5715020.0],
+    "minimal_extent": [592980.0, 5683020.0, 608980.0, 5699020.0],
+    "grid_m": 500.0,
+    "grid_shape": [32, 32],
+    "cell_count": 1024,
+    "representative_cell": "KAL_0496",
+    "representative_xy": [600730.0, 5690770.0],
+    "representative_lonlat": [4.44675648715192, 51.359254426505835]
+  },
+  "reconciliation": {
+    "previous_branch": "work/kalmthout-swap5-pilot",
+    "previous_branch_state": "diverged from current canonical and intersected Rutter/bootstrap dependency surface",
+    "decision": "restart pilot from current canonical and carry only research-domain/application files; do not reuse experimental shared-source modifications"
+  },
+  "checks": {
+    "supplied_total_extent_bounds": "PASS",
+    "supplied_minimal_extent_bounds": "PASS",
+    "local_500m_grid": "PASS",
+    "grid_cells": 1024,
+    "representative_cell": "PASS"
+  },
+  "run": {
+    "workflow_run_id": 37943678790,
+    "trigger_commit": "f12a405286ed8122aae911245d4b09bb281a9866",
+    "status_at_checkpoint": "queued",
+    "sequence": [
+      "official 1024-cell grid validation",
+      "hourly ERA5 extraction 2024-01-01 through 2026-10-01",
+      "current-canonical PPA-WU01 owner gate",
+      "48-hour real-weather Rutter probe",
+      "full real-weather run through 2026-10-01 if probe passes"
+    ]
+  },
+  "next_action": "Poll the existing one-shot run to terminal status; do not start duplicate Actions runs.",
+  "recovery_point": "work/kalmthout-pilot-official-20261009 at f12a405286ed8122aae911245d4b09bb281a9866",
+  "blockers": [
+    "GitHub Actions queue is currently saturated; the one-shot official run is queued.",
+    "The supplied minimal extent GeoPackage has undefined CRS metadata although its coordinates match EPSG:32631."
+  ]
+}
