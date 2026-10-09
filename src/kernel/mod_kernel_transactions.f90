@@ -685,6 +685,23 @@ contains
       return
     end if
 
+    if(committed_state%parameter_identity%valid) then
+      block
+        type(kernel_parameter_identity_t) :: supplied
+        logical :: available
+        call parameters%capture_identity(supplied,available)
+        if(.not.available) then
+          result%status=KERNEL_STATUS_PARAMETER_MISMATCH
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+        if(.not.committed_state%parameter_identity%matches(supplied)) then
+          result%status=KERNEL_STATUS_PARAMETER_MISMATCH
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+      end block
+    end if
     call self%model%configure_parameters(parameters)
 
     ! A supplied checkpoint is an exact reusable clone of the still-current
@@ -779,6 +796,23 @@ contains
       return
     end if
 
+    if(committed_state%parameter_identity%valid) then
+      block
+        type(kernel_parameter_identity_t) :: supplied
+        logical :: available
+        call parameters%capture_identity(supplied,available)
+        if(.not.available) then
+          result%status=KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+        if(.not.committed_state%parameter_identity%matches(supplied)) then
+          result%status=KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+      end block
+    end if
     call self%model%configure_parameters(parameters)
     interval%t0 = t0
     interval%t1 = t1
