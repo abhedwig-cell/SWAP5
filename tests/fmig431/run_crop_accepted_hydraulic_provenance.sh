@@ -48,6 +48,7 @@ for OPT in 0 2;do
       ./test > out
     )
     grep -Fx 'SW431_CROP_ACCEPTED_HYDRAULIC_INVALID=PASS' "$BUILD/o$OPT/out"
+    grep -Fx 'SW431_CROP_ACCEPTED_HYDRAULIC_POSITIVE=PASS' "$BUILD/o$OPT/out"
 done
 cmp "$BUILD/o0/out" "$BUILD/o2/out"
 echo 'SW431_CROP_ACCEPTED_HYDRAULIC_PROVENANCE_O0_O2=PASS'
