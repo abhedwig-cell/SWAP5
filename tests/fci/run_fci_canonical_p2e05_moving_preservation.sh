@@ -260,8 +260,13 @@ fi
 # and B110 blobs may enter this branch, with unchanged reference and all other
 # production sources proved by the independent source guard.
 crop_fkt_b110_exact_successor=0
+# The SHA-exact shared-owner successor applies only to a PR that actually
+# modifies kernel/backend versus canonical first parent. Crop-only PRs
+# inherit the admitted blobs and use their own focused source gates.
 if [[ "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" == "da7a00b6aec996cff504d8d30a90e51a8cce2162" &&
-      "$(git rev-parse HEAD:$BACKEND)" == "b218ac657db52612bc12da671716c97430200f0a" ]]; then
+      "$(git rev-parse HEAD:$BACKEND)" == "b218ac657db52612bc12da671716c97430200f0a" ]] &&
+   { [[ "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" != "$(git rev-parse "$dependency_authority:src/kernel/mod_kernel_transactions.f90")" ]] ||
+     [[ "$(git rev-parse HEAD:$BACKEND)" != "$(git rev-parse "$dependency_authority:$BACKEND")" ]]; }; then
   bash tests/fci/run_crop_fkt_b110_exact_source_successor.sh --verify-only ||
     fail 'crop certified F-KT/B110 exact source successor rejected'
   crop_fkt_b110_exact_successor=1
