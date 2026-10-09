@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.crop_fkt_b110_parameter_identity_recovery.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "checkpoint_commit": "00685ae869c3ac89abff8f782e86a05844e1a215",
+  "last_reconciled_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "status": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "relevant_paths": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90",
+    "src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90",
+    "src/crop/mod_crop_b110_grid_sowing_preflight.f90"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/audits/MC_CROP_FKT_B110_PARAMETER_IDENTITY_CONTRACT_20261009.md"
+  ],
+  "dependency_surface": [
+    "F-KT committed initialization/trial/commit",
+    "B110 parameter validation and model configuration",
+    "trusted reconstruction/restart",
+    "F-CI B19/MICRO and root preservation"
+  ],
+  "architectural_blocker": "The current committed physical clone has no authenticated B110 parameter-set/grid/heat option identity and F-KT accepts a separately supplied parameter carrier; sampling cannot safely certify that the fields share a governing geometry. Requires shared-owner interface change and accepted restart/commit invariant.",
+  "safety": "Fail closed physical preparation/sowing/germination forcing until owner-backed immutable binding, mismatch rejection and same-tree O0/O2 + F-CI are qualified.",
+  "next_action": "Implement typed owner-issued identity at initialization with F-KT advance/commit guards and trusted reconstruction; test negative equal-shape switched grid, stale revision, retry/restart, heat switch. Coordinate parallel kernel and MICRO/root owners before shared code edit.",
+  "recovery_point": "work/swap431-crop-grid-owner-transaction-contract-20261009"
+}
