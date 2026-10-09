@@ -26,7 +26,8 @@
     "semantic_gap_type_recount": "PASS structural classifier on 113 ACTIVE_MIGRATION entries; not an independent source-to-runtime semantic qualification",
     "workunit_sequence_dependency_audit": "PASS: removed closed SW431-ROOT-DENSITY and SW431-GW-PROJECTION from internal sequence blockers; retained as closed authorities",
     "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed",
-    "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending."
+    "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending.",
+    "qualified_module_locator_split": "PASS: 65 open rows name existing production-module authority, 48 name none; this is not proof of completeness."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -53,9 +54,12 @@
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
       "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
-    }
+    },
+    "active_with_existing_production_source_authority": 65,
+    "active_without_listed_production_source_authority": 48,
+    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted routes, not necessarily absent algorithms"
   },
-  "next_action": "Audit additional 51-commit canonical delta and 113 active entries for full-capability closures; exact source-integrity checker still needs byte-exact checkout.",
+  "next_action": "Source-based common owner reconciliation of 65 partial-module rows versus 48 with no listed source; exact-run integrity remains outstanding.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -112,7 +116,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "6d9be82736591f0632ea370d2fe3d982a92daa9b",
+  "last_reconciled_head": "d372ed399f0b4499ddf121e9373e043ec9692613",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
