@@ -48,7 +48,7 @@
     "PR #1119 modifies frost/hydraulic guards"
   ],
   "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
-  "next_action": "Inspect accepted F-KT state/snapshot and source startup task-2 semantics, then implement owner-bound delayed-emergence and separately crop-start-default cases; meanwhile preserve current draft without claiming full physics.",
+  "next_action": "Run exact-head lifecycle B19/MICRO cross-preservation (plus new previous-day O0/O2 gate), check fresh F-CI once queued, preserve no admission until owner-bound forcing provenance and physical lifecycle covered.",
   "next_bounded_slice": {
     "name": "Previous-day emergence eligibility preflight",
     "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:cropemergence",
@@ -70,5 +70,16 @@
     "observation": "B1.11 cropemergence first checks previously accepted fl_prep/fl_sow/fl_germ before task-2 initialization. On start of a crop rotation it can also set immediate emergence if all flags become true after task-2 defaults. Therefore previous-day gate is only the delayed-emergence branch, not an exhaustive standalone crop-start emergence specification.",
     "implication": "Do not wire the read-only gate as the sole emergence authority. Add explicit source-backed startup/default handling after matching accepted physical event and independent forcing evidence.",
     "lineage_warning": "Current gate arguments are caller-provided integer revisions, not real F-KT snapshot authenticated event receipts. Revision equality alone does not prove event identity or hydrothermal input provenance."
+  },
+  "fci_reconciliation": {
+    "run": 37888364151,
+    "qualified_commit": "12b9b8edd1c2b602397023c6a6c0cab28d6fc182",
+    "conclusion": "failure",
+    "failing_job": "current-restricted-canonical-preservation",
+    "exact_failure": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL B19+MICRO unqualified source change: src/crop/mod_crop_previous_day_emergence_gate.f90",
+    "repair_commit": "fa4171a8fae114beaa71fd3fb73a4fa6211a9113",
+    "repair": "Classify new source as crop_lifecycle_changed and REQUIRE the existing tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh; no scientific thresholds or source-owner checks removed.",
+    "new_head_qualification": "PENDING; old failed run cannot be reused",
+    "admission": "NOT ADMITTED"
   }
 }
