@@ -1,0 +1,43 @@
+{
+  "schema": "swap431.mc_crop01.b111_source_oracle_gate.v1",
+  "baseline": "5df74f95a8443cc62152f9df4c317957579af087",
+  "scientific_postimage": "b3c3b774f52aa0f78c2b0f8eee9d3d9afa993e55",
+  "historical_source": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "git_blob": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "range": "germination task 3, lines 755-777"
+  },
+  "exact_local_blob_identities": {
+    "src/crop/mod_crop_b111_germination_sum_candidate.f90": "13e83db9e7dad60a62c11134f8951d65a23c7dc6",
+    "tests/fmig431/test_crop_b111_germination_source_oracle.f90": "56b0ef69355f4a885d06ec7dfb45e180729171a5",
+    "tests/fmig431/run_crop_b111_germination_source_oracle.sh": "8be5b214676297659ce4382f52afa2019f103198"
+  },
+  "local_test": {
+    "command": "bash tests/fmig431/run_crop_b111_germination_source_oracle.sh",
+    "source_oracle_cases": 4464,
+    "O0": "PASS",
+    "O2": "PASS",
+    "bitwise_oracle_results": "PASS",
+    "output_identity": "PASS",
+    "negative_existing_gate": "bash tests/fmig431/run_crop_b111_germination_sum_candidate.sh PASS O0/O2",
+    "exact_git_blobs": "PASS"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "scope": "Only stateless historical B1.11 germination daily temperature sum and source oracle. For SWGERM1/2 arithmetic, no input provenance owner or transaction event.",
+  "limitations": [
+    "Independent transcription is a source-derived test, not execution of full historical executable",
+    "SWGERM=0 behavior in physical lifecycle not covered",
+    "No meteorological producer receipt",
+    "No accepted F-KT weather/crop-state binding",
+    "No integrated F-CI scientific preservation or PR admission"
+  ],
+  "actions_started": 0,
+  "next_action": "Reconcile actual source owner meteorology and daystart tokens; implement cross-owner accepted weather and crop transaction only after interface authority."
+}
