@@ -55,6 +55,7 @@ module mod_kernel_transactions
   type, abstract, public :: kernel_parameters_t
   contains
     procedure :: capture_identity => kernel_parameters_identity_unavailable
+    procedure :: matches_physical_identity => kernel_parameters_physical_unavailable
   end type kernel_parameters_t
 
   ! Canonical F-KT-owned committed carrier. Physical continuation state is
@@ -280,6 +281,11 @@ contains
     identity=kernel_parameter_identity_t()
     available=.false.
   end subroutine
+  logical function kernel_parameters_physical_unavailable(self,state) result(ok)
+    class(kernel_parameters_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+  end function
   pure logical function kernel_parameter_identity_matches(self,other) result(ok)
     class(kernel_parameter_identity_t), intent(in) :: self
     type(kernel_parameter_identity_t), intent(in) :: other
@@ -345,6 +351,10 @@ contains
         self%parameter_identity=kernel_parameter_identity_t()
         return
       end if
+      if(.not.parameters%matches_physical_identity(initial_state)) then
+        self%parameter_identity=kernel_parameter_identity_t()
+        return
+      end if
     end if
     call initial_state%clone(copy)
     call move_alloc(copy, self%physical_state)
@@ -407,6 +417,7 @@ contains
       call parameters%capture_identity(supplied,certified)
       if(.not.certified) return
       if(.not.persisted_identity%matches(supplied)) return
+      if(.not.parameters%matches_physical_identity(physical_state)) return
       target%parameter_identity=persisted_identity
     else
       if(present(persisted_identity)) return
