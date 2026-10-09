@@ -1,0 +1,53 @@
+{
+  "schema": "swap431.crop_fkt_b110_certified_identity_canonical_admission.v1",
+  "workstream": "MC-CROP01",
+  "canonical_baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "qualified_head": "d51b9b3729fa9059c30b1ae59e6bf1b7f1baaca0",
+  "canonical_merge": "3bb0e8c095f8d8c2476d08d195492da2464aabc7",
+  "pull_request": 1160,
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "source_blobs": {
+    "kernel": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+    "backend": "b218ac657db52612bc12da671716c97430200f0a"
+  },
+  "qualification": [
+    {
+      "scope": "certified F-KT/B110 O0/O2",
+      "run": 37943443887,
+      "conclusion": "success"
+    },
+    {
+      "scope": "exact-source B19/MICRO scientific successor O0/O2",
+      "run": 37943443484,
+      "conclusion": "success"
+    },
+    {
+      "scope": "complete F-CI canonical moving preservation",
+      "run": 37943443221,
+      "conclusion": "success"
+    }
+  ],
+  "admitted_scope": [
+    "Opt-in owner-certified B110 parameter_set_id, ordered z/dz grid, heat option bound to F-KT committed state on explicit certified initialization.",
+    "Same-identity validation before F-KT configure/advance and read-only reference floor.",
+    "Certified commit candidate physical node/finite head/content/heat continuation guards; failed checks reject without publication.",
+    "Trusted reconstruction requires separately preserved original identity plus matching B110 physical continuation; legacy unbound remains unqualified.",
+    "Read-only nodsow and source-faithful B1.11 zprep/zsow pressure-head averages plus soil temperature drawn from certified accepted F-KT state.",
+    "Source-exact F-CI successor permits only the admitted kernel/backend SHA pair while retaining historical controls and B19/MICRO tests."
+  ],
+  "claim_ceiling": [
+    "No authenticated atmospheric tav/weather forcing.",
+    "No accepted SWHEA source-control-option mapping beyond certificate heat-active configuration.",
+    "No physical crop sowing/germination event publication, emergence, root initialization or harvest/fallow.",
+    "No end-to-end whole-system byte serializer; independently persisted original certificate remains prerequisite.",
+    "No generic permit for other F-KT kernel/backend hashes or parallel owner changes."
+  ],
+  "next_action": "Qualified crop lifecycle must bind accepted daily weather/tav and historic SWHEA option to the owner-certified F-KT hydrothermal source before actual event publication. Independently qualify B1.11 two-crop harvest/fallow and restart semantics."
+}
