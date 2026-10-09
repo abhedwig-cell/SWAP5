@@ -18,6 +18,17 @@ module mod_crop_rotation_transition
     procedure :: time => checkpoint_time
     procedure :: serial => checkpoint_serial
   end type
+  ! Serialization-neutral value from the already accepted derived calendar.
+  ! It has no publication authority and must be reconstructed against the
+  ! source calendar before the checkpoint can be used for restart.
+  type, public :: crop_rotation_checkpoint_persistence_t
+    logical :: valid=.false.
+    integer :: active_crop=0
+    integer(int64) :: revision=-1_int64
+    real(real64) :: time=0.0_real64
+  contains
+    procedure :: ready => checkpoint_persistence_ready
+  end type
   type, public :: crop_rotation_candidate_t
     private
     logical :: valid=.false.
@@ -27,7 +38,54 @@ module mod_crop_rotation_transition
   end type
   public :: initialize_crop_rotation_checkpoint, propose_crop_rotation_transition
   public :: accept_crop_rotation_transition
+  public :: export_crop_rotation_checkpoint_persistence
+  public :: reconstruct_crop_rotation_checkpoint_persistence
 contains
+  pure logical function checkpoint_persistence_ready(self) result(ready)
+    class(crop_rotation_checkpoint_persistence_t), intent(in) :: self
+    ready=self%valid.and.self%active_crop>=0.and.self%revision>=0_int64.and. &
+         ieee_is_finite(self%time)
+  end function
+
+  subroutine export_crop_rotation_checkpoint_persistence(state,view,exported)
+    type(crop_rotation_checkpoint_t), intent(in) :: state
+    type(crop_rotation_checkpoint_persistence_t), intent(out) :: view
+    logical, intent(out) :: exported
+    view=crop_rotation_checkpoint_persistence_t()
+    exported=state%ready()
+    if(.not.exported) return
+    view%active_crop=state%active_crop
+    view%revision=state%revision
+    view%time=state%committed_time
+    view%valid=.true.
+    exported=view%ready()
+  end subroutine
+
+  subroutine reconstruct_crop_rotation_checkpoint_persistence(calendar,view,state,status)
+    type(crop_calendar_t), intent(in) :: calendar
+    type(crop_rotation_checkpoint_persistence_t), intent(in) :: view
+    type(crop_rotation_checkpoint_t), intent(out) :: state
+    integer, intent(out) :: status
+    integer :: crop,calendar_status
+    logical :: active,begins
+    state=crop_rotation_checkpoint_t()
+    status=ROT_TRANS_INVALID
+    if(.not.calendar%ready().or..not.view%ready()) return
+    call calendar%select_at(view%time,crop,active,begins,calendar_status)
+    if(calendar_status/=CROP_CAL_OK.and.calendar_status/=CROP_CAL_OUTSIDE) return
+    if(crop/=view%active_crop) return
+    state%initialized=.true.
+    state%active_crop=view%active_crop
+    state%committed_time=view%time
+    state%revision=view%revision
+    if(.not.state%ready()) then
+      state=crop_rotation_checkpoint_t()
+      return
+    end if
+    status=ROT_TRANS_OK
+  end subroutine
+
+  subroutine initialize_crop_rotation_checkpoint
   subroutine initialize_crop_rotation_checkpoint(calendar,time,state,status)
     type(crop_calendar_t),intent(in) :: calendar
     real(real64),intent(in) :: time
