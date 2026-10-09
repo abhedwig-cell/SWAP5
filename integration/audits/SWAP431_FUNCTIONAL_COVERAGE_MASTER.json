@@ -3133,7 +3133,7 @@
         "Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-ROOT01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -8413,7 +8413,7 @@
         "Only bounded canonical admission on 75114770c4d4d300f9d8037207d5498fa0e1f44e; do not infer unadmitted selectors or broader crop/ET routes."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -9931,7 +9931,7 @@
         "Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11932,7 +11932,7 @@
         "Only bounded canonical admission on 4dc02866825c6bcd24de81944c2b39e5fb0ca878; do not infer unadmitted selectors or broader crop/ET routes."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -11998,7 +11998,7 @@
         "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12056,7 +12056,7 @@
         "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -12173,7 +12173,7 @@
         "An externally supplied absolute LRV carrier may replace the source resolver only after an explicit typed contract and production MICRO qualification."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -13055,20 +13055,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-ROOT-DENSITY",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Source retains node root biomass and partitions growth/death using FGWRT/FDWRT and current stress. Current admitted typed root inputs are consumers and do not evolve this accepted node inventory.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-FROST-EXT-MULTI",
       "work_unit": "MC-FROST01",
       "dependencies": [],
@@ -13101,20 +13087,6 @@
       "work_unit": "MC-FROST01",
       "dependencies": [],
       "why_open": "Current frost drainage admission explicitly rejects root_extraction_active and root_frost.active. Admitted empirical root frost does not close its composition with ordinary/extended drainage.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-GW-PROJECTION",
-      "work_unit": "MC-LOW01",
-      "dependencies": [],
-      "why_open": "General candidate profile-to-GWL binding absent outside bounded smooth drainage projection; existing carriers/services do not admit all source branches.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -13349,20 +13321,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-ROOT-OXYGEN-EMP",
-      "work_unit": "MC-ROOT01",
-      "dependencies": [],
-      "why_open": "Current Feddes process supplies drought-only reduction. Bartholomeus mode2/type1 admission does not admit the separate SWOXYGEN=1 wet-pressure-head reduction.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 3,
-        "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-ROOT-OXYGEN-REPRO",
       "work_unit": "MC-ROOT01",
       "dependencies": [],
@@ -13372,48 +13330,6 @@
         "functional_relevance": 1,
         "implementation_extent": 3,
         "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 1,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ROOTGROW-DVS",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Source min(AFGEN(RDTB,DVS),RDM) depth derivation has no bound typed resolver. Supplied cumulative-root-fraction input does not provide this mapping.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 1,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ROOTGROW-WATER",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -13643,20 +13559,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-RUNON",
-      "work_unit": "MC-SUR01",
-      "dependencies": [],
-      "why_open": "Typed dynamic-top process includes runon, but current legacy production task2 reachability rejects swrunon /= 0 and common-forcing ingestion rejects nonzero runon. A qualified process field is not a production application binding.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-SW-DRAIN-FEEDBACK",
       "work_unit": "MC-SW01",
       "dependencies": [],
@@ -13839,20 +13741,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-SALT-AQUIFER",
-      "work_unit": "MC-SOL01",
-      "dependencies": [],
-      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
@@ -13890,20 +13778,6 @@
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-CO2",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -14162,22 +14036,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-ROOT-LRV-CONSTANT",
-      "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-ROOT-MICRO2"
-      ],
-      "why_open": "Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-FROST-SNOW",
       "work_unit": "MC-FROST01",
       "dependencies": [
@@ -14284,22 +14142,6 @@
       "work_unit": "MC-CROP01",
       "dependencies": [],
       "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-LOW3-EXPLICIT",
-      "work_unit": "MC-LOW01",
-      "dependencies": [
-        "SW431-GW-PROJECTION"
-      ],
-      "why_open": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14765,5 +14607,33 @@
     ],
     "denominator_changed": false,
     "admissions_changed": false
+  },
+  "latest_queue_integrity_reconciliation": {
+    "date": "2026-10-09",
+    "checked_canonical_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+    "admitted_entries_with_stale_active_workunit_cleared": [
+      "SW431-ROOT-OXYGEN-EMP",
+      "SW431-CROP-CO2",
+      "SW431-ROOT-DENSITY",
+      "SW431-CROP-ROOTGROW-DVS",
+      "SW431-CROP-ROOTGROW-BIOMASS",
+      "SW431-CROP-ROOTGROW-WATER",
+      "SW431-ROOT-LRV-CONSTANT"
+    ],
+    "closed_entries_removed_from_remaining_queue": [
+      "SW431-ROOT-DENSITY",
+      "SW431-GW-PROJECTION",
+      "SW431-ROOT-OXYGEN-EMP",
+      "SW431-CROP-ROOTGROW-BIOMASS",
+      "SW431-CROP-ROOTGROW-DVS",
+      "SW431-CROP-ROOTGROW-WATER",
+      "SW431-RUNON",
+      "SW431-SALT-AQUIFER",
+      "SW431-CROP-CO2",
+      "SW431-ROOT-LRV-CONSTANT",
+      "SW431-LOW3-EXPLICIT"
+    ],
+    "open_queue_size": 113,
+    "disposition_changes": 0
   }
 }
