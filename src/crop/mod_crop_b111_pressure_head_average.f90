@@ -4,6 +4,7 @@ module mod_crop_b111_pressure_head_average
   implicit none
   private
   integer, parameter, public :: CROP_HAVG_OK=0, CROP_HAVG_INVALID=1
+  real(real64), parameter :: B111_SMALL=1.0e-6_real64
   public :: compute_b111_pressure_head_average
 contains
   ! B1.11 SWAP/functions.f90 h_average: weighted pF, then inverse pF.
@@ -21,8 +22,8 @@ contains
     if (.not.all(ieee_is_finite(dz)).or..not.all(ieee_is_finite(h))) return
     if (any(dz<=0.0_real64).or.z_monitor>0.0_real64) return
     depth=-z_monitor
-    ! Source's small-tolerance branch is not approximated: exact zero only.
-    if (depth==0.0_real64) then
+    ! MOD_params small = 1.0d-6 in the byte-verified B0 source.
+    if (abs(z_monitor)<B111_SMALL) then
       average=-10.0_real64**log10(max(1.0_real64,-h(1)))
     else
       if (depth>sum(dz)) return
