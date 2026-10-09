@@ -168,6 +168,7 @@ module mod_fmr_serialized_reference_backend
   implicit none
   private
   public :: fmr_frost_response_drainage_configuration_valid
+  public :: fmr_b110_certified_candidate_layout_matches
   public :: fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
@@ -3052,8 +3053,16 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     type(kernel_parameter_identity_t), intent(in) :: identity
     class(transaction_state_t), intent(in) :: state
+    ok=fmr_b110_certified_candidate_layout_matches(identity,state)
+  end function
+
+  logical function fmr_b110_certified_candidate_layout_matches(identity,state) result(ok)
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
     ok=.false.
     if(.not.identity%valid.or.identity%active_nodes<=0.or.identity%parameter_set_id<=0_int64) return
+    if(.not.allocated(identity%z).or..not.allocated(identity%dz)) return
+    if(size(identity%z)/=identity%active_nodes.or.size(identity%dz)/=identity%active_nodes) return
     select type(state)
     class is(fmr_b110_physical_state_t)
       if(state%active_nodes/=identity%active_nodes) return
