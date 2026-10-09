@@ -275,23 +275,43 @@ module mod_kernel_transactions
   end interface
 
 contains
+  ! Default implementations never issue or approve an identity. The SELECT
+  ! TYPE guards deliberately consume abstract inputs under strict -Werror.
   logical function kernel_model_uncertified_identity(self,identity,state) result(ok)
     class(kernel_model_t), intent(in) :: self
     type(kernel_parameter_identity_t), intent(in) :: identity
     class(transaction_state_t), intent(in) :: state
     ok=.false.
+    if(.not.identity%valid) return
+    select type(self)
+    class default
+      select type(state)
+      class default
+        return
+      end select
+    end select
   end function
   subroutine kernel_parameters_identity_unavailable(self,identity,available)
     class(kernel_parameters_t), intent(in) :: self
     type(kernel_parameter_identity_t), intent(out) :: identity
     logical, intent(out) :: available
-    identity=kernel_parameter_identity_t()
-    available=.false.
+    select type(self)
+    class default
+      identity=kernel_parameter_identity_t()
+      available=.false.
+    end select
   end subroutine
   logical function kernel_parameters_physical_unavailable(self,state) result(ok)
     class(kernel_parameters_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
     ok=.false.
+    select type(self)
+    class default
+      select type(state)
+      class default
+        return
+      end select
+    end select
   end function
   pure logical function kernel_parameter_identity_matches(self,other) result(ok)
     class(kernel_parameter_identity_t), intent(in) :: self
