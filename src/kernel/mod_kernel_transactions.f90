@@ -17,6 +17,7 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_STATUS_NOT_ADMITTED = 101
   integer, parameter, public :: KERNEL_STATUS_UNGUARDED_STATE = 102
   integer, parameter, public :: KERNEL_STATUS_TIME_MISMATCH = 103
+  integer, parameter, public :: KERNEL_STATUS_PARAMETER_MISMATCH = 105
   integer, parameter, public :: KERNEL_STATUS_CHECKPOINT_MISMATCH = 104
 
   integer, parameter, public :: KERNEL_COMMIT_STATUS_COMMITTED = 0
@@ -43,7 +44,17 @@ module mod_kernel_transactions
 
   public :: kernel_reconstruct_committed_state_trusted
 
+  type, public :: kernel_parameter_identity_t
+    integer(int64) :: parameter_set_id=0_int64
+    integer :: active_nodes=0
+    logical :: heat_enabled=.false., valid=.false.
+    real(real64), allocatable :: z(:),dz(:)
+  contains
+    procedure :: matches => kernel_parameter_identity_matches
+  end type
   type, abstract, public :: kernel_parameters_t
+  contains
+    procedure :: capture_identity => kernel_parameters_identity_unavailable
   end type kernel_parameters_t
 
   ! Canonical F-KT-owned committed carrier. Physical continuation state is
@@ -54,6 +65,7 @@ module mod_kernel_transactions
   type, extends(transaction_state_t), public :: kernel_committed_state_t
     private
     class(transaction_state_t), allocatable :: physical_state
+    type(kernel_parameter_identity_t) :: parameter_identity
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: revision = 0_int64
     real(real64) :: committed_time_value = 0.0_real64
@@ -69,6 +81,7 @@ module mod_kernel_transactions
     procedure, public :: current_revision => kernel_current_revision
     procedure, public :: current_time => kernel_current_time
     procedure, public :: time_is_bound => kernel_time_is_bound
+    procedure, public :: certified_parameter_identity => kernel_committed_parameter_identity
   end type kernel_committed_state_t
 
   ! Reusable F-KT-owned trial base. A checkpoint is an immutable physical clone
@@ -260,6 +273,38 @@ module mod_kernel_transactions
   end interface
 
 contains
+  subroutine kernel_parameters_identity_unavailable(self,identity,available)
+    class(kernel_parameters_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    identity=kernel_parameter_identity_t()
+    available=.false.
+  end subroutine
+  pure logical function kernel_parameter_identity_matches(self,other) result(ok)
+    class(kernel_parameter_identity_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: other
+    ok=.false.
+    if(.not.self%valid.or..not.other%valid) return
+    if(self%parameter_set_id<=0_int64.or.self%active_nodes<=0) return
+    if(self%parameter_set_id/=other%parameter_set_id.or.self%active_nodes/=other%active_nodes) return
+    if(self%heat_enabled.neqv.other%heat_enabled) return
+    if(.not.allocated(self%z).or..not.allocated(self%dz)) return
+    if(.not.allocated(other%z).or..not.allocated(other%dz)) return
+    if(size(self%z)/=self%active_nodes.or.size(self%dz)/=self%active_nodes) return
+    if(size(other%z)/=self%active_nodes.or.size(other%dz)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%z)).or..not.all(ieee_is_finite(self%dz))) return
+    if(.not.all(ieee_is_finite(other%z)).or..not.all(ieee_is_finite(other%dz))) return
+    if(any(self%dz<=0.0_real64).or.any(other%dz<=0.0_real64)) return
+    ok=all(self%z==other%z).and.all(self%dz==other%dz)
+  end function
+  subroutine kernel_committed_parameter_identity(self,identity,available)
+    class(kernel_committed_state_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    identity=kernel_parameter_identity_t()
+    available=self%ready().and.self%parameter_identity%valid
+    if(available) identity=self%parameter_identity
+  end subroutine
 
   subroutine kernel_committed_clone(self, copy)
     class(kernel_committed_state_t), intent(in) :: self
@@ -273,16 +318,19 @@ contains
       typed_copy%committed_time_value = self%committed_time_value
       typed_copy%time_bound = self%time_bound
       typed_copy%initialized = self%initialized
+      typed_copy%parameter_identity = self%parameter_identity
       if (allocated(self%physical_state)) call self%physical_state%clone(typed_copy%physical_state)
     end select
   end subroutine kernel_committed_clone
 
-  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize, initial_time)
+  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize, initial_time, parameters)
     class(kernel_committed_state_t), intent(inout) :: self
     integer(int64), intent(in) :: lineage_id
     class(transaction_state_t), allocatable, intent(in) :: initial_state
     logical, intent(out) :: did_initialize
     real(real64), intent(in), optional :: initial_time
+    class(kernel_parameters_t), intent(in), optional :: parameters
+    logical :: certified
     class(transaction_state_t), allocatable :: copy
 
     did_initialize = .false.
@@ -291,6 +339,13 @@ contains
       if (.not. ieee_is_finite(initial_time)) return
     end if
 
+    if(present(parameters)) then
+      call parameters%capture_identity(self%parameter_identity,certified)
+      if(.not.certified.or..not.self%parameter_identity%valid) then
+        self%parameter_identity=kernel_parameter_identity_t()
+        return
+      end if
+    end if
     call initial_state%clone(copy)
     call move_alloc(copy, self%physical_state)
     self%lineage_id = lineage_id
@@ -312,7 +367,7 @@ contains
   ! Ordinary runtime code must continue to use initialize() and transaction
   ! commit. External parsing and codec selection remain outside this module.
   subroutine kernel_reconstruct_committed_state_trusted(target, lineage_id, revision, physical_state, &
-       committed_time, time_bound, reconstructed, status)
+       committed_time, time_bound, reconstructed, status, parameters)
     type(kernel_committed_state_t), intent(inout) :: target
     integer(int64), intent(in) :: lineage_id
     integer(int64), intent(in) :: revision
@@ -321,6 +376,8 @@ contains
     logical, intent(in) :: time_bound
     logical, intent(out) :: reconstructed
     integer, intent(out) :: status
+    class(kernel_parameters_t), intent(in), optional :: parameters
+    logical :: certified
     class(transaction_state_t), allocatable :: copy
 
     reconstructed = .false.
@@ -340,6 +397,13 @@ contains
       if (transfer(committed_time, 0_int64) /= transfer(0.0_real64, 0_int64)) return
     end if
 
+    if(present(parameters)) then
+      call parameters%capture_identity(target%parameter_identity,certified)
+      if(.not.certified.or..not.target%parameter_identity%valid) then
+        target%parameter_identity=kernel_parameter_identity_t()
+        return
+      end if
+    end if
     call physical_state%clone(copy)
     if (.not. allocated(copy)) return
 
