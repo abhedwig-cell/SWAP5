@@ -258,15 +258,14 @@
       ],
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
-      "dependencies": [
-        "SW431-RUNON"
-      ],
+      "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
         "SW431-MACRO-POND"
       ],
       "closed_foundation_authorities": [
-        "SW431-MACRO-TOP"
+        "SW431-MACRO-TOP",
+        "SW431-RUNON"
       ]
     },
     {
