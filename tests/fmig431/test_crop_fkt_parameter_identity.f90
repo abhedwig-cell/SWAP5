@@ -50,6 +50,20 @@ program test_crop_fkt_parameter_identity
  if(.not.available) error stop 'missing snapshot'
  call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
       .true.,reconstructed,status,parameters=p)
+ if(reconstructed) error stop 'restart without original certificate accepted'
+ q=p
+ q%parameter_set_id=72_int64
+ call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
+      .true.,reconstructed,status,parameters=q,persisted_identity=origin)
+ if(reconstructed) error stop 'restart with changed parameter ID accepted'
+ q=p
+ q%dz=[15.0_real64,15.0_real64]
+ q%z=[-7.5_real64,-22.5_real64]
+ call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
+      .true.,reconstructed,status,parameters=q,persisted_identity=origin)
+ if(reconstructed) error stop 'restart with changed equal-sized grid accepted'
+ call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
+      .true.,reconstructed,status,parameters=p,persisted_identity=origin)
  if(.not.reconstructed.or.status/=KERNEL_TRUSTED_RECONSTRUCTION_OK) error stop 'certified restart failed'
  call restarted%certified_parameter_identity(changed,available)
  if(.not.available.or..not.origin%matches(changed)) error stop 'restart dropped certificate'
