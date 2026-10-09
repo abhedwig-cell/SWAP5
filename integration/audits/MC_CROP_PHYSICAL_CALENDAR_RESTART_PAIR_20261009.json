@@ -1,0 +1,43 @@
+{
+  "schema": "swap431.crop_physical_calendar_restart_pair.v1",
+  "workstream": "MC-CROP01",
+  "base": "2df564a95bf2cd7ed60a711a4d381ad98b7aa556",
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "predecessors": [
+    "PR #1132 derived calendar/receipt publication",
+    "PR #1138 F-KT-owned opt-in lifecycle continuation and receipt persistence"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "admitted": false,
+  "scope": "Read-only fail-closed check that a postevent active-crop derived calendar checkpoint and persisted F-WOF38 physical crop event receipt agree with exact time on a committed F-KT state.",
+  "guards": [
+    "reject unready kernel, missing receipt/lifecycle or invalid persistence",
+    "reject exact time mismatch between committed physical time, derived calendar checkpoint and persisted event receipt t1",
+    "reject source-calendar selection mismatch, inactive calendar and fallow",
+    "reject receipt absent/mismatched against the actual committed F-WOF38 owner",
+    "never mutate F-KT, crop owner, calendar, accepted-window or hydraulic/transport state"
+  ],
+  "limits": [
+    "This only checks a postevent active-crop pair, not durable serialization or full whole-system restart",
+    "Does not establish physical sow/emergence/root initialization, harvest/reset or following crop",
+    "Does not prove hydraulic/thermal forcing provenance, mass coupling to MICRO, or SWINCO=3 physical initialization",
+    "Does not prove bit-exact equality of all owner biomass fields to a separately provided persistence view; current physical receipt and owner validity are checked",
+    "No calendar publication or physical mutation occurs"
+  ],
+  "sources": [
+    "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
+    "tests/fmig431/patch_crop_physical_calendar_restart_fixture.py",
+    "tests/fmig431/run_crop_physical_calendar_restart_coherence.sh"
+  ],
+  "qualified_on_base_head": "83078c220e2e5a988acee40f0b7d0b165c2792f0",
+  "qualification_preliminary": {
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886634791",
+    "result": "SUCCESS",
+    "description": "post-event pair positive, stale time and inactive/fallow source-calendar negative, real F-WOF38 O0/O2 fixture"
+  },
+  "next_action": "Qualify exact persisted head with guarded F-CI B19/MICRO cross-preservation; if successful admit bounded receipt/calendar active-day validator, then begin physical forcing plus previous-day emergence/root and harvest successor."
+}

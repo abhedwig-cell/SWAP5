@@ -283,6 +283,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
+  local crop_physical_restart_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -313,6 +314,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
+      src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
@@ -326,6 +328,18 @@ check_b19_micro_root_recomposition() {
       fail 'missing qualified lifecycle B19/MICRO cross-preservation gate'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'lifecycle B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_physical_restart_changed )); then
+    # Restrict this new read-only physical/calendar restart validator to an
+    # exact-head owner O0/O2, stale-calendar/receipt-negative matrix and
+    # inherited B19/MICRO actual-source cross-preservation. There is no
+    # unconditional allowance for a new physical state/forcing owner.
+    test -f tests/fmig431/run_crop_physical_calendar_restart_coherence.sh || \
+      fail 'missing crop physical/calendar restart pair gate'
+    bash tests/fmig431/run_crop_physical_calendar_restart_coherence.sh || \
+      fail 'crop physical/calendar restart pair qualification failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'crop physical restart B19/MICRO cross-preservation failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
