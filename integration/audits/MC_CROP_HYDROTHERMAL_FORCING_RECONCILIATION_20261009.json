@@ -48,7 +48,7 @@
     "PR #1119 modifies frost/hydraulic guards"
   ],
   "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
-  "next_action": "Bind previous-day flags/revision to accepted F-KT snapshot; independently bind hydrothermal forcing provenance; add same-postimage owner O0/O2 and preservation before any admission.",
+  "next_action": "Inspect accepted F-KT state/snapshot and source startup task-2 semantics, then implement owner-bound delayed-emergence and separately crop-start-default cases; meanwhile preserve current draft without claiming full physics.",
   "next_bounded_slice": {
     "name": "Previous-day emergence eligibility preflight",
     "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:cropemergence",
@@ -63,5 +63,10 @@
       "Does not publish physical emergence, roots, or calendar",
       "Not yet part of required owner/F-CI preservation gates"
     ]
+  },
+  "source_ordering_caveat": {
+    "observation": "B1.11 cropemergence first checks previously accepted fl_prep/fl_sow/fl_germ before task-2 initialization. On start of a crop rotation it can also set immediate emergence if all flags become true after task-2 defaults. Therefore previous-day gate is only the delayed-emergence branch, not an exhaustive standalone crop-start emergence specification.",
+    "implication": "Do not wire the read-only gate as the sole emergence authority. Add explicit source-backed startup/default handling after matching accepted physical event and independent forcing evidence.",
+    "lineage_warning": "Current gate arguments are caller-provided integer revisions, not real F-KT snapshot authenticated event receipts. Revision equality alone does not prove event identity or hydrothermal input provenance."
   }
 }
