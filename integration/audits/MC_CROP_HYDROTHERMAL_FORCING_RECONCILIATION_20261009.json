@@ -48,7 +48,7 @@
     "PR #1119 modifies frost/hydraulic guards"
   ],
   "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
-  "next_action": "Run exact-head lifecycle B19/MICRO cross-preservation (plus new previous-day O0/O2 gate), check fresh F-CI once queued, preserve no admission until owner-bound forcing provenance and physical lifecycle covered.",
+  "next_action": "Implement source/owner-authenticated hydraulic/thermal forcing under accepted F-KT event identity; then delayed emergence physical F-KT acceptance, roots, harvest, two crops with fallow, SWINCO=3, serialized restart, O0/O2 and F-CI.",
   "next_bounded_slice": {
     "name": "Previous-day emergence eligibility preflight",
     "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:cropemergence",
@@ -81,5 +81,17 @@
     "repair": "Classify new source as crop_lifecycle_changed and REQUIRE the existing tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh; no scientific thresholds or source-owner checks removed.",
     "new_head_qualification": "PENDING; old failed run cannot be reused",
     "admission": "NOT ADMITTED"
-  }
+  },
+  "bounded_emergence_admission": {
+    "scope": "Read-only previous accepted-day crop emergence eligibility preflight only, no publication or F-KT owner forcing authentication",
+    "pr": 1140,
+    "qualified_head": "bded3d216da9c3dd80e9b70028d458d552fb789a",
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37891074870",
+    "owner_conclusion": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37891075109",
+    "fci_conclusion": "success",
+    "merge_commit": "3740dc77dd38d112b18054af896c0ee90a2c6eb9",
+    "canonical_admitted": true
+  },
+  "scope_status": "Full hydrothermal forcing coupling and physical lifecycle remain open. Bounded previous-day eligibility helper admitted separately in PR #1140."
 }
