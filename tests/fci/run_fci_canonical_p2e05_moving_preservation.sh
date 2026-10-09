@@ -256,10 +256,26 @@ fi
 # admitted F-ROM1A production postimage is accepted when that admission is in
 # the lineage. Before that admission, kernel_transactions remains byte-equal
 # to the Status-A authority.
+# Exact MC-CROP01 successor is never wildcard admission: only known F-KT
+# and B110 blobs may enter this branch, with unchanged reference and all other
+# production sources proved by the independent source guard.
+crop_fkt_b110_exact_successor=0
+if [[ "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" == "da7a00b6aec996cff504d8d30a90e51a8cce2162" &&
+      "$(git rev-parse HEAD:$BACKEND)" == "b218ac657db52612bc12da671716c97430200f0a" ]]; then
+  bash tests/fci/run_crop_fkt_b110_exact_source_successor.sh --verify-only ||
+    fail 'crop certified F-KT/B110 exact source successor rejected'
+  crop_fkt_b110_exact_successor=1
+  echo 'FCI_CANONICAL_CROP_FKT_B110_EXACT_SOURCE_SUCCESSOR=PASS'
+fi
 if git merge-base --is-ancestor "$F_ROM1A_PRODUCTION" HEAD; then
+  if (( crop_fkt_b110_exact_successor )); then
+    test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = "da7a00b6aec996cff504d8d30a90e51a8cce2162" ||
+      fail 'crop F-KT exact kernel source drift'
+  else
   test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" = \
        "$(git rev-parse "$dependency_authority:src/kernel/mod_kernel_transactions.f90")" || \
     fail 'candidate changed current kernel-transaction target postimage'
+  fi
   echo 'FCI_CANONICAL_F_ROM1A_KERNEL_SUCCESSOR=PASS'
 else
   test "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" =     "$(git rev-parse "$AUTH:src/kernel/mod_kernel_transactions.f90")" ||     fail 'pre-F-ROM1A kernel transaction drift'
@@ -286,6 +302,7 @@ check_b19_micro_root_recomposition() {
   local crop_physical_restart_changed=0
   local crop_unified_restart_changed=0
   local crop_accepted_heat_changed=0
+  local crop_certified_sow_changed=0
   local crop_atomic_hydroheat_changed=0
   local crop_head_depth_changed=0
   local crop_havg_changed=0
@@ -296,6 +313,10 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/kernel/mod_kernel_transactions.f90|src/runtime/mod_fmr_serialized_reference_backend.f90 )
+        (( crop_fkt_b110_exact_successor )) ||
+          fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
+        ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
       src/crop/mod_crop_root_anaerobic_extension_gate.f90 ) ;;
       src/crop/mod_crop_root_depth_biomass.f90 ) ;;
@@ -329,6 +350,8 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90 ) crop_head_depth_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_soil_temperature.f90 ) crop_accepted_heat_changed=1 ;;
       src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90 ) crop_atomic_hydroheat_changed=1 ;;
+      src/runtime/mod_fmr_crop_certified_sowing_source.f90 ) crop_certified_sow_changed=1 ;;
+      src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90 ) crop_certified_sow_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
@@ -337,6 +360,21 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_certified_sow_changed )); then
+    bash tests/fmig431/run_crop_fkt_parameter_identity.sh || \
+      fail 'F-KT B110 parameter identity O0/O2 failed'
+    bash tests/fmig431/run_crop_certified_sowing_source.sh || \
+      fail 'F-KT certified sowing source O0/O2 failed'
+    bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh || \
+      fail 'F-KT certified B1.11 hydrothermal forcing O0/O2 failed'
+    if (( crop_fkt_b110_exact_successor )); then
+      bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh ||
+        fail 'certified F-KT/B110 successor scientific B19/MICRO failed'
+    else
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'F-KT certified sowing B19/MICRO preservation failed'
+    fi
+  fi
   if (( crop_atomic_hydroheat_changed )); then
     bash tests/fmig431/run_crop_atomic_accepted_hydroheat.sh || \
       fail 'atomic accepted F-KT hydrothermal O0/O2 gate failed'
@@ -426,8 +464,13 @@ check_b19_micro_root_recomposition() {
       fail 'crop unified physical/calendar persistence replay failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
-    test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
-      fail "B19+MICRO shared-owner postimage changed: $candidate_path"
+    if (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+      test "$(git rev-parse "HEAD:$candidate_path")" = "b218ac657db52612bc12da671716c97430200f0a" ||
+        fail 'crop B110 certified successor backend postimage drift'
+    else
+      test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" ||
+        fail "B19+MICRO shared-owner postimage changed: $candidate_path"
+    fi
   done
   echo 'FCI_CANONICAL_B19_MICRO_RESTRICTED_ROOT_RECOMPOSITION=PASS'
 }
@@ -463,7 +506,12 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     # surface while preserving B19 behavior; accept only that exact successor.
     if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
       check_b19_micro_root_recomposition
+      if (( crop_fkt_b110_exact_successor )); then
+        test "$(git rev-parse HEAD:$BACKEND)" = "b218ac657db52612bc12da671716c97430200f0a" ||
+          fail 'B19/MICRO crop B110 exact successor backend drift'
+      else
       test "$(git rev-parse HEAD:$BACKEND)" = "$(git rev-parse "$dependency_authority:$BACKEND")" || fail 'B19+MICRO current-target serialized backend drift'
+      fi
       test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
       echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
     else
@@ -910,6 +958,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = \
        "$(git rev-parse "$dependency_authority:src/solver/mod_b110_default_mvg_provider.f90")" || \
     fail 'candidate changed current default-MvG provider target postimage'
+  if (( crop_fkt_b110_exact_successor )); then
+    backend_authority="b218ac657db52612bc12da671716c97430200f0a"
+  fi
   test "$(git rev-parse HEAD:$BACKEND)" = "$backend_authority" || \
     fail 'admitted serialized-backend successor drift'
   echo 'FCI_CANONICAL_PPA_WU04B_BACKEND_SUCCESSOR=PASS'
