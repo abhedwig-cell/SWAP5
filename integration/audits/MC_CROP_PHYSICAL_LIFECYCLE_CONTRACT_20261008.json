@@ -53,7 +53,7 @@
   "tested": false,
   "qualified": false,
   "admitted": false,
-  "next_action": "Source-backed hydrothermal forcing provenance, daily physical emergence and root initialization, harvest/root-extraction reset and following crop, SWINCO=3, full owner/calendar checkpoint restart. Do not reopen bounded admitted #1138.",
+  "next_action": "Bound physical hydrothermal forcing to accepted F-KT source; then delayed previous-day emergence/root initialization, harvest/root-reset/fallow and following crop, SWINCO=3, and coherent serialized whole-system restart. Do not repeat admitted #1138/#1139.",
   "reconciled_current_owner": {
     "canonical_head": "d79030e1495d0d6603e70d3ecaa1974b3973fbd7",
     "physical_crop_state": "src/runtime/mod_fmr_wofost_crop_transaction.f90: fmr_wofost_crop_transaction_state_t owns crop owner, optional potential shadow/root growth and last consumed event",
@@ -121,5 +121,13 @@
     "qualified_o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851492515",
     "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37851493061"
   },
-  "full_physical_lifecycle_status": "OPEN_UNIMPLEMENTED_NOT_QUALIFIED"
+  "full_physical_lifecycle_status": "OPEN_UNIMPLEMENTED_NOT_QUALIFIED",
+  "bounded_restart_pair_admission": {
+    "pr": 1139,
+    "qualified_head": "daa927de1ef95c9da4b994fc343ff65f75eb1ba5",
+    "merge_commit": "959a45b9f25d9260809fb4a10c8bd365623a3a7a",
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773798",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773618",
+    "scope": "Fail-closed active-day validator of F-KT physical committed time, receipt and derived crop-calendar checkpoint; not whole-system serialization, crop transition or physical forcing binding."
+  }
 }

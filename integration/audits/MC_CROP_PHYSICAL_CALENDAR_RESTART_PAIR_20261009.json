@@ -39,7 +39,7 @@
     "result": "SUCCESS",
     "description": "post-event pair positive, stale time and inactive/fallow source-calendar negative, real F-WOF38 O0/O2 fixture"
   },
-  "next_action": "Physical daily forcing provenance, previous-day emergence, root state initialization, harvest and fallow remain separate. Do not reopen admitted pair gate without relevant dependency change.",
+  "next_action": "Resume MC-CROP01 PHYSICAL-LIFE source hydrothermal forcing, previous-day emergence and next crop/root initialization, harvest/reset/fallow and full serialized calendar+physical restart; preserve admitted #1138 and #1139.",
   "admission": {
     "pr": 1139,
     "merge_commit": "959a45b9f25d9260809fb4a10c8bd365623a3a7a",
@@ -47,5 +47,18 @@
     "o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773798",
     "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773618",
     "scope": "Read-only postevent active-crop physical event/derived calendar restart coherence only"
+  },
+  "qualification": {
+    "head": "daa927de1ef95c9da4b994fc343ff65f75eb1ba5",
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773798",
+    "owner_conclusion": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773618",
+    "fci_conclusion": "success",
+    "scope": "Positive postevent F-KT/crop/calendar receipt alignment; exact stale time and fallow negative checks O0/O2; gated B19/MICRO cross-preservation; frozen inherited F-CI gates"
+  },
+  "canonical_admission": {
+    "pr": 1139,
+    "merge_commit": "959a45b9f25d9260809fb4a10c8bd365623a3a7a",
+    "scope": "read-only active-crop postevent physical/calendar restart pair validation"
   }
 }
