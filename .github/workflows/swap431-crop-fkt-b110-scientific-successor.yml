@@ -1,0 +1,19 @@
+name: SW431 crop F-KT B110 shared-owner scientific successor
+on:
+  pull_request:
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90'
+      - 'src/runtime/mod_fmr_crop_certified_sowing_source.f90'
+      - 'tests/fmig431/run_crop_fkt_b110_scientific_successor.sh'
+      - '.github/workflows/swap431-crop-fkt-b110-scientific-successor.yml'
+  workflow_dispatch:
+jobs:
+  fkt-b110-micro-b19-successor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
