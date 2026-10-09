@@ -8,7 +8,7 @@ module mod_fmr_serialized_reference_backend
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
+  use mod_kernel_transactions, only: kernel_parameter_identity_t, kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
        KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
@@ -365,6 +365,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
+  contains
+    procedure :: capture_identity => fmr_b110_capture_parameter_identity
   end type fmr_b110_physical_parameters_t
 
   type, public :: fmr_black_evaporation_runtime_forcing_t
@@ -868,6 +870,34 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  subroutine fmr_b110_capture_parameter_identity(self,identity,available)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    integer :: i
+    real(real64) :: bottom
+    identity=kernel_parameter_identity_t()
+    available=.false.
+    if(self%parameter_set_id<=0_int64.or.self%active_nodes<1) return
+    if(.not.allocated(self%z).or..not.allocated(self%dz)) return
+    if(size(self%z)/=self%active_nodes.or.size(self%dz)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%z)).or..not.all(ieee_is_finite(self%dz))) return
+    if(any(self%dz<=0.0_real64)) return
+    bottom=0.0_real64
+    do i=1,self%active_nodes
+      if(self%z(i)/=bottom-0.5_real64*self%dz(i)) return
+      bottom=bottom-self%dz(i)
+      if(.not.ieee_is_finite(bottom)) return
+    end do
+    identity%parameter_set_id=self%parameter_set_id
+    identity%active_nodes=self%active_nodes
+    identity%heat_enabled=self%soil_temperature_active
+    identity%z=self%z
+    identity%dz=self%dz
+    identity%valid=.true.
+    available=.true.
+  end subroutine
 
   pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
@@ -1465,15 +1495,25 @@ contains
     call move_alloc(initialized%macro_mass_mg_cm2, state%salt%macro_mass_mg_cm2)
   end subroutine fmr_initialize_mobile_macro_salt_profile
 
-  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm)
+  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm, parameters)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
     real(real64), intent(in), optional :: initial_rutter_storage_cm
+    type(fmr_b110_physical_parameters_t), intent(in), optional :: parameters
+    type(kernel_parameter_identity_t) :: checked_identity
+    logical :: certified
     class(transaction_state_t), allocatable :: carrier
     integer :: rutter_status
+    if(present(parameters)) then
+      ok=.false.
+      call parameters%capture_identity(checked_identity,certified)
+      if(.not.certified) return
+      if(state%active_nodes/=checked_identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.checked_identity%heat_enabled) return
+    end if
     allocate(fmr_b110_physical_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_physical_state_t)
@@ -1488,7 +1528,11 @@ contains
         end if
       end if
     end select
-    call committed%initialize(lineage_id, carrier, ok, initial_time)
+    if(present(parameters)) then
+      call committed%initialize(lineage_id, carrier, ok, initial_time, parameters)
+    else
+      call committed%initialize(lineage_id, carrier, ok, initial_time)
+    end if
   end subroutine fmr_new_b110_committed_state
 
   subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
