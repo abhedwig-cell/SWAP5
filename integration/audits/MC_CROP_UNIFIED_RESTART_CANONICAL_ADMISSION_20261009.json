@@ -1,0 +1,51 @@
+{
+  "schema": "swap431.crop_unified_restart_canonical_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "87e10479c9c5e11f059a3a125923d68e2d25f53a",
+  "qualified_head": "6861d1872b6caba97bfb9c58f26426222c4d31b4",
+  "canonical_merge": "58e6620053ae79b04d8342ce0a418981ce9f6362",
+  "original_pr": 1141,
+  "states": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "qualification": [
+    {
+      "gate": "crop rotation transition",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37913653397",
+      "conclusion": "success"
+    },
+    {
+      "gate": "physical crop calendar restart",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37913653408",
+      "conclusion": "success"
+    },
+    {
+      "gate": "unified crop/calendar restart",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37913653452",
+      "conclusion": "success"
+    },
+    {
+      "gate": "F-CI canonical",
+      "run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37913653450",
+      "conclusion": "success 15/15"
+    }
+  ],
+  "implementation": [
+    "src/crop/mod_crop_rotation_transition.f90",
+    "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90"
+  ],
+  "scope": "Serialization-neutral reconstruction of paired physical crop transaction and derived calendar checkpoint values against an independently trusted reconstructed F-KT committed kernel, verifying accepted lineage/revision/time, event receipt, and crop/calendar coherence; immutable owner boundaries retained.",
+  "reconciliation": "Original PR #1141 at 4d495e425525c46127b56dce547c5124d67b8584 reconciled onto canonical 87e10479c9c5e11f059a3a125923d68e2d25f53a using exact same code files and union of current F-CI crop/HYD/heat/pF/grid preservation checks; merged recovery parent commit 6861d1872b6caba97bfb9c58f26426222c4d31b4.",
+  "claim_ceiling": [
+    "A trusted committed F-KT physical kernel reconstruction is a prerequisite; this does not implement whole-system checkpoint deserialization.",
+    "A value-based crop/calendar pair is not proof of cross-module whole-system restart or file-level serializer.",
+    "Not evidence of physical sowing/germination forcing, emergence, harvest/fallow, root init/teardown, second crop or SWINCO=3.",
+    "Does not authenticate B110 parameter_set_id/z/dz grid against committed F-KT; no force-source identity was admitted."
+  ],
+  "next_action": "Finish B110 immutable parameter owner identity/reconfiguration/restart binding before permitting accepted hydraulic and heat fields to drive physical sowing and germination. Independently qualify full two-crop harvest/fallow and whole-system restart later."
+}
