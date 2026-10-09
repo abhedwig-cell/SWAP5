@@ -367,6 +367,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
   contains
     procedure :: capture_identity => fmr_b110_capture_parameter_identity
+    procedure :: matches_physical_identity => fmr_b110_matches_physical_identity
   end type fmr_b110_physical_parameters_t
 
   type, public :: fmr_black_evaporation_runtime_forcing_t
@@ -898,6 +899,23 @@ contains
     identity%valid=.true.
     available=.true.
   end subroutine
+
+  logical function fmr_b110_matches_physical_identity(self,state) result(ok)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=self%active_nodes.or.state%active_nodes<=0) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=self%active_nodes.or. &
+           size(state%water_content)/=self%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.self%soil_temperature_active) return
+      ok=.true.
+    class default
+      return
+    end select
+  end function
 
   pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
