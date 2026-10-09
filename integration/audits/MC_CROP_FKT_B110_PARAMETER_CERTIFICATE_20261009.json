@@ -6,9 +6,9 @@
   "status": {
     "implemented": true,
     "persisted": true,
-    "tested": "earlier exact owner O0/O2 heads passed; current exact head queued",
-    "qualified": false,
-    "preserved": false,
+    "tested": true,
+    "qualified": "bounded owner and scientific successor PASS, central admission gate blocked",
+    "preserved": "bounded B19/MICRO suite PASS, full F-CI not admitted",
     "canonically_admitted": false
   },
   "current_work_branch": "work/swap431-crop-fkt-parameter-certificate-20261009",
@@ -46,7 +46,7 @@
     "Trusted reconstruction requires separately persisted original identity; no byte-oriented codec is provided.",
     "Do not admit while frozen kernel/backend F-CI postimage checks are not superseded by accepted complete preservation."
   ],
-  "next_action": "Follow latest exact-head owner and F-CI jobs to terminal; fix failures, independently gate shared F-KT/backend preservation rather than weakening existing frozen checks. Then if qualified admit narrow certificate/forcing and record canonical merge.",
+  "next_action": "Review and implement an explicit exact-source successor condition in current F-CI preserving old authorities; add missing end-to-end commit rejection and mass/restart cases before declaring qualification; do not merge #1160 while F-CI fails.",
   "current_exact_head_runs": [
     {
       "name": "B110 owner O0/O2",
@@ -62,9 +62,30 @@
     }
   ],
   "admission_blocker_details": {
-    "fci_kernel": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh checks src/kernel/mod_kernel_transactions.f90 SHA against dependency_authority under F_ROM1A successor; PR changes that file, so current invariant rejects it until new qualified successor admission authority.",
-    "fci_backend": "Same moving preservation script restricts src/runtime/mod_fmr_serialized_reference_backend.f90 to dependency_authority exact blob for B19/MICRO. tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh independently checks backend byte identity to 6cef5580, so existing cross-preservation cannot itself qualify a changed backend.",
-    "requirement": "Preserve legacy blob checks as historical authority. Add separately qualified scientific/transactional same-head backend+kernel successor tests and explicit accepted new preservation gate; no relaxed hash or wildcard successor.",
-    "next_action": "First obtain exact-head owner outcome; inspect any compile failure and fix. Then run genuine B110/FKT reject-retry mass and MICRO/B19 production regressions on changed backend before proposing a documented successor to frozen F-CI controls."
+    "first": "F-CI current restricted preservation checks kernel blob against dependency_authority and fails before examining further postimages.",
+    "second": "F-CI independently checks current backend identity for B19/MICRO and numerous admitted historical successors. Separate scientific suite passing is evidence but not a license to skip these gates.",
+    "required": "An explicit, formally reviewed source-exact F-CI successor admission with full shared kernel/backend transitive preservation, including commit rejection/retry, restart and water/mass closure. Validate on a new exact postimage. Do not replace current source checks with unconditional allowlisting."
+  },
+  "exact_head_qualification": {
+    "head": "4126bd7cd41f6c14127829e6455afa39edb4d1cd",
+    "owner": {
+      "run": 37940490172,
+      "conclusion": "success"
+    },
+    "scientific_successor": {
+      "run": 37940489638,
+      "conclusion": "success",
+      "scope": "B110/F-KT three owner O0/O2, lifecycle continuation, calendar and transition, MICRO02/03, actual changed-source B19 O0/O2"
+    },
+    "fci": {
+      "run": 37940490277,
+      "conclusion": "failure",
+      "first_failure": "candidate changed current kernel-transaction target postimage",
+      "classification": "intentional frozen canonical dependency gate, not a numerical failure"
+    }
+  },
+  "frozen_source_identity": {
+    "kernel": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+    "backend": "b218ac657db52612bc12da671716c97430200f0a"
   }
 }
