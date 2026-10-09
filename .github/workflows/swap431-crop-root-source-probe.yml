@@ -1,0 +1,37 @@
+name: SWAP431 crop root B1.11 source probe
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+  push:
+    branches: [work/swap431-crop-root-source-probe-20261007]
+    paths:
+      - '.github/workflows/swap431-crop-root-source-probe.yml'
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract B1.11 authority snippets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin work/swap431-master-coverage-20261006 --depth=1
+          git show FETCH_HEAD:integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64 | base64 -d > /tmp/b111.tgz
+          mkdir -p /tmp/b111
+          tar -xzf /tmp/b111.tgz -C /tmp/b111
+          echo "=== MEMBERS ==="
+          find /tmp/b111 -type f | sort
+          find_one() { find /tmp/b111 -type f -path "*/$1" -print -quit; }
+          show() { f="$(find_one "$1")"; a="$2"; b="$3"; echo "=== $1:$a-$b ==="; sed -n "${a},${b}p" "$f"; }
+          show SWAP/MOD_cropdevelopment.f90 1680 1945
+          show SWAP/MOD_cropdevelopment.f90 2020 2365
+          show SWAP/MOD_cropdevelopment.f90 350 760
+          show SWAP/MOD_cropdevelopment.f90 800 930
+          show SWAP/wofost.f90 250 500
+          show SWAP/wofost.f90 560 620
+          show SWAP/wofost.f90 1180 1420
+          show SWAP/wofost.f90 1935 2215
+          show SWAP/fixed.f90 1 275
+          show SWAP/rootextraction.f90 340 470
+          show SWAP/oxygenstress.f90 1 120
