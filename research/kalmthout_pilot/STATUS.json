@@ -1,0 +1,61 @@
+{
+  "workstream": "research/kalmthout_pilot",
+  "work_unit": "KALMTHOUT-PILOT-01",
+  "baseline": "integration/f-ci-canonical",
+  "checkpoint_commit": "4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "canonical_admission": false,
+  "last_reconciled_head": "4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "official_domain": {
+    "crs": "EPSG:32631",
+    "total_extent": [579980.0, 5674020.0, 619980.0, 5715020.0],
+    "minimal_extent": [592980.0, 5683020.0, 608980.0, 5699020.0],
+    "grid_m": 500.0,
+    "grid_shape": [32, 32],
+    "cell_count": 1024,
+    "representative_cell": "KAL_0496",
+    "representative_xy": [600730.0, 5690770.0],
+    "representative_lonlat": [4.44675648715192, 51.359254426505835]
+  },
+  "extent_source_quality": {
+    "total_extent_gpkg_crs": "EPSG:32631",
+    "minimal_extent_gpkg_crs": "undefined srs_id=99999",
+    "pilot_resolution": "minimal extent coordinates assigned EPSG:32631 from project CRS and matching coordinate frame"
+  },
+  "tests": {
+    "official_grid_local": "PASS",
+    "grid_expected_cells": 1024,
+    "representative_cell_check": "PASS",
+    "github_actions_required_for_extent_change": false
+  },
+  "numerical_status": {
+    "meteo_pipeline": "hourly ERA5 extraction configured for official representative cell",
+    "requested_period": "2024-01-01 through 2026-10-01 inclusive",
+    "rutter_application": "not qualified; earlier real-rainfall probe exposed wet-forcing transaction rejection",
+    "next_numerical_action": "resume focused Rutter transaction diagnosis from existing branch evidence, without duplicative Actions runs"
+  },
+  "relevant_paths": [
+    "research/kalmthout_pilot/domain.json",
+    "research/kalmthout_pilot/build_grid.py",
+    "research/kalmthout_pilot/fetch_era5land_daily.py",
+    "research/kalmthout_pilot/kalmthout_rutter_probe.f90",
+    "research/kalmthout_pilot/kalmthout_swap5_daily_pilot.f90",
+    "research/kalmthout_pilot/run_kalmthout_daily.sh",
+    ".github/workflows/kalmthout-swap5-pilot.yml"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_rutter_source_window_processor.f90",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "next_action": "Finish bounded Rutter wet-forcing diagnosis, then rerun one focused pilot gate only after local/static checks and queue reconciliation.",
+  "recovery_point": "work/kalmthout-swap5-pilot at 4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "blockers": [
+    "Minimal source GeoPackage has broken CRS metadata; corrected local artifact produced separately.",
+    "Rutter wet-forcing path is not yet qualified for the long 2024-2026 application run."
+  ]
+}
