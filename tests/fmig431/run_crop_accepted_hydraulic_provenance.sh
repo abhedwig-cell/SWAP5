@@ -19,15 +19,15 @@ for path in sorted((root/'src').rglob('*.f90')):
         if x in by and by[x]!=path: raise SystemExit(f'duplicate module {x}')
         by[x]=path
 order=[];seen=set();active=set()
-def visit(name):
+def visit(name,parent='target'):
     if name not in by:
-        if name.startswith('mod_'): raise SystemExit(f'missing module {name}')
+        if name.startswith('mod_'): raise SystemExit(f'missing module {name} imported by {parent}')
         return
     path=by[name]
     if path in seen:return
     if path in active:raise SystemExit(f'cycle {path}')
     active.add(path)
-    for child in deps[path]:visit(child)
+    for child in deps[path]:visit(child,str(path))
     active.remove(path);seen.add(path);order.append(path.relative_to(root))
 visit('mod_fmr_crop_accepted_hydraulic_provenance')
 for p in order:print(p)
