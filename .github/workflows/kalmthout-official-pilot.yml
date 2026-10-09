@@ -1,0 +1,25 @@
+name: Kalmthout official SWAP5 pilot
+on:
+  push:
+    branches:
+      - work/kalmthout-pilot-official-20261009
+    paths:
+      - research/kalmthout_pilot/RUN_OFFICIAL
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run official Kalmthout pilot
+        run: chmod +x research/kalmthout_pilot/run_kalmthout_official.sh && research/kalmthout_pilot/run_kalmthout_official.sh "$RUNNER_TEMP/kalmthout-output"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kalmthout-official-swap5-pilot
+          path: ${{ runner.temp }}/kalmthout-output
