@@ -1,0 +1,16 @@
+name: SW431 crop accepted physical soil temperature
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_crop_accepted_soil_temperature.f90'
+      - 'tests/fmig431/run_crop_accepted_soil_temperature.sh'
+      - 'tests/fmig431/test_crop_accepted_soil_temperature.f90'
+      - '.github/workflows/swap431-crop-accepted-soil-temperature.yml'
+  workflow_dispatch:
+jobs:
+  fkt-thermal-source-o0-o2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_crop_accepted_soil_temperature.sh

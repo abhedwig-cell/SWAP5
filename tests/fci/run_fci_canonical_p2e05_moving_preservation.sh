@@ -284,6 +284,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
+  local crop_accepted_heat_changed=0
   local crop_head_depth_changed=0
   local crop_havg_changed=0
   local crop_hydraulic_provenance_changed=0
@@ -320,6 +321,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_previous_day_emergence_gate.f90 ) crop_lifecycle_changed=1 ;;
       src/crop/mod_crop_b111_pressure_head_average.f90 ) crop_havg_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90 ) crop_head_depth_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_soil_temperature.f90 ) crop_accepted_heat_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
@@ -328,6 +330,12 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_accepted_heat_changed )); then
+    bash tests/fmig431/run_crop_accepted_soil_temperature.sh || \
+      fail 'F-KT committed soil heat O0/O2 gate failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'F-KT crop heat B19/MICRO preservation failed'
+  fi
   if (( crop_head_depth_changed )); then
     bash tests/fmig431/run_crop_accepted_head_depth_binding.sh || \
       fail 'accepted F-KT pF depth binding O0/O2 failed'
