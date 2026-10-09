@@ -3070,6 +3070,18 @@ contains
       if(size(state%pressure_head)/=identity%active_nodes.or. &
            size(state%water_content)/=identity%active_nodes) return
       if(allocated(state%soil_temperature).neqv.identity%heat_enabled) return
+      if(.not.all(ieee_is_finite(state%pressure_head))) return
+      if(.not.all(ieee_is_finite(state%water_content))) return
+      if(identity%heat_enabled) then
+        block
+          type(soil_temperature_field_view_t) :: field
+          integer :: field_status
+          call build_soil_temperature_field_view(state%soil_temperature,field,field_status)
+          if(field_status/=SOIL_TEMP_OK) return
+          if(field%active_nodes/=identity%active_nodes) return
+          if(.not.all(ieee_is_finite(field%temperature_c))) return
+        end block
+      end if
       ok=.true.
     class default
       return
