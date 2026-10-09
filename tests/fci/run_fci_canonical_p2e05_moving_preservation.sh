@@ -331,6 +331,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_crop_accepted_soil_temperature.f90 ) crop_accepted_heat_changed=1 ;;
       src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90 ) crop_atomic_hydroheat_changed=1 ;;
       src/runtime/mod_fmr_crop_certified_sowing_source.f90 ) crop_certified_sow_changed=1 ;;
+      src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90 ) crop_certified_sow_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
@@ -344,6 +345,8 @@ check_b19_micro_root_recomposition() {
       fail 'F-KT B110 parameter identity O0/O2 failed'
     bash tests/fmig431/run_crop_certified_sowing_source.sh || \
       fail 'F-KT certified sowing source O0/O2 failed'
+    bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh || \
+      fail 'F-KT certified B1.11 hydrothermal forcing O0/O2 failed'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'F-KT certified sowing B19/MICRO preservation failed'
   fi
