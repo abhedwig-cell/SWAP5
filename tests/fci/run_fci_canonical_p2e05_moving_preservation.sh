@@ -285,6 +285,7 @@ check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
   local crop_hydraulic_provenance_changed=0
+  local crop_hydraulic_provenance_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -317,6 +318,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_previous_day_emergence_gate.f90 ) crop_lifecycle_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
@@ -352,6 +354,15 @@ check_b19_micro_root_recomposition() {
       fail 'crop physical/calendar restart pair qualification failed'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'crop physical restart B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_hydraulic_provenance_changed )); then
+    # A new read-only accepted F-KT hydraulic view is NOT unconditionally
+    # admitted. Require positive/negative O0/O2 real B110 owner binding and
+    # actual current-head B19/MICRO source/runtime cross-preservation.
+    bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \
+      fail 'crop accepted hydraulic F-KT provenance O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'crop accepted hydraulic B19/MICRO cross-preservation failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
