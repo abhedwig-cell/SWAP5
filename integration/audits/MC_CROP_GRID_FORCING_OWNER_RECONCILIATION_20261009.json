@@ -1,0 +1,105 @@
+{
+  "schema": "swap431.crop_grid_forcing_owner_reconciliation.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+  "status": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false
+  },
+  "already_admitted": [
+    {
+      "pr": 1146,
+      "scope": "B1.11 weighted pF h_average"
+    },
+    {
+      "pr": 1148,
+      "scope": "F-KT pressure head plus caller supplied dz bounded composition"
+    },
+    {
+      "pr": 1150,
+      "scope": "Accepted F-KT soil-temperature sample by caller supplied node"
+    }
+  ],
+  "owner_fact": "src/runtime/mod_fmr_serialized_reference_backend.f90 fmr_b110_physical_parameters_t holds z(:),dz(:),parameter_set_id,soil_temperature_active,soil_temperature parameter; fmr_b110_physical_state_t holds pressure_head(:),water_content(:),optional soil_temperature state, but not authenticated z/dz geometry or a parameter-set receipt.",
+  "unproven": "A caller can supply valid-shaped but wrong dz or nodsow; existing depth/sowing candidates cannot yet prove parameters originate from exact F-KT physical model. Presence of optional temperature alone does not prove source SWHEA option, and accepted daily tav provenance remains unverified.",
+  "constraint": "Do not assert accepted grid identity by comparing only active_nodes/shape, and do not assign parameter_set_id from caller without owner-backed verification.",
+  "next_implementation": "Find existing F-KT kernel model/parameter owner certificate coupling fmr_b110_physical_parameters_t parameter_set_id to committed snapshot lineage/time; if absent, agree a read-only owner-issued provenance contract before exposing zbotcp/nodsow and dz to lifecycle; cover mismatched geometry, time, parameter id, heat switch, and weather interval at O0/O2 with B19/MICRO preservation.",
+  "active_overlap": "PR #1141 paired physical/calendar restart remains draft; root and MICRO owner PRs remain active; do not edit those shared interfaces.",
+  "claim_ceiling": "Only gap reconciliation, no physical source forcing or crop transition admitted.",
+  "kernel_owner_verification": {
+    "exact_canonical": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "inspected": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
+      "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+    ],
+    "finding": "The kernel_committed_state_t public accessors and snapshot guard lineage, revision and committed time, but its read-only interface shown here does not expose a linked kernel_parameters_t identity or authenticated z/dz geometry. The existing hydraulic binding returns pressures and water contents and the heat sampler checks node number, not parameter geometry.",
+    "non_solution": "Do not infer certified grid identity from matching active_nodes, matching lengths, or a caller supplied parameter_set_id.",
+    "safety_decision": "No physical sowing, preparation or germination forcing may be committed via these view-only APIs until a parameter-owner certificate is bound to the identical committed physical state and validated for restart and retry.",
+    "next_gate": "Identify B110 model's actual parameter-owner binding and propose a read-only certificate with negative mismatched parameter_set_id, permuted equally sized dz, stale revision, foreign lineage, altered time, heat disabled and restart cases. Require O0/O2 and F-CI B19/MICRO gates before admission."
+  },
+  "parameter_owner_source_trace": {
+    "canonical": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "evidence": [
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "detail": "kernel_committed_state_t owns physical_state, lineage_id, revision, committed_time_value but no parameter ID or geometry/parameter certificate in the inspected public committed API"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "287-293",
+        "detail": "fmr_b110_physical_parameters_t carries parameter_set_id, active_nodes, z, dz and node_distance"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "646-655,2990-3020",
+        "detail": "worker-local fmr_serialized_reference_model_t stores soil_parameters and config copies parameter_set_id/z/dz/node_distance into model's soil_parameters"
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
+        "detail": "committed hydraulic read returns pressure, water, lineage, revision and time but not B110 parameter identity"
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90",
+        "detail": "committed heat read validates node against physical active_nodes but not ztempsow or soil_parameter_set"
+      }
+    ],
+    "verified_architectural_gap": "The worker-local configured parameter copy is not an authenticated committed-state provenance certificate. Runtime passing the same object alongside a matching shape is insufficient without owner-issued binding and lifecycle guards.",
+    "required_acceptance_contract": [
+      "Read-only certificate minted by owner that has validated model parameter configuration against the committed column identity; certificate must include parameter_set_id and exact ordered grid geometry identity, active_nodes and lineage, revision, accepted_time.",
+      "Demonstrate certificate remains valid through accepted steps or define revocation, with explicit guard against reuse following parameter reconfiguration, column replacement, retry, or restored checkpoint.",
+      "Bind heat option and node mapping from ztempsow under same parameter identity before consuming temperature; reject missing or disabled heat and unsupported atmospheric forcing.",
+      "Document whether model parameters are immutable per column and how they are reconstructed across restart; fail closed without this evidence.",
+      "Exercise changed-but-equal-length dz, permuted layers, mismatched parameter_set_id, invalid time, stale revision, foreign lineage, heat disabled, missing tav, and restart with genuine owner fixture at O0 and O2; preserve B19/MICRO and root uptake."
+    ],
+    "admission": "BLOCKED_PENDING_OWNER_CERTIFICATE; do not promote this documentation-only PR to forcing admission"
+  },
+  "transactional_counterexample": {
+    "source_commit": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "evidence": [
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "lines": "560-624",
+        "finding": "kernel_advance_interval accepts parameters and committed_state as independent inputs; admission checks readiness/time/checkpoint and calls execution_admitted(parameters), then configure_parameters(parameters), but no parameter identity check against committed physical state"
+      },
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "lines": "853-907",
+        "finding": "commit validates candidate lineage, revision, and origin time, then replaces physical_state and increments revision; parameter_set_id and ordered grid are not part of commit guard"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "2150-2164,2990-3020",
+        "finding": "runtime passes B110 parameters beside committed and copies parameter identity and geometry into worker-local model on configure"
+      }
+    ],
+    "counterexample": "Two parameter sets with same active_nodes but differing dz may pass the exposed kernel lineage/revision/time structural checks against the same committed state. These facts alone do not prove that full numerical admission would accept either; they do prove the missing generic identity guard.",
+    "design_boundary": "A read-only certificate minted solely from a new caller-supplied parameter argument alongside committed_state would reproduce this trust gap. Safe options require parameter lineage bound when the owner initializes/reconstructs physical state or an owner-managed immutable parameter registry consulted by the F-KT commit path.",
+    "minimal_next_action": "Reconcile how F-MR creates initial committed physical state and restart and which owner can persist or register immutable B110 parameter identity; draft a backwards-compatible certificate interface with negative tests before changing F-KT or runtime.",
+    "implementation_decision": "Do not retrofit a fake authenticated depth sampler into #1152. Keep this branch documentation-only until the source owner contract and restart preservation can be qualified."
+  }
+}
