@@ -20,6 +20,8 @@ for path in \
 done
 echo 'SW431_CROP_B19_MICRO_SHARED_PRODUCTION_BLOBS=PASS'
 
+# B1.11 previous-accepted-day emergence guard; no physical owner publication.
+bash tests/fmig431/run_crop_previous_day_emergence_gate.sh
 bash tests/fmig431/run_crop_lifecycle_continuation.sh
 bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
 
