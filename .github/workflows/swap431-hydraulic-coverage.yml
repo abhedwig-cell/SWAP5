@@ -1,0 +1,30 @@
+name: SWAP431 HYD/HYST hydraulic coverage
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpm/test_swap431_hyd_analytical.f90'
+      - 'tests/fpm/run_swap431_hyd_analytical.sh'
+      - 'tests/fpm/test_swap431_hyd_power.f90'
+      - 'tests/fpm/run_swap431_hyd_power.sh'
+      - 'tests/fpm/test_swap431_hyd_serialized_runtime.f90'
+      - 'tests/fpm/run_ppa_wu05a8_real_richards.sh'
+      - 'integration/audits/SWAP431_HYD_HYST_STATUS.json'
+      - '.github/workflows/swap431-hydraulic-coverage.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Focused analytical constitutive oracle
+        run: bash tests/fpm/run_swap431_hyd_analytical.sh
+      - name: Focused MvG power-tail oracle
+        run: bash tests/fpm/run_swap431_hyd_power.sh
+      - name: Serialized Reference Richards production qualification
+        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh

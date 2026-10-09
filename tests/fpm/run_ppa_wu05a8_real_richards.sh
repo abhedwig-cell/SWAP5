@@ -136,7 +136,20 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr_macro.o" -o "$OUT/test_fmr_macro"
   "$OUT/test_fmr_macro" | tee "$OUT/fmr_macro.txt"
   grep -Fq 'PPA_WU05A8_FMR_MACRO_TRIAL=PASS' "$OUT/fmr_macro.txt"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fpm/test_swap431_hyd_serialized_runtime.f90 -o "$OUT/test_swap431_hyd_runtime.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_swap431_hyd_runtime.o" -o "$OUT/test_swap431_hyd_runtime"
+  "$OUT/test_swap431_hyd_runtime" | tee "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_RUNTIME_MODEL2=PASS' "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_RUNTIME_MODEL3=PASS' "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_RUNTIME_MODEL6=PASS' "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_RUNTIME_POWER=PASS' "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_UNQUALIFIED_COMPOSITION=FAIL_CLOSED' "$OUT/swap431_hyd_runtime.txt"
+  grep -Fq 'SWAP431_HYD_SERIALIZED_RUNTIME=PASS' "$OUT/swap431_hyd_runtime.txt"
 done
 cmp "$BUILD/o0/out.txt" "$BUILD/o2/out.txt"
 cmp "$BUILD/o0/fmr_macro.txt" "$BUILD/o2/fmr_macro.txt"
+cmp "$BUILD/o0/swap431_hyd_runtime.txt" "$BUILD/o2/swap431_hyd_runtime.txt"
 echo "PPA_WU05A8_REAL_RICHARDS_GATE=PASS"
+echo "SWAP431_HYD_RUNTIME_O0_O2_IDENTITY=PASS"
