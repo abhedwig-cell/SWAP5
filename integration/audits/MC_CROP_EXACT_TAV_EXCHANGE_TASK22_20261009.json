@@ -1,0 +1,38 @@
+{
+  "schema": "swap431.crop_exact_tav_exchange_source_proof.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "dc5d4e9ac1ff332e0459c10ca4f6527dc4b0d7ef",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "locally_tested": true,
+    "qualified": false,
+    "admitted": false
+  },
+  "historical_source": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90",
+    "subroutine": "handle_exchange",
+    "task": 22,
+    "lines": {
+      "weather": "683-692",
+      "tav": "694-696"
+    },
+    "assignment": "tav  = (tmx+tmn)*0.5d0",
+    "inputs": "tmn=toswap%tmin; tmx=toswap%tmax",
+    "source_option": "handle_exchange task 11 requires SWMETDETAIL=0 and additional exchange constraints; task 22 is not evidence for arbitrary input routes."
+  },
+  "crop_consumer": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "line": 651,
+    "import": "use atmosphere_interface,only: tav",
+    "temperature_sum_lines": "755-766"
+  },
+  "code_change": "src/crop/mod_crop_tav_meteorological_candidate.f90 matches order (tmax+tmin)*0.5_real64",
+  "local_test": "gfortran O0/O2 PASS using actual source and existing tests; no Actions run requested",
+  "limitations": [
+    "No owner-issued acceptance or link between toswap daily meteo record and physical F-KT accepted interval.",
+    "No proof of other 4.3.1 meteo readers or equal-subdaily route.",
+    "No harvest/sow event publication, restart or WOFOST equivalence."
+  ],
+  "next_action": "Authenticate SWAP exchange task22 weather record identity from coupled caller and transaction on commit, with anti-replay and restart; avoid treating unbound mean as accepted forcing."
+}
