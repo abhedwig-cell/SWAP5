@@ -28,7 +28,17 @@
     "confirmed_missing_production_entries": 113,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 117
+    "total_unresolved_capabilities": 117,
+    "active_gap_type_breakdown": {
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 63,
+      "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+      "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+    },
+    "qualified_process_missing_runtime_binding": 2,
+    "missing_production_binding_or_implementation_entries": 113,
+    "missing_standalone_process_implementations_not_established": 113
   },
   "capabilities": [
     {
@@ -14635,5 +14645,22 @@
     ],
     "open_queue_size": 113,
     "disposition_changes": 0
+  },
+  "latest_semantic_denominator_review": {
+    "date": "2026-10-09",
+    "canonical_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+    "classification_counts": {
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 63,
+      "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+      "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+    },
+    "qualified_but_unbound_ids": [
+      "SW431-IRR-TCS7",
+      "SW431-IRR-SSDI"
+    ],
+    "classification_rule": "ACTIVE_MIGRATION means a complete required production route is not yet admitted, not that an entirely new physical algorithm must be implemented. Standalone physics denominator requires per-selector assessment.",
+    "status": "SOURCE_LEDGER_CLASSIFICATION_VERIFIED_NOT_FULL_CANONICAL_FUNCTIONAL_REACHABILITY"
   }
 }
