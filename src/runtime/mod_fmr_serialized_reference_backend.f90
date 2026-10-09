@@ -810,6 +810,7 @@ module mod_fmr_serialized_reference_backend
     logical :: accepted_water_flux_trace_failed = .false.
     type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
   contains
+    procedure :: matches_committed_parameter_identity => fmr_serialized_matches_committed_identity
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
     procedure :: prepare_interval => fmr_serialized_prepare_interval
@@ -3046,6 +3047,25 @@ contains
     end select
     fmr_serialized_execution_admitted = ok
   end function fmr_serialized_execution_admitted
+
+  logical function fmr_serialized_matches_committed_identity(self,identity,state) result(ok)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    if(.not.identity%valid.or.identity%active_nodes<=0.or.identity%parameter_set_id<=0_int64) return
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=identity%active_nodes) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=identity%active_nodes.or. &
+           size(state%water_content)/=identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.identity%heat_enabled) return
+      ok=.true.
+    class default
+      return
+    end select
+  end function
 
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
