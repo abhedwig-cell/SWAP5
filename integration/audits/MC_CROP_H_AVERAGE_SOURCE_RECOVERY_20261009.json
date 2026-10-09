@@ -28,7 +28,7 @@
   ],
   "constraint": "Do not invent averaging formula, node weighting or soil-grid semantics before byte-verified original h_average and dependencies recovered.",
   "overlap": "PR #1141 owns paired crop-calendar physical restart; do not edit these interfaces.",
-  "next_action": "Run exact-Git-postimage qualification O0/O2 and B19/MICRO/F-CI gates without allowlist weakening; verify source small tolerance and accepted grid metadata before binding.",
+  "next_action": "Follow auto-triggered exact-head owner O0/O2 and F-CI; fix exact failures; keep full crop forcing out of claim.",
   "status": "SOURCE_RECOVERED_BOUNDED_PROTOTYPE_NOT_QUALIFIED",
   "source_verified": {
     "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
@@ -42,13 +42,20 @@
     "source": "src/crop/mod_crop_b111_pressure_head_average.f90",
     "test": "tests/fmig431/test_crop_b111_pressure_head_average.f90",
     "runner": "tests/fmig431/run_crop_b111_pressure_head_average.sh",
-    "local_O0": "PASS",
-    "local_O2": "PASS",
+    "local_O0": "Historical source verified; exact-head CI qualification pending",
+    "local_O2": "Historical source verified; exact-head CI qualification pending",
     "qualification": "PENDING",
     "limits": [
-      "Explicit exact-zero handling only, not source small tolerance",
-      "Requires authenticated accepted hydraulic snapshot and validated grid dz",
-      "No physically coupled crop forcing or F-CI preservation"
+      "Historical MOD_params small = 1.0d-6 now honored in code",
+      "Requires validated depth grid and accepted F-KT hydraulic provenance",
+      "Sampler does not yet publish lifecycle or crop state"
+    ],
+    "test_matrix": [
+      "partially intersected second compartment",
+      "zero and near-zero monitor depth",
+      "exact small boundary",
+      "exact compartment boundary",
+      "requested depth outside grid"
     ]
   }
 }
