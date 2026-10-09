@@ -27,7 +27,9 @@ def visit(name,parent='target'):
     if path in seen:return
     if path in active:raise SystemExit(f'cycle {path}')
     active.add(path)
-    for child in deps[path]:visit(child,str(path))
+    for child in deps[path]:
+        if child in by and by[child]==path:continue
+        visit(child,str(path))
     active.remove(path);seen.add(path);order.append(path.relative_to(root))
 visit('mod_fmr_crop_accepted_hydraulic_provenance')
 for p in order:print(p)
