@@ -1,0 +1,163 @@
+{
+  "schema": "swap431.crop_root.ownership_reconciliation.v1",
+  "date": "2026-10-08",
+  "work_unit": "MC-CROP01/MC-ROOT01 cross-owner reconciliation",
+  "baseline": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+  "canonical_branch": "integration/f-ci-canonical",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "scope": "No production change or new physics; exact-head routing, duplicate prevention and recoverable dependency decision. Does not overwrite the master coverage denominator.",
+  "authorities": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "reference/swap-4.3.1/README.md",
+    "integration/audits/MC_CROP01_ROOTGROW_DVS_STATUS.json",
+    "work/swap431-master-coverage-20261006@6640e7c8fc2285aee029e6be20aa49981cef8122:integration/audits/MC_CROP_ROOT_RECONCILIATION_20261007.json"
+  ],
+  "admitted": [
+    {
+      "capability": "SW431-CROP-ROOTGROW-DVS",
+      "note": "Canonical audit records admitted SWRD1; verify new delta and exact admission lineage before changing this status."
+    }
+  ],
+  "reserved": [
+    {
+      "capabilities": [
+        "SW431-ROOT-OXYGEN-EMP"
+      ],
+      "pr": 1110
+    },
+    {
+      "capabilities": [
+        "SW431-ROOT-LRV-CONSTANT"
+      ],
+      "pr": 1108
+    },
+    {
+      "capabilities": [
+        "SW431-CROP-ROOTGROW-BIOMASS"
+      ],
+      "prs": [
+        1111,
+        1113
+      ],
+      "collision": "Two drafts target SWRD3 actual biomass geometry; reconcile potential-biomass owner before selecting a successor."
+    },
+    {
+      "capabilities": [
+        "SW431-CROP-ROOTGROW",
+        "SW431-CROP-ROOTGROW-WATER"
+      ],
+      "pr": 1114
+    },
+    {
+      "capabilities": [
+        "SW431-ROOT-DENSITY"
+      ],
+      "pr": 1115
+    },
+    {
+      "capabilities": [
+        "SW431-CROP-CO2"
+      ],
+      "branch": "work/swap431-crop-co2-20261007"
+    },
+    {
+      "capabilities": [
+        "SW431-CROP-ROTATION",
+        "SW431-CROP-SOW",
+        "SW431-CROP-FIXED",
+        "SW431-CROP-FIXED-THERMAL",
+        "SW431-CROP-SOY",
+        "SW431-CROP-GRASS",
+        "SW431-CROP-VERNAL",
+        "SW431-CROP-ANNUAL",
+        "SW431-CROP-WOF-OTHER"
+      ],
+      "authority": "MC_CROP_ROOT_RECONCILIATION_20261007.json: distinct active branches"
+    },
+    {
+      "capabilities": [
+        "SW431-ROOT-OXYGEN-REPRO",
+        "SW431-ROOT-ANAE-GROW",
+        "SW431-CROP-ROOTGROW-SUPPLY",
+        "SW431-CROP-ATTAINABLE"
+      ],
+      "authority": "MC_CROP_ROOT_RECONCILIATION_20261007.json: distinct active branches"
+    }
+  ],
+  "recommended_closure_order": [
+    "Retain SWRD1 admission; avoid PR #1104 duplicate merge.",
+    "Resolve SWRD3 draft #1111/#1113 overlap and potential WRTPOT ownership against live unified root-growth composition.",
+    "Qualify shared SWRD2 accepted-state carrier and adaptive root-density consumer on exact committed postimages with O0/O2, restart, rollback and preservation.",
+    "Bind oxygen/water/supply gating into the single root sink and accepted daily root growth; qualify whole cluster.",
+    "Separately qualify MICRO absolute LRV with the existing MICRO sink owner.",
+    "Complete seasonal crop lifecycle owner composition and source-specific annual/soy/grass/fixed, preemergence and vernalization gates."
+  ],
+  "next_action": "Construct one exact postimage rooted on current canonical that includes the unified root growth composition, verifying tree/commit lineage. Then run declared O0/O2 qualification and CO2 preservation before proposing admission. No physics replacement of #1113 is needed.",
+  "recovery_point": {
+    "branch": "work/swap431-crop-root-ownership-reconcile-20261008",
+    "base": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "artifact": "integration/audits/MC_CROP_ROOT_OWNERSHIP_RECONCILIATION_20261008.json"
+  },
+  "blockers": [
+    "No independently free large crop/root implementation slice established from current authority; overlapping active branches must be resolved before source modification.",
+    "No O0/O2 or integrated preservation executed in this documentation-only work unit."
+  ],
+  "actions_dispatched": 0,
+  "swrd3_semantic_adjudication": {
+    "checked_heads": {
+      "1111": "ecb663f8d14995bc69baafbd98f0ee9048d82fb8",
+      "1113": "4925f7aeea656f9216eab235d5a47027a22e940b"
+    },
+    "same_path": "src/crop/mod_crop_root_depth_biomass.f90",
+    "different_api": true,
+    "source_resolution": "Prefer the PR #1113 semantic model as integration basis, subject to source-verified WRTMAX and potential WRTPOT owner: it independently derives maximum RDM from RLWTB(WRTMAX), and actual and potential root depth from WRT and WRTpot. PR #1111 exposes only a single biomass/depth evaluator and does not itself establish potential depth or biomass-limited crop maximum RDM.",
+    "integration_rule": "Do not merge #1111 and #1113 independently. Cross-check the full implementation and callers of #1113 with the newer unified root-growth composition and potential-shadow branches before choosing final interface; preserve single primary biomass owner and static root-profile materialization.",
+    "outstanding": "No byte-exact reference or O0/O2 test of the composed postimage performed here; this is source-comment/code semantics adjudication, not admission."
+  },
+  "unified_integration_reconciliation": {
+    "unified_head": "3e9e72ff8c8a0d4a58e83a56e4f29b1e421fb138",
+    "potential_shadow_head": "852ca3dd132df9627221683bd685f7ea211b97da",
+    "swrd3_head": "4925f7aeea656f9216eab235d5a47027a22e940b",
+    "verified_same_blob": {
+      "file": "src/crop/mod_crop_root_depth_biomass.f90",
+      "sha": "4d9f4ffed0d56b1d8f0615e9e66354b5eb617c65"
+    },
+    "finding": "SWRD3 #1113 exact resolver blob is already in the unified root-growth/oxygen composition branch. Reimplementing or cherry-picking it would be redundant. Unified branch also carries potential-shadow state/daily logic, SWRD2 rate owner, adaptive-density owner, source oxygen gate, accepted water/oxygen lineage and binding composition.",
+    "qualification": "Not tested: local git cannot resolve github.com DNS, and connector-readable source alone is not byte-verified runnable checkout. No qualification claims.",
+    "local_failure": "git ls-remote https://github.com/abhedwig-cell/SWAP5.git: Could not resolve host: github.com",
+    "next_gate": "Use unified branch as single integration candidate, reconcile its 17-behind canonical delta before testing; run existing tests/fmig431 and F-WOF O0/O2 then atomic restart/rollback and preservation. Do not independently merge #1111, #1113, #1114, #1115."
+  },
+  "canonical_delta_20261008": {
+    "canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "unified_head": "3e9e72ff8c8a0d4a58e83a56e4f29b1e421fb138",
+    "canonical_ahead_commits": 17,
+    "unified_ahead_commits": 53,
+    "canonical_changed_paths": [
+      ".github/workflows/ppa-wu05a26-live-trial-preparer.yml",
+      ".github/workflows/swap431-crop-co2.yml",
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md",
+      "integration/audits/MC_CROP01_CO2_STATUS.json",
+      "reference/swap-4.3.1/README.md",
+      "src/crop/mod_crop_co2_response_resolver.f90",
+      "src/crop/mod_crop_et_canopy_view_provider.f90",
+      "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+      "tests/fmig431/run_swap431_crop_co2_response.py",
+      "tests/fmig431/test_swap431_crop_co2_response.f90"
+    ],
+    "finding": "No file-path overlap between the 11 canonical delta paths and 33 unified worktree delta paths. This permits conflict-minimal recomposition but not automatic scientific evidence carry-forward. Crop CO2 shared runtime behavior is a preservation dependency even without a direct file conflict.",
+    "local_execution": {
+      "gfortran_available": true,
+      "git_remote_dns": "fatal: unable to access 'https://github.com/abhedwig-cell/SWAP5.git/': Could not resolve host: github.com",
+      "tests_run": false
+    },
+    "next_action": "Construct one exact postimage rooted on current canonical that includes the unified root growth composition, verifying tree/commit lineage. Then run declared O0/O2 qualification and CO2 preservation before proposing admission. No physics replacement of #1113 is needed."
+  }
+}
