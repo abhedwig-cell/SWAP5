@@ -1,0 +1,33 @@
+{
+  "schema": "swap431.crop_h_average_source_recovery.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "c0c00fbfda2c6b3ff08993a0d38f767c0cf2e42e",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false
+  },
+  "missing_authority": "SWAP/functions.f90 in original 63-file B0/B1.11 source; absent from partial b1_11_frost_source mirror",
+  "expected_member_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+  "expected_member_size": 10557,
+  "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "evidence": [
+    "reference/swap-4.3.1/b0/file-manifest.sha256",
+    "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "reference/swap-4.3.1/README.md"
+  ],
+  "attempts": [
+    "Read all 18 Fortran members of partial B1.11 mirror: h_average calls exist, definition absent",
+    "Checked B0, B1.10 and B1.11 file paths in canonical: functions.f90 absent",
+    "Located project/library SWAP.ZIP and SWAP_4.3.1.zip; both raw materialization attempts reported no authorized raw-byte path",
+    "Official SWAP 4.3.1 distribution accessible only through registration/license form, not a verified replacement for project B0 bytes"
+  ],
+  "constraint": "Do not invent averaging formula, node weighting or soil-grid semantics before byte-verified original h_average and dependencies recovered.",
+  "overlap": "PR #1141 owns paired crop-calendar physical restart; do not edit these interfaces.",
+  "next_action": "Obtain authorized original archive bytes, SHA-256 verify source and member, reconstruct exact B1.11 h_average source, implement depth-pressure-head sampler and O0/O2 tests plus required B19/MICRO/F-CI preservation.",
+  "status": "SOURCE_DEPENDENCY_BLOCKED_NO_PHYSICS_ADMISSION"
+}
