@@ -23,7 +23,9 @@
     "seepage_runtime": "6/6 O0/O2 PASS in closed-bottom partial-top-cell fixture; O0/O2 stdout identical; initial free-drainage activity failures retained and attributed",
     "groundwater_projection": "Six unchanged CALCGWL/current-service profiles per O0/O2; identical output; no runtime admission",
     "coverage_structural_recount": "PASS: 243 unique IDs, 113 open migration entries, four qualification-only; no dangling dependencies or stale active owners",
-    "semantic_gap_type_recount": "PASS structural classifier on 113 ACTIVE_MIGRATION entries; not an independent source-to-runtime semantic qualification"
+    "semantic_gap_type_recount": "PASS structural classifier on 113 ACTIVE_MIGRATION entries; not an independent source-to-runtime semantic qualification",
+    "workunit_sequence_dependency_audit": "PASS: removed closed SW431-ROOT-DENSITY and SW431-GW-PROJECTION from internal sequence blockers; retained as closed authorities",
+    "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -52,7 +54,7 @@
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     }
   },
-  "next_action": "Current-head reconciliation of qualified irrigation shared owner and full source/production binding; retain dispositions pending canonical admission evidence.",
+  "next_action": "Reconcile incoming canonical admissions; recover full checker dependencies through supported source route, and verify 113 active entries semantically by workunit.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -107,7 +109,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "dec105fda45e28b14c8cc26fddd91bceb835e0e2",
+  "last_reconciled_head": "3f245d1509723e13d86750d7de4cd5ee17c01d83",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
