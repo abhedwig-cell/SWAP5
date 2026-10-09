@@ -41,5 +41,41 @@
     "non_solution": "Do not infer certified grid identity from matching active_nodes, matching lengths, or a caller supplied parameter_set_id.",
     "safety_decision": "No physical sowing, preparation or germination forcing may be committed via these view-only APIs until a parameter-owner certificate is bound to the identical committed physical state and validated for restart and retry.",
     "next_gate": "Identify B110 model's actual parameter-owner binding and propose a read-only certificate with negative mismatched parameter_set_id, permuted equally sized dz, stale revision, foreign lineage, altered time, heat disabled and restart cases. Require O0/O2 and F-CI B19/MICRO gates before admission."
+  },
+  "parameter_owner_source_trace": {
+    "canonical": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "evidence": [
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "detail": "kernel_committed_state_t owns physical_state, lineage_id, revision, committed_time_value but no parameter ID or geometry/parameter certificate in the inspected public committed API"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "287-293",
+        "detail": "fmr_b110_physical_parameters_t carries parameter_set_id, active_nodes, z, dz and node_distance"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "646-655,2990-3020",
+        "detail": "worker-local fmr_serialized_reference_model_t stores soil_parameters and config copies parameter_set_id/z/dz/node_distance into model's soil_parameters"
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
+        "detail": "committed hydraulic read returns pressure, water, lineage, revision and time but not B110 parameter identity"
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90",
+        "detail": "committed heat read validates node against physical active_nodes but not ztempsow or soil_parameter_set"
+      }
+    ],
+    "verified_architectural_gap": "The worker-local configured parameter copy is not an authenticated committed-state provenance certificate. Runtime passing the same object alongside a matching shape is insufficient without owner-issued binding and lifecycle guards.",
+    "required_acceptance_contract": [
+      "Read-only certificate minted by owner that has validated model parameter configuration against the committed column identity; certificate must include parameter_set_id and exact ordered grid geometry identity, active_nodes and lineage, revision, accepted_time.",
+      "Demonstrate certificate remains valid through accepted steps or define revocation, with explicit guard against reuse following parameter reconfiguration, column replacement, retry, or restored checkpoint.",
+      "Bind heat option and node mapping from ztempsow under same parameter identity before consuming temperature; reject missing or disabled heat and unsupported atmospheric forcing.",
+      "Document whether model parameters are immutable per column and how they are reconstructed across restart; fail closed without this evidence.",
+      "Exercise changed-but-equal-length dz, permuted layers, mismatched parameter_set_id, invalid time, stale revision, foreign lineage, heat disabled, missing tav, and restart with genuine owner fixture at O0 and O2; preserve B19/MICRO and root uptake."
+    ],
+    "admission": "BLOCKED_PENDING_OWNER_CERTIFICATE; do not promote this documentation-only PR to forcing admission"
   }
 }
