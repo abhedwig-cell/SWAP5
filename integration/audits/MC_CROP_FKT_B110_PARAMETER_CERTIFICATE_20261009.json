@@ -6,13 +6,13 @@
   "status": {
     "implemented": true,
     "persisted": true,
-    "tested": "intermediate F-KT exact-head owner O0/O2 success on be1f1b7 and 2769bc1; final exact-head pending",
+    "tested": "earlier exact owner O0/O2 heads passed; current exact head queued",
     "qualified": false,
     "preserved": false,
     "canonically_admitted": false
   },
   "current_work_branch": "work/swap431-crop-fkt-parameter-certificate-20261009",
-  "checkpoint_commit": "abc961577bdf5333bfdf0fe78ed041c36eb9e146",
+  "checkpoint_commit": "f89467aa9954a1c92c676121f51a930cb8bd1988",
   "relevant_paths": [
     "src/kernel/mod_kernel_transactions.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -46,5 +46,25 @@
     "Trusted reconstruction requires separately persisted original identity; no byte-oriented codec is provided.",
     "Do not admit while frozen kernel/backend F-CI postimage checks are not superseded by accepted complete preservation."
   ],
-  "next_action": "Follow latest exact-head owner and F-CI jobs to terminal; fix failures, independently gate shared F-KT/backend preservation rather than weakening existing frozen checks. Then if qualified admit narrow certificate/forcing and record canonical merge."
+  "next_action": "Follow latest exact-head owner and F-CI jobs to terminal; fix failures, independently gate shared F-KT/backend preservation rather than weakening existing frozen checks. Then if qualified admit narrow certificate/forcing and record canonical merge.",
+  "current_exact_head_runs": [
+    {
+      "name": "B110 owner O0/O2",
+      "id": 37927098031,
+      "status": "queued",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37927098031"
+    },
+    {
+      "name": "F-CI canonical",
+      "id": 37927099009,
+      "status": "queued",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37927099009"
+    }
+  ],
+  "admission_blocker_details": {
+    "fci_kernel": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh checks src/kernel/mod_kernel_transactions.f90 SHA against dependency_authority under F_ROM1A successor; PR changes that file, so current invariant rejects it until new qualified successor admission authority.",
+    "fci_backend": "Same moving preservation script restricts src/runtime/mod_fmr_serialized_reference_backend.f90 to dependency_authority exact blob for B19/MICRO. tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh independently checks backend byte identity to 6cef5580, so existing cross-preservation cannot itself qualify a changed backend.",
+    "requirement": "Preserve legacy blob checks as historical authority. Add separately qualified scientific/transactional same-head backend+kernel successor tests and explicit accepted new preservation gate; no relaxed hash or wildcard successor.",
+    "next_action": "First obtain exact-head owner outcome; inspect any compile failure and fix. Then run genuine B110/FKT reject-retry mass and MICRO/B19 production regressions on changed backend before proposing a documented successor to frozen F-CI controls."
+  }
 }
