@@ -10,9 +10,9 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
-  "admitted": false,
+  "qualified": true,
+  "preserved": true,
+  "admitted": true,
   "scope": "Read-only fail-closed check that a postevent active-crop derived calendar checkpoint and persisted F-WOF38 physical crop event receipt agree with exact time on a committed F-KT state.",
   "guards": [
     "reject unready kernel, missing receipt/lifecycle or invalid persistence",
@@ -39,5 +39,13 @@
     "result": "SUCCESS",
     "description": "post-event pair positive, stale time and inactive/fallow source-calendar negative, real F-WOF38 O0/O2 fixture"
   },
-  "next_action": "Qualify exact persisted head with guarded F-CI B19/MICRO cross-preservation; if successful admit bounded receipt/calendar active-day validator, then begin physical forcing plus previous-day emergence/root and harvest successor."
+  "next_action": "Physical daily forcing provenance, previous-day emergence, root state initialization, harvest and fallow remain separate. Do not reopen admitted pair gate without relevant dependency change.",
+  "admission": {
+    "pr": 1139,
+    "merge_commit": "959a45b9f25d9260809fb4a10c8bd365623a3a7a",
+    "qualified_head": "daa927de1ef95c9da4b994fc343ff65f75eb1ba5",
+    "o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773798",
+    "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37886773618",
+    "scope": "Read-only postevent active-crop physical event/derived calendar restart coherence only"
+  }
 }
