@@ -1,0 +1,61 @@
+{
+  "schema": "swap431.crop_accepted_forcing_provenance_recovery.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "CROP-FORCING-OWNER01",
+  "baseline": "5537124ddcec35bb7d9155a94bca7a4ee69efd71",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "admitted": "PR #1140 read-only previous-day emergence helper, qualified head bded3d216da9c3dd80e9b70028d458d552fb789a, owner 37891074870 F-CI 37891075109, merge 3740dc77dd38d112b18054af896c0ee90a2c6eb9",
+  "current_overlap": {
+    "pr1141": "Active separate paired physical/calendar restart bundle; does not claim forcing provenance. Do not modify src/crop/mod_crop_rotation_transition.f90 or src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 while it is active.",
+    "root_prs": [
+      "1111",
+      "1113",
+      "1122"
+    ],
+    "micro_prs": [
+      "1129",
+      "1073",
+      "1074",
+      "1075",
+      "1076"
+    ],
+    "frost": "1119"
+  },
+  "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "source_contract": {
+    "preparation": "h_average(z_prep) compared to h_prep, existing accepted delay counts; source task2 initialization distinct from task3 update",
+    "sowing": "swsow=1 requires SWHEA=1; h_average(z_sow); nodsow from z_tempsow and zbotcp, tsoil(nodsow); delay inherits preparation",
+    "germination": "swgerm=1/2 uses accepted daily tav; mode2 additionally h_average(zgerm), dry/wet pressure-head thresholds; accepted daily temperature sum only",
+    "emergence": "previous-day flags branch differs from immediate initialization branch at rotation start"
+  },
+  "observed_current": "src/crop/mod_crop_preparation_sowing_preflight.f90 and mod_crop_germination_preflight.f90 calculate pure daily proposals from caller-supplied scalars. Those input values are not authenticated as sampling accepted F-KT hydraulic and thermal owners, so neither a successful proposal nor PR #1140 eligibility proves physical emergence.",
+  "implementation_guard": "No mutable state owner or arbitrary sampled values may masquerade as physical committed forcing. First identify accepted hydraulic grid and pressure-head snapshot, soil-temperature owner and SWHEA applicability, atmospheric tav daily source, exact crop receipt and F-KT revision/time; then create read-only typed adapter with strict lineage and O0/O2 tests.",
+  "acceptance_matrix": [
+    "reject mismatched physical time",
+    "reject stale revision/foreign lineage",
+    "reject missing/nonfinite pressure head samples",
+    "reject SWHEA disabled for simulated sowing",
+    "reject missing soil temperature at derived nodsow",
+    "reject wrong air-temperature interval",
+    "ensure rejected/retried trial does not increment germination sum",
+    "exact-head O0/O2 owner and B19/MICRO preservation",
+    "exact-head F-CI final success"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/crop/mod_crop_preparation_sowing_preflight.f90",
+    "src/crop/mod_crop_germination_preflight.f90",
+    "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
+    "hydraulic grid and soil heat-owner modules"
+  ],
+  "next_action": "Locate exact accepted water/temperature snapshot APIs and same-event provenance at canonical head; implement read-only sampling/binding only once source ownership is proven; do not duplicate PR #1141 or assume caller scalars trustworthy.",
+  "status_note": "Recovery/owner-reconciliation only, no physics code or test/qualification claims."
+}
