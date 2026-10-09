@@ -77,5 +77,29 @@
       "Exercise changed-but-equal-length dz, permuted layers, mismatched parameter_set_id, invalid time, stale revision, foreign lineage, heat disabled, missing tav, and restart with genuine owner fixture at O0 and O2; preserve B19/MICRO and root uptake."
     ],
     "admission": "BLOCKED_PENDING_OWNER_CERTIFICATE; do not promote this documentation-only PR to forcing admission"
+  },
+  "transactional_counterexample": {
+    "source_commit": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "evidence": [
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "lines": "560-624",
+        "finding": "kernel_advance_interval accepts parameters and committed_state as independent inputs; admission checks readiness/time/checkpoint and calls execution_admitted(parameters), then configure_parameters(parameters), but no parameter identity check against committed physical state"
+      },
+      {
+        "path": "src/kernel/mod_kernel_transactions.f90",
+        "lines": "853-907",
+        "finding": "commit validates candidate lineage, revision, and origin time, then replaces physical_state and increments revision; parameter_set_id and ordered grid are not part of commit guard"
+      },
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "lines": "2150-2164,2990-3020",
+        "finding": "runtime passes B110 parameters beside committed and copies parameter identity and geometry into worker-local model on configure"
+      }
+    ],
+    "counterexample": "Two parameter sets with same active_nodes but differing dz may pass the exposed kernel lineage/revision/time structural checks against the same committed state. These facts alone do not prove that full numerical admission would accept either; they do prove the missing generic identity guard.",
+    "design_boundary": "A read-only certificate minted solely from a new caller-supplied parameter argument alongside committed_state would reproduce this trust gap. Safe options require parameter lineage bound when the owner initializes/reconstructs physical state or an owner-managed immutable parameter registry consulted by the F-KT commit path.",
+    "minimal_next_action": "Reconcile how F-MR creates initial committed physical state and restart and which owner can persist or register immutable B110 parameter identity; draft a backwards-compatible certificate interface with negative tests before changing F-KT or runtime.",
+    "implementation_decision": "Do not retrofit a fake authenticated depth sampler into #1152. Keep this branch documentation-only until the source owner contract and restart preservation can be qualified."
   }
 }
