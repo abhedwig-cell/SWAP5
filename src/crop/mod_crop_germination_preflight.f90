@@ -56,7 +56,7 @@ contains
     increment=0.0_real64
     if(air_temperature>base_temperature) then
       increment=max(0.0_real64,min(air_temperature,max_effective_temperature)-base_temperature)
-      if(needed_sum>=0.1_real64) increment=increment*optimal_sum/needed_sum
+      if(needed_sum>=0.1_real64) increment=(optimal_sum/needed_sum)*increment
     end if
     if(.not.ieee_is_finite(increment)) return
     candidate%next_temperature_sum=temperature_sum+increment
