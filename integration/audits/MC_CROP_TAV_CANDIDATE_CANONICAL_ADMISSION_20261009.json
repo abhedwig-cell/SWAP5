@@ -1,0 +1,31 @@
+{
+  "schema": "swap431.crop_tav_candidate_admission.v1",
+  "workstream": "MC-CROP01",
+  "base": "df1a8fdc3ced6b1c4b24619c810c92dbffb6611d",
+  "qualified_head": "da14b0de4a5b6263a7838c71c7e07453342aa0c6",
+  "canonical_merge": "5b18b5c6012c64280732e184faf3f5105b82a27b",
+  "pr": 1165,
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "evidence": {
+    "local": "gfortran O0/O2 success with real compiled standalone source, pre-PR",
+    "fci": {
+      "run_id": 37968607791,
+      "conclusion": "success"
+    }
+  },
+  "admitted_scope": "Staging-only candidate day-window validation: contiguous interval coverage, source identity declaration, lineage/revision ordering, duplicate/overlap/gap and invalid inputs rejected, time-weighted candidate average. No owner-issued acceptance proof.",
+  "claim_ceiling": [
+    "Input source IDs, revisions and temperatures are caller-declared, not authenticated accepted meteorological forcing.",
+    "Time-weighted candidate average is not yet historically verified as SWAP atmosphere_interface:tav.",
+    "No accepted weather receipt, no crop event publication, no full restart serializer.",
+    "No production F-KT/kernel owner modified."
+  ],
+  "next_action": "Identify actual SWAP atmosphere_interface:tav population and authoritative accepted meteorological forcing owner; implement owner-issued day observation proof with retry/restart semantics, then connect B1.11 SWGERM2 to that certified value."
+}
