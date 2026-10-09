@@ -284,6 +284,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
+  local crop_havg_changed=0
   local crop_hydraulic_provenance_changed=0
   local crop_hydraulic_provenance_changed=0
   local candidate_path
@@ -316,6 +317,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
       src/crop/mod_crop_previous_day_emergence_gate.f90 ) crop_lifecycle_changed=1 ;;
+      src/crop/mod_crop_b111_pressure_head_average.f90 ) crop_havg_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
@@ -324,6 +326,12 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_havg_changed )); then
+    bash tests/fmig431/run_crop_b111_pressure_head_average.sh || \
+      fail 'B1.11 crop weighted pF O0/O2 tests failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'B1.11 crop weighted pF B19/MICRO preservation failed'
+  fi
   if (( crop_lifecycle_changed )); then
     # This source is admitted to the restricted B19/MICRO candidate surface
     # ONLY after its full exact-head F-KT O0/O2 plus actual MICRO02/03/05/06
