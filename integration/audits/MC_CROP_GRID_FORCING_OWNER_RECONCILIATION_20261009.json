@@ -1,0 +1,32 @@
+{
+  "schema": "swap431.crop_grid_forcing_owner_reconciliation.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+  "status": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false
+  },
+  "already_admitted": [
+    {
+      "pr": 1146,
+      "scope": "B1.11 weighted pF h_average"
+    },
+    {
+      "pr": 1148,
+      "scope": "F-KT pressure head plus caller supplied dz bounded composition"
+    },
+    {
+      "pr": 1150,
+      "scope": "Accepted F-KT soil-temperature sample by caller supplied node"
+    }
+  ],
+  "owner_fact": "src/runtime/mod_fmr_serialized_reference_backend.f90 fmr_b110_physical_parameters_t holds z(:),dz(:),parameter_set_id,soil_temperature_active,soil_temperature parameter; fmr_b110_physical_state_t holds pressure_head(:),water_content(:),optional soil_temperature state, but not authenticated z/dz geometry or a parameter-set receipt.",
+  "unproven": "A caller can supply valid-shaped but wrong dz or nodsow; existing depth/sowing candidates cannot yet prove parameters originate from exact F-KT physical model. Presence of optional temperature alone does not prove source SWHEA option, and accepted daily tav provenance remains unverified.",
+  "constraint": "Do not assert accepted grid identity by comparing only active_nodes/shape, and do not assign parameter_set_id from caller without owner-backed verification.",
+  "next_implementation": "Find existing F-KT kernel model/parameter owner certificate coupling fmr_b110_physical_parameters_t parameter_set_id to committed snapshot lineage/time; if absent, agree a read-only owner-issued provenance contract before exposing zbotcp/nodsow and dz to lifecycle; cover mismatched geometry, time, parameter id, heat switch, and weather interval at O0/O2 with B19/MICRO preservation.",
+  "active_overlap": "PR #1141 paired physical/calendar restart remains draft; root and MICRO owner PRs remain active; do not edit those shared interfaces.",
+  "claim_ceiling": "Only gap reconciliation, no physical source forcing or crop transition admitted."
+}
