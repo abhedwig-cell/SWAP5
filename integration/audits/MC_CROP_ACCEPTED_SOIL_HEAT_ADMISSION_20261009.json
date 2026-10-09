@@ -1,0 +1,44 @@
+{
+  "schema": "swap431.crop_fkt_soil_heat_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "fd3bae289c38c431a5a535610e7af00aadc9d8b9",
+  "qualified_head": "5c4e8960bad191a6d3c6293d64ac50eab6d20c4c",
+  "admission": {
+    "pr": 1150,
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37905561959",
+    "owner_result": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37905561960",
+    "fci_result": "success 15/15",
+    "merge": "55743c412b0d5e28113074ab2e0cac60914f2dd3"
+  },
+  "admitted": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "implementation": "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90",
+  "scope": "Read-only accepted B110/temporal-indicator soil-temperature sample from the same F-KT committed physical clone with strict lineage, revision, exact time, missing-state and node rejection.",
+  "source_binding": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_soil_temperature_contract.f90"
+  ],
+  "tests": [
+    "tests/fmig431/test_crop_accepted_soil_temperature.f90",
+    "tests/fmig431/run_crop_accepted_soil_temperature.sh",
+    "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "claim_ceiling": [
+    "Presence of optional F-KT soil_temperature field is not proof of an independently validated SWHEA option policy.",
+    "Caller-supplied integer soil node is not yet source-bound to ztempsow and B1.11 nodsow depth-grid definition.",
+    "No accepted atmospheric daily tav provenance.",
+    "No physical preparation/sowing/germination transition from this value.",
+    "No harvest, root teardown, two-crop lifecycle or whole-system restart claim."
+  ],
+  "active_overlap": "PR #1141 physical crop/calendar restart open; root depth/SWRD3 and MICRO interfaces are not owned by this unit.",
+  "next_action": "Recover and prove accepted soil-grid geometry for ztempsow/nodsow, match it to the committed heat/hydraulic snapshots; independently validate SWHEA and accepted daily tav forcing, then only allow F-KT-owned lifecycle proposal and physical crop event."
+}
