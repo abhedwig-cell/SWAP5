@@ -4,7 +4,7 @@
   "work_unit": "CROP-FORCING-OWNER01",
   "baseline": "5537124ddcec35bb7d9155a94bca7a4ee69efd71",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false,
@@ -56,6 +56,17 @@
     "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
     "hydraulic grid and soil heat-owner modules"
   ],
-  "next_action": "Locate exact accepted water/temperature snapshot APIs and same-event provenance at canonical head; implement read-only sampling/binding only once source ownership is proven; do not duplicate PR #1141 or assume caller scalars trustworthy.",
-  "status_note": "Recovery/owner-reconciliation only, no physics code or test/qualification claims."
+  "next_action": "Compile existing exact-source dependency closure and test F-KT accepted snapshot valid/foreign lineage/stale revision/time/NaN/unsupported crop physical state; reconcile soil temperature and actual sampled h_average before using as crop forcing. Extend F-CI B19/MICRO conditional gate and qualify. Draft stays unadmitted.",
+  "status_note": "Recovery/owner-reconciliation only, no physics code or test/qualification claims.",
+  "implementation": {
+    "path": "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
+    "commit": "b4df244d8d85cbcc50ce82ab0389ae2f70a02391",
+    "scope": "Read-only F-KT hydraulic snapshot binding with exact lineage, revision and bitwise time, finite profile and existing serialized B110 physical-state bridge. No depth averaging, soil heat, tav or physical crop changes.",
+    "limits": [
+      "Only fmr_b110_physical_state_t and fmr_b110_temporal_indicator_state_t are supported by existing hydraulic binding",
+      "No claim that water profile and crop F-KT owner are jointly committed; separate crop and hydraulic owners still require authenticated event relation",
+      "No h_average(zprep/zsow/zgerm) until historical grid/z convention verified",
+      "No O0/O2 compilation/test or cross preservation evidence exists for this commit"
+    ]
+  }
 }
