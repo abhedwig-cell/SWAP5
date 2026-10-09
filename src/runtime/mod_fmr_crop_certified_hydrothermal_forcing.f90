@@ -66,6 +66,12 @@ contains
     class default
       nodsow=0
     end select
+    if(status/=CROP_CERT_FORCE_OK) then
+      nodsow=0
+      hprep_avg=0.0_real64
+      hsow_avg=0.0_real64
+      sow_soil_temperature=0.0_real64
+    end if
   contains
     subroutine extract(state)
       class(fmr_b110_physical_state_t), intent(in) :: state
