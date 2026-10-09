@@ -6,8 +6,9 @@
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
-    "canonically_admitted": false
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
   },
   "missing_authority": "SWAP/functions.f90 in original 63-file B0/B1.11 source; absent from partial b1_11_frost_source mirror",
   "expected_member_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
@@ -28,8 +29,8 @@
   ],
   "constraint": "Do not invent averaging formula, node weighting or soil-grid semantics before byte-verified original h_average and dependencies recovered.",
   "overlap": "PR #1141 owns paired crop-calendar physical restart; do not edit these interfaces.",
-  "next_action": "Follow auto-triggered exact-head owner O0/O2 and F-CI; fix exact failures; keep full crop forcing out of claim.",
-  "status": "SOURCE_RECOVERED_BOUNDED_PROTOTYPE_NOT_QUALIFIED",
+  "next_action": "Bind canonical B1.11 weighted-pF sampler to validated physical grid thickness and the admitted read-only F-KT hydraulic view for same lineage/revision/time; separately resolve accepted SWHEA/soil temperature and tav. No emergence or root owner publication before full accepted event binding.",
+  "status": "BOUNDED_PRESSURE_HEAD_SAMPLER_CANONICALLY_ADMITTED",
   "source_verified": {
     "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "nested_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
@@ -57,5 +58,14 @@
       "exact compartment boundary",
       "requested depth outside grid"
     ]
+  },
+  "bounded_admission": {
+    "pr": 1146,
+    "qualified_source_head": "a02095abc41f67a2372ebe56fad4f70e621aa799",
+    "merge_commit": "8929f01c897ddfa43311a964c6389d3a64892e8f",
+    "o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37900938309",
+    "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37900938136",
+    "fci_conclusion": "success",
+    "claim": "Independent nonmutating B1.11 pF weighted pressure-head depth average, including MOD_params small=1e-6; no accepted-grid/soil-heat/atmospheric event binding"
   }
 }
