@@ -15,6 +15,8 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - run: gfortran --version
       - run: bash tests/fci/run_crop_fkt_b110_exact_source_successor.sh --verify-only
       - run: bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
