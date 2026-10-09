@@ -1,0 +1,42 @@
+{
+  "schema": "swap431.crop_b111_exact_exchange_tav_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "dc5d4e9ac1ff332e0459c10ca4f6527dc4b0d7ef",
+  "qualified_head": "c6496eff018eb655d72ca412b6afec1093628741",
+  "canonical_merge": "9c4f7671dc8afab2a867ba95944e18ed0c7a3247",
+  "pr": 1169,
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "qualification": [
+    {
+      "gate": "Local gfortran O0/O2",
+      "status": "PASS"
+    },
+    {
+      "gate": "complete F-CI",
+      "run_id": 37972662753,
+      "status": "success"
+    }
+  ],
+  "source_proof": {
+    "file": "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90",
+    "routine": "handle_exchange",
+    "task": 22,
+    "lines": "683–696",
+    "expression": "tav=(tmx+tmn)*0.5d0",
+    "consumer": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:651,755–766"
+  },
+  "scope": "Pure TAV candidate computes minmax midpoint with bitwise source-equivalent operation ordering; no accepted weather receipt or crop publication.",
+  "limits": [
+    "Proven only the task22 daily exchange path; other SWMETDETAIL routes remain open.",
+    "The external toswap input still lacks authenticated accepted F-KT interval identity.",
+    "Weather source ownership, retry/restart authentication and event publication remain unimplemented."
+  ],
+  "next_action": "Trace toswap record owner and 4.3.1 handle_exchange task 21/22/23 accepted timing and bind weather record to F-KT commit; no publication until owner-certified."
+}
