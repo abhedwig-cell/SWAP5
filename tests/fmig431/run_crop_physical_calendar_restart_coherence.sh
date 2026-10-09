@@ -10,8 +10,8 @@ from pathlib import Path
 import sys
 s=Path(sys.argv[1]).read_text()
 old='ROOT="$(cd "$(dirname "$0")/../.." && pwd)"'
-assert s.count(old)==1
-s=s.replace(old,'ROOT="${CROP_PAIR_ROOT:?}"',1)
+assert s.startswith('#!/usr/bin/env bash\nset -euo pipefail\n'+old+'\n')
+s=s.replace(old+'\n','ROOT="${CROP_PAIR_ROOT:?}"\n',1)
 old='''"targets = ['mod_fmr_wofost_crop_transaction']"'''
 assert s.count(old)==1
 s=s.replace(old, '''"targets = ['mod_fmr_crop_physical_calendar_restart_coherence']"''',1)
