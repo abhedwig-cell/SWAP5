@@ -1,0 +1,52 @@
+{
+  "schema": "swap431.crop_hydrothermal_forcing_reconciliation.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "CROP-PHYSICAL-FORCING01",
+  "baseline": "a3f2aa475771c042dcf3db6931e6a613aaca3955",
+  "reconciled_at": "2026-10-09",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "inherited_admitted": [
+    "PR #1135: read-only preparation/sowing/germination candidate calculations",
+    "PR #1136: daily nonmutating composition",
+    "PR #1138: F-KT-owned bounded continuation and receipt persistence",
+    "PR #1139: read-only committed physical/calendar postevent coherence"
+  ],
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "current_candidates": [
+    "src/crop/mod_crop_preparation_sowing_preflight.f90",
+    "src/crop/mod_crop_germination_preflight.f90",
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "src/crop/mod_crop_lifecycle_continuation.f90"
+  ],
+  "source_specific_inputs": {
+    "preparation": "swprep=1: h_average(z_prep), threshold h_prep, and accepted delay_prep; legacy task 3 postpones while mean pressure head exceeds threshold and delay remains below max",
+    "sowing": "swsow=1 requires SWHEA=1; h_average(z_sow), tsoil(nodsow) derived from z_tempsow, thresholds and delay_sow inherited from preparation",
+    "germination": "swgerm=1: daily tav and temperature sum; swgerm=2 additionally h_average(zgerm) and hdrygerm/hwetgerm pressure-head response; accepted source-day accumulation",
+    "publication": "Crop-emergence and root initialization depend on previous lifecycle flags and a valid physical commit, not a candidate or calendar ENTER alone"
+  },
+  "observed_gap": "Present candidate routines accept caller-supplied real-valued samples/heat_enabled, without a verified typed lineage to the accepted F-KT hydraulic, thermal, atmospheric and SWHEA owner at the exact committed time. Existing PR #1139 validator explicitly does not prove this provenance.",
+  "ownership_rule": "Use read-only accepted physical snapshots; never construct independent mutable hydraulic, thermal, crop or root state; bind a single event/time/revision provenance to sampled inputs before proposing lifecycle flags.",
+  "required_next_evidence": [
+    "Map actual accepted F-KT hydraulic snapshot to h_average at zprep,zsow,zgerm with documented grid/depth sign and layering",
+    "Identify accepted heat/soil-temperature owner, SWHEA capability flag and ztempsow-to-nodsow correspondence; reject unsupported sowing",
+    "Identify accepted daily atmospheric tav source/time and require alignment to exact crop event window",
+    "Create fail-closed typed provenance preflight without changing existing candidate physics or F-KT commit semantics",
+    "Test wrong-state, wrong-time, wrong revision, missing heat, nonfinite values, reject/retry and duplicate events at O0/O2",
+    "After owner qualification, require B19/MICRO/root uptake preservation and exact-head F-CI before admission"
+  ],
+  "live_overlap_warning": [
+    "PR #1113 and #1111 propose SWRD3 root geometry",
+    "PR #1129 reconciles crop/B19/MICRO owners",
+    "PR #1122 addresses competing root proposals",
+    "PR #1119 modifies frost/hydraulic guards"
+  ],
+  "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
+  "next_action": "Read exact accepted F-KT snapshot and thermo/hydraulic ownership interfaces, resolve competing workstream modification surfaces, implement read-only typed physical-input provenance and negative tests."
+}
