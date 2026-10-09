@@ -43,11 +43,11 @@
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
         "SW431-CROP-ANNUAL",
-        "SW431-CROP-ROOTGROW",
-        "SW431-ROOT-DENSITY"
+        "SW431-CROP-ROOTGROW"
       ],
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81"
+        "SW5-CROP-WOF81",
+        "SW431-ROOT-DENSITY"
       ]
     },
     {
@@ -218,10 +218,10 @@
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "internal_sequence_dependencies": [
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
         "SW431-GW-PROJECTION"
-      ],
-      "closed_foundation_authorities": []
+      ]
     },
     {
       "id": "MC-MACRO01",
