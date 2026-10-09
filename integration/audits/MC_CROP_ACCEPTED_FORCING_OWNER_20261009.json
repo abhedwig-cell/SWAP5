@@ -6,10 +6,10 @@
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "preserved": false,
-    "canonically_admitted": false
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
   },
   "admitted": "PR #1140 read-only previous-day emergence helper, qualified head bded3d216da9c3dd80e9b70028d458d552fb789a, owner 37891074870 F-CI 37891075109, merge 3740dc77dd38d112b18054af896c0ee90a2c6eb9",
   "current_overlap": {
@@ -56,8 +56,8 @@
     "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
     "hydraulic grid and soil heat-owner modules"
   ],
-  "next_action": "Reuse established mixed B19/F-KT legacy reference build context rather than fabricate mock mod files, or introduce verified narrowed compile dependency boundary. Do not omit the missing required module from the compile graph or weaken preservation.",
-  "status_note": "Recovery/owner-reconciliation only, no physics code or test/qualification claims.",
+  "next_action": "Reconcile B1.11 h_average depth/grid geometry against current accepted F-KT hydraulic grid; separately establish soil temperature SWHEA owner and accepted tav event provenance; do not duplicate PR #1141 restart.",
+  "status_note": "Only bounded hydraulic snapshot module admitted; larger CROP-FORCING-OWNER01 hydrothermal forcing and crop lifecycle remain unimplemented/unqualified.",
   "implementation": {
     "path": "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
     "commit": "b4df244d8d85cbcc50ce82ab0389ae2f70a02391",
@@ -82,5 +82,14 @@
       "37893706512"
     ],
     "fci_cause": "New runtime source intentionally refused by B19/MICRO current-source allowlist; do not add unconditional exception before owner test plus cross-preservation."
-  }
+  },
+  "bounded_hydraulic_admission": {
+    "pr": 1143,
+    "qualified_head": "03b0c985ec1de2a38cdf83872c632a14aa458113",
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37895570252",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37895570138",
+    "merge_commit": "956df0ddf950b10eaa6c6c5904def4be771ba70b",
+    "scope": "Read-only F-KT B110 hydraulic view snapshot with lineage/revision/time and finite profile validity; does not bind crop event, soil temperature, atmospheric tav, source depth averages or physical emergence"
+  },
+  "full_hydrothermal_forcing_status": "OPEN_NOT_QUALIFIED_NOT_ADMITTED"
 }
