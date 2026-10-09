@@ -56,7 +56,7 @@
     "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
     "hydraulic grid and soil heat-owner modules"
   ],
-  "next_action": "Compile existing exact-source dependency closure and test F-KT accepted snapshot valid/foreign lineage/stale revision/time/NaN/unsupported crop physical state; reconcile soil temperature and actual sampled h_average before using as crop forcing. Extend F-CI B19/MICRO conditional gate and qualify. Draft stays unadmitted.",
+  "next_action": "Reuse established mixed B19/F-KT legacy reference build context rather than fabricate mock mod files, or introduce verified narrowed compile dependency boundary. Do not omit the missing required module from the compile graph or weaken preservation.",
   "status_note": "Recovery/owner-reconciliation only, no physics code or test/qualification claims.",
   "implementation": {
     "path": "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
@@ -68,5 +68,19 @@
       "No h_average(zprep/zsow/zgerm) until historical grid/z convention verified",
       "No O0/O2 compilation/test or cross preservation evidence exists for this commit"
     ]
+  },
+  "test_recovery": {
+    "workflow": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37894540205",
+    "result": "FAIL",
+    "failure": "Production transitive dependency scanner stops at missing mod_swap_base imported by src/adapter/mod_reference_richards_legacy_binding.f90; the source dependency belongs to the full legacy reference backend, not the crop provenance routine.",
+    "preceding_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37894317269",
+    "preceding_failure": "Unattributed missing mod_swap_base",
+    "source_status": "Implementation persisted but not compiled or tested; the negative fixture has never executed.",
+    "next_repair": "Reuse established mixed B19/F-KT legacy reference build context rather than fabricate mock mod files, or introduce verified narrowed compile dependency boundary. Do not omit the missing required module from the compile graph or weaken preservation.",
+    "fci_failures": [
+      "37893687867",
+      "37893706512"
+    ],
+    "fci_cause": "New runtime source intentionally refused by B19/MICRO current-source allowlist; do not add unconditional exception before owner test plus cross-preservation."
   }
 }
