@@ -62,6 +62,12 @@
     "B19/MICRO root, balance and F-KT/restart frozen preservation",
     "No shared F-KT or weather owner edits until parallel owner interfaces reconciled"
   ],
-  "next_action": "Trace the actual B1.11 legacy tav source and owning meteorological acquisition path, then implement owner-issued accepted interval observation. Keep existing caller-temperature preflight read-only until certified provenance exists.",
-  "owner_boundary": "No production implementation in this recovery artifact; do not confuse with scientific qualification or admission."
+  "next_action": "Trace implementation of atmosphere_interface.tav in original SWAP 4.3.1 source archive and the F-KT production atmospheric forcing owner. Authenticate its source and accepted day interval before publishing SWGERM1/2; WOFOST average_temperature is not an admitted substitute.",
+  "owner_boundary": "No production implementation in this recovery artifact; do not confuse with scientific qualification or admission.",
+  "byte_verified_historical_trace": {
+    "file": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "module_and_binding": "germination(task) at source line 647 imports use atmosphere_interface, only: tav at line 651",
+    "germination_temperature": "Historical line 755 tests tav > tbasem; lines 756-760 use (tav - tbasem) in germination temperature sum, capped by teffmx in subsequent branch.",
+    "critical_disambiguation": "The historical B1.11 germination model reads tav from atmosphere_interface, NOT automatically from WOFOST one-day forcing average_temperature/daytime_average_temperature. Any bridge must prove exactly which atmosphere_interface.tav is populated and how it is temporally accepted."
+  }
 }
