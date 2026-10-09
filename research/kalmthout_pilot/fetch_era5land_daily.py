@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import csv, json, math, sys, urllib.parse, urllib.request
 from datetime import date
+from pathlib import Path
 
-LAT=51.350606
-LON=4.403689
+DOMAIN=json.loads((Path(__file__).resolve().parent/"domain.json").read_text())
+LAT=float(DOMAIN["representative_cell"]["latitude"])
+LON=float(DOMAIN["representative_cell"]["longitude"])
 ELEVATION_M=25.0
 START="2024-01-01"
 END="2026-10-01"
