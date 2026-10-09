@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "last_reconciled_upstream": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -25,7 +25,8 @@
     "coverage_structural_recount": "PASS: 243 unique IDs, 113 open migration entries, four qualification-only; no dangling dependencies or stale active owners",
     "semantic_gap_type_recount": "PASS structural classifier on 113 ACTIVE_MIGRATION entries; not an independent source-to-runtime semantic qualification",
     "workunit_sequence_dependency_audit": "PASS: removed closed SW431-ROOT-DENSITY and SW431-GW-PROJECTION from internal sequence blockers; retained as closed authorities",
-    "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed"
+    "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed",
+    "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -54,7 +55,7 @@
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     }
   },
-  "next_action": "Reconcile incoming canonical admissions; recover full checker dependencies through supported source route, and verify 113 active entries semantically by workunit.",
+  "next_action": "Audit additional 51-commit canonical delta and 113 active entries for full-capability closures; exact source-integrity checker still needs byte-exact checkout.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -65,7 +66,8 @@
     "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json",
     "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
     "integration/audits/evidence/SWAP431_CROP_ATOMIC_ADMISSION_BOUNDARY_20261009.json",
-    "integration/audits/evidence/SWAP431_IRR_SHARED_OWNER_RECONCILIATION_20261009.json"
+    "integration/audits/evidence/SWAP431_IRR_SHARED_OWNER_RECONCILIATION_20261009.json",
+    "integration/audits/evidence/SWAP431_B110_CANONICAL_DELTA_20261009.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -90,7 +92,8 @@
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
     "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate.",
-    "MC_IRR01": "PR1126 qualified on 4ed0a6d62 (run 37774945522); current branch is 260 commits behind canonical and one ahead, no admission. TCS7/SSDI qualified runtime evidence is not canonical."
+    "MC_IRR01": "PR1126 qualified on 4ed0a6d62 (run 37774945522); current branch is 260 commits behind canonical and one ahead, no admission. TCS7/SSDI qualified runtime evidence is not canonical.",
+    "MC_CROP_FKT_B110": "PR1160 now canonically admitted at 3bb0e8c; source-exact admission checks 37943443887, 37943443484 and 37943443221 success. Bounded hydrothermal owner; does not close whole SW431-CROP-SOW."
   },
   "unresolved_review_ids": [
     "SW431-MACRO-SEP1",
@@ -109,7 +112,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "3f245d1509723e13d86750d7de4cd5ee17c01d83",
+  "last_reconciled_head": "6d9be82736591f0632ea370d2fe3d982a92daa9b",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
