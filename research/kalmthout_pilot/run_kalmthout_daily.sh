@@ -10,6 +10,16 @@ grep -Fq "PPA-WU01 PRODUCTION APPLICATION BOOTSTRAP OWNER GATE PASS" /tmp/kalmth
 echo "KALMTHOUT_RUTTER_OWNER_REGRESSION=PASS"
 OUTDIR="${1:-/tmp/kalmthout-swap5-pilot}"
 mkdir -p "$OUTDIR"
+python3 research/kalmthout_pilot/build_grid.py > "$OUTDIR/grid_500m.csv"
+python3 - "$OUTDIR/grid_500m.csv" <<'PY'
+import csv,sys
+rows=list(csv.DictReader(open(sys.argv[1])))
+assert len(rows)==1024, len(rows)
+c=rows[495]
+assert c["cell_id"]=="KAL_0496"
+assert c["easting"]=="600730.0" and c["northing"]=="5690770.0"
+print("KALMTHOUT_OFFICIAL_GRID=PASS")
+PY
 python3 research/kalmthout_pilot/fetch_era5land_daily.py > "$OUTDIR/weather.csv"
 python3 - "$OUTDIR/weather.csv" <<'PY'
 import csv,sys
