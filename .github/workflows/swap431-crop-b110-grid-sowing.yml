@@ -1,0 +1,17 @@
+name: SW431 crop B110 grid sowing preflight qualification
+on:
+  pull_request:
+    paths:
+      - 'src/crop/mod_crop_b110_grid_sowing_preflight.f90'
+      - 'src/crop/mod_crop_b111_sowing_node.f90'
+      - 'tests/fmig431/test_crop_b110_grid_sowing_preflight.f90'
+      - 'tests/fmig431/run_crop_b110_grid_sowing_preflight.sh'
+      - '.github/workflows/swap431-crop-b110-grid-sowing.yml'
+  workflow_dispatch:
+jobs:
+  crop-grid-sowing-o0-o2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_crop_b110_grid_sowing_preflight.sh
