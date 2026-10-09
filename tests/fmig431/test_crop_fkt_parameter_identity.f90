@@ -4,7 +4,8 @@ program test_crop_fkt_parameter_identity
  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_parameter_identity_t, &
       kernel_reconstruct_committed_state_trusted, KERNEL_TRUSTED_RECONSTRUCTION_OK
  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
-      fmr_b110_physical_parameters_t, fmr_new_b110_committed_state
+      fmr_b110_physical_parameters_t, fmr_new_b110_committed_state, &
+      fmr_b110_certified_candidate_layout_matches
  implicit none
  type(kernel_committed_state_t):: committed,restarted
  type(fmr_b110_physical_state_t):: source,wrong_source
@@ -25,6 +26,17 @@ program test_crop_fkt_parameter_identity
  call committed%certified_parameter_identity(origin,available)
  if(.not.available.or..not.origin%valid) error stop 'missing F-KT certificate'
  if(origin%parameter_set_id/=71_int64.or.any(origin%dz/=p%dz)) error stop 'bad certificate'
+ if(.not.fmr_b110_certified_candidate_layout_matches(origin,source)) error stop 'valid candidate refused'
+ wrong_source=source
+ wrong_source%active_nodes=3
+ if(fmr_b110_certified_candidate_layout_matches(origin,wrong_source)) error stop 'changed count accepted'
+ wrong_source=source
+ deallocate(wrong_source%pressure_head)
+ if(fmr_b110_certified_candidate_layout_matches(origin,wrong_source)) error stop 'head lost accepted'
+ wrong_source=source
+ allocate(wrong_source%soil_temperature)
+ if(fmr_b110_certified_candidate_layout_matches(origin,wrong_source)) error stop 'wrong heat enabled'
+
  q=p
  call q%capture_identity(changed,available)
  if(.not.available.or..not.origin%matches(changed)) error stop 'matching grid rejected'
