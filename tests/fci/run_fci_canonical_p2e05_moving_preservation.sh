@@ -309,6 +309,7 @@ check_b19_micro_root_recomposition() {
   local crop_accepted_heat_changed=0
   local crop_certified_sow_changed=0
   local crop_certified_daily_changed=0
+  local crop_germination_source_order_changed=0
   local crop_tav_day_changed=0
   local crop_tav_meteo_changed=0
   local crop_b111_germ_sum_changed=0
@@ -349,7 +350,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_rotation_transition.f90 ) crop_unified_restart_changed=1 ;;
       src/crop/mod_crop_rotation_lifecycle_preflight.f90 ) ;;
       src/crop/mod_crop_preparation_sowing_preflight.f90 ) ;;
-      src/crop/mod_crop_germination_preflight.f90 ) ;;
+      src/crop/mod_crop_germination_preflight.f90 ) crop_germination_source_order_changed=1 ;;
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
       src/crop/mod_crop_previous_day_emergence_gate.f90 ) crop_lifecycle_changed=1 ;;
@@ -391,6 +392,15 @@ check_b19_micro_root_recomposition() {
   if (( crop_tav_day_changed )); then
     bash tests/fmig431/run_crop_tav_day_window.sh || \
       fail 'untrusted atmospheric tav day candidate O0 O2 preservation failed'
+  fi
+  if (( crop_germination_source_order_changed )); then
+    test "$(git rev-parse HEAD:src/crop/mod_crop_germination_preflight.f90)" =       "d61d86a2b79a7d4f9687988e666fd907d9fff245" ||
+      fail 'unqualified B1.11 germination preflight source order blob'
+    bash tests/fmig431/run_crop_germination_preflight.sh ||
+      fail 'B1.11 previously admitted germination preflight O0/O2 failed'
+    bash tests/fmig431/run_crop_b111_preflight_source_order.sh ||
+      fail 'B1.11 bitwise germination order O0/O2 failed'
+    echo 'FCI_CANONICAL_B111_GERMINATION_PREFLIGHT_EXACT_ORDER=PASS'
   fi
   if (( crop_certified_daily_changed )); then
     bash tests/fmig431/run_crop_certified_daily_preflight.sh ||
