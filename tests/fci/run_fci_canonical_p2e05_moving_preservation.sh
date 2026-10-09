@@ -284,6 +284,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
+  local crop_unified_restart_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -307,14 +308,14 @@ check_b19_micro_root_recomposition() {
       src/process/mod_root_water_uptake_process.f90 ) ;;
       src/crop/mod_crop_root_length_density_constant.f90 ) ;;
       src/crop/mod_crop_rotation_calendar.f90 ) ;;
-      src/crop/mod_crop_rotation_transition.f90 ) ;;
+      src/crop/mod_crop_rotation_transition.f90 ) crop_unified_restart_changed=1 ;;
       src/crop/mod_crop_rotation_lifecycle_preflight.f90 ) ;;
       src/crop/mod_crop_preparation_sowing_preflight.f90 ) ;;
       src/crop/mod_crop_germination_preflight.f90 ) ;;
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
-      src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
+      src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
@@ -340,6 +341,19 @@ check_b19_micro_root_recomposition() {
       fail 'crop physical/calendar restart pair qualification failed'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'crop physical restart B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_unified_restart_changed )); then
+    # A change to either postevent owner/calendar coherence or the derived
+    # calendar revision owner demands complete same-tree replay. This check
+    # is not an authority to change root/transport or publish crop physics.
+    bash tests/fmig431/run_crop_rotation_calendar.sh || \
+      fail 'crop calendar selector preservation failed'
+    bash tests/fmig431/run_crop_rotation_transition.sh || \
+      fail 'crop calendar trial/revision preservation failed'
+    bash tests/fmig431/run_crop_rotation_receipt_full_gate.sh || \
+      fail 'crop committed-receipt publication preservation failed'
+    bash tests/fmig431/run_crop_unified_restart_bundle.sh || \
+      fail 'crop unified physical/calendar persistence replay failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
