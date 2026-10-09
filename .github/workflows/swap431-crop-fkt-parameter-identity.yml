@@ -6,6 +6,9 @@ on:
       - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
       - 'tests/fmig431/test_crop_fkt_parameter_identity.f90'
       - 'tests/fmig431/run_crop_fkt_parameter_identity.sh'
+      - 'src/runtime/mod_fmr_crop_certified_sowing_source.f90'
+      - 'tests/fmig431/test_crop_certified_sowing_source.f90'
+      - 'tests/fmig431/run_crop_certified_sowing_source.sh'
       - '.github/workflows/swap431-crop-fkt-parameter-identity.yml'
   workflow_dispatch:
 jobs:
@@ -15,3 +18,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: gfortran --version
       - run: bash tests/fmig431/run_crop_fkt_parameter_identity.sh
+      - run: bash tests/fmig431/run_crop_certified_sowing_source.sh
