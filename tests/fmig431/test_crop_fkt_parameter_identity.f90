@@ -7,10 +7,10 @@ program test_crop_fkt_parameter_identity
       fmr_b110_physical_parameters_t, fmr_new_b110_committed_state
  implicit none
  type(kernel_committed_state_t):: committed,restarted
- type(fmr_b110_physical_state_t):: source
+ type(fmr_b110_physical_state_t):: source,wrong_source
  type(fmr_b110_physical_parameters_t):: p,q
  type(kernel_parameter_identity_t):: origin,changed
- class(transaction_state_t),allocatable:: physical
+ class(transaction_state_t),allocatable:: physical,malformed
  logical:: ok,available,reconstructed
  integer:: status
  source%active_nodes=2
@@ -62,6 +62,12 @@ program test_crop_fkt_parameter_identity
  call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
       .true.,reconstructed,status,parameters=q,persisted_identity=origin)
  if(reconstructed) error stop 'restart with changed equal-sized grid accepted'
+ wrong_source=source
+ wrong_source%active_nodes=3
+ allocate(malformed,source=wrong_source)
+ call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,malformed,7.0_real64, &
+      .true.,reconstructed,status,parameters=p,persisted_identity=origin)
+ if(reconstructed) error stop 'mismatched physical node count certified on restart'
  call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,physical,7.0_real64, &
       .true.,reconstructed,status,parameters=p,persisted_identity=origin)
  if(.not.reconstructed.or.status/=KERNEL_TRUSTED_RECONSTRUCTION_OK) error stop 'certified restart failed'
