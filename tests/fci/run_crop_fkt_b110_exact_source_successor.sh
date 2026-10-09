@@ -22,5 +22,6 @@ done < <(git diff --name-only "$BASE" HEAD -- src)
 test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$BASE:reference")" ||
  { echo 'CROP_FKT_CERT_REFERENCE_DRIFT' >&2; exit 1; }
 echo 'CROP_FKT_CERT_EXACT_SOURCE_SURFACE=PASS'
+if [[ "${1:-}" == '--verify-only' ]]; then exit 0; fi
 bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
 echo 'CROP_FKT_CERT_CANDIDATE_SUCCESSOR=PASS'
