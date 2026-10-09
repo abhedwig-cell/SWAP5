@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.f_mig431_int12_c.status.v1",
+  "workunit": "F-MIG431-INT12-C",
+  "parent_workunit": "PPA-WU04-C",
+  "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
+  "state": "RESTRICTED_QUALIFICATION_PASS_PENDING_FULL_GATE_AND_ADMISSION",
+  "branch": "work/f-mig431-int12-c-vonhhbraden",
+  "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+  "authorities": {
+    "current_canonical_head": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+    "ppa_wu04_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "ppa_wu04_status": "integration/audits/PPA_WU04_STATUS.json",
+    "source_snapshot": "B1.11",
+    "legacy_source_member": "SWAP/MOD_meteo.f90",
+    "legacy_source_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "p0_status": "integration/audits/F-MIG431-INT12-P0_STATUS.json",
+    "p0_canonical_merge": "4d7be05313336e437461f05642affe80bb9bb129",
+    "independent_trace": "SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9"
+  },
+  "gap": {
+    "restricted_SWINTER1_provider": "F-APP03 admitted Hupsel SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0, SWINTER=1, SWCF=1",
+    "restricted_provider_oracle": "Exact-source independent qualification: 384 daily and 14,062 interval records, zero mismatches",
+    "typed_application_binding": "F-APP04 admitted net_rain_cm_per_day -> dynamic-top precipitation by identity mapping",
+    "p0_runtime_seam": "CANONICALLY_ADMITTED",
+    "missing": "P0 accepted progress/restart is not yet composed with the admitted F-APP03/F-APP04 route and FMR committed endpoint",
+    "event_weighting_boundary": "P0 linear time apportionment is qualified here only for uniform daily SWRAIN=0/SWMETDETAIL=0 forcing"
+  },
+  "scope": [
+    "P0 source-window progress/restart composition for the already admitted F-APP03/F-APP04 Hupsel SWINTER=1 profile"
+  ],
+  "exclusions": [
+    "SWINTER=2 Gash (INT12-D)",
+    "SWINTER=3 Rutter",
+    "legacy meteo parser/calendar",
+    "solver/timestep policy",
+    "groundwater coupling semantics"
+  ],
+  "persistent_physical_state": [],
+  "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
+  "production_admission": "NO_NEW_ADMISSION_YET",
+  "qualification": "PASS_RESTRICTED_COMPOSITION_WORKFLOW",
+  "next_safe_step": "Complete and review the remaining frozen PPA-WU04-C preservation/admission gates; keep claims limited to the restricted Hupsel profile.",
+  "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
+  "production_process_present": "RESTRICTED_HUPSEL_ONLY",
+  "qualification_evidence": {
+    "workflow_run": 37131283115,
+    "owner_job": 111226737659,
+    "tested_head": "fdbbadfdaf3983eecac312a5402a0cf8709f9209",
+    "result": "PASS",
+    "checks": [
+      "O0 compile/run",
+      "O2 compile/run",
+      "O0/O2 output identity",
+      "A/B/A replay preserves admitted Hupsel daily and interval vectors",
+      "invalid day fails closed and valid retry preserves Hupsel result",
+      "rejected hydraulic result leaves source-window progress unchanged",
+      "partial accepted FMR endpoint advances only accepted source-window amount",
+      "mid-window restart and resumed remainder close aggregate bitwise",
+      "F-APP04 net-rain binding preserves value by identity",
+      "accepted gross/interception/net precipitation mass identity"
+    ],
+    "output_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717"
+  }
+}
