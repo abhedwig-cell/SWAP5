@@ -12,7 +12,7 @@ bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh
 bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
 MICRO02_RESULT="${TMPDIR:-/tmp}/crop-owner-micro02-$$.json" python3 tests/physics/run_ppa_micro02_de_willigen.py
 MICRO03_RESULT="${TMPDIR:-/tmp}/crop-owner-micro03-$$.json" python3 tests/physics/run_ppa_micro03_runtime.py
-BUILD="$(mktemp -d "${TMPDIR:-/tmp}/ppa-wu05b19-low-air-crop-owner-XXXXXX")"
+BUILD="$(mktemp -d "${TMPDIR:-/tmp}/ppa-wu05b19-low-air-runtime-crop-owner-XXXXXX")"
 trap 'rm -rf "$BUILD"' EXIT
 python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build "$BUILD"
 for opt in 0 2; do
