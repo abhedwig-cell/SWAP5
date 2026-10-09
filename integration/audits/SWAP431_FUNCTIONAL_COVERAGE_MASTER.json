@@ -38,7 +38,11 @@
     },
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 113,
-    "missing_standalone_process_implementations_not_established": 113
+    "missing_standalone_process_implementations_not_established": 113,
+    "active_with_existing_production_source_authority": 65,
+    "active_without_listed_production_source_authority": 48,
+    "active_missing_complete_admitted_route": 113,
+    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
   },
   "capabilities": [
     {
@@ -14662,5 +14666,13 @@
     ],
     "classification_rule": "ACTIVE_MIGRATION means a complete required production route is not yet admitted, not that an entirely new physical algorithm must be implemented. Standalone physics denominator requires per-selector assessment.",
     "status": "SOURCE_LEDGER_CLASSIFICATION_VERIFIED_NOT_FULL_CANONICAL_FUNCTIONAL_REACHABILITY"
+  },
+  "latest_existing_owner_review": {
+    "canonical": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+    "date": "2026-10-09",
+    "active_with_named_existing_production_modules": 65,
+    "active_without_named_production_modules": 48,
+    "rule": "Existing named module is a locator, not evidence that the complete selector/event/owner is implemented or admitted. No capability promotion without exact route and evidence.",
+    "further_review": "Evaluate common implementation owners, especially HYST, MICRO, MET and irrigation, for shared functional closure; retain current dispositions."
   }
 }
