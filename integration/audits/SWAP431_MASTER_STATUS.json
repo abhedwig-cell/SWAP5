@@ -52,7 +52,7 @@
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     }
   },
-  "next_action": "Owner adjudication of 113 classified incomplete routes, starting with qualified TCS7/SSDI binding and shared owner closure; full Python exact-source checker outstanding.",
+  "next_action": "Current-head reconciliation of qualified irrigation shared owner and full source/production binding; retain dispositions pending canonical admission evidence.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -62,7 +62,8 @@
     "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
     "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json",
     "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
-    "integration/audits/evidence/SWAP431_CROP_ATOMIC_ADMISSION_BOUNDARY_20261009.json"
+    "integration/audits/evidence/SWAP431_CROP_ATOMIC_ADMISSION_BOUNDARY_20261009.json",
+    "integration/audits/evidence/SWAP431_IRR_SHARED_OWNER_RECONCILIATION_20261009.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -86,7 +87,8 @@
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
-    "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate."
+    "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate.",
+    "MC_IRR01": "PR1126 qualified on 4ed0a6d62 (run 37774945522); current branch is 260 commits behind canonical and one ahead, no admission. TCS7/SSDI qualified runtime evidence is not canonical."
   },
   "unresolved_review_ids": [
     "SW431-MACRO-SEP1",
@@ -105,7 +107,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "bbc4d4ff8682e65838850fe84802c8b8d0db4896",
+  "last_reconciled_head": "dec105fda45e28b14c8cc26fddd91bceb835e0e2",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
