@@ -55,6 +55,8 @@ program test_crop_certified_sowing_source
  if(.not.fmr_b110_certified_candidate_layout_matches(identity,physical)) &
      error stop 'valid thermal candidate rejected'
  cold=physical
+ deallocate(cold%soil_temperature)
+ allocate(cold%soil_temperature)
  call initialize_soil_temperature_state([8.0_real64],cold%soil_temperature,st)
  if(st/=SOIL_TEMP_OK) error stop 'malformed heat fixture failed'
  if(fmr_b110_certified_candidate_layout_matches(identity,cold)) &
