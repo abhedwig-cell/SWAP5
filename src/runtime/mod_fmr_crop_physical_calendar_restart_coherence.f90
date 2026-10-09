@@ -91,8 +91,8 @@ contains
     real(real64) :: time
     logical :: available,reconstructed
     integer :: crop_status,calendar_status
-    crop_state=fmr_wofost_crop_transaction_state_t()
-    checkpoint=crop_rotation_checkpoint_t()
+    ! INTENT(OUT) resets both owned derived values by their default
+    ! initialization without constructing types with private components.
     status=CROP_RESTART_PAIR_INVALID
     if(.not.bundle%ready().or..not.committed%ready().or..not.committed%time_is_bound()) return
     if(bundle%fkt_revision/=committed%current_revision()) return
