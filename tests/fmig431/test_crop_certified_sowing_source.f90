@@ -9,10 +9,10 @@ program test_crop_certified_sowing_source
  use mod_fmr_crop_certified_sowing_source
  implicit none
  type(kernel_committed_state_t):: committed,plain,restarted
- type(fmr_b110_physical_state_t):: physical
+ type(fmr_b110_physical_state_t):: physical,cold
  type(fmr_b110_physical_parameters_t):: p
  type(kernel_parameter_identity_t):: identity
- class(transaction_state_t),allocatable:: snapshot
+ class(transaction_state_t),allocatable:: snapshot,malformed
  integer:: st,node
  logical:: ok,available,reconstructed
  real(real64):: head,temp
@@ -53,6 +53,12 @@ program test_crop_certified_sowing_source
  if(.not.available) error stop 10
  call committed%snapshot(snapshot,available)
  if(.not.available) error stop 11
+ cold=physical
+ deallocate(cold%soil_temperature)
+ allocate(malformed,source=cold)
+ call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,malformed,7.0_real64, &
+      .true.,reconstructed,st,parameters=p,persisted_identity=identity)
+ if(reconstructed) error stop 'heat-missing certified restart accepted'
  call kernel_reconstruct_committed_state_trusted(restarted,10_int64,0_int64,snapshot,7.0_real64, &
       .true.,reconstructed,st,parameters=p,persisted_identity=identity)
  if(.not.reconstructed.or.st/=KERNEL_TRUSTED_RECONSTRUCTION_OK) error stop 12
