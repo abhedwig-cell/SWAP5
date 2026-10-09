@@ -23,10 +23,7 @@ new='''hook=('python3 "$ROOT/tests/fmig431/patch_crop_lifecycle_fwof38_fixture.p
 s=s.replace(old,new,1)
 old="grep -Fq 'SW431_CROP_FKT_LIFECYCLE_ACCEPT_RESTART=PASS' \"$BUILD/out\""
 assert s.count(old)==1
-s=s.replace(old,old+"\ngrep -Fq 'SW431_CROP_PHYSICAL_CALENDAR_RESTART_PAIR=PASS' \"$BUILD/out\"",1)
-assert "SW431_CROP_PHYSICAL_CALENDAR_RESTART_PAIR=PASS" in s
-s=s.replace("grep -Fq 'SW431_CROP_PHYSICAL_CALENDAR_RESTART_PAIR=PASS' \\"$BUILD/out\\"",
-            "grep -Fq 'SW431_CROP_PHYSICAL_CALENDAR_RESTART_PAIR=PASS' \\"$BUILD/out\\"\\ngrep -Fq 'SW431_CROP_UNIFIED_RESTART_BUNDLE_ACCEPT_NEGATIVE=PASS' \\"$BUILD/out\\"",1)
+s=s.replace(old,old+"\ngrep -Fq 'SW431_CROP_PHYSICAL_CALENDAR_RESTART_PAIR=PASS' \"$BUILD/out\"\ngrep -Fq 'SW431_CROP_UNIFIED_RESTART_BUNDLE_ACCEPT_NEGATIVE=PASS' \"$BUILD/out\"",1)
 Path(sys.argv[2]).write_text(s)
 PY
 CROP_PAIR_ROOT="$ROOT" bash "$BUILD/derived.sh"
