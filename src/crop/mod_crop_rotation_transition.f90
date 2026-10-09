@@ -85,7 +85,6 @@ contains
     status=ROT_TRANS_OK
   end subroutine
 
-  subroutine initialize_crop_rotation_checkpoint
   subroutine initialize_crop_rotation_checkpoint(calendar,time,state,status)
     type(crop_calendar_t),intent(in) :: calendar
     real(real64),intent(in) :: time
