@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0",
+  "workunit": "SWAP431-MASTER-COVERAGE",
+  "canonical_head": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "reviewed_active_with_module": 65,
+  "groups": [
+    {
+      "module": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "affected_ids": [
+        "SW431-HYST1",
+        "SW431-HYST2",
+        "SW431-FROST-DIV-MULTI",
+        "SW431-FROST-EXT-MULTI",
+        "SW431-FROST-ROOTDRAIN",
+        "SW431-FROST-GW",
+        "SW431-MACRO-ABS2",
+        "SW431-MACRO-DARCY",
+        "SW431-MACRO-POND",
+        "SW431-MACRO-RUNON",
+        "SW431-MACRO-SW",
+        "SW431-MACRO-SNOW",
+        "SW431-MACRO-EVAP",
+        "SW431-SW-MANAGEMENT",
+        "SW431-SW-PRIMARY",
+        "SW431-SW-MULTILEVEL",
+        "SW431-SW-TOPRUNOFF",
+        "SW431-SALT-SORPTION",
+        "SW431-SALT-DECAY",
+        "SW431-SALT-POND",
+        "SW431-AGE-TRACER",
+        "SW431-SW-QHR2",
+        "SW431-FROST-SNOW",
+        "SW431-MACRO-SW-EXTERNAL",
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
+      "number": 26,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+      "affected_ids": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-FREQ",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP",
+        "SW431-IRR-AVAIL"
+      ],
+      "number": 13,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_irrigation_process.f90",
+      "affected_ids": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-FIXED-SPRINK",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-AVAIL"
+      ],
+      "number": 12,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+      "affected_ids": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-FIXED-SPRINK",
+        "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-AVAIL"
+      ],
+      "number": 11,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-INF-SPLIT",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 6,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_root_micro_matric_flux_table.f90",
+      "affected_ids": [
+        "SW431-ROOT-MICRO2",
+        "SW431-ROOT-MICRO3",
+        "SW431-ROOT-MICRO-LIFT",
+        "SW431-ROOT-MICRO-STRESS",
+        "SW431-ROOT-MICRO-TRED"
+      ],
+      "number": 5,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/runtime/mod_fmr_macropore_configuration.f90",
+      "affected_ids": [
+        "SW431-MACRO-KINEMATIC",
+        "SW431-MACRO-POWM",
+        "SW431-MACRO-SORP1",
+        "SW431-MACRO-SW-EXTERNAL",
+        "SW431-MACRO-GEOMETRY"
+      ],
+      "number": 5,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "affected_ids": [
+        "SW431-SW-MANAGEMENT",
+        "SW431-SW-TOPRUNOFF",
+        "SW431-SW-QHR2",
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
+      "number": 5,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_drainage_spatial_distribution.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 5,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_drainage_process.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 4,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_drainage_tabulated_response.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 4,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_drainage_extended_exchange.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 4,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "affected_ids": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "number": 4,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_pmdirect_swetr0_process.f90",
+      "affected_ids": [
+        "SW431-ET-PMTRAD",
+        "SW431-ET-PMDETAIL",
+        "SW431-ET-SOILFACTOR"
+      ],
+      "number": 3,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/process/mod_reference_et_demand_process.f90",
+      "affected_ids": [
+        "SW431-ET-PMTRAD",
+        "SW431-ET-PMDETAIL",
+        "SW431-ET-SOILFACTOR"
+      ],
+      "number": 3,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    },
+    {
+      "module": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+      "affected_ids": [
+        "SW431-ROOT-MICRO-LIFT",
+        "SW431-ROOT-MICRO-STRESS",
+        "SW431-ROOT-MICRO-TRED"
+      ],
+      "number": 3,
+      "interpretation": "Shared module locator only; confirm branch dispatch and owner contract before group closure"
+    }
+  ],
+  "highest_priority_review": [
+    "src/process/mod_irrigation_process.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/process/mod_root_micro_matric_flux_table.f90"
+  ],
+  "caution": "The 26 refs to serialized backend are not 26 implemented physics paths; many are shared facade or negative gap evidence. No dispositions changed.",
+  "coverage_closed": false
+}
