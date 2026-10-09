@@ -5,9 +5,9 @@
   "baseline": "a3f2aa475771c042dcf3db6931e6a613aaca3955",
   "reconciled_at": "2026-10-09",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "preserved": false,
     "canonically_admitted": false
@@ -48,5 +48,20 @@
     "PR #1119 modifies frost/hydraulic guards"
   ],
   "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
-  "next_action": "Read exact accepted F-KT snapshot and thermo/hydraulic ownership interfaces, resolve competing workstream modification surfaces, implement read-only typed physical-input provenance and negative tests."
+  "next_action": "Bind previous-day flags/revision to accepted F-KT snapshot; independently bind hydrothermal forcing provenance; add same-postimage owner O0/O2 and preservation before any admission.",
+  "next_bounded_slice": {
+    "name": "Previous-day emergence eligibility preflight",
+    "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:cropemergence",
+    "implementation": "src/crop/mod_crop_previous_day_emergence_gate.f90",
+    "test": "tests/fmig431/test_crop_previous_day_emergence_gate.f90",
+    "local_compiler": "gfortran -std=f2008 -Wall -Wextra -fcheck=all",
+    "local_o0": "PASS",
+    "local_o2": "PASS",
+    "state": "standalone read-only prototype; not F-KT-wired, not qualified, not admitted",
+    "limits": [
+      "Uses explicit revision and lifecycle flags; caller provenance not authenticated against accepted F-KT state",
+      "Does not publish physical emergence, roots, or calendar",
+      "Not yet part of required owner/F-CI preservation gates"
+    ]
+  }
 }
