@@ -9,7 +9,10 @@ git diff --quiet HEAD -- src/kernel/mod_kernel_transactions.f90 src/runtime/mod_
 bash tests/fmig431/run_crop_fkt_parameter_identity.sh
 bash tests/fmig431/run_crop_certified_sowing_source.sh
 bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh
-bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
+bash tests/fmig431/run_crop_lifecycle_continuation.sh
+bash tests/fmig431/run_crop_unified_restart_bundle.sh
+# The older F-KT compatibility wrapper references a frozen donor fixture that
+# was never present in its pinned historical tree. Do not claim that gate here.
 MICRO02_RESULT="${TMPDIR:-/tmp}/crop-owner-micro02-$$.json" python3 tests/physics/run_ppa_micro02_de_willigen.py
 MICRO03_RESULT="${TMPDIR:-/tmp}/crop-owner-micro03-$$.json" python3 tests/physics/run_ppa_micro03_runtime.py
 BUILD="$(mktemp -d "${TMPDIR:-/tmp}/ppa-wu05b19-low-air-runtime-crop-owner-XXXXXX")"
