@@ -2889,7 +2889,7 @@
       "remaining_dependency": [],
       "active_workunit": null,
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -5613,7 +5613,6 @@
         "MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding."
       ],
       "remaining_dependency": [
-        "SW431-RUNON",
         "SW431-MACRO-POND"
       ],
       "active_workunit": "MC-MACROSUR01",
@@ -5629,7 +5628,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-MACRO-TOP"
+        "SW431-MACRO-TOP",
+        "SW431-RUNON"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "resolution_decision": "MIGRATE"
@@ -12115,12 +12115,10 @@
       "restrictions": [
         "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification."
       ],
-      "remaining_dependency": [
-        "SW431-ROOT-DENSITY"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -12131,7 +12129,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81"
+        "SW5-CROP-WOF81",
+        "SW431-ROOT-DENSITY"
       ],
       "source_input_names": [],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
@@ -12176,7 +12175,7 @@
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -14170,7 +14169,7 @@
       ],
       "why_open": "Production crop/Feddes contracts publish normalized cumulative root fractions, not absolute LRV. B1.11 rootextraction passes LRV_node into both MICRO initialization and uptake. Current canonical MICRO admission supplies only a matric-flux table, with no crop LRV resolver or runtime MICRO consumer binding.",
       "priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -14283,12 +14282,10 @@
     {
       "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
       "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-ROOT-DENSITY"
-      ],
+      "dependencies": [],
       "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
       "priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -14304,7 +14301,7 @@
       ],
       "why_open": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement.",
       "priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -14332,7 +14329,6 @@
       "capability_id": "SW431-MACRO-RUNON",
       "work_unit": "MC-MACROSUR01",
       "dependencies": [
-        "SW431-RUNON",
         "SW431-MACRO-POND"
       ],
       "why_open": "MIGRATE runon into the shared surface donor before pond-derived macro transfer. Source headcalc adds runon to q0 after direct rain/irrigation/melt partition; no independent direct macro runon source is implied. Requires the ordinary runon carrier and pond/macro donor binding.",
@@ -14753,5 +14749,21 @@
       "SW431-CROP-ANNUAL"
     ],
     "note": "Source- and PR-bound postimage reconcile only; other open workunits and aggregate denominator require separate owner audit."
+  },
+  "latest_dependency_cleanup": {
+    "date": "2026-10-09",
+    "canonical_head_checked": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+    "closed_dependency_refs_removed": [
+      [
+        "SW431-MACRO-RUNON",
+        "SW431-RUNON"
+      ],
+      [
+        "SW431-CROP-ROOTGROW-SUPPLY",
+        "SW431-ROOT-DENSITY"
+      ]
+    ],
+    "denominator_changed": false,
+    "admissions_changed": false
   }
 }
