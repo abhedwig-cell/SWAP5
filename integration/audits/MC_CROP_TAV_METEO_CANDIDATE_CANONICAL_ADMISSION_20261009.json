@@ -1,0 +1,34 @@
+{
+  "schema": "swap431.crop_meteo_tav_candidate_canonical_admission.v1",
+  "workstream": "MC-CROP01",
+  "qualified_head": "ce877ce3364fd4e9f7f50001608848fb86af3e22",
+  "canonical_merge": "4b89c1d97c3fe711c08233fe42eb38fdf9689347",
+  "pr": 1167,
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "tests": [
+    {
+      "gate": "Local gfortran 14 O0/O2",
+      "conclusion": "success"
+    },
+    {
+      "gate": "Complete F-CI canonical",
+      "run_id": 37969907123,
+      "conclusion": "success"
+    }
+  ],
+  "scope": "Two pure, finite-checked candidate transformations for full-day minmax mean and uniformly spaced detailed record mean. No side effects, F-KT/kernel or weather owner modifications.",
+  "limits": [
+    "Evidence for calculation patterns comes from publicly available older/evolving SWAP-model source, NOT independently recovered byte-exact 4.3.1 atmosphere_interface writer",
+    "No authenticated accepted meteorological TAV provenance, no exact meteorological dataset ID or F-KT interval binding",
+    "No crop event publication and no actual B1.11 germination forcing admission",
+    "WOFOST daytime_average_temperature must not be substituted without proof"
+  ],
+  "followup": "Recover exact 4.3.1 atmosphere_interface TAV writer and meteorological source before owner-certified weather publication; preserve equality between accepted physical F-KT and meteorological day source."
+}
