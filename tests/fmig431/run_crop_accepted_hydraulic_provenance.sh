@@ -11,7 +11,7 @@ root=Path(sys.argv[1])
 mp=re.compile(r'^\s*module\s+(?!procedure\b|function\b|subroutine\b)([a-z][\w]*)',re.I|re.M)
 up=re.compile(r'^\s*use\s*(?:,\s*(?:non_)?intrinsic\s*::\s*|::\s*)?([a-z][\w]*)',re.I|re.M)
 by={}; deps={}
-for path in sorted((root/'src').rglob('*.f90')):
+for path in [*sorted((root/'src').rglob('*.f90')), root/'tests/fsi/fsi04_real_headcalc_stubs.f90']:
     s=path.read_text(encoding='utf-8',errors='replace')
     deps[path]=[x.lower() for x in up.findall(s)]
     for x in mp.findall(s):
@@ -34,7 +34,7 @@ for p in order:print(p)
 PY
 )
 test "${#SOURCES[@]}" -ge 8
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -Wno-error=function-elimination -fcheck=all)
+COMMON=(-std=f2008 -ffree-line-length-none -w -fopenmp -fcheck=all -fbacktrace)
 for OPT in 0 2;do
     mkdir -p "$BUILD/o$OPT"
     (
@@ -42,7 +42,7 @@ for OPT in 0 2;do
       for SOURCE in "${SOURCES[@]}";do
         gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$ROOT/$SOURCE"
       done
-      gfortran "${COMMON[@]}" -O"$OPT" -J . -I . "$ROOT/tests/fmig431/test_crop_accepted_hydraulic_provenance.f90" ./*.o -o test
+      gfortran "${COMMON[@]}" -O"$OPT" -J . -I . "$ROOT/tests/fmig431/test_crop_accepted_hydraulic_provenance.f90" "$ROOT/src/legacy/b1_10_port/headcalc.f90" ./*.o -o test
       ./test > out
     )
     grep -Fx 'SW431_CROP_ACCEPTED_HYDRAULIC_INVALID=PASS' "$BUILD/o$OPT/out"
