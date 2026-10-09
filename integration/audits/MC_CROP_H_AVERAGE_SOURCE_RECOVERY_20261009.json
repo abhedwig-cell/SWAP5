@@ -3,9 +3,9 @@
   "workstream": "MC-CROP01",
   "baseline": "c0c00fbfda2c6b3ff08993a0d38f767c0cf2e42e",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "canonically_admitted": false
   },
@@ -28,6 +28,27 @@
   ],
   "constraint": "Do not invent averaging formula, node weighting or soil-grid semantics before byte-verified original h_average and dependencies recovered.",
   "overlap": "PR #1141 owns paired crop-calendar physical restart; do not edit these interfaces.",
-  "next_action": "Obtain authorized original archive bytes, SHA-256 verify source and member, reconstruct exact B1.11 h_average source, implement depth-pressure-head sampler and O0/O2 tests plus required B19/MICRO/F-CI preservation.",
-  "status": "SOURCE_DEPENDENCY_BLOCKED_NO_PHYSICS_ADMISSION"
+  "next_action": "Run exact-Git-postimage qualification O0/O2 and B19/MICRO/F-CI gates without allowlist weakening; verify source small tolerance and accepted grid metadata before binding.",
+  "status": "SOURCE_RECOVERED_BOUNDED_PROTOTYPE_NOT_QUALIFIED",
+  "source_verified": {
+    "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "member_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "member_bytes": 10557,
+    "verified": true
+  },
+  "actual_formula": "Mean pF log10(max(1,-h)) weighted over layer thickness in depth interval 0..-z_monitor, including fractional final compartment; h_average=-10**mean_pF; z_monitor near zero uses h(1) under source MOD_params small.",
+  "implementation": {
+    "source": "src/crop/mod_crop_b111_pressure_head_average.f90",
+    "test": "tests/fmig431/test_crop_b111_pressure_head_average.f90",
+    "runner": "tests/fmig431/run_crop_b111_pressure_head_average.sh",
+    "local_O0": "PASS",
+    "local_O2": "PASS",
+    "qualification": "PENDING",
+    "limits": [
+      "Explicit exact-zero handling only, not source small tolerance",
+      "Requires authenticated accepted hydraulic snapshot and validated grid dz",
+      "No physically coupled crop forcing or F-CI preservation"
+    ]
+  }
 }
