@@ -1,0 +1,45 @@
+{
+  "schema": "swap431.crop_certified_daily_preflight_admission.v1",
+  "workstream": "MC-CROP01",
+  "canonical_base": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "qualified_head": "bc9ec9fd1e7ca0741df110e7ba766729125a7d37",
+  "canonical_merge": "0df259e3b60eb96bd598f1d5526a074456ada0de",
+  "pr": 1162,
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "qualification": [
+    {
+      "gate": "certified daily preflight O0/O2 true transitive Fortran",
+      "run_id": 37959757792,
+      "conclusion": "success"
+    },
+    {
+      "gate": "complete F-CI canonical",
+      "run_id": 37959757828,
+      "conclusion": "success"
+    }
+  ],
+  "implementation": [
+    "src/runtime/mod_fmr_crop_certified_germination_moisture.f90",
+    "src/runtime/mod_fmr_crop_certified_daily_preflight.f90"
+  ],
+  "scope": [
+    "Owner-certified depth-weighted B1.11 SWGERM2 average pressure head on zgerm from accepted F-KT committed state; works without physical heat continuation.",
+    "Read-only joint B1.11 soil-based preparation and sowing preflights and moisture-based germination preflight from same expected F-KT lineage/revision/exact time.",
+    "Germination daily air temperature is explicit unverified caller input. Invalid air, inconsistent depth, unbound grid, stale revision/time/lineage and disabled heat sowing fail closed.",
+    "Corrected SHA-exact F-CI kernel/backend successor guard to apply only if shared source actually changed relative to canonical first parent; old exact source freezing remains preserved."
+  ],
+  "claim_ceiling": [
+    "No authenticated accepted daily atmospheric TAV or forcing interval.",
+    "No actual accepted physical crop event publication, no crop state mutation.",
+    "No proof of historical SWHEA control-option parsing from source.",
+    "No complete rotation harvest/fallow, root initialization, or whole-system serialized restart."
+  ],
+  "next_action": "Trace accepted atmospheric weather daily TAV provenance in committed F-KT or atmospheric forcing authority and bind exact accepted day window before crop germination event publication; retain historical SWHEA=1 control sourcing for physical sowing."
+}
