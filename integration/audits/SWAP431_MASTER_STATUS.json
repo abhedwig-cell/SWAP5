@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
+  "last_reconciled_upstream": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": {
-    "coverage_integrity": "PASS",
+    "coverage_integrity": "NOT RUN at current canonical: historical exact-head source-hash assertions need evidence reconciliation",
     "census_lexical_tests": "4 PASS",
     "literal_dramet3_probe": "O0/O2 identical; replacement counterexample reproduced",
     "documentation_source": "PASS",
@@ -21,7 +21,8 @@
     "nfix_equation_discrimination": "6 cases per O0/O2; 3 independent semantic witnesses; PASS",
     "aquifer_bounds_probe": "8 expected bounds failures: O0/O2, 1/3 nodes, positive/negative qdrtot",
     "seepage_runtime": "6/6 O0/O2 PASS in closed-bottom partial-top-cell fixture; O0/O2 stdout identical; initial free-drainage activity failures retained and attributed",
-    "groundwater_projection": "Six unchanged CALCGWL/current-service profiles per O0/O2; identical output; no runtime admission"
+    "groundwater_projection": "Six unchanged CALCGWL/current-service profiles per O0/O2; identical output; no runtime admission",
+    "coverage_structural_recount": "PASS: 243 unique IDs, category totals, no missing dependency IDs or cycles; two stale closed refs repaired"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -29,21 +30,21 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 83,
-      "ACTIVE_MIGRATION": 121,
+      "ADMITTED": 90,
+      "ACTIVE_MIGRATION": 113,
       "SUPERSEDED": 14,
-      "REJECTED": 1,
+      "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 4
     },
-    "open_capabilities": 121,
+    "open_capabilities": 113,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 121,
+    "confirmed_missing_production_entries": 113,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
-    "total_unresolved_capabilities": 125
+    "total_unresolved_capabilities": 117
   },
-  "next_action": "Continue source-bound production-gap reduction from current canonical; LOW3-EXPLICIT and ordinary matrix RUNON are closed. Avoid duplicating MICRO/frost/MIGMAC parallel owners.",
+  "next_action": "Reconcile 2026-10-09 canonical additions against source-specific rows, update pinned evidence baselines without falsely inheriting changed source hashes, run full checker on byte-verified checkout; maintain separation between partial crop owner admissions and full crop lifecycle.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -72,7 +73,7 @@
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "125 unresolved capabilities: 121 missing production implementations/bindings plus 4 qualification/source-admission reviews. Semantic denominator completeness remains unproven."
+    "Full exact-head dependency/evidence reconciliation and Python coverage checker remain outstanding; 117 unresolved ledger entries are not independently verified as missing production capabilities."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
@@ -95,7 +96,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "685e46358a7013580f88a0359e7093a760cbdcfd",
+  "last_reconciled_head": "1fbb64e756c26e595616b9d49886b63315257cc3",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
