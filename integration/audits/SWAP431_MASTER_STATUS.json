@@ -27,7 +27,8 @@
     "workunit_sequence_dependency_audit": "PASS: removed closed SW431-ROOT-DENSITY and SW431-GW-PROJECTION from internal sequence blockers; retained as closed authorities",
     "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed",
     "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending.",
-    "qualified_module_locator_split": "PASS: 65 open rows name existing production-module authority, 48 name none; this is not proof of completeness."
+    "qualified_module_locator_split": "PASS: 65 open rows name existing production-module authority, 48 name none; this is not proof of completeness.",
+    "shared_owner_grouping": "65 active entries with existing module locators grouped; module overlap is not proof of implementation/admission"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -59,7 +60,7 @@
     "active_without_listed_production_source_authority": 48,
     "confirmed_missing_production_entries_claim_scope": "Incomplete admitted routes, not necessarily absent algorithms"
   },
-  "next_action": "Source-based common owner reconciliation of 65 partial-module rows versus 48 with no listed source; exact-run integrity remains outstanding.",
+  "next_action": "Review source-backed real route dispatch for shared drainage, irrigation, MICRO owners; only group-close on exact canonical qualification and admission. Full Python checker remains outstanding.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -71,7 +72,8 @@
     "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
     "integration/audits/evidence/SWAP431_CROP_ATOMIC_ADMISSION_BOUNDARY_20261009.json",
     "integration/audits/evidence/SWAP431_IRR_SHARED_OWNER_RECONCILIATION_20261009.json",
-    "integration/audits/evidence/SWAP431_B110_CANONICAL_DELTA_20261009.json"
+    "integration/audits/evidence/SWAP431_B110_CANONICAL_DELTA_20261009.json",
+    "integration/audits/evidence/SWAP431_SHARED_OWNER_LOCATOR_GROUPS_20261009.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -116,7 +118,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "d372ed399f0b4499ddf121e9373e043ec9692613",
+  "last_reconciled_head": "39b60237cd6f2ce0229273112236b03d00cbd44d",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
