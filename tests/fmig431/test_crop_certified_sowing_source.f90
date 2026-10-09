@@ -51,6 +51,13 @@ program test_crop_certified_sowing_source
  if(st/=CROP_CERT_SOW_PHYSICAL) error stop 9
  call committed%certified_parameter_identity(identity,available)
  if(.not.available) error stop 10
+ if(.not.fmr_b110_certified_candidate_layout_matches(identity,physical)) &
+     error stop 'valid thermal candidate rejected'
+ cold=physical
+ call initialize_soil_temperature_state([8.0_real64],cold%soil_temperature,st)
+ if(st/=SOIL_TEMP_OK) error stop 'malformed heat fixture failed'
+ if(fmr_b110_certified_candidate_layout_matches(identity,cold)) &
+     error stop 'one-node heat continuation passed two-node certificate'
  call committed%snapshot(snapshot,available)
  if(.not.available) error stop 11
  cold=physical
