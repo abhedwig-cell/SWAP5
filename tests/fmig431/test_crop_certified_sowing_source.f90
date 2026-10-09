@@ -4,7 +4,8 @@ program test_crop_certified_sowing_source
  use mod_kernel_transactions, only: kernel_committed_state_t,kernel_parameter_identity_t, &
      kernel_reconstruct_committed_state_trusted, KERNEL_TRUSTED_RECONSTRUCTION_OK
  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &
-     fmr_b110_physical_parameters_t,fmr_new_b110_committed_state
+     fmr_b110_physical_parameters_t,fmr_new_b110_committed_state, &
+     fmr_b110_certified_candidate_layout_matches
  use mod_soil_temperature_contract, only: initialize_soil_temperature_state,SOIL_TEMP_OK
  use mod_fmr_crop_certified_sowing_source
  implicit none
