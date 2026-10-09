@@ -313,6 +313,10 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/kernel/mod_kernel_transactions.f90|src/runtime/mod_fmr_serialized_reference_backend.f90 )
+        (( crop_fkt_b110_exact_successor )) ||
+          fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
+        ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
       src/crop/mod_crop_root_anaerobic_extension_gate.f90 ) ;;
       src/crop/mod_crop_root_depth_biomass.f90 ) ;;
