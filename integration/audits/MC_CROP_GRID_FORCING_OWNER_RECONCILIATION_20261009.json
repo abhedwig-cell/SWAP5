@@ -28,5 +28,18 @@
   "constraint": "Do not assert accepted grid identity by comparing only active_nodes/shape, and do not assign parameter_set_id from caller without owner-backed verification.",
   "next_implementation": "Find existing F-KT kernel model/parameter owner certificate coupling fmr_b110_physical_parameters_t parameter_set_id to committed snapshot lineage/time; if absent, agree a read-only owner-issued provenance contract before exposing zbotcp/nodsow and dz to lifecycle; cover mismatched geometry, time, parameter id, heat switch, and weather interval at O0/O2 with B19/MICRO preservation.",
   "active_overlap": "PR #1141 paired physical/calendar restart remains draft; root and MICRO owner PRs remain active; do not edit those shared interfaces.",
-  "claim_ceiling": "Only gap reconciliation, no physical source forcing or crop transition admitted."
+  "claim_ceiling": "Only gap reconciliation, no physical source forcing or crop transition admitted.",
+  "kernel_owner_verification": {
+    "exact_canonical": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+    "inspected": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90",
+      "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+    ],
+    "finding": "The kernel_committed_state_t public accessors and snapshot guard lineage, revision and committed time, but its read-only interface shown here does not expose a linked kernel_parameters_t identity or authenticated z/dz geometry. The existing hydraulic binding returns pressures and water contents and the heat sampler checks node number, not parameter geometry.",
+    "non_solution": "Do not infer certified grid identity from matching active_nodes, matching lengths, or a caller supplied parameter_set_id.",
+    "safety_decision": "No physical sowing, preparation or germination forcing may be committed via these view-only APIs until a parameter-owner certificate is bound to the identical committed physical state and validated for restart and retry.",
+    "next_gate": "Identify B110 model's actual parameter-owner binding and propose a read-only certificate with negative mismatched parameter_set_id, permuted equally sized dz, stale revision, foreign lineage, altered time, heat disabled and restart cases. Require O0/O2 and F-CI B19/MICRO gates before admission."
+  }
 }
