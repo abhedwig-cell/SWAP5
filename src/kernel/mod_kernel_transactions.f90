@@ -367,7 +367,7 @@ contains
   ! Ordinary runtime code must continue to use initialize() and transaction
   ! commit. External parsing and codec selection remain outside this module.
   subroutine kernel_reconstruct_committed_state_trusted(target, lineage_id, revision, physical_state, &
-       committed_time, time_bound, reconstructed, status, parameters)
+       committed_time, time_bound, reconstructed, status, parameters, persisted_identity)
     type(kernel_committed_state_t), intent(inout) :: target
     integer(int64), intent(in) :: lineage_id
     integer(int64), intent(in) :: revision
@@ -377,6 +377,8 @@ contains
     logical, intent(out) :: reconstructed
     integer, intent(out) :: status
     class(kernel_parameters_t), intent(in), optional :: parameters
+    type(kernel_parameter_identity_t), intent(in), optional :: persisted_identity
+    type(kernel_parameter_identity_t) :: supplied
     logical :: certified
     class(transaction_state_t), allocatable :: copy
 
@@ -398,11 +400,16 @@ contains
     end if
 
     if(present(parameters)) then
-      call parameters%capture_identity(target%parameter_identity,certified)
-      if(.not.certified.or..not.target%parameter_identity%valid) then
-        target%parameter_identity=kernel_parameter_identity_t()
-        return
-      end if
+      ! The trusted decoder must bring the ORIGINAL separately persisted
+      ! identity. Minting a fresh identity from supplied parameters on restart
+      ! would silently authorize an entirely different but equal-sized grid.
+      if(.not.present(persisted_identity)) return
+      call parameters%capture_identity(supplied,certified)
+      if(.not.certified) return
+      if(.not.persisted_identity%matches(supplied)) return
+      target%parameter_identity=persisted_identity
+    else
+      if(present(persisted_identity)) return
     end if
     call physical_state%clone(copy)
     if (.not. allocated(copy)) return
