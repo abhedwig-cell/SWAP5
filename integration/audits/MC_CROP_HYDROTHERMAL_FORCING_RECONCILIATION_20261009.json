@@ -1,0 +1,97 @@
+{
+  "schema": "swap431.crop_hydrothermal_forcing_reconciliation.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "CROP-PHYSICAL-FORCING01",
+  "baseline": "a3f2aa475771c042dcf3db6931e6a613aaca3955",
+  "reconciled_at": "2026-10-09",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "inherited_admitted": [
+    "PR #1135: read-only preparation/sowing/germination candidate calculations",
+    "PR #1136: daily nonmutating composition",
+    "PR #1138: F-KT-owned bounded continuation and receipt persistence",
+    "PR #1139: read-only committed physical/calendar postevent coherence"
+  ],
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "current_candidates": [
+    "src/crop/mod_crop_preparation_sowing_preflight.f90",
+    "src/crop/mod_crop_germination_preflight.f90",
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "src/crop/mod_crop_lifecycle_continuation.f90"
+  ],
+  "source_specific_inputs": {
+    "preparation": "swprep=1: h_average(z_prep), threshold h_prep, and accepted delay_prep; legacy task 3 postpones while mean pressure head exceeds threshold and delay remains below max",
+    "sowing": "swsow=1 requires SWHEA=1; h_average(z_sow), tsoil(nodsow) derived from z_tempsow, thresholds and delay_sow inherited from preparation",
+    "germination": "swgerm=1: daily tav and temperature sum; swgerm=2 additionally h_average(zgerm) and hdrygerm/hwetgerm pressure-head response; accepted source-day accumulation",
+    "publication": "Crop-emergence and root initialization depend on previous lifecycle flags and a valid physical commit, not a candidate or calendar ENTER alone"
+  },
+  "observed_gap": "Present candidate routines accept caller-supplied real-valued samples/heat_enabled, without a verified typed lineage to the accepted F-KT hydraulic, thermal, atmospheric and SWHEA owner at the exact committed time. Existing PR #1139 validator explicitly does not prove this provenance.",
+  "ownership_rule": "Use read-only accepted physical snapshots; never construct independent mutable hydraulic, thermal, crop or root state; bind a single event/time/revision provenance to sampled inputs before proposing lifecycle flags.",
+  "required_next_evidence": [
+    "Map actual accepted F-KT hydraulic snapshot to h_average at zprep,zsow,zgerm with documented grid/depth sign and layering",
+    "Identify accepted heat/soil-temperature owner, SWHEA capability flag and ztempsow-to-nodsow correspondence; reject unsupported sowing",
+    "Identify accepted daily atmospheric tav source/time and require alignment to exact crop event window",
+    "Create fail-closed typed provenance preflight without changing existing candidate physics or F-KT commit semantics",
+    "Test wrong-state, wrong-time, wrong revision, missing heat, nonfinite values, reject/retry and duplicate events at O0/O2",
+    "After owner qualification, require B19/MICRO/root uptake preservation and exact-head F-CI before admission"
+  ],
+  "live_overlap_warning": [
+    "PR #1113 and #1111 propose SWRD3 root geometry",
+    "PR #1129 reconciles crop/B19/MICRO owners",
+    "PR #1122 addresses competing root proposals",
+    "PR #1119 modifies frost/hydraulic guards"
+  ],
+  "scope_ceiling": "Reconciliation checkpoint only. No new physical forcing binding, emergence, harvest or whole-system restart implementation; not qualified or admitted.",
+  "next_action": "Implement source/owner-authenticated hydraulic/thermal forcing under accepted F-KT event identity; then delayed emergence physical F-KT acceptance, roots, harvest, two crops with fallow, SWINCO=3, serialized restart, O0/O2 and F-CI.",
+  "next_bounded_slice": {
+    "name": "Previous-day emergence eligibility preflight",
+    "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:cropemergence",
+    "implementation": "src/crop/mod_crop_previous_day_emergence_gate.f90",
+    "test": "tests/fmig431/test_crop_previous_day_emergence_gate.f90",
+    "local_compiler": "gfortran -std=f2008 -Wall -Wextra -fcheck=all",
+    "local_o0": "PASS on 11 cases at 40fcc45b1a94ec34662ffb25dd0e11dca429f1b2",
+    "local_o2": "PASS on 11 cases at 40fcc45b1a94ec34662ffb25dd0e11dca429f1b2",
+    "state": "standalone read-only prototype; not F-KT-wired, not qualified, not admitted",
+    "limits": [
+      "Uses explicit revision and lifecycle flags; caller provenance not authenticated against accepted F-KT state",
+      "Does not publish physical emergence, roots, or calendar",
+      "Not yet part of required owner/F-CI preservation gates"
+    ],
+    "test_count": 11,
+    "ci_note": "Existing F-CI run 37888364151 tested old head 12b9b8e, cannot qualify this newer branch head; unrelated PUB workflow red results must not be inferred as crop-specific."
+  },
+  "source_ordering_caveat": {
+    "observation": "B1.11 cropemergence first checks previously accepted fl_prep/fl_sow/fl_germ before task-2 initialization. On start of a crop rotation it can also set immediate emergence if all flags become true after task-2 defaults. Therefore previous-day gate is only the delayed-emergence branch, not an exhaustive standalone crop-start emergence specification.",
+    "implication": "Do not wire the read-only gate as the sole emergence authority. Add explicit source-backed startup/default handling after matching accepted physical event and independent forcing evidence.",
+    "lineage_warning": "Current gate arguments are caller-provided integer revisions, not real F-KT snapshot authenticated event receipts. Revision equality alone does not prove event identity or hydrothermal input provenance."
+  },
+  "fci_reconciliation": {
+    "run": 37888364151,
+    "qualified_commit": "12b9b8edd1c2b602397023c6a6c0cab28d6fc182",
+    "conclusion": "failure",
+    "failing_job": "current-restricted-canonical-preservation",
+    "exact_failure": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL B19+MICRO unqualified source change: src/crop/mod_crop_previous_day_emergence_gate.f90",
+    "repair_commit": "fa4171a8fae114beaa71fd3fb73a4fa6211a9113",
+    "repair": "Classify new source as crop_lifecycle_changed and REQUIRE the existing tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh; no scientific thresholds or source-owner checks removed.",
+    "new_head_qualification": "PENDING; old failed run cannot be reused",
+    "admission": "NOT ADMITTED"
+  },
+  "bounded_emergence_admission": {
+    "scope": "Read-only previous accepted-day crop emergence eligibility preflight only, no publication or F-KT owner forcing authentication",
+    "pr": 1140,
+    "qualified_head": "bded3d216da9c3dd80e9b70028d458d552fb789a",
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37891074870",
+    "owner_conclusion": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37891075109",
+    "fci_conclusion": "success",
+    "merge_commit": "3740dc77dd38d112b18054af896c0ee90a2c6eb9",
+    "canonical_admitted": true
+  },
+  "scope_status": "Full hydrothermal forcing coupling and physical lifecycle remain open. Bounded previous-day eligibility helper admitted separately in PR #1140."
+}

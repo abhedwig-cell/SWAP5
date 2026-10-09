@@ -285,6 +285,13 @@ check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
   local crop_unified_restart_changed=0
+  local crop_accepted_heat_changed=0
+  local crop_head_depth_changed=0
+  local crop_havg_changed=0
+  local crop_sow_node_changed=0
+  local crop_grid_sow_changed=0
+  local crop_hydraulic_provenance_changed=0
+  local crop_hydraulic_provenance_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -314,12 +321,50 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_germination_preflight.f90 ) ;;
       src/crop/mod_crop_lifecycle_daily_composition.f90 ) ;;
       src/crop/mod_crop_lifecycle_continuation.f90 ) crop_lifecycle_changed=1 ;;
+      src/crop/mod_crop_previous_day_emergence_gate.f90 ) crop_lifecycle_changed=1 ;;
+      src/crop/mod_crop_b111_pressure_head_average.f90 ) crop_havg_changed=1 ;;
+      src/crop/mod_crop_b111_sowing_node.f90 ) crop_sow_node_changed=1 ;;
+      src/crop/mod_crop_b110_grid_sowing_preflight.f90 ) crop_grid_sow_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90 ) crop_head_depth_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_soil_temperature.f90 ) crop_accepted_heat_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_accepted_heat_changed )); then
+    bash tests/fmig431/run_crop_accepted_soil_temperature.sh || \
+      fail 'F-KT committed soil heat O0/O2 gate failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'F-KT crop heat B19/MICRO preservation failed'
+  fi
+  if (( crop_head_depth_changed )); then
+    bash tests/fmig431/run_crop_accepted_head_depth_binding.sh || \
+      fail 'accepted F-KT pF depth binding O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'accepted F-KT pF depth B19/MICRO preservation failed'
+  fi
+  if (( crop_havg_changed )); then
+    bash tests/fmig431/run_crop_b111_pressure_head_average.sh || \
+      fail 'B1.11 crop weighted pF O0/O2 tests failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'B1.11 crop weighted pF B19/MICRO preservation failed'
+  fi
+  if (( crop_grid_sow_changed )); then
+    bash tests/fmig431/run_crop_b110_grid_sowing_preflight.sh || \
+      fail 'B110 crop grid sowing preflight O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'B110 crop grid sowing preflight B19/MICRO preservation failed'
+  fi
+  if (( crop_sow_node_changed )); then
+    bash tests/fmig431/run_crop_b111_sowing_node.sh || \
+      fail 'B1.11 sowing temperature node O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'B1.11 sowing node B19/MICRO preservation failed'
+  fi
   if (( crop_lifecycle_changed )); then
     # This source is admitted to the restricted B19/MICRO candidate surface
     # ONLY after its full exact-head F-KT O0/O2 plus actual MICRO02/03/05/06
@@ -329,6 +374,15 @@ check_b19_micro_root_recomposition() {
       fail 'missing qualified lifecycle B19/MICRO cross-preservation gate'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'lifecycle B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_hydraulic_provenance_changed )); then
+    # Fail closed unless the exact source dependency closure compiles O0/O2,
+    # rejects invalid F-KT provenance and inherited B19/MICRO runs pass.
+    # This does NOT qualify positive hydraulic sampling or hydrothermal forcing.
+    bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \
+      fail 'crop accepted hydraulic provenance O0/O2 gate failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'crop hydraulic provenance B19/MICRO cross-preservation failed'
   fi
   if (( crop_physical_restart_changed )); then
     # Restrict this new read-only physical/calendar restart validator to an
@@ -342,10 +396,18 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'crop physical restart B19/MICRO cross-preservation failed'
   fi
+  if (( crop_hydraulic_provenance_changed )); then
+    # A new read-only accepted F-KT hydraulic view is NOT unconditionally
+    # admitted. Require positive/negative O0/O2 real B110 owner binding and
+    # actual current-head B19/MICRO source/runtime cross-preservation.
+    bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \
+      fail 'crop accepted hydraulic F-KT provenance O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'crop accepted hydraulic B19/MICRO cross-preservation failed'
+  fi
   if (( crop_unified_restart_changed )); then
-    # A change to either postevent owner/calendar coherence or the derived
-    # calendar revision owner demands complete same-tree replay. This check
-    # is not an authority to change root/transport or publish crop physics.
+    # Both calendar revision and F-KT accepted physical/calendar checkpoint
+    # must pass whole same-tree replay; no new crop publication authority.
     bash tests/fmig431/run_crop_rotation_calendar.sh || \
       fail 'crop calendar selector preservation failed'
     bash tests/fmig431/run_crop_rotation_transition.sh || \

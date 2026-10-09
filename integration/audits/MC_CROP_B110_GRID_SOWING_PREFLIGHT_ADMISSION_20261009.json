@@ -1,0 +1,38 @@
+{
+  "schema": "swap431.crop_b110_grid_sowing_preflight_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "5b3a4336cb7294cd44802cc1df2921a942dcd785",
+  "qualified_head": "acc9575813d88e363be538b20bf4d307b77596b2",
+  "canonical_merge": "f2b38c00cbbd101a677a2511c9cc32e2981048ac",
+  "admitted": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "pr": 1154,
+  "implementation": "src/crop/mod_crop_b110_grid_sowing_preflight.f90",
+  "tests": [
+    "tests/fmig431/test_crop_b110_grid_sowing_preflight.f90",
+    "tests/fmig431/run_crop_b110_grid_sowing_preflight.sh"
+  ],
+  "qualification": {
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37911302111",
+    "owner_result": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37911302133",
+    "fci_result": "success"
+  },
+  "scope": "Read-only B110 z/dz exact compartment midpoint consistency validation with B1.11 first-negative-bottom ztempsow node selection; invalid and out-of-profile requests fail closed.",
+  "source": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90 B110 z/dz exact geometry preflight",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90 historical zbotcp to nodsow rule"
+  ],
+  "claim_ceiling": [
+    "Parameters supplied to this function are not bound by any owner-issued receipt to F-KT committed physical state.",
+    "This validation does not authenticate parameter_set_id, revision/lineage or restart.",
+    "No SWHEA option authentication, accepted daily tav or physical lifecycle transaction; no physical sowing/admission."
+  ],
+  "next_action": "Design and qualify authenticated parameter-owner physical-state binding for the existing F-KT kernel and B110 model, including rollback/reconfigure/restart; then compose preflight with committed heat and hydraulic snapshots."
+}
