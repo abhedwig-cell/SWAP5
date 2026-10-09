@@ -2,13 +2,13 @@
   "workstream": "research/kalmthout_pilot",
   "work_unit": "KALMTHOUT-PILOT-01",
   "baseline": "integration/f-ci-canonical",
-  "checkpoint_commit": "4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "checkpoint_commit": "3ccc06199aa4d3e6caa153422b2383fb0b91c695",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": false,
   "canonical_admission": false,
-  "last_reconciled_head": "4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "last_reconciled_head": "3ccc06199aa4d3e6caa153422b2383fb0b91c695",
   "official_domain": {
     "crs": "EPSG:32631",
     "total_extent": [579980.0, 5674020.0, 619980.0, 5715020.0],
@@ -53,7 +53,7 @@
     "src/runtime/mod_fmr_production_application_bootstrap.f90"
   ],
   "next_action": "Finish bounded Rutter wet-forcing diagnosis, then rerun one focused pilot gate only after local/static checks and queue reconciliation.",
-  "recovery_point": "work/kalmthout-swap5-pilot at 4cec02509e34d575ad68720534c0d381a2cfdad0",
+  "recovery_point": "work/kalmthout-swap5-pilot at 3ccc06199aa4d3e6caa153422b2383fb0b91c695",
   "blockers": [
     "Minimal source GeoPackage has broken CRS metadata; corrected local artifact produced separately.",
     "Rutter wet-forcing path is not yet qualified for the long 2024-2026 application run."
