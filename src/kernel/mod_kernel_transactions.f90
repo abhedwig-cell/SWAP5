@@ -240,6 +240,7 @@ module mod_kernel_transactions
   contains
     procedure(configure_parameters_iface), deferred :: configure_parameters
     procedure(execution_admitted_iface), deferred :: execution_admitted
+    procedure :: matches_committed_parameter_identity => kernel_model_uncertified_identity
   end type kernel_model_t
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
@@ -274,6 +275,12 @@ module mod_kernel_transactions
   end interface
 
 contains
+  logical function kernel_model_uncertified_identity(self,identity,state) result(ok)
+    class(kernel_model_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+  end function
   subroutine kernel_parameters_identity_unavailable(self,identity,available)
     class(kernel_parameters_t), intent(in) :: self
     type(kernel_parameter_identity_t), intent(out) :: identity
@@ -1016,6 +1023,23 @@ contains
       return
     end if
 
+    ! Certified F-KT routes must preserve the layout of the candidate itself.
+    ! A failed validation never consumes the candidate or changes committed state.
+    if(committed_state%parameter_identity%valid) then
+      if(.not.associated(self%model)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+      if(.not.allocated(candidate_state%state)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+      if(.not.self%model%matches_committed_parameter_identity( &
+           committed_state%parameter_identity,candidate_state%state)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+    end if
     call move_alloc(candidate_state%state, committed_state%physical_state)
     if (present(accepted_mass)) accepted_mass = candidate_state%mass
     committed_state%revision = committed_state%revision + 1_int64
