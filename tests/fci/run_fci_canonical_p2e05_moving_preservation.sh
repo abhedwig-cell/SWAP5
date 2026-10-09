@@ -303,6 +303,7 @@ check_b19_micro_root_recomposition() {
   local crop_unified_restart_changed=0
   local crop_accepted_heat_changed=0
   local crop_certified_sow_changed=0
+  local crop_certified_daily_changed=0
   local crop_atomic_hydroheat_changed=0
   local crop_head_depth_changed=0
   local crop_havg_changed=0
@@ -352,6 +353,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90 ) crop_atomic_hydroheat_changed=1 ;;
       src/runtime/mod_fmr_crop_certified_sowing_source.f90 ) crop_certified_sow_changed=1 ;;
       src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90 ) crop_certified_sow_changed=1 ;;
+      src/runtime/mod_fmr_crop_certified_germination_moisture.f90|src/runtime/mod_fmr_crop_certified_daily_preflight.f90 ) crop_certified_daily_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
@@ -360,6 +362,14 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  if (( crop_certified_daily_changed )); then
+    bash tests/fmig431/run_crop_certified_daily_preflight.sh ||
+      fail 'certified F-KT B1.11 daily preparation/sowing/germination O0/O2 failed'
+    bash tests/fmig431/run_crop_germination_preflight.sh ||
+      fail 'source B1.11 germination preflight preservation failed'
+    bash tests/fmig431/run_crop_preparation_sowing_preflight.sh ||
+      fail 'source B1.11 preparation/sowing preflight preservation failed'
+  fi
   if (( crop_certified_sow_changed )); then
     bash tests/fmig431/run_crop_fkt_parameter_identity.sh || \
       fail 'F-KT B110 parameter identity O0/O2 failed'
