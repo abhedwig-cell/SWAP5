@@ -284,6 +284,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 check_b19_micro_root_recomposition() {
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
+  local crop_unified_restart_changed=0
   local crop_accepted_heat_changed=0
   local crop_head_depth_changed=0
   local crop_havg_changed=0
@@ -314,7 +315,7 @@ check_b19_micro_root_recomposition() {
       src/process/mod_root_water_uptake_process.f90 ) ;;
       src/crop/mod_crop_root_length_density_constant.f90 ) ;;
       src/crop/mod_crop_rotation_calendar.f90 ) ;;
-      src/crop/mod_crop_rotation_transition.f90 ) ;;
+      src/crop/mod_crop_rotation_transition.f90 ) crop_unified_restart_changed=1 ;;
       src/crop/mod_crop_rotation_lifecycle_preflight.f90 ) ;;
       src/crop/mod_crop_preparation_sowing_preflight.f90 ) ;;
       src/crop/mod_crop_germination_preflight.f90 ) ;;
@@ -327,7 +328,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90 ) crop_head_depth_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_soil_temperature.f90 ) crop_accepted_heat_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
-      src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1 ;;
+      src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
@@ -403,6 +404,18 @@ check_b19_micro_root_recomposition() {
       fail 'crop accepted hydraulic F-KT provenance O0/O2 failed'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'crop accepted hydraulic B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_unified_restart_changed )); then
+    # Both calendar revision and F-KT accepted physical/calendar checkpoint
+    # must pass whole same-tree replay; no new crop publication authority.
+    bash tests/fmig431/run_crop_rotation_calendar.sh || \
+      fail 'crop calendar selector preservation failed'
+    bash tests/fmig431/run_crop_rotation_transition.sh || \
+      fail 'crop calendar trial/revision preservation failed'
+    bash tests/fmig431/run_crop_rotation_receipt_full_gate.sh || \
+      fail 'crop committed-receipt publication preservation failed'
+    bash tests/fmig431/run_crop_unified_restart_bundle.sh || \
+      fail 'crop unified physical/calendar persistence replay failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "$(git rev-parse "$dependency_authority:$candidate_path")" || \
