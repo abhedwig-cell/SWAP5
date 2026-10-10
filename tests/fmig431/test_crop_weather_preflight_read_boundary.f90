@@ -9,6 +9,8 @@ program test_crop_weather_preflight
  use mod_crop_weather_day_owner
  use mod_fmr_crop_certified_daily_preflight,only:crop_certified_daily_preflight_t
  use mod_fmr_crop_weather_day_preflight
+ use mod_crop_lifecycle_daily_composition,only:crop_daily_lifecycle_candidate_t, &
+      compose_crop_lifecycle_daily_candidate,CROP_DAILY_OK,CROP_DAILY_INVALID
  implicit none
  type(kernel_committed_state_t)::committed,heat_off,restarted
  type(fmr_b110_physical_state_t)::state
@@ -17,6 +19,7 @@ program test_crop_weather_preflight
  class(transaction_state_t),allocatable::snapshot
  type(weather_day_owner_t)::weather,replayed
  type(crop_certified_daily_preflight_t)::result
+ type(crop_daily_lifecycle_candidate_t)::plan
  integer::s
  logical::ok,available,reconstructed
  state%active_nodes=2
@@ -97,6 +100,40 @@ program test_crop_weather_preflight
       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
       -1000.0_real64,-10.0_real64,20.0_real64,result,s)
  if(s/=CROP_WEATHER_PREFLIGHT_SOIL.or.result%valid) error stop 24
+ ! Compose historical preparation -> sowing -> germination ordering from
+ ! the combined WEATHER+CERTIFIED F-KT preflight, never as a physical event.
+ call propose_weather_day_crop_preflight(restarted,52_int64,0_int64,3.0_real64, &
+      replayed,7_int64,9_int64,1_int64,3.0_real64, &
+      -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+      1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+      0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+      -1000.0_real64,-10.0_real64,20.0_real64,result,s)
+ if(s/=CROP_WEATHER_PREFLIGHT_OK.or..not.result%valid) error stop 25
+ call compose_crop_lifecycle_daily_candidate(result%preparation,result%germination,plan,s)
+ if(s/=CROP_DAILY_OK.or..not.plan%valid) error stop 26
+ if(.not.plan%prepared.or..not.plan%sown.or..not.plan%germination_evaluated) error stop 27
+ if(plan%germinated.or.plan%emergence_eligible) error stop 28
+ if(plan%preparation_delay/=0.or.plan%sowing_delay/=0) error stop 29
+ ! A moisture-limited preparation must suppress all germination evaluation,
+ ! even when a valid meteorological day is present.
+ call propose_weather_day_crop_preflight(restarted,52_int64,0_int64,3.0_real64, &
+      replayed,7_int64,9_int64,1_int64,3.0_real64, &
+      -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+      1,0,-200.0_real64,-200.0_real64,10.0_real64, &
+      0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+      -1000.0_real64,-10.0_real64,20.0_real64,result,s)
+ if(s/=CROP_WEATHER_PREFLIGHT_OK.or..not.result%valid) error stop 30
+ call compose_crop_lifecycle_daily_candidate(result%preparation,result%germination,plan,s)
+ if(s/=CROP_DAILY_OK.or..not.plan%valid) error stop 31
+ if(plan%prepared.or.plan%sown.or.plan%germination_evaluated.or. &
+    plan%germinated.or.plan%emergence_eligible) error stop 32
+ if(plan%preparation_delay/=1) error stop 33
+ ! Reject a missing germination candidate once preparation and sowing hold.
+ result%germination%valid=.false.
+ result%preparation%preparation_complete=.true.
+ result%preparation%sowing_complete=.true.
+ call compose_crop_lifecycle_daily_candidate(result%preparation,result%germination,plan,s)
+ if(s/=CROP_DAILY_INVALID.or.plan%valid) error stop 34
  print '(a)','CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS'
 contains
  subroutine propose(lineage,revision,time,source,epoch,wrev,day)
