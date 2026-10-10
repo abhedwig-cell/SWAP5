@@ -1,0 +1,204 @@
+{
+  "schema": "swap5.coverage.implementation_reachability_review.v1",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "reviewed_postimage": "32aede1ca6a9ee4c27cc5f226b5b8d7c5c7c019b",
+  "constitutive_provider_inventory": [
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "line": 22,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: b110_default_mvg_provider_t",
+      "sha256": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "line": 13,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: b110_direct_retention_provider_t",
+      "sha256": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9"
+    },
+    {
+      "path": "src/solver/mod_frost_hydraulic_provider.f90",
+      "line": 15,
+      "declaration": "type, extends(constitutive_hydraulics_provider_t), public :: frost_constitutive_provider_t",
+      "sha256": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a"
+    }
+  ],
+  "source_files_sha256": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990",
+    "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+    "src/solver/mod_frost_hydraulic_provider.f90": "2880e6b558001900f8af72f6282fd2f508825d0ec3c40762a5a2749335d6370a",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "src/process/mod_solute_mobile_salt_state.f90": "7e9463600dd47e4f9a9b05f6f4a8ab68684c383d7dabc80195c212c6da920094",
+    "src/process/mod_solute_mobile_advection_dispersion.f90": "e619f6e1a022a43ed83d39e89ddaad1a97e4ad3a0603bb24023914a2dbe64c3b",
+    "src/runtime/mod_fmr_wofost81_crop_transaction.f90": "da47da6ec514fd752d7fbd7b75c91a82f9122a795566a224f45e82666d08e7a5",
+    "src/process/mod_root_water_uptake_process.f90": "f0805c00977efdef834384d412608a1f454e2a9adf40ed27f0986de0230231c8",
+    "src/process/mod_soil_temperature_contract.f90": "f68e8380a6db4fbcaeb9cdbc1c75c2dc1fe691022eab96c577928fff78a078a5",
+    "src/process/mod_restricted_soil_temperature.f90": "602858657ce4ccd8004303f4d09bc96ee4dae6dace8572d33aa947aef97aefe7",
+    "src/runtime/mod_fmr_macropore_configuration.f90": "2f1d13759ad0ba420f9032ee2468cb4cc48aa3edd4f3fdee2bcf042c856d30bd",
+    "src/runtime/mod_macropore_standard_rate_adapter.f90": "d28e618a53458724d7f222bc2fbd3a5d46aed4faad9752334f86d2d656c693ab",
+    "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+    "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90": "b695009067bd261a89ee3ca3a7e3a4efbd4492d9be21056aa5f5624568e93a5a",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90": "41a2f082116362cd21c1e13d7972b689e8450b25d793647f06447acb37131964",
+    "src/process/mod_irrigation_process.f90": "0cbe4d23a2a29e8dc585fa92f9eb826b8e6f8b6124228e0b8955d160d97d64dd",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90": "0e7b5f97af8a2f3685dff202b37b040a5dafcfaf8cd2cabc890ee9366c0a357d",
+    "src/crop/mod_wofost81_nitrogen.f90": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce",
+    "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90": "60e9fd3fd73e1b19a6e7898aa5f83c9aee864413848e378c445c3bc328238cd4",
+    "tests/fwof/pp02/test_wofost81_nitrogen_driver.f90": "a1e08af921afa75ccc9bec27c2c8b9a02de39397046fc654f631f092bc38a68a",
+    "tests/fwof/pp02/test_wofost81_fullseason_replay.f90": "46d23d15cadbced3b096cbcfcd73c49c019ce9b4c642570cbafaa3d4e165e1ea",
+    "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90": "1e32b6feb546bd1ab809825db7b4a23957f00cc075b9706056ec85f3a0da5c8c",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90": "d8b20863a22d936e026e2633615d6c7a5a233412b8a03547459328319473bdc7",
+    "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
+    "src/runtime/mod_fmr_root_uptake_process_binding.f90": "b29091b566c5b37038f4028b8665a071bee89e6b275c0eee861cce1a8707e8dd",
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "src/process/mod_pmdirect_swetr0_process.f90": "7c0561ce8b2290ced86626bab38cf6a156a7d29f2d909b2f67c7a2b235ea14d7",
+    "src/process/mod_reference_et_demand_process.f90": "e91146a3244079bb79091f137d11ab45214e5a8bd876ead8cd0c03a827821765"
+  },
+  "findings": [
+    {
+      "family": "hydraulic",
+      "finding": "The serialized runtime explicitly binds default MvG, default-MvG direct-retention acceleration, and frost overlay. The direct-retention provider delegates to its analytical default-MvG member. No production binding or owned history layout for models2/3/5..12, arbitrary user constitutive tables, user power tails, hysteresis or PDI/RIA vapour is supplied by these paths. Legacy/reference bodies do not establish this runtime coverage.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:605..607,718,1023..1066",
+        "src/solver/mod_b110_direct_retention_provider.f90:3..19,48..55"
+      ]
+    },
+    {
+      "family": "solute",
+      "finding": "The admitted mobile owner has dissolved mass and derived concentration only. Current physics parameters provide diffusion/dispersion, not sorbed inventory, transformation/decay, aquifer salt storage, pond dissolved mass or age accumulation. Those require different owned state/operators; root salinity stress does not create them.",
+      "evidence_locators": [
+        "src/process/mod_solute_mobile_salt_state.f90:10..17",
+        "src/process/mod_solute_mobile_advection_dispersion.f90:8..13"
+      ]
+    },
+    {
+      "family": "crop_nitrogen",
+      "finding": "WOFOST81 contains nitrogen state/request/supply mechanics. F-CI89 and docs/science/wofost-crop-coupling.md explicitly qualify only bounded N-unlimited request-equals-supply. No legacy Soil-N mineral/organic cycling admission is inferred, and presence of crop N code is not classified as missing crop N algebra."
+    },
+    {
+      "family": "empirical_oxygen",
+      "finding": "Legacy SWOXYGEN=1 applies the HLIM1/HLIM2U/HLIM2L wet-pressure-head reduction before the sole qrot sink. Current evaluate_macro_feddes_drought_uptake uses only HLIM3/HLIM4 drought reduction. The backend optionally applies Bartholomeus mode2/type1; that is a different physical factor. The previous draft-ledger ADMITTED classification and its C3A candidate citation were incorrect and are withdrawn.",
+      "evidence_locators": [
+        "SWAP/rootextraction.f90:385..410,451",
+        "src/process/mod_root_water_uptake_process.f90:54..124",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:3872..3892",
+        "docs/audits/PPA_WU05C3A_CLOSEOUT.md:Admission"
+      ]
+    },
+    {
+      "family": "thermal_boundaries",
+      "finding": "Typed sensible thermal forcing contains only prescribed surface temperature. The actual solver assembles Dirichlet top and zero-flux bottom. No harmonic temperature evaluator, top heat-flux/mixed boundary input, bottom Dirichlet input or snow-resistance boundary is provided by this thermal owner. De Vries and Dirichlet surface admissions remain valid; the five different source routes remain missing production implementations.",
+      "evidence_locators": [
+        "src/process/mod_soil_temperature_contract.f90:42..44",
+        "src/process/mod_restricted_soil_temperature.f90:91..165,260..281"
+      ]
+    },
+    {
+      "family": "macropore_absorption",
+      "finding": "Actual A8 fixture has SorpMax=0.001, alpha=0.5, unsaturated exchange conductivity=0, independent Richards MvG conductivity, and accepted sorption history. Thus positive empirical SWABS1 sorptivity and extra-Darcy OFF have bounded production coverage. Current request preparation does not update the exchange conductivity from current Richards constitutive K, so active source SWDARCY1 binding remains missing. SWABS2 diffusivity algebra is absent. No admission of Parlange fitting, negative empirical exponent or active alternative saturated geometry follows.",
+      "evidence_locators": [
+        "SWAP/macropore.f90:988..996,1974..1977",
+        "SWAP/macrorate.f90:1692..1710,1720..1800",
+        "src/runtime/mod_macropore_standard_rate_adapter.f90:264..385",
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90:128..159",
+        "tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90:217..242"
+      ]
+    },
+    {
+      "family": "fixed_crop",
+      "finding": "CROPTYPE1 is not stateless prescribed forcing: IDEV1 calendar and IDEV2 thermal-sum branches update DVS/TSUM and previous WRT. Current crop typed views consume DVS/LAI/root inputs; no fixed-crop accepted owner/evaluator is supplied by the admitted WOFOST81 runtime. SWGC1 is only an obsolete LAI-table name and SWGC2 errors.",
+      "evidence_locators": [
+        "SWAP/fixed.f90:109..137,208..276",
+        "src/crop/mod_crop_et_canopy_view_provider.f90:27..48",
+        "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90:24..51",
+        "docs/science/wofost-crop-coupling.md"
+      ]
+    },
+    {
+      "family": "composed_admission_guards",
+      "finding": "Concrete current runtime guards establish missing frost/root-drain, non-mode2 frost bottom, multilevel extended frost, frost/snow, macro/snow, macro/Black-Boesten and macro/internal-fixed-weir composition. These findings concern absent supported bindings; they do not label every underlying algorithm missing. External prescribed surface-water and two saturated seepage-face branches remain separately registered source/admission reviews.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:840..847,2590..2601,2639..2655,2665..2669,3274..3282",
+        "SWAP/temperature.f90:255..262",
+        "SWAP/surfacewater.f90:64..71,305,338,357",
+        "SWAP/macrorate.f90:1550..1561"
+      ]
+    },
+    {
+      "family": "irrigation_rate_interval",
+      "finding": "F-APP07 positive-rate, <=one-day, minimum-interval owner does not implement source scheduled zero-rate daily fallback, >one-day adaptive-rate fallback or TCSFIX0. The admitted dayfix gate is separately explicit. TASK4 scales rate and duration and must be traced as physical allocation rather than discarded as executable plumbing. Fixed SSDI divides depth by node count before selection, while scheduled SSDI assignments retain per-node rate; do not conflate these source routes.",
+      "evidence_locators": [
+        "SWAP/irrigation.f90:551..562,596..636,725..729",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:214..220,268..270",
+        "integration/f-app/F-APP07_PREREGISTRATION.json"
+      ]
+    },
+    {
+      "family": "soil_n_and_crop_fixation",
+      "finding": "Canonical production has WOFOST81 crop N algebra but no literal SoilManagement/Wofost_Soil* owner. Runtime passes complete soil_request as supply at334..347. The current81 fixation component exists and tests use.2; however literal B1.11 old demand excludes storage/new-growth demand and applies DVS<DVSNLT as well as RELTR>.01. Nonzero81 runtime qualification alone cannot prove old demand/cutoff coverage. PP01 MAPPING_CONTRACT pins a separately modified13B donor, not this B1.11 source.",
+      "evidence_locators": [
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90:334..347",
+        "src/crop/mod_wofost81_nitrogen.f90:125..149",
+        "tests/fwof/pp02/test_wofost81_nitrogen_edges.f90:13",
+        "tests/fwof/pp02/test_wofost81_fullseason_replay.f90:178",
+        "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90:342",
+        "docs/science/wofost-crop-coupling.md:Nitrogen scope",
+        "SWAP/wofostnut.f90:354..370",
+        "SWAP/wofost.f90:1383..1397",
+        "tests/fwof/pp01/MAPPING_CONTRACT.md"
+      ]
+    },
+    {
+      "family": "root_depth_and_density_owner",
+      "finding": "The actual crop structural owner evolves biomass/DVS/LAI but has no rd/rdpot/rr state or root-depth parameters. B1.11 SWRD2 daily depth advancement, water/supply variants, adaptive node biomass and oxygen-growth gate therefore have missing production ownership. SWRD1 and3 stateless table mappings and SWLRVCONSTANT override remain separate potential typed replacements; generic root-input consumers alone do not qualify their mappings.",
+      "evidence_locators": [
+        "SWAP/MOD_cropdevelopment.f90:1682..1734,1853..1940,1997..2026,2354..2358",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90:25..64",
+        "src/crop/mod_crop_root_uptake_input_contract.f90",
+        "docs/science/wofost-crop-coupling.md"
+      ]
+    },
+    {
+      "family": "surface_water_owner_and_feedback",
+      "finding": "Restricted fixed-weir admission owns storage with power-law rating and two configured nonnegative forcing rates. It has no target-level/drop-rate history, QH table or runoff carrier. Actual backend call passes configured forcing unchanged, not the accepted solver drainage receipt; signed qdrd<0 is explicitly held. Native drain-level feedback and signed donor are therefore separate production gaps, while the bounded existing primitive admission is preserved. WLSBAK oscillation state is numerical-control provenance only.",
+      "evidence_locators": [
+        "SWAP/surfacewater.f90:176..234,254..277,309..356,384..403,496..555",
+        "src/process/mod_restricted_fixed_weir_surface_water.f90:14..29,180..187,215..225",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90:1725..1753,4338..4344,4400..4420"
+      ]
+    },
+    {
+      "family": "absolute_root_length_density_override",
+      "finding": "SWLRVCONSTANT overrides absolute LRV used by MICRO; normalized cumulative root fractions in the admitted Feddes crop contract do not represent this quantity. Canonical MICRO table admission has no LRV resolver or runtime consumer. The source override is stateless and independent of adaptive root-biomass history. No SUPERSEDED claim follows from generic root fractions.",
+      "evidence_locators": [
+        "SWAP/MOD_cropdevelopment.f90:2334..2358",
+        "SWAP/rootextraction.f90:118,234,239,251",
+        "src/crop/mod_crop_root_uptake_input_contract.f90:20..28",
+        "src/runtime/mod_fmr_root_uptake_process_binding.f90:16..21,65..72",
+        "src/process/mod_root_micro_matric_flux_table.f90"
+      ]
+    },
+    {
+      "family": "irrigation_decision_rules",
+      "finding": "Nine explicit source decision rules have no matching parameter/request/evaluator in the two current irrigation components or their application binding. TCS2/3/4 depletion, TCS6 weekly deficit, TCS8 theta sensor, DCS1 refill/rain deduction, DCSLIM clamp, salt-surplus increment and external availability scaling are distinct missing management physics. TCS7/SSDI component code and externally prescribed fluxes do not supply these decisions. Fixed sprinkling and scheduled-surface component reachability/admission are reviewed separately.",
+      "evidence_locators": [
+        "SWAP/irrigation.f90:473..636",
+        "src/process/mod_irrigation_process.f90:29..85,343..369,430..462",
+        "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90:19..51",
+        "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90:30..102"
+      ]
+    },
+    {
+      "family": "atmospheric_demand_partitions",
+      "finding": "Canonical F-APP05 closes bounded daily SWCF2 aerodynamic crop height, superseding the F-APP03 hold. Independently, the current daily PMdirect evaluator has no traditional unscaled resistance/cover partition, no detailed-record radiation multiplier/provider, and the reference-ET evaluator has no soil-only CFBS factor. These three are confirmed distinct missing production routes, not a claim that crop-height code is missing.",
+      "evidence_locators": [
+        "SWAP/MOD_meteo.f90:1415..1460,1917..2001",
+        "src/process/mod_pmdirect_swetr0_process.f90:24..35,130..133,176..230",
+        "src/process/mod_reference_et_demand_process.f90:15..27,117..132",
+        "integration/audits/evidence/SWAP431_SWCF2_ADMISSION_RECONCILIATION.json"
+      ]
+    }
+  ],
+  "scope_limit": "This inventory substantiates specific absent production bindings/state. It is not a complete code call graph or final denominator."
+}

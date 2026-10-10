@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.coverage.swcf2_admission_reconciliation.v1",
+  "canonical_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "canonical_admission_commit": "158ef1e704fbc72f293773cc30ae4d6082d3c28f",
+  "admission_subject": "restricted SWETR0/SWDIVIDE1/SWCF2 Hupsel typed daily canopy aerodynamic-height envelope",
+  "admission_authorities": [
+    "integration/f-app/F-APP05_ADMISSION_READY.json",
+    "integration/f-app/F-APP05_PREREGISTRATION.json"
+  ],
+  "source_files_sha256": {
+    "src/process/mod_pmdirect_swetr0_process.f90": "7c0561ce8b2290ced86626bab38cf6a156a7d29f2d909b2f67c7a2b235ea14d7",
+    "tests/f-app05/test_hupsel_swcf2_pmdirect_daily.f90": "4aa8dc23b399200913fee412e725bd57235d762bc1f0b8538cc4f891555cabc1"
+  },
+  "daily_evaluator_identical_to_admitted_commit": true,
+  "daily_evaluator_sha256": "303b6e8cdaa970f3557b259589d16fd6f81f14fe4e2fa33b56a6e0c599f3b209",
+  "results": [
+    {
+      "optimization": "-O0",
+      "stdout": "F-APP05_HUPSEL_SWCF2_PMDIRECT_DAILY_PASS\n",
+      "cases": 3
+    },
+    {
+      "optimization": "-O2",
+      "stdout": "F-APP05_HUPSEL_SWCF2_PMDIRECT_DAILY_PASS\n",
+      "cases": 3
+    }
+  ],
+  "correction": "F-APP03 exclusion was superseded for this bounded crop-height envelope by actual canonical F-APP05 admission; broad traditional/detailed ET and whole-canopy migration are not inferred.",
+  "new_runtime_admission_created": false
+}

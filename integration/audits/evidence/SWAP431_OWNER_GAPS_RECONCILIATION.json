@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "review": "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
+  "decisions": {
+    "SW431-MACRO-GEOMETRY": "MIGRATE",
+    "SW431-MACRO-POWM": "MIGRATE",
+    "SW431-NUT-NFIX": "MIGRATE",
+    "SW431-CROP-ATTAINABLE": "MIGRATE",
+    "SW431-SW-PRIMARY": "MIGRATE",
+    "SW431-SW-MULTILEVEL": "MIGRATE"
+  },
+  "source_files_sha256": {
+    "src/runtime/mod_fmr_macropore_configuration.f90": "2f1d13759ad0ba420f9032ee2468cb4cc48aa3edd4f3fdee2bcf042c856d30bd",
+    "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90": "6482e11f9c95f5e8ec338507238a230702355f7b53be311816f341d6a6cb10b7",
+    "src/process/mod_drainage_multilevel_aggregation.f90": "42444d0719dc9d8470a7803acad3aa328cb3c7fb080e84b0ae568f4df501967e",
+    "src/process/mod_restricted_fixed_weir_surface_water.f90": "72f2b91e8e4a882b8fc71934ba98d816bd5999cb4e11ef842ce550d742a0e158",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "a1c9baa710b487709c9036a88bf9ab28be5f68b0c0541dd117c2543958de188a",
+    "src/crop/mod_wofost_prepare_assimilation.f90": "8b8d2a2b455f02ba5a00e094b945e7b9809f5b536a5420ae968a2c9937865119",
+    "src/crop/mod_wofost_crop_owner_state.f90": "0fba689dd2cae69a7e5ea73a302539fbe409c043d1c8348acab2b35d8eb037a9",
+    "src/crop/mod_wofost81_nitrogen.f90": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce"
+  },
+  "new_runtime_admission_created": false
+}

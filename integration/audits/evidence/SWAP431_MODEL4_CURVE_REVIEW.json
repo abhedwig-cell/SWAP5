@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.coverage.model4_curve_review.v1",
+  "baseline": "aed173fcbb0772b49ca5e1f3931ceeb89fd53d5e",
+  "source_sha256": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+  "provider_sha256": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990",
+  "status": "PASS_BOUNDED_CURVE_COMPARISON",
+  "cases_per_optimization": 24,
+  "domain": {
+    "pressure_head_cm": [
+      -10,
+      -100,
+      -1000,
+      -10000,
+      -100000,
+      -1000000
+    ],
+    "alpha_per_cm": [
+      0.005,
+      0.01,
+      0.015,
+      0.02
+    ],
+    "n": [
+      1.5,
+      1.7,
+      1.9,
+      2.1
+    ],
+    "m": "1-1/n",
+    "residual_theta": 0.04,
+    "saturated_theta": 0.45,
+    "ksat_cm_day": 10,
+    "lambda": 0.5,
+    "entry_head": 0
+  },
+  "excluded": [
+    "Near-saturation numerical capacity/conductivity regularization",
+    "Nonzero entry head",
+    "Finite dry-end normalization models 5/7/9/11",
+    "Bimodal models",
+    "PDI adsorption/film/vapour",
+    "dK/dh admission",
+    "All soil parameter combinations and full-column trajectory equality"
+  ],
+  "results": [
+    {
+      "optimization": "-O0",
+      "cases": 24,
+      "max_relative_errors_theta_K_C": [
+        1.6041187311525504e-16,
+        8.484846046092113e-14,
+        4.854873962153645e-16
+      ]
+    },
+    {
+      "optimization": "-O2",
+      "cases": 24,
+      "max_relative_errors_theta_K_C": [
+        1.6041187311525504e-16,
+        8.484846046092113e-14,
+        4.854873962153645e-16
+      ]
+    }
+  ],
+  "runtime_admission_created": false
+}

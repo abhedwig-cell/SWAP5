@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MASTER-COVERAGE",
+  "canonical_head": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "scope": "Exact-ref owner/dispatch control-flow proof, deliberately bounded to inspected modules",
+  "findings": [
+    {
+      "family": "drainage/frost",
+      "source": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+      "evidence": "Only fmr_bind_single_level_positive_divdra exported; always allocates drainage_flux_by_level(1,n) after positive single-level process",
+      "frost_source": "src/runtime/mod_fmr_serialized_reference_backend.f90:923-962",
+      "frost_guard": "fmr_frost_divdra_configuration_valid requires frost_active and soil_temperature_active, bottom_mode=2, rejects root_extraction_active, other frost and ordinary response drainage, allocated drainage_response_levels and macropores",
+      "interpretation": "Current positive ordinary binding and frost-specific B19 do not individually establish ordinary signed/multilevel or root-plus-frost composition"
+    },
+    {
+      "family": "root/MICRO",
+      "source": "src/runtime/mod_fmr_root_uptake_process_binding.f90:1-91",
+      "evidence": "fmr_evaluate_committed_root_uptake calls evaluate_macro_feddes_drought_uptake in both inactive and active crop branches; no MICRO microscopic sink dispatch in this binding",
+      "interpretation": "Matric flux table and macro Feddes binding cannot be treated as de Jong van Lier or de Willigen microscopic uptake admission"
+    },
+    {
+      "family": "irrigation",
+      "source": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+      "evidence": "Reviewed TCS1 sprinkling, fixed-surface and Rutter net routing only",
+      "interpretation": "Do not treat partial Hupsel adapter as whole MC-IRR01 admission; PR1126 qualifies isolated owner but not current canonical"
+    }
+  ],
+  "disposition_changes": 0,
+  "new_action_runs": 0,
+  "next_action": "Inspect complete owner wiring and exact qualification evidence if proposing a change to any affected capability; no production duplicate implementation.",
+  "coverage_closed": false
+}

@@ -1,0 +1,416 @@
+{
+  "schema_version": "1.0.0",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "status": "SOURCE_BOUND_CONTRACT_PREREGISTRATIONS_NOT_RUNTIME_ADMISSIONS",
+  "workunits": [
+    {
+      "id": "MC-MICRO01",
+      "decision": "MIGRATE",
+      "capabilities": [
+        "SW431-ROOT-MICRO2",
+        "SW431-ROOT-MICRO3",
+        "SW431-ROOT-MICRO-LIFT",
+        "SW431-ROOT-MICRO-STRESS",
+        "SW431-ROOT-MICRO-TRED"
+      ],
+      "source_dispatch": "SWDROUGHT2 -> iMicro2 de Jong van Lier; SWDROUGHT3 -> iMicro1 de Willigen. External Jarvis/Walsum and frost are prohibited, not optional composition work.",
+      "physics": "Solve soil bulk/root interface/xylem/leaf potential network from immutable hydraulic M/K tables and current accepted/candidate soil heads, root length density, geometry, demand and permitted stress reduction. Preserve distinct formulations and Campbell/linear reduction.",
+      "state": {
+        "immutable": [
+          "typed root/leaf conductances and dimensions",
+          "root efficiency",
+          "validated corrected M/K tables",
+          "stress/reduction/lift selectors"
+        ],
+        "scratch": [
+          "jLayer",
+          "X",
+          "delX",
+          "Pav",
+          "Q",
+          "S",
+          "Phiav",
+          "root-potential bracket",
+          "iteration workspace"
+        ],
+        "candidate_outputs": [
+          "Upw",
+          "UpwPot",
+          "Prz",
+          "PP",
+          "PL",
+          "Tact",
+          "stress attribution"
+        ],
+        "cross_call_source_trace": "Each rate call reconstructs active jLayer, Pav, X, Q, S, Phiav; myFun resets X from Pav for each root-potential evaluation. Saved allocation does not establish physical history. Prz/PP/PL/UpwPot are derived outputs. Root density/growth and accepted daily aggregates remain separately owned.",
+        "restart": "No new physical MICRO history field is justified by this rate-path trace. Configuration/table identity and independently owned accepted root/crop/daily state must survive restart. Requalify fresh-process reconstruction and reject/discard identity before committing this conclusion."
+      },
+      "water_ownership": "Upw -> existing single qrot sink. UpwPot and diagnostics never create additional water removal. Hydraulic lift can produce signed nodal redistribution; aggregate atmospheric transpiration remains a separate nonnegative external receipt.",
+      "first_slice": "Reuse bounded SWDROUGHT3 de Willigen PR1077 candidate and complete its canonical admission. SWDROUGHT2 de Jong van Lier follows as a separate slice; no external compensation, frost or signed lift is inherited.",
+      "dependencies": [
+        "SW431-HYD-MVG",
+        "PPA-MICRO01 corrected typed table component"
+      ],
+      "qualification": [
+        "literal nonlinear source oracle for heterogeneous soil-head/root-density profiles",
+        "zero demand/root length and saturated/dry controls",
+        "nonconvergence and finite/domain failure isolation",
+        "O0/O2",
+        "real Reference Richards sink and mass receipt",
+        "rejected trial and replay",
+        "fresh-process restart",
+        "add de Willigen, stress options and signed lift as separately qualified slices"
+      ],
+      "held_fixed": [
+        "Jarvis/Walsum EXACT01",
+        "Bartholomeus and salinity root owners",
+        "solver numerical policy",
+        "water conservation",
+        "existing admitted restart layouts"
+      ],
+      "noncanonical_candidate": "integration/audits/evidence/SWAP431_MICRO1077_SNAPSHOT.json"
+    },
+    {
+      "id": "MC-HYST01",
+      "decision": "MIGRATE",
+      "capabilities": [
+        "SW431-HYST1",
+        "SW431-HYST2"
+      ],
+      "physics": "MvG wetting/drying scanning retention history, cumulative DELP reversal threshold TAU, INDEKS sign and FHYST adjustment; fixed-water head reinversion and updated capacity.",
+      "source_state": [
+        "INDEKS(node)",
+        "FHYST(node)",
+        "DELP(node)",
+        "HM1/H/theta accepted water state",
+        "wetting and drying alpha parameters"
+      ],
+      "ownership": "One typed constitutive-history owner; trial candidate only. Update head/capacity at fixed owned theta without an additional water storage or source receipt. Derived cofgen/cache belongs to disposable provider scratch.",
+      "first_slice": "Ordinary Reference MvG, fixed grid, no table/PDI/RIA, no tillage or extra root/bottom/frost/macro composition; initial wetting and drying independently qualified.",
+      "qualification": [
+        "unchanged literal reversal oracle",
+        "threshold-neighbour and near-saturation cases",
+        "dry-wet-dry scanning loops",
+        "minimum FHYST adaptation",
+        "constant-water inverse consistency",
+        "retry/discard history isolation",
+        "serialized node history restart",
+        "O0/O2",
+        "existing default MvG preservation"
+      ],
+      "dependencies": [
+        "SW431-HYD-MVG"
+      ]
+    },
+    {
+      "id": "MC-SOL01",
+      "decision": "MIGRATE_OR_EXPLICIT_OWNER_REPLACEMENT_PER_CAPABILITY",
+      "capabilities": [
+        "SW431-SALT-SORPTION",
+        "SW431-SALT-DECAY",
+        "SW431-SALT-AQUIFER",
+        "SW431-SALT-POND",
+        "SW431-AGE-TRACER"
+      ],
+      "physics": "Separate matrix sorbed storage, transformation, aquifer mixing/storage and pond salt from already admitted dissolved mobile matrix transport. Water age uses its own age-production equation. Macropore solute and osmotic-head selector2 are not executable source requirements.",
+      "ownership": "Separate dissolved/sorbed/aquifer/pond conserved stores and explicit transformation source/sink; one receipt per actual carrier. TSCF root removal and water-only SSDI semantics remain unchanged in admitted envelopes.",
+      "sequence": [
+        "reconcile bottom-concentration forcing and pond donor ownership",
+        "nonlinear sorption candidate/restart storage",
+        "temperature/moisture/depth decay with explicit removed mass",
+        "aquifer salt storage/sorption/decay and breakthrough",
+        "water-age production and conservative transport"
+      ],
+      "qualification": [
+        "source equation and initialization oracles",
+        "zero sorption/zero decay legacy limits",
+        "signed top/bottom/drain carriers",
+        "mass of dissolved plus sorbed plus pond/aquifer storage",
+        "reject/discard and fresh-process restart",
+        "O0/O2",
+        "salt/Jarvis/Walsum/SALFRO01 preservation"
+      ],
+      "dependencies": [
+        "SW431-SALT-TRANSPORT"
+      ],
+      "reference_defect_prerequisite": {
+        "capability": "SW431-SALT-AQUIFER",
+        "evidence": "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json",
+        "decision": "Retain intended aquifer capability; derive and approve explicit reservoir coefficient/storage and accumulated-versus-rate units before porting. No guessed replacement node.",
+        "first_gate": "Dimensionally consistent zero-flow, positive/negative drainage and multiple solute substeps with dissolved+sorbed aquifer mass."
+      },
+      "source_branch_contracts": [
+        "SWDC: temperature factor is zero with SWHEA=0; adjudicate source semantics explicitly.",
+        "Age tracer: own age amount, source production 0.5*(theta+thetm1), signed carriers and pond history."
+      ]
+    },
+    {
+      "id": "MC-IRR01",
+      "decision": "MIGRATE_BOUNDED_SELECTOR_SLICES",
+      "capabilities": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-FIXED-SPRINK",
+        "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-FREQ",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP",
+        "SW431-IRR-AVAIL"
+      ],
+      "physics": "Committed-window irrigation decision with source root-zone deficits and sensor thresholds. TCS7 is pressure head, TCS8 water content, TCS6 is weekly deficit-gated. DCS1 refills deficit with DI and rain discount; DCS2 fixed depth is already bounded admitted with TCS1.",
+      "state": [
+        "accepted event/crop/season identity",
+        "dayfix interval/weekly counter",
+        "fixed-event progress",
+        "daily demand/stress aggregates",
+        "sensor/root-zone geometry"
+      ],
+      "ownership": "One gross irrigation event and one partition to canopy/surface or explicitly bounded SSDI nodes; no rainfall/interception double counting. Rejected hydraulic trials do not retrigger or advance management counters.",
+      "sequence": [
+        "reuse admitted TCS1+DCS2 lifecycle and close table/season controls",
+        "TCS2/3/4 deficits with DCS2",
+        "TCS7/8 sensors",
+        "TCS6 weekly clock",
+        "DCS1 and depth bounds",
+        "fixed sprinkling/scheduled surface routing",
+        "SSDI and salt-excess irrigation"
+      ],
+      "qualification": [
+        "literal source trigger/depth boundary cases",
+        "partly rooted last node",
+        "cross-year season and interval counters",
+        "gross/net intercepted water mass",
+        "one event per accepted day",
+        "retry/restart event identity",
+        "O0/O2",
+        "F-APP07 preservation",
+        "zero-rate daily fallback and long-duration depth-preserving rate cap",
+        "fixed versus scheduled SSDI per-node/total depth semantics",
+        "external availability rate/duration and actual caller trace"
+      ],
+      "dependencies": [
+        "SW431-IRR-TCS1"
+      ],
+      "existing_implementation_to_reuse": "Fixed-event index/active interval in mod_irrigation_process; F-APP07 TCS1/DCS2 owner; nonintercepting fixed identity binding. Add distinct fixed-sprinkler intercepted and scheduled-surface nonintercepted composition; do not duplicate event state."
+    },
+    {
+      "id": "MC-TILL01",
+      "decision": "SOURCE_BOUND_MIGRATION_REQUIRES_SEPARATE_CONTRACT",
+      "capabilities": [
+        "SW431-TILL-EVENT",
+        "SW431-TILL-CONSOL",
+        "SW431-TILL-REDIST",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3",
+        "SW431-TILL-REDIST1"
+      ],
+      "physics": "Event-induced density and shared hydraulic material change; I_N_MODEL1/2/3 selects the n-update law. Post-event consolidation is rain-forcing driven. IREDIST1/2 require source-defect adjudication and conservative water/material replacement; IREDIST0 is TEST-only.",
+      "state": [
+        "accepted event cursor",
+        "accepted bulk density and hydraulic material",
+        "previous/event/consolidated density and rain-forcing identity",
+        "owned water/head/pond after conservative material adaptation"
+      ],
+      "ownership": "Candidate-only event with complete geometry/material/water update; atomic accepted publish and restart. Source-prohibited hysteresis/solute/soil-N/macro/KSATEXM combinations are held, not silently generalized.",
+      "qualification": [
+        "B1.11 literal event and three n-law oracles",
+        "SWAP002 start-date repair preservation",
+        "review nraidt rate/amount semantics in consolidation",
+        "preserve bounded defect probe and qualify separately admitted reference correction or explicit conservative replacement",
+        "pre/post event weighted water mass and nonnegative pond",
+        "theta/head/material consistency",
+        "retry/discard and restart",
+        "O0/O2"
+      ],
+      "dependencies": [
+        "SW431-HYD-MVG"
+      ],
+      "source_defect_evidence": "integration/audits/evidence/SWAP431_TILLAGE_DEFECT_PROBE.json"
+    },
+    {
+      "id": "MC-MACRO01",
+      "decision": "MIGRATE_TYPED_STATIC_GEOMETRY_RESOLVER",
+      "capabilities": [
+        "SW431-MACRO-GEOMETRY",
+        "SW431-MACRO-POWM"
+      ],
+      "physics": "B1.11 temporary depth-cell splitting, Mb/Ic integral curves, original-cell accumulation, subdomain lumping/endpoints and polygon diameter. SWPOWM1 changes only the lower Ic exponent.",
+      "ownership": "Immutable configuration only; use existing macropore geometry/water owner. Temporary integration grid is scratch, not persistent physical history.",
+      "sequence": [
+        "SWPOWM0 depth geometry",
+        "SWPOWM1 inverse exponent",
+        "map output into admitted runtime configuration without changing dynamic shrinkage/covering"
+      ],
+      "qualification": [
+        "literal source geometry arrays on split/unsplit cells",
+        "exact boundary depths Z_Tp/Z_Ah/Z_Ic/Z_St/Z_MB50",
+        "SPoint and Rzah source limits",
+        "domain volume/fraction closure and finite parameters",
+        "O0/O2",
+        "existing A26/MIGMAC09 production preservation"
+      ],
+      "dependencies": [],
+      "existing_route_qualification_slices": {
+        "SW431-MACRO-SEP1": "Reuse Ernst algebra and 48-case literal comparison; actual positive-K/full-partial seepage runtime with donor bounds, rollback and restart.",
+        "SW431-MACRO-SEP2": "Reuse Youngs algebra; same active runtime owner gate with Youngs geometry selected, not inherited SWSEP0."
+      },
+      "existing_route_runtime_evidence": "integration/audits/evidence/SWAP431_SEEPAGE_RUNTIME_PROBE.json",
+      "remaining_seepage_gates": [
+        "Full-top-cell saturated geometry",
+        "Capacity/donor-limited active exchange",
+        "Changed-forcing rejected retry",
+        "Fresh-process restart with active exchange",
+        "Coupled literal source trajectory and bounded admission"
+      ]
+    },
+    {
+      "id": "MC-NUT01",
+      "decision": "MIGRATE_SEPARATE_B111_DEMAND_POLICY",
+      "capabilities": [
+        "SW431-NUT-NFIX"
+      ],
+      "physics": "Vegetative N deficits only, strict DVS<DVSNLT and RELTR>.01 gates, soil/fixation partition by NFIXF. Do not modify the admitted WOFOST81 demand equations.",
+      "ownership": "One crop N owner; separate candidate demand from actual supplied/fixed N receipts. Soil N store and transformation remain separately owned. Fixation-only qualification may use zero soil supply and does not await mineral-soil migration.",
+      "sequence": [
+        "typed source demand policy",
+        "N owner and soil-request binding",
+        "accepted fixation and restart composition"
+      ],
+      "qualification": [
+        "literal six-case discrimination probe",
+        "zero and unit NFIXF",
+        "DVSNLT and RELTR threshold neighbours",
+        "one fixation receipt and total crop N conservation",
+        "retry/discard and fresh-process restart",
+        "O0/O2"
+      ],
+      "dependencies": [],
+      "evidence": "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json",
+      "closed_foundations": [
+        "SW5-CROP-WOF81"
+      ]
+    },
+    {
+      "id": "MC-SW01",
+      "decision": "MIGRATE_NATIVE_GROUP_ROUTING_AND_SHARED_DONOR_LIMITER",
+      "capabilities": [
+        "SW431-SW-PRIMARY",
+        "SW431-SW-MULTILEVEL"
+      ],
+      "physics": "NRPRI group maps prescribed primary WLP and common secondary WLS. Secondary levels share one store; falling-dry limiter scales their net signed exchanges by common source ratio.",
+      "ownership": "No invented primary storage. One secondary store and one transfer receipt per level, with aggregate only a derived view.",
+      "sequence": [
+        "typed primary/secondary group routing",
+        "single secondary signed depletion and accepted drainage feedback",
+        "multiple secondary level limiter and receipt reconciliation"
+      ],
+      "qualification": [
+        "primary exclusions from QDRD",
+        "mixed-sign secondary levels and zero-net exchange",
+        "empty storage and supply capacity",
+        "falling-dry and nondepleting boundaries",
+        "per-level plus total water mass",
+        "rejection/replay/restart",
+        "O0/O2",
+        "fixed-weir and Ribasim mode exclusion preservation"
+      ],
+      "dependencies": [
+        "SW431-SW-SIGNED",
+        "SW431-SW-DRAIN-FEEDBACK"
+      ]
+    },
+    {
+      "id": "MC-CROP01",
+      "decision": "MIGRATE_COMPANION_POTENTIAL_RELMF_POLICY",
+      "capabilities": [
+        "SW431-CROP-ATTAINABLE"
+      ],
+      "physics": "SWPOTRELMF1 leaves potential PGASS unscaled; SWPOTRELMF2 applies RELMF to potential PGASS. Actual PGASS scaling already exists and is preserved.",
+      "ownership": "Resolve companion potential-trajectory ownership before adding policy. No second water or actual biomass owner.",
+      "sequence": [
+        "resolve annual actual/potential trajectory contract",
+        "typed potential RELMF selector and parameter mapping",
+        "daily accepted event and restart qualification"
+      ],
+      "qualification": [
+        "selector1/2 at RELMF0,interior,1",
+        "potential/actual trajectory distinction",
+        "source carbon conversion arithmetic",
+        "rejected event isolation",
+        "O0/O2"
+      ],
+      "dependencies": [
+        "SW431-CROP-ANNUAL"
+      ],
+      "additional_owner_slices": {
+        "SW431-CROP-CO2": "MIGRATE a typed CO2AMAXTB/CO2EFFTB/CO2TRATB response resolver and consistent crop/ET forcing binding. Current assimilation consumes resolved factors and F-WOF43A computes only transpiration response. Caller may supply the selected annual concentration without a legacy file/calendar owner.",
+        "SW431-CROP-ROTATION": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
+      },
+      "existing_route_qualification_slices": {
+        "SW431-CROP-ANNUAL": "Literal B1.11 classic daily/seasonal trajectory, actual water stress, carbon/organ/leaf balance, accepted-event and restart ownership; reuse AMAXTB implementation.",
+        "SW431-CROP-WOF-OTHER": "After classic annual gate, independently exercise IDSL1 DLC/DLO and anthesis; no IDSL2 admission."
+      }
+    },
+    {
+      "id": "MC-MACROSUR01",
+      "decision": "MIGRATE_BOUNDED_OWNER_BINDINGS",
+      "capabilities": [
+        "SW431-MACRO-POND",
+        "SW431-MACRO-RUNON",
+        "SW431-MACRO-SW-EXTERNAL"
+      ],
+      "physics": "Pond-derived QMpLatSs with shared surface donor; runon composition via q0; separate prescribed rapid-drain basis carrier.",
+      "sequence": [
+        "Pond transfer without runon; reuse A9 partition/limiter/returns",
+        "Add admitted runon carrier to the same surface donor",
+        "Independent prescribed rapid-drain level slice; internal store feedback remains separate"
+      ],
+      "ownership": "One accepted surface debit and macro credit; returned capacity excess stays in surface store. Immutable interval drain basis, no configuration reset as forcing.",
+      "dependencies": [
+        "SW431-RUNON"
+      ],
+      "closed_foundations": [
+        "SW431-MACRO-TOP"
+      ],
+      "qualification": [
+        "Literal source threshold/donor-cap and returned-excess cases",
+        "Actual Reference Richards coupled water mass",
+        "No double counted runon",
+        "O0/O2",
+        "Rejected trial and changed-forcing retry",
+        "Restart at moving drain-level and surface-storage boundaries"
+      ],
+      "review": "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+    },
+    {
+      "id": "MC-LOW01",
+      "decision": "MIGRATE",
+      "capabilities": [
+        "SW431-GW-PROJECTION",
+        "SW431-LOW3-EXPLICIT",
+        "SW431-LOW9"
+      ],
+      "source_authority": "integration/audits/SWAP431_GROUNDWATER_SOURCE_REVIEW.md",
+      "first_slice": "Value-only candidate profile-to-GWL resolver, distinct from smooth derivative and external aquifer forcing.",
+      "ownership": "Recomputable geometry/head/pond view; no new water store. Start-state sampling before solve, candidate publication only on accept; external head remains separate.",
+      "gates": [
+        "Literal nonuniform-grid and full-saturation/zero-crossing/no-interior comparisons",
+        "Rejected-candidate and retry identity",
+        "Accepted next-step sampling and fresh-process restart",
+        "Preserve ordinary lower boundaries, smooth drainage service, PERCH21 and external head owner"
+      ],
+      "evidence": [
+        "integration/audits/evidence/SWAP431_GROUNDWATER_PROJECTION_PROBE.json"
+      ]
+    }
+  ]
+}

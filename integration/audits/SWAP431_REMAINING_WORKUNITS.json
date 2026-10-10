@@ -1,0 +1,439 @@
+{
+  "schema_version": "1.0",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "work_unit": "SWAP431-MASTER-COVERAGE",
+  "status": "ACTIVE_REGISTERED_SOURCE_REVIEW_AND_BOUNDED_MIGRATION_QUEUE",
+  "owned_surface": "Source census, ledger, documentation reconciliation and bounded preregistrations; no shared physics/solver/runtime edits",
+  "invariants_held_fixed": [
+    "single water/solute owner",
+    "candidate-only trial mutations",
+    "accepted restart semantics",
+    "physical options separate from numerical policy"
+  ],
+  "new_workunits": [
+    {
+      "id": "MC-CROP01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-CROP-FIXED",
+        "SW431-CROP-WOF-OTHER",
+        "SW431-CROP-SOY",
+        "SW431-CROP-GRASS",
+        "SW431-CROP-SOW",
+        "SW431-CROP-ROOTGROW",
+        "SW431-CROP-CO2",
+        "SW431-CROP-ROTATION",
+        "SW431-CROP-ANNUAL",
+        "SW431-ROOT-DENSITY",
+        "SW431-ROOT-ANAE-GROW",
+        "SW431-CROP-ATTAINABLE",
+        "SW431-CROP-FIXED-THERMAL",
+        "SW431-CROP-ROOTGROW-DVS",
+        "SW431-CROP-ROOTGROW-BIOMASS",
+        "SW431-CROP-ROOTGROW-WATER",
+        "SW431-CROP-ROOTGROW-SUPPLY",
+        "SW431-ROOT-LRV-CONSTANT",
+        "SW431-CROP-VERNAL"
+      ],
+      "next_action": "Adjudicate annual-crop functional replacement against actual B1.11 AMAXTB/phenology rather than the separate13B donor; then trace remaining fixed/soy/grass/root/management slices.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [
+        "SW431-ROOT-MICRO2"
+      ],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-CROP-ANNUAL",
+        "SW431-CROP-ROOTGROW"
+      ],
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81",
+        "SW431-ROOT-DENSITY"
+      ]
+    },
+    {
+      "id": "MC-DRAIN01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-DRAIN-DISLAYER",
+        "SW431-DRAIN-INF-SPLIT",
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-INF-LIMIT",
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW"
+      ],
+      "next_action": "Qualify ordinary frost-OFF signed DIVDRA using admitted B19 algebra and ownership; native DRAMET3 controls, multilevel partitions and altered discharge layers remain separate slices.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DRAMET3"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-DRAIN-DIV",
+        "SW431-DRAIN-EXT"
+      ]
+    },
+    {
+      "id": "MC-FROST01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-FROST-DIV-MULTI",
+        "SW431-FROST-EXT-MULTI",
+        "SW431-FROST-ROOTDRAIN",
+        "SW431-FROST-GW",
+        "SW431-FROST-SNOW"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-TEMP-SNOW"
+      ],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-FROST-DIVDRA",
+        "SW431-FROST-DRAIN-EXTENDED",
+        "SW431-FROST-DRAIN-PRESCRIBED",
+        "SW431-FROST-HYD",
+        "SW431-ROOT-FROST",
+        "SW431-SNOW"
+      ]
+    },
+    {
+      "id": "MC-HEAT01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-TEMP-ANALYTIC",
+        "SW431-TEMP-BC3",
+        "SW431-TEMP-BC4",
+        "SW431-TEMP-BOTTOM2",
+        "SW431-TEMP-SNOW"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-TEMP-SENSIBLE"
+      ]
+    },
+    {
+      "id": "MC-HYD01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-HYD-MODEL2",
+        "SW431-HYD-MODEL3",
+        "SW431-HYD-MODEL5",
+        "SW431-HYD-MODEL6",
+        "SW431-HYD-MODEL7",
+        "SW431-HYD-MODEL8",
+        "SW431-HYD-MODEL9",
+        "SW431-HYD-MODEL10",
+        "SW431-HYD-MODEL11",
+        "SW431-HYD-MODEL12",
+        "SW431-HYD-TABLE",
+        "SW431-HYD-POWER",
+        "SW431-HYD-VAPOR",
+        "SW431-HYD-LINEAR-TABLE",
+        "SW431-HYD-RIA-VAPOR"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-HYD-MODEL10",
+        "SW431-HYD-MODEL11",
+        "SW431-HYD-MODEL12",
+        "SW431-HYD-MODEL8",
+        "SW431-HYD-MODEL9"
+      ],
+      "closed_foundation_authorities": []
+    },
+    {
+      "id": "MC-HYST01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-HYST1",
+        "SW431-HYST2"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
+    },
+    {
+      "id": "MC-IRR01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-FIXED-SPRINK",
+        "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-FREQ",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP",
+        "SW431-IRR-AVAIL"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-IRR-TCS1"
+      ]
+    },
+    {
+      "id": "MC-LOW01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-LOW3-EXPLICIT",
+        "SW431-LOW9",
+        "SW431-GW-PROJECTION"
+      ],
+      "next_action": "Freeze and migrate candidate profile-derived GWL view (including nonsmooth/absent cases), then explicit mode-3 profile resistance and mode-9 state ownership; preserve bounded lower-boundary admissions.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-GW-PROJECTION"
+      ]
+    },
+    {
+      "id": "MC-MACRO01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-MACRO-KINEMATIC",
+        "SW431-MACRO-ABS2",
+        "SW431-MACRO-SEP2",
+        "SW431-MACRO-POWM",
+        "SW431-MACRO-DARCY",
+        "SW431-MACRO-SORP1",
+        "SW431-MACRO-SEP1",
+        "SW431-MACRO-GEOMETRY"
+      ],
+      "next_action": "Reuse existing saturated-exchange component for SWSEP1/2: qualify positive-K active seepage faces in the real Richards chain including full/partial top fractions, donor caps, rollback, changed-forcing retry and restart. Resolve static geometry/POWM typed mapping separately; bind current matrix K for Darcy; implement missing diffusivity/Parlange and SWMBF2 only in separately contracted bounded slices.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-MACRO-GEOMETRY"
+      ],
+      "closed_foundation_authorities": []
+    },
+    {
+      "id": "MC-MACROSUR01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-MACRO-POND",
+        "SW431-MACRO-RUNON",
+        "SW431-MACRO-SW",
+        "SW431-MACRO-SNOW",
+        "SW431-MACRO-EVAP",
+        "SW431-MACRO-SW-EXTERNAL"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-MACRO-POND"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-MACRO-TOP",
+        "SW431-RUNON"
+      ]
+    },
+    {
+      "id": "MC-MET01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-ET-PMTRAD",
+        "SW431-ET-PMDETAIL",
+        "SW431-ET-SOILFACTOR",
+        "SW431-MET-RAIN1"
+      ],
+      "next_action": "Migrate RAINTB seasonal intensity-to-pulse derivation; traditional PM, detailed-record PM and CFBS soil scaling remain independent physical slices. WET/.rain representations are closed by typed immutable spans.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
+    },
+    {
+      "id": "MC-MICRO01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-ROOT-MICRO2",
+        "SW431-ROOT-MICRO3",
+        "SW431-ROOT-MICRO-LIFT",
+        "SW431-ROOT-MICRO-STRESS",
+        "SW431-ROOT-MICRO-TRED"
+      ],
+      "next_action": "Reconcile PR1077 after actual canonical admission; reuse its de Willigen normal-uptake/horizon/restart implementation. Then separately implement de Jong van Lier, stress and signed lift. Do not duplicate the noncanonical candidate.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
+        "SW431-ROOT-MICRO2",
+        "SW431-ROOT-MICRO3"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
+    },
+    {
+      "id": "MC-NUT01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "next_action": "Add source-selectable vegetative N-demand/DVSNLT policy reusing a single N/fixation receipt; preserve WOFOST81. Then resolve soil/crop owner coupling in dependency order.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
+      ],
+      "closed_foundation_authorities": [
+        "SW5-CROP-WOF81"
+      ]
+    },
+    {
+      "id": "MC-ROOT01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-ROOT-OXYGEN-EMP",
+        "SW431-ROOT-OXYGEN-REPRO"
+      ],
+      "next_action": "Migrate and qualify separate empirical SWOXYGEN=1 wet-head and SWOXYGEN=2/type2 reproduction factors; neither is supplied by Bartholomeus type1. Compose with the single root-sink owner and source stress attribution.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": []
+    },
+    {
+      "id": "MC-SOL01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-SALT-SORPTION",
+        "SW431-SALT-DECAY",
+        "SW431-SALT-AQUIFER",
+        "SW431-SALT-POND",
+        "SW431-AGE-TRACER"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-SALT-TRANSPORT"
+      ]
+    },
+    {
+      "id": "MC-SUR01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-RUNON",
+        "SW431-RUNOFF-NONLINEAR"
+      ],
+      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-PONDING"
+      ]
+    },
+    {
+      "id": "MC-SW01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-SW-MANAGEMENT",
+        "SW431-SW-PRIMARY",
+        "SW431-SW-MULTILEVEL",
+        "SW431-SW-TOPRUNOFF",
+        "SW431-SW-QHR2",
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
+      "next_action": "Implement typed primary/secondary group routing; signed common-secondary storage and accepted drainage feedback before the multiple-level donor limiter. Keep primary level prescribed and distinguish spatial DIVDRA.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "internal_sequence_dependencies": [
+        "SW431-SW-DRAIN-FEEDBACK",
+        "SW431-SW-SIGNED"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-SW-EXTERNAL",
+        "SW431-SW-FIXED"
+      ]
+    },
+    {
+      "id": "MC-TILL01",
+      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "capabilities": [
+        "SW431-TILL-EVENT",
+        "SW431-TILL-CONSOL",
+        "SW431-TILL-REDIST",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3",
+        "SW431-TILL-REDIST1"
+      ],
+      "next_action": "Adjudicate source redistribution defects and consolidation rain semantics; qualify three n-laws before a conservative typed material/water owner. Do not copy negative pond or unweighted branch selection into production.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [
+        "SW431-TILL-EVENT",
+        "SW431-TILL-N1",
+        "SW431-TILL-N2",
+        "SW431-TILL-N3"
+      ],
+      "closed_foundation_authorities": [
+        "SW431-HYD-MVG"
+      ]
+    }
+  ]
+}

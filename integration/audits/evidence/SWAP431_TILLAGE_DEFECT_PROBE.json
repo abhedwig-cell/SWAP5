@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "authority": "B1.11",
+  "source_member": "SWAP/tillage.f90",
+  "source_sha256": "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3",
+  "routine": "Adapt_WC_H",
+  "literal_source_lines": [
+    270,
+    376
+  ],
+  "scope": "Literal extracted routine with stubbed constitutive queries; no full executable or SWAP5 admission.",
+  "findings": [
+    {
+      "selector": "IREDIST=1",
+      "finding": "Oversaturation makes summ negative; redistribution is skipped and pond becomes negative. Initial 3 cm becomes 1 cm total water including pond: 2 cm lost."
+    },
+    {
+      "selector": "IREDIST=2",
+      "finding": "Equal unweighted theta sums skip both updates even with unequal cell widths. After material change the retained theta differs from watcon(h) by +/-0.125. This does not prove every IREDIST2 trajectory defective."
+    }
+  ],
+  "decision": "Register reference-defect review and conservative replacement requirements; do not reproduce these results as production physics.",
+  "production_reachability": false,
+  "results": [
+    {
+      "optimization": "-O0",
+      "stdout": "simple     3.000000    1.000000   -1.000000\ncomplex_inverse_mismatch     0.125000   -0.125000\n"
+    },
+    {
+      "optimization": "-O2",
+      "stdout": "simple     3.000000    1.000000   -1.000000\ncomplex_inverse_mismatch     0.125000   -0.125000\n"
+    }
+  ]
+}

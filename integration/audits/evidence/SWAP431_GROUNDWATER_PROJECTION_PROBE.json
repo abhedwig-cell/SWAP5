@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "source_member": "SWAP/calcgwl.f90",
+  "source_sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+  "production_source": "src/solver/mod_b110_smooth_freatic_projection.f90",
+  "production_sha256": "9b89f3415f7131ebc1e673245db7403cd06844d916b303ae3440c3de139d93ab",
+  "driver_sha256": "b35c0c6b1881b09b3de2067901a4c7b92d7853963e75e35fec91c1011972ae3a",
+  "stubs_sha256": "64adbf7ff89687632c8757a6f192f8e8363f1d90566181d2ac19984d4bf8df1d",
+  "results": [
+    {
+      "optimization": "-O0",
+      "stdout": " 1   -20.000000   0 T   -20.000000\n 2    -4.000000   5 F     0.000000\n 3     2.000000   5 F     0.000000\n 4   999.000000   4 F     0.000000\n 5   -35.000000   6 F     0.000000\n 6     0.000000   6 F     0.000000\n",
+      "cases": 6,
+      "passed": true
+    },
+    {
+      "optimization": "-O2",
+      "stdout": " 1   -20.000000   0 T   -20.000000\n 2    -4.000000   5 F     0.000000\n 3     2.000000   5 F     0.000000\n 4   999.000000   4 F     0.000000\n 5   -35.000000   6 F     0.000000\n 6     0.000000   6 F     0.000000\n",
+      "cases": 6,
+      "passed": true
+    }
+  ],
+  "conclusion": "Literal CALCGWL defines five tested non-smooth/outside-interior values deliberately excluded by the smooth directional service. Interior value agrees.",
+  "nonclaims": [
+    "No defect in the bounded smooth service.",
+    "No production runtime qualification or new admission.",
+    "No claim that external MODFLOW head ownership should be replaced by internal diagnostic GWL."
+  ]
+}

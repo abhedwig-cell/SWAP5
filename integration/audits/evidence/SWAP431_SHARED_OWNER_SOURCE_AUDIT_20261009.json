@@ -1,0 +1,45 @@
+{
+  "schema": "swap431.master.shared_owner.source_audit.v1",
+  "canonical": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "date": "2026-10-09",
+  "checks": [
+    {
+      "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+      "finding": "Contains only fmr_bind_single_level_positive_divdra; no ordinary multilevel/signed/DRAMET3 complete binding in this module.",
+      "open_ids": [
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-TOPINTERFLOW",
+        "SW431-DRAIN-DRAMET3"
+      ],
+      "ceiling": "Module-local absence, not whole-codebase negative proof."
+    },
+    {
+      "path": "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+      "finding": "Contains fixed surface identity, TCS1 sprinkling-to-Rutter, and Rutter-to-dynamic-top mappings; not the complete 16 capability MC-IRR01 management dispatch.",
+      "open_ids": [
+        "SW431-IRR-TCS7",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-FREQ",
+        "SW431-IRR-RATE-CAP"
+      ],
+      "ceiling": "Partial application binding; isolated PR1126 separately qualified but is still draft and not canonical."
+    },
+    {
+      "path": "src/process/mod_root_micro_matric_flux_table.f90",
+      "finding": "Only build/evaluate matric flux table routines, not independent de Jong van Lier/de Willigen sink and stress/lift dispatch.",
+      "open_ids": [
+        "SW431-ROOT-MICRO2",
+        "SW431-ROOT-MICRO3",
+        "SW431-ROOT-MICRO-LIFT",
+        "SW431-ROOT-MICRO-STRESS",
+        "SW431-ROOT-MICRO-TRED"
+      ],
+      "ceiling": "A real shared constitutive foundation, not full MICRO uptake physics."
+    }
+  ],
+  "closed_by_this_review": [],
+  "source_scope": "Three exact-head canonical modules inspected for exported routines; no exhaustive global runtime callgraph or exact-source standalone checker completed.",
+  "next_action": "Read active dispatcher and owner contracts, reconcile independent admission records and ensure parallel workunit owns implementation before closing rows.",
+  "no_actions_triggered": true
+}
