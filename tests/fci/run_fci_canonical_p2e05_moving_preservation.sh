@@ -303,6 +303,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
+  local crop_positive_window_changed=0
   local crop_event_constructor_changed=0
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
@@ -350,6 +351,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_root_depth_supply_composition.f90 ) ;;
       src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 ) ;;
       src/runtime/mod_fmr_wofost_crop_transaction.f90 ) crop_event_constructor_changed=1 ;;
+      tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py|tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ) crop_positive_window_changed=1 ;;
       src/process/mod_root_water_uptake_process.f90 ) ;;
       src/crop/mod_crop_root_length_density_constant.f90 ) ;;
       src/crop/mod_crop_rotation_calendar.f90 ) ;;
@@ -385,7 +387,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
-  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_preflight_read_boundary.f90)
+  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
   if (( crop_b111_germ_sum_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_b111_germination_sum_candidate.f90)" =       "13e83db9e7dad60a62c11134f8951d65a23c7dc6" ||
       fail 'unqualified changed B1.11 germination arithmetic blob'
@@ -396,6 +398,15 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_b111_germination_boundaries.sh ||
       fail 'B1.11 germination boundary negative O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_B111_GERMINATION_EXACT_SOURCE=PASS'
+  fi
+  if (( crop_positive_window_changed )); then
+    test "$(git rev-parse HEAD:tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py)" = "aa76de1ff9001ff16ac8a1e56b87ba9708f569e6" ||
+      fail 'unqualified positive crop accepted-window fixture'
+    test "$(git rev-parse HEAD:tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)" = "5cb3b58a8b7f0fe80f4a16a0e9af7a066629723c" ||
+      fail 'unqualified positive crop accepted-window runner'
+    bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||
+      fail 'positive FWO38 weather/B110 accepted-window O0/O2 failed'
+    echo 'FCI_CANONICAL_CROP_POSITIVE_WINDOW_BRIDGE=PASS'
   fi
   if (( crop_event_constructor_changed )); then
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_wofost_crop_transaction.f90)" = "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509" ||
