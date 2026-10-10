@@ -400,7 +400,7 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_B111_GERMINATION_EXACT_SOURCE=PASS'
   fi
   if (( crop_positive_window_changed )); then
-    test "$(git rev-parse HEAD:tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py)" = "aa76de1ff9001ff16ac8a1e56b87ba9708f569e6" ||
+    test "$(git rev-parse HEAD:tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py)" = "73255c2ad901444a815819de336995094cd5d5f9" ||
       fail 'unqualified positive crop accepted-window fixture'
     test "$(git rev-parse HEAD:tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)" = "dd54c21eb01c6847a824490579b908d2b82b9d98" ||
       fail 'unqualified positive crop accepted-window runner'
