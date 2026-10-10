@@ -382,7 +382,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
-  done < <(git diff --name-only "$dependency_authority" HEAD -- src)
+  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_preflight_read_boundary.f90)
   if (( crop_b111_germ_sum_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_b111_germination_sum_candidate.f90)" =       "13e83db9e7dad60a62c11134f8951d65a23c7dc6" ||
       fail 'unqualified changed B1.11 germination arithmetic blob'
