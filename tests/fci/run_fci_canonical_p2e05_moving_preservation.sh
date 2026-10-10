@@ -402,7 +402,7 @@ check_b19_micro_root_recomposition() {
   if (( crop_positive_window_changed )); then
     test "$(git rev-parse HEAD:tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py)" = "aa76de1ff9001ff16ac8a1e56b87ba9708f569e6" ||
       fail 'unqualified positive crop accepted-window fixture'
-    test "$(git rev-parse HEAD:tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)" = "5cb3b58a8b7f0fe80f4a16a0e9af7a066629723c" ||
+    test "$(git rev-parse HEAD:tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)" = "ecaed9e7b57bb152f71b2ff5fc7c9999523966dc" ||
       fail 'unqualified positive crop accepted-window runner'
     bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||
       fail 'positive FWO38 weather/B110 accepted-window O0/O2 failed'
