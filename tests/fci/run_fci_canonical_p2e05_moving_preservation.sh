@@ -303,6 +303,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
+  local crop_event_constructor_changed=0
   local crop_lifecycle_changed=0
   local crop_physical_restart_changed=0
   local crop_unified_restart_changed=0
@@ -347,7 +348,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_root_depth_rate_daily_binding.f90 ) ;;
       src/runtime/mod_fmr_root_depth_supply_composition.f90 ) ;;
       src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 ) ;;
-      src/runtime/mod_fmr_wofost_crop_transaction.f90 ) ;;
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 ) crop_event_constructor_changed=1 ;;
       src/process/mod_root_water_uptake_process.f90 ) ;;
       src/crop/mod_crop_root_length_density_constant.f90 ) ;;
       src/crop/mod_crop_rotation_calendar.f90 ) ;;
@@ -393,6 +394,13 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_b111_germination_boundaries.sh ||
       fail 'B1.11 germination boundary negative O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_B111_GERMINATION_EXACT_SOURCE=PASS'
+  fi
+  if (( crop_event_constructor_changed )); then
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_wofost_crop_transaction.f90)" = "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509" ||
+      fail 'unqualified WOFOST crop event constructor source'
+    bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||
+      fail 'physical F-KT crop lifecycle constructor O0/O2 negatives failed'
+    echo 'FCI_CANONICAL_CROP_EVENT_CONSTRUCTOR_EXACT=PASS'
   fi
   if (( crop_weather_preflight_changed )); then
     test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "529e1871966b9be4e345909197cbdb14f7f56f43" ||
