@@ -389,7 +389,7 @@ check_b19_micro_root_recomposition() {
   fi
   if (( crop_tav_period_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_tav_detailed_period_candidate.f90)" = \
-      "b4453bfb0c5495c91f55537257f905650027ba3c" ||
+      "51bed01fbb1d8cece1650235aa2bc518c6f1209d" ||
       fail 'unqualified detailed meteorological period candidate source'
     bash tests/fmig431/run_crop_tav_detailed_period_candidate.sh ||
       fail 'bounded detailed meteorological period candidate O0/O2 failed'
