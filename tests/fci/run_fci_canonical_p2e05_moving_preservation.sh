@@ -303,6 +303,7 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 check_b19_micro_root_recomposition() {
+  local ppa_weather_guard_changed=0
   local crop_positive_window_changed=0
   local crop_event_constructor_changed=0
   local crop_lifecycle_changed=0
@@ -335,6 +336,7 @@ check_b19_micro_root_recomposition() {
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
+      src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
       src/crop/mod_crop_root_anaerobic_extension_gate.f90 ) ;;
       src/crop/mod_crop_root_depth_biomass.f90 ) ;;
@@ -390,6 +392,21 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
+  if (( ppa_weather_guard_changed )); then
+    test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
+      fail 'unqualified PPA-WU03 shared weather guard source'
+    test "$(git rev-parse HEAD:tests/fapp/test_ppa_wu03_common_forcing_adapter.f90)" = "d7f6fc278ab89083196cc45b0bf8a571cea27cc8" ||
+      fail 'unqualified PPA-WU03 shared weather owner test'
+    test "$(git rev-parse HEAD:tests/fapp/run_ppa_wu03_common_forcing_adapter.sh)" = "f18ad9e8866c690f860171e6da131cb65173f8a7" ||
+      fail 'unqualified PPA-WU03 owner runner'
+    test "$(git rev-parse HEAD:tests/fapp/run_ppa_wu03_independent.sh)" = "4e028359102aaaf9a678284d0b3ce8bad1b9ac72" ||
+      fail 'unqualified PPA-WU03 independent runner'
+    bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh ||
+      fail 'PPA-WU03 shared weather owner O0/O2 physical qualification failed'
+    bash tests/fapp/run_ppa_wu03_independent.sh ||
+      fail 'PPA-WU03 shared weather independent O0/O2 qualification failed'
+    echo 'FCI_CANONICAL_PPA_WU03_CROP_SHARED_WEATHER_GUARD=PASS'
+  fi
   if (( crop_b111_germ_sum_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_b111_germination_sum_candidate.f90)" =       "13e83db9e7dad60a62c11134f8951d65a23c7dc6" ||
       fail 'unqualified changed B1.11 germination arithmetic blob'
