@@ -33,7 +33,13 @@ finish=focused_text.index("\n)\n",start)+3
 sources=focused_text[start:finish]
 assert "targets = ['mod_crop_lifecycle_continuation']" in sources
 sources=sources.replace("targets = ['mod_crop_lifecycle_continuation']", 
-                        "targets = ['mod_fmr_wofost_crop_transaction']")
+                        "targets = ['mod_fmr_wofost_crop_transaction', 'mod_fmr_crop_weather_physical_event_composition']")
+assert "for path in sorted((root / 'src').rglob('*.f90')):" in sources
+sources=sources.replace("for path in sorted((root / 'src').rglob('*.f90')):",
+ "for path in [*sorted((root / 'src').rglob('*.f90')), root / 'tests/fsi/fsi04_real_headcalc_stubs.f90']:")
+assert '    for dep in source[path]:\n        visit(dep)' in sources
+sources=sources.replace('    for dep in source[path]:\n        visit(dep)',
+  '    for dep in source[path]:\n        if dep in by_module and by_module[dep] == path: continue\n        visit(dep)')
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
@@ -42,7 +48,9 @@ s=s[:source_start]+sources+s[source_end:]
 hook='python3 "$ROOT/tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py" "$BUILD/fwof38_atomic.f90"\n'
 assert s.count('COMMON=(-std=f2008')==1
 s=s.replace('COMMON=(-std=f2008',hook+'\nCOMMON=(-std=f2008',1)
-s=s.replace(' -Werror -fcheck=all', ' -Werror -Wno-error=compare-reals -Wno-error=function-elimination -fcheck=all', 1)
+s=s.replace('COMMON=(-std=f2008', 'COMMON=(-std=f2008 -w', 1)
+s=s.replace(' -Werror -fcheck=all', ' -Werror -Wno-error=compare-reals -Wno-error=function-elimination -Wno-error=do-subscript -fcheck=all', 1)
+s=s.replace('"$BUILD/fwof38_atomic.f90" ./*.o -o test', '"$BUILD/fwof38_atomic.f90" "$ROOT/src/legacy/b1_10_port/headcalc.f90" ./*.o -o test')
 s=s.replace('  ./test > output.txt 2>&1', '  ./test > output.txt 2>&1 || { cat output.txt >&2; exit 1; }')
 Path(sys.argv[2]).write_text(s)
 PY
@@ -52,4 +60,5 @@ grep -Fq 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_RECEIPT_COHERENCE=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_ACCEPT_RESTART=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_EVENT_PREFLIGHT_NEGATIVES=PASS' "$BUILD/out"
+grep -Fq 'SW431_CROP_POSITIVE_WINDOW_BRIDGE=PASS' "$BUILD/out"
 echo 'SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS'

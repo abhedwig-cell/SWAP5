@@ -38,7 +38,7 @@ replace_one('  real(real64) function fwof34_storage(self, state) result(value)',
 
   real(real64) function fwof34_storage(self, state) result(value)''')
 replace_one('  use mod_fmr_wofost_crop_transaction\n',
-            '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n  use mod_crop_lifecycle_daily_composition\n  use mod_crop_germination_preflight\n')
+            '  use mod_fmr_wofost_crop_transaction\n  use mod_crop_lifecycle_continuation\n  use mod_crop_lifecycle_daily_composition\n  use mod_crop_germination_preflight\n  use mod_crop_weather_day_owner\n  use mod_fmr_crop_weather_physical_event_composition\n  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, &\n       fmr_b110_physical_parameters_t, fmr_new_b110_committed_state\n')
 replace_one('  integer(kind=8) :: crop_revision_before\n',
 '''  integer(kind=8) :: crop_revision_before
   type(crop_lifecycle_continuation_t) :: lifecycle_seed, lifecycle_replayed
@@ -59,6 +59,15 @@ replace_one('  integer(kind=8) :: crop_revision_before\n',
   type(crop_germination_candidate_t) :: lifecycle_germination
   class(transaction_state_t), allocatable :: lifecycle_candidate_snapshot
   logical :: lifecycle_checkpoint_ok
+  type(fmr_b110_physical_state_t) :: bridge_soil
+  type(fmr_b110_physical_parameters_t) :: bridge_pars
+  type(kernel_committed_state_t) :: bridge_seed, bridge_committed
+  type(kernel_parameter_identity_t) :: bridge_parameter_identity
+  class(transaction_state_t), allocatable :: bridge_snapshot
+  type(weather_day_owner_t) :: bridge_weather
+  type(fmr_wofost_crop_event_forcing_t) :: bridge_event
+  logical :: bridge_ready
+  integer :: bridge_status
 ''')
 anchor="  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"
 replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')
@@ -112,6 +121,41 @@ replacement="""  call require(crop_initial_state%ready(), 'F-WOF38 crop transact
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS'
 """
 replace_one(anchor,replacement)
+replace_one("  call prepare_fmr_wofost_crop_event_forcing(accepted_window, forcing, crop_event_forcing, crop_status)\n",'''  bridge_soil%active_nodes=2
+  bridge_soil%pressure_head=[-100.0_real64,-1000.0_real64]
+  bridge_soil%water_content=[0.2_real64,0.3_real64]
+  bridge_pars%parameter_set_id=101_int64
+  bridge_pars%active_nodes=2
+  bridge_pars%z=[-5.0_real64,-20.0_real64]
+  bridge_pars%dz=[10.0_real64,20.0_real64]
+  bridge_pars%soil_temperature_active=.false.
+  call fmr_new_b110_committed_state(bridge_seed,38001_int64,bridge_soil,101.0_real64, &
+       bridge_ready,parameters=bridge_pars)
+  call require(bridge_ready,'certified B110 soil')
+  call bridge_seed%certified_parameter_identity(bridge_parameter_identity,bridge_ready)
+  call require(bridge_ready,'B110 parameter authority')
+  call bridge_seed%snapshot(bridge_snapshot,bridge_ready)
+  call require(bridge_ready,'B110 physical snapshot')
+  call kernel_reconstruct_committed_state_trusted(bridge_committed,38001_int64,1_int64, &
+       bridge_snapshot,101.0_real64,.true.,bridge_ready,bridge_status, &
+       parameters=bridge_pars,persisted_identity=bridge_parameter_identity)
+  call require(bridge_ready.and.bridge_status==KERNEL_TRUSTED_RECONSTRUCTION_OK, &
+       'B110 FKT identity reconstructed')
+  call initialize_weather_day_owner(bridge_weather,91_int64,4_int64,bridge_status)
+  call require(bridge_status==WEATHER_DAY_OK,'weather source')
+  call ingest_weather_day(bridge_weather,91_int64,4_int64,101.0_real64,10.0_real64,14.0_real64,bridge_status)
+  call require(bridge_status==WEATHER_DAY_OK,'weather input')
+  call propose_weather_crop_physical_event(bridge_committed,38001_int64,1_int64,101.0_real64, &
+       bridge_weather,91_int64,4_int64,1_int64,101.0_real64,accepted_window,forcing,4_int64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+       1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+       -1000.0_real64,-10.0_real64,20.0_real64,bridge_event,bridge_status)
+  call require(bridge_status==CROP_EVENT_COMPOSE_OK.and.bridge_event%ready(), &
+       'positive accepted window weather FKT bridge')
+  print '(a)', 'SW431_CROP_POSITIVE_WINDOW_BRIDGE=PASS'
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window, forcing, crop_event_forcing, crop_status)
+''')
 replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')
   ! One opt-in F-KT trial: candidate and receipt must remain on the
   ! unpublished trial while accepted owner/persistence remains unchanged.
