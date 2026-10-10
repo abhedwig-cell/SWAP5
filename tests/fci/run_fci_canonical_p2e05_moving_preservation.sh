@@ -397,7 +397,7 @@ check_b19_micro_root_recomposition() {
   if (( ppa_weather_guard_changed )); then
     test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
       fail 'unqualified PPA-WU03 shared weather guard source'
-    test "$(git rev-parse HEAD:tests/fapp/test_ppa_wu03_common_forcing_adapter.f90)" = "d7f6fc278ab89083196cc45b0bf8a571cea27cc8" ||
+    test "$(git rev-parse HEAD:tests/fapp/test_ppa_wu03_common_forcing_adapter.f90)" = "fe9c2e2372954e724a43520b8e210bf406e949d3" ||
       fail 'unqualified PPA-WU03 shared weather owner test'
     test "$(git rev-parse HEAD:tests/fapp/run_ppa_wu03_common_forcing_adapter.sh)" = "f18ad9e8866c690f860171e6da131cb65173f8a7" ||
       fail 'unqualified PPA-WU03 owner runner'
@@ -465,11 +465,12 @@ check_b19_micro_root_recomposition() {
   if (( crop_weather_ppa_binding_changed )); then
     test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
       fail 'unqualified weather-bound PPA-WU03 adapter postimage'
-    test "$(git rev-parse HEAD:tests/fapp/test_ppa_wu03_common_forcing_adapter.f90)" = "d7f6fc278ab89083196cc45b0bf8a571cea27cc8" ||
+    test "$(git rev-parse HEAD:tests/fapp/test_ppa_wu03_common_forcing_adapter.f90)" = "fe9c2e2372954e724a43520b8e210bf406e949d3" ||
       fail 'unqualified weather-bound PPA-WU03 owner test'
     bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh ||
       fail 'weather-bound PPA-WU03 owner O0/O2 failed'
     echo 'FCI_CANONICAL_PPA_WU03_WEATHER_BOUND_FORCING=PASS'
+    echo 'FCI_CANONICAL_PPA_WU03_TWO_COMMITTED_WEATHER_INTERVALS=PASS'
   fi
   if (( crop_weather_register_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "60df1fe8e9cc9715b85db1885435ffb2b08bda14" ||
