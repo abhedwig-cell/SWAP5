@@ -34,6 +34,8 @@ program test_crop_tav_detailed_period_candidate
  if(st/=CROP_TAV_PERIOD_INVALID) error stop 5
  call crop_tav_from_detailed_period_candidate(x,nan,v,st)
  if(st/=CROP_TAV_PERIOD_INVALID) error stop 6
+ call crop_tav_from_detailed_period_candidate(x,tiny(1.0_real64),v,st)
+ if(st/=CROP_TAV_PERIOD_INVALID) error stop 9
  call crop_tav_from_detailed_period_candidate([real(real64)::],1.0_real64,v,st)
  if(st/=CROP_TAV_PERIOD_INVALID) error stop 7
  x=0.0_real64
