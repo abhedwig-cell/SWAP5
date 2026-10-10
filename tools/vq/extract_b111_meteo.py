@@ -51,7 +51,7 @@ def extract(raw_zip):
 
 def main(argv):
     if len(argv) != 3:
-        raise ValueError("usage: extract_b111_meteo.py exact_SW​AP.ZIP output.f90")
+        raise ValueError("usage: extract_b111_meteo.py exact_SWAP.ZIP output.f90")
     original, output = map(Path, argv[1:])
     if not original.is_file():
         raise ValueError("B0 archive missing")
