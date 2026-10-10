@@ -1,0 +1,36 @@
+{
+  "schema": "swap431.mc_crop01.b111_meteo_source_owner_recovery.v1",
+  "base_canonical": "8496c22d520d26a3fd4b6782f2ce6c3f3621b6bb",
+  "source_authorities": {
+    "b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "b0_meteo_size": 85550,
+    "b111_meteo_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "b111_meteo_size": 85541,
+    "correction": "SWAP-006",
+    "patch": "reference/swap-4.3.1/patches/SWAP-006/fix.patch",
+    "corrected_provenance": "reference/swap-4.3.1/patches/SWAP-006/apply_and_verify.py"
+  },
+  "verified_explanation": "SWAP-006 replaces sentinel-dependent cropstart(i) meteorological loading selection with explicit i=1..ifnd scan; this is a meteo loading/temporal availability dependency, not only arithmetic of tav.",
+  "archive_search": [
+    "B0 member SHA and archive verification scripts present; complete original member bytes not in bounded retained Git source paths",
+    "Historical upload not present as mounted file or retrievable Library search result in this session",
+    "Official SWAP 4.3.1 distribution requires registration/license acknowledgement, no credentialed retrieval performed",
+    "Public SWAP-model/SWAP meteoday is refactored 2026 non-identical comparator only"
+  ],
+  "owner_gap": [
+    "PPA-WU03 is a stateless resolved flux adapter; not persistent weather calendar/source owner",
+    "F-KT accepted hydrothermal certificate authenticates committed soil physical state; not air temperature input identity",
+    "Candidate TAV interfaces must not authorize crop-event publication"
+  ],
+  "work_unit_status": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "next_action": "Recover full original SWAP.ZIP and validate exact archive SHA, run existing tools/vq/b1_11_reconstruct.py against canonical and verify reconstructed MOD_meteo.f90 SHA 99fbf7..., audit complete Meteo(2) branches, meteorological calendar time, and SWAP-006 dependency; then reconcile actual production weather owner before source-faithful receipt implementation.",
+  "prohibition": "Do not infer historical normal MOD_meteo from unofficial meteoday, or imply accepted weather from caller-source ID, or emit physical crop events."
+}
