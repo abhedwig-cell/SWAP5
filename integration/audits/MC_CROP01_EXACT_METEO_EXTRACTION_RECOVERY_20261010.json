@@ -11,22 +11,22 @@
     "patch": "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
   },
   "files": {
-    "tools/vq/extract_b111_meteo.py": "3b5e66fddcaf7b9ce2780b459522cc8c4b13610a",
-    "tools/vq/test_extract_b111_meteo.py": "3788d62ff93374a0769a7bd49e7a1eb572220a73"
+    "tools/vq/extract_b111_meteo.py": "8a538e055cfb7e4c0b3f454440ee2f73c36b83c3",
+    "tools/vq/test_extract_b111_meteo.py": "32012df76ca525b9fb4a41da6b9681d8ed7d85d6"
   },
   "validation": {
-    "equivalent_local_negative_tests": "5/5 PASS",
-    "exact_remote_source_runtime_tests": "NOT RUN",
-    "positive_original_archive_test": "BLOCKED: exact B0 source archive bytes unavailable",
+    "equivalent_local_negative_tests": "Superseded by exact blob gate",
+    "exact_remote_source_runtime_tests": "PASS: 7/7 Python unittest against byte-identical Git blobs",
+    "positive_original_archive_test": "BLOCKED: exact historical B0 SWAP.ZIP archive unavailable; mocks only test safe writing, not historical science",
     "full_b111_reconstruction": "NOT RUN"
   },
   "claim_ceiling": "No claim of recovering normal MOD_meteo source or accepted crop TAV or owner binding; only script and tests persisted.",
   "status": {
     "implemented": true,
     "persisted": true,
-    "tested": "equivalent local negative tests only",
+    "tested": "7/7 exact Git-blob Python tests PASS; historical positive archive gate NOT RUN",
     "qualified": false,
     "canonically_admitted": false
   },
-  "next": "Obtain byte-exact B0 SWAP.ZIP, test extractor against exact archive and verify B111 hash. Then inspect normal Meteo(2) temperature writer and create owner-issued accepted daystart record without changing F-KT or crop publication contracts prematurely."
+  "next": "Review PR #1176 and applicable checks for bounded tooling-only admission; obtain exact B0 archive for full historical positive source proof and next weather-owner work."
 }
