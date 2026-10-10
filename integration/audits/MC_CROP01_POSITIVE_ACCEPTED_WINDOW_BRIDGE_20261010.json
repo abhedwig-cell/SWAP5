@@ -12,7 +12,8 @@
     "trusted reconstructed certified B110 soil on lineage 38001 revision 1 t=101",
     "local weather source 91 epoch 4 day 101 TAV=12",
     "positive weather-to-event composition returns ready FWO38 event forcing",
-    "existing FKT lifecycle atomic accept/restart and negative cases preserved"
+    "existing FKT lifecycle atomic accept/restart and negative cases preserved",
+    "negative read-only proposals reject wrong weather revision, foreign F-KT lineage/revision and foreign crop-day boundary"
   ],
   "limitations": [
     "source IDs self-declared, not trusted meteorological producer",
@@ -27,5 +28,13 @@
     "qualified": false,
     "admitted": false
   },
-  "next": "Run exact-head true-transitive FWO38 owner O0/O2 gate and FCI, correct build/acceptance problems without relaxing contract."
+  "next": "Run exact-head true-transitive FWO38 owner O0/O2 gate and FCI, correct build/acceptance problems without relaxing contract.",
+  "recovery": {
+    "latest_persisted_head": "0084dd7486289a7acde5141382600c279ac762f2",
+    "resolver_fix": "Reuse existing crop-weather preflight transitive source resolver and fail closed before compilation; previous mapfile process substitution masked resolver errors",
+    "negative_proposals": "Four weather/FKT/day identity mismatches assert rejection and unchanged certified F-KT committed revision",
+    "last_verified_failure": "GitHub Actions run 38066744734 failed before scientific assertions at missing mod_swap_base; its other 14 F-CI jobs succeeded",
+    "qualification": "NOT RUN on updated postimage; no admission claim",
+    "next": "Execute actual resolved FWO38 runner at O0/O2 and confirm positive/negative output, then exact-head F-CI preservation and safe merge."
+  }
 }
