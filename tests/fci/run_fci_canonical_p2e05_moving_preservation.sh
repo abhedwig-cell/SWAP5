@@ -425,13 +425,16 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_WEATHER_EVENT_COMPOSITION=PASS'
   fi
   if (( crop_weather_preflight_changed )); then
-    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "16c2c45614bee403f378e022e1a74efba2d5c9bc" ||
+    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "64ef8f27ad312a61f1d362ba6dccdbd1bd6f13ed" ||
       fail 'unqualified integrated weather heat-off restart test blob'
+    test "$(git rev-parse HEAD:tests/fmig431/run_crop_weather_preflight_read_boundary.sh)" = "db3e496a5d13b72784ab642c46dd086d588273f0" ||
+      fail 'unqualified two-day weather preflight runner blob'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_day_preflight.f90)" = "8a99fb56d1b88d47989560c526d99a3888c841dd" ||
       fail 'unqualified weather to F-KT preflight bridge source'
     bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
       fail 'weather and certified F-KT daystart preflight O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS'
+    echo 'FCI_CANONICAL_CROP_TWO_DAY_DAYSTART_RESTART=PASS'
   fi
   if (( crop_weather_owner_test_changed )); then
     test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_day_owner.f90)" = "d1f833b76338eaf4f72235bc6f226e1ef595b3cd" ||
