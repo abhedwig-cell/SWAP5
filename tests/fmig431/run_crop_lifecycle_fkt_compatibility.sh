@@ -23,33 +23,24 @@ extra='''  src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
   src/runtime/mod_fmr_wofost_crop_transaction.f90'''
 assert s.count(anchor)==1
 s=s.replace(anchor,extra,1)
-# Use the same dependency-ordered real source set as the focused
-# lifecycle O0/O2 gate. Frozen F-WOF38's hand-listed compilation order has
-# become stale against the current F-KT directional-publication contract.
-focused=Path(sys.argv[1]).parent.parent / 'fmig431' / 'run_crop_lifecycle_continuation.sh'
+# Use the already-qualified weather/preflight transitive resolver. Unlike
+# the old lifecycle-specific source discovery, this explicitly includes the
+# real F-SI HeadCalc support module and targets the weather/event seam.
+focused=Path(sys.argv[1]).parent.parent / 'fmig431' / 'run_crop_weather_preflight_read_boundary.sh'
 focused_text=focused.read_text()
 start=focused_text.index("mapfile -t SOURCES < <(python3 - \"$ROOT\" <<'PY'\n")
 finish=focused_text.index("\n)\n",start)+3
 sources=focused_text[start:finish]
-assert "targets = ['mod_crop_lifecycle_continuation']" in sources
-sources=sources.replace("targets = ['mod_crop_lifecycle_continuation']", 
-                        "targets = ['mod_fmr_wofost_crop_transaction', 'mod_fmr_crop_weather_physical_event_composition']")
-assert "for path in sorted((root / 'src').rglob('*.f90')):" in sources
-sources=sources.replace("for path in sorted((root / 'src').rglob('*.f90')):",
- "for path in [*sorted((root / 'src').rglob('*.f90')), root / 'tests/fsi/fsi04_real_headcalc_stubs.f90']:")
-assert '    for dep in source[path]:\n        visit(dep)' in sources
-sources=sources.replace('    for dep in source[path]:\n        visit(dep)',
-  '    for dep in source[path]:\n        if dep in by_module and by_module[dep] == path: continue\n        visit(dep)')
-# The transitive resolver must see the real checked-in HeadCalc support
-# source. The original F-WOF38 hand-list did not include this module.
-assert "root / 'tests/fsi/fsi04_real_headcalc_stubs.f90'" in sources
-# Fail closed: process substitution with mapfile otherwise masks resolver
-# exit status and produces misleading missing .mod compiler failures.
+assert "visit('mod_fmr_crop_weather_physical_event_composition')" in sources
+assert "root/'tests/fsi/fsi04_real_headcalc_stubs.f90'" in sources
+sources=sources.replace("visit('mod_crop_lifecycle_daily_composition')",
+                        "visit('mod_crop_lifecycle_daily_composition')\nvisit('mod_fmr_wofost_crop_transaction')")
+# A process substitution hides the resolver exit code behind mapfile.
+# Resolve to a temporary file first; fail before compiling if unresolved.
 sources=sources.replace('mapfile -t SOURCES < <(python3 - "$ROOT" <<\'PY\'',
-    'python3 - "$ROOT" > "$BUILD/resolved_sources" <<\'PY\'')
+                        'python3 - "$ROOT" > "$BUILD/resolved_sources" <<\'PY\'')
 assert sources.endswith('\n)\n')
 sources=sources[:-3] + '\nmapfile -t SOURCES < "$BUILD/resolved_sources"\n'
-assert 'missing required source module' in sources
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
