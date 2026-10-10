@@ -401,6 +401,22 @@ contains
            .not. present(lifecycle_expected_revision)) return
       if (.not. lifecycle_plan%valid) return
       if (lifecycle_expected_revision < 0_8) return
+      ! Validate crop-gating invariants before supplying the physical trial.
+      ! The F-KT crop transaction remains the only acceptance authority.
+      if (lifecycle_plan%preparation_delay < 0 .or. lifecycle_plan%sowing_delay < 0) return
+      if (lifecycle_plan%sown .and. .not. lifecycle_plan%prepared) return
+      if (lifecycle_plan%germinated .and. .not. lifecycle_plan%sown) return
+      if (lifecycle_plan%emergence_eligible .neqv. lifecycle_plan%germinated) return
+      if (lifecycle_plan%germination_evaluated) then
+        if (.not. (lifecycle_plan%prepared .and. lifecycle_plan%sown)) return
+        if (.not. lifecycle_germination%valid) return
+        if (lifecycle_plan%germinated .neqv. lifecycle_germination%complete) return
+        if (.not. ieee_is_finite(lifecycle_germination%next_temperature_sum)) return
+        if (lifecycle_germination%next_temperature_sum < 0.0_real64) return
+      else
+        if (lifecycle_plan%prepared .and. lifecycle_plan%sown) return
+        if (lifecycle_plan%germinated .or. lifecycle_plan%emergence_eligible) return
+      end if
       forcing%lifecycle_plan = lifecycle_plan
       forcing%lifecycle_germination = lifecycle_germination
       forcing%lifecycle_expected_revision = lifecycle_expected_revision
