@@ -83,6 +83,33 @@ program test_crop_certified_daily_preflight
  if(st/=CROP_CERT_GERM_OK) error stop 'heat-off germination moisture'
  call daily(without_heat,43_int64,0_int64,3.0_real64,-15.0_real64,12.0_real64,candidate,status)
  if(status/=CROP_CERT_DAILY_HYDRO) error stop 'heat-off sowing must fail'
+ ! SWHEA=0 is valid when SWSOW=0: certified SWPREP and SWGERM2
+ ! only use the already accepted hydraulic state, not a fabricated heat field.
+ call propose_certified_crop_daily_preflight(without_heat,43_int64,0_int64,3.0_real64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64,1,0, &
+       -50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64, &
+       30.0_real64,12.0_real64,-1000.0_real64,-10.0_real64,20.0_real64, &
+       candidate,status)
+ if(status/=CROP_CERT_DAILY_OK.or..not.candidate%valid) error stop 'heat-off SWSOW0'
+ if(candidate%nodsow/=0.or.candidate%soil_temperature/=0.0_real64) error stop 'no invented heat'
+ if(.not.candidate%preparation%preparation_complete.or. &
+       .not.candidate%preparation%sowing_complete) error stop 'heat-off prep sow'
+ if(abs(candidate%hgerm-germ_head)>1.0e-11_real64) error stop 'heat-off germ head'
+ call propose_certified_crop_daily_preflight(without_heat,43_int64,1_int64,3.0_real64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64,1,0, &
+       -50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64, &
+       30.0_real64,12.0_real64,-1000.0_real64,-10.0_real64,20.0_real64, &
+       candidate,status)
+ if(status/=CROP_CERT_DAILY_HYDRO.or.candidate%valid) error stop 'heat-off stale revision'
+ call propose_certified_crop_daily_preflight(without_heat,43_int64,0_int64,3.0_real64, &
+       -40.0_real64,-15.0_real64,-15.0_real64,-15.0_real64,1,0, &
+       -50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64, &
+       30.0_real64,12.0_real64,-1000.0_real64,-10.0_real64,20.0_real64, &
+       candidate,status)
+ if(status/=CROP_CERT_DAILY_HYDRO.or.candidate%valid) error stop 'heat-off bad zprep'
  print '(a)','SW431_CROP_CERTIFIED_DAILY_PREFLIGHT=PASS'
 contains
  subroutine daily(column,lineage,revision,time,zgerm,air,candidate,status)
