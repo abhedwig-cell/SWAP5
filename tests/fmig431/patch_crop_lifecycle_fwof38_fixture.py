@@ -211,7 +211,9 @@ replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  
   call setup_crop_kernel_committed(lifecycle_state,lifecycle_committed,3831_int64,100.0_real64)
   call lifecycle_committed%capture_checkpoint(lifecycle_checkpoint,lifecycle_checkpoint_ok)
   call require(lifecycle_checkpoint_ok,'lifecycle checkpoint')
-  call crop_kernel%advance_interval(crop_parameters,lifecycle_committed,lifecycle_forcing,crop_config, &
+  ! The physical transaction now consumes the real weather-derived bridge event,
+  ! not an independently caller-composed lifecycle plan.
+  call crop_kernel%advance_interval(crop_parameters,lifecycle_committed,bridge_event,crop_config, &
        100.0_real64,101.0_real64,lifecycle_result,lifecycle_candidate,lifecycle_diag,lifecycle_checkpoint)
   call require(lifecycle_result%status==CANONICAL_STATUS_COMPLETED.and.lifecycle_candidate%ready(), &
        'opt-in physical FKT lifecycle trial')
@@ -267,8 +269,10 @@ replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  
   call lifecycle_restored%snapshot_lifecycle(lifecycle_replayed,lifecycle_available)
   call require(lifecycle_available.and.lifecycle_replayed%revision==5_8.and. &
        lifecycle_replayed%prepared.and.lifecycle_replayed%sown.and. &
+       lifecycle_replayed%germination_temperature_sum==7.0_real64.and. &
        .not.lifecycle_replayed%germinated.and..not.lifecycle_replayed%emerged, &
        'accepted crop lifecycle restart successor')
+  print '(a)', 'SW431_CROP_WEATHER_EVENT_FKT_ACCEPT_RESTART=PASS'
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ACCEPT_RESTART=PASS'
   print '(a)', 'SW431_CROP_FKT_LIFECYCLE_ATOMIC_TRIAL=PASS'
 
