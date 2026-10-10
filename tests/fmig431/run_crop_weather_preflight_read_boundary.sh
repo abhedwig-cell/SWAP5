@@ -31,7 +31,7 @@ def visit(name,parent='target'):
         if child in by and by[child]==path:continue
         visit(child,str(path))
     active.remove(path);seen.add(path);order.append(path.relative_to(root))
-visit('mod_fmr_crop_weather_day_preflight')
+visit('mod_fmr_crop_weather_physical_event_composition')
 visit('mod_crop_lifecycle_daily_composition')
 for p in order:print(p)
 PY

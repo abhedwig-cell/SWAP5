@@ -9,6 +9,10 @@ program test_crop_weather_preflight
  use mod_crop_weather_day_owner
  use mod_fmr_crop_certified_daily_preflight,only:crop_certified_daily_preflight_t
  use mod_fmr_crop_weather_day_preflight
+ use mod_fmr_crop_weather_physical_event_composition
+ use mod_fmr_wofost_crop_transaction,only:fmr_wofost_crop_event_forcing_t
+ use mod_fmr_wofost_accepted_window_lineage,only:fmr_wofost_accepted_window_t
+ use mod_wofost_one_day_structural_evolution,only:wofost_one_day_forcing_t
  use mod_crop_lifecycle_daily_composition,only:crop_daily_lifecycle_candidate_t, &
       compose_crop_lifecycle_daily_candidate,CROP_DAILY_OK,CROP_DAILY_INVALID
  implicit none
@@ -20,6 +24,9 @@ program test_crop_weather_preflight
  type(weather_day_owner_t)::weather,replayed
  type(crop_certified_daily_preflight_t)::result
  type(crop_daily_lifecycle_candidate_t)::plan
+ type(fmr_wofost_crop_event_forcing_t)::event
+ type(fmr_wofost_accepted_window_t)::window
+ type(wofost_one_day_forcing_t)::cropforcing
  integer::s
  logical::ok,available,reconstructed
  state%active_nodes=2
@@ -134,6 +141,22 @@ program test_crop_weather_preflight
  result%preparation%sowing_complete=.true.
  call compose_crop_lifecycle_daily_candidate(result%preparation,result%germination,plan,s)
  if(s/=CROP_DAILY_INVALID.or.plan%valid) error stop 34
+ ! The downstream F-WOF38 boundary cannot make a physical event from
+ ! a correct daystart proposal without a real accepted crop window.
+ call propose_weather_crop_physical_event(restarted,52_int64,0_int64,3.0_real64, &
+      replayed,7_int64,9_int64,1_int64,3.0_real64,window,cropforcing,0_int64, &
+      -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+      1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+      0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+      -1000.0_real64,-10.0_real64,20.0_real64,event,s)
+ if(s/=CROP_EVENT_COMPOSE_PHYSICAL.or.event%ready()) error stop 35
+ call propose_weather_crop_physical_event(restarted,52_int64,0_int64,3.0_real64, &
+      replayed,7_int64,9_int64,0_int64,3.0_real64,window,cropforcing,0_int64, &
+      -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+      1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+      0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+      -1000.0_real64,-10.0_real64,20.0_real64,event,s)
+ if(s/=CROP_EVENT_COMPOSE_WEATHER.or.event%ready()) error stop 36
  print '(a)','CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS'
 contains
  subroutine propose(lineage,revision,time,source,epoch,wrev,day)
