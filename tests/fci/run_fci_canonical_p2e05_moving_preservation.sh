@@ -373,6 +373,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_b111_meteo_loading_candidate.f90 ) crop_meteo_load006_changed=1 ;;
       src/crop/mod_crop_weather_day_owner.f90 ) crop_weather_register_changed=1 ;;
       src/runtime/mod_fmr_crop_weather_day_preflight.f90 ) crop_weather_preflight_changed=1 ;;
+      tests/fmig431/test_crop_weather_preflight_read_boundary.f90 ) crop_weather_preflight_changed=1 ;;
       src/crop/mod_crop_b111_germination_sum_candidate.f90 ) crop_b111_germ_sum_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
@@ -394,6 +395,8 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_B111_GERMINATION_EXACT_SOURCE=PASS'
   fi
   if (( crop_weather_preflight_changed )); then
+    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "a046b73bd581528c8344d42acc65880516b9ee65" ||
+      fail 'unqualified integrated weather heat-off restart test blob'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_day_preflight.f90)" = "8a99fb56d1b88d47989560c526d99a3888c841dd" ||
       fail 'unqualified weather to F-KT preflight bridge source'
     bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
