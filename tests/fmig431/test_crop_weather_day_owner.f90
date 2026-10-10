@@ -6,7 +6,7 @@ program test_weather_day_owner
  type(weather_day_owner_t)::w,w2
  integer::s
  integer(int64)::source,epoch,revision
- real(real64)::day,tmin,tmax,tav,nan
+ real(real64)::day,tmin,tmax,tav,nan,paired_min,paired_max
  logical::yes
  nan=ieee_value(0.0_real64,ieee_quiet_nan)
  call initialize_weather_day_owner(w,2_int64,7_int64,s)
@@ -15,6 +15,11 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK) error stop 2
  call w%read_day(2_int64,7_int64,1_int64,12.0_real64,tav,s)
  if(s/=WEATHER_DAY_OK.or.tav/=4.0_real64) error stop 3
+ call w%read_day(2_int64,7_int64,1_int64,12.0_real64,tav,s,paired_min,paired_max)
+ if(s/=WEATHER_DAY_OK.or.paired_min/=-4.0_real64.or.paired_max/=12.0_real64) error stop 31
+ if(tav/=(paired_max+paired_min)*0.5_real64) error stop 32
+ call w%read_day(2_int64,7_int64,0_int64,12.0_real64,tav,s,paired_min,paired_max)
+ if(s/=WEATHER_DAY_STALE.or.tav/=0.0_real64.or.paired_min/=0.0_real64.or.paired_max/=0.0_real64) error stop 33
  call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-4.0_real64,12.0_real64,s)
  if(s/=WEATHER_DAY_DUPLICATE) error stop 4
  call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-3.0_real64,12.0_real64,s)
@@ -73,5 +78,7 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK) error stop 29
  call w2%read_day(source,epoch,3_int64,14.0_real64,tav,s)
  if(s/=WEATHER_DAY_OK.or.tav/=10.0_real64) error stop 30
+ call w2%read_day(source,epoch,3_int64,14.0_real64,tav,s,paired_min,paired_max)
+ if(s/=WEATHER_DAY_OK.or.paired_min/=4.0_real64.or.paired_max/=16.0_real64) error stop 34
  print '(a)','CROP_WEATHER_DAY_OWNER=PASS'
 end program

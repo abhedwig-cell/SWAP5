@@ -437,18 +437,19 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_TWO_DAY_DAYSTART_RESTART=PASS'
   fi
   if (( crop_weather_owner_test_changed )); then
-    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_day_owner.f90)" = "d1f833b76338eaf4f72235bc6f226e1ef595b3cd" ||
+    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_day_owner.f90)" = "c5b5ac718afde200cc3ea7114001ae75016436a0" ||
       fail 'unqualified weather-day retry/restart test postimage'
     bash tests/fmig431/run_crop_weather_day_owner.sh ||
       fail 'weather-day retry/restart exact test O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_WEATHER_DAY_RETRY_RESTART=PASS'
   fi
   if (( crop_weather_register_changed )); then
-    test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "7c5c6e73c831022e24ccf45ae0e7dd8c382e780c" ||
+    test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "e63932c2faa78dd9004f639f618b0c53290ad844" ||
       fail 'unqualified weather-day register source'
     bash tests/fmig431/run_crop_weather_day_owner.sh ||
       fail 'weather-day register O0/O2 ingestion and restart matrix failed'
     echo 'FCI_CANONICAL_CROP_WEATHER_DAY_REGISTER=PASS'
+    echo 'FCI_CANONICAL_SHARED_METEO_MINMAX_TAV_READ=PASS'
   fi
   if (( crop_meteo_load006_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_b111_meteo_loading_candidate.f90)" = "db1b9b9e7e6322992611333e3bfbb18b52194a93" ||

@@ -58,20 +58,26 @@ contains
     owner%revision=owner%revision+1_int64;owner%has_day=.true.
     status=WEATHER_DAY_OK
   end subroutine
-  subroutine weather_owner_read_day(self,source,epoch,revision,day,tav,status)
+  subroutine weather_owner_read_day(self,source,epoch,revision,day,tav,status,tmin,tmax)
     class(weather_day_owner_t),intent(in)::self
     integer(int64),intent(in)::source,epoch,revision
     real(real64),intent(in)::day
     real(real64),intent(out)::tav
     integer,intent(out)::status
+    real(real64),intent(out),optional::tmin,tmax
     tav=0.0_real64;status=WEATHER_DAY_INVALID
+    if(present(tmin)) tmin=0.0_real64
+    if(present(tmax)) tmax=0.0_real64
     if(.not.self%active.or..not.self%has_day) return
     if(.not.ieee_is_finite(day)) return
     status=WEATHER_DAY_SOURCE
     if(source/=self%source.or.epoch/=self%epoch) return
     status=WEATHER_DAY_STALE
     if(revision/=self%revision.or.day/=self%day) return
-    tav=self%tav;status=WEATHER_DAY_OK
+    tav=self%tav
+    if(present(tmin)) tmin=self%tmin
+    if(present(tmax)) tmax=self%tmax
+    status=WEATHER_DAY_OK
   end subroutine
   subroutine weather_owner_snapshot(self,source,epoch,revision,day,tmin,tmax,available)
     class(weather_day_owner_t),intent(in)::self
