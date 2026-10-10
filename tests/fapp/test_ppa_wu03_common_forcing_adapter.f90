@@ -121,7 +121,7 @@ program test_ppa_wu03_common_forcing_adapter
   call require(normal_input%precipitation_rate_cm_per_day >= 0.0_real64, 'derived precipitation nonnegative')
 
   call materialize_ppa_wu03_common_forcing(forcing_config, normal_input, base_request, &
-       adapter_result, adapter_diag)
+       adapter_result, adapter_diag,weather,71_int64,3_int64,1_int64,4100.0_real64)
   call require(adapter_diag%status == PPA_WU03_OK .and. adapter_result%valid, &
        'final common forcing materialization')
   call require(adapter_diag%interval_valid .and. adapter_diag%forcing_span_valid .and. &
@@ -202,6 +202,14 @@ program test_ppa_wu03_common_forcing_adapter
 
   ! A second subdaily interval uses the same live owner.  No application
   ! bootstrap or committed-state replacement occurs between intervals.
+  normal_input%interval%t0=T1
+  normal_input%interval%t1=T2
+  call materialize_ppa_wu03_common_forcing(forcing_config,normal_input,base_request, &
+       adapter_result,adapter_diag,weather,71_int64,3_int64,1_int64,4100.0_real64)
+  call require(adapter_diag%status==PPA_WU03_OK.and.adapter_result%valid, &
+       'second committed interval same weather day guard')
+  normal_input%interval%t0=T0
+  normal_input%interval%t1=T1
   call direct_app%run_standalone(T1, T2, direct_results, direct_status)
   call adapter_app%run_standalone_with_forcing(T1, T2, adapter_forcing, adapter_results, adapter_status)
   call require(direct_status == FMR_APP_BOOT_OK .and. adapter_status == FMR_APP_BOOT_OK, &
@@ -212,6 +220,8 @@ program test_ppa_wu03_common_forcing_adapter
   call adapter_app%copy_committed_revisions(adapter_revisions, adapter_status)
   call require(all(direct_revisions == 2_int64) .and. all(adapter_revisions == 2_int64), &
        'PPA-WU01 retains committed-state ownership')
+
+  print '(a)', 'PPA_WU03_WEATHER_GUARDED_TWO_COMMITTED_INTERVALS=PASS'
 
   ! Stateless A-B-A materialization proves that retries or repeated requests
   ! cannot consume or advance hidden adapter input.
