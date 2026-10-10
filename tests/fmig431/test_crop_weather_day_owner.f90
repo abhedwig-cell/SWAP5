@@ -80,5 +80,21 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK.or.tav/=10.0_real64) error stop 30
  call w2%read_day(source,epoch,3_int64,14.0_real64,tav,s,paired_min,paired_max)
  if(s/=WEATHER_DAY_OK.or.paired_min/=4.0_real64.or.paired_max/=16.0_real64) error stop 34
+ call validate_weather_day_forcing_span(w2,source,epoch,3_int64,14.0_real64, &
+      14.0_real64,14.5_real64,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=10.0_real64) error stop 35
+ call validate_weather_day_forcing_span(w2,source,epoch,3_int64,14.0_real64, &
+      14.5_real64,15.0_real64,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=10.0_real64) error stop 36
+ call validate_weather_day_forcing_span(w2,source,epoch,3_int64,14.0_real64, &
+      14.5_real64,15.1_real64,tav,s)
+ if(s/=WEATHER_DAY_INVALID.or.tav/=0.0_real64) error stop 37
+ call validate_weather_day_forcing_span(w2,source,epoch,2_int64,14.0_real64, &
+      14.0_real64,14.5_real64,tav,s)
+ if(s/=WEATHER_DAY_STALE.or.tav/=0.0_real64) error stop 38
+ call validate_weather_day_forcing_span(w2,source,epoch,3_int64,14.0_real64, &
+      13.9_real64,14.5_real64,tav,s)
+ if(s/=WEATHER_DAY_INVALID.or.tav/=0.0_real64) error stop 39
+ print '(a)','CROP_WEATHER_FORCING_SPAN=PASS'
  print '(a)','CROP_WEATHER_DAY_OWNER=PASS'
 end program
