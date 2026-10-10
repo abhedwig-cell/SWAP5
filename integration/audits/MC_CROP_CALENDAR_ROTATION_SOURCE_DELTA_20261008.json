@@ -1,0 +1,86 @@
+{
+  "schema": "swap431.crop_calendar_rotation_source_delta.v1",
+  "canonical_pinned": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+  "historical_source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "source_identity": "B1.11 bundled source, master SW431-CROP-ROTATION sha256 aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+  "source_procedures": {
+    "croprotation": "181-354",
+    "find_active_crop": "358-373",
+    "cropemergence": "377-449",
+    "preparation": "453-534",
+    "sowing": "538-643",
+    "germination": "647-788",
+    "cropdevelopment": "925-1038",
+    "reset_crop": "1042-1105"
+  },
+  "historical_semantics": [
+    "Ordered cropstart/cropend intervals with nonoverlap and nonempty duration checks",
+    "Active crop selected by simulation clock; cropstart resets preparation, sowing, germination, harvest flags; root initialization on emergence",
+    "Simulation starting inside an active crop requires SWINCO=3",
+    "Per-crop input filename selection and read-once initialization",
+    "Crop harvest/reset and next crop lifecycle; preparation/sowing/germination conditional on hydraulic and thermal forcing"
+  ],
+  "canonical_existing": {
+    "accepted_window_lifecycle": "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90; exact matching committed crop receipt retires one accepted daily event, does not choose next crop",
+    "wofost81_accepted_window_lifecycle": "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90; same committed event retirement for WOFOST81",
+    "crop_owner": "src/crop/mod_wofost_crop_owner_state.f90; per-crop state owner and one-day evolution",
+    "status": "Implemented per-crop accepted event != historical multi-crop calendar/rotation scheduling"
+  },
+  "delta": [
+    {
+      "capability": "SW431-CROP-ROTATION",
+      "status": "DERIVED_CLOCK_ADMITTED_PHYSICAL_ROTATION_OPEN",
+      "requires": "No duplicate admitted selector/transition/receipt. Remaining physical crop owner, sow/harvest, and serialized restart coupling."
+    },
+    {
+      "capability": "SW431-CROP-SOW",
+      "status": "OPEN_HYDRAULIC_FORCING_DEPENDENCY",
+      "requires": "Pressure-head/soil-temperature workability, sowing, germination guarded against rejected trials and reread"
+    },
+    {
+      "capability": "SW431-CROP-ANNUAL",
+      "status": "QUALIFICATION_ONLY_NOT_AUTO_ADMITTED",
+      "requires": "Check B1.11 annual phenology envelope and accepted-event coupling independently"
+    },
+    {
+      "capability": "SW431-CROP-FIXED",
+      "status": "OPEN_SEPARATE_VARIANT",
+      "requires": "Fixed clock prescribed-LAI/root-biomass and harvest; not equivalent to WOFOST per-event lifecycle"
+    },
+    {
+      "capability": "SW431-CROP-FIXED-THERMAL",
+      "status": "OPEN_SEPARATE_VARIANT",
+      "requires": "Thermal development variant; no assumption of closure from calendar clock"
+    }
+  ],
+  "recommended_order": [
+    "Standalone immutable typed crop schedule validation and deterministic active crop selector with historical edge cases; must not change canonical kernel/bootstrap",
+    "Standalone lifecycle trial/accept/reject/retry and restart tests for two crops, delayed emergence and harvest, using existing committed crop event contract",
+    "Reconcile transport/state owner/hydraulic forcing and preexisting WOFOST81 lifecycle before production binding",
+    "Qualify calendar and sowing/fixed/thermal independently and admit only after F-CI moving preservation"
+  ],
+  "disposition": "DOCUMENTED_OPEN; no new scientific production implementation; preserve active owner workstreams and no Actions rerun",
+  "post_pr1132_reconciliation": {
+    "canonical": "9c01f3cea1f8f29140a26c1535dcc0ec956a780b",
+    "admitted_prs": [
+      1130,
+      1131,
+      1132
+    ],
+    "admitted_scope": "calendar selector, trial/accept checkpoint transition, committed-receipt derived calendar/window publication",
+    "source_review": "B1.11 MOD_cropdevelopment.f90 croprotation/find_active_crop/cropemergence lines 180-449",
+    "still_open": [
+      "start inside season SWINCO=3 policy and state reconstruction",
+      "preparation/sowing/germination conditional on hydraulic and thermal state",
+      "crop physical owner initialization, harvest/reset, root extraction initialization",
+      "serialized physical crop/calendar restart across crops"
+    ],
+    "source_guards": [
+      "adjacent crop separation >= 0.5 days",
+      "initial TSTART inside growing season requires SWINCO=3",
+      "crop selection uses 0.1 day tolerance and cropstart marker 0.001 day",
+      "new crop resets prep/sow/germ/emergence/harvest in legacy; SWAP5 must not mutate committed owner before accepted event"
+    ],
+    "next_safe_step": "Nonmutating source-bound lifecycle preflight and explicit owner transaction/restart contract; no duplicate selector/calendar/receipt implementation"
+  }
+}
