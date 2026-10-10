@@ -37,6 +37,9 @@ sources=sources.replace("targets = ['mod_crop_lifecycle_continuation']",
 assert "for path in sorted((root / 'src').rglob('*.f90')):" in sources
 sources=sources.replace("for path in sorted((root / 'src').rglob('*.f90')):",
  "for path in [*sorted((root / 'src').rglob('*.f90')), root / 'tests/fsi/fsi04_real_headcalc_stubs.f90']:")
+assert '    for dep in source[path]:\n        visit(dep)' in sources
+sources=sources.replace('    for dep in source[path]:\n        visit(dep)',
+  '    for dep in source[path]:\n        if dep in by_module and by_module[dep] == path: continue\n        visit(dep)')
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
