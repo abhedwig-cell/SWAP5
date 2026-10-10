@@ -1,0 +1,32 @@
+{
+  "schema": "swap431.mc_crop01.exact_b111_meteo_recovery.v1",
+  "canonical_baseline": "0d027b099bf69adc4537d4d73651ea82e0dc9c39",
+  "recovery_commit": "15b615c37880530b47e320f18e79e33fd3635f53",
+  "scientific_scope": "Byte-verified recovery infrastructure for SWAP 4.3.1/B1.11 meteorological source; no production physics or meteorological ownership added",
+  "authority": {
+    "B0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "B0_member_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "B111_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "corrected_member_bytes": 85541,
+    "patch": "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
+  },
+  "files": {
+    "tools/vq/extract_b111_meteo.py": "3b5e66fddcaf7b9ce2780b459522cc8c4b13610a",
+    "tools/vq/test_extract_b111_meteo.py": "3788d62ff93374a0769a7bd49e7a1eb572220a73"
+  },
+  "validation": {
+    "equivalent_local_negative_tests": "5/5 PASS",
+    "exact_remote_source_runtime_tests": "NOT RUN",
+    "positive_original_archive_test": "BLOCKED: exact B0 source archive bytes unavailable",
+    "full_b111_reconstruction": "NOT RUN"
+  },
+  "claim_ceiling": "No claim of recovering normal MOD_meteo source or accepted crop TAV or owner binding; only script and tests persisted.",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": "equivalent local negative tests only",
+    "qualified": false,
+    "canonically_admitted": false
+  },
+  "next": "Obtain byte-exact B0 SWAP.ZIP, test extractor against exact archive and verify B111 hash. Then inspect normal Meteo(2) temperature writer and create owner-issued accepted daystart record without changing F-KT or crop publication contracts prematurely."
+}
