@@ -49,6 +49,7 @@ hook='python3 "$ROOT/tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py" "$BUI
 assert s.count('COMMON=(-std=f2008')==1
 s=s.replace('COMMON=(-std=f2008',hook+'\nCOMMON=(-std=f2008',1)
 s=s.replace(' -Werror -fcheck=all', ' -Werror -Wno-error=compare-reals -Wno-error=function-elimination -fcheck=all', 1)
+s=s.replace('"$BUILD/fwof38_atomic.f90" ./*.o -o test', '"$BUILD/fwof38_atomic.f90" "$ROOT/src/legacy/b1_10_port/headcalc.f90" ./*.o -o test')
 s=s.replace('  ./test > output.txt 2>&1', '  ./test > output.txt 2>&1 || { cat output.txt >&2; exit 1; }')
 Path(sys.argv[2]).write_text(s)
 PY
