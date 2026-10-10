@@ -412,7 +412,7 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_WEATHER_EVENT_COMPOSITION=PASS'
   fi
   if (( crop_weather_preflight_changed )); then
-    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "529e1871966b9be4e345909197cbdb14f7f56f43" ||
+    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "16c2c45614bee403f378e022e1a74efba2d5c9bc" ||
       fail 'unqualified integrated weather heat-off restart test blob'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_day_preflight.f90)" = "8a99fb56d1b88d47989560c526d99a3888c841dd" ||
       fail 'unqualified weather to F-KT preflight bridge source'
