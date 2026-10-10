@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "MC-NUT01-MC-SOL01",
+  "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "branch": "work/swap431-nutsol-20261007",
+  "implemented": {
+    "b111_nfixation_policy": true,
+    "nutrient_soil_owner": false,
+    "solute_reactive_owner": false
+  },
+  "persisted": true,
+  "local_tests": {
+    "b111_nfixation_policy": "O0/O2 PASS with gfortran 14.2, -fcheck=all and -ffpe-trap=invalid,zero,overflow"
+  },
+  "qualification": {
+    "b111_literal_source_oracle": "PENDING_PR_ACTION",
+    "production_runtime_admission": false
+  },
+  "owner_contract": "integration/audits/MC_NUT_SOL_OWNER_DECISION.md",
+  "invariants": [
+    "rejected trials do not mutate committed nutrient/solute state",
+    "one authoritative owner per persistent mass store",
+    "whole-system constituent mass balance is independent from local equation equality",
+    "restart reproduces all persistent nutrient/solute stores",
+    "WOFOST81 semantics remain unchanged"
+  ],
+  "explicit_architecture_decision_required": {
+    "capability": "SW431-SALT-AQUIFER",
+    "reason": "B1.11 SWBR source has reproduced numnod+1 bounds defect; corrected reservoir coefficient/storage and units require approved reference-correction contract before implementation"
+  },
+  "next_safe_step": "Qualify the separate B1.11 fixation policy against the exact bundled source, then implement the Soil-N inventory owner before reactions/crop exchange. In MC-SOL01 extend the existing mobile owner with matrix reactive storage only; do not implement aquifer breakthrough until the correction decision is accepted."
+}
