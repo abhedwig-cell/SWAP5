@@ -51,5 +51,27 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK.or.tav/=11.0_real64) error stop 13
  call w%read_day(source,epoch,1_int64,12.0_real64,tav,s)
  if(s/=WEATHER_DAY_STALE.or.tav/=0.0_real64) error stop 14
+ ! Accepted next-day replay is idempotent: identical values cannot advance
+ ! revision; changed values on the same day must fail without mutation.
+ call ingest_weather_day(w,source,epoch,13.0_real64,2.0_real64,20.0_real64,s)
+ if(s/=WEATHER_DAY_DUPLICATE) error stop 22
+ call w%snapshot(source,epoch,revision,day,tmin,tmax,yes)
+ if(.not.yes.or.revision/=2_int64.or.day/=13.0_real64) error stop 23
+ call ingest_weather_day(w,source,epoch,13.0_real64,2.0_real64,19.0_real64,s)
+ if(s/=WEATHER_DAY_CONFLICT) error stop 24
+ call w%read_day(source,epoch,2_int64,13.0_real64,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=11.0_real64) error stop 25
+ ! Restart must retain the day/revision identity, not silently advance
+ ! when the producer replays its last already-consumed weather day.
+ call reconstruct_weather_day_owner(w2,source,epoch,revision,day,tmin,tmax,s)
+ if(s/=WEATHER_DAY_OK) error stop 26
+ call ingest_weather_day(w2,source,epoch,day,tmin,tmax,s)
+ if(s/=WEATHER_DAY_DUPLICATE) error stop 27
+ call w2%read_day(source,epoch,revision,day,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=11.0_real64) error stop 28
+ call ingest_weather_day(w2,source,epoch,14.0_real64,4.0_real64,16.0_real64,s)
+ if(s/=WEATHER_DAY_OK) error stop 29
+ call w2%read_day(source,epoch,3_int64,14.0_real64,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=10.0_real64) error stop 30
  print '(a)','CROP_WEATHER_DAY_OWNER=PASS'
 end program
