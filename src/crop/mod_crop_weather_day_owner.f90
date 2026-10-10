@@ -15,7 +15,7 @@ module mod_crop_weather_day_owner
     procedure :: read_day => weather_owner_read_day
     procedure :: snapshot => weather_owner_snapshot
   end type
-  public :: initialize_weather_day_owner, ingest_weather_day, reconstruct_weather_day_owner
+  public :: initialize_weather_day_owner, ingest_weather_day, reconstruct_weather_day_owner, validate_weather_day_forcing_span
 contains
   subroutine initialize_weather_day_owner(owner,source,epoch,status)
     type(weather_day_owner_t),intent(out)::owner
@@ -79,6 +79,22 @@ contains
     if(present(tmax)) tmax=self%tmax
     status=WEATHER_DAY_OK
   end subroutine
+  ! Read-only handoff guard for a hydrological forcing interval. The
+  ! interval must belong to the very same recorded meteorological day used
+  ! by crop daystart. This does not certify an upstream weather producer or
+  ! change the hydrological forcing values.
+  subroutine validate_weather_day_forcing_span(owner,source,epoch,revision,day,t0,t1,tav,status)
+    type(weather_day_owner_t),intent(in)::owner
+    integer(int64),intent(in)::source,epoch,revision
+    real(real64),intent(in)::day,t0,t1
+    real(real64),intent(out)::tav
+    integer,intent(out)::status
+    tav=0.0_real64
+    status=WEATHER_DAY_INVALID
+    if(.not.ieee_is_finite(day).or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1)) return
+    if(day/=anint(day).or.t0<day.or.t1<=t0.or.t1>day+1.0_real64) return
+    call owner%read_day(source,epoch,revision,day,tav,status)
+  end subroutine validate_weather_day_forcing_span
   subroutine weather_owner_snapshot(self,source,epoch,revision,day,tmin,tmax,available)
     class(weather_day_owner_t),intent(in)::self
     integer(int64),intent(out)::source,epoch,revision
