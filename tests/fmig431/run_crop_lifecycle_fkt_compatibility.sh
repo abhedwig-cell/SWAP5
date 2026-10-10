@@ -48,7 +48,7 @@ assert "root / 'tests/fsi/fsi04_real_headcalc_stubs.f90'" in sources
 sources=sources.replace('mapfile -t SOURCES < <(python3 - "$ROOT" <<\'PY\'',
     'python3 - "$ROOT" > "$BUILD/resolved_sources" <<\'PY\'')
 assert sources.endswith('\n)\n')
-sources=sources[:-3] + 'mapfile -t SOURCES < "$BUILD/resolved_sources"\n'
+sources=sources[:-3] + '\nmapfile -t SOURCES < "$BUILD/resolved_sources"\n'
 assert 'missing required source module' in sources
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
