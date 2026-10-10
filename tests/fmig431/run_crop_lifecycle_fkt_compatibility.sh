@@ -34,6 +34,9 @@ sources=focused_text[start:finish]
 assert "targets = ['mod_crop_lifecycle_continuation']" in sources
 sources=sources.replace("targets = ['mod_crop_lifecycle_continuation']", 
                         "targets = ['mod_fmr_wofost_crop_transaction', 'mod_fmr_crop_weather_physical_event_composition']")
+assert "for path in sorted((root / 'src').rglob('*.f90')):" in sources
+sources=sources.replace("for path in sorted((root / 'src').rglob('*.f90')):",
+ "for path in [*sorted((root / 'src').rglob('*.f90')), root / 'tests/fsi/fsi04_real_headcalc_stubs.f90']:")
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
