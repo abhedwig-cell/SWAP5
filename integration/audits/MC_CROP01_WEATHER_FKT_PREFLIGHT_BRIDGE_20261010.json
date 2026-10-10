@@ -1,0 +1,26 @@
+{
+  "schema": "swap431.mc_crop01.weather_fkt_preflight_bridge.v1",
+  "canonical_base": "c2973410153b630c84b37c8cc585f8136420ce1d",
+  "scope": "Bounded staging read-only composition: existing weather_day_owner_t read_day feeds the already certified committed F-KT soil daily crop preflight, requiring exact day-start and local source epoch revision; no caller TAV argument",
+  "source_blob": "8a99fb56d1b88d47989560c526d99a3888c841dd",
+  "test_blob": "0018f4923f8189cc66116cb738b5925c305562a2",
+  "runner_blob": "1521b09482c6defb8f502b8e2cc6674b2c376fa5",
+  "tests": [
+    "real kernel B110 committed certified soil snapshot, valid weather register positive",
+    "stale weather revision",
+    "wrong weather source",
+    "wrong day",
+    "stale F-KT revision",
+    "wrong F-KT lineage"
+  ],
+  "source_claim_limit": "Local weather register may still be initialized by caller; it does not authenticate a physical upstream meteorological producer. No F-KT weather forcing linkage or accepted interval certificate; no event publication. A day-start preflight must not claim same-day future F-KT acceptance.",
+  "states": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "next": "Execute exact-head transitive Fortran O0/O2 runner and F-CI, repair failures without weakening gates; reconcile true weather input owner before any physical event admission."
+}
