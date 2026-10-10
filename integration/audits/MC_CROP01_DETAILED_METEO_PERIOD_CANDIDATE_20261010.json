@@ -1,0 +1,45 @@
+{
+  "schema": "swap431.mc_crop01.detailed_meteo_period_candidate.v1",
+  "baseline": "381f01491907626cee45a056f90026beeda68105",
+  "history": {
+    "historical_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_file": "SWAP/MOD_meteo.f90",
+    "b0_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "b0_size_bytes": 85550,
+    "exact_b0_file_contents_available": false,
+    "secondary_non_identity_reference": "SWAP-model/SWAP/src/atmosphere/meteoday.f90, refactored February 2026",
+    "secondary_expression": "sum(atav(i))*metperiod",
+    "source_equivalence_claim": false
+  },
+  "postimage": {
+    "source": "src/crop/mod_crop_tav_detailed_period_candidate.f90",
+    "git_blob": "51bed01fbb1d8cece1650235aa2bc518c6f1209d",
+    "test": "tests/fmig431/test_crop_tav_detailed_period_candidate.f90",
+    "test_git_blob": "a70275a96d32ced133edc978b78abe5cd5fb3f52",
+    "runner": "tests/fmig431/run_crop_tav_detailed_period_candidate.sh",
+    "strict_fci": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  },
+  "evidence": {
+    "local_gfortran_O0": "PASS",
+    "local_gfortran_O2": "PASS",
+    "source_and_test_git_blob_verified": true,
+    "cases": "96 period counts, exact operation-order oracle, nonfinite value, period mismatch and subnormal period negative cases",
+    "integrated_fci": "NOT_RUN",
+    "physical_weather_provenance": "NOT_IMPLEMENTED"
+  },
+  "limits": [
+    "This is an untrusted pure candidate only",
+    "No claim of exact original MOD_meteo arithmetic without byte-verifying historical B0 or B1.11 source",
+    "Does not issue authoritative day-start weather record",
+    "Does not authorize physical crop events"
+  ],
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "locally_tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "next": "Run exact-head F-CI once only when ready and existing runs checked; recover and verify original MOD_meteo to move beyond candidate."
+}
