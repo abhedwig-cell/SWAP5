@@ -338,6 +338,7 @@ check_b19_micro_root_recomposition() {
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
       src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
+      tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
       src/crop/mod_crop_root_anaerobic_extension_gate.f90 ) ;;
       src/crop/mod_crop_root_depth_biomass.f90 ) ;;
@@ -393,7 +394,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
-  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
+  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
   if (( ppa_weather_guard_changed )); then
     test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
       fail 'unqualified PPA-WU03 shared weather guard source'
