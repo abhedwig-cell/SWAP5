@@ -40,6 +40,16 @@ sources=sources.replace("for path in sorted((root / 'src').rglob('*.f90')):",
 assert '    for dep in source[path]:\n        visit(dep)' in sources
 sources=sources.replace('    for dep in source[path]:\n        visit(dep)',
   '    for dep in source[path]:\n        if dep in by_module and by_module[dep] == path: continue\n        visit(dep)')
+# The transitive resolver must see the real checked-in HeadCalc support
+# source. The original F-WOF38 hand-list did not include this module.
+assert "root / 'tests/fsi/fsi04_real_headcalc_stubs.f90'" in sources
+# Fail closed: process substitution with mapfile otherwise masks resolver
+# exit status and produces misleading missing .mod compiler failures.
+sources=sources.replace('mapfile -t SOURCES < <(python3 - "$ROOT" <<\'PY\'',
+    'python3 - "$ROOT" > "$BUILD/resolved_sources" <<\'PY\'')
+assert sources.endswith('\n)\n')
+sources=sources[:-3] + 'mapfile -t SOURCES < "$BUILD/resolved_sources"\n'
+assert 'missing required source module' in sources
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
