@@ -317,6 +317,7 @@ check_b19_micro_root_recomposition() {
   local crop_meteo_load006_changed=0
   local crop_weather_register_changed=0
   local crop_weather_preflight_changed=0
+  local crop_weather_event_changed=0
   local crop_b111_germ_sum_changed=0
   local crop_atomic_hydroheat_changed=0
   local crop_head_depth_changed=0
@@ -374,6 +375,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_b111_meteo_loading_candidate.f90 ) crop_meteo_load006_changed=1 ;;
       src/crop/mod_crop_weather_day_owner.f90 ) crop_weather_register_changed=1 ;;
       src/runtime/mod_fmr_crop_weather_day_preflight.f90 ) crop_weather_preflight_changed=1 ;;
+      src/runtime/mod_fmr_crop_weather_physical_event_composition.f90 ) crop_weather_event_changed=1 ;;
       tests/fmig431/test_crop_weather_preflight_read_boundary.f90 ) crop_weather_preflight_changed=1 ;;
       src/crop/mod_crop_b111_germination_sum_candidate.f90 ) crop_b111_germ_sum_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
@@ -401,6 +403,13 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||
       fail 'physical F-KT crop lifecycle constructor O0/O2 negatives failed'
     echo 'FCI_CANONICAL_CROP_EVENT_CONSTRUCTOR_EXACT=PASS'
+  fi
+  if (( crop_weather_event_changed )); then
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_physical_event_composition.f90)" = "0913cff3695e1045598cc513f04324d167f57c00" ||
+      fail 'unqualified source for weather-to-physical crop event composition'
+    bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
+      fail 'weather-to-physical crop event gate O0/O2 failed'
+    echo 'FCI_CANONICAL_CROP_WEATHER_EVENT_COMPOSITION=PASS'
   fi
   if (( crop_weather_preflight_changed )); then
     test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_preflight_read_boundary.f90)" = "529e1871966b9be4e345909197cbdb14f7f56f43" ||
