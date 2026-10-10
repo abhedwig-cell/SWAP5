@@ -317,6 +317,7 @@ check_b19_micro_root_recomposition() {
   local crop_tav_period_changed=0
   local crop_meteo_load006_changed=0
   local crop_weather_register_changed=0
+  local crop_weather_owner_test_changed=0
   local crop_weather_preflight_changed=0
   local crop_weather_event_changed=0
   local crop_b111_germ_sum_changed=0
@@ -376,6 +377,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_tav_detailed_period_candidate.f90 ) crop_tav_period_changed=1 ;;
       src/crop/mod_crop_b111_meteo_loading_candidate.f90 ) crop_meteo_load006_changed=1 ;;
       src/crop/mod_crop_weather_day_owner.f90 ) crop_weather_register_changed=1 ;;
+      tests/fmig431/test_crop_weather_day_owner.f90 ) crop_weather_owner_test_changed=1 ;;
       src/runtime/mod_fmr_crop_weather_day_preflight.f90 ) crop_weather_preflight_changed=1 ;;
       src/runtime/mod_fmr_crop_weather_physical_event_composition.f90 ) crop_weather_event_changed=1 ;;
       tests/fmig431/test_crop_weather_preflight_read_boundary.f90 ) crop_weather_preflight_changed=1 ;;
@@ -387,7 +389,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
-  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
+  done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
   if (( crop_b111_germ_sum_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_b111_germination_sum_candidate.f90)" =       "13e83db9e7dad60a62c11134f8951d65a23c7dc6" ||
       fail 'unqualified changed B1.11 germination arithmetic blob'
@@ -430,6 +432,13 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
       fail 'weather and certified F-KT daystart preflight O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS'
+  fi
+  if (( crop_weather_owner_test_changed )); then
+    test "$(git rev-parse HEAD:tests/fmig431/test_crop_weather_day_owner.f90)" = "d1f833b76338eaf4f72235bc6f226e1ef595b3cd" ||
+      fail 'unqualified weather-day retry/restart test postimage'
+    bash tests/fmig431/run_crop_weather_day_owner.sh ||
+      fail 'weather-day retry/restart exact test O0/O2 failed'
+    echo 'FCI_CANONICAL_CROP_WEATHER_DAY_RETRY_RESTART=PASS'
   fi
   if (( crop_weather_register_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "7c5c6e73c831022e24ccf45ae0e7dd8c382e780c" ||
