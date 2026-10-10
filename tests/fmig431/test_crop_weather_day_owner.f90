@@ -17,6 +17,16 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK.or.tav/=4.0_real64) error stop 3
  call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-4.0_real64,12.0_real64,s)
  if(s/=WEATHER_DAY_DUPLICATE) error stop 4
+ call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-3.0_real64,12.0_real64,s)
+ if(s/=WEATHER_DAY_CONFLICT) error stop 15
+ call w%snapshot(source,epoch,revision,day,tmin,tmax,yes)
+ if(.not.yes.or.revision/=1_int64.or.tmin/=-4.0_real64) error stop 16
+ call w%read_day(2_int64,7_int64,1_int64,12.0_real64,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=4.0_real64) error stop 17
+ call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-4.0_real64,13.0_real64,s)
+ if(s/=WEATHER_DAY_CONFLICT) error stop 18
+ call ingest_weather_day(w,2_int64,7_int64,12.0_real64,-4.0_real64,12.0_real64,s)
+ if(s/=WEATHER_DAY_DUPLICATE) error stop 19
  call ingest_weather_day(w,3_int64,7_int64,13.0_real64,-4.0_real64,12.0_real64,s)
  if(s/=WEATHER_DAY_SOURCE) error stop 5
  call ingest_weather_day(w,2_int64,7_int64,14.0_real64,-4.0_real64,12.0_real64,s)
@@ -29,6 +39,10 @@ program test_weather_day_owner
  if(s/=WEATHER_DAY_OK) error stop 9
  call w2%read_day(source,epoch,revision,day,tav,s)
  if(s/=WEATHER_DAY_OK.or.tav/=4.0_real64) error stop 10
+ call ingest_weather_day(w2,source,epoch,day,-3.0_real64,tmax,s)
+ if(s/=WEATHER_DAY_CONFLICT) error stop 20
+ call w2%read_day(source,epoch,revision,day,tav,s)
+ if(s/=WEATHER_DAY_OK.or.tav/=4.0_real64) error stop 21
  call w2%read_day(source,epoch,0_int64,day,tav,s)
  if(s/=WEATHER_DAY_STALE) error stop 11
  call ingest_weather_day(w,source,epoch,13.0_real64,2.0_real64,20.0_real64,s)

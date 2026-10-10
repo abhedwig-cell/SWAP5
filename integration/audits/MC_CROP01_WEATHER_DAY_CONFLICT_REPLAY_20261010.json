@@ -1,0 +1,21 @@
+{
+  "schema": "swap431.mc_crop01.weather_day_conflict_replay.v1",
+  "baseline": "96655ac0d8e60cbd1c64093403e596376ae56d01",
+  "scope": "Existing local weather day owner only: distinguish byte-identical duplicate from same-day conflicting Tmin/Tmax, refuse either without state mutation. Remains staging-only; no external source authentication, no FKT event authority.",
+  "source_blob": "7c5c6e73c831022e24ccf45ae0e7dd8c382e780c",
+  "test_blob": "ef5edfc054047115f168e3f56c477c223dcbc6d6",
+  "local": {
+    "gfortran_O0": "PASS",
+    "gfortran_O2": "PASS",
+    "git_hash_identical_to_remote": true,
+    "negative_tests": [
+      "same day different Tmin conflict",
+      "same day different Tmax conflict",
+      "same day unchanged exact retry duplicate",
+      "refused conflict revision and accepted TAV stable",
+      "post-reconstruction same-day conflict refuses mutation"
+    ]
+  },
+  "integration": "PENDING",
+  "production_event": false
+}
