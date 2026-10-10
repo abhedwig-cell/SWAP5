@@ -1,0 +1,42 @@
+{
+  "schema": "swap431.mc_crop01.weather_day_register_checkpoint.v1",
+  "canonical_base": "0adcc5128c8f41b86587de07de43ec9f038c978b",
+  "purpose": "Isolated proof-of-concept private daily meteorological input register. NOT a production source owner and NOT a sealed authentication receipt.",
+  "files": [
+    "src/crop/mod_crop_weather_day_owner.f90",
+    "tests/fmig431/test_crop_weather_day_owner.f90",
+    "tests/fmig431/run_crop_weather_day_owner.sh",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "source_git_blob": "f2b5661f6c3746e64e1791fd7ae45b997d0b5b0a",
+  "test_git_blob": "8b6129612797633df94e5621557de6e30cdcd22b",
+  "local_evidence": {
+    "compiler": "gfortran",
+    "O0": "PASS",
+    "O2": "PASS",
+    "git_blobs_verified": true,
+    "negative_matrix": [
+      "duplicate day no mutation",
+      "wrong source/epoch no mutation",
+      "gap/stale day no mutation",
+      "nonfinite input no mutation",
+      "stale read fails and zeroes output",
+      "restart record reconstruction positive"
+    ],
+    "claim_ceiling": "No external weather-source attestation; caller can initialize source ID; snapshot may be copied; restart reconstruction does not verify an external source. No F-KT binding, no crop-event publication, no accepted weather provenance."
+  },
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "dependencies": [
+    "PPA-WU03 stateless effective forcing is not a calendar/owner",
+    "F-KT committed kernel ownership remains unchanged",
+    "The true weather ingestion/calendar owner and its restart contract still require reconciliation"
+  ],
+  "next_action": "Qualify only staging read/ingest behaviour; do not merge as authoritative meteorology or enable physical crop events. Review whether this stateful owner should be folded into production weather ingestion before wider integration."
+}
