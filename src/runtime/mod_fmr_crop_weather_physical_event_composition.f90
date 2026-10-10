@@ -7,8 +7,13 @@ module mod_fmr_crop_weather_physical_event_composition
   use mod_fmr_crop_certified_daily_preflight, only: crop_certified_daily_preflight_t
   use mod_crop_lifecycle_daily_composition, only: &
        crop_daily_lifecycle_candidate_t,compose_crop_lifecycle_daily_candidate,CROP_DAILY_OK
-  use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t
-  use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t
+  use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
+       fmr_wofost_crop_event_token_t, fmr_wofost_crop_event_identity_t, &
+       fmr_wofost_crop_event_identity_persistence_t, &
+       prepare_wofost_crop_event_delivery,identify_wofost_crop_event, &
+       export_wofost_crop_event_identity_persistence,FMR_WOFOST_LINEAGE_OK
+  use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t, &
+       wofost_accepted_window_aggregates_t
   use mod_fmr_wofost_crop_transaction, only: &
        fmr_wofost_crop_event_forcing_t,prepare_fmr_wofost_crop_event_forcing,FMR_WOF38_OK
   implicit none
@@ -43,6 +48,11 @@ contains
     type(crop_certified_daily_preflight_t)::daily
     type(crop_daily_lifecycle_candidate_t)::plan
     integer::s
+    logical::available
+    type(fmr_wofost_crop_event_token_t)::event_token
+    type(fmr_wofost_crop_event_identity_t)::event_identity
+    type(fmr_wofost_crop_event_identity_persistence_t)::event_view
+    type(wofost_accepted_window_aggregates_t)::aggregates
     status=CROP_EVENT_COMPOSE_WEATHER
     ! Reject at the earliest boundary; all output remains uninitialized.
     call propose_weather_day_crop_preflight(committed,lineage,revision,time, &
@@ -57,6 +67,17 @@ contains
     call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s)
     if(s/=CROP_DAILY_OK.or..not.plan%valid) return
     status=CROP_EVENT_COMPOSE_PHYSICAL
+    ! A valid but foreign accepted crop window is not an event for this
+    ! certified committed soil daystart. The opaque event owner derives the
+    ! receipt, not a caller-constructed tuple.
+    call prepare_wofost_crop_event_delivery(window,aggregates,event_token,available,s)
+    if(s/=FMR_WOFOST_LINEAGE_OK.or..not.available) return
+    call identify_wofost_crop_event(event_token,event_identity,s)
+    if(s/=FMR_WOFOST_LINEAGE_OK.or..not.event_identity%ready()) return
+    call export_wofost_crop_event_identity_persistence(event_identity,event_view,available)
+    if(.not.available.or..not.event_view%ready()) return
+    if(event_view%lineage_id/=lineage.or.event_view%final_revision/=revision) return
+    if(transfer(event_view%t1,0_int64)/=transfer(day,0_int64)) return
     call prepare_fmr_wofost_crop_event_forcing(window,crop_forcing,forcing,s, &
          lifecycle_plan=plan,lifecycle_germination=daily%germination, &
          lifecycle_expected_revision=lifecycle_revision)
