@@ -26,7 +26,31 @@
     "persisted": true,
     "tested": "7/7 exact Git-blob Python tests PASS; historical positive archive gate NOT RUN",
     "qualified": false,
-    "canonically_admitted": false
+    "canonically_admitted": true,
+    "implementation_scope": "tooling-only"
   },
-  "next": "Review PR #1176 and applicable checks for bounded tooling-only admission; obtain exact B0 archive for full historical positive source proof and next weather-owner work."
+  "next": "Library archived original found, bytes materialization blocked; resume exact extraction once authorized raw bytes accessible; otherwise proceed disjoint MC-CROP01 work without false historical writer proof.",
+  "archive_locator_reconciliation_20261010": {
+    "verified_library_entries": [
+      {
+        "path": "/SWAP5-rest/SWAP_4.3.1.zip",
+        "bytes": 8959314,
+        "file_id": "file_00000000119481f4a06eb5986a4677f5"
+      },
+      {
+        "path": "/SWAP5_A11_RECOVERY/SWAP_4.3.1.zip",
+        "bytes": 8959314,
+        "file_id": "file_00000000df3c81f6a07e19feedb99bd4"
+      },
+      {
+        "path": "/SWAP5-afmaken/SWAP.ZIP",
+        "bytes": 413203,
+        "file_id": "file_0000000098848246a6ff56f7e5d25e0e"
+      }
+    ],
+    "materialization_attempt": "all 3 denied: This Project file does not have an authorized raw-byte materialization path",
+    "git_history": "B0 SHA and 63-member evidence stored, original zip not established as a Git blob by bounded branch/path/history checks",
+    "science_verified_from_library_bytes": false,
+    "action_needed": "Recover authorized raw-byte access to one located Library archive; verify 8,959,314-byte outer hash, extract nested SWAP.ZIP, run exact B1.11 meteo extractor. Do not request redundant reupload merely to establish the known location."
+  }
 }
