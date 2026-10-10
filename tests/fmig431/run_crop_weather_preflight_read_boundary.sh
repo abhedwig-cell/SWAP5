@@ -49,6 +49,7 @@ for OPT in 0 2;do
       ./test > out
     )
     grep -Fx 'CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS' "$BUILD/o$OPT/out"
+    grep -Fx 'CROP_WEATHER_TWO_DAY_DAYSTART_RESTART=PASS' "$BUILD/o$OPT/out"
 done
 cmp "$BUILD/o0/out" "$BUILD/o2/out"
 echo 'CROP_WEATHER_PREFLIGHT_READ_BOUNDARY_O0_O2=PASS'
