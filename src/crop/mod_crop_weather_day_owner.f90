@@ -4,7 +4,8 @@ module mod_crop_weather_day_owner
   implicit none
   private
   integer, parameter, public :: WEATHER_DAY_OK=0, WEATHER_DAY_INVALID=1, &
-       WEATHER_DAY_STALE=2, WEATHER_DAY_DUPLICATE=3, WEATHER_DAY_SOURCE=4
+       WEATHER_DAY_STALE=2, WEATHER_DAY_DUPLICATE=3, WEATHER_DAY_SOURCE=4, &
+       WEATHER_DAY_CONFLICT=5
   type, public :: weather_day_owner_t
     private
     integer(int64) :: source=0_int64, epoch=0_int64, revision=0_int64
@@ -38,8 +39,13 @@ contains
     status=WEATHER_DAY_SOURCE
     if(source/=owner%source.or.epoch/=owner%epoch) return
     if(owner%has_day) then
-      status=WEATHER_DAY_DUPLICATE
-      if(day==owner%day) return
+      if(day==owner%day) then
+        status=WEATHER_DAY_DUPLICATE
+        if (transfer(tmin,0_int64)==transfer(owner%tmin,0_int64).and. &
+            transfer(tmax,0_int64)==transfer(owner%tmax,0_int64)) return
+        status=WEATHER_DAY_CONFLICT
+        return
+      end if
       status=WEATHER_DAY_STALE
       if(day/=owner%day+1.0_real64) return
     end if
