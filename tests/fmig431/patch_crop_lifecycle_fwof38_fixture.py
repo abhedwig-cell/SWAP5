@@ -154,6 +154,43 @@ replace_one("  call prepare_fmr_wofost_crop_event_forcing(accepted_window, forci
   call require(bridge_status==CROP_EVENT_COMPOSE_OK.and.bridge_event%ready(), &
        'positive accepted window weather FKT bridge')
   print '(a)', 'SW431_CROP_POSITIVE_WINDOW_BRIDGE=PASS'
+  ! Negative read-only boundary checks on the same accepted physical window.
+  ! The failed proposals must not advance the F-KT committed revision.
+  call propose_weather_crop_physical_event(bridge_committed,38001_int64,1_int64,101.0_real64, &
+       bridge_weather,91_int64,4_int64,2_int64,101.0_real64,accepted_window,forcing,4_int64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+       1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+       -1000.0_real64,-10.0_real64,20.0_real64,bridge_event,bridge_status)
+  call require(bridge_status/=CROP_EVENT_COMPOSE_OK.and..not.bridge_event%ready(), &
+       'reject wrong weather revision')
+  call propose_weather_crop_physical_event(bridge_committed,38002_int64,1_int64,101.0_real64, &
+       bridge_weather,91_int64,4_int64,1_int64,101.0_real64,accepted_window,forcing,4_int64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+       1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+       -1000.0_real64,-10.0_real64,20.0_real64,bridge_event,bridge_status)
+  call require(bridge_status/=CROP_EVENT_COMPOSE_OK.and..not.bridge_event%ready(), &
+       'reject foreign FKT lineage')
+  call propose_weather_crop_physical_event(bridge_committed,38001_int64,2_int64,101.0_real64, &
+       bridge_weather,91_int64,4_int64,1_int64,101.0_real64,accepted_window,forcing,4_int64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+       1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+       -1000.0_real64,-10.0_real64,20.0_real64,bridge_event,bridge_status)
+  call require(bridge_status/=CROP_EVENT_COMPOSE_OK.and..not.bridge_event%ready(), &
+       'reject foreign FKT revision')
+  call propose_weather_crop_physical_event(bridge_committed,38001_int64,1_int64,101.0_real64, &
+       bridge_weather,91_int64,4_int64,1_int64,102.0_real64,accepted_window,forcing,4_int64, &
+       -10.0_real64,-15.0_real64,-15.0_real64,-15.0_real64, &
+       1,0,-50.0_real64,-200.0_real64,10.0_real64, &
+       0,0,5,5,2,0.0_real64,50.0_real64,5.0_real64,30.0_real64, &
+       -1000.0_real64,-10.0_real64,20.0_real64,bridge_event,bridge_status)
+  call require(bridge_status/=CROP_EVENT_COMPOSE_OK.and..not.bridge_event%ready(), &
+       'reject foreign crop day boundary')
+  call require(bridge_committed%current_revision()==1_int64, &
+       'negative proposals leave certified committed soil revision unchanged')
+  print '(a)', 'SW431_CROP_POSITIVE_WINDOW_BRIDGE_NEGATIVES=PASS'
   call prepare_fmr_wofost_crop_event_forcing(accepted_window, forcing, crop_event_forcing, crop_status)
 ''')
 replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  call require(crop_checkpoint_ok, 'F-WOF38 crop checkpoint')
