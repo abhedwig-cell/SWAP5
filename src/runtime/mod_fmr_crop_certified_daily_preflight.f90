@@ -45,9 +45,23 @@ contains
     integer :: owner_status,preflight_status
     candidate=crop_certified_daily_preflight_t()
     status=CROP_CERT_DAILY_HYDRO
-    call sample_certified_committed_crop_hydrothermal_forcing(committed,lineage,revision,time, &
-         zprep,zsow,ztempsow,candidate%hprep,candidate%hsow, &
-         candidate%soil_temperature,candidate%nodsow,owner_status)
+    if (swsow==1) then
+      ! Historical B1.11 SWHEA=1 is mandatory only for simulated sowing.
+      call sample_certified_committed_crop_hydrothermal_forcing(committed,lineage,revision,time, &
+           zprep,zsow,ztempsow,candidate%hprep,candidate%hsow, &
+           candidate%soil_temperature,candidate%nodsow,owner_status)
+    else if (swsow==0) then
+      ! No heat or sowing node is needed. SWPREP still requires the
+      ! owner-certified accepted hydraulic head at its own depth.
+      owner_status=CROP_CERT_FORCE_OK
+      if (swprep==1) then
+        call sample_certified_committed_germination_head(committed,lineage,revision,time, &
+             zprep,candidate%hprep,owner_status)
+        if(owner_status==CROP_CERT_GERM_OK) owner_status=CROP_CERT_FORCE_OK
+      end if
+    else
+      owner_status=-1
+    end if
     if(owner_status/=CROP_CERT_FORCE_OK) then
       candidate=crop_certified_daily_preflight_t()
       return
@@ -60,7 +74,7 @@ contains
       return
     end if
     status=CROP_CERT_DAILY_PREP
-    call propose_preparation_sowing(swprep,swsow,.true.,candidate%hprep, &
+    call propose_preparation_sowing(swprep,swsow,swsow==1,candidate%hprep, &
          hprep_threshold,candidate%hsow,hsow_threshold, &
          candidate%soil_temperature,sow_temperature,prep_delay,sow_delay, &
          max_prep_delay,max_sow_delay,candidate%preparation,preflight_status)

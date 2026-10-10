@@ -440,6 +440,9 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_B111_GERMINATION_PREFLIGHT_EXACT_ORDER=PASS'
   fi
   if (( crop_certified_daily_changed )); then
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_certified_daily_preflight.f90)" = "3c6242ee6e052478eb107600c21a7d30858a76c7" ||
+      fail 'unqualified B1.11 SWSOW0 heat-off daily preflight source'
+
     bash tests/fmig431/run_crop_certified_daily_preflight.sh ||
       fail 'certified F-KT B1.11 daily preparation/sowing/germination O0/O2 failed'
     bash tests/fmig431/run_crop_germination_preflight.sh ||
