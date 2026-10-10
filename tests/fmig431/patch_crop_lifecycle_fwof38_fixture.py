@@ -129,6 +129,36 @@ replace_one("  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n", """  
   lifecycle_germination%valid=.true.
   lifecycle_germination%complete=.false.
   lifecycle_germination%next_temperature_sum=2.0_real64
+  ! Constructor guards reject invalid lifecycle plans before a physical trial.
+  lifecycle_plan%sown=.false.
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_LIFECYCLE_REJECTED.and..not.lifecycle_forcing%ready(), &
+       'reject germination before sowing')
+  lifecycle_plan%sown=.true.
+  lifecycle_plan%germination_evaluated=.false.
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_LIFECYCLE_REJECTED.and..not.lifecycle_forcing%ready(), &
+       'reject untested germination for sown crop')
+  lifecycle_plan%germination_evaluated=.true.
+  lifecycle_germination%valid=.false.
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_LIFECYCLE_REJECTED.and..not.lifecycle_forcing%ready(), &
+       'reject invalid germination input')
+  lifecycle_germination%valid=.true.
+  lifecycle_germination%next_temperature_sum=-1.0_real64
+  call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
+       lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
+       lifecycle_expected_revision=4_8)
+  call require(crop_status==FMR_WOF38_LIFECYCLE_REJECTED.and..not.lifecycle_forcing%ready(), &
+       'reject negative germination sum')
+  lifecycle_germination%next_temperature_sum=2.0_real64
+  print '(a)', 'SW431_CROP_FKT_EVENT_PREFLIGHT_NEGATIVES=PASS'
   call prepare_fmr_wofost_crop_event_forcing(accepted_window,forcing,lifecycle_forcing,crop_status, &
        lifecycle_plan=lifecycle_plan,lifecycle_germination=lifecycle_germination, &
        lifecycle_expected_revision=4_8)
