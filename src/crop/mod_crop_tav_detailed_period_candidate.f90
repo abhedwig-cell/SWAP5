@@ -21,7 +21,6 @@ contains
     if(n<1.or.n>96) return
     if(.not.ieee_is_finite(metperiod)) return
     if(metperiod<=0.0_real64.or.metperiod>1.0_real64) return
-    if(nint(1.0_real64/metperiod)/=n) return
     if(abs(real(n,real64)*metperiod-1.0_real64)>32.0_real64*epsilon(metperiod)) return
     if(.not.all(ieee_is_finite(temperatures))) return
     accumulated=0.0_real64
