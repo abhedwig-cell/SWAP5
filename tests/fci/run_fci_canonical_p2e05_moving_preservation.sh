@@ -401,7 +401,7 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_WEATHER_PREFLIGHT_READ_BOUNDARY=PASS'
   fi
   if (( crop_weather_register_changed )); then
-    test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "f2b5661f6c3746e64e1791fd7ae45b997d0b5b0a" ||
+    test "$(git rev-parse HEAD:src/crop/mod_crop_weather_day_owner.f90)" = "7c5c6e73c831022e24ccf45ae0e7dd8c382e780c" ||
       fail 'unqualified weather-day register source'
     bash tests/fmig431/run_crop_weather_day_owner.sh ||
       fail 'weather-day register O0/O2 ingestion and restart matrix failed'
