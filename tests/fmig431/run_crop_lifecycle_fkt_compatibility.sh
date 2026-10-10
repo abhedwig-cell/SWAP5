@@ -33,7 +33,7 @@ finish=focused_text.index("\n)\n",start)+3
 sources=focused_text[start:finish]
 assert "targets = ['mod_crop_lifecycle_continuation']" in sources
 sources=sources.replace("targets = ['mod_crop_lifecycle_continuation']", 
-                        "targets = ['mod_fmr_wofost_crop_transaction']")
+                        "targets = ['mod_fmr_wofost_crop_transaction', 'mod_fmr_crop_weather_physical_event_composition']")
 source_start=s.index('SOURCES=(\n')
 source_end=s.index('\n)\n\nfor OPT',source_start)+3
 s=s[:source_start]+sources+s[source_end:]
@@ -52,4 +52,5 @@ grep -Fq 'SW431_CROP_FKT_LIFECYCLE_PERSISTENCE_REPLAY=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_RECEIPT_COHERENCE=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_LIFECYCLE_ACCEPT_RESTART=PASS' "$BUILD/out"
 grep -Fq 'SW431_CROP_FKT_EVENT_PREFLIGHT_NEGATIVES=PASS' "$BUILD/out"
+grep -Fq 'SW431_CROP_POSITIVE_WINDOW_BRIDGE=PASS' "$BUILD/out"
 echo 'SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS'
