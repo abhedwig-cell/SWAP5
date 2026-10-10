@@ -405,7 +405,7 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_EVENT_CONSTRUCTOR_EXACT=PASS'
   fi
   if (( crop_weather_event_changed )); then
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_physical_event_composition.f90)" = "0913cff3695e1045598cc513f04324d167f57c00" ||
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_physical_event_composition.f90)" = "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7" ||
       fail 'unqualified source for weather-to-physical crop event composition'
     bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
       fail 'weather-to-physical crop event gate O0/O2 failed'
