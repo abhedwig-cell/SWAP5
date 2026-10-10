@@ -313,6 +313,7 @@ check_b19_micro_root_recomposition() {
   local crop_tav_day_changed=0
   local crop_tav_meteo_changed=0
   local crop_tav_period_changed=0
+  local crop_meteo_load006_changed=0
   local crop_b111_germ_sum_changed=0
   local crop_atomic_hydroheat_changed=0
   local crop_head_depth_changed=0
@@ -367,6 +368,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_tav_day_window.f90 ) crop_tav_day_changed=1 ;;
       src/crop/mod_crop_tav_meteorological_candidate.f90 ) crop_tav_meteo_changed=1 ;;
       src/crop/mod_crop_tav_detailed_period_candidate.f90 ) crop_tav_period_changed=1 ;;
+      src/crop/mod_crop_b111_meteo_loading_candidate.f90 ) crop_meteo_load006_changed=1 ;;
       src/crop/mod_crop_b111_germination_sum_candidate.f90 ) crop_b111_germ_sum_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
@@ -386,6 +388,13 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_b111_germination_boundaries.sh ||
       fail 'B1.11 germination boundary negative O0/O2 failed'
     echo 'FCI_CANONICAL_CROP_B111_GERMINATION_EXACT_SOURCE=PASS'
+  fi
+  if (( crop_meteo_load006_changed )); then
+    test "$(git rev-parse HEAD:src/crop/mod_crop_b111_meteo_loading_candidate.f90)" = "db1b9b9e7e6322992611333e3bfbb18b52194a93" ||
+      fail 'unqualified B1.11 SWAP-006 meteorological loading candidate blob'
+    bash tests/fmig431/run_crop_b111_meteo_loading_candidate.sh ||
+      fail 'source-bound SWAP-006 loading O0/O2 negative matrix failed'
+    echo 'FCI_CANONICAL_CROP_SW006_METEO_LOADING_EXACT=PASS'
   fi
   if (( crop_tav_period_changed )); then
     test "$(git rev-parse HEAD:src/crop/mod_crop_tav_detailed_period_candidate.f90)" = \
