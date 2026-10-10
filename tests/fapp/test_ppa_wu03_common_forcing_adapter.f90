@@ -18,11 +18,13 @@ program test_ppa_wu03_common_forcing_adapter
        reference_et_demand_diagnostics_t, REF_ET_DEMAND_OK
   use mod_fmr_reference_et_demand_binding, only: fmr_reference_et_binding_diagnostics_t, &
        fmr_evaluate_reference_et_demand, FMR_REFERENCE_ET_BINDING_OK
+  use mod_crop_weather_day_owner, only: weather_day_owner_t, initialize_weather_day_owner, &
+       ingest_weather_day, WEATHER_DAY_OK
   use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t, &
        ppa_wu03_common_forcing_input_t, ppa_wu03_common_forcing_result_t, &
        ppa_wu03_common_forcing_diagnostics_t, materialize_ppa_wu03_common_forcing, &
        bind_ppa_wu03_flux_result_to_effective_forcing, PPA_WU03_OK, &
-       PPA_WU03_UNSUPPORTED_ET, PPA_WU03_UNSUPPORTED_INTERCEPTION, &
+       PPA_WU03_WEATHER_REJECTED, PPA_WU03_UNSUPPORTED_ET, PPA_WU03_UNSUPPORTED_INTERCEPTION, &
        PPA_WU03_UNSUPPORTED_IRRIGATION, PPA_WU03_TOP_RESULT_REJECTED, &
        PPA_WU03_ET_REFERENCE, PPA_WU03_INTERCEPTION_NONE, &
        PPA_WU03_IRRIGATION_NONE, PPA_WU03_IRRIGATION_RESOLVED_SURFACE
@@ -35,6 +37,7 @@ program test_ppa_wu03_common_forcing_adapter
   real(real64), parameter :: HARD_MASS_GATE = 1.0e-12_real64
   real(real64), parameter :: TOL = 1.0e-12_real64
 
+  type(weather_day_owner_t) :: weather
   type(fmr_production_application_config_t) :: app_config
   type(fmr_production_application_bootstrap_t) :: direct_app, adapter_app
   type(ppa_wu03_common_forcing_config_t) :: forcing_config, bad_forcing_config
@@ -76,6 +79,30 @@ program test_ppa_wu03_common_forcing_adapter
   irrigation_rate = 0.10_real64 * conductivity0
   normal_input%surface_irrigation_rate_cm_per_day = irrigation_rate
   normal_input%precipitation_rate_cm_per_day = 0.0_real64
+
+  ! The same meteorological day owner used by crop daystart must certify
+  ! the hydrological interval before ordinary WU03 forcing is materialized.
+  call initialize_weather_day_owner(weather,71_int64,3_int64,status)
+  call require(status==WEATHER_DAY_OK,'weather owner initialization')
+  call ingest_weather_day(weather,71_int64,3_int64,4100.0_real64,10.0_real64,14.0_real64,status)
+  call require(status==WEATHER_DAY_OK,'weather day input')
+  call materialize_ppa_wu03_common_forcing(forcing_config,normal_input,base_request, &
+       adapter_result,adapter_diag,weather,71_int64,3_int64,1_int64,4100.0_real64)
+  call require(adapter_diag%status==PPA_WU03_OK.and.adapter_result%valid, &
+       'same weather-day validated forcing positive')
+  call materialize_ppa_wu03_common_forcing(forcing_config,normal_input,base_request, &
+       adapter_result,adapter_diag,weather,71_int64,3_int64,0_int64,4100.0_real64)
+  call require(adapter_diag%status==PPA_WU03_WEATHER_REJECTED.and..not.adapter_result%valid, &
+       'stale weather revision cannot materialize hydrological forcing')
+  call materialize_ppa_wu03_common_forcing(forcing_config,normal_input,base_request, &
+       adapter_result,adapter_diag,weather,71_int64,3_int64,1_int64,4099.0_real64)
+  call require(adapter_diag%status==PPA_WU03_WEATHER_REJECTED.and..not.adapter_result%valid, &
+       'foreign weather day cannot materialize hydrological forcing')
+  call materialize_ppa_wu03_common_forcing(forcing_config,normal_input,base_request, &
+       adapter_result,adapter_diag,weather=weather)
+  call require(adapter_diag%status==PPA_WU03_WEATHER_REJECTED.and..not.adapter_result%valid, &
+       'partial weather identity fails closed')
+  print '(a)', 'PPA_WU03_CROP_SHARED_WEATHER_SPAN=PASS'
 
   ! Resolve only the already-admitted surface-demand operator first.  The
   ! resulting actual dry-surface evaporation is then used to build a steady
