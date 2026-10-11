@@ -59,6 +59,15 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || { diff -u "$BUILD/o0/out
 cat "$BUILD/o0/output.txt"
 echo "MC_IRR01_MANAGEMENT_PHYSICAL_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo 'MC_IRR01_REALISTIC_EVENT_MASS=PASS'
+# Source-equivalent root-trigger/depth routes at the fixed coarse profile.
+for opt in 0 2; do
+  "$BUILD/o$opt/test" 1e-6 cluster > "$BUILD/o$opt/cluster.txt" 2>&1 || { cat "$BUILD/o$opt/cluster.txt" >&2; fail "root cluster O$opt"; }
+done
+cmp "$BUILD/o0/cluster.txt" "$BUILD/o2/cluster.txt" || fail 'root cluster O0/O2 drift'
+[[ "$(grep -c '^MC_IRR01_PHYSICAL_TCS=' "$BUILD/o0/cluster.txt")" == 12 ]] || fail 'root cluster case count'
+cat "$BUILD/o0/cluster.txt"
+echo "MC_IRR01_REALISTIC_ROOT_CLUSTER_SHA256=$(sha256sum "$BUILD/o0/cluster.txt" | awk '{print $1}')"
+echo 'MC_IRR01_REALISTIC_ROOT_CLUSTER_O0_O2=PASS' 
 python3 - "$BUILD/o0/output.txt" <<'PY'
 import sys,numpy as np
 lines=open(sys.argv[1]).read().splitlines()

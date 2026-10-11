@@ -58,7 +58,7 @@ program test_mc_irr01_realistic_event
   type(fmr_serialized_column_result_t) :: managed_result
   integer :: criterion, mode, rst_status
   integer(int64) :: pre_revision
-  character(len=64) :: budget_arg
+  character(len=64) :: budget_arg, scope_arg
   real(real64) :: temporal_budget
   class(transaction_state_t), allocatable :: final_snapshot
   real(real64) :: theta0
@@ -75,9 +75,12 @@ program test_mc_irr01_realistic_event
 
   call get_command_argument(1,budget_arg)
   read(budget_arg,*) temporal_budget
-  do criterion = 2, 2
+  call get_command_argument(2,scope_arg)
+  do criterion = 2, 6
+    if (trim(scope_arg) /= "cluster" .and. criterion /= 2) cycle
     if (criterion == 5) cycle
-    do mode = 1, 1
+    do mode = 1, 3
+      if (trim(scope_arg) /= "cluster" .and. mode /= 1) cycle
       call configure_physical_parameters(parameters(1), initial_state, conductivity0)
       call configure_column(columns(1), templates(1))
       call configure_transaction(config)
@@ -133,7 +136,7 @@ program test_mc_irr01_realistic_event
         irrigation_parameters%policy%depth_criterion = 1
         irrigation_parameters%policy%dcs1_knot_count = 2
         irrigation_parameters%policy%dcs1_dvs(1:2) = [0.0_real64,2.0_real64]
-        ! Literal DITAB mm: refill deficit + adjustment - rain = 0.000048 cm.
+        ! Literal DITAB mm: refill deficit + adjustment - rain = selected depth.
         irrigation_parameters%policy%dcs1_adjustment_mm(1:2) = &
              10.0_real64*(expected_depth - 0.03_real64*parameters(1)%dz(1)*0.5_real64 + 0.02_real64)
         irrigation_parameters%policy%rainfall_threshold_cm = 0.01_real64
