@@ -64,7 +64,7 @@ program test_mc_irr01_realistic_sensor_restart
   type(fmr_serialized_batch_diagnostics_t) :: runtime
   real(real64) :: conductivity0,theta0,initial_irrigation_derivative(numnod),duration,mid,total_in
   integer :: timing,mode,layout,status,nodes,dispatch
-  type(kernel_committed_state_t) :: prelude(1)
+  type(kernel_committed_state_t) :: prelude(1), before_reject
   type(fmr_serialized_column_result_t),allocatable :: prelude_result(:)
   type(fmr_column_diagnostics_t),allocatable :: prelude_diag(:)
   type(fmr_aggregate_diagnostics_t) :: prelude_aggregate
@@ -136,11 +136,12 @@ program test_mc_irr01_realistic_sensor_restart
           request%availability_scaling_enabled=.true.;request%availability_fraction=0.5_real64
         end if
         management=irrigation_state_t()
+        before_reject=physical
         rejected_config=config;rejected_config%model_temporal_indicator_budget_available=.false.
         call reset_legacy_globals()
         call fmr_run_sensor_depth_ssdi_interval(columns(1),templates(1),parameters(1),base,physical,sensor,root,depth, &
              0.02_real64,management,request,rejected_config,top_provider,result,runtime,binding,selected,accepted)
-        call require(.not.accepted.and.physical%current_revision()==0_int64.and..not.management%active_event,'atomic reject')
+        call require(.not.accepted.and.physical%current_revision()==before_reject%current_revision().and.committed_physics_identical(physical,before_reject).and..not.management%active_event,'atomic reject')
         call reset_legacy_globals()
         call fmr_run_sensor_depth_ssdi_interval(columns(1),templates(1),parameters(1),base,physical,sensor,root,depth, &
              0.02_real64,management,request,config,top_provider,result,runtime,binding,selected,accepted)
