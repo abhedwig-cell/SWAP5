@@ -1,14 +1,14 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "9d95eacb6619f7fece1d3bfe7b3e068304836ecd",
-  "phase": "LOCAL_SCIENCE_PASS_CENTRAL_EXACT_PRESERVATION_PENDING",
+  "phase": "CANONICALLY_ADMITTED_BOUNDED_ONSET",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "scope": "Read-only numerical diagnosis, diagnostic test output only; no shared solver, history, crop/root or salt mutation",
+  "qualified": true,
+  "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion.",
   "question": "Does the 1-cm retained-history event fail before first commit or after accepted progress?",
-  "next_action": "Exact proposed central shared successor: run moving F-CI and existing automatic owner qualification, reconcile live canonical, admit only bounded qualified scope.",
+  "next_action": "Qualify and admit real-depth source-off/spatial sensor restart and common root salt successor; retain all external root/lifecycle, accepted solute and allocation authority gates.",
   "finding": "Inherited 3-cm column at -75 cm head has ~0.231265 cm free storage, insufficient for 1 cm with equal prescribed top/bottom fluxes and no ponding/elasticity. Earlier negative evidence does not establish a solver/history defect.",
   "corrected_geometry": "Four 25-cm cells, total 100 cm, ~7.70884 cm free storage",
   "serialized_context": "Existing production binder requires exact typed/legacy geometry equality. Dedicated test context now carries the same 100-cm geometry; original F-SI04 stub and qualified tiny witnesses untouched.",
@@ -42,7 +42,7 @@
     "cross_workstream_consequences": "Changes residual arithmetic for all explicit constitutive providers. Fallback provider remains theta_new-theta_old. Default MVG stable increment reuses admitted formula. Requires shared preservation and explicit central acceptance; no implied new physics.",
     "canonical_admission_owner": "central SWAP5 regie",
     "classification": "PROPOSED_NUMERICAL_ARITHMETIC_REPAIR",
-    "status": "NOT_ADMITTED"
+    "status": "CANONICALLY_ADMITTED_BOUNDED"
   },
   "archive": "integration/audits/evidence/MC_IRR01_STORAGE_DIAGNOSIS_20261011.tar.gz.b64",
   "archive_sha256": "6944f6051f539fc6c84485360b42658237a170c8bc5d901633eff48b31db9f3d",
@@ -103,9 +103,26 @@
   },
   "central_proposal": {
     "pull_request": 1200,
-    "status": "EXACT_HEAD_ACTIONS_PENDING",
-    "local_fci": "RUNNING",
+    "status": "ADMITTED",
+    "local_fci": "PASS",
     "canonical_delta": "10b94cbd -> 9d95eacb: only 3 governance/evidence paths; no scientific dependency delta",
     "docs_source_check": "PASS"
-  }
+  },
+  "stable_storage_admission": {
+    "pull_request": 1200,
+    "qualified_head": "5155c3df427fbb91fd391a9aa98f85ffad75b10b",
+    "qualified_tree": "846d71ce63efd4f5f5d3e8061a62a3f0bf996d36",
+    "canonical_merge": "ea4759a0633011f26e8ee43126db2484c0def8b3",
+    "canonical_paths_verified": 11,
+    "owner_run": 38132433330,
+    "owner_job": 114449349641,
+    "owner_result": "PASS_O0_O2_THREE_PROFILES_TWELVE_ROOT_CASES",
+    "fci_run": 38132433375,
+    "fci_moving_job": 114449871342,
+    "fci_result": "PASS_ALL_14_FROZEN_HISTORICAL_AND_MOVING",
+    "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+    "local_fci": "PASS",
+    "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  },
+  "canonical_admitted": true
 }
