@@ -71,14 +71,24 @@
     "detailed_meteorology": "source recovered, detailed period oracle/application integration not qualified"
   },
   "local_evidence": {
-    "four_day_O0_O2": "PASS at d438a73b; final no-bypass successor aa1e3a6a is being rerun",
+    "four_day_O0_O2": "PASS for complete no-bypass source postimage; identical O0/O2 stdout; 256 committed physical intervals",
     "FKT21_current_canonical_O0_O2": "PASS with fresh retry result vectors after move_alloc staging; scientific expected values unchanged",
     "PPA_WU01": "PASS in full PPA preservation invocation",
     "F_APP07": "PASS including 110-interval exact composition and MC-IRR01 sensor/SSDI O0/O2",
     "FCI93_current_replay": "FAILED legacy non-M1 headed surface fixture; flux Task2 assertions passed before failure",
-    "B19_MICRO_current_scientific_successor": "running",
+    "B19_MICRO_current_scientific_successor": "PASS: certified FKT/sowing/hydrothermal, lifecycle and rotation, MICRO02/MICRO03 actual physics, B19 O0/O2 current source case1 byte identity",
     "F_CI_exact_PR_merge_postimage": "running in isolated worktree with canonical as first parent",
-    "Actions": "not dispatched; no duplicate workflows started"
+    "Actions": "not dispatched; no duplicate workflows started",
+    "PPA_WU03_current_owner": "PASS O0/O2 including prior PR1193 and PR1194 interval/two-day regressions",
+    "PPA_WU03_independent": "PASS prior to no-bypass addition (default-off route unchanged); do not substitute for exact-head Actions",
+    "evidence_path": "integration/audits/MC_CROP01_FILE_WEATHER_LOCAL_EVIDENCE.json"
   },
-  "recovery_local_commit": "aa1e3a6a788db855c64004fee443042dcfa4f81a"
+  "recovery_local_commit": "aa1e3a6a788db855c64004fee443042dcfa4f81a",
+  "next_lifecycle_dependencies": [
+    "Bind opaque physical accepted receipts to the actual application hydro executor; certified receipt paths currently use a separate orchestration executor without a model.",
+    "Reuse existing WOFOST transaction lifecycle values at daystart instead of external temperature_sum/delay controls. Define initial accepted-state event semantics without requiring same-day end acceptance.",
+    "Extend existing crop lifecycle owner through emergence and harvest; its current continuation rejects already-emerged or harvested state and does not publish emergence.",
+    "Bind root, rotation and fallow execution through existing owners after full lifecycle state and accepted-event identity are admitted.",
+    "Persist and restore one coherent hydrology, weather-bytes/epoch, WOFOST/lifecycle and event-history bundle through existing restart services; whole in-memory weather equality is not a disk restart format."
+  ]
 }
