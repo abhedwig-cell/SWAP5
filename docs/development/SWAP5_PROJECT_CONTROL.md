@@ -21,7 +21,7 @@ The canonical branch moves quickly. This document is therefore an **exact snapsh
 
 ## Integration refresh 2026-10-11
 
-Central regie reconciled the live queue from `c7879cdf54fce43d668877f5a0a4d71806df7426` and established recovery point `integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005`. The original 2026-09-20 control snapshot below remains historical evidence; this refresh is the current delta authority.
+Central regie reconciled the live queue from `c7879cdf54fce43d668877f5a0a4d71806df7426` and established the latest verified recovery point `integration/f-ci-canonical@44a031a83b5b9da5f8a76e4e8859396e57a48cd0`. The original 2026-09-20 control snapshot below remains historical evidence; this refresh is the current delta authority.
 
 ### Canonical admission completed
 
@@ -34,6 +34,19 @@ MC-IRR01 was recomposed from its qualified isolated owner postimage and admitted
 
 The moving functional-coverage master remains independently owned by PR #1072. It must recompute from the admitted canonical postimage before publishing fresh global counts. The MC-IRR01 admission is bounded and is not a claim of unrestricted irrigation coverage.
 
+F-PE-NLGLOB14Z47 was then selectively recomposed from its qualified historical owner result on current canonical and admitted through PR #921. Only the fail-closed eligibility guard for the already-admitted, explicit non-default moving-interface manager was admitted. The historical cumulative research lineage was not imported; `LEGACY_NUMERICS` remains the production default.
+
+- reconciled PR head: `c7c5bf65d812f236f7c5005c396b5c1c8b02c457`;
+- exact admitted tree: `c209b72768639df6fb4e3ed833f843d50da46fb3`;
+- qualified manager postimage: `fc3805e1f106b5de1ee3a492920d0c21eba7bd1d`;
+- exact F-CI preservation script: `327b29a207a2e6346220b11682c963f90ded1a2a`;
+- historical focused owner authority: run `36818047308`, job `110227325151`, SUCCESS;
+- reconciled PR preservation: F-CI run `38119253100`, moving-current job `114410923144`, PASS;
+- canonical squash merge: `44a031a83b5b9da5f8a76e4e8859396e57a48cd0`;
+- canonical verification: F-CI run `38119657018`, moving-current job `114411818086`, PASS.
+
+Central regie added no production physics and did not activate the manager by default. The owner gate executes at O0 and O2 and requires byte-identical output; the canonical preservation authority pins the complete 40-character manager blob.
+
 ### Supersession closures
 
 Sixteen PRs were closed only after their successor and recovery path were recorded in the PR thread:
@@ -43,7 +56,23 @@ Sixteen PRs were closed only after their successor and recovery path were record
 - stale central checkpoints/probes: #1121 and #1105;
 - obsolete irrigation carriers superseded by MC-IRR01: #1097 and #1126.
 
-PR #58 remains the intentional canonical carrier. After admission and closures, 116 PRs remain open; this count is descriptive, not a new queue authority.
+A second batch closed 31 already-consumed or superseded candidates after exact-head evidence was recorded in every PR thread:
+
+- F-CI110 / PR #626 performance reconstruction: #599, #600, #601, #604, #607, #608, #610, #617, #618, #619, #620 and #621;
+- F-PE-SYSTEM-CLOSE01 current-host performance closeout: #669, #671, #672, #673, #674, #675, #676, #677, #678, #679, #680 and #686;
+- admitted ELASTIC successors: #807, #822, #891 and #910;
+- bounded PPA-WU05-C3A successor PR #962: #973;
+- canonical issue-#989 storage-ownership fix: #990 and #995.
+
+A third batch closed 17 completed historical performance/research carriers with their exact heads and selected successors preserved:
+
+- F-CI110 / F-PE-SYSTEM-CLOSE01: #602, #605, #609, #611, #612, #613, #614, #615 and #616;
+- selected REPAIR01/PROFILE05R2/PROFILE06 successors: #634, #635, #636 and #639;
+- completed negative or observation-only F-PE-SYSTEM-CLOSE01 evidence: #654, #657, #658 and #659.
+
+After canonical admission of #921, 15 cumulative NLGLOB research candidates were closed as superseded live candidates: #810, #830, #841, #844, #849, #852, #856, #859, #861, #867, #872, #876, #879, #880 and #882. Each PR thread records its exact research head and points to #921 / `44a031a83b5b9da5f8a76e4e8859396e57a48cd0`. Their negative, falsification and unselected research evidence remains reachable; closure does not declare that research lineage admitted.
+
+PR #58 remains the intentional canonical carrier. After both admissions and all 79 supersession closures in this reconciliation, exactly 54 PRs remain open. This count was read from the live GitHub queue after the #921 merge and NLGLOB closure batch; it is descriptive, not a replacement queue authority.
 
 ### Exact remaining blockers and owners
 
@@ -54,10 +83,12 @@ PR #58 remains the intentional canonical carrier. After admission and closures, 
 | #1119 | PPA-WU05B frost | Keep focused finite-guard work under the frost owner; recompose broad whole-source/exact-tree preservation against current canonical. |
 | #1103 | HYD/HYST | Finish the active specialized qualification; no central semantics change or admission claim. |
 | #1098, #1117 | NUT/SOL | Complete owner-controlled consolidated qualification and source/restart gates; #1117 is not an admission proposal. |
-| #1072 | functional-coverage master | Recompute from canonical `cadcc63d3` and incorporate bounded MC-IRR01 before fresh global coverage counts. |
+| #1072 | functional-coverage master | Recompute from canonical `44a031a83` and incorporate bounded MC-IRR01 plus selective NLGLOB14Z47 before fresh global coverage counts. |
 | #486 | F-GC shared admission authority | Resolve non-overlapping storage partition and one owner per physical drainage path. |
 
-No manual workflow dispatches were added. Broad unrelated workflow failures on the admission PR are scheduling/governance debt, not MC-IRR01 scientific qualification; the exact owner and canonical-preservation gates are the admission evidence.
+PRs #1196 (MC-HEAT01) and #1197 (MC-CROP01), together with the active PPA/macropore, frost, crop, nutrient/solute, hydraulics and coupling lines, remain with their specialized owners and were not modified by this integration round.
+
+No manual workflow dispatches were added. Only path-triggered owner/preservation runs were used, and the necessary PR and canonical F-CI runs were polled to terminal success. Broad unrelated workflow results are not admission evidence; the exact owner and canonical-preservation gates named above are authoritative.
 
 ## Control model
 

@@ -402,8 +402,9 @@
   ],
   "integration_reconciliation_20261011": {
     "reconciliation_base": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-    "canonical_recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
-    "open_pr_count_after_reconciliation": 116,
+    "canonical_recovery_point": "integration/f-ci-canonical@44a031a83b5b9da5f8a76e4e8859396e57a48cd0",
+    "canonical_tree": "c209b72768639df6fb4e3ed833f843d50da46fb3",
+    "open_pr_count_after_reconciliation": 54,
     "admitted_clusters": [
       {
         "work_unit": "MC-IRR01",
@@ -418,12 +419,100 @@
         "fci_result": "PASS_ALL_FROZEN_AND_MOVING_CURRENT",
         "qualification_reconciliation": "Production and test blobs match qualified integration head 4ed0a6d62eae82f46d9f79d06b764e141474c9e2. Central regie added only bounded exact preservation and admission metadata.",
         "production_physics_changed_by_regie": false
+      },
+      {
+        "work_unit": "F-PE-NLGLOB14Z47",
+        "pull_request": 921,
+        "reconciliation_base": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+        "admission_head": "c7c5bf65d812f236f7c5005c396b5c1c8b02c457",
+        "canonical_merge": "44a031a83b5b9da5f8a76e4e8859396e57a48cd0",
+        "exact_tree": "c209b72768639df6fb4e3ed833f843d50da46fb3",
+        "owner": "moving-interface performance / F-PE-NLGLOB14Z47",
+        "scope": "Selective fail-closed process/configuration eligibility guard for the already-admitted explicit non-default moving-interface manager. Historical cumulative research lineage is not imported and LEGACY_NUMERICS remains the production default.",
+        "production_preimage_blob": "27c710e61706a585c359811bee04b60cb14ffec4",
+        "production_postimage_blob": "fc3805e1f106b5de1ee3a492920d0c21eba7bd1d",
+        "fci_preservation_blob": "327b29a207a2e6346220b11682c963f90ded1a2a",
+        "historical_owner_run": 36818047308,
+        "historical_owner_job": 110227325151,
+        "owner_result": "PASS",
+        "pr_fci_run": 38119253100,
+        "pr_fci_job": 114410923144,
+        "pr_fci_result": "PASS_ALL_FROZEN_AND_MOVING_CURRENT",
+        "canonical_fci_run": 38119657018,
+        "canonical_fci_job": 114411818086,
+        "canonical_fci_result": "PASS_ALL_FROZEN_AND_MOVING_CURRENT",
+        "owner_optimization_contract": "O0_O2_BYTE_IDENTICAL",
+        "production_physics_changed_by_regie": false,
+        "default_activation_changed": false
       }
     ],
     "closed_superseded_prs": [
+      599,
+      600,
+      601,
+      602,
+      604,
+      605,
+      607,
+      608,
+      609,
+      610,
+      611,
+      612,
+      613,
+      614,
+      615,
+      616,
+      617,
+      618,
+      619,
+      620,
+      621,
       623,
       624,
       625,
+      634,
+      635,
+      636,
+      639,
+      654,
+      657,
+      658,
+      659,
+      669,
+      671,
+      672,
+      673,
+      674,
+      675,
+      676,
+      677,
+      678,
+      679,
+      680,
+      686,
+      807,
+      810,
+      822,
+      830,
+      841,
+      844,
+      849,
+      852,
+      856,
+      859,
+      861,
+      867,
+      872,
+      876,
+      879,
+      880,
+      882,
+      891,
+      910,
+      973,
+      990,
+      995,
       1073,
       1074,
       1075,
@@ -437,6 +526,93 @@
       1122,
       1126,
       1129
+    ],
+    "closed_superseded_pr_count": 79,
+    "closure_batches": [
+      {
+        "name": "initial_canonical_and_irrigation_cleanup",
+        "count": 16,
+        "prs": [623, 624, 625, 1073, 1074, 1075, 1076, 1097, 1104, 1105, 1111, 1113, 1121, 1122, 1126, 1129],
+        "successors": "Exact canonical ancestors, unified admissions, current central checkpoints and MC-IRR01."
+      },
+      {
+        "name": "performance_and_consumed_candidate_cleanup",
+        "count": 31,
+        "successor_groups": [
+          {
+            "prs": [599, 600, 601, 604, 607, 608, 610, 617, 618, 619, 620, 621],
+            "successor": "F-CI110 / PR #626 / canonical a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a"
+          },
+          {
+            "prs": [669, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 686],
+            "successor": "F-PE-SYSTEM-CLOSE01; SETUP04 PR #681 at 71813645a5acbacd7cd900aee6f619dc1039e8e1 and reconciled closeout 3b744aa69c6a0b1317d04b0d98704d7086b38a95"
+          },
+          {
+            "prs": [807, 822, 891, 910],
+            "successor": "Canonical ELASTIC18/ELASTIC21/ELASTIC45/mineral-ELAS authorities; PR #822 specifically selects PR #821 at e355dacf50fcc0cceb77e02f73b78eddebcbeced plus closeout #823 at fed1d42a3f95b2396c071f6f9e76ec8cb66943cd"
+          },
+          {
+            "prs": [973],
+            "successor": "PPA-WU05-C3A PR #962 at 179673b16b84bc48fa5e0e83341a8a8e80b2211a"
+          },
+          {
+            "prs": [990, 995],
+            "successor": "Canonical issue-#989 storage-ownership fix 23f5d3cff78e055426b48ec93f57c1cb9880759c"
+          }
+        ]
+      },
+      {
+        "name": "completed_performance_research_cleanup",
+        "count": 17,
+        "successor_groups": [
+          {
+            "prs": [602, 605, 609, 611, 612, 613, 614, 615, 616],
+            "successor": "F-CI110 / PR #626 at a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a plus F-PE-SYSTEM-CLOSE01"
+          },
+          {
+            "prs": [634],
+            "successor": "Selected canonical REPAIR01 successor"
+          },
+          {
+            "prs": [635],
+            "successor": "PR #637 at c64737c89953888c311e005a2a0077964f358498"
+          },
+          {
+            "prs": [636],
+            "successor": "PROFILE05R2 PR #638 at ef177a64f8f0e6618fd6896f9db266e99d22c710"
+          },
+          {
+            "prs": [639],
+            "successor": "PROFILE06 PR #640 at 59a53d80534d6603a462fe4219094c6a75dd896f"
+          },
+          {
+            "prs": [654, 657, 658, 659],
+            "successor": "F-PE-SYSTEM-CLOSE01 negative/observation-only authority"
+          }
+        ]
+      },
+      {
+        "name": "nlglob_cumulative_research_cleanup",
+        "count": 15,
+        "successor": "Selective F-PE-NLGLOB14Z47 admission PR #921 / canonical 44a031a83b5b9da5f8a76e4e8859396e57a48cd0; full historical research lineage not admitted.",
+        "pr_heads": {
+          "810": "36127c5e25b91c65ccc0a0451018c37f3d54a512",
+          "830": "374b295fe8155fc44d4698c19d30e9f72d7d83d8",
+          "841": "fbb864f44b283be114db569e44952d37837ccdd1",
+          "844": "e16b1a38f9d5c7d5d01646dbefa6048814718af7",
+          "849": "79f5044bf2bcec0c9f4409370f053bc92a980ef6",
+          "852": "2a640af354f9071a78bdfdb82740cf879f7828e0",
+          "856": "ef1a86797ba5d99a5ca0ad808a25113b75b8e6a3",
+          "859": "5bd99df6aafab72d0e1cddeba463d7f61ec0065c",
+          "861": "8f8ba71edaae2b5b0f034d9c899adec618c316d8",
+          "867": "a15e12929d9dc7acfd58810053bc0f8a1dd59a5b",
+          "872": "cd21956e5cdf873e84dfb573591a04cc2129962e",
+          "876": "c1335fcf996e0523bfcaadc404857362ae5c5d82",
+          "879": "f088b23d0df2aa42a964b39e2fa302a0830327cf",
+          "880": "efd64971d6160c16796f788bbad131b857c4ea0f",
+          "882": "61748c7af9a1aa5bd7faa4bda6a64be756887ab2"
+        }
+      }
     ],
     "closure_rule": "Each closed PR has an explicit PR-thread successor/recovery comment. Exact ancestor heads and unique evidence remain reachable from the named canonical successor or persistent recovery commit.",
     "classified_live_blockers": [
@@ -468,7 +644,7 @@
       {
         "pr": 1072,
         "owner": "functional-coverage master",
-        "blocker": "Recompute the moving functional-coverage master from canonical cadcc63d3296e12e6a0634ee7095693454b60005 and incorporate the bounded MC-IRR01 admission before publishing fresh global counts."
+        "blocker": "Recompute the moving functional-coverage master from canonical 44a031a83b5b9da5f8a76e4e8859396e57a48cd0 and incorporate bounded MC-IRR01 plus selective F-PE-NLGLOB14Z47 before publishing fresh global counts."
       },
       {
         "pr": 486,
@@ -476,8 +652,9 @@
         "blocker": "Resolve non-overlapping storage partition and one-owner-per-drainage-path authority before admission."
       }
     ],
+    "untouched_active_specialized_prs": [486, 924, 961, 968, 1072, 1083, 1098, 1103, 1117, 1119, 1120, 1196, 1197],
     "intentional_open_carrier": 58,
-    "action_policy": "No manual duplicate workflow dispatches were used. Unrelated broad publication/workflow failures are not treated as qualification evidence for MC-IRR01."
+    "action_policy": "No manual duplicate workflow dispatches were used. Necessary path-triggered PR and canonical F-CI runs were polled to terminal success. Unrelated broad publication/workflow results are not treated as admission evidence."
   },
   "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central regie has no residual #72/#163/#172 housekeeping queue. New central work is event-driven: qualified specialized admission, shared-authority resolution, preservation drift, or deliberate control refresh.",
   "historical_closed_prs": [
