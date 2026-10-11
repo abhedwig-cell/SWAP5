@@ -477,6 +477,9 @@ contains
     do timing=7,8
       do nodes=1,3,2
         cfg=config
+        ! The older steady fixture has a separate balancing irrigation source.
+        ! Managed weather owns its source; use an explicitly zero initial source.
+        cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0.0_real64
         cfg%irrigation%enabled=.true.
         cfg%irrigation%sensor%scheduled_irrigation_enabled=.true.
         cfg%irrigation%sensor%active_nodes=4;cfg%irrigation%sensor%sensor_node=2
