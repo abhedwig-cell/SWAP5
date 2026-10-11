@@ -1452,7 +1452,15 @@
         "pr": 1008,
         "owner": "PPA-WU05-C3A performance",
         "head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be",
-        "disposition": "COMPLETED_BOUNDED_ATTRIBUTION_SUCCESSOR_PENDING_CANONICAL_PUBLICATION_AND_CARRIER_CLOSURE",
+        "disposition": "COMPLETED_BOUNDED_ATTRIBUTION_CANONICALLY_ADMITTED_CARRIER_CLOSED_UNMERGED",
+        "canonical_commit": "f85e68b3cd04f97b372adeda52aba412df468b6c",
+        "canonical_tree": "6e1870f2176cffb88b7358dd5bdb266f1182bf0b",
+        "canonical_fetched_verified": true,
+        "closure_comment": 6112271809,
+        "original_branch_and_head_retained": true,
+        "fresh_open_pr_count": 15,
+        "remaining_owner_candidates": 14,
+        "new_actions": 0,
         "report": "integration/audits/PPA_WU05C3A_PERF03_ATTRIBUTION_20261011.json",
         "result_document": "docs/audits/PPA_WU05C3A_PERF03_RESULT.md",
         "scientific_checkpoint": "0731bdadc656b0a7f086bb1d9ce5188c46faf0c0",
@@ -1464,7 +1472,7 @@
         "archive_members": 31,
         "original_postimages_preserved": 4,
         "claim_boundary": "Local stage attribution only, no physical/season/MultiSWAP speed claim or optimization admission. Existing production/reference/workflow trees and incumbent tests remain unchanged.",
-        "next_action": "Verify canonical successor then close original carrier with original head/branch retained. Performance owner may investigate exact-preserving repeated/pure waterfilm work under a separate preregistered optimization gate."
+        "next_action": "No remaining PERF03 attribution-carrier admission gate. Performance owner may investigate exact-preserving repeated/pure waterfilm work under a separate preregistered optimization gate. All other owner/scientific gates remain active."
       },
       {
         "pr": 1001,
