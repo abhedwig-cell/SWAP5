@@ -12,6 +12,7 @@ module mod_fmr_runtime_core
 
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_NONE = 0_int64
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY = 1_int64
+  integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION = 2_int64
 
   ! Qualified optional physical-state topology identities.  The layout ID is a
   ! template capability identity; it does not imply that every column using the
@@ -23,6 +24,15 @@ module mod_fmr_runtime_core
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER = 43107_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION = 404001_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION = 404002_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE = 404003_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE = 404004_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_MACROPORE = 505001_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER = 505003_int64
+
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_NONE = 0_int64
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED = 505003_int64
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE = 505004_int64
 
   type, public :: fmr_logical_column_t
     integer(int64) :: column_id = 0_int64
@@ -44,6 +54,8 @@ module mod_fmr_runtime_core
     ! numerical continuation is deliberately a separate axis so solver policy
     ! cannot overload or reinterpret the physical feature layout.
     integer(int64) :: optional_state_layout_id = 0_int64
+    ! Independent salt-state identity; orthogonal to hydraulic/thermal continuation.
+    integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
     integer(int64) :: numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
     integer :: compatible_backend_id = 0
   end type fmr_template_t
@@ -118,6 +130,7 @@ module mod_fmr_runtime_core
   public :: fmr_count_templates
   public :: fmr_metadata_bytes_per_column
   public :: fmr_optional_state_layout_known
+  public :: fmr_solute_state_layout_known
 
 contains
 
@@ -293,12 +306,23 @@ contains
     case (FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
           FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
           FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-          FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION)
+          FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+          FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
+          FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
+          FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, &
+          FMR_OPTIONAL_STATE_LAYOUT_RUTTER)
       known = .true.
     case default
       known = .false.
     end select
   end function fmr_optional_state_layout_known
+
+  pure logical function fmr_solute_state_layout_known(layout_id) result(known)
+    integer(int64), intent(in) :: layout_id
+    known = layout_id == FMR_SOLUTE_STATE_LAYOUT_NONE .or. &
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED .or. &
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE
+  end function fmr_solute_state_layout_known
 
   logical function fmr_assignment_compatible(template, physics_topology_id, state_layout_id, backend_id)
     type(fmr_template_t), intent(in) :: template

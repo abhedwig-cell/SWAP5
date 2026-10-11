@@ -1,6 +1,6 @@
 # SWAP5 post-Status-A current canonical state
 
-Date: 2026-09-18
+Date: 2026-10-01
 
 This page is the current development-state supplement to the frozen Status-A review authority. It does **not** retroactively expand the first colleague-review denominator fixed on 2026-09-16. It records later canonically admitted capabilities that are relevant when deciding what may be developed next.
 
@@ -119,3 +119,396 @@ The following remain outside the admitted Ribasim profile:
 - combined SWAP5 + MODFLOW6 + Ribasim triangle admission.
 
 The legacy `STTAB` storage relation is not assumed to map exactly to a Ribasim Basin profile between its knots. Q1H provides a separately named epsilon-controlled legacy-emulation route, but the default coupled production profile uses Ribasim-native geometry because Ribasim owns the surface-water state.
+
+
+## Current post-Status-A macropore capability
+
+Canonical now also contains a bounded production macropore route through serialized single-column FMR.
+
+The controlling authority chain is now:
+
+1. PPA-WU05-A8, canonically admitted by PR #923 at `9bad713b0d2ab24d40fcf937d11c850d3fb52a22`, for the bounded serialized Reference-Richards macropore runtime and continuation-state contract;
+2. PPA-WU05-A9, canonically admitted by PR #926 at `243f43cccd817c1bb175f14faa64efd574d6d3ca`, for the source-faithful surface-connected macropore top-input carrier;
+3. PPA-WU05-A10, canonically admitted by PR #928 at `190dad36a821f3a43f78f00fccf827c58cacedb6`, for source-bound main-domain rapid drainage. Post-merge A10 preservation run `36829313469` passed on that exact canonical merge.
+
+The admitted envelope is deliberately narrow:
+
+- standard `swmbf=1` route;
+- Reference Richards only;
+- immutable FMR macropore configuration;
+- dynamic hydraulic views from accepted matrix/macropore state;
+- outer source/sink coupling while the inner Richards request keeps `macropore_active=.false.`;
+- transactional candidate-only publication;
+- committed-state persistence/restart for the seven continuation fields;
+- serialized single-column execution;
+- explicit source-faithful net rainfall, net irrigation and melt input for surface-connected macropores;
+- explicit separately owned lateral overland/infiltration-excess macropore input;
+- current accepted macropore top geometry for source partitioning;
+- capacity limitation, redistribution and returned-surface receipt through the admitted A6 logic;
+- accepted macropore top input booked exactly once in whole-column external mass accounting;
+- main-domain rapid drainage through the source-bound A6 RAPIDDRAIN formulation;
+- dynamic rapid-drain water level, saturated top fraction, ponding, active bottom and storage views;
+- exact below-drain volume reconstruction for drain levels aligned to compartment boundaries;
+- accepted rapid drainage booked exactly once as external whole-column outflow.
+
+The admission does not include inference of source components from generic FMR `top_flux`, independent ponding/runon macropore source terms, simultaneous A9 ownership with Snow/Black/Boesten/fixed-weir surface-water routes, covering-layer or perched-zone macropore physics, arbitrary within-compartment rapid-drain levels, multiple rapid-drain levels, fixed-weir/Ribasim ownership of the same rapid-drain receipt, within-corrector dynamic crack-geometry feedback, RossFast, or parallel/concurrent MultiSWAP macropore execution.
+
+This capability is post-Status-A and does not change the frozen Status-A denominator.
+
+
+## Current post-Status-A Bartholomeus oxygen capability
+
+Canonical now contains the bounded PPA-WU05-C3A Bartholomeus oxygen-stress route admitted by PR #962 at `179673b16b84bc48fa5e0e83341a8a8e80b2211a`. Exact candidate `63b7c982d12a7df8f6f933d32fc382fbcc02bb67` passed final qualification run `36972631192`, including the actual typed Reference application, complete unchanged B1.11 assembled oracle and affected current-canonical/shared-backend preservation.
+
+The admitted envelope is oxygen mode 2/type 1 with analytical MvG REFERENCE waterfilm in the homogeneous serial typed Fortran Reference application, bottom 2 or 7 and the existing restricted thermal owner. Oxygen OFF remains exact; unsupported active compositions fail closed. Oxygen adds no accepted continuation state, checkpoint/restart field, solver ABI or water ledger.
+
+Groundwater-coupled, macropore, snow, drainage-response, elastic, hysteretic, tabular, PRACTICAL/WFT300 and worker-parallel oxygen remain outside the admitted envelope. This admission also does not close salinity, frost, compensation or MICRO/JvL gaps and does not alter the frozen Status A denominator. See `docs/audits/PPA_WU05C3A_CLOSEOUT.md`.
+
+
+## Current post-Status-A interception capability
+
+Canonical now contains the completed non-Rutter SWAP 4.3.1 interception family for `SWINTER=1/2`.
+
+The controlling authority chain is:
+
+1. PPA-WU04, which reconstructed the state/transaction contract and identified `SWINTER=1` as Von Hoyningen-Hune/Braden, `SWINTER=2` as Gash and `SWINTER=3` as the separate stateful Rutter capability;
+2. F-MIG431-INT12-P0 for method-neutral immutable source-window interception aggregates with accepted progress, retry and restart provenance;
+3. F-MIG431-INT12-C for the existing `SWINTER=1` daily aggregate route;
+4. F-MIG431-INT12-D, PR #1010, canonical merge `23a5768771a93a338daba78ab117682ee1e459f2`, for `SWINTER=2` Gash daily `SWMETDETAIL=0`;
+5. F-MIG431-INT12-E, PR #1011, canonical merge `0fc427f63cffab666014129641c864ccd65983f0`, for `SWMETDETAIL=1` non-Rutter record continuation shared by `SWINTER=1/2`.
+
+The admitted semantics are:
+
+- `SWINTER=1` and `SWINTER=2` interception physics produce source-window aggregates rather than persistent physical canopy-storage state;
+- Gash preserves the B1.11 equation and legacy branch ordering, including the historical `grai` saturation comparison;
+- numerical retries do not reevaluate nonlinear daily interception physics on smaller hydraulic spans;
+- accepted source-window progress is transactional and restartable through P0;
+- daily rain/sprinkling partition, the legacy DivIntercep threshold, snow-disable gate and wet-canopy potential-transpiration composition are qualified;
+- detailed meteorology uses record-weighted daily interception and an explicit accepted `restint` continuation within the source day;
+- detailed `restint` is reset to zero at every new detailed-meteo source day and is therefore not physical or multi-day canopy storage;
+- mid-day restart persists source-day identity, next-record cursor and accepted `restint`;
+- rejected trials advance neither interception progress nor detailed-record continuation state.
+
+Final INT12-E admission-head qualification passed in run `37152387427`; INT12-D preservation passed in `37152387486`; P0 preservation passed in `37152387442`.
+
+Within the non-Rutter `SWINTER=1/2` interception scope, no known selector, retry, restart or precipitation-partition capability gap remains. `SWINTER=3` Rutter remains a separate stateful capability and is not subsumed by this closure.
+
+The INT13 work branch composes Rutter canopy storage and INT12 source-window progress into the production FMR physical-state candidate. Reconciliation against the recovered exact SWAP 4.3.1/B1.11 `MOD_meteo.f90` showed that the previous candidate used the wrong SWAP 4.2.0 exponential `fimin` equation. The current local candidate instead integrates B1.11's piecewise-constant fill/dry flux regimes and removes `fimin` from the forcing contract. Local O0/O2 source-window, production-transaction and capacity-event tests pass. Targeted Actions run `37271615834` passed the INT13 physics/source-window/retry/restart and production FMR gates on candidate commit `4403db7996ec49b910a419d53c7efe2b4cd75102`; historical run `37268521592` tested the superseded candidate. This qualifies the bounded candidate, but `SWINTER=3` remains unadmitted pending canonical integration. The source correction is recorded in `integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md`. The bounded constant-surface-irrigation extension passed INT13 Actions run `37276517425` and companion PPA-WU01 run `37276517357` on commit `6f6eba2241b662cf0d3c1126bd21a63845b6ee41`, covering both B1.11 `ISUA` modes at the tested low-rate vector. Higher throughfall reached the separate Reference Richards dynamic-head surface-head derivative error and remains out of scope, as do irrigation scheduling, sprinkling, Snow, Black/Boesten, macropore and surface-water/RFM combinations. See `integration/audits/F-MIG431-INT13_STATUS.json`.
+
+
+## Compensated root uptake: PPA-WU05-D2/D3 (2026-10-04)
+
+Jarvis (PR #1012, canonical merge `4fd57c8c8`) and Walsum (PR #1013,
+canonical merge `a34c87db9`) are separately admitted within the existing Feddes
+root-sink chain, optionally composed with independently admitted Bartholomeus
+oxygen. The sole root-water mass owner remains unchanged. Accepted transpiration
+now reports the final transformed sink through the existing transaction result.
+Walsum derives its dynamic ALPHACRIT from typed current centimetre geometry,
+including the full bottom of a partially rooted node.
+
+See [canonical closeout](../audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md) for
+qualification, exact scope, legacy-source limitations and the remaining D4/D5 gaps.
+This does not admit salinity, frost, MICRO or general coupling combinations.
+
+## PPA-WU05-MIGMAC02 dynamic crack geometry
+
+PR #1019 canonically admits Kim clay direct option-1 shrinkage in the
+existing serialized Reference Richards macropore chain. Candidate moisture and
+accepted crack history derive subsidence, capacity, domain bottoms and top crack
+area. Existing exchange/top-input/rapid-drain owners consume that geometry;
+displacement enters the matrix receipt before acceptance. Retry and restart
+retain the accepted boundary. The explicit provider disables the inherited
+short-step source-freezing heuristic when geometry can change.
+
+The controlling scope, exact source postimages, independent oracles, O0/O2,
+A/B/A, smaller retry, restart, water closure and preservation evidence are in
+`integration/audits/PPA_WU05_MIGMAC02_QUALIFICATION.json` and
+`docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md`. Canonical admission is recorded in
+`integration/audits/PPA_WU05_MIGMAC02_STATUS.json` with canonical merge `957b87d69888f1eb7ef5671f441563bd9b798687`. Peat/alternate fitting and additional surface/drain compositions
+remain outside this bounded admission. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC03 peat and rigid constitutive extension
+
+Direct regular Hendriks and three-segment peat laws, including alternating
+rigid/peat compartment profiles, are canonically admitted by PR #1020 in the existing Reference
+Richards macropore geometry/transaction chain. Optional typed law selectors
+preserve implicit Kim callers. No new water or restart owner is introduced.
+[Closeout](../audits/PPA_WU05_MIGMAC03_CLOSEOUT.md) bounds parameter validity and
+claims; `integration/audits/PPA_WU05_MIGMAC03_STATUS.json` records admission.
+Parameter fitting, mixed Kim/peat runtime and new mixed-law rapid-drain reference
+construction remain separate gaps. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC04 characteristic-point shrinkage input
+
+Kim clay input2 and the uniquely identifiable regular Hendriks peat input2
+branch are canonically admitted by PR #1021 as preparation of existing constitutive carriers.
+Clay preparation is analytic; peat preparation uses bounded, bracketed root
+finding against the exact B1.11 equation. No runtime/state/mass owner is added.
+[Closeout](../audits/PPA_WU05_MIGMAC04_CLOSEOUT.md) bounds input validity, numerical
+criteria and non-identifiable cases; `integration/audits/PPA_WU05_MIGMAC04_STATUS.json`
+records admission. Ambiguous fits and new mixed-law/drain compositions remain
+outside this scope. Frozen Status A is unchanged.
+
+## PPA-WU05-MIGMAC05 mixed constitutive Reference profiles
+
+PR #1022 canonically admits mixed Kim/direct Hendriks, Kim/three-segment peat and
+rigid/Kim/peat qualification in the existing serialized Reference geometry chain.
+This later admission closes the mixed Kim/peat runtime gap named in MIGMAC03/04.
+No production source or physical owner changes. Prepared carriers, accepted history,
+wetting displacement, retry, A/B/A and restart pass at O0/O2. Supplied-coefficient
+two-domain drainage composes; new mixed-law reference KD derivation remains open.
+See [closeout](../audits/PPA_WU05_MIGMAC05_CLOSEOUT.md) and its pinned qualification.
+Wider drain/surface compositions and whole-model equivalence remain excluded.
+Frozen Status A remains unchanged.
+
+## PPA-WU05-MIGMAC06 hydrostatic rapid-drain reference KD
+
+PR #1023 admits explicit pre-trial preparation of the existing immutable reference
+KD from hydraulic-owner supplied hydrostatic moisture and mixed constitutive laws.
+This closes the bounded mixed-law reference construction gap named in MIGMAC05.
+The source reference geometry, node tolerance, saturation cap and rigid barrier
+rules are preserved. Zero connectivity disables rapid drainage. No new water,
+state or restart owner is added. Supplied and adapter-derived Reference results
+agree at O0/O2, including wetting and two-domain rapid drainage; retry and restart
+pass. [Closeout](../audits/PPA_WU05_MIGMAC06_CLOSEOUT.md) pins source and gates.
+Multiple/within-compartment drains, covering-layer reference preparation and
+additional surface/whole-model compositions remain excluded. Frozen Status A
+and the incomplete broad migration denominator remain unchanged.
+
+## PPA-WU05-MIGMAC07 within-compartment rapid drainage
+
+PR #1024 admits one rapid-drain level inside an FMR compartment using the source
+VOLUNDR uniform-volume-density equation. The A10 aligned-only restriction and
+MIGMAC06 within-compartment exclusion are superseded within this bounded route.
+The shared geometry helper retains boundary snapping, current main-domain capacity,
+active cutoff and one external rapid-drain receipt. No accepted subcell state is
+introduced. Partial-level A10 and mixed-law Reference retry/restart, wetting,
+water closure and supplied/derived KD equivalence pass at O0/O2.
+[Closeout](../audits/PPA_WU05_MIGMAC07_CLOSEOUT.md) pins source and qualification.
+
+The exact source prepares only one rapid-drain reference level; RAPIDDRAIN returns
+for domains other than main domain1 and uses one selected NumLevRapDra. Multiple
+simultaneous rapid-drain levels are therefore future functionality, not a missing
+implemented B1.11 capability. Ordinary multilevel matrix drainage is separate.
+Covering-layer reference preparation, wider source-relevant surface compositions
+and whole-model equivalence remain separate migration work. Frozen Status A and
+the incomplete broad migration claim remain unchanged.
+
+## PPA-WU05-MIGMAC08 rigid covered reference preparation
+
+PR #1025 admits hydrostatic reference-KD preparation for an explicit rigid cover
+with exactly zero above-top static macropore capacity. Existing covering matrix
+transfer remains the covered-input owner; surface-connected A9 precipitation is
+absent there. Invalid cover selectors/capacity fail without KD mutation. Source
+section-D and independent covered reference geometry agree. Mixed-law Reference
+wetting, partial rapid drainage, prepared carriers, supplied/derived KD identity,
+retry, A/B/A and accepted restart pass at O0/O2, with preceding route preservation.
+[Closeout](../audits/PPA_WU05_MIGMAC08_CLOSEOUT.md) controls source and qualification.
+
+Earlier covering-reference exclusions are superseded only for this rigid route.
+Nonrigid covering reference preparation still needs source relevance/ownership
+reconciliation; wider source-relevant surface compositions and whole-model
+equivalence remain outside this admission. Frozen Status A remains unchanged;
+broad migration is still incomplete.
+
+## PPA-WU05-MIGMAC09 source covering compartment mask
+
+PR #1026 admits the source mask above IcTopMp independently of covering soil
+shrink law. Source initialization zeros static volume and all domain fractions
+there; MPVOLUME excludes those cells. Production candidate geometry now receives
+the actual top node. Reference preparation checks zero static/domain capacities,
+replacing MIGMAC08's rigid-selector restriction. Nonzero accepted covered crack
+volume fails without accepted-state mutation. Covering matrix transfer retains
+its owner; no new surface forcing, persistent state or solver policy is added.
+
+Nonrigid covered mixed-law dry/wetting/partial-drain Reference trials, prepared
+carriers, supplied/derived coefficient identity, retry/A-B-A/restart and O0/O2
+pass. All affected pure/provider and A8/A10/MIGMAC01/PERCH20 gates pass. Exact
+section-D source and independent reference geometry agree. See
+[closeout](../audits/PPA_WU05_MIGMAC09_CLOSEOUT.md) and pinned qualification.
+Earlier nonrigid-cover reference exclusions are superseded for this source mask;
+a separate covering macropore crack law is not unported B1.11 functionality.
+Wider source-relevant surface compositions and whole-model equivalence remain
+outside admission. Frozen Status A is unchanged; broad migration is incomplete.
+
+
+## Bounded frost hydraulics: PPA-WU05B (2026-10-05)
+
+The B1.11 temperature-to-K/dKdh modifier is canonically admitted through PR #1018,
+merge `5272ac9192ec1065dbe2432f73d1f1b4394437e0`. Dedicated run `37324712595`
+passed frost effect/provider/runtime/restart/retry and the complete current-canonical
+preservation runner at O0/O2 on exactly the tree admitted by that merge.
+
+Scope is serialized Reference Richards with the existing restricted sensible-temperature
+owner and prescribed bottom mode 2 with zero bottom flux. Water content, capacity,
+water mass and committed restart ownership remain unchanged. Frost root stress,
+FrozenBounds, snow/macropore/drainage/coupling combinations, temporal history,
+trajectory direction, sensible boundary carriers and new latent-heat/ice physics
+remain excluded. This closes the bounded hydraulic slice, not aggregate frost migration.
+
+See [canonical closeout](../audits/PPA_WU05B_CANONICAL_CLOSEOUT.md) and
+`integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json` for scope and evidence.
+
+
+## Matrix salinity in Jarvis: PPA WU05 E (2026-10-05)
+
+PR #1015, canonical merge `cb841851db6a4f459835b4943cf442595898ecd3`, independently admits the selected matrix dissolved-salt transport owner, Maas-Hoffman response and its Feddes/Bartholomeus/Jarvis composition. This extends the earlier bounded D2 admission with selected matrix salinity; the historical D2/D3 closeout above describes its original denominator. The sole root-water sink is retained, while salt mass commits/discards and restarts with matching accepted water state.
+
+All 19 named current-source local qualification/preservation gates pass after reconciling admitted frost. Seven actual mixed stress cases, three top boundary cases, O0/O2, retry and separate-process restart are covered. The admitted merge source/test subtrees exactly match execution, with 1,024 verified manifest entries. Frost, Rutter, Walsum and MIGMAC07/08/09 remain preserved.
+
+Admission excludes salt/frost, salt/Rutter, salinity/Walsum, osmotic-head mode, sorption/decomposition, aquifer/groundwater salt state and full legacy or seasonal field equivalence. See [canonical closeout](../audits/PPA_WU05E_CANONICAL_CLOSEOUT.md) and `integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json`. Frozen Status A remains unchanged.
+
+### PPA-WU05B2 empirical root frost admission (2026-10-05)
+
+PR #1030 / merge `3039e573229b2bf19747f713084ea7a19cb48ed0` admits the explicit
+macro-root subzero cutoff with uncompensated, Jarvis and Walsum application paths.
+Local O0/O2 runtime, actual thaw, accepted uptake, direct refinement, fresh-worker
+restart, active salinity preservation and full current-canonical preservation pass.
+Production source identity is exact. Actions confirmation was queued and is not
+claimed successful. Local full/half temperature budgets do not imply cumulative
+1e-6 C accuracy; the documented horizon comparison bound is 1e-4 C. Joint salt/frost,
+Bartholomeus/frost and FrozenBounds remain excluded. The next source-bound boundary
+review is `docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md`.
+
+## Matrix salinity in Walsum: PPA WALSAL01 (2026-10-05)
+
+PR #1032, merge `83258c02be55879cddf9918a2b80c96da7eae2a9`, independently extends selected matrix
+Maas-Hoffman salinity from Jarvis to the admitted current-geometry Walsum route.
+The crop request is checked before stress can mask sink support. No physical
+state, restart schema, mass owner or root-water receipt is added.
+
+Fourteen current-source qualification/preservation groups pass after reconciling
+canonical root frost PR #1030. Both transport variants, O0/O2, seven actual stress
+cases, independent geometry alpha, reject/discard/adaptive retry and separate
+process restart are covered. All 1046 source entries and complete
+source/test trees match actual admission. See [canonical closeout](../audits/PPA_WU05E_WALSAL01_CANONICAL_CLOSEOUT.md).
+
+This successor removes the earlier Walsum/salinity exclusion only in the selected
+matrix envelope. Salt/frost, salt/Rutter, macropore salt production, osmotic-head
+and unqualified chemistry/groundwater/crop combinations remain excluded. The
+frozen Status A denominator is unchanged.
+
+## Bounded no-drain frost lower-boundary successor
+
+PPA-WU05B3 is canonically admitted via PR #1034 at `bdb5ecb78bd14226dc850ce27b72d551eaeff287`. It composes one final prescribed bottom proposal from trial-start frost/air fields on rootless ordinary Reference mode2 columns, with existing solver, mass and restart ownership. Current-source local O0/O2 qualification and full canonical preservation pass; queued Actions are not used as evidence. [Contract and admission](../audits/PPA_WU05B3_NO_DRAIN_FROZEN_BOTTOM.md) retain the explicit legacy last-node omission and bounded numerical budgets. Combined root/bottom frost and drainage remain separate. The [actual drainage source probe](../audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_FINDING.md) establishes a low-air SWDIVD=0 node/level accounting inconsistency that requires a qualified reference correction. The aggregate frost migration is not complete.
+
+## Joint root and no-drain bottom frost successor
+
+PPA-WU05B4 is canonically admitted via PR #1036 at `d3bb48eb2407cdc8a3a089f37cc689f6a940dddb`. It composes the empirical zero-degree root cutoff and OFF/Jarvis/Walsum compensation with the legacy no-drain bottom-flux rule, using the same immutable trial-start state, one final sink and one final bottom proposal. The joint numerical norm is the maximum of both independent norms. Actual signed/mixed/blocked/warm cases, application, retry/fine continuation, committed restart, all incumbent frost/salinity variants and full current preservation pass locally on the verified admitted source. [Contract and evidence](../audits/PPA_WU05B4_ROOT_BOTTOM_COMPOSITION_CONTRACT.md) retain hard mass closure and narrow claims. No queued Actions success or full frost completion is claimed; drainage reporting/redistribution remains separate.
+
+## Joint matrix salt and root frost: PPA SALFRO01 (2026-10-05)
+
+PR #1044, merge `ef83887448838acd12cd06a054729193abdb8213`, extends the selected matrix Jarvis/Walsum route
+with empirical root frost. Source weighted losses feed one final root-water sink
+and the existing salt owner. Both existing normalized temporal metrics constrain
+acceptance through their maximum. No state, restart field or mass owner is added.
+
+All 24 composite local qualification/preservation groups pass, including both transport
+variants at O0/O2, separate-process byte identity, independent stress oracle,
+invalid-input isolation, actual frozen/warm/thaw regimes and both temporal owners.
+All 1774 manifest entries match the executed source.
+See [canonical closeout](../audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md).
+
+Earlier salt/frost exclusions are superseded only for this selected envelope.
+Bottom/normal-drain frost with salt, Bartholomeus at negative temperature, Rutter
+and macropore hybrids, osmotic-head and real ice remain excluded. The frozen
+Status A denominator is unchanged.
+
+## Bracketed low-air frost drainage successor
+
+PPA-WU05B8 is canonically admitted via PR #1046 at `0aca73324ea46511d18af56bca3fddd0dba52ffd`. Explicit physical drain depths and guarded B7 front geometry select final signed nodal drainage and a separate final bottom proposal on rootless ordinary Reference mode2 columns. Final node sums drive reports and the existing mass owner. Normal cases retain admitted B6.
+
+Completed local O0/O2 source parity, nonfinite-input guards, six65536-step runtime trajectories, additional first-case131072 refinement, hard mass, restart/application and all relevant current-source preservation pass. The exact proposed merge tree and source match qualification. [Contract and evidence](../audits/PPA_WU05B8_BRACKETED_LOW_AIR_DRAINAGE.md) retain failed numerical screens and bounded short-window claims. No queued Actions success is claimed. Active response generation, redistribution and broader hybrid/front interpretations remain separate; aggregate frost migration and frozen Status A are unchanged.
+
+## Normal frost with generated linear drainage
+
+PPA-WU05B9 is canonically admitted via PR #1048 at `5cd8f04f81c19c6a20abeacddc172e0c44598ded`. Its explicit physical selector generates admitted LINEAR drainage from each immutable trial-start GWL view before B6 normal frost reduction. Final nodal rates feed the existing sink and step/window receipts; raw generation diagnostics retain proposal provenance.
+
+[Contract and evidence](../audits/PPA_WU05B9_LINEAR_RESPONSE_FROST.md) bind completed local source parity, six O0/O2-identical actual trajectories, further reference refinement, hard mass, retry/replay/restart/application and all relevant incumbent/current preservation. Exact proposed merge identity was verified. B10 low-air response is preregistered separately; redistribution, projection, hybrids and broader geometry remain outside this admission. Aggregate frost migration and the frozen Status A denominator are unchanged.
+
+## Generated linear drainage with bracketed low-air frost
+
+PPA-WU05B10 is admitted via PR #1050 at `6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50`. Its separate physical selector composes admitted LINEAR generation with B8 guarded low-air depths, final nodal receipts and a separate final bottom owner. The [contract and evidence](../audits/PPA_WU05B10_LOW_AIR_LINEAR_RESPONSE.md) cover216 corrected-reference cases, six O0/O2-identical65536-step trajectories, further131072 refinement, activation/provenance, hard mass, retry/replay/restart/application and preservation.
+
+The actual merge incorporated a concurrent qualified exact root-cutoff repair. Active B10 dependencies remained unchanged; affected root/salt and composed postimage preservation were freshly checked, with a separate immutable replay and reconciliation record. No full-tree equality to the earlier proposed merge is claimed. Other generation families, SWDIVD1, projection, hybrids and new geometry/phase-change remain separate. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Exact macro compensation cutoff: PPA EXACT01 (2026-10-05)
+
+PR #1051, merge `4c0615bfdb3a3e12db2b988eff97db749cca0511`, restores executable B1.11 eligibility
+`alptot >= 1e-14`, replacing the earlier reconstructed 0.05 cutoff. All 29
+current-source groups pass, including literal source and actual severe-stress
+application/restart trials. Ownership and restart schema remain unchanged.
+
+Exact dispatcher evidence also supersedes the earlier external Jarvis/Walsum
+after MICRO interpretation: it is not a B1.11 option. Independent MICRO physics
+migration remains open. See the [canonical closeout](../audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md).
+Historical evidence and the frozen Status A denominator remain unchanged.
+
+## Tabulated drainage with normal and guarded low-air frost
+
+PPA-WU05B11 is admitted via PR #1054 at `d975acb21472ddf96c800ef66be327810f8968c0`. Its separate OFF-by-default selector composes admitted signed DRAMET1 tables and LINEAR/TABULATED level mixtures with the existing normal/B8 low-air modifiers on rootless ordinary Reference mode2. Active variant-specific preflight and final-node single ownership preserve raw proposal provenance, separate bottom exchange and existing receipts without additional persistent state.
+
+[Contract and evidence](../audits/PPA_WU05B11_TABULATED_FROST_DRAINAGE.md) bind768 corrected-reference cases, twelve O0/O2-identical actual trajectories,72 additional actual activation cases, finer reference trajectories, hard mass/retry/replay/restart/application and complete relevant preservation. Exact proposed and actual merge tree/source identities are verified. The repaired fixture negative screens are retained. Other generation families, distribution, projection, hybrids and new phase-change physics remain separate. No queued Actions success or practical low-air performance claim is made; aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Analytic DRAMET2 drainage with normal and guarded low-air frost
+
+PPA-WU05B12 is admitted via PR #1056 at `388a87cad21218d0519cd8cf401a41ef0b67327e`. Its OFF-by-default selector composes already-admitted Hooghoudt IPOS1/2/3 and Ernst IPOS4/5 with normal and B8 guarded low-air frost on rootless ordinary Reference mode2. Existing selected LINEAR/TABULATED mixtures retain their flags. Active variant/prepared validation and exact analytic/frost physical drain-depth agreement preserve immutable trial-start generation, disposable proposal provenance, one final nodal sink, separate bottom exchange and existing accepted receipts. No new persistent/restart or phase state is introduced.
+
+[Contract and evidence](../audits/PPA_WU05B12_ANALYTIC_FROST_DRAINAGE.md) bind 148 independent scientific cases/132 tangent checks, 4320 corrected-source composition cases, 30 complete actual trajectories per route at O0/O2, 180 additional actual activation cases across both routes, independent finer references, hard mass/retry/replay/empty restart/application and complete relevant preservation. All optimization-level outputs are identical and exact proposed/actual merge tree/source identities are verified. Retained fixture negative findings distinguish incomplete recovery from completed qualification. Empirical interflow and other response/distribution/hybrid/phase scopes remain separate. No queued Actions success or practical low-air speed claim is made. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Empirical interflow with normal and guarded low-air frost
+
+PPA-WU05B13 is admitted via PR #1058 at `4ca2996bddb6bff101867f87251589a5b11357c7`. Its OFF-by-default selector composes the existing drainage-side empirical interflow at the last selected level, alone or after LINEAR, with normal/B8 low-air frost on rootless ordinary Reference mode2. Immutable trial-start generation, disposable proposal provenance, one final nodal sink, separate bottom exchange and accepted step/window receipts retain their owners. Finite interval control heads remain separate from physical frost depths. No new persistent/restart or phase state is introduced.
+
+[Contract and evidence](../audits/PPA_WU05B13_EMPIRICAL_FROST_DRAINAGE.md) bind 1404 scientific equations and tangents, 29160 corrected-source component cases, 36 complete trajectories per route at O0/O2, 144 actual activation cases per route, independent finer references and relevant fresh preservation. Exact proposed/actual merge identities are verified. Negative-side DRAMET3 infiltration, legacy OWLTAB/clamping/SWALLO dispatcher, EXTENDED mixtures and other spatial/hybrid/phase scopes remain separate. The original F-APP09/VQ128 external profile is preserved with its frost exclusion. No queued Actions success or practical low-air speed claim is made. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Single-level signed TUBE/OPEN exchange with frost
+
+PPA-WU05B14 is admitted via PR #1060 at `16e4e854016129ccc44a4e719adf02db74887186`. The OFF-by-default selector composes one actual EXTENDED TUBE or OPEN_CHANNEL level, highest_level false and TOP_NONE, with normal/B8 low-air frost on rootless ordinary Reference mode2. Immutable trial-start generation, independently regenerated full/half terminal proposals, disposable proposal provenance, one final nodal sink, separate bottom exchange and accepted step/window receipts retain their owners. The supplied resolved surface-water control stays separate from physical frost depth; exact active zbotdr agreement is required for low-air.
+
+[Contract and evidence](../audits/PPA_WU05B14_EXTENDED_FROST_DRAINAGE.md) bind the unchanged1507-case Q4A scientific oracle on actual production/full hydraulic carrier,116640 corrected-source component cases,24 complete trajectories per route with O0/O2 byte identity,160 additional actual activation cases per route, independent finer references and fresh relevant B1..B13, four salt/root/frost matrices, immutable drainage/root oracles and the original full F-APP09/VQ128 external primary. Both B12 and B13 preserve their original full qualified outputs exactly on both routes and optimization levels. Exact proposed/actual merge identities are verified. Highest-surface, mixed/multilevel, spatial/hybrid/phase scopes and external frost remain separate. No queued Actions success or practical low-air speed claim is made. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Highest surface resistance and power drainage with frost
+
+PPA-WU05B15 is admitted via PR #1062 at `83dbe781295e4dc66b33a28ccd4c4570247e6aeb`. The separate OFF selector composes one actual EXTENDED TUBE or OPEN_CHANNEL highest level with SURFACE_RESISTANCE or nonnegative POWER_INTERFLOW on rootless ordinary Reference mode2, using normal/B8 guarded low-air frost. B14 retains its highest-level exclusion. Supplied resolved controls remain distinct from physical drain depths, with exact low-air zbotdr agreement. Original negative-power inputs retain their HELD domain and reject before solver/publication. No process arithmetic, persistent phase state or additional mass owner is introduced.
+
+[Contract and evidence](../audits/PPA_WU05B15_HIGHEST_FROST_DRAINAGE.md) bind the unchanged1507-case Q4A oracle,77760 distinct bindings,215136 corrected B7 compositions,6048 original negative-power binding holds,36 complete trajectories per route with O0/O2 byte identity and original independent8192/65536 references.240 actual short activation calls per route distinguish224 committed hard-mass/single-owner cases from16 exact-state-preserving held cases. Independent finer references, fresh relevant B1..B14 preservation, four179-source salt/root/frost matrices, immutable drainage/root oracles and full original F-APP09/VQ128 pass. B12/B13/B14 retain original qualified stdout exactly on both routes and optimization levels. Exact proposed/actual merge tree/source/parents are verified.
+
+SWDIVD1 redistribution, mixed/multilevel EXTENDED, external frost and hybrids remain separate. No queued Actions success or practical low-air performance claim is made. Aggregate frost migration and the frozen Status A denominator remain unchanged.
+
+## Original SWDIVD1 reference-owner evidence
+
+PR #1064 at `9906bf429c445f3eb715a949b47460d223294a29` admits the [B16 reference-owner adjudication](../audits/PPA_WU05B16_DIVDRA_REFERENCE_OWNER.md): full unchanged original FrozenBounds plus DIVDRA, 4536 controlled cases, fresh O0/O2 byte identity and independent partition/owner checks. This is scientific reference evidence only; no runtime frost redistribution or hard-mass admission follows. A demonstrated bounded tiny-unsaturated-transmissivity omission in separate infiltration is routed to a separately preregistered B17 corrected-reference qualification under ADR-0005. The source-body and production trees remain unchanged; aggregate frost migration stays open.
+
+## Bounded corrected DIVDRA reference
+
+PR #1065 at `987715cbf5513a0911bd81403209452d2a99666c` admits [FROST-DIVDRA-02](../audits/PPA_WU05B17_CORRECTED_DIVDRA_REFERENCE.md) under ADR-0005: a single guard correction retains the existing infiltration integral for positive tiny unsaturated transmissivity. Full original/corrected O0/O2 source execution covers4536 cases per variant/optimization;192 predicted differences restore omitted nodal contributions,4344 controls stay byte-exact, and1296 original initial tiny-scalar early returns remain. Corrected nodal/scalar residual is at most4.17e-17 cm/day. Original reference and production source remain unchanged. This is bounded reference-component admission, with no global B1 promotion or runtime redistribution claim. Aggregate frost migration remains open.
+
+## Typed frost and DIVDRA scientific component
+
+PR #1067 at `a9a35a60409a16ef7fdf3a38d5bcffb6899c2416` admits [B18 typed single-level signed frost/DIVDRA component](../audits/PPA_WU05B18_TYPED_FROST_DIVDRA.md) only:3240 actual corrected-source parity cases,1296 original tiny-scalar unavailable cases,32 invalid-domain guards and2 actual geometry seam comparisons pass at O0/O2. Existing positive-only process/binding smoke programs remain exact and every376 prior production blob is unchanged. No backend/forcing/solver/restart/application interface is modified, and no runtime hard-mass admission follows. Aggregate frost migration remains open.
+
+## Independent MICRO table component (2026-10-06)
+
+PR #1069, merge `efaeffcc36205f54ed3990b2efaf99ac908e5c0d`, admits an unused typed matric-flux/conductivity
+table with a corrected explicit -20000 cm dry endpoint. The exact source
+bracket defect, patched-source comparison and independent terminal integral
+are qualified at O0/O2. No existing uptake runtime changes. Full MICRO
+nonlinear uptake, provider, sink and restart remain open. See the
+[component closeout](../audits/PPA_MICRO01_CANONICAL_CLOSEOUT.md).
+
+## Bounded single-level signed frost/DIVDRA runtime
+
+PR #1078, merge `811ad186fa8f06386c73baa6abd8e19307cc8dc5`, admits the
+default-OFF B19 signed frost/DIVDRA runtime on rootless ordinary Reference,
+prescribed constant bottom mode2, normal and guarded low-air routes and separate
+infiltration. The [canonical closeout](../audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md)
+records all eleven inherited complete gates, 56 fresh O0/O2 runtime receipts,
+32 original normal and 48 original low-air preservation executions, negative
+falsification checks and successful source-bound controlling CI. Actual and
+CI-tested merge trees match exactly; qualified production source is unchanged.
+Immutable trial-start generation, existing nodal/bottom ownership and one mass
+ledger remain. Retained negative evidence and separately routed inherited CI
+failures are not relabelled as passes. No phase-change, excluded hybrid,
+full-winter or practical performance claim follows. Aggregate frost migration
+and the frozen Status A denominator remain unchanged.

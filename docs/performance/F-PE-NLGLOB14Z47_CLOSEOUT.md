@@ -56,6 +56,16 @@ Merge only if:
 - live canonical remains compatible;
 - required repository checks are green.
 
+## Current-canonical admission reconciliation
+
+On 2026-10-11 the exact Z47 production postimage was recomposed on
+`integration/f-ci-canonical@e3b9685470639355e1899b95c25f9a7ddee15fe6`.
+The original and current canonical production preimage is the same blob,
+`27c710e61706a585c359811bee04b60cb14ffec4`. Admission therefore carries no
+unreviewed production reconciliation delta. The owner runner now requires O0/O2
+execution and byte-stable output, and moving F-CI exact-pins the Z47 production
+postimage before invoking that runner.
+
 ## Recovery point
 
 WORK UNIT: F-PE-NLGLOB14Z47

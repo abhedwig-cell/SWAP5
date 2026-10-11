@@ -1,0 +1,17 @@
+name: PPA WU05 C3A E2E02 post-PERF02
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/performance/benchmark_bartholomeus_e2e.f90'
+      - 'tests/performance/run_bartholomeus_e2e.py'
+  workflow_dispatch:
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Accepted application ON OFF runtime
+        env:
+          C3A_OPTS: O3
+        run: python3 tests/performance/run_bartholomeus_e2e.py

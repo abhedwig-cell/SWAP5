@@ -14,6 +14,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !                          and conductivities for next time step
 ! ----------------------------------------------------------------------
    ! input
+   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
@@ -24,7 +25,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
         SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
-        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY, evaluate_resistive_bottom_boundary
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -67,13 +68,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+   type(soil_water_boundary_conditions_t) :: evaluated_boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
    type(soil_water_physical_config_t), intent(in), optional :: physical_config
    real(8), intent(in), optional :: explicit_step_duration
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
+   logical :: typed_bottom_invalid, typed_bottom_ok
+   real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
+   logical :: provider_macropore_active, provider_macropore_rate_active, provider_macropore_derivative_available
+   logical :: provider_macropore_partition_evaluated
+   real(8) :: provider_macropore_surface_area_fraction
    logical :: provider_tuple_valid, provider_tuple_from_candidate
    logical :: provider_point_conductivity_supported, provider_point_conductivity_available
 !  local
@@ -83,9 +90,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
-   real(8)                          :: CritDevBalCp, CritDevBalTot
+   real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
+   real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
@@ -105,6 +113,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !---------------------------------------------------------------------
 
    legacy_state_binding = .not. present(state_binding)
+   typed_bottom_invalid=.false.
+   typed_bottom_conductance=0.0d0
+   if (legacy_state_binding) then
+      lysimeter_plate_head=hplate
+   else
+      lysimeter_plate_head=0.0d0
+   end if
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
@@ -137,25 +152,52 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
-   swmacro = legacy_swmacro
-   swbotb = legacy_swbotb
-   dt = legacy_dt
-   swkimpl = legacy_swkimpl
-   swkmean = legacy_swkmean
-   maxit = legacy_maxit
-   maxbacktr = legacy_maxbacktr
-   dtmin = legacy_dtmin
-   critdevh2cp = legacy_critdevh2cp
-   critdevh1cp = legacy_critdevh1cp
-   critdevponddt = legacy_critdevponddt
-   CritDevBalCp = legacy_CritDevBalCp
-   CritDevBalTot = legacy_CritDevBalTot
+   swmacro = 0
+   if (legacy_state_binding) swmacro = legacy_swmacro
+   swbotb = 0
+   if (legacy_state_binding) swbotb = legacy_swbotb
+   dt = 0.0d0
+   if (legacy_state_binding) dt = legacy_dt
+   swkimpl = 0
+   if (legacy_state_binding) swkimpl = legacy_swkimpl
+   swkmean = 0
+   if (legacy_state_binding) swkmean = legacy_swkmean
+   maxit = 0
+   if (legacy_state_binding) maxit = legacy_maxit
+   maxbacktr = 0
+   if (legacy_state_binding) maxbacktr = legacy_maxbacktr
+   dtmin = 0.0d0
+   if (legacy_state_binding) dtmin = legacy_dtmin
+   critdevh2cp = 0.0d0
+   if (legacy_state_binding) critdevh2cp = legacy_critdevh2cp
+   critdevh1cp = 0.0d0
+   if (legacy_state_binding) critdevh1cp = legacy_critdevh1cp
+   critdevponddt = 0.0d0
+   if (legacy_state_binding) critdevponddt = legacy_critdevponddt
+   CritDevBalCp = 0.0d0
+   if (legacy_state_binding) CritDevBalCp = legacy_CritDevBalCp
+   CritDevBalTot = 0.0d0
+   if (legacy_state_binding) CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
-      if (physical_config%macropore_active) error stop 'HeadCalc: active explicit macropore route not admitted'
+      if (physical_config%macropore_active) then
+         if (.not. present(evaluation_context)) error stop 'HeadCalc: explicit macropore route requires evaluation context'
+         if (.not. associated(evaluation_context%macropore)) &
+              error stop 'HeadCalc: explicit macropore route requires macropore provider'
+      end if
+      if (allocated(physical_config%matrix_area_fraction)) then
+         if (size(physical_config%matrix_area_fraction) /= numnod) &
+              error stop 'HeadCalc: explicit matrix-area carrier shape mismatch'
+         if (any(.not. ieee_is_finite(physical_config%matrix_area_fraction)) .or. &
+             any(physical_config%matrix_area_fraction <= 0.0d0) .or. &
+             any(physical_config%matrix_area_fraction > 1.0d0)) &
+              error stop 'HeadCalc: invalid explicit matrix-area carrier'
+      end if
+      ! Explicit/provider macropore physics never activates legacy module-global ownership.
       swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
+      if (swbotb == 8) lysimeter_plate_head=boundary_conditions%bottom_head
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
@@ -173,6 +215,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
    provider_top_active = .false.
    provider_dynamic_top_active = .false.
+   evaluated_boundary_conditions = soil_water_boundary_conditions_t()
+   if (present(boundary_conditions)) evaluated_boundary_conditions = boundary_conditions
+   provider_macropore_partition_evaluated = .false.
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
@@ -181,10 +226,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_point_conductivity_available = .false.
    provider_source_sink_active = .false.
    provider_root_sink_active = .false.
+   provider_macropore_active = .false.
+   provider_macropore_rate_active = .false.
+   provider_macropore_derivative_available = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
       provider_constitutive_active = associated(evaluation_context%constitutive)
       provider_source_sink_active = associated(evaluation_context%source_sink)
       provider_root_sink_active = associated(evaluation_context%root_sink)
+      provider_macropore_active = physical_config%macropore_active .and. associated(evaluation_context%macropore)
+      if (physical_config%macropore_active .and. .not. provider_macropore_active) &
+           error stop 'HeadCalc: active explicit macropore route requires provider'
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
       provider_point_conductivity_supported = evaluation_context%constitutive%supports_point_conductivity()
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
@@ -200,6 +251,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
            error stop 'HeadCalc: explicit-flux top mode requires fixed top-boundary provider'
       if (boundary_conditions%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER .and. .not. provider_dynamic_top_active) &
            error stop 'HeadCalc: dynamic top mode requires dynamic top-boundary provider'
+      if (boundary_conditions%matrix_source_area_partition) then
+         if (.not. provider_dynamic_top_active .or. .not. provider_macropore_active) &
+              error stop 'HeadCalc: matrix source partition requires dynamic top and macropore providers'
+      end if
    end if
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
@@ -208,6 +263,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       fsi_ws => local_fsi_workspace
    end if
    call prepare_reference_workspace_for_solve(fsi_ws, numnod)
+   allocate(provider_macropore_exchange(numnod),provider_macropore_dqdh(numnod))
+   provider_macropore_exchange=0.0d0
+   provider_macropore_dqdh=0.0d0
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
@@ -246,7 +304,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          state%theta(1) = watcon(1,state%gwlinp)
          state%kmean(1) = hconduc(1,state%gwlinp,state%theta(1),rfcp(1))
 !        in case of static macropores FrArMtrx < 1
-         if (swmacro == 1) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
+         if (matrix_area_scaling_active()) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
 
          fsi_ws%vertical_flux(1) = q1
          do i = 1, numnod
@@ -262,7 +320,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (SwKimpl == 1) then
             do i = 1, numnod
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1)  state%k(i) = matrix_fraction(i) * state%k(i)
+               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -314,7 +372,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
    end if
    do i = 1, numnod
-      if (swmacro == 1)  state%k(i)     = matrix_fraction(i) * state%k(i)
+      if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
       if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
    end do
    state%kmean(numnod+1) = state%k(numnod)
@@ -334,6 +392,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  calculate vector fsi_ws%residual (first time)
    call vector_F(1)
+   if (typed_bottom_invalid) then
+      state%fldecdt=.true.
+      ctx%control%request_dt_reduction=.true.
+      return
+   end if
 
 !  initial estimate of fsi_ws%residual inner product
    sumold = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
@@ -385,7 +448,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (SwKimpl == 1) then
          do i = 1, NN
             fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
-            if (swmacro == 1) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
+            if (matrix_area_scaling_active()) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
             fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
@@ -491,7 +554,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             call Rootextraction(2)
             do i = 1, NN
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1) state%k(i) = matrix_fraction(i) * state%k(i)
+               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -501,6 +564,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        re-calculate fsi_ws%residual-function
          call vector_F(2)
+         if (typed_bottom_invalid) then
+            state%fldecdt=.true.
+            ctx%control%request_dt_reduction=.true.
+            return
+         end if
 
 !        calculate maximum deviation per compartment and new inner product
          sump = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
@@ -521,7 +589,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
-      if (swmacro == 1) then
+      if (macropore_iteration_policy_active()) then
          fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
          fsi_ws%nonconverged_head(1:numnod) = .FALSE.
       end if
@@ -532,19 +600,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (swmacro == 1) fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (swmacro == 1) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -587,7 +655,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       
 
 !     implemented to improve iteration performance in case of macropores
-      if (dt <  0.01d0 .AND. swmacro == 1 .AND. .NOT.flnonconv3) then 
+      if (dt < 0.01d0 .AND. macropore_iteration_policy_active() .AND. .NOT.flnonconv3) then
          flok = .TRUE.
          if (dt > 10.d0*dtmin) then
             do i = 1, nodgwl
@@ -733,10 +801,31 @@ logical function macropore_exchange_retry_available()
    end if
 end function macropore_exchange_retry_available
 
+logical function macropore_iteration_policy_active()
+   if (swmacro == 1) then
+      macropore_iteration_policy_active = .true.
+   else
+      macropore_iteration_policy_active = provider_macropore_active .and. present(physical_config) .and. &
+           allocated(physical_config%matrix_area_fraction)
+      if(provider_macropore_active) macropore_iteration_policy_active = &
+           macropore_iteration_policy_active .and. evaluation_context%macropore%permits_source_freezing()
+   end if
+end function macropore_iteration_policy_active
+
+logical function matrix_area_scaling_active()
+   if (legacy_state_binding) then
+      matrix_area_scaling_active = swmacro == 1
+   else
+      matrix_area_scaling_active = present(physical_config) .and. allocated(physical_config%matrix_area_fraction)
+   end if
+end function matrix_area_scaling_active
+
 real(8) function matrix_fraction(node)
    integer, intent(in) :: node
    if (legacy_state_binding .or. swmacro == 1) then
       matrix_fraction = legacy_frarmtrx(node)
+   else if (present(physical_config) .and. allocated(physical_config%matrix_area_fraction)) then
+      matrix_fraction = physical_config%matrix_area_fraction(node)
    else
       matrix_fraction = 1.0d0
    end if
@@ -861,10 +950,26 @@ subroutine boundtop_state_bridge(task)
    real(8) :: provider_runoff_flux
    provider_runoff_resolved = .false.
    if (provider_dynamic_top_active) then
+      if (evaluated_boundary_conditions%matrix_source_area_partition .or. &
+          associated(evaluation_context%macropore)) then
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
+         if (.not.ieee_is_finite(provider_macropore_surface_area_fraction) .or. &
+             provider_macropore_surface_area_fraction<0.0d0 .or. provider_macropore_surface_area_fraction>1.0d0) &
+              error stop 'HeadCalc: candidate macropore surface-area fraction unavailable'
+         evaluated_boundary_conditions%macropore_surface_area_fraction=provider_macropore_surface_area_fraction
+         provider_macropore_partition_evaluated=.true.
+      end if
       call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
-           boundary_conditions, provider_dynamic_top_result)
+           evaluated_boundary_conditions, provider_dynamic_top_result)
       if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
            error stop 'HeadCalc: dynamic top-boundary provider unavailable'
+      if (associated(evaluation_context%macropore)) then
+         call evaluation_context%macropore%set_candidate_pond_lateral( &
+              provider_dynamic_top_result%macropore_pond_requested_lateral_cm)
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
+      end if
       if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
            error stop 'HeadCalc: dynamic top-boundary provider omitted surface mass terms'
       if (.not. provider_dynamic_top_result%runoff_resolved) &
@@ -962,13 +1067,22 @@ subroutine vector_F(iTask)
 !  functions
    real(8)                    :: afgen
 
+   if (provider_constitutive_active .and. matrix_area_scaling_active()) then
+      call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
+           state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
+   else
+      fsi_ws%provider_water_content_increment(1:numnod) = state%theta(1:numnod)-state%thetm1(1:numnod)
+   end if
+
 !  top layer
-   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * matrix_fraction(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+   fsi_ws%residual(1) = fsi_ws%provider_water_content_increment(1) * matrix_fraction(1) * grid_dz(1) / dt + &
+        fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
 
 !  depending on iTask
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
 
 !  take care of top BC
+   provider_macropore_partition_evaluated = .false.
    call boundtop_state_bridge(2)
 
 !  depending on iTask
@@ -978,6 +1092,15 @@ subroutine vector_F(iTask)
       else
          QMpLatSs = QMpLatSsSav
       end if
+   end if
+   if (provider_macropore_active) then
+      if (.not. provider_macropore_partition_evaluated .and. .not. fsi_ws%unsaturated_flags(3)) then
+         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
+              provider_macropore_exchange,provider_macropore_rate_active)
+      end if
+   else
+      provider_macropore_rate_active=.false.
+      provider_macropore_exchange=0.0d0
    end if
 
 !  take care of top BC: ponding, runoff
@@ -995,7 +1118,7 @@ subroutine vector_F(iTask)
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
+      fsi_ws%residual(i) = fsi_ws%provider_water_content_increment(i) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
    end do
 
 !  for bottom BC
@@ -1010,8 +1133,8 @@ subroutine vector_F(iTask)
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
       if (swbotb == 8) then
-         if (state%h(NN) > Critdz - grid_disnod(NN+1) + hplate) then
-            fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
+            fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
             flboth = .TRUE.
          else
             flboth = .FALSE.
@@ -1021,7 +1144,7 @@ subroutine vector_F(iTask)
       end if
    else
       if (swbotb == 8 .AND. flboth) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
+         fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
       end if
    end if
 
@@ -1030,12 +1153,20 @@ subroutine vector_F(iTask)
       state%theta(NN) = watcon(NN,state%h(NN))
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
       ! in case of static macropores FrArMtrx < 1
-      if (swmacro == 1) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+      if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
+      fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
-      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
-      if (swbotb == 3 .AND. swbotb3Impl == 1) then
+      fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
+      if (swbotb == 3 .and. .not. legacy_state_binding) then
+         call evaluate_resistive_bottom_boundary(boundary_conditions,state%h(NN),grid_z(NN), &
+              grid_disnod(NN+1),state%kmean(NN+1),state%qbot,typed_bottom_conductance,typed_bottom_ok)
+         if (.not. typed_bottom_ok) then
+            typed_bottom_invalid=.true.
+            return
+         end if
+         fsi_ws%residual(NN)=fsi_ws%residual(NN)-state%qbot
+      else if (swbotb == 3 .AND. swbotb3Impl == 1) then
          
          ! Cauchy-relation, implemented as head boundary
          if (SwBotb3ResVert == 0) then
@@ -1067,20 +1198,21 @@ subroutine vector_F(iTask)
          else
             state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
          end if
-         if (swmacro == 1) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
+         if (matrix_area_scaling_active()) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
-      else if (swbotb == 8) then                                  
-         
-         ! lysimeter option
+      else if (swbotb == 8) then
+
+         ! lysimeter option; flboth was selected once from solve-entry state
          if (flboth) then
-            state%hbot = hplate
-            fsi_ws%residual(NN) = fsi_ws%residual(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            state%hbot = lysimeter_plate_head
+            state%qbot = -state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
+            fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
          else
             state%qbot = 0.0d0
          end if
-      
+
       else
          
           ! flux bottom boundary
@@ -1091,6 +1223,8 @@ subroutine vector_F(iTask)
    end if
 
    if (swmacro == 1) fsi_ws%residual(1:NN) = fsi_ws%residual(1:NN) - QExcMpMtx(1:NN)
+   if (provider_macropore_rate_active) &
+        fsi_ws%residual(1:NN)=fsi_ws%residual(1:NN)-provider_macropore_exchange(1:NN)
 
 end subroutine vector_F
 
@@ -1122,6 +1256,8 @@ subroutine jacobian_F()
    fsi_ws%dfdh_main(NN) = state%dimoca(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
+   else if (swbotb == 3 .and. .not. legacy_state_binding) then
+      fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+typed_bottom_conductance
    else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy
       if (SwBotb3ResVert == 0) then
          fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / (grid_disnod(NN+1)/state%kmean(NN+1) + rimlay)   
@@ -1162,6 +1298,15 @@ subroutine jacobian_F()
    if (swmacro == 1 .AND. .NOT.fsi_ws%unsaturated_flags(3)) then
       call MACROPORE(3)
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
+   end if
+   if (provider_macropore_active .and. .not. fsi_ws%unsaturated_flags(3)) then
+      call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
+           state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
+           provider_macropore_rate_active)
+      if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
+           error stop 'HeadCalc: active macropore derivative unavailable'
+      if (provider_macropore_rate_active) &
+           fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
    end if
 
 end subroutine jacobian_F

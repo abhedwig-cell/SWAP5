@@ -1,0 +1,55 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "LOCAL_QUALIFIED_NOT_ADMITTED",
+  "tested_commit": "d19327ca985e54891f94bf95cfbe02cd7f335020",
+  "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "qualified": true,
+  "admitted": false,
+  "runtime_admitted": false,
+  "remote_persisted": false,
+  "runtime_maxima": {
+    "mass_residual_cm": 6.3570282206809126e-15,
+    "fine_head_error_cm": 2.125502e-08,
+    "fine_temperature_error_c": 3.074508e-05
+  },
+  "gates": {
+    "signed_runtime": {
+      "passed": true
+    },
+    "normal_full_module_preservation": {
+      "passed": true
+    },
+    "low_air_full_module_preservation": {
+      "passed": true
+    },
+    "component": {
+      "passed": true
+    },
+    "literal_root": {
+      "passed": true
+    },
+    "extended_science": {
+      "passed": true
+    },
+    "analytic_science": {
+      "passed": true
+    },
+    "adjacent": {
+      "passed": true
+    },
+    "moving_canonical": {
+      "passed": true
+    },
+    "docs": {
+      "passed": true
+    },
+    "mkdocs": {
+      "passed": true
+    }
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_LOCAL_REPLAY.json.gz",
+    "sha256": "d74b5df08b04bb7f720d49921e233bc0975105e0fbcb8fbb510afd7f3c4dcfb6",
+    "bytes": 456879
+  }
+}

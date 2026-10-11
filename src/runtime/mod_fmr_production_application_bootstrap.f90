@@ -1,18 +1,27 @@
 module mod_fmr_production_application_bootstrap
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_fmr_micro_mvg_table_binding, only: fmr_micro_horizon_map_valid
+  use mod_fmr_serialized_reference_backend, only: fmr_frost_response_drainage_configuration_valid, &
+       fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
+  use mod_root_uptake_compensation, only: ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM
   use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
        FMR_BACKEND_SERIALIZED_REFERENCE, FMR_EXECUTION_EASY, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
        FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_new_b110_committed_state, &
        fmr_new_b110_temporal_indicator_committed_state, fmr_new_b110_black_evaporation_committed_state, &
-       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg
+       fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg, &
+       fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_matches_trial, fmr_mobile_dispersion_matches_hydraulic_owner
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
@@ -59,6 +68,10 @@ module mod_fmr_production_application_bootstrap
   ! PPA-WU02-A additionally admits homogeneous typed bottom_mode=2 prescribed-qbot applications.
   ! WU03 may supply already-resolved effective forcing without changing lower-boundary ownership.
   type, public :: fmr_production_application_tile_config_t
+    logical :: ordinary_prescribed_head = .false.
+    logical :: ordinary_implicit_cauchy = .false.
+    logical :: ordinary_explicit_cauchy = .false.
+    logical :: ordinary_lysimeter_plate = .false.
     integer(int64) :: tile_id = 0_int64
     integer(int64) :: ledger_id = 0_int64
     integer :: execution_class = FMR_EXECUTION_EASY
@@ -69,12 +82,14 @@ module mod_fmr_production_application_bootstrap
     real(real64) :: initial_black_ldwet = 0.0_real64
     real(real64) :: initial_boesten_spev = 0.0_real64
     real(real64) :: initial_boesten_saev = 0.0_real64
+    real(real64) :: initial_rutter_canopy_storage_cm = 0.0_real64
     type(groundwater_head_datum_t) :: groundwater_datum
     real(real64), allocatable :: initial_right_derivative(:)
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
     real(real64) :: initial_time = 0.0_real64
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
     integer :: groundwater_parallel_workers = 1
     type(fmr_production_application_tile_config_t), allocatable :: tiles(:)
@@ -83,7 +98,11 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
+    logical :: ordinary_head_application = .false.
+    logical :: ordinary_cauchy_application = .false.
+    logical :: ordinary_lysimeter_application = .false.
     logical :: direct_retention_owner_active = .false.
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
     type(fmr_logical_column_t), allocatable :: columns(:)
     type(fmr_template_t), allocatable :: templates(:)
@@ -124,8 +143,8 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
-    logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile
-    logical :: direct_retention_requested
+    logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
+    logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
     type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
@@ -139,6 +158,10 @@ contains
     if (config%groundwater_parallel_workers /= 1 .and. config%groundwater_parallel_workers /= 2 .and. &
         config%groundwater_parallel_workers /= 4) return
 
+    ordinary_head_profile = .true.
+    ordinary_cauchy_profile = .true.
+    ordinary_explicit_cauchy_profile = .true.
+    ordinary_lysimeter_profile = .true.
     groundwater_profile = .true.
     standalone_profile = .true.
     prescribed_qbot_profile = .true.
@@ -148,13 +171,54 @@ contains
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
-      groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5
+      if (allocated(config%tiles(i)%parameters%micro_de_willigen)) then
+        if (config%numerical%transaction%temporal_mode /= TX_TEMPORAL_MODEL_CERTIFICATE .or. &
+            config%tiles(i)%template%numerical_continuation_layout_id /= &
+            FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end if
+      if(allocated(config%tiles(i)%parameters%mobile_dispersion))then
+        if(.not.config%base_salt_temporal_policy%transport%valid())then
+          status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end if
+      if (config%tiles(i)%template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+        if (.not. config%base_salt_temporal_policy%valid() .or. &
+            config%numerical%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+            .not. ieee_is_finite(config%numerical%transaction%temporal_tolerance)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (config%numerical%transaction%temporal_tolerance /= 1.0_real64) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (.not. fmr_c_drain_salt_matches_trial(config%tiles(i)%base_forcing%c_drain_salt, &
+            int(i,int64),config%initial_time,config%tiles(i)%base_forcing%c_drain_salt%valid_t1) .or. &
+            .not. fmr_soil_salt_boundary_matches_trial(config%tiles(i)%base_forcing%soil_salt_boundary, &
+            int(i,int64),config%initial_time,config%tiles(i)%base_forcing%soil_salt_boundary%valid_t1)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      end if
+      groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5 .and. &
+           .not. config%tiles(i)%ordinary_prescribed_head .and. .not. config%tiles(i)%ordinary_implicit_cauchy .and. &
+           .not. config%tiles(i)%ordinary_explicit_cauchy .and. .not. config%tiles(i)%ordinary_lysimeter_plate
+      ordinary_head_profile = ordinary_head_profile .and. config%tiles(i)%ordinary_prescribed_head
+      ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
+      ordinary_explicit_cauchy_profile = ordinary_explicit_cauchy_profile .and. config%tiles(i)%ordinary_explicit_cauchy
+      ordinary_lysimeter_profile = ordinary_lysimeter_profile .and. config%tiles(i)%ordinary_lysimeter_plate
       standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
     end do
     if (.not. int64_values_unique(config%tiles%tile_id)) return
-    if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile) then
+    if (.not. groundwater_profile .and. .not. standalone_profile .and. .not. prescribed_qbot_profile .and. &
+         .not. ordinary_head_profile .and. .not. ordinary_cauchy_profile .and. .not. ordinary_explicit_cauchy_profile .and. &
+         .not. ordinary_lysimeter_profile) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
@@ -204,9 +268,21 @@ contains
     allocate(self%columns(n), self%templates(n))
     allocate(self%parameters(n), self%base_forcing(n), self%committed(n))
     allocate(self%backend, self%top_boundary)
+    self%ordinary_head_application = ordinary_head_profile
+    self%ordinary_cauchy_application = ordinary_cauchy_profile .or. ordinary_explicit_cauchy_profile
+    self%ordinary_lysimeter_application = ordinary_lysimeter_profile
     self%numerical = config%numerical
+    self%base_salt_temporal_policy = config%base_salt_temporal_policy
 
     call self%backend%initialize(self%top_boundary)
+    if (config%base_salt_temporal_policy%enabled) then
+      call self%backend%configure_base_salt_temporal_policy(config%base_salt_temporal_policy,ok)
+      if (.not. ok) then
+        status = FMR_APP_BOOT_INVALID_CONFIG
+        call discard_owner_storage(self)
+        return
+      end if
+    end if
     self%groundwater_parallel_workers = config%groundwater_parallel_workers
 
     if (groundwater_profile .and. self%groundwater_parallel_workers > 1) then
@@ -257,6 +333,10 @@ contains
           initial_boesten_state%saev = config%tiles(i)%initial_boesten_saev
           call fmr_new_b110_boesten_evaporation_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, initial_boesten_state, config%initial_time, ok)
+        else if (self%templates(i)%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+          call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+               config%tiles(i)%initial_state, config%initial_time, ok, &
+               initial_rutter_storage_cm=config%tiles(i)%initial_rutter_canopy_storage_cm)
         else
           call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
                config%tiles(i)%initial_state, config%initial_time, ok)
@@ -387,7 +467,7 @@ contains
 
     type(fmr_column_diagnostics_t), allocatable :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t) :: aggregate
-    integer :: dispatch_status
+    integer :: dispatch_status, i
 
     if (allocated(results)) deallocate(results)
     status = FMR_APP_BOOT_NOT_READY
@@ -405,18 +485,64 @@ contains
       return
     end if
 
+    do i = 1, size(effective_forcing)
+      if (self%ordinary_head_application) then
+        if (.not. allocated(effective_forcing(i)%legacy_swbotb5_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (.not. effective_forcing(i)%legacy_swbotb5_control%ready()) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (self%ordinary_cauchy_application) then
+        if (.not. allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+        if (.not. effective_forcing(i)%legacy_swbotb3_implicit_control%ready()) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb5_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (self%ordinary_lysimeter_application) then
+        if (.not. ieee_is_finite(effective_forcing(i)%bottom_head) .or. effective_forcing(i)%bottom_flux /= 0.0_real64) then
+          status = FMR_APP_BOOT_INVALID_CONFIG
+          return
+        end if
+        if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
+            allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+          status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+          return
+        end if
+      else if (allocated(effective_forcing(i)%legacy_swbotb5_control) .or. &
+               allocated(effective_forcing(i)%legacy_swbotb3_implicit_control)) then
+        status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+    end do
+
     if (self%execution_plan%ready()) then
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, execution_plan=self%execution_plan, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+           base_salt_temporal_policy=self%base_salt_temporal_policy)
     else
       call fmr_run_serialized_physical_multiswap(self%columns, self%templates, self%parameters, effective_forcing, &
            self%committed, self%numerical, self%top_boundary, t0, t1, size(self%columns), results, diagnostics, &
            aggregate, dispatch_status, materialize_worker_assignments=.false., &
            materialize_summary_diagnostics=.false., materialize_diagnostic_metadata=.false., &
-           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true.)
+           materialize_column_diagnostics=.false., trusted_prepared_parameters=.true., &
+           base_salt_temporal_policy=self%base_salt_temporal_policy)
     end if
 
     status = FMR_APP_BOOT_RUNTIME_FAILED
@@ -714,23 +840,162 @@ contains
     if (tile%template%template_id <= 0_int64) return
     if (tile%template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
     if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE .and. &
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .and. &
         tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .and. &
-        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) return
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .and. &
+        tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
     if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
         tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
-        tile%parameters%bottom_mode /= 2) return
+        tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8) return
+    if (allocated(tile%parameters%micro_de_willigen)) then
+      if (allocated(tile%parameters%micro_horizon_first_node)) then
+        if (.not. fmr_micro_horizon_map_valid(tile%parameters%micro_horizon_first_node, &
+            tile%parameters%active_nodes)) return
+      end if
+      if (.not. tile%parameters%root_extraction_active) return
+      if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
+      if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF .or. tile%parameters%root_salinity_active .or. &
+          tile%parameters%root_frost%active .or. allocated(tile%parameters%bartholomeus)) return
+      if (tile%parameters%micro_de_willigen%oxygen_mode /= 0) return
+      if (tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active .or. &
+          tile%parameters%ksatexm_extension_active .or. tile%parameters%frost_active .or. &
+          tile%parameters%soil_temperature_active .or. tile%parameters%snow_active .or. &
+          tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+      if (.not. allocated(tile%base_forcing%micro_root_length_density)) return
+      if (tile%base_forcing%micro_rooted_nodes < 0 .or. &
+          tile%base_forcing%micro_rooted_nodes > tile%parameters%active_nodes) return
+      if (size(tile%base_forcing%micro_root_length_density) /= tile%parameters%active_nodes) return
+      if (any(.not. ieee_is_finite(tile%base_forcing%micro_root_length_density))) return
+      if (any(tile%base_forcing%micro_root_length_density < 0.0_real64)) return
+      if (.not. allocated(tile%base_forcing%root_extraction_sink)) return
+      if (any(tile%base_forcing%root_extraction_sink /= 0.0_real64)) return
+    else
+      if (allocated(tile%parameters%micro_horizon_first_node)) return
+      if (allocated(tile%base_forcing%micro_root_length_density) .or. &
+          tile%base_forcing%micro_rooted_nodes /= 0) return
+    end if
+
+    select case (tile%template%solute_state_layout_id)
+    case (FMR_SOLUTE_STATE_LAYOUT_NONE)
+      if (allocated(tile%initial_state%salt) .or. tile%parameters%root_salinity_active.or. &
+          allocated(tile%parameters%mobile_dispersion)) return
+    case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+      if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) return
+      if (tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 7) return
+      if (tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+      if (tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if(allocated(tile%parameters%mobile_dispersion))then
+        if(.not.fmr_mobile_dispersion_matches_hydraulic_owner(tile%parameters))return
+      end if
+      if (.not. allocated(tile%initial_state%salt)) return
+      if (.not. tile%initial_state%salt%ready(tile%parameters%active_nodes)) return
+      if (.not. allocated(tile%base_forcing%c_drain_salt) .or. &
+          .not. allocated(tile%base_forcing%soil_salt_boundary)) return
+    case default
+      return
+    end select
 
     ! WU01 established the no-new-physics production owner. PPA-WU02-A only
     ! widens normal application reachability to the already admitted typed
     ! prescribed-qbot mode 2; process composition remains fail-closed here.
     if (tile%parameters%macropore_active .or. tile%parameters%snow_active .or. &
         tile%parameters%hysteresis_active .or. &
-        tile%parameters%frost_active .or. tile%parameters%soil_temperature_active .or. &
-        tile%parameters%drainage_response_active .or. tile%parameters%root_extraction_active .or. &
+        (tile%parameters%frost_active.and..not.tile%parameters%root_frost%active.and..not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) .or. &
+        (tile%parameters%drainage_response_active.and..not.tile%parameters%frost_response_drainage_active) .or. &
         tile%parameters%tabulated_hydraulics_active) return
+    ! The original bare-soil admission remains exact when the new carrier is
+    ! absent. Only the source-bound standalone root/thermal slice is widened.
+    if(allocated(tile%parameters%bartholomeus)) then
+      if(tile%parameters%bottom_mode/=2 .and. tile%parameters%bottom_mode/=7) return
+      if(.not.tile%parameters%root_extraction_active) return
+      if(tile%parameters%elasticity_active .or. tile%parameters%direct_retention_active) return
+      if(tile%parameters%black_evaporation_active .or. tile%parameters%boesten_evaporation_active) return
+    else
+      if(tile%parameters%soil_temperature_active.and..not.tile%parameters%root_frost%active.and. &
+           .not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) return
+      if(tile%parameters%root_extraction_active) then
+        if (allocated(tile%parameters%micro_de_willigen)) then
+          if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+        else if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+          if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
+        else
+          if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM.and. &
+             .not.tile%parameters%root_frost%active) return
+        end if
+        if(tile%parameters%bottom_mode/=2.and.tile%parameters%bottom_mode/=7) return
+        if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active) return
+        if(tile%parameters%black_evaporation_active.or.tile%parameters%boesten_evaporation_active) return
+      end if
+      if(allocated(tile%base_forcing%crop_oxygen)) return
+    end if
+
+    if(.not.fmr_frost_response_drainage_configuration_valid(tile%parameters))return
+    if(.not.fmr_frost_divdra_configuration_valid(tile%parameters))return
+    if(.not.fmr_frost_divdra_forcing_valid(tile%parameters%frost_divdra_active,tile%base_forcing))return
+    if(tile%parameters%frost_low_air_drainage%active)then
+      if(.not.tile%parameters%frost_low_air_drainage%valid().or..not.tile%parameters%frost_drainage%active)return
+      if(tile%parameters%frost_low_air_response_drainage_active)then
+        if(.not.allocated(tile%parameters%drainage_response_levels))return
+        if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
+             size(tile%parameters%drainage_response_levels))return
+      else
+        if(.not.allocated(tile%base_forcing%drainage_flux_by_level))return
+        if(size(tile%parameters%frost_low_air_drainage%drain_depth_cm)/= &
+             size(tile%base_forcing%drainage_flux_by_level,1))return
+      end if
+    end if
+    if(tile%parameters%frost_drainage%active)then
+      if(.not.tile%parameters%frost_drainage%valid())return
+      if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
+      if(tile%parameters%frost_bottom%active.or.tile%parameters%root_extraction_active.or. &
+           tile%parameters%root_frost%active.or. &
+           (tile%parameters%drainage_response_active.and..not.tile%parameters%frost_response_drainage_active))return
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt))return
+      if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen))return
+      if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active)return
+      if(tile%parameters%bottom_mode/=2)return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+    end if
+    if(tile%parameters%frost_bottom%active)then
+      if(.not.tile%parameters%frost_bottom%valid())return
+      if(.not.tile%parameters%frost_active.or..not.tile%parameters%soil_temperature_active)return
+      if(tile%parameters%root_extraction_active.neqv.tile%parameters%root_frost%active)return
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt))return
+      if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen))return
+      if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active)return
+      if(tile%parameters%bottom_mode/=2)return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+    end if
+
+    if(tile%parameters%root_frost%active) then
+      if(tile%parameters%root_salinity_active.or.allocated(tile%initial_state%salt)) then
+        if(.not.tile%parameters%root_salinity_active.or..not.allocated(tile%initial_state%salt)) return
+        if(tile%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) return
+        if(tile%parameters%frost_bottom%active.or.tile%parameters%frost_drainage%active) return
+        if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+             tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+      end if
+      if(.not.tile%parameters%frost_active.or..not.tile%parameters%root_extraction_active.or. &
+           .not.tile%parameters%soil_temperature_active) return
+      if(tile%parameters%bottom_mode/=2) return
+      if(.not.tile%parameters%frost_bottom%active.and.tile%base_forcing%bottom_flux/=0.0_real64) return
+      if(allocated(tile%parameters%bartholomeus).or.allocated(tile%base_forcing%crop_oxygen)) return
+      if(tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE) return
+      if(tile%parameters%root_frost%rooted_nodes<0.or. &
+           tile%parameters%root_frost%rooted_nodes>tile%parameters%active_nodes) return
+      if(.not.ieee_is_finite(tile%parameters%root_frost_head_budget_cm).or. &
+           .not.ieee_is_finite(tile%parameters%root_frost_temperature_budget_c)) return
+      if(tile%parameters%root_frost_head_budget_cm<=0.0_real64.or. &
+           tile%parameters%root_frost_temperature_budget_c<=0.0_real64) return
+      if(tile%parameters%root_compensation%method/=ROOT_COMP_OFF.and. &
+           tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
+           tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM) return
+    end if
 
     if (tile%parameters%black_evaporation_active) then
       if (tile%parameters%boesten_evaporation_active) return
@@ -754,10 +1019,24 @@ contains
       if (tile%initial_black_ldwet /= 0.0_real64) return
       if (tile%parameters%bottom_mode == 5) return
     else
-      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if(tile%parameters%soil_temperature_active) then
+        if(tile%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE) return
+      else if(tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+        if (allocated(tile%parameters%bartholomeus) .or. &
+            tile%parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
+            tile%template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+      else
+        if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      end if
       if (allocated(tile%parameters%black_evaporation) .or. allocated(tile%parameters%boesten_evaporation)) return
       if (tile%initial_black_ldwet /= 0.0_real64 .or. tile%initial_boesten_spev /= 0.0_real64 .or. &
           tile%initial_boesten_saev /= 0.0_real64) return
+    end if
+    if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
+      if (.not. ieee_is_finite(tile%initial_rutter_canopy_storage_cm) .or. &
+          tile%initial_rutter_canopy_storage_cm < 0.0_real64) return
+    else if (tile%initial_rutter_canopy_storage_cm /= 0.0_real64) then
+      return
     end if
 
     if (.not. allocated(tile%parameters%z) .or. .not. allocated(tile%parameters%dz) .or. &
@@ -779,7 +1058,76 @@ contains
     if (.not. allocated(tile%initial_state%pressure_head) .or. .not. allocated(tile%initial_state%water_content)) return
     if (size(tile%initial_state%pressure_head) /= tile%parameters%active_nodes .or. &
         size(tile%initial_state%water_content) /= tile%parameters%active_nodes) return
-    if (tile%parameters%bottom_mode == 5) then
+    if (tile%ordinary_prescribed_head .and. (tile%ordinary_implicit_cauchy .or. tile%ordinary_explicit_cauchy)) return
+    if (tile%ordinary_implicit_cauchy .and. tile%ordinary_explicit_cauchy) return
+    if (tile%ordinary_lysimeter_plate .and. (tile%ordinary_prescribed_head .or. tile%ordinary_implicit_cauchy .or. &
+        tile%ordinary_explicit_cauchy)) return
+    if (tile%ordinary_lysimeter_plate) then
+      if (tile%parameters%bottom_mode /= 8 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (.not. ieee_is_finite(tile%base_forcing%bottom_head)) return
+      if (tile%base_forcing%bottom_flux /= 0.0_real64) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_implicit_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
+          tile%parameters%boesten_evaporation_active) return
+      if (tile%parameters%active_nodes > 1) then
+        if (any(tile%parameters%cofgen(:,2:tile%parameters%active_nodes) /= &
+             spread(tile%parameters%cofgen(:,1),2,tile%parameters%active_nodes-1))) return
+      end if
+    end if
+    if (tile%ordinary_prescribed_head) then
+      if (tile%parameters%bottom_mode /= 5) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb5_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb5_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%parameters%direct_retention_active) return
+      if (allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+    else if (tile%ordinary_explicit_cauchy) then
+      if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (.not. tile%parameters%swbotb3_explicit_active .or. .not. tile%parameters%profile_groundwater_projection) return
+      if (.not. ieee_is_finite(tile%parameters%swbotb3_explicit_hdrain_cm) .or. &
+          .not. ieee_is_finite(tile%parameters%swbotb3_explicit_shape_3)) return
+      if (tile%parameters%swbotb3_explicit_shape_3 < 0.0_real64 .or. tile%parameters%swbotb3_explicit_shape_3 > 1.0_real64) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
+          tile%parameters%boesten_evaporation_active) return
+    else if (tile%ordinary_implicit_cauchy) then
+      if (tile%parameters%bottom_mode /= 3 .or. tile%parameters%swkimpl /= 0 .or. tile%parameters%swsophy /= 0) return
+      if (tile%parameters%swbotb3_explicit_active .or. tile%parameters%profile_groundwater_projection) return
+      if (.not. allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (.not. tile%base_forcing%legacy_swbotb3_implicit_control%ready()) return
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb2_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb4_qgwl_control)) return
+      if (tile%ledger_id /= 0_int64 .or. tile%groundwater_datum%available) return
+      if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
+      if (tile%parameters%direct_retention_active .or. tile%parameters%ksatexm_extension_active .or. &
+          tile%parameters%elasticity_active .or. tile%parameters%black_evaporation_active .or. &
+          tile%parameters%boesten_evaporation_active) return
+      if (tile%parameters%active_nodes > 1) then
+        if (any(tile%parameters%cofgen(:,2:tile%parameters%active_nodes) /= &
+             spread(tile%parameters%cofgen(:,1), 2, tile%parameters%active_nodes-1))) return
+      end if
+    else
+      if (allocated(tile%base_forcing%legacy_swbotb5_control) .or. &
+          allocated(tile%base_forcing%legacy_swbotb3_implicit_control)) return
+      if (tile%parameters%swbotb3_explicit_active .or. tile%parameters%profile_groundwater_projection) return
+    end if
+    if (tile%parameters%bottom_mode == 5 .and. .not. tile%ordinary_prescribed_head) then
       if (tile%ledger_id <= 0_int64 .or. .not. tile%groundwater_datum%valid()) return
     end if
     if (allocated(tile%initial_right_derivative)) then
@@ -826,6 +1174,9 @@ contains
       self%direct_retention_owner_active = .false.
     end if
     self%initialized = .false.
+    self%ordinary_head_application = .false.
+    self%ordinary_cauchy_application = .false.
+    self%ordinary_lysimeter_application = .false.
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap

@@ -1,0 +1,25 @@
+{
+  "work_unit": "PPA-WU05B17",
+  "decision": "ADMIT_BOUNDED_CORRECTED_REFERENCE_COMPONENT",
+  "canonical_pr": 1065,
+  "qualified_base": "9906bf429c445f3eb715a949b47460d223294a29",
+  "qualified_head": "3cbafbd5aa23995de223ebd0b2540292f202c085",
+  "accepted_tree": "5814fc71f02fcdb8d9dafe7dbff2b6755ead6961",
+  "production_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "verified_proposed_merge": "8b2e36632a60805acfc407fb0db75e7999c1114c",
+  "actual_first_parent": "9906bf429c445f3eb715a949b47460d223294a29",
+  "canonical_merge": "987715cbf5513a0911bd81403209452d2a99666c",
+  "proposed_and_actual_tree_source_identity": true,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B17_CORRECTED_REFERENCE_REPLAY.json.gz",
+    "sha256": "e497d7b8302e1174e64c68aa1035aa6b811a48f42f591c9f07f13f462166f27a",
+    "bytes": 304971,
+    "manifest_count": 21
+  },
+  "qualification": "integration/audits/PPA_WU05B17_REF_QUALIFICATION.json",
+  "global_B1_snapshot_promoted": false,
+  "runtime_admitted": false,
+  "original_source_unchanged": true,
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Preregister typed single-level frost/SWDIVD1 scientific composition before adding new process interfaces"
+}

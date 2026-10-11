@@ -1,0 +1,24 @@
+name: SW431 crop physical calendar restart qualification
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90
+      - tests/fmig431/patch_crop_physical_calendar_restart_fixture.py
+      - tests/fmig431/run_crop_physical_calendar_restart_coherence.sh
+      - .github/workflows/swap431-crop-physical-restart.yml
+permissions:
+  contents: read
+jobs:
+  accepted-physical-restart-pair:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Current Fortran compiler
+        run: gfortran --version
+      - name: Source-bound paired physical and calendar checkpoint O0/O2
+        run: bash tests/fmig431/run_crop_physical_calendar_restart_coherence.sh

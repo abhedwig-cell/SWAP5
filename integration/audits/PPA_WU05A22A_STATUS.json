@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.ppa_wu05a22a.status.v1",
+  "workunit": "PPA-WU05-A22A",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_TERMINATING_ENDPOINT_RELEASE_OWNER",
+  "baseline": "81b7feda17f53a94ab4e5877467cc4499de6f568",
+  "branch": "work/ppa-wu05-a22a-rfm-endpoint-release",
+  "qualified_postimage": "ac46ed334707cc80f21325f1668787aca33adf4f",
+  "qualification_run": 36871141024,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "alt34_fixed_velocity_required": false,
+  "physics": {
+    "instant_vertical_delivery": true,
+    "philip_darcy_endpoint_release": true,
+    "storage_limited": true,
+    "ell_ex_derived": true
+  },
+  "remaining_blocker": "PPA-WU05-A22B persistent/deep MB fate",
+  "live_runtime_authorized": false
+}

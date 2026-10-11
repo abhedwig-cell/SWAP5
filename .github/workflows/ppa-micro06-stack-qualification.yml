@@ -1,0 +1,60 @@
+name: PPA MICRO06 stacked source and runtime qualification
+on:
+  pull_request:
+    branches: [work/ppa-micro05-literal-mvg-runtime-20261006, integration/f-ci-canonical]
+    paths:
+      - .github/workflows/ppa-micro06-stack-qualification.yml
+      - src/process/mod_root_micro_*.f90
+      - src/runtime/mod_fmr_micro_mvg_table_binding.f90
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - src/runtime/mod_fmr_production_application_bootstrap.f90
+      - tests/physics/*micro*.f90
+      - tests/physics/run_ppa_micro*.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check compiler and source authority
+        run: |
+          gfortran --version
+          sha256sum reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90
+          sha256sum reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90
+      - name: MICRO02 standalone and corrected literal source
+        shell: bash
+        run: |
+          set -euo pipefail
+          MICRO02_RESULT=micro02-smoke.json python3 tests/physics/run_ppa_micro02_de_willigen.py | tee micro02-smoke.log
+          MICRO02_ORACLE_RESULT=micro02-oracle.json python3 tests/physics/run_ppa_micro02_source_oracle.py | tee micro02-oracle.log
+      - name: MICRO04 and MICRO05 horizon and literal MvG source
+        shell: bash
+        run: |
+          set -euo pipefail
+          MICRO04_RESULT=micro04-horizon.json python3 tests/physics/run_ppa_micro04_horizon_binding.py | tee micro04-horizon.log
+          MICRO05_RESULT=micro05-literal.json python3 tests/physics/run_ppa_micro05_literal_mvg.py | tee micro05-literal.log
+      - name: MICRO03 through MICRO06 production trial and preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          MICRO03_RESULT=micro06-runtime.json MICRO03_EVIDENCE_WORK_UNIT=PPA-MICRO06 \
+            python3 tests/physics/run_ppa_micro03_runtime.py | tee micro06-runtime.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-micro06-stack
+          path: |
+            micro02-smoke.json
+            micro02-smoke.log
+            micro02-oracle.json
+            micro02-oracle.log
+            micro04-horizon.json
+            micro04-horizon.log
+            micro05-literal.json
+            micro05-literal.log
+            micro06-runtime.json
+            micro06-runtime.log
+          if-no-files-found: warn

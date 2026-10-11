@@ -102,6 +102,8 @@ MODULE_SRC=(
   src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
   src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

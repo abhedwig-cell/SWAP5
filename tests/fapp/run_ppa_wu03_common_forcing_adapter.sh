@@ -85,6 +85,7 @@ MODULE_SRC=(
   src/process/mod_drainage_ernst_ipos45_response.f90
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
@@ -101,13 +102,15 @@ MODULE_SRC=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -117,6 +120,7 @@ MODULE_SRC=(
   src/solver/mod_rossfast_d3r_soil_water_solver.f90
   src/runtime/mod_fmr_rossfast_solver_selection_binding.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/crop/mod_crop_weather_day_owner.f90
   src/adapter/mod_ppa_wu03_common_forcing_adapter.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_groundwater_coupling_contract.f90
@@ -139,6 +143,8 @@ MODULE_SRC=(
   src/adapter/mod_fmr_groundwater_application_c_api.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
@@ -157,6 +163,7 @@ for opt in 0 2; do
     fail "runtime O$opt"
   }
   grep '^PPA_WU03_' "$OUT/output.txt" > "$OUT/stable.txt"
+  grep -Fq 'PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS' "$OUT/output.txt" || fail "missing continuous two-day accepted weather O$opt"
   grep -Fq 'PPA-WU03 COMMON FORCING OWNER GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
   echo "PPA_WU03_O${opt}=PASS"
 done

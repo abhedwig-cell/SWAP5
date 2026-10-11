@@ -1,0 +1,26 @@
+{
+  "schema": "swap5.ppa_wu05a22b.status.v1",
+  "workunit": "PPA-WU05-A22B",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_MB_WALL_DEEP_FATE",
+  "baseline": "8bfff34e5bf06817f63a571282f70436cd90ede2",
+  "branch": "work/ppa-wu05-a22b-rfm-mb-wall-deep-fate",
+  "qualified_postimage": "8a30765b2f065f4432b340179a010f7a8f0a4fe0",
+  "qualification_run": 36873358399,
+  "negative_run": {
+    "run_id": 36873267169,
+    "classification": "PREREGISTERED_ORACLE_MAGNITUDE_ERROR",
+    "production_physics_falsified": false
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "alt34_mb_release_constant_required": false,
+  "deep_receipt_is_matrix_qbot": false,
+  "a21_fast_domain_fate_blocker": "resolved_with_A22A_and_A22B",
+  "live_runtime_authorized": false,
+  "next": "end-to-end candidate/commit composition and whole-column closure before A20 runtime guard removal"
+}

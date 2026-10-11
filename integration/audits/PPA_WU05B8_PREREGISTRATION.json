@@ -1,0 +1,28 @@
+{
+  "work_unit": "PPA-WU05B8",
+  "baseline": "024c6a5510757a02851426806248b0e2afe45a6b",
+  "status": "PREREGISTERED",
+  "scope": "Rootless ordinary Reference mode2 prescribed signed nodal drainage with explicitly selected bracketed low-air FrozenBounds branch",
+  "reference": "integration/audits/PPA_WU05B7_REF_STATUS.json",
+  "physical_contract": "Retain legacy deepest-index/available-air condition; evaluate only guarded bracketed front geometry from the same immutable trial-start temperature and prescribed thermal surface value. Explicit finite negative physical drain depths. Zero nodal level fluxes above the frozen bottom, retain others; suppress qbot only when remaining drain sum is below1e-6 and frozen bottom below deepest drain. Derive report totals from final nodes as corrected B1. Never move qbot into a second owner. Normal branch delegates to admitted B6.",
+  "interface": "New frost_low_air_drainage physical opt-in/depth vector, requiring existing frost_drainage activation and positive head/temperature budgets. No new persistent state, solver or restart payload. Trial full/half comparisons use same existing temporal contract plus branch/level/bottom cutoff guards.",
+  "gates": [
+    "actual guarded corrected B1 FrozenCond/FrozenBounds O0/O2 factor/depth/signed nodal/bottom/report parity including cancellation/equality/deepest-level cases",
+    "pure geometry invalid bracket/grid/limit failures without FP traps",
+    "actual runtime hard mass1e-12cm, real retries, fresh replay, 2048-step direct trajectory envelope head1e-6cm temperature1e-4C, empty-registry restart and ordinary application",
+    "unchanged committed state after invalid geometry and excluded-option trials",
+    "incumbent B1/B2/B3/B4/B6 source-bound O0/O2 preservation; Jarvis/Walsum salts and complete current canonical preservation",
+    "docs checks and strict build"
+  ],
+  "exclusions": [
+    "uniform/unbracketed full-frozen front interpretation",
+    "last-node index correction",
+    "SWDIVD1 redistribution",
+    "active drainage-response generation",
+    "root/salt/macropore/snow combinations",
+    "joint frost_bottom",
+    "groundwater-owned bottom",
+    "new phase-change physics"
+  ],
+  "aggregate_frost_migration_complete": false
+}

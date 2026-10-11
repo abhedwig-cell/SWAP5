@@ -33,7 +33,8 @@ module mod_fpe_nlglob14z47_test_providers
 
   type, extends(macropore_exchange_provider_t) :: z46_macropore_t
   contains
-    procedure :: evaluate => z46_macropore_evaluate
+    procedure :: evaluate_rate => z46_macropore_evaluate_rate
+    procedure :: evaluate_derivative => z46_macropore_evaluate_derivative
   end type
 
 contains
@@ -91,15 +92,33 @@ contains
         .not. same_type_as(self,self)) result = soil_water_top_boundary_result_t()
   end subroutine z46_dynamic_top_evaluate
 
-  subroutine z46_macropore_evaluate(self, pressure_head, exchange_flux, active)
+  subroutine z46_macropore_evaluate_rate(self, pressure_head, water_content, exchange_flux, active, &
+                                         surface_area_fraction)
     class(z46_macropore_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head(:)
+    real(real64), intent(in) :: pressure_head(:), water_content(:)
     real(real64), intent(out) :: exchange_flux(:)
     logical, intent(out) :: active
+    real(real64), intent(out), optional :: surface_area_fraction
     exchange_flux = 0.0_real64
     active = .true.
-    if (size(pressure_head) < 0 .or. .not. same_type_as(self,self)) active = .false.
-  end subroutine z46_macropore_evaluate
+    if (present(surface_area_fraction)) surface_area_fraction = 0.0_real64
+    if (size(pressure_head) + size(water_content) < 0 .or. .not. same_type_as(self,self)) active = .false.
+  end subroutine z46_macropore_evaluate_rate
+
+  subroutine z46_macropore_evaluate_derivative(self, pressure_head, water_content, capacity, &
+                                                dexchange_dhead, derivative_available, active)
+    class(z46_macropore_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), water_content(:), capacity(:)
+    real(real64), intent(out) :: dexchange_dhead(:)
+    logical, intent(out) :: derivative_available, active
+    dexchange_dhead = 0.0_real64
+    derivative_available = .true.
+    active = .true.
+    if (size(pressure_head) + size(water_content) + size(capacity) < 0 .or. .not. same_type_as(self,self)) then
+      derivative_available = .false.
+      active = .false.
+    end if
+  end subroutine z46_macropore_evaluate_derivative
 
 end module mod_fpe_nlglob14z47_test_providers
 

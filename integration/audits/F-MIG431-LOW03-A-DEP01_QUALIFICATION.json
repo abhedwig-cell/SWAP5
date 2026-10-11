@@ -1,0 +1,32 @@
+{
+  "work_unit": "F-MIG431-LOW03-A-DEP01",
+  "baseline_canonical": "3869ec27a7314375fd7919debb6abe7c6450f261",
+  "qualified_postimage": "850f946095f813626dca1efc3a9bd671b41faad9",
+  "run": 36977170821,
+  "job": 110743398080,
+  "result": "success",
+  "artifact": {
+    "id": 11213119768,
+    "name": "F-MIG431-LOW03-A-DEP01-qualification",
+    "digest": "sha256:2ab45ec884c7db813d08747709c3e57f917d1ca150d145991a66d14088ac6884"
+  },
+  "exact_git_blobs": {
+    "baseline_context_binding": "58fa665b16851448d3901bb9a46cc23c74797d3a",
+    "candidate_context_binding": "71bec11875f7c6232438d82dd029690e373a520b",
+    "qualification_runner": "a81dfd3488f018885ea120f248d45d8c951f838d",
+    "qualification_workflow": "08a5604095cb290915c7d8400f496d45cbe80df7"
+  },
+  "gates": [
+    "Paired current-canonical versus candidate RossFast/shared-binding suite: identical existing outputs at O0/O2",
+    "Focused serialized context carrier: mode3 plus modes 2/internal -2/5/7 PASS at O0/O2",
+    "Unsupported selectors and mode3 SWKIMPL1 remain fail-closed",
+    "Existing RossFast mode3 rejection preserved",
+    "Admitted LOW03-P0 direct typed solver qualification preserved"
+  ],
+  "production_delta": [
+    "src/adapter/mod_b110_serialized_context_binding.f90"
+  ],
+  "semantic_delta": "Add already validated typed bottom_mode=3 to the serialized legacy-context allowed-mode guard.",
+  "claim_ceiling": "Context carrier only; no ordinary mode3 application admission, no explicit mode3, no SWBOTB1 or SWBOTB8 admission.",
+  "canonical_admission": false
+}

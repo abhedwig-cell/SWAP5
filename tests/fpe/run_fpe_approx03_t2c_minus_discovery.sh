@@ -246,6 +246,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 objects=()
 for source in "${MODULE_SRC[@]}"; do
   obj="$BUILD/$(basename "${source%.*}").o"

@@ -107,3 +107,8 @@ A claim should be no broader than the authority that supports it. In particular:
 ## Adding later SWAP 4.3.1 equivalence evidence
 
 The parallel SWAP 4.3.1 to SWAP5 equivalence campaign can be added as an additional verification authority under the applicable capability rows once its evidence is accepted. The core Status-A description does not need to be rewritten unless that campaign changes an accepted scientific or scope conclusion.
+
+
+## Later bounded lower-boundary admission: LOW05-A
+
+PR#974 canonically admits the homogeneous typed Fortran ordinary Reference DATE5/HBOT5 prescribed lower-face pressure-head adapter at `e88af3da54b743958b887d9cc15647227388333a`. Existing typed physics, transaction/restart/mass ownership and default groundwater-owned mode5 semantics are unchanged. Original proposal endpoint is frozen through sibling/retry staging; ordinary ownership is explicit and excludes GWledger/datum. [Closeout and claim ceiling](../migration/F-MIG431-LOW05A_CLOSEOUT.md) bind source, qualification and admission. Qualification run36964835178 proves bounded progress, rollback, restart and existing2/4/6/7/defaultGW5 preservation at O0/O2. It does not assert global green CI, a generic parser, mixed ownership, broad transient accuracy or migration of1/3/8.

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "reference": "B1.11 exact expanded source with read-only diagnostics",
+  "time": 35796.986000000004,
+  "dt": 0.002,
+  "last_rate_task": 1,
+  "reference_main_node": 55,
+  "reference_perched_top": 55,
+  "reference_perched_bottom": 55,
+  "critical_under_saturated_volume_cm": 0.1,
+  "reference_groundwater_cm": -75.23346963453669,
+  "positive_head_intervals": [
+    [
+      1,
+      2
+    ],
+    [
+      15,
+      28
+    ],
+    [
+      55,
+      112
+    ]
+  ],
+  "source_h54": -1.2419233129262046,
+  "source_h55": 0.8510135494351094,
+  "max_last_rate_to_accepted_head_lag_cm": 0.00013091323540594113,
+  "swap5_carrier_at_exact_rate_state": {
+    "main_top": 55,
+    "perched_active": true,
+    "perched_top": 1,
+    "perched_bottom": 29
+  },
+  "finding": "Legacy CALCGWL begins perched search inside the ordinary saturated zone; this event misidentifies ordinary groundwater as a one-node perched zone and misses distinct shallow saturated water. Requires explicit reference qualification; do not regress admitted PERCH21.",
+  "last_rate_capture_sha256": "f206407ef3bb6e33b346a5193463ff11cea3a52f8d37f0cdb911a2cefdb18316",
+  "calcgwl_sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+  "instrumented_source_sha256": {
+    "macropore.f90": "a3fd0ac9d3e843b7783af09d865920fee2e70ba3564e8c5aae6153d214371934",
+    "macrorate.f90": "30c19e135533ac3ac56e160d08ed4388774ff9e17596c9682addc4568a0decac",
+    "soilwater.f90": "dbc0a7144d9037ed417904ef35b63833be325270f1769c072ef200d57faca2e0"
+  },
+  "active_swap5_e2e_qualified": false,
+  "diagnostic_ablation_only": {
+    "perched_off_other_cm_per_day": -0.3913906758279594,
+    "reference_other_cm_per_day": -0.40973640650434007,
+    "max_remaining_diff_node": 55,
+    "probe_node55_cm_per_day": -0.01834573067640615,
+    "reference_node55_cm_per_day": -0.0366914613528123,
+    "duplicate_factor": 2,
+    "production_template_changed": false,
+    "perched_active_in_full_runtime": true
+  },
+  "exact_persisted_diagnostic_head": "c49c8210876efbaaf4d72305eb921f70d237224a",
+  "optimization_levels_reproduced": [
+    "O0",
+    "O2"
+  ]
+}

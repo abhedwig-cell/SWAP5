@@ -139,6 +139,8 @@ MODULE_SRC=(
   src/adapter/mod_modflow6_fgc34_c_bridge.f90
   BRIDGE_PLACEHOLDER
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 compile_variant(){
   local name="$1"

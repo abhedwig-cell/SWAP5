@@ -1,0 +1,81 @@
+{
+  "work_unit": "PPA-MICRO03",
+  "status": "LOCAL_O0_O2_RUNTIME_PASS",
+  "source_sha256": {
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "src/process/mod_root_micro_de_willigen_process.f90": "6230c5bd7c4a1e0d77496775db6c31e1497b19d1304d503ba7fd2c97807a5bdd",
+    "src/runtime/mod_fmr_micro_mvg_table_binding.f90": "98c719b48a3b2a570252e6dfd4cbb3b68d092b93529f65ecb31bd592c6dd942c",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "30a702cd0ef0f0530670d9287b6a5ff8b31746c917ff0c31c45b5f95109d1369",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "1cb60bb1020cbb67dbf671225d502b2506abcd8819b6d577cc871cf0fa041202",
+    "tests/physics/test_ppa_micro03_runtime.f90": "6234affec91b10cbfaa421f8fa594fada5d5ea8638748767b0ca8bd53c117818",
+    "tests/physics/run_ppa_micro03_runtime.py": "73d608aeddb998ccde899482a947fed4bbea7ca2d78ead2cfe28a680dd315e4c",
+    "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90": "3dd313145b0101939eb2afc1c9d44a6887f7a62af68cd2cced1834cbdcd4f48a"
+  },
+  "gfortran": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "outputs": {
+    "O0": [
+      "MICRO03_TRIAL completed=T status=0 mass=  1.636603E-16 temporal_rejections=0",
+      "MICRO03_DIAG solver,temporal,cert,mass=0 0 0 0  reason=available solver=T",
+      "MICRO03_ACCEPTED_ROOT_RATE=  1.000000E-04",
+      "At line 213 of file src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "Fortran runtime warning: An array temporary was created",
+      "MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS"
+    ],
+    "O2": [
+      "MICRO03_TRIAL completed=T status=0 mass=  1.636603E-16 temporal_rejections=0",
+      "MICRO03_DIAG solver,temporal,cert,mass=0 0 0 0  reason=available solver=T",
+      "MICRO03_ACCEPTED_ROOT_RATE=  1.000000E-04",
+      "At line 213 of file src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "Fortran runtime warning: An array temporary was created",
+      "MICRO03_TRIAL_MASS_RESTART_REJECTION=PASS"
+    ]
+  },
+  "preservation_outputs": {
+    "O0": [
+      "PPA_ROOT_HYD01_QREF= -1.6263920642131460E-01",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-04 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-04 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-04 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-03 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-03 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-03 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-02 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-02 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-02 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-01 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-01 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-01 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E+00 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E+00 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E+00 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS",
+      "PPA_ROOT_HYD01_D2_ROOT completed=F status=2 certificate_unavailable_rejections=0 indicator_route=reference-richards-raw-bound cert_available=T normalized_indicator=  8.5206497718684332E+04 reason=available",
+      "PPA_ROOT_HYD01_D2_GENERIC completed=F status=2 certificate_unavailable_rejections=0 indicator_route=reference-richards-raw-bound cert_available=T normalized_indicator=  8.5206497718684332E+04 reason=available",
+      "PPA_ROOT_HYD01_R1_ROOT_GENERIC_TEMPORAL_EQUIVALENCE=PASS",
+      "PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS"
+    ],
+    "O2": [
+      "PPA_ROOT_HYD01_QREF= -1.6263920642131460E-01",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-04 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-04 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-04 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-03 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-03 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-03 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-02 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-02 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-02 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E-01 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E-01 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E-01 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_ROOT duration=  1.0000E+00 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_GENERIC duration=  1.0000E+00 completed=F status=2 retries=8 solver_rejections=0 temporal_rejections=9 mass_rejections=0",
+      "PPA_ROOT_HYD01_PAIR duration=  1.0000E+00 states_compared=F max_head_diff=  0.0000000000000000E+00 max_theta_diff=  0.0000000000000000E+00",
+      "PPA_ROOT_HYD01_D1_SWEEP_COMPLETE=PASS",
+      "PPA_ROOT_HYD01_D2_ROOT completed=F status=2 certificate_unavailable_rejections=0 indicator_route=reference-richards-raw-bound cert_available=T normalized_indicator=  8.5206497718684332E+04 reason=available",
+      "PPA_ROOT_HYD01_D2_GENERIC completed=F status=2 certificate_unavailable_rejections=0 indicator_route=reference-richards-raw-bound cert_available=T normalized_indicator=  8.5206497718684332E+04 reason=available",
+      "PPA_ROOT_HYD01_R1_ROOT_GENERIC_TEMPORAL_EQUIVALENCE=PASS",
+      "PPA_ROOT_HYD01_D2_TEMPORAL_DIAG_COMPLETE=PASS"
+    ]
+  }
+}

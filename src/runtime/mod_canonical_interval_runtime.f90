@@ -40,7 +40,8 @@ contains
     type(transaction_policy_t) :: transaction_policy
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
     real(real64) :: cursor, next_cursor, tol, transaction_t1
-    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
+    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux, aggregate_transpiration
+    logical :: aggregate_transpiration_available
     logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
     integer :: isub, max_retries_cap
 
@@ -67,6 +68,8 @@ contains
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
     aggregate_mass_complete = .true.
+    aggregate_transpiration_available=.true.
+    aggregate_transpiration=0.0_real64
     aggregate_bottom_available = .true.
     aggregate_bottom_exchange = 0.0_real64
     terminal_bottom_flux = 0.0_real64
@@ -105,6 +108,8 @@ contains
       end if
 
       call accumulate_accepted_mass(result, tx, aggregate_mass_complete)
+      aggregate_transpiration_available=aggregate_transpiration_available.and.tx%actual_transpiration_available
+      if(aggregate_transpiration_available) aggregate_transpiration=aggregate_transpiration+tx%actual_transpiration_amount
       call accumulate_accepted_bottom_interface(tx, aggregate_bottom_available, aggregate_bottom_exchange, &
            terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
@@ -132,6 +137,10 @@ contains
           result%bottom_interface_exchange_available = .true.
           result%bottom_outward_exchange_native = aggregate_bottom_exchange
           result%terminal_bottom_outward_flux_native = terminal_bottom_flux
+        end if
+        if(aggregate_transpiration_available.and.ieee_is_finite(aggregate_transpiration).and.aggregate_transpiration>=0.0_real64) then
+          result%actual_transpiration_available=.true.
+          result%actual_transpiration_amount=aggregate_transpiration
         end if
         result%interface_sensitivity = terminal_sensitivity
         if (result%interface_sensitivity%available) then

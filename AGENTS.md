@@ -18,6 +18,10 @@ When starting material work:
 
 If repository state and chat context disagree, repository state wins.
 
+## Autonomous execution across chats
+
+For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; exact-head scientific plus F-CI preservation; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
+
 ## Read first
 
 For most work, start here:
@@ -57,6 +61,8 @@ Older `docs/architecture/implementation-status.md`, `D3a_IMPLEMENTATION_STATUS_M
 ## Work-unit discipline
 
 For a material work unit, maintain a recoverable Git state before expensive or timeout-sensitive work. Follow `docs/development/workstream-execution-protocol.md`.
+
+For operational continuity, use local shell/Git/Python/gfortran and focused tests when available, with GitHub connector access as an independent fallback. A local DNS or checkout failure is not evidence that the repository or legacy sources are unavailable. Follow the recovery ladder and local-first qualification rules in `docs/development/workstream-execution-protocol.md`. Work autonomously across meaningful phases, including justified shared-architecture changes with explicit contracts and preservation gates.
 
 A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
 

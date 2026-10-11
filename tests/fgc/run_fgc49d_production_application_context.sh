@@ -148,6 +148,8 @@ MODULE_SRC=(
   src/adapter/mod_fmr_groundwater_application_c_api.f90
   tests/fgc/support/mod_fgc49d_application_context_fixture.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

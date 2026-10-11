@@ -19,6 +19,46 @@ It does **not** replace scientific, implementation or qualification evidence in 
 
 The canonical branch moves quickly. This document is therefore an **exact snapshot**, not a claim that the branch remains at this SHA. Before a central admission action, reconcile the delta from the snapshot head to the live canonical head.
 
+## Integration refresh 2026-10-11
+
+Central regie reconciled the live queue from `c7879cdf54fce43d668877f5a0a4d71806df7426` and established recovery point `integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005`. The original 2026-09-20 control snapshot below remains historical evidence; this refresh is the current delta authority.
+
+### Canonical admission completed
+
+MC-IRR01 was recomposed from its qualified isolated owner postimage and admitted through PR #1195. The admitted production and test blobs match qualified integration head `4ed0a6d62eae82f46d9f79d06b764e141474c9e2`. Central regie added no new production physics, only exact bounded preservation and admission metadata.
+
+- owner gate: F-APP07 run `38115056270`, O0/O2 PASS;
+- canonical preservation: F-CI run `38115056145`, all frozen jobs plus moving-current job `114398715430` PASS;
+- admission head: `4ed4fa44c05b93c44d53c2f62a97d2307e29cca9`;
+- canonical squash merge: `cadcc63d3296e12e6a0634ee7095693454b60005`.
+
+The moving functional-coverage master remains independently owned by PR #1072. It must recompute from the admitted canonical postimage before publishing fresh global counts. The MC-IRR01 admission is bounded and is not a claim of unrestricted irrigation coverage.
+
+### Supersession closures
+
+Sixteen PRs were closed only after their successor and recovery path were recorded in the PR thread:
+
+- exact canonical ancestors: #1073, #1074, #1075, #1076, #623, #624 and #625;
+- duplicate or narrower candidates superseded by unified admissions: #1104, #1111, #1113, #1122 and #1129;
+- stale central checkpoints/probes: #1121 and #1105;
+- obsolete irrigation carriers superseded by MC-IRR01: #1097 and #1126.
+
+PR #58 remains the intentional canonical carrier. After admission and closures, 116 PRs remain open; this count is descriptive, not a new queue authority.
+
+### Exact remaining blockers and owners
+
+| PR | Owner | Required resolution |
+|---|---|---|
+| #1120 | CI/workflow governance | Replace incomplete static PR path filters with a generated/conservative dependency surface or fail-closed trigger strategy. Observed compile closure exceeds the proposed lists: CO2 13 resolved paths for 3 owned sources; root runtime about 169 dependencies for 4 named sources. |
+| #1083 | PPA-WU03/runon | Recompose the bounded delta on current canonical and replace the stale protected task2 pin and broad B19/MICRO tree assumptions with bounded successors. |
+| #1119 | PPA-WU05B frost | Keep focused finite-guard work under the frost owner; recompose broad whole-source/exact-tree preservation against current canonical. |
+| #1103 | HYD/HYST | Finish the active specialized qualification; no central semantics change or admission claim. |
+| #1098, #1117 | NUT/SOL | Complete owner-controlled consolidated qualification and source/restart gates; #1117 is not an admission proposal. |
+| #1072 | functional-coverage master | Recompute from canonical `cadcc63d3` and incorporate bounded MC-IRR01 before fresh global coverage counts. |
+| #486 | F-GC shared admission authority | Resolve non-overlapping storage partition and one owner per physical drainage path. |
+
+No manual workflow dispatches were added. Broad unrelated workflow failures on the admission PR are scheduling/governance debt, not MC-IRR01 scientific qualification; the exact owner and canonical-preservation gates are the admission evidence.
+
 ## Control model
 
 Specialized workstreams may research, implement and qualify inside their declared ownership. They do not acquire canonical authority merely by producing a branch or PR.

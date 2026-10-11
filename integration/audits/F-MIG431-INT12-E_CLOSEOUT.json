@@ -1,0 +1,13 @@
+{
+ "schema":"swap5.f_mig431_int12_e.closeout.v1",
+ "workunit":"F-MIG431-INT12-E",
+ "status":"CANONICAL_ADMITTED_CLOSED",
+ "pull_request":1011,
+ "canonical_merge":"0fc427f63cffab666014129641c864ccd65983f0",
+ "qualified_head":"d147fbfbf891347ccae4c74a9e20901736312785",
+ "capability":"SWMETDETAIL=1 non-Rutter interception continuation for SWINTER=1/2",
+ "state_classification":{"restint":"accepted intra-day continuation only","day_boundary":"reset to zero for every new detailed-meteo source day","restart":"schema + source_day_id + next_record + restint","physical_canopy_storage":false},
+ "final_evidence":{"int12e_run":37152387427,"int12e":"success","int12d_run":37152387486,"int12d":"success","p0_run":37152387442,"p0":"success"},
+ "negative_findings":["Initial hypothesis that restint might persist across detailed-meteo days was falsified by legacy PartitionPrecipitation, which resets it to zero.","Detailed meteorology disables snow physics in the legacy branch.","Record rain interception reporting and restint wet-canopy carryover are related but distinct bookkeeping quantities."],
+ "remaining_exclusions":["SWINTER=3 Rutter","general meteorological parser migration","TOP03/SCV","solver/timestep policy"]
+}

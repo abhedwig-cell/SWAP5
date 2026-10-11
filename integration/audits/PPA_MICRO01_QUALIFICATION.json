@@ -1,0 +1,24 @@
+{
+  "work_unit": "PPA-MICRO01",
+  "status": "QUALIFIED_TYPED_CORRECTED_TABLE_COMPONENT_ONLY",
+  "execution": "f59af520b4ba5bb369754912b2377a0c49dac879",
+  "workflow_run": 37416861172,
+  "source_manifest_entries_verified": 7,
+  "component": "src/process/mod_root_micro_matric_flux_table.f90",
+  "contract": "docs/audits/PPA_MICRO01_TABLE_REPAIR_CONTRACT.md",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_MICRO01_TABLE_REPLAY.json.gz",
+    "sha256": "8a48364af65bad57b3cc92665d6c800c0f3f5dffd4500aea7edd74ab64adfb1e"
+  },
+  "cases_per_optimization": 2600,
+  "optimization_identity": "O0_O2_IDENTICAL",
+  "reference_policy": "Honor explicit -20000 cm endpoint; integrate terminal interval as linear conductivity with exact integral, retain source trapezoidal/log-grid algebra elsewhere",
+  "runtime_admitted": false,
+  "documentation_gates": "PENDING",
+  "exclusions": [
+    "Full MICRO nonlinear uptake",
+    "Real soil hydraulic provider binding",
+    "Runtime sink/state/restart",
+    "Hydraulic lift, salt/osmotic, frost and external Jarvis after MICRO"
+  ]
+}

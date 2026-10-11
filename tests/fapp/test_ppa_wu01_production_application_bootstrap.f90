@@ -3,7 +3,10 @@ program test_ppa_wu01_production_application_bootstrap
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use mod_fmr_runtime_core, only: fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+  use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window, INTWIN_OK
+  use mod_rutter_interception_process, only: rutter_interval_input_t
+  use mod_root_uptake_compensation, only: ROOT_COMP_OFF
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
@@ -35,10 +38,15 @@ program test_ppa_wu01_production_application_bootstrap
   type(fmr_production_application_config_t) :: config, gw_config, bad_config, root_bad_config, drainage_bad_config
   type(fmr_production_application_config_t) :: gw_parallel2_config, gw_parallel4_config, invalid_workers_config
   type(fmr_production_application_config_t) :: standalone_parallel_config
+  type(fmr_production_application_config_t) :: rutter_config
   type(fmr_production_application_bootstrap_t) :: app, gw_app, bad_app, root_bad_app, drainage_bad_app
   type(fmr_production_application_bootstrap_t) :: gw_parallel2_app, gw_parallel4_app, invalid_workers_app
   type(fmr_production_application_bootstrap_t) :: standalone_parallel_app
+  type(fmr_production_application_bootstrap_t) :: rutter_app
   type(fmr_serialized_column_result_t), allocatable :: results(:)
+  type(fmr_b110_physical_forcing_t), allocatable :: rutter_forcing(:)
+  type(interception_source_window_t) :: rutter_window
+  type(rutter_interval_input_t) :: rutter_process
   type(groundwater_topology_tile_t) :: topology_tiles(NTILE)
   type(groundwater_topology_cell_t) :: topology_cells(NTILE)
   type(groundwater_topology_t) :: topology, unresolved_topology
@@ -47,6 +55,7 @@ program test_ppa_wu01_production_application_bootstrap
   integer(int64), allocatable :: revisions(:)
   integer(int64) :: context_handle
   integer :: i, status, topology_status
+  integer :: rutter_window_status
   integer(c_int) :: ncell, ntile_count, c_status
   real(real64) :: reference_head_m
 
@@ -93,6 +102,79 @@ program test_ppa_wu01_production_application_bootstrap
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'standalone owner committed revisions')
   call app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. app%ready(), 'clean standalone owner close')
+
+  ! Production Rutter path: the immutable source window is routed through the
+  ! common atmospheric boundary and committed with the FMR physical candidate.
+  call initialize_application_config(rutter_config)
+  rutter_config%numerical%transaction%temporal_tolerance = 0.03_real64
+  rutter_config%numerical%transaction%max_retries = 8
+  rutter_config%numerical%max_committed_substeps = 32
+  do i = 1, NTILE
+    rutter_config%tiles(i)%template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+    rutter_config%tiles(i)%parameters%bottom_mode = 2
+    rutter_config%tiles(i)%parameters%root_extraction_active = .true.
+    rutter_config%tiles(i)%parameters%root_compensation%method = ROOT_COMP_OFF
+    rutter_config%tiles(i)%base_forcing%top_flux = 0.0_real64
+    rutter_config%tiles(i)%base_forcing%bottom_flux = 0.0_real64
+    rutter_config%tiles(i)%base_forcing%drainage_flux_by_level = 0.0_real64
+    rutter_config%tiles(i)%base_forcing%subsurface_irrigation_source = 0.0_real64
+    rutter_config%tiles(i)%initial_rutter_canopy_storage_cm = 0.0_real64
+  end do
+  call rutter_app%initialize(rutter_config, status)
+  call require(status == FMR_APP_BOOT_OK .and. rutter_app%ready(), 'Rutter production bootstrap initialize')
+  allocate(rutter_forcing(NTILE))
+  do i = 1, NTILE
+    rutter_forcing(i) = rutter_config%tiles(i)%base_forcing
+  end do
+  call initialize_interception_window(810001_int64, T0, T1, 0.2_real64, rutter_window, rutter_window_status)
+  call require(rutter_window_status == INTWIN_OK, 'Rutter immutable source window')
+  rutter_process%vegetation_cover_fraction = 1.0_real64
+  rutter_process%canopy_storage_capacity_cm = 0.05_real64
+  rutter_process%interception_evaporation_capacity_cm_per_day = 0.0_real64
+  rutter_process%potential_transpiration_dry_cm_per_day = 0.02_real64
+  rutter_process%potential_transpiration_wet_cm_per_day = 0.01_real64
+  rutter_process%surface_irrigation_cm_per_day = 0.01_real64
+  rutter_process%interval_days = T1 - T0
+  do i = 1, NTILE
+    allocate(rutter_forcing(i)%rutter)
+    rutter_forcing(i)%root_extraction_sink = 1.0e-5_real64
+    rutter_forcing(i)%rutter%source_window = rutter_window
+    rutter_forcing(i)%rutter%process = rutter_process
+    rutter_forcing(i)%rutter%process%surface_irrigation_is_intercepted = i == 1
+    rutter_forcing(i)%rutter%ponding_max_cm = 0.2_real64
+    rutter_forcing(i)%rutter%runoff_resistance_day = 0.1_real64
+    rutter_forcing(i)%rutter%runoff_exponent = 1.0_real64
+  end do
+  call rutter_app%run_standalone_with_forcing(T0, T1 + 0.1_real64, rutter_forcing, results, status)
+  call require(status /= FMR_APP_BOOT_OK, 'Rutter out-of-window trial rejected')
+  call rutter_app%copy_committed_revisions(revisions, status)
+  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 0_int64), &
+       'rejected Rutter forcing leaves accepted state unchanged')
+  call rutter_app%run_standalone_with_forcing(T0, T1, rutter_forcing, results, status)
+  if (status /= FMR_APP_BOOT_OK) then
+    write(*,'(a,1x,i0)') 'PPA_WU01_DEBUG_RUTTER_STATUS', status
+    if (allocated(results)) then
+      do i = 1, size(results)
+        write(*,'(a,1x,i0,1x,a,1x,i0,1x,l1,1x,l1,1x,l1,4(1x,i0),1x,es24.16,1x,a,1x,l1,1x,i0,1x,i0,1x,l1,2(1x,es24.16))') &
+             'PPA_WU01_DEBUG_RUTTER_RESULT', &
+             i, trim(results(i)%admission_status), results(i)%kernel_status, results(i)%admitted, &
+             results(i)%completed, results(i)%committed, results(i)%accepted_substeps, results(i)%solver_rejections, &
+             results(i)%temporal_rejections, results(i)%mass_rejections, results(i)%mass%residual, &
+             trim(results(i)%solver_route), results(i)%solver_executed, results(i)%solver_iterations, &
+             results(i)%solver_status, results(i)%mass%complete, results(i)%mass%total_in, results(i)%mass%total_out
+      end do
+    end if
+  end if
+  call require(status == FMR_APP_BOOT_OK, 'Rutter production trial status')
+  call require(all(results%completed) .and. all(results%committed), 'Rutter candidate committed through FMR')
+  call require(all(results%solver_status == 1), 'Rutter dynamic top boundary Richards solver converged')
+  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'Rutter production hard mass')
+  call require(sum(results%temporal_rejections) > 0, 'Rutter full/half temporal refinement exercised')
+  call rutter_app%copy_committed_revisions(revisions, status)
+  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'Rutter source interval committed once')
+  call rutter_app%close(status)
+  call require(status == FMR_APP_BOOT_OK .and. .not. rutter_app%ready(), 'Rutter production owner clean close')
+  print '(a)', 'PPA_WU01_RUTTER_FMR_TRIAL_COMMIT=PASS'
 
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.

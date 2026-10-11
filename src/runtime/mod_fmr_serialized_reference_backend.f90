@@ -5,9 +5,10 @@ module mod_fmr_serialized_reference_backend
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
+  use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
+  use mod_kernel_transactions, only: kernel_parameter_identity_t, kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
        KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
@@ -16,15 +17,27 @@ module mod_fmr_serialized_reference_backend
        assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY, &
+       FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION, &
        FMR_OPTIONAL_STATE_LAYOUT_SNOW, FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
        fmr_optional_state_layout_known
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
-       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+       FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RFM, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, &
+       FMR_SOLUTE_STATE_LAYOUT_NONE, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, &
+       FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, fmr_solute_state_layout_known
+  use mod_interception_source_window_runtime, only: interception_source_window_t
+  use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t, &
+       RUTTER_OK
+  use mod_rutter_source_window_processor, only: rutter_source_state_t, rutter_source_trial_t, &
+       initialize_rutter_source_state, initialize_rutter_canopy_state, prepare_rutter_source_trial, &
+       accept_rutter_source_trial, RUTTER_WINDOW_OK
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -47,6 +60,9 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
+  use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
+       evaluate_b111_profile_groundwater_projection
   use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -59,30 +75,101 @@ module mod_fmr_serialized_reference_backend
        BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
+  use mod_root_micro_matric_flux_table, only: micro_matric_flux_table_t
+  use mod_root_micro_de_willigen_process, only: micro_de_willigen_parameters_t, micro_de_willigen_result_t, &
+       evaluate_micro_de_willigen, MICRO_DW_OK
+  use mod_fmr_micro_mvg_table_binding, only: fmr_build_micro_mvg_tables, fmr_micro_horizon_map_valid
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
-  use mod_soil_temperature_contract, only: soil_temperature_at_node
+  use mod_soil_temperature_contract, only: copy_soil_temperature_profile, soil_temperature_at_node, soil_temperature_field_view_t, &
+       build_soil_temperature_field_view
+  use mod_crop_bartholomeus_input, only: crop_bartholomeus_input_t, valid_crop_bartholomeus_input
+  use mod_fmr_bartholomeus_contract, only: fmr_bartholomeus_parameters_t, valid_fmr_bartholomeus_parameters, &
+       matches_bartholomeus_hydraulic_owner
+  use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
+       FMR_BARTHOLOMEUS_DISABLED
+  use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
+  use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
+  use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
+       ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, &
+       attribute_root_stress_losses, evaluate_walsum_geometry
+  use mod_frost_low_air_drainage_effect, only: frost_low_air_drainage_config_t, frost_low_air_drainage_result_t, &
+       compose_legacy_bracketed_frost_drainage
+  use mod_frost_divdra_drainage_effect, only: frost_divdra_parameters_t, frost_divdra_result_t, &
+       compose_single_level_signed_frost_divdra, valid_frost_divdra_parameters
+  use mod_frost_geometry_effect, only: frost_geometry_result_t, evaluate_legacy_bracketed_frost_geometry
+  use mod_frost_drainage_effect, only: frost_drainage_config_t, frost_drainage_result_t, &
+       compose_legacy_normal_frost_drainage, FROST_DRAIN_OK
+  use mod_frost_bottom_boundary_effect, only: frost_bottom_config_t, frost_bottom_result_t, &
+       compose_legacy_no_drain_frost_bottom, FROST_BOTTOM_OK
+  use mod_root_frost_stress, only: root_frost_config_t, compose_legacy_zero_root_frost, ROOT_FROST_OK
+  use mod_root_uptake_compensation_execution, only: apply_root_uptake_compensation, ROOT_COMP_EXEC_OK
   use mod_fmr_drainage_response_binding, only: fmr_drainage_response_level_parameters_t, &
        fmr_drainage_response_level_control_t, fmr_drainage_response_diagnostics_t, &
        evaluate_fmr_drainage_response_bottom_lumped, fmr_drainage_response_configuration_status, &
-       FMR_DRAIN_BIND_OK
+       FMR_DRAIN_BIND_OK, FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_TABULATED, &
+       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
+       FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5, &
+       FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
+  use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
+  use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
+       EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
+       EXT_DRAIN_TOP_SURFACE_RESISTANCE, EXT_DRAIN_TOP_POWER_INTERFLOW
+  use mod_drainage_tabulated_response, only: valid_tabulated_drainage_parameters
+  use mod_drainage_hooghoudt_ipos1_response, only: valid_hooghoudt_ipos1_parameters
+  use mod_drainage_hooghoudt_ipos23_response, only: valid_hooghoudt_ipos2_parameters, &
+       valid_hooghoudt_ipos3_parameters, valid_hooghoudt_prepared
+  use mod_drainage_ernst_ipos45_response, only: valid_ernst_ipos4_prepared, valid_ernst_ipos5_prepared
+  use mod_fmr_legacy_qgwl_bottom_boundary_provider, only: fmr_qgwl_bottom_boundary_config_t, &
+       fmr_qgwl_bottom_boundary_result_t, fmr_evaluate_legacy_qgwl_bottom_boundary, FMR_QGWL_OK
   use mod_fmr_drainage_qbot_directional_binding, only: project_fmr_qbot_smooth_groundwater_level, &
        compose_fmr_qbot_drainage_sink_direction, FMR_QBOT_DRAIN_DIRECTION_OK
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
        trial_restricted_soil_temperature, commit_soil_temperature_state
+  use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, FROST_EFFECT_OK, &
+       evaluate_frost_hydraulic_factor
+  use mod_frost_hydraulic_provider, only: frost_constitutive_provider_t, &
+       bind_frost_constitutive_provider, FROST_PROVIDER_OK
   use mod_restricted_fixed_weir_surface_water, only: fixed_weir_surface_water_parameters_t, &
        fixed_weir_surface_water_state_t, fixed_weir_surface_water_forcing_t, &
        fixed_weir_surface_water_numerical_config_t, fixed_weir_surface_water_result_t, &
        evaluate_restricted_fixed_weir_surface_water, validate_fixed_weir_surface_water_parameters, &
        FIXED_WEIR_AVAILABLE
+  use mod_macropore_continuation_state, only: macropore_continuation_state_t
+  use mod_rfm_physical_state, only: rfm_physical_state_t, copy_rfm_physical_state
+  use mod_rfm_runtime_configuration, only: rfm_runtime_configuration_t
+  use mod_rfm_surface_forcing, only: rfm_surface_forcing_t
+  use mod_rfm_matrix_source_provider, only: rfm_matrix_source_provider_t, bind_rfm_matrix_source_provider
+  use mod_rfm_live_trial_preparer, only: rfm_live_trial_prepare_result_t, prepare_rfm_live_trial
+  use mod_solute_macropore_exchange, only: mobile_macro_salt_state_t
+  use mod_solute_mobile_salt_state, only: mobile_salt_state_t, mobile_salt_fluxes_t, &
+       initialize_mobile_salt_state, advance_mobile_salt_trial, SOLUTE_OK
+  use mod_solute_mobile_advection_dispersion, only: mobile_dispersion_physics_t, mobile_transport_receipt_t, &
+       advance_mobile_advection_dispersion
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t, fmr_base_salt_normalized_error
+  use mod_solute_mobile_macro_salt_transport, only: mobile_macro_salt_receipt_t, &
+       advance_mobile_macro_salt_trial, initialize_mobile_macro_salt_state, MACRO_SALT_OK, MACRO_SALT_INVALID
+  use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
+  use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
+
+  use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
+  use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
+  use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
+       macropore_runtime_result_t, MACRO_RUNTIME_CONVERGED, MACRO_RUNTIME_RETRY
+  use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
+  use mod_fmr_legacy_cauchy_bottom_boundary_provider, only: fmr_cauchy3_control_t, fmr_cauchy3_proposal_t, &
+       FMR_CAUCHY3_OK
   implicit none
   private
+  public :: fmr_frost_response_drainage_configuration_valid
+  public :: fmr_b110_certified_candidate_layout_matches
+  public :: fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
@@ -120,6 +207,15 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: event_t0 = 0.0_real64
   end type fmr_snow_runtime_state_t
 
+  type, public :: fmr_mobile_salt_component_t
+    real(real64), allocatable :: mass_mg_cm2(:)
+    real(real64), allocatable :: macro_mass_mg_cm2(:,:)
+    integer(int64) :: cdrain_source_id = 0_int64
+    integer(int64) :: cdrain_revision = -1_int64
+  contains
+    procedure, public :: ready => fmr_mobile_salt_ready
+  end type fmr_mobile_salt_component_t
+
   type, extends(canonical_state_t), public :: fmr_b110_physical_state_t
     integer :: active_nodes = 0
     real(real64), allocatable :: pressure_head(:)
@@ -128,9 +224,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: groundwater_level = 0.0_real64
     type(fmr_snow_runtime_state_t), allocatable :: snow
     type(soil_temperature_state_t), allocatable :: soil_temperature
+    type(macropore_continuation_state_t), allocatable :: macropore
+    type(fmr_mobile_salt_component_t), allocatable :: salt
+    type(rutter_source_state_t), allocatable :: rutter
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
+
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_macropore_reduction_state_t
+    type(macropore_reduction_continuation_t) :: reduction_continuation
+  contains
+    procedure :: clone => fmr_b110_macropore_reduction_state_clone
+  end type fmr_b110_macropore_reduction_state_t
 
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_temporal_indicator_state_t
     private
@@ -165,6 +270,21 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_boesten_evaporation_state_clone
   end type fmr_b110_boesten_evaporation_state_t
 
+  ! MIGMAC10 explicitly composes the atomic Boesten SPEV/SAEV pair with the
+  ! existing macropore continuation carried by the physical parent state.
+  type, extends(fmr_b110_boesten_evaporation_state_t), public :: fmr_b110_boesten_macropore_state_t
+  contains
+    procedure :: clone => fmr_b110_boesten_macropore_state_clone
+  end type fmr_b110_boesten_macropore_state_t
+
+  ! PPA-WU05-A20 dedicated RFM optional physical-state carrier.
+  ! Carrier/checkpoint semantics are admitted separately from live execution.
+  type, extends(fmr_b110_physical_state_t), public :: fmr_b110_rfm_state_t
+    type(rfm_physical_state_t) :: rfm
+  contains
+    procedure :: clone => fmr_b110_rfm_state_clone
+  end type fmr_b110_rfm_state_t
+
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
     integer :: active_nodes = 0
@@ -175,6 +295,10 @@ module mod_fmr_serialized_reference_backend
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
@@ -188,7 +312,34 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     logical :: practical_richards_a2c_active = .false.
     logical :: root_extraction_active = .false.
+    ! MICRO owns the one trial root sink when this optional configuration exists.
+    type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
+    integer, allocatable :: micro_horizon_first_node(:)
+    logical :: root_salinity_active = .false.
+    type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
+    real(real64) :: solute_tscf = 0.0_real64
+    real(real64) :: saltmax_mg_cm3 = 0.0_real64
+    real(real64) :: saltslope_cm3_mg = 0.0_real64
+    real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
+    type(root_compensation_config_t) :: root_compensation
+    type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
+    type(frost_drainage_config_t) :: frost_drainage
+    logical :: frost_divdra_active = .false.
+    type(frost_divdra_parameters_t) :: frost_divdra
+    logical :: frost_response_drainage_active = .false.
+    logical :: frost_low_air_response_drainage_active = .false.
+    logical :: frost_tabulated_response_drainage_active = .false.
+    logical :: frost_analytic_response_drainage_active = .false.
+    logical :: frost_empirical_response_drainage_active = .false.
+    logical :: frost_extended_response_drainage_active = .false.
+    logical :: frost_highest_response_drainage_active = .false.
+    type(frost_bottom_config_t) :: frost_bottom
+    type(root_frost_config_t) :: root_frost
+    real(real64) :: root_frost_head_budget_cm=0.0_real64
+    real(real64) :: root_frost_temperature_budget_c=0.0_real64
+    type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
     logical :: macropore_active = .false.
+    type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
     logical :: tabulated_hydraulics_active = .false.
@@ -199,6 +350,7 @@ module mod_fmr_serialized_reference_backend
     logical :: ksatexm_extension_active = .false.
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
+    type(frost_hydraulic_parameters_t) :: frost_hydraulic
     logical :: soil_temperature_active = .false.
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t), allocatable :: black_evaporation
@@ -214,6 +366,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
+  contains
+    procedure :: capture_identity => fmr_b110_capture_parameter_identity
+    procedure :: matches_physical_identity => fmr_b110_matches_physical_identity
   end type fmr_b110_physical_parameters_t
 
   type, public :: fmr_black_evaporation_runtime_forcing_t
@@ -242,27 +397,155 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: runoff_exponent = 1.0_real64
   end type fmr_boesten_evaporation_runtime_forcing_t
 
+  integer, parameter, public :: FMR_C_DRAIN_UNIT_MG_CM3 = 1
+  type, public :: fmr_c_drain_salt_forcing_t
+    logical :: available = .false.
+    real(real64) :: concentration_mg_cm3 = 0.0_real64
+    real(real64) :: valid_t0 = 0.0_real64, valid_t1 = 0.0_real64
+    integer(int64) :: source_id = 0_int64, revision = -1_int64
+    integer :: unit_id = 0
+  end type fmr_c_drain_salt_forcing_t
+
+  ! Resolved dissolved concentrations at the soil interfaces. The boundary
+  ! owner handles surface-pool mixing and schedules these values over a trial.
+  type, public :: fmr_soil_salt_boundary_forcing_t
+    logical :: available = .false.
+    logical :: matrix_top_outflow_carries_solute = .false.
+    real(real64) :: matrix_top_mg_cm3 = 0.0_real64, matrix_bottom_mg_cm3 = 0.0_real64
+    real(real64), allocatable :: macropore_top_mg_cm3(:), macropore_bottom_mg_cm3(:)
+    real(real64) :: valid_t0 = 0.0_real64, valid_t1 = 0.0_real64
+    integer(int64) :: source_id = 0_int64, revision = -1_int64
+    integer :: unit_id = 0
+  end type fmr_soil_salt_boundary_forcing_t
+  type, public :: fmr_rutter_runtime_forcing_t
+    logical :: prepared = .false.
+    type(interception_source_window_t) :: source_window
+    type(rutter_interval_input_t) :: process
+    type(rutter_interval_result_t) :: result
+    type(rutter_source_state_t) :: candidate_state
+    real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_per_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 0.0_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
+    real(real64) :: runoff_exponent = 1.0_real64
+  end type fmr_rutter_runtime_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
+    real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
+    type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
+    type(fmr_c_drain_salt_forcing_t), allocatable :: c_drain_salt
+    type(fmr_soil_salt_boundary_forcing_t), allocatable :: soil_salt_boundary
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
+    integer :: micro_rooted_nodes = 0
+    real(real64), allocatable :: micro_root_length_density(:)
+    real(real64) :: root_potential_transpiration = 0.0_real64
+    real(real64) :: root_drought_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_potential_sink(:)
+    type(root_walsum_geometry_t), allocatable :: root_walsum_geometry
+    type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     type(snow_forcing_t), allocatable :: snow
     type(soil_temperature_forcing_t), allocatable :: soil_temperature
     type(fmr_black_evaporation_runtime_forcing_t), allocatable :: black_evaporation
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
+    type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
+    type(rfm_surface_forcing_t), allocatable :: rfm_surface
+    type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
+  ! Read-only trial trace of one accepted Richards physical substep. It is
+  ! worker observation data, never committed or restart state.
+  type, public :: fmr_water_flux_substep_trace_t
+    real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
+    real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
+    type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
+    real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
+         root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
+         macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
+  end type fmr_water_flux_substep_trace_t
+
   type, public :: fmr_serialized_physical_observation_t
+    logical :: bartholomeus_executed = .false.
+    integer :: bartholomeus_status = 0
+    real(real64) :: root_oxygen_base_uptake = 0.0_real64
+    real(real64) :: root_oxygen_final_uptake = 0.0_real64
+    real(real64), allocatable :: root_oxygen_final_sink(:)
+    type(frost_low_air_drainage_result_t) :: frost_low_air_drainage
+    logical :: frost_divdra_executed = .false., frost_divdra_mass_accounted_in_trial = .false.
+    real(real64) :: frost_divdra_raw_scalar = 0.0_real64, frost_divdra_start_gwl = 0.0_real64
+    real(real64) :: frost_divdra_signed_exchange_native = 0.0_real64, frost_divdra_trial_duration = 0.0_real64
+    type(frost_geometry_result_t) :: frost_divdra_geometry
+    type(frost_divdra_result_t) :: frost_divdra
+    logical :: frost_drainage_executed = .false.
+    type(frost_drainage_result_t) :: frost_drainage
+    logical :: frost_bottom_executed = .false.
+    type(frost_bottom_result_t) :: frost_bottom
+    logical :: root_frost_executed = .false.
+    integer :: root_frost_status = 0
+    real(real64) :: root_frost_loss = 0.0_real64
+    real(real64), allocatable :: root_frost_final_sink(:)
+    real(real64) :: root_compensation_frost_loss = 0.0_real64
+    logical :: root_compensation_executed = .false.
+    integer :: root_compensation_status = 0
+    real(real64) :: root_compensation_base_uptake = 0.0_real64
+    real(real64) :: root_compensation_final_uptake = 0.0_real64
+    real(real64) :: root_compensation_drought_loss = 0.0_real64
+    real(real64) :: root_compensation_oxygen_loss = 0.0_real64
+    real(real64), allocatable :: root_compensation_final_sink(:)
+    logical :: root_salinity_executed = .false.
+    integer :: root_salinity_status = 0
+    real(real64) :: root_salinity_base_uptake = 0.0_real64
+    real(real64) :: root_salinity_final_uptake = 0.0_real64
+    real(real64) :: root_salinity_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_salinity_alpha(:), root_salinity_cml_mg_cm3(:)
+    logical :: salt_transport_executed = .false.
+    integer :: salt_transport_status = 0
+    integer :: salt_internal_substeps = 0
+    real(real64) :: salt_transport_closure_mg_cm2 = 0.0_real64
+    real(real64) :: salt_root_uptake_mg_cm2 = 0.0_real64
+    real(real64), allocatable :: salt_qdra_signed_out_mg_cm2(:)
     logical :: solver_executed = .false.
+    logical :: accepted_water_flux_trace_available = .false.
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
+    logical :: hbot5_proposal_available = .false.
+    real(real64) :: hbot5_proposed_t0 = 0.0_real64, hbot5_proposed_t1 = 0.0_real64
+    real(real64) :: hbot5_sample_t1900 = 0.0_real64, hbot5_pressure_head_cm = 0.0_real64
+    logical :: cauchy3_proposal_available = .false.
+    real(real64) :: cauchy3_proposed_t0 = 0.0_real64, cauchy3_proposed_t1 = 0.0_real64
+    real(real64) :: cauchy3_head_sample_t1900 = 0.0_real64, cauchy3_sine_phase_day = 0.0_real64
+    real(real64) :: cauchy3_aquifer_head_cm = 0.0_real64
+    real(real64) :: cauchy3_q4_sample_t1900 = 0.0_real64, cauchy3_q4_cm_per_day = 0.0_real64
+    logical :: cauchy3_explicit_active = .false.
+    real(real64) :: cauchy3_explicit_qbot_cm_per_day = 0.0_real64
+    real(real64) :: cauchy3_explicit_gwlmean_cm = 0.0_real64
+    real(real64) :: cauchy3_explicit_profile_resistance_day = 0.0_real64
     integer :: solver_status = 0
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
+    logical :: macropore_top_input_active = .false.
+    real(real64) :: macropore_requested_top_cm = 0.0_real64
+    real(real64) :: macropore_accepted_top_cm = 0.0_real64
+    real(real64) :: macropore_returned_surface_cm = 0.0_real64
+    real(real64) :: macropore_pond_requested_cm = 0.0_real64
+    real(real64) :: macropore_pond_accepted_cm = 0.0_real64
+    real(real64) :: macropore_pond_returned_cm = 0.0_real64
+    logical :: macropore_rapid_drain_active = .false.
+    real(real64) :: macropore_rapid_outflow_cm = 0.0_real64
+    logical :: macropore_inner_richards_exchange_used = .false.
+    logical :: macropore_matrix_source_area_partition_used = .false.
+    real(real64) :: macropore_inner_initial_exchange_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_inner_final_exchange_rate_cm_per_day = 0.0_real64
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
@@ -296,6 +579,11 @@ module mod_fmr_serialized_reference_backend
     type(snow_mass_contribution_t) :: snow_mass
     logical :: soil_temperature_active = .false.
     logical :: soil_temperature_executed = .false.
+    logical :: frost_hydraulic_active = .false.
+    logical :: frost_hydraulic_executed = .false.
+    integer :: frost_hydraulic_status = 0
+    real(real64) :: frost_factor_min = 1.0_real64
+    real(real64) :: frost_factor_max = 1.0_real64
     integer :: soil_temperature_status = 0
     logical :: soil_temperature_energy_accounting_complete = .false.
     real(real64) :: soil_temperature_energy_residual_j_cm2 = 0.0_real64
@@ -334,11 +622,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: boesten_empirical_demand = 0.0_real64
     real(real64) :: boesten_candidate_spev = 0.0_real64
     real(real64) :: boesten_candidate_saev = 0.0_real64
+    real(real64) :: rutter_net_rain_rate_cm_per_day = 0.0_real64
+    real(real64) :: rutter_net_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: boesten_wetting_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_top_rain_rate_cm_per_day = 0.0_real64
+    real(real64) :: macropore_top_irrigation_rate_cm_per_day = 0.0_real64
   end type fmr_serialized_physical_observation_t
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
   ! attempt context, never compact committed column state.
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
+    type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
     logical :: bottom_thermal_active = .false.
     logical :: bottom_thermal_valid = .true.
     type(fmr_bottom_thermal_carrier_t) :: bottom_thermal_carrier
@@ -348,9 +643,15 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_response_window_exchange_available = .false.
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     type(accepted_trajectory_direction_t) :: trajectory_direction
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
+    logical :: accepted_water_flux_trace_failed = .false.
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
+    type(fmr_hbot5_proposal_t) :: hbot5_proposal
+    type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
+    type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
@@ -377,8 +678,43 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
     real(real64), pointer :: qrot_zero(:) => null()
+    ! Disposable worker inputs/scratch, not accepted oxygen continuation state.
+    real(real64), allocatable :: qrot_unmodified(:)
+    type(micro_de_willigen_parameters_t), allocatable :: micro_de_willigen
+    type(micro_matric_flux_table_t), allocatable :: micro_tables(:)
+    integer, allocatable :: micro_horizon_first_node(:)
+    real(real64), allocatable :: micro_root_length_density(:)
+    integer :: micro_rooted_nodes = 0
+    type(root_compensation_config_t) :: root_compensation
+    type(frost_low_air_drainage_config_t) :: frost_low_air_drainage
+    type(frost_drainage_config_t) :: frost_drainage
+    logical :: frost_divdra_active = .false.
+    type(frost_divdra_parameters_t) :: frost_divdra
+    real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
+    logical :: frost_response_drainage_active = .false.
+    logical :: frost_low_air_response_drainage_active = .false.
+    logical :: frost_tabulated_response_drainage_active = .false.
+    logical :: frost_analytic_response_drainage_active = .false.
+    logical :: frost_empirical_response_drainage_active = .false.
+    logical :: frost_extended_response_drainage_active = .false.
+    logical :: frost_highest_response_drainage_active = .false.
+    real(real64),allocatable :: unfrozen_drainage_flux(:,:)
+    type(frost_bottom_config_t) :: frost_bottom
+    type(root_frost_config_t) :: root_frost
+    real(real64) :: root_frost_head_budget_cm=0.0_real64
+    real(real64) :: root_frost_temperature_budget_c=0.0_real64
+    real(real64) :: root_potential_transpiration = 0.0_real64
+    real(real64) :: root_drought_reduction_total = 0.0_real64
+    real(real64), allocatable :: root_potential_sink(:)
+    type(root_walsum_geometry_t), allocatable :: root_walsum_geometry
+    type(fmr_bartholomeus_parameters_t), allocatable :: bartholomeus
+    type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
+    logical :: swbotb3_explicit_active = .false.
+    logical :: profile_groundwater_projection = .false.
+    real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
+    real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: max_iterations = 8
@@ -396,11 +732,32 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
+    type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
+    logical :: root_salinity_active = .false.
+    type(mobile_dispersion_physics_t), allocatable :: mobile_dispersion
+    real(real64) :: solute_tscf = 0.0_real64
+    real(real64) :: saltmax_mg_cm3 = 0.0_real64
+    real(real64) :: saltslope_cm3_mg = 0.0_real64
+    real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
+    real(real64) :: temporal_tolerance_cm = 0.0_real64
+    integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
+    type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
+    type(fmr_c_drain_salt_forcing_t) :: c_drain_salt_forcing
+    type(fmr_soil_salt_boundary_forcing_t) :: soil_salt_boundary_forcing
+    logical :: macropore_active = .false.
+    type(fmr_macropore_physical_config_t), allocatable :: macropore_config
+    type(fmr_macropore_top_input_forcing_t) :: macropore_top_input_forcing
+    type(macropore_runtime_policy_t) :: macropore_policy
+    logical :: macropore_policy_configured = .false.
+    type(macropore_single_column_runtime_t) :: macropore_runtime
+    type(rfm_runtime_configuration_t) :: rfm_configuration
+    type(rfm_surface_forcing_t) :: rfm_surface_forcing
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
+    logical :: macropore_reduction_continuation_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
     real(real64) :: temporal_indicator_budget = 0.0_real64
@@ -422,12 +779,17 @@ module mod_fmr_serialized_reference_backend
     type(snow_flux_result_t) :: snow_fluxes
     type(snow_diagnostics_t) :: snow_diagnostics
     logical :: soil_temperature_active = .false.
+    logical :: frost_active = .false.
+    type(frost_hydraulic_parameters_t) :: frost_hydraulic
+    type(frost_constitutive_provider_t), pointer :: frost_constitutive => null()
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t) :: black_evaporation_parameters
     type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
     logical :: boesten_evaporation_active = .false.
     type(boesten_evaporation_parameters_t) :: boesten_evaporation_parameters
     type(fmr_boesten_evaporation_runtime_forcing_t) :: boesten_evaporation_forcing
+    logical :: rutter_active = .false.
+    type(fmr_rutter_runtime_forcing_t), allocatable :: rutter_forcing
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
@@ -445,7 +807,11 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    logical :: accepted_water_flux_trace_enabled = .false.
+    logical :: accepted_water_flux_trace_failed = .false.
+    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
   contains
+    procedure :: matches_committed_parameter_identity => fmr_serialized_matches_committed_identity
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
     procedure :: prepare_interval => fmr_serialized_prepare_interval
@@ -471,6 +837,9 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
+    procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
+    procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
+    procedure, public :: configure_rfm_runtime => fmr_serialized_backend_configure_rfm_runtime
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
@@ -487,13 +856,340 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_reference_backend_t
 
   public :: prepare_fmr_b110_default_mvg
+  public :: fmr_c_drain_salt_covers_interval
+  public :: fmr_c_drain_salt_matches_trial
+  public :: fmr_soil_salt_boundary_matches_trial
   public :: fmr_new_b110_committed_state
+  public :: fmr_initialize_mobile_macro_salt_profile
+  public :: fmr_initialize_mobile_salt_profile
+  public :: fmr_base_salt_temporal_policy_t
+  public :: fmr_mobile_dispersion_matches_hydraulic_owner
+  public :: fmr_new_b110_macropore_reduction_committed_state
   public :: fmr_new_b110_temporal_indicator_committed_state
   public :: fmr_new_b110_fixed_weir_surface_water_committed_state
   public :: fmr_new_b110_black_evaporation_committed_state
   public :: fmr_new_b110_boesten_evaporation_committed_state
+  public :: fmr_new_b110_boesten_macropore_committed_state
+  public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  subroutine fmr_b110_capture_parameter_identity(self,identity,available)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    integer :: i
+    real(real64) :: bottom
+    identity=kernel_parameter_identity_t()
+    available=.false.
+    if(self%parameter_set_id<=0_int64.or.self%active_nodes<1) return
+    if(.not.allocated(self%z).or..not.allocated(self%dz)) return
+    if(size(self%z)/=self%active_nodes.or.size(self%dz)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%z)).or..not.all(ieee_is_finite(self%dz))) return
+    if(any(self%dz<=0.0_real64)) return
+    bottom=0.0_real64
+    do i=1,self%active_nodes
+      if(self%z(i)/=bottom-0.5_real64*self%dz(i)) return
+      bottom=bottom-self%dz(i)
+      if(.not.ieee_is_finite(bottom)) return
+    end do
+    identity%parameter_set_id=self%parameter_set_id
+    identity%active_nodes=self%active_nodes
+    identity%heat_enabled=self%soil_temperature_active
+    identity%z=self%z
+    identity%dz=self%dz
+    identity%valid=.true.
+    available=.true.
+  end subroutine
+
+  logical function fmr_b110_matches_physical_identity(self,state) result(ok)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=self%active_nodes.or.state%active_nodes<=0) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=self%active_nodes.or. &
+           size(state%water_content)/=self%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.self%soil_temperature_active) return
+      ok=.true.
+    class default
+      return
+    end select
+  end function
+
+  pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    integer :: n, i
+    real(real64) :: bottom
+    ok=.true.
+    if(.not.parameters%frost_divdra_active)return
+    ok=.false.
+    if(.not.parameters%frost_active.or..not.parameters%soil_temperature_active)return
+    if(.not.parameters%frost_drainage%active.or..not.parameters%frost_drainage%valid())return
+    if(parameters%bottom_mode/=2.or.parameters%frost_bottom%active.or.parameters%frost_low_air_drainage%active)return
+    if(parameters%drainage_response_active.or.parameters%frost_response_drainage_active)return
+    if(parameters%drainage_qbot_smooth_freatic_projection)return
+    if(allocated(parameters%drainage_response_levels))return
+    if(parameters%root_extraction_active.or.parameters%root_frost%active.or.parameters%root_salinity_active)return
+    if(parameters%root_compensation%method/=ROOT_COMP_OFF.or.allocated(parameters%bartholomeus))return
+    if(parameters%macropore_active.or.parameters%snow_active.or.parameters%elasticity_active)return
+    if(parameters%direct_retention_active.or.parameters%ksatexm_extension_active.or.parameters%tabulated_hydraulics_active)return
+    if(parameters%prepared_default_mvg_available)then
+      if(parameters%prepared_default_mvg%elastic_storage_active)return
+    end if
+    if(.not.valid_frost_divdra_parameters(parameters%frost_divdra))return
+    n=parameters%active_nodes
+    if(parameters%frost_divdra%distribution%active_nodes/=n)return
+    if(.not.allocated(parameters%dz).or..not.allocated(parameters%z).or..not.allocated(parameters%node_distance))return
+    if(.not.allocated(parameters%cofgen))return
+    if(size(parameters%dz)/=n.or.size(parameters%z)/=n.or.size(parameters%node_distance)/=n)return
+    if(size(parameters%cofgen,1)<24.or.size(parameters%cofgen,2)/=n)return
+    if(any(.not.ieee_is_finite(parameters%z)).or.any(.not.ieee_is_finite(parameters%node_distance)))return
+    if(any(parameters%frost_divdra%distribution%dz/=parameters%dz))return
+    if(any(parameters%frost_divdra%distribution%saturated_conductivity/=parameters%cofgen(3,:)))return
+    bottom=0.0_real64
+    do i=1,n
+      if(parameters%z(i)/=bottom-0.5_real64*parameters%dz(i))return
+      bottom=bottom-parameters%dz(i)
+      if(parameters%frost_divdra%distribution%zbotcp(i)/=bottom)return
+      if(i==1)then
+        if(parameters%node_distance(i)/=-parameters%z(i))return
+      else
+        if(parameters%node_distance(i)/=parameters%z(i-1)-parameters%z(i))return
+      end if
+    end do
+    ok=.true.
+  end function fmr_frost_divdra_configuration_valid
+
+  pure logical function fmr_frost_divdra_forcing_valid(active,forcing) result(ok)
+    logical, intent(in) :: active
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64) :: scalar
+    ok=.false.;scalar=forcing%frost_divdra_scalar_cm_per_day
+    if(.not.ieee_is_finite(scalar))return
+    if(.not.active)then
+      ok=scalar==0.0_real64;return
+    end if
+    if(abs(scalar)>1.e6_real64)return
+    if(scalar/=0.0_real64.and.abs(scalar)<=1.e-10_real64)return
+    if(allocated(forcing%legacy_swbotb2_control).or.allocated(forcing%legacy_swbotb4_qgwl_control))return
+    if(allocated(forcing%legacy_swbotb3_implicit_control).or.allocated(forcing%legacy_swbotb5_control))return
+    if(allocated(forcing%drainage_flux_by_level).or.allocated(forcing%drainage_response_controls))return
+    if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt).or.allocated(forcing%crop_oxygen))return
+    if(.not.allocated(forcing%subsurface_irrigation_source).or..not.allocated(forcing%root_extraction_sink))return
+    if(any(.not.ieee_is_finite(forcing%subsurface_irrigation_source)))return
+    if(any(.not.ieee_is_finite(forcing%root_extraction_sink)))return
+    if(.not.ieee_is_finite(forcing%bottom_flux))return
+    if(any(forcing%subsurface_irrigation_source/=0.0_real64).or.any(forcing%root_extraction_sink/=0.0_real64))return
+    ok=.true.
+  end function fmr_frost_divdra_forcing_valid
+
+  pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer :: level
+    logical :: has_table, has_analytic, has_empirical, has_extended
+    real(real64) :: analytic_depth
+    ok=.true.
+    if(.not.parameters%frost_response_drainage_active)then
+      ok=.not.parameters%frost_low_air_response_drainage_active.and. &
+           .not.parameters%frost_tabulated_response_drainage_active.and. &
+           .not.parameters%frost_analytic_response_drainage_active.and. &
+           .not.parameters%frost_empirical_response_drainage_active.and. &
+           .not.parameters%frost_extended_response_drainage_active.and. &
+           .not.parameters%frost_highest_response_drainage_active
+      return
+    end if
+    ok=.false.
+    if(.not.parameters%frost_drainage%active.or..not.parameters%drainage_response_active)return
+    if(parameters%drainage_qbot_smooth_freatic_projection)return
+    if(parameters%frost_low_air_drainage%active.neqv.parameters%frost_low_air_response_drainage_active)return
+    if(.not.allocated(parameters%drainage_response_levels))return
+    if(size(parameters%drainage_response_levels)<1)return
+    if(parameters%frost_low_air_response_drainage_active)then
+      if(.not.parameters%frost_low_air_drainage%valid())return
+      if(size(parameters%frost_low_air_drainage%drain_depth_cm)/=size(parameters%drainage_response_levels))return
+    end if
+    if(parameters%frost_empirical_response_drainage_active)then
+      if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active)return
+    end if
+    if(parameters%frost_highest_response_drainage_active)then
+      if(parameters%frost_extended_response_drainage_active.or.parameters%frost_tabulated_response_drainage_active.or. &
+           parameters%frost_analytic_response_drainage_active.or.parameters%frost_empirical_response_drainage_active)return
+      if(size(parameters%drainage_response_levels)/=1)return
+      if(parameters%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_EXTENDED_SIGNED)return
+    end if
+    if(parameters%frost_extended_response_drainage_active)then
+      if(parameters%frost_tabulated_response_drainage_active.or.parameters%frost_analytic_response_drainage_active.or. &
+           parameters%frost_empirical_response_drainage_active)return
+      if(size(parameters%drainage_response_levels)/=1)return
+      if(parameters%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_EXTENDED_SIGNED)return
+    end if
+    has_table=.false.;has_analytic=.false.;has_empirical=.false.;has_extended=.false.
+    do level=1,size(parameters%drainage_response_levels)
+      if(parameters%frost_empirical_response_drainage_active)then
+        if(parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_LINEAR.and. &
+             parameters%drainage_response_levels(level)%variant/=FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)return
+      end if
+      select case(parameters%drainage_response_levels(level)%variant)
+      case(FMR_DRAIN_VARIANT_LINEAR)
+        if(.not.ieee_is_finite(parameters%drainage_response_levels(level)%linear%drainage_resistance))return
+        if(parameters%drainage_response_levels(level)%linear%drainage_resistance<=0._real64)return
+      case(FMR_DRAIN_VARIANT_TABULATED)
+        if(.not.parameters%frost_tabulated_response_drainage_active)return
+        if(.not.valid_tabulated_drainage_parameters(parameters%drainage_response_levels(level)%tabulated))return
+        ! Keep the existing evaluator's representation-dependent depth-zero
+        ! singleton outside the selected runtime before any solver call.
+        if(size(parameters%drainage_response_levels(level)%tabulated%groundwater_depth)==1)then
+          if(parameters%drainage_response_levels(level)%tabulated%groundwater_depth(1)<=0._real64)return
+        end if
+        has_table=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos1_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos1))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_ipos1%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos2_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos2))return
+        if(.not.valid_hooghoudt_prepared(parameters%drainage_response_levels(level)%hooghoudt_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_hooghoudt_ipos3_parameters(parameters%drainage_response_levels(level)%hooghoudt_ipos3))return
+        if(.not.valid_hooghoudt_prepared(parameters%drainage_response_levels(level)%hooghoudt_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%hooghoudt_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_ERNST_IPOS4)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_ernst_ipos4_prepared(parameters%drainage_response_levels(level)%ernst_ipos4_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%ernst_ipos4_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_ERNST_IPOS5)
+        if(.not.parameters%frost_analytic_response_drainage_active)return
+        if(.not.valid_ernst_ipos5_prepared(parameters%drainage_response_levels(level)%ernst_ipos5_prepared))return
+        analytic_depth=parameters%drainage_response_levels(level)%ernst_ipos5_prepared%drain_bottom_level
+        has_analytic=.true.
+      case(FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
+        if(.not.parameters%frost_empirical_response_drainage_active)return
+        if(level/=size(parameters%drainage_response_levels))return
+        if(.not.valid_empirical_interflow_parameters(parameters%drainage_response_levels(level)%empirical))return
+        has_empirical=.true.
+      case(FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
+        if(.not.parameters%frost_extended_response_drainage_active.and. &
+             .not.parameters%frost_highest_response_drainage_active)return
+        if(.not.valid_extended_drainage_parameters(parameters%drainage_response_levels(level)%extended))return
+        if(parameters%drainage_response_levels(level)%extended%drain_type/=EXT_DRAIN_TUBE.and. &
+             parameters%drainage_response_levels(level)%extended%drain_type/=EXT_DRAIN_OPEN_CHANNEL)return
+        if(parameters%frost_highest_response_drainage_active)then
+          if(.not.parameters%drainage_response_levels(level)%extended%highest_level)return
+          select case(parameters%drainage_response_levels(level)%extended%highest_surface_mode)
+          case(EXT_DRAIN_TOP_SURFACE_RESISTANCE,EXT_DRAIN_TOP_POWER_INTERFLOW)
+          case default
+            return
+          end select
+        else
+          ! B14's selected ordinary profile remains highest-level excluding.
+          if(parameters%drainage_response_levels(level)%extended%highest_level)return
+          if(parameters%drainage_response_levels(level)%extended%highest_surface_mode/=EXT_DRAIN_TOP_NONE)return
+        end if
+        analytic_depth=parameters%drainage_response_levels(level)%extended%zbotdr_cm
+        if(analytic_depth>=0._real64)return
+        has_extended=.true.
+      case default
+        return
+      end select
+      if(parameters%frost_low_air_response_drainage_active)then
+        select case(parameters%drainage_response_levels(level)%variant)
+        case(FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1,FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
+             FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3,FMR_DRAIN_VARIANT_ERNST_IPOS4,FMR_DRAIN_VARIANT_ERNST_IPOS5, &
+             FMR_DRAIN_VARIANT_EXTENDED_SIGNED)
+          if(analytic_depth/=parameters%frost_low_air_drainage%drain_depth_cm(level))return
+        end select
+      end if
+    end do
+    if(parameters%frost_tabulated_response_drainage_active.and..not.has_table)return
+    if(parameters%frost_analytic_response_drainage_active.and..not.has_analytic)return
+    ok=.true.
+    if(parameters%frost_empirical_response_drainage_active.and..not.has_empirical)ok=.false.
+    if(parameters%frost_extended_response_drainage_active.and..not.has_extended)ok=.false.
+    if(parameters%frost_highest_response_drainage_active.and..not.has_extended)ok=.false.
+  end function fmr_frost_response_drainage_configuration_valid
+
+  pure logical function fmr_mobile_dispersion_matches_hydraulic_owner(parameters)result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    integer::n
+    real(real64),parameter::tol=1024.0_real64*epsilon(1.0_real64)
+    ok=.false.;n=parameters%active_nodes
+    if(.not.allocated(parameters%mobile_dispersion))return
+    if(.not.parameters%mobile_dispersion%valid(n))return
+    if(.not.allocated(parameters%dz).or..not.allocated(parameters%node_distance).or. &
+      .not.allocated(parameters%cofgen))return
+    if(size(parameters%dz)/=n.or.size(parameters%node_distance)/=n.or. &
+      size(parameters%cofgen,1)<2.or.size(parameters%cofgen,2)/=n)return
+    if(any(.not.ieee_is_finite(parameters%dz)).or.any(parameters%dz<=0.0_real64).or. &
+      any(.not.ieee_is_finite(parameters%node_distance)).or.any(parameters%node_distance<=0.0_real64).or. &
+      any(.not.ieee_is_finite(parameters%cofgen(2,:))))return
+    associate(p=>parameters%mobile_dispersion)
+      ok=all(abs(p%theta_sat_left-parameters%cofgen(2,1:n-1))<=tol).and. &
+        all(abs(p%face_distance_cm-parameters%node_distance(2:n))<=tol*max(1.0_real64,maxval(parameters%node_distance)))
+      ok=ok.and.all(abs(p%face_left_weight-.5_real64*parameters%dz(2:n)/parameters%node_distance(2:n))<=tol)
+      ok=ok.and.all(abs(p%face_right_weight-.5_real64*parameters%dz(1:n-1)/parameters%node_distance(2:n))<=tol)
+    end associate
+  end function
+
+  pure logical function fmr_c_drain_salt_covers_interval(forcing, t0, t1) result(valid)
+    type(fmr_c_drain_salt_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1
+    valid = .false.
+    if (.not. forcing%available) return
+    if (forcing%unit_id /= FMR_C_DRAIN_UNIT_MG_CM3) return
+    if (forcing%source_id <= 0_int64 .or. forcing%revision < 0_int64) return
+    if (.not. ieee_is_finite(forcing%concentration_mg_cm3) .or. forcing%concentration_mg_cm3 < 0.0_real64) return
+    if (.not. ieee_is_finite(forcing%valid_t0) .or. .not. ieee_is_finite(forcing%valid_t1)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    valid = forcing%valid_t0 <= t0 .and. forcing%valid_t1 >= t1 .and. forcing%valid_t1 > forcing%valid_t0
+  end function fmr_c_drain_salt_covers_interval
+
+  pure logical function fmr_c_drain_salt_matches_trial(forcing, forcing_handle, t0, t1) result(valid)
+    type(fmr_c_drain_salt_forcing_t), intent(in) :: forcing
+    integer(int64), intent(in) :: forcing_handle
+    real(real64), intent(in) :: t0, t1
+    valid = .false.
+    if (forcing_handle <= 0_int64 .or. forcing%source_id /= forcing_handle) return
+    valid = fmr_c_drain_salt_covers_interval(forcing, t0, t1)
+  end function fmr_c_drain_salt_matches_trial
+
+  pure logical function fmr_soil_salt_boundary_matches_trial(forcing, forcing_handle, t0, t1, active_domains) result(valid)
+    type(fmr_soil_salt_boundary_forcing_t), intent(in) :: forcing
+    integer(int64), intent(in) :: forcing_handle
+    real(real64), intent(in) :: t0, t1
+    integer, intent(in), optional :: active_domains
+    integer :: nd
+
+    valid = .false.
+    if (.not. forcing%available .or. forcing%unit_id /= FMR_C_DRAIN_UNIT_MG_CM3) return
+    if (forcing_handle <= 0_int64 .or. forcing%source_id /= forcing_handle .or. forcing%revision < 0_int64) return
+    if (.not. all(ieee_is_finite([forcing%matrix_top_mg_cm3, forcing%matrix_bottom_mg_cm3, &
+         forcing%valid_t0, forcing%valid_t1, t0, t1]))) return
+    if (min(forcing%matrix_top_mg_cm3, forcing%matrix_bottom_mg_cm3) < 0.0_real64) return
+    if (t1 <= t0 .or. forcing%valid_t1 <= forcing%valid_t0 .or. forcing%valid_t0 > t0 .or. forcing%valid_t1 < t1) return
+    if (present(active_domains)) then
+      nd = active_domains
+      if (nd <= 0 .or. .not. allocated(forcing%macropore_top_mg_cm3) .or. &
+          .not. allocated(forcing%macropore_bottom_mg_cm3)) return
+      if (size(forcing%macropore_top_mg_cm3) /= nd .or. size(forcing%macropore_bottom_mg_cm3) /= nd) return
+      if (any(.not. ieee_is_finite(forcing%macropore_top_mg_cm3)) .or. &
+          any(.not. ieee_is_finite(forcing%macropore_bottom_mg_cm3))) return
+      if (any(forcing%macropore_top_mg_cm3 < 0.0_real64) .or. &
+          any(forcing%macropore_bottom_mg_cm3 < 0.0_real64)) return
+    else
+      if (allocated(forcing%macropore_top_mg_cm3) .or. allocated(forcing%macropore_bottom_mg_cm3)) return
+    end if
+    valid = .true.
+  end function fmr_soil_salt_boundary_matches_trial
 
   subroutine prepare_fmr_b110_default_mvg(parameters, prepared)
     type(fmr_b110_physical_parameters_t), intent(inout) :: parameters
@@ -612,7 +1308,46 @@ contains
       allocate(target%soil_temperature)
       target%soil_temperature = source%soil_temperature
     end if
+    if (allocated(target%macropore)) deallocate(target%macropore)
+    if (allocated(source%macropore)) then
+      allocate(target%macropore)
+      target%macropore = source%macropore
+    end if
+    if (allocated(target%salt)) deallocate(target%salt)
+    if (allocated(source%salt)) then
+      allocate(target%salt)
+      target%salt = source%salt
+    end if
+    if (allocated(target%rutter)) deallocate(target%rutter)
+    if (allocated(source%rutter)) then
+      allocate(target%rutter)
+      target%rutter = source%rutter
+    end if
   end subroutine copy_b110_physical_state
+
+  logical function fmr_mobile_salt_ready(self,active_nodes,active_domains) result(ready)
+    class(fmr_mobile_salt_component_t), intent(in) :: self
+    integer, intent(in) :: active_nodes
+    integer, intent(in), optional :: active_domains
+    ready = .false.
+    if ((self%cdrain_source_id == 0_int64 .and. self%cdrain_revision /= -1_int64) .or. &
+        (self%cdrain_source_id /= 0_int64 .and. &
+        (self%cdrain_source_id < 0_int64 .or. self%cdrain_revision < 0_int64))) return
+    if (active_nodes <= 0) return
+    if (.not. allocated(self%mass_mg_cm2)) return
+    if (size(self%mass_mg_cm2) /= active_nodes) return
+    if (.not. all(ieee_is_finite(self%mass_mg_cm2)) .or. any(self%mass_mg_cm2 < 0.0_real64)) return
+    if (present(active_domains)) then
+      if (active_domains <= 0 .or. .not. allocated(self%macro_mass_mg_cm2)) return
+      if (any(shape(self%macro_mass_mg_cm2) /= [active_domains,active_nodes])) return
+      if (.not. all(ieee_is_finite(self%macro_mass_mg_cm2))) return
+      if (any(self%macro_mass_mg_cm2 < 0.0_real64)) return
+    else if (allocated(self%macro_mass_mg_cm2)) then
+      ! A domain-resolved payload cannot be validated without its declared layout.
+      return
+    end if
+    ready = .true.
+  end function fmr_mobile_salt_ready
 
   subroutine fmr_b110_state_clone(self, copy)
     class(fmr_b110_physical_state_t), intent(in) :: self
@@ -623,6 +1358,31 @@ contains
       call copy_b110_physical_state(self, typed_copy)
     end select
   end subroutine fmr_b110_state_clone
+
+  subroutine fmr_b110_macropore_reduction_state_clone(self, copy)
+    class(fmr_b110_macropore_reduction_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_macropore_reduction_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%reduction_continuation = self%reduction_continuation
+    end select
+  end subroutine fmr_b110_macropore_reduction_state_clone
+
+  subroutine fmr_b110_rfm_state_clone(self, copy)
+    class(fmr_b110_rfm_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical :: ok
+
+    allocate(fmr_b110_rfm_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      call copy_rfm_physical_state(self%rfm, typed_copy%rfm, ok)
+      if (.not. ok) error stop 'PPA-WU05-A20 RFM clone rejected valid source'
+    end select
+  end subroutine fmr_b110_rfm_state_clone
 
   subroutine fmr_b110_temporal_indicator_state_clone(self, copy)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
@@ -674,6 +1434,17 @@ contains
     end select
   end subroutine fmr_b110_boesten_evaporation_state_clone
 
+  subroutine fmr_b110_boesten_macropore_state_clone(self, copy)
+    class(fmr_b110_boesten_macropore_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    allocate(fmr_b110_boesten_macropore_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (fmr_b110_boesten_macropore_state_t)
+      call copy_b110_physical_state(self, typed_copy)
+      typed_copy%boesten_evaporation = self%boesten_evaporation
+    end select
+  end subroutine fmr_b110_boesten_macropore_state_clone
+
   logical function fmr_b110_temporal_history_available(self) result(available)
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     available = self%temporal_history%available(self%active_nodes)
@@ -688,20 +1459,145 @@ contains
     call self%temporal_history%snapshot(derivative, available)
   end subroutine fmr_b110_temporal_history_snapshot
 
-  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok)
+  subroutine fmr_initialize_mobile_salt_profile(state, node_thickness_cm, concentration_mg_cm3, status)
+    type(fmr_b110_physical_state_t),intent(inout)::state
+    real(real64),intent(in)::node_thickness_cm(:),concentration_mg_cm3(:)
+    integer,intent(out)::status
+    type(mobile_salt_state_t)::initialized
+    status=MACRO_SALT_INVALID
+    if(allocated(state%salt).or.allocated(state%macropore))return
+    if(.not.allocated(state%water_content))return
+    if(state%active_nodes/=size(state%water_content))return
+    call initialize_mobile_salt_state(node_thickness_cm,state%water_content,concentration_mg_cm3,initialized,status)
+    if(status/=SOLUTE_OK)return
+    allocate(state%salt)
+    call move_alloc(initialized%mass_mg_cm2,state%salt%mass_mg_cm2)
+  end subroutine
+
+  subroutine fmr_configure_base_salt_temporal_policy(self,policy,ok)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    type(fmr_base_salt_temporal_policy_t),intent(in)::policy
+    logical,intent(out)::ok
+    self%model%base_salt_temporal_policy=fmr_base_salt_temporal_policy_t()
+    ok=policy%valid()
+    if(ok)self%model%base_salt_temporal_policy=policy
+  end subroutine
+
+  subroutine fmr_initialize_mobile_macro_salt_profile(state, node_thickness_cm, matrix_concentration_mg_cm3, &
+       macro_concentration_mg_cm3, status, matrix_area_fraction)
+    type(fmr_b110_physical_state_t), intent(inout) :: state
+    real(real64), intent(in) :: node_thickness_cm(:), matrix_concentration_mg_cm3(:)
+    real(real64), intent(in) :: macro_concentration_mg_cm3(:,:)
+    integer, intent(out) :: status
+    real(real64), intent(in), optional :: matrix_area_fraction(:)
+    type(mobile_macro_salt_state_t) :: initialized
+    real(real64), allocatable :: matrix_storage_thickness(:)
+
+    status = MACRO_SALT_INVALID
+    ! Existing inventory is authoritative, particularly after warm restart.
+    if (allocated(state%salt)) return
+    if (.not. allocated(state%water_content) .or. .not. allocated(state%macropore)) return
+    if (.not. state%macropore%ready()) return
+    if (state%active_nodes /= size(state%water_content) .or. &
+        state%macropore%num_nodes /= state%active_nodes) return
+    matrix_storage_thickness=node_thickness_cm
+    if (present(matrix_area_fraction)) then
+      if (size(matrix_area_fraction)/=size(node_thickness_cm)) return
+      if (any(.not.ieee_is_finite(matrix_area_fraction)).or.any(matrix_area_fraction<=0.0_real64).or. &
+          any(matrix_area_fraction>1.0_real64)) return
+      matrix_storage_thickness=node_thickness_cm*matrix_area_fraction
+    end if
+    call initialize_mobile_macro_salt_state(matrix_storage_thickness, state%water_content, &
+         state%macropore%water_domain_cp, matrix_concentration_mg_cm3, macro_concentration_mg_cm3, initialized, status)
+    if (status /= MACRO_SALT_OK) return
+    allocate(state%salt)
+    call move_alloc(initialized%matrix_mass_mg_cm2, state%salt%mass_mg_cm2)
+    call move_alloc(initialized%macro_mass_mg_cm2, state%salt%macro_mass_mg_cm2)
+  end subroutine fmr_initialize_mobile_macro_salt_profile
+
+  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm, parameters)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
+    real(real64), intent(in), optional :: initial_rutter_storage_cm
+    type(fmr_b110_physical_parameters_t), intent(in), optional :: parameters
+    type(kernel_parameter_identity_t) :: checked_identity
+    logical :: certified
     class(transaction_state_t), allocatable :: carrier
+    integer :: rutter_status
+    if(present(parameters)) then
+      ok=.false.
+      call parameters%capture_identity(checked_identity,certified)
+      if(.not.certified) return
+      if(state%active_nodes/=checked_identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.checked_identity%heat_enabled) return
+    end if
     allocate(fmr_b110_physical_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_physical_state_t)
       call copy_b110_physical_state(state, typed_carrier)
+      if (present(initial_rutter_storage_cm)) then
+        if (allocated(typed_carrier%rutter)) deallocate(typed_carrier%rutter)
+        allocate(typed_carrier%rutter)
+        call initialize_rutter_canopy_state(initial_rutter_storage_cm, typed_carrier%rutter, rutter_status)
+        if (rutter_status /= RUTTER_WINDOW_OK) then
+          ok = .false.
+          return
+        end if
+      end if
+    end select
+    if(present(parameters)) then
+      call committed%initialize(lineage_id, carrier, ok, initial_time, parameters)
+    else
+      call committed%initialize(lineage_id, carrier, ok, initial_time)
+    end if
+  end subroutine fmr_new_b110_committed_state
+
+  subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    integer(int64),intent(in)::lineage_id
+    type(fmr_b110_physical_state_t),intent(in)::state
+    type(macropore_reduction_continuation_t),intent(in)::reduction
+    real(real64),intent(in)::initial_time
+    logical,intent(out)::ok
+    class(transaction_state_t),allocatable::carrier
+
+    ok=.false.
+    if(.not.reduction%valid())return
+    allocate(fmr_b110_macropore_reduction_state_t :: carrier)
+    select type(typed_carrier=>carrier)
+    type is(fmr_b110_macropore_reduction_state_t)
+      call copy_b110_physical_state(state,typed_carrier)
+      typed_carrier%reduction_continuation=reduction
+    end select
+    call committed%initialize(lineage_id,carrier,ok,initial_time)
+  end subroutine fmr_new_b110_macropore_reduction_committed_state
+
+  subroutine fmr_new_b110_rfm_committed_state(committed, lineage_id, state, rfm_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(rfm_physical_state_t), intent(in) :: rfm_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+    logical :: copied
+
+    ok = .false.
+    if (.not. rfm_state%ready()) return
+    if (allocated(state%macropore) .or. allocated(state%snow) .or. allocated(state%soil_temperature)) return
+
+    allocate(fmr_b110_rfm_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_rfm_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      call copy_rfm_physical_state(rfm_state, typed_carrier%rfm, copied)
+      if (.not. copied) return
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
-  end subroutine fmr_new_b110_committed_state
+  end subroutine fmr_new_b110_rfm_committed_state
 
   subroutine fmr_new_b110_temporal_indicator_committed_state(committed, lineage_id, state, initial_time, ok, &
                                                               initial_right_derivative)
@@ -789,33 +1685,72 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
+  subroutine fmr_new_b110_boesten_macropore_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok)
+    type(kernel_committed_state_t), intent(out) :: committed
+    integer(int64), intent(in) :: lineage_id
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(boesten_evaporation_state_t), intent(in) :: boesten_state
+    real(real64), intent(in) :: initial_time
+    logical, intent(out) :: ok
+    class(transaction_state_t), allocatable :: carrier
+
+    ok = .false.
+    if (.not. allocated(state%macropore) .or. .not. state%macropore%ready()) return
+    if (state%macropore%num_nodes /= state%active_nodes) return
+    if (.not. ieee_is_finite(boesten_state%spev) .or. boesten_state%spev < 0.0_real64 .or. &
+        .not. ieee_is_finite(boesten_state%saev) .or. boesten_state%saev < 0.0_real64) return
+    allocate(fmr_b110_boesten_macropore_state_t :: carrier)
+    select type (typed_carrier => carrier)
+    type is (fmr_b110_boesten_macropore_state_t)
+      call copy_b110_physical_state(state, typed_carrier)
+      typed_carrier%boesten_evaporation = boesten_state
+    end select
+    call committed%initialize(lineage_id, carrier, ok, initial_time)
+  end subroutine fmr_new_b110_boesten_macropore_committed_state
+
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled, &
+                                                               macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active) result(matches)
+                                                               boesten_evaporation_active, macropore_active, rutter_active) result(matches)
     class(transaction_state_t), intent(in) :: state
-    logical, intent(in) :: temporal_history_enabled, fixed_weir_surface_water_active
-    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active
+    logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
+    logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, macropore_active, rutter_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
     end if
     select type (state)
+    type is (fmr_b110_macropore_reduction_state_t)
+      matches = macropore_reduction_enabled .and. .not. temporal_history_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. &
+           .not. boesten_evaporation_active .and. state%reduction_continuation%valid()
     type is (fmr_b110_temporal_indicator_state_t)
-      matches = temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. .not. rutter_active
     type is (fmr_b110_fixed_weir_surface_water_state_t)
-      matches = .not. temporal_history_enabled .and. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. .not. rutter_active
     type is (fmr_b110_black_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
+           .not. rutter_active
     type is (fmr_b110_boesten_evaporation_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active .and. &
+           .not. macropore_active .and. .not. allocated(state%macropore) .and. .not. rutter_active
+    type is (fmr_b110_boesten_macropore_state_t)
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. .not. black_evaporation_active .and. boesten_evaporation_active .and. &
+           macropore_active .and. allocated(state%macropore) .and. state%macropore%ready() .and. &
+           state%macropore%num_nodes == state%active_nodes .and. (allocated(state%rutter) .eqv. rutter_active)
     type is (fmr_b110_physical_state_t)
-      matches = .not. temporal_history_enabled .and. .not. fixed_weir_surface_water_active .and. &
-           .not. black_evaporation_active .and. .not. boesten_evaporation_active
+      matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
+           .not. fixed_weir_surface_water_active .and. &
+           .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
+           (allocated(state%rutter) .eqv. rutter_active)
     class default
       matches = .false.
     end select
@@ -846,19 +1781,27 @@ contains
     class(transaction_state_t), allocatable :: snapshot
     logical :: available
     call clear_snow_preparation(model)
+    if(allocated(parameters%bartholomeus)) then
+      if(.not.valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)) return
+    else
+      if(allocated(forcing%crop_oxygen)) return
+    end if
     model%snow_active = parameters%snow_active
     model%soil_temperature_active = parameters%soil_temperature_active
     model%black_evaporation_active = parameters%black_evaporation_active
     model%boesten_evaporation_active = parameters%boesten_evaporation_active
+    model%macropore_active = parameters%macropore_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     if (model%fixed_weir_surface_water_active .and. parameters%snow_active) return
     call committed%snapshot(snapshot, available)
     if (.not. available) return
     if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled, &
+                                                           model%macropore_reduction_continuation_enabled, &
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
-                                                           model%boesten_evaporation_active)) return
+                                                           model%boesten_evaporation_active, model%macropore_active, &
+                                                           model%rutter_active)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -899,6 +1842,7 @@ contains
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
+    self%model%macropore_reduction_continuation_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
@@ -917,6 +1861,13 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     call self%top_sensible_boundary_candidate%clear()
     call self%clear_fixed_weir_surface_water()
+    self%model%macropore_active = .false.
+    if (allocated(self%model%macropore_config)) deallocate(self%model%macropore_config)
+    self%model%macropore_policy = macropore_runtime_policy_t()
+    self%model%base_salt_temporal_policy = fmr_base_salt_temporal_policy_t()
+    if(allocated(self%model%mobile_dispersion))deallocate(self%model%mobile_dispersion)
+    self%model%macropore_policy_configured = .false.
+    call self%model%rfm_configuration%clear()
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
@@ -947,6 +1898,32 @@ contains
     end if
     self%initialized = ok
   end subroutine fmr_serialized_backend_configure_soil_water_model
+
+  subroutine fmr_serialized_backend_configure_macropore_policy(self, policy, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(macropore_runtime_policy_t), intent(in) :: policy
+    logical, intent(out) :: ok
+
+    ok = .false.
+    if (.not. self%initialized) return
+    if (.not. policy%valid()) return
+    if (.not. policy%enabled) return
+    self%model%macropore_policy = policy
+    self%model%macropore_policy_configured = .true.
+    ok = .true.
+  end subroutine fmr_serialized_backend_configure_macropore_policy
+
+  subroutine fmr_serialized_backend_configure_rfm_runtime(self, config, ok)
+    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    type(rfm_runtime_configuration_t), intent(in) :: config
+    logical, intent(out) :: ok
+
+    ok = .false.
+    if (.not. self%initialized) return
+    if (.not. config%valid()) return
+    self%model%rfm_configuration = config
+    ok = self%model%rfm_configuration%valid()
+  end subroutine fmr_serialized_backend_configure_rfm_runtime
 
   subroutine fmr_serialized_backend_set_bottom_thermal_carrier_enabled(self, enabled)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
@@ -1204,7 +2181,6 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
-
     if (.not. self%model%soil_water_selection%uses_reference()) then
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
       diagnostics%admission_rejections = 1
@@ -1237,7 +2213,7 @@ contains
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
-                                               trusted_prepared_parameters)
+                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -1251,7 +2227,20 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
-    logical :: bottom_thermal_ok, top_sensible_ok
+    logical, intent(in), optional :: trace_accepted_water_flux_substeps
+    logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
+    integer :: salt_active_domains
+    logical :: rutter_snapshot_available
+    logical :: composed_rutter_boesten_macro
+    integer :: rutter_prepare_status
+    real(real64) :: rutter_source_origin, rutter_sink_total, rutter_scale
+    real(real64) :: rutter_rain_amount, rutter_total_input, rutter_surface_output, rutter_storage_change, rutter_residual
+    type(fmr_b110_physical_forcing_t) :: trial_forcing
+    type(rutter_source_state_t) :: rutter_accepted_state, rutter_candidate_state
+    type(rutter_source_trial_t) :: rutter_trial
+    type(rutter_interval_result_t) :: rutter_result
+    type(rutter_diagnostics_t) :: rutter_diagnostics
+    class(transaction_state_t), allocatable :: accepted_snapshot
 
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
@@ -1267,6 +2256,23 @@ contains
     self%model%temporal_indicator_budget = 0.0_real64
     self%model%trajectory_worker_id = -1
     self%model%trajectory_provenance_valid = .false.
+    self%model%accepted_water_flux_trace_enabled = .false.
+    if (present(trace_accepted_water_flux_substeps)) &
+         self%model%accepted_water_flux_trace_enabled = trace_accepted_water_flux_substeps
+    if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
+    if (self%model%accepted_water_flux_trace_enabled) then
+      if (parameters%snow_active .or. parameters%drainage_response_active .or. &
+          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+          .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
+          self%model%rfm_configuration%enabled .or. &
+          self%model%fixed_weir_surface_water_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    end if
+    self%model%accepted_water_flux_trace_failed = .false.
     if (column%column_id > 0_int64 .and. column%column_id <= int(huge(0), int64)) then
       self%model%trajectory_worker_id = int(column%column_id)
       self%model%trajectory_provenance_valid = self%model%trajectory_worker_id > 0
@@ -1275,6 +2281,121 @@ contains
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
       call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    if(allocated(parameters%mobile_dispersion).and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+      call reject_backend_trial(result,candidate,diagnostics)
+      return
+    end if
+    if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      if (.not. allocated(forcing%c_drain_salt)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (.not. fmr_c_drain_salt_matches_trial(forcing%c_drain_salt, column%forcing_handle, t0, t1)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (.not. allocated(forcing%soil_salt_boundary)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      select case (template%solute_state_layout_id)
+      case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+        soil_salt_boundary_ok = fmr_soil_salt_boundary_matches_trial(forcing%soil_salt_boundary, &
+             column%forcing_handle, t0, t1)
+      case (FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE)
+        soil_salt_boundary_ok = .false.
+        if (parameters%macropore_active .and. allocated(parameters%macropore)) then
+          salt_active_domains = parameters%macropore%geometry%num_domains
+          soil_salt_boundary_ok = fmr_soil_salt_boundary_matches_trial(forcing%soil_salt_boundary, &
+               column%forcing_handle, t0, t1, salt_active_domains)
+        end if
+      case default
+        soil_salt_boundary_ok = .false.
+      end select
+      if (.not. soil_salt_boundary_ok) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+          parameters%snow_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+          .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. parameters%drainage_response_active .or. &
+          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+          self%model%rfm_configuration%enabled .or. self%model%fixed_weir_surface_water_active) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if(allocated(parameters%mobile_dispersion))then
+        if(template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.or. &
+          .not.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).or. &
+          .not.self%model%base_salt_temporal_policy%transport%valid())then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+      end if
+      if (template%solute_state_layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) then
+        if (parameters%macropore_active .or. config%transaction%temporal_tolerance /= 1.0_real64 .or. &
+            .not. self%model%base_salt_temporal_policy%valid() .or. &
+            template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+      else
+        if (.not.parameters%macropore_active.or..not.allocated(parameters%macropore).or. &
+            parameters%soil_temperature_active.or. &
+            .not.ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2).or. &
+            parameters%salt_temporal_tolerance_mg_cm2<=0.0_real64) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        if (.not.allocated(parameters%macropore%matrix_area_fraction)) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+        if (parameters%macropore%shrinkage%enabled.or. &
+            any(.not.ieee_is_finite(parameters%macropore%matrix_area_fraction)).or. &
+            any(parameters%macropore%matrix_area_fraction<=0.0_real64).or. &
+            any(parameters%macropore%matrix_area_fraction>1.0_real64)) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+      end if
+    else if (parameters%root_salinity_active) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) then
+      call reject_backend_trial(result, candidate, diagnostics)
+      return
+    end if
+    composed_rutter_boesten_macro = &
+         template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
+    self%model%rutter_active = template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER .or. &
+         composed_rutter_boesten_macro
+    if (self%model%rutter_active) then
+      ! Preserve the independently qualified layouts; no combined Rutter/salt profile.
+      if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
+          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          (parameters%macropore_active .neqv. composed_rutter_boesten_macro) .or. &
+          parameters%black_evaporation_active .or. &
+          (parameters%boesten_evaporation_active .neqv. composed_rutter_boesten_macro) .or. &
+          parameters%drainage_response_active .or. parameters%elasticity_active .or. &
+          parameters%direct_retention_active .or. allocated(parameters%bartholomeus) .or. &
+          (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7) .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+    end if
+    if(.not.fmr_frost_divdra_forcing_valid(parameters%frost_divdra_active,forcing))then
+      call reject_backend_trial(result,candidate,diagnostics)
       return
     end if
     if (.not. fmr_serialized_rossfast_preflight(self, template, parameters, forcing, config, t0, t1)) then
@@ -1297,16 +2418,54 @@ contains
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end if
+    self%model%macropore_reduction_continuation_enabled = .false.
     select case (template%numerical_continuation_layout_id)
     case (FMR_NUMERICAL_CONTINUATION_NONE)
       self%model%temporal_indicator_history_enabled = .false.
     case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
+    case (FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION)
+      self%model%temporal_indicator_history_enabled = .false.
+      self%model%macropore_reduction_continuation_enabled = .true.
     case default
       call reject_backend_trial(result, candidate, diagnostics)
       return
     end select
     if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+      result = kernel_result_t()
+      result%status = KERNEL_STATUS_NOT_ADMITTED
+      candidate = kernel_candidate_state_t()
+      diagnostics = kernel_diagnostics_t()
+      diagnostics%admission_rejections = 1
+      return
+    end if
+    if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
+      if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+          template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+          .not. self%model%soil_water_selection%uses_reference()) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
+    if (parameters%macropore_active) then
+      if ((template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
+          (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .and. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION) .or. &
+          (template%numerical_continuation_layout_id == FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION .and. &
+           .not. self%model%macropore_policy%source_reduction_retry_enabled) .or. &
+          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
+        result = kernel_result_t()
+        result%status = KERNEL_STATUS_NOT_ADMITTED
+        candidate = kernel_candidate_state_t()
+        diagnostics = kernel_diagnostics_t()
+        diagnostics%admission_rejections = 1
+        return
+      end if
+    else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -1327,7 +2486,9 @@ contains
         return
       end if
     else if (parameters%boesten_evaporation_active) then
-      if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .or. &
+      if ((template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
           parameters%snow_active .or. parameters%soil_temperature_active .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
@@ -1338,7 +2499,9 @@ contains
         return
       end if
     else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
-             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) then
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .or. &
+             template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) then
       result = kernel_result_t()
       result%status = KERNEL_STATUS_NOT_ADMITTED
       candidate = kernel_candidate_state_t()
@@ -1378,6 +2541,99 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
+    trial_forcing = forcing
+    if (self%model%rutter_active) then
+      if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%source_window%valid()) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call committed%snapshot(accepted_snapshot, rutter_snapshot_available)
+      if (.not. rutter_snapshot_available) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      select type (rutter_physical => accepted_snapshot)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(rutter_physical%rutter)) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        rutter_accepted_state = rutter_physical%rutter
+      class default
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end select
+      if (.not. rutter_accepted_state%source_window_initialized()) then
+        if (abs(t0 - forcing%rutter%source_window%start_time()) > &
+            64.0_real64 * epsilon(1.0_real64) * max(1.0_real64, abs(t0))) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        call initialize_rutter_source_state(forcing%rutter%source_window, rutter_accepted_state%canopy_storage(), &
+             rutter_accepted_state, rutter_prepare_status)
+        if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+      end if
+      rutter_source_origin = rutter_accepted_state%accepted_until()
+      if (abs(rutter_source_origin - t0) > 64.0_real64 * epsilon(1.0_real64) * &
+          max(1.0_real64, abs(t0), abs(rutter_source_origin))) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call prepare_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, t1, &
+           forcing%rutter%process, rutter_result, rutter_trial, rutter_diagnostics, rutter_prepare_status)
+      if (rutter_prepare_status /= RUTTER_WINDOW_OK .or. rutter_diagnostics%status /= RUTTER_OK .or. &
+          .not. rutter_diagnostics%result_produced) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      call accept_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, rutter_trial, &
+           rutter_candidate_state, rutter_prepare_status)
+      if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      rutter_rain_amount = forcing%rutter%source_window%aggregate_value() * (t1 - t0) / &
+           (forcing%rutter%source_window%end_time() - forcing%rutter%source_window%start_time())
+      rutter_total_input = rutter_rain_amount + forcing%rutter%process%surface_irrigation_cm_per_day * (t1 - t0)
+      rutter_surface_output = (rutter_result%net_rain_cm_per_day + &
+           rutter_result%net_surface_irrigation_cm_per_day) * (t1 - t0)
+      rutter_storage_change = rutter_candidate_state%canopy_storage() - rutter_accepted_state%canopy_storage()
+      rutter_residual = rutter_total_input - rutter_surface_output - &
+           rutter_result%reservoir_outflow_cm_per_day * (t1 - t0) - rutter_storage_change
+      if (.not. ieee_is_finite(rutter_residual) .or. &
+          abs(rutter_residual) > 1024.0_real64 * epsilon(1.0_real64) * &
+          max(1.0_real64, abs(rutter_total_input), abs(rutter_surface_output), &
+              abs(rutter_storage_change), abs(rutter_result%reservoir_outflow_cm_per_day * (t1 - t0)))) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      rutter_sink_total = sum(forcing%root_extraction_sink)
+      if (.not. ieee_is_finite(rutter_sink_total) .or. rutter_sink_total < 0.0_real64) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      if (rutter_sink_total <= tiny(1.0_real64)) then
+        if (rutter_result%potential_transpiration_cm_per_day > tiny(1.0_real64)) then
+          call reject_backend_trial(result, candidate, diagnostics)
+          return
+        end if
+        rutter_scale = 0.0_real64
+      else
+        rutter_scale = rutter_result%potential_transpiration_cm_per_day / rutter_sink_total
+      end if
+      if (.not. ieee_is_finite(rutter_scale) .or. rutter_scale < 0.0_real64) then
+        call reject_backend_trial(result, candidate, diagnostics)
+        return
+      end if
+      trial_forcing%root_extraction_sink = forcing%root_extraction_sink * rutter_scale
+      trial_forcing%root_potential_transpiration = rutter_result%potential_transpiration_cm_per_day
+      trial_forcing%rutter%prepared = .true.
+      trial_forcing%rutter%result = rutter_result
+      trial_forcing%rutter%candidate_state = rutter_candidate_state
+    end if
     self%model%trusted_prepared_default_mvg = .false.
     nullify(self%model%trusted_parameter_source)
     if (present(trusted_prepared_parameters)) then
@@ -1386,12 +2642,37 @@ contains
         self%model%trusted_parameter_source => parameters
       end if
     end if
-    call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
-         result, candidate, diagnostics)
+    self%model%solute_state_layout_id = template%solute_state_layout_id
+    self%model%temporal_tolerance_cm = config%transaction%temporal_tolerance
+    self%model%c_drain_salt_forcing = fmr_c_drain_salt_forcing_t()
+    self%model%soil_salt_boundary_forcing = fmr_soil_salt_boundary_forcing_t()
+    if (allocated(forcing%c_drain_salt)) self%model%c_drain_salt_forcing = forcing%c_drain_salt
+    if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
+    if (allocated(forcing%legacy_swbotb5_control)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector=select_hbot5_proposal)
+    else if (allocated(forcing%legacy_swbotb3_implicit_control)) then
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics, target_selector=select_cauchy3_proposal)
+    else
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+           result, candidate, diagnostics)
+    end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
     nullify(self%model%hydraulic_parameters)
     nullify(self%model%trusted_parameter_source)
     self%model%trusted_prepared_default_mvg = .false.
+    if (self%model%accepted_water_flux_trace_enabled .and. result%completed) then
+      if (self%model%accepted_water_flux_trace_failed .or. &
+          .not. allocated(self%model%accepted_water_flux_substeps)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+      else if (.not. accepted_water_flux_trace_covers(self%model%accepted_water_flux_substeps,t0,t1)) then
+        call reject_backend_trial(result, candidate, diagnostics)
+      else
+        self%model%last_observation%accepted_water_flux_substeps = self%model%accepted_water_flux_substeps
+        self%model%last_observation%accepted_water_flux_trace_available = .true.
+      end if
+    end if
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -1414,6 +2695,37 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
+  contains
+    subroutine select_hbot5_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+      integer :: provider_status
+      target_t1 = requested_t1
+      max_retries_cap = config%transaction%max_retries
+      valid = .false.
+      self%model%hbot5_proposal = fmr_hbot5_proposal_t()
+      if (.not. allocated(self%model%legacy_swbotb5_control)) return
+      call self%model%legacy_swbotb5_control%resolve(cursor,target_t1,self%model%hbot5_proposal,provider_status)
+      valid = provider_status == FMR_HBOT5_OK .and. self%model%hbot5_proposal%available
+    end subroutine
+
+    subroutine select_cauchy3_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+      integer :: provider_status
+      target_t1 = requested_t1
+      max_retries_cap = config%transaction%max_retries
+      valid = .false.
+      self%model%cauchy3_proposal = fmr_cauchy3_proposal_t()
+      if (.not. allocated(self%model%legacy_swbotb3_implicit_control)) return
+      call self%model%legacy_swbotb3_implicit_control%resolve_proposal(cursor, target_t1, &
+           self%model%cauchy3_proposal, provider_status)
+      valid = provider_status == FMR_CAUCHY3_OK .and. self%model%cauchy3_proposal%available
+    end subroutine
   end subroutine fmr_serialized_backend_run_trial
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
@@ -1436,7 +2748,9 @@ contains
   logical function fmr_serialized_attempt_context_required(self) result(required)
     class(fmr_serialized_reference_model_t), intent(in) :: self
 
-    required = self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+    required = allocated(self%legacy_swbotb5_control) .or. allocated(self%legacy_swbotb3_implicit_control) .or. &
+         self%trajectory_direction_requested .or. self%drainage_response_active .or. &
+         self%accepted_water_flux_trace_enabled .or. &
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
@@ -1448,6 +2762,8 @@ contains
     allocate(fmr_serialized_attempt_context_t :: context)
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      typed%hbot5_proposal = self%hbot5_proposal
+      typed%cauchy3_proposal = self%cauchy3_proposal
       typed%bottom_thermal_active = self%bottom_thermal_carrier_active
       typed%bottom_thermal_valid = self%bottom_thermal_carrier_valid
       call self%bottom_thermal_carrier%copy_to(typed%bottom_thermal_carrier)
@@ -1457,6 +2773,9 @@ contains
       typed%drainage_response_window_exchange_available = self%drainage_response_window_exchange_available
       typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
       typed%trajectory_direction = self%trajectory_direction
+      typed%accepted_water_flux_trace_failed = self%accepted_water_flux_trace_failed
+      if (allocated(self%accepted_water_flux_substeps)) &
+           typed%accepted_water_flux_substeps = self%accepted_water_flux_substeps
     end select
   end subroutine fmr_serialized_capture_attempt_context
 
@@ -1466,6 +2785,8 @@ contains
 
     select type (typed => context)
     type is (fmr_serialized_attempt_context_t)
+      self%hbot5_proposal = typed%hbot5_proposal
+      self%cauchy3_proposal = typed%cauchy3_proposal
       self%bottom_thermal_carrier_active = typed%bottom_thermal_active
       self%bottom_thermal_carrier_valid = typed%bottom_thermal_valid
       call self%bottom_thermal_carrier%restore_from(typed%bottom_thermal_carrier)
@@ -1475,7 +2796,15 @@ contains
       self%drainage_response_window_exchange_available = typed%drainage_response_window_exchange_available
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
+      self%accepted_water_flux_trace_failed = typed%accepted_water_flux_trace_failed
+      if (allocated(typed%accepted_water_flux_substeps)) then
+        self%accepted_water_flux_substeps = typed%accepted_water_flux_substeps
+      else if (allocated(self%accepted_water_flux_substeps)) then
+        deallocate(self%accepted_water_flux_substeps)
+      end if
     class default
+      self%hbot5_proposal = fmr_hbot5_proposal_t()
+      self%cauchy3_proposal = fmr_cauchy3_proposal_t()
       self%bottom_thermal_carrier_active = .false.
       self%bottom_thermal_carrier_valid = .false.
       call self%bottom_thermal_carrier%clear()
@@ -1484,6 +2813,8 @@ contains
       call self%top_sensible_boundary_carrier%clear()
       self%drainage_response_window_exchange_available = .false.
       self%drainage_response_window_signed_exchange_native = 0.0_real64
+      self%accepted_water_flux_trace_failed = .true.
+      if (allocated(self%accepted_water_flux_substeps)) deallocate(self%accepted_water_flux_substeps)
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -1493,6 +2824,7 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
+    integer :: oxygen_route,waterfilm_mode
     ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
          self%state_profile_admitted
     if (self%fixed_weir_surface_water_active) then
@@ -1508,11 +2840,37 @@ contains
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
+      if (parameters%macropore_active) then
+        ! Admission precedes configure_parameters(). Validate the immutable
+        ! production config from the parameter carrier here; configure_parameters
+        ! materializes the model-owned copy only after this gate succeeds.
+        ok = ok .and. allocated(parameters%macropore) .and. self%macropore_policy_configured .and. &
+             self%macropore_policy%valid() .and. self%macropore_policy%enabled .and. &
+             self%soil_water_selection%uses_reference() .and. &
+             .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%black_evaporation_active .and. &
+             .not. parameters%drainage_response_active .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
+             parameters%macropore%valid_for_nodes(parameters%active_nodes)
+      else
+        ok = ok .and. .not. allocated(parameters%macropore)
+      end if
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
-           parameters%bottom_mode == 2) .and. &
-           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
-           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
-            .not. parameters%frost_active
+           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
+           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
+           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
+       if (parameters%bottom_mode == 3) then
+         if (parameters%swbotb3_explicit_active) then
+           ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
+                ieee_is_finite(parameters%swbotb3_explicit_shape_3) .and. &
+                parameters%swbotb3_explicit_shape_3 >= 0.0_real64 .and. &
+                parameters%swbotb3_explicit_shape_3 <= 1.0_real64 .and. parameters%prepared_default_mvg_available
+         end if
+         ! Admission precedes configure_parameters()/prepare_interval(). The
+         ! immutable forcing-owned Cauchy control is therefore validated in
+         ! prepare_interval, not through stale model-local state here.
+         ok = ok .and. self%soil_water_selection%uses_reference()
+       end if
        if (parameters%elasticity_active) then
          ok = ok .and. self%soil_water_selection%uses_reference() .and. &
               .not. parameters%ksatexm_extension_active .and. .not. parameters%direct_retention_active .and. &
@@ -1542,6 +2900,59 @@ contains
              parameters%soil_temperature%node_count() == parameters%active_nodes
       else
         ok = ok .and. .not. allocated(parameters%soil_temperature) .and. .not. self%soil_temperature_active
+      end if
+      if (parameters%frost_active) then
+        ok = ok .and. parameters%frost_hydraulic%valid() .and. parameters%frost_hydraulic%active .and. &
+             parameters%soil_temperature_active .and. self%soil_temperature_active .and. &
+             self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
+             parameters%bottom_mode == 2 .and. &
+             (.not. parameters%root_extraction_active .or. parameters%root_frost%active) .and. &
+             .not. parameters%macropore_active .and. &
+             (.not.parameters%drainage_response_active.or.parameters%frost_response_drainage_active).and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active .and. &
+             .not. self%bottom_thermal_carrier_active .and. .not. self%top_sensible_boundary_carrier_active .and. &
+             .not. self%trajectory_direction_requested .and. .not. self%temporal_indicator_history_enabled
+      else
+        ok = ok .and. .not. parameters%frost_hydraulic%active
+      end if
+      ok=ok.and.fmr_frost_response_drainage_configuration_valid(parameters)
+      ok=ok.and.fmr_frost_divdra_configuration_valid(parameters)
+      if(parameters%frost_low_air_drainage%active)then
+        ok=ok.and.parameters%frost_low_air_drainage%valid().and.parameters%frost_drainage%active
+      end if
+      if(parameters%frost_drainage%active)then
+        ok=ok.and.parameters%frost_drainage%valid().and.parameters%frost_active.and. &
+             numerical_config%transaction%temporal_mode==TX_TEMPORAL_EXTERNAL_FULL_HALF.and. &
+             .not.parameters%frost_bottom%active.and..not.parameters%root_extraction_active.and. &
+             .not.parameters%root_frost%active.and..not.parameters%root_salinity_active.and. &
+             (.not.parameters%drainage_response_active.or.parameters%frost_response_drainage_active).and. &
+             .not.self%base_salt_temporal_policy%enabled.and. &
+             .not.parameters%elasticity_active.and..not.parameters%direct_retention_active.and. &
+             .not.allocated(parameters%bartholomeus)
+      end if
+      if(parameters%frost_bottom%active) then
+        ok=ok.and.parameters%frost_bottom%valid().and.parameters%frost_active.and. &
+             (.not.parameters%root_extraction_active.or.parameters%root_frost%active).and. &
+             .not.parameters%root_salinity_active.and..not.self%base_salt_temporal_policy%enabled.and. &
+             .not.parameters%elasticity_active.and..not.parameters%direct_retention_active.and. &
+             .not.allocated(parameters%bartholomeus)
+      end if
+      if(parameters%root_frost%active) then
+        ok=ok.and.parameters%frost_active.and.parameters%root_extraction_active.and. &
+             parameters%root_frost%rooted_nodes>=0.and.parameters%root_frost%rooted_nodes<=parameters%active_nodes
+        ok=ok.and.ieee_is_finite(parameters%root_frost_head_budget_cm).and. &
+             ieee_is_finite(parameters%root_frost_temperature_budget_c).and. &
+             parameters%root_frost_head_budget_cm>0.0_real64.and.parameters%root_frost_temperature_budget_c>0.0_real64
+        if(parameters%root_salinity_active) then
+          ok=ok.and.self%base_salt_temporal_policy%enabled.and. &
+               self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
+               .not.parameters%frost_bottom%active.and..not.parameters%frost_drainage%active.and..not.parameters%macropore_active
+        else
+          ok=ok.and..not.self%base_salt_temporal_policy%enabled
+        end if
+        ! Actual negative-temperature Bartholomeus composition is separate scope.
+        ok=ok.and..not.allocated(parameters%bartholomeus)
       end if
       if (parameters%black_evaporation_active) then
         ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
@@ -1577,16 +2988,111 @@ contains
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
       end if
+      if(allocated(parameters%mobile_dispersion))then
+        ok=ok.and.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).and..not.parameters%macropore_active
+      end if
+      if (parameters%root_salinity_active) then
+        ! Ordered validation: Fortran may evaluate comparisons even when a
+        ! preceding finite predicate is false. Reject before comparing NaNs.
+        if(.not.all(ieee_is_finite([parameters%solute_tscf,parameters%saltmax_mg_cm3,parameters%saltslope_cm3_mg])))then
+          ok=.false.
+          return
+        end if
+        ok = ok .and. parameters%root_extraction_active .and. &
+             (parameters%root_compensation%method == ROOT_COMP_JARVIS .or. &
+              parameters%root_compensation%method == ROOT_COMP_WALSUM) .and. &
+             ieee_is_finite(parameters%solute_tscf) .and. parameters%solute_tscf >= 0.0_real64 .and. &
+             parameters%solute_tscf <= 10.0_real64 .and. ieee_is_finite(parameters%saltmax_mg_cm3) .and. &
+             parameters%saltmax_mg_cm3 >= 0.0_real64 .and. parameters%saltmax_mg_cm3 <= 100.0_real64 .and. &
+             ieee_is_finite(parameters%saltslope_cm3_mg) .and. parameters%saltslope_cm3_mg >= 0.0_real64 .and. &
+             parameters%saltslope_cm3_mg <= 1.0_real64
+      end if
+      if(allocated(parameters%bartholomeus)) then
+        ok=ok .and. valid_fmr_bartholomeus_parameters(parameters%bartholomeus,parameters%active_nodes)
+        call select_fmr_bartholomeus_route(parameters%bartholomeus%selection,oxygen_route,waterfilm_mode)
+        if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+          ok=ok .and. parameters%root_extraction_active .and. parameters%soil_temperature_active .and. &
+               self%soil_water_selection%uses_reference() .and. &
+               (parameters%bottom_mode==2 .or. parameters%bottom_mode==7) .and. &
+               .not.parameters%direct_retention_active .and. .not.parameters%elasticity_active .and. &
+               .not.parameters%macropore_active .and. .not.parameters%snow_active .and. &
+               .not.parameters%drainage_response_active .and. .not.self%fixed_weir_surface_water_active
+          ok=ok .and. parameters%bartholomeus%soil%initial_hysteresis_branch==0
+          ok=ok .and. matches_bartholomeus_hydraulic_owner(parameters%bartholomeus,parameters%cofgen,parameters%dz)
+        end if
+      end if
+      if (allocated(parameters%micro_de_willigen)) then
+        ok = ok .and. parameters%root_extraction_active .and. &
+             self%soil_water_selection%uses_reference() .and. &
+             numerical_config%transaction%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE .and. &
+             self%temporal_indicator_history_enabled .and. &
+             (parameters%bottom_mode == 2 .or. parameters%bottom_mode == 7) .and. &
+             parameters%root_compensation%method == ROOT_COMP_OFF .and. &
+             parameters%micro_de_willigen%oxygen_mode == 0 .and. &
+             .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
+             .not. allocated(parameters%bartholomeus) .and. .not. self%rutter_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%drainage_response_active .and. &
+             .not. self%fixed_weir_surface_water_active
+        if (allocated(parameters%micro_horizon_first_node)) then
+          ok = ok .and. fmr_micro_horizon_map_valid(parameters%micro_horizon_first_node,parameters%active_nodes)
+        end if
+      else
+        ok = ok .and. .not. allocated(parameters%micro_horizon_first_node)
+      end if
     class default
       ok = .false.
     end select
     fmr_serialized_execution_admitted = ok
   end function fmr_serialized_execution_admitted
 
+  logical function fmr_serialized_matches_committed_identity(self,identity,state) result(ok)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=fmr_b110_certified_candidate_layout_matches(identity,state)
+  end function
+
+  logical function fmr_b110_certified_candidate_layout_matches(identity,state) result(ok)
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    if(.not.identity%valid.or.identity%active_nodes<=0.or.identity%parameter_set_id<=0_int64) return
+    if(.not.allocated(identity%z).or..not.allocated(identity%dz)) return
+    if(size(identity%z)/=identity%active_nodes.or.size(identity%dz)/=identity%active_nodes) return
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=identity%active_nodes) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=identity%active_nodes.or. &
+           size(state%water_content)/=identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.identity%heat_enabled) return
+      if(.not.all(ieee_is_finite(state%pressure_head))) return
+      if(.not.all(ieee_is_finite(state%water_content))) return
+      if(identity%heat_enabled) then
+        block
+          type(soil_temperature_field_view_t) :: field
+          integer :: field_status
+          call build_soil_temperature_field_view(state%soil_temperature,field,field_status)
+          if(field_status/=SOIL_TEMP_OK) return
+          if(field%active_nodes/=identity%active_nodes) return
+          if(.not.all(ieee_is_finite(field%temperature_c))) return
+        end block
+      end if
+      ok=.true.
+    class default
+      return
+    end select
+  end function
+
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     integer :: n
+    logical :: micro_tables_ok
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
@@ -1636,6 +3142,10 @@ contains
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
+      self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
+      self%profile_groundwater_projection = parameters%profile_groundwater_projection
+      self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
+      self%swbotb3_explicit_shape_3 = parameters%swbotb3_explicit_shape_3
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
@@ -1654,8 +3164,60 @@ contains
       end if
       self%ponding_tolerance = parameters%ponding_tolerance
       self%root_extraction_active = parameters%root_extraction_active
+      self%root_salinity_active = parameters%root_salinity_active
+      if (allocated(self%micro_de_willigen)) deallocate(self%micro_de_willigen)
+      if (allocated(self%micro_tables)) deallocate(self%micro_tables)
+      if (allocated(self%micro_horizon_first_node)) deallocate(self%micro_horizon_first_node)
+      if (allocated(parameters%micro_de_willigen)) then
+        self%micro_de_willigen = parameters%micro_de_willigen
+        if (allocated(parameters%micro_horizon_first_node)) then
+          self%micro_horizon_first_node = parameters%micro_horizon_first_node
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok, &
+               self%micro_horizon_first_node)
+        else
+          call fmr_build_micro_mvg_tables(self%hydraulic_parameters, self%micro_tables, micro_tables_ok)
+        end if
+      end if
+      if(allocated(self%mobile_dispersion))deallocate(self%mobile_dispersion)
+      if(allocated(parameters%mobile_dispersion))self%mobile_dispersion=parameters%mobile_dispersion
+      self%solute_tscf = parameters%solute_tscf
+      self%saltmax_mg_cm3 = parameters%saltmax_mg_cm3
+      self%saltslope_cm3_mg = parameters%saltslope_cm3_mg
+      self%salt_temporal_tolerance_mg_cm2 = parameters%salt_temporal_tolerance_mg_cm2
+      self%root_compensation = parameters%root_compensation
+      self%frost_low_air_drainage = parameters%frost_low_air_drainage
+      self%frost_drainage = parameters%frost_drainage
+      self%frost_divdra_active = parameters%frost_divdra_active
+      self%frost_divdra = parameters%frost_divdra
+      self%frost_response_drainage_active = parameters%frost_response_drainage_active
+      self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
+      self%frost_tabulated_response_drainage_active = parameters%frost_tabulated_response_drainage_active
+      self%frost_analytic_response_drainage_active = parameters%frost_analytic_response_drainage_active
+      self%frost_empirical_response_drainage_active = parameters%frost_empirical_response_drainage_active
+      self%frost_extended_response_drainage_active = parameters%frost_extended_response_drainage_active
+      self%frost_highest_response_drainage_active = parameters%frost_highest_response_drainage_active
+      self%frost_bottom = parameters%frost_bottom
+      self%root_frost = parameters%root_frost
+      self%root_frost_head_budget_cm=parameters%root_frost_head_budget_cm
+      self%root_frost_temperature_budget_c=parameters%root_frost_temperature_budget_c
+      if (self%root_compensation%method < ROOT_COMP_OFF .or. self%root_compensation%method > ROOT_COMP_WALSUM) return
+      if (self%root_compensation%method /= ROOT_COMP_OFF .and. .not. self%root_extraction_active) return
+      if(self%root_compensation%stressor==ROOT_COMP_FROST.and..not.self%root_frost%active) return
+      if(allocated(self%bartholomeus)) deallocate(self%bartholomeus)
+      if(allocated(parameters%bartholomeus)) self%bartholomeus=parameters%bartholomeus
+      self%macropore_active = parameters%macropore_active
+      if (allocated(self%macropore_config)) deallocate(self%macropore_config)
+      if (parameters%macropore_active .and. allocated(parameters%macropore)) then
+        allocate(self%macropore_config)
+        self%macropore_config = parameters%macropore
+      end if
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      self%frost_active = parameters%frost_active
+      self%frost_hydraulic = parameters%frost_hydraulic
+      if (self%frost_active) then
+        if (.not. associated(self%frost_constitutive)) allocate(self%frost_constitutive)
+      end if
       self%black_evaporation_active = parameters%black_evaporation_active
       self%black_evaporation_parameters = black_evaporation_parameters_t()
       if (parameters%black_evaporation_active .and. allocated(parameters%black_evaporation)) then
@@ -1689,8 +3251,15 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
-    real(real64) :: black_values(9), boesten_values(9)
+    real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol
     self%forcing_admitted = .false.
+    if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
+    self%hbot5_proposal = fmr_hbot5_proposal_t()
+    self%cauchy3_proposal = fmr_cauchy3_proposal_t()
+    if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
+    if (allocated(self%legacy_swbotb3_implicit_control)) deallocate(self%legacy_swbotb3_implicit_control)
+    self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
+    self%rfm_surface_forcing = rfm_surface_forcing_t()
     self%drainage_response_evaluations = 0
     self%drainage_response_diagnostics = fmr_drainage_response_diagnostics_t()
     self%drainage_response_window_exchange_available = self%drainage_response_active
@@ -1741,7 +3310,77 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
-      if (self%drainage_response_active) then
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. self%root_extraction_active .or. .not. allocated(self%micro_tables)) return
+        if (.not. allocated(forcing%micro_root_length_density)) return
+        if (size(forcing%micro_root_length_density) /= n) return
+        if (forcing%micro_rooted_nodes < 0 .or. forcing%micro_rooted_nodes > n) return
+        if (any(.not. ieee_is_finite(forcing%micro_root_length_density))) return
+        if (any(forcing%micro_root_length_density < 0.0_real64)) return
+        if (any(forcing%root_extraction_sink /= 0.0_real64)) return
+        if (allocated(forcing%root_potential_sink) .or. forcing%root_drought_reduction_total /= 0.0_real64) return
+        if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_salinity_active .or. &
+            self%root_frost%active .or. allocated(self%bartholomeus) .or. self%rutter_active) return
+        if (self%micro_de_willigen%oxygen_mode /= 0) return
+        if (forcing%micro_rooted_nodes > 1 .and. .not. allocated(self%micro_horizon_first_node)) then
+          if (any(self%hydraulic_parameters%cofgen(1:24,2:forcing%micro_rooted_nodes) /= &
+              spread(self%hydraulic_parameters%cofgen(1:24,1),2,forcing%micro_rooted_nodes-1))) return
+        end if
+        self%micro_rooted_nodes = forcing%micro_rooted_nodes
+        self%micro_root_length_density = forcing%micro_root_length_density
+      else
+        if (allocated(forcing%micro_root_length_density) .or. forcing%micro_rooted_nodes /= 0) return
+        if (allocated(self%micro_root_length_density)) deallocate(self%micro_root_length_density)
+        self%micro_rooted_nodes = 0
+      end if
+      if (self%rutter_active) then
+        if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%prepared .or. &
+            .not. forcing%rutter%source_window%valid()) return
+        if (allocated(forcing%snow) .or. allocated(forcing%black_evaporation) .or. &
+            (allocated(forcing%boesten_evaporation) .and. .not. self%boesten_evaporation_active) .or. &
+            allocated(forcing%rfm_surface) .or. &
+            allocated(forcing%macropore_top_input) .or. self%snow_active .or. &
+            self%black_evaporation_active .or. &
+            forcing%top_flux /= 0.0_real64) return
+        time_tol = 64.0_real64 * epsilon(1.0_real64) * &
+             max(1.0_real64, abs(interval%t0), abs(interval%t1))
+        if (interval%t0 < forcing%rutter%source_window%start_time() - time_tol .or. &
+            interval%t1 > forcing%rutter%source_window%end_time() + time_tol) return
+        rutter_values = [forcing%rutter%process%surface_irrigation_cm_per_day, &
+             forcing%rutter%process%vegetation_cover_fraction, &
+             forcing%rutter%process%canopy_storage_capacity_cm, &
+             forcing%rutter%process%interception_evaporation_capacity_cm_per_day, &
+             forcing%rutter%process%potential_transpiration_dry_cm_per_day, &
+             forcing%rutter%process%potential_transpiration_wet_cm_per_day, &
+             forcing%rutter%snowmelt_rate_cm_per_day, forcing%rutter%runon_rate_cm_per_day, &
+             forcing%rutter%potential_bare_soil_evaporation_cm_per_day, &
+             forcing%rutter%potential_pond_evaporation_cm_per_day, forcing%rutter%ponding_max_cm, &
+             forcing%rutter%runoff_resistance_day, forcing%rutter%runoff_exponent, interval%t1-interval%t0]
+        if (any(.not. ieee_is_finite(rutter_values))) return
+        if (forcing%rutter%process%vegetation_cover_fraction < 0.0_real64 .or. &
+            forcing%rutter%process%vegetation_cover_fraction > 1.0_real64 .or. &
+            forcing%rutter%process%canopy_storage_capacity_cm < 0.0_real64 .or. &
+            forcing%rutter%process%interception_evaporation_capacity_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%process%potential_transpiration_dry_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%process%potential_transpiration_wet_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%rutter%runon_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%rutter%potential_bare_soil_evaporation_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%potential_pond_evaporation_cm_per_day < 0.0_real64 .or. &
+            forcing%rutter%ponding_max_cm < 0.0_real64 .or. forcing%rutter%runoff_resistance_day < 0.0_real64 .or. &
+            forcing%rutter%runoff_exponent <= 0.0_real64) return
+        if (allocated(self%rutter_forcing)) deallocate(self%rutter_forcing)
+        allocate(self%rutter_forcing)
+        self%rutter_forcing = forcing%rutter
+      else
+        if (allocated(forcing%rutter)) return
+        if (allocated(self%rutter_forcing)) deallocate(self%rutter_forcing)
+      end if
+      if(.not.fmr_frost_divdra_forcing_valid(self%frost_divdra_active,forcing))return
+      self%frost_divdra_scalar_cm_per_day=forcing%frost_divdra_scalar_cm_per_day
+      if(self%frost_divdra_active)then
+        ! A scalar owner is mutually exclusive with every materialized nodal owner.
+        if(abs(forcing%bottom_flux)>1.e6_real64)return
+      else if (self%drainage_response_active) then
         if (allocated(forcing%drainage_flux_by_level) .or. .not. allocated(self%drainage_response_levels) .or. &
             .not. allocated(forcing%drainage_response_controls)) return
         drainage_preflight_status = fmr_drainage_response_configuration_status(self%drainage_response_levels, &
@@ -1749,15 +3388,107 @@ contains
         self%drainage_response_diagnostics%status = drainage_preflight_status
         self%last_observation%drainage_response = self%drainage_response_diagnostics
         if (drainage_preflight_status /= FMR_DRAIN_BIND_OK) return
+        if(self%frost_low_air_response_drainage_active)then
+          if(.not.self%frost_low_air_drainage%valid())return
+          if(size(self%frost_low_air_drainage%drain_depth_cm)/=size(self%drainage_response_levels))return
+        end if
+        if(self%frost_response_drainage_active)then
+          if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt))return
+          if(any(forcing%subsurface_irrigation_source/=0._real64).or.any(forcing%root_extraction_sink/=0._real64))return
+        end if
       else
         if (.not. allocated(forcing%drainage_flux_by_level) .or. allocated(forcing%drainage_response_controls)) return
         if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n) return
+        if (self%frost_active .and. .not.self%frost_drainage%active.and.any(forcing%drainage_flux_by_level /= 0.0_real64)) return
+        if(self%frost_low_air_drainage%active)then
+          if(.not.allocated(self%frost_low_air_drainage%drain_depth_cm))return
+          if(size(self%frost_low_air_drainage%drain_depth_cm)/=size(forcing%drainage_flux_by_level,1))return
+        end if
+        ! Legacy FrozenBounds can replace a prescribed qbot under a deep frozen
+        ! profile. Until that boundary view is separately admitted, this slice
+        ! is limited to a zero prescribed qbot where the boundary is invariant.
+        if (self%frost_active .and. .not.self%frost_bottom%active.and..not.self%frost_drainage%active .and. forcing%bottom_flux /= 0.0_real64) return
+        if(self%frost_bottom%active.or.self%frost_drainage%active)then
+          if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt))return
+        end if
       end if
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+      if(self%root_frost%active) then
+        if(self%root_salinity_active.and.any(forcing%subsurface_irrigation_source/=0.0_real64)) return
+        if(self%root_frost%rooted_nodes<0.or.self%root_frost%rooted_nodes>n) return
+        if(any(forcing%root_extraction_sink(self%root_frost%rooted_nodes+1:)/=0.0_real64)) return
+        if(self%root_compensation%method/=ROOT_COMP_OFF) then
+          if(.not.allocated(forcing%root_potential_sink)) return
+          if(size(forcing%root_potential_sink)/=n) return
+          if(any(.not.ieee_is_finite(forcing%root_potential_sink))) return
+          if(any(forcing%root_potential_sink<forcing%root_extraction_sink)) return
+          if(any(forcing%root_potential_sink(self%root_frost%rooted_nodes+1:)/=0.0_real64)) return
+        end if
+      end if
+      if (self%root_compensation%method /= ROOT_COMP_OFF) then
+        if (.not. ieee_is_finite(forcing%root_potential_transpiration) .or. forcing%root_potential_transpiration < 0.0_real64) return
+        if (.not. ieee_is_finite(forcing%root_drought_reduction_total) .or. forcing%root_drought_reduction_total < 0.0_real64) return
+      end if
+      if (self%root_salinity_active .and. self%root_compensation%method == ROOT_COMP_WALSUM) then
+        block
+          real(real64) :: geometry_alpha
+          integer :: deepest_root_node, geometry_status
+          ! Validate the crop owner's support before stress can mask a sink.
+          if (.not. allocated(forcing%root_walsum_geometry) .or. .not. allocated(forcing%root_potential_sink)) return
+          if (size(forcing%root_potential_sink) /= n) return
+          if (any(.not. ieee_is_finite(forcing%root_potential_sink))) return
+          if (any(forcing%root_potential_sink < 0.0_real64)) return
+          call evaluate_walsum_geometry(forcing%root_walsum_geometry,self%soil_parameters%dz, &
+               geometry_alpha,deepest_root_node,geometry_status)
+          if (geometry_status /= ROOT_COMP_OK) return
+          if (any(forcing%root_potential_sink(deepest_root_node+1:) /= 0.0_real64)) return
+          if (any(forcing%root_extraction_sink(deepest_root_node+1:) /= 0.0_real64)) return
+        end block
+      end if
+      if(allocated(self%bartholomeus)) then
+        block
+          integer :: oxygen_route,waterfilm_mode
+          call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+          if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+            if(.not.allocated(forcing%crop_oxygen)) return
+            if(.not.valid_crop_bartholomeus_input(forcing%crop_oxygen,n)) return
+            self%crop_oxygen=forcing%crop_oxygen
+          else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
+            return
+          end if
+        end block
+      else
+        if(allocated(forcing%crop_oxygen)) return
+      end if
       if (self%root_extraction_active) then
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
+      if (allocated(forcing%legacy_swbotb5_control)) then
+        if (self%bottom_mode /= 5 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb3_implicit_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
+            allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb5_control%ready()) return
+        allocate(self%legacy_swbotb5_control)
+        self%legacy_swbotb5_control = forcing%legacy_swbotb5_control
+      end if
+      if (allocated(forcing%legacy_swbotb3_implicit_control)) then
+        if (self%bottom_mode /= 3 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb2_control) .or. &
+            allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        if (.not. forcing%legacy_swbotb3_implicit_control%ready()) return
+        allocate(self%legacy_swbotb3_implicit_control)
+        self%legacy_swbotb3_implicit_control = forcing%legacy_swbotb3_implicit_control
+      end if
+      if (self%bottom_mode == 3 .and. .not. allocated(self%legacy_swbotb3_implicit_control)) return
+      if (allocated(forcing%legacy_swbotb4_qgwl_control)) then
+        if (allocated(forcing%legacy_swbotb2_control)) return
+        if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
+        if (.not. allocated(self%legacy_swbotb4_qgwl_control)) allocate(self%legacy_swbotb4_qgwl_control)
+        self%legacy_swbotb4_qgwl_control = forcing%legacy_swbotb4_qgwl_control
+      else if (allocated(self%legacy_swbotb4_qgwl_control)) then
+        deallocate(self%legacy_swbotb4_qgwl_control)
       end if
       if (allocated(forcing%legacy_swbotb2_control)) then
         if (self%bottom_mode /= 2 .or. .not. self%soil_water_selection%uses_reference()) return
@@ -1824,14 +3555,24 @@ contains
         if (.not. all(ieee_is_finite(boesten_values))) return
         if (any(boesten_values(1:8) < 0.0_real64)) return
         if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) return
-        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
-            forcing%boesten_evaporation%runon_rate_cm_per_day /= 0.0_real64) return
+        ! Runon is an admitted shared-surface source for the B1.11 dynamic
+        ! top boundary. It must not be reclassified as direct macropore input.
+        ! Snowmelt remains outside this bounded Boesten envelope here.
+        if (forcing%boesten_evaporation%snowmelt_rate_cm_per_day /= 0.0_real64) return
         self%boesten_evaporation_forcing = forcing%boesten_evaporation
       else
         if (allocated(forcing%boesten_evaporation)) return
       end if
 
-      if (self%drainage_response_active) then
+      if(self%frost_divdra_active)then
+        if(allocated(self%drainage_response_controls))deallocate(self%drainage_response_controls)
+        if(allocated(self%unfrozen_drainage_flux))deallocate(self%unfrozen_drainage_flux)
+        if(associated(self%qdra))then
+          if(size(self%qdra,1)/=1.or.size(self%qdra,2)/=n)deallocate(self%qdra)
+        end if
+        if(.not.associated(self%qdra))allocate(self%qdra(1,n))
+        self%qdra=0.0_real64
+      else if (self%drainage_response_active) then
         if (associated(self%qdra)) then
           if (size(self%qdra,1) /= size(self%drainage_response_levels) .or. size(self%qdra,2) /= n) then
             deallocate(self%qdra)
@@ -1855,6 +3596,8 @@ contains
         end if
         if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
         self%qdra = forcing%drainage_flux_by_level
+        if(allocated(self%unfrozen_drainage_flux))deallocate(self%unfrozen_drainage_flux)
+        if(self%frost_drainage%active)self%unfrozen_drainage_flux=forcing%drainage_flux_by_level
       end if
 
       if (associated(self%qssdi)) then
@@ -1874,6 +3617,17 @@ contains
 
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
+      self%root_potential_transpiration = forcing%root_potential_transpiration
+      self%root_drought_reduction_total = forcing%root_drought_reduction_total
+      if(allocated(self%root_walsum_geometry)) deallocate(self%root_walsum_geometry)
+      if(allocated(forcing%root_walsum_geometry)) self%root_walsum_geometry=forcing%root_walsum_geometry
+      if(allocated(self%root_potential_sink)) deallocate(self%root_potential_sink)
+      if(allocated(forcing%root_potential_sink)) self%root_potential_sink=forcing%root_potential_sink
+      if(allocated(self%crop_oxygen) .or. self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_frost%active) then
+        self%qrot_unmodified=forcing%root_extraction_sink
+      else
+        if(allocated(self%qrot_unmodified)) deallocate(self%qrot_unmodified)
+      end if
       self%qrot_zero = 0.0_real64
 
       if (self%drainage_qbot_smooth_freatic_projection) then
@@ -1884,6 +3638,27 @@ contains
         self%projection_zero_direction = 0.0_real64
       else if (allocated(self%projection_zero_direction)) then
         deallocate(self%projection_zero_direction)
+      end if
+      if (self%rfm_configuration%enabled) then
+        if (.not. self%rfm_configuration%valid()) return
+        if (.not. allocated(forcing%rfm_surface)) return
+        if (.not. forcing%rfm_surface%valid()) return
+        if (self%macropore_active .or. self%snow_active .or. self%black_evaporation_active .or. &
+            self%boesten_evaporation_active .or. self%fixed_weir_surface_water_active) return
+        if (allocated(forcing%macropore_top_input)) return
+        self%rfm_surface_forcing = forcing%rfm_surface
+      else
+        if (allocated(forcing%rfm_surface)) return
+      end if
+
+      if (allocated(forcing%macropore_top_input)) then
+        if (.not. self%macropore_active) return
+        if (.not. forcing%macropore_top_input%valid()) return
+        if (forcing%macropore_top_input%supplied) then
+          if (self%snow_active .or. self%black_evaporation_active .or. &
+              self%fixed_weir_surface_water_active) return
+        end if
+        self%macropore_top_input_forcing = forcing%macropore_top_input
       end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
@@ -2055,34 +3830,72 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(macropore_runtime_result_t) :: macropore_result
+    type(mobile_macro_salt_receipt_t) :: salt_receipt
     type(soil_water_accepted_step_direction_result_t) :: direction_result
     type(trajectory_step_token_t) :: direction_token
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
+    type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
+    type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
+    type(micro_de_willigen_result_t) :: micro_result
+    real(real64),allocatable :: oxygen_w_root(:),oxygen_factors(:),frost_factors(:),root_frost_factors(:)
+    real(real64),allocatable :: salinity_cml(:),salinity_alpha(:),salinity_sink(:),salinity_node_loss(:),root_after_oxygen(:),salinity_storage_thickness(:)
+    real(real64),allocatable :: trace_macro_water_start(:,:)
+    real(real64) :: atmospheric_ctop,salinity_loss_total,salinity_loss_rate
+    integer :: oxygen_route,waterfilm_mode,oxygen_status,oxygen_nodes,salinity_status,salt_status
+    logical :: publish_root_result
     type(black_evaporation_forcing_t) :: black_process_forcing
     type(black_evaporation_result_t) :: black_result
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
-    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider
+    type(rutter_interval_result_t) :: rutter_process_result
+    type(fmr_macropore_top_input_forcing_t) :: macro_top_input_trial
+    type(rfm_matrix_source_provider_t), target :: rfm_source_provider
+    type(rfm_live_trial_prepare_result_t) :: rfm_live
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
+    real(real64), allocatable, target :: rfm_source_rate(:)
+    real(real64), allocatable :: rfm_node_depth_cm(:)
+    type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider, &
+         rutter_top_provider
     real(real64), allocatable :: drainage_sink_direction(:)
     type(b110_smooth_freatic_projection_diagnostics_t) :: projection_diagnostics
     real(real64) :: step_duration, bottom_temperature_start_c
+    real(real64) :: macropore_accepted_top_cm, macropore_rapid_outflow_cm
+    real(real64) :: surface_external_exchange_cm
+    real(real64) :: macropore_pond_requested_cm, macropore_pond_accepted_cm, macropore_pond_returned_cm
+    real(real64) :: rfm_preferential_input_cm, rfm_deep_receipt_cm
     real(real64) :: step_drainage_exchange
     real(real64) :: fixed_top_conductivity
     real(real64) :: projected_groundwater_level, ignored_groundwater_direction
     real(real64) :: candidate_projected_groundwater_level, drainage_groundwater_direction
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok
-    logical :: direct_retention_ok
+    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok, hydraulic_view_ok, rfm_source_ok
+    logical :: direct_retention_ok, rutter_trial_prepared
+    real(real64) :: rutter_previous_ponding
     logical :: bottom_temperature_start_available, fixed_top_conductivity_ok
     logical :: trajectory_begin_ok, trajectory_request_ok, trajectory_stage_ok, trajectory_accept_ok
     logical :: trajectory_solver_used, rossfast_certificate_available, drainage_direction_available
     real(real64) :: rossfast_temporal_indicator, effective_bottom_flux
-    integer :: effective_bottom_mode, swbotb2_status
+    real(real64) :: cauchy3_q4, cauchy3_q4_sample_t1900, low3_qbot, low3_gwlmean, low3_cvalprof
+    real(real64), allocatable :: low3_ztop(:), low3_zbot(:), low3_ksat(:)
+    integer :: effective_bottom_mode, swbotb2_status, swbotb4_status, cauchy3_status, low3_status, low3_i
+    logical :: low3_k_ok
+    type(b111_profile_groundwater_projection_t) :: profile_projection
+    type(fmr_qgwl_bottom_boundary_result_t) :: swbotb4_result
     integer :: soil_temperature_status, bottom_temperature_status, drainage_direction_status, candidate_projection_status
+    type(frost_bottom_result_t) :: frost_bottom_result
+    integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
     outcome = trial_outcome_t()
+    macropore_accepted_top_cm = 0.0_real64
+    macropore_rapid_outflow_cm = 0.0_real64
+    macropore_pond_requested_cm = 0.0_real64
+    macropore_pond_accepted_cm = 0.0_real64
+    macropore_pond_returned_cm = 0.0_real64
+    rfm_preferential_input_cm = 0.0_real64
+    rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
@@ -2090,6 +3903,7 @@ contains
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
     self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
     self%last_observation%soil_temperature_active = self%soil_temperature_active
+    self%last_observation%frost_hydraulic_active = self%frost_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active
     self%last_observation%boesten_evaporation_active = self%boesten_evaporation_active
     self%fixed_weir_surface_water_result = fixed_weir_surface_water_result_t()
@@ -2101,6 +3915,8 @@ contains
     self%last_observation%temporal_head_budget = self%temporal_indicator_budget
     bottom_temperature_start_c = 0.0_real64
     bottom_temperature_start_available = .false.
+    frost_status = FROST_EFFECT_OK
+    frost_provider_status = FROST_PROVIDER_OK
     trajectory_begin_ok = .false.
     trajectory_request_ok = .false.
     trajectory_stage_ok = .false.
@@ -2120,6 +3936,13 @@ contains
       self%last_observation%temporal_certificate_unavailable_reason = 'indicator-not-evaluated'
     end if
     call populate_snow_observation(self)
+    ! Re-enter from the ORIGINAL base root sink for every sibling/retry/step.
+    ! qrot is worker scratch. Reducing its previous value would create history.
+    if(allocated(self%crop_oxygen)) then
+      if(.not.allocated(self%qrot_unmodified) .or. .not.associated(self%qrot)) return
+      if(size(self%qrot_unmodified)/=size(self%qrot)) return
+      self%qrot=self%qrot_unmodified
+    end if
     call populate_fixed_weir_surface_water_observation(self)
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%drainage_qbot_projection_active = self%drainage_qbot_smooth_freatic_projection
@@ -2129,13 +3952,51 @@ contains
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled, &
+                                                           self%macropore_reduction_continuation_enabled, &
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
-                                                           self%boesten_evaporation_active)) return
+                                                           self%boesten_evaporation_active, self%macropore_active, &
+                                                           self%rutter_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
+    rutter_trial_prepared = .false.
+    rutter_previous_ponding = 0.0_real64
+    if (self%rutter_active) then
+      if (.not. allocated(self%rutter_forcing) .or. .not. self%rutter_forcing%prepared) return
+      select type (rutter_physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(rutter_physical%rutter)) return
+        rutter_previous_ponding = rutter_physical%ponding_depth
+      class default
+        return
+      end select
+      rutter_process_result = self%rutter_forcing%result
+      self%last_observation%rutter_net_rain_rate_cm_per_day = rutter_process_result%net_rain_cm_per_day
+      self%last_observation%rutter_net_irrigation_rate_cm_per_day = &
+           rutter_process_result%net_surface_irrigation_cm_per_day
+      call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
+           self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
+           rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
+           self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
+           self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day, &
+           self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
+           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+      rutter_trial_prepared = .true.
+    end if
     effective_bottom_mode = self%bottom_mode
     effective_bottom_flux = self%bottom_flux
+    if (allocated(self%legacy_swbotb4_qgwl_control)) then
+      select type (physical_control => state)
+      class is (fmr_b110_physical_state_t)
+        call fmr_evaluate_legacy_qgwl_bottom_boundary(self%legacy_swbotb4_qgwl_control, &
+             physical_control%groundwater_level, swbotb4_result, swbotb4_status)
+        if (swbotb4_status /= FMR_QGWL_OK .or. .not. swbotb4_result%available) return
+        effective_bottom_mode = 2
+        effective_bottom_flux = swbotb4_result%qbot_cm_per_day
+      class default
+        return
+      end select
+    end if
     if (allocated(self%legacy_swbotb2_control)) then
       select type (physical_control => state)
       class is (fmr_b110_physical_state_t)
@@ -2158,7 +4019,8 @@ contains
     end if
     request%parameters => self%soil_parameters
     request%step_duration = step_duration
-    if (self%black_evaporation_active .or. self%boesten_evaporation_active) then
+    if (self%black_evaporation_active .or. self%boesten_evaporation_active .or. self%rfm_configuration%enabled .or. &
+        self%rutter_active) then
       request%boundary%top_mode = FSI_TOP_MODE_DYNAMIC_PROVIDER
     else
       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -2168,6 +4030,68 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%legacy_swbotb3_implicit_control)) then
+      if (.not. self%cauchy3_proposal%covers(t0,t1)) return
+      call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
+      if (cauchy3_status /= FMR_CAUCHY3_OK) return
+      if (self%swbotb3_explicit_active) then
+        if (.not.self%profile_groundwater_projection) return
+        select type (low3_physical => state)
+        class is (fmr_b110_physical_state_t)
+          if (low3_physical%active_nodes /= self%soil_parameters%active_nodes .or. &
+              .not. allocated(low3_physical%pressure_head)) return
+          call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection)
+        class default
+          return
+        end select
+        if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
+        allocate(low3_ztop(self%soil_parameters%active_nodes), low3_zbot(self%soil_parameters%active_nodes), &
+                 low3_ksat(self%soil_parameters%active_nodes))
+        do low3_i=1,self%soil_parameters%active_nodes
+          low3_ztop(low3_i)=self%soil_parameters%z(low3_i)+0.5_real64*self%soil_parameters%dz(low3_i)
+          low3_zbot(low3_i)=self%soil_parameters%z(low3_i)-0.5_real64*self%soil_parameters%dz(low3_i)
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,low3_i,0.0_real64,low3_ksat(low3_i),low3_k_ok)
+          if(.not.low3_k_ok)return
+        end do
+        call evaluate_b111_explicit_cauchy_profile_flux(profile_projection%level_cm, &
+             self%swbotb3_explicit_hdrain_cm,self%swbotb3_explicit_shape_3,self%cauchy3_proposal%aquifer_total_head_cm, &
+             self%legacy_swbotb3_implicit_control%external_resistance_days(),low3_ztop,low3_zbot,self%soil_parameters%dz, &
+             low3_ksat,cauchy3_q4,low3_qbot,low3_gwlmean, &
+             low3_cvalprof,low3_status)
+        if(low3_status/=B111_EXPLICIT_CAUCHY_OK)return
+        request%boundary%bottom_mode = 2
+        request%boundary%bottom_flux = low3_qbot
+        self%last_observation%cauchy3_explicit_active = .true.
+        self%last_observation%cauchy3_explicit_qbot_cm_per_day = low3_qbot
+        self%last_observation%cauchy3_explicit_gwlmean_cm = low3_gwlmean
+        self%last_observation%cauchy3_explicit_profile_resistance_day = low3_cvalprof
+      else
+        request%boundary%bottom_mode = 3
+        request%boundary%bottom_head = self%cauchy3_proposal%aquifer_total_head_cm
+        request%boundary%bottom_flux = cauchy3_q4
+        request%boundary%bottom_external_resistance_days = &
+             self%legacy_swbotb3_implicit_control%external_resistance_days()
+        request%boundary%bottom_include_half_cell = self%legacy_swbotb3_implicit_control%half_cell_enabled()
+      end if
+      self%last_observation%cauchy3_proposal_available = .true.
+      self%last_observation%cauchy3_proposed_t0 = self%cauchy3_proposal%t0
+      self%last_observation%cauchy3_proposed_t1 = self%cauchy3_proposal%original_t1
+      self%last_observation%cauchy3_head_sample_t1900 = self%cauchy3_proposal%legacy_head_sample_t1900
+      self%last_observation%cauchy3_sine_phase_day = self%cauchy3_proposal%sine_phase_day
+      self%last_observation%cauchy3_aquifer_head_cm = self%cauchy3_proposal%aquifer_total_head_cm
+      self%last_observation%cauchy3_q4_sample_t1900 = cauchy3_q4_sample_t1900
+      self%last_observation%cauchy3_q4_cm_per_day = cauchy3_q4
+    end if
+    if (allocated(self%legacy_swbotb5_control)) then
+      if (.not. self%hbot5_proposal%covers(t0,t1)) return
+      request%boundary%bottom_head = self%hbot5_proposal%pressure_head_cm
+      self%last_observation%hbot5_proposal_available = .true.
+      self%last_observation%hbot5_proposed_t0 = self%hbot5_proposal%t0
+      self%last_observation%hbot5_proposed_t1 = self%hbot5_proposal%original_t1
+      self%last_observation%hbot5_sample_t1900 = self%hbot5_proposal%legacy_sample_t1900
+      self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
+    end if
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
@@ -2184,10 +4108,26 @@ contains
     request%numerical%head_abs_tolerance = self%head_abs_tolerance
     request%numerical%head_rel_tolerance = self%head_rel_tolerance
     request%numerical%ponding_tolerance = self%ponding_tolerance
+    if (self%macropore_active .and. allocated(self%macropore_config)) then
+      if (allocated(self%macropore_config%matrix_area_fraction)) &
+           request%physical%matrix_area_fraction = self%macropore_config%matrix_area_fraction
+    end if
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       if (physical%active_nodes /= self%soil_parameters%active_nodes .or. .not. allocated(physical%pressure_head) .or. &
           .not. allocated(physical%water_content)) return
+      if (allocated(self%micro_de_willigen)) then
+        if (.not. allocated(self%micro_root_length_density) .or. .not. allocated(self%micro_tables)) return
+        if (size(physical%pressure_head) /= physical%active_nodes) return
+        call evaluate_micro_de_willigen(self%micro_de_willigen, physical%pressure_head, self%soil_parameters%dz, &
+             self%micro_root_length_density, spread(1.0_real64,1,physical%active_nodes), &
+             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result)
+        if (micro_result%status /= MICRO_DW_OK) return
+        self%qrot = micro_result%root_extraction_sink
+        self%root_potential_sink = micro_result%potential_root_sink
+        self%root_drought_reduction_total = max(0.0_real64, &
+             self%root_potential_transpiration-micro_result%actual_uptake_total)
+      end if
       if (self%snow_active) then
         if (.not. allocated(physical%snow) .or. .not. self%snow_event_prepared) return
         if (.not. physical%snow%event_applied .or. .not. same_real_bits(physical%snow%event_t0, self%snow_outer_t0)) then
@@ -2205,6 +4145,12 @@ contains
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
       request%base_state%groundwater_level = physical%groundwater_level
+      if (self%macropore_active) then
+        if (.not. allocated(physical%macropore) .or. .not. allocated(self%macropore_config)) return
+        if (.not. physical%macropore%ready()) return
+      else
+        if (allocated(physical%macropore)) return
+      end if
 
       if (self%black_evaporation_active) then
         select type (black_physical => state)
@@ -2246,12 +4192,18 @@ contains
 
       if (self%boesten_evaporation_active) then
         select type (boesten_physical => state)
-        type is (fmr_b110_boesten_evaporation_state_t)
+        class is (fmr_b110_boesten_evaporation_state_t)
           boesten_process_forcing = boesten_evaporation_forcing_t()
           boesten_process_forcing%potential_bare_soil_evaporation = &
                self%boesten_evaporation_forcing%potential_bare_soil_evaporation_cm_per_day
-          boesten_process_forcing%wetting_rate = self%boesten_evaporation_forcing%precipitation_rate_cm_per_day + &
-               self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
+          if (self%rutter_active) then
+            boesten_process_forcing%wetting_rate = rutter_process_result%net_rain_cm_per_day + &
+                 rutter_process_result%net_surface_irrigation_cm_per_day
+          else
+            boesten_process_forcing%wetting_rate = self%boesten_evaporation_forcing%precipitation_rate_cm_per_day + &
+                 self%boesten_evaporation_forcing%irrigation_rate_cm_per_day
+          end if
+          self%last_observation%boesten_wetting_rate_cm_per_day = boesten_process_forcing%wetting_rate
           boesten_process_forcing%surface_is_ponded = &
                boesten_physical%ponding_depth > BOESTEN_EVAP_PONDING_CLASSIFICATION_CM
           call evaluate_boesten_evaporation_reduction(self%boesten_evaporation_parameters, &
@@ -2276,15 +4228,102 @@ contains
                self%boesten_evaporation_forcing%ponding_max_cm, &
                self%boesten_evaporation_forcing%runoff_resistance_day, &
                self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
+          boesten_top_provider%matrix_source_area_partition = self%macropore_top_input_forcing%supplied
+          if(self%macropore_config%surface_pond_inflow_enabled)then
+            boesten_top_provider%macropore_pond_donor_active=.true.
+            boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+            boesten_top_provider%macropore_surface_conductivity= &
+                 self%macropore_config%surface_macropore_conductivity_cm_per_day
+          end if
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
           return
         end select
       end if
 
+      if(self%frost_response_drainage_active)then
+        ! Generate from this original trial-start view before applying frost.
+        call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
+        if(.not.hydraulic_view_ok)return
+        call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+             hydraulic_start,self%qdra,self%drainage_response_diagnostics)
+        self%drainage_response_evaluations=self%drainage_response_evaluations+1
+        self%last_observation%drainage_response_evaluations=self%drainage_response_evaluations
+        self%last_observation%drainage_response=self%drainage_response_diagnostics
+        if(self%drainage_response_diagnostics%status/=FMR_DRAIN_BIND_OK)return
+        self%unfrozen_drainage_flux=self%qdra
+      end if
+
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
+        if (self%frost_active) then
+          call build_soil_temperature_field_view(physical%soil_temperature, frost_thermal, soil_temperature_status)
+          if (soil_temperature_status /= SOIL_TEMP_OK) then
+            self%last_observation%frost_hydraulic_status = soil_temperature_status
+            return
+          end if
+          allocate(frost_factors(frost_thermal%active_nodes))
+          call evaluate_frost_hydraulic_factor(self%frost_hydraulic, frost_thermal%temperature_c, &
+               frost_factors, frost_status)
+          self%last_observation%frost_hydraulic_executed = .true.
+          self%last_observation%frost_hydraulic_status = frost_status
+          if (frost_status /= FROST_EFFECT_OK) return
+          self%last_observation%frost_factor_min = minval(frost_factors)
+          self%last_observation%frost_factor_max = maxval(frost_factors)
+          if(self%frost_divdra_active)then
+            if(allocated(physical%salt))return
+            call build_process_hydraulic_view(request%base_state,hydraulic_start,hydraulic_view_ok)
+            if(.not.hydraulic_view_ok)return
+            call evaluate_legacy_bracketed_frost_geometry(frost_thermal%temperature_c, &
+                 self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+                 self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+                 self%soil_parameters%z,self%soil_parameters%node_distance,self%last_observation%frost_divdra_geometry)
+            self%last_observation%frost_divdra_raw_scalar=self%frost_divdra_scalar_cm_per_day
+            self%last_observation%frost_divdra_start_gwl=hydraulic_start%groundwater_level
+            if(.not.self%last_observation%frost_divdra_geometry%available)return
+            call compose_single_level_signed_frost_divdra(self%frost_divdra,hydraulic_start,frost_factors, &
+                 self%last_observation%frost_divdra_geometry%deepest_node, &
+                 self%last_observation%frost_divdra_geometry%bottom_depth_cm, &
+                 physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                 self%frost_divdra_scalar_cm_per_day,effective_bottom_flux,self%last_observation%frost_divdra)
+            self%last_observation%frost_divdra_executed=.true.
+            if(.not.self%last_observation%frost_divdra%available)return
+            self%qdra(1,:)=self%last_observation%frost_divdra%final_nodal_sink
+            request%boundary%bottom_flux=self%last_observation%frost_divdra%final_bottom
+          else if(self%frost_drainage%active)then
+            if(allocated(physical%salt).or..not.allocated(self%unfrozen_drainage_flux))return
+            if(self%frost_low_air_drainage%active)then
+              call compose_legacy_bracketed_frost_drainage(frost_thermal%temperature_c, &
+                   self%soil_temperature_forcing%prescribed_surface_temperature_c,self%frost_hydraulic%reduction_start_c, &
+                   self%frost_hydraulic%reduction_end_c,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                   self%soil_parameters%dz,frost_factors,self%soil_parameters%z,self%soil_parameters%node_distance, &
+                   self%frost_low_air_drainage%drain_depth_cm,self%unfrozen_drainage_flux,effective_bottom_flux, &
+                   self%qdra,self%last_observation%frost_low_air_drainage)
+              self%last_observation%frost_drainage_executed=.true.
+              self%last_observation%frost_drainage=self%last_observation%frost_low_air_drainage%drainage
+              if(.not.self%last_observation%frost_low_air_drainage%available)return
+              request%boundary%bottom_flux=self%last_observation%frost_low_air_drainage%final_bottom_flux
+            else
+            call compose_legacy_normal_frost_drainage(.true.,frost_thermal%temperature_c, &
+                 self%frost_hydraulic%reduction_end_c,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                 self%soil_parameters%dz,frost_factors,self%unfrozen_drainage_flux,self%qdra, &
+                 self%last_observation%frost_drainage)
+            self%last_observation%frost_drainage_executed=.true.
+            if(self%last_observation%frost_drainage%status/=FROST_DRAIN_OK)return
+            end if
+          end if
+          if(self%frost_bottom%active)then
+            if(allocated(physical%salt))return
+            call compose_legacy_no_drain_frost_bottom(.true.,frost_thermal%temperature_c, &
+                 self%frost_hydraulic%reduction_end_c,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                 self%soil_parameters%dz,frost_factors,effective_bottom_flux,frost_bottom_result)
+            self%last_observation%frost_bottom_executed=.true.
+            self%last_observation%frost_bottom=frost_bottom_result
+            if(frost_bottom_result%status/=FROST_BOTTOM_OK.or..not.frost_bottom_result%available)return
+            request%boundary%bottom_flux=frost_bottom_result%final_flux
+          end if
+        end if
         if (self%bottom_thermal_carrier_active) then
           call soil_temperature_at_node(physical%soil_temperature, physical%active_nodes, bottom_temperature_start_c, &
                bottom_temperature_status)
@@ -2293,15 +4332,161 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
-      if (self%soil_temperature_active .or. self%drainage_response_active) then
+      if ((self%soil_temperature_active.or.self%drainage_response_active.or.self%rfm_configuration%enabled).and. &
+          .not.self%frost_response_drainage_active) then
         call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
         if (.not. hydraulic_view_ok) return
+      end if
+      if (self%root_compensation%method /= ROOT_COMP_OFF .or. self%root_frost%active) then
+        if (.not. allocated(self%qrot_unmodified)) return
+        self%qrot = self%qrot_unmodified
+      end if
+      if(allocated(self%bartholomeus)) then
+        call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+        if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
+          if(.not.allocated(self%crop_oxygen) .or. .not.allocated(physical%soil_temperature)) return
+          call build_soil_temperature_field_view(physical%soil_temperature,oxygen_thermal,oxygen_status)
+          if(oxygen_status/=SOIL_TEMP_OK) return
+          oxygen_nodes=size(self%crop_oxygen%root_density_kg_m3)
+          allocate(oxygen_w_root(oxygen_nodes))
+          oxygen_w_root=1.0_real64/self%bartholomeus%specific_root_length_m_kg
+          atmospheric_ctop=672.0_real64/(8.314472_real64*(self%crop_oxygen%air_temperature_c+273.0_real64))
+          oxygen_base%root_extraction_sink=self%qrot_unmodified
+          oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
+          call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
+               self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
+               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors)
+          self%last_observation%bartholomeus_executed=.true.
+          self%last_observation%bartholomeus_status=oxygen_status
+          self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
+          if(oxygen_status/=FMR_BARTHOLOMEUS_EXEC_OK) return
+          self%qrot=oxygen_final%root_extraction_sink
+          self%last_observation%root_oxygen_final_uptake=oxygen_final%actual_uptake_total
+          self%last_observation%root_oxygen_final_sink=oxygen_final%root_extraction_sink
+        else if(oxygen_route/=FMR_BARTHOLOMEUS_DISABLED) then
+          return
+        end if
+      end if
+      if(self%root_frost%active) then
+        block
+          type(root_water_uptake_flux_result_t)::root_base,root_final
+          real(real64)::frost_loss
+          integer::root_status
+          root_base%root_extraction_sink=self%qrot
+          root_base%actual_uptake_total=sum(self%qrot)
+          call compose_legacy_zero_root_frost(self%root_frost,frost_thermal%temperature_c, &
+               root_base,root_final,root_frost_factors,frost_loss,root_status)
+          self%last_observation%root_frost_executed=.true.
+          self%last_observation%root_frost_status=root_status
+          if(root_status/=ROOT_FROST_OK) return
+          self%last_observation%root_frost_loss=frost_loss
+          self%last_observation%root_frost_final_sink=root_final%root_extraction_sink
+          self%qrot=root_final%root_extraction_sink
+        end block
+      end if
+      salinity_loss_total = 0.0_real64
+      if (self%root_salinity_active) then
+        if (.not. allocated(physical%salt) .or. .not. allocated(self%root_potential_sink)) return
+        if (self%macropore_active) then
+          if (.not. allocated(physical%macropore)) return
+          if (.not. physical%salt%ready(physical%active_nodes, physical%macropore%num_domains)) return
+        else
+          if (allocated(physical%macropore)) return
+          if (.not. physical%salt%ready(physical%active_nodes)) return
+        end if
+        salinity_storage_thickness=self%soil_parameters%dz
+        if(self%macropore_active)salinity_storage_thickness= &
+             self%soil_parameters%dz*self%macropore_config%matrix_area_fraction
+        call evaluate_mobile_root_salinity_sink(physical%salt%mass_mg_cm2,physical%water_content, &
+             salinity_storage_thickness, &
+             self%saltmax_mg_cm3,self%saltslope_cm3_mg,self%root_potential_sink,salinity_cml,salinity_alpha, &
+             salinity_sink,salinity_node_loss,salinity_loss_rate,salinity_status)
+        self%last_observation%root_salinity_executed = .true.
+        self%last_observation%root_salinity_status = salinity_status
+        if (salinity_status /= SALINITY_OK) return
+        if (.not. associated(self%qrot) .or. size(self%qrot) /= size(salinity_alpha)) return
+        root_after_oxygen = self%qrot
+        if (.not. allocated(oxygen_factors)) then
+          allocate(oxygen_factors(size(self%qrot)))
+          oxygen_factors = 1.0_real64
+        end if
+        self%qrot = self%qrot * salinity_alpha
+        self%last_observation%root_salinity_base_uptake = sum(root_after_oxygen)
+        self%last_observation%root_salinity_final_uptake = sum(self%qrot)
+        self%last_observation%root_salinity_alpha = salinity_alpha
+        self%last_observation%root_salinity_cml_mg_cm3 = salinity_cml
+      end if
+      if (self%root_compensation%method /= ROOT_COMP_OFF) then
+        block
+          type(root_water_uptake_flux_result_t) :: compensation_base, compensation_final
+          type(root_water_uptake_diagnostics_t) :: compensation_base_diagnostics
+          type(root_compensation_diagnostics_t) :: compensation_diagnostics
+          real(real64) :: oxygen_reduction_total, frost_reduction_total
+          integer :: compensation_status,attribution_status
+          compensation_base%root_extraction_sink = self%qrot
+          compensation_base%actual_uptake_total = sum(self%qrot)
+          compensation_base_diagnostics%drought_reduction_total = self%root_drought_reduction_total
+          oxygen_reduction_total = sum(self%qrot_unmodified)-compensation_base%actual_uptake_total
+          frost_reduction_total=0.0_real64
+          if(self%root_frost%active) then
+            if(.not.allocated(self%root_potential_sink)) return
+            if(abs(sum(self%root_potential_sink)-self%root_potential_transpiration)> &
+                 256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            if(.not.allocated(oxygen_factors)) then
+              allocate(oxygen_factors(size(self%qrot)));oxygen_factors=1.0_real64
+            end if
+            if(self%root_salinity_active) then
+              call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                   compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                   salinity_factor=salinity_alpha,salinity_loss=salinity_loss_total, &
+                   frost_factor=root_frost_factors,frost_loss=frost_reduction_total)
+            else
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                 frost_factor=root_frost_factors,frost_loss=frost_reduction_total)
+            end if
+            if(attribution_status/=ROOT_COMP_OK) return
+          else if(self%root_salinity_active) then
+            oxygen_reduction_total = sum(self%qrot_unmodified)-sum(root_after_oxygen)
+            if (.not. allocated(self%root_potential_sink)) return
+            if (abs(sum(self%root_potential_sink)-self%root_potential_transpiration) > &
+                256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status, &
+                 salinity_factor=salinity_alpha,salinity_loss=salinity_loss_total)
+            if (attribution_status /= ROOT_COMP_OK) return
+          else if(allocated(oxygen_factors).and.self%root_drought_reduction_total>0.0_real64) then
+            ! Mixed stress requires the existing drought owner's potential nodes.
+            ! Scalar sequential losses do not reproduce B1.11 apportionment.
+            if(.not.allocated(self%root_potential_sink)) return
+            if(abs(sum(self%root_potential_sink)-self%root_potential_transpiration)> &
+                 256.0_real64*epsilon(1.0_real64)*max(1.0_real64,self%root_potential_transpiration)) return
+            call attribute_root_stress_losses(self%root_potential_sink,self%qrot_unmodified,oxygen_factors, &
+                 compensation_base_diagnostics%drought_reduction_total,oxygen_reduction_total,attribution_status)
+            if(attribution_status/=ROOT_COMP_OK) return
+          end if
+          call apply_root_uptake_compensation(self%root_compensation,self%root_potential_transpiration, &
+               compensation_base,compensation_base_diagnostics,oxygen_reduction_total,compensation_final, &
+               compensation_diagnostics,compensation_status,self%root_walsum_geometry,self%soil_parameters%dz, &
+               salinity_reduction_total=salinity_loss_total,frost_reduction_total=frost_reduction_total)
+          self%last_observation%root_compensation_executed=.true.
+          self%last_observation%root_compensation_status=compensation_status
+          self%last_observation%root_compensation_base_uptake=compensation_base%actual_uptake_total
+          if(compensation_status/=ROOT_COMP_EXEC_OK) return
+          self%last_observation%root_compensation_drought_loss=compensation_diagnostics%drought_reduction_total
+          self%last_observation%root_compensation_oxygen_loss=compensation_diagnostics%oxygen_reduction_total
+          self%last_observation%root_compensation_frost_loss=compensation_diagnostics%frost_reduction_total
+          self%last_observation%root_salinity_reduction_total=compensation_diagnostics%salinity_reduction_total
+          self%qrot=compensation_final%root_extraction_sink
+          self%last_observation%root_compensation_final_uptake=compensation_final%actual_uptake_total
+          self%last_observation%root_compensation_final_sink=compensation_final%root_extraction_sink
+        end block
       end if
     class default
       return
     end select
 
-    if (self%drainage_response_active) then
+    if (self%drainage_response_active.and..not.self%frost_response_drainage_active) then
       if (self%drainage_qbot_smooth_freatic_projection) then
         if (.not. allocated(self%projection_zero_direction) .or. &
             size(self%projection_zero_direction) /= hydraulic_start%active_nodes) return
@@ -2330,15 +4515,79 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-    if (self%direct_retention_active) then
+    if (self%frost_active) then
+      if (.not. allocated(frost_factors)) return
+      if (self%direct_retention_active) then
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%direct_retention_constitutive, &
+             frost_factors, frost_provider_status)
+      else
+        call bind_frost_constitutive_provider(self%frost_constitutive, self%constitutive, frost_factors, &
+             frost_provider_status)
+      end if
+      if (frost_provider_status /= FROST_PROVIDER_OK) then
+        self%last_observation%frost_hydraulic_status = -frost_provider_status
+        return
+      end if
+      request%evaluation%constitutive => self%frost_constitutive
+    else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
     else
       request%evaluation%constitutive => self%constitutive
     end if
-    request%evaluation%source_sink => self%source_sink
+
+    if (self%rfm_configuration%enabled) then
+      if (self%direct_retention_active) return
+      if (.not. self%soil_water_selection%uses_reference()) return
+      select type (rfm_physical => state)
+      type is (fmr_b110_rfm_state_t)
+        if (.not. rfm_physical%rfm%ready()) return
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rfm_physical%ponding_depth, step_duration, &
+             self%rfm_surface_forcing%precipitation_rate_cm_per_day, self%rfm_surface_forcing%irrigation_rate_cm_per_day, &
+             self%rfm_surface_forcing%snowmelt_rate_cm_per_day, self%rfm_surface_forcing%runon_rate_cm_per_day, &
+             self%rfm_surface_forcing%potential_bare_soil_evaporation_cm_per_day, &
+             self%rfm_surface_forcing%potential_pond_evaporation_cm_per_day, self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day, self%rfm_surface_forcing%runoff_exponent)
+        call rfm_top_provider%evaluate(rfm_physical%pressure_head(1), rfm_physical%water_content(1), &
+             rfm_physical%ponding_depth, request%boundary, rfm_preflight)
+        allocate(rfm_node_depth_cm(rfm_physical%active_nodes)); rfm_node_depth_cm=abs(self%soil_parameters%z)
+        call prepare_rfm_live_trial(rfm_physical%rfm,self%rfm_configuration,self%rfm_surface_forcing,hydraulic_start, &
+             self%constitutive,rfm_preflight,rfm_node_depth_cm,self%soil_parameters%dz,step_duration, &
+             max(self%compartment_balance_tolerance,FMR_REFERENCE_BALANCE_FLOOR_DEPTH_CM),rfm_live)
+        if(.not.rfm_live%valid)return
+        rfm_source_rate=rfm_live%candidate%matrix_source_rate_per_day
+        call bind_rfm_matrix_source_provider(rfm_source_provider,self%source_sink,rfm_source_rate,rfm_source_ok)
+        if(.not.rfm_source_ok)return
+        request%evaluation%source_sink=>rfm_source_provider
+        rfm_preferential_input_cm=rfm_live%surface%preferential_supply_cm_per_day*step_duration
+        rfm_deep_receipt_cm=rfm_live%candidate%deep_receipt_cm
+        call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters,self%hydraulic_parameters, &
+             self%swkmean,rfm_physical%ponding_depth,step_duration,rfm_live%surface%matrix_supply_cm_per_day, &
+             0.0_real64,0.0_real64,0.0_real64,0.0_real64,0.0_real64,self%rfm_surface_forcing%ponding_max_cm, &
+             self%rfm_surface_forcing%runoff_resistance_day,self%rfm_surface_forcing%runoff_exponent)
+        request%evaluation%dynamic_top_boundary=>rfm_top_provider
+      class default
+        return
+      end select
+    else
+      request%evaluation%source_sink=>self%source_sink
+    end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
-    if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) &
-         request%evaluation%top_boundary => self%top_boundary
+    if (self%rutter_active) then
+      if (.not. rutter_trial_prepared) return
+      if (self%boesten_evaporation_active) then
+        call bind_b110_dynamic_top_boundary_solver_provider(rutter_top_provider, self%soil_parameters, &
+             self%hydraulic_parameters, self%swkmean, rutter_previous_ponding, step_duration, &
+             rutter_process_result%net_rain_cm_per_day, rutter_process_result%net_surface_irrigation_cm_per_day, &
+             self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
+             boesten_result%empirical_bare_soil_evaporation_demand, &
+             self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
+             self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+      end if
+      request%evaluation%dynamic_top_boundary => rutter_top_provider
+    else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
+      request%evaluation%top_boundary => self%top_boundary
+    end if
 
     if (self%soil_water_selection%uses_rossfast()) then
       context_ok = .true.
@@ -2378,7 +4627,117 @@ contains
       end if
     end if
 
-    if (self%soil_water_selection%uses_rossfast()) then
+    if (self%macropore_active) then
+      if (self%soil_water_selection%uses_rossfast() .or. trajectory_request_ok) return
+      macro_top_input_trial = self%macropore_top_input_forcing
+      if (self%rutter_active) then
+        macro_top_input_trial%supplied = .true.
+        macro_top_input_trial%net_rain_rate_cm_per_day = rutter_process_result%net_rain_cm_per_day
+        macro_top_input_trial%net_irrigation_rate_cm_per_day = rutter_process_result%net_surface_irrigation_cm_per_day
+        macro_top_input_trial%melt_rate_cm_per_day = self%rutter_forcing%snowmelt_rate_cm_per_day
+      end if
+      self%last_observation%macropore_top_rain_rate_cm_per_day = macro_top_input_trial%net_rain_rate_cm_per_day
+      self%last_observation%macropore_top_irrigation_rate_cm_per_day = &
+           macro_top_input_trial%net_irrigation_rate_cm_per_day
+      select type (physical_macro => state)
+      type is (fmr_b110_macropore_reduction_state_t)
+        if(self%accepted_water_flux_trace_enabled.or. &
+           self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE)then
+          if(allocated(physical_macro%macropore%water_domain_cp))then
+            trace_macro_water_start=physical_macro%macropore%water_domain_cp
+          else
+            self%accepted_water_flux_trace_failed=.true.
+          end if
+        end if
+        if (self%macropore_config%covering_parameters_available) then
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=macro_top_input_trial, reduction_accepted=physical_macro%reduction_continuation, &
+               covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
+        else
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=macro_top_input_trial, reduction_accepted=physical_macro%reduction_continuation, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
+        end if
+        if(macropore_result%status==MACRO_RUNTIME_CONVERGED) &
+             physical_macro%reduction_continuation=macropore_result%reduction_candidate
+      class is (fmr_b110_physical_state_t)
+        if(self%accepted_water_flux_trace_enabled.or. &
+           self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE)then
+          if(allocated(physical_macro%macropore%water_domain_cp))then
+            trace_macro_water_start=physical_macro%macropore%water_domain_cp
+          else
+            self%accepted_water_flux_trace_failed=.true.
+          end if
+        end if
+        if (self%macropore_config%covering_parameters_available) then
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=macro_top_input_trial, &
+               covering_minimum_polygon_diameter_cm=self%macropore_config%covering_minimum_polygon_diameter_cm, &
+               covering_ksat_cm_per_day=self%macropore_config%covering_ksat_cm_per_day, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
+        else
+          call self%macropore_runtime%execute(self%solver, self%workspace, request, physical_macro%macropore, &
+               self%macropore_config%geometry, self%macropore_config%rate_template, &
+               self%macropore_config%history_template, self%macropore_policy, macropore_result, &
+               top_input=macro_top_input_trial, &
+               shrinkage_config=self%macropore_config%shrinkage, &
+               matrix_area_fraction=self%macropore_config%matrix_area_fraction)
+        end if
+      class default
+        return
+      end select
+      solve_result = macropore_result%matrix_result
+      macropore_pond_requested_cm=macropore_result%pond_requested_top_input_cm
+      macropore_pond_accepted_cm=macropore_result%pond_accepted_top_input_cm
+      macropore_pond_returned_cm=macropore_result%pond_returned_surface_cm
+      if (macropore_pond_requested_cm>0.0_real64) then
+        if(macropore_pond_accepted_cm<0.0_real64 .or. macropore_pond_returned_cm<0.0_real64 .or. &
+           abs(macropore_pond_accepted_cm+macropore_pond_returned_cm-macropore_pond_requested_cm)>1.0e-10_real64)return
+        if(macropore_pond_accepted_cm>macropore_result%accepted_top_input_cm+1.0e-10_real64 .or. &
+           macropore_pond_returned_cm>macropore_result%returned_surface_cm+1.0e-10_real64)return
+        ! All capacity-rejected top water returns to the shared surface donor.
+        ! Only the pond-derived accepted share is internal surface-to-macropore
+        ! redistribution; direct accepted atmospheric macro input remains an
+        ! external inflow in the transaction ledger below.
+        solve_result%candidate_state%ponding_depth=solve_result%candidate_state%ponding_depth+ &
+             macropore_result%returned_surface_cm
+      end if
+      self%last_observation%macropore_top_input_active = macro_top_input_trial%supplied
+      self%last_observation%macropore_requested_top_cm = macropore_result%requested_top_input_cm
+      self%last_observation%macropore_accepted_top_cm = macropore_result%accepted_top_input_cm
+      self%last_observation%macropore_returned_surface_cm = macropore_result%returned_surface_cm
+      self%last_observation%macropore_pond_requested_cm = macropore_pond_requested_cm
+      self%last_observation%macropore_pond_accepted_cm = macropore_pond_accepted_cm
+      self%last_observation%macropore_pond_returned_cm = macropore_pond_returned_cm
+      self%last_observation%macropore_rapid_drain_active = self%macropore_config%rate_template%rapid%enabled
+      self%last_observation%macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
+      self%last_observation%macropore_inner_richards_exchange_used = macropore_result%inner_richards_exchange_used
+      self%last_observation%macropore_matrix_source_area_partition_used = &
+           macropore_result%matrix_source_area_partition_used
+      self%last_observation%macropore_inner_initial_exchange_rate_cm_per_day = &
+           macropore_result%inner_initial_exchange_rate_cm_per_day
+      self%last_observation%macropore_inner_final_exchange_rate_cm_per_day = &
+           macropore_result%inner_final_exchange_rate_cm_per_day
+      macropore_accepted_top_cm = macropore_result%accepted_top_input_cm-macropore_pond_accepted_cm
+      macropore_rapid_outflow_cm = macropore_result%rapid_external_outflow_cm
+      if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
+      if (.not. ieee_is_finite(macropore_rapid_outflow_cm) .or. macropore_rapid_outflow_cm < 0.0_real64) return
+      if (macropore_result%status /= MACRO_RUNTIME_CONVERGED) then
+        if (macropore_result%status == MACRO_RUNTIME_RETRY) solve_result%retry_advised = .true.
+        return
+      end if
+    else if (self%soil_water_selection%uses_rossfast()) then
       call self%soil_water_selection%solve(request, solve_result)
     else if (trajectory_request_ok) then
       if (self%drainage_qbot_smooth_freatic_projection .and. .not. drainage_direction_available) then
@@ -2423,6 +4782,29 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      select type (salt_physical => state)
+      class is (fmr_b110_physical_state_t)
+        if(self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+          call advance_fmr_mobile_salt_step(self,salt_physical,request,solve_result,t0,t1,salt_receipt,salt_status)
+        else
+          call advance_fmr_mobile_macro_salt_step(self,salt_physical,request,solve_result,macropore_result, &
+               trace_macro_water_start,t0,t1,salt_receipt,salt_status)
+        end if
+        if (salt_status /= MACRO_SALT_OK) then
+          self%last_observation%salt_transport_executed = .true.
+          self%last_observation%salt_transport_status = salt_status
+          return
+        end if
+        self%last_observation%salt_transport_executed = .true.
+        self%last_observation%salt_transport_status = salt_status
+        self%last_observation%salt_transport_closure_mg_cm2 = salt_receipt%closure_error_mg_cm2
+        self%last_observation%salt_root_uptake_mg_cm2 = sum(salt_receipt%root_solute_uptake_mg_cm2)
+        self%last_observation%salt_qdra_signed_out_mg_cm2 = salt_receipt%qdra_signed_out_mg_cm2
+      class default
+        return
+      end select
+    end if
     if (self%drainage_qbot_smooth_freatic_projection) then
       call project_fmr_qbot_smooth_groundwater_level(self%soil_parameters, solve_result%candidate_state, &
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
@@ -2457,7 +4839,7 @@ contains
 
     if (self%boesten_evaporation_active) then
       select type (boesten_physical => state)
-      type is (fmr_b110_boesten_evaporation_state_t)
+      class is (fmr_b110_boesten_evaporation_state_t)
         if (boesten_result%status /= BOESTEN_EVAP_AVAILABLE) return
         boesten_physical%boesten_evaporation = boesten_result%candidate_state
       class default
@@ -2502,11 +4884,28 @@ contains
       else
         if (allocated(physical%soil_temperature)) return
       end if
+      if (self%macropore_active) then
+        if (.not. allocated(physical%macropore)) return
+        physical%macropore = macropore_result%macropore_candidate
+      end if
       physical%active_nodes = solve_result%candidate_state%active_nodes
       physical%pressure_head = solve_result%candidate_state%pressure_head
       physical%water_content = solve_result%candidate_state%water_content
       physical%ponding_depth = solve_result%candidate_state%ponding_depth
       physical%groundwater_level = solve_result%candidate_state%groundwater_level
+      if (self%rutter_active) then
+        if (.not. rutter_trial_prepared .or. .not. allocated(physical%rutter)) return
+        physical%rutter = self%rutter_forcing%candidate_state
+      end if
+      if(self%rfm_configuration%enabled)then
+        select type(rfm_physical=>state)
+        type is(fmr_b110_rfm_state_t)
+          call copy_rfm_physical_state(rfm_live%candidate%candidate_rfm,rfm_physical%rfm,rfm_source_ok)
+          if(.not.rfm_source_ok)return
+        class default
+          return
+        end select
+      end if
     class default
       return
     end select
@@ -2518,11 +4917,42 @@ contains
         return
       end select
     end if
-    call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
-         snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
+    ! The transaction ledger owns exchanges across the outer model boundary.
+    ! In dynamic-top mode qtop is the internal surface-to-matrix exchange, while
+    ! ponding is committed storage. Reconstruct the accepted external surface
+    ! exchange from the final surface storage change and qtop; HeadCalc has
+    ! already enforced the independent pond-balance equation.
+    surface_external_exchange_cm = -solve_result%top_flux*step_duration
+    if (request%boundary%top_mode == FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+      ! Final pond storage already contains any capacity return. Add the
+      ! accepted pond-to-macropore transfer back when reconstructing the outer
+      ! surface exchange, because that accepted share moved internally from
+      ! pond storage into macropore storage and is not an external macro input.
+      surface_external_exchange_cm = solve_result%candidate_state%ponding_depth - &
+           request%base_state%ponding_depth - solve_result%top_flux*step_duration + &
+           macropore_pond_accepted_cm
+    end if
+    if (self%snow_active) surface_external_exchange_cm = -self%base_top_flux*step_duration
+    if (.not. ieee_is_finite(surface_external_exchange_cm)) return
+    call account_external_fluxes(self, step_duration, surface_external_exchange_cm, solve_result%bottom_flux, &
+         snow_event_applied_this_call, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
+         outcome%mass_in, outcome%mass_out)
+    if(self%rfm_configuration%enabled)then
+      outcome%mass_in=outcome%mass_in+rfm_preferential_input_cm
+      outcome%mass_out=outcome%mass_out+rfm_deep_receipt_cm
+    end if
+    if(self%frost_divdra_active)then
+      ! This is provenance of the existing nodal accounting above, not a second ledger.
+      self%last_observation%frost_divdra_trial_duration=step_duration
+      self%last_observation%frost_divdra_signed_exchange_native=sum(self%qdra)*step_duration
+      self%last_observation%frost_divdra_mass_accounted_in_trial=.true.
+    end if
     if (self%drainage_response_active) then
       self%last_observation%drainage_response_mass_accounted_in_trial = .true.
       step_drainage_exchange = self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate * step_duration
+      ! Raw generation diagnostics remain proposal provenance. The accepted
+      ! receipt follows the same final nodes as the one solver sink/ledger.
+      if(self%frost_response_drainage_active)step_drainage_exchange=self%last_observation%frost_drainage%total_rate*step_duration
       self%last_observation%drainage_response_signed_exchange_native = step_drainage_exchange
       if (self%drainage_response_window_exchange_available .and. ieee_is_finite(step_drainage_exchange)) then
         self%drainage_response_window_signed_exchange_native = &
@@ -2547,6 +4977,16 @@ contains
       outcome%terminal_bottom_outward_flux_native = 0.0_real64
       return
     end if
+    publish_root_result=self%root_compensation%method/=ROOT_COMP_OFF.or.self%root_frost%active
+    if(allocated(self%bartholomeus)) then
+      call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
+      publish_root_result=publish_root_result.or.oxygen_route==FMR_BARTHOLOMEUS_ACTIVE
+    end if
+    if(self%root_extraction_active.and.publish_root_result) then
+      outcome%actual_transpiration_amount=sum(self%qrot)*step_duration
+      if(.not.ieee_is_finite(outcome%actual_transpiration_amount).or.outcome%actual_transpiration_amount<0.0_real64) return
+      outcome%actual_transpiration_available=.true.
+    end if
     outcome%bottom_interface_exchange_available = .true.
     outcome%mass_accounting_complete = .true.
     outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
@@ -2560,8 +5000,327 @@ contains
     if (trajectory_stage_ok) then
       call accept_trajectory_step(self%trajectory_direction, trajectory_accept_ok)
     end if
+    if (self%accepted_water_flux_trace_enabled) then
+      if (self%macropore_active) then
+        if (.not. allocated(macropore_result%exchange_rate_node) .or. &
+            .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
+            .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
+            macropore_result%requested_top_input_cm /= 0.0_real64 .or. &
+            macropore_accepted_top_cm /= 0.0_real64 .or. macropore_result%returned_surface_cm /= 0.0_real64 .or. &
+            macropore_result%covered_internal_transfer_cm /= 0.0_real64 .or. macropore_rapid_outflow_cm /= 0.0_real64) then
+          self%accepted_water_flux_trace_failed = .true.
+        else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
+             macropore_result%exchange_rate_node,macropore_result%exchange_rate_domain_cp,trace_macro_water_start, &
+             macropore_result%macropore_candidate%water_domain_cp, &
+             macropore_result%vertical_flux%vertical_face_rate,salt_receipt=salt_receipt)) then
+          self%accepted_water_flux_trace_failed = .true.
+        end if
+      else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1,salt_receipt=salt_receipt)) then
+        self%accepted_water_flux_trace_failed = .true.
+      end if
+    end if
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
+
+  subroutine advance_fmr_mobile_salt_step(self,physical,request,solve_result,t0,t1,receipt,status)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    type(fmr_b110_physical_state_t),intent(inout)::physical
+    type(soil_water_solve_request_t),intent(in)::request
+    type(soil_water_solve_result_t),intent(in)::solve_result
+    real(real64),intent(in)::t0,t1
+    type(mobile_macro_salt_receipt_t),intent(out)::receipt
+    integer,intent(out)::status
+    type(mobile_salt_state_t)::committed_salt,candidate_salt
+    type(mobile_salt_fluxes_t)::matrix_receipt
+    type(mobile_transport_receipt_t)::transport_receipt
+    real(real64),allocatable::faces(:),net_source(:),qdra_rate(:,:),qssdi_rate(:)
+    real(real64)::closure,dt
+    integer::n,face_status
+    status=MACRO_SALT_INVALID;receipt=mobile_macro_salt_receipt_t()
+    if(.not.allocated(physical%salt).or.allocated(physical%macropore))return
+    n=physical%active_nodes;dt=t1-t0
+    if(.not.physical%salt%ready(n).or.dt<=0.0_real64)return
+    if(.not.associated(self%soil_parameters).or..not.associated(self%qrot).or. &
+       .not.associated(self%qssdi).or..not.associated(self%qdra))return
+    if(.not.allocated(request%base_state%water_content).or. &
+       .not.allocated(solve_result%candidate_state%water_content))return
+    if(size(request%base_state%water_content)/=n.or.size(solve_result%candidate_state%water_content)/=n)return
+    ! No surface salt store exists in this bounded soil-interface contract.
+    if(request%base_state%ponding_depth/=0.0_real64.or.solve_result%candidate_state%ponding_depth/=0.0_real64)return
+    if(any(request%base_state%water_content<=tiny(0.0_real64)))return
+    if(physical%salt%cdrain_source_id/=0_int64.and. &
+       physical%salt%cdrain_source_id/=self%c_drain_salt_forcing%source_id)return
+    net_source=self%qssdi-sum(self%qdra,dim=1)-self%qrot
+    call reconstruct_interval_water_face_flux(self%soil_parameters%dz,request%base_state%water_content, &
+         solve_result%candidate_state%water_content,net_source,-solve_result%top_flux,-solve_result%bottom_flux,dt, &
+         max(1.0e-12_real64,self%compartment_balance_tolerance/dt),faces,closure,face_status)
+    if(face_status/=WATER_FACE_FLUX_OK)return
+    qdra_rate=self%qdra
+    qssdi_rate=self%qssdi
+    committed_salt%mass_mg_cm2=physical%salt%mass_mg_cm2
+    committed_salt%concentration_mg_cm3=physical%salt%mass_mg_cm2/ &
+         (request%base_state%water_content*self%soil_parameters%dz)
+    if(allocated(self%mobile_dispersion))then
+      call advance_mobile_advection_dispersion(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
+        solve_result%candidate_state%water_content,faces,self%qrot,self%soil_salt_boundary_forcing%matrix_top_mg_cm3, &
+        self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3,self%solute_tscf,dt,self%mobile_dispersion, &
+        self%base_salt_temporal_policy%transport,qdra_rate,qssdi_rate,self%c_drain_salt_forcing%concentration_mg_cm3, &
+        .true.,candidate_salt,transport_receipt,status, &
+        top_outflow_carries_solute=self%soil_salt_boundary_forcing%matrix_top_outflow_carries_solute)
+      if(status/=SOLUTE_OK)return
+      matrix_receipt=transport_receipt%balance
+      self%last_observation%salt_internal_substeps=transport_receipt%substeps
+    else
+      call advance_mobile_salt_trial(committed_salt,self%soil_parameters%dz,request%base_state%water_content, &
+         solve_result%candidate_state%water_content,faces,self%qrot,self%soil_salt_boundary_forcing%matrix_top_mg_cm3, &
+         self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3,self%solute_tscf,dt,candidate_salt,matrix_receipt,status, &
+         qdra_rate=qdra_rate,qssdi_rate=qssdi_rate,cdrain_mg_cm3=self%c_drain_salt_forcing%concentration_mg_cm3, &
+         cdrain_available=.true., &
+         top_outflow_carries_solute=self%soil_salt_boundary_forcing%matrix_top_outflow_carries_solute)
+      self%last_observation%salt_internal_substeps=1
+    end if
+    if(status/=SOLUTE_OK)return
+    physical%salt%mass_mg_cm2=candidate_salt%mass_mg_cm2
+    physical%salt%cdrain_source_id=self%c_drain_salt_forcing%source_id
+    physical%salt%cdrain_revision=self%c_drain_salt_forcing%revision
+    receipt%matrix_top_input_mg_cm2=matrix_receipt%top_input_mg_cm2
+    receipt%matrix_top_output_mg_cm2=matrix_receipt%top_output_mg_cm2
+    receipt%matrix_bottom_input_mg_cm2=matrix_receipt%bottom_input_mg_cm2
+    receipt%matrix_bottom_output_mg_cm2=matrix_receipt%bottom_output_mg_cm2
+    allocate(receipt%macro_top_input_mg_cm2(0),receipt%macro_top_output_mg_cm2(0), &
+         receipt%macro_bottom_input_mg_cm2(0),receipt%macro_bottom_output_mg_cm2(0), &
+         receipt%macro_to_matrix_mg_cm2(0,n),receipt%matrix_to_macro_mg_cm2(0,n))
+    if(allocated(self%mobile_dispersion))then
+      receipt%root_solute_uptake_mg_cm2=transport_receipt%root_by_node_mg_cm2
+    else
+      receipt%root_solute_uptake_mg_cm2=self%solute_tscf*self%qrot*committed_salt%concentration_mg_cm3*dt
+    end if
+    receipt%qdra_signed_out_mg_cm2=matrix_receipt%qdra_signed_out_mg_cm2
+    receipt%closure_error_mg_cm2=matrix_receipt%closure_error_mg_cm2
+  end subroutine
+
+  subroutine advance_fmr_mobile_macro_salt_step(self, physical, request, solve_result, macropore_result, &
+       macro_water_start, t0, t1, receipt, status)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(fmr_b110_physical_state_t), intent(inout) :: physical
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    type(macropore_runtime_result_t), intent(in) :: macropore_result
+    real(real64), intent(in) :: macro_water_start(:,:), t0, t1
+    type(mobile_macro_salt_receipt_t), intent(out) :: receipt
+    integer, intent(out) :: status
+
+    type(mobile_macro_salt_state_t) :: committed_salt, candidate_salt
+    real(real64), allocatable :: matrix_faces(:), net_source(:), matrix_storage_thickness(:)
+    real(real64) :: closure, dt
+    integer :: face_status, n, nd
+
+    receipt = mobile_macro_salt_receipt_t()
+    status = MACRO_SALT_INVALID
+    if (.not. allocated(physical%salt) .or. .not. allocated(physical%macropore)) return
+    if (.not. associated(self%soil_parameters) .or. &
+        .not. allocated(self%soil_salt_boundary_forcing%macropore_top_mg_cm3) .or. &
+        .not. allocated(self%soil_salt_boundary_forcing%macropore_bottom_mg_cm3)) return
+    if (.not. associated(self%qrot) .or. .not. associated(self%qssdi) .or. .not. associated(self%qdra)) return
+    if (.not. allocated(request%base_state%water_content) .or. &
+        .not. allocated(solve_result%candidate_state%water_content)) return
+    if (.not. allocated(macropore_result%exchange_rate_node) .or. &
+        .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
+        .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
+        .not. allocated(macropore_result%macropore_candidate%water_domain_cp)) return
+    ! This binding has no salt pools for accepted/returned macropore surface
+    ! water, covering, or rapid drainage. Keep those routes explicitly closed.
+    if (macropore_result%requested_top_input_cm /= 0.0_real64 .or. &
+        macropore_result%accepted_top_input_cm /= 0.0_real64 .or. &
+        macropore_result%returned_surface_cm /= 0.0_real64 .or. &
+        macropore_result%covered_internal_transfer_cm /= 0.0_real64 .or. &
+        macropore_result%rapid_external_outflow_cm /= 0.0_real64) return
+
+    n = physical%active_nodes
+    nd = physical%macropore%num_domains
+    dt = t1 - t0
+    if (n <= 0 .or. nd <= 0 .or. dt <= 0.0_real64) return
+    if (.not. physical%salt%ready(n, nd)) return
+    if (size(self%soil_parameters%dz) /= n .or. size(self%qrot) /= n .or. size(self%qssdi) /= n .or. &
+        size(self%qdra, 2) /= n .or. any(shape(macro_water_start) /= [nd,n]) .or. &
+        any(shape(macropore_result%exchange_rate_domain_cp) /= [nd,n]) .or. &
+        any(shape(macropore_result%vertical_flux%vertical_face_rate) /= [nd,n+1]) .or. &
+        any(shape(macropore_result%macropore_candidate%water_domain_cp) /= [nd,n])) return
+    if (physical%salt%cdrain_source_id /= 0_int64 .and. &
+        physical%salt%cdrain_source_id /= self%c_drain_salt_forcing%source_id) return
+
+    net_source = self%qssdi - sum(self%qdra, dim=1) - self%qrot + macropore_result%exchange_rate_node
+    matrix_storage_thickness=self%soil_parameters%dz*self%macropore_config%matrix_area_fraction
+    call reconstruct_interval_water_face_flux(matrix_storage_thickness, request%base_state%water_content, &
+         solve_result%candidate_state%water_content, net_source, -solve_result%top_flux, -solve_result%bottom_flux, &
+         dt, max(1.0e-12_real64, self%compartment_balance_tolerance / dt), matrix_faces, closure, face_status)
+    if (face_status /= WATER_FACE_FLUX_OK) return
+
+    committed_salt%matrix_mass_mg_cm2 = physical%salt%mass_mg_cm2
+    committed_salt%macro_mass_mg_cm2 = physical%salt%macro_mass_mg_cm2
+    call advance_mobile_macro_salt_trial(committed_salt, matrix_storage_thickness, &
+         request%base_state%water_content, solve_result%candidate_state%water_content, macro_water_start, &
+         macropore_result%macropore_candidate%water_domain_cp, matrix_faces, &
+         macropore_result%vertical_flux%vertical_face_rate, macropore_result%exchange_rate_domain_cp, self%qrot, &
+         self%soil_salt_boundary_forcing%matrix_top_mg_cm3, self%soil_salt_boundary_forcing%matrix_bottom_mg_cm3, &
+         self%soil_salt_boundary_forcing%macropore_top_mg_cm3, self%soil_salt_boundary_forcing%macropore_bottom_mg_cm3, &
+         self%solute_tscf, dt, candidate_salt, receipt, status, qdra_rate=self%qdra, qssdi_rate=self%qssdi, &
+         cdrain_mg_cm3=self%c_drain_salt_forcing%concentration_mg_cm3, cdrain_available=.true.)
+    if (status /= MACRO_SALT_OK) return
+    physical%salt%mass_mg_cm2 = candidate_salt%matrix_mass_mg_cm2
+    physical%salt%macro_mass_mg_cm2 = candidate_salt%macro_mass_mg_cm2
+    physical%salt%cdrain_source_id = self%c_drain_salt_forcing%source_id
+    physical%salt%cdrain_revision = self%c_drain_salt_forcing%revision
+  end subroutine advance_fmr_mobile_macro_salt_step
+
+  logical function append_accepted_water_flux_substep(self,request,solve_result,t0,t1,macropore_exchange, &
+       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate,salt_receipt) result(ok)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    real(real64), intent(in) :: t0,t1
+    real(real64), intent(in), optional :: macropore_exchange(:)
+    real(real64), intent(in), optional :: macropore_exchange_domain(:,:)
+    real(real64), intent(in), optional :: macropore_water_start(:,:),macropore_water_end(:,:)
+    real(real64), intent(in), optional :: macropore_vertical_face_rate(:,:)
+    type(mobile_macro_salt_receipt_t), intent(in), optional :: salt_receipt
+    type(fmr_water_flux_substep_trace_t), allocatable :: grown(:)
+    type(fmr_water_flux_substep_trace_t) :: step
+    integer :: n, prior
+
+    ok = .false.
+    if (.not. associated(self%qssdi) .or. .not. associated(self%qdra) .or. .not. associated(self%qrot)) return
+    n = request%base_state%active_nodes
+    if (n <= 0 .or. size(self%qssdi) /= n .or. size(self%qdra,2) /= n .or. size(self%qrot) /= n) return
+    if (solve_result%status /= SW_SOLVE_CONVERGED .or. solve_result%candidate_state%active_nodes /= n) return
+    if (.not. allocated(solve_result%candidate_state%water_content) .or. &
+        .not. allocated(request%base_state%water_content)) return
+    if (size(solve_result%candidate_state%water_content) /= n .or. size(request%base_state%water_content) /= n) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    if (.not. ieee_is_finite(solve_result%top_flux) .or. .not. ieee_is_finite(solve_result%bottom_flux)) return
+    if (any(.not. ieee_is_finite(self%qssdi)) .or. any(.not. ieee_is_finite(self%qrot)) .or. &
+        any(.not. ieee_is_finite(self%qdra))) return
+
+    step%t0 = t0
+    step%t1 = t1
+    step%top_flux = solve_result%top_flux
+    step%bottom_flux = solve_result%bottom_flux
+    step%water_start = request%base_state%water_content
+    step%water_end = solve_result%candidate_state%water_content
+    step%subsurface_source = self%qssdi
+    step%drainage_sink = sum(self%qdra,dim=1)
+    step%drainage_sink_by_level = self%qdra
+    step%root_sink = self%qrot
+    allocate(step%macropore_matrix_exchange(n))
+    allocate(step%macropore_matrix_exchange_domain(0,n))
+    allocate(step%macropore_water_start(0,n),step%macropore_water_end(0,n))
+    allocate(step%macropore_vertical_face_rate(0,n+1))
+    step%macropore_matrix_exchange = 0.0_real64
+    if(present(macropore_exchange_domain))then
+      if(size(macropore_exchange_domain,2)/=n .or. size(macropore_exchange_domain,1)<=0 .or. &
+         any(.not.ieee_is_finite(macropore_exchange_domain)))return
+      if(.not.present(macropore_exchange))return
+      if(.not.present(macropore_water_start).or..not.present(macropore_water_end))return
+      if(.not.present(macropore_vertical_face_rate))return
+      if(any(shape(macropore_water_start)/=shape(macropore_exchange_domain)) .or. &
+         any(shape(macropore_water_end)/=shape(macropore_exchange_domain)))return
+      if(any(shape(macropore_vertical_face_rate)/= &
+           [size(macropore_exchange_domain,1),size(macropore_exchange_domain,2)+1]))return
+      if(any(.not.ieee_is_finite(macropore_water_start)).or.any(.not.ieee_is_finite(macropore_water_end)))return
+      if(any(.not.ieee_is_finite(macropore_vertical_face_rate)))return
+      if(any(macropore_water_start<0.0_real64).or.any(macropore_water_end<0.0_real64))return
+      if(maxval(abs(sum(macropore_exchange_domain,dim=1)-macropore_exchange))> &
+         1.0e-12_real64*max(1.0_real64,maxval(abs(macropore_exchange))))return
+      step%macropore_matrix_exchange_domain=macropore_exchange_domain
+      step%macropore_water_start=macropore_water_start
+      step%macropore_water_end=macropore_water_end
+      step%macropore_vertical_face_rate=macropore_vertical_face_rate
+      if(maxval(abs((macropore_water_end-macropore_water_start)/(t1-t0) - &
+           (macropore_vertical_face_rate(:,1:n)-macropore_vertical_face_rate(:,2:n+1)- &
+           macropore_exchange_domain)))>1.0e-12_real64*max(1.0_real64, &
+           maxval(abs(macropore_vertical_face_rate)),maxval(abs(macropore_exchange_domain))))return
+    end if
+    if (present(macropore_exchange)) then
+      if (size(macropore_exchange) /= n .or. any(.not. ieee_is_finite(macropore_exchange))) return
+      step%macropore_matrix_exchange = macropore_exchange
+    end if
+    step%net_node_source = step%subsurface_source - step%drainage_sink - step%root_sink + &
+         step%macropore_matrix_exchange
+    if (any(.not. ieee_is_finite(step%water_start)) .or. any(.not. ieee_is_finite(step%water_end)) .or. &
+        any(.not. ieee_is_finite(step%net_node_source))) return
+
+    prior = 0
+    if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+      if (.not. present(salt_receipt)) return
+      if (.not. allocated(salt_receipt%root_solute_uptake_mg_cm2)) return
+      allocate(step%salt_receipt)
+      step%salt_receipt = salt_receipt
+    end if
+    if (allocated(self%accepted_water_flux_substeps)) prior = size(self%accepted_water_flux_substeps)
+    allocate(grown(prior+1))
+    if (prior > 0) grown(1:prior) = self%accepted_water_flux_substeps
+    grown(prior+1) = step
+    call move_alloc(grown,self%accepted_water_flux_substeps)
+    ok = .true.
+  end function append_accepted_water_flux_substep
+
+  logical function accepted_water_flux_trace_covers(steps,t0,t1) result(ok)
+    type(fmr_water_flux_substep_trace_t), intent(in) :: steps(:)
+    real(real64), intent(in) :: t0,t1
+    real(real64) :: cursor,tolerance
+    integer :: i,n
+
+    ok = .false.
+    if (size(steps) <= 0 .or. .not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+    cursor = t0
+    tolerance = 128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(t0),abs(t1))
+    do i=1,size(steps)
+      n = 0
+      if (allocated(steps(i)%water_start)) n=size(steps(i)%water_start)
+      if (n <= 0 .or. .not. allocated(steps(i)%water_end) .or. &
+          .not. allocated(steps(i)%subsurface_source) .or. .not. allocated(steps(i)%drainage_sink) .or. &
+          .not. allocated(steps(i)%drainage_sink_by_level) .or. .not. allocated(steps(i)%root_sink) .or. .not. allocated(steps(i)%macropore_matrix_exchange) .or. &
+          .not. allocated(steps(i)%macropore_matrix_exchange_domain) .or. &
+          .not. allocated(steps(i)%macropore_water_start) .or. .not. allocated(steps(i)%macropore_water_end) .or. &
+          .not. allocated(steps(i)%macropore_vertical_face_rate) .or. &
+          .not. allocated(steps(i)%net_node_source)) return
+      if (size(steps(i)%water_end)/=n .or. size(steps(i)%subsurface_source)/=n .or. &
+          size(steps(i)%drainage_sink)/=n .or. size(steps(i)%drainage_sink_by_level,2)/=n .or. &
+          size(steps(i)%drainage_sink_by_level,1)<=0 .or. size(steps(i)%root_sink)/=n .or. &
+          size(steps(i)%macropore_matrix_exchange)/=n .or. &
+          size(steps(i)%macropore_matrix_exchange_domain,2)/=n .or. &
+          size(steps(i)%net_node_source)/=n) return
+      if(any(.not.ieee_is_finite(steps(i)%drainage_sink_by_level)))return
+      if(maxval(abs(sum(steps(i)%drainage_sink_by_level,dim=1)-steps(i)%drainage_sink))> &
+           1.0e-12_real64*max(1.0_real64,maxval(abs(steps(i)%drainage_sink))))return
+      if(any(shape(steps(i)%macropore_water_start)/=shape(steps(i)%macropore_matrix_exchange_domain)) .or. &
+         any(shape(steps(i)%macropore_water_end)/=shape(steps(i)%macropore_matrix_exchange_domain)))return
+      if(any(shape(steps(i)%macropore_vertical_face_rate)/= &
+           [size(steps(i)%macropore_matrix_exchange_domain,1),n+1]))return
+      if(any(.not.ieee_is_finite(steps(i)%macropore_water_start)) .or. &
+         any(.not.ieee_is_finite(steps(i)%macropore_water_end)) .or. &
+         any(steps(i)%macropore_water_start<0.0_real64) .or. any(steps(i)%macropore_water_end<0.0_real64))return
+      if(any(.not.ieee_is_finite(steps(i)%macropore_vertical_face_rate)))return
+      if(size(steps(i)%macropore_matrix_exchange_domain,1)>0)then
+        if(any(.not.ieee_is_finite(steps(i)%macropore_matrix_exchange_domain)))return
+        if(maxval(abs(sum(steps(i)%macropore_matrix_exchange_domain,dim=1)- &
+             steps(i)%macropore_matrix_exchange))>1.0e-12_real64* &
+             max(1.0_real64,maxval(abs(steps(i)%macropore_matrix_exchange))))return
+        if(maxval(abs((steps(i)%macropore_water_end-steps(i)%macropore_water_start)/ &
+             (steps(i)%t1-steps(i)%t0) - &
+             (steps(i)%macropore_vertical_face_rate(:,1:n)-steps(i)%macropore_vertical_face_rate(:,2:n+1)- &
+             steps(i)%macropore_matrix_exchange_domain)))>1.0e-12_real64*max(1.0_real64, &
+             maxval(abs(steps(i)%macropore_vertical_face_rate)), &
+             maxval(abs(steps(i)%macropore_matrix_exchange_domain))))return
+      else if(any(abs(steps(i)%macropore_matrix_exchange)>1.0e-14_real64))then
+        return
+      end if
+      if (.not. ieee_is_finite(steps(i)%t0) .or. .not. ieee_is_finite(steps(i)%t1) .or. &
+          steps(i)%t1 <= steps(i)%t0 .or. abs(steps(i)%t0-cursor)>tolerance) return
+      cursor = steps(i)%t1
+    end do
+    ok = abs(cursor-t1) <= tolerance
+  end function accepted_water_flux_trace_covers
 
   subroutine record_bottom_thermal_sample(self, state, t0, t1, outward_exchange, start_temperature_c, &
                                           start_temperature_available)
@@ -2619,18 +5378,20 @@ contains
     if (.not. appended) self%top_sensible_boundary_carrier_valid = .false.
   end subroutine record_top_sensible_boundary_sample
 
-  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
+  subroutine account_external_fluxes(self, step_duration, surface_external_exchange_cm, bottom_flux, &
+                                     snow_event_applied, macropore_accepted_top_cm, macropore_rapid_outflow_cm, &
                                      total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux
+    real(real64), intent(in) :: step_duration, surface_external_exchange_cm, bottom_flux, macropore_accepted_top_cm, &
+         macropore_rapid_outflow_cm
     logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
-    real(real64) :: value, external_top_flux
-    external_top_flux = solver_top_flux
-    if (self%snow_active) external_top_flux = self%base_top_flux
-    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
-    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
+    real(real64) :: value
+    total_in = max(0.0_real64, surface_external_exchange_cm) + max(0.0_real64, bottom_flux) * step_duration + &
+         macropore_accepted_top_cm
+    total_out = max(0.0_real64, -surface_external_exchange_cm) + max(0.0_real64, -bottom_flux) * step_duration + &
+         macropore_rapid_outflow_cm
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
       if (value >= 0.0_real64) then
@@ -2673,6 +5434,13 @@ contains
     class(transaction_state_t), intent(in) :: state
     if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     select type (physical => state)
+    type is (fmr_b110_rfm_state_t)
+      if (.not. allocated(physical%water_content)) error stop 'PPA-WU05-A20 RFM matrix storage incomplete'
+      if (allocated(physical%macropore) .or. allocated(physical%snow) .or. allocated(physical%soil_temperature)) &
+           error stop 'PPA-WU05-A20 RFM carrier mixed optional state'
+      if (.not. physical%rfm%ready()) error stop 'PPA-WU05-A20 RFM fast storage incomplete'
+      value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth + &
+           physical%rfm%storage_cm()
     type is (fmr_b110_fixed_weir_surface_water_state_t)
       if (.not. self%fixed_weir_surface_water_active) error stop 'F-PM08D7 inactive model with fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
@@ -2682,7 +5450,19 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) error stop 'F-PM08D7 active model missing fixed-weir state'
       if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
-      value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      if (self%macropore_active) then
+        if (.not. allocated(self%macropore_config)) error stop 'F-MR06 active macropore config missing'
+        if (.not. allocated(self%macropore_config%matrix_area_fraction)) error stop 'F-MR06 active macropore area fraction missing'
+        value = sum(self%soil_parameters%dz * physical%water_content * self%macropore_config%matrix_area_fraction) + &
+             physical%ponding_depth
+      else
+        value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      end if
+      if (self%macropore_active) then
+        if (.not. allocated(physical%macropore) .or. .not. physical%macropore%ready()) &
+             error stop 'F-MR06 active macropore storage state incomplete'
+        value = value + sum(physical%macropore%water_domain_cp)
+      end if
       if (self%snow_active) then
         if (.not. allocated(physical%snow)) error stop 'F-MR06 active snow storage state incomplete'
         value = value + physical%snow%process%snow_water_storage
@@ -2701,6 +5481,13 @@ contains
     missing_mask = TX_MASS_MISSING_UNSPECIFIED
     if (.not. associated(self%soil_parameters)) return
     select type (physical => state)
+    type is (fmr_b110_rfm_state_t)
+      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. &
+           allocated(physical%pressure_head) .and. allocated(physical%water_content) .and. &
+           .not. allocated(physical%macropore) .and. .not. allocated(physical%snow) .and. &
+           .not. allocated(physical%soil_temperature) .and. physical%rfm%ready()
+      if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
+           size(physical%water_content) == physical%active_nodes
     type is (fmr_b110_fixed_weir_surface_water_state_t)
       if (.not. self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
@@ -2711,13 +5498,26 @@ contains
     class is (fmr_b110_physical_state_t)
       if (self%fixed_weir_surface_water_active) return
       complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
-           allocated(physical%water_content)
+           allocated(physical%water_content) .and. allocated(self%soil_parameters%dz)
+      if (complete) complete = size(self%soil_parameters%dz) == self%soil_parameters%active_nodes
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
+      if (complete .and. self%macropore_active) then
+        complete = allocated(self%macropore_config)
+        if (complete) complete = allocated(self%macropore_config%matrix_area_fraction)
+        if (complete) complete = size(self%macropore_config%matrix_area_fraction) == physical%active_nodes
+        if (complete) complete = allocated(physical%macropore)
+        if (complete) complete = physical%macropore%ready() .and. &
+             physical%macropore%num_nodes == physical%active_nodes
+      end if
+      if (complete .and. .not. self%macropore_active) complete = .not. allocated(physical%macropore)
       if (complete .and. self%snow_active) complete = allocated(physical%snow)
       if (complete .and. .not. self%snow_active) complete = .not. allocated(physical%snow)
       if (complete .and. self%soil_temperature_active) then
-        complete = allocated(physical%soil_temperature)
+        complete = allocated(self%soil_temperature_parameters)
+        if (complete) complete = self%soil_temperature_parameters%ready()
+        if (complete) complete = self%soil_temperature_parameters%node_count() == physical%active_nodes
+        if (complete) complete = allocated(physical%soil_temperature)
         if (complete) complete = physical%soil_temperature%ready() .and. &
              physical%soil_temperature%node_count() == physical%active_nodes
       end if
@@ -2732,11 +5532,46 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(self%frost_divdra_active)then
+      value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
+      return
+    end if
+    if(self%frost_low_air_drainage%active)then
+      value=fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state)
+      return
+    end if
+    if(self%frost_drainage%active)then
+      value=fmr_frost_drainage_temporal_error(self,full_state,half_state)
+      return
+    end if
+    if(self%frost_bottom%active)then
+      value=fmr_frost_bottom_temporal_error(self,full_state,half_state)
+      if(self%root_frost%active)value=max(value,fmr_root_frost_temporal_error(self,full_state,half_state))
+      return
+    end if
+    if(self%root_frost%active) then
+      value=fmr_root_frost_temporal_error(self,full_state,half_state)
+      ! Both owners retain their existing independent acceptance budgets.
+      if(self%root_salinity_active)value=max(value,fmr_base_salt_physical_temporal_error(self,full_state,half_state))
+      return
+    end if
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
-        self%bottom_mode /= 2) then
+        self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
       value = huge(0.0_real64)
       return
     end if
+
+    select type (full => full_state)
+    type is (fmr_b110_rfm_state_t)
+      value = huge(0.0_real64)
+      select type (half => half_state)
+      type is (fmr_b110_rfm_state_t)
+        if (base_physical_states_identical(full,half) .and. full%rfm%same_values(half%rfm)) value = 0.0_real64
+      class default
+      end select
+      return
+    class default
+    end select
 
     if (self%fixed_weir_surface_water_active) then
       value = huge(0.0_real64)
@@ -2758,6 +5593,20 @@ contains
       return
     end if
 
+    if (self%macropore_active) then
+      value = fmr_macropore_physical_temporal_error(self, full_state, half_state)
+      return
+    end if
+
+    if(self%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+      value=fmr_base_salt_physical_temporal_error(self,full_state,half_state)
+      return
+    end if
+    if (self%rutter_active) then
+      value = fmr_rutter_temporal_error(self, full_state, half_state)
+      return
+    end if
+
     same = .false.
     select type (full => full_state)
     class is (fmr_b110_physical_state_t)
@@ -2770,6 +5619,8 @@ contains
                            full%ponding_depth == half%ponding_depth .and. full%groundwater_level == half%groundwater_level
           if (same) same = allocated(full%snow) .eqv. allocated(half%snow)
           if (same) same = allocated(full%soil_temperature) .eqv. allocated(half%soil_temperature)
+          if (same) same = allocated(full%macropore) .eqv. allocated(half%macropore)
+          if (same .and. allocated(full%macropore)) same = full%macropore%same_values(half%macropore)
           ! F-MR39 deliberately does not introduce a new combined water/thermal
           ! timestep tolerance. Thermal temporal refinement remains qualified by
           ! F-VQ58; the existing Richards temporal acceptance route is preserved.
@@ -2787,6 +5638,439 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:)
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%root_frost_head_budget_cm<=0.0_real64.or.self%root_frost_temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        ! A full/half disagreement across the empirical cutoff requires refinement.
+        if(any((tf(:self%root_frost%rooted_nodes)<0.0_real64).neqv. &
+             (th(:self%root_frost%rooted_nodes)<0.0_real64))) return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%root_frost_head_budget_cm,temperature_error/self%root_frost_temperature_budget_c)
+      end select
+    end select
+  end function fmr_root_frost_temporal_error
+
+  real(real64) function fmr_frost_divdra_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    type(frost_divdra_result_t)::bf,bh
+    type(frost_geometry_result_t)::gf,gh
+    real(real64),allocatable::tf(:),th(:)
+    real(real64)::head_error,temperature_error
+    integer::status
+    value=huge(0.0_real64)
+    if(self%frost_drainage%head_budget_cm<=0.0_real64.or.self%frost_drainage%temperature_budget_c<=0.0_real64)return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        call regenerate(full,bf,gf,tf,status)
+        if(status/=0)return
+        call regenerate(half,bh,gh,th,status)
+        if(status/=0)return
+        if(bf%low_air.neqv.bh%low_air)return
+        if(bf%blocked.neqv.bh%blocked)return
+        if(gf%deepest_node/=gh%deepest_node)return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_drainage%head_budget_cm,temperature_error/self%frost_drainage%temperature_budget_c)
+      end select
+    end select
+  contains
+    subroutine regenerate(physical,result,geometry,temperature,status)
+      type(fmr_b110_physical_state_t),intent(in)::physical
+      type(frost_divdra_result_t),intent(out)::result
+      type(frost_geometry_result_t),intent(out)::geometry
+      real(real64),allocatable,intent(out)::temperature(:)
+      integer,intent(out)::status
+      type(process_hydraulic_view_t)::view
+      real(real64),allocatable::factor(:)
+      integer::n
+      status=1;n=self%soil_parameters%active_nodes
+      if(physical%active_nodes/=n)return
+      if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content))return
+      if(size(physical%pressure_head)/=n.or.size(physical%water_content)/=n)return
+      if(.not.allocated(physical%soil_temperature).or..not.allocated(self%soil_temperature_forcing))return
+      call copy_soil_temperature_profile(physical%soil_temperature,temperature,status)
+      if(status/=SOIL_TEMP_OK)return
+      status=1
+      if(size(temperature)/=n)return
+      allocate(factor(n))
+      call evaluate_frost_hydraulic_factor(self%frost_hydraulic,temperature,factor,status)
+      if(status/=FROST_EFFECT_OK)return
+      status=1
+      call evaluate_legacy_bracketed_frost_geometry(temperature, &
+           self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+           self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+           self%soil_parameters%z,self%soil_parameters%node_distance,geometry)
+      if(.not.geometry%available)return
+      view%active_nodes=n;view%pressure_head=physical%pressure_head;view%water_content=physical%water_content
+      view%ponding_depth=physical%ponding_depth;view%groundwater_level=physical%groundwater_level
+      call compose_single_level_signed_frost_divdra(self%frost_divdra,view,factor,geometry%deepest_node, &
+           geometry%bottom_depth_cm,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+           self%frost_divdra_scalar_cm_per_day,self%bottom_flux,result)
+      if(result%available)status=0
+    end subroutine regenerate
+  end function fmr_frost_divdra_temporal_error
+
+  real(real64) function fmr_frost_low_air_drainage_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
+    type(frost_low_air_drainage_result_t)::bf,bh
+    real(real64),allocatable::final_flux(:,:),proposal_full(:,:),proposal_half(:,:)
+    type(process_hydraulic_view_t)::view_full,view_half
+    type(fmr_drainage_response_diagnostics_t)::generated_full,generated_half
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%frost_drainage%head_budget_cm<=0.0_real64.or.self%frost_drainage%temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        allocate(ff(n),fh(n))
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,tf,ff,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,th,fh,status)
+        if(status/=FROST_EFFECT_OK)return
+        if(.not.allocated(self%unfrozen_drainage_flux).or..not.allocated(self%soil_temperature_forcing))return
+        if(.not.self%frost_low_air_drainage%valid())return
+        allocate(final_flux(size(self%unfrozen_drainage_flux,1),n))
+        if(self%frost_low_air_response_drainage_active)then
+          proposal_full=self%unfrozen_drainage_flux;proposal_half=self%unfrozen_drainage_flux
+          ! Terminal views carry their own GWL; no last-trial generated scratch
+          ! is silently used as the proposal for both full and half endpoints.
+          view_full%active_nodes=n;view_full%pressure_head=full%pressure_head
+          view_full%water_content=full%water_content;view_full%ponding_depth=full%ponding_depth
+          view_full%groundwater_level=full%groundwater_level
+          view_half%active_nodes=n;view_half%pressure_head=half%pressure_head
+          view_half%water_content=half%water_content;view_half%ponding_depth=half%ponding_depth
+          view_half%groundwater_level=half%groundwater_level
+          call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+               view_full,proposal_full,generated_full)
+          if(generated_full%status/=FMR_DRAIN_BIND_OK)return
+          call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+               view_half,proposal_half,generated_half)
+          if(generated_half%status/=FMR_DRAIN_BIND_OK)return
+        end if
+        if(self%frost_low_air_response_drainage_active)then
+        call compose_legacy_bracketed_frost_drainage(tf,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             proposal_full,self%bottom_flux,final_flux,bf)
+        call compose_legacy_bracketed_frost_drainage(th,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             proposal_half,self%bottom_flux,final_flux,bh)
+        else
+        call compose_legacy_bracketed_frost_drainage(tf,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             self%unfrozen_drainage_flux,self%bottom_flux,final_flux,bf)
+        call compose_legacy_bracketed_frost_drainage(th,self%soil_temperature_forcing%prescribed_surface_temperature_c, &
+             self%frost_hydraulic%reduction_start_c,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh, &
+             self%soil_parameters%z,self%soil_parameters%node_distance,self%frost_low_air_drainage%drain_depth_cm, &
+             self%unfrozen_drainage_flux,self%bottom_flux,final_flux,bh)
+        end if
+        if(.not.bf%available.or..not.bh%available)return
+        if(bf%low_air_branch.neqv.bh%low_air_branch)return
+        if(bf%bottom_blocked.neqv.bh%bottom_blocked)return
+        if(any(bf%blocked_level.neqv.bh%blocked_level))return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_drainage%head_budget_cm,temperature_error/self%frost_drainage%temperature_budget_c)
+      end select
+    end select
+  end function fmr_frost_low_air_drainage_temporal_error
+
+  real(real64) function fmr_frost_drainage_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
+    type(frost_bottom_result_t)::bf,bh
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%frost_drainage%head_budget_cm<=0.0_real64.or.self%frost_drainage%temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        allocate(ff(n),fh(n))
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,tf,ff,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,th,fh,status)
+        if(status/=FROST_EFFECT_OK)return
+        call compose_legacy_no_drain_frost_bottom(.true.,tf,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff,self%bottom_flux,bf)
+        call compose_legacy_no_drain_frost_bottom(.true.,th,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh,self%bottom_flux,bh)
+        if(.not.bf%available.or..not.bh%available)return
+        ! Excluded low-air branch is rejected at both terminal candidates as well.
+        if(bf%blocked.or.bh%blocked)return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_drainage%head_budget_cm,temperature_error/self%frost_drainage%temperature_budget_c)
+      end select
+    end select
+  end function fmr_frost_drainage_temporal_error
+
+  real(real64) function fmr_frost_bottom_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::tf(:),th(:),ff(:),fh(:)
+    type(frost_bottom_result_t)::bf,bh
+    real(real64)::head_error,temperature_error
+    integer::status,n
+    value=huge(0.0_real64)
+    if(self%frost_bottom%head_budget_cm<=0.0_real64.or.self%frost_bottom%temperature_budget_c<=0.0_real64) return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n) return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head)) return
+        if(.not.allocated(full%water_content).or..not.allocated(half%water_content)) return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n) return
+        if(size(full%water_content)/=n.or.size(half%water_content)/=n) return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head))) return
+        if(any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content))) return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level]))) return
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature)) return
+        call copy_soil_temperature_profile(full%soil_temperature,tf,status)
+        if(status/=SOIL_TEMP_OK) return
+        call copy_soil_temperature_profile(half%soil_temperature,th,status)
+        if(status/=SOIL_TEMP_OK) return
+        if(size(tf)/=n.or.size(th)/=n) return
+        if(any(.not.ieee_is_finite(tf)).or.any(.not.ieee_is_finite(th))) return
+        allocate(ff(n),fh(n))
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,tf,ff,status)
+        if(status/=FROST_EFFECT_OK)return
+        call evaluate_frost_hydraulic_factor(self%frost_hydraulic,th,fh,status)
+        if(status/=FROST_EFFECT_OK)return
+        call compose_legacy_no_drain_frost_bottom(.true.,tf,self%frost_hydraulic%reduction_end_c, &
+             full%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,ff,self%bottom_flux,bf)
+        call compose_legacy_no_drain_frost_bottom(.true.,th,self%frost_hydraulic%reduction_end_c, &
+             half%water_content,self%hydraulic_parameters%cofgen(2,:),self%soil_parameters%dz,fh,self%bottom_flux,bh)
+        if(.not.bf%available.or..not.bh%available)return
+        if(bf%blocked.neqv.bh%blocked)return
+        head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        temperature_error=maxval(abs(tf-th))
+        value=max(head_error/self%frost_bottom%head_budget_cm,temperature_error/self%frost_bottom%temperature_budget_c)
+      end select
+    end select
+  end function fmr_frost_bottom_temporal_error
+
+  real(real64) function fmr_base_salt_physical_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    type(soil_temperature_field_view_t)::full_thermal,half_thermal
+    integer::n,status
+    value=huge(0.0_real64)
+    if(.not.self%base_salt_temporal_policy%valid().or..not.associated(self%soil_parameters))return
+    if(self%temporal_tolerance_cm/=1.0_real64)return
+    select type(full=>full_state)
+    class is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      class is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<=0.or.half%active_nodes/=n.or.size(self%soil_parameters%dz)/=n)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+           .not.allocated(full%water_content).or..not.allocated(half%water_content).or. &
+           .not.allocated(full%salt).or..not.allocated(half%salt))return
+        if(allocated(full%macropore).or.allocated(half%macropore).or. &
+           allocated(full%snow).or.allocated(half%snow))return
+        if(.not.full%salt%ready(n).or..not.half%salt%ready(n))return
+        if(allocated(full%soil_temperature).neqv.allocated(half%soil_temperature))return
+        if(allocated(full%soil_temperature))then
+          call build_soil_temperature_field_view(full%soil_temperature,full_thermal,status)
+          if(status/=0)return
+          call build_soil_temperature_field_view(half%soil_temperature,half_thermal,status)
+          if(status/=0)return
+          value=fmr_base_salt_normalized_error(self%base_salt_temporal_policy,self%soil_parameters%dz, &
+               full%pressure_head,half%pressure_head,full%water_content,half%water_content, &
+               full%salt%mass_mg_cm2,half%salt%mass_mg_cm2,full%ponding_depth,half%ponding_depth, &
+               full%groundwater_level,half%groundwater_level,full_thermal%temperature_c,half_thermal%temperature_c)
+        else
+          value=fmr_base_salt_normalized_error(self%base_salt_temporal_policy,self%soil_parameters%dz, &
+               full%pressure_head,half%pressure_head,full%water_content,half%water_content, &
+               full%salt%mass_mg_cm2,half%salt%mass_mg_cm2,full%ponding_depth,half%ponding_depth, &
+               full%groundwater_level,half%groundwater_level)
+        end if
+      end select
+    end select
+  end function
+  real(real64) function fmr_rutter_temporal_error(self, full_state, half_state) result(value)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    integer :: i, n
+    real(real64) :: local_error
+
+    value = huge(0.0_real64)
+    select type (full => full_state)
+    type is (fmr_b110_physical_state_t)
+      select type (half => half_state)
+      type is (fmr_b110_physical_state_t)
+        if (.not. allocated(full%rutter) .or. .not. allocated(half%rutter)) return
+        if (.not. full%rutter%same_source_candidate(half%rutter)) return
+        if (full%active_nodes <= 0 .or. full%active_nodes /= half%active_nodes) return
+        if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head) .or. &
+            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+        n = full%active_nodes
+        if (size(full%pressure_head) /= n .or. size(half%pressure_head) /= n .or. &
+            size(full%water_content) /= n .or. size(half%water_content) /= n) return
+        if (.not. associated(self%soil_parameters)) return
+        if (.not. allocated(self%soil_parameters%dz)) return
+        if (size(self%soil_parameters%dz) /= n) return
+        value = 0.0_real64
+        do i = 1, n
+          local_error = abs(full%pressure_head(i) - half%pressure_head(i))
+          value = max(value, local_error)
+        end do
+        value = max(value, abs(full%ponding_depth - half%ponding_depth))
+      class default
+        return
+      end select
+    class default
+      return
+    end select
+  end function fmr_rutter_temporal_error
+
+  real(real64) function fmr_macropore_physical_temporal_error(self, full_state, half_state) result(value)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    integer :: n
+
+    value = huge(0.0_real64)
+    if (.not. self%macropore_active .or. .not. associated(self%soil_parameters)) return
+
+    select type (full => full_state)
+    class is (fmr_b110_physical_state_t)
+      select type (half => half_state)
+      class is (fmr_b110_physical_state_t)
+        if (full%active_nodes /= half%active_nodes .or. full%active_nodes /= self%soil_parameters%active_nodes) return
+        n = full%active_nodes
+        if (n <= 0) return
+        if (.not. allocated(full%pressure_head) .or. .not. allocated(half%pressure_head) .or. &
+            .not. allocated(full%water_content) .or. .not. allocated(half%water_content)) return
+        if (size(full%pressure_head) /= n .or. size(half%pressure_head) /= n .or. &
+            size(full%water_content) /= n .or. size(half%water_content) /= n) return
+        if (.not. allocated(full%macropore) .or. .not. allocated(half%macropore)) return
+        if (.not. full%macropore%ready() .or. .not. half%macropore%ready()) return
+        if (full%macropore%num_nodes /= n .or. half%macropore%num_nodes /= n .or. &
+            full%macropore%num_domains /= half%macropore%num_domains) return
+        ! ICpBtDm is discrete topology, not a continuous centimetre-scale
+        ! coordinate. A full/half topology mismatch therefore fails closed.
+        if (any(full%macropore%icp_bottom_domain /= half%macropore%icp_bottom_domain)) return
+
+        value = 0.0_real64
+        value = max(value, maxval(abs(full%pressure_head-half%pressure_head)))
+        value = max(value, abs(full%ponding_depth-half%ponding_depth))
+        value = max(value, abs(full%groundwater_level-half%groundwater_level))
+        if (allocated(self%macropore_config) .and. allocated(self%macropore_config%matrix_area_fraction)) then
+          value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz * &
+               self%macropore_config%matrix_area_fraction)))
+        else
+          value = max(value, maxval(abs((full%water_content-half%water_content)*self%soil_parameters%dz)))
+        end if
+        value = max(value, maxval(abs(full%macropore%water_domain_cp-half%macropore%water_domain_cp)))
+        value = max(value, maxval(abs(full%macropore%volume_domain_cp-half%macropore%volume_domain_cp)))
+        value = max(value, maxval(abs(full%macropore%dynamic_volume_cp-half%macropore%dynamic_volume_cp)))
+        if (self%solute_state_layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE) then
+          if (.not. allocated(full%salt) .or. .not. allocated(half%salt)) then
+            value = huge(0.0_real64)
+            return
+          end if
+          if (.not. full%salt%ready(n, full%macropore%num_domains) .or. &
+              .not. half%salt%ready(n, half%macropore%num_domains) .or. &
+              .not. ieee_is_finite(self%salt_temporal_tolerance_mg_cm2) .or. &
+              self%salt_temporal_tolerance_mg_cm2 <= 0.0_real64 .or. &
+              .not. ieee_is_finite(self%temporal_tolerance_cm) .or. self%temporal_tolerance_cm <= 0.0_real64) then
+            value = huge(0.0_real64)
+            return
+          end if
+          value = max(value, maxval(abs(full%salt%mass_mg_cm2-half%salt%mass_mg_cm2)) / &
+               self%salt_temporal_tolerance_mg_cm2 * self%temporal_tolerance_cm)
+          value = max(value, maxval(abs(full%salt%macro_mass_mg_cm2-half%salt%macro_mass_mg_cm2)) / &
+               self%salt_temporal_tolerance_mg_cm2 * self%temporal_tolerance_cm)
+        end if
+      class default
+        return
+      end select
+    class default
+      return
+    end select
+  end function fmr_macropore_physical_temporal_error
 
   logical function base_physical_states_identical(full, half) result(same)
     class(fmr_b110_physical_state_t), intent(in) :: full, half

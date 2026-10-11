@@ -1,0 +1,44 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "pr": 1078,
+  "tested_publication_checkpoint": "a0630beff3b7b329ede3e57a10620116e5b1f456",
+  "qualified_production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "scope": "Two completed inherited CI failures diagnosed from exact job logs and unchanged versioned harnesses. Not a disposition of every PR check.",
+  "observations": [
+    {
+      "workflow": "PPA-WU05B bounded frost qualification and admission",
+      "run_id": 37449351977,
+      "job_id": 112221835495,
+      "job": "highest-runtime (low_air)",
+      "conclusion": "failure",
+      "script": "tests/frost/run_ppa_wu05b15_runtime.py",
+      "failure": "Line 5 asserts HEAD:src equals ab1849e155cfe4aadb838075c3e402985bc4e0f5; the B19 tree is 24fda78fd9a38964c16c89d5505b0056185ac410.",
+      "classification": "Historical source-pin preflight rejection before runtime execution, not a failing B19 physical result.",
+      "script_and_workflow_unchanged_from_canonical_baseline": true,
+      "preserved_successor_evidence": "All 48 complete original low-air executions on the current B19 whole-module closure passed O0/O2 and immutable stdout comparison in the sealed B19 replay.",
+      "required_reconciliation": "Keep the immutable B15 source pin intact. Route current-source qualification through the explicitly source-bound B19 successor and its complete preservation evidence under the controlling admission authority."
+    },
+    {
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "run_id": 37449352071,
+      "job_id": 112221834685,
+      "job": "reference-uncertainty-gate",
+      "conclusion": "failure",
+      "script": "tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh",
+      "failure": "Compilation of mod_reference_richards_temporal_indicator.f90 cannot open mod_b110_direct_retention_provider.mod.",
+      "classification": "The explicit historical compile list omits a required module before compiling the temporal indicator; numerical test execution was not reached.",
+      "script_workflow_and_temporal_indicator_unchanged_from_canonical_baseline": true,
+      "required_reconciliation": "Reconcile the current whole-module dependency closure under its owning publication/integration workstream; do not claim this job passed or silently alter its scientific criteria."
+    }
+  ],
+  "verification": {
+    "canonical_baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "local_and_published_whole_checkpoint_trees_exact": true,
+    "sealed_source_test_contract_report_and_replay_hashes_unchanged": true,
+    "eleven_completed_local_B19_gates_remain_valid": true,
+    "blanket_CI_green": false,
+    "canonical_admission": false,
+    "aggregate_frost_migration_complete": false
+  },
+  "approval_boundary": "The user authorized branch publication and PR creation. A separate canonical-admission and merge authorization is needed before widening that external mutation scope."
+}

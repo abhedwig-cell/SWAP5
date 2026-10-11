@@ -1,0 +1,139 @@
+{
+  "schema": "swap5.f_mig431_int13_status.v1",
+  "workunit": "F-MIG431-INT13",
+  "title": "Rutter SWINTER=3 stateful atmospheric-forcing migration",
+  "state": "CANONICALLY_ADMITTED_BOUNDED",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "head": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
+  },
+  "branch": "work/f-mig431-int13-rutter-stateful-forcing",
+  "pull_request": 1016,
+  "last_reconciled_head": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+  "last_reconciled_upstream": "origin/integration/f-ci-canonical",
+  "relevant_paths": [
+    "src/process/mod_rutter_interception_process.f90",
+    "src/runtime/mod_fmr_rutter_output_application_binding.f90",
+    "src/runtime/mod_interception_source_window_runtime.f90",
+    "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "integration/audits/F-MIG431-INT12-P0_STATUS.json",
+    "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json",
+    "integration/audits/F-MIG431-INT12-E_CLOSEOUT.json",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "src/process/mod_rutter_event_integrator.f90",
+    "src/runtime/mod_rutter_source_window_processor.f90",
+    "src/runtime/mod_fmr_rutter_source_window_application.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "authority_paths": [
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/architecture/invariants.md",
+    "integration/f-app/F-APP05_PREREGISTRATION.json",
+    "integration/f-app/F-APP05_OWNER_QUALIFICATION.json",
+    "integration/f-app/F-APP05_ADMISSION_READY.json",
+    "integration/f-app/F-APP08_ADMISSION_READY.json",
+    "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "reference/swap-4.3.1/snapshots/B1.11.yml"
+  ],
+  "test_paths": [
+    "tests/fpm/test_f_mig431_int13_capacity_event.f90",
+    "tests/fpm/run_f_mig431_int13_capacity_event.sh",
+    "tests/fpm/test_f_mig431_int13_rutter_source_window.f90",
+    "tests/fpm/run_f_mig431_int13_rutter_source_window.sh",
+    "tests/fpm/run_f_mig431_int12_p0.sh",
+    "tests/f-app08/test_rutter_output_binding.f90",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-INT13_CORRECTED_REFERENCE.md",
+    "integration/audits/F-MIG431-INT13_LOCAL_QUALIFICATION.json",
+    "integration/audits/F-MIG431-INT13_SOURCE_RECONCILIATION_ADDENDUM.md"
+  ],
+  "implemented": "B1.11 piecewise-constant Rutter fill/dry event integrator; source-window FMR physical-state candidate; constant surface irrigation routing for both ISUA modes; fimin removed from the Rutter contract",
+  "persisted": "PR #1016 was merged to integration/f-ci-canonical on 2026-10-05T12:43:37Z as merge commit 88f6e0a9406b34d7457d1f8a36c19df8289628c5. The final PR head 25a02d1949b2bb7ef16b0c6ee62c406f3f17acf4 retained the bounded Rutter qualification. The Rutter repeat run 37309564781 passed including FMR controls, and F-CI109R1 repeat run 37309564302 passed with the F-APP09 exact-delta gate correctly skipped as not applicable to INT13.",
+  "tested": "The exact remote tree for 6f6eba2241b662cf0d3c1126bd21a63845b6ee41 matches the locally verified candidate tree. INT13 Actions run 37276517425 passed Rutter physics/source-window/retry/restart/determinism and production FMR composition/preservation. PPA-WU01 run 37276517357 passed. Local O0/O2 tests pass both ISUA hand-oracles, immutable irrigation source-window forcing, FMR production at the bounded low-rate irrigation vector, and source-window checks. Latest PR-head INT13 run 37279774590 passed both the Rutter/source-window/retry/restart/determinism gate and production FMR composition/preservation gate; comparison shows the only commit after the previously qualified tip changed this status JSON. Final pre-merge Rutter/FMR requalification passed in run 37309564781; F-CI109R1 scope/applicability repeat passed in run 37309564302.",
+  "latest_audit_findings": [
+    "Exact B1.11 MOD_meteo.f90 member reconstructed from the release archive; SHA-256 99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f.",
+    "B1.11 Rutter uses piecewise constant canopy input/output fluxes with internal fill and dry event times. It does not use fimin or the SWAP 4.2.0 exponential storage equation.",
+    "The current source-window integrator resolves B1.11-style process events internally and returns interval-average fluxes; event transitions do not command Richards substeps.",
+    "Constant surface irrigation now passes the B1.11 ISUA=0 intercepted and ISUA/=0 rain-only partitions in local process and FMR production tests. The production test uses a low irrigation rate of 0.01 cm/day with 0.2 cm rainfall per source window.",
+    "Higher tested irrigation throughfall combinations reached the Reference Richards error \"HeadCalc: dynamic head regime omitted surface-head derivative\". Those high-forcing combinations remain outside this qualification pending the separately owned top-boundary/Jacobian issue.",
+    "Targeted INT13 run 37276517425 and PPA-WU01 owner run 37276517357 both passed on exact candidate commit 6f6eba2241b662cf0d3c1126bd21a63845b6ee41; the earlier INT13 run 37271615834 qualifies only the rain-only candidate."
+  ],
+  "qualified": true,
+  "next_action": "No further INT13 admission action. Treat SWINTER=3 as canonically admitted only within the recorded bounded envelope. Any extension to higher-throughfall irrigation, scheduling, sprinkling, Snow, Black/Boesten composition with Rutter, macropore, RFM/surface-water combinations or unsupported solver profiles requires separate qualification.",
+  "recovery_point": "integration/audits/F-MIG431-INT13_PREREGISTRATION.md",
+  "blockers": [],
+  "dependency_surface": [
+    "Rutter process state and equations",
+    "interception source-window progress",
+    "forcing application and dynamic-top binding",
+    "transaction/restart state publication",
+    "SWINTER=0/1/2, Black and Boesten preservation interfaces"
+  ],
+  "persisted_qualification": {
+    "workflow_run_id": 37276517425,
+    "head": "6f6eba2241b662cf0d3c1126bd21a63845b6ee41",
+    "tree": "a523b26932bf95d5cd773e88b85ae1c34896645d",
+    "rutter_physics_retry_restart_determinism": "PASS",
+    "production_fmr_composition_and_preservation": "PASS",
+    "surface_irrigation_extension": "PASS_BOTH_ISUA_MODES_BOUNDED_LOW_RATE",
+    "companion_ppa_wu01_run_id": 37276517357,
+    "companion_ppa_wu01": "PASS",
+    "previous_rain_only_run_id": 37271615834,
+    "historical_superseded_run_id": 37268521592
+  },
+  "scope_limitations": [
+    "The persisted irrigation envelope is constant surface irrigation at the tested low-rate vector (0.01 cm/day) with 0.2 cm rainfall per source window, both ISUA partitions, and constant forcing per immutable source window.",
+    "Higher throughfall combinations trigger the separately owned Reference Richards error 'HeadCalc: dynamic head regime omitted surface-head derivative' and remain out of scope.",
+    "Irrigation scheduling, sprinkling, Snow, Black/Boesten with Rutter, macropore, RFM/surface-water combinations and unsupported solver profiles remain out of scope.",
+    "SWINTER=3 is canonically admitted only within the persisted bounded envelope; no broader combination claim is implied."
+  ],
+  "latest_pull_request_requalification": {
+    "workflow_run_id": 37279774590,
+    "head": "9b8281d2c1e50153c0d7bb86d7b883cb40f48629",
+    "base": "9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "rutter_physics_source_windows_retry_restart_determinism": "PASS",
+    "production_fmr_composition_and_preservation": "PASS",
+    "note": "This PR-head run requalifies the current candidate. It does not constitute canonical admission."
+  },
+  "canonical_admission": {
+    "status": "ADMITTED_BOUNDED",
+    "pull_request": 1016,
+    "pr_head": "25a02d1949b2bb7ef16b0c6ee62c406f3f17acf4",
+    "merged_at": "2026-10-05T12:43:37Z",
+    "merge_commit": "88f6e0a9406b34d7457d1f8a36c19df8289628c5",
+    "base": "integration/f-ci-canonical",
+    "rutter_repeat_run_id": 37309564781,
+    "rutter_repeat": "PASS_INCLUDING_FMR_CONTROLS",
+    "fci109r1_repeat_run_id": 37309564302,
+    "fci109r1_repeat": "PASS_FAPP09_GATE_SKIPPED_NOT_APPLICABLE",
+    "claim": "SWINTER=3 Rutter source-window migration is canonically admitted within the persisted bounded qualification envelope."
+  },
+  "canonical_gate_diagnosis": {
+    "workflow": ".github/workflows/f-ci109r1-fapp09-current-canonical.yml",
+    "workflow_run_id": 37279774357,
+    "run_head": "9b8281d2c1e50153c0d7bb86d7b883cb40f48629",
+    "trigger_overlap": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "tests/fapp/**"
+    ],
+    "observed_gate": "The workflow ran for PR #1016 and failed because tests/fci/run_fci109r1_fapp09_current_canonical.sh requires the complete production source delta to equal exactly the five F-APP09 files.",
+    "interpretation": "This is an F-APP09-specific exact-delta gate triggered by INT13 shared-backend and test paths. Its failure does not indicate an INT13/Rutter physics or production-composition failure; do not weaken the F-APP09 exact-postimage invariant.",
+    "required_check_status": "RESOLVED_BY_SUCCESSFUL_MERGE",
+    "access_note": "Branch-protection configuration remained unreadable through the GitHub integration, but GitHub accepted PR #1016 into integration/f-ci-canonical on 2026-10-05T12:43:37Z. No claim is made about non-required unrelated workflow checks."
+  },
+  "fci109r1_scope_repair": {
+    "commit": "cce140b9d1472f14a3fe77198b8e08415893139f",
+    "workflow_run_id": 37308577282,
+    "workflow_run": "PASS",
+    "applicability_step": "PASS_INT13_HAS_NO_FAPP09_OWNED_PATH",
+    "exact_fapp09_gate": "SKIPPED_AS_NOT_APPLICABLE; unchanged for F-APP09-owned paths",
+    "local_path_matrix": "PASS_INT13_FALSE_FAPP09_TRUE",
+    "companion_int13_run_id": 37308577030,
+    "companion_int13_run": "PASS"
+  }
+}

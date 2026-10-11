@@ -2,6 +2,8 @@ module mod_ppa_wu03_common_forcing_adapter
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_canonical_contracts, only: canonical_interval_t
+  use, intrinsic :: iso_fortran_env, only: int64
+  use mod_crop_weather_day_owner, only: weather_day_owner_t, validate_weather_day_forcing_span, WEATHER_DAY_OK
   use mod_reference_et_demand_process, only: reference_et_demand_parameters_t, &
        reference_et_demand_canopy_view_t, reference_et_demand_result_t, &
        reference_et_demand_diagnostics_t, REF_ET_DEMAND_OK
@@ -21,6 +23,7 @@ module mod_ppa_wu03_common_forcing_adapter
   integer, parameter, public :: PPA_WU03_UNSUPPORTED_IRRIGATION = 4
   integer, parameter, public :: PPA_WU03_REFERENCE_ET_REJECTED = 5
   integer, parameter, public :: PPA_WU03_TOP_RESULT_REJECTED = 6
+  integer, parameter, public :: PPA_WU03_WEATHER_REJECTED = 7
 
   integer, parameter, public :: PPA_WU03_ET_REFERENCE = 1
   integer, parameter, public :: PPA_WU03_INTERCEPTION_NONE = 0
@@ -40,6 +43,7 @@ module mod_ppa_wu03_common_forcing_adapter
     real(real64) :: forcing_t1 = 0.0_real64
     real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
     real(real64) :: surface_irrigation_rate_cm_per_day = 0.0_real64
+    real(real64) :: runon_rate_cm_per_day = 0.0_real64
     type(fmr_reference_et_forcing_span_t) :: reference_et
     type(reference_et_demand_canopy_view_t) :: canopy
   end type ppa_wu03_common_forcing_input_t
@@ -66,19 +70,38 @@ module mod_ppa_wu03_common_forcing_adapter
 
 contains
 
-  subroutine materialize_ppa_wu03_common_forcing(config, input, base_top_request, result, diagnostics)
+  subroutine materialize_ppa_wu03_common_forcing(config, input, base_top_request, result, diagnostics, &
+       weather, weather_source, weather_epoch, weather_revision, weather_day)
     type(ppa_wu03_common_forcing_config_t), intent(in) :: config
     type(ppa_wu03_common_forcing_input_t), intent(in) :: input
     type(b110_dynamic_top_boundary_request_t), intent(in) :: base_top_request
     type(ppa_wu03_common_forcing_result_t), intent(out) :: result
     type(ppa_wu03_common_forcing_diagnostics_t), intent(out) :: diagnostics
+    ! Optional opt-in guard. Existing admitted PPA-WU03 profiles remain
+    ! unchanged until their actual meteorological producer is integrated.
+    type(weather_day_owner_t), optional, intent(in) :: weather
+    integer(int64), optional, intent(in) :: weather_source, weather_epoch, weather_revision
+    real(real64), optional, intent(in) :: weather_day
 
     type(reference_et_demand_diagnostics_t) :: process_diagnostics
     type(fmr_reference_et_binding_diagnostics_t) :: binding_diagnostics
-    real(real64) :: duration
+    real(real64) :: duration, weather_tav
+    integer :: weather_status
+    logical :: supplied(5)
 
     result = ppa_wu03_common_forcing_result_t()
     diagnostics = ppa_wu03_common_forcing_diagnostics_t()
+    supplied=[present(weather),present(weather_source),present(weather_epoch), &
+         present(weather_revision),present(weather_day)]
+    ! Partial identity is never interpreted as an unguarded forcing request.
+    if(any(supplied)) then
+      diagnostics%status=PPA_WU03_WEATHER_REJECTED
+      if(.not.all(supplied)) return
+      call validate_weather_day_forcing_span(weather,weather_source,weather_epoch, &
+           weather_revision,weather_day,input%interval%t0,input%interval%t1, &
+           weather_tav,weather_status)
+      if(weather_status/=WEATHER_DAY_OK) return
+    end if
 
     if (config%et_mode /= PPA_WU03_ET_REFERENCE) then
       diagnostics%status = PPA_WU03_UNSUPPORTED_ET
@@ -109,14 +132,16 @@ contains
     if (input%precipitation_rate_cm_per_day < 0.0_real64) return
     if (.not. ieee_is_finite(input%surface_irrigation_rate_cm_per_day)) return
     if (input%surface_irrigation_rate_cm_per_day < 0.0_real64) return
+    if (.not. ieee_is_finite(input%runon_rate_cm_per_day)) return
+    if (input%runon_rate_cm_per_day < 0.0_real64) return
     if (config%irrigation_mode == PPA_WU03_IRRIGATION_NONE .and. &
         input%surface_irrigation_rate_cm_per_day /= 0.0_real64) then
       diagnostics%status = PPA_WU03_UNSUPPORTED_IRRIGATION
       return
     end if
 
-    ! Snowmelt and runon are separate ingestion slices.  They are never
-    ! silently inherited from the caller's base request in this WU03 slice.
+    ! Snowmelt remains a separate ingestion slice and is never silently
+    ! inherited from the caller. Runon is an explicit common-forcing carrier.
     if (.not. ieee_is_finite(base_top_request%snowmelt_rate_cm_per_day)) return
     if (.not. ieee_is_finite(base_top_request%runon_rate_cm_per_day)) return
     if (base_top_request%snowmelt_rate_cm_per_day /= 0.0_real64 .or. &
@@ -140,7 +165,7 @@ contains
     result%top_request%precipitation_rate_cm_per_day = input%precipitation_rate_cm_per_day
     result%top_request%irrigation_rate_cm_per_day = input%surface_irrigation_rate_cm_per_day
     result%top_request%snowmelt_rate_cm_per_day = 0.0_real64
-    result%top_request%runon_rate_cm_per_day = 0.0_real64
+    result%top_request%runon_rate_cm_per_day = input%runon_rate_cm_per_day
     result%top_request%potential_bare_soil_evaporation_cm_per_day = &
          result%reference_et_demand%potential_soil_evaporation_cm_per_day
     result%top_request%potential_pond_evaporation_cm_per_day = &

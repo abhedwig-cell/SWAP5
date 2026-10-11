@@ -1,0 +1,130 @@
+{
+  "schema": "swap5.ppa_wu05d.compensation_authority_contract.v1",
+  "workunit": "PPA-WU05-D",
+  "authority": {
+    "corrected_reference": {
+      "snapshot": "B1.11",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "file": "SWAP/rootextraction.f90",
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "b0_size_bytes": 22013,
+      "b1_11_patch_relation": "UNCHANGED_BY_ADMITTED_B1_PATCHES"
+    },
+    "current_swap5": [
+      "src/process/mod_root_water_uptake_process.f90",
+      "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+      "integration/f-ci/F-CI31_STATUS.json",
+      "integration/f-ci/F-CI37_STATUS.json",
+      "integration/audits/PPA_WU05C_OXYGEN_AUTHORITY_CONTRACT.json"
+    ],
+    "prior_source_bound_authority": {
+      "workunit": "F-PM05",
+      "historical_branch": "work/f-pm05-root-water-uptake-readiness",
+      "exact_rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "decision": "Compensated uptake explicitly held outside the admitted drought-only Feddes seam."
+    },
+    "corroborating_historical_artifact": {
+      "name": "rootextraction.f90",
+      "observed_size_bytes": 27585,
+      "exact_b1_11_size_bytes": 22013,
+      "class": "CORROBORATING_LATER_ARTIFACT_NOT_B1_11_ORACLE",
+      "observed_semantics": [
+        "compensation executes after an initial root-stress result exists",
+        "candidate nodewise qrot is rescaled rather than independently ledgered",
+        "qrosum and stress-attribution totals are recomputed after compensation",
+        "Jarvis/Walsum options and a selected stressor control the redistribution"
+      ],
+      "prohibited_use": "Do not freeze exact equations, thresholds, persistent state or B1.11 ordering solely from this artifact."
+    }
+  },
+  "invariants": {
+    "accepted_water_mass_owner": "Existing root-water-uptake process remains the sole accepted nodewise root sink and actual-transpiration water-mass owner.",
+    "compensation_mass_owner": "NONE_SEPARATE. Compensation may modify the candidate sink before acceptance but must not create a second water withdrawal receipt.",
+    "hydraulic_owner": "Soil-water owner. Compensation does not acquire HeadCalc/Newton/Jacobian ownership.",
+    "stress_owner": "Drought/oxygen/salinity/frost modifiers remain independently qualified inputs/results. Compensation does not admit them.",
+    "crop_owner": "Root geometry and crop/root-development quantities remain crop/root owner inputs.",
+    "transaction": "A compensated trial must be derived from the same committed/root-demand checkpoint as its uncompensated candidate. Rejected compensated output is disposable.",
+    "retry": "A smaller retry must rebuild the pre-compensation root result from the committed checkpoint; it may not rescale an already-scaled rejected qrot.",
+    "restart": "UNKNOWN_DO_NOT_INFER until exact B1.11 source trace proves whether compensation owns continuation state.",
+    "persistent_physical_state": "UNKNOWN_DO_NOT_INFER",
+    "reporting": "Stress-attribution totals are diagnostics/results unless exact source establishes continuation semantics.",
+    "coupling": "Any compensation-induced change in root sink remains outside analytic groundwater tangent coverage until root-response derivative coverage is separately admitted."
+  },
+  "corroborated_order_boundary": {
+    "status": "CORROBORATED_NOT_EXACT_B1_11_FROZEN",
+    "likely_shape": "pre-compensation potential/root-stress evaluation -> compensation transformation -> final candidate qrot/qrosum -> accepted root-sink receipt",
+    "exact_option_order": "HELD_ON_EXACT_SOURCE_MATERIALIZATION",
+    "reason": "Later source artifact and historical root contracts agree on post-stress rescaling, but byte identity differs from B1.11."
+  },
+  "jarvis_walsum_boundary": {
+    "Jarvis": {
+      "selector": "sw_compensate=1 in corroborating artifact",
+      "exact_equation": "HELD_ON_EXACT_B1_11_SOURCE",
+      "likely_geometry_dependency": "No additional Walsum root-depth criticality term observed in corroborating artifact; do not treat as exact authority."
+    },
+    "Walsum": {
+      "selector": "sw_compensate=2 in corroborating artifact",
+      "exact_equation": "HELD_ON_EXACT_B1_11_SOURCE",
+      "corroborated_extra_inputs": [
+        "critical root-zone depth/root-depth geometry"
+      ],
+      "exact_inputs": "HELD_ON_EXACT_B1_11_SOURCE"
+    }
+  },
+  "multi_stressor_boundary": {
+    "drought": "Current production drought-only root owner exists; compensation itself is not admitted.",
+    "oxygen": "WU05-C review authority exists; production oxygen compensation held until relevant oxygen slice admission.",
+    "salinity": "Held until WU05-E source/state authority and production slice.",
+    "frost": "Held until WU05-B source authority can progress and frost production exists.",
+    "modifier_order": "SOURCE_BOUND_DO_NOT_INVENT"
+  },
+  "unresolved_source_trace": {
+    "state": "BLOCKED_EXACT_B1_11_ROOTEXTRACTION_MATERIALIZATION_REQUIRED",
+    "required": [
+      "full B1.11 rootextraction.f90 bytes matching pinned SHA256",
+      "exact sw_compensate and sw_stressor branches",
+      "exact Jarvis/Walsum equations and option defaults",
+      "exact ordering relative to drought, oxygen, salinity and frost reductions",
+      "all compensation-mutated module/cross-call fields",
+      "persistent state versus pure result/recomputable scratch classification",
+      "restart representation if any",
+      "macro versus MICRO applicability"
+    ],
+    "source_materialization_note": "Current Project/Library exposes later loose rootextraction artifacts and legacy archives, but raw byte materialization of the exact archive is not authorized on the current file surface.",
+    "prohibited_inference": [
+      "do not infer zero persistent state",
+      "do not infer exact B1.11 Jarvis/Walsum formulas from later artifact",
+      "do not infer stressor order",
+      "do not infer MICRO compensation applicability"
+    ]
+  },
+  "migration_slices": [
+    {
+      "id": "PPA-WU05-D1",
+      "scope": "Exact B1.11 rootextraction source materialization plus compensation call/order/state census",
+      "state": "BLOCKED_SOURCE_MATERIALIZATION_REQUIRED"
+    },
+    {
+      "id": "PPA-WU05-D2",
+      "scope": "Typed Jarvis compensated-uptake compositor on an independently admitted pre-compensation root result",
+      "state": "HELD_ON_D1"
+    },
+    {
+      "id": "PPA-WU05-D3",
+      "scope": "Typed Walsum compensated-uptake compositor with source-bound root-depth inputs",
+      "state": "HELD_ON_D1"
+    },
+    {
+      "id": "PPA-WU05-D4",
+      "scope": "Multi-stressor compensation composition",
+      "state": "HELD_ON_D1_AND_RELEVANT_OXYGEN_SALINITY_FROST_ADMISSIONS"
+    },
+    {
+      "id": "PPA-WU05-D5",
+      "scope": "MICRO/Jong-van-Lier compensation composition",
+      "state": "HELD_ON_INDEPENDENT_MICRO_AUTHORITY"
+    }
+  ],
+  "production_admission": "NONE_REVIEW_ONLY_BLOCKED",
+  "review_verdict": "ROOT_SINK_OWNER_AND_RETRY_BOUNDARIES_FROZEN_EXACT_COMPENSATION_SCIENCE_SOURCE_HELD"
+}

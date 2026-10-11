@@ -138,6 +138,8 @@ REAL_SRC=(
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t REAL_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${REAL_SRC[@]}")
 for opt in 0 2; do
   OUT="$BUILD/real-o$opt"
   mkdir -p "$OUT"

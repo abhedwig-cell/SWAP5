@@ -41,6 +41,10 @@ if git merge-base --is-ancestor "$FPERF_B1_ADMISSION" HEAD; then
   tx_authority=97d8ef1fae91e174ab6daefb42ffa6a85da9380e
   echo 'F_ROSS13_ROSS12_FPERF_B1_TRANSACTION_SUCCESSOR=ACTIVE'
 fi
+if [[ "${PPA_WU05B_MOVING_CANONICAL_PRESERVATION:-0}" == "1" ]]; then
+  tx_authority="$(git rev-parse "HEAD^1:$TX")"
+  echo 'F_ROSS13_ROSS12_PPA_WU05B_CURRENT_TARGET_TRANSACTION=ACTIVE'
+fi
 test "$(git rev-parse HEAD:$TX)" = "$tx_authority" || fail 'transaction authority drift'
 
 sw_authority=40a1ddc05fb8e2c1822763de645fd07a094568a3
@@ -51,6 +55,10 @@ fi
 if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
   sw_authority="$BOFEK00_SW"
   echo 'F_ROSS13_ROSS12_BOFEK00_SOLVER_CONTRACT_SUCCESSOR=ACTIVE'
+fi
+if [[ "${PPA_WU05B_MOVING_CANONICAL_PRESERVATION:-0}" == "1" ]]; then
+  sw_authority="$(git rev-parse "HEAD^1:$SW")"
+  echo 'F_ROSS13_ROSS12_PPA_WU05B_CURRENT_TARGET_SOLVER_CONTRACT=ACTIVE'
 fi
 test "$(git rev-parse HEAD:$SW)" = "$sw_authority" || fail 'solver contract drift'
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9 || fail 'RossFast policy drift'

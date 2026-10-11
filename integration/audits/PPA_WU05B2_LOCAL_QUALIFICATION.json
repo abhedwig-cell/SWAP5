@@ -1,0 +1,71 @@
+{
+  "work_unit": "PPA-WU05B2",
+  "status": "LOCAL_RECONCILED_FULL_QUALIFICATION_PASS",
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "new_tests": {
+    "root_cutoff_attribution_jarvis_walsum": "PASS",
+    "serialized_runtime_and_fresh_replay": "PASS",
+    "actual_thaw": "PASS",
+    "committed_restart_fresh_worker": "PASS",
+    "jarvis_walsum_public_application": "PASS",
+    "accepted_uptake_publication": "PASS",
+    "direct_refinement_2048_steps": "PASS",
+    "frost_without_compensation_public_application": "PASS",
+    "joint_salt_frost_application_rejected": "PASS"
+  },
+  "preservation": {
+    "existing_rootless_frost_runtime": "PASS",
+    "existing_jarvis_oracles": "PASS",
+    "existing_walsum_geometry_and_application": "PASS",
+    "full_moving_canonical": "PASS",
+    "active_matrix_salt_upwind": "PASS",
+    "active_matrix_salt_dispersion": "PASS",
+    "reconciled_rootless_frost_runtime": "PASS",
+    "reconciled_jarvis_oracles": "PASS",
+    "reconciled_walsum_application": "PASS"
+  },
+  "water_mass_bound_cm": 1e-12,
+  "refinement": {
+    "head_error_cm": 1.511038e-07,
+    "temperature_error_c": 7.351853e-05,
+    "head_horizon_bound_cm": 1e-06,
+    "temperature_horizon_bound_c": 0.0001,
+    "local_full_half_head_budget_cm": 1e-06,
+    "local_full_half_temperature_budget_c": 1e-06,
+    "cumulative_temperature_1e-6_claim": false
+  },
+  "documentation_source_check": "PASS",
+  "strict_mkdocs": "PASS",
+  "admitted": false,
+  "tested_canonical": "916035e78305cae5f88c30d5805b5d9c33a348f8",
+  "tested_local_merge": "a748a5885aba8191087ba8df2b622da235377d54",
+  "tested_full_preservation_tree": "3eabefe24a589dc13ea3f20740514ee9256f44f2",
+  "production_source_tree": "7f2e6f2ded8ee0202656cf0a81febf7a3fa7cf10",
+  "qualification_semantics": "All production source postimages match the full preservation merge. The added uncompensated-root application oracle was compiled and executed separately at O0/O2 on those same postimages. Remaining candidate changes are evidence and source audit only.",
+  "log_sha256": {
+    "full_current_preservation": "b9148a43489c782acad88fb619c80b78a42d7eac536b424da2b6266c5e59f669",
+    "reconciled_root_oracles": "cdec30b2bd79de9668b3d61bebdf51da86555827f1d11c9fe8d2b25f1746a924",
+    "reconciled_root_runtime": "dd1f2b058ffa36399cc71be702548774b793b46b389e503836353c3daf8aa5ed",
+    "active_matrix_salt": "36aed9ec8c6aca01d511044106c54b3e4578b10fd71c96343df298ca65f622ac",
+    "active_matrix_salt_dispersion": "a1a7a7a52d036592fc9cad59bb35d2a89444e94aeb5d2b860e4bfffe476826fa",
+    "reconciled_rootless_frost": "8ed48be94f71a0053fa2adaa27a588db694d4dcf16a96f747bdb0a5a4e67de83",
+    "reconciled_walsum": "e4b885d1451378fb9e8efe5a2aa65afb4f4d2193d26268b160a1b80fe5f08908"
+  },
+  "persistent_confirmation": {
+    "workflow_run": 37332053283,
+    "status": "QUEUED_AT_LOCAL_CLOSEOUT",
+    "head": "fd634f37da80212e9825982ac023a60ada61496b",
+    "not_claimed_as_success": true
+  },
+  "additional_runtime_oracle": {
+    "test": "tests/frost/test_ppa_wu05b2_root_frost_runtime.f90",
+    "source_sha256": "14cf8d272415a9f761820bc661bd5f35cca761d27ae8054c103e780c7952dac4",
+    "O0_output_sha256": "f391915fb84c91dab1ccbc19c9b0879177ecd51977b21973a6614edc735a5557",
+    "O2_output_sha256": "f391915fb84c91dab1ccbc19c9b0879177ecd51977b21973a6614edc735a5557",
+    "semantic_identity": "PASS",
+    "assertions_include": "uncompensated root-frost public application and joint salt-frost rejection"
+  }
+}

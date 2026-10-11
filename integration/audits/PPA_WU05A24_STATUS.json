@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.ppa_wu05a24.status.v1",
+  "workunit": "PPA-WU05-A24",
+  "phase": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_RFM_RICHARDS_TRANSACTIONAL_SPLIT_BINDING",
+  "baseline": "0bf4bc0aec1d1f5d157ba6b4a88f0117c854bf6b",
+  "branch": "work/ppa-wu05-a24-rfm-richards-transaction-split",
+  "qualified_postimage": "52ecc62bc91001f9134d77772201438d75178b7c",
+  "qualification_run": 36874847383,
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "closed": false,
+  "operator_split": "accepted-state frozen first-order",
+  "accepted_origin_immutable": true,
+  "replay_identity": true,
+  "real_reference_richards": true,
+  "live_runtime_guard_removed": false,
+  "next": "PPA-WU05-A25 explicit live RFM runtime admission/guard removal"
+}

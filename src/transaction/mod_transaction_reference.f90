@@ -1,5 +1,5 @@
 module mod_transaction_reference
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_value, ieee_quiet_nan
   use, intrinsic :: iso_fortran_env, only: real64, int64
   implicit none
   private
@@ -55,6 +55,8 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -132,6 +134,8 @@ module mod_transaction_reference
     real(real64) :: accepted_storage_change = 0.0_real64
     real(real64) :: accepted_total_in = 0.0_real64
     real(real64) :: accepted_total_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: accepted_bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -257,8 +261,12 @@ contains
     context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
     if (context_required) call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -288,8 +296,12 @@ contains
         cycle
       end if
 
-      storage_full = model%storage(full_state)
       call model%storage_accounting_status(full_state, full_storage_end_complete, full_end_missing_mask)
+      if (full_storage_end_complete) then
+        storage_full = model%storage(full_state)
+      else
+        storage_full = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
       full_missing_mask = ior(start_missing_mask, full_end_missing_mask)
       full_missing_mask = ior(full_missing_mask, full_outcome%missing_mass_contribution_mask)
@@ -346,8 +358,12 @@ contains
         cycle
       end if
 
-      storage_half = model%storage(half_state)
       call model%storage_accounting_status(half_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_half = model%storage(half_state)
+      else
+        storage_half = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
@@ -408,6 +424,20 @@ contains
       result%accepted_storage_change = storage_half - storage0
       result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
       result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%actual_transpiration_available = half1_outcome%actual_transpiration_available .and. &
+           half2_outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_available=ieee_is_finite(half1_outcome%actual_transpiration_amount).and. &
+             ieee_is_finite(half2_outcome%actual_transpiration_amount).and. &
+             half1_outcome%actual_transpiration_amount>=0.0_real64.and.half2_outcome%actual_transpiration_amount>=0.0_real64
+      end if
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount = half1_outcome%actual_transpiration_amount + &
+             half2_outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = half1_outcome%bottom_interface_exchange_available .and. &
            half2_outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
@@ -480,8 +510,12 @@ contains
     context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
     if (context_required) call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -511,8 +545,12 @@ contains
       end if
 
       if (context_required) call model%capture_attempt_context(accepted_context)
-      storage_candidate = model%storage(candidate_state)
       call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_candidate = model%storage(candidate_state)
+      else
+        storage_candidate = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       mass_residual = storage_candidate - storage0 - (outcome%mass_in - outcome%mass_out)
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
@@ -566,6 +604,13 @@ contains
       result%accepted_storage_change = storage_candidate - storage0
       result%accepted_total_in = outcome%mass_in
       result%accepted_total_out = outcome%mass_out
+      result%actual_transpiration_available = outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount=outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
         result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native

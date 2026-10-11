@@ -1,0 +1,18 @@
+name: SW431 crop certified daily preflight O0 O2
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_crop_certified_germination_moisture.f90'
+      - 'src/runtime/mod_fmr_crop_certified_daily_preflight.f90'
+      - 'tests/fmig431/test_crop_certified_daily_preflight.f90'
+      - 'tests/fmig431/run_crop_certified_daily_preflight.sh'
+      - '.github/workflows/swap431-crop-certified-daily-preflight.yml'
+jobs:
+  crop-certified-daily-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fmig431/run_crop_certified_daily_preflight.sh
+      - run: bash tests/fmig431/run_crop_preparation_sowing_preflight.sh
+      - run: bash tests/fmig431/run_crop_germination_preflight.sh

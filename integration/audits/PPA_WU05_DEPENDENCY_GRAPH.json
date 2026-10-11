@@ -112,25 +112,168 @@
         "frozencond": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
         "temperature": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
       },
-      "decomposition_authority": "Current canonical sensible-temperature authority plus B1.11 frozencond/temperature source identities; detailed frost field semantics require exact source trace.",
+      "decomposition_authority": "Exact B1.11 frost and sensible-temperature source reconstructed locally using tools/vq/b1_11_reconstruct.py; selected source hashes are persisted in reference/swap-4.3.1/b1_11_frost_source/manifest.json and semantic trace in integration/audits/PPA_WU05B_SOURCE_TRACE.json.",
       "legacy_semantics": [
-        "Current canonical sensible-temperature authority explicitly does not admit frost, latent heat or phase change.",
-        "B1.11 frozencond/temperature exact identities establish the legacy source family only.",
-        "Any temperature-to-hydraulic, drainage or bottom-boundary frost dependency must be recovered from exact source before implementation."
+        "B1.11 computes rfcp from TSOIL using TFROSTSTA/TFROSTEND and modifies K and dK/dh with the same factor plus a 1e-10 cm/day residual K floor.",
+        "The B1.11 sensible-temperature route has no explicit ice content, frozen-water partition or latent heat.",
+        "FrozenBounds separately changes drainage and boundary fluxes using frost-depth/air-volume heuristics.",
+        "Root frost stress is a distinct binary TSOIL<0 C modifier, not the hydraulic rfcp factor."
       ],
-      "persistent_state": "UNRESOLVED_SOURCE_TRACE_REQUIRED",
-      "recomputable_fields": [],
-      "restart_rule": "Not frozen by WU05. Determine from exact B1.11 source whether frost fields are recomputable or continuation state.",
+      "persistent_state": "Frost factor and frost crossing geometry are recomputed from temperature each call; existing sensible TSOIL profile is the physical continuation state.",
+      "recomputable_fields": [
+        "rfcp(node)",
+        "nodfrostbot",
+        "zfrosttop",
+        "zfrostbot"
+      ],
+      "restart_rule": "Reuse current admitted soil_temperature state/restart; no independent frost restart payload is required by traced B1.11 hydraulic equations.",
       "prohibited_conflation": "This legacy hydraulic frost modifier is not authority for explicit ice-content storage, latent heat or a new thermodynamic phase-change model.",
       "target_interfaces": [
         "read-only committed temperature-field view",
-        "solver-neutral frost effect view only after exact source semantics are recovered"
+        "typed K/dKdh frost decorator over one existing constitutive provider"
       ],
+      "bounded_candidate": {
+        "scope": "reference Richards with prescribed bottom mode 2 and zero bottom flux; root uptake, snow, macropore, drainage-response and sensible boundary carriers excluded",
+        "implemented_paths": [
+          "src/process/mod_frost_hydraulic_effect.f90",
+          "src/solver/mod_frost_hydraulic_provider.f90",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        ],
+        "verification": "Exact-head O0/O2 frost/runtime/retry/restart and complete current-canonical preservation PASS in run 37324712595; PR #1018 admitted.",
+        "production_status": "CANONICALLY_ADMITTED",
+        "open_gates": []
+      },
       "option_constraint": "Legacy frost-plus-macropore incompatibility must remain fail-closed until separately qualified.",
       "risk": "HIGH_BUT_BOUNDED_FOR_LEGACY_MODIFIER; VERY_HIGH_FOR_NEW_PHASE_CHANGE",
       "use_relevance": "MEDIUM",
       "architecture_maturity": "MEDIUM_CURRENT_TEMPERATURE_OWNER_LOW_FROST_AUTHORITY",
-      "production_status": "NOT_MIGRATED"
+      "production_status": "BOUNDED_HYDRAULIC_AND_EXPLICIT_ROOT_STRESS_ADMITTED_BOUNDARY_PATHS_OPEN",
+      "source_trace_status": "COMPLETE_EXACT_B1_11_RECONSTRUCTION",
+      "known_legacy_defects": [
+        "No TFROSTSTA>TFROSTEND validation; equal temperatures in frost-depth interpolation can divide by zero; interpolated frost depth is not consistently clamped."
+      ],
+      "canonical_admission_authority": "integration/audits/PPA_WU05B_CANONICAL_ADMISSION.json",
+      "root_stress_successor_admission": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json",
+      "boundary_reassessment": "docs/audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md",
+      "no_drain_frozen_bottom_successor": {
+        "work_unit": "PPA-WU05B3",
+        "admission": "integration/audits/PPA_WU05B3_CANONICAL_ADMISSION.json",
+        "canonical_merge": "bdb5ecb78bd14226dc850ce27b72d551eaeff287",
+        "scope": "Rootless ordinary Reference mode2 legacy no-drain FrozenBounds with explicit opt-in and finite positive local numerical budgets",
+        "admitted": true
+      },
+      "drainage_source_finding": "integration/audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_STATUS.json",
+      "joint_root_bottom_successor": {
+        "work_unit": "PPA-WU05B4",
+        "canonical_merge": "d3bb48eb2407cdc8a3a089f37cc689f6a940dddb",
+        "admission": "integration/audits/PPA_WU05B4_CANONICAL_ADMISSION.json",
+        "scope": "Joint empirical root cutoff with OFF/Jarvis/Walsum and no-drain ordinary prescribed-qbot frost; same trial-start state and strict max of independent temporal norms",
+        "admitted": true
+      },
+      "corrected_drainage_reference": {
+        "work_unit": "PPA-WU05B5-REF",
+        "status": "CANONICALLY_ADMITTED_REFERENCE_COMPONENT",
+        "canonical_merge": "7257d884136396823286783971357ba2d80b836e",
+        "authority": "integration/audits/PPA_WU05B5_REF_STATUS.json",
+        "scope": "Reporting-only ordinary SWDRA=1 SWDIVD=0 SWMACRO=0 overlay; original physical fluxes bitwise unchanged",
+        "global_B1_snapshot_promoted": false
+      },
+      "normal_frost_drainage_successor": {
+        "work_unit": "PPA-WU05B6",
+        "canonical_merge": "f28e020855666b47207bcf6679cf367e0962e65c",
+        "admission": "integration/audits/PPA_WU05B6_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2 normal FrozenBounds scaling of prescribed signed level/node drainage",
+        "admitted": true
+      },
+      "guarded_frost_geometry_reference": {
+        "work_unit": "PPA-WU05B7-REF",
+        "canonical_merge": "e93e40a9609bb13a1e6786a2dccd08c8ca30856f",
+        "authority": "integration/audits/PPA_WU05B7_REF_STATUS.json",
+        "scope": "Valid bracket/source geometry guards; legacy last-node indexing retained; no new fully frozen front",
+        "admitted": true,
+        "global_B1_snapshot_promoted": false
+      },
+      "bracketed_low_air_drainage_successor": {
+        "work_unit": "PPA-WU05B8",
+        "canonical_merge": "0aca73324ea46511d18af56bca3fddd0dba52ffd",
+        "admission": "integration/audits/PPA_WU05B8_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2 prescribed signed nodal drainage; explicit finite negative physical drain depths; legacy low-air branch with guarded bracketed geometry, derived final-node totals and separate final qbot owner; normal branch retains B6",
+        "admitted": true
+      },
+      "active_response_composition_review": "integration/audits/PPA_WU05B9_SOURCE_REVIEW.json",
+      "normal_linear_response_frost_successor": {
+        "work_unit": "PPA-WU05B9",
+        "canonical_merge": "5cd8f04f81c19c6a20abeacddc172e0c44598ded",
+        "admission": "integration/audits/PPA_WU05B9_CANONICAL_ADMISSION.json",
+        "scope": "Rootless ordinary Reference mode2, current GWL LINEAR bottom-lumped generation then B6 normal frost modifier; final nodal rate drives single sink and step/window receipts",
+        "admitted": true
+      },
+      "low_air_response_successor_preregistration": "integration/audits/PPA_WU05B10_PREREGISTRATION.json",
+      "low_air_linear_response_frost_successor": {
+        "work_unit": "PPA-WU05B10",
+        "canonical_merge": "6042ea20e202d3c84cc8cd6a19f65e3c8e2f4b50",
+        "admission": "integration/audits/PPA_WU05B10_CANONICAL_ADMISSION.json",
+        "postmerge_reconciliation": "integration/audits/PPA_WU05B10_POSTMERGE_RECONCILIATION.json",
+        "admitted": true
+      },
+      "remaining_response_family_review": "integration/audits/PPA_WU05B16_SOURCE_REVIEW.json",
+      "tabulated_response_frost_successor": {
+        "work_unit": "PPA-WU05B11",
+        "canonical_merge": "d975acb21472ddf96c800ef66be327810f8968c0",
+        "admission": "integration/audits/PPA_WU05B11_CANONICAL_ADMISSION.json",
+        "scope": "Existing TABULATED and LINEAR/TABULATED mixtures with normal/B8 guarded low-air modifiers; single final nodal owner and separate bottom owner",
+        "admitted": true
+      },
+      "analytic_response_frost_successor": {
+        "work_unit": "PPA-WU05B12",
+        "canonical_merge": "388a87cad21218d0519cd8cf401a41ef0b67327e",
+        "admission": "integration/audits/PPA_WU05B12_CANONICAL_ADMISSION.json",
+        "scope": "Admitted DRAMET2 IPOS1..5 plus selected LINEAR/TABULATED mixtures with normal/B8 low-air modifiers; exact analytic physical drain/frost depth agreement and single final nodal owner",
+        "admitted": true
+      },
+      "empirical_response_frost_successor": {
+        "work_unit": "PPA-WU05B13",
+        "canonical_merge": "4ca2996bddb6bff101867f87251589a5b11357c7",
+        "admission": "integration/audits/PPA_WU05B13_CANONICAL_ADMISSION.json",
+        "scope": "Explicit rootless ordinary Reference mode2 last-level drainage-side empirical interflow, alone or after LINEAR; normal/B8 low-air frost. Finite interval control heads remain separate from physical frost depths. One final nodal sink/receipts, separate bottom owner and independent terminal full/half proposals.",
+        "admitted": true
+      },
+      "extended_response_frost_successor": {
+        "work_unit": "PPA-WU05B14",
+        "canonical_merge": "16e4e854016129ccc44a4e719adf02db74887186",
+        "admission": "integration/audits/PPA_WU05B14_CANONICAL_ADMISSION.json",
+        "scope": "Explicit rootless ordinary Reference mode2 single-level actual EXTENDED TUBE/OPEN_CHANNEL signed exchange, highest_level false and TOP_NONE, normal/B8 guarded low-air frost. Finite resolved surface-water control stays separate from physical frost depth; exact low-air zbotdr agreement. Immutable trial-start generation, independently regenerated terminal full/half proposals, one final nodal sink and separate bottom owner/accepted receipts.",
+        "admitted": true
+      },
+      "highest_response_frost_successor": {
+        "work_unit": "PPA-WU05B15",
+        "canonical_merge": "83dbe781295e4dc66b33a28ccd4c4570247e6aeb",
+        "admission": "integration/audits/PPA_WU05B15_CANONICAL_ADMISSION.json",
+        "scope": "Explicit rootless ordinary Reference mode2 one actual EXTENDED TUBE/OPEN_CHANNEL highest level with SURFACE_RESISTANCE or nonnegative POWER_INTERFLOW, normal/B8 guarded low-air frost. Finite supplied resolved surface-water control stays separate from physical depth; exact low-air zbotdr agreement. Original negative-power HELD domain rejects before solver/publication. Immutable trial-start generation, independently regenerated terminal full/half proposals, one final nodal sink, separate bottom exchange and accepted receipts retain their owners.",
+        "admitted": true
+      },
+      "divdra_reference_owner_review": {
+        "work_unit": "PPA-WU05B16",
+        "admission": "integration/audits/PPA_WU05B16_CANONICAL_ADMISSION.json",
+        "canonical_merge": "9906bf429c445f3eb715a949b47460d223294a29",
+        "reference_qualified": true,
+        "runtime_admitted": false,
+        "next": "PPA-WU05B17"
+      },
+      "divdra_corrected_reference": {
+        "work_unit": "PPA-WU05B17",
+        "canonical_merge": "987715cbf5513a0911bd81403209452d2a99666c",
+        "admission": "integration/audits/PPA_WU05B17_REF_CANONICAL_ADMISSION.json",
+        "reference_qualified": true,
+        "runtime_admitted": false
+      },
+      "divdra_typed_component": {
+        "work_unit": "PPA-WU05B18",
+        "canonical_merge": "a9a35a60409a16ef7fdf3a38d5bcffb6899c2416",
+        "admission": "integration/audits/PPA_WU05B18_CANONICAL_ADMISSION.json",
+        "component_admitted": true,
+        "runtime_admitted": false
+      }
     },
     "advanced_root_stress": {
       "legacy_files": [
@@ -173,7 +316,9 @@
           ],
           "composition_target": "Root stress modifier downstream of an admitted frost view.",
           "risk": "HIGH",
-          "authority_maturity": "LOW_BLOCKED_BY_FROST"
+          "authority_maturity": "QUALIFIED_EXPLICIT_SOURCE_COMPATIBILITY_NO_PHYSIOLOGICAL_VALIDATION_CLAIM",
+          "production_status": "CANONICALLY_ADMITTED_BOUNDED_MACRO_ROOT_COMPATIBILITY",
+          "canonical_admission": "integration/audits/PPA_WU05B2_CANONICAL_ADMISSION.json"
         },
         "compensated_uptake": {
           "dependencies": [
@@ -320,10 +465,10 @@
     {
       "rank": 3,
       "id": "PPA-WU05-B",
-      "target": "Legacy frost hydraulic boundary source trace",
-      "scope": "Recover exact frozencond/temperature dependencies, state/recomputability and clean temperature-to-hydraulic interfaces without claiming latent heat or new phase-change physics.",
-      "reason": "Sensible-temperature ownership exists, but frost semantics and joint acceptance requirements remain unbound.",
-      "implementation_admission": "REVIEW_FIRST_NO_PHASE_CHANGE_CLAIM"
+      "target": "Bounded frost hydraulic candidate qualification and boundary disposition",
+      "scope": "Qualify the typed temperature-to-K/dKdh candidate with retry/restart evidence, then separately admit, replace or reject FrozenBounds and frost-root-stress behavior without claiming latent heat or new phase-change physics.",
+      "reason": "Exact B1.11 source is reconstructed and the bounded provider path is implemented; retry/restart evidence and general boundary behavior remain open.",
+      "implementation_admission": "BOUNDED_HYDRAULIC_AND_ROOT_FROST_ADMITTED_FROZEN_BOUNDS_REPLACEMENT_OPEN"
     },
     {
       "rank": 4,
@@ -345,7 +490,7 @@
       "id": "PPA-WU05-F",
       "target": "Frost root stress",
       "prerequisite": "admitted frost hydraulic modifier",
-      "implementation_admission": "BLOCKED_BY_FROST"
+      "implementation_admission": "PPA_WU05B2_BOUNDED_MACRO_ROOT_FROST_CANONICALLY_ADMITTED"
     },
     {
       "rank": 7,

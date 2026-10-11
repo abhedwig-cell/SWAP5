@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.crop_unified_restart_bundle.v1",
+  "workstream": "MC-CROP01",
+  "base": "a3f2aa475771c042dcf3db6931e6a613aaca3955",
+  "inherited": [
+    "PR #1131 derived calendar checkpoint trial/accept",
+    "PR #1132 committed receipt publication",
+    "PR #1138 F-KT physical lifecycle owner persistence",
+    "PR #1139 exact F-KT physical/calendar postevent pair validation"
+  ],
+  "scope": "Serialization-neutral paired physical crop owner and derived calendar checkpoint with kernel lineage/revision/time provenance, fail-closed reconstruction and no F-KT publication",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "admitted": false,
+  "guards": [
+    "source-calendar selection and checkpoint active crop validated on reconstruction",
+    "exact F-KT lineage, kernel revision and accepted time bound to saved bundle",
+    "physical receipt must match actual committed FKT crop owner",
+    "stale FKT revision, wrong calendar identity and wrong receipt time fail closed",
+    "rollback and failed reconstruction cannot alter committed F-KT kernel or source calendar"
+  ],
+  "limitations": [
+    "Not a complete byte-serialized on-disk restart or F-KT carrier reconstruction; kernel is separately reconstructed by its owner",
+    "Does not prove bitwise identity of separately supplied saved WOFOST biomass to F-KT physical snapshot; matching receipt plus owner readiness is checked",
+    "Active-crop, immediately postevent pair only; fallow, harvest and crop switches remain nonadmitted",
+    "No hydraulic/thermal forcing provenance, source previous-day emergence or root initialization/harvest semantics"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_rotation_transition.sh",
+    "tests/fmig431/run_crop_rotation_receipt_full_gate.sh",
+    "tests/fmig431/run_crop_unified_restart_bundle.sh"
+  ],
+  "next_action": "Compile and qualify exact head owner, receipt and bundle plus F-CI B19/MICRO preservation; only then bounded admission. Full physical crop lifecycle and whole-system bytes remain separate."
+}

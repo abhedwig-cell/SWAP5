@@ -35,6 +35,7 @@ module mod_drainage_tabulated_response
   end type drainage_tabulated_diagnostics_t
 
   public :: evaluate_tabulated_drainage_response
+  public :: valid_tabulated_drainage_parameters
 
 contains
 
@@ -137,7 +138,12 @@ contains
     response = drainage_tabulated_result_t()
   end subroutine evaluate_tabulated_drainage_response
 
-  logical function valid_parameters(parameters) result(valid)
+  pure logical function valid_tabulated_drainage_parameters(parameters) result(valid)
+    type(drainage_tabulated_parameters_t), intent(in) :: parameters
+    valid = valid_parameters(parameters)
+  end function valid_tabulated_drainage_parameters
+
+  pure logical function valid_parameters(parameters) result(valid)
     type(drainage_tabulated_parameters_t), intent(in) :: parameters
     integer :: i, n
 

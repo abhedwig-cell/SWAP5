@@ -72,6 +72,8 @@ MODULE_SRC=(
   src/adapter/mod_fmr_mode7_temporal_head_envelope.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

@@ -16,6 +16,7 @@ module mod_fmr_serialized_multiswap_runtime
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
        fmr_serialized_physical_observation_t
+  use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_candidate_t, fmr_bottom_thermal_sample_t, &
        FMR_BOTTOM_THERMAL_DONOR_EXTERNAL
   use mod_fmr_bottom_external_thermal_binding, only: fmr_bottom_external_thermal_binding_bundle_t, &
@@ -49,9 +50,13 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: completed = .false.
     logical :: committed = .false.
     logical :: solver_executed = .false.
+    integer :: solver_status = 0
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
     integer :: accepted_substeps = 0
+    integer :: solver_rejections = 0
+    integer :: temporal_rejections = 0
+    integer :: mass_rejections = 0
     integer :: solver_nonlinear_iterations = 0
     integer :: solver_internal_retries = 0
     integer :: solver_headcalc_calls = 0
@@ -169,7 +174,7 @@ contains
                                                     runtime_diagnostics, receipt_column_ids, commit_receipts, execution_plan, &
                                                     materialize_worker_assignments, materialize_summary_diagnostics, &
                                                     materialize_diagnostic_metadata, materialize_column_diagnostics, &
-                                                    trusted_prepared_parameters)
+                                                    trusted_prepared_parameters, base_salt_temporal_policy)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -193,13 +198,15 @@ contains
     logical, intent(in), optional :: materialize_column_diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
 
+    type(fmr_base_salt_temporal_policy_t), intent(in), optional :: base_salt_temporal_policy
+
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     type(fmr_column_diagnostics_t) :: scratch_diagnostic
     integer, allocatable :: order(:), receipt_slot_by_column(:)
     integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot, template_index_hint
-    logical :: receipt_request_ok
+    logical :: receipt_request_ok, salt_policy_ok
     logical :: do_worker_assignments, do_summary_diagnostics, do_diagnostic_metadata, do_column_diagnostics
     logical :: track_physical_concurrency, trust_prepared
 
@@ -299,6 +306,16 @@ contains
     end if
 
     call backend%initialize(top_boundary)
+    if (present(base_salt_temporal_policy)) then
+      if (base_salt_temporal_policy%enabled) then
+        call backend%configure_base_salt_temporal_policy(base_salt_temporal_policy,salt_policy_ok)
+        if (.not. salt_policy_ok) then
+          dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+          call mark_all_rejected(diagnostics, 'INVALID_BASE_SALT_TEMPORAL_POLICY')
+          return
+        end if
+      end if
+    end if
     batches = 0
     do batch_start = 1, size(columns), batch_size
       batches = batches + 1
@@ -782,6 +799,9 @@ contains
     diagnostic%attempts = kernel_diag%attempts
     diagnostic%retries = kernel_diag%retries
     output%accepted_substeps = kernel_diag%accepted_substeps
+    output%solver_rejections = kernel_diag%solver_rejections
+    output%temporal_rejections = kernel_diag%temporal_rejections
+    output%mass_rejections = kernel_diag%mass_rejections
     output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
     output%solver_internal_retries = kernel_diag%internal_retries
     output%solver_headcalc_calls = kernel_diag%headcalc_calls
@@ -806,6 +826,7 @@ contains
     if (kernel_diag%transaction_calls > 0) then
       observation = backend%observation()
       output%solver_executed = observation%solver_executed
+      output%solver_status = observation%solver_status
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       if (output%solver_executed .and. do_track_physical_concurrency) then
@@ -896,6 +917,10 @@ contains
     end if
 
     call bind_committed_actual_transpiration(parameters, effective_forcing, t0, t1, output)
+    if(kernel_result%actual_transpiration_available) then
+      output%actual_transpiration_available=.true.
+      output%actual_transpiration_amount=kernel_result%actual_transpiration_amount
+    end if
     output%completed = .true.
     output%committed = .true.
     diagnostic%accepted = 1

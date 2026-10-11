@@ -1,11 +1,11 @@
 module mod_reference_richards_legacy_binding
-  use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value
+  use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value, ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
-       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
+       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
@@ -154,15 +154,17 @@ contains
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
-       ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
+       ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
        ! leaves the exact unrounded compartment residual vector in worker scratch.
        ! Materialize qbot with exact B1.10 watstor()+fluxes() arithmetic grouping
        ! from explicit request/state/provider data; do not call legacy fluxes(),
        ! which mutates integration globals outside the focused solver service.
-       if (request%boundary%bottom_mode == 5 .and. .not. ws%state_binding%fldecdt .and. &
+       if ((request%boundary%bottom_mode == 5 .or. request%boundary%bottom_mode == 8) .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
-          call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+             call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          end if
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
           result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
@@ -176,7 +178,8 @@ contains
        ! by HeadCalc's total-balance convergence criterion. Preserve that exact
        ! value in the compatibility field, expose it explicitly as cm/day, and
        ! separately publish its time-integrated equation-balance residual in cm.
-       if (request%boundary%bottom_mode == 2 .and. .not. ws%state_binding%fldecdt .and. &
+       if ((request%boundary%bottom_mode == 2 .or. request%boundary%bottom_mode == 3) .and. &
+           .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
@@ -330,6 +333,10 @@ contains
     logical, intent(out) :: ok
     character(len=*), intent(out) :: route
     logical :: common_ok
+    logical :: boundary_ok
+    integer :: n
+    real(real64), allocatable :: theta_check(:), k_check(:), capacity_check(:), derivative_check(:)
+    real(real64) :: boundary_flux, boundary_conductance
 
     ok = .false.
     route = 'legacy-request-invalid'
@@ -339,8 +346,13 @@ contains
     end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
-    if (request%physical%macropore_active) then
-       route = 'explicit-macropore-deferred'
+    if (request%physical%macropore_active .and. .not. associated(request%evaluation%macropore)) then
+       route = 'explicit-macropore-provider-required'
+       return
+    end if
+    if (request%physical%macropore_active .and. request%boundary%matrix_source_area_partition .and. &
+        request%boundary%top_mode /= FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+       route = 'matrix-source-partition-requires-dynamic-top'
        return
     end if
     if (request%numerical%conductivity_implicit_mode /= 0) then
@@ -352,9 +364,43 @@ contains
        return
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
-        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2) then
+        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 8) then
+       route = 'lysimeter-plate-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head)) return
+       if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (.not. ieee_is_finite(request%parameters%node_distance(n))) return
+       if (request%parameters%node_distance(n) <= 0.0_real64) return
+       if (.not. ieee_is_finite(request%base_state%pressure_head(n))) return
+    end if
+    if (request%boundary%bottom_mode == 3) then
+       route = 'resistive-bottom-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (any(.not. ieee_is_finite(request%parameters%z))) return
+       if (any(.not. ieee_is_finite(request%parameters%dz))) return
+       if (any(.not. ieee_is_finite(request%parameters%node_distance))) return
+       if (any(request%parameters%dz <= 0.0_real64)) return
+       if (any(request%parameters%node_distance <= 0.0_real64)) return
+       if (any(.not. ieee_is_finite(request%base_state%pressure_head))) return
+       if (any(abs(request%base_state%pressure_head)>1.0e10_real64)) return
+       allocate(theta_check(n),k_check(n),capacity_check(n),derivative_check(n))
+       call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
+            theta_check,k_check,capacity_check,derivative_check)
+       call evaluate_resistive_bottom_boundary(request%boundary,request%base_state%pressure_head(n), &
+            request%parameters%z(n),0.5_real64*request%parameters%dz(n),k_check(n), &
+            boundary_flux,boundary_conductance,boundary_ok)
+       if (.not. boundary_ok) return
     end if
     select case (request%boundary%top_mode)
     case (FSI_TOP_MODE_EXPLICIT_FLUX)

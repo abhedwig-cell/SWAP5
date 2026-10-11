@@ -174,7 +174,7 @@ contains
     end if
     if (m1_profile) then
       call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
-           swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
+           swkmean, pondm1, dt, nraidt, nird, melt, runon, potential_bare_evaporation, epond, &
            pondmx, rsro, rsroexp, fixed_top_node_conductivity=k(1))
     else
       call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
@@ -286,7 +286,6 @@ contains
       ftoph = (accepted_surface%regime == SW_TOP_BOUNDARY_REGIME_HEAD)
       flrunoff = accepted_surface%runoff_potential .or. abs(accepted_surface%runoff_depth) > 0.0_real64
       if (ftoph) kmean(1) = accepted_surface%surface_face_conductivity
-      runon = 0.0_real64
       fldecdt = .false.
 
       ! Preserve the legacy accepted-iteration statistics owned by HeadCalc.
@@ -336,7 +335,6 @@ contains
     if (swfrost /= 0) return
     if (swdra == 2) return
     if (swpondmx /= 0) return
-    if (swrunon /= 0) return
     if (swkimpl /= 0) return
     if (fldtmin) return
     if (swkmean < 1 .or. swkmean > 6) return

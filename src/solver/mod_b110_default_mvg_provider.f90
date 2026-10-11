@@ -25,6 +25,7 @@ module mod_b110_default_mvg_provider
    contains
      procedure :: evaluate => b110_default_mvg_evaluate
      procedure :: evaluate_demand => b110_default_mvg_evaluate_demand
+     procedure :: evaluate_water_content_increment => b110_default_mvg_evaluate_water_content_increment
      procedure :: supports_point_conductivity => b110_default_mvg_supports_point_conductivity
      procedure :: evaluate_point_conductivity => b110_default_mvg_evaluate_point_conductivity
   end type b110_default_mvg_provider_t
@@ -168,6 +169,32 @@ contains
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
+
+  subroutine b110_default_mvg_evaluate_water_content_increment(self, pressure_head, previous_pressure_head, &
+                                                                 water_content, previous_water_content, increment)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), previous_pressure_head(:)
+    real(real64), intent(in) :: water_content(:), previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+    integer :: i, n
+
+    if (.not. associated(self%parameters)) error stop 'B1.10 default MvG provider: parameters not bound'
+    n = self%parameters%active_nodes
+    if (size(pressure_head) /= n .or. size(previous_pressure_head) /= n .or. size(water_content) /= n .or. &
+        size(previous_water_content) /= n .or. size(increment) /= n) &
+         error stop 'B1.10 default MvG provider: storage increment shape mismatch'
+
+    do i = 1, n
+      if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64 .and. &
+          previous_pressure_head(i) >= 0.0_real64) then
+        increment(i) = self%parameters%specific_elastic_storage(i) * &
+             (pressure_head(i)-previous_pressure_head(i))
+      else
+        increment(i) = b110_watcon_increment(self%parameters%cofgen(:,i), pressure_head(i), &
+             previous_pressure_head(i), water_content(i), previous_water_content(i))
+      end if
+    end do
+  end subroutine b110_default_mvg_evaluate_water_content_increment
 
   logical function b110_default_mvg_supports_point_conductivity(self) result(supported)
     class(b110_default_mvg_provider_t), intent(in) :: self
@@ -337,6 +364,84 @@ contains
        end if
     end if
   end function b110_watcon
+
+  pure real(real64) function b110_watcon_increment(c, head_new, head_old, theta_new, theta_old) result(delta_theta)
+    real(real64), intent(in) :: c(:), head_new, head_old, theta_new, theta_old
+    real(real64) :: h105
+
+    delta_theta = theta_new-theta_old
+    if (head_new == head_old) then
+      delta_theta = 0.0_real64
+      return
+    end if
+    if (head_new >= 0.0_real64 .and. head_old >= 0.0_real64) then
+      delta_theta = 0.0_real64
+      return
+    end if
+    if (head_new >= 0.0_real64 .or. head_old >= 0.0_real64) return
+
+    if (c(9) > B110_H_CRIT) then
+      if (head_new > B110_H_CRIT .and. head_old > B110_H_CRIT) then
+        delta_theta = c(27)*(head_new-head_old)
+      else if (head_new <= B110_H_CRIT .and. head_old <= B110_H_CRIT) then
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,1.0_real64,delta_theta)
+      end if
+    else
+      h105 = 1.05_real64*c(9)
+      if (head_new >= h105 .and. head_old >= h105) then
+        delta_theta = c(42)*(head_new-head_old) / &
+             ((1.0_real64+c(41)*head_new)*(1.0_real64+c(41)*head_old))
+      else if (head_new < h105 .and. head_old < h105) then
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,c(28),delta_theta)
+      end if
+    end if
+  end function b110_watcon_increment
+
+  pure real(real64) function b110_vg_same_branch_increment(c,head_new,head_old,normalization,fallback) result(delta_theta)
+    real(real64), intent(in) :: c(:), head_new, head_old, normalization, fallback
+    real(real64) :: abs_old, relative_abs_change, x_old, dx, dlog_se, se_old
+
+    delta_theta = fallback
+    abs_old = abs(head_old)
+    if (abs_old <= 0.0_real64 .or. normalization <= 0.0_real64) return
+    relative_abs_change = (abs(head_new)-abs_old)/abs_old
+    if (relative_abs_change <= -1.0_real64) return
+
+    x_old = abs(c(4)*head_old)**c(6)
+    if (.not. ieee_is_finite(x_old)) return
+    dx = x_old*b110_expm1(c(6)*b110_log1p(relative_abs_change))
+    if (.not. ieee_is_finite(dx)) return
+    dlog_se = -c(7)*b110_log1p(dx/(1.0_real64+x_old))
+    if (.not. ieee_is_finite(dlog_se)) return
+    se_old = 1.0_real64/((1.0_real64+x_old)**c(7))
+    if (.not. ieee_is_finite(se_old)) return
+    delta_theta = c(25)*se_old*b110_expm1(dlog_se)/normalization
+    if (.not. ieee_is_finite(delta_theta)) delta_theta = fallback
+  end function b110_vg_same_branch_increment
+
+  pure real(real64) function b110_log1p(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x - 0.5_real64*x2 + x*x2/3.0_real64 - x2*x2/4.0_real64 + &
+           x*x2*x2/5.0_real64 - x2*x2*x2/6.0_real64
+    else
+      value = log(1.0_real64+x)
+    end if
+  end function b110_log1p
+
+  pure real(real64) function b110_expm1(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x + 0.5_real64*x2 + x*x2/6.0_real64 + x2*x2/24.0_real64 + &
+           x*x2*x2/120.0_real64 + x2*x2*x2/720.0_real64
+    else
+      value = exp(x)-1.0_real64
+    end if
+  end function b110_expm1
 
   pure real(real64) function b110_moiscap(c, head, step_duration) result(capacity)
     real(real64), intent(in) :: c(:), head, step_duration

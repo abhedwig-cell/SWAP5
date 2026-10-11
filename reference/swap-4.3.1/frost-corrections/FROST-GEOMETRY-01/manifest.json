@@ -1,0 +1,17 @@
+{
+  "correction": "FROST-GEOMETRY-01",
+  "base": "FROST-DRAIN-01",
+  "base_sha256": "9d75dc4a552f438fa4f358f3d9e17ddaaa1d50348e549b11802617a270ca1c87",
+  "target_sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2",
+  "scope": "Actual FrozenCond guarded bracket domain and ordinary SWDRA1 SWDIVD0 nonmacro valid drain-depth guard",
+  "global_B1_snapshot_promoted": false,
+  "production_source_unchanged": true,
+  "last_node_index_policy": "Original decrement-before-test retained; no last-node correction",
+  "exclusions": [
+    "new fully frozen front interpretation",
+    "SWDIVD1",
+    "macropore/surface-water drainage",
+    "global legacy equivalence",
+    "SWAP5 production"
+  ]
+}

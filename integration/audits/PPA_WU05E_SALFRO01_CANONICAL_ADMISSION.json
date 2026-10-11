@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.ppa.salfro01.canonical_admission.v1",
+  "work_unit": "PPA-WU05-E-SALFRO01",
+  "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_ROOT_FROST",
+  "canonical_pr": 1044,
+  "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+  "qualified_candidate": "3f482e7088dc581b13eb9d81e10babc6c20fd545",
+  "execution_checkout": "62ab20b25ec8648d9204ffd8f223672804925661",
+  "reconciled_execution_checkout": "2a8e7ffe73b759576044333dc80187e9d57a2999",
+  "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json",
+  "source_subtrees": {
+    "src": "184379954b7a6e29632e3af79350c5f5ae10f4f3",
+    "tests": "28b024edbb156abdce1f28fd43dc61ca3d5dd56c"
+  },
+  "source_manifest_entries_verified": 1774,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_SALFRO01_RECONCILED_REPLAY.json.gz",
+    "sha256": "7849f5094f9c3990d74c08416a1eecab01ffb70e3897ce260c759cab04f013e9",
+    "bytes": 74622
+  },
+  "verified_admission_source_identity": true,
+  "gates_passed": 24,
+  "scope": [
+    "Independent four-factor node attribution and all five compensation selectors for Jarvis/Walsum at O0/O2",
+    "Selected actual matrix Maas-Hoffman and empirical root frost, no Bartholomeus, zero-flux bottom2/no drains/no irrigation",
+    "Actual ALL/salinity/frost selectors, one final water sink, TSCF root salt receipt and hard water/salt balance",
+    "Nine invalid profile/input cases reject at backend/application without publishing accepted transpiration or mutating state",
+    "Actual all-frozen/warm/short-thaw response with accepted root water and salt zero in the frozen regime",
+    "Both independent temporal owners force rejection, attainable-budget refinement, exact discard isolation",
+    "Changed temperature/salt boundary/current Walsum geometry, committed restart and separate-process/O0/O2 physical byte identity"
+  ],
+  "exclusions": [
+    "Bottom frost or normal frost drainage combined with salt",
+    "Bartholomeus oxygen at negative temperature, Rutter or macropore salt hybrids",
+    "Osmotic head, real ice/latent heat/cryoconcentration",
+    "Seasonal field and full legacy equivalence"
+  ],
+  "documentation_gates": {
+    "source_check": "PASS",
+    "mkdocs_strict": "PASS",
+    "whitespace": "PASS"
+  },
+  "actions_claim": "Named local current-source groups control admission. No blanket all-workflows-green claim."
+}

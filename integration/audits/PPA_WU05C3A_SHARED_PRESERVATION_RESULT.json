@@ -1,0 +1,33 @@
+{
+  "work_unit": "PPA-WU05-C3A",
+  "candidate_postimage": "42c9367f65b7fa7f98b8d173afae74b4a7d92827",
+  "canonical_baseline": "7a629a10cabb3553ff77474423e6ccac81b29aec",
+  "candidate_whole_tree_identity": "3f04a2a994d26a5ad7aa88cd9f76c0699911ba58",
+  "canonical_input_blob_identity": "PASS",
+  "candidate_canonical_all_marker_and_observable_identity": true,
+  "optimization_identity": true,
+  "exact_FKT22_runtime": "PASS",
+  "A9_A10_source_trial_replay_restart": "PASS",
+  "A26_RFM_optional_layout": "PASS",
+  "scope": "Bounded declared successor preservation, not global green CI",
+  "historical_thermal_gate": {
+    "canonical": "FAIL",
+    "candidate": "FAIL",
+    "assertion": "external full-half outflow fixture rejected before commit",
+    "successor": "Physical water commit exactly once; unqualified outflow energy fail closed, all other original assertions retained"
+  },
+  "historical_evaporation_admission_gates": "Original work-unit production-delta checks retained; not claimed green by numeric preservation",
+  "qualified_oxygen_run": 36968761028,
+  "qualified_oxygen_artifact": 11211090561,
+  "qualified_oxygen_artifact_digest": "sha256:3b1ea2fbaf42b573abf46851f75313ba1ec65bda62aeafc32e8853617d4719bb",
+  "raw_log_sha256": {
+    "c3a-runtime-exact.log": "2e98a6114fa5478d541f4a959651bce276c7ad12e5d6855414b6d0a70012ba8d",
+    "c3a-preservation-a10.log": "95178fc52a4a6b5e556807695652f676360fa585e8c340a856878df6e97a789f",
+    "c3a-preservation-a26.log": "19a6c134fb7de44cb199cae996e00c7335feb313cc34b9e7ad929857c09c54ba",
+    "c3a-shared-exact.log": "e9f57b65bec6d9cbd19dc9dfdd8681784b3fb9fbb9a1f1ce8b17330b50ecf148",
+    "c3a-shared-baseline-exact.log": "e4cd094123bfdb2844e120770fed192e838ac9ec99783371a69638e6a0d723cf",
+    "c3a-preservation-thermal.log": "57b22021397aa786dfbb36453b0138c864eba745cf772dece11eff447b1b5e99",
+    "c3a-baseline-thermal.log": "c3d42b25cef046e6e9d125d8796ddeb081661dc18e10a31ed7c047d7dee842d9"
+  },
+  "canonical_admitted": false
+}

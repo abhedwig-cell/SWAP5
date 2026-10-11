@@ -73,7 +73,14 @@ for spec in "$MODEL:$MODEL_BLOB" "$PROVIDER:$PROVIDER_BLOB" "$POLICY:$POLICY_BLO
   path="${spec%%:*}"; blob="${spec##*:}"
   test "$(git rev-parse "HEAD:$path")" = "$blob" || fail "qualified dependency drift: $path"
 done
-test "$(git rev-parse "HEAD:$CONTRACT")" = "$contract_authority" || fail "qualified dependency drift: $CONTRACT"
+if [[ "${PPA_WU05B_MOVING_CANONICAL_PRESERVATION:-0}" == "1" ]]; then
+  # The moving canonical PR merge must preserve the target's current contract
+  # postimage; fixed BOFEK00/FCI110 pins predate later accepted successors.
+  test "$(git rev-parse "HEAD:$CONTRACT")" = "$(git rev-parse "HEAD^1:$CONTRACT")" || \
+    fail "candidate changed current solver-contract target postimage: $CONTRACT"
+else
+  test "$(git rev-parse "HEAD:$CONTRACT")" = "$contract_authority" || fail "qualified dependency drift: $CONTRACT"
+fi
 echo 'FROSS22_ADMISSION_DEPENDENCY_CLOSURE=PASS'
 
 if ! git cat-file -e "$FROSS22_HEAD^{commit}" 2>/dev/null; then git fetch --no-tags origin "$FROSS22_HEAD"; fi

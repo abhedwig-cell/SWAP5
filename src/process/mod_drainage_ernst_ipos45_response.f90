@@ -42,6 +42,9 @@ module mod_drainage_ernst_ipos45_response
   public :: evaluate_drainage_ernst_ipos4_response
   public :: evaluate_drainage_ernst_ipos5_response
 
+  public :: valid_ernst_ipos4_prepared
+  public :: valid_ernst_ipos5_prepared
+
 contains
 
   subroutine evaluate_drainage_ernst_ipos4_response(prepared, hydraulic_view, response, diagnostics)
@@ -218,7 +221,7 @@ contains
     response%derivative_defined = .true.
   end subroutine evaluate_drainage_ernst_ipos5_response
 
-  logical function valid_ipos4_prepared(prepared) result(valid)
+  pure logical function valid_ipos4_prepared(prepared) result(valid)
     type(ernst_ipos4_prepared_t), intent(in) :: prepared
     valid = prepared%is_valid .and. ieee_is_finite(prepared%shape_factor) .and. &
          ieee_is_finite(prepared%drain_bottom_level) .and. ieee_is_finite(prepared%interface_level) .and. &
@@ -231,7 +234,7 @@ contains
          prepared%vertical_conductivity_bottom > 0.0_real64
   end function valid_ipos4_prepared
 
-  logical function valid_ipos5_prepared(prepared) result(valid)
+  pure logical function valid_ipos5_prepared(prepared) result(valid)
     type(ernst_ipos5_prepared_t), intent(in) :: prepared
     valid = prepared%is_valid .and. ieee_is_finite(prepared%shape_factor) .and. &
          ieee_is_finite(prepared%drain_bottom_level) .and. &
@@ -240,5 +243,15 @@ contains
     if (.not. valid) return
     valid = prepared%shape_factor > 0.0_real64 .and. prepared%vertical_conductivity_top > 0.0_real64
   end function valid_ipos5_prepared
+
+  pure logical function valid_ernst_ipos4_prepared(parameters) result(valid)
+    type(ernst_ipos4_prepared_t), intent(in) :: parameters
+    valid = valid_ipos4_prepared(parameters)
+  end function valid_ernst_ipos4_prepared
+
+  pure logical function valid_ernst_ipos5_prepared(parameters) result(valid)
+    type(ernst_ipos5_prepared_t), intent(in) :: parameters
+    valid = valid_ipos5_prepared(parameters)
+  end function valid_ernst_ipos5_prepared
 
 end module mod_drainage_ernst_ipos45_response

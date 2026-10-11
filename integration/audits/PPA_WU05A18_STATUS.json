@@ -1,0 +1,21 @@
+{
+  "schema": "swap5.ppa_wu05a18.status.v1",
+  "workunit": "PPA-WU05-A18",
+  "phase": "CLOSED_STATE_OWNERSHIP_ADJUDICATED",
+  "decision": "DEDICATED_RFM_OPTIONAL_PHYSICAL_STATE_LAYOUT_REQUIRED",
+  "baseline": "9c6f36ea5ded98a4a9cc36c26d5b3677c8e65ea4",
+  "branch": "audit/ppa-wu05-a18-rfm-state-ownership",
+  "production_mutation": false,
+  "current_standard_macropore_state_as_rfm_container": "rejected_semantic_mismatch",
+  "transaction_kernel_reuse": "supported",
+  "dedicated_rfm_layout_required": true,
+  "minimal_initial_state_roles": [
+    "mb_water_cm",
+    "endpoint_water_cm",
+    "tau_surface_day"
+  ],
+  "standard_and_rfm_simultaneous_top_receipt": false,
+  "live_rfm_runtime_authorized": false,
+  "next": "PPA-WU05-A19 minimal dedicated RFM physical state and candidate receipt",
+  "stop_rule": "OWNERSHIP_ADJUDICATED_SUCCESSOR_AUTHORIZED"
+}

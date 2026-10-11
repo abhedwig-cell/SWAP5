@@ -1,0 +1,74 @@
+{
+  "work_unit": "F-MIG431-LOWGWL01-P0",
+  "workstream": "central F-MIG431 lower-boundary",
+  "baseline": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+  "last_reconciled_head": "90622bdcaa67aff52ccbd9035c0f48dee70cc745",
+  "official_branch": "work/f-mig431-lowgwl01-p0-shared-richards-authority",
+  "state": "PARKED_BY_USER_DECISION",
+  "implemented": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_mode1_admitted": false,
+  "checkpoint_commit": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+  "recovery_point": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+  "next_action": "No active mode1 work. Preserve source/negative evidence and existing branch. Reopen only on explicit user/central decision. Next central review: SWBOTB3, then8.",
+  "blockers": [
+    "Typed HeadCalc mode1 below-profile indexing requires shared solver work",
+    "In-profile legacy-global constitutive reads require explicit provider ownership",
+    "Candidate/full-node accepted mass publication and transaction/restart contract require qualification"
+  ],
+  "relevant_paths": [
+    "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_soil_water_solver_contract.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "docs/performance/evidence/F-PE19_B1_11_source_manifest.sha256",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md"
+  ],
+  "test_paths": [
+    "tests/fmig431/test_lowgwl01_feasibility.f90",
+    "tests/fmig431/run_lowgwl01_feasibility.py"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-LOWGWL01-P0_FEASIBILITY.json"
+  ],
+  "dependency_surface": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter",
+    "src/solver",
+    "src/runtime",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90"
+  ],
+  "interfaces_changed": [],
+  "production_delta": [],
+  "future_application_unit": "F-MIG431-LOWGWL01-A not issued",
+  "remaining_order": [
+    3,
+    8
+  ],
+  "test_scope": "Negative feasibility only: public fail-closed and direct raw-mode1 bounds blocker, fresh O0/O2 builds at persisted postimage",
+  "parking_decision": {
+    "date": "2026-10-02",
+    "state": "PARKED_BY_USER_DECISION",
+    "authority": "Explicit user instruction: Dit is een vreemde optie. Laten we deze parkeren.",
+    "meaning": "Defer SWBOTB1 migration and its shared prerequisite; not migrated, not admitted, not removed or scientifically falsified.",
+    "resume_condition": "Explicit central reprioritization or user instruction",
+    "next_active_selector": 3,
+    "active_sequence": [
+      3,
+      8
+    ]
+  },
+  "parked_selectors": [
+    1
+  ]
+}

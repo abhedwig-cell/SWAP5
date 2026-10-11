@@ -1,0 +1,40 @@
+{
+  "work_unit": "PPA-MICRO05",
+  "status": "LOCAL_LITERAL_MVG_TABLE_O0_O2_PASS",
+  "source_sha256": {
+    "tests/physics/micro05_literal_mvg_stubs.f90": "93a202d61297307146bfdad2a1d3942705be94bd08fc008aa7e3b154f302beac",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90": "6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104",
+    "src/solver/mod_soil_water_solver_contract.f90": "82e3cf865c0e66de8d9020832ff161e75a4c9f02186cf02a297bf5e4776e90c2",
+    "src/solver/mod_b110_default_mvg_provider.f90": "9e8aaa385c92ce769195dd63c51365c3c2d8a86abc6716303c3f67368cb44990",
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "src/runtime/mod_fmr_micro_mvg_table_binding.f90": "64077bd4b29768f4252a5b42e6b8fbc317210d81b56352732b30a9d653d10cc8",
+    "src/process/mod_root_micro_de_willigen_process.f90": "6230c5bd7c4a1e0d77496775db6c31e1497b19d1304d503ba7fd2c97807a5bdd",
+    "tests/physics/test_ppa_micro05_literal_mvg.f90": "779853a4ff03d2dcb87022795de7fd2d4f6553469d0711e4d1c50ff3c2bc05fc",
+    "tests/physics/run_ppa_micro05_literal_mvg.py": "eb12a2f1bbb711bb373fc6a7a061e5bc3e296e3305706594a8f1f98c590dadaf",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477"
+  },
+  "corrected_rwu_sha256": "ad43627963b94d40a29ef41cb53c350bb947f606e409db084ff6e7494e0116fc",
+  "explicit_rwu_patches": [
+    [
+      "public :: do_RWU_micro, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table",
+      "public :: do_RWU_micro, RWU_micro, get_MFLP_K, read_rwu_micro_input, PP, PL, UpwPot, swAlpTot, M_table, K_table"
+    ],
+    [
+      "      start = int(100.d0*dlog10(-wiltpoint))",
+      "      M_table=0d0; K_table=0d0\n      start = int(100.d0*dlog10(-wiltpoint))"
+    ],
+    [
+      "         M_table(start,lay) = 0.0d0",
+      "         K_table(start,lay)=conduc1\n         wcontent=watcon(i,wiltpoint)\n         conduc2=hconduc(i,wiltpoint,wcontent,10d0)\n         K_table(start+1,lay)=conduc2\n         M_table(start,lay)=0.5d0*(conduc1+conduc2)*(phead1-wiltpoint)"
+    ],
+    [
+      "      else if (H > -1.023293d0) then",
+      "      else if (H <= -10d0**(dble(int(100d0*dlog10(-wiltpoint)))/100d0)) then\n         start=int(100d0*dlog10(-wiltpoint))\n         phead1=-10d0**(dble(start)/100d0)\n         c0=H-wiltpoint\n         c1=c0/(phead1-wiltpoint)\n         M=K_table(start+1,lay)*c0+0.5d0*(K_table(start,lay)-K_table(start+1,lay))*c0*c1\n         if(Kpresent)K=K_table(start+1,lay)+(K_table(start,lay)-K_table(start+1,lay))*c1\n      else if (H > -1.023293d0) then"
+    ]
+  ],
+  "outputs": {
+    "O0": "MICRO05_MAX_M_K_ABS_ERROR=  0.0000000000000000E+00  0.0000000000000000E+00\nMICRO05_SOURCE_NORMAL_SINK=   2.50108446E-02   2.50108446E-02   2.49825512E-02   2.49825512E-02\nMICRO05_SOURCE_HETEROGENEOUS_HEAD_SINK=   2.50853526E-02   2.50356635E-02   2.49577037E-02   2.49080682E-02\nMICRO05_LITERAL_MVG_HORIZON_AND_KSATFIT=PASS\n",
+    "O2": "MICRO05_MAX_M_K_ABS_ERROR=  0.0000000000000000E+00  0.0000000000000000E+00\nMICRO05_SOURCE_NORMAL_SINK=   2.50108446E-02   2.50108446E-02   2.49825512E-02   2.49825512E-02\nMICRO05_SOURCE_HETEROGENEOUS_HEAD_SINK=   2.50853526E-02   2.50356635E-02   2.49577037E-02   2.49080682E-02\nMICRO05_LITERAL_MVG_HORIZON_AND_KSATFIT=PASS\n"
+  },
+  "claim_ceiling": "Standard MvG (model 1), no power tail/KSATEXM/hysteresis, two representative horizons; no full production trajectory"
+}

@@ -96,6 +96,27 @@ Z47 is ready for a focused PR to `integration/f-ci-canonical`.
 
 The PR must remain narrow, explicit opt-in, fail-closed and default-off.
 
+## 2026-10-11 current-canonical reconciliation
+
+The eight-commit Z47 candidate was replayed without conflict on:
+
+`integration/f-ci-canonical@e3b9685470639355e1899b95c25f9a7ddee15fe6`
+
+The preimage of `src/runtime/mod_moving_interface_manager.f90` remains byte-identical
+between the original admission base and this current canonical base:
+
+`27c710e61706a585c359811bee04b60cb14ffec4`
+
+The qualified production postimage remains:
+
+`fc3805e1f106b5de1ee3a492920d0c21eba7bd1`
+
+The focused owner runner now compiles and executes the eligibility matrix at both
+`-O0` and `-O2` and requires byte-identical output. The moving F-CI preservation
+runner recognizes only the exact production postimage above and invokes that same
+O0/O2 owner runner. This is admission hardening only. No production physics or
+default-selection behavior was added.
+
 ## Production boundary
 
 No production default change.
