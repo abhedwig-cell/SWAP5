@@ -4,7 +4,7 @@
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cadcc63d3296e12e6a0634ee7095693454b60005",
-  "last_reconciled_upstream": "73796d85ba8de962673390a40d1be54e9c152d53",
+  "last_reconciled_upstream": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Bind already admitted PR1015 matrix salt CML to irrigation selection; qualify root and sensor physical/event restart. Then close remaining whole-run crop/root/weather and persistent external allocation authority.",
+  "next_action": "Complete independent external availability receipt/repeated-event preservation and admission. Then central shared application composition with active crop1197 owner; no missing salt process remains.",
   "recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -310,5 +310,16 @@
     "science": "PASS O0/O2 literal 48; realistic root 12; sensor 12; source-off three profiles",
     "F_CI": "PASS full local lineage-aware preservation",
     "fullcap_promotions": 0
+  },
+  "accepted_salt_admission": {
+    "pull_request": 1203,
+    "qualified_head": "3b9223720e4fea58ba4256c10be2faaf686011c8",
+    "admission_head": "1ec4b281da27fefade4b3fd4a6b68bac8aca982f",
+    "canonical_merge": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
+    "canonical_paths_verified": 11,
+    "science": "PASS sensor12/root24 actual salt/water physical/event restart O0/O2 plus typed negative guards",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0,
+    "evidence": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json"
   }
 }
