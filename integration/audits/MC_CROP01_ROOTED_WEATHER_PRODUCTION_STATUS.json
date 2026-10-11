@@ -163,5 +163,12 @@
     "PR1194": "PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS",
     "shared_source": "PPA_WU03_CROP_SHARED_WEATHER_SPAN=PASS",
     "claim_limit": "Restricted existing two-interval/two-day PPA owner vectors, not a whole historical crop lifecycle; exact new source owner run exit0."
+  },
+  "partial_frost_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_PARTIAL_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "8b3d465fc1383e2b2235de5a02a211c8cdc3f0c4da416763ca077e5db91c3e67",
+    "complete_configurations": 18,
+    "required_configurations": 24,
+    "partial_only": true
   }
 }
