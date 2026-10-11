@@ -68,6 +68,14 @@ The candidate evidence currently distinguishes:
 
 Until the candidate is qualified and admitted, current canonical implementation remains the executable authority. Publication claims affected by the interpretation remain subject to their own reconciliation.
 
+## MC-IRR01 source and execution reconciliation (2026-10-11)
+
+- `TCD-IRR-AVAIL-SSDI`, `IMPLEMENTATION_DEFECT`: the former generic availability helper scaled SSDI rate and positive-rate duration. Literal B1.11 TASK4 scales `gird` and positive-rate duration but leaves `qssdi` unchanged. PR #1198 corrects the SSDI route and preserves surface behaviour. Twelve literal extracted-source cases pass at O0/O2. Zero-rate fallback remains unchanged by TASK4. This is a source binding correction, not a new allocation policy.
+- `TCD-IRR-SSDI-NODES`, `INVESTIGATING`: scheduled B1.11 writes the full scheduled source to every selected node. PR #1198 implements that exact spatial mapping and sums actual nodal sources for external mass. A three-node process witness passes. This does not establish total-profile depth normalisation or qualify a multi-node physical trajectory.
+- `TCD-IRR-FKT-FORCING-HISTORY`, `INVESTIGATING`: a non-cancelling 0.48 cm/day irrigation onset converged Richards mass but exhausted the existing temporal-controller limits. Twelve physical management cases pass only for a 4.8e-8 cm initial impulse with forcing-consistent derivative history. The F-KT owner must qualify the history policy at event onset/end with existing committed history before unrestricted irrigation coverage. No temporal threshold, hydraulic interface or solver was changed.
+
+Exact source hash, runners, tested envelope, rejected envelope and all sixteen capability dispositions are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Full MC-IRR01 coverage remains open; PR #1195's five bounded admissions are retained.
+
 ## Resolution rule
 
 Closing an entry must preserve:

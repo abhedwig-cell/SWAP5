@@ -302,6 +302,38 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # and must be accompanied by exact-head empirical oxygen qualification.
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
+irrigation_owner_verified=0
+verify_mc_irr01_owner_successor() {
+  if (( irrigation_owner_verified )); then return; fi
+  local candidate_path
+  declare -A irrigation_owner_blobs=(
+    [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
+    [src/process/mod_irrigation_process.f90]=c14ce960691c9a8835253b5aa576fc3eef9c11ec
+    [src/process/mod_irrigation_root_zone_summary.f90]=81fb9e35d1fe0026bf5719175a3af8f3d080592e
+    [src/process/mod_scheduled_irrigation_management_policy.f90]=09bc5a840bad171ffc7d478ea68dda6047fd4535
+    [src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90]=88a3f5c3f78624ec2da91252de932c4c36ac7ea0
+    [src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90]=e952aa327319bf23a7336d0740670e8f802cd147
+    [src/runtime/mod_fmr_irrigation_management_restart.f90]=2fc1090a9871d3373840c88f2ef13093f733c11f
+    [src/runtime/mod_fmr_scheduled_irrigation_application.f90]=91a8b3f50d3f041c69ad2f6e8e88482c058a9eca
+    [src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90]=1104bc35080780bf95d8b8ef85d02f1e1f2f803d
+    [src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=cb19ae772cad71c293a9097c2e8a24585f5e870e
+    [src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90]=f604dfbcd28258af4e6339f15138b158e946ed45
+  )
+  irrigation_owner_blobs[src/runtime/mod_fmr_management_irrigation_forcing_binding.f90]=649006fb63395fa2980bae8e6853eedc6f122bed
+  for candidate_path in "${!irrigation_owner_blobs[@]}"; do
+    test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
+      fail "unqualified MC-IRR01 owner blob: $candidate_path"
+  done
+  bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||
+    fail 'MC-IRR01 exact owner and composed-path O0/O2 preservation failed'
+  bash tests/mc-irr01/run_mc_irr01_management_policy.sh || fail 'MC-IRR01 management preservation'
+  bash tests/mc-irr01/run_mc_irr01_literal_management.sh || fail 'MC-IRR01 exact B1.11 management oracle'
+  bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'
+  bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'
+  echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
+  irrigation_owner_verified=1
+}
+
 check_b19_micro_root_recomposition() {
   local ppa_weather_guard_changed=0
   local crop_positive_window_changed=0
@@ -410,33 +442,7 @@ check_b19_micro_root_recomposition() {
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
-  if (( irrigation_owner_changed )); then
-    declare -A irrigation_owner_blobs=(
-      [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
-      [src/process/mod_irrigation_process.f90]=c14ce960691c9a8835253b5aa576fc3eef9c11ec
-      [src/process/mod_irrigation_root_zone_summary.f90]=81fb9e35d1fe0026bf5719175a3af8f3d080592e
-      [src/process/mod_scheduled_irrigation_management_policy.f90]=09bc5a840bad171ffc7d478ea68dda6047fd4535
-      [src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90]=88a3f5c3f78624ec2da91252de932c4c36ac7ea0
-      [src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90]=e952aa327319bf23a7336d0740670e8f802cd147
-      [src/runtime/mod_fmr_irrigation_management_restart.f90]=2fc1090a9871d3373840c88f2ef13093f733c11f
-      [src/runtime/mod_fmr_scheduled_irrigation_application.f90]=91a8b3f50d3f041c69ad2f6e8e88482c058a9eca
-      [src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90]=1104bc35080780bf95d8b8ef85d02f1e1f2f803d
-      [src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=cb19ae772cad71c293a9097c2e8a24585f5e870e
-      [src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90]=f604dfbcd28258af4e6339f15138b158e946ed45
-    )
-    irrigation_owner_blobs[src/runtime/mod_fmr_management_irrigation_forcing_binding.f90]=649006fb63395fa2980bae8e6853eedc6f122bed
-    for candidate_path in "${!irrigation_owner_blobs[@]}"; do
-      test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
-        fail "unqualified MC-IRR01 owner blob: $candidate_path"
-    done
-    bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||
-      fail 'MC-IRR01 exact owner and composed-path O0/O2 preservation failed'
-    bash tests/mc-irr01/run_mc_irr01_management_policy.sh || fail 'MC-IRR01 management preservation'
-    bash tests/mc-irr01/run_mc_irr01_literal_management.sh || fail 'MC-IRR01 exact B1.11 management oracle'
-    bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'
-    bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'
-    echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
-  fi
+  if (( irrigation_owner_changed )); then verify_mc_irr01_owner_successor; fi
   if (( nlglob14z47_changed )); then
     test "$(git rev-parse HEAD:src/runtime/mod_moving_interface_manager.f90)" = \
       "fc3805e1f106b5de1ee3a492920d0c21eba7bd1d" ||
@@ -1286,4 +1292,7 @@ if git merge-base --is-ancestor "$PPA_ROOT_HYD01_ADMISSION" HEAD; then
   echo 'FCI_CANONICAL_PPA_ROOT_HYD01_EXACT_TEMPORAL_INDICATOR_SUCCESSOR_PRESERVATION=PASS'
 fi
 echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
+# Irrigation remains owner-qualified even when the backend follows its exact
+# historical branch and bypasses the B19/MICRO recomposition function.
+verify_mc_irr01_owner_successor
 echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
