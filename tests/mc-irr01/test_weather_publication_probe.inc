@@ -66,6 +66,35 @@
     call clean_app%copy_committed_for_crop(1,expected,st)
     call require(st==FMR_APP_BOOT_OK,'probe clean state')
     call compare_probe_hydrology(actual,expected)
+    ! A completed earlier segment is real committed authority. A failed
+    ! next segment must retain that common soil/weather prefix, not reset
+    ! the whole application to daystart or publish its own incomplete tail.
+    call trial_app%run_weather_interval(wr,short_end,T0+0.5_real64,forcing_config,canopy,rr,st)
+    call require(st/=FMR_APP_BOOT_OK.and.allocated(rr),'probe next-segment incomplete dispatch')
+    call require(rr(1)%accepted_substeps==1.and..not.rr(1)%completed.and..not.rr(1)%committed, &
+         'probe next-segment internal acceptance is not outer publication')
+    call require(rr(1)%final_revision==1_int64,'probe first completed segment stays committed')
+    call trial_app%copy_committed_for_crop(1,actual,st)
+    call require(st==FMR_APP_BOOT_OK,'probe retained accepted prefix')
+    call compare_probe_hydrology(actual,expected)
+    call trial_app%capture_weather_crop_continuation(trial_crop,after,st)
+    call require(st==FMR_APP_BOOT_OK,'probe joint continuation at retained accepted prefix')
+    if(trim(continuation_mode)=='restart') then
+      call trial_app%close(st);call require(st==FMR_APP_BOOT_OK,'probe close accepted prefix')
+      trial_crop=kernel_committed_state_t()
+      call trial_app%restore_weather_crop_continuation(after,trial_crop,st)
+      call require(st==FMR_APP_BOOT_OK,'probe restore accepted prefix after failed next segment')
+    endif
+    call trial_app%run_weather_interval(wr,short_end,2.0_real64*short_end,forcing_config,canopy,rr,st)
+    call require(st==FMR_APP_BOOT_OK.and.allocated(rr),'probe retry from common accepted prefix')
+    call require(rr(1)%completed.and.rr(1)%committed.and.rr(1)%final_revision==2_int64, &
+         'probe exactly second completed segment')
+    call require(rr(1)%mass%complete.and.abs(rr(1)%mass%residual)<=HARD_MASS_GATE,'probe second hard mass')
+    call clean_app%run_weather_interval(wr,short_end,2.0_real64*short_end,forcing_config,canopy,cr,st)
+    call require(st==FMR_APP_BOOT_OK.and.allocated(cr),'probe clean second interval')
+    call trial_app%copy_committed_for_crop(1,actual,st);call require(st==FMR_APP_BOOT_OK,'probe final actual')
+    call clean_app%copy_committed_for_crop(1,expected,st);call require(st==FMR_APP_BOOT_OK,'probe final clean')
+    call compare_probe_hydrology(actual,expected)
     call trial_app%capture_weather_crop_continuation(trial_crop,after,st)
     call require(st==FMR_APP_BOOT_OK,'probe actual retry joint continuation')
     call trial_app%run_weather_interval(wr,T0,short_end,forcing_config,canopy,rr,st)
@@ -79,6 +108,7 @@
     print '(a)', 'MC_IRR01_WEATHER_FAILED_PREFIX_JOINT_RESTART=PASS'
     print '(a)', 'MC_IRR01_WEATHER_RETRY_EQUALS_CLEAN_ORIGIN=PASS'
     print '(a)', 'MC_IRR01_WEATHER_RETRY_EXACTLY_ONCE=PASS'
+    print '(a)', 'MC_IRR01_WEATHER_COMPLETED_PREFIX_SURVIVES_NEXT_SEGMENT_FAILURE=PASS'
   end subroutine
 
   subroutine compare_probe_hydrology(a,b)

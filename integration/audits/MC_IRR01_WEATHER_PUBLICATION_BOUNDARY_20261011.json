@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
-  "phase": "PERSISTED_APPLICATION_PUBLICATION_PROBE_PENDING",
+  "phase": "PERSISTED_COMPLETED_PREFIX_EXTENSION_PENDING",
   "implemented": true,
   "tested": false,
   "qualified": false,
@@ -22,9 +22,12 @@
     "No outer physical/crop provenance, pressure, water, ponding, groundwater or retained derivative mutation, including repeated failed attempts",
     "Capture and restore coherent actual weather/crop/soil continuation after failure",
     "Successful short retry equals clean origin bitwise with unchanged hard mass and no duplicate publication",
-    "O0/O2 and continuous/restored identity"
+    "O0/O2 and continuous/restored identity",
+    "After first outer committed interval, failed next segment retains common accepted prefix and coherent continuation; second short retry equals clean two-segment state"
   ],
-  "next_action": "Run persisted actual application probe at O0/O2. Preserve failures; do not alter dispatcher, controller or mass assertions. Narrow shared contract only if evidence passes.",
+  "next_action": "Run completed-prefix extension on the persisted postimage; narrow publication contract for the admitted single-column profile without assuming multi-column atomicity.",
   "recovery_branch": "work/mc-irr01-publication-probe-20261011",
-  "fullcap_promotions": 0
+  "fullcap_promotions": 0,
+  "first_probe_result": "PASS_O0_O2_ONE_INTERNAL_PREFIX_DISCARDED_JOINT_RESTART_CLEAN_RETRY",
+  "first_probe_head": "c9bf04fa1a308c5f8dc4021359e683b0c4020528"
 }
