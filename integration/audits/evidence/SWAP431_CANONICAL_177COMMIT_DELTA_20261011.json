@@ -1,0 +1,80 @@
+{
+  "schema": "swap431.master.delta20261011.v1",
+  "canonical_head": "47cb17230b9da9a1dd83ddcdab5a82d61e6a1933",
+  "previous_reviewed_canonical": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "canonical_delta_commits": 177,
+  "changed_files": 73,
+  "merged_crop_prs": [
+    1172,
+    1173,
+    1174,
+    1175,
+    1176,
+    1177,
+    1178,
+    1179,
+    1180,
+    1181,
+    1182,
+    1183,
+    1184,
+    1185,
+    1186,
+    1187,
+    1188,
+    1189,
+    1190,
+    1191,
+    1192,
+    1193
+  ],
+  "merged_pr_ranges": "1172..1193",
+  "representative_proof": [
+    {
+      "pr": 1173,
+      "status": "merged",
+      "claim": "B1.11 germination floating-expression order; not event publication"
+    },
+    {
+      "pr": 1182,
+      "status": "merged",
+      "claim": "weather/F-KT daystart lifecycle regression; no authenticated meteorological provider or published crop events"
+    },
+    {
+      "pr": 1193,
+      "status": "merged",
+      "claim": "two committed PPA-WU01 subdaily intervals weather-bound; no full SWAP431 meteo or crop lifecycle"
+    },
+    {
+      "pr": 1194,
+      "status": "open",
+      "claim": "two registered weather days, not canonical"
+    }
+  ],
+  "affected_master_capabilities": [
+    "SW431-CROP-SOW",
+    "SW431-CROP-ANNUAL",
+    "SW431-CROP-ROTATION",
+    "SW431-MET-FORCING"
+  ],
+  "disposition_changes": 0,
+  "reason": "Merged bounded components do not independently prove all named B1.11 selector semantics of any currently open capability. SW431-MET-FORCING was already ADMITTED; new linkage does not create a second census entry.",
+  "snapshot_counts": {
+    "ADMITTED": 90,
+    "ACTIVE_MIGRATION": 113,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4,
+    "total": 243,
+    "unresolved": 117
+  },
+  "verification": {
+    "commit_delta": "GitHub compare against pinned refs",
+    "merged_pr_metadata": "GitHub PR records, representative exact claims",
+    "structural": "previous checkpoint; not rerun on full current canonical",
+    "full_checker": "NOT_EXECUTED",
+    "denominator_completeness": "UNPROVEN"
+  },
+  "next_action": "Reconcile other workstreams only when new canonical admissions occur; run full source and coverage checker on local byte-exact worktree; discriminate crop event publication vs weather hydrologic forcing."
+}
