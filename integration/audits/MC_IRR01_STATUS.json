@@ -194,5 +194,15 @@
     "production_physics_changed_by_regie": false,
     "canonical_admission": false,
     "status": "PERSISTED_CURRENT_CANONICAL_ADMISSION_CANDIDATE"
+  },
+  "preservation_reconciliation_20261011": {
+    "owner_run": 38114644489,
+    "owner_job": 114397011546,
+    "owner_conclusion": "success",
+    "owner_checks": "F-APP07 exact source, O0/O2 process/composition, management policy, retry/restart and nonfinite guards PASS",
+    "fci_run": 38114644478,
+    "fci_first_attempt": "14 frozen jobs PASS; moving-current guard failed closed on first previously unknown MC-IRR01 source path",
+    "repair": "Exact-pin all eleven qualified MC-IRR01 production blobs and rerun the existing complete F-APP07 O0/O2 gate inside moving preservation; no wildcard source allowance",
+    "next_action": "Persist preservation repair, observe the single automatically triggered exact-head owner/F-CI runs to terminal status, then admit only if both pass."
   }
 }
