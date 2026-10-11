@@ -39,8 +39,8 @@
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 108,
     "missing_standalone_process_implementations_not_established": 113,
-    "active_with_existing_production_source_authority": 60,
-    "active_without_listed_production_source_authority": 48,
+    "active_with_existing_production_source_authority": 61,
+    "active_without_listed_production_source_authority": 47,
     "active_missing_complete_admitted_route": 108,
     "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
   },
@@ -8829,7 +8829,10 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Soil-state-dependent preparation, sowing and germination",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -8838,10 +8841,12 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress."
+        "claim": "Actual root-free file-weather task2/task3 pre-emergence production is now admitted at PR1204/1206. Full selector/lifecycle composition with delayed physical emergence/root/growth remains unqualified; established=false is the full-capability claim, not absence of all production owners."
       },
       "restrictions": [
-        "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress."
+        "Delayed physical emergence/root initialization and active growth remain fail-closed/open.",
+        "Harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open.",
+        "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -8854,7 +8859,7 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRE_EMERGENCE_PRODUCTION_ADMITTED_FULL_LIFECYCLE_ACTIVE",
       "implementation_absence_proven": true,
       "source_input_names": [
         "maxprepdelay",
@@ -8863,7 +8868,34 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "INTEGRATED_DELAYED_EMERGENCE_ROOT_GROWTH_AND_FULL_LIFECYCLE_REQUIRED",
+      "bounded_production_admissions": [
+        {
+          "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
+          "canonical_merge": "1e281332f64335092944ac8118a9ebc67e68fe4e",
+          "admission_head": "ee84b43b367de3825b8865beb95f7cd56151d20a",
+          "qualified_source_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+          "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+          "authority_at_canonical": "integration/audits/MC_CROP01_TASK2_PRODUCTION_STATUS.json",
+          "canonical_source_paths": [
+            "src/crop/mod_crop_lifecycle_continuation.f90",
+            "src/crop/mod_crop_lifecycle_daily_composition.f90",
+            "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+            "src/runtime/mod_fmr_production_application_bootstrap.f90",
+            "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+          ],
+          "scope": "Authentic daily file weather plus explicit task2/task3 independent flags, same-first-day processing, actual accepted hydraulic/thermal preparation/sowing/germination and existing owner/schema2 restart in a root-free mode7 production profile.",
+          "qualification": "Current physical source four-day neutral/dry/hydraulic continuous/restored O0/O2, literal12 selectors and actual thermal historical continuation/restart; PPA-WU03 owner/preservation and full moving F-CI terminal0 PASS;24 frost highest configurations/144 comparisons PASS.",
+          "archive_sha256": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f",
+          "full_capability": false,
+          "limitations": [
+            "Delayed physical emergence/root initialization and active growth remain fail-closed/open.",
+            "Harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open.",
+            "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
+          ],
+          "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
+        }
+      ]
     },
     {
       "capability_id": "SW431-CROP-ROOTGROW",
@@ -15254,5 +15286,32 @@
     "canonical_receipt": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
     "global_master_integrity": "Not renewed: whole checker fails with pre-existing stale inheritance baseline before this bounded update. Existing master owner must reconcile its global inherited authority; no assertion changed or global green claim.",
     "bounded_integrity": "11 owned rows/queue reasons, salt dependency cleanup, existing workunit only; all other capability rows/queues/dispositions/summary retained byte-semantically."
+  },
+  "bounded_owner_receipts": {
+    "mc_crop01_task2_task3_20261011": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
+      "canonical_merge": "1e281332f64335092944ac8118a9ebc67e68fe4e",
+      "admission_head": "ee84b43b367de3825b8865beb95f7cd56151d20a",
+      "qualified_source_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+      "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+      "authority_at_canonical": "integration/audits/MC_CROP01_TASK2_PRODUCTION_STATUS.json",
+      "canonical_source_paths": [
+        "src/crop/mod_crop_lifecycle_continuation.f90",
+        "src/crop/mod_crop_lifecycle_daily_composition.f90",
+        "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+      ],
+      "scope": "Authentic daily file weather plus explicit task2/task3 independent flags, same-first-day processing, actual accepted hydraulic/thermal preparation/sowing/germination and existing owner/schema2 restart in a root-free mode7 production profile.",
+      "qualification": "Current physical source four-day neutral/dry/hydraulic continuous/restored O0/O2, literal12 selectors and actual thermal historical continuation/restart; PPA-WU03 owner/preservation and full moving F-CI terminal0 PASS;24 frost highest configurations/144 comparisons PASS.",
+      "archive_sha256": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f",
+      "full_capability": false,
+      "limitations": [
+        "Delayed physical emergence/root initialization and active growth remain fail-closed/open.",
+        "Harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open.",
+        "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
+      ],
+      "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
+    }
   }
 }

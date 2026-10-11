@@ -414,3 +414,10 @@ Details: [surface and crop owner review](SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.m
 The fixed-interface external groundwater admission does not close every internal CALCGWL branch. MC-LOW01 now separately owns the general candidate profile-to-GWL binding; its explicit mode-3 successor depends on that resolver. The unreachable internal gwlevel option 2 is NOT_APPLICABLE, while PERCH21 retains its bounded perched-zone admission.
 
 Six unchanged-source/current-service comparisons per O0/O2 distinguish the admitted smooth interior service from full saturation, zero-pressure and absent-interior cases. Details: [groundwater source review](SWAP431_GROUNDWATER_SOURCE_REVIEW.md).
+
+
+### MC-CROP01 task2/task3 bounded canonical receipt (2026-10-11)
+
+PR1206 is canonical at `1e281332f64335092944ac8118a9ebc67e68fe4e`, verified source tree `ad4e30250b6e5268522cbce7400f6fed61cdece4`. Together with1204, it supersedes the old claim that no production owner persists preparation/sowing/germination: the actual root-free authentic daily weather/F-KT application now supports independent source task2 flags, same-first-day task3, accepted hydrothermal continuation and explicit schema2 joint restart. Current physical O0/O2, literal12 selectors/thermal/restart, PPA-WU03 owner/preservation,24 highest frost configurations and full central F-CI pass. Exact source/evidence scope is recorded on the SW431-CROP-SOW row.
+
+SW431-CROP-SOW remains ACTIVE_MIGRATION. Delayed physical emergence/root initialization, emerged growth, harvest/rotation/fallow, SWINCO=3 and external disk serialization remain open; the bounded four-node root-free daily/AIR-no-snow qualification is not a full historical soil/crop trajectory. No disposition/denominator/count promotion. The master scientific checkout predates this owner code; use the later exact canonical receipt. Other master rows and existing authorities remain unchanged.
