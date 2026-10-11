@@ -57,6 +57,7 @@ module mod_scheduled_irrigation_management_policy
   end type irrigation_management_policy_result_t
 
   public :: evaluate_irrigation_management_policy
+  public :: evaluate_irrigation_management_depth
 
 contains
 
@@ -68,7 +69,7 @@ contains
     type(irrigation_management_policy_state_t), intent(out) :: candidate_state
     type(irrigation_management_policy_result_t), intent(out) :: result
     integer, intent(out) :: status
-    real(real64) :: threshold, depletion, adjustment, rain_reduction, fixed_depth
+    real(real64) :: threshold, depletion
     logical :: ok
 
     candidate_state = committed_state
@@ -117,6 +118,31 @@ contains
 
     if (.not. result%trigger) return
 
+    call evaluate_irrigation_management_depth(parameters,request,result,status)
+
+  end subroutine evaluate_irrigation_management_policy
+
+  ! Shared source DCS1/DCS2 plus DCSLIM stage. Timing and salinity remain
+  ! separate stages, so sensor and root triggers use the same depth authority.
+  pure subroutine evaluate_irrigation_management_depth(parameters,request,result,status)
+    type(irrigation_management_policy_parameters_t), intent(in) :: parameters
+    type(irrigation_management_policy_request_t), intent(in) :: request
+    type(irrigation_management_policy_result_t), intent(inout) :: result
+    integer, intent(out) :: status
+    real(real64) :: adjustment,rain_reduction,fixed_depth
+    logical :: ok
+    status=IRR_MGMT_OK
+    result%selected_depth_cm=0.0_real64
+    result%rainfall_deducted=.false.
+    result%depth_limited=.false.
+    if (.not.valid_request(request)) then
+      status=IRR_MGMT_INVALID_REQUEST
+      return
+    end if
+    if (.not.valid_depth_parameters(parameters)) then
+      status=IRR_MGMT_INVALID_PARAMETERS
+      return
+    end if
     select case (parameters%depth_criterion)
     case (1)
       call afgen(parameters%dcs1_dvs, parameters%dcs1_adjustment_mm, parameters%dcs1_knot_count, request%dvs, adjustment, ok)
@@ -143,7 +169,7 @@ contains
       result%selected_depth_cm = min(result%selected_depth_cm, parameters%maximum_depth_cm)
     end if
 
-  end subroutine evaluate_irrigation_management_policy
+  end subroutine evaluate_irrigation_management_depth
 
   pure logical function valid_request(request)
     type(irrigation_management_policy_request_t), intent(in) :: request
@@ -182,6 +208,12 @@ contains
     case default
       return
     end select
+    valid_parameters=valid_depth_parameters(parameters)
+  end function valid_parameters
+
+  pure logical function valid_depth_parameters(parameters)
+    type(irrigation_management_policy_parameters_t), intent(in) :: parameters
+    valid_depth_parameters=.false.
     select case(parameters%depth_criterion)
     case(1)
       if (.not. valid_table(parameters%dcs1_dvs,parameters%dcs1_adjustment_mm,parameters%dcs1_knot_count)) return
@@ -200,8 +232,8 @@ contains
       if (parameters%minimum_depth_cm<0.0_real64 .or. parameters%minimum_depth_cm>10.0_real64 .or. &
           parameters%maximum_depth_cm<parameters%minimum_depth_cm .or. parameters%maximum_depth_cm>1.0e6_real64) return
     end if
-    valid_parameters=.true.
-  end function valid_parameters
+    valid_depth_parameters=.true.
+  end function valid_depth_parameters
 
   pure logical function valid_table(knots,values,n)
     real(real64), intent(in) :: knots(IRR_MGMT_MAX_KNOTS),values(IRR_MGMT_MAX_KNOTS)

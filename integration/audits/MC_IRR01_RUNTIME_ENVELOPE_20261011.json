@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "0de42a6abe22e7efbe1be352202ed9637a1dc3b2",
-  "phase": "PERSISTED_REALISTIC_HISTORY_REFINEMENT_PROBE",
+  "phase": "PERSISTED_SENSOR_DCS1_MULTI_NODE_CONTINUATION",
   "allowed_changes": [
     "Irrigation owner tests and qualification evidence",
     "Owned irrigation parameter/source resolver with no shared contract mutation after reconciliation"
@@ -32,11 +32,20 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "next_action": "Run O0/O2 onset, rollback and refinement. Failure is diagnostic, not evidence of a missing production interface without further analysis.",
+  "next_action": "Run literal 48-case management preservation, management policy preservation, and twelve physical sensor/depth/multinode compositions including in-flight physical and event restart. Existing very strict witness remains unchanged.",
   "initial_probe": "1 cm, 48 cm/day, accepted zero-forcing history: rejected with 22 temporal rejections under 24 retries. Diagnostic bound available. No mass rejections. Increase numerical effort before inferring a shared-interface defect.",
   "effort_only_successor": {
     "max_retries": 40,
     "min_step_days": 1e-13,
     "mass_and_temporal_acceptance_unchanged": true
-  }
+  },
+  "realistic_effort_probe": {
+    "postimage": "ea12279a8fc09177031aedaa3b2fa55929006dac",
+    "result": "FAIL at O0 first profile; no O2 qualification",
+    "diagnostic_log": "/usr/bin/ld: warning: /tmp/swap5-mc-irr01-realistic-event-local-5/o0/src_physics_oxygen_mod_bartholomeus_response.o: requires executable stack (because the .note.GNU-stack section is executable)\nERROR STOP 1\n\nError termination. Backtrace:\n#0  0x7f3aa5127e59 in ???\n#1  0x7f3aa5128a71 in ???\n#2  0x55f14183a77d in require.0\n#3  0x55f1418548b5 in MAIN__\n#4  0x55f14185cf04 in main\n MANAGEMENT_DIAGNOSTIC           2           1           0           0 ADMITTED                                           2           1      291252           0   0.0000000000000000     \n CERTIFICATE_REASON=available                                        ROUTE=reference-richards-defect-bound          BOUND=   1.3683105708831285E-003  NORMALIZED=   1368.3105708831285     \nFVQ20_SCHEDULED_RUNTIME_MASS_FAIL management physical commit\nMC_IRR01_MANAGEMENT_PHYSICAL_FAIL runtime O0 budget 1e-6\n",
+    "temporal_rejections": 291252,
+    "mass_rejections": 0,
+    "interpretation": "Extra numerical effort alone did not establish the declared realistic event envelope. No fullcap promotion or shared history mutation."
+  },
+  "independent_production_change": "Expose the existing DCS1/DCS2+DCSLIM stage once and reuse it for TCS7/TCS8. New atomic physical sensor wrapper preserves existing salinity-after-limit and availability stages. In-flight continuation never reselects depth."
 }
