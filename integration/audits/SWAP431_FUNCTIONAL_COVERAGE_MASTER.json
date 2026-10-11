@@ -6977,12 +6977,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Accepted evolving rooted extent plus material FC/stress threshold."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -7049,6 +7052,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Accepted evolving rooted extent plus material FC/stress threshold.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -7081,12 +7102,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Accepted evolving rooted extent plus material FC/wilting threshold."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -7153,6 +7177,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Accepted evolving rooted extent plus material FC/wilting threshold.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -7185,12 +7227,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Accepted rooted deficit and strict DWATAB comparison in weather/daystart execution."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -7257,6 +7302,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Accepted rooted deficit and strict DWATAB comparison in weather/daystart execution.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -7289,12 +7352,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Bind real dayfix/week counter across repeated weather days and joint restart."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Real dayfix/week progression across repeated weather days and joint continuation."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Bind real dayfix/week counter across repeated weather days and joint restart."
@@ -7361,6 +7427,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Bind real dayfix/week counter across repeated weather days and joint restart.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Real dayfix/week progression across repeated weather days and joint continuation.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -7391,12 +7475,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Accepted pressure sensor through same authentic weather management execution."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -7463,6 +7550,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Accepted pressure sensor through same authentic weather management execution.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
       }
     },
     {
@@ -7495,12 +7600,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Accepted water-content sensor through same authentic weather management execution."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -7567,6 +7675,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Accepted water-content sensor through same authentic weather management execution.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
       }
     },
     {
@@ -7599,12 +7725,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Same-window actual rain subtraction and material-consistent rooted field-capacity refill."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner."
@@ -7674,6 +7803,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Same-window actual rain subtraction and material-consistent rooted field-capacity refill.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -7839,12 +7986,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Preserve selected spatial input and authentic surface rain/evaporation independently."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Actual1/3node spatial input combined independently with authentic surface rain/ET."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Preserve selected spatial input and authentic surface rain/evaporation independently."
@@ -7914,6 +8064,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Preserve selected spatial input and authentic surface rain/evaporation independently.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Actual1/3node spatial input combined independently with authentic surface rain/ET.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
       }
     },
     {
@@ -8008,12 +8176,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Depth caps with accepted root/material bounds through actual shared management entry."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -8083,6 +8254,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Depth caps with accepted root/material bounds through actual shared management entry.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
       }
     },
     {
@@ -8118,12 +8307,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Reuse admitted PR1015/1203 accepted matrix CML and common root/sensor modifier in authentic application profile."
       },
       "restrictions": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -8193,6 +8385,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Reuse admitted PR1015/1203 accepted matrix CML and common root/sensor modifier in authentic application profile.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
       }
     },
     {
@@ -12375,12 +12585,15 @@
         "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_SOURCE_OFF_20261011.json",
-        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+        "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json",
+        "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Canonical PR1198/1199/1200/1201/1203/1205 prove literal source, realistic onset/off, spatial physical water/salt, event/retry/restart and persistent external allocation. Full capability: PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Reuse admitted external provider receipt; qualify its joint weather/application continuation, not another allocation algorithm."
+        "claim": "Admitted bounded physical irrigation runtime (PR1198/1199/1200/1201/1203/1205), but full SWAP431 route remains blocked on shared authentic weather, accepted evolving crop/root/material and application ownership. Reuse admitted frozen external provider receipt; integrate joint weather/application continuation and fresh next-event selection."
       },
       "restrictions": [
         "Literal TASK4 leaves SSDI rate unchanged and scales positive configured duration; original selected provider receipt is frozen in-flight and fresh on next event.",
@@ -12452,6 +12665,24 @@
         "unresolved_gate": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Reuse admitted external provider receipt; qualify its joint weather/application continuation, not another allocation algorithm.",
         "fullcap_admitted": false,
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
+      },
+      "latest_owner_disposition": {
+        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "canonical_runtime_prs": [
+          1198,
+          1199,
+          1200,
+          1201,
+          1203,
+          1205
+        ],
+        "runtime_admitted": true,
+        "full_capability_admitted": false,
+        "remaining_specific_action": "Reuse admitted frozen external provider receipt; integrate joint weather/application continuation and fresh next-event selection.",
+        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
       }
     },
     {
@@ -15313,5 +15544,25 @@
       ],
       "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
     }
+  },
+  "latest_mc_irr01_shared_application_reconciliation": {
+    "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+    "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+    "owner_confirmed_fullcaps": 5,
+    "still_blocked_shared_application": [
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4",
+      "SW431-IRR-TCS6",
+      "SW431-IRR-TCS7",
+      "SW431-IRR-TCS8",
+      "SW431-IRR-DCS1",
+      "SW431-IRR-SSDI",
+      "SW431-IRR-LIMIT",
+      "SW431-IRR-SALTEXCESS",
+      "SW431-IRR-AVAIL"
+    ],
+    "canonical_pr": 1205,
+    "dispositions_changed": 0
   }
 }
