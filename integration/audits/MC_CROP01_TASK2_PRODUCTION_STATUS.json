@@ -8,7 +8,7 @@
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scientific_predecessor": "7372dccf4a5c9d23354257a8e9326f90074814db",
   "predecessor_scope": "Full pre-frost central preservation, PPA owner/preservation and focused O0/O2 passed; retained predecessor evidence only. Current composed source is independently qualified below.",
   "relevant_paths": [
@@ -28,7 +28,7 @@
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
     "tests/fapp/run_ppa_wu03_preservation.sh"
   ],
-  "next_action": "Admit bounded current qualified profile after exact canonical/PR overlap check; then implement delayed physical emergence and full annual crop/root/weather production in one dependency-ordered batch.",
+  "next_action": "Complete delayed physical emergence plus rooted annual crop/weather production through existing owners, then harvest/rotation/fallow and SWINCO=3/external joint disk continuation under the preserved dependency-ordered gates. Do not repeat qualified task2 startup or admitted root-free weather integration.",
   "blockers": [
     "Delayed physical emergence, grown root/canopy/WOFOST daily production, harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open."
   ],
@@ -40,7 +40,7 @@
     "required_configurations": 24,
     "partial_only": false
   },
-  "local_stage": "CURRENT full moving, PPA owner/preservation and COMPLETE24 frost highest routes terminal PASS; bounded admission pending.",
+  "local_stage": "Implemented/persisted/tested/qualified/preserved/canonically admitted bounded profile. Canonical1e281332 exact source/archive verification PASS; full lifecycle remains ACTIVE.",
   "predecessor_qualification": {
     "head": "7372dccf4a5c9d23354257a8e9326f90074814db",
     "tree": "e8883d60de3880c0ef0d8476b4822ec3e0d18944",
@@ -70,9 +70,9 @@
     "required_configurations": 24,
     "partial_only": true
   },
-  "last_reconciled_upstream": "22d99c734bb119a1b99275ae8595f7d35f0ca678",
+  "last_reconciled_upstream": "1e281332f64335092944ac8118a9ebc67e68fe4e",
   "test_scope": "Explicit historical task2/task3 pre-emergence production profile, actual thermal delayed sowing/germination, schema2 restart, four-day physical default weather cases. Delayed physical emergence/root/growth/harvest/rotation/fallow and external disk serialization remain open.",
-  "status": "CURRENT_SOURCE_QUALIFIED_PRESERVED_BOUNDED_PROFILE_READY_FOR_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_HISTORICAL_TASK2_TASK3_PRODUCTION_FULL_LIFECYCLE_ACTIVE",
   "current_full_qualification": {
     "head": "a3c37f2641e244445530698b7d9e713be032cbd9",
     "tree": "266cc830cbc28eb23a2b1c98e287acc5d450d320",
@@ -155,5 +155,28 @@
       "scope": "Canonical PR700 documentary/archive reconciliation; absent from crop/frost/F-CI scientific compile/execution closures."
     },
     "scope": "Preserve both independent project-control/registry receipts. Current source/actual executed scientific dependencies remain identical to a3c37f26; no science inheritance through a changed existing tool."
+  },
+  "canonical_admission": {
+    "pr": 1206,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
+    "admission_head": "ee84b43b367de3825b8865beb95f7cd56151d20a",
+    "merge_commit": "1e281332f64335092944ac8118a9ebc67e68fe4e",
+    "verified_merge_tree": "7822b8cb6962b8d84861ef605d9cb1ea55d42af1",
+    "verified_source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+    "scientific_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+    "canonical_source_archive_and_execution_dependency_verification": "PASS",
+    "full_capability": false,
+    "scope": "Historical task2/task3 pre-emergence production profile; delayed physical emergence/root/growth and full crop lifecycle remain open."
+  },
+  "master_coverage_reconciliation": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "head": "2b0e0a5e30bcf43f10d51863d035a1a5134fdc27",
+    "pr": 1072,
+    "changed_row": "SW431-CROP-SOW",
+    "disposition": "ACTIVE_MIGRATION",
+    "old_no_production_owner_claim": "SUPERSEDED by bounded actual profile admission",
+    "full_capability_promotions": 0,
+    "capability_counts_unchanged": true,
+    "scope": "Scoped receipt/metadata integrity; not full master source-census qualification or closure."
   }
 }

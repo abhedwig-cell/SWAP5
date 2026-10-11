@@ -3316,14 +3316,27 @@
       "tested": true,
       "qualified": true,
       "preserved": true,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "full_capability": false,
       "master_coverage": "ACTIVE_MIGRATION; no fullcap/count promotion",
       "scope": "Explicit source task2 independent flags, same-first-day task3, actual thermal delayed sowing/germination, existing owner/schema2 and actual previous accepted F-KT/weather source. Delayed emergence/growth/harvest/rotation/fallow/disk codec remain open.",
       "evidence": "integration/audits/evidence/MC_CROP01_TASK2_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
       "decoded_sha256": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f",
       "owner_gates": "Current PPA-WU03 owner and preservation terminal0, four-day crop/weather physical O0/O2 + literal12 selectors/thermal/restart PASS,24 frost highest configurations/144 comparisons PASS, full current F-CI lineage terminal0 PASS.",
-      "remaining_owner": "Existing MC-CROP01/F-WOF38/F-WOF40/root and central shared application authority; reuse admitted MC-IRR01 bindings."
+      "remaining_owner": "Existing MC-CROP01/F-WOF38/F-WOF40/root and central shared application authority; reuse admitted MC-IRR01 bindings.",
+      "canonical_admission": {
+        "pr": 1206,
+        "url": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
+        "admission_head": "ee84b43b367de3825b8865beb95f7cd56151d20a",
+        "merge_commit": "1e281332f64335092944ac8118a9ebc67e68fe4e",
+        "verified_merge_tree": "7822b8cb6962b8d84861ef605d9cb1ea55d42af1",
+        "verified_source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+        "scientific_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+        "canonical_source_archive_and_execution_dependency_verification": "PASS",
+        "full_capability": false,
+        "scope": "Historical task2/task3 pre-emergence production profile; delayed physical emergence/root/growth and full crop lifecycle remain open."
+      },
+      "master_reconciliation_head": "2b0e0a5e30bcf43f10d51863d035a1a5134fdc27"
     }
   },
   "mc_irr01_independent_runtime_closeout_20261011": {
