@@ -41,5 +41,25 @@
     "required_configurations": 24,
     "partial_only": true
   },
-  "local_stage": "12 normal O0/O2 plus low-air O0 configuration1 PASS and exact immutable outputs; all11 remaining low-air cases pending"
+  "local_stage": "12 normal O0/O2 plus low-air O0 configuration1 PASS and exact immutable outputs; all11 remaining low-air cases pending",
+  "predecessor_qualification": {
+    "head": "7372dccf4a5c9d23354257a8e9326f90074814db",
+    "tree": "e8883d60de3880c0ef0d8476b4822ec3e0d18944",
+    "full_moving_exit_code": 0,
+    "PPA_owner_and_preservation_exit_code": 0,
+    "qualified_bounded_profile": true,
+    "canonically_admitted": false
+  },
+  "current_focused": {
+    "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+    "O0_O2_exit_code": 0,
+    "semantic_records_identical_to_predecessor": 184,
+    "claim_limit": "Focused actual weather/crop/thermal/restart and source task2/task3 profile only; no full current preservation claim"
+  },
+  "evidence_paths": [
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64"
+  ],
+  "evidence_sha256": {
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64": "57811f8c11dcbc4932d49cd0bd827637e5453e479de7f8fa6e549a85b5f53241"
+  }
 }
