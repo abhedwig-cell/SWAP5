@@ -8,6 +8,8 @@ trap cleanup EXIT
 cd "$ROOT"
 fail(){ echo "MC_IRR01_MANAGEMENT_PHYSICAL_FAIL $*" >&2; exit 1; }
 TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
+PHASE=${MC_IRR01_EVENT_PHASE:-on}
+case "$PHASE" in on|off) ;; *) fail "unknown event phase $PHASE";; esac
 
 python3 - "$TEST" <<'PY' > "$BUILD/sources"
 import pathlib,re,sys
@@ -49,7 +51,8 @@ for opt in 0 2; do
   gfortran -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/test" || fail "link O$opt"
   : > "$OUT/output.txt"
   for budget in 1e-6 1e-7 1e-8; do
-    "$OUT/test" "$budget" >> "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt budget $budget"; }
+    args=("$budget"); [[ "$PHASE" != off ]] || args+=(off)
+    "$OUT/test" "${args[@]}" >> "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt budget $budget"; }
   done
   grep -Fq 'MC_IRR01_MANAGEMENT_REAL_RICHARDS=PASS' "$OUT/output.txt" || fail "runtime O$opt"
   grep -Fq 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS' "$OUT/output.txt" || fail "mass O$opt"

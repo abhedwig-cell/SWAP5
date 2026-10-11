@@ -231,6 +231,28 @@ program test_mc_irr01_realistic_event
       call require(rst_status == FMR_IRR_MGMT_RESTART_OK, 'restart export')
       call restore_fmr_irrigation_management_restart(restart,restored,rst_status)
       call require(rst_status == FMR_IRR_MGMT_RESTART_OK, 'restart restore')
+      if (trim(scope_arg) == 'off') then
+        ! A real second interval retains the accepted irrigation derivative and
+        ! selects no new event. The solver must resolve the source discontinuity.
+        irrigation_request%t0=t1
+        irrigation_request%t1=t1+expected_duration
+        irrigation_request%selection_opportunity=.false.
+        pre_revision=states_irrigation(1)%current_revision()
+        call reset_legacy_globals()
+        call fmr_run_management_ssdi_interval(columns(1),templates(1),parameters(1),forcing_control(1), &
+             states_irrigation(1),irrigation_parameters,irrigation_committed,irrigation_request,config,top_provider, &
+             managed_result,run_irrigation,irrigation_binding_diag,accepted)
+        if (.not.accepted) write(*,*) 'SOURCE_OFF_DIAGNOSTIC=',managed_result%kernel_status, &
+             managed_result%solver_status,managed_result%temporal_rejections,managed_result%mass_rejections
+        call require(accepted,'source-off real physical commit')
+        call require(.not.irrigation_committed%event%active_event,'source-off no new event')
+        call require(states_irrigation(1)%current_revision()>pre_revision,'source-off retained state advances')
+        call require(managed_result%mass%complete .and. abs(managed_result%mass%residual)<=hard_mass_gate, &
+             'source-off complete mass')
+        call require(abs(managed_result%mass%total_in-abs(conductivity0)*expected_duration) <= &
+             128.0_real64*epsilon(1.0_real64),'source-off no irrigation inflow')
+        print '(A)', 'MC_IRR01_REALISTIC_SOURCE_OFF_RETAINED_HISTORY=PASS'
+      end if
     end do
   end do
   call states_irrigation(1)%snapshot(final_snapshot,ok)

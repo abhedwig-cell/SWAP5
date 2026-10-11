@@ -9,7 +9,7 @@ module mod_fmr_scheduled_management_irrigation_application
        irrigation_management_policy_result_t, evaluate_irrigation_management_policy, IRR_MGMT_OK
   use mod_irrigation_process, only: irrigation_state_t, irrigation_flux_result_t, &
        IRRIGATION_APPLICATION_SPRINKLER, IRRIGATION_APPLICATION_SURFACE, IRRIGATION_APPLICATION_SSDI, &
-       IRRIGATION_EVENT_SCHEDULED
+       IRRIGATION_EVENT_SCHEDULED, apply_irrigation_salinity_excess
   use mod_irrigation_availability_policy, only: apply_irrigation_availability, IRR_AVAIL_OK
   implicit none
   private
@@ -33,6 +33,9 @@ module mod_fmr_scheduled_management_irrigation_application
     integer :: ssdi_first_node = 0
     integer :: ssdi_last_node = 0
     real(real64) :: rate_cm_per_day = 0.0_real64
+    logical :: salinity_excess_enabled = .false.
+    real(real64) :: salinity_threshold = 0.0_real64
+    real(real64) :: salinity_excess_percent = 0.0_real64
   end type fmr_irrigation_management_parameters_t
 
   type, public :: fmr_irrigation_management_state_t
@@ -53,6 +56,8 @@ module mod_fmr_scheduled_management_irrigation_application
     logical :: fixed_event_already_selected = .false.
     logical :: availability_scaling_enabled = .false.
     real(real64) :: availability_fraction = 1.0_real64
+    logical :: solute_enabled = .false.
+    real(real64) :: sensor_concentration = 0.0_real64
   end type fmr_irrigation_management_request_t
 
   type, public :: fmr_irrigation_management_diagnostics_t
@@ -65,6 +70,7 @@ module mod_fmr_scheduled_management_irrigation_application
     real(real64) :: selected_depth_cm = 0.0_real64
     real(real64) :: effective_rate_cm_per_day = 0.0_real64
     logical :: availability_applied = .false.
+    logical :: salinity_excess_applied = .false.
   end type fmr_irrigation_management_diagnostics_t
 
   public :: fmr_evaluate_scheduled_management_irrigation
@@ -182,6 +188,14 @@ contains
     end if
     if (.not. policy_result%trigger) return
 
+    call apply_irrigation_salinity_excess(parameters%salinity_excess_enabled, request%solute_enabled, &
+         parameters%salinity_threshold, parameters%salinity_excess_percent, request%sensor_concentration, &
+         policy_result%selected_depth_cm, diagnostics%salinity_excess_applied, ok)
+    if (.not. ok) then
+      candidate_state = committed_state
+      diagnostics%status = FMR_IRR_MGMT_APP_INVALID_PARAMETERS
+      return
+    end if
     diagnostics%selected_depth_cm = policy_result%selected_depth_cm
     call normalize_rate(policy_result%selected_depth_cm, parameters%rate_cm_per_day, effective_rate, duration, ok)
     if (.not. ok) then
