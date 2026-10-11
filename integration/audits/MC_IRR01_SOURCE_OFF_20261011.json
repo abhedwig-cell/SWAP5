@@ -1,0 +1,74 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "d620326c",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "owned_surface": "Irrigation tests and evidence only",
+  "shared_sources_unchanged": true,
+  "next_action": "Accepted physical salt concentration binding and whole-run crop/root/weather/allocation integration.",
+  "source_off_local_science": {
+    "result": "PASS O0/O2 bit-identical three fixed profiles",
+    "postimage": "83c9da049c3f743858617484efb1a2c1d84f24e1",
+    "output_sha256": "5159cecd0a327069f9e77ad9525bf4b0fce45369d8d0ff129b981be8eb64c548",
+    "head_errors": [
+      2.838270455640668e-05,
+      6.638208134290835e-06
+    ],
+    "water_errors": [
+      2.734075543742165e-08,
+      6.394514362462189e-09
+    ]
+  },
+  "source_off_full_runner": {
+    "result": "PASS O0/O2 three profiles plus twelve root routes",
+    "runner": "tests/f-app07/run_mc_irr01_realistic_source_off.sh",
+    "postimage": "4d8da369728ddc371ad1714d8596db7d782560c3",
+    "output_sha256": "5159cecd0a327069f9e77ad9525bf4b0fce45369d8d0ff129b981be8eb64c548"
+  },
+  "realistic_sensor_restart": {
+    "result": "PASS O0/O2 bit-identical twelve cases",
+    "runner": "tests/f-app07/run_mc_irr01_realistic_sensor_restart.sh",
+    "postimage": "29761f561b319f02e1eaa7fb65c5a1fa21046719",
+    "output_sha256": "5f7a54d2c152e8aae355f32c36b551858bd258143b23ff7b91fa3a5473a83ee5",
+    "cases": 12,
+    "claim": "TCS7/8; 1/3 SSDI nodes; DCS1/2/LIMIT; scalar salt plus TASK4; retained accepted zero-source history and true half-event physical/event restart"
+  },
+  "inheritance_after_common_salt_refactor": "Fresh O0/O2 execution on tested persisted head 70eedcd: sensor restart and source-off PASS with unchanged hashes.",
+  "phase": "QUALIFIED_OWNER_RUNTIME_COMPLETION",
+  "canonical_admitted": true,
+  "qualification": {
+    "tested_persisted_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "science": "PASS O0/O2",
+    "integrated_F_CI": "PASS full lineage-aware preservation",
+    "scientific_dependency_subtrees": {
+      "src": "4636b52b9a4c1a3158ad1e166695aa52ad9e8252",
+      "tests": "2051e7cedeb2418321e6395249e732140efce790",
+      "tools": "6192aa5cf46c7e6301f5f1891e9c10fe4b68f230",
+      ".github": "c06ebf675f157c70ddf4fe24cb416cb5d12ba4d5"
+    },
+    "inheritance": "Admission candidate preserves all src/tests/tools/.github trees byte-exact. Only evidence and unrelated canonical control records differ.",
+    "evidence_archive": "integration/audits/evidence/MC_IRR01_ROOT_SALT_20261011.tar.gz.b64",
+    "archive_sha256": "0c53413b424d4f9d57621293076698fc18be9cb8a2037ead8141eb532b9faf0b",
+    "log_sha256": {
+      "irr-root-salt-exact-moving-fci.log": "5f7340df8aee2710057564820b266bba3d8c1317524b842ea757f89a0eb4d31c",
+      "irr-root-salt-realistic-full.log": "9e631b657344582b4a724745a2d68436779fcb6e3bed6efdccbed617c28eddee",
+      "irr-root-salt-realistic-sensor-preservation.log": "9b72b3d45b04a46b850ff62c9fbea39435bbe62e17fbe064f1f71bbae53f7bd1",
+      "irr-root-salt-realistic-off-preservation.log": "31d27a66f838e271660579b862fb5de8ee7cf6f27cf93661f75f54344e7d18ba",
+      "irr-root-salt-existing-owner.log": "13e9706b7c833ec9ace0b1ad47622f4472ae0932dfc8205da2a527a1ea56063d",
+      "irr-root-salt-literal-common.log": "f1edf4a7c0f09987d7e3f28d57db5348a40cfa7de3b569107011dae20a88d54f"
+    }
+  },
+  "canonical_admission": {
+    "pull_request": 1201,
+    "qualified_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "admission_head": "bdf81672804b3e453dca0630b1ea0cb736848b23",
+    "canonical_merge": "73796d85ba8de962673390a40d1be54e9c152d53",
+    "canonical_paths_verified": 15,
+    "qualified_scientific_surface_inheritance": "PASS src/tests/tools/.github exact subtree identity",
+    "science": "PASS O0/O2 literal 48; realistic root 12; sensor 12; source-off three profiles",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0
+  }
+}

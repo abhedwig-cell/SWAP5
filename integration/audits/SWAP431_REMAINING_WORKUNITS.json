@@ -174,8 +174,30 @@
     },
     {
       "id": "MC-IRR01",
-      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "status": "ACTIVE_SHARED_APPLICATION_COMPOSITION",
       "capabilities": [
+        "SW431-IRR-AVAIL",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8"
+      ],
+      "next_action": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
+      "production_edits_authorized_by_this_record": false,
+      "dependencies": [],
+      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
+      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
+      "internal_sequence_dependencies": [],
+      "closed_foundation_authorities": [
+        "SW431-IRR-TCS1"
+      ],
+      "original_capabilities": [
         "SW431-IRR-TCS2",
         "SW431-IRR-TCS3",
         "SW431-IRR-TCS4",
@@ -193,18 +215,27 @@
         "SW431-IRR-RATE-CAP",
         "SW431-IRR-AVAIL"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
-      "production_edits_authorized_by_this_record": false,
-      "dependencies": [],
-      "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
-      "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-      "internal_sequence_dependencies": [
+      "admitted_capabilities": [
+        "SW431-IRR-FIXED-SPRINK",
+        "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-FREQ",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP"
+      ],
+      "active_capabilities": [
+        "SW431-IRR-AVAIL",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-LIMIT",
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-SSDI",
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
         "SW431-IRR-TCS7",
         "SW431-IRR-TCS8"
       ],
-      "closed_foundation_authorities": [
-        "SW431-IRR-TCS1"
-      ]
+      "reconciliation_evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
     },
     {
       "id": "MC-LOW01",
