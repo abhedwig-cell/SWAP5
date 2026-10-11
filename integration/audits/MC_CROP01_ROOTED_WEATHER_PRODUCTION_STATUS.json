@@ -220,5 +220,78 @@
     "canonical_source_archive_and_execution_dependency_verification": "PASS",
     "full_capability": false,
     "scope": "Bounded authentic daily rooted production, delayed physical emergence and four active growth completions; full historical day-end/harvest/rotation/fallow and external disk restart remain open."
+  },
+  "master_coverage_reconciliation": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "head": "c1686a2cce14e0f02555e2640ad554e444ddeb68",
+    "pr": 1072,
+    "changed_row": "SW431-CROP-SOW",
+    "disposition": "ACTIVE_MIGRATION",
+    "remaining_queue_no_owner_claim": "CORRECTED",
+    "implementation_absence_proven": false,
+    "full_capability_promotions": 0,
+    "capability_counts_unchanged": true
+  },
+  "next_coherent_production_block": {
+    "status": "SOURCE_AND_OWNER_BOUNDARIES_RECONCILED_NOT_IMPLEMENTED",
+    "authority_bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "historical_source": {
+      "SWAP/swap.f90": {
+        "sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+        "lines": [
+          491,
+          511,
+          514,
+          521,
+          535
+        ],
+        "order": "accepted hydrology -> cropdevelopment(3) -> cropdevelopment(4) -> integral/output -> reset_crop"
+      },
+      "SWAP/wofost.f90": {
+        "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+        "lines": [
+          400,
+          410
+        ],
+        "harvest": "sw_harv0 calendar end+1; sw_harv>0 annual DVS>=dvsend or same calendar boundary"
+      },
+      "SWAP/MOD_cropdevelopment.f90": {
+        "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+      }
+    },
+    "current_limit": "PR1207 consumes growth at the next real morning and does not flush the final accepted hydrological day; the seven-day regression has four completed growth days and one final pending window. This is explicitly bounded, not historical complete day-end equivalence.",
+    "required_existing_owner_extensions": [
+      {
+        "owner": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "change": "Complete current accepted weather_window with its own retained authentic record without acquiring synthetic tomorrow weather. Add validated end-completed phase to capture/restore and next-morning logic so growth is never duplicated."
+      },
+      {
+        "owner": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "change": "Apply source task4 to the accepted daily crop candidate; retain immutable harvested end-of-day observation for publication before clearing current owner, without relaxing inactive-state biomass invariants."
+      },
+      {
+        "owner": "src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90",
+        "change": "Existing lines154-159 only admit active contemporaneous crop/receipt. Introduce source-bound harvested/fallow/new-season phase agreement through existing calendar and physical receipt binding; do not bypass deliberate fail-closed branches."
+      },
+      {
+        "owner": "src/kernel/mod_kernel_transactions.f90",
+        "change": "Current lines700/815 require positive intervals. New-season same-time initialization needs an explicit existing-owner authority/contract; do not fabricate zero-duration or extra hydrological intervals, reset accepted time, or misuse restart reconstruction for runtime transitions."
+      }
+    ],
+    "dependency_order": [
+      "day-end/current-window final flush and next-morning idempotency",
+      "source harvest plus immutable output before reset",
+      "physical calendar receipt and fallow/no-root hydro continuation",
+      "new-season owner initialization with explicit boundary authority",
+      "two authentic crop seasons with real intervening fallow and simulation end"
+    ],
+    "qualification_required": [
+      "Literal source arithmetic/order for calendar and DVS harvest; final-day output before reset",
+      "Two physically accepted seasons and real fallow using the same authentic meteo and persistent hydro state",
+      "Rejected day-end/harvest/season candidates, duplicate retry, rollback and pending/complete/fallow/season restart equivalence",
+      "Full crop/root/soil/heat/Richards O0/O2 postimages, mass and specific PASS markers",
+      "Affected owners, unchanged reference/preservation, highest complete frost closure and full moving F-CI exact postimage before admission"
+    ],
+    "full_lifecycle_closed": false
   }
 }
