@@ -73,3 +73,11 @@ jobs:
         run: bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh
       - name: MC-IRR01 feasible real-depth source-onset refinement and root cluster
         run: bash tests/f-app07/run_mc_irr01_realistic_event.sh
+      - name: MC-IRR01 retained-history real-depth source-off refinement
+        run: bash tests/f-app07/run_mc_irr01_realistic_source_off.sh
+      - name: MC-IRR01 real-depth sensor spatial event restart
+        run: bash tests/f-app07/run_mc_irr01_realistic_sensor_restart.sh
+      - name: MC-IRR01 common root salt source order and physical mass
+        run: |
+          bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh
+          bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh

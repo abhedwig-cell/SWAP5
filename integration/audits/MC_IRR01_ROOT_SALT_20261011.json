@@ -18,11 +18,23 @@
     "Real physical root onset, mass, event restart with salt/availability",
     "Exact-head scientific and F-CI canonical preservation before admission"
   ],
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonical_admitted": false,
   "fullcap_promotions": 0,
-  "external_authority_remaining": "MC-SOL01 supplies accepted sensor concentration with state/revision identity; no manufactured solute authority."
+  "external_authority_remaining": "MC-SOL01 supplies accepted sensor concentration with state/revision identity; no manufactured solute authority.",
+  "next_action": "Run exact persisted integrated F-CI, reconcile canonical PR1200 admission and owner source surfaces; no fullcap promotion.",
+  "local_science": {
+    "literal_source_cases": 48,
+    "literal_result": "PASS O0/O2",
+    "physical_cases": 12,
+    "physical_result": "PASS O0/O2",
+    "profiles": 3,
+    "physical_profile_sha256": "b08597ddbb0c61296ab7ca4e0dbc26765f23bb5a20c9db4a32336d308405ccc6",
+    "physical_cluster_sha256": "85621b3fc56b86fd6d256c09325c760065593de31ad4a60fdac5716ef06a8a04",
+    "existing_owner": "PASS O0/O2 with unchanged composition/sensor output hashes",
+    "limits": "Configured scalar concentration; actual solute authority and whole crop lifecycle not qualified."
+  }
 }
