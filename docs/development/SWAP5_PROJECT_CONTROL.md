@@ -312,7 +312,7 @@ This ordering is a routing decision, not a scientific priority ranking.
 
 ## MC-IRR01 bounded successor admission (2026-10-11)
 
-PR #1198 is READY_FOR_REGIE and reconciled against canonical `24a69ee415366c4c9d508806bd48bf14c002ea86`. The irrigation owner corrected literal SSDI availability/spatial mapping and added atomic management-to-production Richards execution. Central admission imports that qualified delta without changing shared crop/root, solute, drainage, solver or hydrologic state contracts.
+PR #1198 was admitted as squash `122866c17fbdc62f29bdc7521736bb559a68ee91`; its production and scientific test blobs were verified byte-exact against qualified admission tree `f7669f6228ae8e402ba4f1f7206784d68b3ae201`. Canonical tree `0215eacafd2421cd504a39f514be4ad76d473f43` also retains the concurrent F-CI93 diagnostic metadata commit `64b9fb3d`. It was reconciled against canonical `24a69ee415366c4c9d508806bd48bf14c002ea86`. The irrigation owner corrected literal SSDI availability/spatial mapping and added atomic management-to-production Richards execution. Central admission imports that qualified delta without changing shared crop/root, solute, drainage, solver or hydrologic state contracts.
 
 Owner run `38122332488` and F-CI run `38122332557` completed successfully on scientific head `0b421925c28f63bfa3024da303f283e9e9fe35ff`. Production/scientific test blobs are unchanged in preservation successor `2fa04e1f416a3fad5dfb96d90dc4c565778eafbf`; its complete local O0/O2 preservation passed with the irrigation owner gate exercised on every backend route. The only moving canonical delta was unrelated crop preservation/governance metadata.
 

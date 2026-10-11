@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "READY_FOR_REGIE_RECONCILED_BOUNDED_ADMISSION",
+  "phase": "CANONICALLY_ADMITTED_BOUNDED_FULL_COVERAGE_OPEN",
   "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
   "source_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "master_head": "e4c5a9583494c31052178f841d62c0388f93e525",
@@ -174,11 +174,11 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "next_action": "Central ADMIT of qualified bounded scope; verify canonical tree and publish eleven exact open-gate annotations to master owner. Full coverage requires central F-KT forcing-history contract and crop/solute owner bindings.",
+  "next_action": "Central F-KT owner: establish and qualify irrigation onset/end history contract without discarding accepted state or weakening temporal acceptance. Then finish crop/root and salt-state bindings plus source-reachable sensor/DCS1, multi-node physics and whole-run restart. All eleven remain ACTIVE_MIGRATION until those gates pass.",
   "reconciled_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
   "candidate_pr": 1198,
   "functional_coverage_closed": false,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "verification": {
     "scientific_postimage_commit": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
     "scientific_postimage_tree": "80980cfe79d7730f8169412033f0f18734099f82",
@@ -285,5 +285,8 @@
     "preservation_successor_tree": "ec420bc648711b7f6ea83bc3f4e926f89f2d881b",
     "successor_reason": "Execute irrigation exact-owner check also on backend routes bypassing B19/MICRO recomposition; no guard relaxation"
   },
-  "qualification_claim_scope": "Literal source correction and bounded atomic initial-impulse runtime only; no fullcap promotion"
+  "qualification_claim_scope": "Literal source correction and bounded atomic initial-impulse runtime only; no fullcap promotion",
+  "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+  "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
+  "canonical_verification_scope": "All qualified production and scientific test blobs byte-exact. Whole canonical tree also contains concurrent four-path F-CI93 diagnostic metadata commit 64b9fb3d; no source/test change. Reconciled and retained."
 }
