@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "RECONCILED_PRODUCTION_BINDING_PLAN",
+  "phase": "QUALIFIED_OWNER_SUBSCOPE_PRESERVATION_RUNNING",
   "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
   "source_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "master_head": "e4c5a9583494c31052178f841d62c0388f93e525",
@@ -9,97 +9,140 @@
       "capability_id": "SW431-IRR-TCS2",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-TCS3",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-TCS4",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Bind authoritative cumulative daily potential/actual transpiration and crop lifecycle selection; qualify event onset/end with preserved temporal history.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-TCS6",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Bind shared historical dayfix/daystart counter to authoritative lifecycle across restart; qualify repeated weekly execution with evolving root extent.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-TCS7",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Qualify non-cancelling pressure-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-TCS8",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Qualify non-cancelling moisture-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-DCS1",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Combine sensor and root management depth paths under source order, with authoritative rainfall and evolving crop/root parameters; physical lifecycle proof.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
       "master_disposition": "ADMITTED",
       "admission": true,
-      "next_gate": "Retain bounded #1195 authority"
+      "next_gate": "Retain bounded #1195 authority",
+      "current_disposition": "ADMITTED",
+      "authority": "PR #1195 / cadcc63d3296e12e6a0634ee7095693454b60005; preserve exact bounded scope"
     },
     {
       "capability_id": "SW431-IRR-SCHED-SURF",
       "master_disposition": "ADMITTED",
       "admission": true,
-      "next_gate": "Retain bounded #1195 authority"
+      "next_gate": "Retain bounded #1195 authority",
+      "current_disposition": "ADMITTED",
+      "authority": "PR #1195 / cadcc63d3296e12e6a0634ee7095693454b60005; preserve exact bounded scope"
     },
     {
       "capability_id": "SW431-IRR-SSDI",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-FREQ",
       "master_disposition": "ADMITTED",
       "admission": true,
-      "next_gate": "Retain bounded #1195 authority"
+      "next_gate": "Retain bounded #1195 authority",
+      "current_disposition": "ADMITTED",
+      "authority": "PR #1195 / cadcc63d3296e12e6a0634ee7095693454b60005; preserve exact bounded scope"
     },
     {
       "capability_id": "SW431-IRR-LIMIT",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Management DCS1 min/max is literal-tested; bind common limit ordering for sensor/DCS1 and saline source-reachable combinations.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "MC-SOL01 owner must supply accepted sensor concentration/state identity; scalar caller input is not complete salt-state runtime authority. Verify physical excess with depth limits and restart.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     },
     {
       "capability_id": "SW431-IRR-RATE-DAILY",
       "master_disposition": "ADMITTED",
       "admission": true,
-      "next_gate": "Retain bounded #1195 authority"
+      "next_gate": "Retain bounded #1195 authority",
+      "current_disposition": "ADMITTED",
+      "authority": "PR #1195 / cadcc63d3296e12e6a0634ee7095693454b60005; preserve exact bounded scope"
     },
     {
       "capability_id": "SW431-IRR-RATE-CAP",
       "master_disposition": "ADMITTED",
       "admission": true,
-      "next_gate": "Retain bounded #1195 authority"
+      "next_gate": "Retain bounded #1195 authority",
+      "current_disposition": "ADMITTED",
+      "authority": "PR #1195 / cadcc63d3296e12e6a0634ee7095693454b60005; preserve exact bounded scope"
     },
     {
       "capability_id": "SW431-IRR-AVAIL",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+      "next_gate": "Literal TASK4 correction proven; bind external allocation provider to event identity and qualify multi-day physical restriction/restart under realistic rates.",
+      "current_disposition": "ACTIVE_MIGRATION",
+      "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
+      "promotion_authorized": false
     }
   ],
   "allowed_changes": [
@@ -127,9 +170,82 @@
     "Scheduled SSDI writes full rate to every selected node, while fixed SSDI divides depth at read time but not positive configured rate. A total-depth normalisation cannot be introduced silently.",
     "TASK4 scales gird and positive-rate duration; it does not scale qssdi. Existing generic availability scaling scales SSDI rate too. Multi-node and SSDI availability require literal oracle and reference-policy disposition."
   ],
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "next_action": "Create bounded production management forcing binding and run real O0/O2 mass/storage verification; keep source discrepancies separate."
+  "next_action": "Finish exact preservation and owner Actions; reconcile current canonical delta, then central bounded admission. Keep full coverage open until all named owner and physical composition gates pass.",
+  "reconciled_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+  "candidate_pr": 1198,
+  "functional_coverage_closed": false,
+  "canonical_admitted": false,
+  "verification": {
+    "scientific_postimage_commit": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+    "scientific_postimage_tree": "80980cfe79d7730f8169412033f0f18734099f82",
+    "compiler": "GNU Fortran; O0/O2; fcheck=all; ffpe-trap=invalid,zero,overflow",
+    "literal_task4": {
+      "cases": 12,
+      "result": "PASS",
+      "runner": "tests/mc-irr01/run_mc_irr01_literal_availability.sh"
+    },
+    "literal_management": {
+      "cases": 48,
+      "result": "PASS",
+      "runner": "tests/mc-irr01/run_mc_irr01_literal_management.sh",
+      "limits": "Pinned source blocks, constant AFGEN witnesses; existing owner tests carry interpolation proof"
+    },
+    "physical_management": {
+      "cases": 12,
+      "result": "PASS",
+      "runner": "tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+      "output_sha256": "3c36c3ce70057123f407eb1d2c7beb679b0ae207fec46a3a3d44a1879f49beeb",
+      "source_rate_cm_day": 0.00048,
+      "source_depth_cm": 4.8e-08,
+      "interval_days": 0.0001,
+      "temporal_budget_cm": 2.5e-11,
+      "mass_tolerance_cm": 1e-12,
+      "initial_history": "forcing-consistent right derivative seeded using admitted state constructor",
+      "assertions": [
+        "Real hydraulic state differs from no-irrigation control",
+        "Unbalanced irrigation equals authoritative external mass delta",
+        "Conflicting existing source rejected without management mutation",
+        "Event boundary split rejects whole unsplit interval",
+        "Rejected physical execution preserves committed F-KT and management state",
+        "Completed event restart restores owner record"
+      ],
+      "does_not_prove": [
+        "Arbitrary forcing discontinuities with pre-existing temporal history",
+        "Realistic irrigation rate envelope",
+        "Full physical plus crop/management whole-run restart",
+        "Multi-node physical storage response",
+        "Rainfall/evaporation forcing composition"
+      ]
+    },
+    "existing_owner": {
+      "result": "PASS",
+      "runner": "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+      "sensor_runtime_output_sha256": "2ee223a75ed4d82c83d3ee7b5d04446dcacc9c2f7bdba25a798b240631452681"
+    },
+    "preservation": {
+      "result": "RUNNING",
+      "runner": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "remote_owner_run": 38122332488,
+      "remote_fci_run": 38122332557
+    }
+  },
+  "negative_evidence": [
+    {
+      "classification": "NUMERICAL_QUALIFICATION_ENVELOPE_NOT_CLOSED",
+      "observation": "A 0.48 cm/day onset trial converged Richards mass but exhausted the existing strict temporal controller substep/rejection limits. No thresholds, solver or committed history were changed to force acceptance.",
+      "next_action": "Shared F-KT owner must qualify forcing-discontinuity history policy; use accepted interface/admission procedure before any implementation change."
+    }
+  ],
+  "master_reconciliation": {
+    "owner_pr": 1072,
+    "capabilities": 16,
+    "retained_admitted": 5,
+    "retained_active_migration": 11,
+    "promotion_count": 0,
+    "stale_claim_correction": "Replace missing implementation assertions by existing policy / bounded physical route / explicit remaining source-reachable gaps. No fullcap promotion from a tiny initial impulse or isolated literal oracle."
+  }
 }

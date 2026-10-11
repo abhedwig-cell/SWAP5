@@ -18,6 +18,11 @@ FCI51P_MOVING_BASE=afe253164ddff55ce3a362277a43878d733057d3
 # recomposition. Preserve only the exact admitted capability blobs here; the
 # dedicated F-CI51P workflow owns broader moving-preservation provenance.
 if git merge-base --is-ancestor "$FCI51P_MOVING_BASE" HEAD; then
+  if git merge-base --is-ancestor 75114770c4d4d300f9d8037207d5498fa0e1f44e HEAD; then
+    bash tests/fci/run_fci51p_wof43a_successor_preservation.sh
+    echo 'FCI51_HISTORICAL_RECOMPOSITION_NOT_REOPENED=PASS'
+    exit 0
+  fi
   test "$(git rev-parse HEAD:src/crop/mod_crop_et_canopy_view_provider.f90)" = "$PROVIDER_BLOB" || {
     echo 'FCI51_POSTADMISSION_PROVIDER_PRESERVATION=FAIL' >&2
     exit 1

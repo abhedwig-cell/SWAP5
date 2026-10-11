@@ -34,8 +34,7 @@ jobs:
           git merge-base --is-ancestor "$FCI51_POSTIMAGE" "$FCI52_SOURCE_POSTIMAGE"
           git merge-base --is-ancestor "$FCI52_SOURCE_POSTIMAGE" "$BASE"
           git merge-base --is-ancestor "$BASE" HEAD
-          test "$(git rev-parse "HEAD:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
-          test "$(git rev-parse "HEAD:$DEP_PATH")" = "$DEP_BLOB"
+          bash tests/fci/run_fci51p_wof43a_successor_preservation.sh
           test "$(git rev-parse "$FCI51_POSTIMAGE:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
           test "$(git rev-parse "$FCI51_POSTIMAGE:$DEP_PATH")" = "$DEP_BLOB"
           test "$(git rev-parse "$BASE:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
@@ -62,7 +61,7 @@ jobs:
           echo "FCI51P_R3_CURRENT_CANONICAL_BASE=PASS:$BASE"
           echo "FCI51P_R3_FCI51_POSTIMAGE_ANCESTRY=PASS:$FCI51_POSTIMAGE"
           echo "FCI51P_R3_FCI52P_CLOSEOUT_DESCENDANT=PASS:$BASE"
-          echo "FCI51P_R3_WOF43A_PROVIDER_BLOB_PRESERVED=PASS:$PROVIDER_BLOB"
+          echo "FCI51P_R3_HISTORICAL_WOF43A_PROVIDER_BLOB_PRESERVED=PASS:$PROVIDER_BLOB"
           echo "FCI51P_R3_WOF43A_DIRECT_DEPENDENCY_PRESERVED=PASS:$DEP_BLOB"
           echo "FCI51P_R3_OWNER_AND_FVQ37_PROVENANCE_PRESERVED=PASS"
           echo "FCI51P_R3_MOVING_CURRENT_CANONICAL_PRESERVATION=PASS"

@@ -59,5 +59,27 @@
   "reference_source_change": false,
   "scientific_semantics_change": false,
   "final_verdict": "CLOSED_CANONICAL_DEPENDENCY_AWARE_PRESERVATION_GREEN",
-  "next_permitted_action": "Use F-CI93 as the moving F-SI35 preservation authority. Reopen only when an actual F-SI35 dependency surface changes; unrelated admitted production additions must not trigger repository-wide freeze semantics."
+  "successor_diagnostic_20261011": {
+    "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+    "status": "BLOCKED_SEMANTIC_HEADED_REPLAY_NOT_ADMITTED",
+    "remote_recovery_branch": "qualification/regie-preservation-successors-20261011",
+    "remote_recovery_commit": "78bc8fc2c2ae34d6643c6eab3e5f943f54d91c53",
+    "recovery_scope": "Bounded diagnostic runner only; not a canonical preservation repair or production change.",
+    "reconciled_successors": {
+      "task2_runon": "ea4c6548b7693abbd25d428e85227b43e499a814",
+      "dynamic_top_migmac11": "8cd14e459913f77f412e12125ccda597a841e22d",
+      "migmac11_exact_admitted_qualification_run": 37615105739,
+      "transaction_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d"
+    },
+    "identity_lineage_receipt_checks": "PASS",
+    "compile_closure": "Completed through existing dependency resolver with immutable F-KT15 stubs taking precedence",
+    "semantic_gate": "FAIL_O0_PRODUCTION_SURFACE_REGIMES",
+    "error": "HeadCalc: dynamic head regime omitted surface-head derivative",
+    "local_log_sha256": "31860d8560bea1a8fd465a2dcc4aa2721c50b7be047a4ad732f5574361b2c86e",
+    "o2_qualified": false,
+    "owner": "central HeadCalc/dynamic-top admission authority with PPA-WU03 and MIGMAC owners",
+    "next_action": "Resolve headed derivative contract/fixture discrepancy and replay unchanged FKT15 surface, Task2 and FSI35 dispatch gates at O0/O2. Do not substitute pin reconciliation for a semantic pass.",
+    "canonical_runner_or_production_mutated": false
+  },
+  "next_permitted_action": "The 20261011 diagnostic reopens the relevant dependency surface. Keep F-CI93 fail-closed; only qualified headed semantic preservation may replace the current moving authority."
 }
