@@ -157,6 +157,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_config_t
     logical :: file_weather_daystart = .false.
     logical :: file_weather_rooted = .false.
+    logical :: file_weather_dayend = .false.
     real(real64) :: file_weather_latitude = -999.0_real64
     real(real64) :: file_weather_emergence_dry_weight = -1.0_real64
     real(real64) :: file_weather_maximum_root_depth_cm = 0.0_real64
@@ -236,6 +237,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: run_weather_interval => production_application_run_weather_interval
     procedure, public :: initialize_weather_crop_daystart => production_application_initialize_weather_crop_daystart
     procedure, public :: run_weather_crop_daystart => production_application_run_weather_crop_daystart
+    procedure, public :: run_weather_crop_dayend => production_application_run_weather_crop_dayend
     procedure, public :: capture_weather_crop_continuation => production_application_capture_weather_crop_continuation
     procedure, public :: restore_weather_crop_continuation => production_application_restore_weather_crop_continuation
     procedure, public :: copy_committed_for_crop => production_application_copy_committed_for_crop
@@ -342,6 +344,7 @@ contains
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
+    if(config%file_weather_dayend.and..not.config%file_weather_rooted) return
     if(config%file_weather_rooted) then
       if(.not.config%file_weather_daystart.or.n/=1) return
       if(.not.ieee_is_finite(config%file_weather_latitude).or. &
@@ -1035,7 +1038,7 @@ contains
     real(real64) :: day,tmin,tmax,rain,etref,crop_time,solar(6),radiation
     integer :: iday
     integer :: s,commit_status
-    logical :: available,did_commit,retired,active_event,emergence
+    logical :: available,did_commit,retired,active_event,emergence,new_weather_day
     active_event=.false.;emergence=.false.
     result=kernel_result_t();status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
@@ -1054,6 +1057,16 @@ contains
       return
     end select
     if(controls%initialization_profile/=lifecycle%initialization_profile) return
+    new_weather_day=.not.self%weather_record%same_input(record)
+    if(self%weather_configuration%file_weather_dayend.and.owner%crop_emerged) then
+      ! Do not discard the still-undelivered current record by acquiring
+      ! tomorrow's meteorology. Complete its real accepted window first.
+      if(new_weather_day.and.self%weather_window%ready()) then
+        if(.not.self%weather_window%delivery_committed()) then
+          status=FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE;return
+        end if
+      end if
+    end if
     if(lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
       ! Source emergence is checked from the previous accepted flags before
       ! task3. Only the explicit rooted profile may initialize biomass and
@@ -1081,6 +1094,20 @@ contains
     if(lifecycle%germinated) effective_controls%germ_mode=0
     call self%begin_weather_day(record,effective_controls,daily,status)
     if(status/=FMR_APP_BOOT_OK) return
+    if(self%weather_configuration%file_weather_dayend.and.owner%crop_emerged) then
+      call record%values(day,tmin,tmax,rain,etref,available)
+      if(.not.available) return
+      day=day-real(self%weather_epoch_day,real64)
+      call crop_committed%current_time(crop_time,available)
+      if(.not.available.or.crop_time/=day.or..not.self%previous_weather_window%delivery_committed()) then
+        status=FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE;return
+      end if
+      ! Previous growth is already accepted. Authentic morning weather and
+      ! the new physical window were acquired, but no crop event is repeated.
+      status=FMR_APP_BOOT_CROP_EVENT_DELIVERED
+      if(new_weather_day) status=FMR_APP_BOOT_OK
+      return
+    end if
     status=FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE
     if(.not.self%previous_weather_window%complete()) return
     if(self%previous_weather_window%delivery_committed()) then
@@ -1157,6 +1184,89 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
+  subroutine production_application_run_weather_crop_dayend(self,crop_kernel,crop_parameters,crop_config, &
+       crop_committed,result,status)
+    class(fmr_production_application_bootstrap_t),intent(inout)::self
+    type(kernel_executor_t),intent(inout)::crop_kernel
+    type(fmr_wofost_crop_transaction_parameters_t),intent(in)::crop_parameters
+    type(canonical_numerical_config_t),intent(in)::crop_config
+    type(kernel_committed_state_t),intent(inout)::crop_committed
+    type(kernel_result_t),intent(out)::result
+    integer,intent(out)::status
+    class(transaction_state_t),allocatable::physical
+    type(crop_lifecycle_continuation_t)::lifecycle
+    type(wofost_crop_owner_state_t)::owner
+    type(wofost_one_day_forcing_t)::forcing
+    type(fmr_wofost_crop_event_forcing_t)::event
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_diagnostics_t)::diagnostics
+    real(real64)::day,tmin,tmax,rain,etref,soil_time,crop_time,radiation,solar(6)
+    integer::s,iday,commit_status
+    logical::available,did_commit,retired
+    result=kernel_result_t();status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(.not.self%weather_configuration%file_weather_dayend.or..not.self%weather_configuration%file_weather_rooted) return
+    if(size(self%committed)/=1.or.associated(self%active_context).or.self%weather_interval_active) return
+    if(.not.self%crop_daystart_active) return
+    status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    if(crop_committed%current_lineage_id()/=self%accepted_crop_lineage.or. &
+         crop_committed%current_revision()/=self%accepted_crop_revision) return
+    call crop_committed%snapshot(physical,available)
+    if(.not.available) return
+    select type(physical)
+    type is(fmr_wofost_crop_transaction_state_t)
+      call physical%snapshot_lifecycle(lifecycle,available)
+      if(.not.available.or..not.lifecycle%ready()) return
+      call physical%snapshot_owner(owner,available)
+      if(.not.available.or..not.owner%crop_emerged.or..not.lifecycle%emerged.or.lifecycle%harvested) return
+    class default
+      return
+    end select
+    status=FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE
+    if(.not.self%weather_window%complete()) return
+    if(self%weather_window%delivery_committed()) then
+      status=FMR_APP_BOOT_CROP_EVENT_DELIVERED;return
+    end if
+    call self%weather_record%values(day,tmin,tmax,rain,etref,available)
+    if(.not.available) return
+    day=day-real(self%weather_epoch_day,real64)
+    call self%committed(1)%current_time(soil_time,available)
+    if(.not.available.or.soil_time/=day+1.0_real64) return
+    call crop_committed%current_time(crop_time,available)
+    if(.not.available.or.crop_time/=day) return
+    status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    if(.not.crop_parameters%matches_canopy(self%weather_configuration%file_weather_stem_area_coefficient, &
+         self%weather_configuration%file_weather_storage_area_coefficient)) return
+    call self%weather_record%growth_values(self%weather_configuration%file_weather_latitude, &
+         iday,radiation,solar,available)
+    if(.not.available) return
+    forcing%minimum_temperature=tmin
+    forcing%average_temperature=(tmax+tmin)*0.5_real64
+    forcing%daytime_average_temperature=(tmax+forcing%average_temperature)*0.5_real64
+    forcing%global_radiation=radiation
+    forcing%daylength_hours=solar(1);forcing%photoperiodic_daylength_hours=solar(2)
+    forcing%sinld=solar(3);forcing%cosld=solar(4)
+    forcing%diffuse_perpendicular_radiation=solar(5)
+    forcing%daily_sine_solar_elevation_integral=solar(6)
+    call prepare_fmr_wofost_crop_event_forcing(self%weather_window,forcing,event,s, &
+         active_expected_revision=lifecycle%revision)
+    if(s/=CROP_EVENT_COMPOSE_OK.or..not.event%ready()) return
+    call crop_committed%capture_checkpoint(checkpoint,available)
+    if(.not.available) return
+    call crop_kernel%advance_interval(crop_parameters,crop_committed,event,crop_config, &
+         day,day+1.0_real64,result,candidate,diagnostics,checkpoint)
+    if(.not.result%completed.or..not.candidate%ready()) return
+    call crop_kernel%commit_candidate(crop_committed,candidate,diagnostics,did_commit,commit_status)
+    if(.not.did_commit) return
+    call reconcile_committed_crop_event_receipt(self%weather_window,crop_committed,retired,s)
+    if(s/=FMR_WOF39_OK.or..not.retired) error stop 'MC-CROP01 accepted day-end receipt retirement failed'
+    self%accepted_crop_lineage=crop_committed%current_lineage_id()
+    self%accepted_crop_revision=crop_committed%current_revision()
+    status=FMR_APP_BOOT_OK
+  end subroutine
+
   subroutine production_application_capture_weather_crop_continuation(self,crop_committed,bundle,status)
     class(fmr_production_application_bootstrap_t), intent(in) :: self
     type(kernel_committed_state_t), intent(in) :: crop_committed
@@ -1191,7 +1301,9 @@ contains
     call self%weather_record%values(day,tmin,tmax,rain,etref,available)
     if(.not.available) return
     day=day-real(self%weather_epoch_day,real64)
-    if(self%previous_weather_window%ready().and..not.self%previous_weather_window%delivery_committed()) then
+    if(self%weather_configuration%file_weather_dayend.and.self%weather_window%delivery_committed()) then
+      if(.not.self%weather_window%complete().or.crop_time/=day+1.0_real64.or.soil_time/=crop_time) return
+    else if(self%previous_weather_window%ready().and..not.self%previous_weather_window%delivery_committed()) then
       ! Pending daystart/retry is a real previous accepted window; preserve
       ! its undelivered state without advancing today's soil or crop.
       if(.not.self%previous_weather_window%complete()) return

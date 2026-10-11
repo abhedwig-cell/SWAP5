@@ -109,6 +109,7 @@ program test_crop_file_weather_production
   type(reference_et_demand_canopy_view_t)::canopy
   type(fmr_serialized_column_result_t),allocatable::results(:)
   integer(int64),allocatable::revisions(:)
+  real(real64),allocatable::admitted_morning_soil(:)
   character(1024)::path,altered_path,bad_path,backup_path
   real(real64)::k,day,tmin,tmax,rain,etref,hgerm,before_time,previous_storage,initial_head
   integer::s,d,i
@@ -175,6 +176,7 @@ program test_crop_file_weather_production
   ! threshold remains unchanged; no forcing is reverse-engineered to steady.
   config%numerical%max_committed_substeps=262144
   call test_rooted_weather_production()
+  call test_rooted_weather_production(.true.)
   call test_immediate_startup()
   call test_authentic_thermal_sowing()
   call test_authentic_thermal_sowing(.true.)
@@ -490,7 +492,8 @@ program test_crop_file_weather_production
   if(trim(moisture_mode)=='hydraulic') print '(a)', 'CROP_FILE_WEATHER_HYDRAULIC_PREPARATION_PHASE_TRANSITION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
-  subroutine test_rooted_weather_production()
+  subroutine test_rooted_weather_production(at_dayend)
+    logical,intent(in),optional::at_dayend
     type(fmr_production_application_config_t)::tc,bad_tc
     type(fmr_production_application_bootstrap_t)::ta,bad_app
     type(fmr_application_crop_daystart_controls_t)::c
@@ -501,7 +504,7 @@ contains
     type(fmr_wofost_crop_transaction_parameters_t)::cp,bad_cp
     type(canonical_numerical_config_t)::cn
     type(kernel_result_t)::cr
-    type(swap_daily_weather_record_t)::wr,prior_wr
+    type(swap_daily_weather_record_t)::wr,prior_wr,next_wr
     type(fmr_serialized_column_result_t),allocatable::rr(:)
     type(wofost_crop_owner_state_t)::empty_owner,wo,before_owner,expected_owner,wrong_owner
     type(fmr_wofost_crop_transaction_persistence_t)::crop_view
@@ -514,10 +517,14 @@ contains
     real(real64)::dist(numnod),wd,tmn,tmx,rain,etref,solar(6),expected_solar(6),rad
     real(real64)::uptake,prior_uptake,total_uptake,previous_weight,weight,bits(4*numnod+6),expected_bits(4*numnod+6)
     real(real64),allocatable::profile(:),derivative(:)
+    real(real64),allocatable::soil_before(:),soil_after(:)
+    integer(int64)::soil_revision,crop_revision
     integer::st,j,q,d,iday
-    logical::ok
+    logical::ok,dayend
+    dayend=.false.
+    if(present(at_dayend)) dayend=at_dayend
     call make_bundle(bundle);update%leaf_lifespan=40.0_real64
-    tc=config;tc%file_weather_rooted=.true.
+    tc=config;tc%file_weather_rooted=.true.;tc%file_weather_dayend=dayend
     ! Explicit bounded site parameter, not a claim of Andelst site geometry.
     tc%file_weather_latitude=52.0_real64;tc%file_weather_emergence_dry_weight=10.0_real64
     tc%file_weather_maximum_root_depth_cm=30.0_real64
@@ -572,7 +579,7 @@ contains
           call require(st==FMR_APP_BOOT_OK,'rooted initial historical cold sowing')
         else
           before_owner=wo
-          if(d==2.or.d==3) then
+          if(d==2.or.(d==3.and..not.dayend)) then
             call ta%run_weather_crop_daystart(wr,c,ck,bad_cp,cn,cs,cr,st)
             call require(st==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.cs%current_revision()==int(d-1,int64), &
                  'rejected emergence/growth candidate leaves accepted crop unchanged')
@@ -607,12 +614,12 @@ contains
           call require(life%emerged.and.wo%crop_emerged,'previous accepted flags physically emerge crop')
           weight=wo%biomass%root_biomass+wo%biomass%stem_biomass+wo%biomass%storage_biomass+sum(wo%biomass%leaf_biomass)
           if(d==2) call require(weight==10.0_real64.and.wo%development_stage==0.0_real64,'emergence initializes TDWI without previous-day phantom growth')
-          if(d>=3) then
+          if(d>=3.and..not.dayend) then
             if(.not.(weight>previous_weight.and.wo%development_stage>0.0_real64)) &
                  write(*,*) 'ROOTED_GROWTH_DIAGNOSTIC',d,weight,previous_weight,wo%development_stage
             call require(weight>previous_weight.and.wo%development_stage>0.0_real64,'actual positive WOFOST biomass and development')
           end if
-          if(d>=3) then
+          if(d>=3.and..not.dayend) then
             call require(crop_view%receipt%t0==real(d-1,real64).and.crop_view%receipt%t1==real(d,real64).and. &
                  crop_view%receipt%actual_root_uptake_integral==prior_uptake, &
                  'grown crop receipt contains its own actual previous accepted root extraction')
@@ -641,10 +648,109 @@ contains
           call require(abs(rr(1)%mass%residual)<=HARD_MASS_GATE,'rooted hard physical water mass conservation')
           call require(rr(1)%actual_transpiration_available,'accepted physical root amount published by dispatcher')
           uptake=uptake+rr(1)%actual_transpiration_amount
+          if(q==0.and.d>=2.and.dayend) then
+            crop_revision=cs%current_revision()
+            call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+            call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision, &
+                 'partial actual window cannot commit end-day growth')
+            if(j==2.and.d==3) then
+              call ta%capture_weather_crop_continuation(cs,saved,st)
+              call require(st==FMR_APP_BOOT_OK,'capture partial accepted day-end window')
+              call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close partial-day application')
+              cs=kernel_committed_state_t()
+              call ta%restore_weather_crop_continuation(saved,cs,st)
+              call require(st==FMR_APP_BOOT_OK,'restore partial day before remaining actual hydrology')
+            end if
+          end if
         end do
         if(d<2) call require(uptake==0.0_real64,'pre-emergence root sink is physically zero')
         if(d>=2) call require(uptake>0.0_real64,'emerged crop drives actual nonzero soil extraction')
         total_uptake=total_uptake+uptake
+        if(.not.dayend.and.d==2) then
+          crop_revision=cs%current_revision()
+          call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+          call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision, &
+               'legacy morning profile cannot silently acquire day-end semantics')
+        end if
+        if(dayend.and.d>=2) then
+          before_owner=wo;crop_revision=cs%current_revision()
+          call ta%run_weather_crop_dayend(ck,cp,cn,foreign,cr,st)
+          call require(st/=FMR_APP_BOOT_OK.and..not.foreign%ready().and.cs%current_revision()==crop_revision, &
+               'foreign crop has no day-end commit authority')
+          call ta%copy_committed_for_crop(1,ss,st)
+          call require(st==FMR_APP_BOOT_OK,'day-end actual accepted soil authority')
+          soil_revision=ss%current_revision();soil_before=complete_thermal_soil_values(ss)
+          if(d==2.or.d==4) then
+            call ta%run_weather_crop_dayend(ck,bad_cp,cn,cs,cr,st)
+            call require(st==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.cs%current_revision()==crop_revision, &
+                 'rejected day-end leaves actual crop and event unconsumed')
+            call cs%snapshot(ps,ok)
+            select type(ps)
+            type is(fmr_wofost_crop_transaction_state_t)
+              call ps%snapshot_owner(expected_owner,ok)
+              call require(ok,'rejected day-end crop snapshot')
+              call compare_complete_wofost_owners(expected_owner,before_owner)
+            class default
+              call require(.false.,'rejected day-end existing owner')
+            end select
+            if(d==2) then
+              call read_swap_daily_weather_file(trim(path),1999,1,23,next_wr,st)
+              call require(st==SWAP_WEATHER_FILE_OK,'independent next-day authenticated record')
+              call ta%run_weather_crop_daystart(next_wr,c,ck,cp,cn,cs,cr,st)
+              call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision, &
+                   'next morning cannot bypass an unaccepted current growth day')
+            end if
+            if(j==2) then
+              call ta%capture_weather_crop_continuation(cs,saved,st)
+              call require(st==FMR_APP_BOOT_OK,'capture pending day-end actual soil crop weather window')
+              call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close pending end-day application')
+              cs=kernel_committed_state_t()
+              call ta%restore_weather_crop_continuation(saved,cs,st)
+              call require(st==FMR_APP_BOOT_OK,'restore pending day-end for exact retry')
+            end if
+          end if
+          call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+          call require(st==FMR_APP_BOOT_OK.and.cr%completed.and.cs%current_revision()==crop_revision+1_int64, &
+               'current real weather day including final day physically completes exactly once')
+          call cs%snapshot(ps,ok);call require(ok,'accepted day-end crop')
+          select type(ps)
+          type is(fmr_wofost_crop_transaction_state_t)
+            call ps%snapshot_owner(wo,ok);call require(ok,'day-end current actual biomass')
+            call export_fmr_wofost_crop_transaction_persistence(ps,crop_view,ok,st)
+            call require(ok.and.crop_view%ready(),'day-end physical receipt persistence')
+          class default
+            call require(.false.,'day-end existing physical owner')
+          end select
+          call require(crop_view%receipt%t0==real(d,real64).and.crop_view%receipt%t1==real(d+1,real64).and. &
+               crop_view%receipt%actual_root_uptake_integral==uptake, &
+               'day-end receipt uses actual same-day accepted extraction')
+          aggregates%actual_root_uptake=crop_view%receipt%actual_root_uptake_integral
+          aggregates%potential_transpiration=crop_view%receipt%potential_transpiration_integral
+          call expected_growth_from_record(before_owner,wr,d+1,bundle,update,aggregates,expected_owner)
+          call compare_complete_wofost_owners(wo,expected_owner)
+          weight=wo%biomass%root_biomass+wo%biomass%stem_biomass+wo%biomass%storage_biomass+sum(wo%biomass%leaf_biomass)
+          call require(weight>previous_weight.and.wo%development_stage>0.0_real64,'positive same-day physical growth')
+          previous_weight=weight
+          call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+          call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision+1_int64, &
+               'duplicate end-day cannot republish growth or receipt')
+          call ta%copy_committed_for_crop(1,ss,st)
+          call require(st==FMR_APP_BOOT_OK.and.ss%current_revision()==soil_revision,'day-end never reexecutes soil')
+          soil_after=complete_thermal_soil_values(ss)
+          call require(all(transfer(soil_before,[0_int64],size(soil_before))== &
+               transfer(soil_after,[0_int64],size(soil_after))),'day-end soil heat and Richards history unchanged')
+          if(j==2) then
+            call ta%capture_weather_crop_continuation(cs,saved,st)
+            call require(st==FMR_APP_BOOT_OK,'capture completed day-end crop time equals soil time')
+            call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close completed end-day application')
+            cs=kernel_committed_state_t()
+            call ta%restore_weather_crop_continuation(saved,cs,st)
+            call require(st==FMR_APP_BOOT_OK,'restore completed phase for next morning without duplicate growth')
+            call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+            call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision+1_int64, &
+                 'restart retains retired current-window event identity')
+          end if
+        end if
         prior_uptake=uptake;prior_wr=wr
       end do
       call ta%copy_committed_for_crop(1,ss,st);call require(st==FMR_APP_BOOT_OK,'rooted final accepted soil')
@@ -656,6 +762,14 @@ contains
         call ps%temporal_history_snapshot(derivative,ok);call require(ok,'rooted actual Richards history')
         bits=[ps%pressure_head,ps%water_content,profile,derivative,weight,wo%development_stage,total_uptake, &
              wo%biomass%root_biomass,wo%biomass%stem_biomass,wo%biomass%leaf_area_sum()]
+        soil_after=[ps%pressure_head,ps%water_content,profile,derivative,total_uptake]
+        if(.not.dayend.and.j==1) admitted_morning_soil=soil_after
+        if(dayend) then
+          call require(allocated(admitted_morning_soil),'admitted morning hydrological oracle available')
+          call require(all(transfer(soil_after,[0_int64],size(soil_after))== &
+               transfer(admitted_morning_soil,[0_int64],size(admitted_morning_soil))), &
+               'day-end rephasing preserves entire admitted hydrology and actual uptake bitwise')
+        end if
       class default
         call require(.false.,'rooted temporal soil owner')
       end select
@@ -670,19 +784,50 @@ contains
         call require(all(transfer(crop_bits,[0_int64],size(crop_bits))== &
              transfer(expected_crop_bits,[0_int64],size(crop_bits))),'entire restarted biomass/leaf/thermal-history crop owner identity')
         do q=1,size(crop_bits)
-          write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_OWNER_BITS=',q,transfer(crop_bits(q),0_int64)
+          if(dayend) then
+            write(*,'(a,i0,1x,z16.16)') 'CROP_DAYEND_WEATHER_OWNER_BITS=',q,transfer(crop_bits(q),0_int64)
+          else
+            write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_OWNER_BITS=',q,transfer(crop_bits(q),0_int64)
+          end if
         end do
         do q=1,size(bits)
-          write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_POSTIMAGE_BITS=',q,transfer(bits(q),0_int64)
+          if(dayend) then
+            write(*,'(a,i0,1x,z16.16)') 'CROP_DAYEND_WEATHER_POSTIMAGE_BITS=',q,transfer(bits(q),0_int64)
+          else
+            write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_POSTIMAGE_BITS=',q,transfer(bits(q),0_int64)
+          end if
         end do
       end if
       call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close rooted physical application')
       cs=kernel_committed_state_t()
     end do
-    print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
-    print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
-    print '(a)','CROP_ROOTED_WEATHER_SAME_DAY_GROWTH_DISCRIMINATOR=PASS'
+    if(dayend) then
+      print '(a)','CROP_DAYEND_CURRENT_WINDOW_FINAL_FLUSH_RETRY_RESTART_O0_O2=PASS'
+      print '(a)','CROP_DAYEND_ADMITTED_HYDROLOGY_ROOT_UPTAKE_BITWISE=PASS'
+    else
+      print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
+      print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
+      print '(a)','CROP_ROOTED_WEATHER_SAME_DAY_GROWTH_DISCRIMINATOR=PASS'
+    end if
   end subroutine
+
+  function complete_thermal_soil_values(committed) result(values)
+    type(kernel_committed_state_t),intent(in)::committed
+    real(real64),allocatable::values(:),temperature(:),history(:)
+    class(transaction_state_t),allocatable::physical
+    logical::ok
+    integer::st
+    call committed%snapshot(physical,ok);call require(ok,'actual thermal soil snapshot')
+    select type(physical)
+    type is(fmr_b110_temporal_indicator_state_t)
+      call copy_soil_temperature_profile(physical%soil_temperature,temperature,st)
+      call require(st==SOIL_TEMP_OK,'actual thermal soil profile')
+      call physical%temporal_history_snapshot(history,ok);call require(ok,'actual soil temporal derivative')
+      values=[physical%pressure_head,physical%water_content,temperature,history]
+    class default
+      call require(.false.,'actual thermal soil type')
+    end select
+  end function
 
   subroutine expected_growth_from_record(before,record,d,bundle,update,aggregates,expected)
     type(wofost_crop_owner_state_t),intent(in)::before

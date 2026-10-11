@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
-  "phase": "PERSISTED_COMPLETED_PREFIX_EXTENSION_PENDING",
+  "phase": "CURRENT_DAYEND_OWNER_REQUALIFICATION_PENDING",
   "implemented": true,
   "tested": false,
   "qualified": false,
@@ -25,9 +25,136 @@
     "O0/O2 and continuous/restored identity",
     "After first outer committed interval, failed next segment retains common accepted prefix and coherent continuation; second short retry equals clean two-segment state"
   ],
-  "next_action": "Run completed-prefix extension on the persisted postimage; narrow publication contract for the admitted single-column profile without assuming multi-column atomicity.",
+  "next_action": "Repeat actual publication boundary on admitted PR1209 bootstrap source and current owner fixture. Existing profile still has file_weather_dayend=false. Preserve prior raw proof and reject inherited current-head qualification until terminal O0/O2.",
   "recovery_branch": "work/mc-irr01-publication-probe-20261011",
   "fullcap_promotions": 0,
   "first_probe_result": "PASS_O0_O2_ONE_INTERNAL_PREFIX_DISCARDED_JOINT_RESTART_CLEAN_RETRY",
-  "first_probe_head": "c9bf04fa1a308c5f8dc4021359e683b0c4020528"
+  "first_probe_head": "c9bf04fa1a308c5f8dc4021359e683b0c4020528",
+  "qualification": {
+    "test_head": "9e13066e7f49d509beaeda0fd883c474781b877e",
+    "local_equivalent_head": "25df0108",
+    "command": "python tests/mc-irr01/run_weather_publication_probe.py",
+    "exit_code": 0,
+    "O0_O2": "BYTE_IDENTICAL_STDOUT",
+    "continuous_restored": "BYTE_IDENTICAL_STDOUT",
+    "accepted_internal_prefix_substeps": 1,
+    "incomplete_kernel_status": 4,
+    "successful_committed_segments": 2,
+    "mass_threshold_cm": 1e-12,
+    "scope": "Existing single-column root-free default-MVG bottom7 authentic Jan20 Andelst rain0mm/reference ET0.2355mm/day; configured 30cm four-node homogeneous fixture; no irrigation source inserted. Failed0.5-day requests; successful1e-6-day segments; no full-day integrated trajectory or quantitative accuracy claim."
+  },
+  "evidence": {
+    "archive": "integration/audits/evidence/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.tar.gz.b64",
+    "decoded_sha256": "6aafd6d6712b2be3ce480ef0c43616e4dab737d4c135662e1848479b6d5a9dd5",
+    "members": {
+      "first-prefix.log": {
+        "sha256": "3444891aa3b2e506cbe9cafea70b3cff38d15ac2c895a42b9a59e8947e2ac593",
+        "bytes": 2789
+      },
+      "completed-prefix.log": {
+        "sha256": "97ba0741693736d6ae0cb1eb108848b1b0697b0afd25dacd4e479c1a6aab2fd3",
+        "bytes": 3224
+      },
+      "compiler.txt": {
+        "sha256": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "bytes": 254
+      },
+      "generated_runner.sh": {
+        "sha256": "e431fef9e7914fffdef7fb632a684c62da4bf143a6ef1c644982161bdc995dfd",
+        "bytes": 10529
+      },
+      "generated_driver.f90": {
+        "sha256": "9246ad72a656f4686d35ee7cb44fb693209a3c976a1374bddaad9ff5e82134b7",
+        "bytes": 70992
+      },
+      "dependency_manifest.json": {
+        "sha256": "c0f76dda3b113d88f37b488c4c59ffed1d25f0d794ab2440fc21fe3588fdeab3",
+        "bytes": 51173
+      },
+      "run_weather_publication_probe.py": {
+        "sha256": "e3f634a1a92deefd5880b61b84a304fe16ccffdae81200dcdaf68cd5beb3ba6f",
+        "bytes": 2750
+      },
+      "test_weather_publication_probe.inc": {
+        "sha256": "94eb9f0edfa0be8a598a5da7fad40fb983e747b617734868eacd60f611db0e08",
+        "bytes": 9962
+      }
+    },
+    "input_manifest_count": 229
+  },
+  "interpretation": "Actual run_weather_interval/model dispatcher discards an incomplete one-column candidate even after internal accepted progress. Existing committed soil provenance/pressure/water/ponding/GWL/history is bitwise preserved; joint opaque restart succeeds and short retries equal a clean origin. A previously completed outer segment remains committed across failure/restart of the next segment. No dispatcher repair or reset to daystart is justified for this tested profile.",
+  "remaining_owner_decision": "Central RT/HY with MC-CROP01 accepts or returns preparation-only allocation seam, explicit managed-weather profile, per-completed-segment publication and schema-tagged joint irrigation continuation. The underlying single-column dispatcher already supplies atomic interval publication; do not invent a second physical transaction owner. Keep event/scheduler segmentation and common accepted prefix explicit. Multi-column partial batches, irrigation forcing/event endpoints, rooted canopy, salt bottom7 and allocation continuation are outside this probe.",
+  "unchanged_surface": [
+    "all production modules",
+    "all numerical/mass thresholds",
+    "original crop/weather driver and runner",
+    "workflows",
+    "mastercap dispositions5 admitted11 active"
+  ],
+  "canonical_admitted": false,
+  "validation": {
+    "archive8_members_and229_input_identities": "PASS",
+    "production_and_original_crop_fixture_byte_identity": "PASS",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "whitespace": "PASS",
+    "full_FCI": "NOT_RERUN_NO_CHANGED_PRODUCTION_OR_INCUMBENT_EXECUTION_SURFACE",
+    "new_fullcap_admissions": 0
+  },
+  "prior_qualification_20261011": {
+    "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
+    "qualification": {
+      "test_head": "9e13066e7f49d509beaeda0fd883c474781b877e",
+      "local_equivalent_head": "25df0108",
+      "command": "python tests/mc-irr01/run_weather_publication_probe.py",
+      "exit_code": 0,
+      "O0_O2": "BYTE_IDENTICAL_STDOUT",
+      "continuous_restored": "BYTE_IDENTICAL_STDOUT",
+      "accepted_internal_prefix_substeps": 1,
+      "incomplete_kernel_status": 4,
+      "successful_committed_segments": 2,
+      "mass_threshold_cm": 1e-12,
+      "scope": "Existing single-column root-free default-MVG bottom7 authentic Jan20 Andelst rain0mm/reference ET0.2355mm/day; configured 30cm four-node homogeneous fixture; no irrigation source inserted. Failed0.5-day requests; successful1e-6-day segments; no full-day integrated trajectory or quantitative accuracy claim."
+    },
+    "evidence": {
+      "archive": "integration/audits/evidence/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.tar.gz.b64",
+      "decoded_sha256": "6aafd6d6712b2be3ce480ef0c43616e4dab737d4c135662e1848479b6d5a9dd5",
+      "members": {
+        "first-prefix.log": {
+          "sha256": "3444891aa3b2e506cbe9cafea70b3cff38d15ac2c895a42b9a59e8947e2ac593",
+          "bytes": 2789
+        },
+        "completed-prefix.log": {
+          "sha256": "97ba0741693736d6ae0cb1eb108848b1b0697b0afd25dacd4e479c1a6aab2fd3",
+          "bytes": 3224
+        },
+        "compiler.txt": {
+          "sha256": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+          "bytes": 254
+        },
+        "generated_runner.sh": {
+          "sha256": "e431fef9e7914fffdef7fb632a684c62da4bf143a6ef1c644982161bdc995dfd",
+          "bytes": 10529
+        },
+        "generated_driver.f90": {
+          "sha256": "9246ad72a656f4686d35ee7cb44fb693209a3c976a1374bddaad9ff5e82134b7",
+          "bytes": 70992
+        },
+        "dependency_manifest.json": {
+          "sha256": "c0f76dda3b113d88f37b488c4c59ffed1d25f0d794ab2440fc21fe3588fdeab3",
+          "bytes": 51173
+        },
+        "run_weather_publication_probe.py": {
+          "sha256": "e3f634a1a92deefd5880b61b84a304fe16ccffdae81200dcdaf68cd5beb3ba6f",
+          "bytes": 2750
+        },
+        "test_weather_publication_probe.inc": {
+          "sha256": "94eb9f0edfa0be8a598a5da7fad40fb983e747b617734868eacd60f611db0e08",
+          "bytes": 9962
+        }
+      },
+      "input_manifest_count": 229
+    }
+  },
+  "last_reconciled_upstream": "be5a14761b3ddedfe7052cf0c6e5ce7985803190"
 }

@@ -9,7 +9,7 @@ cd "$ROOT"
 BASE=0d9f2c5da26e2214c3b19d56acdc734bf62d33f4
 fail(){ echo "CROP_FILE_WEATHER_SOURCE_SUCCESSOR_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
-  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
     python3 tests/fmig431/run_crop_rooted_weather_frost_successor.py --verify-only
   elif [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
     python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
@@ -23,13 +23,17 @@ expected_crop_2=bc04a4239b2b0d8ef21f962af14be6ef28fbe436
 expected_crop_3=0f7fccc714a908083f4550394ca1fdd28f354d47
 expected_crop_4=cf317b2130e3f685caf92f6d3a46ae933e100335
 expected_crop_5=97b810649eb9c8c5207061c17651d2eec7ec2ee8
-if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
   expected_crop_0=22c1d4f7c0aec3600dadc0ad346a1e4fc3374783
   expected_crop_1=6b27f366b7c352e6dfd8a3d720acc45d2d307b05
   expected_crop_2=851cb80954e1be909f6ec54661c0b12b80f225cd
   expected_crop_3=39b4f75c92ea44d6b4e4be326ddf731f54522dfd
   expected_crop_4=b4cfeedb9a09339ef095005243168978d1376956
   expected_crop_5=3c143002bc82486a5c1552ac75101006ff194615
+fi
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
+  expected_crop_2=23c2db74b1254e5e97e608764d186a59eeb694d5
+  expected_crop_5=5350f175cccda6f01c9812afb7c231a1cb118cc8
 fi
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled canonical baseline absent'
 test "$(git rev-parse HEAD:src/adapter/mod_swap_daily_weather_file_adapter.f90)" = "$expected_crop_0" || fail 'postimage drift: src/adapter/mod_swap_daily_weather_file_adapter.f90'

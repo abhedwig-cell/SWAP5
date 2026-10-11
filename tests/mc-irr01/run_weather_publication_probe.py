@@ -9,7 +9,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 PINS = {
     "tests/fmig431/run_crop_file_weather_production.sh": "b4cfeedb9a09339ef095005243168978d1376956",
-    "tests/fmig431/test_crop_file_weather_production.f90": "3c143002bc82486a5c1552ac75101006ff194615",
+    "tests/fmig431/test_crop_file_weather_production.f90": "5350f175cccda6f01c9812afb7c231a1cb118cc8",
 }
 
 

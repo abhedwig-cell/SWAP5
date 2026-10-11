@@ -8,6 +8,9 @@ EXPECTED = {'src/adapter/mod_swap_daily_weather_file_adapter.f90': '22c1d4f7c0ae
 def git(*args):
  return subprocess.check_output(['git', *args], cwd=ROOT)
 assert not git('status','--porcelain','--','src').strip()
+dayend = git('rev-parse','HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90').decode().strip() == '23c2db74b1254e5e97e608764d186a59eeb694d5'
+if dayend:
+ EXPECTED['src/runtime/mod_fmr_production_application_bootstrap.f90'] = '23c2db74b1254e5e97e608764d186a59eeb694d5'
 assert git('diff','--name-only',BASE,'HEAD','--','src').decode().splitlines() == sorted(EXPECTED)
 for path, blob in EXPECTED.items():
  assert git('rev-parse','HEAD:'+path).decode().strip() == blob, path
@@ -16,7 +19,8 @@ runner = 'tests/frost/run_ppa_wu05b15_runtime.py'
 assert git('show',BASE+':'+runner) == (ROOT/runner).read_bytes()
 assert git('rev-parse','HEAD:src/process/mod_frost_hydraulic_effect.f90').decode().strip() == '0dd5b541af936d292d23575f798c3cdd5be19c47'
 if sys.argv[1:] == ['--verify-only']:
- status = json.loads((ROOT/'integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json').read_text())
+ status_path = 'integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json' if dayend else 'integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json'
+ status = json.loads((ROOT/status_path).read_text())
  record = status['frost_successor_evidence']
  raw = base64.b64decode((ROOT/record['path']).read_bytes())
  assert hashlib.sha256(raw).hexdigest() == record['decoded_sha256']
@@ -47,7 +51,8 @@ assert source.count(old) == 1
 source = source.replace(old, "assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip() == '" + git('rev-parse','HEAD:src').decode().strip() + "'")
 old_prefix = "prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else'')"
 assert source.count(old_prefix) == 1
-source = source.replace(old_prefix, "prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime-crop-rooted-weather'")
+suffix = 'dayend' if dayend else 'rooted-weather'
+source = source.replace(old_prefix, "prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime-crop-"+suffix+"'")
 # Preserve every original fixture, flag, physical assertion and six complete
 # configurations at both optimizations; only exact admission/prefix differ.
 exec(compile(source,str(ROOT/runner),'exec'), {'__file__':str(ROOT/runner),'__name__':'__main__'})

@@ -3466,7 +3466,18 @@
         },
         "full_capability": false,
         "master_count_delta": 0,
-        "master_reconciliation_head": "c1686a2cce14e0f02555e2640ad554e444ddeb68"
+        "master_reconciliation_head": "c1686a2cce14e0f02555e2640ad554e444ddeb68",
+        "dayend_production_successor": {
+          "authority": "integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json",
+          "pr": 1209,
+          "merge_commit": "97f2d96e3cbe1cf34efba703a46e5ada0ea090a6",
+          "verified_tree": "4404f5f7daf30a2d527959445571b73dbdb49259",
+          "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
+          "six_stages_complete": true,
+          "full_capability": false,
+          "master_count_delta": 0,
+          "scope": "Current accepted weather-window growth including final day; partial/pending/completed in-process restart and no duplicate morning event. Harvest/output/reset, physical rotation/fallow/new-season, broader profiles and external disk codec remain open."
+        }
       }
     }
   },
