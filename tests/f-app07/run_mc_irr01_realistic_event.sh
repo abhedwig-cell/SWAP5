@@ -8,6 +8,8 @@ trap cleanup EXIT
 cd "$ROOT"
 fail(){ echo "MC_IRR01_MANAGEMENT_PHYSICAL_FAIL $*" >&2; exit 1; }
 TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
+PHASE=${MC_IRR01_EVENT_PHASE:-on}
+case "$PHASE" in on|off) ;; *) fail "unknown event phase $PHASE";; esac
 
 python3 - "$TEST" <<'PY' > "$BUILD/sources"
 import pathlib,re,sys
@@ -49,7 +51,8 @@ for opt in 0 2; do
   gfortran -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/test" || fail "link O$opt"
   : > "$OUT/output.txt"
   for budget in 1e-6 1e-7 1e-8; do
-    "$OUT/test" "$budget" >> "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt budget $budget"; }
+    args=("$budget"); [[ "$PHASE" != off ]] || args+=(off)
+    "$OUT/test" "${args[@]}" >> "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "runtime O$opt budget $budget"; }
   done
   grep -Fq 'MC_IRR01_MANAGEMENT_REAL_RICHARDS=PASS' "$OUT/output.txt" || fail "runtime O$opt"
   grep -Fq 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS' "$OUT/output.txt" || fail "mass O$opt"
@@ -69,13 +72,14 @@ cat "$BUILD/o0/cluster.txt"
 echo "MC_IRR01_REALISTIC_ROOT_CLUSTER_SHA256=$(sha256sum "$BUILD/o0/cluster.txt" | awk '{print $1}')"
 echo 'MC_IRR01_REALISTIC_ROOT_CLUSTER_O0_O2=PASS' 
 python3 - "$BUILD/o0/output.txt" <<'PY'
-import sys,numpy as np
+import sys
 lines=open(sys.argv[1]).read().splitlines()
-heads=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')])
-theta=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')])
-assert heads.shape==(3,5) and theta.shape==(3,5)
-eh=np.max(abs(heads[:2,1:]-heads[2,1:]),axis=1); ew=np.max(abs(theta[:2,1:]-theta[2,1:]),axis=1)
-print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh.tolist(),'THETA=',ew.tolist())
+heads=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')]
+theta=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')]
+assert len(heads)==len(theta)==3 and all(len(row)==5 for row in heads+theta)
+eh=[max(abs(a-b) for a,b in zip(row[1:],heads[2][1:])) for row in heads[:2]]
+ew=[max(abs(a-b) for a,b in zip(row[1:],theta[2][1:])) for row in theta[:2]]
+print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh,'THETA=',ew)
 assert eh[1] < eh[0] and ew[1] < ew[0], 'refinement does not reduce error'
 assert eh[1] < 2e-3 and ew[1] < 2e-6, 'declared refined profile accuracy target missed'
 print('MC_IRR01_EVENT_REFINEMENT=PASS')
