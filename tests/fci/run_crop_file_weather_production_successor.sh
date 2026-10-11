@@ -33,7 +33,7 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
 fi
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
   expected_crop_2=23c2db74b1254e5e97e608764d186a59eeb694d5
-  expected_crop_5=d736f313b0ebfcf5e6df5fb4a71f1fe8b6e5ce43
+  expected_crop_5=c70ed9a959f1bd9cac002c248596b4f54ea1201f
 fi
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled canonical baseline absent'
 test "$(git rev-parse HEAD:src/adapter/mod_swap_daily_weather_file_adapter.f90)" = "$expected_crop_0" || fail 'postimage drift: src/adapter/mod_swap_daily_weather_file_adapter.f90'

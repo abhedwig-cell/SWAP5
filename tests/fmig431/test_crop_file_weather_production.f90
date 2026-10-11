@@ -652,13 +652,30 @@ contains
             call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
             call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision, &
                  'partial actual window cannot commit end-day growth')
+            if(j==2.and.d==3) then
+              call ta%capture_weather_crop_continuation(cs,saved,st)
+              call require(st==FMR_APP_BOOT_OK,'capture partial accepted day-end window')
+              call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close partial-day application')
+              cs=kernel_committed_state_t()
+              call ta%restore_weather_crop_continuation(saved,cs,st)
+              call require(st==FMR_APP_BOOT_OK,'restore partial day before remaining actual hydrology')
+            end if
           end if
         end do
         if(d<2) call require(uptake==0.0_real64,'pre-emergence root sink is physically zero')
         if(d>=2) call require(uptake>0.0_real64,'emerged crop drives actual nonzero soil extraction')
         total_uptake=total_uptake+uptake
+        if(.not.dayend.and.d==2) then
+          crop_revision=cs%current_revision()
+          call ta%run_weather_crop_dayend(ck,cp,cn,cs,cr,st)
+          call require(st/=FMR_APP_BOOT_OK.and.cs%current_revision()==crop_revision, &
+               'legacy morning profile cannot silently acquire day-end semantics')
+        end if
         if(dayend.and.d>=2) then
           before_owner=wo;crop_revision=cs%current_revision()
+          call ta%run_weather_crop_dayend(ck,cp,cn,foreign,cr,st)
+          call require(st/=FMR_APP_BOOT_OK.and..not.foreign%ready().and.cs%current_revision()==crop_revision, &
+               'foreign crop has no day-end commit authority')
           call ta%copy_committed_for_crop(1,ss,st)
           call require(st==FMR_APP_BOOT_OK,'day-end actual accepted soil authority')
           soil_revision=ss%current_revision();soil_before=complete_thermal_soil_values(ss)
@@ -775,10 +792,13 @@ contains
       call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close rooted physical application')
       cs=kernel_committed_state_t()
     end do
-    print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
-    print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
-    print '(a)','CROP_ROOTED_WEATHER_SAME_DAY_GROWTH_DISCRIMINATOR=PASS'
-    if(dayend) print '(a)','CROP_DAYEND_CURRENT_WINDOW_FINAL_FLUSH_RETRY_RESTART_O0_O2=PASS'
+    if(dayend) then
+      print '(a)','CROP_DAYEND_CURRENT_WINDOW_FINAL_FLUSH_RETRY_RESTART_O0_O2=PASS'
+    else
+      print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
+      print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
+      print '(a)','CROP_ROOTED_WEATHER_SAME_DAY_GROWTH_DISCRIMINATOR=PASS'
+    end if
   end subroutine
 
   function complete_thermal_soil_values(committed) result(values)
