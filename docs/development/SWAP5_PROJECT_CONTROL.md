@@ -103,6 +103,12 @@ All three actual production blobs above are identical at pre-admission base `e3b
 
 ## Control model
 
+### Preservation follow-up 2026-10-11
+
+Central regie reconciled the qualified crop CO2 successor `75114770c4d4d300f9d8037207d5498fa0e1f44e` against canonical `4fab8a28a5a834844b8f9ffb105ff7185a95018c`. F-CI51P now retains the historical exact provider/dependency authorities while requiring exact admitted successor identity and replaying original WOF43A owner plus F-VQ37 independent semantics (29,000 cases and 13 edges), and the added CO2 semantics, at O0/O2 with output identity. All local gates passed. The original F-CI51 post-admission route delegates to that same preservation guard instead of retaining a contradictory old moving provider pin. No production/reference source, scientific assertion or tolerance changed. Exact-postimage automatic canonical qualification remains the final published gate; consult the commit-bound runs.
+
+F-CI93 is **not repaired or admitted**. Diagnostic recovery `78bc8fc2c2ae34d6643c6eab3e5f943f54d91c53` on `qualification/regie-preservation-successors-20261011` binds the admitted RUNON, MIGMAC11 dynamic-top and D2 transaction successors and completes transitive compilation with the original immutable F-KT15 stubs. The unchanged O0 production surface-regimes replay then fails `HeadCalc: dynamic head regime omitted surface-head derivative`. O2 qualification was not reached. The canonical F-CI93 runner is deliberately unchanged; central HeadCalc/dynamic-top admission authority, together with PPA-WU03/MIGMAC owners, must resolve the headed derivative contract/fixture discrepancy before preservation can close. This is the same failure text reported by the active crop successor, not evidence that crop caused it.
+
 Specialized workstreams may research, implement and qualify inside their declared ownership. They do not acquire canonical authority merely by producing a branch or PR.
 
 The common admission path is:

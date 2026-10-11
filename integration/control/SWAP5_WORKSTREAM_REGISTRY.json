@@ -673,7 +673,9 @@
         "actual_blob": "040299d7fac3499f5b72f3b166cb08973530885d",
         "dependency_blob_preserved": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5",
         "owner": "F-CI central preservation authority with crop/MC-CROP owner",
-        "next_action": "Reconcile admitted crop successor and exact qualification before changing the historical preservation pin."
+        "current_disposition": "LOCAL_QUALIFIED_SUCCESSOR_PRESERVATION_REPAIR",
+        "current_authority": "integration/f-ci/F-CI51P_STATUS.json#successor_reconciliation_20261011",
+        "next_action": "Observe exact-postimage automatic canonical F-CI and F-CI51P; historical failure remains provenance, not current science evidence."
       },
       {
         "workflow": "F-CI58P / F-CI93 F-SI35",
@@ -686,7 +688,12 @@
         "historical_authorities_successor_lineage_receipt": "PASS",
         "downstream_reconciliation": "SKIPPED",
         "owner": "F-CI central preservation authority with Task2/PPA-WU03 owner",
-        "next_action": "Qualify and bind the admitted runon successor without replaying old Task2 implementation."
+        "current_disposition": "BLOCKED_SEMANTIC_HEADED_REPLAY_NOT_ADMITTED",
+        "diagnostic_recovery": "78bc8fc2c2ae34d6643c6eab3e5f943f54d91c53",
+        "current_error": "HeadCalc: dynamic head regime omitted surface-head derivative",
+        "current_owner": "central HeadCalc/dynamic-top admission authority with PPA-WU03 and MIGMAC owners",
+        "current_authority": "integration/f-ci/F-CI93_STATUS.json#successor_diagnostic_20261011",
+        "next_action": "Resolve the headed derivative contract/fixture discrepancy, then replay unchanged surface, Task2 and dispatch gates at O0/O2. Diagnostic pin and compile reconciliation alone is not qualification."
       }
     ],
     "historical_preservation_drift_preexisting": {

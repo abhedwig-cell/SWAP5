@@ -89,5 +89,23 @@
     "r1_and_r2_remain_nonpromotion_authorities": true,
     "no_further_fci51_or_fci51p_action_required": true
   },
-  "next_required_step": "None. F-CI51/F-CI51P are closed. Future dependency-changing admissions must independently preserve or requalify the WOF43A capability without rewriting these frozen authorities."
+  "successor_reconciliation_20261011": {
+    "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+    "decision": "LOCAL_QUALIFIED_CO2_SUCCESSOR_PRESERVATION",
+    "historical_r3_authorities_unchanged": true,
+    "admitted_successor": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
+    "qualified_owner_head": "d064bf436bc39e6dd34ad7b41bd9f359f9a9c1da",
+    "qualified_owner_run": 37637780221,
+    "provider_postimage": "040299d7fac3499f5b72f3b166cb08973530885d",
+    "dependency_postimage": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5",
+    "runner": "tests/fci/run_fci51p_wof43a_successor_preservation.sh",
+    "local_gate": "PASS_ORIGINAL_OWNER_INDEPENDENT_29000_CASES_13_EDGES_AND_CO2_O0_O2_IDENTITY",
+    "legacy_fci51_delegation": "PASS",
+    "negative_controls": "PASS_UNKNOWN_PROVIDER_AND_DEPENDENCY_BLOB_DRIFT_EXIT_51_BEFORE_COMPILE",
+    "local_log_sha256": "c4a0f18f0cf32b2548b8adf86be4ad69aa30b7741944a0a907337edb17770b96",
+    "production_or_reference_changed": false,
+    "preservation_policy": "Keep historical exact authorities, require admitted successor lineage and exact current successor/dependency blobs, and replay both original semantics and added CO2 semantics. Unknown drift fails closed.",
+    "next_action": "Observe automatically triggered exact-postimage canonical F-CI and F-CI51P through terminal status; GitHub run evidence is bound to the published commit."
+  },
+  "next_required_step": "Use the 20261011 successor reconciliation for moving preservation; original F-CI51/F-CI51P R3 records remain immutable historical evidence."
 }
