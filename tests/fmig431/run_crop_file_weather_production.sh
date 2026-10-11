@@ -66,16 +66,22 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
       "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" ./*.o -o test
-    for mode in continuous restart; do
-      ./test "$BUILD/weather.999" "$BUILD/altered.999" "$BUILD/bad.999" "$BUILD/backup.999" "$mode" > "$mode.txt" 2> "$mode.diagnostics" || \
-        { cat "$mode.txt" "$mode.diagnostics" >&2; exit 1; }
-      grep -Fx 'CROP_FILE_WEATHER_PRODUCTION=PASS' "$mode.txt"
+    for moisture in neutral dry; do
+      for mode in continuous restart; do
+        output="$moisture-$mode"
+        ./test "$BUILD/weather.999" "$BUILD/altered.999" "$BUILD/bad.999" "$BUILD/backup.999" "$mode" "$moisture" > "$output.txt" 2> "$output.diagnostics" || \
+          { cat "$output.txt" "$output.diagnostics" >&2; exit 1; }
+        grep -Fx 'CROP_FILE_WEATHER_PRODUCTION=PASS' "$output.txt"
+      done
+      cmp "$moisture-continuous.txt" "$moisture-restart.txt"
     done
-    cmp continuous.txt restart.txt
-    cp restart.txt output.txt
+    cp neutral-restart.txt output.txt
   )
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+cmp "$BUILD/o0/dry-restart.txt" "$BUILD/o2/dry-restart.txt"
 cat "$BUILD/o0/output.txt"
+cat "$BUILD/o0/dry-restart.txt"
 echo 'CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS'
 echo 'CROP_FILE_WEATHER_CONTINUOUS_RESTORED_O0_O2_IDENTICAL=PASS'
+echo 'CROP_FILE_WEATHER_NEUTRAL_DRY_CONTINUOUS_RESTORED_O0_O2=PASS'

@@ -40,13 +40,12 @@
     29,
     30
   ],
-  "contract": "Authentic file-weather production handoff plus live accepted-window/crop orchestration: actual accepted hydrology supplies previous-day WOFOST window; existing FKT/WOFOST crop owner commits preparation, scheduled sowing and germination sum at next daystart before same-day hydrology. Pending crop daystart cannot be bypassed. Failed trials retain state/event, accepted events retire exactly once. Private opaque joint continuation retains original immutable configuration/source bytes, weather owner, certified soil/crop FKT snapshots and accepted/delivered windows; restore creates fresh owners, never overwrites live owners. First model day remains warmup with no fabricated accepted event. No second state owner.",
+  "contract": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window. Initial model day creates one existing crop owner from authenticated weather and actual initial accepted soil through existing initialization authority; completed preparation/sowing/germination phases persist. Private opaque joint continuation retains source bytes/epoch, original configuration, existing weather, certified soil/crop and delivered or pending windows; restores fresh owners only. No second state owner.",
   "blockers": [
     "Physical emergence, harvest, rotation/fallow and authoritative lifecycle state values still need existing crop-owner extensions and integration.",
-    "No production weather+hydrology+crop unified restart yet.",
     "Detailed-period and subdaily meteorology are outside this daily uniform-rate application profile; corrected historical source is now recovered exactly.",
     "FCI93 current-source historical surface-regime replay fails closed: HeadCalc dynamic head regime omitted surface-head derivative. The caller is the legacy non-M1 Task2 surface fixture; production Task2/backend/HeadCalc blobs are unchanged from canonical. Do not claim this preservation gate passed, omit it, or modify another owner solely for green tests.",
-    "Live WOFOST accepted-window/crop event execution and receipt-path certification are not part of the implemented read-only daystart profile."
+    "Opaque joint runtime continuation is implemented and O0/O2 tested; external disk codec and broad historical lifecycle equivalence remain open."
   ],
   "coverage": "Do not promote MC-CROP01 to closed or change master denominator.",
   "commit_contract": "No-receipt serialized physical commit uses existing backend%commit_trial_candidate and its model-bound executor. The original orchestration executor cannot validate certified physical identity because it has no model. Kernel/backend scientific and FKT guards are unchanged. Receipt paths remain separate, unchanged and are not enabled by this root-free profile.",
@@ -77,15 +76,15 @@
     "F_APP07": "PASS including 110-interval exact composition and MC-IRR01 sensor/SSDI O0/O2",
     "FCI93_current_replay": "FAILED legacy non-M1 headed surface fixture; flux Task2 assertions passed before failure",
     "B19_MICRO_current_scientific_successor": "PASS: certified FKT/sowing/hydrothermal, lifecycle and rotation, MICRO02/MICRO03 actual physics, B19 O0/O2 current source case1 byte identity",
-    "F_CI_exact_PR_merge_postimage": "PASS locally and exact-head Actions for original PR1197 source; successor exact local full gate pending",
+    "F_CI_exact_PR_merge_postimage": "Original PR1197 PASS local and Actions. Prior live-source83f PASS full local central gate. Current initial-day source563f full exact central gate RUNNING; earlier source qualification not carried forward.",
     "Actions": "One PR trigger; existing owner and central runs completed. No new synchronize, manual dispatch or duplicate workflow for the live-window successor.",
     "PPA_WU03_current_owner": "PASS O0/O2 including prior PR1193 and PR1194 interval/two-day regressions",
     "PPA_WU03_independent": "PASS prior to no-bypass addition (default-off route unchanged); do not substitute for exact-head Actions",
     "evidence_path": "integration/audits/MC_CROP01_FILE_WEATHER_LOCAL_EVIDENCE.json"
   },
-  "recovery_local_commit": "aa1e3a6a788db855c64004fee443042dcfa4f81a",
+  "recovery_local_commit": "5716ecba6bfbc97f50dd0f20827d9c29435be29a",
   "next_lifecycle_dependencies": [
-    "Define historical first-day lifecycle publication against accepted initial soil through existing FKT/crop event authority; existing accepted-window event requires positive prior interval, so no fabricated window or same-day end dependence.",
+    "Qualify historical initial-day event semantics beyond the tested existing-owner scheduled startup; integrate physical emergence and retained phase transitions with admitted crop owner.",
     "Finish hydraulic/thermal preparation/sowing continuation and emergence/growth via existing owners; current qualified profile is scheduled, pre-emergence, root-free.",
     "Integrate authentic radiation/solar and detailed meteorology with WOFOST growth and root/heat owners, then harvest/rotation/fallow.",
     "Encode/decode the coherent joint continuation via an admitted external disk adapter; preserve certified physical parameter identity and exact weather bytes/source epoch.",
@@ -106,14 +105,14 @@
     "PPA_preservation": "FAILED headed non-M1 fixture: surface-head derivative absent; all compiled physical source unchanged from canonical",
     "admission": "BLOCKED; no failed gate waived"
   },
-  "successor_local_source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
+  "successor_local_source_tree": "56317f7db66878e57ee4bc6930dd685ac857ea43",
   "successor_branch": "work/mc-crop01-live-window-20261011",
   "successor_status": {
     "implemented": true,
-    "persisted": "local Git committed; connector checkpoint next",
-    "tested": "PASS integrated four-day continuous/restored O0/O2, all four outputs identical",
+    "persisted": "local Git committed; connector checkpoint pending",
+    "tested": "PASS eight neutral/dry continuous/restored O0/O2; exact complete physical postimage",
     "qualified": false,
-    "preserved": "full exact local central gate running",
+    "preserved": "current exact full local central gate running",
     "canonically_admitted": false
   }
 }

@@ -2,7 +2,7 @@
   "workstream": "MC-CROP01",
   "baseline": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
   "canonical_reconciled": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
-  "scope": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window.",
+  "scope": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window. Initial model day creates one existing crop owner from authenticated weather and actual initial accepted soil through existing initialization authority; completed preparation/sowing/germination phases persist.",
   "owners": [
     "mod_kernel_transactions",
     "mod_fmr_wofost_accepted_window_lineage",
@@ -24,10 +24,9 @@
   ],
   "limits": [
     "Pre-emergence root-free profile only; no WOFOST growth/solar/radiation claim",
-    "Initial day has no preceding window; fail closed without manufactured interval; historical initial-day semantics remain open",
     "No shared headed-surface physics changes",
     "Joint continuation is opaque and serialization-neutral; an external disk codec is still required.",
-    "Full historical initial-day event, sticky hydraulic/thermal prep/sowing transitions, emerged growth and rotation/fallow are not qualified by the scheduled root-free profile."
+    "Initial crop creation is qualified in a scheduled root-free profile; full historical initial-day event equivalence, simulated thermal sowing, emerged growth and rotation/fallow remain open."
   ],
   "status": {
     "implemented": true,
@@ -43,7 +42,16 @@
     "restore": "Only a fresh/closed application and an uninitialized crop carrier; all source snapshots validate before startup publication. No overwrite or rollback of a live owner.",
     "scientific_scope": "Continuous next-day physical execution after disposal and restoration of the real application, crop carrier and bound crop executor. Not a disk codec or external archive format."
   },
-  "local_source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
-  "local_production_commit": "79b7bb59295301fc6924721b1bbdb50ccac3b3d8",
-  "local_O0_O2": "PASS: continuous and joint-restored four-day execution identical, including full profile pressure/water/surface/ledger/Richards history and crop bits"
+  "local_source_tree": "56317f7db66878e57ee4bc6930dd685ac857ea43",
+  "local_production_commit": "5716ecba6bfbc97f50dd0f20827d9c29435be29a",
+  "local_O0_O2": "PASS eight neutral/dry continuous/restored executions including first-day creation, pending daystart restore, completed phase retention and exact complete physical postimage",
+  "initial_day_successor_contract": {
+    "authority": "Existing initialize_fmr_wofost_crop_transaction_state plus kernel_committed_state%initialize; no FKT interval/event semantics are altered.",
+    "source": "Existing certified weather/soil daily preflight and daily lifecycle composition derive initial prepared/sown/germination fields from authentic first source day.",
+    "publication": "Creation of one previously-uninitialized existing crop carrier, at actual initial accepted soil time/revision zero; not an invented positive accepted hydro window or a zero-duration FKT trial.",
+    "exactly_once": "Positive stable crop identity/lineage and uninitialized target required; repeat or late initialization fails before publication. Original crop continuation inputs remain owner-derived thereafter.",
+    "completed_phases": "Existing prepared/sown flags prevent re-running completed entry conditions; already germinated state uses existing mode0 no further temperature-sum accumulation while emergence remains unimplemented.",
+    "restart": "Opaque continuation distinguishes initial crop creation and pending next-day event from already consumed event; accepts only private actual owner provenance and publishes only fresh owners.",
+    "limits": "Scheduled sowing and root-free/no-heat profile; does not qualify simulated thermal sowing, emergence, WOFOST growth, root/rotation/fallow or disk codec."
+  }
 }

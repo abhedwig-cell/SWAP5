@@ -1,28 +1,29 @@
 {
-  "source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
-  "execution": "Real production bootstrap, Full Richards, shared authentic immutable file, four days/256 accepted intervals and three physical pre-emergence crop events per execution; continuous and joint-restored mode each at O0 and O2.",
+  "source_tree": "56317f7db66878e57ee4bc6930dd685ac857ea43",
+  "execution": "Eight real production executions: O0/O2 x neutral/dry actual accepted soil x continuous/restored. Four authentic days/256 accepted Full Richards intervals each, initial existing crop-owner creation and three subsequent physical crop events; restart at initial day, pending day21 and accepted day22.",
   "weather_sha256": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
   "historical_source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
-  "test_log_sha256": "ff308f24ffa01cc5e27bda1910a7aadd75feb540e96dd8abfd6bda132bbe8f5e",
+  "test_log_sha256": "e240ecf10a0adc17cc9f9d2b9daadfff020deb44a3d2f9a476b92b7fdd2d3a47",
   "PASS_markers": [
-    "CROP_FILE_WEATHER_PRODUCTION=PASS",
-    "CROP_FILE_WEATHER_PRODUCTION=PASS",
-    "CROP_FILE_WEATHER_PRODUCTION=PASS",
-    "CROP_FILE_WEATHER_PRODUCTION=PASS",
+    "CROP_FILE_WEATHER_ACCEPTED_SOIL_PHYSICAL_GERMINATION=PASS",
     "CROP_FILE_WEATHER_AUTHENTIC_SHARED_RECORD=PASS",
-    "CROP_FILE_WEATHER_PRIOR_ACCEPTED_DAYSTART=PASS",
+    "CROP_FILE_WEATHER_COMPLETED_PHASE_RETENTION=PASS",
+    "CROP_FILE_WEATHER_CONTINUOUS_RESTORED_O0_O2_IDENTICAL=PASS",
+    "CROP_FILE_WEATHER_CROP_CONTINUATION_RESTORE=PASS",
+    "CROP_FILE_WEATHER_CROP_REJECT_RETRY_EXACTLY_ONCE=PASS",
     "CROP_FILE_WEATHER_FOUR_DAY_PHYSICAL_MASS_CONTINUITY=PASS",
-    "CROP_FILE_WEATHER_RETRY_CONFLICT_DUPLICATE=PASS",
-    "CROP_FILE_WEATHER_PHYSICAL_REJECT_ROLLBACK=PASS",
+    "CROP_FILE_WEATHER_INITIAL_DAY_OWNER_CREATION=PASS",
+    "CROP_FILE_WEATHER_JOINT_OPAQUE_CONTINUATION=PASS",
     "CROP_FILE_WEATHER_LIVE_FKT_WINDOW=PASS",
+    "CROP_FILE_WEATHER_NEUTRAL_DRY_CONTINUOUS_RESTORED_O0_O2=PASS",
+    "CROP_FILE_WEATHER_PENDING_DAYSTART_RESTORE=PASS",
     "CROP_FILE_WEATHER_PHYSICAL_CROP_CONTINUATION=PASS",
     "CROP_FILE_WEATHER_PHYSICAL_GERMINATION=PASS",
-    "CROP_FILE_WEATHER_CROP_CONTINUATION_RESTORE=PASS",
-    "CROP_FILE_WEATHER_JOINT_OPAQUE_CONTINUATION=PASS",
-    "CROP_FILE_WEATHER_CROP_REJECT_RETRY_EXACTLY_ONCE=PASS",
+    "CROP_FILE_WEATHER_PHYSICAL_REJECT_ROLLBACK=PASS",
+    "CROP_FILE_WEATHER_PRIOR_ACCEPTED_DAYSTART=PASS",
     "CROP_FILE_WEATHER_PRODUCTION=PASS",
     "CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS",
-    "CROP_FILE_WEATHER_CONTINUOUS_RESTORED_O0_O2_IDENTICAL=PASS"
+    "CROP_FILE_WEATHER_RETRY_CONFLICT_DUPLICATE=PASS"
   ],
   "exact_physical_postimage": [
     "CROP_FILE_WEATHER_SOIL_BITS=1 C058A767158742AA 3FD4CC8B84A088C6",
@@ -34,7 +35,37 @@
     "CROP_FILE_WEATHER_HISTORY_BITS=2 C009EFDDC3E58D10",
     "CROP_FILE_WEATHER_HISTORY_BITS=3 C00DCF2504D9B6DB",
     "CROP_FILE_WEATHER_HISTORY_BITS=4 C01091F809BA87D6",
-    "CROP_FILE_WEATHER_CROP_BITS= 931 3 3 1 40244CCCCCCCCCCD T T T F F"
+    "CROP_FILE_WEATHER_CROP_BITS= 931 3 3 1 4025B33333333334 T T T F F",
+    "CROP_FILE_WEATHER_SOIL_BITS=1 C058A767158742AA 3FD4CC8B84A088C6",
+    "CROP_FILE_WEATHER_SOIL_BITS=2 C057DA8BF9E95A2F 3FD4F7C083F299CC",
+    "CROP_FILE_WEATHER_SOIL_BITS=3 C056D8157CD72D75 3FD52FAD7C085FFE",
+    "CROP_FILE_WEATHER_SOIL_BITS=4 C0561ED8ED4FC06E 3FD558C022A50DE0",
+    "CROP_FILE_WEATHER_SURFACE_LEDGER_BITS= 0000000000000000 C000000000000000 4023D14E22ED2FBC",
+    "CROP_FILE_WEATHER_HISTORY_BITS=1 C00804441998D0FB",
+    "CROP_FILE_WEATHER_HISTORY_BITS=2 C009EFDDC3E58D10",
+    "CROP_FILE_WEATHER_HISTORY_BITS=3 C00DCF2504D9B6DB",
+    "CROP_FILE_WEATHER_HISTORY_BITS=4 C01091F809BA87D6",
+    "CROP_FILE_WEATHER_CROP_BITS= 931 3 3 1 402538F51DD326E6 T T T F F"
   ],
-  "limits": "Scheduled preparation/sowing, germination threshold 10, un-emerged/root-free mode7; initial day warmup; opaque joint continuation, no external disk format or full historical trajectory/lifecycle equivalence; not canonically admitted."
+  "limits": "Scheduled sowing, threshold 9.5, pre-emergence root-free mode7; actual accepted dry head affects physical germination. Completed germination is retained. Initial owner creation is not a positive accepted hydro event. Opaque in-memory continuation has no disk codec; full historical trajectory/lifecycle equivalence and canonical admission not claimed.",
+  "previous_evidence": {
+    "source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
+    "test_log_sha256": "ff308f24ffa01cc5e27bda1910a7aadd75feb540e96dd8abfd6bda132bbe8f5e",
+    "scope": "Prior joint-restored pre-emergence route before initial-day owner creation, neutral case only"
+  },
+  "postimage": {
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "7440ed4b9177e46887429bab49526dd33740b181",
+    "tests/fmig431/test_crop_file_weather_production.f90": "b3eaa9d8cece36096a38ba16bb1b111eb2dda80c",
+    "tests/fmig431/run_crop_file_weather_production.sh": "e9aa70432108a5b3ab4d07d93a51d772e88c94a8",
+    "tests/fci/run_crop_file_weather_production_successor.sh": "0fcef4cd3543a24b9c4e84f72109a746e26467d8"
+  },
+  "central_preservation": {
+    "state": "RUNNING",
+    "source_head": "5716ecba6bfbc97f50dd0f20827d9c29435be29a",
+    "local_merge": "210ff680bef73d553bde5fb1c08f557ad60498e5",
+    "tree": "2a8d81bc61f22f54859b665cb61e20401b255222",
+    "first_parent": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+    "prior_complete_source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
+    "prior_result": "PASS full local central gate at prior exact source/test snapshot79b7bb59; not transferable to current production change"
+  }
 }

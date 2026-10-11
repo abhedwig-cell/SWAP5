@@ -67,16 +67,19 @@ program test_crop_file_weather_production
   type(fmr_production_application_bootstrap_t)::restored_app
   type(kernel_committed_state_t)::joint_crop,foreign_crop
   class(transaction_state_t),allocatable::foreign_physical
-  character(32)::continuation_mode
+  character(32)::continuation_mode,moisture_mode
   type(canonical_numerical_config_t)::crop_config
   type(kernel_result_t)::crop_result
   type(crop_lifecycle_continuation_t)::lifecycle
-  real(real64)::accepted_germination_sum
+  type(wofost_crop_owner_state_t)::initial_owner
+  real(real64)::accepted_germination_sum,expected_germination_sum
   logical::available
   call get_command_argument(1,path);call get_command_argument(2,altered_path);call get_command_argument(3,bad_path)
   call get_command_argument(4,backup_path)
   call get_command_argument(5,continuation_mode)
   call require(trim(continuation_mode)=='continuous'.or.trim(continuation_mode)=='restart','explicit replay mode')
+  call get_command_argument(6,moisture_mode)
+  call require(trim(moisture_mode)=='neutral'.or.trim(moisture_mode)=='dry','explicit hydraulic qualification mode')
   call restored_app%restore_weather_crop_continuation(empty_restart,joint_crop,s)
   call require(s==FMR_APP_BOOT_INVALID_CONFIG.and..not.restored_app%ready().and..not.joint_crop%ready(), &
        'empty joint continuation cannot initialize owners')
@@ -120,7 +123,11 @@ program test_crop_file_weather_production
   call initialize_crop(crop_committed,crop_parameters,crop_config)
   call crop_kernel%bind_model(crop_model)
   accepted_germination_sum=0.0_real64
-  controls%germ_mode=2;controls%optimal_sum=10.0_real64
+  controls%germ_mode=2;controls%optimal_sum=9.5_real64
+  if(trim(moisture_mode)=='dry') then
+    controls%dry_head=-50.0_real64
+    controls%water_response_a=1.0_real64
+  end if
   controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
   controls%ztempsow=-1.0_real64;controls%zgerm=-1.0_real64
   call app%begin_weather_day(empty,controls,candidate,s)
@@ -149,20 +156,76 @@ program test_crop_file_weather_production
     call app%begin_weather_day(record,controls,candidate,s)
     call require(s==FMR_APP_BOOT_OK.and.candidate%valid,'production meteorology before future hydrology acceptance')
     call require(candidate%hgerm==hgerm,'crop reads actual same-owner accepted soil')
-    call require(candidate%germination%next_temperature_sum==max(0.0_real64,b111_daily_tav(tmin,tmax)), &
-         'historical source-derived daily TAV with cold-day germination stop')
+    if(trim(moisture_mode)=='neutral'.or.tmax+tmin<=0.0_real64) then
+      call require(candidate%germination%next_temperature_sum==max(0.0_real64,b111_daily_tav(tmin,tmax)), &
+           'historical source-derived daily TAV with cold-day germination stop')
+    else
+      call require(hgerm<controls%dry_head.and.candidate%germination%next_temperature_sum>0.0_real64.and. &
+           candidate%germination%next_temperature_sum<max(0.0_real64,b111_daily_tav(tmin,tmax)), &
+           'actual accepted FKT soil head reduces germination under identical authentic temperature')
+    end if
     call app%begin_weather_day(record,controls,repeated,s)
     call require(s==FMR_APP_BOOT_OK.and.repeated%germination%next_temperature_sum== &
          candidate%germination%next_temperature_sum,'retry daystart does not double-add')
-    ! The first day has no prior accepted hydro window. No manufactured
-    ! physical event is published. Subsequent daystart executes existing
-    ! crop transaction ownership before today's hydrological acceptance.
+    ! Existing owner creation consumes day-zero weather/accepted initial
+    ! soil before future hydrology; it invents no positive hydro receipt.
     if(d==20) then
-      call app%run_weather_crop_daystart(record,controls,crop_kernel,crop_parameters, &
-           crop_config,crop_committed,crop_result,s)
-      call require(s==FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE.and.crop_committed%current_revision()==0_int64, &
-           'initial day has no fictitious hydro event')
+      call app%initialize_weather_crop_daystart(record,controls,initial_owner,0_int64,931_int64,crop_committed,s)
+      call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and..not.crop_committed%ready(), &
+           'invalid first-day crop identity cannot publish owner')
+      bad_controls=controls;bad_controls%temperature_sum=999.0_real64
+      bad_controls%prep_delay=99;bad_controls%sow_delay=99
+      call app%initialize_weather_crop_daystart(record,bad_controls,initial_owner,1_int64,931_int64,crop_committed,s)
+      call require(s==FMR_APP_BOOT_OK.and.crop_committed%current_revision()==0_int64, &
+           'first-day crop initialized through existing authority without invented event')
+      call read_lifecycle(crop_committed,lifecycle)
+      accepted_germination_sum=candidate%germination%next_temperature_sum
+      call require(lifecycle%prepared.and.lifecycle%sown.and..not.lifecycle%germinated.and. &
+           lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
+           lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0.and. &
+           .not.lifecycle%last_event_identity%ready(),'authentic initial lifecycle owns zero-based continuation')
+      call app%initialize_weather_crop_daystart(record,controls,initial_owner,1_int64,931_int64,crop_committed,s)
+      call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.crop_committed%current_revision()==0_int64, &
+           'repeat first-day creation cannot replace accepted crop')
+      call app%capture_weather_crop_continuation(crop_committed,application_restart,s)
+      call require(s==FMR_APP_BOOT_OK,'initial joint continuation without fabricated event receipt')
+      if(trim(continuation_mode)=='restart') then
+        call app%close(s);call require(s==FMR_APP_BOOT_OK,'close first-day application before restore')
+        crop_committed=kernel_committed_state_t()
+        call app%restore_weather_crop_continuation(application_restart,crop_committed,s)
+        call require(s==FMR_APP_BOOT_OK,'restore first-day authenticated owner creation')
+        call app%initialize_weather_crop_daystart(record,controls,initial_owner,1_int64,931_int64,crop_committed,s)
+        call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED,'restored initial owner rejects repeat creation')
+      end if
     else
+      bad_controls=controls
+      bad_controls%temperature_sum=accepted_germination_sum
+      if(lifecycle%germinated) bad_controls%germ_mode=0
+      call app%begin_weather_day(record,bad_controls,repeated,s)
+      call require(s==FMR_APP_BOOT_OK.and.repeated%hgerm==hgerm,'actual physical source for live hydraulic crop proposal')
+      expected_germination_sum=repeated%germination%next_temperature_sum
+      if(lifecycle%germinated) then
+        call require(expected_germination_sum==accepted_germination_sum,'completed germination retained without further accumulation')
+      else if(trim(moisture_mode)=='neutral') then
+        call require(expected_germination_sum==accepted_germination_sum+max(0.0_real64,b111_daily_tav(tmin,tmax)), &
+             'neutral accepted physical crop retains exact historical TAV oracle')
+      else if(tmax+tmin>0.0_real64) then
+        call require(expected_germination_sum>accepted_germination_sum.and. &
+             expected_germination_sum<accepted_germination_sum+max(0.0_real64,b111_daily_tav(tmin,tmax)), &
+             'hydraulic reduction affects actual forthcoming physical crop commit')
+      else
+        call require(expected_germination_sum==accepted_germination_sum,'cold hydraulic case retains accepted germination sum')
+      end if
+      if(d==21) then
+        call app%capture_weather_crop_continuation(crop_committed,application_restart,s)
+        call require(s==FMR_APP_BOOT_OK,'pending initial crop successor window captured before trial')
+        if(trim(continuation_mode)=='restart') then
+          call app%close(s);call require(s==FMR_APP_BOOT_OK,'close pending crop application before restore')
+          crop_committed=kernel_committed_state_t()
+          call app%restore_weather_crop_continuation(application_restart,crop_committed,s)
+          call require(s==FMR_APP_BOOT_OK,'restore actual undelivered previous-day window before retry')
+        end if
+      end if
       bad_controls=controls
       ! These deliberately wrong caller values must be ignored for live
       ! continuation: the existing committed crop state is authoritative.
@@ -179,18 +242,19 @@ program test_crop_file_weather_production
            crop_config,crop_committed,crop_result,s)
       call require(s==FMR_APP_BOOT_OK.and.crop_result%completed,'live physical crop event committed')
       call read_lifecycle(crop_committed,lifecycle)
-      accepted_germination_sum=accepted_germination_sum+max(0.0_real64,b111_daily_tav(tmin,tmax))
+      accepted_germination_sum=expected_germination_sum
       call require(lifecycle%revision==int(d-20,int64).and.lifecycle%prepared.and.lifecycle%sown.and. &
            lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
            lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0,'existing crop continuation owns actual values')
-      call require(lifecycle%germinated.eqv.(d>=22),'physical germination threshold reached and retained')
+      call require(lifecycle%germinated.eqv.(d>=21),'physical germination threshold reached and retained')
       call app%run_weather_crop_daystart(record,bad_controls,crop_kernel,crop_parameters, &
            crop_config,crop_committed,crop_result,s)
       call require(s==FMR_APP_BOOT_CROP_EVENT_DELIVERED.and.crop_committed%current_revision()==int(d-20,int64), &
            'accepted crop event published exactly once')
     end if
     if(d==20) then
-      call require(candidate%germination%next_temperature_sum==(7.7_real64+3.2_real64)*0.5_real64, &
+      if(trim(moisture_mode)=='neutral') call require( &
+           candidate%germination%next_temperature_sum==(7.7_real64+3.2_real64)*0.5_real64, &
            'literal historical temperature sum from actual first source day')
       ! Same pathname, changed bytes: a pathname-only provenance check would
       ! miss this. Restore the authentic input before any positive run.
@@ -325,7 +389,11 @@ program test_crop_file_weather_production
   print '(a)', 'CROP_FILE_WEATHER_PHYSICAL_GERMINATION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_CROP_CONTINUATION_RESTORE=PASS'
   print '(a)', 'CROP_FILE_WEATHER_JOINT_OPAQUE_CONTINUATION=PASS'
+  if(trim(moisture_mode)=='dry') print '(a)', 'CROP_FILE_WEATHER_ACCEPTED_SOIL_PHYSICAL_GERMINATION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_CROP_REJECT_RETRY_EXACTLY_ONCE=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_INITIAL_DAY_OWNER_CREATION=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_PENDING_DAYSTART_RESTORE=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_COMPLETED_PHASE_RETENTION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
   subroutine print_exact_postimage(soil,crop,storage)
@@ -372,16 +440,6 @@ contains
     class(transaction_state_t),allocatable::physical
     integer::s
     logical::ok
-    initial%valid=.true.;initial%crop_identity=1_int64
-    call initialize_fmr_wofost_crop_transaction_state(owner,state,s,lifecycle_initial=initial)
-    call require(s==FMR_WOF38_OK,'existing crop state initialization')
-    allocate(fmr_wofost_crop_transaction_state_t::physical)
-    select type(physical)
-    type is(fmr_wofost_crop_transaction_state_t)
-      physical=state
-    end select
-    call committed%initialize(931_int64,physical,ok,0.0_real64)
-    call require(ok,'existing crop FKT carrier initialization')
     call make_bundle(bundle)
     call construct_fmr_wofost_crop_transaction_parameters(bundle,update,0.0_real64,0.0_real64,parameters,s)
     call require(s==FMR_WOF38_OK,'existing WOFOST parameters ready')
@@ -401,7 +459,9 @@ contains
     select type(physical)
     type is(fmr_wofost_crop_transaction_state_t)
       call physical%snapshot_lifecycle(value,ok)
-      call require(ok.and.physical%receipt_ready(),'accepted lifecycle and event receipt')
+      call require(ok.and.value%ready(),'accepted lifecycle')
+      if(committed%current_revision()>0_int64) call require(physical%receipt_ready(),'positive event receipt')
+      if(committed%current_revision()==0_int64) call require(.not.physical%receipt_ready(),'initialization is not a physical event')
     class default
       call require(.false.,'accepted crop state type')
     end select

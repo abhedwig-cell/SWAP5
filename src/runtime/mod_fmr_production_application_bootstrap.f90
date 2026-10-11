@@ -17,12 +17,15 @@ module mod_fmr_production_application_bootstrap
        accumulate_wofost_trial_process_rate, prevalidate_wofost_trial_admission, &
        certify_fkt_accepted_interval, admit_wofost_accepted_trial, FMR_WOFOST_LINEAGE_OK
   use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_state_t, &
-       fmr_wofost_crop_transaction_parameters_t, fmr_wofost_crop_event_forcing_t
+       fmr_wofost_crop_transaction_parameters_t, fmr_wofost_crop_event_forcing_t, &
+       initialize_fmr_wofost_crop_transaction_state, FMR_WOF38_OK
   use mod_fmr_crop_weather_physical_event_composition, only: &
        propose_weather_crop_physical_event, CROP_EVENT_COMPOSE_OK
   use mod_fmr_wofost_crop_event_lifecycle, only: reconcile_committed_crop_event_receipt, FMR_WOF39_OK
   use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
-  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t
+  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
+  use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t, &
+       compose_crop_lifecycle_daily_candidate, CROP_DAILY_OK
   use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_serialized_execution_plan_t, fmr_build_serialized_execution_plan, &
@@ -94,8 +97,8 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_CROP_TRANSACTION_FAILED = 14
   integer, parameter, public :: FMR_APP_BOOT_CROP_EVENT_DELIVERED = 15
 
-  ! Physical controls only; persistent lifecycle values remain caller-supplied
-  ! until the existing crop transaction owner is integrated with this route.
+  ! Physical controls only. Live continuation is read exclusively from the
+  ! existing committed crop owner; creation starts with zero continuation.
   type, public :: fmr_application_crop_daystart_controls_t
     real(real64) :: zprep=-5.0_real64,zsow=-5.0_real64,ztempsow=-5.0_real64,zgerm=-5.0_real64
     integer :: swprep=0,swsow=0,germ_mode=1
@@ -151,7 +154,7 @@ module mod_fmr_production_application_bootstrap
   ! public setters or disk codec. F-KT provenance/certification stays opaque.
   type, public :: fmr_weather_crop_application_continuation_t
     private
-    logical :: valid=.false.
+    logical :: valid=.false., initial_crop_daystart_committed=.false.
     type(fmr_production_application_config_t) :: configuration
     type(kernel_persistence_snapshot_t) :: soil,crop
     type(weather_day_owner_t) :: weather
@@ -194,6 +197,7 @@ module mod_fmr_production_application_bootstrap
     integer(int64) :: weather_revision=0_int64
     integer :: weather_epoch_day=0
     logical :: weather_interval_active=.false.,crop_daystart_active=.false.
+    logical :: initial_crop_daystart_committed=.false.
     type(fmr_production_application_config_t) :: weather_configuration
     type(fmr_wofost_accepted_window_t) :: weather_window, previous_weather_window
     integer(int64) :: accepted_crop_lineage=0_int64,accepted_crop_revision=-1_int64
@@ -206,6 +210,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: begin_weather_day => production_application_begin_weather_day
     procedure, public :: run_weather_interval => production_application_run_weather_interval
+    procedure, public :: initialize_weather_crop_daystart => production_application_initialize_weather_crop_daystart
     procedure, public :: run_weather_crop_daystart => production_application_run_weather_crop_daystart
     procedure, public :: capture_weather_crop_continuation => production_application_capture_weather_crop_continuation
     procedure, public :: restore_weather_crop_continuation => production_application_restore_weather_crop_continuation
@@ -770,6 +775,68 @@ contains
     if(s/=FMR_WOFOST_LINEAGE_OK) error stop 'MC-CROP01 prevalidated accepted window admission failed'
   end subroutine
 
+  subroutine production_application_initialize_weather_crop_daystart(self,record,controls,owner, &
+       crop_identity,crop_lineage,crop_committed,status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(swap_daily_weather_record_t), intent(in) :: record
+    type(fmr_application_crop_daystart_controls_t), intent(in) :: controls
+    type(wofost_crop_owner_state_t), intent(in) :: owner
+    integer(int64), intent(in) :: crop_identity,crop_lineage
+    type(kernel_committed_state_t), intent(inout) :: crop_committed
+    integer, intent(out) :: status
+    type(fmr_application_crop_daystart_controls_t) :: initial_controls
+    type(crop_certified_daily_preflight_t) :: daily
+    type(crop_daily_lifecycle_candidate_t) :: plan
+    type(crop_lifecycle_continuation_t) :: lifecycle
+    type(fmr_wofost_crop_transaction_state_t) :: state
+    type(kernel_committed_state_t) :: pending_crop
+    class(transaction_state_t), allocatable :: physical
+    real(real64) :: day,tmin,tmax,rain,etref,time
+    integer :: s
+    logical :: available
+    status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    ! Existing initialization authority creates a new owner exactly once.
+    ! This is not an accepted hydro event or a zero-duration F-KT commit.
+    if(crop_committed%ready().or.self%crop_daystart_active) return
+    if(crop_identity<=0_int64.or.crop_lineage<=0_int64) return
+    if(owner%validate()/=WOFOST_CROP_OWNER_OK.or.owner%crop_emerged) return
+    if(size(self%committed)/=1.or.self%weather_epoch_day==0) return
+    if(self%committed(1)%current_revision()/=0_int64) return
+    if(self%previous_weather_window%ready()) return
+    call record%values(day,tmin,tmax,rain,etref,available)
+    if(.not.available) return
+    day=day-real(self%weather_epoch_day,real64)
+    call self%committed(1)%current_time(time,available)
+    if(.not.available.or.time/=day.or.day/=self%weather_configuration%initial_time) return
+    initial_controls=controls
+    initial_controls%prep_delay=0;initial_controls%sow_delay=0
+    initial_controls%temperature_sum=0.0_real64
+    call self%begin_weather_day(record,initial_controls,daily,status)
+    if(status/=FMR_APP_BOOT_OK) return
+    status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s)
+    if(s/=CROP_DAILY_OK.or..not.plan%valid) return
+    lifecycle%valid=.true.;lifecycle%crop_identity=crop_identity
+    lifecycle%prepared=plan%prepared;lifecycle%sown=plan%sown;lifecycle%germinated=plan%germinated
+    lifecycle%preparation_delay=plan%preparation_delay;lifecycle%sowing_delay=plan%sowing_delay
+    if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
+    call initialize_fmr_wofost_crop_transaction_state(owner,state,s,lifecycle_initial=lifecycle)
+    if(s/=FMR_WOF38_OK) return
+    allocate(fmr_wofost_crop_transaction_state_t::physical)
+    select type(physical)
+    type is(fmr_wofost_crop_transaction_state_t)
+      physical=state
+    end select
+    call pending_crop%initialize(crop_lineage,physical,available,time)
+    if(.not.available) return
+    crop_committed=pending_crop
+    self%crop_daystart_active=.true.;self%initial_crop_daystart_committed=.true.
+    self%accepted_crop_lineage=crop_lineage;self%accepted_crop_revision=0_int64
+    status=FMR_APP_BOOT_OK
+  end subroutine
+
   subroutine production_application_run_weather_crop_daystart(self,record,controls,crop_kernel, &
        crop_parameters,crop_config,crop_committed,result,status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -818,6 +885,9 @@ contains
     effective_controls%prep_delay=lifecycle%preparation_delay
     effective_controls%sow_delay=lifecycle%sowing_delay
     effective_controls%temperature_sum=lifecycle%germination_temperature_sum
+    if(lifecycle%prepared) effective_controls%swprep=0
+    if(lifecycle%sown) effective_controls%swsow=0
+    if(lifecycle%germinated) effective_controls%germ_mode=0
     call self%begin_weather_day(record,effective_controls,daily,status)
     if(status/=FMR_APP_BOOT_OK) return
     status=FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE
@@ -877,14 +947,15 @@ contains
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(self%weather_epoch_day==0.or.size(self%committed)/=1.or.associated(self%active_context)) return
     if(.not.self%crop_daystart_active.or.self%weather_interval_active) return
-    if(.not.self%previous_weather_window%delivery_committed()) return
     if(crop_committed%current_lineage_id()/=self%accepted_crop_lineage.or. &
          crop_committed%current_revision()/=self%accepted_crop_revision) return
     call crop_committed%snapshot(physical,available)
     if(.not.available) return
     select type(physical)
     type is(fmr_wofost_crop_transaction_state_t)
-      if(.not.physical%receipt_ready()) return
+      if(.not.physical%receipt_ready()) then
+        if(.not.self%initial_crop_daystart_committed.or.self%accepted_crop_revision/=0_int64) return
+      end if
     class default
       return
     end select
@@ -895,7 +966,15 @@ contains
     call self%weather_record%values(day,tmin,tmax,rain,etref,available)
     if(.not.available) return
     day=day-real(self%weather_epoch_day,real64)
-    if(crop_time/=day.or.soil_time<day.or.soil_time>day+1.0_real64) return
+    if(self%previous_weather_window%ready().and..not.self%previous_weather_window%delivery_committed()) then
+      ! Pending daystart/retry is a real previous accepted window; preserve
+      ! its undelivered state without advancing today's soil or crop.
+      if(.not.self%previous_weather_window%complete()) return
+      if(crop_time/=day-1.0_real64.or.soil_time/=day) return
+    else
+      if(crop_time/=day.or.soil_time<day.or.soil_time>day+1.0_real64) return
+      if(.not.self%previous_weather_window%ready().and..not.self%initial_crop_daystart_committed) return
+    end if
     call export_kernel_committed_state(self%committed(1),self%templates(1)%template_id,bundle%soil,available,s)
     if(.not.available.or.s/=KERNEL_PERSISTENCE_OK) return
     call export_kernel_committed_state(crop_committed,904001_int64,bundle%crop,available,s)
@@ -905,6 +984,7 @@ contains
     bundle%weather_revision=self%weather_revision
     bundle%current_window=self%weather_window;bundle%previous_window=self%previous_weather_window
     bundle%crop_lineage=self%accepted_crop_lineage;bundle%crop_revision=self%accepted_crop_revision
+    bundle%initial_crop_daystart_committed=self%initial_crop_daystart_committed
     bundle%valid=.true.;status=FMR_APP_BOOT_OK
   end subroutine
 
@@ -940,6 +1020,7 @@ contains
     self%weather_revision=bundle%weather_revision
     self%weather_window=bundle%current_window;self%previous_weather_window=bundle%previous_window
     self%crop_daystart_active=.true.
+    self%initial_crop_daystart_committed=bundle%initial_crop_daystart_committed
     self%accepted_crop_lineage=bundle%crop_lineage;self%accepted_crop_revision=bundle%crop_revision
     crop_committed=pending_crop
     status=FMR_APP_BOOT_OK
@@ -1683,6 +1764,7 @@ contains
     self%ordinary_lysimeter_application = .false.
     self%weather=weather_day_owner_t()
     self%weather_record=swap_daily_weather_record_t()
+    self%initial_crop_daystart_committed=.false.
     self%weather_revision=0_int64;self%weather_epoch_day=0;self%weather_interval_active=.false.;self%crop_daystart_active=.false.
     self%accepted_crop_lineage=0_int64;self%accepted_crop_revision=-1_int64
     self%weather_configuration=fmr_production_application_config_t()
