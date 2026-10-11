@@ -517,7 +517,10 @@ contains
         provider%source_id=41_int64;provider%revision=7_int64
         provider%valid_t0=0.0_real64;provider%valid_t1=1.0_real64;provider%fraction=.5_real64
         call a%run_weather_interval(wr,0.0_real64,.05_real64,forcing_config,canopy,r,st,cs,provider)
-        call require(st==FMR_APP_BOOT_OK.and.r(1)%completed.and.r(1)%mass%complete,'managed real first half')
+        if(st/=FMR_APP_BOOT_OK) print '(A,I0)','MANAGED_FIRST_STATUS=',st
+        call require(st==FMR_APP_BOOT_OK,'managed real first half status')
+        call require(allocated(r),'managed first half results allocated')
+        call require(r(1)%completed.and.r(1)%mass%complete,'managed real first half')
         call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'managed first half water balance')
         first_in=r(1)%mass%total_in
         call baseline%run_weather_interval(wr,0.0_real64,.05_real64,forcing_config,canopy,control,st)
@@ -536,7 +539,8 @@ contains
         changed=provider;changed%source_id=99_int64;changed%revision=88_int64
         changed%valid_t1=.04_real64;changed%fraction=0.0_real64
         call a%run_weather_interval(wr,.05_real64,.1_real64,forcing_config,canopy,r,st,cs,changed)
-        call require(st==FMR_APP_BOOT_OK.and.abs(r(1)%mass%residual)<=HARD_MASS_GATE,'active event ignores expired replacement')
+        call require(st==FMR_APP_BOOT_OK,'active event ignores expired replacement status')
+        call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'active event second mass')
         total_in=first_in+r(1)%mass%total_in
         call b%run_weather_interval(wr,.05_real64,.1_real64,forcing_config,canopy,rr,st,rs,changed)
         call require(st==FMR_APP_BOOT_OK,'restored physical second half')
