@@ -24,6 +24,20 @@ for case in dynamic_top_correction frozen_wet_trajectory; do
   cat "$BUILD/${case}-o0.txt"
   echo "MC_IRR01_STORAGE_BOFEK_${case}_O0_O2=PASS"
 done
-bash tests/fsi/run_fsi38_prescribed_qbot_temporal_certificate_gate.sh
-bash tests/fsi/run_fsi39_b110_ksatexm.sh
+# Reuse executable scientific assertions directly. Historical F-SI38/39
+# admission scripts contain old exact source-shape/delta guards; this successor
+# is governed by its own exact shared-source pin, without changing those guards.
+for case in fsi38_prescribed_qbot_temporal_certificate fsi25_reference_indicator_production_seam fsi39_b110_ksatexm; do
+  for opt in 0 2; do
+    out="$BUILD/${case}-o$opt"
+    python3 tests/rom/compile_f_rom0_fortran_closure.py --root "$ROOT" \
+      --stub tests/fsi/fsi04_real_headcalc_stubs.f90 --target "tests/fsi/test_${case}.f90" \
+      --external-source src/legacy/b1_10_port/headcalc.f90 --build "$out" --opt "$opt"
+    args=(); if [[ "$case" == fsi25_reference_indicator_production_seam ]]; then args=(-75.0 0.01); fi
+    "$out/rom0_test" "${args[@]}" > "$BUILD/${case}-o${opt}.txt" 2>&1
+  done
+  cmp "$BUILD/${case}-o0.txt" "$BUILD/${case}-o2.txt"
+  cat "$BUILD/${case}-o0.txt"
+  echo "MC_IRR01_STORAGE_${case}_O0_O2=PASS"
+done
 echo 'MC_IRR01_SHARED_STORAGE_SEMANTIC_PRESERVATION=PASS'
