@@ -134,5 +134,15 @@
     "changed_blob_hashes_verified": 10,
     "mechanism": "GitHub connector; nonforced expected-head update; full content tree verified against local Git. This metadata-only successor records the published content checkpoint.",
     "pending_successor": true
+  },
+  "mc_irr01_runtime_reconciliation_20261011": {
+    "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+    "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94",
+    "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json",
+    "scope": "Eleven stale absent-evaluator/runtime claims replaced with existing bounded routes and exact remaining gates; five original admissions retained",
+    "promotions": 0,
+    "disposition_and_global_count_changes": false,
+    "bounded_reconciliation": "PASS: only eleven MC-IRR01 open rows/queue descriptions; unrelated rows, dependencies, summary unchanged",
+    "global_master_qualification": "NOT established; preexisting stale inheritance baseline/backend dependency observed before this patch"
   }
 }

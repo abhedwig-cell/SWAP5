@@ -6972,12 +6972,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No RAWTAB or root-zone readily available water/depletion evaluator in current scheduling contracts."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -6993,9 +6994,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS3",
@@ -7022,12 +7034,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No TAWTAB or total available root-zone water/depletion evaluator in current scheduling contracts."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -7043,9 +7056,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS4",
@@ -7072,12 +7096,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No DWATAB or absolute root-zone depletion evaluator in current scheduling contracts."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Bind authoritative cumulative daily potential/actual transpiration and crop lifecycle selection; qualify event onset/end with preserved temporal history."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -7093,9 +7118,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Bind authoritative cumulative daily potential/actual transpiration and crop lifecycle selection; qualify event onset/end with preserved temporal history.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS6",
@@ -7122,12 +7158,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No weekly seven-day deficit clock and IRGTHRESHOLD evaluator in current scheduling contracts; minimum event interval is a different rule."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Bind shared historical dayfix/daystart counter to authoritative lifecycle across restart; qualify repeated weekly execution with evolving root extent."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -7143,9 +7180,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Bind shared historical dayfix/daystart counter to authoritative lifecycle across restart; qualify repeated weekly execution with evolving root extent.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS7",
@@ -7170,12 +7218,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json"
+        "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted process exists and is independently qualified; production runtime binding is absent at the audited canonical head."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Qualify non-cancelling pressure-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content",
@@ -7192,9 +7241,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Qualify non-cancelling pressure-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS8",
@@ -7221,12 +7281,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "The scheduled component evaluates a pressure-head threshold (TCS7), not a theta sensor threshold TCRITAB."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Qualify non-cancelling moisture-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations."
       },
       "restrictions": [
         "Actual source option not covered by TCS1+DCS2 admission; TCS7 uses pressure head, TCS8 water content"
@@ -7242,9 +7303,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Qualify non-cancelling moisture-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-DCS1",
@@ -7271,12 +7343,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No field-capacity deficit, DITAB under/over depth and conditional rainfall deduction request/evaluator."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Combine sensor and root management depth paths under source order, with authoritative rainfall and evolving crop/root parameters; physical lifecycle proof."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7292,12 +7365,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Combine sensor and root management depth paths under source order, with authoritative rainfall and evolving crop/root parameters; physical lifecycle proof.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
@@ -7457,12 +7541,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json"
+        "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Restricted process exists and is independently qualified; production runtime binding is absent at the audited canonical head."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07",
@@ -7479,12 +7564,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-FREQ",
@@ -7573,12 +7669,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No DCSLIM minimum/maximum selected event depth parameters or postselection clamp."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Management DCS1 min/max is literal-tested; bind common limit ordering for sensor/DCS1 and saline source-reachable combinations."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7594,12 +7691,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Management DCS1 min/max is literal-tested; bind common limit ordering for sensor/DCS1 and saline source-reachable combinations.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
@@ -7629,12 +7737,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No concentration-threshold sensor request or PERIRRSURP postselection depth increment."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: MC-SOL01 owner must supply accepted sensor concentration/state identity; scalar caller input is not complete salt-state runtime authority. Verify physical excess with depth limits and restart."
       },
       "restrictions": [
         "Requires source-bound typed event/cursor state and accepted water ownership beyond restricted F-APP07"
@@ -7653,12 +7762,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "MC-SOL01 owner must supply accepted sensor concentration/state identity; scalar caller input is not complete salt-state runtime authority. Verify physical excess with depth limits and restart.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS5",
@@ -11803,12 +11923,13 @@
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/evidence/SWAP431_MC_IRR01_RUNTIME_RECONCILIATION_20261011.json"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "No external F_IRR_AVAIL postselection scaling request or candidate event-duration update. Supplied gross irrigation forcing alone does not implement management availability."
+        "claim": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Literal TASK4 correction proven; bind external allocation provider to event identity and qualify multi-day physical restriction/restart under realistic rates."
       },
       "restrictions": [
         "Legacy TASK4 scales both gird and, for positive configured rate, dt_irr_event: event volume scales quadratically. Trace actual MultiSWAP callers and intended allocation semantics before migration/replacement; this is physical availability logic rather than obsolete TASK dispatch."
@@ -11824,13 +11945,24 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
       "source_input_names": [],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "OWNER_STATE_AND_PHYSICAL_COMPOSITION_QUALIFICATION_REQUIRED",
+      "algorithm_absence_proven": false,
+      "implementation_absence_proven_scope": "Incomplete full admitted production route; no assertion of absent evaluator or absent code",
+      "canonical_successor_review": {
+        "pr": 1198,
+        "scientific_head": "0b421925c28f63bfa3024da303f283e9e9fe35ff",
+        "fullcap_admitted": false,
+        "bounded_route_tested": true,
+        "unresolved_gate": "Literal TASK4 correction proven; bind external allocation provider to event identity and qualify multi-day physical restriction/restart under realistic rates.",
+        "canonical_bounded_admission": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+        "canonical_receipt": "1ae45e73eebe4314d5bfb5835c73ee4337288f94"
+      }
     },
     {
       "capability_id": "SW431-MACRO-GEOMETRY",
@@ -12872,7 +13004,7 @@
       "capability_id": "SW431-IRR-AVAIL",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No external F_IRR_AVAIL postselection scaling request or candidate event-duration update. Supplied gross irrigation forcing alone does not implement management availability.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Literal TASK4 correction proven; bind external allocation provider to event identity and qualify multi-day physical restriction/restart under realistic rates.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12886,7 +13018,7 @@
       "capability_id": "SW431-IRR-DCS1",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No field-capacity deficit, DITAB under/over depth and conditional rainfall deduction request/evaluator.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Combine sensor and root management depth paths under source order, with authoritative rainfall and evolving crop/root parameters; physical lifecycle proof.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12900,7 +13032,7 @@
       "capability_id": "SW431-IRR-LIMIT",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No DCSLIM minimum/maximum selected event depth parameters or postselection clamp.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Management DCS1 min/max is literal-tested; bind common limit ordering for sensor/DCS1 and saline source-reachable combinations.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12914,7 +13046,7 @@
       "capability_id": "SW431-IRR-SSDI",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Restricted process exists and is independently qualified; production runtime binding is absent at the audited canonical head.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12928,7 +13060,7 @@
       "capability_id": "SW431-IRR-TCS2",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No RAWTAB or root-zone readily available water/depletion evaluator in current scheduling contracts.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12942,7 +13074,7 @@
       "capability_id": "SW431-IRR-TCS3",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No TAWTAB or total available root-zone water/depletion evaluator in current scheduling contracts.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Crop/root owner must provide current rooted extent and material-consistent FC/stress/wilting parameters; qualify realistic forcing onset/end with preserved temporal history.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12956,7 +13088,7 @@
       "capability_id": "SW431-IRR-TCS4",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No DWATAB or absolute root-zone depletion evaluator in current scheduling contracts.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Bind authoritative cumulative daily potential/actual transpiration and crop lifecycle selection; qualify event onset/end with preserved temporal history.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12970,7 +13102,7 @@
       "capability_id": "SW431-IRR-TCS6",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "No weekly seven-day deficit clock and IRGTHRESHOLD evaluator in current scheduling contracts; minimum event interval is a different rule.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Bind shared historical dayfix/daystart counter to authoritative lifecycle across restart; qualify repeated weekly execution with evolving root extent.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12984,7 +13116,7 @@
       "capability_id": "SW431-IRR-TCS7",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Restricted process exists and is independently qualified; production runtime binding is absent at the audited canonical head.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -12998,7 +13130,7 @@
       "capability_id": "SW431-IRR-TCS8",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "The scheduled component evaluates a pressure-head threshold (TCS7), not a theta sensor threshold TCRITAB.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: Qualify non-cancelling moisture-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -13963,7 +14095,7 @@
         "SW431-IRR-TCS7",
         "SW431-IRR-TCS8"
       ],
-      "why_open": "No concentration-threshold sensor request or PERIRRSURP postselection depth increment.",
+      "why_open": "Existing policy/application and bounded runtime evidence are available. Full admitted route remains open: MC-SOL01 owner must supply accepted sensor concentration/state identity; scalar caller input is not complete salt-state runtime authority. Verify physical excess with depth limits and restart.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
