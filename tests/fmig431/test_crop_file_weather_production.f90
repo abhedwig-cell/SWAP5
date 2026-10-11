@@ -48,13 +48,18 @@ program test_crop_file_weather_production
   allocate(config%tiles(1)%initial_right_derivative(numnod))
   config%tiles(1)%initial_right_derivative=0.0_real64
   config%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
-  config%numerical%transaction%temporal_tolerance=1.0_real64
+  config%numerical%transaction%temporal_tolerance=0.0_real64
   config%numerical%model_temporal_indicator_budget_available=.true.
   config%numerical%model_temporal_indicator_budget=1.0e-5_real64
   config%numerical%transaction%max_retries=16
   config%tiles(1)%parameters%head_abs_tolerance=HARD_MASS_GATE
   config%tiles(1)%parameters%head_rel_tolerance=HARD_MASS_GATE
   config%tiles(1)%parameters%ponding_tolerance=HARD_MASS_GATE
+  config%tiles(1)%parameters%max_iterations=16
+  config%tiles(1)%parameters%max_backtracking=8
+  config%tiles(1)%parameters%min_step_duration=1.0e-8_real64
+  config%tiles(1)%parameters%compartment_balance_tolerance=HARD_MASS_GATE
+  config%tiles(1)%parameters%total_balance_tolerance=HARD_MASS_GATE
   ! Real atmospheric forcing is nonsteady. The accepted production mass
   ! threshold remains unchanged; no forcing is reverse-engineered to steady.
   config%numerical%max_committed_substeps=128
