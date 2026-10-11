@@ -91,7 +91,7 @@
   },
   "successor_reconciliation_20261011": {
     "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
-    "decision": "LOCAL_QUALIFIED_CO2_SUCCESSOR_PRESERVATION",
+    "decision": "CLOSED_CANONICAL_CO2_SUCCESSOR_PRESERVATION_GREEN",
     "historical_r3_authorities_unchanged": true,
     "admitted_successor": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
     "qualified_owner_head": "d064bf436bc39e6dd34ad7b41bd9f359f9a9c1da",
@@ -105,7 +105,15 @@
     "local_log_sha256": "c4a0f18f0cf32b2548b8adf86be4ad69aa30b7741944a0a907337edb17770b96",
     "production_or_reference_changed": false,
     "preservation_policy": "Keep historical exact authorities, require admitted successor lineage and exact current successor/dependency blobs, and replay both original semantics and added CO2 semantics. Unknown drift fails closed.",
-    "next_action": "Observe automatically triggered exact-postimage canonical F-CI and F-CI51P through terminal status; GitHub run evidence is bound to the published commit."
+    "qualified_canonical_head": "491236f87d713f97a6ea809a241b066bb717b761",
+    "canonical_fci_run": 38121781430,
+    "canonical_fci_job": 114418101477,
+    "canonical_fci_result": "SUCCESS_ALL_FROZEN_AND_MOVING_CURRENT",
+    "fci51p_run": 38121781333,
+    "fci51p_job": 114417817024,
+    "fci51p_result": "SUCCESS",
+    "final_receipt_policy": "Evidence-only closeout carries qualification from the exact tested head; production, reference, tests and workflows are unchanged. No duplicate Actions dispatch or scientific-gate waiver.",
+    "next_action": "None for this bounded repair. Reopen when the recorded successor/dependency surface changes; historical R3 authorities stay immutable."
   },
   "next_required_step": "Use the 20261011 successor reconciliation for moving preservation; original F-CI51/F-CI51P R3 records remain immutable historical evidence."
 }

@@ -673,9 +673,12 @@
         "actual_blob": "040299d7fac3499f5b72f3b166cb08973530885d",
         "dependency_blob_preserved": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5",
         "owner": "F-CI central preservation authority with crop/MC-CROP owner",
-        "current_disposition": "LOCAL_QUALIFIED_SUCCESSOR_PRESERVATION_REPAIR",
+        "current_disposition": "CLOSED_CANONICAL_SUCCESSOR_PRESERVATION_GREEN",
+        "qualified_canonical_head": "491236f87d713f97a6ea809a241b066bb717b761",
+        "canonical_fci_run": 38121781430,
+        "fci51p_run": 38121781333,
         "current_authority": "integration/f-ci/F-CI51P_STATUS.json#successor_reconciliation_20261011",
-        "next_action": "Observe exact-postimage automatic canonical F-CI and F-CI51P; historical failure remains provenance, not current science evidence."
+        "next_action": "Bounded repair closed. Reopen on relevant dependency drift; historical failure remains provenance, not current science evidence."
       },
       {
         "workflow": "F-CI58P / F-CI93 F-SI35",
@@ -696,6 +699,17 @@
         "next_action": "Resolve the headed derivative contract/fixture discrepancy, then replay unchanged surface, Task2 and dispatch gates at O0/O2. Diagnostic pin and compile reconciliation alone is not qualification."
       }
     ],
+    "fgc_execution_infrastructure_20261011": {
+      "head": "491236f87d713f97a6ea809a241b066bb717b761",
+      "run": 38121781326,
+      "job": 114417816972,
+      "result": "FAILURE_MODFLOW_DOWNLOAD_HTTP_403_RATE_LIMIT_EXCEEDED",
+      "observed_stage": "PPA-WU01 bootstrap owner O0/O2 passed; FloPy get_modflow release retrieval then failed before remaining full closeout",
+      "production_reference_workflow_blobs_unchanged_from_previous_green": true,
+      "previous_exact_green_run": 38120739493,
+      "owner": "F-GC CI/external executable provisioning",
+      "next_action": "Restore the authorized executable provisioning route, then qualify the existing exact code postimage if needed. Do not classify this download failure as a scientific pass or regression; no duplicate rerun or permission workaround was attempted."
+    },
     "historical_preservation_drift_preexisting": {
       "compared_heads": ["e3b9685470639355e1899b95c25f9a7ddee15fe6", "44a031a83b5b9da5f8a76e4e8859396e57a48cd0", "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40"],
       "actual_provider_dependency_task2_blobs_identical": true,
