@@ -32,13 +32,25 @@ if sys.argv[1:] == ['--verify-only']:
     assert hashlib.sha256(raw).hexdigest() == record['decoded_sha256']
     with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
         manifest = json.load(archive.extractfile('MANIFEST.json'))
-        assert manifest['source_tree'] == git('rev-parse', 'HEAD:src').decode().strip()
+        assert manifest['current_source_tree'] == git('rev-parse', 'HEAD:src').decode().strip()
+        assert manifest['current_canonical_base'] == BASE
+        assert manifest['highest_complete_configurations'] == 24
         for name, digest in manifest['member_sha256'].items():
             assert hashlib.sha256(archive.extractfile(name).read()).hexdigest() == digest, name
+        dependencies = json.load(archive.extractfile('source-dependency-manifest.json'))
+        for path, item in dependencies.items():
+            if not item.get('generated'):
+                assert git('rev-parse', 'HEAD:' + path).decode().strip() == item['blob'], path
+                assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == item['sha256'], path
         for route in ['normal', 'low-air']:
             log = archive.extractfile('logs/frost-nan-highest-' + route + '.log').read().decode()
             assert log.count('_FRESH_PROCESS=PASS') == 12
             assert '_O0_O2_IDENTITY=PASS' in log
+            assert archive.extractfile('highest/' + route + '/o0/output.txt').read() == archive.extractfile('highest/' + route + '/o2/output.txt').read()
+        assert manifest['logs']['current-full-moving']['exit_code'] == 0
+        current = archive.extractfile('logs/frost-nan-current-full-moving.log').read()
+        assert b'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS' in current
+        assert b'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS' in current
     print('FROST_NAN_GUARD_COMPLETE_HIGHEST_ARCHIVE=PASS')
     sys.exit(0)
 original = (ROOT / RUNNER).read_text()

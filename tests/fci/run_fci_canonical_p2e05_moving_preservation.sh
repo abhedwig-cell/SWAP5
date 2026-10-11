@@ -96,7 +96,7 @@ fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 # evidence and the original invalid-input oracle. Other source drift remains
 # subject to every existing owning gate and exact postimage check below.
 if [[ "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" == 0dd5b541af936d292d23575f798c3cdd5be19c47 ]]; then
-  python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-source-only || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
+  python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
   bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'
   bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'
   echo 'FCI_CANONICAL_FROST_NAN_GUARD_EXACT_SCIENTIFIC_SUCCESSOR=PASS'
@@ -511,7 +511,7 @@ check_b19_micro_root_recomposition() {
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
       src/process/mod_frost_hydraulic_effect.f90 )
-        python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-source-only ||
+        python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only ||
           fail 'unqualified frost hydraulic guard source change'
         ;;
       src/legacy/b1_10_port/headcalc.f90 )
