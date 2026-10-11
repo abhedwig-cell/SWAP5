@@ -957,7 +957,13 @@
   },
   "owner_research_reconciliation_20261011": {
     "canonical_base": "87a9516e43562e241ea0511b56da9be1c257c116",
-    "stage": "EVIDENCE_PRESERVED_READY_FOR_TWO_HISTORICAL_RESEARCH_CLOSURES",
+    "stage": "TWO_HISTORICAL_E2E_CARRIERS_CLOSED_REMAINING_OWNERS_EXPLICIT",
+    "canonical_evidence_checkpoint": "a22e5b924f54e2010d862ef962c7cbb957097196",
+    "canonical_evidence_tree": "39762dcb48eb1b96e682e28d07bd7d29348c6f13",
+    "closure_comments": {"1001": 6108331856, "1005": 6108332130},
+    "classification_comments": {"740": 6108338364, "700": 6108338461},
+    "coverage_handoff_comment": 6108338589,
+    "local_validation": {"json": "PASS", "documentation_source": "PASS", "strict_mkdocs": "PASS", "whitespace": "PASS", "scientific_dependency_trees": "IDENTICAL_TO_CANONICAL_BASE87a9516e4"},
     "canonical_delta_reconciled": {
       "since": "8f90abfa6e3b3d854eaea39d044e01a675a71abf",
       "admission": 1200,
@@ -1163,6 +1169,6 @@
       "numerical_reruns": "Not required for metadata-only research disposition; no current qualification claim",
       "new_actions": 0
     },
-    "next_action": "Persist evidence and fixed owner/tested refs, close only1001/1005 with exact bounded dispositions, record final receipt. Keep remaining unique candidates under their owners."
+    "next_action": "Two historical E2E carriers are closed with fixed full owner/tested recovery refs. Master owner reconciles four thermal admissions and later bounded irrigation annotations; ELASTIC/PPA owners adjudicate unique source corpora. Preserve active PERF03 and all production workstreams."
   }
 }
