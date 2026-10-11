@@ -727,7 +727,9 @@ check_b19_micro_root_recomposition() {
       fail 'crop unified physical/calendar persistence replay failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
-    if (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+    if (( mc_heat01_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+      test "$(git rev-parse "HEAD:$candidate_path")" = "$MC_HEAT01_BACKEND" || fail 'MC-HEAT01 shared backend exact successor drift'
+    elif (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
       test "$(git rev-parse "HEAD:$candidate_path")" = "b218ac657db52612bc12da671716c97430200f0a" ||
         fail 'crop B110 certified successor backend postimage drift'
     else
