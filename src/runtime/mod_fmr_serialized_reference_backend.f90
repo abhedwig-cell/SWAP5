@@ -131,7 +131,8 @@ module mod_fmr_serialized_reference_backend
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
-       trial_restricted_soil_temperature, commit_soil_temperature_state
+       trial_restricted_soil_temperature, commit_soil_temperature_state, SOIL_TEMP_SOLUTION_NUMERIC, &
+       SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE, SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
   use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, FROST_EFFECT_OK, &
        evaluate_frost_hydraulic_factor
   use mod_frost_hydraulic_provider, only: frost_constitutive_provider_t, &
@@ -588,6 +589,7 @@ module mod_fmr_serialized_reference_backend
     logical :: soil_temperature_energy_accounting_complete = .false.
     real(real64) :: soil_temperature_energy_residual_j_cm2 = 0.0_real64
     real(real64) :: soil_temperature_top_heat_flux_j_cm2_day = 0.0_real64
+    real(real64) :: soil_temperature_bottom_heat_flux_j_cm2_day = 0.0_real64
     real(real64) :: soil_temperature_storage_change_j_cm2 = 0.0_real64
     real(real64) :: soil_temperature_boundary_energy_j_cm2 = 0.0_real64
     logical :: fixed_weir_surface_water_active = .false.
@@ -3508,6 +3510,12 @@ contains
         if (.not. allocated(forcing%soil_temperature)) return
         if (.not. allocated(self%soil_temperature_forcing)) allocate(self%soil_temperature_forcing)
         self%soil_temperature_forcing = forcing%soil_temperature
+        if (self%frost_active) then
+          if (self%soil_temperature_parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC .or. &
+              self%soil_temperature_forcing%top_boundary_mode/=SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE .or. &
+              self%soil_temperature_forcing%bottom_boundary_mode/=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX .or. &
+              self%soil_temperature_forcing%snow_water_storage_cm/=0.0_real64) return
+        end if
       else
         if (allocated(forcing%soil_temperature)) return
         if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
@@ -4873,6 +4881,8 @@ contains
         self%last_observation%soil_temperature_energy_residual_j_cm2 = soil_temperature_result%energy_residual_j_cm2
         self%last_observation%soil_temperature_top_heat_flux_j_cm2_day = &
              soil_temperature_result%top_heat_flux_into_soil_j_cm2_day
+        self%last_observation%soil_temperature_bottom_heat_flux_j_cm2_day = &
+             soil_temperature_result%bottom_heat_flux_into_soil_j_cm2_day
         self%last_observation%soil_temperature_storage_change_j_cm2 = soil_temperature_result%sensible_storage_change_j_cm2
         self%last_observation%soil_temperature_boundary_energy_j_cm2 = soil_temperature_result%boundary_energy_into_soil_j_cm2
         if (soil_temperature_result%status /= SOIL_TEMP_OK .or. .not. soil_temperature_result%produced) return
