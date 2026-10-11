@@ -470,6 +470,8 @@ contains
     real(real64)::first_in,total_in,time
     integer(int64)::revision
     logical::ok
+    class(transaction_state_t),allocatable::left,right
+    real(real64),allocatable::ld(:),rd(:)
     call make_bundle(bundle)
     c%swprep=0;c%swsow=0;c%germ_mode=0;c%zgerm=-1.0_real64
     call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
@@ -552,6 +554,27 @@ contains
         call a%copy_committed_for_crop(1,physical_before,st)
         call b%copy_committed_for_crop(1,physical_after,st)
         call require(physical_before%current_revision()==physical_after%current_revision(),'joint physical revision identity')
+        call physical_before%snapshot(left,ok);call require(ok,'continuous physical state snapshot')
+        call physical_after%snapshot(right,ok);call require(ok,'restored physical state snapshot')
+        select type(left)
+        type is(fmr_b110_temporal_indicator_state_t)
+          select type(right)
+          type is(fmr_b110_temporal_indicator_state_t)
+            call require(all(transfer(left%pressure_head,[0_int64],4)==transfer(right%pressure_head,[0_int64],4)), &
+                 'joint pressure head bit identity')
+            call require(all(transfer(left%water_content,[0_int64],4)==transfer(right%water_content,[0_int64],4)), &
+                 'joint water content bit identity')
+            call left%temporal_history_snapshot(ld,ok);call require(ok,'continuous retained history')
+            call right%temporal_history_snapshot(rd,ok);call require(ok,'restored retained history')
+            call require(all(transfer(ld,[0_int64],size(ld))==transfer(rd,[0_int64],size(rd))), &
+                 'joint retained physical history bit identity')
+          class default
+            call require(.false.,'restored actual history state type')
+          end select
+        class default
+          call require(.false.,'continuous actual history state type')
+        end select
+
         call a%copy_irrigation_state(after,st);call b%copy_irrigation_state(resumed,st)
         call require(.not.after%management%event%active_event.and..not.resumed%management%event%active_event, &
              'event ends exactly at restored boundary')
@@ -562,6 +585,16 @@ contains
         call require(st/=FMR_APP_BOOT_OK,'fresh provider needed next event')
         call a%copy_committed_for_crop(1,physical_after,st)
         call require(physical_after%current_revision()==revision,'next-event stale provider cannot advance soil')
+        provider%source_id=42_int64;provider%revision=8_int64;provider%fraction=.25_real64
+        call a%run_weather_interval(wr,.1_real64,.125_real64,forcing_config,canopy,r,st,cs,provider)
+        call require(st==FMR_APP_BOOT_OK,'fresh next-event allocation accepted')
+        call require(abs(r(1)%mass%residual)<=HARD_MASS_GATE,'fresh next-event physical balance')
+        call a%copy_irrigation_state(after,st)
+        call require(after%receipt%allocation%source_id==42_int64.and.after%receipt%allocation%revision==8_int64, &
+             'new event binds fresh provider identity')
+        call require(abs(after%receipt%event_end-.15_real64)<1.0e-14_real64.and. &
+             after%receipt%allocation%fraction==.25_real64,'new event selected fraction and duration')
+
         print '(A,2I3,A,ES24.16)','MC_IRR01_MANAGED_WEATHER_CASE=',timing,nodes,' TOTAL_IN=',total_in
         call a%close(st);call b%close(st);call baseline%close(st)
         cs=kernel_committed_state_t();rs=kernel_committed_state_t();control_crop=kernel_committed_state_t()
@@ -571,6 +604,27 @@ contains
     call invalid%initialize(bad,st);call require(st==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'rooted DCS1 held closed')
     bad=cfg;bad%irrigation%sensor%salinity_excess_enabled=.true.
     call invalid%initialize(bad,st);call require(st==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'saline profile held closed')
+    bad=cfg;bad%numerical%max_committed_substeps=1
+    call invalid%initialize(bad,st);call require(st==FMR_APP_BOOT_OK,'bounded one-commit policy for partial-dispatch test')
+    call invalid%initialize_weather_crop_daystart(wr,c,empty_owner,4_int64,934_int64,rs,st,100.0_real64,bundle)
+    call require(st==FMR_APP_BOOT_OK,'partial-dispatch existing crop owner')
+    call invalid%copy_committed_for_crop(1,physical_before,st)
+    revision=physical_before%current_revision()
+    provider%source_id=41_int64;provider%revision=7_int64;provider%fraction=.5_real64
+    call invalid%run_weather_interval(wr,0.0_real64,.05_real64,forcing_config,canopy,r,st,rs,provider)
+    call require(st/=FMR_APP_BOOT_OK,'incomplete managed dispatch fails closed')
+    call require(allocated(r),'incomplete managed dispatch has physical diagnostics')
+    call require(r(1)%final_revision>revision,'incomplete private trajectory contains an actually accepted prefix')
+    call invalid%copy_committed_for_crop(1,physical_after,st)
+    call require(physical_after%current_revision()==revision,'private accepted prefix cannot publish soil')
+    call physical_after%current_time(time,ok)
+    call require(ok.and.time==0.0_real64,'private accepted prefix cannot publish time')
+    call invalid%copy_irrigation_state(after,st)
+    call require(.not.after%management%event%active_event.and..not.after%receipt%present, &
+         'private accepted prefix cannot publish irrigation event or allocation')
+    call invalid%capture_weather_crop_continuation(rs,saved,st)
+    call require(st==FMR_APP_BOOT_OK,'incomplete dispatch retains capturable common accepted boundary')
+    call invalid%close(st)
     print '(A)','MC_IRR01_MANAGED_WEATHER_PHYSICAL_JOINT_RESTART=PASS'
   end subroutine
   subroutine test_authentic_thermal_sowing()

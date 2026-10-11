@@ -9,7 +9,7 @@ BASE=2bc609a3a9ca14a5efb05a8a8849ced1f22a2036
 fail(){ echo "CROP_FILE_WEATHER_SOURCE_SUCCESSOR_FAIL $*" >&2; exit 1; }
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled canonical baseline absent'
 test "$(git rev-parse HEAD:src/adapter/mod_swap_daily_weather_file_adapter.f90)" = eb1fe3881b53209e01aba7bec0d69a8160bb29c6 || fail 'postimage drift: src/adapter/mod_swap_daily_weather_file_adapter.f90'
-test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = 7b6904941b72c87fe82c032c1a80c15b5e7c6562 || fail 'postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
+test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = d3a0719dfd5c7fb7a0061502c56fe4eede1ca9de || fail 'postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = d320ea43f8dd0958c841c86a00beb22282588656 || fail 'postimage drift: src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
 test "$(git rev-parse HEAD:tests/fmig431/run_crop_file_weather_production.sh)" = f848713d8638a7e8da03c53922cc8d83e7b35f0b || fail 'postimage drift: tests/fmig431/run_crop_file_weather_production.sh'
 test "$(git rev-parse HEAD:tests/fmig431/test_crop_file_weather_production.f90)" = 598b06fba84d4d818b4c42504bb8a52d5d19f42a || fail 'postimage drift: tests/fmig431/test_crop_file_weather_production.f90'
@@ -26,10 +26,10 @@ while IFS= read -r path; do
       python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost invalid-input qualified archive'
       ;;
     src/runtime/mod_fmr_irrigation_allocation_binding.f90)
-      # Disjoint MC-IRR01 successor. It is absent from the immutable crop
-      # compile closure; full irrigation preservation owns its execution.
+      # Centrally scoped managed-weather preparation successor. The current
+      # crop closure now includes this module; both owner gates must execute.
       # No wildcard allowance for any further source or owner mutation.
-      test "$(git rev-parse "HEAD:$path")" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail "unqualified irrigation allocation successor: $path"
+      test "$(git rev-parse "HEAD:$path")" = dfe51ab8e50204e8a7adc84219757a7b77df68e2 || fail "unqualified irrigation allocation successor: $path"
       ;;
     *) fail "unqualified additional production mutation: $path" ;;
   esac
