@@ -28,5 +28,12 @@
   "qualified": false,
   "canonical_admitted": false,
   "fullcap_promotions": 0,
-  "next_action": "Focused root production physical/event/receipt restart O0/O2 running; then exact preservation, sensor route and repeated-event allocation coverage."
+  "next_action": "Focused root24 repeated-event and sensor12 physical/event/receipt restart O0/O2 running. Preserve exact integrated head with full F-CI before admission; whole application bootstrap overlap remains with active crop1197.",
+  "exact_guard_dependencies": {
+    "src/runtime/mod_fmr_irrigation_allocation_binding.f90": "ab5ac97c5017da9ba0560e674fb5888e422de5e5",
+    "tests/f-app07/run_mc_irr01_allocated_root_restart.sh": "c3d1b0c2da5f3a78132c8a0c38148758f3abd4ca",
+    "tests/f-app07/test_mc_irr01_allocated_root_restart.f90": "1108400284dcd685660d0dd6b439eeb7002ffc05",
+    "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh": "d076298b49c9c0892fe449a5f5b8ba071cb5c81a",
+    "tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90": "3b2c6e35287a8ecfcc6c87202c4ca0a470e5e4a7"
+  }
 }

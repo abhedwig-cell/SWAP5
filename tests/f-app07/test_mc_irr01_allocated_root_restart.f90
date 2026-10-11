@@ -241,6 +241,26 @@ program test_mc_irr01_allocated_root_restart
         ! Closed top/bottom water and salt boundaries isolate the SSDI source.
         ! subtract its two-interval authoritative inflow to isolate SSDI.
         call require(abs(total_in-real(nodes,real64)*expected_rate*duration)<=128.0_real64*epsilon(1.0_real64),'nodal source total')
+        if(timing==2.and.mode==1)then
+          ! A later event must acquire a fresh provider record; a stale one
+          ! cannot consume either committed physics or the previous receipt.
+          request%t0=t0+duration;request%t1=request%t0+expected_duration*.25_real64
+          request%selection_opportunity=.true.
+          before_reject=physical
+          call reset_legacy_globals()
+          call run_root_binding(columns(1),templates(1),parameters(1),base,physical,sensor,root,depth, &
+               0.02_real64,management,request,config,salt_policy,top_provider,result,runtime,binding,selected,salt_diag,accepted)
+          call require(.not.accepted.and.committed_physics_identical(physical,before_reject),'stale next delivery rollback')
+          call require(management%receipt%allocation%source_id==41_int64,'failed selection retains prior receipt')
+          delivery%source_id=42_int64;delivery%revision=8_int64;delivery%fraction=.25_real64
+          delivery%valid_t0=request%t0;delivery%valid_t1=request%t1+1.0_real64
+          call reset_legacy_globals()
+          call run_root_binding(columns(1),templates(1),parameters(1),base,physical,sensor,root,depth, &
+               0.02_real64,management,request,config,salt_policy,top_provider,result,runtime,binding,selected,salt_diag,accepted)
+          call require(accepted.and..not.management%management%event%active_event,'fresh next event accepted')
+          call require(management%receipt%allocation%source_id==42_int64,'next event takes fresh provider')
+          call require(abs(result%mass%total_in-real(nodes,real64)*.25_real64)<=hard_mass_gate,'fresh fraction source mass')
+        end if
         write(*,'(A,3I3,A,ES24.16)')'MC_IRR01_SENSOR_DEPTH_CASE=',timing,mode,layout,' SSDI=',real(nodes,real64)*expected_rate*duration
       end do
     end do

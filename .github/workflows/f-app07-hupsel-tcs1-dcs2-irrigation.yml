@@ -86,3 +86,8 @@ jobs:
         run: |
           bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh
           bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh
+
+      - name: MC-IRR01 external allocation physical restart O0/O2
+        run: |
+          bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh
+          bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh
