@@ -1,7 +1,7 @@
 {
   "workstream": "MC-CROP01",
   "baseline": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
-  "canonical_reconciled": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+  "canonical_reconciled": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
   "scope": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window. Initial model day creates one existing crop owner from authenticated weather and actual initial accepted soil through existing initialization authority; completed preparation/sowing/germination phases persist. Actual wet-to-dry hydraulic preparation and delayed sowing/germination are qualified locally in the same physical production route.",
   "owners": [
     "mod_kernel_transactions",
@@ -42,8 +42,8 @@
     "restore": "Only a fresh/closed application and an uninitialized crop carrier; all source snapshots validate before startup publication. No overwrite or rollback of a live owner.",
     "scientific_scope": "Continuous next-day physical execution after disposal and restoration of the real application, crop carrier and bound crop executor. Not a disk codec or external archive format."
   },
-  "local_source_tree": "56317f7db66878e57ee4bc6930dd685ac857ea43",
-  "local_production_commit": "5716ecba6bfbc97f50dd0f20827d9c29435be29a",
+  "local_source_tree": "153ed189be4a0886e535e20ef07e104c79979727",
+  "local_production_commit": "9540d210dd309faf3ef3e3a8b0f03ee6cd157c20",
   "local_O0_O2": "PASS twelve actual production executions with hydraulic preparation delay, scheduled sowing, dry-soil germination, retained completed phases and coherent initial/pending/accepted continuation",
   "initial_day_successor_contract": {
     "authority": "Existing initialize_fmr_wofost_crop_transaction_state plus kernel_committed_state%initialize; no FKT interval/event semantics are altered.",
@@ -54,5 +54,5 @@
     "restart": "Opaque continuation distinguishes initial crop creation and pending next-day event from already consumed event; accepts only private actual owner provenance and publishes only fresh owners.",
     "limits": "Scheduled sowing and root-free/no-heat profile; does not qualify simulated thermal sowing, emergence, WOFOST growth, root/rotation/fallow or disk codec."
   },
-  "central_preservation": "PASS exact production source and frozen eight-case snapshot; twelve-case qualification/source guard PASS with identical production. Full admission preservation remains BLOCKED by unchanged canonical headed fixture."
+  "central_preservation": "PASS full current-canonical twelve-case scientific central preservation at public exact tested tree16ce7d5; broader admission remains BLOCKED by unchanged canonical headed fixture and historical initial-state semantic boundary."
 }
