@@ -126,6 +126,41 @@ def focused(scratch, status):
     status['stages']['tested'] = True
 
 
+def partial(scratch, status):
+    """Persist completed immutable child receipts, never an admission authority."""
+    original_path = 'integration/audits/evidence/FROST_NAN_GUARD_QUALIFICATION_20261011.tar.gz.b64'
+    original_raw = base64.b64decode((ROOT / original_path).read_bytes())
+    assert sha(original_raw) == 'f7b95b481c3d2f389647a52a74ce7f152b2c8dae365a6748d72df92537e5f316'
+    members, completed = {}, []
+    with tarfile.open(fileobj=io.BytesIO(original_raw)) as original:
+        for route in ('normal', 'low-air'):
+            build = pathlib.Path('/tmp/ppa-wu05b15-' + route + '-runtime-crop-dayend')
+            controller = (scratch / ('dayend-frost-' + route.replace('-', '_') + '.log')).read_bytes()
+            members['controllers/' + route + '.log'] = controller
+            for opt in (0, 2):
+                for config in range(1, 7):
+                    path = build / f'o{opt}' / f'configuration-{config}.txt'
+                    if not path.exists():
+                        continue
+                    marker = f'PPA_WU05B15_{route.replace("-", "_").upper()}_O{opt}_CONFIGURATION_{config}_FRESH_PROCESS=PASS'
+                    if marker.encode() not in controller:
+                        continue
+                    name = f'highest/{route}/o{opt}/configuration-{config}.txt'
+                    data = path.read_bytes()
+                    assert data.count(b'_RUNTIME=PASS') == 1 and data.count(b'FINE_COMPARISON') == 6
+                    assert data == original.extractfile(name).read()
+                    members[name] = data
+                    members[name[:-3] + 'err'] = path.with_suffix('.err').read_bytes()
+                    completed.append(name)
+    assert completed and len(completed) < 24
+    status['partial_frost_evidence'] = seal('PARTIAL_FROST_QUALIFICATION', members,
+                                         {'partial_only': True, 'completed_children': completed,
+                                          'complete_configurations': len(completed), 'required_configurations': 24,
+                                          'original_archive': original_path, 'original_archive_sha256': sha(original_raw)})
+    status['partial_frost_evidence'].update(partial_only=True, complete_configurations=len(completed),
+                                          required_configurations=24, fine_comparisons=6 * len(completed))
+
+
 def full(scratch, status):
     markers = {'dayend-full-moving.log': 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS',
                'dayend-ppa-preservation.log': 'PPA-WU03 PRESERVATION GATE PASS'}
@@ -157,12 +192,12 @@ def full(scratch, status):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('phase', choices=('focused', 'frost', 'full'))
+    parser.add_argument('phase', choices=('focused', 'partial', 'frost', 'full'))
     parser.add_argument('--scratch', type=pathlib.Path, required=True)
     args = parser.parse_args()
     assert not git('status', '--porcelain')
     assert git('rev-parse', 'HEAD:src') == SOURCE
     status = json.loads(STATUS.read_text())
-    {'focused': focused, 'frost': frost, 'full': full}[args.phase](args.scratch, status)
+    {'focused': focused, 'partial': partial, 'frost': frost, 'full': full}[args.phase](args.scratch, status)
     STATUS.write_text(json.dumps(status, indent=2) + '\n')
     print(json.dumps({'phase': args.phase, 'source_tree': SOURCE, 'status': status['status']}))
