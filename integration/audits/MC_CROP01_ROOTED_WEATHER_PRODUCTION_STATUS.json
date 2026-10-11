@@ -99,6 +99,22 @@
       "exit_code": 0,
       "terminal_marker": "PPA_WU05B15_NORMAL_O0_O2_IDENTITY=PASS",
       "log_sha256": "37348bdc16870794587c5469cd1a987b08ebc29afb39fa13e5c1b23fa00b662a"
+    },
+    "lifecycle_direct": {
+      "exit_code": 0,
+      "terminal_marker": "SW431_CROP_LIFECYCLE_CONTINUATION_O0_O2=PASS",
+      "log_sha256": "59fffb68dd95d31bcd053411cb5dc436e0165204942af765e9a989ebd5fb87bd"
+    },
+    "emergence_direct": {
+      "exit_code": 0,
+      "terminal_marker": "PASS previous-day emergence gate",
+      "log_sha256": "e413aef8b9eb34096bf97d230292a73c10fafa3418343823ae69052ba7b968e4"
+    },
+    "meteo_extractor_unit": {
+      "exit_code": 0,
+      "terminal_marker": "Ran 7 tests",
+      "log_sha256": "096c42bc08c8290cafb54e8f8c5d139cd39adc18987aae75d9123a563bd3d82f",
+      "claim_limit": "Seven extractor integrity/write unit tests, including mocked positive write; does not substitute for authenticated source archive validation in physical Fortran regression."
     }
   },
   "preservation_prerequisite_failure": {
@@ -113,5 +129,39 @@
     "positive_logs": 4,
     "preserved_negative_logs": 3,
     "full_FCI_qualified": false
+  },
+  "next_lifecycle_dependencies": {
+    "authenticated_sources": {
+      "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+      "SWAP/MOD_cropdevelopment.f90_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+      "SWAP/wofost.f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "SWAP/swap.f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a"
+    },
+    "ordering": "Historical wofost(task4) checks abs(t1900-cropend(icrop)-1.d0)<0.1d0; sw_harv>0 annual modes also check dvs>=dvsend. It clears emergence and sets harvest; cropdevelopment(task4) then resets extraction/interception. Calendar select_at alone cannot substitute for this physical transition or reset biomass before end-status retention.",
+    "next_morning": "croprotation(task2) finds active crop; at a new calendar start it clears preparation/sow/germ/emergence/harvest flags and crop reset marker, then executes cropemergence initialization/daily steps through existing owners. reset_crop separately zeros crop/canopy/root state for fallow. Reconcile exact caller timing before implementation.",
+    "existing_owners": [
+      "F-WOF38/F-KT candidate/committed crop",
+      "mod_crop_lifecycle_continuation",
+      "mod_crop_rotation_calendar/transition derived checkpoints",
+      "mod_fmr_crop_rotation_receipt_binding matching physical receipt/window/calendar atomic publication",
+      "existing root/canopy views"
+    ],
+    "required_implementation": "Candidate-only annual maturity/calendar harvest with accepted end-status retention, zero extraction/fallow, next crop task2 initialization/parameters, derived calendar bound to accepted physical receipts and joint calendar/crop/source/event continuation. No second physical owner.",
+    "required_integration_gate": "Two actual crops separated by physical fallow using authentic weather and continuous accepted hydrology; rejected harvest/start candidates, exactly-once receipts, positive then zero then positive actual root extraction, joint restart, O0/O2 and affected owner/highest frost/full F-CI preservation.",
+    "other_full_closure_gates": [
+      "Detailed meteorology/source routes",
+      "Broader historical crop/root/CO2 and management profiles",
+      "SWINCO=3 owner transfer",
+      "Legacy CLI/front-end orchestration",
+      "External joint disk codec/process-level restart",
+      "Master coverage ACTIVE_MIGRATION until complete qualified lifecycle admission"
+    ],
+    "main_loop_reset_order": "Authenticated SWAP/swap.f90 lines491/511/522..535: cropdevelopment3 -> cropdevelopment4 -> integral4 -> normal output -> flDayEnd/reset_crop if harvested. A candidate may therefore retain an immutable accepted end-status publication value before clearing crop biomass/root/canopy for the following day; no need to relax the existing inactive-owner no-biomass invariant. Croprotation2/new-season initialization occurs on the next morning. The exact accepted-event publication/reset composition remains to implement and qualify."
+  },
+  "predecessor_shared_weather_preservation": {
+    "PR1193": "PPA_WU03_WEATHER_GUARDED_TWO_COMMITTED_INTERVALS=PASS",
+    "PR1194": "PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS",
+    "shared_source": "PPA_WU03_CROP_SHARED_WEATHER_SPAN=PASS",
+    "claim_limit": "Restricted existing two-interval/two-day PPA owner vectors, not a whole historical crop lifecycle; exact new source owner run exit0."
   }
 }
