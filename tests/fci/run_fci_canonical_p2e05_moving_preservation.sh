@@ -415,6 +415,18 @@ verify_mc_irr01_owner_successor() {
     bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh || fail 'root salt physical source/depth/availability preservation'
     echo 'FCI_CANONICAL_MC_IRR01_ROOT_SALT_SUCCESSOR=PASS'
   fi
+  if git cat-file -e HEAD:src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90 2>/dev/null; then
+    (( root_salt_successor )) || fail 'accepted salt root prerequisite'
+    git merge-base --is-ancestor cb841851db6a4f459835b4943cf442595898ecd3 HEAD || fail 'accepted salt PR1015 lineage'
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90)" = a9ba5313efc564fd26d3951457aa40f1d92cb214 || fail 'accepted salt dependency identity: src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90'
+    test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_accepted_salt_restart.sh)" = 74128e215430d1b97893d63821523d65671a623b || fail 'accepted salt dependency identity: tests/f-app07/run_mc_irr01_accepted_salt_restart.sh'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_accepted_salt_restart.f90)" = 7dabc5b191e8def3fcfcd78e74fbfe359ccb80a7 || fail 'accepted salt dependency identity: tests/f-app07/test_mc_irr01_accepted_salt_restart.f90'
+    test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh)" = 742f9ecaaf90fbf14e09c15a03e7de61d9b04a35 || fail 'accepted salt dependency identity: tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_accepted_salt_root_restart.f90)" = 2e28ef5ac19d18dd5cc474609e28032474326ddd || fail 'accepted salt dependency identity: tests/f-app07/test_mc_irr01_accepted_salt_root_restart.f90'
+    bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh || fail 'accepted salt sensor physical/restart'
+    bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh || fail 'accepted salt root physical/restart'
+    echo 'FCI_CANONICAL_MC_IRR01_ACCEPTED_SALT_SUCCESSOR=PASS'
+  fi
   echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
   irrigation_owner_verified=1
 }
@@ -532,6 +544,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_management_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
