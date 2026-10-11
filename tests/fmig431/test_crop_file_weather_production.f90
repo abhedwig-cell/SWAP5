@@ -21,8 +21,8 @@ program test_crop_file_weather_production
   use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
   implicit none
   real(real64),parameter::T0=729774.0_real64,T1=T0+1.0_real64,H0_CM=-75.0_real64,HARD_MASS_GATE=1.0e-12_real64
-  type(fmr_production_application_config_t)::config
-  type(fmr_production_application_bootstrap_t)::app
+  type(fmr_production_application_config_t)::config,reject_config
+  type(fmr_production_application_bootstrap_t)::app,reject_app
   type(fmr_application_crop_daystart_controls_t)::controls,bad_controls
   type(swap_daily_weather_record_t)::record,old_record,altered,empty
   type(kernel_committed_state_t)::soil
@@ -31,11 +31,12 @@ program test_crop_file_weather_production
   type(reference_et_demand_canopy_view_t)::canopy
   type(fmr_serialized_column_result_t),allocatable::results(:)
   integer(int64),allocatable::revisions(:)
-  character(1024)::path,altered_path,bad_path
+  character(1024)::path,altered_path,bad_path,backup_path
   real(real64)::k,day,tmin,tmax,rain,etref,hgerm,before_time,previous_storage,initial_head
   integer::s,d,i
   logical::available
   call get_command_argument(1,path);call get_command_argument(2,altered_path);call get_command_argument(3,bad_path)
+  call get_command_argument(4,backup_path)
   call require(swap_weather_calendar_day(1999,1,20)==int(T0),'explicit Gregorian epoch')
   call require(swap_weather_calendar_day(2000,2,29)>0.and.swap_weather_calendar_day(1900,2,29)==0,'leap calendar')
   call read_swap_daily_weather_file(trim(bad_path),1999,1,20,record,s)
@@ -100,12 +101,41 @@ program test_crop_file_weather_production
     call require(s==FMR_APP_BOOT_OK.and.repeated%germination%next_temperature_sum== &
          candidate%germination%next_temperature_sum,'retry daystart does not double-add')
     if(d==20) then
-      call read_swap_daily_weather_file(trim(altered_path),1999,1,d,altered,s)
+      call require(candidate%germination%next_temperature_sum==(7.7_real64+3.2_real64)*0.5_real64, &
+           'literal historical temperature sum from actual first source day')
+      ! Same pathname, changed bytes: a pathname-only provenance check would
+      ! miss this. Restore the authentic input before any positive run.
+      call copy_input_file(trim(altered_path),trim(path))
+      call read_swap_daily_weather_file(trim(path),1999,1,d,altered,s)
+      call copy_input_file(trim(backup_path),trim(path))
       call require(s==SWAP_WEATHER_FILE_OK,'altered input parse remains valid')
       call app%begin_weather_day(altered,controls,repeated,s)
       call require(s==FMR_APP_BOOT_WEATHER_REJECTED,'same TAV different Tmin Tmax input conflict')
       call app%run_weather_interval(altered,day,day+0.5_real64,forcing_config,canopy,results,s)
       call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(results),'alternate file cannot drive hydrology')
+      reject_config=config
+      reject_config%numerical%transaction%max_retries=0
+      reject_config%numerical%max_committed_substeps=1
+      reject_config%numerical%model_temporal_indicator_budget=0.0_real64
+      call reject_app%initialize(reject_config,s)
+      call require(s==FMR_APP_BOOT_OK,'deliberately rejecting production policy owner')
+      call reject_app%begin_weather_day(record,controls,repeated,s)
+      call require(s==FMR_APP_BOOT_OK,'rejected-day meteorology acquired independently')
+      do i=1,2
+        call reject_app%run_weather_interval(record,day,day+0.5_real64,forcing_config,canopy,results,s)
+        call require(s/=FMR_APP_BOOT_OK.and.allocated(results),'real physical rejection and repeated attempt')
+        call require(.not.results(1)%committed.and.results(1)%final_revision==0_int64, &
+             'rejected physical attempt never commits accepted state')
+        call reject_app%copy_committed_for_crop(1,soil,s)
+        call soil%current_time(before_time,available)
+        call require(s==FMR_APP_BOOT_OK.and.available.and.before_time==day.and. &
+             soil%current_revision()==0_int64,'rejected attempt leaves time/revision intact')
+        call sample_certified_committed_germination_head(soil,soil%current_lineage_id(), &
+             soil%current_revision(),day,controls%zgerm,hgerm,s)
+        call require(s==CROP_CERT_GERM_OK.and.hgerm==candidate%hgerm,'physical rejection leaves accepted soil intact')
+      end do
+      call reject_app%close(s)
+      call require(s==FMR_APP_BOOT_OK,'rejected owner close')
     end if
     do i=0,1
       call app%run_weather_interval(record,day+real(i,real64)*0.5_real64, &
@@ -149,8 +179,24 @@ program test_crop_file_weather_production
   print '(a)', 'CROP_FILE_WEATHER_PRIOR_ACCEPTED_DAYSTART=PASS'
   print '(a)', 'CROP_FILE_WEATHER_FOUR_DAY_PHYSICAL_MASS_CONTINUITY=PASS'
   print '(a)', 'CROP_FILE_WEATHER_RETRY_CONFLICT_DUPLICATE=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_PHYSICAL_REJECT_ROLLBACK=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
+  subroutine copy_input_file(source,target)
+    character(*),intent(in)::source,target
+    character(:),allocatable::bytes
+    integer::unit,n,ios
+    open(newunit=unit,file=source,status='old',access='stream',form='unformatted',action='read',iostat=ios)
+    call require(ios==0,'negative input copy source open')
+    inquire(unit=unit,size=n)
+    allocate(character(n)::bytes)
+    read(unit)bytes
+    close(unit)
+    open(newunit=unit,file=target,status='replace',access='stream',form='unformatted',action='write',iostat=ios)
+    call require(ios==0,'negative input copy target open')
+    write(unit)bytes
+    close(unit)
+  end subroutine
   subroutine initialize_application_config(value, conductivity0)
     type(fmr_production_application_config_t), intent(out) :: value
     real(real64), intent(out) :: conductivity0
