@@ -23,7 +23,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-TCS3",
@@ -38,7 +39,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-TCS4",
@@ -53,7 +55,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-TCS6",
@@ -68,7 +71,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-TCS7",
@@ -83,7 +87,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-TCS8",
@@ -98,7 +103,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-DCS1",
@@ -113,7 +119,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
@@ -152,7 +159,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-FREQ",
@@ -179,7 +187,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
@@ -194,7 +203,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
     },
     {
       "capability_id": "SW431-IRR-RATE-DAILY",
@@ -233,7 +243,8 @@
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
-      ]
+      ],
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
     }
   ],
   "shared_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json",
@@ -241,5 +252,6 @@
     "superseded_prs_1097_1126": "Already CLOSED/unmerged; unique evidence retained. No duplicate closure or new workunit created.",
     "obsolete_blockers": "Missing source archives, missing accepted matrix salt, tiny-only event and absent persistent allocation are not current blockers.",
     "remaining_master_dispositions": "5 ADMITTED /11 ACTIVE_MIGRATION; no promotion without full authority."
-  }
+  },
+  "shared_interface_review": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#shared_interface_review_20261011"
 }
