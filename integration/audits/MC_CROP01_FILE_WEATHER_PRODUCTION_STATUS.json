@@ -1,0 +1,171 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Authentic daily weather input to existing production application and prior-accepted-soil crop daystart",
+  "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "last_reconciled_upstream": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "next_action": "Existing central/headed-surface admission authority resolves the failed unchanged FCI93 non-M1 fixture. Resume physical emergence/root initialization together under existing F-WOF38/F-KT owner, then authentic radiation/solar WOFOST growth, harvest/reset/calendar/fallow and external joint codec. Consolidated recovery branch preserves the qualified bounded production work; do not promote MC-CROP01 to closed.",
+  "recovery_point": "work/mc-crop01-file-weather-production-20261011",
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/audits/MC_CROP01_METEO_DAYSTART_OWNER_BOUNDARY_20261009.md",
+    "docs/audits/PPA_WU03_ATMOSPHERIC_FORCING_NORMAL_INPUT_ADAPTER.md"
+  ],
+  "relevant_paths": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh",
+    "tests/fapp/run_ppa_wu03_preservation.sh"
+  ],
+  "invariants": [
+    2,
+    3,
+    7,
+    9,
+    13,
+    21,
+    22,
+    27,
+    29,
+    30
+  ],
+  "contract": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window. Initial model day creates one existing crop owner from authenticated weather and actual initial accepted soil through existing initialization authority; completed preparation/sowing/germination phases persist. Private opaque joint continuation retains source bytes/epoch, original configuration, existing weather, certified soil/crop and delivered or pending windows; restores fresh owners only. No second state owner.",
+  "blockers": [
+    "Physical emergence, harvest, rotation/fallow and authoritative lifecycle state values still need existing crop-owner extensions and integration.",
+    "Detailed-period and subdaily meteorology are outside this daily uniform-rate application profile; corrected historical source is now recovered exactly.",
+    "FCI93 current-source historical surface-regime replay fails closed: HeadCalc dynamic head regime omitted surface-head derivative. The caller is the legacy non-M1 Task2 surface fixture; production Task2/backend/HeadCalc blobs are unchanged from canonical. Do not claim this preservation gate passed, omit it, or modify another owner solely for green tests.",
+    "Opaque joint runtime continuation is implemented and O0/O2 tested; external disk codec and broad historical lifecycle equivalence remain open."
+  ],
+  "coverage": "Do not promote MC-CROP01 to closed or change master denominator.",
+  "commit_contract": "No-receipt serialized physical commit uses existing backend%commit_trial_candidate and its model-bound executor. The original orchestration executor cannot validate certified physical identity because it has no model. Kernel/backend scientific and FKT guards are unchanged. Receipt paths remain separate, unchanged and are not enabled by this root-free profile.",
+  "test_contract": {
+    "authentic_days": "1999-01-20 through 1999-01-23",
+    "continuous_accepted_intervals": 256,
+    "physical_grid": "four compartments, 30 cm, identical explicit and linked geometry",
+    "weather_identity": "whole immutable source bytes plus selected raw record and station; not a caller-set number",
+    "time_binding": "model day 0 = Gregorian 1999-01-20; source calendar retained in immutable input",
+    "head_convergence": "existing BOFEK00 wet policy, 1e-9",
+    "solver_residual_rate_tolerance": 1e-10,
+    "internal_mass_tolerance_cm": 1e-14,
+    "independent_accepted_interval_mass_gate_cm": 1e-12,
+    "richards_history_budget_cm": 1e-05,
+    "no_scientific_trajectory_equivalence_claim": "Andelst weather, homogeneous qualification soil, no Andelst soil or full historical trajectory claim"
+  },
+  "historical_meteorology": {
+    "corrected_MOD_meteo_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "authentic_daily_input_sha256": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+    "archive_path": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "oracle": "unique actual daily Meteo(2) TAV statement extracted without arithmetic rewriting; source SHA verified",
+    "detailed_meteorology": "source recovered, detailed period oracle/application integration not qualified",
+    "cropdevelopment_archive_member_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "cropdevelopment_archive_member": "SWAP/MOD_cropdevelopment.f90 in existing byte-verified B111 authority archive; historical previous-day emergence and initial/day progression branches rechecked, no broad equivalence claim"
+  },
+  "local_evidence": {
+    "four_day_O0_O2": "PASS for complete no-bypass source postimage; identical O0/O2 stdout; 256 committed physical intervals",
+    "FKT21_current_canonical_O0_O2": "PASS with fresh retry result vectors after move_alloc staging; scientific expected values unchanged",
+    "PPA_WU01": "PASS in full PPA preservation invocation",
+    "F_APP07": "PASS including 110-interval exact composition and MC-IRR01 sensor/SSDI O0/O2",
+    "FCI93_current_replay": "FAILED legacy non-M1 headed surface fixture; flux Task2 assertions passed before failure",
+    "B19_MICRO_current_scientific_successor": "PASS: certified FKT/sowing/hydrothermal, lifecycle and rotation, MICRO02/MICRO03 actual physics, B19 O0/O2 current source case1 byte identity",
+    "F_CI_exact_PR_merge_postimage": "PASS original PR1197 exact-head Actions, prior exact local postimages, and now full current-canonical twelve-case gate at public24d2a7a5/tree16ce7d5/source153ed189. No new manual, synchronize or duplicate Actions for successor.",
+    "Actions": "One PR trigger; existing owner and central runs completed. No new synchronize, manual dispatch or duplicate workflow for the live-window successor.",
+    "PPA_WU03_current_owner": "PASS O0/O2 including prior PR1193 and PR1194 interval/two-day regressions",
+    "PPA_WU03_independent": "PASS prior to no-bypass addition (default-off route unchanged); do not substitute for exact-head Actions",
+    "evidence_path": "integration/audits/MC_CROP01_FILE_WEATHER_LOCAL_EVIDENCE.json",
+    "hydraulic_preparation": "PASS true accepted-soil wet-to-dry preparation, delayed sowing/zero early germination, completed preparation retained when soil becomes wetter",
+    "FCI51P_successor_current": "PASS current central repaired guard, WOF43A/F-VQ37/CO2 O0/O2, on exact public postimage f5b5a5c9"
+  },
+  "recovery_local_commit": "9540d210dd309faf3ef3e3a8b0f03ee6cd157c20",
+  "next_lifecycle_dependencies": [
+    "Qualify historical initial-day event semantics beyond the tested existing-owner scheduled startup; integrate physical emergence and retained phase transitions with admitted crop owner.",
+    "Finish hydraulic/thermal preparation/sowing continuation and emergence/growth via existing owners; current qualified profile is scheduled, pre-emergence, root-free.",
+    "Integrate authentic radiation/solar and detailed meteorology with WOFOST growth and root/heat owners, then harvest/rotation/fallow.",
+    "Encode/decode the coherent joint continuation via an admitted external disk adapter; preserve certified physical parameter identity and exact weather bytes/source epoch.",
+    "Resolve unchanged canonical FCI93 non-M1 headed surface preservation with the owning/central admission authority; original numerical assertions remain mandatory."
+  ],
+  "prior_exact_PR_qualification": {
+    "pr": 1197,
+    "head": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
+    "merge_postimage": "104d7147edc00f34b0547789eaab69a91670f7f7",
+    "source_tree": "fb7e3e3d2b390ae3652c29b2b70c125d9dce41c5",
+    "owner_run": 38116821823,
+    "owner_O0_O2": "PASS",
+    "canonical_F_CI_run": 38116821737,
+    "moving_job": 114404251018,
+    "frozen_jobs": "all 14 PASS",
+    "moving_preservation": "PASS, exact scientific markers and source postimage verified",
+    "PPA_WU03_independent_and_owner": "PASS",
+    "PPA_preservation": "FAILED headed non-M1 fixture: surface-head derivative absent; all compiled physical source unchanged from canonical",
+    "admission": "BLOCKED; no failed gate waived"
+  },
+  "successor_local_source_tree": "153ed189be4a0886e535e20ef07e104c79979727",
+  "successor_branch": "work/mc-crop01-live-window-20261011",
+  "successor_status": {
+    "implemented": true,
+    "persisted": "GitHub consolidated recovery branch, exact public current-canonical tested tree24d2a7a5, full compile closure and scientific/admission evidence; original PR1197 head remains immutable",
+    "tested": "PASS twelve actual four-day/256-interval executions at O0/O2; neutral/dry/hydraulic preparation x continuous/restored; full physical bits identical",
+    "qualified": false,
+    "preserved": "PASS exact current-canonical full central moving-preservation script, including all twelve real production cases and specific scientific markers; additional mandatory PPA headed fixture remains FAILED, not waived",
+    "canonically_admitted": false
+  },
+  "master_coverage_handoff": {
+    "owner": "Functional-coverage master PR #1072 and central regie",
+    "registry": "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "canonical_reverified": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+    "disposition": "MC-CROP01 OPEN/ACTIVE_MIGRATION; no master denominator or ADMITTED count change because no canonical admission",
+    "evidence": "integration/audits/MC_CROP01_LIVE_WINDOW_LOCAL_EVIDENCE.json",
+    "new_bounded_implementation": "Authentic daily physical production integration, initial existing-owner creation, hydraulic preparation delay, scheduled sowing, moisture-sensitive germination, exactly-once previous accepted-window events, and opaque joint initial/pending/accepted continuation"
+  },
+  "remaining_owner_dependencies": {
+    "emergence": "Existing previous-day emergence gate is a classifier only. F-WOF38 lacks atomic lifecycle emergence plus source-backed biomass/root initialization; do not set a flag as a substitute for physical owner creation.",
+    "thermal": "Current admitted root-free bootstrap excludes soil_temperature_active without Bartholomeus/frost composition. Simulated sowing needs existing certified thermal owner with authenticated meteorological boundary semantics, reconciled with specialized root/heat workstream.",
+    "growth": "Immutable daily adapter retains RAD/HUM/WIND in source bytes but exposes only TMIN/TMAX/RAIN/ETref. Full source-backed radiation/solar/CO2 and crop-derived canopy/root demand still need production handoff.",
+    "termination": "Existing derived calendar checkpoint/receipt is not physical harvest, crop/root teardown, fallow or successor initialization.",
+    "restart": "Opaque in-memory composition is qualified; external whole-system disk codec and calendar/crop-change state remain open.",
+    "historical_initialization": "Literal historical task2 sowing flag can be true while preparation is false; current admitted continuation requires sown=>prepared. Existing-owner startup is tested under the bounded daily composition contract, not full B111 initialization equivalence. Resolve in existing crop owner/central authority together with SWINCO3 and immediate emergence."
+  },
+  "final_assessment": {
+    "historical_functional_coverage": "PARTIAL: authentic physical daystart, existing-owner startup, hydraulic preparation, scheduled sowing and germination integrated; literal historical task2 initialization invariant, emergence/growth/harvest/root/calendar succession/fallow remain OPEN",
+    "meteorological_fidelity": "PASS bounded authentic daily whole-input identity and corrected exact historical TAV; detailed meteorology/radiation/solar handoff OPEN",
+    "hydrologic_crop_consistency": "PASS tested actual previous accepted soil, hydraulic delayed preparation and dry-head germination in continuous Full Richards production",
+    "transaction_rollback_restart": "PASS tested reject/retry/no duplicate events and opaque joint initial/pending/accepted owner restore; external disk/calendars OPEN",
+    "scientific_regression_equivalence": "PASS full current-canonical O0/O2 twelve-case physical production, exact continuous/restored postimages and central owner preservation; full historical initialization/trajectory equivalence NOT CLAIMED",
+    "canonical_admission": "NOT ADMITTED: latest canonical4fab8a28 central debt routing inherited, original PR1197 draft head immutable, current source153ed189 full central qualified at canonical7ceb5ff0; no guard waiver and no MC-CROP01 closure.",
+    "master_coverage": "OPEN; no global counts or capability closure promoted",
+    "limitations": "Scheduled root-free daily mode7; no simulated thermal sowing, emerged growth/root uptake, harvest/rotation/fallow or external joint restart codec"
+  },
+  "live_canonical_reconciliation": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+  "latest_authority_delta": "Metadata only versus scientific-tested canonical7ceb5ff0. No production/test/reference/qualification dependency changed; source/test postimage and full central PASS retained.",
+  "literal_germination_qualification": {
+    "state": "PASS",
+    "local_scientific_head": "fbedcc7d57eea8b41584d5839983f26cb4aab9c8",
+    "public_exact_postimage": "f5b5a5c9723ed668418284389b7cc8589be180c5",
+    "exact_tree": "688d96ecbcbac9a22214c75012504c21fdaff100",
+    "canonical_first_parent": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+    "source_tree": "153ed189be4a0886e535e20ef07e104c79979727",
+    "crop_source_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "source_extraction": "Literal germination case(3) and original bgerm/cgerm arithmetic compiled from authenticated archive member; h_average callback supplies the actual certified accepted production soil sample. No translated oracle or caller-assigned source identity.",
+    "executions": 12,
+    "accepted_intervals_per_execution": 256,
+    "log_sha256": "d9425047267bc609b9391b3355acd6df0929bffce1b86a2e16664bd95f7a1a4a",
+    "assertions": [
+      "Bit-exact initial germination temperature sum and completion flag",
+      "Bit-exact subsequent germination against existing accepted owner sum, authentic daily TAV and actual F-KT soil sample",
+      "Bit-exact accepted physical crop publication, including moisture response",
+      "Retained completed germination; continuous/restarted and O0/O2 complete physical output identity"
+    ],
+    "limits": "Germination arithmetic only; historical cropemergence task-mode dispatch and independent initialization flags are not qualified by this oracle."
+  },
+  "historical_initialization_decision": "integration/audits/MC_CROP01_HISTORICAL_INITIALIZATION_DECISION.json"
+}

@@ -179,7 +179,18 @@ dependency_surface=(
 )
 dependency_authority="$(git rev-parse HEAD^1)"
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
+crop_file_weather_exact_successor=0
+for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
+  if [[ "$(git rev-parse "HEAD:$weather_path" 2>/dev/null)" != "$(git rev-parse "$dependency_authority:$weather_path" 2>/dev/null)" ]]; then
+    bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only || fail 'unqualified file-weather production successor'
+    crop_file_weather_exact_successor=1
+    break
+  fi
+done
 for path in "${dependency_surface[@]}"; do
+  if (( crop_file_weather_exact_successor )) && [[ "$path" == src/runtime/mod_fmr_serialized_multiswap_runtime.f90 ]]; then
+    continue # Exact postimage checked above; all F-KT semantics remain guarded.
+  fi
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
     fail "candidate changed current canonical dependency from $dependency_authority: $path"
 done
@@ -370,6 +381,9 @@ check_b19_micro_root_recomposition() {
       src/kernel/mod_kernel_transactions.f90|src/runtime/mod_fmr_serialized_reference_backend.f90 )
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
+        ;;
+      src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
+        (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
         ;;
       src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
@@ -685,7 +699,14 @@ check_b19_micro_root_recomposition() {
     bash tests/fmig431/run_crop_unified_restart_bundle.sh || \
       fail 'crop unified physical/calendar persistence replay failed'
   fi
+  if (( crop_file_weather_exact_successor )); then
+    bash tests/fci/run_crop_file_weather_production_successor.sh || fail 'file-weather integrated owner/scientific preservation failed'
+    echo 'FCI_CANONICAL_FILE_WEATHER_PRODUCTION_O0_O2=PASS'
+  fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
+    if (( crop_file_weather_exact_successor )) && [[ "$candidate_path" == src/runtime/mod_fmr_production_application_bootstrap.f90 ]]; then
+      continue # Independently qualified exact bootstrap, no wildcard drift.
+    fi
     if (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
       test "$(git rev-parse "HEAD:$candidate_path")" = "b218ac657db52612bc12da671716c97430200f0a" ||
         fail 'crop B110 certified successor backend postimage drift'
@@ -734,7 +755,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
       else
       test "$(git rev-parse HEAD:$BACKEND)" = "$(git rev-parse "$dependency_authority:$BACKEND")" || fail 'B19+MICRO current-target serialized backend drift'
       fi
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
+      if (( ! crop_file_weather_exact_successor )); then
+        test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
+      fi
       echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
     else
       check_b19_micro_root_recomposition
