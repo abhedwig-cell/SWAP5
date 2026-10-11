@@ -181,6 +181,7 @@ contains
     integer, intent(out) :: status
 
     integer :: i, local_status, n
+    class(transaction_state_t), allocatable :: initial_physical
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
     logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
     type(black_evaporation_state_t) :: initial_black_state
@@ -267,7 +268,9 @@ contains
     if(config%file_weather_daystart) then
       if(n/=1.or..not.standalone_profile.or. &
            config%tiles(1)%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
-           config%tiles(1)%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE) then
+           (config%tiles(1)%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE.and. &
+            config%tiles(1)%template%numerical_continuation_layout_id/= &
+            FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)) then
         status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
@@ -307,6 +310,24 @@ contains
       if (.not. ok) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
+      end if
+
+      if(config%file_weather_daystart.and. &
+           self%templates(i)%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+        ! Initialization only: preserve the existing backend-created temporal
+        ! carrier and certify its parameters through the existing F-KT entry.
+        ! No accepted revision is ever rewrapped or reset during execution.
+        call self%committed(i)%snapshot(initial_physical,ok)
+        if(ok) then
+          self%committed(i)=kernel_committed_state_t()
+          call self%committed(i)%initialize(config%tiles(i)%tile_id,initial_physical,ok, &
+               config%initial_time,self%parameters(i))
+        end if
+        if(.not.ok) then
+          status=FMR_APP_BOOT_STATE_INIT_FAILED
+          call discard_owner_storage(self)
+          return
+        end if
       end if
       self%direct_retention_owner_active = .true.
     end if
@@ -619,7 +640,7 @@ contains
     call self%committed(1)%snapshot(physical,available)
     if(.not.available) return
     select type(physical)
-    type is(fmr_b110_physical_state_t)
+    class is(fmr_b110_physical_state_t)
       if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content)) return
       if(physical%active_nodes<1) return
       request%pressure_head_top_cm=physical%pressure_head(1)

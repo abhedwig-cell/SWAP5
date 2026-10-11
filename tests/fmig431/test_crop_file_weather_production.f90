@@ -1,7 +1,9 @@
 program test_crop_file_weather_production
   use iso_fortran_env, only: real64,int64
   use MOD_grid, only: numnod,z,dz,disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE,FMR_NUMERICAL_CONTINUATION_NONE
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE,FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t,fmr_b110_physical_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
@@ -40,6 +42,19 @@ program test_crop_file_weather_production
   call require(s/=SWAP_WEATHER_FILE_OK.and..not.record%ready(),'malformed daily record rejected')
   call initialize_application_config(config,k)
   config%file_weather_daystart=.true.
+  ! Use the admitted nonsteady Richards history certificate (ROOT-HYD01),
+  ! not the base full/half bit-identity comparator used by steady WU03.
+  config%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  allocate(config%tiles(1)%initial_right_derivative(numnod))
+  config%tiles(1)%initial_right_derivative=0.0_real64
+  config%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  config%numerical%transaction%temporal_tolerance=1.0_real64
+  config%numerical%model_temporal_indicator_budget_available=.true.
+  config%numerical%model_temporal_indicator_budget=1.0e-5_real64
+  config%numerical%transaction%max_retries=16
+  config%tiles(1)%parameters%head_abs_tolerance=HARD_MASS_GATE
+  config%tiles(1)%parameters%head_rel_tolerance=HARD_MASS_GATE
+  config%tiles(1)%parameters%ponding_tolerance=HARD_MASS_GATE
   ! Real atmospheric forcing is nonsteady. The accepted production mass
   ! threshold remains unchanged; no forcing is reverse-engineered to steady.
   config%numerical%max_committed_substeps=128
