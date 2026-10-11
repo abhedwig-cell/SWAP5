@@ -124,3 +124,41 @@ must be qualified; an abstract bookkeeping example is not sufficient.
 `tests/fgc/test_drainage_route_authority_contract.py` checks only synthetic
 declaration/receipt logic and that the existing production NONE gate is still
 present. It is not a SWAP/MODFLOW physical execution or production admission test.
+
+### Current-source physical component boundary (2026-10-11)
+
+**Qualified component replay, active coupled drainage admission pending.**
+The existing F-GC31 physical fixture has now been replayed against canonical
+`989069886d971daed94b1ce7c8176e2d3f73dad1` production dependencies at O0 and O2.
+The original fixture, six scientific assertions, finite-difference step and
+tolerances are unchanged. Both modes produce byte-identical output: two accepted
+substeps, three retries and a maximum head/face finite-difference error of
+`2.711697e-5` within the original relative gate. This qualifies the restricted
+prescribed-qbot, lagged active-drainage component, including its accepted-step
+coverage and absence of extra full nonlinear solves.
+
+The additive negative control uses the actual production head-forcing
+materializer and Reference backend. With the same smooth drainage projection
+and `bottom_mode=5`, materialization succeeds but backend execution returns
+`KERNEL_STATUS_NOT_ADMITTED=101` before any transaction. No candidate becomes
+available; pressure, water content, ponding, groundwater-level carrier, lineage,
+revision and time remain byte-exact. Materializer acceptance alone therefore
+does not establish physical backend or application admission.
+
+This reproduces the bounded E6 profile-intersection failure on current source.
+It does not establish that every head/drainage profile is rejected or that
+SWAP-owned drainage cannot physically coexist with MODFLOW-owned drainage.
+Removing the smooth projection would change the tested physical response and
+requires its own explicit qualification; it is not an interchangeable repair.
+
+Before this fixture can support a joint coupling experiment, RT/HY and central
+F-GC must establish head-driven drainage authority: phreatic projection distinct
+from lower-face head, lagged versus fully implicit response, complete drainage
+budget/tangent coverage, and actual physical storage/path mapping. The existing
+production NONE guard remains required. Physical distinct-path SWAP/MODFLOW
+budgets, accepted-window publication and joint restart remain separate gates.
+
+Exact checkpoint, current compile manifest, full raw logs and source recovery
+are recorded in
+`integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json`;
+the replay is `tests/fgc/run_fgc31_current_drainage_profile_boundary.sh`.

@@ -136,6 +136,16 @@
         ],
         "pub_gc_submission": "HELD",
         "hupsel_rerun_authorized": false,
+        "current_source_drainage_profile_replay_20261011": {
+          "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+          "record": "integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json",
+          "checkpoint": "609c6683dbe7c8d6d2d06fae34c85ffeff3d6fe8",
+          "recovery_branch": "qualification/regie-drainage-profile-boundary-20261011",
+          "qualification": "Actual F-GC31 active-drainage qbot component replay PASS O0/O2 exact output, 2 accepted substeps/3 retries, original six scientific assertions unchanged; 160 current compile dependencies pinned.",
+          "physical_blocker": "Exact smooth-projection fixture with mode5 head forcing fails kernel101 before any transaction; physical origin/provenance preserved. Establish RT/HY head-driven drainage/phreatic response authority before using this fixture for joint coupling.",
+          "scope_limit": "No live MODFLOW drainage, mixed-path budget, joint restart or production admission. Other head/drainage profiles not evaluated. NONE production gate retained.",
+          "pr486_and_pr528": "OPEN_UNCHANGED"
+        },
         "route_authority_reconciliation_20261011": {
           "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
           "record": "integration/f-gc/F-GC_DRAINAGE_ROUTE_AUTHORITY_20261011.json",
