@@ -197,6 +197,31 @@
     "full_capability": false,
     "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
   },
+  "bounded_mc_crop01_dayend_production_receipt": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1209",
+    "canonical_merge": "97f2d96e3cbe1cf34efba703a46e5ada0ea090a6",
+    "canonical_receipt_head": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
+    "admission_head": "5c00e28f04cf49be65e7917aebd2587b530c63d5",
+    "qualified_source_head": "9825deeef3c6c51dc28702e92291dcbdf7f439cf",
+    "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
+    "authority_at_canonical": "integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json",
+    "scope": "Current accepted weather-window and final real day growth3 completion; five active growth days across seven authentic days, no duplicate morning, partial/pending/completed joint in-process restart. Not harvest/output/reset, physical rotation/fallow/new-season or full lifecycle closure.",
+    "qualification": "Focused/owner/cross-owner/PPA and full F-CI/PPA exit0; full vectors O0/O2;24 fresh highest frost configurations/144 immutable fine comparisons/227 compile dependencies PASS; exact canonical postimage and archive members independently verified.",
+    "full_archive_sha256": "d74e236b8a8c15b0a3b290477dc3827385b9003dcda60ddc80da5b04ef102e6b",
+    "full_capability": false,
+    "capability_counts_unchanged": true,
+    "scope_validation": "PASS: exact baseline c1686a2c comparison changes only SW431-CROP-SOW in capabilities and remaining_queue; every other top-level master field/queue, row/disposition and count is identical. Full reachability remains false and full_capability remains false. No full source-census checker claim.",
+    "validation_diagnostic": "Initial generic list traversal erroneously expected a changed row in the unchanged qualification_queue and failed. Corrected validation explicitly requires changes only in capabilities/remaining_queue and byte-equivalent parsed data for every other top-level field; terminal PASS. No census, science or production change made to obtain PASS.",
+    "verified_unchanged_master_branch_counts": {
+      "total": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    }
+  },
   "mc_crop01_remaining_queue_integrity_reconciliation": {
     "stale_no_application_owner_claim": "SUPERSEDED",
     "row": "SW431-CROP-SOW",
@@ -204,7 +229,7 @@
     "capability_counts_unchanged": true,
     "full_capability_promotions": 0,
     "remaining": [
-      "Historical day-end completion/output/reset, final-window flush, harvest/rotation/fallow and new-season initialization remain open.",
+      "Historical harvest4/integral-output/reset, physical rotation/fallow and new-season initialization remain open. PR1209 now admits current-day/final-window growth3 completion, not the complete day-end chain.",
       "SWINCO=3, detailed weather, compensated/oxygen/CO2 profiles and external joint disk codec remain open.",
       "Bounded four-node qualification with explicit site/crop parameters; no full Andelst soil/crop trajectory claim."
     ]

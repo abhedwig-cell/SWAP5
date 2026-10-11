@@ -180,7 +180,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-CROP-FIXED-THERMAL | Thermal-sum prescribed-LAI/root-biomass crop development and harvest | Source IDEV2 uses max(0,TAV-TBASE), TSUMEA before anthesis and TSUMAM after anthesis to advance DVS, then updates prescribed LAI/root biomass. Current typed views do not supply this independent accepted phenology state/evaluator. | None |
 | SW431-CROP-GRASS | Grass regrowth, mowing and grazing | Current crop owner and transaction lack mowing/grazing biomass-removal operators, cutting counters and regrowth-delay state. Daily event receipt retirement is not agro-management. | None |
 | SW431-CROP-ROOTGROW | Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth | Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner. | None |
-| SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | PR1206/1207 admit persisted preparation/sowing/germination, delayed emergence and rooted growth; historical day-end/final flush, harvest/rotation/fallow/new-season and broader selector/disk profiles remain open. | None |
+| SW431-CROP-SOW | Soil-state-dependent preparation, sowing and germination | PR1206/1207/1209 admit persisted preparation/sowing/germination, delayed emergence, rooted growth and current-day/final-window growth completion; harvest/output/reset, physical rotation/fallow/new-season and broader selector/disk profiles remain open. | None |
 | SW431-CROP-SOY | Soybean-specific phenology and photoperiod | B1.11 nonlinear short-day soybean temperature and maturity-group/explicit photoperiod dispatcher is absent from the current thermal-sum/linear long-day IDSL0/1 finalizer. | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | Current common rate parameters accept IDSL0/1 only and crop owners have no vern accumulation/completion state or vernalisation response operator. Typed daily daylength forcing does not replace this persistent temperature history. | None |
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing. | SW431-CROP-ANNUAL |
@@ -428,3 +428,29 @@ SW431-CROP-SOW remains ACTIVE_MIGRATION. Delayed physical emergence/root initial
 PR1207 is canonical at `23787767ec9d0ed2c88cdf5ed37229ff4647da60`, source `da7699303f3bcbf36cfe5411de369e4080fcda7c`. It supersedes the previous bounded-profile absence of delayed physical emergence and rooted growth. Seven authentic days now execute delayed sowing, germination, TDWI initialization, four growth completions and five days of actual accepted F-KT root extraction through existing owners. Full crop/soil/heat/Richards O0/O2 and restart identity, rollback/retry/exactly-once, hard mass, affected owners, current PPA and full F-CI preservation pass; all24 highest frost configurations/144 fine comparisons and227 compile dependencies verify.
 
 SW431-CROP-SOW remains ACTIVE_MIGRATION for the full historical lifecycle. The old no-application-owner remaining_queue claim is corrected. Historical day-end/final-window completion/output/reset, harvest/rotation/fallow/new-season, SWINCO=3, broader weather/root/CO2/oxygen and external disk continuation remain open. This bounded receipt changes no denominator, counts, other owner admission or master scientific checkout; full coverage is not closed. Resolve the exact later canonical receipt and full raw archive through `integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json`.
+
+## MC-CROP01 admitted current-day/final-window growth successor (2026-10-11)
+
+PR1209 is canonical at `97f2d96e3cbe1cf34efba703a46e5ada0ea090a6`, verified
+tree `4404f5f7daf30a2d527959445571b73dbdb49259`, source
+`b52c70dc50742fdbf5b03f71ec68709b191d0ec7`. It supersedes the PR1207 snapshot's
+remaining current-day/final-window growth gap: seven authentic days execute
+448 accepted hydro intervals and five current-day growth completions,
+including the last actual weather record without a synthetic future record.
+The next actual daystart opens hydrology/weather without duplicate growth.
+Existing F-WOF38/F-KT/crop/weather/root owners and positive interval contract
+are reused; partial/pending/completed in-process restart, retry/rollback,
+full crop/soil/heat/Richards O0/O2 and unchanged admitted hydro/uptake pass.
+Focused/owner/PPA/cross-owner, all24 fresh highest frost configurations/144
+fine comparisons and full F-CI/PPA preservation have actual terminal0.
+
+SW431-CROP-SOW remains ACTIVE_MIGRATION. Growth3 is admitted; historical
+harvest4, integral/output-before-reset, physical rotation/fallow/new-season,
+broader selector/weather/root/CO2/oxygen, SWINCO=3, legacy CLI and external
+disk continuation remain open. Exact source/order/interfaces and next
+two-crop/fallow integration gate are retained by
+`integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json` on later canonical.
+This master branch retains its older scientific checkout. Only this bounded
+crop row and corresponding queue/receipt are reconciled; every other row,
+disposition, denominator and census count is unchanged. No fullcap promotion
+or full source-census checker claim.

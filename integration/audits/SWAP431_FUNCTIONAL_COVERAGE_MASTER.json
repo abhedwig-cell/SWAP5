@@ -9051,10 +9051,10 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "PR1204/1206/1207 admit authentic-weather preparation/sowing/germination, delayed emergence and rooted annual growth in the actual application. established=false denotes full historical selector/lifecycle scope, not absence of owners."
+        "claim": "PR1204/1206/1207/1209 admit authentic-weather preparation/sowing/germination, delayed emergence, rooted annual growth and current-day/final-window growth completion in the actual application. established=false denotes full historical selector/lifecycle scope, not absence of owners."
       },
       "restrictions": [
-        "Historical day-end completion/output/reset, final-window flush, harvest/rotation/fallow and new-season initialization remain open.",
+        "Historical harvest4/integral-output/reset, rotation/fallow and new-season initialization remain open; PR1209 completes current-day growth3 and final actual weather window, not the complete day-end chain.",
         "SWINCO=3, detailed weather, compensated/oxygen/CO2 profiles and external joint disk codec remain open.",
         "Bounded four-node qualification with explicit site/crop parameters; no full Andelst soil/crop trajectory claim."
       ],
@@ -9069,7 +9069,7 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "BOUNDED_ROOTED_PRODUCTION_ADMITTED_FULL_LIFECYCLE_ACTIVE",
+      "workunit_stage": "BOUNDED_CURRENT_DAYEND_GROWTH_ADMITTED_FULL_LIFECYCLE_ACTIVE",
       "implementation_absence_proven": false,
       "source_input_names": [
         "maxprepdelay",
@@ -9078,7 +9078,7 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "HISTORICAL_DAY_END_HARVEST_ROTATION_FALLOW_REQUIRED",
+      "resolution_stage": "HISTORICAL_HARVEST_OUTPUT_RESET_ROTATION_FALLOW_REQUIRED",
       "bounded_production_admissions": [
         {
           "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
@@ -9117,6 +9117,20 @@
           "archive_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
           "full_capability": false,
           "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
+        },
+        {
+          "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1209",
+          "canonical_merge": "97f2d96e3cbe1cf34efba703a46e5ada0ea090a6",
+          "verified_merge_tree": "4404f5f7daf30a2d527959445571b73dbdb49259",
+          "admission_head": "5c00e28f04cf49be65e7917aebd2587b530c63d5",
+          "qualified_source_head": "9825deeef3c6c51dc28702e92291dcbdf7f439cf",
+          "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
+          "authority_at_canonical": "integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json",
+          "scope": "Actual current-weather day-end growth with accepted soil/root extraction; seven days/448 hydro intervals, five active growth completions including final authentic record. Explicit day-end opt-in; next real morning no duplicate event; partial/pending/completed in-process joint restart. Existing default morning and admitted hydrology/uptake vectors unchanged.",
+          "qualification": "Focused/owner/cross-owner/PPA O0/O2 and full F-CI/PPA preservation terminal0 on identical clean frozen head;24 fresh highest frost configurations/144 fine comparisons and227 source-bound dependencies PASS. All raw archive members/source/execution blobs independently verified on canonical.",
+          "archive_sha256": "d74e236b8a8c15b0a3b290477dc3827385b9003dcda60ddc80da5b04ef102e6b",
+          "full_capability": false,
+          "master_source_branch_note": "Resolve this later exact canonical receipt rather than replaying this older master scientific checkout; no count/denominator promotion."
         }
       ]
     },
@@ -14662,7 +14676,7 @@
       "capability_id": "SW431-CROP-SOW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "PR1206/1207 admit persisted preparation/sowing/germination, delayed emergence and actual rooted growth. Remaining scope is historical day-end/final flush, harvest/rotation/fallow/new-season authority, broader selector/weather profiles and disk restart.",
+      "why_open": "PR1206/1207/1209 admit persisted preparation/sowing/germination, delayed emergence, actual rooted growth and current-day/final-window growth completion. Remaining scope is historical harvest4/integral-output/reset, physical rotation/fallow/new-season authority, broader selector/weather/root profiles, SWINCO=3 and external disk restart.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
