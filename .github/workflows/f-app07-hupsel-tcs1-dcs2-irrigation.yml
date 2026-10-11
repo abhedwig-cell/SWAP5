@@ -91,3 +91,4 @@ jobs:
         run: |
           bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh
           bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh
+          bash tests/f-app07/run_mc_irr01_allocation_guards.sh
