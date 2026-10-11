@@ -611,3 +611,28 @@ Historical #181/#199 are CLOSED/UNMERGED after canonical admission `3bf921f50539
 ### Fixed-interface editorial transfer — archival successor
 
 #587 is a completed two-document editorial handoff at `ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3`. Preserve both exact original postimages, the complete current manuscript before annotation and PR provenance in `integration/audits/evidence/PUB_GC_THEORY_HANDOFF_CLOSEOUT_20261011.tar.gz.b64` (decoded SHA256 `35fc92668810d008ce04d5d50de8c3df95628f935e453811dff6f5a0dfaae394`, 5 members). Select the missing dated handoff and a scoped manuscript link/submission-hold annotation; no substantive mathematical/Methods revision or new scientific verdict. Existing manuscript bytes and negative E7 interpretation remain intact. The historical claim of closed storage/process ownership is not today's authority: central #486 retains CSR-B1/CSR-B2, and manuscript/theory owners retain mathematical-context, novelty/literature and final editorial revision. Submission/release holds and no-Hupsel-rerun guard remain explicit. Existing registry `publication_regie_closeout_20261011.theory_handoff_closeout` owns recovery.
+
+
+### Verified theory handoff closure and current remaining owners
+
+The bounded archival successor is canonical at `cfbd81b61e2ef5462ef4b719be0bc2ee02e80e9e`, tree `9ae690af3557334d3ef70755b81d7c4bbd043ab2`, fetched and verified before original #587 closure. #587 is CLOSED/UNMERGED, original `ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3` and branch retained, comment6109146606. All five archive members, both exact original postimages and complete incumbent manuscript verified. Documentation source/strict MkDocs, JSON/whitespace and six unchanged science/execution subtrees pass. No Actions at either new archival admission; no dispatches or recovery refs. Existing registry routes actual scientific/editorial gates independently of the now-closed documentary carriers.
+
+Fresh queue has17 PRs:16 owner candidates and canonical integration58. The exact current heads/branches are persisted under existing `publication_regie_closeout_20261011.theory_handoff_closeout.fresh_open_pr_census`. This table supersedes only the earlier active-carrier routing; historical dispositions/evidence stay intact.
+
+| Open PR | Existing owner | Actual remaining admission/closure gate |
+| --- | --- | --- |
+| #1119 | PPA-WU05B frost | Current dependency recompose, bounded/highest qualification and mandatory preservation; focused normal/low-air success alone is insufficient. |
+| #1098, #1103, #1117 | SW431 nutrient/solute/hydraulic owners | Owned source/layout/binding, mass/restart qualification and exact production-admission proposal; consolidated qualification is not blanket admission. |
+| #1072 | SWAP431 mastercoverage | Reconcile four admitted thermal dispositions and bounded irrigation/crop annotations; qualify current dependency inheritance before global recount. |
+| #1009 | F-MIG431-INT12 SWINTER1 | Actual physical accepted-source-window/E2E composition and preservation against admitted crop1204; simulated FMR evidence is insufficient. |
+| #1008 | PPA oxygen PERF03 | Full preregistered Bartholomeus-route attribution and scientific equivalence; no general performance claim. |
+| #987 | PPA RFM A27/A28 | Q4 long-history/trusted replay/nonpublication rollback; fixed64 default retained, opt-in approximation branch-only. |
+| #953, #956 | SW-RIB TOP02/TOP03 shared admission | Combined exactly-once transaction/mass, accepted-window/external-body/storage, transient/restart and numerical preservation. |
+| #740 | F-PE ELASTIC source/calibration | Final disposition of unique M5 inverse20-kPa corpus/scale transfer; admitted M1 h=-100 is not same-policy supersession. |
+| #700 | PPA migration reconciliation | Map862 historical paths to typed successors; ten divergent shared source owners require disposition before any wholesale replay. |
+| #528 | F-GC fixed-interface research/shared authority | PB01 sign/orientation/storage production-contract reconciliation by central F-GC; isolated roots/tangents cannot authorize sign repair. |
+| #486 | Central F-GC | CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP. Submission held; no Hupsel rerun. |
+| #365 | DIF-P0 | Independent second iterative nonlinear Richards method for H3; RossFast is a different formulation. P0A is not full Phase0. |
+| #389 | PUB-Stromingen editorial | Internal review; current public NHI terms/status and owner authorship/editorial decisions before external publication. |
+
+Owners without an open historical carrier remain explicit: PUB-ME G1/P1-Q06,G2 checkpoint/restore/rerun,G3 warm-start,G4 additional hydrologic replication,G5 dated literature/final novelty; PUB-GC substantive mathematical-context/Methods revision and literature/novelty; PUB-GC R1/L1/A3, authors and42 finalization placeholders. MC-CROP01 retains grown-root/delayed-emergence/whole lifecycle/CLI/disk continuation; MC-IRR01 retains shared management application-hook admission and independent external allocation. Snow/thermal shared state/event timing and EB-I25/F-KT22 energy ledger retain existing central/thermal owners. No new production physics, fullcap promotion or global coverage count.
