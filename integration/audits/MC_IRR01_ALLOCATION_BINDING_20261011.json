@@ -1,0 +1,31 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "PROPOSED_OWNER_ALLOCATION_BINDING",
+  "baseline": "3b9223720e4fea58ba4256c10be2faaf686011c8",
+  "capability": "SW431-IRR-AVAIL",
+  "source_authority": "B1.11 irrigation.f90 TASK4 lines 633-636: externally supplied f_irr_avail applies postselection; qssdi rate unchanged, positive configured rate scales duration",
+  "reconciliation": "Scalar restriction and physical/event restart already admitted. Persist the external availability receipt with selected event identity, without changing mass/state/solver owners or inventing an external allocation physics model.",
+  "allowed_surface": "New irrigation-owned runtime wrapper plus typed external input/receipt/restart record; reuse existing root/sensor preparation and physical interval execution.",
+  "contract": "External caller supplies source_id>0, revision>=0, finite selection-valid time window and fraction in [0,1]. Resolve only at event selection. Publish receipt only with accepted event and physical state. Preserve original receipt throughout retry/in-flight/restart even if a later external record changes. Next event selects fresh receipt.",
+  "held_fixed": [
+    "existing event rate/duration source semantics",
+    "common historical TASK4 modifier",
+    "shared physical state and ledgers",
+    "crop/root/drainage/solute ownership",
+    "existing numerical gates"
+  ],
+  "required_gates": [
+    "invalid/stale allocation rejected atomically",
+    "real production restriction and conserved mass O0/O2",
+    "provider changes do not reselect in-flight events",
+    "event+receipt+physical restart bit identity",
+    "repeated events use fresh allocation",
+    "exact production and F-CI preservation"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "fullcap_promotions": 0
+}
