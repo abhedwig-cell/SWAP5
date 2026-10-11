@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "66c313a73f83fbb6b3460d4d167ba9ff28da0c7a",
-  "last_reconciled_head": "66c313a73f83fbb6b3460d4d167ba9ff28da0c7a",
+  "checkpoint_commit": "d1875355b2bc83514c0852c0caac2b98703c3810",
+  "last_reconciled_head": "d1875355b2bc83514c0852c0caac2b98703c3810",
   "last_reconciled_upstream": "c7879cdf54fce43d668877f5a0a4d71806df7426",
   "implemented": true,
   "persisted": true,
@@ -64,8 +64,8 @@
     23,
     29
   ],
-  "next_action": "Run the existing F-APP07 owner gate once on persisted admission candidate 66c313a73f83fbb6b3460d4d167ba9ff28da0c7a, verify required canonical preservation, then admit or return the bounded cluster. Do not repeat owner qualification for metadata-only successors.",
-  "recovery_point": "integration/regie-mc-irr01-admission-20261011@66c313a73f83fbb6b3460d4d167ba9ff28da0c7a",
+  "next_action": "Run the existing F-APP07 owner gate once on persisted admission candidate d1875355b2bc83514c0852c0caac2b98703c3810, verify required canonical preservation, then admit or return the bounded cluster. Do not repeat owner qualification for metadata-only successors.",
+  "recovery_point": "integration/regie-mc-irr01-admission-20261011@d1875355b2bc83514c0852c0caac2b98703c3810",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
   "qualification": {
@@ -181,7 +181,7 @@
   },
   "admission_reconciliation_20261011": {
     "canonical_base": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-    "candidate_head": "66c313a73f83fbb6b3460d4d167ba9ff28da0c7a",
+    "candidate_head": "d1875355b2bc83514c0852c0caac2b98703c3810",
     "source_candidate": "origin/integration/mc-irr01-isolated-20261008@90923773e30cb11bac88677d74d94cc58778b5dd",
     "qualified_integration_head": "4ed0a6d62eae82f46d9f79d06b764e141474c9e2",
     "owner_production_and_test_blobs": "BYTE_IDENTICAL",
