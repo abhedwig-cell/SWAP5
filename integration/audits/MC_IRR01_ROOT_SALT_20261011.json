@@ -1,0 +1,28 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "PROPOSED_OWNER_RUNTIME_COMPLETION",
+  "baseline": "a388f789566e92d758e46df0a100601938f2189b",
+  "source_authority": "B1.11 SWAP/irrigation.f90 TASK3 lines 589-595 applies scalar salt excess after DCSLIM for every scheduled timing criterion, not only sensor triggers",
+  "reconciliation": "Existing sensor production applies the scalar modifier. Root TCS2/3/4/6 runtime has no salt fields and bypasses that modifier. This is a real runtime binding gap, separate from external MC-SOL01 accepted concentration authority.",
+  "design": "Extract existing scalar modifier without changing its operation into irrigation-owned common pure routine; reuse it in both sensor and root management production paths. Add default-disabled salt parameters/request values only to irrigation-owned types. Apply after depth limits, before rate normalization and TASK4 availability. No crop/root, hydraulic, drainage, solute or shared physical state changes.",
+  "invariants": [
+    "Single mass owner",
+    "Rejected trial preserves committed event/physical state",
+    "No duplicate salt implementation",
+    "Existing default-disabled behavior preserved",
+    "In-flight event does not reselect salt or depth"
+  ],
+  "verification_required": [
+    "Existing literal source and owner O0/O2 preservation",
+    "Source-oracle scalar salt cases root triggers with DCSLIM and TASK4",
+    "Real physical root onset, mass, event restart with salt/availability",
+    "Exact-head scientific and F-CI canonical preservation before admission"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "fullcap_promotions": 0,
+  "external_authority_remaining": "MC-SOL01 supplies accepted sensor concentration with state/revision identity; no manufactured solute authority."
+}
