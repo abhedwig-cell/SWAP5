@@ -1,0 +1,42 @@
+{
+  "workstream": "MC-CROP01",
+  "unit": "Delayed emergence and same-day rooted weather growth",
+  "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+  "status": "IMPLEMENTED_PERSISTED_LOCAL_O0_O2_PENDING",
+  "stages": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "authority": "User-delegated MC-CROP01 central admission; existing physical lifecycle contract and PR1206 continuation order",
+  "contract": [
+    "Explicit opt-in single-column daily rooted AIR/no-snow/default-MVG bottom7 profile, ROOT_COMP_OFF. Existing Feddes/DVS/canopy/WOFOST/F-KT owners; no process or solver physics change.",
+    "Previous accepted preparation/sowing/germination alone authorize delayed emergence; TDWI biomass initialized inside existing F-WOF38 candidate with preceding actual accepted hydrological receipt. No growth during that previous pre-emergence window.",
+    "Active growth uses retained preceding immutable weather record and its Gregorian DOY/radiation in source units, completed with its own accepted root uptake; current morning weather never substitutes for previous growth weather.",
+    "Root geometry and canopy are derived from the current committed crop owner, checked against application lineage/revision/time; shared reference ET produces transpiration, existing Feddes adapter produces sink, unchanged dispatcher accepts actual soil transactions.",
+    "Root OFF makes submitted sink equal solver sink throughout a bounded interval; accepted contribution certified only after actual F-KT commit. Any compensated/oxygen/salinity/frost profile remains outside this unit.",
+    "Retry publishes no owner/receipt until F-KT acceptance; joint bundle retains preceding weather record and both accepted windows. Harvest/rotation/fallow/full historical closure remain open."
+  ],
+  "held_fixed": [
+    "HeadCalc, numerical/mass/temporal policies and tolerances",
+    "Root/heat/irrigation scientific owner arithmetic",
+    "Original highest frost runners/assertions/budgets"
+  ],
+  "qualification_required": [
+    "Authentic multi-day delayed emergence -> biomass growth and positive physical root extraction, hard mass, negative/retry/rollback, exactly-once, joint restart, O0/O2",
+    "Literal authenticated astro/emergence arithmetic oracle and existing WOFOST growth owner/reference gates",
+    "Affected owner preservation, full F-CI, exact source successor plus highest frost compile-closure preservation"
+  ],
+  "next_action": "Implement complete dependent composition, persist, run local O0/O2; no canonical admission until declared scientific and preservation gates pass.",
+  "files": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/crop/mod_crop_lifecycle_continuation.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/test_crop_file_weather_production.f90"
+  ]
+}
