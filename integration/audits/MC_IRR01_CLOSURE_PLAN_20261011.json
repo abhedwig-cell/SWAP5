@@ -1,0 +1,135 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "RECONCILED_PRODUCTION_BINDING_PLAN",
+  "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+  "source_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+  "master_head": "e4c5a9583494c31052178f841d62c0388f93e525",
+  "capabilities": [
+    {
+      "capability_id": "SW431-IRR-TCS2",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-TCS3",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-TCS4",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-TCS6",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-TCS7",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-TCS8",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-DCS1",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-FIXED-SPRINK",
+      "master_disposition": "ADMITTED",
+      "admission": true,
+      "next_gate": "Retain bounded #1195 authority"
+    },
+    {
+      "capability_id": "SW431-IRR-SCHED-SURF",
+      "master_disposition": "ADMITTED",
+      "admission": true,
+      "next_gate": "Retain bounded #1195 authority"
+    },
+    {
+      "capability_id": "SW431-IRR-SSDI",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-FREQ",
+      "master_disposition": "ADMITTED",
+      "admission": true,
+      "next_gate": "Retain bounded #1195 authority"
+    },
+    {
+      "capability_id": "SW431-IRR-LIMIT",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-SALTEXCESS",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-DAILY",
+      "master_disposition": "ADMITTED",
+      "admission": true,
+      "next_gate": "Retain bounded #1195 authority"
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-CAP",
+      "master_disposition": "ADMITTED",
+      "admission": true,
+      "next_gate": "Retain bounded #1195 authority"
+    },
+    {
+      "capability_id": "SW431-IRR-AVAIL",
+      "master_disposition": "ACTIVE_MIGRATION",
+      "admission": false,
+      "next_gate": "Exact-source and real physical runtime, then bounded central admission"
+    }
+  ],
+  "allowed_changes": [
+    "New management forcing binding consuming existing accepted hydraulic snapshot and physical forcing types",
+    "Owner tests, literal source oracle, evidence, status",
+    "Exact bounded preservation successor after scientific gates"
+  ],
+  "excluded_changes": [
+    "crop/root ownership and hydraulic service interfaces",
+    "drainage, solver, shared physical state implementation",
+    "Master owner branch without exact delta reconciliation"
+  ],
+  "invariants_affected": [
+    3,
+    7,
+    9,
+    13,
+    21,
+    22,
+    23,
+    29
+  ],
+  "implementation_plan": "Reuse management evaluator and existing event/restart state. Bind selected SSDI source to real runtime forcing. Test TCS2/3/4/6 and DCS1/LIMIT through authoritative Richards mass accounting, without balancing the irrigation away. Extend sensor runtime proof to TCS8/salinity/availability. Resolve multi-node SSDI source semantics explicitly before any unrestricted admission.",
+  "source_discrepancies": [
+    "Scheduled SSDI writes full rate to every selected node, while fixed SSDI divides depth at read time but not positive configured rate. A total-depth normalisation cannot be introduced silently.",
+    "TASK4 scales gird and positive-rate duration; it does not scale qssdi. Existing generic availability scaling scales SSDI rate too. Multi-node and SSDI availability require literal oracle and reference-policy disposition."
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "next_action": "Create bounded production management forcing binding and run real O0/O2 mass/storage verification; keep source discrepancies separate."
+}
