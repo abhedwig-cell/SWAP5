@@ -69,6 +69,14 @@
     "master_count_delta": 0
   },
   "canonical_admission_owner": "Delegated MC-CROP01 central application authority",
+  "master_reconciliation": {
+    "pr": 1072,
+    "head": "a0ea55bf3c53237be9ee9c9efa1d560d8c234f64",
+    "tree": "068699f7240593466da766cd7785e7cad75698f9",
+    "scope": "Only SW431-CROP-SOW and corresponding remaining_queue now acknowledge PR1209 current-day/final-window growth. Exact baseline comparison preserves all other master fields/rows/dispositions/counts; master remains draft, full lifecycle ACTIVE_MIGRATION and zero fullcap promotion.",
+    "verified_master_branch_counts": "243 total:95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,4 QUALIFICATION_ONLY",
+    "external_source_census_checker_claim": false
+  },
   "qualification_diagnostics": [
     "Early focused archive sealing failed closed on a missing terminal PASS and created no archive. The subsequent strengthened runner terminated with exit0 before successful sealing; no production change or numerical weakening was made for this diagnostic.",
     "Complete frost sealing first refused a dirty documentary receipt; that observed terminal-exit receipt was committed before successful sealing. All24 fresh configurations/144 fine comparisons are verified against the immutable original authority."

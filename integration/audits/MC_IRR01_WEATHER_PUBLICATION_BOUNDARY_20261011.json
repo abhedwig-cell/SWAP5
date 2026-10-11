@@ -1,10 +1,10 @@
 {
   "work_unit": "MC-IRR01",
-  "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
-  "phase": "CURRENT_DAYEND_OWNER_REQUALIFICATION_PENDING",
+  "baseline": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
+  "phase": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
   "implemented": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_delta": "NONE",
   "shared_interface_decision": "STILL_OPEN",
   "scope": "Actual admitted one-column root-free authentic weather bootstrap incomplete-dispatch outer publication boundary, in-process joint restart and successful retry. No managed forcing hook or fullcap claim.",
@@ -25,14 +25,14 @@
     "O0/O2 and continuous/restored identity",
     "After first outer committed interval, failed next segment retains common accepted prefix and coherent continuation; second short retry equals clean two-segment state"
   ],
-  "next_action": "Repeat actual publication boundary on admitted PR1209 bootstrap source and current owner fixture. Existing profile still has file_weather_dayend=false. Preserve prior raw proof and reject inherited current-head qualification until terminal O0/O2.",
+  "next_action": "Admit bounded test/evidence record. Central RT/HY with MC-CROP01 still decides managed profile, allocation preparation seam, per-completed-segment receipt publication and schema-tagged joint irrigation continuation before shared implementation.",
   "recovery_branch": "work/mc-irr01-publication-probe-20261011",
   "fullcap_promotions": 0,
   "first_probe_result": "PASS_O0_O2_ONE_INTERNAL_PREFIX_DISCARDED_JOINT_RESTART_CLEAN_RETRY",
   "first_probe_head": "c9bf04fa1a308c5f8dc4021359e683b0c4020528",
   "qualification": {
-    "test_head": "9e13066e7f49d509beaeda0fd883c474781b877e",
-    "local_equivalent_head": "25df0108",
+    "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7",
+    "local_equivalent_head": "3c6e628f",
     "command": "python tests/mc-irr01/run_weather_publication_probe.py",
     "exit_code": 0,
     "O0_O2": "BYTE_IDENTICAL_STDOUT",
@@ -41,38 +41,36 @@
     "incomplete_kernel_status": 4,
     "successful_committed_segments": 2,
     "mass_threshold_cm": 1e-12,
-    "scope": "Existing single-column root-free default-MVG bottom7 authentic Jan20 Andelst rain0mm/reference ET0.2355mm/day; configured 30cm four-node homogeneous fixture; no irrigation source inserted. Failed0.5-day requests; successful1e-6-day segments; no full-day integrated trajectory or quantitative accuracy claim."
+    "scope": "Existing single-column root-free default-MVG bottom7 authentic Jan20 Andelst rain0mm/reference ET0.2355mm/day; configured 30cm four-node homogeneous fixture; no irrigation source inserted. Failed0.5-day requests; successful1e-6-day segments; no full-day integrated trajectory or quantitative accuracy claim.",
+    "file_weather_dayend": false,
+    "dayend_profile_qualified": false
   },
   "evidence": {
-    "archive": "integration/audits/evidence/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.tar.gz.b64",
-    "decoded_sha256": "6aafd6d6712b2be3ce480ef0c43616e4dab737d4c135662e1848479b6d5a9dd5",
+    "archive": "integration/audits/evidence/MC_IRR01_WEATHER_PUBLICATION_PR1209_20261011.tar.gz.b64",
+    "decoded_sha256": "0f24f34e08662003fe93d2874b0c36da502f73b367ee6c0e117dde9cb487e7eb",
     "members": {
-      "first-prefix.log": {
-        "sha256": "3444891aa3b2e506cbe9cafea70b3cff38d15ac2c895a42b9a59e8947e2ac593",
-        "bytes": 2789
-      },
-      "completed-prefix.log": {
-        "sha256": "97ba0741693736d6ae0cb1eb108848b1b0697b0afd25dacd4e479c1a6aab2fd3",
-        "bytes": 3224
-      },
       "compiler.txt": {
         "sha256": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
         "bytes": 254
+      },
+      "completed-prefix-pr1209.log": {
+        "sha256": "8c6a4cbe4947b9a1b34e2ce29f5a32fefeb731baf3266737622d5fbdfe67bb61",
+        "bytes": 3224
+      },
+      "dependency_manifest.json": {
+        "sha256": "03e7e496a0af56bee37e861066ba01b640c69ef8def0b62fa94a1131796a4e3b",
+        "bytes": 51173
+      },
+      "generated_driver.f90": {
+        "sha256": "7a177ccc8dc6b3a26b6caae388edebfc70e425d32efeda61191a7969c3901e56",
+        "bytes": 79955
       },
       "generated_runner.sh": {
         "sha256": "e431fef9e7914fffdef7fb632a684c62da4bf143a6ef1c644982161bdc995dfd",
         "bytes": 10529
       },
-      "generated_driver.f90": {
-        "sha256": "9246ad72a656f4686d35ee7cb44fb693209a3c976a1374bddaad9ff5e82134b7",
-        "bytes": 70992
-      },
-      "dependency_manifest.json": {
-        "sha256": "c0f76dda3b113d88f37b488c4c59ffed1d25f0d794ab2440fc21fe3588fdeab3",
-        "bytes": 51173
-      },
       "run_weather_publication_probe.py": {
-        "sha256": "e3f634a1a92deefd5880b61b84a304fe16ccffdae81200dcdaf68cd5beb3ba6f",
+        "sha256": "81786b75d012f2ed74004f8e56b5507bab02a93a83982210a4b9689ec844ffd0",
         "bytes": 2750
       },
       "test_weather_publication_probe.inc": {
@@ -93,13 +91,13 @@
   ],
   "canonical_admitted": false,
   "validation": {
-    "archive8_members_and229_input_identities": "PASS",
     "production_and_original_crop_fixture_byte_identity": "PASS",
     "documentation_source": "PASS",
     "strict_mkdocs": "PASS",
     "whitespace": "PASS",
     "full_FCI": "NOT_RERUN_NO_CHANGED_PRODUCTION_OR_INCUMBENT_EXECUTION_SURFACE",
-    "new_fullcap_admissions": 0
+    "new_fullcap_admissions": 0,
+    "archive_members_and_input_identities": "PASS_7_MEMBERS_229_INPUTS"
   },
   "prior_qualification_20261011": {
     "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
@@ -156,5 +154,6 @@
       "input_manifest_count": 229
     }
   },
-  "last_reconciled_upstream": "be5a14761b3ddedfe7052cf0c6e5ce7985803190"
+  "last_reconciled_upstream": "7315be4f",
+  "upstream_reconciliation": "PR1209 bootstrap and updated owner driver requalified O0/O2 with default file_weather_dayend=false; later7315be4f changes only crop status/control documentation and is preserved. No dayend mode qualification inherited."
 }

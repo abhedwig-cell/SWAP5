@@ -216,7 +216,10 @@
       "record": "integration/audits/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.json",
       "scope": "Actual admitted one-column root-free weather application; no inserted irrigation",
       "result": "PASS internal accepted incomplete rollback, complete common-prefix preservation, joint opaque restart and clean retry O0/O2",
-      "does_not_accept_shared_interface": true
+      "does_not_accept_shared_interface": true,
+      "requalified_crop_pr": 1209,
+      "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7",
+      "file_weather_dayend": false
     }
   },
   "current_owner_reconciliation_20261011": {
