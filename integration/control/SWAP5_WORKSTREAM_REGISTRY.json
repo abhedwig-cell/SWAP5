@@ -954,5 +954,215 @@
     "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
     "local_fci": "PASS",
     "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  },
+  "owner_research_reconciliation_20261011": {
+    "canonical_base": "87a9516e43562e241ea0511b56da9be1c257c116",
+    "stage": "EVIDENCE_PRESERVED_READY_FOR_TWO_HISTORICAL_RESEARCH_CLOSURES",
+    "canonical_delta_reconciled": {
+      "since": "8f90abfa6e3b3d854eaea39d044e01a675a71abf",
+      "admission": 1200,
+      "canonical_merge": "ea4759a0633011f26e8ee43126db2484c0def8b3",
+      "authority": "integration/audits/MC_IRR01_PR1200_CHECK_RECONCILIATION_20261011.json",
+      "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+      "effect": "Retain stable constitutive storage arithmetic and its qualified owner/F-CI postimage; do not replay older research providers or broaden fullcap disposition."
+    },
+    "closures": [
+      {
+        "pr": 1001,
+        "owner": "PPA-WU05-C3A performance",
+        "head": "162dd96e95d138b2750888fbbb79b411d0dee007",
+        "tree": "e499f38341c04ebc6e6afc9a86ce1382ecc3a835",
+        "recovery_ref": "recovery/regie-pr1001-20261011-162dd96e",
+        "tested_merge": "33cc1fdfc00d61ad51879c272908cebc2ad50d31",
+        "tested_tree": "47a3f95467f99b0ccb8dab49de35264f7973c3af",
+        "tested_recovery_ref": "recovery/regie-pr1001-tested-20261011-33cc1fdf",
+        "run": 37112457801,
+        "job": 111172863478,
+        "run_result": "SUCCESS; historical O3 measurement, not a current O0/O2 admission qualification",
+        "files": {
+          "tests/performance/benchmark_bartholomeus_e2e.f90": "51cce3482fef6fc5e52cf877f6a5be5bf62b61b8",
+          "tests/performance/run_bartholomeus_e2e.py": "7e9f9be04b6864268c8a142b4e7a56470d3e655f"
+        },
+        "disposition": "COMPLETED_HISTORICAL_MEASUREMENT_CARRIER_RESEARCH_DIRECTION_SUPERSEDED",
+        "successors": [
+          "PR1007 docs/audits/PPA_WU05C3A_E2E05_CLOSEOUT.md Decision B at 0d3b27e09b887cbb9bea1fe789dc1d7241fa7bf7",
+          "PR1008 docs/audits/PPA_WU05C3A_PERF03_PREREGISTRATION.md at f4f698ddfe2c12d2676afc7e11347bb9410a08be"
+        ],
+        "claim_boundary": "ON/OFF fixture timing and initial conservative gate diagnostics only. Later E2E05 reconciles physical oxygen construction and both current/z0 demand carriers; historical matrix cannot override that corrected frontier. No general eligibility frequency, season, portable speed or canonical production admission.",
+        "scientific_log_excerpt": [
+          "2026-10-03T09:16:28.6060348Z HEAD is now at 33cc1fd Merge 162dd96e95d138b2750888fbbb79b411d0dee007 into e3bfcdca00ba89cfeea529cf9b648dcc803483ab",
+          "2026-10-03T09:17:24.0458103Z E2E_GATE_NODE=1 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  1.18722E-03 CTOP=  2.75846E-01 CMACRO=  2.75840E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.0460567Z E2E_GATE_NODE=2 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  1.18254E-03 CTOP=  2.75840E-01 CMACRO=  2.75833E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.0462731Z E2E_GATE_NODE=3 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  1.17786E-03 CTOP=  2.75833E-01 CMACRO=  2.75820E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.2103695Z E2E_MATRIX_HEAD= -7.5000E+01 DENS_SCALE= 1.000E-02 SKIP=F ON_NS=  1.200000E+05 OFF_NS=  3.000000E+04 RATIO=  4.000000E+00",
+          "2026-10-03T09:17:24.2676902Z E2E_MATRIX_HEAD= -7.5000E+01 DENS_SCALE= 3.000E-02 SKIP=F ON_NS=  1.200000E+05 OFF_NS=  2.500000E+04 RATIO=  4.800000E+00",
+          "2026-10-03T09:17:24.3274508Z E2E_MATRIX_HEAD= -7.5000E+01 DENS_SCALE= 1.000E-01 SKIP=F ON_NS=  1.250000E+05 OFF_NS=  2.500000E+04 RATIO=  5.000000E+00",
+          "2026-10-03T09:17:24.3967172Z E2E_MATRIX_HEAD= -7.5000E+01 DENS_SCALE= 3.000E-01 SKIP=F ON_NS=  1.200000E+05 OFF_NS=  3.000000E+04 RATIO=  4.000000E+00",
+          "2026-10-03T09:17:24.3967656Z E2E_GATE_NODE=1 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  3.50381E-03 CTOP=  2.75846E-01 CMACRO=  2.75827E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.3968218Z E2E_GATE_NODE=2 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  3.03582E-03 CTOP=  2.75827E-01 CMACRO=  2.75810E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.3968764Z E2E_GATE_NODE=3 GFP=  7.70884E-02 DSOIL=  4.89537E-03 DEMAND=  2.56782E-03 CTOP=  2.75810E-01 CMACRO=  2.75782E-01 CMIC_UB=  1.89692E+00 CMIC_REF=  1.48180E+00 FILM_UB=  3.31296E-04",
+          "2026-10-03T09:17:24.4534967Z E2E_MATRIX_HEAD= -7.5000E+01 DENS_SCALE= 1.000E+00 SKIP=F ON_NS=  1.250000E+05 OFF_NS=  5.000000E+04 RATIO=  2.500000E+00",
+          "2026-10-03T09:17:24.5062334Z E2E_MATRIX_HEAD= -1.5000E+02 DENS_SCALE= 1.000E-02 SKIP=F ON_NS=  1.000000E+05 OFF_NS=  3.000000E+04 RATIO=  3.333333E+00",
+          "2026-10-03T09:17:24.5583805Z E2E_MATRIX_HEAD= -1.5000E+02 DENS_SCALE= 3.000E-02 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  2.500000E+04 RATIO=  3.200000E+00",
+          "2026-10-03T09:17:24.6278933Z E2E_MATRIX_HEAD= -1.5000E+02 DENS_SCALE= 1.000E-01 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  3.000000E+04 RATIO=  2.666667E+00",
+          "2026-10-03T09:17:24.6807881Z E2E_MATRIX_HEAD= -1.5000E+02 DENS_SCALE= 3.000E-01 SKIP=F ON_NS=  1.000000E+05 OFF_NS=  5.000000E+04 RATIO=  2.000000E+00",
+          "2026-10-03T09:17:24.7329906Z E2E_MATRIX_HEAD= -1.5000E+02 DENS_SCALE= 1.000E+00 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  2.500000E+04 RATIO=  3.200000E+00",
+          "2026-10-03T09:17:24.7848124Z E2E_MATRIX_HEAD= -3.0000E+02 DENS_SCALE= 1.000E-02 SKIP=F ON_NS=  1.050000E+05 OFF_NS=  5.000000E+04 RATIO=  2.100000E+00",
+          "2026-10-03T09:17:24.8544920Z E2E_MATRIX_HEAD= -3.0000E+02 DENS_SCALE= 3.000E-02 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  2.500000E+04 RATIO=  3.200000E+00",
+          "2026-10-03T09:17:24.9076775Z E2E_MATRIX_HEAD= -3.0000E+02 DENS_SCALE= 1.000E-01 SKIP=F ON_NS=  1.050000E+05 OFF_NS=  5.000000E+04 RATIO=  2.100000E+00",
+          "2026-10-03T09:17:24.9593435Z E2E_MATRIX_HEAD= -3.0000E+02 DENS_SCALE= 3.000E-01 SKIP=F ON_NS=  1.050000E+05 OFF_NS=  5.000000E+04 RATIO=  2.100000E+00",
+          "2026-10-03T09:17:25.0114070Z E2E_MATRIX_HEAD= -3.0000E+02 DENS_SCALE= 1.000E+00 SKIP=F ON_NS=  1.050000E+05 OFF_NS=  5.000000E+04 RATIO=  2.100000E+00",
+          "2026-10-03T09:17:25.0114546Z E2E_GATE_NODE=1 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  4.97413E-05 CTOP=  2.75846E-01 CMACRO=  2.75846E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.0115095Z E2E_GATE_NODE=2 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  4.95844E-05 CTOP=  2.75846E-01 CMACRO=  2.75846E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.0115742Z E2E_GATE_NODE=3 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  4.94275E-05 CTOP=  2.75846E-01 CMACRO=  2.75845E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.0641434Z E2E_MATRIX_HEAD= -6.0000E+02 DENS_SCALE= 1.000E-02 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  3.000000E+04 RATIO=  2.666667E+00",
+          "2026-10-03T09:17:25.1319458Z E2E_MATRIX_HEAD= -6.0000E+02 DENS_SCALE= 3.000E-02 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  3.000000E+04 RATIO=  2.666667E+00",
+          "2026-10-03T09:17:25.1843812Z E2E_MATRIX_HEAD= -6.0000E+02 DENS_SCALE= 1.000E-01 SKIP=F ON_NS=  1.050000E+05 OFF_NS=  5.000000E+04 RATIO=  2.100000E+00",
+          "2026-10-03T09:17:25.2364233Z E2E_MATRIX_HEAD= -6.0000E+02 DENS_SCALE= 3.000E-01 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  3.000000E+04 RATIO=  2.666667E+00",
+          "2026-10-03T09:17:25.2364711Z E2E_GATE_NODE=1 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  1.27413E-04 CTOP=  2.75846E-01 CMACRO=  2.75845E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.2365272Z E2E_GATE_NODE=2 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  1.11722E-04 CTOP=  2.75845E-01 CMACRO=  2.75845E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.2365932Z E2E_GATE_NODE=3 GFP=  2.42238E-01 DSOIL=  1.46007E-01 DEMAND=  9.60305E-05 CTOP=  2.75845E-01 CMACRO=  2.75844E-01 CMIC_UB=  8.47631E-01 CMIC_REF=  7.42768E-01 FILM_UB=  2.92996E-05",
+          "2026-10-03T09:17:25.2886645Z E2E_MATRIX_HEAD= -6.0000E+02 DENS_SCALE= 1.000E+00 SKIP=F ON_NS=  8.000000E+04 OFF_NS=  3.000000E+04 RATIO=  2.666667E+00",
+          "2026-10-03T09:17:25.2886770Z PPA_WU05C3A_E2E_BENCHMARK=PASS"
+        ]
+      },
+      {
+        "pr": 1005,
+        "owner": "PPA-WU05-C3A performance sequential-host research",
+        "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e",
+        "tree": "7d3ae832c47697edaed6cc4947f955be70672713",
+        "recovery_ref": "recovery/regie-pr1005-20261011-6e0b78a8",
+        "tested_merge": "e2ce38129d75c9cfd15fe41ecadf0db4a8ce9ec2",
+        "tested_tree": "2186bab2e5ed714d5cc0ed75a3b2f82cefa2d7ff",
+        "tested_recovery_ref": "recovery/regie-pr1005-tested-20261011-e2ce3812",
+        "run": 37124112956,
+        "job": 111205856925,
+        "run_result": "SUCCESS; historical O2 constant-host characterization, not a current O0/O2 admission qualification",
+        "files": {
+          "tests/performance/characterize_bartholomeus_e2e04.f90": "6283018ca2e35814c2b70b6e9f0eac9af26ba8a6",
+          "tests/performance/run_bartholomeus_e2e04.sh": "2e67c0334ffc513e0d47315f96261395263e239b"
+        },
+        "disposition": "COMPLETED_HISTORICAL_CONSTANT_HOST_CHARACTERIZATION",
+        "result": "120 accepted daily states, zero PERF02 hits; zero reported net/storage change and constant h1=-10. Final fixture is constant forcing, not a dynamic seasonal workload.",
+        "successors": [
+          "PR1007 corrected nonstationary BOFEK screening and independent holdout Decision B",
+          "PR1008 full stress-route cost attribution"
+        ],
+        "claim_boundary": "Retain original host observation including reported one-host A2 timing, without attributing 51.28% to PERF02 (zero hits) or inferring dynamic/full-season/portable speed. Research fixture is not production admission.",
+        "scientific_log_excerpt": [
+          "2026-10-03T12:49:21.5111462Z HEAD is now at e2ce381 Merge 6e0b78a8876c3878cf7daddc477a0daec000ba1e into 43b1b0237efe340a1d01d175d277a2a189a5a377",
+          "2026-10-03T12:49:44.6271207Z E2E04_GATE|DAY=1|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6298916Z E2E04_GATE|DAY=10|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6326299Z E2E04_GATE|DAY=20|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6353822Z E2E04_GATE|DAY=30|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6381281Z E2E04_GATE|DAY=40|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6409053Z E2E04_GATE|DAY=50|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6445552Z E2E04_GATE|DAY=60|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6464070Z E2E04_GATE|DAY=70|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6492512Z E2E04_GATE|DAY=80|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6519952Z E2E04_GATE|DAY=90|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6547412Z E2E04_GATE|DAY=100|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6574628Z E2E04_GATE|DAY=110|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6602094Z E2E04_GATE|DAY=120|SKIP=F|H1=-10.000000000000000|THETA1=0.39329335069586341",
+          "2026-10-03T12:49:44.6765907Z E2E04_GATE_SUMMARY|STEPS=120|HITS=0|FRACTION=0.0000000000000000",
+          "2026-10-03T12:49:44.6768664Z APPROX02_A2_APPLICATION|STEPS=120|DT=1.0000000000000000|TOP_FACTOR=-1.0000000000000000|CANDIDATE_TOL=0.10000000000000000E-3|EXACT_SECONDS=0.33549865999999998E-1|A2_SECONDS=0.16343836000000000E-1|RUNTIME_RATIO=0.48715055970715360|SPEEDUP_PERCENT=51.284944029284638|EXACT_NONLINEAR=120|A2_NONLINEAR=120|EXACT_SUBSTEPS=120|A2_SUBSTEPS=120|EXACT_RETRIES=0|A2_RETRIES=0|EXACT_BACKTRACK=120|A2_BACKTRACK=120|EXACT_MAX_MASS_RESIDUAL=0.0000000000000000|A2_MAX_MASS_RESIDUAL=0.0000000000000000|EXACT_CUM_NET=0.0000000000000000|A2_CUM_NET=0.0000000000000000|CUM_NET_ABS=0.0000000000000000|CUM_NET_REL=0.0000000000000000|EXACT_CUM_STORAGE=0.0000000000000000|A2_CUM_STORAGE=0.0000000000000000|CUM_STORAGE_ABS=0.0000000000000000|CUM_STORAGE_REL=0.0000000000000000|MAX_STORAGE_END_ABS=0.0000000000000000|MAX_STORAGE_END_REL=0.0000000000000000|MAX_STEP_NET_ABS=0.0000000000000000|MAX_STEP_NET_REL=0.0000000000000000",
+          "2026-10-03T12:49:44.6771540Z FPE_APPROX02_A2_APPLICATION_SEQUENCE=PASS",
+          "2026-10-03T12:49:44.6876348Z APPROX02_A2_APPLICATION_SUMMARY|SPEEDUP_PERCENT=51.284944|EXACT_NONLINEAR=120|A2_NONLINEAR=120|EXACT_SUBSTEPS=120|A2_SUBSTEPS=120|EXACT_RETRIES=0|A2_RETRIES=0|MAX_MASS_RESIDUAL=0.00000000000000000e+00|CUM_NET_REL=0.00000000000000000e+00|CUM_STORAGE_REL=0.00000000000000000e+00|MAX_STORAGE_END_REL=0.00000000000000000e+00|MAX_STEP_NET_REL=0.00000000000000000e+00",
+          "2026-10-03T12:49:44.6877560Z FPE_APPROX02_A2_APPLICATION_GATE=PASS"
+        ]
+      }
+    ],
+    "qualification_reconciliation": "Existing owner runs and every returned original-head workflow are terminal. Adjacent original F-CI37112457758/37124113078 failed and remain negative historical evidence; these PRs are closed as research carriers, not admitted production or current F-CI-qualified implementations. No historical evidence is rebound to changed canonical dependencies.",
+    "keep_open": [
+      {
+        "pr": 740,
+        "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+        "owner": "F-PE ELASTIC physical/source parameterization authority",
+        "class": "UNIQUE_M5_SOURCE_AND_TRANSFER_CORPUS_NOT_SUPERSEDED_BY_MINERAL_M1_POLICY",
+        "census": {
+          "changed": 119,
+          "identical_at_canonical": 0,
+          "absent_paths": 116,
+          "different_paths": 3,
+          "top_level": {
+            ".github": 17,
+            "docs": 66,
+            "research": 15,
+            "tests": 21
+          }
+        },
+        "evidence": {
+          "run": 36540669506,
+          "job": 109315024319,
+          "classification": "REFERENCE_PRIOR_POPULATION_QUALIFIED",
+          "intervals": 21,
+          "supported": 16,
+          "extrapolative": 5,
+          "reference_stress_kpa": 20
+        },
+        "blocker": "Owner disposition of unique M5 inverse-stress mechanical/20-kPa wet-state transfer corpus; no same-policy supersession follows from canonical ELASTIC13 mineral M1 h=-100 convention. Need final source-population/scale-transfer routing; do not infer unqualified production ELAS or auto-assign peat.",
+        "next_action": "Keep 119-path corpus and historical terminal research evidence on original head. Owner must decide whether to freeze distinct M5 lineage or produce a separately qualified physical successor."
+      },
+      {
+        "pr": 700,
+        "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+        "owner": "PPA reconciliation authority with MC-CROP01, MC-IRR01, MC-SOL01 and macropore/runtime owners",
+        "class": "HISTORICAL_SYNCHRONIZATION_UNIQUE_CANDIDATES_NOT_ADMISSION_READY",
+        "census": {
+          "changed": 862,
+          "identical_at_canonical": 0,
+          "absent_paths": 773,
+          "different_paths": 89,
+          "src_paths": 160,
+          "absent_src_paths": 150,
+          "different_src_paths": 10,
+          "top_level": {
+            ".github": 28,
+            "docs": 2,
+            "integration": 298,
+            "src": 160,
+            "testbank": 1,
+            "tests": 372,
+            "tools": 1
+          }
+        },
+        "authority": "integration/audits/PPA_RECONCILE01_STATUS.json at original head",
+        "blocker": "Original WU04C trial completed=false/committed=false after legacy-reference-retry. Missing canonical pathnames are not missing physical capabilities: active owners use later typed replacements. Ten shared src paths diverge, including HeadCalc, backend, bootstrap, irrigation, restart and solver contract.",
+        "next_action": "Keep original reconciliation history. Owner maps each unique source/runtime candidate to current capability and successor before selective recovery; never whole-tree merge or blind supersession."
+      },
+      {
+        "pr": 1008,
+        "head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be",
+        "owner": "PPA-WU05-C3A performance",
+        "class": "ACTIVE_PERF03_ATTRIBUTION_KEEP_OPEN",
+        "next_action": "Finish exact-preserving stress-route attribution under existing preregistration; no physics or approximation authorized by regie closeout."
+      }
+    ],
+    "coverage_reconciliation": {
+      "owner_pr": 1072,
+      "head": "f2cfaa1c8d46e7025d7d46a891b92288d5b94e55",
+      "authority": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json at owner head",
+      "canonical_master_present": false,
+      "observed_pending_admission_rows": [
+        "SW431-TEMP-ANALYTIC",
+        "SW431-TEMP-BC3",
+        "SW431-TEMP-BC4",
+        "SW431-TEMP-BOTTOM2"
+      ],
+      "observed_owner_disposition": "ACTIVE_MIGRATION remains on all four despite canonical e326931 admission and existing handoff6107527878",
+      "snow": "SW431-TEMP-SNOW remains active; shared state/event-timing blocker retained; no Frost-SNOW promotion",
+      "irrigation": "Five fullcaps admitted, eleven fullcaps active. Current owner head records #1199 tiny restart/rollback, but later #1200 feasible 1-cm stable-storage annotation remains to reconcile; no fullcap promotion.",
+      "next_action": "Master owner reconciles these exact admissions and bounded irrigation annotations, then validates current dependency/evidence inheritance. Do not import or edit entire active master ledger from central regie.",
+      "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; no global count recomputation claimed"
+    },
+    "preservation": {
+      "changed_surface": "Existing PROJECT-CONTROL and registry only",
+      "production_source_changed": false,
+      "interfaces_changed": false,
+      "invariants_affected": "None; retain transaction, mass, retry/restart and ownership authorities.",
+      "numerical_reruns": "Not required for metadata-only research disposition; no current qualification claim",
+      "new_actions": 0
+    },
+    "next_action": "Persist evidence and fixed owner/tested refs, close only1001/1005 with exact bounded dispositions, record final receipt. Keep remaining unique candidates under their owners."
   }
 }
