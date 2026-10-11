@@ -1,0 +1,30 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
+  "phase": "PERSISTED_APPLICATION_PUBLICATION_PROBE_PENDING",
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "production_delta": "NONE",
+  "shared_interface_decision": "STILL_OPEN",
+  "scope": "Actual admitted one-column root-free authentic weather bootstrap incomplete-dispatch outer publication boundary, in-process joint restart and successful retry. No managed forcing hook or fullcap claim.",
+  "test_paths": [
+    "tests/mc-irr01/run_weather_publication_probe.py",
+    "tests/mc-irr01/test_weather_publication_probe.inc"
+  ],
+  "source_owner_paths": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "source_hypothesis": "Serialized dispatcher discards an incomplete single-column candidate before publishing committed_state, even if its internal transaction accepted substeps. Test before requiring complete detached application staging for the admitted one-column profile.",
+  "preregistered_assertions": [
+    "Exactly one internal accepted substep followed by incomplete outer execution",
+    "No outer physical/crop provenance, pressure, water, ponding, groundwater or retained derivative mutation, including repeated failed attempts",
+    "Capture and restore coherent actual weather/crop/soil continuation after failure",
+    "Successful short retry equals clean origin bitwise with unchanged hard mass and no duplicate publication",
+    "O0/O2 and continuous/restored identity"
+  ],
+  "next_action": "Run persisted actual application probe at O0/O2. Preserve failures; do not alter dispatcher, controller or mass assertions. Narrow shared contract only if evidence passes.",
+  "recovery_branch": "work/mc-irr01-publication-probe-20261011",
+  "fullcap_promotions": 0
+}
