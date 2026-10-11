@@ -103,12 +103,14 @@
     "scope": "Dedicated noncanonical branch; public-source oracle and authority reconciliation only; no production, workflows, existing runners or master changes"
   },
   "remote_persistence": {
-    "completed": false,
+    "completed": true,
     "local_review_head": "e3f4b3c4",
     "blocked_action": "Push dedicated work/mc-irr01-weather-authority-20261011 branch to https://github.com/abhedwig-cell/SWAP5.git",
     "automatic_approval_review": "REJECTED",
     "stated_reason": "Transcript lacks end-user authorization specifying this code/audit/evidence payload and public GitHub destination. Public visibility and connected account push permission were verified, but publication remained rejected.",
-    "required_next_step": "Explicit user authorization to publish this locally tested oracle, evidence archive and six authority/documentation updates to the named repository branch. No workaround or additional publication retry."
+    "required_next_step": "Resolved by explicit user continuation authorization and supported connected Git-data publication; prior rejected push retained as history.",
+    "historical_blocker_resolved": true,
+    "initial_rejection_retained_as_history": true
   },
   "publication_recovery_20261011": {
     "explicit_user_authorization": "Ga door following the exact branch/payload publication request",
@@ -116,6 +118,11 @@
     "supported_fallback": "Connected GitHub Git-data API, with exact local/remote blob and tree verification",
     "canonical_reconciled": "767503dfeac3ea5f550a2925a02ef2a906262865",
     "delta": "Seven isolated drainage documentary/fixture/evidence paths; no production or irrigation dependency changes; preserve both PROJECT-CONTROL additions and both registry updates.",
-    "remote_complete": false
+    "remote_complete": true,
+    "remote_head": "1b7a46510ce35031bfbe73248f78a2d28e409d36",
+    "remote_tree": "63b0417696d634127a0752d778568af1e1c6d2d2",
+    "remote_blobs_verified": 8,
+    "pull_request": 1208,
+    "canonical_admitted": false
   }
 }
