@@ -105,3 +105,35 @@ CO2 correction, alternative roots, harvest/rotation/fallow or SWINCO=3.
 The joint opaque in-process continuation retains accepted soil/heat,
 meteorological provenance, crop and event windows; an external disk codec
 and a legacy CLI front end remain separate open requirements.
+
+## MC-CROP01 current-day growth completion successor
+
+**Implemented, persisted, O0/O2 tested, qualified and preserved;
+canonical admission pending (2026-10-11).** The owning receipt is
+`integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json`, under the
+[current-window contract](../science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md).
+The existing bootstrap's `file_weather_dayend` opt-in and
+`run_weather_crop_dayend` complete the current accepted F-KT daily window
+using its own stored authentic meteorology and actual root extraction.
+The crop transaction remains an ordinary positive interval; no soil replay,
+synthetic tomorrow record or new state owner is introduced.
+
+The next real daystart authenticates its meteorology and opens its physical
+window without repeating the completed crop event. Joint in-process restart
+covers partial, pending and accepted end-completed phases. The seven-day
+integrated regression completes five emerged growth days, including the last
+actual meteorological day, and retains full bitwise hydrology/uptake identity
+with the admitted morning profile. Full crop/soil/heat/Richards O0/O2,
+candidate rejection/retry, duplicate and foreign-owner refusal are checked.
+
+The full moving F-CI and PPA-WU03 preservation controllers both terminated
+with exit0 on clean head `9825deeef3c6c51dc28702e92291dcbdf7f439cf`, source
+tree `b52c70dc50742fdbf5b03f71ec68709b191d0ec7`. Complete highest frost
+qualification covers24 fresh configurations and144 fine comparisons,
+byte-identical to the original authority. Raw owner, frost and full-controller
+archives and exact execution postimages are pinned by the owning receipt.
+
+This is growth completion, not the complete historical day-end chain.
+Harvest, output-before-reset, physical rotation/fallow/new-season authority,
+broader root/weather profiles and external disk restart remain open. All
+PR1207 profile restrictions and the frozen Status-A denominator remain.

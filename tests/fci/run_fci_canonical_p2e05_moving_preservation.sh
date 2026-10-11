@@ -91,7 +91,7 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
-  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
     python3 tests/fmig431/run_crop_rooted_weather_frost_successor.py --verify-only
   elif [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
     python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
@@ -268,6 +268,9 @@ dependency_authority="$(git rev-parse HEAD^1)"
 # canonical source baseline, even when the immediate parent has the same src.
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
   dependency_authority=e35ea0c6801ad0c225ff02e60f24996d2bc0156d
+fi
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
+  dependency_authority=1e689fd2c31bac468df01540b314ea128be4554a
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
@@ -666,7 +669,7 @@ check_b19_micro_root_recomposition() {
     expected_crop_blob=3c6fea3ca43b35b563f25f5dbbd24e90e89b4509
     if (( crop_file_weather_exact_successor )); then
       expected_crop_blob=0f7fccc714a908083f4550394ca1fdd28f354d47
-      if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+      if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
         expected_crop_blob=39b4f75c92ea44d6b4e4be326ddf731f54522dfd
       fi
     fi
