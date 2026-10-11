@@ -1,0 +1,31 @@
+name: F-WOF35 canonical composition
+
+on:
+  push:
+    branches:
+      - integration/f-wof35-accepted-window-canonical-composition
+    paths:
+      - 'src/crop/mod_wofost_actual_biomass_state.f90'
+      - 'src/crop/mod_wofost_crop_owner_state.f90'
+      - 'src/crop/mod_wofost_one_day_structural_evolution.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90'
+      - 'tests/fwof/run_fwof35_canonical_composition_gate.sh'
+      - 'integration/f-wof/F-WOF35_WORK_UNIT_CONTRACT.json'
+      - '.github/workflows/fwof35-canonical-composition.yml'
+  workflow_dispatch:
+
+jobs:
+  canonical-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-WOF35 canonical composition gate
+        run: bash tests/fwof/run_fwof35_canonical_composition_gate.sh

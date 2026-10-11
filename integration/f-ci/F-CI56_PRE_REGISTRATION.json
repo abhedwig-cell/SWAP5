@@ -1,0 +1,65 @@
+{
+  "schema": "swap5.fci56_pre_registration.v1",
+  "work_unit": "F-CI56",
+  "title": "F-GC21 Restricted Predictor-Corrector Coupling Window Orchestrator Current-Canonical Admission",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "df51575e18777856a47a5d0d1e2e1c7456be4601",
+  "production_composition": "09895c05b5d2e11ead16bfcdf018d210da18eb77",
+  "owner_authority": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+  "owner_implementation": "0ba31e5e6ab6702dfd6ddc76aba71e7162d80947",
+  "independent_authority": "466119889a3f09b33ede638322e897bded2472a3",
+  "independent_executable_authority": "c6429070beda4aed509f2785f83baf9c8280cc79",
+  "independent_executable_run": 34745096442,
+  "independent_final_exact_head_run": 34745309838,
+  "production_files": {
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90": "649b3587a730d2ae3b0e3b8a512fadc216e202f6",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "f3bf2effebc772b1e3417232d2baabe49ebb8da0"
+  },
+  "required_base_blobs": {
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "f0fc25592624360802713a9487813d119e7dc4e9",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "d37f1926dafde9d941939cf4147d799cb7478bfc",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/transaction/mod_transaction_reference.f90": "834487df4e7a38c7c8ffd83805d98933714c6977"
+  },
+  "composition_rules": [
+    "production composition is a direct child of the live restart canonical",
+    "the production composition delta contains exactly the three preregistered F-GC21 runtime files",
+    "all three production blobs are byte-identical to the independently qualified F-GC21 source image",
+    "qualification may add only the F-CI56 workflow, gate and governance evidence above the production composition",
+    "no production source or reference drift is permitted after production composition",
+    "the live canonical must remain the preregistered restart canonical until promotion or F-CI56 must be recomposed and requalified",
+    "promotion requires a true two-parent merge with the then-live canonical as first parent and the exact qualified F-CI56 head as second parent",
+    "force, squash and rebase promotion are forbidden",
+    "broad postpromotion canonical qualification including current-restricted-canonical-preservation must be green before closeout"
+  ],
+  "required_replays": [
+    "independent F-VQ64 predictor-corrector sequence oracle against the admission source image at O0 and O2",
+    "exact F-GC17 head/flux contract and F-GC18/F-GC19 transactional base blob identity",
+    "F-GC21P1 accepted whole-window exchange transport base blob identity",
+    "predictor and corrector from one frozen SWAP and groundwater origin",
+    "rejected predictor/corrector paths publish no committed interface mass",
+    "normal successful path remains exactly predictor plus one corrector",
+    "groundwater and ledger publication are preflighted before irreversible publication",
+    "q_groundwater is the exact opposite assignment of q_swap with no mass tolerance",
+    "generic non-calendar coupling windows",
+    "typed common-datum head materialization without solver-private HeadCalc access",
+    "all 30 architecture invariants",
+    "absence of new file-format, MODFLOW, midnight or fixed-day assumptions"
+  ],
+  "maximum_positive_decision_before_merge": "QUALIFIED_F_CI56_READY_FOR_CANONICAL_PROMOTION",
+  "hard_nonclaims": [
+    "no production direct-groundwater coupling admission by this qualification alone",
+    "no MODFLOW adapter or aquifer-solver end-to-end qualification",
+    "no crash-recovery or distributed transaction protocol qualification",
+    "no F-GC20 tile aggregation composition admission",
+    "no F-GC22 application temporal-accuracy composition admission",
+    "no F-GC23 response-tangent composition admission",
+    "no large-batch throughput qualification",
+    "RB1 remains frozen"
+  ]
+}

@@ -1,0 +1,69 @@
+name: F-CI28 canonical admission readiness
+
+on:
+  push:
+    branches:
+      - qualification/f-ci28-fmr25-restart-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  frozen-fci24-reference-et-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f49e17c6627717d5dea181808a122f2e35960739
+          fetch-depth: 0
+      - name: Replay F-CI24 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
+          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
+          bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
+          test "$(git rev-parse HEAD:src)" = 3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+
+  frozen-fci27-reference-et-runtime-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d
+          fetch-depth: 0
+      - name: Replay F-CI27 authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
+          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
+          bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
+          test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+
+  current-fci28-postimage:
+    needs:
+      - frozen-fci24-reference-et-authority
+      - frozen-fci27-reference-et-runtime-authority
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Require live canonical and independent F-CI28 postimage qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci28_restart_canonical_gate.py --mode admission
+          bash tests/fci/run_fci28_restart_current_canonical_admission.sh
+      - name: Verify future canonical workflow and exact postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'python tools/fci/fci28_restart_canonical_gate.py --mode canonical' .github/workflows/fci-canonical.yml
+          grep -Fq 'ref: 0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d' .github/workflows/fci-canonical.yml
+          test "$(git rev-parse HEAD:src)" = 3fe4ccff367479e54ab5db106e5faf8b480d8ec0
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI28_CANONICAL_ADMISSION_READINESS=PASS'

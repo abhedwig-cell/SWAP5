@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ107",
+  "capability": "F-GC33",
+  "title": "Independent MODFLOW6 Linear Response Backend Qualification",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
+  "owner": {
+    "branch": "work/f-gc33-modflow6-linear-response-backend-reconciled",
+    "checkpoint_head": "3d01e4301ef0613b8e5440b1f74b0b9b62123f3d",
+    "production_blob": "1d3c1af6baab71f63749555339d0c89e8aed4ddf",
+    "exact_head_run": 35292855536,
+    "exact_head_job": 105439233696,
+    "exact_head_conclusion": "success"
+  },
+  "independence": {
+    "verifier_branch": "qualification/f-vq107-fgc33-linear-response-independent",
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "oracle": "manual typed F-GC40 cell response; direct HCOF/RHS coefficient algebra; four-head direct volume-flux oracle; equivalent-reference invariance; area/sign; negative inputs"
+  },
+  "next_permitted_action": "Qualify this exact verifier status head. If green, create F-CI100 admission postimage from current canonical plus immutable F-GC33/F-VQ107 evidence.",
+  "verifier_evidence": {
+    "qualified_head": "646e9a9f46086c454b28ea24c1c952da0b83d1a4",
+    "workflow_run": 35292952013,
+    "workflow_job": 105439532043,
+    "conclusion": "success",
+    "optimization_modes": "O0_AND_O2_WITH_OUTPUT_IDENTITY",
+    "pass_markers": [
+      "FVQ107_VERIFIER_PRODUCTION_DELTA_NONE",
+      "FVQ107_OWNER_PRODUCTION_BLOB_LOCK",
+      "FVQ107_OWNER_TEST_NOT_REUSED",
+      "FVQ107_INDEPENDENT_ORACLE_STRUCTURE",
+      "FVQ107_DIRECT_COEFFICIENT_ORACLE",
+      "FVQ107_MULTIHEAD_VOLUME_FLUX_ORACLE",
+      "FVQ107_EQUIVALENT_REFERENCE_ORACLE",
+      "FVQ107_AREA_AND_SIGN_ORACLE",
+      "FVQ107_NEGATIVE_INPUT_ORACLE",
+      "FVQ107_INDEPENDENT_LINEAR_BACKEND_GATE",
+      "FVQ107_INDEPENDENT_O0_O2_IDENTITY"
+    ]
+  }
+}

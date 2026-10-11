@@ -1,0 +1,117 @@
+{
+  "workunit": "F-APP03",
+  "capability": "Hupsel file-driven application composition to typed SWETR0 process-ready forcing",
+  "protocol_phase": "ACQUIRE_RECOVER_CLOSE",
+  "timestamp_utc": "2026-09-16T16:42:00Z",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_checked": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "delta_assessment": "Latest canonical delta is F-ROSS12 RossFast solver-adapter admission. No Hupsel application-composition, meteorology, interception, PMdirect, crop-atmosphere, or legacy-file semantic dependency used by this workunit changed."
+  },
+  "work_branch": {
+    "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+    "preimage": "df061f4eb60d9ccbba47b9fb98af68f15e605fd2",
+    "preimage_message": "checkpoint(F-APP03): preregister typed SWETR0 application contract"
+  },
+  "reused_immutable_evidence": {
+    "a13_pmdirect_rederivation": {
+      "commit": "21508f0d70672d92132c553a344c35f6b7b2296f",
+      "path": "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json",
+      "verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+      "coverage": "1096 daily Hupsel records; SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0; all preregistered A13 fields within 1e-12"
+    },
+    "typed_contract_preregistration": {
+      "commit": "df061f4eb60d9ccbba47b9fb98af68f15e605fd2",
+      "path": "integration/f-app/F-APP03_TYPED_SWETR0_PREREGISTRATION.json",
+      "decision": "PREREGISTER_MINIMUM_TYPED_SWETR0_APPLICATION_SURFACE_WITH_EXPLICIT_RUTTER_BOUNDARY"
+    },
+    "exact_hupsel_authority_recovery": {
+      "path": "integration/f-app/F-APP03_HUPSEL_AUTHORITY_RESTORED.json",
+      "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "scope": "Exact official Hupsel fixture and exact source authority were transiently verified during prior qualification; raw archive bytes were not persisted in the repository."
+    }
+  },
+  "recovered_mapping_state": {
+    "daily_weather": {
+      "status": "SUFFICIENT_FOR_RESTRICTED_TYPED_INPUT_SURFACE",
+      "facts": [
+        "Historical A21 qualification reads FWIND as configuration and keeps .met wind as the daily wind forcing value rather than silently modifying the meteorological record.",
+        "Historical A21 full-run shadow reproduced 1096 Hupsel daily meteorological records with zero mismatches at 1e-12.",
+        "Radiation and rainfall unit conversions are already qualified on the restricted Hupsel daily branch."
+      ]
+    },
+    "crop_canopy": {
+      "status": "SUFFICIENT_FOR_RESTRICTED_TYPED_INPUT_SURFACE",
+      "facts": [
+        "Historical A22 boundary maps crop emergence, LAI, vegetation cover, COFAB, albedo, dry and wet canopy resistance, FCO2TRA, root depth and root distribution through an explicit crop snapshot/adapter boundary.",
+        "The A21/A22 four-step 10 June 2002 integrated qualification remained numerically and route equivalent to the prior qualified route."
+      ]
+    },
+    "fwind_input_read": {
+      "status": "PARTIALLY_RECOVERED",
+      "facts": [
+        "The SWAP 4.3.1 input inventory identifies FWIND as an optional MOD_meteo scalar read with admissible range 0.5 to 5.0.",
+        "The A21 typed forcing profile carries wind_function_factor separately from daily wind_speed_m_s."
+      ]
+    },
+    "fwind_executable_application": {
+      "status": "MISSING_DURABLE_EXACT_AUTHORITY",
+      "missing": [
+        "Exact SWAP 4.3.1 executable statement(s) showing where and how FWIND modifies the active SWETR=0, SWDIVIDE=1 PMdirect calculation.",
+        "A durable exact-fixture value or immutable trace sufficient to prove that FWIND is numerically neutral for the official Hupsel restricted route."
+      ]
+    }
+  },
+  "bounded_recovery_attempts": [
+    "Re-read the current F-APP03 preregistration and A13 exact-authority qualification rather than reconstructing the workunit broadly.",
+    "Checked the historical A21 forcing-profile evidence for FWIND ownership and raw-wind handling.",
+    "Checked the historical A22 crop snapshot/adapter evidence for the PMdirect canopy fields.",
+    "Checked the SWAP 4.3.1 parameter inventory for the FWIND input read and range.",
+    "Searched the retained historical qualification material for an exact Hupsel FWIND value and for the exact executable MOD_meteo FWIND application site; neither was durably recovered.",
+    "A newer public SWAP penmon implementation was inspected only as a locator/cross-check and is explicitly not accepted as replacement semantic authority for SWAP 4.3.1."
+  ],
+  "qualification": {
+    "existing_a13_qualification_reused": true,
+    "new_candidate_implementation_created": false,
+    "new_candidate_compiled": false,
+    "new_candidate_runtime_gate_attempted": false,
+    "ten_june_precheck": "HISTORICAL_A21_A22_GATE_EXISTS_BUT_NOT_REUSED_AS_AUTHORITY_FOR_MISSING_FWIND_OPERATION",
+    "reason_not_attempted": "Implementing the typed PMdirect candidate now would require inferring the exact FWIND operation or assuming that the exact Hupsel FWIND value is neutral. Both would violate the fail-closed/no-inference rule."
+  },
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "scientific_equations": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_file_semantics": "NONE",
+    "tests": "NONE",
+    "documentation_evidence_only": true
+  },
+  "admission": {
+    "permitted": false,
+    "reason": "The restricted typed SWETR0 application surface is not yet independently implementable from durable exact 4.3.1 authority because FWIND executable semantics remain unresolved."
+  },
+  "m1_c3_effect": {
+    "criterion_3_closed": false,
+    "verdict": "UNCHANGED_NOT_PASS",
+    "reason": "No new admitted legacy-file to typed process-ready application-composition implementation was produced."
+  },
+  "verdict": "F_APP03_BLOCKED_MISSING_DURABLE_EXACT_FWIND_EXECUTABLE_MAPPING",
+  "next_permitted_action": [
+    "Recover exact SWAP 4.3.1 MOD_meteo source bytes, an exact extracted A13 implementation, or immutable exact-authority trace/config evidence that establishes FWIND executable semantics for the qualified Hupsel SWETR=0/SWDIVIDE=1 route.",
+    "Then implement only the preregistered minimum pure typed SWETR0 route and bind it outside I/O/legacy parsing.",
+    "Qualify first against the existing 1096-day A13 process oracle and the frozen 10 June 2002 multi-step integration gate without changing physics, solver, timestep policy or tolerances.",
+    "Keep SWINTER=3/SWCF=2 and whole-Hupsel closure outside this restricted implementation until separately qualified/adapted.",
+    "Only after process qualification and admission continue M1-C3 legacy file replay through the typed boundary."
+  ],
+  "exclusions": [
+    "No SWETR=1 crop-factor substitute.",
+    "No inference or fitting of missing FWIND semantics.",
+    "No use of modern SWAP source as semantic replacement authority.",
+    "No broad API or I/O redesign.",
+    "No new Richards, groundwater, Ross, solver, tolerance or timestep work.",
+    "No whole-Hupsel or M1-C3 PASS claim."
+  ]
+}

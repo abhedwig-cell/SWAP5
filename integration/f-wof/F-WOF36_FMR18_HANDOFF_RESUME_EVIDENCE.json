@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "evidence_class": "QUALIFIED_RUNTIME_OWNER_HANDOFF_RESUME",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "gate_A_handoff_head": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
+  "composed_F_MR18_closeout_head": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
+  "composition_method": "FAST_FORWARD_SAME_LINEAR_HISTORY",
+  "force_update_used": false,
+  "runtime_owner_work_unit": "F-MR18",
+  "runtime_owner_status": "QUALIFIED_GATES_A_B_C_F_WOF36_RESUME_ALLOWED",
+  "runtime_owner_status_path": "integration/f-mr/F-MR18_STATUS.json",
+  "runtime_owner_gate_C_evidence": "integration/f-mr/F-MR18_GATE_C_QUALIFICATION_EVIDENCE.json",
+  "runtime_owner_gate_C_tested_head": "5cce4cdbfc7deac0fe40a0ed32b4591f6f704889",
+  "runtime_owner_gate_C_workflow_run": 34337899251,
+  "runtime_owner_gate_C_workflow_job": 102421518664,
+  "runtime_owner_gate_C_conclusion": "success",
+  "qualified_properties_reused_by_F_WOF36": [
+    "generic commit-associated receipt after actual F-KT commit",
+    "same execute_column checkpoint and physical candidate provenance",
+    "sparse feature-scoped receipt routing",
+    "no persistent optional receipt state for inactive columns",
+    "rejected requested columns expose no ready receipt",
+    "accepted requested columns expose exact committed revision and interval",
+    "invalid sparse request fails before committed-state mutation",
+    "existing no-receipt physical route and mass accounting remain identical",
+    "deterministic batch and A-B-A replay",
+    "F-WOF34 exact transcript preserved",
+    "F-CI19 semantic preservation retained"
+  ],
+  "still_unqualified_in_F_WOF36": [
+    "PTRA payload capture from the exact physical trial",
+    "QROT payload capture from the exact applied root_extraction_sink",
+    "trial-local accepted-window contribution scratch",
+    "binding of PTRA/QROT payload to the sparse F-MR18 receipt",
+    "accepted retry exactly-once contribution",
+    "WOFOST accepted-window total publication in real serialized MultiSWAP",
+    "F-WOF36 O0/O2 and MultiSWAP qualification"
+  ],
+  "decision": "RUNTIME_OWNER_BLOCKER_SATISFIED_F_WOF36_GATE_B_MAY_PROCEED"
+}

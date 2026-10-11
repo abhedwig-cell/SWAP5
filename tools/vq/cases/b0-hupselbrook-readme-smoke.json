@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "case_id": "b0-hupselbrook-readme-smoke",
+  "baseline": "B0",
+  "case_path": "cases/1.hupselbrook",
+  "input_identity": {
+    "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+  },
+  "published_oracle": {
+    "source": "readme_4.3.1.txt section 3",
+    "period": ["2002-01-01", "2002-12-31"],
+    "water_storage_change_cm": 2.82,
+    "input_sum_cm": 86.58,
+    "output_sum_cm": 83.76,
+    "components_cm": {
+      "rain + snow": 84.18,
+      "runon": 0.0,
+      "ssdi": 0.0,
+      "irrigation": 2.40,
+      "bottom flux": 0.0,
+      "interception": 4.25,
+      "runoff": 0.03,
+      "transpiration": 34.73,
+      "soil evaporation": 11.99,
+      "crack flux": 0.0,
+      "drainage level 1": 32.76
+    }
+  },
+  "gfortran_runner_compatibility": {
+    "required_for_current_environment": true,
+    "patch": "SWCSV=1_to_0",
+    "classification": "output_only_runner_compatibility",
+    "reason": "The unchanged official case terminates in csv_write before simulation under the provisional GNU source build; the packaged Intel binary remains unavailable because libimf.so is absent.",
+    "patched_swap_swp_sha256": "b4e6045e33abdb0fe6137e9cd555c6c23e8965d6b7441a05402c220520456b54"
+  },
+  "legacy_balance_reporting": {
+    "resolution_cm": 0.01,
+    "hard_mass_gate_eligible": false,
+    "purpose": "B0/B1 regression and report-level accounting consistency only"
+  }
+}

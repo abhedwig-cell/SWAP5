@@ -1,0 +1,34 @@
+name: F-CI37 Parallel Root-Uptake Canonical Admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci37-fmr35-parallel-root-uptake-canonical-admission
+    paths:
+      - 'src/runtime/mod_fmr_parallel_root_uptake_pool.f90'
+      - 'tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh'
+      - 'integration/f-ci/F-CI37_*.json'
+      - '.github/workflows/fci37-parallel-root-uptake-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  canonical-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact F-CI37 head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI37 source-bound canonical admission gate
+        env:
+          FCI37_EVIDENCE_DIR: _fci37_evidence
+        run: bash tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh
+      - name: Upload F-CI37 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI37-parallel-root-uptake-canonical-admission-evidence
+          path: _fci37_evidence
+          if-no-files-found: error

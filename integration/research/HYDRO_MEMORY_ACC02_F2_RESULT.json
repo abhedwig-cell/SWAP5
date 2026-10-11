@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.hydro_memory.acc02_f2.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC02-F2",
+  "decision": "ACC02_F2_PASS_FOUR_CONSECUTIVE_LIVE_ROOT_ACTIVE_WINDOWS",
+  "authority": {
+    "canonical_base": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+    "branch": "research/hydro-memory-acc02-f2",
+    "qualified_head": "5e80554fe8d3f03471a823e81b3bf327141169be",
+    "workflow_run": 35459607211,
+    "workflow_job": 105940970075,
+    "conclusion": "success"
+  },
+  "frozen_accuracy": {
+    "h_app_cm": 0.4,
+    "temporal_budget_cm": 0.1,
+    "interface_tolerance_m": 0.001,
+    "root_total_cm_per_day": 0.02,
+    "fixed_point_max_iterations": 6,
+    "flux_iteration_tolerance_m_per_s": 1e-15,
+    "hard_mass_tolerance_cm": 1e-12
+  },
+  "windows": [
+    {
+      "window": 1,
+      "revision": 1,
+      "time_day": 0.0001,
+      "ledger_count": 1,
+      "iterations": 2,
+      "max_temporal_indicator": 0.008953861377725887,
+      "head_residual_m": 1.5543122344752192e-15,
+      "flux_residual": 6.10887690236235e-21,
+      "ledger_exchange_m": -1.1679695071757646e-12
+    },
+    {
+      "window": 2,
+      "revision": 2,
+      "time_day": 0.0002,
+      "ledger_count": 2,
+      "iterations": 2,
+      "max_temporal_indicator": 0.00009508954018272624,
+      "head_residual_m": 9.992007221626409e-16,
+      "flux_residual": 3.8601611131008795e-21,
+      "ledger_exchange_m": -1.7607362991491766e-10
+    },
+    {
+      "window": 3,
+      "revision": 3,
+      "time_day": 0.00030000000000000003,
+      "ledger_count": 3,
+      "iterations": 2,
+      "max_temporal_indicator": 0.00015723218029759414,
+      "head_residual_m": 1.5890067039947553e-11,
+      "flux_residual": 6.258176043867372e-17,
+      "ledger_exchange_m": -5.190117094126881e-10
+    },
+    {
+      "window": 4,
+      "revision": 4,
+      "time_day": 0.0004,
+      "ledger_count": 4,
+      "iterations": 2,
+      "max_temporal_indicator": 0.00026620415701573546,
+      "head_residual_m": 2.5360602506907526e-11,
+      "flux_residual": 9.98796005462235e-17,
+      "ledger_exchange_m": -1.0246035282766471e-9
+    }
+  ],
+  "maxima": {
+    "temporal_indicator": 0.008953861377725887,
+    "head_residual_m": 2.5360602506907526e-11,
+    "flux_residual": 9.98796005462235e-17,
+    "coupling_iterations": 2
+  },
+  "pass_evidence": [
+    "four consecutive live MODFLOW6 6.8.0 timesteps without SWAP or MODFLOW reinitialization",
+    "next-window predictor rebuilt from current committed SWAP state and previously accepted interface",
+    "prescribed-root tangent remained authoritative every window",
+    "governed temporal and interface accuracy unchanged",
+    "revision sequence exactly [1,2,3,4]",
+    "committed time sequence exactly [1e-4,2e-4,3e-4,4e-4] day",
+    "ledger count sequence exactly [1,2,3,4]",
+    "cumulative interface ledger matched per-window accepted bottom exchange",
+    "intermediate correctors did not mutate committed authority",
+    "exact-once MODFLOW, SWAP and ledger publication each window",
+    "O0/O2 behavior equivalence",
+    "MODFLOW6 6.8.0 asset SHA-256 verified"
+  ],
+  "stage0_authorized": false,
+  "downstream": "Adjudicate research-runner sufficiency versus production-owner widening, then qualify dynamic Stage 0 forcing/root-uptake composition and freeze soil hydraulics before scientific execution."
+}

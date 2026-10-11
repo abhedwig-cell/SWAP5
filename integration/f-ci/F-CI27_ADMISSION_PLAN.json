@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI27",
+  "title": "F-MR23 Restricted Reference-ET Generic-Time Runtime Binding Canonical Admission",
+  "branch": "qualification/f-ci27-fmr23-reference-et-runtime-canonical-admission",
+  "base_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "f49e17c6627717d5dea181808a122f2e35960739",
+    "src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "authority": "QUALIFIED_CLOSED_FPM06A_RESTRICTED_REFERENCE_ET_CANONICAL_SOURCE_ADMISSION"
+  },
+  "candidate": {
+    "F_MR23_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+    "F_VQ36_closeout": "9f39d3d621bc3254063af86efb4abd64525ef07f",
+    "F_VQ36_decision": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING",
+    "production_source": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "production_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "upstream_ET_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "post_src_tree": "4121255813971a360949efc3fb17ab6c8f87a799",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "admission_scope": {
+    "restricted_reference_ET_runtime_binding_added": true,
+    "generic_contained_interval_binding": true,
+    "explicit_forcing_validity_span": true,
+    "potential_ET_rates_only": true,
+    "persistent_state_added": false,
+    "root_uptake_binding_added": false,
+    "ptra_ownership_reconciled": false,
+    "hydraulic_binding_added": false,
+    "mass_ledger_binding_added": false,
+    "accepted_interval_rate_integration_added": false,
+    "actual_evaporation_added": false,
+    "interception_added": false,
+    "crop_state_advancement_added": false
+  },
+  "admission_requirements": [
+    "live canonical remains exactly f49e17c6627717d5dea181808a122f2e35960739 until promotion decision",
+    "candidate remains a strict forward descendant of that canonical head",
+    "exact src delta is only src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "runtime source blob remains 8c679f911c9a82c498258224d83f5fce3cb09163",
+    "F-MR23 owner evidence and F-VQ36 independent qualification remain immutable",
+    "F-CI24 canonical ET source authority remains intact",
+    "reference tree remains unchanged",
+    "F-MR23 owner gate passes on the admission postimage",
+    "F-VQ36 independent qualification passes on the admission postimage",
+    "canonical promotion is non-forced fast-forward only",
+    "post-promotion canonical workflow passes on the promoted head"
+  ],
+  "blocking_nonclaim": "Canonical admission of this runtime evaluator must not be interpreted as authorization to feed its potential_transpiration directly into root uptake. crop_root_uptake_input_t already has potential_transpiration, so a separate ownership reconciliation is required first.",
+  "target_decision": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD"
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC29",
+  "title": "Optional Groundwater Response Sensitivity Service Extension",
+  "phase": "QUALIFY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e"
+  },
+  "owner": {
+    "branch": "work/f-gc29-groundwater-response-sensitivity-service-extension",
+    "qualified_source_head": "bf0bc93e359fba42237fd102ced7da9a5a84efad",
+    "qualified_source_tree": "d9b94d44f4346e933dc2d02cc84ea7f765c6f608"
+  },
+  "owner_qualification": {
+    "workflow": ".github/workflows/fgc29-groundwater-response-sensitivity.yml",
+    "run_id": 35017268641,
+    "job_id": 104543740194,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "O0_O2_output_identity": true,
+    "markers": [
+      "FGC29_STATIC_CONTRACT_AUDIT=PASS",
+      "FGC29_FGC18_SERVICE_BLOB_PRESERVED=PASS",
+      "FGC29_ATOMIC_TRIAL_RESPONSE_API=PASS",
+      "FGC29_ATOMIC_TRIAL_RESPONSE_BINDING=PASS",
+      "FGC29_PROVENANCE_BOUND_RESPONSE=PASS",
+      "FGC29_INDEPENDENT_FD_REFERENCE=PASS",
+      "FGC29_RETRY_REPLACES_RESPONSE_WITH_ZERO_STALE_LEAKAGE=PASS",
+      "FGC29_DETERMINISTIC_RESPONSE=PASS",
+      "FGC29_REJECTED_TRIAL_ZERO_RESPONSE=PASS",
+      "FGC29_OPTIONAL_PROVIDER_UNAVAILABLE=PASS",
+      "FGC29_NONSMOOTH_FAIL_CLOSED=PASS",
+      "FGC29_PROVIDER_UNAVAILABLE_FAIL_CLOSED=PASS",
+      "FGC29_PROVIDER_ERROR_FAIL_CLOSED=PASS",
+      "FGC29_NONFINITE_DERIVATIVE_FAIL_CLOSED=PASS",
+      "FGC29_NO_COMMITTED_STATE_MUTATION=PASS",
+      "FGC29_SCOPE_ALLOWLIST=PASS",
+      "FGC29_O0_O2_IDENTITY=PASS"
+    ]
+  },
+  "production_delta": {
+    "added": ["src/runtime/mod_groundwater_response_sensitivity_contract.f90"],
+    "modified_existing_production_files": [],
+    "canonical_F_GC18_service_blob_preserved": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "new_groundwater_physics": false,
+    "concrete_MODFLOW_types_or_adapter": false,
+    "production_finite_difference_or_secant": false
+  },
+  "design_refinement_since_reconcile": {
+    "initial_idea": "additive response subtype attached to the service boundary",
+    "qualified_design": "separate optional companion response provider plus one public atomic trial-with-response wrapper",
+    "reason": "Preserve the admitted F-GC18/F-GC18R service implementation byte-for-byte while preventing caller-side relabeling of a response onto another live retry candidate.",
+    "public_response_path": "groundwater_trial_with_response_sensitivity",
+    "low_level_binding_public": false,
+    "additional_groundwater_trial_for_native_response": false
+  },
+  "qualified_contract": [
+    "response creation is atomically paired with the exact groundwater trial invocation that returns its candidate and trial result",
+    "service, lineage, origin revision, successor revision and exact generic [t0,t1] provenance are validated and transported",
+    "discard/retry replacement has zero stale response carry-over",
+    "a rejected groundwater trial publishes neither candidate nor response",
+    "unsupported, unavailable and nonsmooth response capability is explicit and fail closed",
+    "non-finite provider derivative is rejected",
+    "response evaluation does not commit or mutate committed groundwater state",
+    "existing F-GC18/F-GC18R service source remains unchanged",
+    "finite difference is qualification reference only and absent from production construction"
+  ],
+  "authority": {
+    "F_GC16_plan_blob": "d8b02dcf1c4915634c0a7659f3202604c4d91b88",
+    "authority_blob_verified_by_gate": true
+  },
+  "verdict": "OWNER_QUALIFIED_PENDING_INDEPENDENT_QUALIFICATION",
+  "production_semantics_changed": true,
+  "semantic_change_class": "additive optional coupling service capability; no groundwater constitutive physics change",
+  "next_permitted_action": "Perform independent qualification against exact owner source bf0bc93e359fba42237fd102ced7da9a5a84efad. Canonical admission is forbidden until that independent qualification passes.",
+  "blocked_consumer": {
+    "capability": "F-GC23",
+    "checkpoint": "5f0b81451433242d9e6395272d6f6491fcf3be2a"
+  },
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "concrete MODFLOW adapter implementation",
+    "structural finite difference as production response construction",
+    "F-GC23 implementation before F-GC29 canonical admission",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

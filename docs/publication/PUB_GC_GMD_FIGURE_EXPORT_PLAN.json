@@ -1,0 +1,75 @@
+{
+  "schema": "pub-gc-gmd-figure-export-plan-v2",
+  "date": "2026-09-19",
+  "source_rule": "Repository SVG files are governed scientific sources; submission exports are presentation transforms only.",
+  "upload_rule": {
+    "archive": "single flat zip; no subfolders",
+    "preferred_format": "PDF",
+    "accepted_formats": [
+      "pdf",
+      "ps",
+      "eps",
+      "jpg",
+      "png",
+      "tif",
+      "gif"
+    ],
+    "svg_direct_upload": false,
+    "max_pdf_figure_mb": 2,
+    "max_other_figure_mb": 5,
+    "max_total_submission_mb_excluding_supplements": 30
+  },
+  "figures": [
+    {
+      "id": "F1",
+      "source": "docs/publication/figures/PUB_GC_F1_OWNERSHIP_AUTHORITY.svg",
+      "target": "f01.pdf",
+      "caption": "solver ownership / trial authority / publication boundary"
+    },
+    {
+      "id": "F2",
+      "source": "docs/publication/figures/PUB_GC_F2_TYPED_HYDROLOGICAL_INTERFACE.svg",
+      "target": "f02.pdf",
+      "caption": "typed hydrological interface"
+    },
+    {
+      "id": "F3",
+      "source": "docs/publication/figures/PUB_GC_F3_CLOSURE_VS_HEAD_CORRECTION.svg",
+      "target": "f03.pdf",
+      "caption": "closure versus head correction"
+    },
+    {
+      "id": "F4",
+      "source": "docs/publication/figures/PUB_GC_F4_RESPONSE_IDENTITY.svg",
+      "target": "f04.pdf",
+      "caption": "finite-window response identity"
+    },
+    {
+      "id": "F5",
+      "source": "docs/publication/figures/PUB_GC_F5_RESPONSE_INFORMATION_VALUE.svg",
+      "target": "f05.pdf",
+      "caption": "response-information value"
+    },
+    {
+      "id": "F6",
+      "source": "docs/publication/figures/PUB_GC_F6_COMPONENT_ADMISSION_ENVELOPE.svg",
+      "target": "f06.pdf",
+      "caption": "component-admission envelope"
+    },
+    {
+      "id": "F7",
+      "source": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "target": "f07.pdf",
+      "caption": "realistic Hupsel component-domain limit"
+    }
+  ],
+  "validation": [
+    "all seven source SVGs exist at governed submission revision",
+    "PDF exports preserve labels/geometry without clipping",
+    "fonts embedded in PDF exports",
+    "each PDF <=2 MB",
+    "flat figure zip contains only numbered figure files",
+    "F7 preserves zero coupled E7 windows and participant-domain stop",
+    "overall non-supplement submission <=30 MB"
+  ]
+}

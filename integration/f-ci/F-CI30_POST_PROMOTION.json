@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI30",
+  "phase": "POST_PROMOTION_VERIFIED",
+  "canonical_branch": "integration/f-ci-canonical",
+  "promoted_head_verified": "755a626712be38ca360c5217334b73b5297f76f2",
+  "promoted_src_tree": "d6fa88b076d39fa0ffd924ce08ae4d978649dc85",
+  "promoted_source_blobs": {
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90": "11ef6182414af4fbe67eebec3d6f14742df04aca"
+  },
+  "verification_workflow": {
+    "run_id": 34468087086,
+    "job_id": 102841290853,
+    "conclusion": "success",
+    "checkout_ref": "integration/f-ci-canonical",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04.4"
+  },
+  "verification": {
+    "promoted_canonical_head_and_source": "PASS",
+    "cleanup_hardened_admission_wrapper": "PASS",
+    "exact_three_file_postimage": "PASS",
+    "production_source_immutable": "PASS",
+    "F_CI29_ptra_preserved": "PASS",
+    "parallel_O0_O2": "PASS",
+    "parallel_O0_O2_output_identity": "PASS",
+    "hard_mass_all_parallel_cases": "PASS",
+    "deterministic_publication": "PASS",
+    "serialized_sparse_receipts_preserved": "PASS",
+    "committed_boundary_restart_preserved": "PASS",
+    "reference_ET_runtime_preserved": "PASS",
+    "reference_ET_ptra_ownership_preserved": "PASS",
+    "final_canonical_admission_gate": "PASS"
+  },
+  "decision": "POST_PROMOTION_CANONICAL_REPLAY_PASSED"
+}

@@ -1,0 +1,39 @@
+name: F-PE-ELASTIC32 BRO spatial source authority audit
+
+concurrency:
+  group: f-pe-elastic32-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic32-spatial-source-audit
+    paths:
+      - 'tools/fpe_elastic32_spatial_source_audit.py'
+      - 'tests/fpe/run_fpe_elastic32.sh'
+      - 'docs/performance/F-PE-ELASTIC32_SPATIAL_SOURCE_AUDIT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic32.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic32-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Audit spatial source authority
+        run: bash tests/fpe/run_fpe_elastic32.sh "$RUNNER_TEMP/elastic32-pdok"

@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "workunit": "PPA-WU03",
+  "title": "Atmospheric forcing and normal-input adapter boundary",
+  "state": "CANONICAL_ADMITTED_CLOSED",
+  "canonical_basis": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "12beef3e91f90f88b101c13af72cd216bccc63e3"
+  },
+  "qualified_subject": {
+    "branch": "work/ppa-wu03-common-forcing-adapter",
+    "commit": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
+    "pull_request": 323
+  },
+  "production_delta": [
+    "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90: read-only run_standalone_with_forcing seam"
+  ],
+  "admitted_candidate_envelope": {
+    "et": "SWETR=1 restricted reference-ET authority only",
+    "interception": "SWINTER=0 only",
+    "precipitation": "nonnegative resolved interval rate",
+    "irrigation": "none or already-resolved nonnegative surface irrigation rate",
+    "time": "finite generic real-valued interval covered by explicit forcing spans",
+    "top_boundary_handoff": "AVAILABLE pure-flux dynamic-top result only",
+    "runtime_owner": "PPA-WU01 remains sole FMR/committed-state/transaction/timestep/retry owner"
+  },
+  "qualification": {
+    "workflow_run": 35374130545,
+    "owner_job": 105694706631,
+    "owner_result": "PASS",
+    "owner_checks": [
+      "O0 PASS",
+      "O2 PASS",
+      "O0/O2 stable output identity PASS",
+      "common normal input to typed forcing PASS",
+      "generic subdaily time PASS",
+      "direct typed physics identity PASS",
+      "PPA-WU01 owner preserved PASS",
+      "stateless A-B-A retry/input stability PASS",
+      "unsupported options fail closed PASS",
+      "hard mass gate PASS"
+    ],
+    "independent_job": 105694706401,
+    "independent_result": "PASS",
+    "independent_checks": [
+      "54 independently rederived forcing/canopy/time cases PASS",
+      "reference-ET equation oracle PASS",
+      "generic-time matrix PASS",
+      "precipitation/irrigation transport identity PASS",
+      "fail-closed matrix PASS",
+      "O0/O2 stable output identity PASS"
+    ],
+    "preservation_job": 105694706721,
+    "preservation_result": "PASS",
+    "preservation_checks": [
+      "protected F-APP/M1 production blobs unchanged",
+      "PPA-WU01 regression PASS",
+      "F-APP07 irrigation regression PASS",
+      "M1 current semantic preservation PASS"
+    ]
+  },
+  "qualification_matrix": {
+    "Q1": "PASS",
+    "Q2": "PASS",
+    "Q3": "PASS",
+    "Q4": "PASS",
+    "Q5": "PASS",
+    "Q6": "PASS",
+    "Q7": "PASS",
+    "Q8": "PASS",
+    "Q9": "PASS",
+    "Q10": "PASS"
+  },
+  "explicit_nonclaims": [
+    "legacy meteorological file grammar",
+    "calendar/date ingestion",
+    "SWETR=0 PMdirect normal-input derivation",
+    "SWINTER=1/2",
+    "SWINTER=3 Rutter canopy-state ownership",
+    "irrigation event scheduling or management parsing",
+    "snow/runon ingestion",
+    "dynamic-top head/ponding/runoff pre-resolution",
+    "mixed PPA-WU01 bottom_mode=5/7 ownership",
+    "new physics or tolerance changes"
+  ],
+  "admission": {
+    "canonical_state": "CANONICAL_ADMITTED",
+    "canonical_merge_commit": "97c4471155001e12133109be5eb6bd95f799eb00",
+    "pull_request": 323,
+    "closeout_state": "CLOSED",
+    "production_admission": "Bounded PPA-WU03 common-forcing slice admitted on integration/f-ci-canonical"
+  },
+  "canonical_closeout": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "observed_head": "080c24be1fd352d390647c832d215833e1ae3df2",
+    "production_subject_qualified_head": "74b3bcbfffc6efe7125e39e1c6052dd130e2a42d",
+    "post_qualification_delta": "documentation/status/register only",
+    "closure_rule": "No broad legacy meteorological preprocessing claim; explicit nonclaims remain open.",
+    "live_delta_since_admission": {
+      "commit_count": 12,
+      "classification": "OWNERSHIP_DISJOINT_PUBLICATION_ONLY",
+      "changed_surface": "docs/publication/PUB_GC_* only",
+      "production_overlap": "NONE"
+    }
+  }
+}

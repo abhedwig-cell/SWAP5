@@ -1,0 +1,26 @@
+name: F-CI55R moving preservation reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci55r-moving-preservation-reconciliation
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci55r-moving-preservation-reconciliation.yml'
+      - 'integration/f-ci/F-CI55R_*.json'
+      - 'tests/fci/run_fci55r_moving_preservation_reconciliation.sh'
+  workflow_dispatch:
+
+jobs:
+  qualify-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualify F-CI55R moving preservation reconciliation
+        shell: bash
+        run: bash tests/fci/run_fci55r_moving_preservation_reconciliation.sh

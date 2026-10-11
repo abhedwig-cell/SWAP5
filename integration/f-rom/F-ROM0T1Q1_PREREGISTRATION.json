@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.f-rom0t1q1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1Q1",
+  "title": "Strict-first P2E21 successor Reference policy and exact temporal-floor qualification",
+  "phase": "PREREGISTERED_BEFORE_SUCCESSOR_POLICY_EXECUTION",
+  "predecessors": {
+    "T1": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+    "T1D1": "T1_RETRY_CAUSE_NONUNIFORM",
+    "V1": "VERTICAL_REFERENCE_FLOOR_MEASURED"
+  },
+  "independent_policy_authority": {
+    "P2E19": {
+      "verdict": "INTEGRATED_BALANCE_SCALING_CAUSALLY_RECOVERS_FINE_REFERENCE_ROUTE_REF_HIGH_FEASIBLE_33_OF_36",
+      "integrated_balance_allowance_cm_per_substep": 1.6e-15,
+      "applies_to": ["compartment_balance_tolerance","total_balance_tolerance"],
+      "endpoint_neutrality": "72_OF_72_OVERLAPPING_ENDPOINTS_PASS",
+      "allowance_retuned_after_execution": false
+    },
+    "P2E20": {
+      "role": "CANDIDATE_BLIND_NUMERICAL_REFERENCE_CONSTRUCTION",
+      "balance_rate_tolerance_formula": "1.6e-15 / dt_day for both compartment and total balance convergence criteria",
+      "hard_typed_integrated_mass_abs_limit_cm_each_accepted_substep": 1e-12
+    },
+    "P2E21": {
+      "verdict": "REF_HIGH_REPRESENTATION_BOUNDED_QUALIFIED_36_OF_36_EQUAL_ERROR_POPULATION_AVAILABLE",
+      "compartment_integrated_allowance_cm": 1.6e-15,
+      "compartment_rate_tolerance_formula": "1.6e-15 / dt_day",
+      "total_integrated_bound_formula": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i))",
+      "total_rate_tolerance_formula": "total_integrated_bound_cm / dt_day",
+      "pre_solve_inputs_only": ["material theta_s","accepted base-state water_content","dz","current dt"],
+      "failed_residual_used": false,
+      "empirical_safety_factor": "none"
+    }
+  },
+  "why_successor_is_not_T1_retuning": "The original T1 no-go remains immutable. T1Q1 is a new Reference-authority workunit using a numerical policy whose constants, formulas and endpoint-neutrality evidence all predate T1 and were not selected from T1 outcomes.",
+  "physical_matrix": {
+    "materials": ["B01","B14"],
+    "geometry": "16x10 cm over 160 cm",
+    "initial_state": "original uniform Se=0.85",
+    "cases": [
+      {"id":"B01_E1_NOMINAL_FLUX","top_flux_expression":"0.01*K0","bottom_flux_expression":"-0.004*K0"},
+      {"id":"B01_E2_DRYING_FLUX","top_flux_expression":"-0.005*K0","bottom_flux_expression":"-0.019*K0"},
+      {"id":"B14_E1_NOMINAL_FLUX","top_flux_expression":"0.01*K0","bottom_flux_expression":"-0.004*K0"},
+      {"id":"B14_E2_DRYING_FLUX","top_flux_expression":"-0.005*K0","bottom_flux_expression":"-0.019*K0"}
+    ]
+  },
+  "strict_control": {
+    "dt_base_day": 0.0016,
+    "base_steps": 32,
+    "dt_refined_day": 0.0008,
+    "refined_steps": 64,
+    "compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "total_balance_rate_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "immutable_strict_refined_provenance": {
+    "B01_E1_NOMINAL_FLUX": {"accepted_steps":17,"fail_step":18},
+    "B01_E2_DRYING_FLUX": {"accepted_steps":3,"fail_step":4},
+    "B14_E1_NOMINAL_FLUX": {"accepted_steps":64,"fail_step":0},
+    "B14_E2_DRYING_FLUX": {"accepted_steps":3,"fail_step":4},
+    "expected_original_accepted_overlap_steps": 87
+  },
+  "successor_algorithm": [
+    "Compute P2E21 total representation bound from accepted pre-solve state before each refined interval.",
+    "Attempt original strict refined interval first on F-KT Reference-floor sample route.",
+    "If strict succeeds, commit that strict candidate unchanged; no successor policy is evaluated.",
+    "If strict fails, require committed lineage/revision/time/physical state unchanged.",
+    "Diagnose the same failed interval directly from that immutable state.",
+    "Fallback is allowed only for RETRY_TOTAL_ONLY or RETRY_LOCAL_BALANCE; any head, mixed, other, failed or unclassified route is fail-closed.",
+    "Require max local residual * dt <= 1.6e-15 cm whenever any local-balance flag is present.",
+    "Require abs(total residual) * dt <= max(1.6e-15, pre-solve P2E21 total representation bound).",
+    "Retry exactly the same interval once on a fresh backend with compartment tolerance = 1.6e-15/dt and total tolerance = max(1.6e-15, representation_bound)/dt.",
+    "Candidate must pass the unchanged 1e-12 cm hard transaction mass gate and all non-balance controls.",
+    "No automatic dt subdivision and no second fallback are allowed."
+  ],
+  "overlap_neutrality": {
+    "expected_strict_accepted_refined_steps": 87,
+    "required_identity": [
+      "pressure_head_profile_bits",
+      "water_content_profile_bits",
+      "ponding_bits",
+      "groundwater_level_bits",
+      "transaction_mass_residual_bits",
+      "bottom_exchange_bits",
+      "terminal_bottom_flux_bits",
+      "nonlinear_iteration_count",
+      "backtracking_count"
+    ],
+    "rule": "All 87 original strict accepted refined endpoints must be bit-identical in the successor run."
+  },
+  "temporal_floor_measurement": {
+    "base": "four original strict 0.0016-day trajectories, 32 steps each",
+    "refined": "four qualified successor 0.0008-day trajectories, 64 steps each",
+    "common_times": "base step j versus refined step 2*j for j=1..32",
+    "outputs": [
+      "D_h_inf_cm","D_h_rms_cm","D_theta_inf","D_theta_rms",
+      "D_total_storage_abs_cm","D_upper_0_40cm_storage_abs_cm","D_lower_40_160cm_storage_abs_cm",
+      "D_cumulative_top_exchange_abs_cm","D_cumulative_bottom_exchange_abs_cm",
+      "D_terminal_bottom_flux_abs_cm_per_day"
+    ],
+    "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD"
+  },
+  "qualification": [
+    "STRICT_PROVENANCE_REPRODUCED",
+    "ALL_FOUR_STRICT_BASE_TRAJECTORIES_COMPLETE",
+    "ALL_FOUR_SUCCESSOR_REFINED_TRAJECTORIES_COMPLETE",
+    "ALL_87_ORIGINAL_REFINED_OVERLAP_STEPS_BIT_IDENTICAL",
+    "EVERY_FALLBACK_TRIGGER_MATCHES_PREEXISTING_P2E21_INTEGRATED_BOUNDS",
+    "NO_HEAD_MIXED_OR_OTHER_FALLBACK",
+    "HARD_TRANSACTION_MASS_GATE_EVERY_ACCEPTED_STEP",
+    "ZERO_DT_SUBDIVISION",
+    "ALL_32_COMMON_TIME_METRICS_FINITE_FOR_ALL_FOUR_CASES",
+    "O0_O2_STDOUT_BIT_IDENTITY",
+    "REPEAT_STDOUT_BIT_IDENTITY"
+  ],
+  "positive_decision": "T1_SUCCESSOR_REFERENCE_POLICY_QUALIFIED_AND_TEMPORAL_FLOOR_MEASURED",
+  "negative_decision": "T1_SUCCESSOR_REFERENCE_POLICY_NO_GO",
+  "if_positive": "Together with ROM-0V1, reevaluate Q0.1-Q0.6 under the new Reference-authority chain while retaining original T1 no-go as immutable history.",
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_TOLERANCE_CHANGE",
+    "NO_ORIGINAL_T1_RECLASSIFICATION",
+    "NO_POLICY_CONSTANT_FROM_T1_RESULTS",
+    "NO_DT_CHANGE",
+    "NO_CASE_OR_FORCING_CHANGE",
+    "NO_ITERATION_OR_HEAD_TOLERANCE_CHANGE",
+    "NO_CASE_REMOVAL",
+    "NO_ROM1_WORK_BEFORE_FINAL_Q0_RECONCILIATION"
+  ],
+  "production_admission_authorized": false,
+  "rom1a_authorized": false
+}

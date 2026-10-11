@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "kind": "POST_PROMOTION_CANONICAL_RECEIPT",
+  "canonical_branch": "integration/f-ci-canonical",
+  "promoted_governance_head": "c5d7344730eb73dadcc5c1dfd2d14f7132155f61",
+  "production_candidate": "9492d99e6291dd21ba2c5b394a79b3f877fed0e2",
+  "canonical_base": "8c16ea58946092024e4b394db87acf91f3fd4abf",
+  "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "production_delta": [
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "production_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "post_promotion_workflow": {
+    "run_id": 34472406545,
+    "event": "push",
+    "head_sha": "c5d7344730eb73dadcc5c1dfd2d14f7132155f61",
+    "conclusion": "success"
+  },
+  "preservation": {
+    "historical_fci03_through_fci18": "PASS",
+    "fci19_candidate_preservation": "PASS",
+    "fci19_source_lineage": "PASS",
+    "fci24_reference_et": "PASS",
+    "fci27_reference_et_runtime": "PASS",
+    "fci28_restart": "PASS",
+    "fci29_ptra_ownership": "PASS",
+    "fci30_restricted_parallel_v1": "PASS",
+    "fci31_current_postimage": "PASS"
+  },
+  "scope": "STATELESS_REFERENCE_ET_PTRA_TO_RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT_ROOT_WATER_UPTAKE_EXECUTION_COMPOSITION",
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction execution",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "decision": "CANONICAL_POST_PROMOTION_GATE_PASSED"
+}

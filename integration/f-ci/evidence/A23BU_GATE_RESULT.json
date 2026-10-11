@@ -1,0 +1,39 @@
+{
+  "work_unit": "A23BU",
+  "status": "PASS_IRRIGATION_CONTINUATION_MINIMIZATION_EVENT_WORKSPACE_RECONSTRUCTIBLE_LEGACY_EVENT_GLOBALS_REMAIN_SERIAL_BACKEND",
+  "reference": "B1.6 Hupsel Jan 4-5 2002",
+  "physics_changed": false,
+  "solver_policy_changed": false,
+  "selective_step_doubling_changed": false,
+  "top_jacobian_route_changed": false,
+  "gates": {
+    "irrigation_cursor_negative_control": "PASS",
+    "process_event_workspace_poison": "PASS",
+    "process_state_source_audit": "PASS",
+    "transaction_regression_o0_o2": "PASS",
+    "trial_output_suppression": "PASS",
+    "worker_isolation_8x1000": "PASS"
+  },
+  "physical": {
+    "mass_limit_cm": 1e-06,
+    "mass_pass": true,
+    "mass_residual_cm": -1.7872350177583485e-07,
+    "o0_o2_logs_identical": true
+  },
+  "persistent_process_cursor_fields": ["nirri", "dayfix"],
+  "reconstructible_event_workspace": [
+    "irrigevent", "gird", "isua", "cirr", "nird", "dt_irr_event", "qssdi", "qssdisum"
+  ],
+  "holds": [
+    "legacy irrigation event workspace still module-global during serialized execution",
+    "scheduled irrigation dynamic qualification pending",
+    "sub-day irrigation event boundaries pending",
+    "crop/WOFOST process continuation pending"
+  ],
+  "source_evidence": {
+    "original_blob": "ba7968f4c6369898658f6794004e568d510e7189",
+    "source_commit": "763f276a96ee1722a465bacd3a710172a5f38107",
+    "classification": "QUALIFIED_TEST_OR_CONTRACT"
+  },
+  "fci_note": "Condensed canonical retention of A23BU gate facts. It is evidence for worker/process semantics, not admission of the B1.6 physical adapter."
+}

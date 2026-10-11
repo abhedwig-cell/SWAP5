@@ -1,0 +1,150 @@
+{
+  "schema": "swap5.fwof.pp03.checkpoint.v2",
+  "capability": "F-WOF-PP03",
+  "title": "WOFOST81 runtime activation",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "state": "QUALIFIED_WOFOST81_RUNTIME_ACTIVATION",
+  "canonical_at_owner_construction": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587",
+    "message": "close(F-GC26): record canonical external gateway admission"
+  },
+  "owner": {
+    "branch": "work/f-wof-pp03-wofost81-runtime-activation",
+    "base_head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "qualified_execution_head": "97b7b6c712d003daa67b696faa1e9f207dff4e14"
+  },
+  "inherited_evidence": {
+    "F_WOF_PP02": {
+      "canonical_admission_status": "CLOSED_CANONICAL_ADMITTED",
+      "governance_checkpoint": "0be6bd755e51914d21e967afbe25401c14b39b81",
+      "qualified_execution_head": "a1f08076a2c0470118463ed6215d53bebfb555ca",
+      "ten_case_verdict": "QUALIFIED_TEN_CASE_WOFOST81_MIGRATION_PRESERVATION",
+      "cases": 10,
+      "states": 1045,
+      "accepted_transitions": 1035,
+      "qualified_outputs": [
+        "DVS", "LAI", "NamountLV", "NamountRT", "NamountSO", "NamountST",
+        "NuptakeTotal", "TAGP", "TWLV", "TWRT", "TWSO", "TWST"
+      ],
+      "outside_surface": ["RD", "TRA"],
+      "first_divergences": 0,
+      "maximum_observed_absolute_deviation": 7.275957614183426e-12,
+      "tolerances_changed": false,
+      "executable_preservation_replayed_in_pp03": {
+        "case": 1,
+        "states": 101,
+        "accepted_transitions": 100,
+        "first_divergences": 0,
+        "repository_integration_o0_o2_identity_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+        "fullseason_replay_sha256": "64b27e848507a027b9fe7a9b590600de5f90e2ad095fa9696650f565206fb708",
+        "summary_sha256": "cd370c873e11821c64c603fbe403eea3dfc3e4e28fc2707875a9e36fc2c86895",
+        "verdict": "PASS"
+      }
+    }
+  },
+  "implementation_contract": {
+    "strategy": "ADDITIVE_PARALLEL_WOFOST81_TRANSACTION_AND_LIFECYCLE",
+    "legacy_wofost_transaction_must_remain_semantically_unchanged": true,
+    "reuse_accepted_event_identity_and_lineage": true,
+    "reuse_kernel_transaction_policy": {
+      "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+      "max_retries": 0,
+      "max_committed_substeps": 1
+    },
+    "atomic_publication": "WOFOST81 owner and consumed-event receipt become authoritative only after one-day candidate preparation and nitrogen-supply application both succeed",
+    "potential_production_activation": {
+      "nitrogen_mode": "N_UNLIMITED",
+      "donor_equivalent_switch": "SWCROPSNM=0",
+      "soil_n_coupling_not_introduced": true
+    },
+    "activation_meaning": "typed SWAP5 runtime transaction route for WOFOST81, not replacement of the legacy WOFOST transaction"
+  },
+  "qualification": {
+    "workflow": ".github/workflows/f-wof-pp03-runtime-activation-qualification.yml",
+    "run_number": 13,
+    "run_id": 35034651590,
+    "job_id": 104600883520,
+    "conclusion": "SUCCESS",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "pp03_runtime_gate": {
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_identity": "PASS",
+      "output_sha256": "7182c28172fc58dd6f5cf31505d2ba70c7936c89731c25e52dabc7de6c5c002b",
+      "accepted_event_provenance": "PASS",
+      "runtime_candidate_equals_pp02_direct": "PASS",
+      "precommit_owner_receipt_unchanged": "PASS",
+      "lifecycle_requires_committed_receipt": "PASS",
+      "rollback_zero_owner_receipt_leak": "PASS",
+      "owner_and_receipt_one_atomic_revision": "PASS",
+      "lifecycle_matched_retirement": "PASS",
+      "lifecycle_duplicate_idempotent": "PASS",
+      "duplicate_event_zero_extra_advancement": "PASS",
+      "failed_evolution_zero_owner_receipt_mutation": "PASS",
+      "fixed_one_day_policy_enforced": "PASS",
+      "legacy_wofost_runtime_unchanged": "PASS"
+    },
+    "legacy_preservation": {
+      "F_WOF38": {
+        "immutable_script_blob": "435ae756e326fc059a771f202eb3d9a144460257",
+        "source_blob_unchanged": "PASS",
+        "o0": "PASS",
+        "o2": "PASS",
+        "o0_o2_output_identity": "PASS",
+        "current_contract_preservation": "PASS"
+      },
+      "F_WOF39": {
+        "immutable_script_blob": "c85424228f65799757833f34272dba570c3ea5c0",
+        "source_blob_unchanged": "PASS",
+        "matching_receipt_retirement_only": "PASS",
+        "owner_receipt_revision_unchanged": "PASS",
+        "replay_idempotent_zero_mutation": "PASS",
+        "current_contract_preservation": "PASS"
+      },
+      "compatibility_harness_only": {
+        "path": "tests/fwof/pp03/run_fwof38_fwof39_current_contract_preservation.sh",
+        "later_directional_compile_dependencies_added_to_temporary_gate_copy": true,
+        "historical_fwof34_fixture_given_explicit_fkt18_mass_completeness_metadata": true,
+        "compare_reals_and_function_elimination_warnings_not_promoted_to_errors_in_temporary_gate_copy": true,
+        "production_source_modified_by_compatibility_harness": false,
+        "immutable_legacy_gate_modified": false,
+        "physics_modified": false,
+        "tolerance_modified": false
+      }
+    }
+  },
+  "mutations_since_reconcile": {
+    "production": [
+      "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+      "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90"
+    ],
+    "qualification": [
+      "tests/fwof/pp03/test_fwof_pp03_runtime_activation.f90",
+      "tests/fwof/pp03/run_fwof_pp03_runtime_activation_gate.sh",
+      "tests/fwof/pp03/run_fwof38_fwof39_current_contract_preservation.sh",
+      ".github/workflows/f-wof-pp03-runtime-activation-qualification.yml"
+    ],
+    "legacy_runtime_semantics_modified": false,
+    "crop_physics_modified": false,
+    "oracle_or_tolerance_modified": false
+  },
+  "hard_exclusions": [
+    "No EB work",
+    "No ROSS or RossFast work",
+    "No groundwater work",
+    "No RD migration",
+    "No TRA migration",
+    "No maize blocker work",
+    "No new crop physics",
+    "No tolerance changes",
+    "No replacement or semantic modification of the legacy WOFOST transaction",
+    "No new Soil-N coupling policy",
+    "No production semantic workaround to force qualification"
+  ],
+  "verdict": "PASS/QUALIFY: exact owner execution head 97b7b6c712d003daa67b696faa1e9f207dff4e14 activates the qualified WOFOST81 one-day candidate through a typed atomic transaction and matching lifecycle. PP03 is deterministic at O0/O2, preserves PP02 numerical behavior on the executable Case001 replay, preserves immutable F-WOF38/F-WOF39 semantics under a qualification-only current-contract compatibility harness, and leaves the legacy WOFOST runtime unchanged.",
+  "next_permitted_action": "Reconcile qualified owner execution head 97b7b6c712d003daa67b696faa1e9f207dff4e14 against live integration/f-ci-canonical. If no relevant dependency conflict or semantic overlap exists, compose and independently qualify a current-canonical admission candidate before canonical mutation."
+}

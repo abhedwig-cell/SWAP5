@@ -1,0 +1,23 @@
+name: EB-I18R current-canonical bottom-energy publication
+
+on:
+  push:
+    branches:
+      - work/eb-i18r-current-canonical-bottom-energy-publication
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: EB-I18R current-canonical staged qualification
+        run: bash tests/eb/run_eb_i18r_current_canonical_gate.sh

@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.publication.p2e07-reference-cancellation-floor-result.v1",
+  "workunit": "PUB-P2E07",
+  "phase": "QUALIFIED_RESULT_PENDING_FINAL_EXACT_HEAD_GATES",
+  "canonical_base_at_pr": "910fbc1c9cab2b11094e6a45606dfcea85621f4d",
+  "preregistered_canonical_base": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+  "branch": "work/pub-p2e07-reference-cancellation-floor",
+  "qualified_diagnostic_head_before_result": "89b105e525bdba6a4d8a86935ee2a72bdeb21bee",
+  "pre_result_pull_request_merge_image": "f3d404a292691b972fc7aca5a2eb23dcaaf328c1",
+  "pull_request": 203,
+  "scope": "Reference-only decomposition of the exact immutable P2E03/P2E04/P2E06 162-case domain; no RossFast execution or discrepancy inspection, no production/reference source change, no tolerance change, no case removal or historical rewrite",
+  "qualification_before_result_commit": {
+    "p2e07_workflow_run": 35284055739,
+    "p2e07_job": 105412324962,
+    "p2e07_result": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_sha256": "9b3d0d07fa4b1987dfc70aa5ff355f04913433f49f3684fe794efa27789e1c6f",
+    "documentation_workflow_run": 35284055701,
+    "documentation_result": "PASS",
+    "f_ci_canonical_workflow_run": 35284055634,
+    "f_ci_canonical_result": "PASS",
+    "f_ci_canonical_jobs": 15
+  },
+  "exact_baseline_reproduction": {
+    "cases": 162,
+    "accepted": 47,
+    "retry_total_only": 12,
+    "retry_local_balance": 103,
+    "other_failure_classes": 0,
+    "local_balance_first_failure_stage": {
+      "coarse": 83,
+      "half1": 18,
+      "half2": 2
+    },
+    "local_balance_by_requested_coarse_dt_day": {
+      "0.0016": 3,
+      "0.0004": 46,
+      "0.0001": 54
+    }
+  },
+  "internal_residual_reconstruction": {
+    "local_balance_states": 103,
+    "exactly_reconstructed": 103,
+    "max_absolute_closure_cm_per_day": 0.0,
+    "public_fail_closed_storage_rate_zero": 103,
+    "internal_storage_rate_nonzero": 99,
+    "internal_storage_rate_zero": 4,
+    "internal_storage_zero_case_ids": [30, 33, 36, 138],
+    "interpretation": "The P2E06 public candidate-state storage decomposition was not a valid proxy for the failed internal Newton iterate. In 99/103 local-balance failures the internal workspace carries a nonzero storage-rate term while the fail-closed public candidate reports zero storage change. Four states have zero internal storage-rate as well, so a universal nonzero-storage hypothesis is not supported."
+  },
+  "estimated_floor_definition": {
+    "units": "cm/day",
+    "formula": "max(storage_input_quantization_floor, abs(real64_native_order_sum-higher_precision_component_sum), real64_summation_order_spread)",
+    "storage_input_quantization_floor": "0.5*(spacing(theta_internal)+spacing(theta_base))*dz/dt",
+    "criterion": "The configured strict Reference compartment-balance criterion is not numerically distinguishable for calibration at a diagnosed state when estimated_local_floor >= configured_compartment_balance_tolerance.",
+    "configured_compartment_balance_tolerance_cm_per_day": 1e-12,
+    "boundary": "This is a diagnostic resolution scale for the frozen experiment, not a rigorous propagated-error bound, not a replacement solver tolerance and not proof that one arithmetic operation is the sole causal mechanism."
+  },
+  "floor_results": {
+    "local_balance_states": 103,
+    "estimated_floor_at_or_above_tolerance": 102,
+    "estimated_floor_below_tolerance": 1,
+    "residual_at_or_below_estimated_floor": 85,
+    "residual_above_estimated_floor": 18,
+    "estimated_floor_dominated_by_storage_input_quantization": 103,
+    "higher_precision_recomposition_difference_nonzero": 7,
+    "summation_order_spread_nonzero": 33,
+    "max_higher_precision_difference_over_estimated_floor": 0.00064,
+    "max_summation_order_spread_over_estimated_floor": 0.00064,
+    "dt_times_estimated_floor_cm": {
+      "min": 2.7755575615628914e-16,
+      "max": 1.1102230246251565e-15
+    },
+    "cancellation_ratio_component_l1_over_abs_residual": {
+      "min": 2506409.148070441,
+      "max": 27696176001251.184
+    },
+    "interpretation": "The residual is produced by cancellation among much larger stored algebraic terms, but the measured final real64 summation-order and higher-precision recomposition effects are small compared with the theta input-representation scale. In all 103 states the preregistered estimated floor is therefore set by the storage-input quantization term."
+  },
+  "requested_dt_summaries": {
+    "0.0016": {
+      "local_cases": 3,
+      "reconstruction_supported": 3,
+      "floor_at_or_above_tolerance": 3,
+      "floor_min_cm_per_day": 1.3877787807814457e-12,
+      "floor_mean_cm_per_day": 1.3877787807814457e-12,
+      "floor_max_cm_per_day": 1.3877787807814457e-12,
+      "tolerance_over_floor_mean": 0.7205759403792792,
+      "residual_over_floor_mean": 0.84164,
+      "cancellation_ratio_mean": 12506819493293.258,
+      "internal_storage_nonzero": 3,
+      "public_storage_zero": 3
+    },
+    "0.0004": {
+      "local_cases": 46,
+      "reconstruction_supported": 46,
+      "floor_at_or_above_tolerance": 45,
+      "floor_min_cm_per_day": 6.938893903907228e-13,
+      "floor_mean_cm_per_day": 1.9760763074170584e-12,
+      "floor_max_cm_per_day": 2.7755575615628914e-12,
+      "tolerance_over_floor_mean": 0.5795936911746376,
+      "residual_over_floor_mean": 0.8308502302430764,
+      "cancellation_ratio_mean": 6580689863241.031,
+      "internal_storage_nonzero": 46,
+      "public_storage_zero": 46
+    },
+    "0.0001": {
+      "local_cases": 54,
+      "reconstruction_supported": 54,
+      "floor_at_or_above_tolerance": 54,
+      "floor_min_cm_per_day": 2.7755575615628914e-12,
+      "floor_mean_cm_per_day": 5.859510407743882e-12,
+      "floor_max_cm_per_day": 1.1102230246251565e-11,
+      "tolerance_over_floor_mean": 0.19015198426675417,
+      "residual_over_floor_mean": 0.7644326574579877,
+      "cancellation_ratio_mean": 1760296360485.91,
+      "internal_storage_nonzero": 50,
+      "public_storage_zero": 54
+    }
+  },
+  "distinguishable_exception": {
+    "case_id": 62,
+    "material": "O01",
+    "effective_saturation": 0.65,
+    "forcing": "WETTING",
+    "requested_coarse_dt_day": 0.0004,
+    "failed_stage": "COARSE",
+    "actual_dt_day": 0.0004,
+    "residual_rate_cm_per_day": 1.1298184610097906e-12,
+    "estimated_floor_cm_per_day": 6.938893903907228e-13,
+    "tolerance_over_floor": 1.4411518807585586,
+    "residual_over_floor": 1.62824,
+    "interpretation": "This is the single LOCAL_BAL state in the frozen domain for which the preregistered estimated floor is below the configured 1e-12 cm/day criterion. The local failure is therefore numerically distinguishable by this diagnostic, unlike the other 102 states."
+  },
+  "hypothesis_adjudication": {
+    "H_internal_state": "PARTIALLY_SUPPORTED_99_OF_103_NONZERO_INTERNAL_STORAGE; UNIVERSAL_FORM_NOT_SUPPORTED",
+    "H_storage_resolution": "SUPPORTED_IN_FROZEN_DOMAIN_AS_DOMINANT_ESTIMATED_FLOOR_SCALE",
+    "H_cancellation": "SUPPORTED_FOR_LARGE_COMPONENT_CANCELLATION; FINAL_RECOMPOSITION_AND_SUMMATION_ORDER_ROUNDING_NOT_DOMINANT",
+    "H_validity": "SUPPORTED_102_OF_103_LOCAL_BAL_STATES_NOT_NUMERICALLY_DISTINGUISHABLE_BY_PREREGISTERED_CRITERION",
+    "causal_precision_claim": "NOT_PROVEN; EVIDENCE_IDENTIFIES_A_DOMINANT_DIAGNOSTIC_REPRESENTATION_SCALE, NOT_A_UNIQUE_ARITHMETIC_CAUSE"
+  },
+  "scientific_reconciliation": {
+    "p2e06_rate_scaling_pattern": "SUPPORTED_AND_REFINED",
+    "p2e06_public_storage_zero_interpretation": "REVISED: PUBLIC FAIL-CLOSED CANDIDATE STATE MASKS THE FAILED INTERNAL ITERATE AND MUST NOT BE USED TO ATTRIBUTE THE INTERNAL RESIDUAL",
+    "integrated_scale": "dt times estimated floor spans approximately 2.8e-16 to 1.1e-15 cm, consistent with the integrated residual-depth scale observed by P2E06.",
+    "reference_calibration_validity": "The frozen strict 1e-12 cm/day compartment criterion is not a numerically distinguishishable calibration discriminator for 102/103 diagnosed LOCAL_BAL first-failure states under the preregistered floor model."
+  },
+  "firewall_verification": {
+    "rossfast_solver_executed": false,
+    "rossfast_discrepancy_inspected": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "production_tolerance_changed": false,
+    "reference_numerical_policy_changed": false,
+    "p2e03_p2e04_p2e06_history_rewritten": false,
+    "case_removed_or_substituted": false
+  },
+  "scientific_boundary": {
+    "p2e03_status": "REMAINS_BLOCKED",
+    "rossfast_scientific_admissibility_established": false,
+    "production_tolerance_change_authorized": false,
+    "reference_tolerance_change_authorized": false,
+    "replacement_calibration_matrix_authorized": false
+  },
+  "verdict": "QUALIFIED_REFERENCE_CANCELLATION_FLOOR_AND_CALIBRATION_VALIDITY_EVIDENCE_PENDING_FINAL_EXACT_HEAD_GATES",
+  "next_permitted_action": "Run the P2E07 diagnostic, documentation and full canonical gates on the result-bearing exact head. If all pass, admit P2E07 evidence only. After admission, any replacement Reference calibration-domain construction must be a separate preregistered workunit and must not change solver tolerances or inspect RossFast discrepancies until the Reference-valid common domain is independently established."
+}

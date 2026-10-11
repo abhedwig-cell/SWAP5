@@ -1,0 +1,42 @@
+{
+  "schema": "pub-gc-gmd-license-external-evidence-v1",
+  "date": "2026-09-19",
+  "status": "UPSTREAM_SW4_GPLV2_CONFIRMED_SWAP5_DECLARATION_AUTHORITY_REQUIRED",
+  "candidate": {
+    "source_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "source_tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "authority_file": "release/pub-gc-gmd/PUB_GC_GMD_UNVERSIONED_CANDIDATE.json"
+  },
+  "official_sources": [
+    {
+      "authority": "SWAP/WUR",
+      "title": "SWAP 4 - Technical addendum to the SWAP documentation",
+      "url": "https://swap.wur.nl/Documents/SWAP%204%20-%20Technical%20addendum%20to%20the%20SWAP%20documentation.pdf",
+      "DOI": "10.18174/540451",
+      "evidence": "Source code and executable are publicly available/freely usable; software is distributed under GNU General Public License Version 2, June 1991."
+    },
+    {
+      "authority": "Wageningen University & Research",
+      "title": "Choosing a licence for your research software",
+      "url": "https://support.wur.nl/esc?id=kb_article&sysparm_article=KB0017455",
+      "evidence": "Research software licensing must be explicit; WUR does not mandate one single standard software licence."
+    },
+    {
+      "authority": "SWAP/WUR",
+      "title": "SWAP downloads",
+      "url": "https://swap.wur.nl/downloads.html",
+      "evidence": "Official current distribution surface for SWAP releases/development packages."
+    }
+  ],
+  "resolved": [
+    "official upstream SWAP 4 GPL version 2 provenance",
+    "upstream licence evidence is external/official rather than inferred only from repository files"
+  ],
+  "unresolved": [
+    "exact authorized licence expression for the SWAP5 publication archive",
+    "redistribution scope for all candidate contents",
+    "authorized reviewer access route for external SWAP 4.3.1 reference distribution"
+  ],
+  "forbidden_inference": "Do not convert upstream GPLv2 evidence into a final SWAP5 licence declaration without controlling authority.",
+  "l1_question": "What exact licence/redistribution statement is authorized for the frozen SWAP5 publication candidate?"
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-SI39",
+  "title": "B1.11 near-saturated KSATEXM constitutive preservation",
+  "phase": "QUALIFY_ADMISSION_READY",
+  "branch": "work/f-si39-b110-ksatexm-preservation",
+  "canonical_reconciliation": {
+    "live_head": "d443000631f032bc0ba3e4c39f566da3cc05a3c6",
+    "production_overlap": false,
+    "modified_production_files": [
+      "src/solver/mod_b110_default_mvg_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "canonical_preimages": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "4597c833e7f45beaef04ffcc592ca6a4fcbd0395"
+    },
+    "qualified_postimages": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "556ed83dee4d5b159f1de7ae797af7106a0abe2e"
+    },
+    "note": "The subject was carried onto current canonical with identical production postimages; subsequent canonical drift did not touch either production file."
+  },
+  "trigger": {
+    "source": "M1-C3 exact six-interval B1.11 Hupsel replay",
+    "before_max_head_error_cm": 1.504150813995352,
+    "exact_optin_after_max_head_error_cm": 0,
+    "classification": "missing active legacy KSATEXM constitutive semantic, not tolerance or solver policy"
+  },
+  "owner_qualification": {
+    "run_id": 35353574323,
+    "job_id": 105627327663,
+    "conclusion": "success",
+    "markers": [
+      "F_SI39_STATIC_EXACT_FORMULA_AND_OPTIN=PASS",
+      "F_SI39_DEFAULT_DISABLED_PRESERVATION=PASS",
+      "F_SI39_HUPSEL_SATURATED_KSATEXM=PASS",
+      "F_SI39_HUPSEL_NEAR_SATURATED_INTERPOLATION=PASS",
+      "F_SI39_BELOW_THRESHOLD_NOOP=PASS",
+      "F_SI39_OWNER_QUALIFICATION=PASS"
+    ],
+    "O0_O2": "PASS",
+    "output_sha256": "13b14016a6eb495fb3863698e843c0a1e524fa0bcf83e6f546f5627c12d33d4f"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ127",
+    "run_id": 35353574382,
+    "job_id": 105627327700,
+    "conclusion": "success",
+    "markers": [
+      "F_VQ127_EXACT_B111_ORACLE=PASS",
+      "F_VQ127_PER_NODE_ACTIVATION=PASS",
+      "F_VQ127_DEFAULT_ROUTE_PRESERVED=PASS",
+      "F_VQ127_BELOW_THRESHOLD_IDENTITY=PASS",
+      "F_VQ127_FSI39_INDEPENDENT=PASS"
+    ],
+    "O0_O2": "PASS",
+    "output_sha256": "be1ebff70e9f13f5bab56b81eaa1ea34d4655108f46ee7275868f08fa6c97200",
+    "production_mutation": "NONE"
+  },
+  "semantic_contract": {
+    "default_route": "unchanged; KSATEXM extension disabled unless explicitly requested",
+    "enabled_route": "exact legacy per-node activation cofgen(10)>cofgen(3), relsat>cofgen(11), SWMACRO=0 equivalent",
+    "tolerance_change": "NONE",
+    "transaction_change": "NONE",
+    "retry_change": "NONE",
+    "timestep_change": "NONE",
+    "rossfast_change": "NONE",
+    "legacy_source_change": "NONE"
+  },
+  "m1_c3_snapshot_effect": {
+    "frozen_dates": [
+      "2002-01-05",
+      "2002-07-15",
+      "2003-05-15",
+      "2003-08-15",
+      "2004-01-15",
+      "2004-10-15"
+    ],
+    "replay_cases": 6,
+    "pressure_head_max_abs_error_cm": 0,
+    "water_content_max_abs_error": 0,
+    "ponding_max_abs_error_cm": 0,
+    "top_flux_max_abs_error_cm_per_day": 0,
+    "bottom_flux_max_abs_error_cm_per_day": 0,
+    "normalized_result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+    "normalized_result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+  },
+  "verdict": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION"
+}

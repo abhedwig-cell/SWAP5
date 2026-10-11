@@ -1,0 +1,67 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_IMPLEMENT_DECISION",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "precheckpoint_head": "eb2bf4b929ac10d87c3e28fae443dc96809e8dbb",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "74051e113fcef19e021d69854f3ab99066eb30cb",
+    "parent": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+    "relevant_delta": "DOCUMENTATION_ONLY_F_DOC27_NO_PRODUCTION_REFERENCE_TEST_PHYSICS_OR_NUMERICAL_SEMANTIC_CHANGE"
+  },
+  "dependency_reconciliation": {
+    "admitted_F_APP03_commit": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+    "dependency_merged_into_F_APP04": true,
+    "qualified_process": "src/process/mod_pmdirect_swetr0_process.f90",
+    "process_qualification": "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+    "handoff": "integration/f-app/F-APP03_PROCESS_CLOSE_FAPP04_HANDOFF.json",
+    "previous_exact_source_blocker": "CLOSED_BY_ADMITTED_F_APP03_EXACT_AUTHORITY_AND_QUALIFIED_PROCESS_POSTIMAGE",
+    "broad_source_recovery_may_not_be_repeated": true
+  },
+  "inspected_downstream_contracts": {
+    "root_input_contract": "src/crop/mod_crop_root_uptake_input_contract.f90",
+    "existing_SWETR1_root_binding": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "surface_process": "src/process/mod_restricted_surface_evaporation.f90",
+    "existing_SWETR1_surface_runtime_materialization": "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+  },
+  "implementation_decision": {
+    "principle": "Consume the admitted F-APP03 postimage; do not reproduce or fit PMdirect equations in F-APP04.",
+    "root_uptake": "Add a PMdirect-specific transparent binding from pmdirect_swetr0_interval_result_t potential_transpiration_cm_per_day into the existing canonical crop_root_uptake_input_t while preserving and validating root geometry exactly as the admitted SWETR=1 binding does.",
+    "surface_evaporation": "Add a PMdirect-specific transparent demand binding from pmdirect_swetr0_daily_result_t potential_soil_evaporation_cm_per_day and potential_pond_evaporation_cm_per_day into the existing surface_evaporation_demand_t. Do not duplicate candidate/committed-state materialization logic and do not modify the admitted SWETR=1 runtime materialization module.",
+    "net_rain": "No new downstream rain contract is authorized by the targeted inspection. Keep pmdirect_swetr0_interval_result_t net_rain_cm_per_day in the qualified F-APP03 postimage until an existing typed receiving seam is demonstrated; do not invent one in F-APP04.",
+    "existing_SWETR1_production_blobs_must_remain_unchanged": true,
+    "new_parallel_application_runtime": false,
+    "new_scientific_equations": false
+  },
+  "validation_policy": [
+    "Reject upstream PMdirect diagnostics unless status is PMDIRECT_SWETR0_OK and the required daily/interval result-produced flag is true.",
+    "For root uptake, neutralize incoming potential_transpiration before validating existing root geometry, then bind the F-APP03 interval postimage and validate the assembled canonical input.",
+    "For surface demand, require finite non-negative F-APP03 daily demands before producing surface_evaporation_demand_t.",
+    "On rejection return zero/default output objects and explicit diagnostics; never substitute defaults for missing scientific authority."
+  ],
+  "mutations": {
+    "production_source": "NONE_IN_THIS_CHECKPOINT",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "retry_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "governance_evidence_only": true
+  },
+  "next_permitted_action": "Implement only the two transparent PMdirect typed bindings described above, add owner tests for exact mapping and fail-closed behavior, and qualify them without modifying existing SWETR=1 binding/runtime files. Revisit net-rain application only if a pre-existing typed receiving contract is found by a bounded targeted inspection.",
+  "exclusions": [
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "M1-C3 legacy file adapter",
+    "generic ET redesign",
+    "modification of admitted SWETR=1 reference-ET process or binding/runtime modules",
+    "RossFast",
+    "Energy Balance",
+    "solver/Richards/timestep/retry/tolerance changes",
+    "broad IO or application-runtime redesign"
+  ]
+}

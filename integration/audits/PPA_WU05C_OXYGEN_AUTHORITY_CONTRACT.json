@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.ppa_wu05c.oxygen_authority_contract.v1",
+  "workunit": "PPA-WU05-C",
+  "authority": {
+    "corrected_reference": {
+      "snapshot": "B1.11",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "files": {
+        "SWAP/oxygenstress.f90": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+        "SWAP/rootextraction.f90": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+        "SWAP/RWU_micro.f90": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+        "SWAP/temperature.f90": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+      }
+    },
+    "admitted_correction": {
+      "id": "SWAP-007",
+      "scope": "Numerical robustness only: guard unrepresentable oxygen-stress Newton quotient and route through the existing restart path.",
+      "physics_change": false,
+      "normal_path_change_demonstrated": false,
+      "mandatory_for_future_oracle": true
+    },
+    "current_swap5": [
+      "src/process/mod_root_water_uptake_process.f90",
+      "integration/f-ci/F-CI31_STATUS.json",
+      "integration/f-ci/F-CI37_STATUS.json",
+      "integration/f-gc/F-GC30_CLOSEOUT.json",
+      "integration/f-ci/F-CI45_STATUS.json"
+    ],
+    "recovered_historical_evidence": {
+      "A23AP_ROOTEXTRACTION_OXYGEN_CONTRACT": {
+        "class": "CORROBORATING_SOURCE_BOUND_HISTORICAL_EVIDENCE",
+        "strongest_scope": "SWOXYGEN=2, SWOXYGENTYPE=2 macro and microscopic root-extraction reproduction path",
+        "result": "Pure scalar/prefix oxygen reproduction factor with no physical persistent state in the recovered candidate."
+      },
+      "A23AP_REPORT": {
+        "class": "CORROBORATING_EXECUTABLE_HISTORICAL_EVIDENCE",
+        "qualification": {
+          "pure_checks": 100000,
+          "gas_zero_cases": 4539,
+          "bitwise_mismatches": 0,
+          "dynamic_reproduction_calls": 16116,
+          "macro_calls": 3788,
+          "microscopic_calls": 12328,
+          "current_theta_s_requests": 194924,
+          "stale_theta_s_requests": 0
+        }
+      },
+      "S9_S11_oxygenstress_cache": {
+        "class": "CORROBORATING_OWNERSHIP_EVIDENCE_NOT_B1_11_PRODUCTION_AUTHORITY",
+        "fields": [
+          "d_soil_term1",
+          "d_soil_term2",
+          "gfp100",
+          "capac_term",
+          "nmin1",
+          "mplus1"
+        ],
+        "classification": "immutable-after-construction derived data under a complete construction key; not transaction snapshot state",
+        "caveat": "When hysteresis affects construction-time watcon(), the initial hysteresis branch belongs in the construction key."
+      }
+    }
+  },
+  "invariants": {
+    "accepted_water_mass_owner": "The existing root-water-uptake owner remains the sole authoritative accepted nodewise root sink and actual-uptake mass owner.",
+    "oxygen_mass_owner": "NONE. Oxygen stress modifies/reduces a root-water-demand/sink result; it does not book an independent water sink.",
+    "hydraulic_owner": "Soil-water owner. Oxygen receives clean current/committed hydraulic fields only.",
+    "thermal_owner": "Soil-temperature owner. Oxygen may consume a read-only temperature field only where the exact selected legacy option requires it.",
+    "crop_owner": "Crop/root-geometry and oxygen coefficients remain externally owned read-only configuration/views.",
+    "worker_scratch": "Temporary Newton/algebra/prefix work is disposable execution scratch unless exact source proves physical continuation semantics.",
+    "coupling": "Any oxygen modifier that changes accepted root sink remains outside F-GC30 analytic tangent coverage until exact root-response derivative coverage is independently qualified.",
+    "rejected_trial": "Must not publish accepted root-sink mass or advance any oxygen continuation state.",
+    "swap007": "Any migrated oxygen Newton path must preserve the B1.11 SWAP-007 representability guard."
+  },
+  "families": {
+    "SWOXYGEN_2_SWOXYGENTYPE_2_REPRODUCTION": {
+      "authority_state": "REVIEW_AUTHORITY_FROZEN_FOR_LATER_IMPLEMENTATION_SLICE",
+      "legacy_role": "Oxygen reproduction factor used by macro and microscopic root-extraction paths.",
+      "recovered_inputs": [
+        "immutable oxygen slope[6]",
+        "immutable oxygen intercept[6]",
+        "current node theta",
+        "current hydraulic theta_s",
+        "current node soil temperature",
+        "node depth z",
+        "bottom coordinate zbotcp",
+        "cumulative gas-volume/porosity prefix"
+      ],
+      "output": "root-water-uptake reduction factor in [0,1]",
+      "persistent_physical_state": [],
+      "shared_derived_state": [],
+      "worker_scratch": [
+        "current theta_s scalar",
+        "cumulative porosity prefix scalar"
+      ],
+      "hydraulic_contract": "theta_s comes from the current hydraulic representation, not a stale compatibility replica.",
+      "thermal_contract": "read-only current/committed soil temperature scalar/profile view",
+      "mass_contract": "factor/result only; final accepted root sink is ledgered once by the root uptake owner",
+      "historical_evidence_strength": "STRONG",
+      "production_status": "NOT_IMPLEMENTED",
+      "next_slice": "PPA-WU05-C1"
+    },
+    "SWOXYGEN_1_FEDDES_WETNESS": {
+      "authority_state": "SOURCE_MATERIALIZATION_REQUIRED_BEFORE_STATE_OR_EQUATION_FREEZE",
+      "known_boundary": "Separate from the currently admitted drought-only Feddes route. It must compose as a root-sink modifier without creating a second mass owner.",
+      "persistent_physical_state": "UNKNOWN_DO_NOT_INFER",
+      "equation_oracle": "BLOCKED_UNTIL_EXACT_B1_11_ROUTINE_MATERIALIZATION",
+      "mass_contract": "No separate accepted water sink; root uptake remains the sole mass owner.",
+      "production_status": "NOT_IMPLEMENTED",
+      "next_slice": "PPA-WU05-C2"
+    },
+    "SWOXYGEN_2_SWOXYGENTYPE_1_BARTHOLOMEUS": {
+      "authority_state": "SOURCE_MATERIALIZATION_REQUIRED_BEFORE_PHYSICAL_STATE_FREEZE",
+      "known_boundary": "Physical oxygen-stress model distinct from reproduction and Feddes families.",
+      "corroborated_derived_cache": {
+        "fields": [
+          "d_soil_term1",
+          "d_soil_term2",
+          "gfp100",
+          "capac_term",
+          "nmin1",
+          "mplus1"
+        ],
+        "likely_owner": "shared immutable-after-construction derived data",
+        "not_checkpoint_state": true,
+        "authority_level": "HISTORICAL_CORROBORATION_ONLY"
+      },
+      "persistent_physical_state": "UNKNOWN_DO_NOT_INFER",
+      "exact_runtime_inputs": "PARTIALLY_KNOWN_ONLY",
+      "equation_oracle": "BLOCKED_UNTIL_EXACT_B1_11_ROUTINE_MATERIALIZATION",
+      "swap007_requirement": true,
+      "production_status": "NOT_IMPLEMENTED",
+      "next_slice": "PPA-WU05-C3"
+    }
+  },
+  "composition": {
+    "modifier_order": "Must be source-bound per option. WU05-C does not invent a new multiplication/order rule between drought, oxygen, salinity, frost or compensation.",
+    "macro_micro": "Microscopic root-uptake composition is separate from oxygen-factor science. C1 may expose a reusable factor contract, but MICRO production remains a separate later slice.",
+    "temperature": "Current sensible-temperature production capability does not itself admit oxygen stress; it only supplies a potential read-only field once an oxygen slice is independently qualified.",
+    "restart": "C1 has no physical continuation state in recovered evidence. C2/C3 restart semantics remain held until exact source trace.",
+    "parallel": "No advanced oxygen profile is admitted to the existing parallel root pool by this review."
+  },
+  "migration_slices": [
+    {
+      "id": "PPA-WU05-C1",
+      "scope": "Typed pure SWOXYGEN=2/SWOXYGENTYPE=2 oxygen reproduction factor",
+      "priority": 1,
+      "state": "DEFINED_NOT_IMPLEMENTED",
+      "prerequisite": "Reproduce recovered A23AP scalar/prefix oracle against a pinned exact reference implementation or equivalent exact-source oracle; preserve current theta_s ownership and SWAP-007 nonapplicability/interaction as source-bound.",
+      "expected_state_topology": "No persistent physical state; call-local prefix/saturation scratch only.",
+      "production_gate": [
+        "exact factor oracle",
+        "macro and micro call-path oracle",
+        "current theta/theta_s and thermal view ownership",
+        "O0/O2 identity",
+        "A/B/A replay",
+        "root-sink exactly-once mass preservation",
+        "parallel and groundwater-coupling fail-closed preservation"
+      ]
+    },
+    {
+      "id": "PPA-WU05-C2",
+      "scope": "Feddes oxygen/wetness modifier",
+      "priority": 2,
+      "state": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+      "prerequisite": "Exact B1.11 equation/state/call-path materialization"
+    },
+    {
+      "id": "PPA-WU05-C3",
+      "scope": "Bartholomeus physical oxygen-stress process",
+      "priority": 3,
+      "state": "HELD_SOURCE_MATERIALIZATION_REQUIRED",
+      "prerequisite": "Exact B1.11 physical state, cache, Newton/restart and input call graph including SWAP-007 path"
+    },
+    {
+      "id": "PPA-WU05-C4",
+      "scope": "MICRO/Jong-van-Lier composition with independently admitted oxygen modifier",
+      "priority": 4,
+      "state": "HELD_DEPENDENCY",
+      "prerequisite": "Independent MICRO owner/state authority plus relevant oxygen slice admission"
+    }
+  ],
+  "review_verdict": "OXYGEN_FAMILY_BOUNDARIES_FROZEN_C1_READY_FOR_SEPARATE_IMPLEMENTATION_AUTHORITY_C2_C3_SOURCE_HELD",
+  "production_admission": "NONE_REVIEW_ONLY"
+}

@@ -1,0 +1,81 @@
+name: F-CI70 EB-I22 moving preservation
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/process/mod_linear_mixture_sensible_storage.f90'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'src/kernel/mod_energy_conservation_types.f90'
+      - 'src/process/mod_soil_temperature_contract.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'tests/eb/EB-I22_CONTRACT.md'
+      - 'tests/eb/F-VQ88_STATUS.json'
+      - 'integration/f-ci/F-CI70_STATUS.json'
+      - '.github/workflows/fci70-eb-i22-moving-preservation.yml'
+  pull_request:
+    paths:
+      - 'src/process/mod_linear_mixture_sensible_storage.f90'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'src/kernel/mod_energy_conservation_types.f90'
+      - 'src/process/mod_soil_temperature_contract.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'tests/eb/EB-I22_CONTRACT.md'
+      - 'tests/eb/F-VQ88_STATUS.json'
+      - 'integration/f-ci/F-CI70_STATUS.json'
+      - '.github/workflows/fci70-eb-i22-moving-preservation.yml'
+  workflow_dispatch:
+
+jobs:
+  preserve-eb-i22:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preserve admitted EB-I22 authority surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADMISSION=9344470f3d0a754f3c53028d0b9fb4cc07b34466
+          git merge-base --is-ancestor "$ADMISSION" HEAD
+          test "$(git rev-parse HEAD:src/process/mod_linear_mixture_sensible_storage.f90)" = "0403c23454a879356ce8d2345006df130484067d"
+          test "$(git rev-parse HEAD:src/process/mod_whole_column_sensible_energy_accounting.f90)" = "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+          test "$(git rev-parse HEAD:src/kernel/mod_energy_conservation_types.f90)" = "15a6a9c5c5da6ad0d535c27772e57a23e618658d"
+          test "$(git rev-parse HEAD:src/process/mod_soil_temperature_contract.f90)" = "baa13df3975de2c699b0ec910477bcfa9b47f15e"
+          test "$(git rev-parse HEAD:src/process/mod_restricted_soil_temperature.f90)" = "fa4e1d7b48d3515e6569c9080d497178c25c4e85"
+          python3 -m json.tool tests/eb/F-VQ88_STATUS.json >/dev/null
+          python3 -m json.tool integration/f-ci/F-CI70_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I22_INDEPENDENT"' tests/eb/F-VQ88_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_F_CI70_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI70_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI70_STATUS.json
+          echo 'FCI70_MOVING_EB_I22_AUTHORITY_PRESERVATION=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay EB-I22 owner and independent evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          cd build
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90 \
+            -o owner
+          ./owner | tee ../owner.txt
+          gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -O2 \
+            ../src/kernel/mod_energy_conservation_types.f90 \
+            ../src/process/mod_linear_mixture_sensible_storage.f90 \
+            ../src/process/mod_whole_column_sensible_energy_accounting.f90 \
+            ../tests/eb/test_f_vq88_eb_i22_independent.f90 \
+            -o independent
+          ./independent | tee ../independent.txt
+          grep -Fx 'EB-I22 whole-column sensible-energy accounting: PASS' ../owner.txt
+          grep -Fx 'F-VQ88 EB-I22 independent qualification: PASS' ../independent.txt
+          echo 'FCI70_MOVING_EB_I22_REPLAY=PASS'

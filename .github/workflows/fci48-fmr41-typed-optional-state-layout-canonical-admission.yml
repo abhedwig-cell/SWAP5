@@ -1,0 +1,32 @@
+name: F-CI48 F-MR41 typed optional-state layout canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci48-fmr41-typed-optional-state-layout-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  exact-head-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI48_EXACT_HEAD_START=PASS:${GITHUB_SHA}"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI48 canonical admission gate
+        shell: bash
+        run: bash tests/fci/run_fci48_fmr41_canonical_admission.sh
+      - name: Exact head end
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          echo "FCI48_EXACT_HEAD_END=PASS:${GITHUB_SHA}"

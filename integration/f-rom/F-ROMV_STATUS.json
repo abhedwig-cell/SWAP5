@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.f-romv.status.v2",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV",
+  "title": "ROM computational-value go/no reassessment",
+  "phase": "CLOSED_NO_GO_UNDER_CURRENT_PROPOSITION",
+  "canonical_reconciliation": {
+    "branch": "integration/f-ci-canonical",
+    "preimage": "d5587a650007e96e9f6008a179ac4bdf0cf77218",
+    "scope": "EVIDENCE_ONLY_TERMINAL_RECONCILIATION"
+  },
+  "historical_stage": {
+    "decision": "CONDITIONAL_GO_NARROW_RESEARCH_ONLY",
+    "research_head": "f662451bcc825dc4b4933c1a947e2d6227f66b9e",
+    "pull_request": 403,
+    "reclassified": false,
+    "meaning": "Authorized exactly one minimal B01 template-local discriminating experiment, not production ROM."
+  },
+  "terminal_stage": {
+    "work_unit": "F-ROMV-MDE-S1",
+    "decision": "STOP_SIMPLE_TEMPLATE_LOCAL_ROM",
+    "research_head": "c4626211a20a6e00bd0b09a0e84253b8d848405d",
+    "pull_request": 409,
+    "scientific_pre_screen_passed": false,
+    "direct_performance_comparator_stage_executed": false,
+    "reason": "PREREGISTERED_SCIENTIFIC_EARLY_KILL"
+  },
+  "terminal_findings": {
+    "structural_water_ledger": "PASS",
+    "heldout_bottom_flux_sign": "FAIL",
+    "heldout_flow_reversal_timing": "FAIL_19_STEPS_EARLY_IN_H02",
+    "heldout_physical_state_bounds": "FAIL_H03_IN_DOMAIN_REDUCED_STEPS",
+    "ood_fail_closed_unseen_combined_forcing": "PASS_H04_ALL_FALLBACK",
+    "hybrid_fallback_fraction": 0.30952380952380953
+  },
+  "governance": {
+    "rom1_terminal_result_preserved": "MATERIAL_SPECIFIC_ONLY",
+    "general_production_rom": "NO_GO",
+    "cross_material_rom": "NOT_AUTHORIZED",
+    "rom2_authorized": false,
+    "production_rom_authorized": false,
+    "post_result_regularization_retuning_authorized": false,
+    "post_result_ood_retuning_authorized": false,
+    "neural_escalation_authorized": false
+  },
+  "current_canonical_postimage_reconciliation": {
+    "canonical_advanced_since_original_romv_reconciliation": true,
+    "intervening_commits": 37,
+    "rossfast_authority_changed": false,
+    "mp_performance_authority_changed": false,
+    "rom1_terminal_evidence_changed": false,
+    "serialized_reference_backend_changed": true,
+    "effect_on_stage1": "NONE_STAGE1_USES_IMMUTABLE_ROM1AR2_ARTIFACT_AND_DOES_NOT_REEXECUTE_CURRENT_REFERENCE_BACKEND"
+  },
+  "next": "STOP_F_ROMV_TRACK_UNDER_CURRENT_PROPOSITION. Reopening requires a new independently governed proposition with new computational-bottleneck or scientific evidence and must preserve this negative result."
+}

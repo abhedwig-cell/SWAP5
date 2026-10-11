@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC43",
+  "title": "Production SWAP participant binding for whole-window coupling",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_PRODUCTION_SWAP_PARTICIPANT",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e2e75ed3361e88148060b615f67684ecada51ca1"
+  },
+  "source": {
+    "branch": "work/f-gc43-production-swap-participant",
+    "base": "e2e75ed3361e88148060b615f67684ecada51ca1"
+  },
+  "predecessors": [
+    "F-GC39 prepared-solve internal coupling service",
+    "F-GC41 whole-window acceptance/retry",
+    "F-GC42 service composition"
+  ],
+  "goal": "Bind the real SWAP kernel checkpoint/candidate/rollback/commit lifecycle to the admitted F-GC39/F-GC41 composition without introducing a second transaction owner.",
+  "existing_authority": [
+    "kernel_committed_state_t.capture_checkpoint",
+    "kernel_executor_t.advance_interval(checkpoint=...)",
+    "kernel_candidate_state_t provenance accessors",
+    "kernel_executor_t.rollback_candidate",
+    "kernel_executor_t.commit_candidate",
+    "groundwater_swap_forcing_materializer_t"
+  ],
+  "decisions": [
+    "The new participant is a thin adapter over kernel transactions, not a new SWAP transaction system.",
+    "Corrector trials must originate from one captured kernel_checkpoint_t for the whole coupling window.",
+    "Publication preflight must duplicate the exact candidate/committed provenance and interval predicates used by kernel commit so ordinary post-publication rejection is exhausted before commit.",
+    "The underlying kernel commit remains the sole SWAP committed-state mutation.",
+    "F-GC39 predictor/corrector ownership stays below iMOD Coupler; F-GC41 publication order remains MODFLOW timestep then SWAP then ledger."
+  ],
+  "exclusions": [
+    "new groundwater physics",
+    "new solver algorithm",
+    "new transaction semantics",
+    "N:1 scaling expansion",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Open a separately bounded real end-to-end application qualification. Reuse the admitted FMR groundwater-head forcing materializer and F-GC43 SWAP participant together with the live MODFLOW6 prepared-solve/timestep backend. Qualify one real SWAP application case end-to-end before any scaling expansion.",
+  "canonical_admission": {
+    "preimage": "e2e75ed3361e88148060b615f67684ecada51ca1",
+    "head": "e683667fb432a8aef95de878e0f0f75b8f926525",
+    "pr": 235,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner": {
+      "run": 35338142627,
+      "job": 105577665261,
+      "conclusion": "success",
+      "oracles": [
+        "FGC43_REAL_KERNEL_CHECKPOINT_ORIGIN=PASS",
+        "FGC43_REPEATED_CORRECTORS_SAME_ORIGIN=PASS",
+        "FGC43_PREFLIGHT_NONMUTATING=PASS",
+        "FGC43_KERNEL_SOLE_COMMIT_OWNER=PASS",
+        "FGC43_STALE_ORIGIN_FAIL_CLOSED=PASS",
+        "FGC43_O0_O2_IDENTITY=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ115",
+      "run": 35338142655,
+      "job": 105577665203,
+      "conclusion": "success",
+      "oracles": [
+        "FVQ115_REAL_KERNEL_CHECKPOINT_BINDING=PASS",
+        "FVQ115_SAME_ORIGIN_TRIAL_BINDING=PASS",
+        "FVQ115_NONMUTATING_PUBLICATION_PREFLIGHT=PASS",
+        "FVQ115_KERNEL_SOLE_COMMIT_OWNER=PASS",
+        "FVQ115_EVIDENCE_BOUNDARY=PASS"
+      ]
+    }
+  },
+  "verdict": "CLOSED_CANONICAL_ADMITTED"
+}

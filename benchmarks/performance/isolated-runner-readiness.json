@@ -1,0 +1,12 @@
+{
+  "schema_version": "mp-isolated-runner-readiness-v1",
+  "status": "INFRASTRUCTURE_PENDING",
+  "baseline": "8eb863eadbae5f505188d2d6d9404c66fd1b1446",
+  "required_runner_label": "swap5-performance",
+  "repository_visible_self_hosted_configuration": false,
+  "runner_inventory_observable_from_repository_connector": false,
+  "admission_evidence": null,
+  "cpu_baseline_established": false,
+  "reason": "The repository contains no self-hosted performance-runner configuration or admitted runner evidence. Account-level runner inventory is not exposed through the repository connector, so MP must fail closed rather than infer availability.",
+  "next_required_action": "Provision or identify an isolated runner satisfying isolated-runner-contract.json, run the manual readiness workflow, then execute the full MP-7 host-admission protocol on that runner."
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS09",
+  "title": "RossFast D3R explicit typed application model configuration binding",
+  "status": "CLOSED_POSITIVE_RESTRICTED_EXPLICIT_CONFIGURATION_BINDING",
+  "decision": "QUALIFIED_EXPLICIT_TYPED_CONFIGURATION_BINDING_TO_F_ROSS08_PENDING_EXTERNAL_INGESTION_AND_PRODUCTION_CANONICAL_ADMISSION",
+  "parent": {
+    "branch": "work/f-ross08-explicit-application-model-selection",
+    "head": "7b16da2aadcfdcda842002b1cd5ba4f9bab5a00f",
+    "qualified_selection_blob": "5b652f04f172a8faa468d38faa23883ce6f35294",
+    "status_blob": "7cf4028b72adea5c97962d2c7206c81515e12333"
+  },
+  "candidate": {
+    "precloseout_qualified_head": "bf83094e2d8257319d797142f90a926634010010",
+    "config_binding_blob": "5892d5b2573c678ab8d121ae80353870b66886d2",
+    "test_blob": "94cc8ad416e8f11e18ee06b2df90c258c506849b",
+    "runner_blob": "663e825e96ae646df331d8205938e45e61df7cfd",
+    "workflow_blob": "0e6f79c102a208da3a716ade71758095732cf633"
+  },
+  "configuration_contract": {
+    "configuration_is_explicit_opt_in": true,
+    "configuration_key": "SOIL_WATER_MODEL",
+    "accepted_value": "ROSSFAST_D3R",
+    "accepted_value_is_case_sensitive": true,
+    "missing_configuration_selects_nothing": true,
+    "unknown_configuration_key_fails_closed": true,
+    "unsupported_or_reference_model_value_fails_closed": true,
+    "prebound_application_model_key_is_a_conflict": true,
+    "complete_request_validated_before_runtime_registry_materialization": true,
+    "f_ross08_application_selection_remains_the_only_materialization_authority": true,
+    "legacy_swsolve_semantics_unchanged": true,
+    "legacy_input_file_grammar_unchanged": true,
+    "full_richards_task2_adapter_unchanged": true
+  },
+  "qualification": {
+    "workflow_run_id": 34972269918,
+    "job_id": 104391184517,
+    "tested_head": "bf83094e2d8257319d797142f90a926634010010",
+    "conclusion": "success",
+    "compiler": "GNU Fortran on ubuntu-24.04",
+    "parent_lock_pass": true,
+    "bounded_surface_pass": true,
+    "exact_explicit_rossfast_config_pass": true,
+    "missing_config_fail_closed": true,
+    "unknown_key_fail_closed": true,
+    "case_normalized_value_fail_closed": true,
+    "reference_model_not_captured": true,
+    "prebound_column_conflict_fail_closed": true,
+    "downstream_invalid_request_no_registry_leak": true,
+    "o0_o2_output_identity": true,
+    "reused_f_ross08_immutable_scientific_evidence": true,
+    "artifacts": {
+      "diagnostics": {
+        "id": 10398340532,
+        "digest": "sha256:cf74dea0e403dc5d3fdcaf73cffb07be5b5a44daf0f23019481ca5f01d3bc58d",
+        "size_bytes": 572
+      },
+      "evidence": {
+        "id": 10397469192,
+        "digest": "sha256:1ab71b10e9080660016c65d378ff721efe099a0d63051735f67831262a117bcb",
+        "size_bytes": 1293
+      }
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_LEGACY_INPUT_FILE_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_AUTOMATIC_ROSSFAST_SELECTION_WHEN_CONFIGURATION_IS_ABSENT",
+    "NO_DIRECT_CLI_ENVIRONMENT_OR_INPUT_FILE_INGESTION_YET",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_PROVIDER_SELECTOR_OR_RETRY_SEMANTICS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_OR_CANONICAL_ADMISSION"
+  ],
+  "next_gap": "RECONCILE_AND_QUALIFY_ONE_ACTUAL_EXTERNAL_USER_CONFIGURATION_INGESTION_SEAM_TO_THIS_TYPED_CONTRACT_WITHOUT_TOUCHING_LEGACY_SW_SOLVE_GRAMMAR_OR_BROADENING_F_ROSS08_SCIENTIFIC_SCOPE"
+}

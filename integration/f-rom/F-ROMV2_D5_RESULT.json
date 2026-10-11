@@ -1,0 +1,121 @@
+{
+  "schema": "swap5.f-romv2-d5.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D5",
+  "decision": "L2_IMC_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+  "adjudication": "INTEGRITY_PASS_BUT_DOMINATED_BY_PREEXISTING_R2_ON_BALANCE_AND_TRANSIENT_DEVELOPMENT_VIEWS",
+  "execution": {
+    "workflow_run": 35445739551,
+    "workflow_job": 105904227494,
+    "executed_head": "e2263533fd54c3d8ddb1b82b29b8da0782a2c1ee",
+    "execution_pull_request": 424,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10584269469,
+    "artifact_digest": "sha256:5d3d7aa22889f5fd1a373b656cbb1287e680e2c93efc7c7d1b17bc8f91cf2e29",
+    "workflow_conclusion": "success",
+    "R16_stdout_sha256": "fb62f94a3fddc37a547272521fd0a3e575e6ffaa30acb9e680d2fd985ec3154c",
+    "result_sha256": "e8336dd1bf49898963faa6c4a991c28516e60c874a7310034b5dff8baa030d15",
+    "analyzer_sha256": "fe5cb4b18f26530267783c03bd73cf041eff84d12e2df22ecb4113aefb058ca4",
+    "R16_O0_O2_identity": true
+  },
+  "candidate": {
+    "id": "L2_IMC",
+    "state_dimension": 2,
+    "training_required": false,
+    "nonlinear_Richards_solve_required": false,
+    "clipping_used": false,
+    "adaptive_substepping_used": false,
+    "full_order_fallback_used": false,
+    "integrator": "single explicit Heun predictor-corrector per interval",
+    "interface_flux": "harmonic-conductivity Darcy flux",
+    "hidden_mass_correction": false
+  },
+  "integrity": {
+    "pass": true,
+    "max_abs_transaction_mass_residual_cm": 4.122136659789888e-15,
+    "hard_mass_gate_cm": 1e-12,
+    "physical_bound_failure_count": 0,
+    "nonfinite_failure_count": 0
+  },
+  "pooled": {
+    "total_storage_rmse_cm": 0.05164492935964347,
+    "cumulative_bottom_exchange_rmse_cm": 0.05164492935964566,
+    "terminal_bottom_flux_rmse_cm_per_day": 3.579393725911933,
+    "bottom_flux_sign_error_count": 136,
+    "history_reversal_sequence_mismatch_count": 8,
+    "upper_storage_rmse_cm": 0.000021935462675434765,
+    "lower_storage_rmse_cm": 0.05165415157880609
+  },
+  "preexisting_R2_comparator": {
+    "total_storage_rmse_cm": 0.040708791265067,
+    "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+    "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+    "bottom_flux_sign_error_count": 136,
+    "history_reversal_sequence_mismatch_count": 8
+  },
+  "development_frontier": {
+    "balance_view_pass": false,
+    "transient_view_pass": false,
+    "non_dominated_on_at_least_one_preregistered_view": false,
+    "interpretation": "L2_IMC eliminates nonlinear Richards solves but is hydrologically worse than the already admitted R2 comparator on both preregistered error views. Structural cheapness alone does not retain it."
+  },
+  "history_findings": {
+    "exact_or_near_exact_flux_mode_histories": [
+      "D01",
+      "D02",
+      "D05"
+    ],
+    "largest_balance_error_history": {
+      "history": "D03",
+      "cumulative_bottom_exchange_rmse_cm": 0.11035897724137268,
+      "relative_final_cumulative_bottom_exchange_error": 4.284183427574837,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.4092518161187133,
+      "sign_errors": 18
+    },
+    "strongest_flux_failure": {
+      "history": "D06",
+      "terminal_bottom_flux_rmse_cm_per_day": 5.643680463544825,
+      "sign_errors": 18
+    },
+    "validation_like_exposed_histories": {
+      "V01": {
+        "relative_final_cumulative_bottom_exchange_error": -0.06387355681276112,
+        "q_rmse_cm_per_day": 4.248689906834234,
+        "sign_errors": 16
+      },
+      "V02": {
+        "relative_final_cumulative_bottom_exchange_error": 0.2620344893846129,
+        "q_rmse_cm_per_day": 3.816361942883052,
+        "sign_errors": 20
+      },
+      "V03": {
+        "relative_final_cumulative_bottom_exchange_error": -0.04346901081568498,
+        "q_rmse_cm_per_day": 4.243183491229084,
+        "sign_errors": 16
+      },
+      "V04": {
+        "relative_final_cumulative_bottom_exchange_error": -0.10210266548583657,
+        "q_rmse_cm_per_day": 4.206663610704069,
+        "sign_errors": 16
+      }
+    }
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_RETAINED_BY_D5_COMPARATIVE_FRONTIER",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_QUALIFIED",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "scientific_conclusion": "A clean-sheet two-state instantaneous Darcy reduction can be robust and exactly mass-conservative yet still lie behind a strongly coarsened Richards comparator. D5 therefore falsifies this specific two-layer architecture as the next cost-fidelity frontier candidate. The remaining physically motivated direction is a quasi-steady/storage-flux manifold that represents profile adjustment nonlocally rather than through two instantaneous layer heads.",
+  "next": [
+    "CLOSE_L2_IMC_WITHOUT_EQUATION_RETUNING",
+    "PREREGISTER_A_QUASI_STEADY_STORAGE_FLUX_MANIFOLD_AS_A_DISTINCT_ARCHITECTURE",
+    "USE_META_SWAP_AND_TWO_LAYER_LITERATURE_AS_PRECEDENT_NOT_CODE_DONORS",
+    "RETAIN_R8_R4_R2_AS_COARSE_RICHARDS_COMPARATORS",
+    "DEFER_PURPOSE_SPECIFIC_ACCEPTANCE_THRESHOLDS_TO_NEW_VALIDATION_EVIDENCE"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

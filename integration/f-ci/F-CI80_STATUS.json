@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI80",
+  "title": "RossFast restricted stack current-canonical admission",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
+  "decision": "ADMITTED_RESTRICTED_F_ROSS02_TO_F_ROSS10_STACK_TO_CANONICAL",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+  "canonical_preimage_tree": "187651cb2b5bce636f675b876b36f62af94f16f6",
+  "canonical_admission_commit": "c9dafa34875ae2fb4e7257b77c0017103d770405",
+  "canonical_admission_tree": "057918d0bc18e21bd49a5ef0c130f70cd9dc02b6",
+  "closeout_governance_parent": "7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a",
+  "admission_branch": "integration/f-ci80-rossfast-restricted-stack-admission",
+  "qualified_candidate_head": "d5b6075a85487ebf4515ecdab0d5d8a90ea7e159",
+  "qualified_source_head": "a483452f04a85f3bb64eaad6a383a4800abaed16",
+  "admitted_owner_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"],
+  "qualification": {
+    "primary_run_id": 34992726403,
+    "primary_job_id": 104461166882,
+    "primary_conclusion": "success",
+    "successor_replay_run_id": 34992520370,
+    "successor_replay_job_id": 104460471486,
+    "successor_replay_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "exact_qualified_blob_projection": true,
+    "six_material_real_table_kernel_registry_application_route_replayed": true,
+    "typed_config_and_external_file_adapter_replayed": true,
+    "invalid_mixed_and_missing_configuration_cases_fail_closed": true,
+    "o0_o2_output_identity": true,
+    "current_reference_backend_preserved_byte_identical": true,
+    "legacy_soilwater_swap_main_and_full_richards_task2_preserved": true,
+    "no_eb_groundwater_root_or_source_sink_scope_broadening": true,
+    "ross08_output_sha256": "d77c21bc6a4c02fc3ba3bd62b73a7f8011946ce843e66c2c9a5d9097da791832",
+    "ross10_output_sha256": "345faf5ee92ffd6eca4e6feb332acee5f470e1b4858ca343464fce75d44652e5"
+  },
+  "qualification_artifacts": {
+    "diagnostics_id": 10406053158,
+    "diagnostics_zip_sha256": "ab31896cbdf549ecfc161bb62089b895e5b3d0b57f7f7e659a826644303673eb",
+    "evidence_id": 10405878745,
+    "evidence_zip_sha256": "40d56f9e71039b027c996826d978914df327b039bb29833c86876bbfdfb20998"
+  },
+  "canonical_postimage_verification": {
+    "admission_head_verified": "c9dafa34875ae2fb4e7257b77c0017103d770405",
+    "admission_tree_verified": "057918d0bc18e21bd49a5ef0c130f70cd9dc02b6",
+    "first_parent_verified": "64937452be6b073a21b1b87acf21ce4edcbfda14",
+    "second_parent_verified": "d5b6075a85487ebf4515ecdab0d5d8a90ea7e159"
+  },
+  "post_closeout_gate_reconciliation": {
+    "superseded_failure_run_id": 34993158200,
+    "superseded_failure_job_id": 104462658724,
+    "classification": "GOVERNANCE_HARNESS_POSTIMAGE_MODE_MISSING_NO_SCIENTIFIC_REGRESSION",
+    "workflow_fix_commit": "7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a",
+    "fix_scope": "WORKFLOW_ONLY",
+    "postimage_preservation_run_id": 34993396555,
+    "postimage_preservation_job_id": 104463483578,
+    "postimage_preservation_conclusion": "success",
+    "gate_mode": "POSTIMAGE_PRESERVATION",
+    "full_scientific_replay": true,
+    "diagnostics_id": 10405918423,
+    "diagnostics_zip_sha256": "87857ec611ff9b7f34872206eb4bd3935c19da13d508fff211c2e2725a1e0b53",
+    "evidence_id": 10405564596,
+    "evidence_zip_sha256": "088873571eeacfbec209a67276a2f801de8a3ec5a40e8d1678d791c10aa797c9"
+  },
+  "canonical_admission": true,
+  "production_host_wiring_admitted": false,
+  "mutations": [
+    "Canonical admission contains the exact qualified restricted F-ROSS02 through F-ROSS10 production modules, immutable D3R table assets, typed application selection/configuration contracts, and explicit external config-file adapter.",
+    "No scientific or production semantics were changed during admission qualification or closeout.",
+    "The closeout workflow was made postimage-aware after an expected governance-harness mismatch exposed by the first post-admission status push; the complete scientific gate was then replayed successfully."
+  ],
+  "next_permitted_action": "Any broader RossFast use requires a separate bounded contract and qualification. Direct production host wiring, automatic configuration discovery, legacy .swp integration, mixed reference/RossFast MultiSWAP, or scientific-domain expansion are not implied by F-CI80.",
+  "exclusions": [
+    "No legacy .swp grammar or parser change.",
+    "No SW_SOLVE reinterpretation.",
+    "No automatic configuration discovery.",
+    "No direct swap_main production wiring.",
+    "No new Public API production wiring.",
+    "No mixed reference/RossFast MultiSWAP admission.",
+    "No dynamic-top, prescribed-head-bottom, groundwater, root, distributed source/sink, ponding, EB, heterogeneous-grid, arbitrary-profile-forcing, or duration-generalization admission."
+  ]
+}

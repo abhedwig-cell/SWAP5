@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.f-rom1a-i0.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM1A-I0",
+  "title": "Current-canonical research Reference observation seam qualification",
+  "execution": {
+    "workflow_run": 35380688867,
+    "workflow_job": 105715867943,
+    "executed_head": "2493c3cd5a7b933593690f13535cc0361d534898",
+    "canonical_base": "be2bffe2b3d1684e68f64862d530810ba2c6eb2e",
+    "artifact_id": 10561849286,
+    "artifact_digest": "sha256:c71346a54373cde59bf203ab71f1b50aa38c3e46658325c5bdac149c318e7ba9",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "source_scope": {
+    "changed_source_files": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "reference_tree_changed": false,
+    "ordinary_solver_transaction_runtime_core_changed": false,
+    "reference_richards_equations_changed": false,
+    "production_reference_fallback_admitted": false
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "bottom_modes": [2,5],
+    "sample_dt_day": 0.0008,
+    "hard_mass_gate_cm": 1e-12,
+    "positive_rows": 4,
+    "positive_pass_rows": 4,
+    "all_one_physical_advance": true,
+    "all_zero_transaction_retries": true
+  },
+  "positive_rows": [
+    {"material":"B01","mode":2,"mass_residual_cm":0.0,"bottom_exchange_cm":0.0031391984712307998,"terminal_bottom_flux_cm_per_day":3.9239980890384993,"nonlinear_iterations":1},
+    {"material":"B01","mode":5,"mass_residual_cm":0.0,"bottom_exchange_cm":0.0031391984712307998,"terminal_bottom_flux_cm_per_day":3.9239980890384993,"nonlinear_iterations":1},
+    {"material":"B14","mode":2,"mass_residual_cm":0.0,"bottom_exchange_cm":0.000016274963796660516,"terminal_bottom_flux_cm_per_day":0.020343704745825645,"nonlinear_iterations":1},
+    {"material":"B14","mode":5,"mass_residual_cm":0.0,"bottom_exchange_cm":0.000016274963796660516,"terminal_bottom_flux_cm_per_day":0.020343704745825645,"nonlinear_iterations":1}
+  ],
+  "fail_closed_control": {
+    "setup": "B01 mode-5 prescribed-head perturbation with max_iterations=1",
+    "sample_status": "KERNEL_REFERENCE_FLOOR_STATUS_SOLVER_FAILED",
+    "status_code": 204,
+    "physical_advances": 1,
+    "nonlinear_iterations": 1,
+    "backtracking_attempts": 1,
+    "candidate_ready_after_failure": false,
+    "committed_revision_before": 0,
+    "committed_revision_after": 0,
+    "committed_lineage_unchanged": true,
+    "committed_time_bit_identity": true,
+    "committed_physical_state_bit_identity": true
+  },
+  "decision": "CURRENT_CANONICAL_REFERENCE_OBSERVATION_SEAM_QUALIFIED",
+  "rom1a_trajectory_generation_authorized": true,
+  "rom1b_authorized": false,
+  "production_application_admission": false,
+  "production_rom_authorized": false
+}

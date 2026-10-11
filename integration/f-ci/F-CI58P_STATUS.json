@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fci58p.status.v1",
+  "work_unit": "F-CI58P",
+  "branch": "qualification/f-ci58p-fsi35-current-canonical-postimage-reconciliation",
+  "status": "QUALIFIED_READY_FOR_CANONICAL_METADATA_ADMISSION",
+  "decision": "QUALIFIED_F_CI58P_FSI35_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "base_canonical": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+  "base_tree": "8710a9f8b9657c5efc613f17a994f0a6e6ce1f1d",
+  "source_admission": {
+    "work_unit": "F-CI58",
+    "pull_request": 107,
+    "merge_sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "true_two_parent_merge": true,
+    "parent_1": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "parent_2": "daaa41509a55be43c00cd6b92cf2ddf9590e35db"
+  },
+  "postpromotion_canonical_qualification": {
+    "run_id": 34774219679,
+    "head_sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "conclusion": "success"
+  },
+  "postimage_reconciliation": {
+    "qualified_head_before_status_persistence": "88be64898f5a99155935290d88bc8f0c3698ed8b",
+    "workflow_run_id": 34774491995,
+    "conclusion": "success",
+    "permanent_preservation_gate": "PASS",
+    "heavy_postimage_reconciliation": "PASS",
+    "production_source_delta_from_base_canonical": []
+  },
+  "production_source_identity": {
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "src/legacy/b1_10_port/soilwater.f90": "c1850ea7fa82a1ed8974af57e1da95aa11a771be",
+    "identity_to_F_SI35_owner_F_VQ68_F_CI58_and_canonical": "EXACT"
+  },
+  "reconciliation_matrix": {
+    "true_two_parent_admission_ancestry": "PASS",
+    "mandatory_typed_solver_seam": "PASS",
+    "standalone_common_service": "PASS",
+    "worker_multiswap_common_service": "PASS",
+    "standalone_worker_bitwise_dispatch_equivalence": "PASS",
+    "production_headcalc_interface_violations": 0,
+    "full_richards_algorithm_unchanged": "PASS",
+    "accepted_rejected_retry_transactions": "PASS",
+    "hard_mass": "PASS",
+    "dynamic_top_boundary_regimes": "PASS",
+    "bottom_boundary_sensitivity": "PASS",
+    "diagnostics_and_stale_sensitivity_clear": "PASS",
+    "worker_scratch_isolation": "PASS",
+    "process_hydraulic_view": "PASS",
+    "F_SI31_research_isolation": "PASS",
+    "serialized_multiswap_preservation": "PASS",
+    "groundwater_coupling_preservation": "PASS",
+    "architecture_invariants_30_of_30": "PASS_NO_ADVERSE_DELTA"
+  },
+  "fsi34_gap_closure": {
+    "G1_headcalc_isolation": "CLOSED",
+    "G2_solver_interface": "CLOSED",
+    "G3_transaction": "CLOSED_BY_COMMON_SERVICE_AND_TRANSACTION_REPLAY",
+    "G4_alternative_solver_seam": "CLOSED_ARCHITECTURAL_SEAM_FSI31_PRESERVED_NO_ROSSFAST_PRODUCTION_REQUIRED",
+    "G5_runtime_isolation": "CLOSED_MOD_SOILWATER_RUNTIME_BYPASS_REMOVED"
+  },
+  "scope": {
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "new_physics": false,
+    "full_richards_algorithm_changed": false,
+    "rossfast_production_requirement": false,
+    "fci58p_production_source_changed": false
+  },
+  "next_step": "Persist this reconciliation, its permanent preservation workflow, and F-SI35 final-completion artifact in integration/f-ci-canonical; then require post-merge canonical workflows to succeed."
+}

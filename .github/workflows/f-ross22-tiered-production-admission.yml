@@ -1,0 +1,46 @@
+name: F-ROSS22 tiered production admission
+
+on:
+  push:
+    branches:
+      - integration/f-ross22-tiered-production-admission
+  pull_request:
+    branches:
+      - integration/f-ci107-rossfast-transform-cache-admission
+      - integration/f-ci-canonical
+    paths:
+      - 'src/solver/mod_rossfast_d3r_table_kernel.f90'
+      - 'src/solver/mod_rossfast_d3r_soil_water_solver.f90'
+      - 'tests/ross/test_fross22_admission_all_material.f90'
+      - 'tests/ross/run_fross22_admission_all_material.sh'
+      - 'tools/performance/f_ross22_admission_all_material_summary.py'
+      - 'tests/fci/run_fci_fross22_tiered_successor_preservation.sh'
+      - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
+      - '.github/workflows/f-ross22-tiered-production-admission.yml'
+      - 'integration/f-ross/F-ROSS22_*'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Execute F-ROSS22 admission owner gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p F-ROSS22-ADMISSION-EVIDENCE
+          bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh | tee F-ROSS22-ADMISSION-EVIDENCE/owner-gate.txt
+          sha256sum F-ROSS22-ADMISSION-EVIDENCE/owner-gate.txt | tee F-ROSS22-ADMISSION-EVIDENCE/sha256.txt
+          echo 'FROSS22_ADMISSION_QUALIFICATION_GATE=PASS'
+      - name: Preserve F-ROSS22 admission evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross22-tiered-admission-${{ github.run_id }}
+          path: F-ROSS22-ADMISSION-EVIDENCE
+          if-no-files-found: warn

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50P",
+  "phase": "R1_RACE_SAFE_RECOMPOSITION",
+  "title": "Current-Canonical Postimage Reconciliation after F-CI50",
+  "branch": "qualification/f-ci50p-current-canonical-postimage-reconciliation-r1",
+  "scientific_source_authority": {
+    "F_CI50_promoted_postimage": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+    "F_CI50_admission_head": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+    "F_GC17_closeout": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "source_blobs": {
+      "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+      "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+    }
+  },
+  "current_canonical_base": {
+    "sha": "6c04ab07b4535c119157b5c5bce674b626656f07",
+    "tree": "2a9371508def2ce2f90284f1131cd98a1eaf8472",
+    "relation_to_F_CI50_postimage": "direct_child_metadata_only",
+    "delta_from_F_CI50_postimage": ["integration/f-ci/F-CI49P_STATUS.json"],
+    "production_src_delta": false,
+    "reference_delta": false
+  },
+  "failed_first_attempt": {
+    "branch": "qualification/f-ci50p-current-canonical-postimage-reconciliation",
+    "head": "a8da1d72800df8afd539b21a2040caeed7ead3bd",
+    "workflow_run": 34678881436,
+    "workflow_job": 103513626602,
+    "classification": "EXPECTED_CANONICAL_RACE_FAIL_CLOSED",
+    "failed_gate": "origin/integration/f-ci-canonical must equal pinned postimage",
+    "reason": "Concurrent final F-CI49P closeout advanced canonical from 39b8ed3d... to 6c04ab07... while changing metadata only.",
+    "semantic_or_source_defect": false,
+    "tolerance_relaxation_allowed": false,
+    "old_branch_promotion_allowed": false
+  },
+  "purpose": "Recompose the exact F-CI50 moving-preservation extension on the live current canonical without changing production/reference content or weakening any gate.",
+  "exact_workflow_change": {
+    "AUTH_from": "42544af575db522d012db491db801615577048df",
+    "AUTH_to": "6c04ab07b4535c119157b5c5bce674b626656f07",
+    "add_dependency_paths": [
+      "src/runtime/mod_groundwater_coupling_contract.f90",
+      "src/runtime/mod_groundwater_coupling_policy.f90"
+    ],
+    "add_marker": "FCI50_MOVING_FGC17_TYPED_GROUNDWATER_INTERFACE_PRESERVATION=PASS"
+  },
+  "hard_guards": [
+    "No src/ or reference/ file may change in F-CI50P R1.",
+    "The current canonical base must remain the first parent for any promotion.",
+    "F-CI50 scientific/source authority remains the 39b8ed3d postimage and exact F-GC17 blobs.",
+    "The 6c04ab07 metadata-only F-CI49P closeout must be preserved, not overwritten or omitted.",
+    "Historical/frozen workflow prefix remains byte-identical.",
+    "Moving-preservation suffix changes only by AUTH replacement, two dependency insertions and one F-CI50 marker.",
+    "No mass, scientific tolerance, physics, solver or transaction behavior change."
+  ],
+  "promotion_rule": "After exact-head qualification, promote only if integration/f-ci-canonical is still exactly 6c04ab07b4535c119157b5c5bce674b626656f07, using a true two-parent governance-only merge with no force update.",
+  "exit_target": "QUALIFIED_FCI50_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FOR_PROMOTION"
+}

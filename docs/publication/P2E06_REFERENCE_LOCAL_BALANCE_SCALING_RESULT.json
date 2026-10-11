@@ -1,0 +1,147 @@
+{
+  "schema": "swap5.publication.p2e06-reference-local-balance-scaling-result.v1",
+  "workunit": "PUB-P2E06",
+  "phase": "QUALIFIED_PENDING_ADMISSION",
+  "canonical_base": "9164ec2218951950c25de03bb3d3bf953d48d635",
+  "qualified_science_and_governance_head": "cfb318a0e94c149579dd5bd33d9c43330e926d77",
+  "pull_request": 190,
+  "scope": "Reference-only diagnosis of the immutable P2E03/P2E04 162-case domain; no production physics, tolerance, reference source, case-set or RossFast change",
+  "qualification": {
+    "p2e06_workflow_run": 35273642931,
+    "p2e06_result": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_sha256": "8385efc7560a687384d591e140c6a6f3eddb756155fd41da966dd5d271e3fd94",
+    "documentation": "PASS",
+    "f_ci96_workflow_run": 35273642930,
+    "f_ci96_result": "PASS",
+    "f_ci_canonical_workflow_run": 35273642945,
+    "f_ci_canonical_result": "PASS"
+  },
+  "exact_baseline_reproduction": {
+    "cases": 162,
+    "accepted": 47,
+    "retry_total_only": 12,
+    "retry_local_balance": 103,
+    "other_failure_classes": 0,
+    "local_balance_first_failure_stage": {
+      "coarse": 83,
+      "half1": 18,
+      "half2": 2
+    },
+    "local_balance_by_requested_coarse_dt_day": {
+      "0.0016": 3,
+      "0.0004": 46,
+      "0.0001": 54
+    }
+  },
+  "requested_dt_summaries": {
+    "0.0016": {
+      "local_cases": 3,
+      "max_local_residual_rate_cm_per_day": {
+        "min": 1.0021428131778976e-12,
+        "mean": 1.1680101330568959e-12,
+        "max": 1.3232748230507241e-12
+      },
+      "actual_dt_times_max_local_residual_cm": {
+        "min": 8.017142505423181e-16,
+        "mean": 9.344081064455167e-16,
+        "max": 1.0586198584405792e-15
+      },
+      "max_residual_over_theta_spacing_rate_scale": {
+        "n": 3,
+        "min": 0.72212,
+        "mean": 0.84164,
+        "max": 0.95352
+      },
+      "cleared_at_64_iterations": 0,
+      "unchanged_max_residual_at_64": 3
+    },
+    "0.0004": {
+      "local_cases": 46,
+      "max_local_residual_rate_cm_per_day": {
+        "min": 1.017519402068956e-12,
+        "mean": 1.4776935080488151e-12,
+        "max": 2.708944180085382e-12
+      },
+      "actual_dt_times_max_local_residual_cm": {
+        "min": 2.0534685063466897e-16,
+        "mean": 4.7967231074268497e-16,
+        "max": 1.0835776720341528e-15
+      },
+      "max_residual_over_theta_spacing_rate_scale": {
+        "n": 46,
+        "min": 0.36992,
+        "mean": 0.8308502302430764,
+        "max": 1.62824
+      },
+      "cleared_at_64_iterations": 0,
+      "unchanged_max_residual_at_64": 45
+    },
+    "0.0001": {
+      "local_cases": 54,
+      "max_local_residual_rate_cm_per_day": {
+        "min": 1.1382583244012867e-12,
+        "mean": 4.3243932486056204e-12,
+        "max": 9.624301355870557e-12
+      },
+      "actual_dt_times_max_local_residual_cm": {
+        "min": 1.1382583244012867e-16,
+        "mean": 4.3243932486056223e-16,
+        "max": 9.624301355870558e-16
+      },
+      "max_residual_over_theta_spacing_rate_scale": {
+        "n": 54,
+        "min": 0.205050390625,
+        "mean": 0.7644326574579877,
+        "max": 1.44078
+      },
+      "cleared_at_64_iterations": 0,
+      "unchanged_max_residual_at_64": 53
+    }
+  },
+  "iteration_budget_test": {
+    "baseline_local_balance_cases": 103,
+    "cleared_when_only_max_iterations_changed_16_to_64": 0,
+    "accepted_at_64": 0,
+    "shifted_to_other_retry_class_at_64": 0,
+    "exactly_unchanged_max_residual_at_64": 101,
+    "interpretation": "The preregistered domain provides no evidence that the dominant LOCAL_BAL failures are caused primarily by the 16-iteration budget."
+  },
+  "residual_scaling_observations": {
+    "rate_pattern": "The mean maximum local residual rate rises as requested coarse dt decreases, most strongly at 0.0001 day.",
+    "integrated_pattern": "Multiplying each failed-stage maximum residual rate by its actual failed-stage dt keeps the residual depth on an approximately 1e-16 to 1e-15 cm scale rather than showing the same rate amplification.",
+    "theta_spacing_context": "The maximum residual divided by a theta-spacing-derived storage-rate scale remains predominantly order unity. This is context consistent with a numerical representation/cancellation floor, not causal proof of IEEE roundoff.",
+    "max_node_decomposition": "The emitted LOCAL_BAL diagnostics report zero final candidate-state storage-rate contribution at the maximum-residual node and assign the observed residual to the algebraic non-storage remainder at that node.",
+    "boundary": "Because the residual contains coupled constitutive and flux terms, P2E06 does not attribute the mechanism to one arithmetic operation or one physical term."
+  },
+  "hypothesis_adjudication": {
+    "H_iteration_budget": "NOT_SUPPORTED_IN_PREREGISTERED_DOMAIN",
+    "H_rate_scaling": "SUPPORTED_AS_AN_EMPIRICAL_PATTERN_CONSISTENT_WITH_A_NUMERICAL_RESOLUTION_OR_CANCELLATION_FLOOR",
+    "H_specific_storage_term_mechanism": "NOT_SUPPORTED_BY_MAX_NODE_DECOMPOSITION",
+    "H_finite_precision_context": "CONSISTENT_CONTEXT_ONLY_NOT_CAUSALLY_PROVEN"
+  },
+  "governance_reconciliation": {
+    "initial_failure": "The old F-CI96 P2E05 preservation gate compared the historical P2E05 base directly with current HEAD and therefore rejected any later unrelated canonical successor file.",
+    "correction": "Bound P2E05 allowed-file scope to the immutable historical interval dd394f33b8687e457c4d40e9765551b58fe11b6c...ff89a93bf5b49795db5cb04be0c7325c7b060f5c, while retaining current-HEAD exact P2E05/F-ROSS12 source blob locks, Reference-tree lock and semantic replays.",
+    "authority_weakened": false,
+    "f_ci96_after_correction": "PASS",
+    "full_canonical_after_correction": "PASS"
+  },
+  "firewall_verification": {
+    "rossfast_solver_executed": false,
+    "production_tolerance_changed": false,
+    "src_tree_changed_from_p2e05_canonical": false,
+    "reference_tree_changed_from_p2e05_canonical": false,
+    "p2e03_history_rewritten": false,
+    "case_removed_or_substituted": false
+  },
+  "scientific_boundary": {
+    "p2e03_status": "REMAINS_BLOCKED",
+    "rossfast_scientific_admissibility_established": false,
+    "production_tolerance_change_authorized": false,
+    "reference_numerical_policy_change_authorized": false
+  },
+  "verdict": "QUALIFIED_REFERENCE_LOCAL_BALANCE_SCALING_EVIDENCE_PENDING_ADMISSION",
+  "next_permitted_action": "After P2E06 admission, start a separate preregistered Reference-only workunit to decompose the non-storage residual/cancellation floor and derive a dimensionally and numerically justified Reference calibration-validity criterion before any replacement calibration matrix or tolerance-policy proposal."
+}

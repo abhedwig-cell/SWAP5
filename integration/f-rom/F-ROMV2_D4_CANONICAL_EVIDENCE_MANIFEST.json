@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.f-romv2-d4.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D4",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d4-integrated-residual-coarse-richards",
+    "pull_request": 422,
+    "pull_request_merged": false,
+    "head": "7ceb67d35712cd042f9eb7f88b41584a7220fac1",
+    "workflow_run": 35445149845,
+    "workflow_job": 105902697853,
+    "artifact_id": 10585137684,
+    "artifact_digest": "sha256:812fb3f66ec0c959d0eba82d1fff567a01667a6a84e87b911ef0b3df2cd1636e",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "R16_stdout_sha256": "1a54aa1626caa3a22f10d00bf5ec82378f6dd25962b4c8519d5ccb27ce58b1ce",
+    "R8_stdout_sha256": "ad736a33029f0b72aca242c2096d435babf4989a5f51d59d209da272d912d8e3",
+    "R4_stdout_sha256": "92425420b6941b846b077e40cefd6cb1927e7324342ca2c858dfc620f7a19ec3",
+    "R2_stdout_sha256": "304adc0c627816dae2648aedce5281a478bc44aea6a4105c88a771a2440faf64",
+    "geometry_status_sha256": "2ecdf8706081528e1934fea2ec2ff3cd7eed7a6911f30f495449308069e8090e",
+    "result_sha256": "58cc68b0a25df2d12899600b046875b25010b510973c3339957664e64ee926e8",
+    "analyzer_sha256": "1a96cbb537dc70bff4fdbc7673012fab3377c100d7d1d402b704a29af77bf5bd"
+  },
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d4_integrated_residual_coarse_richards.f90",
+    "tests/rom/analyze_f_romv2_d4_integrated_residual_coarse_richards.py",
+    "tests/rom/run_f_romv2_d4_integrated_residual_coarse_richards.sh",
+    ".github/workflows/f-romv2-d4-integrated-residual.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "production_reference_policy_changed": false,
+  "post_result_policy_retuning": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

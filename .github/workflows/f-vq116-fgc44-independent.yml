@@ -1,0 +1,23 @@
+name: F-VQ116 F-GC44 independent qualification
+on:
+  push:
+    branches: [work/f-gc44-real-swap-modflow-end-to-end]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'tests/fgc/support/mod_fgc44_real_swap_c_bridge.f90'
+      - 'tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py'
+      - 'docs/integration/F-GC44_REAL_SWAP_MODFLOW6_END_TO_END.md'
+      - 'tests/fvq/test_fvq116_fgc44_independent.py'
+      - 'tests/fvq/run_fvq116_fgc44_independent.sh'
+      - '.github/workflows/f-vq116-fgc44-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq116_fgc44_independent.sh

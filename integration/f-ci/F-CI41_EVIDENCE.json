@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.fci41_surface_evaporation_runtime_admission_evidence.v1",
+  "work_unit": "F-CI41",
+  "title": "Restricted Surface-Evaporation Runtime Canonical Admission",
+  "branch": "qualification/f-ci41-fpm06f-surface-evaporation-runtime-canonical-admission",
+  "pre_admission_canonical": {
+    "head": "af9ec34ec587be76deea95763186a204f3ed32cd",
+    "tree": "5116f1af87e72601f99b303d5f3c69c7f21b7564",
+    "src_tree": "fd07bc662410a7bfbd64b4960295997c9e05e19a",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "composition": {
+    "commit": "1ff184f96cce252c039295b82c6b0ed5c5921f34",
+    "tree": "9e5904488db80e5401027a3a1e8abbafdccfc22c",
+    "direct_child_of_pre_admission_canonical": true,
+    "owner_tree_identical": true,
+    "owner_candidate": "fdb0e745b362c81a042faba7f81cab53b1372d97",
+    "production_files": {
+      "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "afd2de6893aced7b48eac33f6b3a51876b2c1d12"
+    }
+  },
+  "independent_authority": {
+    "work_unit": "F-VQ56",
+    "head": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+    "status_blob": "7bec3e5186942246f5143d716fe40059b5bf0771",
+    "exact_status_head_run": 34548837037,
+    "exact_status_head_conclusion": "success",
+    "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE"
+  },
+  "admission_qualification": {
+    "run": 34549048449,
+    "job": 103107857985,
+    "head": "8cf851944f4155bb6ea7258bc9490e230900b4bd",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "abstract_provider_oracle_sha256": "810417a1924174b04a44f15d3c36731cf8dd5615d0e4d90b655160bca6d7676e",
+    "real_b110_provider_oracle_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4",
+    "markers": {
+      "current_canonical_exact_base": "PASS",
+      "exact_two_file_production_scope": "PASS",
+      "owner_tree_identity": "PASS",
+      "reference_immutable": "PASS",
+      "independent_qualification_authority": "PASS",
+      "architecture_source_guards": "PASS",
+      "no_second_mass_booking_path": "PASS",
+      "no_boundary_or_physics_scope_widening": "PASS",
+      "fvq56_heldout_replay": "PASS",
+      "o0_o2_identity": "PASS",
+      "fvq52_structural_replay": "PASS",
+      "fvq54_capacity_replay": "PASS",
+      "hard_mass_authority_unchanged": "PASS",
+      "transactional_noninterference": "PASS",
+      "performance_scope_hold": "PASS",
+      "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+      "canonical_admission_gate": "PASS"
+    }
+  },
+  "warning_disposition": "pre-existing canonical/legacy compiler warnings and deliberate exact-real identity checks were observed; none is introduced as a new production defect by the two-file candidate",
+  "mass_contract": "RESULT_DECOMPOSITION_ONLY; ACCEPTED_SOLVER_EXTERNAL_TOP_FLUX_REMAINS_THE_SOLE_AUTHORITATIVE_TOP_WATER_MASS_CONTRIBUTION",
+  "performance_nonclaim": "NO_MULTISWAP_THROUGHPUT_OR_COPY_COST_ADMISSION_CLAIM"
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ36",
+  "title": "Independent Qualification of F-MR23 Generic-Time Reference-ET Runtime Binding",
+  "branch": "qualification/f-vq36-fmr23-reference-et-runtime-binding",
+  "candidate": {
+    "F_MR23_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+    "runtime_source": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "F_MR23_status_blob": "3e2aef36f902e7525adabc133fddb3c26f31c78f"
+  },
+  "upstream_scientific_authority": {
+    "F_VQ35_decision": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION",
+    "ET_process_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  },
+  "independence": {
+    "reuse_F_MR23_expected_literals_as_oracle": false,
+    "rederive_ET_rate_equations": true,
+    "independently_generate_time_spans_and_subintervals": true,
+    "candidate_source_must_remain_immutable": true,
+    "owner_tests_must_remain_immutable": true
+  },
+  "prove": [
+    "generic signed time origins do not affect valid binding semantics",
+    "multiple forcing-span lengths are accepted without day assumptions",
+    "arbitrary contained intervals preserve ET rates exactly within numeric tolerance",
+    "exact forcing-span boundaries are admissible",
+    "out-of-span intervals reject before process evaluation",
+    "invalid interval and forcing-span geometry rejects fail-closed",
+    "potential ET rates are not multiplied by runtime interval duration",
+    "non-emerged canopy semantics remain identical to F-VQ35 source equations",
+    "candidate adds no hydraulic, root-uptake, mass-ledger or persistent-state dependency",
+    "A-B-A replay identity",
+    "O0/O2 output identity"
+  ],
+  "nonclaims": [
+    "root-uptake composition",
+    "ptra ownership reconciliation with crop_root_uptake_input_t",
+    "actual evaporation",
+    "interception",
+    "mass-ledger binding",
+    "canonical admission of F-MR23"
+  ],
+  "exit_target": "QUALIFIED_INDEPENDENT_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING"
+}

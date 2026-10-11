@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI08",
+  "title": "B1.10 physical process continuation-state classification",
+  "b1_oracle": "B1.10",
+  "principle": "persistent state contains only information needed to continue physical/process evolution; forcing cursors, numerical scratch and reporting/accounting remain outside",
+  "thermal": {
+    "persistent_physical": ["MOD_SoilTemperature%tsoil"],
+    "worker_or_recomputable_scratch": ["tmpold", "thoma", "thomb", "thomc", "thomf", "thomx", "theave", "heacnd", "heacap", "heacon", "tetop", "tebot"],
+    "trial_rollback_forcing_cursors": ["ipos_qtop", "ipos_tetop", "ipos_tebot"]
+  },
+  "solute": {
+    "persistent_physical_cde": ["MOD_solute_global%cml", "MOD_Solute%cmsy"],
+    "persistent_physical_age_tracer_when_active": ["MOD_solute_global%ageml"],
+    "trial_rollback_accounting": "solute intermediate/cumulative balance accumulators, not physical continuation state"
+  },
+  "irrigation": {
+    "optional_persistent_process": ["MOD_irrigation%dayfix", "MOD_irrigation%nirri"],
+    "trial_workspace_or_derived": ["irrigevent", "isua", "cirr", "gird", "nird", "qssdi", "qssdisum", "dt_irr_event"],
+    "parameters_not_state": ["schedule", "tcs", "tcsfix", "dcs", "irgdayfix", "irdate", "irdepth", "irrate", "irconc"]
+  },
+  "crop": {
+    "optional_persistent_common": [
+      "plant_interface%icrop",
+      "crop lifecycle flags",
+      "plant_interface%noddrz",
+      "plant_interface%rd",
+      "plant_interface%dvs",
+      "plant_interface%lai",
+      "plant_interface%tsum",
+      "actual/potential biomass status mirrors",
+      "plant_interface%sicact",
+      "grass harvest/cut continuation",
+      "MOD_cropdevelopment preparation/sowing/germination flags and delays",
+      "MOD_cropdevelopment%rdpot",
+      "MOD_cropdevelopment%noddrz_old",
+      "dynamic root-distribution arrays"
+    ],
+    "optional_persistent_wofost_when_croptype_2": [
+      "MOD_wofost%s_act",
+      "MOD_wofost%s_pot",
+      "MOD_wofost%m_act",
+      "MOD_wofost%m_pot",
+      "MOD_wofost%vern",
+      "MOD_wofost%fl_anthesis",
+      "MOD_wofost%fl_vernalised",
+      "MOD_wofost%t_tsumcum",
+      "MOD_wofost%nofd",
+      "MOD_wofost%atmin7"
+    ],
+    "rates_or_parameters_not_persistent": ["WOFOST rates r_act/r_pot", "dtsum", "dvr", "vernrate", "daylp", "crop parameter tables"]
+  },
+  "source_bound_probe": {
+    "profile": "HUPSEL_2002_2004_WITH_SIMPLE_MAIZE_WOFOST_POTATO_WOFOST_GRASS_HEAT_SOLUTE_IRRIGATION_DRAINAGE",
+    "finding": "rerunning a day after restoring water plus legacy rollback bookkeeping but not crop continuation changes crop/WOFOST state; therefore crop state is required for complete physical rollback",
+    "representative_offsets": [499, 520, 760, 800, 1000]
+  },
+  "holds": [
+    "module implementation and clone/capture/restore gate pending",
+    "full physical reject-restore-rerun pending",
+    "generic physical subday continuation remains outside current legacy qualification"
+  ],
+  "status": "SOURCE_AUDIT_COMPLETE_IMPLEMENTATION_PENDING"
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI55R",
+  "title": "F-CI55 Moving Canonical Preservation Authority Reconciliation",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_F_CI55R_SOURCE_ADMISSION_FINALIZED",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "blocked_fci55_candidate": "860f697cd785f3de01a36c9f0f06043e6dcb689a",
+  "blocked_pr": 89,
+  "blocked_broad_run": 34717007154,
+  "blocking_preservation_job": 103616157347,
+  "blocked_reason": "The original F-CI55 admission was correctly stopped by current-restricted-canonical-preservation because all five qualified F-GC21P1-R1 production files lay on the then-frozen moving dependency surface.",
+  "replacement_pr": 91,
+  "qualified_production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "qualified_production_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/transaction/mod_transaction_reference.f90": "834487df4e7a38c7c8ffd83805d98933714c6977"
+  },
+  "moving_preservation_reconciliation": {
+    "commit": "41de29f585c9446911799d6671bd38e69addc509",
+    "stale_authority": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+    "replacement_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+    "workflow_delta": "Only the current-restricted-canonical-preservation AUTH line changed; dependency_surface remained byte-identical.",
+    "scientific_tolerance_change": false,
+    "mass_tolerance_change": false
+  },
+  "prepromotion_exact_head": "d04d67e56b677e4bc7099e3c05ad96ba17d5fb6f",
+  "prepromotion_evidence": {
+    "dedicated_fci55r_run": 34718669167,
+    "dedicated_fci55r_conclusion": "success",
+    "broad_pr_run": 34718671600,
+    "broad_pr_conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103620675725,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "canonical_source_promotion": {
+    "merge_commit": "4023a16c32f4437f23fa1806a3ee0573f81fa1f3",
+    "first_parent": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+    "second_parent": "d04d67e56b677e4bc7099e3c05ad96ba17d5fb6f",
+    "merge_method": "TRUE_TWO_PARENT_MERGE",
+    "github_signature_verified": true,
+    "squash": false,
+    "rebase": false,
+    "force_update": false
+  },
+  "postpromotion_source_postimage_evidence": {
+    "broad_canonical_push_run": 34718842447,
+    "broad_canonical_push_conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103621035518,
+    "current_restricted_canonical_preservation_conclusion": "success",
+    "supplemental_fci51p_r3_push_run": 34718842432,
+    "supplemental_fci51p_r3_push_conclusion": "success"
+  },
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_MOVING_PRESERVATION_RECONCILIATION",
+  "mass_conservation": "HARD_PRESERVED_NO_TOLERANCE_RELAXATION",
+  "canonical_admission": true,
+  "production_groundwater_coupling_admission": false,
+  "full_fgc21_predictor_corrector_admission": false,
+  "ready_for_canonical_promotion": false,
+  "hard_nonclaims": [
+    "No full F-GC21 predictor-corrector orchestration qualification or admission.",
+    "No production groundwater-coupling or SWAP-MODFLOW coupling admission.",
+    "No MODFLOW/aquifer end-to-end qualification.",
+    "No crash-recovery or distributed-runtime qualification.",
+    "No large-batch throughput qualification.",
+    "No scientific or mass-conservation tolerance was relaxed.",
+    "RB1 remains frozen."
+  ],
+  "closeout_policy": "This metadata-only closeout commit intentionally does not cite its own future workflow run. Exactly one external broad F-CI canonical push run on the final closeout head must succeed, including current-restricted-canonical-preservation. After that evidence exists, do not add another F-CI55R metadata commit merely to self-record it."
+}

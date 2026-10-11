@@ -1,0 +1,27 @@
+name: F-VQ35 independent F-PM06A reference ET demand
+
+on:
+  push:
+    branches:
+      - qualification/f-vq35-fpm06a-reference-et-demand
+    paths-ignore:
+      - integration/f-vq/F-VQ35_QUALIFICATION.json
+      - integration/f-vq/F-VQ35_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ35 independent scientific qualification
+        run: bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh

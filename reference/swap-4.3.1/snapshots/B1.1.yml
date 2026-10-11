@@ -1,0 +1,18 @@
+schema_version: 1
+snapshot: "B1.1"
+reference_family: SWAP-4.3.1-corrected
+
+b0:
+  source_archive_sha256: "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  expanded_member_manifest_sha256: "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
+
+patches:
+  - id: "SWAP-001"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
+    patch_sha256: "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770"
+    target: "SWAP/macropore.f90"
+    b0_target_sha256: "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b"
+    corrected_target_sha256: "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f"
+    qualification: "reference/swap-4.3.1/patches/SWAP-001/qualification.md"
+
+meaning: "First corrected SWAP 4.3.1 reference snapshot. Adds the qualified SWAP-001 macropore array-shape fix only."

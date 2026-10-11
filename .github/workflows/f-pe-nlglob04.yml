@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB04 residual-term floor attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB04*.md'
+      - 'tests/fpe/materialize_fpe_nlglob04*.py'
+      - 'tests/fpe/run_fpe_nlglob04*.py'
+      - 'tests/fpe/run_fpe_nlglob04*.sh'
+      - '.github/workflows/f-pe-nlglob04.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob04-residual-term-floor
+    paths:
+      - 'docs/performance/F-PE-NLGLOB04*.md'
+      - 'tests/fpe/materialize_fpe_nlglob04*.py'
+      - 'tests/fpe/run_fpe_nlglob04*.py'
+      - 'tests/fpe/run_fpe_nlglob04*.sh'
+      - '.github/workflows/f-pe-nlglob04.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob04-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  residual-term-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run NLGLOB04 residual-term attribution
+        run: bash tests/fpe/run_fpe_nlglob04.sh

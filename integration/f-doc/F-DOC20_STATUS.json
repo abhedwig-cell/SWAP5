@@ -1,0 +1,120 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-DOC20",
+  "title": "SWAP5 Documentation & Review Baseline",
+  "phase": "CLOSE",
+  "decision": "READY_FOR_CANONICAL_ADMISSION",
+  "verdict": "PASS",
+  "protocol": ["RECONCILE", "UPDATE", "VERIFY", "PUBLISH", "CLOSE"],
+  "branch": "work/f-doc20-review-baseline-publication",
+  "branch_head_before_closeout": "a34dc0f85bf2bac2d71feb2b442fd8d15ed516f4",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_start_head": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+  "canonical_reconciled_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+  "canonical_delta_since_final_reconcile": "NONE",
+  "frozen_scientific_review_authority": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "qualified_documentation_evidence": {
+    "first_review_slice": {
+      "head": "f19eed15ca6adf015f7008ee53b90b4a437b6956",
+      "workflow_run": 35104014812,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS"
+    },
+    "capability_slice": {
+      "head": "e7a8c712c5c11a332e0c3e56231693a781002c3d",
+      "workflow_run": 35107000010,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS"
+    },
+    "practical_entry_slice": {
+      "head": "15e64ab9c1689bac504b32b48309424b7bbe4165",
+      "workflow_run": 35107454357,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS"
+    },
+    "publication_contract_slice": {
+      "head": "c38922849b67f18e4f92f90c5b08a4e57c519eec",
+      "workflow_run": 35108150706,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS",
+      "publication_branch_contract": "publication/status-a-review-20260916",
+      "main_deployment_removed": true,
+      "external_verifier_rebound_to_current_review_routes": true
+    },
+    "documentation_completeness_and_drainage_slice": {
+      "head": "dc681f60d1ddbf86970777dd899f341f5135871d",
+      "workflow_run": 35108621857,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS",
+      "documentation_completion_rule_persisted": true,
+      "drainage_evidence_boundary_persisted": true
+    },
+    "markup_robust_verifier_slice": {
+      "head": "a34dc0f85bf2bac2d71feb2b442fd8d15ed516f4",
+      "workflow_run": 35109164782,
+      "repository_documentation_checks": "PASS",
+      "mkdocs_build_strict": "PASS",
+      "verifier_change": "Rendered-HTML marker made markup-robust without changing the scientific/user-facing claim."
+    }
+  },
+  "publication_authority": {
+    "branch": "publication/status-a-review-20260916",
+    "materialized": true,
+    "exact_documentation_commit": "743e40aa360b2d8d9132fc8061eec17fde800b80",
+    "exact_documentation_tree": "a2e5fba299cafaf589f183eaa16b61e0ab14ee9f",
+    "public_url": "https://abhedwig-cell.github.io/SWAP5/",
+    "deployment_workflow_run": 35109465705,
+    "validate_build_job": 104839089441,
+    "deploy_job": 104839233731,
+    "external_verify_job": 104839322630,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pages_deployment": "PASS",
+    "external_verification": "PASS",
+    "final_publication_revision_contains_documentation_completeness_rule": true,
+    "final_publication_revision_contains_precise_drainage_evidence_boundary": true
+  },
+  "scientific_authority_reconciliation": {
+    "F_DOC16": "CURRENT_REUSABLE_WITH_RECONCILIATION",
+    "F_DOC18": "HISTORICAL_QUALIFIED_RB1_SOURCE",
+    "F_DOC13": "HISTORICAL_RESTRICTED_NUMERICAL_SOURCE",
+    "F_DOC17": "HISTORICAL_STATUS_ASSESSMENT_SUPERSEDED_BY_LATER_STATUS_A_ADMISSION",
+    "STATUS_A_DOCS": "CURRENT_REVIEW_AUTHORITY"
+  },
+  "legacy_equivalence_reconciliation": {
+    "f_vq99_legacy_long_trajectory": "QUALIFIED",
+    "hupsel_period": "2002-01-01 through 2004-12-31",
+    "b0_b1_10_normalized_result_bal_identity": "PASS_EXACT",
+    "b0_b1_10_normalized_result_blc_identity": "PASS_EXACT",
+    "unexplained_scientific_difference_found": false,
+    "whole_application_swap431_to_swap5_equivalence": "NOT_YET_ESTABLISHED",
+    "reason": "Complete canonical SWAP5 application-level mapping for the long Hupsel legacy input/crop/ET composition is not yet fixed; this remains an experimental prerequisite gap, not a discovered unexplained numerical difference."
+  },
+  "documentation_completion_rule": "Missing but reconstructable documentation is written from accepted theory/code/evidence; missing unproven authority is recorded as a bounded gap and is not invented.",
+  "mutations": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_denominator_change": false,
+    "documentation_only": true
+  },
+  "explicit_nonclaims": [
+    "No production or reference source is modified by F-DOC20.",
+    "Historical F-DOC branches are not silently promoted to current canonical authority.",
+    "The review portal does not claim complete whole-application SWAP 4.3.1/SWAP5 equivalence before that experiment is validly executed.",
+    "Post-Status-A capability development remains outside the first frozen scientific review denominator unless explicitly added before a later freeze.",
+    "Capability documentation does not broaden admitted Restart, MultiSWAP, WOFOST, Snow, Drainage or Groundwater semantics.",
+    "Internal qualification runners are not represented as a broad stable end-user SWAP5 application interface.",
+    "Moving main is not used as the Status-A review publication authority."
+  ],
+  "next_permitted_action": "Admit PR #162 to integration/f-ci-canonical if its current head remains mergeable and required qualification remains green; no production requalification is required for this checkpoint-only closeout delta.",
+  "exclusions": [
+    "generated Fortran/API reference integration beyond the first human review hierarchy",
+    "whole-application SWAP 4.3.1 versus SWAP5 equivalence experiment",
+    "new physics or numerical semantics",
+    "broad public API/CLI or wholesale legacy I/O modernization"
+  ]
+}

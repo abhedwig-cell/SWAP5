@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.f-rom0t1d1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1D1",
+  "title": "Exact T1 refined retry cause and representation-bound diagnostic",
+  "phase": "PREREGISTERED_BEFORE_DIAGNOSTIC_EXECUTION",
+  "predecessor": {
+    "work_unit": "ROM-0T1",
+    "decision": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+    "immutable_failures": [
+      {"case":"B01_E1_NOMINAL_FLUX","failed_step":18,"t0_day":0.0136,"t1_day":0.0144},
+      {"case":"B01_E2_DRYING_FLUX","failed_step":4,"t0_day":0.0024,"t1_day":0.0032},
+      {"case":"B14_E2_DRYING_FLUX","failed_step":4,"t0_day":0.0024,"t1_day":0.0032}
+    ]
+  },
+  "purpose": "Classify the exact final-iteration convergence criterion of each frozen T1 refined failure and, without changing the solve, compare its time-integrated total residual to the independently established prospective floating-point representation bound.",
+  "classification_authority": {
+    "work_unit": "PUB-P2E11D",
+    "imported_component_only": "retry cause classification from final Reference workspace",
+    "classes": {
+      "RETRY_MIXED": "local balance flags >0 and head flags >0",
+      "RETRY_LOCAL_BALANCE": "local balance flags >0 and head flags ==0",
+      "RETRY_HEAD": "local balance flags ==0 and head flags >0",
+      "RETRY_TOTAL_ONLY": "no local/head flags, max abs local residual <= 1e-12 cm/day, abs(sum residual) > 1e-12 cm/day",
+      "RETRY_OTHER": "retry advised but not classified above"
+    }
+  },
+  "representation_bound_authority": {
+    "work_unit": "PUB-P2E21",
+    "formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "inputs": ["material theta_s","accepted predecessor theta","dz"],
+    "computed_before_failed_solve": true,
+    "failed_residual_used_in_formula": false,
+    "empirical_safety_factor": "none",
+    "population_admission_imported": false,
+    "tolerance_policy_imported": false
+  },
+  "trajectory_reconstruction": {
+    "initial_state": "original uniform Se=0.85",
+    "geometry": "16x10 cm over 160 cm",
+    "dt_day": 0.0008,
+    "accepted_predecessor_route": "F-KT Reference-floor sample/candidate/commit under original strict fixed-flux controls",
+    "diagnostic_failed_interval_route": "direct Reference solver call from snapshot of accepted predecessor",
+    "diagnostic_candidate_commit_allowed": false,
+    "FMR_failure_reproduction_required": true
+  },
+  "frozen_controls": {
+    "bottom_mode": 2,
+    "compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "total_balance_rate_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "hard_transaction_mass_gate_cm": 1e-12
+  },
+  "required_evidence": [
+    "ALL_THREE_ACCEPTED_PREDECESSORS_REBUILT",
+    "DIRECT_DIAGNOSTIC_STATUS_RETRY_ADVISED_ALL_THREE",
+    "FMR_FAILURE_REPRODUCES_SAME_INTERVAL_ALL_THREE",
+    "DIRECT_DIAGNOSTIC_DOES_NOT_MUTATE_COMMITTED_STATE",
+    "FINAL_WORKSPACE_BALANCE_FLAG_COUNT",
+    "FINAL_WORKSPACE_HEAD_FLAG_COUNT",
+    "MAX_ABS_LOCAL_RESIDUAL",
+    "SIGNED_TOTAL_RESIDUAL",
+    "PRE_SOLVE_REPRESENTATION_BOUND_CM",
+    "ABS_TOTAL_RESIDUAL_TIMES_DT_CM",
+    "RESIDUAL_OVER_REPRESENTATION_BOUND",
+    "O0_O2_STDOUT_BIT_IDENTITY",
+    "REPEAT_STDOUT_BIT_IDENTITY"
+  ],
+  "positive_diagnostic_decision": "T1_ALL_RETRIES_TOTAL_ONLY_WITHIN_PRIOR_REPRESENTATION_BOUND",
+  "other_decisions": [
+    "T1_RETRY_CAUSE_NONUNIFORM",
+    "T1_RETRY_NOT_TOTAL_ONLY",
+    "T1_TOTAL_ONLY_EXCEEDS_PRIOR_REPRESENTATION_BOUND",
+    "T1_RETRY_DIAGNOSTIC_BLOCKED"
+  ],
+  "firewalls": [
+    "ORIGINAL_T1_NO_GO_REMAINS_IMMUTABLE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_DT_CHANGE",
+    "NO_ITERATION_OR_BACKTRACKING_CHANGE",
+    "NO_REPRESENTATION_POLICY_APPLICATION",
+    "NO_EMPIRICAL_FACTOR",
+    "NO_FAILED_CANDIDATE_COMMIT",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_ROM1_WORK"
+  ],
+  "remedy_authorized": false,
+  "rom1a_authorized": false
+}

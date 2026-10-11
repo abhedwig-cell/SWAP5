@@ -1,0 +1,21 @@
+--- SWAP/tridag.f90
++++ SWAP/tridag.f90
+@@ -85,7 +85,8 @@
+       ! global
+       integer, intent(in)  :: n, m1, m2, np, mp, mpl
+       integer, intent(out) :: indx(n)
+-      real(8), intent(out) :: a(np,mp),al(np,mpl)
++      real(8), intent(inout) :: a(np,mp)
++      real(8), intent(out)   :: al(np,mpl)
+       real(8), intent(out) :: d
+       real(8), parameter   :: TINY = 1.d-20
+       ! local
+@@ -152,7 +153,7 @@
+       ! global
+       integer, intent(in)  :: n, np, mp, mpl, indx(n), m1, m2
+       real(8), intent(in)  :: a(np,mp),al(np,mpl)
+-      real(8), intent(out) :: b(n)
++      real(8), intent(inout) :: b(n)
+       ! local
+       INTEGER              :: i,k,l,mm
+       real(8)              :: dum

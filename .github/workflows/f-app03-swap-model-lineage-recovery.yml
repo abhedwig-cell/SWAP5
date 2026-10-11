@@ -1,0 +1,89 @@
+name: F-APP03 SWAP-model Hupsel lineage recovery
+
+on:
+  push:
+    branches:
+      - work/f-app03-hupsel-daily-meteo-recovery
+    paths:
+      - '.github/workflows/f-app03-swap-model-lineage-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lineage-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe immutable SWAP-model swap-testcases initial import
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          source_repo='SWAP-model/swap-testcases'
+          source_commit='a1b15843e9e9732713bed1ee41d09c16c3136593'
+          base="https://raw.githubusercontent.com/${source_repo}/${source_commit}/cases/hupselbrook/legacy"
+
+          curl -fsSL --retry 3 "$base/283.met" -o 283.met
+          curl -fsSL --retry 3 "$base/grassd.crp" -o grassd.crp
+          curl -fsSL --retry 3 "$base/maizes.crp" -o maizes.crp
+          curl -fsSL --retry 3 "$base/potatod.crp" -o potatod.crp
+          curl -fsSL --retry 3 "$base/swap.dra" -o swap.dra
+          curl -fsSL --retry 3 "$base/swap_linux.swp.template" -o swap_linux.swp.template
+          curl -fsSL --retry 3 "$base/swap_windows.swp.template" -o swap_windows.swp.template
+
+          expected_283='1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6'
+          expected_grass='8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882'
+          expected_maize='2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33'
+          expected_potato='96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707'
+          expected_dra='070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17'
+          expected_swp='a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b'
+
+          sha_283="$(sha256sum 283.met | awk '{print $1}')"
+          sha_grass="$(sha256sum grassd.crp | awk '{print $1}')"
+          sha_maize="$(sha256sum maizes.crp | awk '{print $1}')"
+          sha_potato="$(sha256sum potatod.crp | awk '{print $1}')"
+          sha_dra="$(sha256sum swap.dra | awk '{print $1}')"
+          sha_swp_linux="$(sha256sum swap_linux.swp.template | awk '{print $1}')"
+          sha_swp_windows="$(sha256sum swap_windows.swp.template | awk '{print $1}')"
+
+          match() { if [[ "$1" == "$2" ]]; then printf PASS; else printf NO_MATCH; fi; }
+
+          {
+            echo 'workunit=F-APP03'
+            echo 'probe=SWAP_MODEL_SWAP_TESTCASES_INITIAL_IMPORT'
+            echo "source_repo=$source_repo"
+            echo "source_commit=$source_commit"
+            echo 'source_provenance=Initial import states inputs came from canonical in-repo regression suite plus retired private SWAP-model/swap-cases material.'
+            echo "expected_FVQ99_283_met_sha256=$expected_283"
+            echo "observed_283_met_sha256=$sha_283"
+            echo "FAPP03_SWAPMODEL_283_RAW_MATCH=$(match "$sha_283" "$expected_283")"
+            echo "expected_FVQ99_grass_crp_sha256=$expected_grass"
+            echo "observed_grassd_crp_sha256=$sha_grass"
+            echo "FAPP03_SWAPMODEL_GRASS_RAW_MATCH=$(match "$sha_grass" "$expected_grass")"
+            echo "expected_FVQ99_maize_crp_sha256=$expected_maize"
+            echo "observed_maizes_crp_sha256=$sha_maize"
+            echo "FAPP03_SWAPMODEL_MAIZE_RAW_MATCH=$(match "$sha_maize" "$expected_maize")"
+            echo "expected_FVQ99_potato_crp_sha256=$expected_potato"
+            echo "observed_potatod_crp_sha256=$sha_potato"
+            echo "FAPP03_SWAPMODEL_POTATO_RAW_MATCH=$(match "$sha_potato" "$expected_potato")"
+            echo "expected_FVQ99_swap_dra_sha256=$expected_dra"
+            echo "observed_swap_dra_sha256=$sha_dra"
+            echo "FAPP03_SWAPMODEL_DRA_RAW_MATCH=$(match "$sha_dra" "$expected_dra")"
+            echo "expected_FVQ99_swap_swp_sha256=$expected_swp"
+            echo "observed_swap_linux_swp_template_sha256=$sha_swp_linux"
+            echo "FAPP03_SWAPMODEL_SWP_LINUX_RAW_MATCH=$(match "$sha_swp_linux" "$expected_swp")"
+            echo "observed_swap_windows_swp_template_sha256=$sha_swp_windows"
+            echo "FAPP03_SWAPMODEL_SWP_WINDOWS_RAW_MATCH=$(match "$sha_swp_windows" "$expected_swp")"
+            echo 'FAPP03_SWAPMODEL_CONTROL_PLOT_STATUS=ABSENT_FROM_PUBLIC_INITIAL_IMPORT_HUPSEL_LEGACY_DIRECTORY'
+            echo 'FAPP03_SWAPMODEL_PLOT_SWAP_CMD_STATUS=ABSENT_FROM_PUBLIC_INITIAL_IMPORT_HUPSEL_LEGACY_DIRECTORY'
+            echo 'FAPP03_SWAPMODEL_RUN_SWAP_CMD_STATUS=ABSENT_FROM_PUBLIC_INITIAL_IMPORT_HUPSEL_LEGACY_DIRECTORY'
+            echo 'interpretation=Only exact raw SHA matches are authority-equivalent for the corresponding F-VQ99 file. Filename lineage or semantic similarity alone does not clear the blocker.'
+          } | tee F-APP03_SWAPMODEL_LINEAGE_RECOVERY.txt
+
+      - name: Upload lineage evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app03-swapmodel-hupsel-lineage-recovery
+          path: F-APP03_SWAPMODEL_LINEAGE_RECOVERY.txt
+          if-no-files-found: error

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM06A",
+  "title": "Restricted Stateless Reference-ET Demand Structural Candidate",
+  "branch": "work/f-pm06a-reference-et-demand-candidate",
+  "status": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "decision": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_INDEPENDENTLY_SCIENTIFICALLY_QUALIFIED",
+  "lineage": {
+    "F_PM06_readiness_closeout": "2113dd20c2f20c77c3191c65be2f994955202037",
+    "candidate_base": "2113dd20c2f20c77c3191c65be2f994955202037",
+    "definitive_tested_head": "23206aaf996ffb7dde355508fa2379a5efbd3d57",
+    "definitive_tested_tree": "f45905c1751d9c6423641a389bf62a6381e70595",
+    "evidence_commit": "0555a5d5e2ca8918836bef017eb5c3edea4d22e3",
+    "production_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "independently_scientifically_qualified": false,
+    "runtime_bound": false,
+    "canonical_admitted": false
+  },
+  "candidate_profile": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "SWEVAP": 1,
+    "SWREDU": 0,
+    "SWCFBS": 0,
+    "persistent_ET_state": false,
+    "outputs": [
+      "potential_transpiration_cm_per_day",
+      "potential_soil_evaporation_cm_per_day",
+      "potential_pond_evaporation_cm_per_day"
+    ]
+  },
+  "production_scope": {
+    "added_source": [
+      "src/process/mod_reference_et_demand_process.f90"
+    ],
+    "existing_production_source_modified": false,
+    "root_uptake_source_modified": false,
+    "crop_owner_source_modified": false,
+    "runtime_source_modified": false,
+    "solver_source_modified": false,
+    "kernel_source_modified": false,
+    "legacy_source_modified": false,
+    "IO_source_modified": false
+  },
+  "qualification": {
+    "workflow_run": 34449186836,
+    "workflow_job": 102780712913,
+    "workflow_conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "c9f4557cc0999b01e6379b72ec09b743542dd447c48790e7149451da8d9da61a",
+    "single_production_delta": "PASS",
+    "owner_blob_locks": "PASS",
+    "B1_10_equation_oracle": "PASS",
+    "vcover_surface_semantics": "PASS",
+    "inactive_crop_dependency_minimality": "PASS",
+    "fail_closed": "PASS",
+    "stateless_replay": "PASS"
+  },
+  "architecture_invariants": {
+    "single_kernel": "PASS_NO_ALTERNATE_KERNEL",
+    "kernel_IO_separation": "PASS",
+    "data_separation": "PASS",
+    "compact_state": "PASS_ZERO_PROCESS_STATE",
+    "worker_scratch": "PASS_NO_PROCESS_SCRATCH_STATE",
+    "transactional_timesteps": "PASS_BY_STATELESSNESS_FOR_THIS_PROCESS",
+    "cheap_recompute": "PASS_A_B_A",
+    "generic_time": "PASS_RATE_FOR_EXPLICIT_FORCING_SPAN",
+    "mass_conservation": "PASS_POTENTIAL_DEMAND_NOT_LEDGERED",
+    "hydraulic_interface": "PASS_NO_HYDRAULIC_ACCESS",
+    "reuse_crop_physics": "PASS_READ_ONLY_CANOPY_VIEW",
+    "reuse_root_uptake": "PASS_NO_DUPLICATED_ROOT_PHYSICS",
+    "physics_solver_policy_separation": "PASS",
+    "optional_functionality": "PASS_NO_OPTIONAL_STATE_ALLOCATED",
+    "no_silent_dependencies": "PASS_RESTRICTED_OPTIONS_EXPLICIT"
+  },
+  "held_scope": [
+    "independent source-level scientific rederivation against frozen B1.10 MOD_meteo",
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "SWINTER=1,2,3",
+    "SWREDU=1,2",
+    "wet-canopy partition",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "actual root uptake",
+    "runtime crop/canopy composition",
+    "surface-hydraulic composition",
+    "authoritative mass-ledger composition",
+    "canonical promotion"
+  ],
+  "recommended_next": {
+    "owner": "F-VQ",
+    "scope": "independently verify exact F-PM06A source blob against frozen B1.10 ETpot restricted equations and units, including non-emerged vcover semantics, dependency-minimal inactive crop factors, zero/cover boundaries, stateless replay and strict nonclaim boundaries; do not modify candidate production source",
+    "candidate_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  }
+}

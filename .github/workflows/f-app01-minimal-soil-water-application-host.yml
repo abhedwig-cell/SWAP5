@@ -1,0 +1,55 @@
+name: F-APP01 minimal soil-water application host
+
+on:
+  push:
+    branches:
+      - work/f-app01-minimal-soil-water-application-host
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run bounded F-APP01 qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x tests/runtime/run_fapp01_minimal_soil_water_application_host.sh
+          tests/runtime/run_fapp01_minimal_soil_water_application_host.sh | tee F-APP01_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-APP01"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            echo "host_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_soil_water_application_host.f90 || true)"
+            grep -E 'FAPP01_' F-APP01_GATE.log || true
+          } > F-APP01_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app01-evidence
+          path: F-APP01_EVIDENCE.txt
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app01-diagnostics
+          path: F-APP01_GATE.log
+          if-no-files-found: warn

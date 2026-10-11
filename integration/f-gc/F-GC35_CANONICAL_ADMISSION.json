@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC35",
+  "title": "MODFLOW6 XMI Package Adapter — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_XMI_PACKAGE_ADAPTER_CONTRACT",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7d335dbbfd16407aca235ccf41a6c70534a1c4df"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "27a887803205463b8452142202a3358e641db35f",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI102",
+    "initial_gate_head": "28fa2382bfa479e9cebfa5a087bb26a20265d0ff",
+    "initial_gate_run": 35294634213,
+    "initial_gate_job": 105444531723,
+    "status_head_run": 35294668665,
+    "status_head_job": 105444636351,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ109",
+    "status_head": "9ecd770f4a8b9ddf639d9f917c567927721cb111",
+    "final_green_run": 35294523262,
+    "final_green_job": 105444207215,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "dependency_authority": {
+    "upstream": "F-GC34",
+    "upstream_verdict": "CLOSED_CANONICAL_ADMITTED_MODFLOW6_TYPED_API_BINDING"
+  },
+  "admitted_production_blobs": {
+    "src/adapter/modflow6_xmi_package_adapter.py": "cf127a6fc17d895ced04bf1a013ca53e6aa3a713"
+  },
+  "admitted_contract": [
+    "resolve NODELIST/HCOF/RHS/MAXBOUND/NBOUND XMI addresses for one configured API package",
+    "acquire initial views after initialize while publication remains closed",
+    "reacquire all five live views after each host prepare_time_step",
+    "validate capacity/dtype/scalar shape before publication opens",
+    "forward canonical F-GC34 publisher payload and live package views without transformation/copying",
+    "require one successful current-generation publication before close_before_prepare_solve succeeds",
+    "never call MODFLOW initialize/prepare/solve/finalize lifecycle methods"
+  ],
+  "evidence_boundary": {
+    "admitted": "mock-XMI API shape, pointer refresh identity, lifecycle/publication-window guard",
+    "not_admitted": [
+      "real libmf6 shared-library execution",
+      "actual live xmipy NumPy pointer qualification",
+      "concrete cross-language F-GC34 callable bridge",
+      "end-to-end MODFLOW solve with SWAP5 tangent terms"
+    ]
+  },
+  "exclusions": [
+    "MODFLOW execution ownership",
+    "head exchange",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Close F-GC35 metadata-only, then evaluate/rematerialize F-GC36 live MODFLOW6/F-GC34 bridge from current canonical."
+}

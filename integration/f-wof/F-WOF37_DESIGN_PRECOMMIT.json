@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF37",
+  "title": "Physical Accepted-Window Crop-Event Composition and Donor Closure Qualification",
+  "branch": "work/f-wof37-physical-accepted-window-crop-event-composition",
+  "base": {
+    "work_unit": "F-WOF36",
+    "commit": "cf790e559884f2c834db098fe6a010527cd504bf",
+    "status": "QUALIFIED_GATES_A_B_RESTRICTED_PHYSICAL_BINDING_SCOPE_COMPLETE"
+  },
+  "donor": {
+    "work_unit": "F-WOF33",
+    "commit": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+    "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD"
+  },
+  "already_present_exact_donor_blobs": [
+    {"path":"src/crop/mod_wofost_actual_biomass_state.f90","blob":"feab0672b38e1c9668ac418cbe9d800f032cf4d8"},
+    {"path":"src/crop/mod_wofost_crop_owner_state.f90","blob":"31bb390a0b70bec0a3f525f1d704a2c53890f9b4"},
+    {"path":"src/crop/mod_wofost_one_day_structural_evolution.f90","blob":"c1fd9704ca1617f1f34d41fd7ec38640cce81d94"}
+  ],
+  "missing_minimal_donor_closure": [
+    {"path":"src/crop/mod_wofost_rate_table.f90","blob":"5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"},
+    {"path":"src/crop/mod_wofost_rate_parameters.f90","blob":"b2e2b86e2f0b8be3f569604523b4891af40016b5"},
+    {"path":"src/crop/mod_wofost_one_day_rate_state_view.f90","blob":"eb0cf889676b617fef0542bc1b87e14b4f8b650c"},
+    {"path":"src/crop/mod_wofost_prepare_assimilation.f90","blob":"9d948be4fbd264fd3c3316fbc2b323d0c3b69f44"},
+    {"path":"src/crop/mod_wofost_finalize_rates.f90","blob":"5a57ef2301e6ee308db7fa2ab486a86f2f689ee0"},
+    {"path":"src/crop/mod_wofost_two_phase_crop_window.f90","blob":"45fac1cd92cb2269cb30b56b8b89dc8ec49c7485"}
+  ],
+  "explicitly_excluded_donor_files": [
+    "src/crop/mod_crop_lifecycle_state.f90",
+    "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+    "src/crop/mod_crop_root_uptake_input_assembly.f90",
+    "src/crop/mod_nonadaptive_crop_root_view_producer.f90",
+    "src/crop/mod_swrd2_crop_lifecycle_state.f90"
+  ],
+  "reason_for_exclusion": "These files are not dependencies of the restricted F-WOF33 two-phase crop-window seam being composed here and must not enlarge the production closure by history alone.",
+  "target_composition": [
+    "begin the already-qualified F-WOF33 two-phase WOFOST crop window from committed crop-owner state",
+    "use the already-qualified F-WOF36 physical runtime binding to admit exact same-trial PTRA and applied QROT only from accepted physical commits",
+    "use the already-qualified F-WOF34 lineage/delivery seam to freeze and deliver one accepted aggregate carrier exactly once",
+    "complete the already-qualified F-WOF33 crop window from that delivered accepted aggregate carrier",
+    "keep crop candidate commit authority outside the crop kernel"
+  ],
+  "hard_holds": {
+    "calendar_scheduler_added": false,
+    "midnight_or_one_day_runtime_assumption_added": false,
+    "crop_kernel_transaction_knowledge_added": false,
+    "new_crop_commit_authority_added": false,
+    "F_KT_commit_authority_changed": false,
+    "Richards_root_ET_physics_changed": false,
+    "mass_accounting_changed": false,
+    "persistent_solver_scratch_added": false,
+    "active_window_restart_ownership_claimed": false,
+    "canonical_promotion_claimed": false
+  },
+  "qualification_gates": [
+    "exact six-file donor blob lock and no other F-WOF33 production donor materialization",
+    "F-WOF33 exact closeout regression on the composed tree",
+    "F-WOF36 real-physics PTRA/QROT binding regression and hard-mass preservation",
+    "F-WOF34 accepted-window lineage and exactly-once delivery regression",
+    "one explicit generic crop window end-to-end: begin -> accepted physical contributions -> prepare delivery -> complete crop candidate -> exactly-once delivery commit",
+    "rejected physical trial contributes zero to the crop candidate trajectory",
+    "rejected then accepted retry yields the same crop candidate as direct acceptance",
+    "duplicate delivery cannot produce a second admitted crop event",
+    "O0/O2 output identity",
+    "inactive/non-WOFOST path remains functionally unchanged",
+    "no calendar or file-I/O dependency"
+  ],
+  "decision": "MATERIALIZE_MINIMAL_BYTE_LOCKED_DONOR_CLOSURE_THEN_QUALIFY_COMPOSITION_BEFORE_ANY_NEW_RUNTIME_OWNER_CODE",
+  "status": "DESIGN_PERSISTED_READY_FOR_DONOR_MATERIALIZATION"
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.f-rom0v1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0V1",
+  "title": "Required vertical-resolution Reference-floor diagnostic",
+  "execution": {
+    "workflow_run": 35375404190,
+    "workflow_job": 105698904560,
+    "executed_head": "138733e5acd9a0c1342322337feeeec954f51d38",
+    "artifact_id": 10559493353,
+    "artifact_digest": "sha256:233596efdc8c2cf1ec85507b6f600ee6a6309bd008d233a3e9ec0884a628c4ed",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity_g16": true,
+    "o0_o2_stdout_bitwise_identity_g32": true,
+    "repeat_stdout_bitwise_identity_g16": true,
+    "repeat_stdout_bitwise_identity_g32": true
+  },
+  "authority": {
+    "preregistration_schema": "swap5.f-rom0v1-preregistration.v2",
+    "vertical_pair_dt_day": 0.0016,
+    "steps": 32,
+    "horizon_day": 0.0512,
+    "policy": "ORIGINAL_STRICT_FIXED_FLUX_REFERENCE_SAMPLE",
+    "representation_bounded_total_policy_used": false,
+    "production_or_reference_source_mutated": false
+  },
+  "comparison": {
+    "coarse": "16x10 cm",
+    "fine": "32x5 cm",
+    "depth_cm": 160,
+    "mapping": {
+      "pressure_head": "pair-average fine heads at each coarse cell",
+      "water_content": "pair-average fine theta, storage-conservative for equal 5-cm cells"
+    },
+    "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD"
+  },
+  "cases": {
+    "B01_E1_NOMINAL_FLUX": {
+      "common_endpoint_count": 32,
+      "max_over_time": {
+        "D_h_inf_cm": 0.2108357915457475,
+        "D_h_rms_cm": 0.06077944711419054,
+        "D_theta_inf": 0.0005420462931603476,
+        "D_theta_rms": 0.00015761829804374265,
+        "D_total_storage_abs_cm": 3.552713678800501e-14,
+        "D_upper_0_40cm_storage_abs_cm": 0.0003748292968630551,
+        "D_lower_40_160cm_storage_abs_cm": 0.00037482929685239696,
+        "D_cumulative_bottom_exchange_abs_cm": 0.0,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0,
+        "D_cumulative_prescribed_top_exchange_abs_cm": 0.0
+      },
+      "G16": {
+        "max_abs_step_mass_residual_cm": 2.7587334543513475e-14,
+        "nonlinear_iterations_range": [3,7],
+        "backtracking_range": [3,7]
+      },
+      "G32": {
+        "max_abs_step_mass_residual_cm": 3.636151167489554e-14,
+        "nonlinear_iterations_range": [3,6],
+        "backtracking_range": [3,6]
+      }
+    },
+    "B14_E2_DRYING_FLUX": {
+      "common_endpoint_count": 32,
+      "max_over_time": {
+        "D_h_inf_cm": 0.005989831712014393,
+        "D_h_rms_cm": 0.0027709388392532365,
+        "D_theta_inf": 1.6414144244913942e-06,
+        "D_theta_rms": 7.771906914206851e-07,
+        "D_total_storage_abs_cm": 3.552713678800501e-14,
+        "D_upper_0_40cm_storage_abs_cm": 2.4268587139886222e-11,
+        "D_lower_40_160cm_storage_abs_cm": 2.425082357149222e-11,
+        "D_cumulative_bottom_exchange_abs_cm": 0.0,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0,
+        "D_cumulative_prescribed_top_exchange_abs_cm": 0.0
+      },
+      "G16": {
+        "max_abs_step_mass_residual_cm": 2.2887683408747317e-14,
+        "nonlinear_iterations_range": [3,9],
+        "backtracking_range": [3,9]
+      },
+      "G32": {
+        "max_abs_step_mass_residual_cm": 1.9744881530952082e-14,
+        "nonlinear_iterations_range": [3,3],
+        "backtracking_range": [3,3]
+      }
+    }
+  },
+  "gates": {
+    "both_required_cases_complete_both_geometries": true,
+    "common_endpoints_per_case": 32,
+    "all_metrics_finite": true,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "hard_mass_gate_pass": true,
+    "prescribed_top_exchange_identity": true,
+    "strict_fixed_flux_controls_unchanged": true,
+    "source_freeze_pass": true
+  },
+  "decision": "VERTICAL_REFERENCE_FLOOR_MEASURED",
+  "interpretation": "The required 16x10 cm versus 32x5 cm vertical numerical Reference floor is now measured on the two preregistered fixed-flux cases under the original strict Reference sample controls. No acceptance threshold is derived from these observed differences.",
+  "rom1a_authorized": false
+}

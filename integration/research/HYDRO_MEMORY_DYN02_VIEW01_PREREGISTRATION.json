@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.hydro_memory.dyn02_view_binding.preregistration.v1",
+  "date": "2026-09-20",
+  "work_unit": "HYDRO-MEMORY-DYN02-VIEW01",
+  "title": "Temporal-history committed-state hydraulic-view admission",
+  "canonical_base": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+  "trigger": {
+    "dyn02_run": 35460379501,
+    "observed_status": 102,
+    "diagnosis": "DYN02 first-window recomposition uses F-CI31 from a temporal-history committed carrier. mod_fmr_process_hydraulic_view_binding currently accepts only exact fmr_b110_physical_state_t through TYPE IS, while fmr_b110_temporal_indicator_state_t is an extension of that type."
+  },
+  "allowed_production_delta": [
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+  ],
+  "allowed_semantics": [
+    "admit exactly fmr_b110_temporal_indicator_state_t in addition to the already admitted exact physical carrier",
+    "extract only inherited hydraulic fields active_nodes, pressure_head, water_content, ponding_depth and groundwater_level",
+    "retain fail-closed behavior for all other transaction-state types"
+  ],
+  "forbidden": [
+    "do not use broad CLASS IS fmr_b110_physical_state_t because that would silently admit fixed-weir, evaporation and other physical-state extensions",
+    "no root-uptake equation change",
+    "no forcing change",
+    "no temporal/coupling tolerance change",
+    "no DYN02 preregistration change"
+  ],
+  "qualification": [
+    "plain physical and temporal-history carriers built from identical hydraulic state produce bit-identical process hydraulic views",
+    "temporal-history carrier is accepted",
+    "unrelated transaction-state carrier remains rejected",
+    "committed revision/time/state are not mutated",
+    "O0/O2 output identity"
+  ],
+  "pass_decision": "DYN02_VIEW01_QUALIFIED_RESTRICTED_TEMPORAL_CARRIER",
+  "fail_decision": "DYN02_VIEW01_BLOCKED"
+}

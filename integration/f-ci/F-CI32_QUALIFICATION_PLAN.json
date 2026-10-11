@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.canonical_source_admission_plan.v1",
+  "work_unit": "F-CI32",
+  "title": "Remediated Restricted DIVDRA Spatial Distribution Canonical Source Admission",
+  "branch": "qualification/f-ci32-fpm08br-divdra-canonical-admission",
+  "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "source_authority": {
+    "owner_work_unit": "F-PM08BR",
+    "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "scientific_authority": {
+    "work_unit": "F-VQ47",
+    "scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "administrative_head": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "decision": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
+    "scientific_scope_reopened": false
+  },
+  "canonical_dependency_lock": {
+    "path": "src/solver/mod_process_hydraulic_view.f90",
+    "blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "present_on_clean_base": true,
+    "owner_candidate_uses_same_blob": true
+  },
+  "admission_scope": {
+    "add_exact_qualified_divdra_provider": true,
+    "modify_existing_production_source": false,
+    "modify_reference_source": false,
+    "runtime_binding": false,
+    "runtime_composition": false,
+    "new_drainage_physics": false,
+    "scientific_requalification": false
+  },
+  "required_gates": [
+    "exact production blob lock against F-PM08BR/F-VQ47 authority",
+    "dependency blob lock against current canonical",
+    "compile admitted provider with current canonical hydraulic-view and solver contract dependencies",
+    "restricted provider smoke execution covering accepted transfer and fail-closed boundary statuses",
+    "standard canonical lineage-aware CI remains green",
+    "source-delta audit permits only the qualified DIVDRA production provider plus F-CI32 qualification assets",
+    "zero reference-source delta",
+    "all 30 SWAP architecture invariants audited for admission no-adverse-delta",
+    "identical admission gate rerun on exact closeout head before any canonical fast-forward"
+  ],
+  "mass_governance": {
+    "mass_conservation_absolute": true,
+    "candidate_scalar_transfer_authoritative": true,
+    "last_node_closure_is_roundoff_closure_only": true,
+    "configurable_mass_tolerance_allowed": false
+  },
+  "promotion_policy": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "fast_forward_only": true,
+    "recheck_live_canonical_head_immediately_before_promotion": true,
+    "promotion_forbidden_if_canonical_moved": true,
+    "post_promotion_canonical_ci_required": true
+  },
+  "next_stage_if_closed": "Separate runtime binding/composition workunit followed by independent runtime qualification; F-CI32 does not qualify runtime consumption."
+}

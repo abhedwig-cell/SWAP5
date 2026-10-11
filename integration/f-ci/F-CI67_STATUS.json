@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI67",
+  "title": "Restricted RossFast D3R execution-policy current-canonical admission",
+  "status": "CLOSED_POSITIVE_RESTRICTED_PRODUCTION_POLICY_ADMISSION_CANDIDATE",
+  "decision": "ADMIT_RESTRICTED_ROSSFAST_D3R_EXECUTION_POLICY_ON_CURRENT_CANONICAL",
+  "scope": "EXACT_D3R_RESTRICTED_DOMAIN_ONLY",
+  "branch": "qualification/f-ci67-rossfast-d3r-execution-policy-admission",
+  "canonical_preimage": {
+    "head": "96e810cca678449e0611ea9635ae6ac1209fb5db",
+    "tree": "8d9cfdb78cc09c5b3c23818737f6daf87c0fe271",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237"
+  },
+  "qualified_candidate": {
+    "head": "7dfdbb889e9be5cd0be3643fa12744e2db5a1a82",
+    "tree": "115764222979185c10a7eafb070b192a4e9b1f9a",
+    "production_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "test_blob": "724dae5c63e0898885636846f2dc4b7dbf3a6255",
+    "runner_blob": "46c2112e371896dff543f2b4c99466ef45409fff",
+    "workflow_blob": "755c0bec64edda4e2d7fbbf7f72385397562c236"
+  },
+  "qualification": {
+    "workflow_run_id": 34888458871,
+    "job_id": 104124863967,
+    "conclusion": "success",
+    "artifact_id": 10365751956,
+    "artifact_name": "fci67-rossfast-d3r-execution-policy-34888458871",
+    "artifact_digest": "sha256:16cf5b7491e6dc9e81e6248af33b2d5a73f6e11994b77debc18fd269b09e2bef",
+    "artifact_size_bytes": 1010,
+    "optimization_modes": ["O0", "O2"],
+    "optimization_outputs_byte_identical": true,
+    "output_sha256": "d348bf914e82d5b649c20329a81197528d9b8e3a92efed782d120cb5bc1aa0ba",
+    "production_fortran_standard": "F2008",
+    "test_harness_fortran_standard": "F2018",
+    "test_harness_f2018_reason": "VARIABLE_ERROR_STOP_CODE_FOR_ASSERTION_DIAGNOSTICS_ONLY",
+    "production_standard_relaxed": false
+  },
+  "research_authority": {
+    "remainder_closeout_path": "integration/f-ross/F-ROSS01_K_RUNTIME_REMAINDER_CLOSEOUT.json",
+    "remainder_closeout_blob": "bf5ae8a8eb732ff363f0a462a2141b2991670a9f",
+    "remainder_contract_path": "integration/f-ross/F-ROSS01_K_RUNTIME_REMAINDER_SCHEDULER_CONTRACT.json",
+    "remainder_contract_blob": "0ac2003c0a287a03b942b51cd4fbe518db70d9d5",
+    "authority_branch": "work/f-ross01-fast-mfp-feasibility"
+  },
+  "policy_contract": {
+    "outer_horizon_day": 0.0016,
+    "retry_scale": 0.5,
+    "full_attempt_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "half_only_index": 9,
+    "minimum_full_attempt_day": 0.00000625,
+    "selection_rule": "GREEDY_LARGEST_QUALIFIED_DYADIC_DURATION_NOT_EXCEEDING_REMAINDER",
+    "segment_retry_cap": "8 - segment_index",
+    "smallest_segment_retry_cap": 0,
+    "off_grid_or_oversized": "FAIL_CLOSED_BEFORE_TRANSACTION_EXECUTION",
+    "generic_runtime_binding": "F-CI66_OPTIONAL_TARGET_SELECTOR_CALLBACK"
+  },
+  "qualified": {
+    "full_attempt_indices_0_to_8_only": true,
+    "index_9_half_only_not_selectable": true,
+    "greedy_grid_remainder_selection": true,
+    "segment_retry_cap_8_minus_index": true,
+    "smallest_segment_failure_has_zero_retry_budget": true,
+    "off_grid_request_fails_before_transaction": true,
+    "oversized_request_fails_before_transaction": true,
+    "level_2_shortened_accept_remainder_composition": true,
+    "single_external_publication_after_full_outer_completion": true,
+    "complete_mass_accounting_in_positive_cases": true,
+    "generic_runtime_unchanged": true,
+    "transaction_core_unchanged": true,
+    "canonical_contracts_unchanged": true
+  },
+  "production_delta": [
+    "src/runtime/mod_rossfast_d3r_execution_policy.f90"
+  ],
+  "governance_delta": [
+    ".github/workflows/fci67-rossfast-d3r-execution-policy-admission.yml",
+    "tests/fci/run_fci67_rossfast_d3r_execution_policy_admission.sh",
+    "tests/fci/test_fci67_rossfast_d3r_execution_policy.f90",
+    "integration/f-ci/F-CI67_STATUS.json"
+  ],
+  "hard_nonclaims": [
+    "NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION",
+    "NO_NEW_ROSSFAST_PHYSICS",
+    "NO_D2_D3R_RESEARCH_PHYSICS_WHOLESALE_PRODUCTION_PROMOTION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_RUNTIME_PERFORMANCE_QUALIFICATION",
+    "NO_A10_SURFACE_CAP_GENERALIZATION",
+    "NO_HETEROGENEOUS_PROFILE_GENERALIZATION",
+    "NO_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_GROUNDWATER_SCIENTIFIC_GENERALIZATION",
+    "NO_MULTISWAP_QUALIFICATION",
+    "NO_FULLRICHARDS_EQUIVALENCE"
+  ],
+  "promotion_rule": "PROMOTE_ONLY_IF_THIS_STATUS_HEAD_REQUALIFIES_GREEN_AND_LIVE_CANONICAL_REMAINS_EXACTLY_96e810cca678449e0611ea9635ae6ac1209fb5db",
+  "next_gap": "CONCRETE_PRODUCTION_ROSSFAST_HYDRAULIC_MODEL_BINDING_TO_THE_ADMITTED_EXECUTION_POLICY"
+}

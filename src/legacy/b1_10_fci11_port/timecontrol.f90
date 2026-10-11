@@ -1,0 +1,6 @@
+include 'timecontrol_part01.inc'
+include 'timecontrol_part02.inc'
+include 'timecontrol_part03.inc'
+include 'timecontrol_part04.inc'
+include 'timecontrol_part05.inc'
+include 'timecontrol_part06.inc'

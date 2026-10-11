@@ -1,0 +1,60 @@
+{
+  "workunit": "F-VQ93",
+  "title": "EB-I25 accepted external full/half multi-substep sensible-boundary independent qualification",
+  "decision": "QUALIFIED_EB_I25_INDEPENDENT",
+  "owner_branch": "work/eb-i25-accepted-multisubstep-sensible-boundary",
+  "qualified_checkpoint_head": "08be50f248f3e169a3f1aeebd263cfe95b0dccd0",
+  "owner_qualified_head_before_checkpoint": "7aa467dca8c691bf72a0276c0757a568ae574845",
+  "owner_base": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+  "owner_qualification_run": 34986684267,
+  "owner_checkpoint_replay_run": 34986987790,
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head_at_qualification": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+  "qualification_branch": "qualification/f-vq93-eb-i25-accepted-multisubstep-sensible-boundary-independent-qualification",
+  "initial_green_qualification_head": "400d805d5951f0b327cf86916ebd69b8c76e08d9",
+  "initial_green_run_id": 34989239984,
+  "initial_green_job_id": 104449252799,
+  "evidence": {
+    "exact_checkpoint_head_guard": true,
+    "dependency_surface_unchanged": true,
+    "qualification_only_delta": true,
+    "owner_checkpoint_provenance": true,
+    "structural_fail_closed_guards": true,
+    "independent_carrier_rollback_oracle": true,
+    "independent_carrier_aggregation_oracle": true,
+    "carrier_oracle_O0_O2_identity": true,
+    "exact_owner_runtime_replay": true,
+    "sample_count_broadening_mutant_rejected": true,
+    "outflow_broadening_mutant_rejected": true,
+    "rollback_restore_removal_mutant_rejected": true
+  },
+  "qualified_scope": {
+    "rollback_safe_top_boundary_carrier": true,
+    "accepted_external_full_half_top_conductive_aggregation": true,
+    "accepted_external_full_half_snow_inactive_top_liquid_inflow": true,
+    "one_canonical_commit_two_internal_half_samples": true,
+    "single_substep_I24_semantics_preserved": true,
+    "missing_top_donor_fails_closed": true,
+    "accepted_external_full_half_top_liquid_outflow": false,
+    "multiple_outer_committed_runtime_substeps": false,
+    "snow_or_melt_thermal_provenance": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance_complete": false,
+    "canonical_admission": false
+  },
+  "nonclaims": [
+    "F-VQ93 qualifies only the bounded EB-I25 accepted external full/half two-half sensible-boundary surface.",
+    "Accepted external full/half top liquid outflow remains unqualified.",
+    "Multiple outer committed runtime-substep aggregation remains unqualified.",
+    "Snow or melt thermal provenance remains unqualified.",
+    "No new thermodynamic law or whole-column sensible-energy residual is introduced.",
+    "No complete SWAP5 Energy Balance is claimed.",
+    "F-VQ93 does not itself perform canonical admission."
+  ],
+  "next_permitted_action": "Replay this qualification checkpoint head green, then perform bounded canonical admission of exact EB-I25 production authorities plus F-VQ93 evidence if live dependencies remain unchanged.",
+  "exclusions": [
+    "No Ross or RossFast work.",
+    "No production semantic changes during independent qualification.",
+    "No broadening beyond the qualified EB-I25 surface."
+  ]
+}

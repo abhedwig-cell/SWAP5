@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI46",
+  "title": "F-GC14 External Accuracy Runtime Adapter Canonical Admission",
+  "branch": "qualification/f-ci46-fgc14-external-accuracy-runtime-adapter-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FGC14_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_FOR_CURRENT_CANONICAL_ADMISSION",
+  "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+  "canonical_base_stage": "F-CI45P",
+  "composition_head": "fb6339e665b016e2b4fc9ab03c972b3cd7b7bd34",
+  "composition_tree": "1c7b9e24385e5a27b24ad850a75aaff6d58b0c5c",
+  "F_GC14_closeout": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+  "production_blobs": {
+    "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e"
+  },
+  "first_green_admission": {
+    "head": "53ff3675bd33faf14f614a07c62e4639bffe2c39",
+    "run": 34644798743,
+    "job": 103412879948,
+    "conclusion": "success"
+  },
+  "state": {
+    "composition_realized": true,
+    "exact_F_GC14_source_replayed": true,
+    "exact_F_GC14_executable_test_replayed": true,
+    "source_delta_count": 1,
+    "reference_unchanged": true,
+    "transaction_core_modified": false,
+    "physical_kernel_modified": false,
+    "water_mass_path_changed": false,
+    "numeric_application_policy_added": false,
+    "external_source_byte_verification_added_to_SWAPP": false,
+    "production_coupling_admitted": false,
+    "canonical_promoted": false,
+    "RB1_modified_or_reopened": false
+  },
+  "qualified_scope": {
+    "owner": "runtime/coupler application-policy boundary",
+    "input": "already F-GC13-validated, externally source-verified and canonicalized typed project-accuracy view",
+    "output": "coupling_application_accuracy_contract_t",
+    "supported_qoi": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"],
+    "fail_closed": "rejected input returns default unconfigured contract and materialized=false",
+    "source_verification_boundary": "source-byte/digest verification remains external upstream governance; adapter consumes attestations only",
+    "policy_selection": "none; adapter transports already canonicalized H_app/A_temporal policy only"
+  },
+  "qualification": {
+    "canonical_race_guard": "PASS",
+    "exact_one_blob_production_scope": "PASS",
+    "reference_immutable": "PASS",
+    "F_GC14_authority_pinned": "PASS",
+    "typed_fail_closed_contract_binding": "PASS",
+    "nonfinite_guard_inheritance": "PASS_WITH_EXPLICIT_SCOPE",
+    "architecture_invariants": "PASS_30_OF_30",
+    "diff_check": "PASS",
+    "exact_F_GC14_executable_replay": "PASS",
+    "dynamic_rejection_matrix": "PASS_12_OF_12",
+    "O0_O2_repeated_run_determinism": "PASS",
+    "mass_conservation_relaxed": false
+  },
+  "hard_holds": [
+    "no numeric H_app",
+    "no numeric A_temporal",
+    "no real-project temporal head-error budget",
+    "no application-class prediction-accuracy qualification",
+    "no universal accuracy claim",
+    "no external source-byte verification inside SWAP runtime or kernel",
+    "no file-format parsing in the kernel",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation relaxation",
+    "no F-GC workunit reopening",
+    "no RB1 modification or reopening"
+  ],
+  "architecture_audit": "integration/f-ci/F-CI46_ARCHITECTURE_AUDIT.json",
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI46_success": true,
+    "require_same_single_production_blob": true,
+    "require_reference_unchanged": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "post_promotion_reconciliation_required": true
+  },
+  "closeout_metadata_policy": {
+    "this_commit_may_change_integration_fci_metadata_only": true,
+    "no_production_reference_test_or_workflow_mutation_after_first_green": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "Run F-CI46 on this exact metadata status head. If green and canonical remains pinned to c7379b6b5b5f529ff96de3087379712bd665276a, promote by a true two-parent merge and perform separate current-canonical post-promotion reconciliation."
+}

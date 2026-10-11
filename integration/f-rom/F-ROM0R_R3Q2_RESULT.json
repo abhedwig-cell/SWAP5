@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.f-rom0r.r3q2-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3Q2",
+  "title": "F-KT Reference-floor trajectory under qualified prescribed-head representation policy",
+  "execution": {
+    "workflow_run": 35374391172,
+    "workflow_job": 105695533420,
+    "executed_head": "4b6e21508751a12626c4210fda3d0370218115d0",
+    "artifact_id": 10559228651,
+    "artifact_digest": "sha256:86fd6f69dbdd608b3514e4288ed2da33112facdc96cf7a25dd8dec6e3bf92064",
+    "conclusion": "success",
+    "o0_o2_and_repeat_stdout_bitwise_identity": true
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["BOTTOM_HEAD_RISE","BOTTOM_HEAD_FALL"],
+    "step_count": 64,
+    "case_pass_count": 4
+  },
+  "gates": {
+    "complete_matrix": true,
+    "all_direct_vs_fkt_candidate_identity": true,
+    "all_canonical_step_mass_residuals_within_1e_12_cm": true,
+    "all_direct_integrated_mass_residuals_within_1e_12_cm": true,
+    "revision_and_time_progression_exact": true,
+    "both_materials_directional_reachability": true,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "directional_reachability": {
+    "B01": {
+      "rise_lower_storage_cm": 44.02746082292648,
+      "fall_lower_storage_cm": 43.90773804688335,
+      "rise_minus_fall_lower_storage_cm": 0.11972277604312609,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.01284564738676487,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.10687712865634702,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.11972277604311189
+    },
+    "B14": {
+      "rise_lower_storage_cm": 42.69336964668223,
+      "fall_lower_storage_cm": 42.68854375248657,
+      "rise_minus_fall_lower_storage_cm": 0.004825894195661817,
+      "rise_cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "fall_cumulative_bottom_outward_exchange_cm": 0.0026646469341575192,
+      "rise_minus_fall_bottom_outward_exchange_cm": -0.0048258941956476065
+    }
+  },
+  "max_abs_canonical_mass_residual_cm": 8.673617379884035e-19,
+  "decision": "FKT_PRESCRIBED_HEAD_REPRESENTATION_TRAJECTORY_QUALIFIED",
+  "interpretation": "The R3Q1-qualified prescribed-head representation policy transfers exactly into the existing F-KT Reference-floor sample/candidate/commit ownership path. Every one of 64 F-KT candidates is bit-identical to an independent direct Reference candidate from the same committed base and policy parameters before commit; lineage, revision, interval, mass, bottom exchange and committed state progression all pass.",
+  "original_r3_decision_changed": false,
+  "production_or_reference_source_mutated": false,
+  "production_application_admission": false,
+  "rom1a_authorized": false
+}

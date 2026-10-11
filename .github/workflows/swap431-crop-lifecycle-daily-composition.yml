@@ -1,0 +1,16 @@
+name: SWAP431 crop lifecycle daily composition
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/crop/mod_crop_lifecycle_daily_composition.f90'
+      - 'tests/fmig431/test_crop_lifecycle_daily_composition.f90'
+      - 'tests/fmig431/run_crop_lifecycle_daily_composition.sh'
+      - '.github/workflows/swap431-crop-lifecycle-daily-composition.yml'
+jobs:
+  daily-composition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Strict isolated O0 O2
+        run: bash tests/fmig431/run_crop_lifecycle_daily_composition.sh

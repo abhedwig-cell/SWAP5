@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI04",
+  "title": "Canonical Runtime and B1.10 Physical Seam Contract",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "b1_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+  "materialized": {
+    "canonical_data_contracts": true,
+    "atomic_interval_runtime": true,
+    "b1_10_physical_seam_contract": true,
+    "focused_o0_o2_regression": true,
+    "b1_10_physical_adapter": false
+  },
+  "qualification": {
+    "workflow_run_id": 34081431284,
+    "fci03_job_id": 101617309302,
+    "fci04_job_id": 101617332887,
+    "fci03_regression": "PASS",
+    "fci04_runtime_gate": "PASS",
+    "optimization_levels": ["O0", "O2"]
+  },
+  "holds": [
+    "B1.10 physical adapter implementation pending",
+    "full unrounded accepted interval mass accounting pending",
+    "generic physical sub-day execution pending",
+    "scheduled irrigation and crop continuation qualification pending"
+  ],
+  "status": "PASS_CANONICAL_RUNTIME_PHYSICAL_ADAPTER_BLOCKED"
+}

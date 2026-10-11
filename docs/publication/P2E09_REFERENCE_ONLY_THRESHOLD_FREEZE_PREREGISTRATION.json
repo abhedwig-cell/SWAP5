@@ -1,0 +1,102 @@
+{
+  "schema": "swap5.publication.p2e09-reference-threshold-freeze.v1",
+  "workunit": "PUB-P2E09",
+  "phase": "PREREGISTERED_THRESHOLD_FREEZE_BEFORE_BROAD_ROSSFAST_EVALUATION",
+  "canonical_base": "b7e48275ebfba5ba888685f7515005c7195d5d73",
+  "authorities": {
+    "p2e08_result_blob": "fbfa1309a6297568a6811583db809363da5a7e6f",
+    "admissibility_design_blob": "3a906232441e09f09442731e212ca705ad547354",
+    "paper2_research_design_blob": "b94fb98e7e52c5c08ddad92addaa393bdcedb681"
+  },
+  "purpose": "Freeze the E0 scientific state/storage admissibility rule using only the admitted complete PUB-P2E08 Reference self-disagreement dataset, before any new broad RossFast matrix discrepancies are generated or inspected.",
+  "calibration_domain": {
+    "physical_cases": 54,
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "effective_saturation": [0.65, 0.85, 0.98],
+    "forcing": ["DRYING", "NOMINAL", "WETTING"],
+    "reference_calibration_coarse_dt_day": 0.0064,
+    "reference_calibration_half_dt_day": 0.0032,
+    "construction": "one Reference solve over 0.0064 day versus two sequential Reference solves over 0.0032 + 0.0032 day",
+    "complete_domain": true
+  },
+  "firewall": {
+    "new_rossfast_solver_execution_allowed": false,
+    "new_rossfast_discrepancy_inspection_allowed": false,
+    "historical_stage0_b01_rossfast_metrics_allowed_in_rule_choice": false,
+    "performance_metrics_allowed_in_rule_choice": false,
+    "production_or_reference_source_change_allowed": false,
+    "reference_tolerance_change_allowed": false,
+    "posthoc_physical_case_removal_allowed": false
+  },
+  "stratification_decision": {
+    "stratify_by": "effective_saturation",
+    "levels": [0.65, 0.85, 0.98],
+    "do_not_stratify_by": ["forcing", "material"],
+    "reference_only_rationale": "P2E08 self-disagreement changes by orders of magnitude across the predeclared normalized initial-state axis: maximum U_h_inf is approximately 0.00233, 0.02488 and 1.03049 cm at Se 0.65, 0.85 and 0.98 respectively. Forcing-level distributions are similar, while material-level differences partly encode the same state dependence with only nine cases per material. Se is already a predeclared physically normalized coordinate and therefore provides the least post-hoc, most interpretable bounded stratification.",
+    "scope_limit": "The three thresholds apply only to the exact discrete E0 Se levels. They are not an interpolated continuous function of Se and do not generalize beyond the calibrated E0 domain."
+  },
+  "threshold_rule": {
+    "form": "T_metric(Se) = max(application_resolution_floor_metric, 1.0 * max_reference_self_disagreement_metric_within_Se)",
+    "reference_scale_statistic": "empirical maximum over all 18 admitted P2E08 Reference cases in the Se stratum",
+    "reference_factor": 1.0,
+    "application_resolution_floor": {
+      "U_h_inf_cm": 0.0,
+      "U_h_rms_cm": 0.0,
+      "U_theta_inf": 0.0,
+      "U_theta_rms": 0.0,
+      "U_storage_cm": 0.0
+    },
+    "why_maximum": "The future broad E0 matrix uses the same bounded physical strata, so P2E09 freezes a nonparametric containment envelope rather than inferring a population quantile. A p95 rule would place at least one admitted Reference self-disagreement outside its own calibration envelope.",
+    "why_factor_one": "No independent evidence justifies inflating or shrinking the complete-domain Reference envelope. A factor above one would be an arbitrary safety margin and a factor below one would cease to contain the admitted Reference calibration data.",
+    "why_zero_application_floor": "No independent application-resolution authority with the same physical interpretation has been admitted. P2E09 therefore does not invent one.",
+    "claim_ceiling": "These thresholds are empirical Reference-calibration envelopes for the exact E0 domain, not formal true-solution error bounds, not production solver tolerances and not universal SWAP accuracy requirements."
+  },
+  "frozen_thresholds": {
+    "Se_0.65": {
+      "U_h_inf_cm": 0.002329984405367469,
+      "U_h_rms_cm": 0.0008461192168990192,
+      "U_theta_inf": 0.000014036839159875525,
+      "U_theta_rms": 0.000005088115857112092,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.85": {
+      "U_h_inf_cm": 0.024875926496918055,
+      "U_h_rms_cm": 0.008913060711649613,
+      "U_theta_inf": 0.00009940338552821837,
+      "U_theta_rms": 0.00003496499657040913,
+      "U_storage_cm": 2.1316282072803006e-14
+    },
+    "Se_0.98": {
+      "U_h_inf_cm": 1.0304935719866082,
+      "U_h_rms_cm": 0.26027530243065616,
+      "U_theta_inf": 0.0006060020680420108,
+      "U_theta_rms": 0.00017540588521301983,
+      "U_storage_cm": 2.842170943040401e-14
+    }
+  },
+  "future_case_admissibility_rule": {
+    "state_storage": "A paired E0 case passes the scientific discrepancy criterion only if every one of D_h_inf, D_h_rms, D_theta_inf, D_theta_rms and D_storage_abs is <= the frozen threshold for that case's exact Se stratum.",
+    "no_compensation": true,
+    "mass": "Mass remains a separate hard route-level validity gate using typed integrated residuals; state agreement cannot compensate for a mass/conservation failure.",
+    "route_validity": "Both routes must execute the separately preregistered common paired protocol through their declared solver routes without fallback and remain finite and physically representable.",
+    "prescribed_fluxes": "No predicted top- or bottom-flux discrepancy tolerance is defined for E0 because both boundaries are prescribed inputs in this experiment."
+  },
+  "temporal_interpretation_boundary": {
+    "statement": "P2E08 supplies an empirical complete-domain Reference self-disagreement envelope at 0.0064 versus two 0.0032-day steps. P2E09 does not assume a formal temporal order or Richardson extrapolation because no such order is taken as an admitted authority here.",
+    "future_evaluation_requirement": "The broad RossFast paired temporal protocol must be separately preregistered and held identical between solvers. P2E09 thresholds may not be silently reinterpreted as schedule-independent mathematical error bounds."
+  },
+  "qualification": {
+    "required": [
+      "replay the exact admitted P2E08 Reference-only extraction without compiling the RossFast numerical solver",
+      "recompute all five empirical maxima independently within each of the three Se strata",
+      "verify the recomputed values equal the frozen threshold values",
+      "verify 18 Reference cases contribute to each Se stratum and all 54 physical cases are retained",
+      "verify no src/** or reference/** mutation",
+      "verify no threshold file changes after broad RossFast evaluation begins",
+      "O0/O2 reproducibility inherited and rechecked through the exact P2E08 replay",
+      "full relevant canonical preservation gates on the resulting PR"
+    ]
+  },
+  "verdict": "PREREGISTERED_REFERENCE_ONLY_E0_THRESHOLD_FREEZE_READY_FOR_QUALIFICATION",
+  "next_permitted_action": "Implement a publication-only validator that replays the admitted P2E08 Reference extraction and proves the frozen Se-stratified thresholds are exactly the empirical Reference maxima. Do not execute RossFast. After admission, preregister the broad E0 paired RossFast-versus-Reference matrix and its common temporal protocol before generating new RossFast discrepancies."
+}

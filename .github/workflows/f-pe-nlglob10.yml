@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB10 residual failure decomposition
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB10*.md'
+      - 'tests/fpe/materialize_fpe_nlglob10*.py'
+      - 'tests/fpe/run_fpe_nlglob10*.py'
+      - 'tests/fpe/run_fpe_nlglob10*.sh'
+      - '.github/workflows/f-pe-nlglob10.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob10-residual-decomposition
+    paths:
+      - 'docs/performance/F-PE-NLGLOB10*.md'
+      - 'tests/fpe/materialize_fpe_nlglob10*.py'
+      - 'tests/fpe/run_fpe_nlglob10*.py'
+      - 'tests/fpe/run_fpe_nlglob10*.sh'
+      - '.github/workflows/f-pe-nlglob10.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob10-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  residual-decomposition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered residual decomposition
+        run: bash tests/fpe/run_fpe_nlglob10.sh

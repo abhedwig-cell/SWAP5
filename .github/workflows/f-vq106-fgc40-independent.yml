@@ -1,0 +1,26 @@
+name: F-VQ106 F-GC40 independent qualification
+on:
+  push:
+    branches:
+      - qualification/f-vq106-fgc40-multiswap-cell-response-independent
+    paths:
+      - 'tests/fvq/test_fvq106_fgc40_independent.f90'
+      - 'tests/fvq/run_fvq106_fgc40_independent.sh'
+      - 'qualification/F-VQ106_STATUS.json'
+      - '.github/workflows/f-vq106-fgc40-independent.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Independent F-GC40 qualification
+        run: bash tests/fvq/run_fvq106_fgc40_independent.sh

@@ -1,0 +1,29 @@
+name: F-PE-TIMEARCH05 retry ownership
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch05-retry-ownership
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH05_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timearch05_retry_ownership.f90'
+      - 'tests/fpe/guard_fpe_timearch05_source.py'
+      - 'tests/fpe/run_fpe_timearch05.sh'
+      - '.github/workflows/f-pe-timearch05.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  retry-ownership:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run retry ownership matrix
+        run: bash tests/fpe/run_fpe_timearch05.sh

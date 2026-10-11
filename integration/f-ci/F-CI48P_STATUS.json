@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.fci48p_status.v1",
+  "work_unit": "F-CI48P",
+  "title": "F-MR41 Typed Optional-State Layout Current-Canonical Postimage Reconciliation",
+  "branch": "qualification/f-ci48p-current-canonical-postimage-reconciliation",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_FCI48_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FINALIZED",
+  "prepromotion_canonical": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "fci48_admission_head": "effb42a36cf369293825484598fa17c53f4a2250",
+  "fci48_promoted_postimage": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "fci48p_qualified_status_head": "c855d1a012efcd7adda2927e7efe250be5971550",
+  "fci48p_promoted_reconciliation_head": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+  "fmr41_source_authority": "50b8bd32b03946d947b9c8b87a17192684843b6e",
+  "production_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "88adf19e274956ab0f97fe6b4f6307fbfb453790",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "2364c765935813675dee0d2838a7ce183d81f560",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "4a9c1644665c02de77c82e4b5fa2baaaf0a1fb6d"
+  },
+  "qualification_evidence": {
+    "fci48_first_green_admission_run": 34648706383,
+    "fci48_exact_status_head_run": 34648891355,
+    "fci48p_first_green_postimage_run": 34650077071,
+    "fci48p_exact_status_head_run": 34650121706,
+    "post_reconciliation_broad_canonical_run": 34650199119,
+    "post_reconciliation_broad_canonical_conclusion": "success",
+    "current_restricted_canonical_preservation_job": 103430658475,
+    "current_restricted_canonical_preservation_conclusion": "success"
+  },
+  "state": {
+    "fci48_true_two_parent_merge_verified": true,
+    "exact_fmr41_three_blob_postimage_verified": true,
+    "fci48p_true_two_parent_governance_merge_verified": true,
+    "production_source_changed_by_fci48p": false,
+    "reference_changed_by_fci48p": false,
+    "scientific_tolerance_changed": false,
+    "mass_conservation_relaxed": false,
+    "moving_preservation_disabled_or_weakened": false,
+    "historical_frozen_authority_rewritten": false,
+    "moving_preservation_authority_advanced_to_fci48_postimage": true,
+    "explicit_fci48_moving_preservation_marker_present": true,
+    "all_30_architecture_invariants_reconciled": true,
+    "canonical_reconciliation_promoted": true,
+    "post_reconciliation_broad_canonical_green": true,
+    "current_restricted_canonical_preservation_green": true,
+    "final_closeout_complete": true,
+    "RB1_reopened": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI48P_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI48P_EVIDENCE.json",
+  "hard_nonclaims": [
+    "no new science, physics or solver behavior",
+    "no performance qualification",
+    "no scientific tolerance relaxation",
+    "no weakening or disabling of moving preservation",
+    "no immutable historical admission authority rewrite",
+    "no production or reference mutation by F-CI48P",
+    "no mass-conservation relaxation",
+    "no RB1 modification or reopening"
+  ],
+  "closeout_policy": {
+    "this_closeout_changes_integration_metadata_only": true,
+    "production_and_reference_authorities_remain_the_promoted_fci48_postimage": true,
+    "no_further_fci48_or_fci48p_action_required": true
+  },
+  "next_required_step": "NONE. F-CI48 and F-CI48P are closed. Any future change to the typed optional-state layout contract requires a new separately qualified workunit and subsequent canonical admission."
+}

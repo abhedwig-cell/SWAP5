@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.fci42_status.v1",
+  "work_unit": "F-CI42",
+  "title": "Surface-Evaporation Allocation Performance Canonical Admission",
+  "branch": "qualification/f-ci42-fpe11-surface-evaporation-allocation-canonical-admission",
+  "phase": "PROMOTED_AND_BROAD_QUALIFIED_HANDOFF_TO_FCI42P",
+  "decision": "QUALIFIED_FPE11_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_ADMITTED_TO_CURRENT_CANONICAL",
+  "source_authority": {
+    "work_unit": "F-CI41P",
+    "head": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "tree": "6baaf40271497db831698c5a01de355b5d296dbe",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "composition": {
+    "head": "5c68a732fb25535c43b768034cf8a2dd45a85e13",
+    "tree": "4e143133ff0714cbc7a5a33bd5207f9d180d798e",
+    "direct_child_of_source_authority": true
+  },
+  "performance_owner": {
+    "work_unit": "F-PE11",
+    "closeout_head": "b436f8e70664cdb851f20f148463459358568579",
+    "post_closeout_exact_head_run": 34554150328,
+    "decision": "QUALIFIED_RETAIN_OWNERSHIP_TRANSFER_CANDIDATE_FOR_FUTURE_CANONICAL_PERFORMANCE_ADMISSION"
+  },
+  "scientific_authority": {
+    "work_unit": "F-VQ56",
+    "head": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+    "reopened": false
+  },
+  "production_scope": {
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "bc40bc6b121f56071d2b811195759f86130defeb",
+    "other_production_source_changed": false
+  },
+  "admission_scope": "PERFORMANCE_ONLY_OWNERSHIP_TRANSFER_BEHIND_EXISTING_PUBLIC_RUNTIME_SEAMS",
+  "qualification_chain": {
+    "initial_exact_head": {
+      "head": "1861d41e4f7c53ea8a828273b70a21e889f756ea",
+      "run": 34557823726,
+      "job": 103134161564,
+      "conclusion": "success"
+    },
+    "exact_status_head": {
+      "head": "3060f3f4316878e8815b849d4486e1f91167bab4",
+      "run": 34557944445,
+      "conclusion": "success"
+    },
+    "first_promoted_canonical": {
+      "head": "3060f3f4316878e8815b849d4486e1f91167bab4",
+      "F_CI42_run": 34557997278,
+      "F_CI42_conclusion": "success",
+      "broad_canonical_run": 34557997273,
+      "broad_canonical_conclusion": "success",
+      "current_restricted_preservation": "success"
+    },
+    "governance_remediation": {
+      "head": "6f82c926516fe49e76f88a2345ad7b2676aa7300",
+      "exact_branch_run": 34558142587,
+      "exact_branch_conclusion": "success",
+      "promoted_F_CI42_run": 34558203843,
+      "promoted_F_CI42_conclusion": "success",
+      "promoted_broad_canonical_run": 34558203826,
+      "promoted_broad_canonical_conclusion": "success",
+      "promoted_current_restricted_preservation": "success"
+    },
+    "oracle_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4"
+  },
+  "performance_evidence": {
+    "paired_same_runner_balanced_order_O2": true,
+    "profile_nodes": [2,20,60,200,1000],
+    "candidate_faster_paired_rounds": "20/20",
+    "candidate_median_runtime_reduction_percent_first_admission_run": {
+      "2": 35.197,
+      "20": 35.170,
+      "60": 31.862,
+      "200": 34.597,
+      "1000": 34.750
+    },
+    "claim_scope": "LOCAL_SURFACE_MATERIALIZATION_MICROKERNEL_ONLY",
+    "whole_SWAP_speedup_claim": false,
+    "MultiSWAP_speedup_claim": false,
+    "portable_speedup_claim": false
+  },
+  "post_promotion_governance_defect": {
+    "failed_workflow": ".github/workflows/fci41-surface-evaporation-runtime-canonical-admission.yml",
+    "failed_run": 34557997309,
+    "failure": "FCI41_GATE_FAIL post-promotion canonical runtime materialization blob drift",
+    "candidate_defect": false,
+    "classification": [
+      "2_STALE_HISTORICAL_ADMISSION_GATE",
+      "3_GOVERNANCE_WORKFLOW_TRIGGER_SCOPE_DEFECT"
+    ],
+    "governing_authority": "F-CI38 Historical Admission Gate Scope Separation & Moving-Canonical Regression Governance",
+    "remediation": "integration/f-ci-canonical push trigger removed from F-CI41 historical admission workflow; F-CI41 runner, science and historical decision unchanged",
+    "production_source_delta": false,
+    "reference_delta": false,
+    "historical_runner_delta": false,
+    "scientific_tolerance_delta": false
+  },
+  "architecture_invariants": [1,3,5,6,7,13,16,20,22,23,25,26,27,30],
+  "state": {
+    "composition_realized": true,
+    "composition_persisted": true,
+    "PE11_owner_qualified": true,
+    "scientific_authority_reopened": false,
+    "admission_tested": true,
+    "admission_qualified": true,
+    "exact_status_head_requalified": true,
+    "canonical_promoted": true,
+    "governance_trigger_defect_remediated": true,
+    "promoted_FCI42_qualified": true,
+    "broad_canonical_qualified": true,
+    "handoff_to_FCI42P_complete": true,
+    "final_closeout_complete": false
+  },
+  "final_authority": "F-CI42P"
+}

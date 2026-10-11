@@ -1,0 +1,162 @@
+{
+  "schema": "swap5.f-romv2-d14.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D14",
+  "title": "Literature-bound FMC surface-front and falling-slug kinematics preflight",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "91673afbefef40c2bf62084b8c14510570a13778",
+  "purpose": "Qualify the published FMC/SMVE surface-process kinematics before implementing supply-limited finite-volume activation, slug collision/merging, redistribution bookkeeping, or any SWAP trajectory comparator.",
+  "scientific_role": {
+    "class": "LITERATURE_BOUND_SURFACE_KINEMATICS_PREFLIGHT",
+    "SWAP_trajectory_evidence_consumed": false,
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D12": "FMC/SMVE equation preflight passed; 200 bins and maximum 10 s explicit process step frozen before SWAP trajectory evidence.",
+    "D13": "FMC_GW200 groundwater-front branch retained research candidacy and beat matched R2 in the bounded capillary-fringe relaxation envelope.",
+    "implication": "D14 tests the distinct atmospheric-side front kinematics without changing D12 discretization or using D13 outcomes to tune them."
+  },
+  "primary_authority": [
+    {
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+      "doi": "10.1002/2015WR017126",
+      "role": "improved infiltration-front equation 18, falling-slug equation 19, capillary relaxation, finite-volume accounting"
+    },
+    {
+      "citation": "Talbot and Ogden (2008), A method for computing infiltration and redistribution in a discretized moisture content domain",
+      "doi": "10.1029/2008WR006815",
+      "role": "finite-water-content surface supply/front-activation precedent; D14 does not yet implement the full allocation algorithm"
+    },
+    {
+      "citation": "Ogden et al. (2017), The Soil Moisture Velocity Equation",
+      "doi": "10.1002/2017MS000931",
+      "role": "SMVE derivation and advection-like physical interpretation"
+    }
+  ],
+  "frozen_B01_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "effective_capillary_drive_HcM_cm": 14.085215420920257,
+    "HcM_authority": "F-ROMV2-D12"
+  },
+  "discretization": {
+    "moisture_bins": 200,
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "baseline_bin_i": 100,
+    "active_surface_bins": "j=101..199",
+    "rightmost_wet_bin_d": 199,
+    "constitutive_sample": "right edge of each theta bin",
+    "maximum_explicit_substep_seconds": 10,
+    "preflight_substep_seconds": 10,
+    "tuned_from_SWAP_outcomes": false
+  },
+  "infiltration_front": {
+    "id": "FMC_EQ18_MULTI_BIN",
+    "equation": "dz_j/dt = [K(theta_d)-K(theta_i)]/[theta_d-theta_i] * [1 + (G_eff+h_p)/z_j]",
+    "theta_i": "bin 100",
+    "theta_d": "bin 199",
+    "G_eff": "max(abs(psi(theta_d)), HcM)",
+    "ponded_surface_head_h_p_cm": 0,
+    "reservoir_semantics": "unlimited synthetic surface reservoir; D14 measures water demand but does not implement rainfall supply allocation",
+    "finite_volume_storage_increment_cm": "dtheta * sum_j(z_j_new-z_j_old)",
+    "capillary_relaxation": "sort front depths descending after the explicit step; sorting may change bin/front association but must not change dtheta*sum(z)",
+    "physical_requirement": "0 < z_j <= 160 cm before and after relaxation"
+  },
+  "infiltration_profiles": [
+    {
+      "id": "I_SHALLOW",
+      "construction": "linear in bin index from z_101=20 cm to z_199=2 cm",
+      "role": "ordinary shallow infiltration front family"
+    },
+    {
+      "id": "I_MID",
+      "construction": "linear in bin index from z_101=60 cm to z_199=5 cm",
+      "role": "ordinary mid-depth infiltration front family"
+    },
+    {
+      "id": "I_DEEP",
+      "construction": "linear in bin index from z_101=120 cm to z_199=10 cm",
+      "role": "ordinary deep infiltration front family"
+    },
+    {
+      "id": "I_RELAX",
+      "construction": "linear in bin index from z_101=1.0 cm to z_199=0.1 cm",
+      "role": "prospectively selected constitutive-only stress case that produces pre-relaxation front overtaking under the frozen 10 s step"
+    }
+  ],
+  "falling_slug": {
+    "id": "FMC_EQ19_TRANSLATION",
+    "equation": "v_j = [K(theta_j)-K(theta_{j-1})]/[theta_j-theta_{j-1}]",
+    "interpretation": "gravity-only falling-slug translation; upper and lower slug interfaces for the same bin move at identical v_j",
+    "synthetic_state": "for each j=101..199, slug top depth = 20 + 0.1*(j-101) cm and slug length = 5 cm",
+    "update": "top_new=top_old+v_j*dt; bottom_new=bottom_old+v_j*dt",
+    "storage_identity": "dtheta*(bottom-top) is unchanged for every bin and in total",
+    "collision_or_merging": "not exercised in D14",
+    "capillary_redistribution": "not exercised in D14"
+  },
+  "tests": [
+    {
+      "id": "K1_EQ18_MULTI_BIN_FINITE_ADVANCE",
+      "requirement": "For all four frozen profiles, every Eq.18 velocity and raw/relaxed front depth is finite and physical; finite-volume surface-water demand is positive."
+    },
+    {
+      "id": "K2_EQ18_CAPILLARY_RELAXATION_CONSERVATION",
+      "requirement": "For every profile, sorting restores/retains monotone front ordering and changes dtheta*sum(z) by <=1e-14 cm. I_RELAX must contain at least one raw front-order inversion before sorting so relaxation is actually exercised."
+    },
+    {
+      "id": "K3_EQ18_SURFACE_RESERVOIR_LEDGER",
+      "requirement": "With an unlimited synthetic reservoir, withdrawn surface water equals the finite-volume column storage increment to <=1e-14 cm; no correction flux is permitted."
+    },
+    {
+      "id": "K4_EQ19_FALLING_SLUG_TRANSLATION",
+      "requirement": "All 99 falling-slug bin velocities are finite and positive, both slug interfaces remain inside 0..160 cm after 10 s, and maximum absolute slug-length change is <=1e-14 cm."
+    },
+    {
+      "id": "K5_EQ19_TOTAL_SLUG_WATER_IDENTITY",
+      "requirement": "Total finite-volume slug water dtheta*sum(length_j) is unchanged by the Eq.19 translation to <=1e-14 cm."
+    }
+  ],
+  "D15_gate": {
+    "positive": "D14_FMC_SURFACE_KINEMATICS_PREFLIGHT_PASS",
+    "negative": "D14_FMC_SURFACE_KINEMATICS_NO_GO",
+    "if_positive": "Authorize D15 only to reconcile and preflight the remaining finite-volume surface accounting: supply-limited bin activation, dry-bin initiation, falling-slug creation/collision/groundwater merge, and redistribution bookkeeping. A SWAP infiltration comparator is not authorized until that accounting preflight passes.",
+    "if_negative": "Close the FMC atmospheric-side route without changing bin count, substep, equations, or synthetic profiles."
+  },
+  "explicitly_not_tested": [
+    "rainfall supply limitation",
+    "sequential left-to-right bin activation",
+    "dry-bin front initiation",
+    "ponding/runoff",
+    "falling-slug creation",
+    "falling-slug collision or merging",
+    "falling-slug/groundwater-front merge",
+    "redistribution water transfer between bins",
+    "groundwater-front dynamics",
+    "SWAP trajectories",
+    "ET/root uptake"
+  ],
+  "firewalls": [
+    "NO_SWAP_TRAJECTORY_EVIDENCE_IN_D14",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_POST_RESULT_PROFILE_RETUNING",
+    "NO_SUPPLY_LIMITED_ALLOCATION_CLAIM",
+    "NO_DRY_BIN_ACTIVATION_CLAIM",
+    "NO_SLUG_COLLISION_OR_MERGE_CLAIM",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_EXTERNAL_SOURCE_CODE_COPIED_INTO_SWAP5",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

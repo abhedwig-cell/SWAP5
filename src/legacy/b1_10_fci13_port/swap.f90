@@ -1,0 +1,8 @@
+include 'swap_part01.inc'
+include 'swap_part02.inc'
+include 'swap_part03.inc'
+include 'swap_part04.inc'
+include 'swap_part05.inc'
+include 'swap_part06.inc'
+include 'swap_part07.inc'
+include 'swap_part08.inc'

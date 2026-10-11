@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR23",
+  "title": "Restricted Reference-ET Demand Generic-Time Runtime Binding",
+  "branch": "work/f-mr23-reference-et-demand-runtime-binding",
+  "base": {
+    "canonical_ref": "integration/f-ci-canonical",
+    "canonical_head_at_start": "f49e17c6627717d5dea181808a122f2e35960739",
+    "F_CI24_decision": "QUALIFIED_CLOSED_FPM06A_RESTRICTED_REFERENCE_ET_CANONICAL_SOURCE_ADMISSION",
+    "ET_source": "src/process/mod_reference_et_demand_process.f90",
+    "ET_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+  },
+  "goal": "Bind the canonically admitted stateless reference-ET demand provider to an explicit generic runtime interval and forcing-validity span without adding root-uptake, hydraulic-boundary, interception or mass-ledger composition.",
+  "contract": {
+    "runtime_interval": "generic canonical_interval_t [t0,t1] with finite t1>t0",
+    "forcing_validity": "explicit [forcing_t0,forcing_t1] with finite forcing_t1>forcing_t0",
+    "containment": "runtime interval must be fully contained in forcing-validity span",
+    "process_input": "reference ET rate plus read-only canopy view and immutable ET parameters",
+    "output": "potential transpiration, potential soil evaporation and potential pond evaporation rates",
+    "persistent_state": "none",
+    "mass_semantics": "potential demands are not authoritative mass withdrawals and are not integrated by this binding"
+  },
+  "ownership_decision": {
+    "crop_root_contract_contains_potential_transpiration_today": true,
+    "direct_root_uptake_composition_in_F_MR23": false,
+    "reason": "Directly injecting the new ET provider into the existing crop_root_uptake_input_t path would create ambiguous potential-transpiration ownership. That boundary must be reconciled in a separate workunit before ptra is wired to root uptake.",
+    "crop_state_advanced": false,
+    "root_uptake_called": false,
+    "hydraulic_view_built": false,
+    "mass_ledger_written": false
+  },
+  "qualification_requirements": [
+    "arbitrary sub-day interval accepted inside a larger forcing span",
+    "no midnight or one-day assumption",
+    "interval outside forcing span rejected fail-closed",
+    "invalid interval or forcing span rejected fail-closed",
+    "exact F-PM06A/F-VQ35 process source blob preserved",
+    "rate invariance for multiple subintervals under identical forcing and canopy",
+    "non-emerged crop dependency semantics preserved",
+    "stateless A-B-A replay identity",
+    "O0/O2 output identity",
+    "no HeadCalc, Newton, Jacobian, file I/O or mass-ledger dependency"
+  ],
+  "nonclaims": [
+    "potential-transpiration ownership reconciliation with crop_root_uptake_input_t",
+    "root-uptake runtime composition",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "surface hydraulic limitation",
+    "interception",
+    "SWREDU stateful evaporation reduction",
+    "Penman-Monteith",
+    "mass-ledger contribution"
+  ],
+  "exit_target": "RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING_READY_FOR_INDEPENDENT_QUALIFICATION"
+}

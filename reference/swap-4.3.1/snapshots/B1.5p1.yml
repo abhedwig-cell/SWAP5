@@ -1,0 +1,60 @@
+schema_version: 1
+snapshot: "B1.5p1"
+reference_family: SWAP-4.3.1-corrected
+supersedes: "B1.5"
+change_class: "PROVENANCE_REPAIR"
+numerical_change_from_superseded_snapshot: false
+
+b0:
+  source_archive_sha256: "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  expanded_member_manifest_sha256: "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
+
+patches:
+  - id: "SWAP-001"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
+    patch_sha256: "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770"
+    target: "SWAP/macropore.f90"
+    b0_target_sha256: "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b"
+    corrected_target_sha256: "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f"
+
+  - id: "SWAP-005"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-005/fix.patch"
+    patch_sha256: "243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553"
+    target: "SWAP/MOD_cropdevelopment.f90"
+    b0_target_sha256: "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+    corrected_target_sha256: "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+
+  - id: "SWAP-006"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
+    patch_sha256: "4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f"
+    target: "SWAP/MOD_meteo.f90"
+    b0_target_sha256: "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+    corrected_target_sha256: "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+
+  - id: "SWAP-007"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
+    patch_sha256: "3ac9580bc162f8a4c90b83d59452e7b40bd1e0c82ba92e7a2c1ac58f154af5f0"
+    target: "SWAP/oxygenstress.f90"
+    b0_target_sha256: "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735"
+    corrected_target_sha256: "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+    canonical_verifier: "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py"
+
+  - id: "SWAP-008"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-008/fix.patch"
+    patch_sha256: "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c"
+    target: "SWAP/tridag.f90"
+    b0_target_sha256: "6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651"
+    corrected_target_sha256: "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a"
+
+provenance_repair:
+  trigger: "VQ-1c / GitHub issue #19"
+  historical_snapshots_modified: false
+  patch_payloads_modified: false
+  intended_patch_set_modified: false
+  findings:
+    - "B1.2-B1.5 declared SWAP-005 patch SHA did not match stored fix.patch bytes."
+    - "B1.3-B1.5 declared SWAP-006 patch SHA did not match stored fix.patch bytes."
+    - "B1.4-B1.5 declared SWAP-007 patch SHA did not match stored fix.patch bytes."
+    - "SWAP-007 dossier used a non-canonical B0 oxygenstress SHA; the same transformation reproduces the documented corrected target on canonical B0."
+
+meaning: "Provenance-correct replacement oracle for B1.5. Same intended corrections and corrected source results as B1.5, with exact stored patch hashes and canonical B0 preimages."

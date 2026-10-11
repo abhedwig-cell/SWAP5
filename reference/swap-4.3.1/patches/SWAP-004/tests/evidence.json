@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "audit_id": "SWAP-004",
+  "compiler": "GNU Fortran 14.2.0",
+  "source_binding": {
+    "canonical_b0_tillage_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+    "ordered_b1_10_tillage_sha256": "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3",
+    "stored_patch_sha256": "0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818",
+    "candidate_tillage_sha256": "41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede"
+  },
+  "b0_sparse_bounds_reproducer": {
+    "ntill": 1,
+    "type_tillage": [3],
+    "itype_tillage": [3, 3],
+    "expected": "nonzero exit under -fcheck=all due index 3 on iTT1/iTT2 extent 1"
+  },
+  "candidate_cases": {
+    "dense_legacy_mapping_unchanged": "PASS",
+    "represented_type_code_gt_ntill": "PASS",
+    "represented_noncontiguous_types": "PASS",
+    "missing_type_record_rejected": "PASS",
+    "total": "4/4 PASS"
+  }
+}

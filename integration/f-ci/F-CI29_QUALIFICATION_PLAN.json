@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI29",
+  "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
+  "branch": "qualification/f-ci29-fmr26-ptra-ownership-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_base_at_initial_branch_creation": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "canonical_base_current_authority": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "canonical_drift_reconciliation": {
+    "transient_add_commit": "6d14f098ed59d26483c0d7dd350897cb829c3d47",
+    "transient_add_message": "noop",
+    "transient_added_path": "__noop_should_not_exist",
+    "revert_commit": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+    "revert_message": "revert: remove accidental connector no-op from canonical",
+    "net_repository_diff_vs_FCI28_closeout": "empty",
+    "src_tree_unchanged": true,
+    "reference_tree_unchanged": true,
+    "policy": "preserve both commits in canonical lineage, bind F-CI29 to the reverted live authority, and rerun qualification"
+  },
+  "owner": {
+    "workunit": "F-MR26",
+    "closeout": "e99e144b4f2bedcbb93d06af578cb409dc76f6c7",
+    "production_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "production_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ41",
+    "closeout": "e0d6c9993d46bb858d84524bb290f3bb12e82ce4",
+    "qualified_candidate_head": "9a13c599e7e45d4717c681a7800a9f88730c73e1",
+    "workflow_run": 34460907655,
+    "workflow_job": 102818253052,
+    "active_grid_cases": 2304,
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
+  },
+  "admission_method": "reconcile the F-CI29 branch with current canonical 4a2b7a82 after proving the transient add/revert pair has zero net content delta; retain the single qualified production-source postimage; replay the exact frozen F-VQ41 oracle; require non-forced fast-forward only after rerun gates pass",
+  "required_gates": [
+    "current canonical authority is incorporated in F-CI29 ancestry before promotion",
+    "06658d0b83206008dcaefba3b8d7e5c7f0c77538 to 4a2b7a82287a209dc8150dcb70c6c2d6e459c592 has zero net repository content delta",
+    "production delta from current canonical contains exactly the F-MR26 ptra ownership binding source",
+    "candidate source blob is exactly 11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "F-CI27 reference-ET runtime/process/root-input authorities remain byte-identical",
+    "F-CI28 restricted restart production sources remain byte-identical",
+    "the exact frozen F-VQ41 independent oracle test is replayed from F-VQ41 closeout rather than rewritten in F-CI29",
+    "2304-case independent ptra oracle remains green",
+    "O0/O2 scientific output identity remains exact",
+    "F-VQ41 test output hash remains a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f",
+    "canonical workflow preserves frozen F-CI28 authority and validates the current F-CI29 postimage",
+    "canonical ref does not drift again before promotion"
+  ],
+  "hard_scope": "canonical admission of the stateless ptra ownership seam only",
+  "nonclaims": [
+    "No root-water uptake execution admission.",
+    "No actual transpiration or mass-ledger admission.",
+    "No ET physics expansion.",
+    "No crop lifecycle advancement.",
+    "No general SWAP5 release qualification."
+  ],
+  "exit_target": "QUALIFIED_FMR26_PTRA_OWNERSHIP_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD"
+}

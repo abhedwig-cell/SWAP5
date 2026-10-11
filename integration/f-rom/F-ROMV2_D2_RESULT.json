@@ -1,0 +1,211 @@
+{
+  "schema": "swap5.f-romv2-d2.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D2",
+  "decision": "COARSE_RICHARDS_REMAINS_SERIOUS_PHYSICAL_REDUCTION_CANDIDATE",
+  "adjudication": "R8_BALANCE_REDUCTION_CANDIDATE_EVENT_FIDELITY_WEAK_R4_R2_NUMERICAL_AUTHORITY_NO_GO",
+  "execution": {
+    "complete_workflow_run": 35441802458,
+    "complete_workflow_job": 105893780103,
+    "executed_head": "329ffa7582f592529984b172f5c4fc01240dc363",
+    "execution_pull_request": 418,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10583802946,
+    "artifact_digest": "sha256:95cd25551da619091f8e3b2d14c494cf55ddb39bf650ac41d806b049e22e252b",
+    "result_sha256": "abfa8e6adc208971d7dcbec08bb155b717a40ba566c1dee00e77f8c4dd7397c9",
+    "geometry_status_sha256": "e173bd65cfa506418ed14fb488c5d93c96439e8955ca6fb38031b0b6b21bc4c5",
+    "analyzer_sha256": "08fbf53aa3dfa536d2fa2c61ac878550103a5eff57ea086d7d3fc54cbd7bb4a5",
+    "prior_partial_run": {
+      "workflow_run": 35441681811,
+      "classification": "ORCHESTRATION_ABORT_AFTER_R4_SCIENTIFIC_FAILURE",
+      "scientific_policy_changed_in_repair": false,
+      "retained_scientific_observation": "R4 failed the same frozen local-integrated-residual gate later reproduced in the complete census."
+    }
+  },
+  "workload": {
+    "material": "B01",
+    "exposed_development_histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "endpoints_per_geometry": 768,
+    "blind_confirmation": false,
+    "application_acceptance": false
+  },
+  "reference_R16": {
+    "nodes": 16,
+    "status": "COMPLETE",
+    "integrity_pass": true,
+    "total_nonlinear_iterations": 3188,
+    "mean_nonlinear_iterations_per_interval": 4.151041666666667,
+    "total_backtracking_attempts": 4135,
+    "research_reference_fallback_count": 65,
+    "output_sha256": "212a0772ace2d5a657265e361a5ec32fc51dc8be9ce04e68d71d957668a27bb1"
+  },
+  "R8": {
+    "nodes": 8,
+    "status": "COMPLETE",
+    "integrity_pass": true,
+    "output_sha256": "74f98c91ec94967b0814dfe3d2fe132e4f1411f293d5a4a8574671a1ecc8a227",
+    "o0_o2_bitwise_identity": true,
+    "pooled": {
+      "total_storage_rmse_cm": 0.017992229089876743,
+      "total_storage_max_abs_cm": 0.04432901536176814,
+      "cumulative_bottom_exchange_rmse_cm": 0.017992229089875102,
+      "cumulative_bottom_exchange_max_abs_cm": 0.044329015361761016,
+      "terminal_bottom_flux_rmse_cm_per_day": 1.640921678933252,
+      "terminal_bottom_flux_max_abs_cm_per_day": 7.285251978448329,
+      "mapped_theta_rmse": 0.00031993227277230825,
+      "mapped_theta_max_abs": 0.002201210412701049,
+      "mapped_head_rmse_cm": 0.11772706786095065,
+      "mapped_head_max_abs_cm": 0.8090274598409621,
+      "bottom_flux_sign_error_count": 136,
+      "bottom_flux_sign_error_fraction": 0.17708333333333334,
+      "history_reversal_sequence_mismatch_count": 8
+    },
+    "computational_proxies": {
+      "total_nonlinear_iterations": 2654,
+      "nonlinear_iteration_ratio_vs_R16": 0.8324968632371392,
+      "total_backtracking_attempts": 3290,
+      "backtracking_ratio_vs_R16": 0.7956469165659008,
+      "research_reference_fallback_count": 484,
+      "reference_fallback_ratio_vs_R16": 7.446153846153846
+    },
+    "V_histories": {
+      "V01": {
+        "final_cumulative_bottom_error_cm": -0.007395023972620152,
+        "R16_cumulative_bottom_cm": 0.21071389378966748,
+        "relative_final_error": -0.035095094298821086,
+        "sign_errors": 16,
+        "R16_reversals": [
+          9,
+          17,
+          41,
+          49
+        ],
+        "R8_reversals": []
+      },
+      "V02": {
+        "final_cumulative_bottom_error_cm": 0.02315638303250009,
+        "R16_cumulative_bottom_cm": 0.15708431201454093,
+        "relative_final_error": 0.1474137215583728,
+        "sign_errors": 20,
+        "R16_reversals": [
+          25,
+          45
+        ],
+        "R8_reversals": []
+      },
+      "V03": {
+        "final_cumulative_bottom_error_cm": -0.004068203142281845,
+        "R16_cumulative_bottom_cm": 0.20622688487964888,
+        "relative_final_error": -0.01972683214730219,
+        "sign_errors": 16,
+        "R16_reversals": [
+          5,
+          17,
+          21,
+          33,
+          37,
+          49,
+          53
+        ],
+        "R8_reversals": []
+      },
+      "V04": {
+        "final_cumulative_bottom_error_cm": -0.014001099759639174,
+        "R16_cumulative_bottom_cm": 0.2196685856595347,
+        "relative_final_error": -0.06373737836751742,
+        "sign_errors": 16,
+        "R16_reversals": [
+          9,
+          25
+        ],
+        "R8_reversals": []
+      }
+    },
+    "interpretation": "R8 provides complete-domain training-free physical reduction and lower raw nonlinear/backtracking work, but instantaneous lower-boundary dynamics are substantially degraded and the research Reference route requires many more numerical-policy fallbacks."
+  },
+  "R4": {
+    "nodes": 4,
+    "status": "FROZEN_REFERENCE_POLICY_NO_GO",
+    "first_post_seed_failure": {
+      "interval_t0_day": 0.0032,
+      "interval_t1_day": 0.004,
+      "bottom_mode": 2,
+      "class": "RETRY_LOCAL_BALANCE",
+      "balance_flags": 2,
+      "head_flags": 0,
+      "max_local_residual_rate_cm_per_day": 2.4238389073616418e-12,
+      "local_integrated_residual_cm": 1.9390711258893132e-15,
+      "frozen_allowed_local_integrated_cm": 1.6e-15,
+      "absolute_total_residual_cm": 1.6051160400820662e-15,
+      "pre_solve_representation_bound_cm": 8.881784197001252e-15,
+      "failed_nonlinear_iterations": 16,
+      "failed_backtracking_attempts": 96
+    },
+    "interpretation": "No-go under the preregistered numerical authority. This does not establish intrinsic hydrological invalidity because the violated local allowance was inherited from the prior research Reference policy rather than independently calibrated for a 40-cm cell."
+  },
+  "R2": {
+    "nodes": 2,
+    "status": "FROZEN_REFERENCE_POLICY_NO_GO",
+    "first_post_seed_failure": {
+      "interval_t0_day": 0.0032,
+      "interval_t1_day": 0.004,
+      "bottom_mode": 2,
+      "class": "RETRY_LOCAL_BALANCE",
+      "balance_flags": 1,
+      "head_flags": 0,
+      "max_local_residual_rate_cm_per_day": 2.9665159217984183e-12,
+      "local_integrated_residual_cm": 2.3732127374387344e-15,
+      "frozen_allowed_local_integrated_cm": 1.6e-15,
+      "absolute_total_residual_cm": 2.8357760584185595e-15,
+      "pre_solve_representation_bound_cm": 8.881784197001252e-15,
+      "failed_nonlinear_iterations": 16,
+      "failed_backtracking_attempts": 102
+    },
+    "interpretation": "No-go under the preregistered numerical authority. As for R4, D2 may not retune the exposed tolerance."
+  },
+  "frontiers": {
+    "structural_balance": [
+      "R16",
+      "R8"
+    ],
+    "structural_transient": [
+      "R16",
+      "R8"
+    ],
+    "solverwork_balance": [
+      "R16",
+      "R8"
+    ],
+    "retained_coarse_candidates": [
+      "R8"
+    ]
+  },
+  "purpose_dependent_interpretation": {
+    "long_term_regional_balance": "R8_REMAINS_PLAUSIBLE_NOT_QUALIFIED",
+    "groundwater_coupled_many_column": "R8_NOT_YET_QUALIFIED_DUE_FLUX_SIGN_AND_MAGNITUDE_ERRORS",
+    "fast_event_threshold": "R8_NOT_QUALIFIED_IN_D2",
+    "drought_ET": "NOT_TESTED",
+    "scientific_process_inference": "NOT_QUALIFIED"
+  },
+  "scientific_conclusion": "Vertical coarsening does not provide a universal free speedup. R8 preserves balance-scale behaviour sufficiently well to remain a serious physical-reduction candidate, but it degrades lower-boundary event dynamics and triggers substantially more research Reference fallbacks. R4/R2 cannot be judged hydrologically under D2 because the frozen numerical authority fails before the history develops.",
+  "next": [
+    "RETAIN_R8_AS_BALANCE_FOCUSED_PHYSICAL_REDUCTION_COMPARATOR",
+    "DO_NOT_RETUNE_R4_R2_NUMERICAL_POLICY_FROM_D2_RESULTS",
+    "EXPAND_STATE_OF_THE_ART_TO_MASS_CONSERVATIVE_LAYERED_BUCKET_AND_QUASI_STEADY_MANIFOLD_REDUCTIONS",
+    "PREREGISTER_AN_INDEPENDENT_PHYSICAL_REDUCTION_ARCHITECTURE_BEFORE_NEW_CONFIRMATORY_DATA"
+  ],
+  "production_rom_authorized": false
+}

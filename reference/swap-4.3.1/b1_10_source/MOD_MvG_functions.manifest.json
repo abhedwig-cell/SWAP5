@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "artifact": "SWAP/MOD_MvG_functions.f90",
+  "snapshot": "B1.10",
+  "encoding": "gzip-mtime0-then-base64",
+  "payload_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+  "decoded_source_bytes": 41215,
+  "decoded_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "gzip_bytes": 7754,
+  "gzip_sha256": "8b61719def30aedb9777df2c0533e6a4a08f865ea974ed0960a11651635ae1ba",
+  "provenance": {
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "b110_snapshot_path": "reference/swap-4.3.1/snapshots/B1.10.yml",
+    "swap012_apply_path": "reference/swap-4.3.1/patches/SWAP-012/apply_and_verify.py"
+  },
+  "use_rule": "Immutable qualification/reference source only. Do not compile this legacy module as shared mutable provider state in the SWAP5 kernel."
+}

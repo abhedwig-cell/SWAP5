@@ -1,0 +1,38 @@
+name: F-CI73 F-GC25 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci73-fgc25-multiswap-current-canonical-admission
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_*.f90'
+      - 'tests/fgc/**'
+      - 'tests/qualification/fvq87/**'
+      - 'tests/qualification/fci73/**'
+      - 'qualification/F-VQ87_STATUS.json'
+      - 'integration/f-gc/F-GC25_G05_CAPABILITY_QUALIFICATION.json'
+      - 'integration/f-ci/F-CI73_STATUS.json'
+      - '.github/workflows/fci73-fgc25-current-canonical-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  current-canonical-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+          git --version
+
+      - name: Run F-CI73 admission gate
+        run: bash tests/qualification/fci73/run_fci73_fgc25_current_canonical_admission_gate.sh

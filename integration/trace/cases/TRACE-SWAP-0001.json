@@ -1,0 +1,132 @@
+{
+  "trace_id": "TRACE-SWAP-0001",
+  "model": "SWAP",
+  "status": "CLOSED",
+  "discovery": {
+    "first_observed_date": "2026-09-19",
+    "registered_date": "2026-09-19",
+    "observer": "TRACE_PRIMARY_RECONCILIATION",
+    "work_unit": "TRACE-B02-SWAP-E03",
+    "inspection_trigger": "SCHEDULED_SYSTEMATIC_RECONCILIATION",
+    "planned_or_opportunistic": "PLANNED"
+  },
+  "eligibility": {
+    "known_before_registration": false,
+    "disposition_known_before_registration": false,
+    "prospective_eligible": true,
+    "decision_reason": "The canonical status mismatch was first observed during preregistered Batch 02 inspection and was frozen before PR #194/branch chronology was inspected."
+  },
+  "scientific_element": {
+    "scientific_element_id": "TRACE-ELEM-SWAP-B02-003",
+    "subsystem": "time_stepping",
+    "description": "Transactional timestep, acceptance, retry and external publication semantics together with the reviewer-facing F-DOC30 authority state."
+  },
+  "representations": [
+    {
+      "kind": "reviewer_documentation",
+      "path": "docs/numerics/transactional-time-stepping.md",
+      "pre_resolution_blob": "eb825f635bb4213c87c242cabacf0880ae12ce2e",
+      "claim": "Current canonical reviewer page documents frozen admitted transaction semantics and points to F-KT15/F-CI49/F-CI49P authority."
+    },
+    {
+      "kind": "canonical_documentation_status",
+      "path": "integration/f-doc/F-DOC30_STATUS.json",
+      "pre_resolution_blob": "351021815599c58f378758fe3a36794578984f7f",
+      "claim": "phase=VERIFY; exact status-head rerun pending; guarded admission still a future action."
+    },
+    {
+      "kind": "work_branch_closeout_status",
+      "path": "integration/f-doc/F-DOC30_STATUS.json",
+      "ref": "608015a24378ffcceaf713850a2daf528dd8190a",
+      "blob": "ed51332089f4e248419daf9e66a7a96f9ea35998",
+      "claim": "phase=CLOSE; DOCUMENTATION_ADMITTED_AND_CLOSED; admitted canonical merge=8064b092c428fdd84b066dfcfedba43a01cb4ad8."
+    },
+    {
+      "kind": "underlying_transaction_authority",
+      "path": "integration/f-ci/F-CI49P_STATUS.json",
+      "pre_resolution_blob": "84d5f7fc14ae1f5d231b42e522bdfb567abc2217",
+      "claim": "F-KT15/F-CI49 postimage and moving preservation authority finalized, with no production/reference/scientific/tolerance mutation."
+    }
+  ],
+  "conflict": {
+    "relation_classes": [
+      "DOCUMENTATION_IMPLEMENTATION"
+    ],
+    "initial_statement": "Current canonical contains the admitted F-DOC30 reviewer surface but its own status artifact still represents a pre-admission VERIFY state, while the work branch contains a later explicit closeout that records the already completed canonical merge.",
+    "application_envelope": "Interpretation of the authority/admission state of the frozen Status-A transactional interval documentation. Underlying transaction physics, numerics and runtime behavior are unchanged.",
+    "discovery_uncertainty": "Before chronology reconstruction it was unknown whether the VERIFY status was intentionally frozen provenance or stale current metadata."
+  },
+  "detection": {
+    "first_exposing_evidence": "Side-by-side inspection of current canonical F-DOC30_STATUS.json and the current transactional reference during planned Batch-02 reconciliation.",
+    "method": "Prospective scheduled reconciliation followed, after evidence freeze, by PR #194 state, F-DOC30 branch-head and exact-head workflow reconstruction.",
+    "modernization_specific": true,
+    "mechanism_code": "POST_MERGE_CLOSEOUT_STATUS_NOT_PROPAGATED_TO_CANONICAL"
+  },
+  "scientific_consequence": {
+    "potential": [
+      "INTERPRETATIVE",
+      "STRUCTURAL"
+    ],
+    "demonstrated": [
+      "INTERPRETATIVE"
+    ],
+    "evidence": "A reviewer reading current canonical can conclude that F-DOC30 is still awaiting exact-head verification/admission although PR #194 is merged and the work branch explicitly records the documentation admitted and closed. No physical, numerical trajectory, mass or quantitative model consequence is demonstrated."
+  },
+  "regression_counterfactual": {
+    "preexisting_suite_ref": "F-DOC30 Documentation workflow run 35277873123 on admission head 6258bfa2302fd6a152b9252389dde08547317924",
+    "affected_route_within_scope": false,
+    "outcome": "REGRESSION_NOT_APPLICABLE",
+    "evidence": "The exact-head Documentation workflow ran before the merge and correctly validated the then-current pre-admission status. The inconsistency arose because the post-merge closeout-status commit was not propagated back to canonical; no pre-existing post-merge status-synchronization oracle was identified."
+  },
+  "resolution": {
+    "candidate_authorities": [
+      {
+        "authority": "F-DOC30 PR #194",
+        "ref": "merge 8064b092c428fdd84b066dfcfedba43a01cb4ad8",
+        "role": "Establishes that admission actually occurred from expected head 6258bfa2302fd6a152b9252389dde08547317924."
+      },
+      {
+        "authority": "F-DOC30 work-branch closeout status",
+        "ref": "608015a24378ffcceaf713850a2daf528dd8190a",
+        "role": "Explicit post-merge closeout records DOCUMENTATION_ADMITTED_AND_CLOSED and the canonical merge identity."
+      },
+      {
+        "authority": "F-CI49P",
+        "ref": "integration/f-ci/F-CI49P_STATUS.json",
+        "role": "Confirms the underlying transaction production authority is already finalized and not the source of the discrepancy."
+      }
+    ],
+    "final_authority": "F-DOC30 work-branch closeout status at 608015a24378ffcceaf713850a2daf528dd8190a plus merged PR #194 / canonical merge 8064b092c428fdd84b066dfcfedba43a01cb4ad8",
+    "disposition": "DOCUMENTATION_CORRECTED",
+    "code_changed": false,
+    "documentation_changed": true,
+    "tests_changed": false,
+    "repair": {
+      "status_path": "integration/f-doc/F-DOC30_STATUS.json",
+      "source_closeout_ref": "608015a24378ffcceaf713850a2daf528dd8190a",
+      "source_closeout_blob": "ed51332089f4e248419daf9e66a7a96f9ea35998",
+      "repair_head": "6d17307d4522f0973e556eafe861c9aa21e71131",
+      "change": "Propagate the already-authored post-merge F-DOC30 CLOSE/DOCUMENTATION_ADMITTED_AND_CLOSED status onto the current canonical lineage without changing reviewer content or production semantics."
+    }
+  },
+  "reproducibility": {
+    "pre_resolution_ref": "8cf184955a0f366ef85bc38dd64c19aa639b7098",
+    "evidence_manifest": "integration/trace/evidence/TRACE-SWAP-0001/manifest.json",
+    "chronology": {
+      "content_head": "c86f17131f4757d35ef33b77d1fd2d7b23050d13",
+      "admission_head": "6258bfa2302fd6a152b9252389dde08547317924",
+      "exact_status_head_run": 35277873123,
+      "pr": 194,
+      "merge_commit": "8064b092c428fdd84b066dfcfedba43a01cb4ad8",
+      "post_merge_closeout_head": "608015a24378ffcceaf713850a2daf528dd8190a"
+    },
+    "repair_postimage_ref": "6d17307d4522f0973e556eafe861c9aa21e71131",
+    "repair_qualification": {
+      "trace_workflow_run": 35438262921,
+      "trace_conclusion": "success",
+      "broad_preservation_workflow": "F-GC42 live whole-window service",
+      "broad_preservation_run": 35438262905,
+      "broad_preservation_conclusion": "success"
+    }
+  }
+}

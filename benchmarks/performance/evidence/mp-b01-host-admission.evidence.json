@@ -1,0 +1,96 @@
+{
+  "final": {
+    "execution_blocks": [
+      [0, 7],
+      [7, 14],
+      [14, 21]
+    ],
+    "measured_sample_throttled_events": 0,
+    "measured_sample_throttled_usec": 0,
+    "observed_exit_code": 100,
+    "pairs": [
+      {"cycle": 0, "off_child_cpu_seconds": 1.229017, "off_wall_elapsed_seconds": 1.231141334, "on_child_cpu_seconds": 1.2219690000000003, "on_wall_elapsed_seconds": 1.224454378},
+      {"cycle": 1, "off_child_cpu_seconds": 1.2709320000000002, "off_wall_elapsed_seconds": 1.272675452, "on_child_cpu_seconds": 1.195328, "on_wall_elapsed_seconds": 1.197114926},
+      {"cycle": 2, "off_child_cpu_seconds": 1.2403069999999996, "off_wall_elapsed_seconds": 1.242077095, "on_child_cpu_seconds": 1.2218089999999995, "on_wall_elapsed_seconds": 1.22347559},
+      {"cycle": 3, "off_child_cpu_seconds": 1.1877500000000012, "off_wall_elapsed_seconds": 1.189277691, "on_child_cpu_seconds": 1.1808170000000002, "on_wall_elapsed_seconds": 1.182428632},
+      {"cycle": 4, "off_child_cpu_seconds": 1.2218859999999996, "off_wall_elapsed_seconds": 1.223756002, "on_child_cpu_seconds": 1.2117050000000003, "on_wall_elapsed_seconds": 1.213443641},
+      {"cycle": 5, "off_child_cpu_seconds": 1.2042160000000006, "off_wall_elapsed_seconds": 1.20575387, "on_child_cpu_seconds": 1.2830139999999997, "on_wall_elapsed_seconds": 1.284833941},
+      {"cycle": 6, "off_child_cpu_seconds": 1.2029519999999998, "off_wall_elapsed_seconds": 1.204847645, "on_child_cpu_seconds": 1.234426000000001, "on_wall_elapsed_seconds": 1.236141172},
+      {"cycle": 7, "off_child_cpu_seconds": 1.176709, "off_wall_elapsed_seconds": 1.17867549, "on_child_cpu_seconds": 1.175921, "on_wall_elapsed_seconds": 1.177892164},
+      {"cycle": 8, "off_child_cpu_seconds": 1.1741739999999998, "off_wall_elapsed_seconds": 1.175994185, "on_child_cpu_seconds": 1.172438, "on_wall_elapsed_seconds": 1.174021714},
+      {"cycle": 9, "off_child_cpu_seconds": 1.1823310000000005, "off_wall_elapsed_seconds": 1.184165635, "on_child_cpu_seconds": 1.1796579999999999, "on_wall_elapsed_seconds": 1.181698729},
+      {"cycle": 10, "off_child_cpu_seconds": 1.166023, "off_wall_elapsed_seconds": 1.167722798, "on_child_cpu_seconds": 1.1788860000000003, "on_wall_elapsed_seconds": 1.180573707},
+      {"cycle": 11, "off_child_cpu_seconds": 1.1664610000000017, "off_wall_elapsed_seconds": 1.168001032, "on_child_cpu_seconds": 1.1678249999999988, "on_wall_elapsed_seconds": 1.16951196},
+      {"cycle": 12, "off_child_cpu_seconds": 1.1732929999999993, "off_wall_elapsed_seconds": 1.175113739, "on_child_cpu_seconds": 1.1718209999999996, "on_wall_elapsed_seconds": 1.173581463},
+      {"cycle": 13, "off_child_cpu_seconds": 1.3398210000000006, "off_wall_elapsed_seconds": 1.34155676, "on_child_cpu_seconds": 1.3091880000000007, "on_wall_elapsed_seconds": 1.311298272},
+      {"cycle": 14, "off_child_cpu_seconds": 1.203851, "off_wall_elapsed_seconds": 1.206053126, "on_child_cpu_seconds": 1.2286219999999999, "on_wall_elapsed_seconds": 1.230685234},
+      {"cycle": 15, "off_child_cpu_seconds": 1.2259349999999998, "off_wall_elapsed_seconds": 1.227721898, "on_child_cpu_seconds": 1.275983, "on_wall_elapsed_seconds": 1.277798174},
+      {"cycle": 16, "off_child_cpu_seconds": 1.2764050000000005, "off_wall_elapsed_seconds": 1.278281814, "on_child_cpu_seconds": 1.237775, "on_wall_elapsed_seconds": 1.240643961},
+      {"cycle": 17, "off_child_cpu_seconds": 1.1739639999999998, "off_wall_elapsed_seconds": 1.178168207, "on_child_cpu_seconds": 1.2424679999999997, "on_wall_elapsed_seconds": 1.244280871},
+      {"cycle": 18, "off_child_cpu_seconds": 1.209479, "off_wall_elapsed_seconds": 1.211697197, "on_child_cpu_seconds": 1.1722979999999996, "on_wall_elapsed_seconds": 1.174011957},
+      {"cycle": 19, "off_child_cpu_seconds": 1.1770739999999993, "off_wall_elapsed_seconds": 1.179547649, "on_child_cpu_seconds": 1.1858330000000006, "on_wall_elapsed_seconds": 1.187486603},
+      {"cycle": 20, "off_child_cpu_seconds": 1.2014619999999994, "off_wall_elapsed_seconds": 1.203400122, "on_child_cpu_seconds": 1.2641299999999998, "on_wall_elapsed_seconds": 1.266009673}
+    ],
+    "physical_output_distinct_counts": {"result.bal": 1, "result.blc": 1},
+    "physical_output_hashes": {
+      "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+      "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+    },
+    "physical_output_observations": 42,
+    "selected_cpu": 3,
+    "warmup_runs_per_variant": 3
+  },
+  "git_baseline": "d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5",
+  "host": {
+    "block_loadavg_1m": [0.57177734375, 0.638671875, 0.6083984375, 0.6962890625],
+    "cpu_max": "400000 100000",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpuset": "0-4",
+    "dedicated_host": false,
+    "qualification_window_after": {"nr_throttled": 70, "throttled_usec": 3230196},
+    "qualification_window_before": {"nr_throttled": 68, "throttled_usec": 3164826},
+    "reported_cpu_mhz": 2596.13,
+    "visible_logical_cpus": 5
+  },
+  "notes": [
+    "No post-hoc timing outlier deletion.",
+    "Pilot pairs are excluded from the final effect estimate.",
+    "No measured final sample itself recorded cgroup throttling; the broader qualification-window counter did increase."
+  ],
+  "pilot": {
+    "pairs": [
+      {"off_child_cpu_seconds": 1.1991209999999999, "on_child_cpu_seconds": 1.2105700000000006},
+      {"off_child_cpu_seconds": 1.2164519999999985, "on_child_cpu_seconds": 1.240101000000001},
+      {"off_child_cpu_seconds": 1.1953589999999998, "on_child_cpu_seconds": 1.2150719999999993},
+      {"off_child_cpu_seconds": 1.2295090000000002, "on_child_cpu_seconds": 1.2454110000000007},
+      {"off_child_cpu_seconds": 1.1839639999999996, "on_child_cpu_seconds": 1.216937999999999},
+      {"off_child_cpu_seconds": 1.1845029999999994, "on_child_cpu_seconds": 1.2666570000000021},
+      {"off_child_cpu_seconds": 1.2101299999999995, "on_child_cpu_seconds": 1.260308000000002},
+      {"off_child_cpu_seconds": 1.2827059999999975, "on_child_cpu_seconds": 1.2945969999999996},
+      {"off_child_cpu_seconds": 1.2375950000000024, "on_child_cpu_seconds": 1.2292500000000004},
+      {"off_child_cpu_seconds": 1.1769670000000012, "on_child_cpu_seconds": 1.1713239999999985}
+    ],
+    "predeclared_final_pairs": 21,
+    "rule": "pilot mean excluded; paired stdev only determines final pair count",
+    "selected_cpu": 3
+  },
+  "preflight": {
+    "candidates": {
+      "0": {"child_cpu_seconds": [1.2253660000000002, 1.2103660000000005, 1.2382109999999997, 1.2648919999999997], "throttled_events": 0, "wall_elapsed_seconds": [1.227899856, 1.212417189, 1.240393879, 1.267268253]},
+      "1": {"child_cpu_seconds": [1.2228790000000007, 1.2599549999999997, 1.2468830000000004, 1.22105], "throttled_events": 0, "wall_elapsed_seconds": [1.227626336, 1.265028734, 1.251704738, 1.22536984]},
+      "2": {"child_cpu_seconds": [1.213267, 1.200592000000002, 1.2126059999999974, 1.2558550000000004], "throttled_events": 0, "wall_elapsed_seconds": [1.215270885, 1.202497649, 1.214526099, 1.257894971]},
+      "3": {"child_cpu_seconds": [1.2246089999999974, 1.235862000000001, 1.2472190000000012, 1.2438450000000003], "throttled_events": 0, "wall_elapsed_seconds": [1.228169313, 1.237832639, 1.249016383, 1.245678762]},
+      "4": {"child_cpu_seconds": [1.1997820000000026, 1.2121519999999997, 1.2251030000000007, 1.2337720000000019], "throttled_events": 0, "wall_elapsed_seconds": [1.201560048, 1.213971858, 1.226875501, 1.235604985]}
+    },
+    "cpu_cv_limit_relative": 0.01,
+    "rule": "lowest child CPU CV among candidates with zero measured preflight throttling; tie by CPU id",
+    "runs_per_cpu": 4,
+    "selected_cpu": 3
+  },
+  "reference_level": "B0-shadow",
+  "resolution_multiplier": 2.0,
+  "schema_version": "mp-host-admission-v1",
+  "target_resolution_relative": 0.01,
+  "workload_id": "MP-B01-HUPSEL-SINGLE",
+  "workstream": "MP-7"
+}

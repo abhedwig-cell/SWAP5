@@ -1,0 +1,28 @@
+name: F-WOF37 prepared crop candidate
+
+on:
+  push:
+    branches:
+      - work/f-wof37-physical-accepted-window-crop-event-composition
+    paths:
+      - 'src/crop/mod_wofost_*.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'integration/f-wof/F-WOF37_GATE_B_ATOMICITY_HOLD.json'
+      - 'tests/fwof/run_fwof37_prepared_crop_candidate_gate.sh'
+      - '.github/workflows/fwof37-prepared-crop-candidate.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-prepared-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF37 prepared crop candidate composition gate
+        run: bash tests/fwof/run_fwof37_prepared_crop_candidate_gate.sh

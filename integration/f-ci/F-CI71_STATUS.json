@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.fci71.status.v1",
+  "work_unit": "F-CI71",
+  "capability": "F-SI37 Accepted-Step Directional Derivative Seam",
+  "phase": "CURRENT_CANONICAL_ADMISSION_CANDIDATE",
+  "decision": "QUALIFIED_F_CI71_READY_FOR_CANONICAL_PROMOTION",
+  "canonical_base": "5ad1192dc3a120c5be0f36b023ebcac8d862e904",
+  "source_authority": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd",
+  "independent_qualification_tested_head": "53c3e7e1a8b805b6ad1c408b7a408fe159da9588",
+  "independent_qualification_evidence_head": "f8c43db9cf2dc4f3c330f8cb4d2ba0910f0b68f9",
+  "independent_qualification_status": "qualification/F-VQ89_STATUS.json",
+  "independent_qualification_result": "PASS",
+  "independent_workflow_runs": {
+    "push": 34942556156,
+    "pull_request": 34942636609,
+    "canonical_regression": 34942636596,
+    "immutable_evidence_regression": 34942902571
+  },
+  "exact_production_payload": {
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "52698b1ad2350bf787862a053a49c7c73c3358f0",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "ef395ac3fb0cf6f347031bf2081a74b74b5167ae"
+  },
+  "admission_claim": {
+    "accepted_step_state_ownership": "QUALIFIED",
+    "rejected_retry_no_derivative_leak": "QUALIFIED",
+    "independent_finite_difference_agreement": "QUALIFIED",
+    "zero_single_mixed_directions": "QUALIFIED",
+    "deterministic_O0_O2": "QUALIFIED",
+    "committed_physical_state_nonmutation": "QUALIFIED",
+    "unavailable_failure_paths_fail_closed": "QUALIFIED",
+    "canonical_regression_preservation": "QUALIFIED"
+  },
+  "numerical_reference": {
+    "method": "independent five-point centered finite difference of the fully converged accepted endpoint",
+    "coarse_step": 0.0002,
+    "fine_step": 0.0001,
+    "relative_gate": 0.00005,
+    "head_absolute_floor": 2e-7,
+    "water_content_absolute_floor": 2e-9,
+    "flux_absolute_floor": 2e-9,
+    "two_stencil_relative_consistency_gate": 0.00002,
+    "rationale": "Inherited unchanged from immutable F-VQ89 evidence; the admission workunit replays the same independent harness and does not weaken the numerical gates."
+  },
+  "scope": {
+    "production_semantics_repaired_for_admission": false,
+    "EB_touched": false,
+    "ROSS_touched": false,
+    "RossFast_touched": false,
+    "groundwater_coupling_composition_broadened": false,
+    "additional_scientific_capability_opened": false
+  },
+  "changed_files_relative_to_canonical": [
+    ".github/workflows/f-ci71-f-si37-current-canonical-admission.yml",
+    ".github/workflows/fvq89-fsi37-independent.yml",
+    "integration/f-ci/F-CI71_STATUS.json",
+    "qualification/F-VQ89_STATUS.json",
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "tests/qualification/fvq89/fvq89_make_reference_stubs.py",
+    "tests/qualification/fvq89/run_fvq89_fsi37_independent.sh",
+    "tests/qualification/fvq89/test_fvq89_fsi37_independent.f90"
+  ],
+  "commands": [
+    "bash tests/qualification/fvq89/run_fvq89_fsi37_independent.sh",
+    "python3 -m json.tool qualification/F-VQ89_STATUS.json",
+    "python3 -m json.tool integration/f-ci/F-CI71_STATUS.json",
+    "git diff --name-only 5ad1192dc3a120c5be0f36b023ebcac8d862e904 HEAD",
+    "GitHub Actions F-CI canonical qualification on the F-CI71 pull request"
+  ],
+  "canonical_admission": false,
+  "promotion_policy": "MERGE_COMMIT_ONLY_AFTER_F_CI71_AND_EXISTING_CANONICAL_GATES_ARE_GREEN",
+  "hard_nonclaims": [
+    "F-CI71 does not qualify multi-step trajectory sensitivity.",
+    "F-CI71 does not qualify groundwater coupling composition.",
+    "F-CI71 does not touch or qualify EB, ROSS or RossFast.",
+    "This status is a pre-promotion admission record; canonical admission is true only after the merge commit lands on integration/f-ci-canonical."
+  ]
+}

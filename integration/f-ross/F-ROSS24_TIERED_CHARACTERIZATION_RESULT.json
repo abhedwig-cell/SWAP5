@@ -1,0 +1,447 @@
+{
+  "schema": "swap5.f-ross24.tiered-production-characterization-summary.v1",
+  "workunit": "F-ROSS24",
+  "phase": "CLOSED",
+  "title": "Admitted tiered RossFast versus Reference production characterization",
+  "branch": "work/f-ross24-tiered-production-characterization",
+  "measurement_authority": {
+    "head": "a75bb520272edc3a2547794f76e36c2a336f07b5",
+    "workflow_run": 35348535778,
+    "job": 105610811820,
+    "artifact_id": 10548670877,
+    "artifact_digest": "sha256:fee7b5ffa0103057c6d5ba902a1167d16e01148cd969d88072906f77229b4fe1",
+    "full_artifact_file": "F-ROSS24_SCREENING_RESULT.json",
+    "conclusion": "PASS"
+  },
+  "production_authority": {
+    "f_ross22_canonical_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "admitted_kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "admitted_solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "live_canonical_at_close": "01e133b3da79468618e6c89a74533efff1ccdaaf",
+    "relevant_dependency_drift": false,
+    "relevant_live_blobs": {
+      "src/solver/mod_rossfast_d3r_table_kernel.f90": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+      "src/runtime/mod_rossfast_d3r_model_binding.f90": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+      "src/solver/mod_rossfast_d3r_table_provider.f90": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+      "src/runtime/mod_rossfast_d3r_execution_policy.f90": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+      "src/solver/mod_soil_water_solver_contract.f90": "40a1ddc05fb8e2c1822763de645fd07a094568a3"
+    }
+  },
+  "measurement_contract": {
+    "attempted_cases": 216,
+    "paired_valid_cases": 213,
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "inner_repetitions_per_paired_valid_case": 200,
+    "timed_solves_per_sample": 42600,
+    "optimization": "O2",
+    "primary_metric": "Fortran CPU_TIME around solve calls only",
+    "pair_order": "alternating",
+    "cpu_affinity": "single visible CPU",
+    "outlier_deletion": false,
+    "host_class": "GITHUB_HOSTED_SCREENING_ONLY",
+    "formal_performance_claim": false
+  },
+  "scientific_characterization": {
+    "attempted_cases": 216,
+    "rossfast_route_valid": 216,
+    "reference_route_valid": 213,
+    "paired_valid": 213,
+    "rossfast_invalid": 0,
+    "reference_invalid": 3,
+    "both_invalid": 0,
+    "reference_invalid_cases": [
+      {
+        "id": 96,
+        "material": "B16",
+        "se": 0.98,
+        "forcing": "NOMINAL",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK",
+        "tier": "K2",
+        "linear_solves": 6,
+        "temporal_indicator": 0.0006259842386355797,
+        "mass_residual_cm": -4.286068028269696e-15
+      },
+      {
+        "id": 101,
+        "material": "B17",
+        "se": 0.98,
+        "forcing": "DRYING",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK",
+        "tier": "K2",
+        "linear_solves": 6,
+        "temporal_indicator": 0.000009999999999999999,
+        "mass_residual_cm": -1.3403884732286937e-14
+      },
+      {
+        "id": 107,
+        "material": "B18",
+        "se": 0.98,
+        "forcing": "DRYING",
+        "reference_reason": "STATUS_NOT_CONVERGED",
+        "rossfast_reason": "OK",
+        "tier": "K2",
+        "linear_solves": 6,
+        "temporal_indicator": 0.00002134639500783754,
+        "mass_residual_cm": 1.9615400951200797e-14
+      }
+    ],
+    "tier_distribution_all_216": {
+      "K2": 212,
+      "K4": 2,
+      "K8": 2
+    },
+    "tier_cases": {
+      "K4": [
+        {
+          "id": 113,
+          "material": "O01",
+          "se": 0.98,
+          "forcing": "DRYING"
+        },
+        {
+          "id": 114,
+          "material": "O01",
+          "se": 0.98,
+          "forcing": "NOMINAL"
+        }
+      ],
+      "K8": [
+        {
+          "id": 29,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "DRYING"
+        },
+        {
+          "id": 30,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "NOMINAL"
+        }
+      ]
+    },
+    "historical_p2e10_threshold_diagnostic": {
+      "authority_boundary": "Historical six-material thresholds remain descriptive only for this 36-material characterization.",
+      "within": 209,
+      "outside": 4,
+      "outside_cases": [
+        {
+          "id": 29,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "DRYING",
+          "tier": "K8",
+          "exceeded": [
+            "D_THETA_INF",
+            "D_THETA_RMS"
+          ],
+          "d_h_inf": 0.32682567504650617,
+          "d_h_rms": 0.09233077650179775,
+          "d_theta_inf": 0.0006183910548337446,
+          "d_theta_rms": 0.00020014131498142024,
+          "d_storage": 7.105427357601002e-15
+        },
+        {
+          "id": 30,
+          "material": "B05",
+          "se": 0.98,
+          "forcing": "NOMINAL",
+          "tier": "K8",
+          "exceeded": [
+            "D_THETA_INF",
+            "D_THETA_RMS"
+          ],
+          "d_h_inf": 0.3374076567786384,
+          "d_h_rms": 0.09504319287422967,
+          "d_theta_inf": 0.0006295812322271721,
+          "d_theta_rms": 0.00020374673910251347,
+          "d_storage": 7.105427357601002e-15
+        },
+        {
+          "id": 147,
+          "material": "O07",
+          "se": 0.85,
+          "forcing": "DRYING",
+          "tier": "K2",
+          "exceeded": [
+            "D_STORAGE"
+          ],
+          "d_h_inf": 0.0002148114080000596,
+          "d_h_rms": 0.00010301404483067224,
+          "d_theta_inf": 5.563378097095395e-8,
+          "d_theta_rms": 2.6672420022714668e-8,
+          "d_storage": 2.842170943040401e-14
+        },
+        {
+          "id": 205,
+          "material": "O17",
+          "se": 0.65,
+          "forcing": "DRYING",
+          "tier": "K2",
+          "exceeded": [
+            "D_STORAGE"
+          ],
+          "d_h_inf": 2.8941343543920084e-7,
+          "d_h_rms": 1.3463128375212553e-7,
+          "d_theta_inf": 1.014388573139513e-10,
+          "d_theta_rms": 4.718800603790584e-11,
+          "d_storage": 2.842170943040401e-14
+        }
+      ]
+    },
+    "paired_discrepancy_maxima": {
+      "d_h_inf": {
+        "value": 0.3374076567786384,
+        "id": 30,
+        "material": "B05",
+        "se": 0.98,
+        "forcing": "NOMINAL"
+      },
+      "d_h_rms": {
+        "value": 0.09504319287422967,
+        "id": 30,
+        "material": "B05",
+        "se": 0.98,
+        "forcing": "NOMINAL"
+      },
+      "d_theta_inf": {
+        "value": 0.0006295812322271721,
+        "id": 30,
+        "material": "B05",
+        "se": 0.98,
+        "forcing": "NOMINAL"
+      },
+      "d_theta_rms": {
+        "value": 0.00020374673910251347,
+        "id": 30,
+        "material": "B05",
+        "se": 0.98,
+        "forcing": "NOMINAL"
+      },
+      "d_storage": {
+        "value": 2.842170943040401e-14,
+        "id": 47,
+        "material": "B08",
+        "se": 0.98,
+        "forcing": "DRYING"
+      }
+    }
+  },
+  "performance_screening": {
+    "aggregate": {
+      "rossfast_over_reference_cpu_ratio_mean": 0.8228088245864688,
+      "rossfast_over_reference_relative_delta_mean": -0.17719117541353124,
+      "minimum_detectable_relative_effect": 0.009080907587785686,
+      "reference_over_rossfast_speedup_mean": 1.215754902694907,
+      "outcome": "SCREENING_ROSSFAST_FASTER",
+      "whole_child_cpu_relative_delta_mean": -0.04365589582688012,
+      "wall_elapsed_relative_delta_mean": -0.043628317571342966,
+      "formal_performance_claim": false
+    },
+    "individual_cases": {
+      "paired_valid": 213,
+      "rossfast_faster": 185,
+      "reference_faster": 20,
+      "not_resolved": 8,
+      "by_effective_saturation": {
+        "0.65": {
+          "rossfast_faster": 51,
+          "reference_faster": 16,
+          "not_resolved": 5
+        },
+        "0.85": {
+          "rossfast_faster": 70,
+          "reference_faster": 0,
+          "not_resolved": 2
+        },
+        "0.98": {
+          "rossfast_faster": 64,
+          "reference_faster": 4,
+          "not_resolved": 1
+        }
+      },
+      "best_observed_rossfast_case": {
+        "id": 138,
+        "material": "O05",
+        "se": 0.98,
+        "forcing": "NOMINAL",
+        "tier": "K2",
+        "rossfast_over_reference_ratio_mean": 0.26120774322693663,
+        "relative_delta_mean": -0.7387922567730634,
+        "mde": 0.00378432350276458,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "worst_observed_rossfast_case": {
+        "id": 30,
+        "material": "B05",
+        "se": 0.98,
+        "forcing": "NOMINAL",
+        "tier": "K8",
+        "rossfast_over_reference_ratio_mean": 2.4240262572250018,
+        "relative_delta_mean": 1.424026257225002,
+        "mde": 0.031648184489638825,
+        "outcome": "REFERENCE_FASTER"
+      }
+    },
+    "by_tier": {
+      "K2": {
+        "paired_case_count": 209,
+        "rossfast_over_reference_ratio_mean": 0.7874782652229809,
+        "relative_delta_mean": -0.21252173477701905,
+        "mde": 0.008686704387129004,
+        "reference_over_rossfast_speedup_mean": 1.2702995408958204,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "K4": {
+        "paired_case_count": 2,
+        "rossfast_over_reference_ratio_mean": 1.4970992159247911,
+        "relative_delta_mean": 0.4970992159247911,
+        "mde": 0.029991145958219362,
+        "reference_over_rossfast_speedup_mean": 0.668703685543517,
+        "outcome": "REFERENCE_FASTER"
+      },
+      "K8": {
+        "paired_case_count": 2,
+        "rossfast_over_reference_ratio_mean": 2.288993520047239,
+        "relative_delta_mean": 1.2889935200472393,
+        "mde": 0.04487803870101002,
+        "reference_over_rossfast_speedup_mean": 0.437320771929624,
+        "outcome": "REFERENCE_FASTER"
+      }
+    },
+    "by_effective_saturation": {
+      "0.65": {
+        "paired_case_count": 72,
+        "ratio_mean": 0.947672306521807,
+        "relative_delta_mean": -0.05232769347819289,
+        "mde": 0.014033739746759985,
+        "speedup_mean": 1.055861412097021,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "0.85": {
+        "paired_case_count": 72,
+        "ratio_mean": 0.8068545754018376,
+        "relative_delta_mean": -0.1931454245981625,
+        "mde": 0.009734265479449477,
+        "speedup_mean": 1.2398707743596955,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "0.98": {
+        "paired_case_count": 69,
+        "ratio_mean": 0.7481533047751818,
+        "relative_delta_mean": -0.2518466952248182,
+        "mde": 0.007044254517323798,
+        "speedup_mean": 1.3369481936544008,
+        "outcome": "ROSSFAST_FASTER"
+      }
+    },
+    "by_family": {
+      "B": {
+        "paired_case_count": 105,
+        "ratio_mean": 0.8545739704950489,
+        "relative_delta_mean": -0.1454260295049511,
+        "mde": 0.010803137743512213,
+        "speedup_mean": 1.1706864072770344,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "O": {
+        "paired_case_count": 108,
+        "ratio_mean": 0.7922496111268362,
+        "relative_delta_mean": -0.2077503888731638,
+        "mde": 0.009306032159472807,
+        "speedup_mean": 1.2627141092497374,
+        "outcome": "ROSSFAST_FASTER"
+      }
+    },
+    "by_forcing": {
+      "DRYING": {
+        "paired_case_count": 106,
+        "ratio_mean": 0.8437966125487453,
+        "relative_delta_mean": -0.1562033874512547,
+        "mde": 0.00909053204919501,
+        "speedup_mean": 1.185498827268799,
+        "outcome": "ROSSFAST_FASTER"
+      },
+      "NOMINAL": {
+        "paired_case_count": 107,
+        "ratio_mean": 0.8029689805596103,
+        "relative_delta_mean": -0.19703101944038973,
+        "mde": 0.009391956476869221,
+        "speedup_mean": 1.2458435943685797,
+        "outcome": "ROSSFAST_FASTER"
+      }
+    },
+    "material_summary": {
+      "faster_material_groups": 33,
+      "reference_faster_material_groups": [
+        "B05",
+        "O01"
+      ],
+      "unresolved_material_groups": [
+        "B10"
+      ],
+      "notable": {
+        "B05": {
+          "ratio_mean": 1.4978172551754232,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "O01": {
+          "ratio_mean": 1.0788778533795562,
+          "outcome": "REFERENCE_FASTER"
+        },
+        "B10": {
+          "ratio_mean": 0.997924681546695,
+          "outcome": "NOT_RESOLVED"
+        },
+        "B04": {
+          "ratio_mean": 0.5751712688846536,
+          "outcome": "ROSSFAST_FASTER"
+        },
+        "O05": {
+          "ratio_mean": 0.5799667428797385,
+          "outcome": "ROSSFAST_FASTER"
+        }
+      }
+    }
+  },
+  "comparison_to_static_f_ross23": {
+    "boundary": "Descriptive cross-run comparison only; static and tiered timings were separate GitHub-hosted runs and are not a formal paired static-vs-tiered performance experiment.",
+    "static_primary_rossfast_over_reference_ratio": 3.107197377836018,
+    "tiered_rossfast_over_reference_ratio": 0.8228088245864688,
+    "ratio_of_ratios_tiered_over_static": 0.2648073889530337,
+    "descriptive_reduction_factor_static_ratio_over_tiered_ratio": 3.7763296709872405,
+    "interpretation": "The production evolution from static to cache+tiered has reversed the aggregate shared-host solver-only screen from materially slower than Reference to materially faster; exact static-to-tiered speedup is not claimed from separate runs."
+  },
+  "interpretation": [
+    "Admitted tiered RossFast remains route-valid in all 216 E0 characterization cases; the same three high-saturation B cases remain Reference non-convergences while RossFast succeeds at K2.",
+    "Aggregate solver-only shared-host screening is resolved in favor of RossFast: about 17.7% lower solver CPU, corresponding to mean Reference/RossFast speedup about 1.216.",
+    "The performance advantage is generated by K2: on the 209 paired-valid K2 cases RossFast uses about 78.7% of Reference solver CPU on average. K4 and K8 fallback cases are individually more expensive than Reference.",
+    "Fallback remains rare: 212/216 cases finish at K2, two O01 high-saturation cases finish at K4, and two B05 high-saturation cases finish at K8.",
+    "The advantage strengthens with saturation in aggregate: roughly 5.2% lower solver CPU at Se=0.65, 19.3% at Se=0.85, and 25.2% at Se=0.98 on paired-valid cases.",
+    "At individual-case level the solver is not uniformly faster: 185/213 cases favor RossFast, 20 favor Reference, and 8 are unresolved. All four K4/K8 paired cases favor Reference.",
+    "Historical P2E10 direct-state thresholds remain descriptive only; four paired cases exceed one or more of those historical six-material thresholds, two of them only by storage roundoff-scale differences.",
+    "Whole-child CPU and wall-clock improvements are smaller (~4.36%) than solver-only improvement because process/setup overhead dilutes the solver gain."
+  ],
+  "mutation_audit": {
+    "production_or_reference_mutation": false,
+    "tolerance_change": false,
+    "certificate_change": false,
+    "optimization_change": false,
+    "architecture_change": false,
+    "material_envelope_change": false
+  },
+  "verdict": "CLOSED_ADMITTED_TIERED_ROSSFAST_ROBUST_AND_AGGREGATE_SCREENING_FASTER_THAN_REFERENCE_ON_MEASURED_E0_DOMAIN",
+  "close": {
+    "no_open_f_ross24_implementation_action": true,
+    "formal_performance_claim_requires": "Replay the frozen F-ROSS24 contract on an MP-admitted isolated performance host.",
+    "next_permitted_capabilities": [
+      "Optional MP-isolated replay for a formal performance claim.",
+      "A separately preregistered broader hydrological/use-case validation if claims are to extend beyond the fixed-flux E0 characterization domain."
+    ]
+  }
+}

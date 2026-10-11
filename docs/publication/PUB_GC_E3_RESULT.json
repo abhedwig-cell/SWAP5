@@ -1,0 +1,39 @@
+{
+  "schema": "pub-gc-e3-consolidated-result-v1",
+  "date": "2026-09-18",
+  "status": "SUPPORTED_RESTRICTED",
+  "main": {
+    "case_count": 48,
+    "converged": 12,
+    "predictor_unavailable": 36,
+    "max_loose_relative_flux_mismatch": 1.766532010114289,
+    "max_abs_loose_residual_m_per_s": 2.8034238983696472e-12,
+    "max_abs_loose_to_iterative_head_correction_m": 5.549886994415942e-9,
+    "max_abs_qswap_correction_m_per_s": 1.924233663354988e-14,
+    "workflow_run": 35343426404
+  },
+  "predictor_envelope": {
+    "case_count": 21,
+    "ready": 14,
+    "failed": 7,
+    "failure_stage": "PREDICTOR_WHOLE_WINDOW_TRIAL_INCOMPLETE",
+    "workflow_run": 35343968268
+  },
+  "failure_mechanism": {
+    "case_count": 6,
+    "failed_status": "TRANSACTION_FAILED",
+    "mass_rejections": 0,
+    "temporal_certificate_unavailable_rejections": 0,
+    "workflow_run": 35344946609
+  },
+  "stronger_flux_refinement": {
+    "case_count": 24,
+    "converged": 20,
+    "loose_trial_failed": 3,
+    "iterative_trial_failed": 1,
+    "max_abs_loose_to_iterative_head_correction_m": 1.8311455685093847e-9,
+    "max_abs_qswap_correction_m_per_s": 6.1084368016444556e-15,
+    "workflow_run": 35344946652
+  },
+  "conclusion": "Strict finite-window interface closure benefits from iteration, but hydrological head correction remains negligible in the current admitted near-equilibrium fixture; the SWAP component execution envelope is reached before a materially strong head-feedback case."
+}

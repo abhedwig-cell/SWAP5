@@ -1,0 +1,40 @@
+name: F-PE-ELASTIC45 RD application host orchestrator
+
+concurrency:
+  group: f-pe-elastic45-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic45-rd-host-orchestrator
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_rd_application_host.f90'
+      - 'tests/fpe/prepare_fpe_elastic45.py'
+      - 'tests/fpe/run_fpe_elastic45.sh'
+      - 'docs/performance/F-PE-ELASTIC45_RD_APPLICATION_HOST_ORCHESTRATOR_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic45.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic45-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Qualify RD application host orchestrator
+        run: bash tests/fpe/run_fpe_elastic45.sh "$RUNNER_TEMP/elastic45-pdok"

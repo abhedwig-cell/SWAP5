@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.ppa_wu05b.source_trace.v1",
+  "work_unit": "PPA-WU05B",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "9605fbb1622d96f4691117f66264f13b6dd3a47b"
+  },
+  "authority": {
+    "snapshot": "B1.11",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "reconstruction_tool": "tools/vq/b1_11_reconstruct.py",
+    "reconstruction_result": "PASS_63_MEMBERS_1886519_BYTES",
+    "selected_source_manifest": "reference/swap-4.3.1/b1_11_frost_source/manifest.json"
+  },
+  "selectors": {
+    "swfrost": "integer 0/1",
+    "tfroststa": "read when SWFROST=1; input range [-10,5] C",
+    "tfrostend": "read when SWFROST=1; input range [-10,5] C",
+    "legacy_guards": [
+      "SWFROST=1 requires SWHEA /= 0",
+      "SWFROST=1 and SWMACRO=1 is rejected",
+      "microscopic rootextraction_micro errors when SWFROST=1"
+    ],
+    "missing_validation": "No requirement that TFROSTSTA > TFROSTEND; equality can divide by zero and reversed limits invert the intended interval."
+  },
+  "execution": {
+    "temperature_owner": "MOD_SoilTemperature owns TSOIL/TETOP; sensible profile is updated after each soil-water interval.",
+    "order": [
+      "day-start snow update where enabled",
+      "FrozenCond(TSOIL,TETOP)",
+      "root extraction",
+      "bottom-boundary preparation",
+      "drainage and soil-water solve, with FrozenBounds",
+      "SoilTemperature(2) sensible update after water interval"
+    ],
+    "thermal_hydraulic_policy": "No joint thermal-hydraulic nonlinear iteration; frost reads temperature available at the hydraulic attempt start."
+  },
+  "effects": {
+    "constitutive": "Kfrost=K*rfcp+1e-10 cm/day*(1-rfcp); dKfrost/dh=dK/dh*rfcp.",
+    "theta_capacity": "No effect on theta(h), C(h), saturation or stored water.",
+    "boundaries": "FrozenBounds applies additional drainage/top/bottom flux heuristics using frost depth and available air volume.",
+    "root_stress": "Separate binary factor: alpfrs=0 for TSOIL<0 C, otherwise 1; SW_STRESSOR=5 selects legacy frost compensation behavior."
+  },
+  "state": {
+    "recomputable": ["rfcp", "nodfrostbot", "zfrosttop", "zfrostbot"],
+    "persistent_configuration": ["swfrost", "tfroststa", "tfrostend"],
+    "persistent_physics": ["tsoil sensible profile"],
+    "restart": "Reuse admitted SWAP5 sensible-temperature state/restart; no separately stored frost factor or crossing-depth continuation is required by the B1.11 equations.",
+    "mass": "K factor adds no storage or flux. FrozenBounds boundary flux changes must be booked once by existing boundary/drainage owners.",
+    "energy": "No latent heat or phase-change energy state/ledger in B1.11."
+  },
+  "physical_review": {
+    "confirmed_limitations": [
+      "No frozen/unfrozen water partition or explicit ice content.",
+      "No latent heat or thermodynamic freeze-thaw closure.",
+      "Frost-depth interpolation may divide by zero for equal bracketing temperatures and lacks a consistent segment clamp.",
+      "The residual K floor allows tiny conductivity when rfcp=0.",
+      "Hydraulic thresholds and binary root-stress cutoff have distinct semantics and can disagree.",
+      "FrozenBounds is a separate heuristic boundary algorithm, not implied by constitutive K scaling."
+    ],
+    "dispositions": {
+      "bounded_temperature_to_K_dKdh": "PROPOSED_MIGRATION_WITH_STRICT_THRESHOLD_VALIDATION",
+      "latent_heat_ice_partition": "REJECTED_AS_LEGACY_MIGRATION_NEW_PHYSICS_REQUIRED",
+      "legacy_frost_depth_interpolation": "REJECTED_UNGUARDED_IMPLEMENTATION_REPLACE_ONLY_WITH_BOUNDED_ORACLE",
+      "legacy_residual_conductivity_floor": "PRESERVE_NAMED_COMPATIBILITY_CONSTANT_IN_BOUNDED_SLICE; verify sensitivity",
+      "FrozenBounds": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; future separate typed boundary and mass contract remains possible",
+      "frost_root_stress": "REJECTED_IN_LEGACY_FORM_FOR_BOUNDED_MIGRATION; binary 0 C cutoff and ALPHACRIT compensation need a separate biological contract; microscopic path explicitly errors"
+    }
+  },
+  "implementation": {
+    "production_mutation": true,
+    "candidate_scope": "reference Richards; prescribed bottom mode 2 with zero qbot; root sink off; snow/macropore/drainage-response/sensible-boundary-carrier/trajectory compositions fail closed",
+    "candidate_paths": [
+      "src/process/mod_frost_hydraulic_effect.f90",
+      "src/solver/mod_frost_hydraulic_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "tested": true,
+    "qualified": false,
+    "admitted": false,
+    "local_runtime_evidence": {
+      "backend_regimes": ["unfrozen +1 C", "onset 0 C", "partial -1 C", "strong -4 C", "warming", "freeze-thaw cycle"],
+      "partial_frost_richards": "prescribed top flux 1e-10 cm/day; prescribed bottom flux 0; accepted substeps 8; mass residual -2.140518e-16 cm; hard gate 1e-12 cm",
+      "retry": "serialized transaction recorded 28 attempts and 20 retries; final hydraulic and thermal state compared with eight direct smaller-step continuations from identical initial committed physical state",
+      "restart": "fmr_export_committed_restart/fmr_restore_committed_restart round-trip through empty state registry; template optional-state layout, lineage, revision, time, profile and recomputed frost factor checked",
+      "optimization": ["O0", "O2"],
+      "scope": "local candidate evidence only; no persisted admission claimed"
+    },
+    "qualification_gaps": [
+      "final exact-postimage O0/O2 run and hash update",
+      "persisted branch qualification and repository admission gate",
+      "FrozenBounds and frost-root-stress migration explicitly rejected only in current legacy form; any future replacement is separate scope"
+    ]
+  }
+}

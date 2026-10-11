@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ105",
+  "title": "Independent qualification of F-GC31 active-drainage accepted-trajectory tangent",
+  "verifier_branch": "qualification/f-vq105-fgc31-active-drainage-tangent-independent",
+  "canonical_baseline": "d67a96fd576dcd1c5a30eb766c5aa1a503e10cf0",
+  "owner": {
+    "work_unit": "F-GC31",
+    "qualified_source_head": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
+    "owner_checkpoint_head": "82246ce5bb59b267df41f0d5fafbfea6f5dfaba4",
+    "owner_workflow_run": 35288724235,
+    "owner_workflow_job": 105426705900,
+    "production_modules": {
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "8ca4e08f0297a6b7d0bca1608e9a1ac4d41f4fd7",
+      "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90": "481dc8cb1af683053614de3a11c4155acb34b413",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+      "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90": "2d5342b45a61c9426d2b589b285050b648d141b9",
+      "src/solver/mod_b110_smooth_freatic_projection.f90": "e83c1013a1d96508740619a71cfa1dbfdd665d61",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "b5a0276d2f1b2c8ffe581e68dffecdaf55a32768",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90": "b1be9af9ece045cac1fd17087e6b08bc615bd733",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "d267a763ceb697557e762c937a99b7f11cb44684"
+    }
+  },
+  "verifier_evidence": {
+    "qualified_verifier_head": "0993f92bf404bfe9a3436e8304ea5025c9e9abea",
+    "workflow_run_id": 35289076608,
+    "workflow_job_id": 105427777020,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+    "optimization_modes": ["O0", "O2"],
+    "O0_O2_output_identity": true,
+    "accepted_substeps": 2,
+    "retries": 3,
+    "face_fd_error": 2.711418e-5,
+    "head_fd_max_error": 2.711418e-5
+  },
+  "independence": {
+    "verifier_production_delta": "NONE",
+    "owner_modules_loaded_as_pinned_git_donors": true,
+    "owner_test_reused": false,
+    "independent_fixture": true,
+    "same_backend_centered_finite_difference_oracle": true,
+    "static_contract_audit": true,
+    "production_finite_difference_runtime_fallback_admitted": false
+  },
+  "verified_claims": [
+    "restricted non-macropore smooth interior groundwater-level projection remains fail-closed outside its admitted branch",
+    "accepted-step tangent explicitly carries direct source/sink direction with B1.10 residual signs",
+    "source/sink derivative coverage is accumulated over accepted trajectory steps and published as provenance",
+    "active lagged drainage response is differentiated as dq/dgwl times accepted-start dgwl/dqbot for the next accepted substep",
+    "accepted candidate groundwater level is refreshed from accepted hydraulic state before subsequent lagged drainage evaluation",
+    "active-drainage trajectory over at least two accepted substeps agrees with same-backend centered qbot finite differences",
+    "requesting the tangent does not change accepted physical state, retry count, or accepted-substep topology",
+    "active drainage endpoint is authoritative only when source/sink coverage provenance is complete",
+    "missing drainage coverage remains available only as non-authoritative partial tangent information and fails closed",
+    "the tangent adds no full nonlinear solve and no Jacobian rebuild beyond the existing accepted-factor backsolve",
+    "all eight owner production modules compile unchanged against current canonical dependencies",
+    "O0 and O2 verifier outputs are identical"
+  ],
+  "non_scientific_failed_attempts": [
+    {
+      "run": 35289033149,
+      "classification": "VERIFIER_STATIC_STRING_MATCH_ONLY",
+      "cause": "static audit expected a multiline Fortran assignment on one line; production code was not reached"
+    }
+  ],
+  "markers": [
+    "FVQ105_OWNER_STATIC_CONTRACT=PASS",
+    "FVQ105_LAGGED_DRAINAGE_WIRING=PASS",
+    "FVQ105_COVERAGE_PROVENANCE_STATIC=PASS",
+    "FVQ105_ACTIVE_DRAINAGE_MULTI_SUBSTEP=PASS",
+    "FVQ105_ACTIVE_DRAINAGE_COVERAGE_PROVENANCE=PASS",
+    "FVQ105_TANGENT_PHYSICAL_IDENTITY=PASS",
+    "FVQ105_SAME_BACKEND_CENTERED_FD=PASS",
+    "FVQ105_NO_EXTRA_NONLINEAR_SOLVE=PASS",
+    "FVQ105_ENDPOINT_AUTHORITATIVE=PASS",
+    "FVQ105_COVERAGE_FAIL_CLOSED=PASS",
+    "FVQ105_GWL_BRANCH_FAIL_CLOSED=PASS",
+    "FVQ105_INDEPENDENT_NUMERICAL_ORACLE=PASS",
+    "FVQ105_VERIFIER_PRODUCTION_DELTA=PASS:NONE",
+    "FVQ105_O0_O2_IDENTITY=PASS"
+  ],
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
+  "canonical_admission": false,
+  "preserved_limits": [
+    "only non-macropore smooth interior zero-pressure groundwater-level crossing is admitted",
+    "drainage remains B1.10 lagged per accepted substep; fully implicit Newton/Jacobian drainage coupling remains outside F-GC31",
+    "root uptake and other uncovered state-dependent source/sink owners remain fail closed",
+    "no runtime finite-difference fallback",
+    "no MODFLOW6/XMI backend",
+    "no Groundwater Coupling v1 transaction or commit semantic change",
+    "no accepted_storage_change substitution",
+    "no irrigation or Ribasim coupling"
+  ],
+  "next_permitted_action": "Create a separate current-canonical admission gate for the exact eight F-GC31 owner production blobs. Preserve owner and F-VQ105 evidence immutably and admit only the restricted active-drainage lagged accepted-substep tangent envelope."
+}

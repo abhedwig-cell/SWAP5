@@ -1,0 +1,138 @@
+{
+  "schema": "swap5.f-rom1a.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-1A",
+  "title": "Reachable-state trajectory library and blind data split",
+  "phase": "PREREGISTERED_BEFORE_TRAJECTORY_GENERATION",
+  "canonical_authority": "624400307cf40f2bcdc3176e682e0365ee1025b5",
+  "predecessor": {
+    "work_unit": "ROM-0",
+    "decision": "PROCEED_TO_ROM1A",
+    "status_path": "integration/f-rom/F-ROM0_STATUS.json",
+    "current_reconciliation": "docs/science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_T1Q1.md"
+  },
+  "scientific_question": "Can physically reachable accepted Richards states be represented by a small practically useful future-relevant state without erasing distinctions required by the frozen pure-hydraulics capability and forcing domain?",
+  "scope": {
+    "capability": "PURE_HYDRAULICS_STATE_SUFFICIENCY_PREPARATION",
+    "geometry": "16x10 cm homogeneous 160 cm column",
+    "initial_effective_saturation": 0.85,
+    "discovery_material": "B01",
+    "material_transfer_holdout": "B14",
+    "production_rom_authorized": false
+  },
+  "reference_authority": {
+    "policy": "STRICT_FIRST_FAIL_CLOSED_SUCCESSOR_RESEARCH_REFERENCE",
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "strict_attempt_always_first": true,
+    "failed_strict_attempt_may_commit": false,
+    "fallback_scope": "only independently admitted balance-only classes inside pre-solve P2E19/P2E21 representation bounds",
+    "head_mixed_or_other_fallback_allowed": false,
+    "automatic_dt_subdivision": false,
+    "production_reference_policy_changed": false,
+    "current_canonical_observation_seam_required": "F-ROM1A-I0"
+  },
+  "history_domain": {
+    "allowed_top_flux_factors_of_initial_K0": [-0.005,0.0,0.01],
+    "allowed_bottom_flux_factors_of_initial_K0": [-0.019,-0.004],
+    "allowed_bottom_head_expressions": ["0.75*h0","1.25*h0"],
+    "observation_dt_day": {
+      "fixed_flux": 0.0016,
+      "prescribed_head": 0.0008
+    },
+    "amplitude_retuning_after_generation": false
+  },
+  "discovery_histories": [
+    {"id":"D01_NOMINAL","segments":[{"family":"E1_NOMINAL_FLUX","intervals":32}]},
+    {"id":"D02_DRYING","segments":[{"family":"E2_DRYING_FLUX","intervals":32}]},
+    {"id":"D03_HEAD_RISE","segments":[{"family":"E3_BOTTOM_HEAD_RISE","intervals":16}]},
+    {"id":"D04_HEAD_FALL","segments":[{"family":"E4_BOTTOM_HEAD_FALL","intervals":16}]},
+    {"id":"D05_HEAD_REVERSAL","segments":[{"family":"E3_BOTTOM_HEAD_RISE","intervals":8},{"family":"E4_BOTTOM_HEAD_FALL","intervals":8}]},
+    {"id":"D06_FLUX_REVERSAL","segments":[{"family":"E1_NOMINAL_FLUX","intervals":16},{"family":"E2_DRYING_FLUX","intervals":16}]},
+    {"id":"D07_PULSE","segments":[{"family":"E1_NOMINAL_FLUX","intervals":8},{"family":"E0_HOLD","intervals":8},{"family":"E2_DRYING_FLUX","intervals":8},{"family":"E0_HOLD","intervals":8}]}
+  ],
+  "held_out_histories": [
+    {"id":"H01_REVERSED_FLUX_ORDER","segments":[{"family":"E2_DRYING_FLUX","intervals":16},{"family":"E1_NOMINAL_FLUX","intervals":16}]},
+    {"id":"H02_REVERSED_HEAD_ORDER","segments":[{"family":"E4_BOTTOM_HEAD_FALL","intervals":8},{"family":"E3_BOTTOM_HEAD_RISE","intervals":8}]},
+    {"id":"H03_SHORT_FLUX_CYCLES","segments":[{"family":"E1_NOMINAL_FLUX","intervals":4},{"family":"E2_DRYING_FLUX","intervals":4},{"family":"E1_NOMINAL_FLUX","intervals":4},{"family":"E2_DRYING_FLUX","intervals":4}]},
+    {"id":"H04_HOLD_THEN_HEAD_RISE","segments":[{"family":"E0_HOLD","intervals":8},{"family":"E3_BOTTOM_HEAD_RISE","intervals":8}]}
+  ],
+  "future_probes": {
+    "discovery": [
+      {"id":"PD01_NOMINAL","segments":[{"family":"E1_NOMINAL_FLUX","intervals":8}]},
+      {"id":"PD02_DRYING","segments":[{"family":"E2_DRYING_FLUX","intervals":8}]},
+      {"id":"PD03_HEAD_RISE","segments":[{"family":"E3_BOTTOM_HEAD_RISE","intervals":8}]},
+      {"id":"PD04_HEAD_FALL","segments":[{"family":"E4_BOTTOM_HEAD_FALL","intervals":8}]}
+    ],
+    "held_out": [
+      {"id":"PH01_FLUX_SWITCH","segments":[{"family":"E1_NOMINAL_FLUX","intervals":4},{"family":"E2_DRYING_FLUX","intervals":4}]},
+      {"id":"PH02_HEAD_SWITCH","segments":[{"family":"E3_BOTTOM_HEAD_RISE","intervals":4},{"family":"E4_BOTTOM_HEAD_FALL","intervals":4}]},
+      {"id":"PH03_DRY_TO_NOMINAL","segments":[{"family":"E2_DRYING_FLUX","intervals":4},{"family":"E1_NOMINAL_FLUX","intervals":4}]},
+      {"id":"PH04_HOLD","segments":[{"family":"E0_HOLD","intervals":8}]}
+    ],
+    "execution_phase": "ROM-1B_AFTER_REPRESENTATION_CANDIDATE_LOCK"
+  },
+  "data_split_firewall": {
+    "B01_discovery_histories_visible_for_state_identification": true,
+    "B01_held_out_history_payload_hidden_until_candidate_lock": true,
+    "B14_all_payload_hidden_until_material_transfer_gate": true,
+    "repository_persists_holdout_hashes_and_counts_before_unblinding": true,
+    "coordinate_retuning_after_holdout_or_B14_unblinding": false
+  },
+  "accepted_record_schema": {
+    "inherits": "integration/f-rom/F-ROM0_TRAJECTORY_SCHEMA.json",
+    "adds": [
+      "partition_id",
+      "history_id",
+      "segment_id",
+      "material_role",
+      "reference_policy_id",
+      "strict_attempt_status",
+      "fallback_used",
+      "fallback_class_or_null",
+      "library_point_id"
+    ],
+    "rejected_attempt_state_in_library": false
+  },
+  "required_outputs_for_later_predictive_tests": [
+    "pressure_head_profile",
+    "water_content_profile",
+    "total_storage",
+    "upper_0_40cm_storage",
+    "lower_40_160cm_storage",
+    "accepted_top_exchange",
+    "accepted_bottom_exchange",
+    "terminal_bottom_flux"
+  ],
+  "reference_floor_interpretation": {
+    "temporal_authority": "ROM-0T1Q1 exact original 0.0016 vs 0.0008 matrix",
+    "vertical_authority": "ROM-0V1 exact original 16x10 vs 32x5 matrix",
+    "rule": "REFERENCE_FLOORS_ARE_CONTEXTUAL_NUMERICAL_EVIDENCE_NOT_ROM_TOLERANCES",
+    "positive_ambiguity_claim": "requires output separation above a matched available Reference-floor envelope",
+    "if_no_matched_floor": "label NO_MATCHED_REFERENCE_FLOOR and make no sub-floor equivalence claim",
+    "subtract_floor_from_error": false
+  },
+  "library_generation_gates": [
+    "ACCEPTED_FKT_OWNERSHIP_ONLY",
+    "HARD_MASS_GATE_EVERY_RETAINED_POINT",
+    "NO_HEAD_MIXED_OR_OTHER_FALLBACK",
+    "DETERMINISTIC_REPLAY",
+    "DISCOVERY_HOLDOUT_ARTIFACT_SEPARATION",
+    "MATERIAL_TRANSFER_ARTIFACT_SEPARATION",
+    "MANIFEST_AND_SHA256_PERSISTED"
+  ],
+  "forbidden_before_ROM1A_close": [
+    "POD_OR_MODAL_BASIS_SELECTION",
+    "REDUCED_COORDINATE_SELECTION",
+    "MEMORY_VARIABLE_SELECTION",
+    "REDUCED_DYNAMICS_OR_CLOSURE_FIT",
+    "HOLDOUT_DRIVEN_FEATURE_ENGINEERING",
+    "B14_DRIVEN_FEATURE_ENGINEERING",
+    "PRODUCTION_ROM_CLAIM"
+  ],
+  "close_decisions": [
+    "PROCEED_TO_ROM1B",
+    "EXPAND_REACHABLE_STATE_LIBRARY",
+    "REFERENCE_AUTHORITY_OUTSIDE_QUALIFIED_DOMAIN",
+    "NO_GO_REACHABLE_STATE_LIBRARY"
+  ]
+}

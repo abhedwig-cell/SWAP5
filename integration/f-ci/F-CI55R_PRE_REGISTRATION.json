@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI55R",
+  "title": "F-CI55 Moving Canonical Preservation Authority Reconciliation",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "blocked_fci55_candidate": "860f697cd785f3de01a36c9f0f06043e6dcb689a",
+  "blocked_broad_run": 34717007154,
+  "blocking_job": 103616157347,
+  "blocking_reason": "current-restricted-canonical-preservation correctly detected drift on its frozen dependency surface because F-GC21P1-R1 intentionally modifies five files on that surface",
+  "production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "stale_moving_preservation_authority": "828ba0f0ed933fb62107f849ae0bb7cc32c47c30",
+  "target_moving_preservation_authority": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "allowed_changes": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci55r-moving-preservation-reconciliation.yml",
+    "integration/f-ci/F-CI55R_PRE_REGISTRATION.json",
+    "integration/f-ci/F-CI55R_ARCHITECTURE_AUDIT.json",
+    "integration/f-ci/F-CI55R_STATUS.json",
+    "tests/fci/run_fci55r_moving_preservation_reconciliation.sh"
+  ],
+  "forbidden_changes": [
+    "any production source",
+    "reference/swap-4.3.1",
+    "F-GC21P1-R1 owner authority",
+    "F-VQ63 independent authority",
+    "RB1 release authority",
+    "scientific or mass tolerances"
+  ],
+  "required_proofs": [
+    "the five F-GC21P1-R1 production blobs remain exactly the independently qualified composition postimage",
+    "the moving dependency_surface is unchanged",
+    "only AUTH moves from the stale admitted preservation authority to the exact five-file production composition",
+    "the target authority is a direct child of the pinned restart canonical and is an ancestor of the remediation candidate",
+    "F-CI55 dedicated admission qualification remains green in substance",
+    "all 30 architecture invariants have no adverse delta",
+    "mass conservation remains hard with no tolerance relaxation",
+    "the broad F-CI canonical workflow including current-restricted-canonical-preservation must be green before promotion"
+  ],
+  "promotion_rule": "Do not promote blocked F-CI55 head 860f697. Promote only a separately qualified F-CI55R final head by a true two-parent merge after live canonical race recheck; no squash, rebase or force update.",
+  "hard_nonclaims": [
+    "no full F-GC21 predictor-corrector orchestration admission",
+    "no production groundwater-coupling admission",
+    "no MODFLOW/aquifer end-to-end qualification",
+    "no crash-recovery, distributed-runtime or large-batch throughput qualification",
+    "RB1 remains frozen"
+  ]
+}

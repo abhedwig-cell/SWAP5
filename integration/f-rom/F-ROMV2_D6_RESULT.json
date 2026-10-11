@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.f-romv2-d6.preflight-result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D6",
+  "decision": "D6_FIXED_ENDPOINT_BRACKET_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+  "adjudication": "ROOT_SEARCH_DESIGN_NO_GO_NOT_MANIFOLD_HYDROLOGY_NO_GO",
+  "execution": {
+    "workflow_run": 35446115430,
+    "workflow_job": 105905207753,
+    "executed_head": "e979ff99045166b645be72a6ece09afba2066e5d",
+    "execution_pull_request": 426,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10585064118,
+    "artifact_digest": "sha256:4177cc02c7cb542f546f3b6969fdc68b743770cf2a45751753d3112677ce6588",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "fb827152dec40c8f0081f6f4cd9e188aa47bf4f916e5d4c754437b453548ce7a",
+    "preflight_stdout_sha256": "0017c03bf6ad57d813f2e2c61465de99204a2d9bb11654863d24f540a2fa89ab"
+  },
+  "trajectory_evidence_consumed": false,
+  "initial_equilibrium": {
+    "theta": 0.36636989999999997,
+    "h_cm": -29.793709016906497,
+    "K_cm_per_day": 3.9239980890384993,
+    "storage_cm": 58.619184
+  },
+  "frozen_q_bracket_cm_per_day": [
+    -31.225016,
+    31.225016
+  ],
+  "endpoint_evidence": {
+    "minus_Ksat": {
+      "finite": false,
+      "error": "invalid conductivity"
+    },
+    "plus_Ksat": {
+      "finite": false,
+      "error": "theta outside open physical domain"
+    },
+    "equilibrium_q_control": {
+      "finite": true,
+      "storage_cm": 58.61918400000099,
+      "storage_residual_cm": 9.947598300641403e-13
+    }
+  },
+  "endpoint_finite_contract_pass": false,
+  "opposite_residual_sign_contract_pass": false,
+  "post_result_bracket_widening_or_narrowing_authorized": false,
+  "scientific_interpretation": "The frozen D6 fixed-endpoint bracket is not physically admissible at its own endpoints. This invalidates the D6 search construction before any dynamic trajectory evidence is consumed. It does not invalidate the quasi-steady manifold hypothesis.",
+  "next": [
+    "CLOSE_D6_WITHOUT_BRACKET_RETUNING",
+    "PREREGISTER_A_NEW_PHYSICALLY_ADMISSIBLE_ROOT_SEARCH_CONSTRUCTION",
+    "PRESERVE_QS1_EQUATIONS_AND_RK4_ORDER_UNCHANGED_IF_REUSED",
+    "DO_NOT_CONSUME_TRAJECTORY_EVIDENCE_UNTIL_THE_NEW_ROOT_SEARCH_PASSES_PREFLIGHT"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

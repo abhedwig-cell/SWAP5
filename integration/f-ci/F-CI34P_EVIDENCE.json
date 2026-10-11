@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.canonical_post_promotion_reconciliation_evidence.v1",
+  "work_unit": "F-CI34P",
+  "base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "tested_head": "1d8aee8b9712dab889d8983b661f91a9a1c12e8a",
+  "workflow": {
+    "run": 34490684618,
+    "job": 102916317004,
+    "conclusion": "success",
+    "artifact_id": 10157617447,
+    "artifact_name": "F-CI34P-post-promotion-reconciliation-evidence",
+    "artifact_digest": "sha256:deb5736e9925b62b04ed234c72f48689ec0e83729b07d41a2ac1d31c5621fbf7"
+  },
+  "checks": {
+    "zero_src_reference_delta": "PASS",
+    "scope_delta": "PASS",
+    "f_ci33_divdra_runtime_authority_preserved": "PASS",
+    "f_ci34_root_attribution_runtime_authority_preserved": "PASS",
+    "f_ci33_f_ci33r_gate_runner_code_byte_identical": "PASS",
+    "obsolete_moving_canonical_triggers_retired": "PASS",
+    "historical_replay_paths_preserved": "PASS",
+    "broad_canonical_authority_reconciled": "PASS",
+    "f_ci34_strong_source_science_replay": "PASS",
+    "current_divdra_o0": "PASS",
+    "current_divdra_o2": "PASS",
+    "current_divdra_o0_o2_identity": "PASS",
+    "architecture_invariants_30_of_30": "PASS"
+  },
+  "frozen_postimage": {
+    "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "f_ci33_divdra_runtime_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "f_ci34_root_attribution_runtime_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "failure_reconciliation": {
+    "prior_broad_canonical_run": 34488927973,
+    "prior_broad_failure_job": 102911134666,
+    "classification": "STALE_FCI33_CURRENT_POSTIMAGE_AUTHORITY_AFTER_VALID_FCI34_SOURCE_MOVE",
+    "production_regression_indicated": false,
+    "scientific_regression_indicated": false,
+    "mass_regression_indicated": false,
+    "basis": "The nine frozen historical jobs passed on the promoted F-CI34 head, the dedicated F-CI34 gate passed on that same head, and F-CI34P subsequently replayed F-CI34 plus current DIVDRA successfully after governance-only trigger reconciliation."
+  },
+  "qualification_interpretation": "This evidence qualifies the governance reconciliation before promotion. It does not by itself claim that the repaired broad canonical workflow has passed on integration/f-ci-canonical; that remains a required post-promotion gate."
+}

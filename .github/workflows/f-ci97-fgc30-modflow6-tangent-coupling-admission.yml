@@ -1,0 +1,33 @@
+name: F-CI97 F-GC30 MODFLOW6 tangent coupling admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci97-fgc30-modflow6-tangent-coupling-admission
+    paths:
+      - 'src/runtime/mod_modflow6_swap_predictor_response.f90'
+      - 'src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90'
+      - 'src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90'
+      - 'src/runtime/mod_modflow6_swap_predictor_origin.f90'
+      - 'src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90'
+      - 'qualification/F-VQ104_STATUS.json'
+      - 'tests/fci/run_fci97_fgc30_modflow6_tangent_coupling_admission.sh'
+      - '.github/workflows/f-ci97-fgc30-modflow6-tangent-coupling-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI97 exact-source admission qualification
+        run: bash tests/fci/run_fci97_fgc30_modflow6_tangent_coupling_admission.sh

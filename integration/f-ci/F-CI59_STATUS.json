@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.fci59.status.v1",
+  "work_unit": "F-CI59",
+  "phase": "QUALIFIED_READY_FOR_PROMOTION",
+  "restart_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "owner_authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "independent_authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+  "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION",
+  "tested": true,
+  "independently_qualified": true,
+  "canonical_recomposition_qualified": true,
+  "production_delta_files": 2,
+  "reference_source_changed": false,
+  "physics_changed": false,
+  "kernel_changed": false,
+  "mass_authority_changed": false,
+  "permanent_preservation_gate_updated": true,
+  "workflow_run": 34780440432,
+  "workflow_job": 103786356223,
+  "promoted": false,
+  "next": "recheck live current canonical; if unchanged, true two-parent merge; then postimage reconciliation"
+}

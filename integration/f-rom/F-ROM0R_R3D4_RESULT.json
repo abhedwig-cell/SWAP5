@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.f-rom0r.r3d4-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0R-R3D4",
+  "title": "Fail-closed total-only representation fallback qualification",
+  "execution": {
+    "workflow_run": 35374485859,
+    "workflow_attempt": 2,
+    "workflow_job": 105696173795,
+    "executed_head": "97abf1f04329f7d19c0bcae863d00579913966f4",
+    "artifact_id": 10559343867,
+    "artifact_digest": "sha256:4089f7be90d326539b53bff9bbc03c2c8e20f346f5edefe571c2eee842a18a69",
+    "conclusion": "success",
+    "o0_o2_stdout_bitwise_identity": true
+  },
+  "baseline_provenance": {
+    "B01_BOTTOM_HEAD_RISE": {"pass_steps":10,"fail_step":11},
+    "B01_BOTTOM_HEAD_FALL": {"pass_steps":9,"fail_step":10},
+    "B14_BOTTOM_HEAD_RISE": {"pass_steps":16,"fail_step":0},
+    "B14_BOTTOM_HEAD_FALL": {"pass_steps":16,"fail_step":0},
+    "reproduced": true
+  },
+  "overlap": {
+    "expected_original_accepted_steps": 51,
+    "observed_original_accepted_overlap_steps": 51,
+    "all_bit_neutral": true
+  },
+  "fallback": {
+    "count": 2,
+    "B01_positive_both_directions": true,
+    "B14_zero_both_directions": true,
+    "all_triggers_total_only_within_pre_solve_bound": true,
+    "rows": [
+      {
+        "material": "B01",
+        "case": "BOTTOM_HEAD_RISE",
+        "step": 11,
+        "classification": "RETRY_TOTAL_ONLY",
+        "local_balance_flags": 0,
+        "head_flags": 0,
+        "max_abs_local_residual_cm_per_day": 8.242295734817162e-13,
+        "total_residual_cm_per_day": -1.0602629885170245e-12,
+        "representation_bound_cm": 8.881784197001252e-15,
+        "abs_total_residual_integrated_cm": 8.4821039081362e-16,
+        "residual_over_bound": 0.09550000000000004,
+        "fallback_total_tolerance_cm_per_day": 1.110223024625156e-11,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking": 29,
+        "accepted_nonlinear_iterations": 3,
+        "accepted_backtracking": 3,
+        "accepted_mass_residual_cm": -4.336808689942018e-19
+      },
+      {
+        "material": "B01",
+        "case": "BOTTOM_HEAD_FALL",
+        "step": 10,
+        "classification": "RETRY_TOTAL_ONLY",
+        "local_balance_flags": 0,
+        "head_flags": 0,
+        "max_abs_local_residual_cm_per_day": 5.520028878436278e-13,
+        "total_residual_cm_per_day": 1.55964130499342e-12,
+        "representation_bound_cm": 8.881784197001252e-15,
+        "abs_total_residual_integrated_cm": 1.2477130439947338e-15,
+        "residual_over_bound": 0.14047999999999977,
+        "fallback_total_tolerance_cm_per_day": 1.1102230246251585e-11,
+        "failed_nonlinear_iterations": 16,
+        "failed_backtracking": 42,
+        "accepted_nonlinear_iterations": 4,
+        "accepted_backtracking": 6,
+        "accepted_mass_residual_cm": -8.673617379884035e-19
+      }
+    ]
+  },
+  "full_horizon": {
+    "case_pass_count": 4,
+    "all_four_complete": true
+  },
+  "directional_reachability": {
+    "B01": {
+      "head_rise_lower_storage_cm": 44.02746082292647,
+      "head_fall_lower_storage_cm": 43.907738046883345,
+      "head_rise_cumulative_bottom_outward_exchange_cm": -0.012845647386771976,
+      "head_fall_cumulative_bottom_outward_exchange_cm": 0.10687712865636834,
+      "directional_order_pass": true
+    },
+    "B14": {
+      "head_rise_lower_storage_cm": 42.69336964668223,
+      "head_fall_lower_storage_cm": 42.68854375248657,
+      "head_rise_cumulative_bottom_outward_exchange_cm": -0.0021612472614900877,
+      "head_fall_cumulative_bottom_outward_exchange_cm": 0.0026646469341646247,
+      "directional_order_pass": true
+    }
+  },
+  "mass": {
+    "hard_gate_cm": 1e-12,
+    "max_abs_committed_transaction_mass_residual_cm": 8.673617379884035e-19,
+    "hard_gate_pass": true
+  },
+  "policy": {
+    "representation_bound_formula": "0.5 * sum_i((spacing(theta_s_material) + spacing(theta_base_i)) * dz_i)",
+    "fallback_total_tolerance_formula": "max(1e-12, representation_bound_cm/dt)",
+    "observed_failed_residual_used_to_choose_tolerance": false,
+    "dt_subdivision_used": false,
+    "fresh_backend_for_fallback": true
+  },
+  "decision": "R3_FAIL_CLOSED_TOTAL_ONLY_FALLBACK_QUALIFIED",
+  "important_nonclaims": [
+    "The original R3 fixed-total-control no-go remains unchanged.",
+    "This qualifies only the frozen ROM research Reference fallback policy.",
+    "No production Reference default or general fallback is admitted.",
+    "ROM-1A is not authorized until the remaining ROM-0 Reference-floor gates close."
+  ],
+  "production_fallback_admitted": false,
+  "production_or_reference_source_mutated": false,
+  "rom1a_authorized": false
+}

@@ -1,0 +1,33 @@
+name: TRACE research integrity
+
+on:
+  pull_request:
+    paths:
+      - 'integration/trace/**'
+      - 'tools/validate_trace_registry.py'
+      - '.github/workflows/trace-research-integrity.yml'
+  push:
+    paths:
+      - 'integration/trace/**'
+      - 'tools/validate_trace_registry.py'
+      - '.github/workflows/trace-research-integrity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate TRACE registry and case integrity
+        run: python tools/validate_trace_registry.py
+      - name: Validate TRACE JSON syntax
+        run: |
+          python -m json.tool integration/trace/TRACE_CASE_SCHEMA.json >/dev/null
+          python -m json.tool integration/trace/TRACE_CASE_TEMPLATE.json >/dev/null
+          python -m json.tool integration/trace/TRACE_EVIDENCE_MANIFEST_TEMPLATE.json >/dev/null

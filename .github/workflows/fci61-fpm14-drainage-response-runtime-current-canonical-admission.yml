@@ -1,0 +1,26 @@
+name: F-CI61 F-PM14 drainage-response runtime current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci61-fpm14-drainage-response-runtime-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI61 fail-closed admission gate
+        run: bash tests/fci/run_fci61_fpm14_drainage_response_runtime_current_canonical_admission.sh

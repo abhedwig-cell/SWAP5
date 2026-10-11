@@ -1,0 +1,56 @@
+name: F-PE-TEMPORAL08 production c0.65 admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fpe/run_fpe_temporal08_*.sh'
+      - 'tests/fpe/test_fpe_temporal08_*.f90'
+      - 'docs/performance/F-PE-TEMPORAL08_*.md'
+      - '.github/workflows/f-pe-temporal08.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-policy-default-off:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_temporal08_p0_policy.sh
+
+  p1-registry-equivalence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_temporal08_p1_registry.sh
+
+  p2-bootstrap-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_temporal08_p2_bootstrap.sh
+
+  p3-live-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fgc/run_fgc49d_live_production_application_context.sh
+
+  p3-live-c065-production:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fpe/run_fpe_temporal08_p3_live_production.sh

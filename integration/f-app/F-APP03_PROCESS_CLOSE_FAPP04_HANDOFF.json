@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect scientific process",
+  "phase": "CLOSE_HANDOFF",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "expected_parent": "3668d0adabf46bc47a60b9f10d31b09e7dcf7488",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "95748d047325e74adf6d06eba978dea61bd51a7d",
+    "relevant_delta": "No F-APP03 scientific dependency change. Latest canonical change F-DOC26 is documentation-only and explicitly preserves production/reference source."
+  },
+  "process_authority": {
+    "implementation": "src/process/mod_pmdirect_swetr0_process.f90",
+    "implementation_commit": "f84890dbe28084515dec0936b65fa5c7a12efaad",
+    "persistent_test": "tests/fapp/test_fapp03_pmdirect_swetr0_process.f90",
+    "test_commit": "9aab3741beec7127fb83f4bf27d0210322d60944",
+    "qualification": "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+    "qualification_commit": "3668d0adabf46bc47a60b9f10d31b09e7dcf7488",
+    "verdict": "PASS_RESTRICTED_PMDIRECT_PROCESS_IMPLEMENTED_AND_INDEPENDENTLY_QUALIFIED"
+  },
+  "ownership_reconciliation": {
+    "finding": "Existing admitted downstream bindings are nominally coupled to reference_et_demand_result_t and fmr_reference_et_binding_diagnostics_t. Directly wiring PMdirect through them would require either refactoring admitted SWETR=1-specific adapters or duplicating parallel runtime logic.",
+    "inspected_surfaces": [
+      "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+      "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+    ],
+    "decision": "Do not broaden F-APP03 into runtime/application composition. Close F-APP03 at the pure scientific-process boundary and hand the typed composition/binding decision to the already preregistered F-APP04 workunit.",
+    "reason": "F-APP04 is the existing separate decision surface for Restricted Hupsel SWETR=0 PMdirect typed application composition and explicitly permits minimal downstream binding while requiring the admitted SWETR=1 reference-ET process to remain unchanged."
+  },
+  "f_app04_handoff": {
+    "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+    "live_head": "98cac5b96dd0bf853df0ca867c06d6300aa4b1c1",
+    "preregistration_commit": "391800f60871c8403aab1ef7871267425bccec30",
+    "preregistration_file": "integration/f-app/F-APP04_PREREGISTRATION.json",
+    "previous_exact_source_blocker": "Cured by exact archive/source/config authority and the qualified F-APP03 process postimage.",
+    "required_dependency": "F-APP04 must consume the admitted/accepted F-APP03 process postimage rather than independently recreating or fitting PMdirect equations."
+  },
+  "branch_relationship": {
+    "f_app04_vs_f_app03": {
+      "status": "diverged",
+      "merge_base": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+      "f_app03_ahead_by": 23,
+      "f_app03_behind_by": 51
+    },
+    "canonical_vs_f_app03": {
+      "status": "diverged",
+      "merge_base": "6531dae99e5f1cc0cd6d4fadc5c633f0ccece404",
+      "f_app03_ahead_by": 23,
+      "f_app03_behind_by": 169
+    },
+    "policy": "Do not force-update F-APP04 and do not duplicate the PMdirect source onto the divergent F-APP04 branch. Establish F-APP03 admission/dependency first, then reconcile F-APP04 against that accepted dependency."
+  },
+  "verdict": "F_APP03_PROCESS_CLOSED_QUALIFIED_PENDING_CANONICAL_ADMISSION_FAPP04_COMPOSITION_HANDOFF",
+  "production_source_changed": true,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "runtime_binding_changed": false,
+  "whole_hupsel_closed": false,
+  "m1_c3_closed": false,
+  "next_permitted_action": "Open a bounded F-APP03 admission PR against current integration/f-ci-canonical. Do not merge until current-head checks confirm the qualified process/test/evidence can be admitted without altering existing SWETR=1, solver, transaction or reference behaviour. After admission, reconcile F-APP04 from its preregistered state against the admitted F-APP03 dependency and implement only the composition/binding surface.",
+  "exclusions": [
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "legacy file-driven M1-C3 adapter",
+    "generic ET redesign",
+    "modification of admitted SWETR=1 reference-ET process",
+    "solver, Richards, timestep, retry or tolerance changes"
+  ]
+}

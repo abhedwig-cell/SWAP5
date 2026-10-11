@@ -1,0 +1,27 @@
+name: F-WOF36 Gate B composition preservation
+
+on:
+  push:
+    branches:
+      - work/f-wof36-physical-trial-accepted-integral-binding
+    paths:
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_physical_trial_binding.f90'
+      - 'tests/fwof/run_fwof36_gate_b_preservation_gate.sh'
+      - '.github/workflows/fwof36-gate-b-preservation.yml'
+  workflow_dispatch:
+
+jobs:
+  preserve-gate-b:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF36 Gate B composition preservation
+        run: bash tests/fwof/run_fwof36_gate_b_preservation_gate.sh

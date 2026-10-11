@@ -1,0 +1,81 @@
+{
+  "schema": "swap5.fci66p.status.v1",
+  "work_unit": "F-CI66P",
+  "title": "Generic canonical subinterval execution-policy postimage and moving-current preservation reconciliation",
+  "phase": "POSTIMAGE_RECONCILIATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI66P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "branch": "qualification/f-ci66p-current-canonical-postimage-reconciliation",
+  "admitted_postimage": {
+    "commit": "87893112dd9bfb9e37f48a2f851b85e6f23b9951",
+    "tree": "43b17ed75d38b3f5f9f5ab3e6196496a73580d07",
+    "first_parent_pre_admission_canonical": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+    "second_parent_fci66_final_green_status": "cabed28c6b9996666df1dc39ce34758177745f3f",
+    "true_two_parent_promotion": true
+  },
+  "authorities": {
+    "F_CI66_status_blob": "6d5a443da40d2e6c355dfa3f98159016aa0f1359",
+    "F_CI66_final_green_head": "cabed28c6b9996666df1dc39ce34758177745f3f",
+    "F_ROSS01_K_RUNTIME_REMAINDER_CLOSEOUT_blob": "bf5ae8a8eb732ff363f0a462a2141b2991670a9f"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "a6aeb668129886e3be87de49b981050919b0be80",
+    "green_tree_before_status": "14829bfb140d11955a09057c0a87b528b7cd846e",
+    "workflow_run": 34885084075,
+    "workflow_job": 104113624503,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "true_two_parent_promotion_and_live_postimage_lock": "PASS",
+    "exact_canonical_runtime_postimage": "PASS",
+    "reconciliation_scope_allowlist": "PASS",
+    "exact_canonical_workflow_transformation": "PASS",
+    "moving_current_authority_reconciliation": "PASS",
+    "F_CI66_authority_reconciliation": "PASS",
+    "promoted_F_CI66_O0_O2_replay": "PASS"
+  },
+  "production_postimage": {
+    "src/runtime/mod_canonical_interval_runtime.f90": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237"
+  },
+  "preserved_immutable_sources": {
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc"
+  },
+  "moving_current_preservation": {
+    "authority_anchor": "87893112dd9bfb9e37f48a2f851b85e6f23b9951",
+    "exact_workflow_transformation": "PASS",
+    "canonical_runtime_already_in_dependency_surface": true,
+    "production_or_reference_delta": false
+  },
+  "scope_guards": {
+    "new_physics": false,
+    "rossfast_specific_policy_in_generic_runtime": false,
+    "new_mass_tolerance": false,
+    "new_temporal_tolerance": false,
+    "new_kernel_io": false,
+    "new_persistent_solver_scratch": false,
+    "runtime_performance_claim": false,
+    "arbitrary_duration_generalization": false,
+    "multiswap_claim": false,
+    "groundwater_science_claim": false,
+    "a10_surface_cap_claim": false
+  },
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "rossfast_production_model_adapter_admitted": false,
+  "ready_for_postimage_reconciliation_promotion": true,
+  "canonical_contains_this_reconciliation_metadata": false,
+  "hard_nonclaims": [
+    "F-CI66P closes only the generic canonical subinterval execution-policy seam admission and preservation scope.",
+    "F-CI66P does not admit a RossFast production model adapter or RossFast scheduling science.",
+    "F-CI66P does not qualify runtime performance or arbitrary-duration generalization.",
+    "F-CI66P does not admit A10 surface-cap, heterogeneous-profile, bottom-boundary, groundwater-science, MultiSWAP or FullRichards generalizations."
+  ],
+  "promotion_requirements": [
+    "This exact final F-CI66P status head must pass the F-CI66P workflow.",
+    "Live integration/f-ci-canonical must still equal 87893112dd9bfb9e37f48a2f851b85e6f23b9951 immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI66P status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI66P status-head tree.",
+    "No src or reference source delta is permitted in F-CI66P.",
+    "The canonical F-CI workflow must pass after promotion before F-CI66P is operationally closed."
+  ]
+}

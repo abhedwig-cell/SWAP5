@@ -1,0 +1,73 @@
+name: F-APP03 public Hupsel fixture recovery
+
+on:
+  push:
+    branches:
+      - work/f-app03-hupsel-daily-meteo-recovery
+    paths:
+      - '.github/workflows/f-app03-public-hupsel-fixture-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  recovery-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe pinned public Hupsel copies
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          expected_met='1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6'
+          expected_swp='a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b'
+
+          rswap_commit='c30f40227004191ca729f25cc35f500301cb4bab'
+          pyswap_commit='d9b83c4c2cecfa0e7b5335935e8e36d6d437a0bc'
+
+          curl -fsSL --retry 3 \
+            "https://raw.githubusercontent.com/moritzshore/rswap/${rswap_commit}/inst/extdata/rswap_example_input/283.met" \
+            -o rswap_283.met
+          curl -fsSL --retry 3 \
+            "https://raw.githubusercontent.com/moritzshore/rswap/${rswap_commit}/inst/extdata/rswap_example_input/swap.swp" \
+            -o rswap_swap.swp
+          curl -fsSL --retry 3 \
+            "https://raw.githubusercontent.com/zawadzkim/pySWAP/${pyswap_commit}/pyswap/testcase/data/1-hupselbrook/283.csv" \
+            -o pyswap_283.csv
+
+          rswap_met_sha="$(sha256sum rswap_283.met | awk '{print $1}')"
+          rswap_swp_sha="$(sha256sum rswap_swap.swp | awk '{print $1}')"
+          pyswap_csv_sha="$(sha256sum pyswap_283.csv | awk '{print $1}')"
+
+          if [[ "$rswap_met_sha" == "$expected_met" ]]; then met_match=PASS; else met_match=NO_MATCH; fi
+          if [[ "$rswap_swp_sha" == "$expected_swp" ]]; then swp_match=PASS; else swp_match=NO_MATCH; fi
+
+          # rswap carries historical generated-file comments before the CSV-style header.
+          # Compare only the data table to the pySWAP copy; this is provenance context,
+          # never a substitute for the F-VQ99 raw-byte SHA authority.
+          awk 'BEGIN{start=0} /^Station,DD,MM,YYYY,Rad,Tmin,Tmax,Hum,Wind,Rain,ETref,Wet$/{start=1} start{print}' rswap_283.met > rswap_283_table.csv
+          if cmp -s rswap_283_table.csv pyswap_283.csv; then public_table_identity=PASS; else public_table_identity=NO_MATCH; fi
+
+          {
+            echo "workunit=F-APP03"
+            echo "probe=PINNED_PUBLIC_HUPSEL_FIXTURE_COPIES"
+            echo "expected_FVQ99_283_met_sha256=$expected_met"
+            echo "expected_FVQ99_swap_swp_sha256=$expected_swp"
+            echo "rswap_commit=$rswap_commit"
+            echo "rswap_283_met_sha256=$rswap_met_sha"
+            echo "FAPP03_RSWAP_283_RAW_MATCH=$met_match"
+            echo "rswap_swap_swp_sha256=$rswap_swp_sha"
+            echo "FAPP03_RSWAP_SWAP_SWP_RAW_MATCH=$swp_match"
+            echo "pyswap_commit=$pyswap_commit"
+            echo "pyswap_283_csv_sha256=$pyswap_csv_sha"
+            echo "FAPP03_PUBLIC_METEO_TABLE_IDENTITY=$public_table_identity"
+            echo "interpretation=Only exact raw SHA matches may clear the F-VQ99 fixture-authority blocker. Table identity alone is supporting provenance evidence."
+          } | tee F-APP03_PUBLIC_FIXTURE_RECOVERY.txt
+
+      - name: Upload recovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-app03-public-hupsel-fixture-recovery
+          path: F-APP03_PUBLIC_FIXTURE_RECOVERY.txt
+          if-no-files-found: error

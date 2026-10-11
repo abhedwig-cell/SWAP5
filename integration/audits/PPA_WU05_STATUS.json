@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.ppa_wu05.status.v1",
+  "work_unit": "PPA-WU05",
+  "title": "Advanced water-process triage",
+  "branch": "qualification/ppa-wu05-advanced-water-process-triage-closeout",
+  "reconcile_base": "ff56b8c1565821cf1d23f980e754905d8920371e",
+  "status": "DEPENDENCY_GRAPH_AUTHORITY_FROZEN_CLOSED",
+  "production_source_mutation": false,
+  "reference_mutation": false,
+  "authority": {
+    "reference_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore_corrected_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "oxygenstress_corrected_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+  },
+  "unsupported_historical_labels_removed": [
+    "S12o",
+    "A23au",
+    "S12r",
+    "F-PM05 readiness",
+    "F-PM07 readiness",
+    "F-PE15/F-PE16 macropore ownership evidence"
+  ],
+  "family_verdicts": {
+    "macropore": "HIGH_USE_HIGH_DEPENDENCY_UNBLOCKING_SOURCE_STATE_TRANSACTION_AUTHORITY_REQUIRED",
+    "advanced_root_stress": "DECOMPOSE_BEFORE_MIGRATION_EXISTING_ROOT_SINK_OWNER_PRESERVED",
+    "frost": "SENSIBLE_TEMPERATURE_EXISTS_FROST_AUTHORITY_REQUIRES_SEPARATE_SOURCE_TRACE"
+  },
+  "first_target": {
+    "id": "PPA-WU05-A",
+    "title": "Macropore source/state/mass/transaction authority",
+    "type": "REVIEW_ONLY_PREREQUISITE",
+    "production_admission": "NONE",
+    "exit": [
+      "exact B1.11 macropore/macrorate source trace",
+      "persistent/candidate/result/scratch classification",
+      "internal/external mass-transfer graph",
+      "restart schema",
+      "rollback contract",
+      "bounded later production slices"
+    ]
+  },
+  "sequencing": [
+    "PPA-WU05-A macropore authority",
+    "PPA-WU05-C oxygen authority",
+    "PPA-WU05-B frost authority"
+  ],
+  "qualification": {
+    "state": "PASS",
+    "workflow": "PPA-WU05 advanced water-process triage",
+    "run_id": 35379607616,
+    "authority_job": 105712393295,
+    "authority_conclusion": "success",
+    "documentation_run": 35379607553,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run": 35379607550,
+    "canonical_qualification_conclusion": "success",
+    "checks": [
+      "B1.11 corrected macropore and oxygenstress authority",
+      "unsupported historical labels excluded as decision authority",
+      "macropore state/scratch specifics held for exact source trace",
+      "frost persistence/recomputability held for exact source trace",
+      "advanced root decomposition preserves single admitted root sink owner",
+      "first target is review-only PPA-WU05-A",
+      "zero src/reference mutation",
+      "broad canonical preservation"
+    ]
+  },
+  "verdict": "DEPENDENCY_GRAPH_FROZEN_FIRST_TARGET_MACROPORE_SOURCE_STATE_MASS_TRANSACTION_AUTHORITY",
+  "next_action": "PPA-WU05 is closed as triage authority. Open PPA-WU05-A as a separate exact B1.11 macropore/macrorate source-state-mass-transaction review. No macropore production implementation is authorized by WU05.",
+  "parallel_reconciliation": {
+    "superseded_pr": 336,
+    "reason": "Parallel branch used historical labels not recoverable as current canonical files or searchable repository commits; those labels are not accepted as decision authority.",
+    "authoritative_pr": 337
+  }
+}

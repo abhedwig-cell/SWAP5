@@ -1,0 +1,155 @@
+{
+  "schema": "swap5.f-romv2-d21.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D21",
+  "title": "Rainfall-ponding-runoff boundary authority before FMC hydrological comparison",
+  "phase": "PREREGISTERED_BEFORE_BOUNDARY_PREFLIGHT",
+  "canonical_base": "277bf86d79a1ac13cbc9ede7c934aa661f915b6f",
+  "purpose": "Qualify a matched rainfall-supply, ponding-head and linear-runoff surface-boundary authority before any FMC versus R16/R2 rainfall-threshold trajectory comparison.",
+  "scientific_role": {
+    "class": "BOUNDARY_AUTHORITY_PREFLIGHT",
+    "hydrological_comparator": false,
+    "R16_R2_trajectory_evidence_consumed": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D14": "Published Ogden-2015 Eq.18 surface-front kinematics qualified for h_p=0; Eq.19 slug kinematics qualified.",
+    "D15": "Finite-volume rainfall allocation, dry-bin activation, finite surface store, runoff bookkeeping, hiatus transition and merge accounting qualified.",
+    "D16": "Surface redistribution fidelity retained against R2 under prescribed infiltration and qbot=0.",
+    "D20": "Longer fixed-water-table FMC persistence retained, but rainfall/ponding/runoff explicitly remained unqualified.",
+    "SWAP_dynamic_top": "Current canonical b110 dynamic-top provider supports surface-flux, ponded-head and ponded-head-linear-runoff regimes.",
+    "WU04A_boundary": "Dynamic-top runtime is admitted through Black optional-state composition. D21 uses zero potential evaporation and does not compose with groundwater mode 5."
+  },
+  "matched_surface_context": {
+    "material": "B01 D12/D16 identity",
+    "total_depth_cm": 160,
+    "planned_later_bottom_boundary": "mode 2 prescribed zero flux",
+    "initial_surface_profile": "D16 D14_I_DEEP exact finite-volume mapping",
+    "initial_falling_slugs": "none",
+    "initial_surface_store_cm": 0,
+    "FMC_bins": 200,
+    "process_step_seconds": 10,
+    "root_sink_ET_drainage_subsurface_irrigation": "zero for eventual comparator",
+    "groundwater_front": "none in D21"
+  },
+  "B01": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "HcM_cm": 14.085215420920257
+  },
+  "boundary_parameters": {
+    "step_day": "10/86400",
+    "rainfall_factor_ladder_of_Ksat": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "irrigation_rate_cm_per_day": 0,
+    "snowmelt_rate_cm_per_day": 0,
+    "runon_rate_cm_per_day": 0,
+    "potential_bare_soil_evaporation_cm_per_day": 0,
+    "potential_pond_evaporation_cm_per_day": 0,
+    "ponding_max_cm": "Ksat*step_day",
+    "runoff_resistance_day": 0.001,
+    "runoff_exponent": 1,
+    "rationale": [
+      "The rainfall ladder is fixed before any R16/R2 trajectory exposure and spans sub-Ksat through strongly super-Ksat supply.",
+      "ponding_max=Ksat*dt reuses the finite-store scale already qualified in D15 rather than inventing a new application parameter.",
+      "runoff_resistance=1e-3 day is the minimum active linear-runoff resistance admitted by the current dynamic-top provider and is used as a qualification stress boundary, not as an application calibration."
+    ]
+  },
+  "SWAP_provider_oracle": {
+    "implementation": "canonical evaluate_b110_dynamic_top_boundary",
+    "geometry": "16 x 10 cm B01 research geometry",
+    "top_state": "exact D16 I_DEEP top 10-cm finite-volume average mapped through B01 inverse retention",
+    "conductivity_mean_method": 1,
+    "previous_ponding_depth_cm": 0,
+    "candidate_iteration": {
+      "rule": "For each rainfall factor start candidate ponding at zero, evaluate the provider, then feed result candidate_ponding_depth back only as candidate_ponding_depth while committed previous_ponding_depth remains zero.",
+      "max_iterations": 32,
+      "convergence": "bitwise equality or abs(candidate_new-candidate_old)<=1e-14 cm",
+      "purpose": "Emulate the provider's solver-candidate surface-water closure without running a Richards trajectory."
+    },
+    "regime_classes": {
+      "FLUX_NO_PONDING": "route=surface-flux and candidate ponding=0 and runoff=0",
+      "PONDED_NO_RUNOFF": "route=ponded-head and candidate ponding>0 and runoff=0",
+      "ACTIVE_LINEAR_RUNOFF": "route=ponded-head-linear-runoff and candidate ponding>ponding_max and runoff>0"
+    },
+    "selection_rule": [
+      "select the lowest ladder factor classified FLUX_NO_PONDING",
+      "select the lowest ladder factor classified PONDED_NO_RUNOFF",
+      "select the lowest ladder factor classified ACTIVE_LINEAR_RUNOFF"
+    ],
+    "preflight_requirement": "All three classes must exist with strictly increasing selected rainfall factor."
+  },
+  "FMC_boundary_primitives": {
+    "published_front_equation": "D14/Ogden Eq.18 dz/dt = secantK * [1 + (G_eff+h_p)/z]",
+    "newly_qualified_dimension": "nonzero h_p only; no change to constitutive law, bins, process step or capillary relaxation",
+    "ponding_head_cases_cm": [
+      "0",
+      "ponding_max",
+      "2*ponding_max"
+    ],
+    "requirement_h_p": [
+      "all 99 I_DEEP Eq.18 velocities finite and positive for all h_p cases",
+      "all one-step raw front depths remain inside 0..160 cm",
+      "finite-volume potential infiltration demand is nondecreasing with h_p",
+      "D14 conservative relaxation changes no finite-volume storage"
+    ],
+    "linear_surface_reservoir": {
+      "law": "For a post-infiltration provisional surface water depth W, if W<=ponding_max then S_new=W and runoff=0; otherwise solve S_new = W - dt/RSRO*(S_new-ponding_max), so S_new=(W+dt/RSRO*ponding_max)/(1+dt/RSRO) and runoff=W-S_new.",
+      "synthetic_W_cases": "0.5*ponding_max and 2*ponding_max",
+      "requirements": [
+        "no-runoff case stores all W",
+        "active-runoff case has S_new>ponding_max and runoff>0",
+        "W=S_new+runoff to <=1e-14 cm",
+        "no clipping or hidden correction"
+      ]
+    }
+  },
+  "stage1_gate": {
+    "positive": "D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_PASS",
+    "negative": "D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_NO_GO",
+    "positive_rule": [
+      "SWAP provider oracle identifies all three ordered regimes from the frozen factor ladder",
+      "all provider evaluations are finite and converge under the frozen candidate iteration",
+      "FMC nonzero-h_p Eq.18 primitive passes",
+      "FMC matched linear surface-reservoir primitive passes"
+    ],
+    "if_positive": "Persist the three selected rainfall factors and authorize a separately locked Stage-2 coupled boundary micro-preflight before any R16/R2 rainfall-threshold trajectories.",
+    "if_negative": "Close D21 before trajectory comparison. Do not change ladder, ponding_max, runoff resistance, Eq.18, bins or timestep."
+  },
+  "future_stage2_boundary": {
+    "authorized_now": false,
+    "note": "Stage 2, if authorized, must couple FMC infiltration demand, surface store and runoff using the Stage-1 selected rainfall factors. R16/R2 trajectory generation remains prohibited until that coupled micro-preflight passes."
+  },
+  "firewalls": [
+    "NO_R16_R2_TRAJECTORY_EVIDENCE_IN_STAGE1",
+    "NO_GROUNDWATER_MODE5_COMPOSITION",
+    "NO_RAINFALL_LADDER_RETUNING",
+    "NO_PONDING_MAX_RETUNING",
+    "NO_RUNOFF_RESISTANCE_RETUNING",
+    "NO_BIN_COUNT_OR_PROCESS_STEP_TUNING",
+    "NO_POST_RESULT_HP_EQUATION_RETUNING",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.fci62.status.v1",
+  "work_unit": "F-CI62",
+  "title": "Prescribed-qbot temporal certificate and serialized runtime current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI62_READY_FOR_CANONICAL_PROMOTION",
+  "canonical_base": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+  "authorities": {
+    "F-SI38": "4658b9f45c9a92f93a6a4b59c5c8aee33820ad94",
+    "F-MR44R_exact_head": "acb63559b5246db33b1958bb0c5bc8c1ba2055c0",
+    "F-VQ75": "efecaeaa48661c9188bea220deb1f5b615ecfd99"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "f5d027b4dae1070fb137231b45d1545192852f91",
+    "workflow_run": 34818120874,
+    "workflow_job": 103893216217,
+    "live_canonical_lock": "PASS",
+    "exact_three_production_blobs": "PASS",
+    "owner_independent_and_30_invariants": "PASS",
+    "independent_replay": "PASS",
+    "positive_qbot_mass_residual_cm": -2.22044604925031308e-16,
+    "normalized_temporal_indicator": 0.494515385913371908
+  },
+  "scope_guards": {
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_persistent_state": false,
+    "new_solver_policy": false,
+    "new_application_accuracy_default": false,
+    "reference_source_changed": false,
+    "EB_I18_energy_publication_in_scope": false
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "promotion_requirements": [
+    "This exact status head must pass the F-CI62 workflow.",
+    "Live integration/f-ci-canonical must still equal the frozen canonical base immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI62 head as second parent.",
+    "Postimage reconciliation is required before F-CI62 closeout or EB-I18 recomposition."
+  ]
+}

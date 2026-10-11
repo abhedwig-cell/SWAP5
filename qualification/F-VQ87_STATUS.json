@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ87",
+  "title": "F-GC25 MultiSWAP Direct Groundwater Composition Independent Qualification",
+  "branch": "qualification/f-vq87-fgc25-multiswap-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "canonical_context_at_closeout": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "1ef995e682cbc0fbbce8b68281646b0de1bbbcd3",
+    "tree": "c8fbf2cc65451b56a597e3b2264742cb19f62d0b"
+  },
+  "owner_authority": {
+    "work_unit": "F-GC25",
+    "branch": "work/f-gc-g05-direct-groundwater-composition",
+    "owner_review_head": "251adbb2aeece53cf9b745e488a44b49d67aa3eb",
+    "owner_review_tree": "4c7d85ead30038328ab1f161530c0b54e7d6d94a",
+    "qualified_source_head": "43c9f09110dea83928ef7d58990c37575d8ca223",
+    "owner_qualification_run": 34869005146,
+    "owner_qualification_job": 104059959530,
+    "open_owner_pr": 122
+  },
+  "tested_head": {
+    "commit": "8449383263d86daba2cc087fa2c7c9e92daa5744",
+    "tree": "c864c9fbe4dc56cfc9c9314ef2af5a8234151f47"
+  },
+  "workflow": {
+    "name": "F-VQ87 F-GC25 MultiSWAP independent qualification",
+    "run_id": 34944834169,
+    "job_id": 104301651356,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "python": "3.12.3",
+    "git": "2.55.0"
+  },
+  "inherited_authorities": {
+    "F-GC20": {
+      "authority_head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "production_path": "src/runtime/mod_groundwater_tile_aggregation.f90",
+      "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+      "exact_on_tested_head": true
+    },
+    "F-GC22": {
+      "authority_head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "production_path": "src/runtime/mod_groundwater_accuracy_binding.f90",
+      "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "exact_on_tested_head": true,
+      "gc25_relevant_upstream_blobs": {
+        "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+        "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+        "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+      }
+    },
+    "F-GC21_fixture_reference": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f"
+  },
+  "gc22_temporal_supersession_reconciliation": {
+    "original_gc22_governance_pin_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "tested_head_temporal_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
+    "same_blob": false,
+    "classification": "QUALIFIED_CANONICAL_SUPERSESSION_OUTSIDE_F_GC25_EXECUTABLE_BOUNDARY",
+    "boundary_evidence": "F-GC25 MultiSWAP runtime modules consume a pre-bound groundwater_head_convergence_policy_t and do not import mod_reference_richards_temporal_indicator or mod_groundwater_accuracy_binding.",
+    "F-SI38_candidate_source_commit": "ae8b73d99e3055817284c320ad3e13808da9fd9a",
+    "F-SI38_qualified_exact_head": "9b93a4341f722dd19aa667b4975bbfce5a637353",
+    "F-SI38_mode5_preservation": true,
+    "F-VQ75_tested_head": "d0a2dcadfc1793c02928a9c376aeab7d802a774c",
+    "F-VQ75_workflow_run": 34816553128,
+    "F-VQ75_workflow_job": 103888313816,
+    "F-VQ75_conclusion": "success",
+    "F-VQ75_F-SI38_preservation_replay": "PASS",
+    "F-CI62P_canonical_postimage": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "F-CI62P_production_canonical_admitted": true,
+    "F-CI62P_moving_current_preservation_reconciled": true
+  },
+  "independence_boundary": {
+    "owner_gate_replay_role": "Prerequisite and exact owner-postimage preservation evidence only; not counted as independent oracle evidence.",
+    "independent_harness": "tests/qualification/fvq87/test_fvq87_fgc25_multiswap_independent.f90",
+    "independent_runner": "tests/qualification/fvq87/run_fvq87_fgc25_multiswap_independent_gate.sh",
+    "production_delta_from_owner": false,
+    "owner_test_delta_from_owner": false,
+    "fixture_policy": "Pinned F-GC21 and F-GC25 fixture types are reused; adversarial sequences and assertions are independently supplied by F-VQ87."
+  },
+  "independent_evidence": [
+    "groundwater prepare rejection remains pre-publication atomic",
+    "duplicate tile identity is rejected before trial execution",
+    "stale tile origin or revision is rejected before trial execution",
+    "a non-converged cell rolls back without committed publication leakage",
+    "successful 0.4/0.6 tile weighting closes per-tile and cell-level mass exactly within the qualified arithmetic path",
+    "groundwater and SWAP action/reaction exchange are equal and opposite in the accepted publication",
+    "global publication preflight precedes first SWAP commit",
+    "post-preflight groundwater prepared commit exposes no recoverable status path under the exclusive-owner contract",
+    "prepared groundwater mass-ledger commit is assignment-only after readiness and fails hard on invariant breach",
+    "owner-qualified postimage replays successfully",
+    "independent oracle output is byte-identical under O0 and O2"
+  ],
+  "evidence_markers": {
+    "FVQ87_SCOPE_ALLOWLIST": "PASS",
+    "FVQ87_OWNER_PRODUCTION_POSTIMAGE_LOCKED": "PASS",
+    "FVQ87_GC22_TEMPORAL_CHANGE_OUTSIDE_GC25_BOUNDARY": "PASS",
+    "FVQ87_FGC20_FGC22_INHERITANCE_LOCKED": "PASS",
+    "FVQ87_PUBLICATION_BOUNDARY_STATIC_AUDIT": "PASS",
+    "FVQ87_OWNER_POSTIMAGE_REPLAY": "PASS",
+    "FVQ87_PINNED_OWNER_FIXTURE": "PASS",
+    "FVQ87_PREPARE_REJECTION_ATOMICITY": "PASS",
+    "FVQ87_DUPLICATE_TILE_PRETRIAL_REJECTION": "PASS",
+    "FVQ87_STALE_ORIGIN_PRETRIAL_REJECTION": "PASS",
+    "FVQ87_NONCONVERGED_CELL_ROLLBACK": "PASS",
+    "FVQ87_WEIGHTED_MASS_ACTION_REACTION": "PASS",
+    "FVQ87_INDEPENDENT_ORACLE": "PASS",
+    "FVQ87_INDEPENDENT_ORACLE_O0_O2_IDENTITY": "PASS",
+    "F_VQ87_FINAL_GATE": "PASS"
+  },
+  "independent_oracle_sha256": "de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
+  "failed_run_reconciliation": [
+    {
+      "run_id": 34944511159,
+      "job_id": 104300619390,
+      "conclusion": "failure",
+      "classification": "QUALIFICATION_HARNESS_DEPENDENCY_SCOPE_ASSUMPTION_MISMATCH",
+      "finding": "The first verifier revision required the original F-GC22 temporal-indicator governance pin to remain blob-identical even though F-GC25 does not execute that module. The temporal blob had been superseded by qualified and canonically reconciled F-SI38 semantics while the actual F-GC25-relevant F-GC22 dependency boundary remained exact.",
+      "production_defect_established": false,
+      "production_delta_applied": false
+    }
+  ],
+  "hard_nonclaims": [
+    "This is not F-CI current-canonical admission of F-GC25.",
+    "This does not prove post-admission canonical preservation.",
+    "This does not create standalone canonical admission claims for F-GC20 or F-GC22.",
+    "F-VQ87 does not requalify F-SI38 temporal-indicator semantics; it only reconciles their existing qualified canonical supersession as outside the F-GC25 executable dependency boundary.",
+    "This does not qualify F-GC23 whole-window response tangent composition.",
+    "This does not qualify F-GC26 external groundwater adapter conformance or any MODFLOW backend.",
+    "This does not establish wall-clock throughput or parallel speedup.",
+    "This is not a groundwater-coupling-v1 completion claim.",
+    "No EB or Ross capability is modified or qualified by F-VQ87."
+  ],
+  "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+  "next_owner": "F-GC25 current-canonical admission/composition review using the exact owner-qualified production postimage plus this F-VQ87 independent evidence, followed by postimage preservation reconciliation."
+}

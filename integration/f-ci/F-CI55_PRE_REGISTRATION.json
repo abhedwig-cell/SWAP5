@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.fci55_pre_registration.v1",
+  "work_unit": "F-CI55",
+  "title": "F-GC21P1-R1 Exact Accepted Bottom-Interface Exchange Result Current-Canonical Admission",
+  "governance_authority": "09ef05c60c5e45af218980001c8ad8ec30da2e9e",
+  "restart_canonical": "c6494f913303b7aefc4f9c53c6c157082d54ea4b",
+  "production_composition": "8a1aeedbaeb5bd015e7e8d098d605968bbecd94e",
+  "owner_authority": "dcde6360f902081c94927486455e5233b81dfc1b",
+  "qualified_source_postimage": "89f7d11413e1f3ae24c648f24f56577b982f23e6",
+  "independent_authority": "a76f338f5fdebed8346ffdbbd04dc7461d15a137",
+  "independent_final_head_run": 34716004112,
+  "scope_blocked_parent_candidate": "95e05490d3f60325361a9036dc720c7954093307",
+  "production_files": {
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/runtime/mod_canonical_contracts.f90": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f41f725df4be883d277a8fd5afe5a6f1bc14ad1b",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "d565b893a08d92c46077995fdec544584aa04664",
+    "src/transaction/mod_transaction_reference.f90": "834487df4e7a38c7c8ffd83805d98933714c6977"
+  },
+  "composition_rules": [
+    "production composition must remain a direct child of the live restart canonical",
+    "the production composition delta must contain exactly the five preregistered production files",
+    "every composed production blob must be byte-identical to the F-GC21P1-R1/F-VQ63 qualified source postimage",
+    "qualification may add only the F-CI55 workflow, gate and governance evidence above the production composition",
+    "no production source or reference drift is permitted after production composition",
+    "the two canonical REAL equality predicates restored by R1 must remain byte-semantic equivalents of the restart canonical predicates",
+    "promotion requires a true two-parent merge with the then-live canonical as first parent and the exact qualified F-CI55 head as second parent",
+    "force, squash and rebase promotion are forbidden",
+    "postpromotion broad canonical qualification including current-restricted-canonical-preservation must be green"
+  ],
+  "required_replays": [
+    "independent F-VQ63 adversarial accepted-exchange test against the admission source image at O0 and O2",
+    "owner F-GC21P1 exact-bottom-interface result test as supporting preservation",
+    "owner and independent authority status semantics",
+    "exact production blob identity to the qualified source postimage",
+    "rejected full, half and retry routes publish no accepted interface exchange",
+    "accepted two-half routes aggregate only accepted exchanges and use the terminal accepted half flux",
+    "canonical interval aggregation publishes only after the complete requested interval",
+    "missing or nonfinite interface exchange fails closed",
+    "generic non-calendar time-window behavior",
+    "all 30 architecture invariants",
+    "hard mass conservation with no tolerance relaxation",
+    "absence of new file-format, MODFLOW, midnight or fixed-day assumptions in the admitted delta"
+  ],
+  "maximum_positive_decision_before_merge": "QUALIFIED_F_CI55_READY_FOR_CANONICAL_PROMOTION",
+  "hard_nonclaims": [
+    "no full F-GC21 predictor-corrector orchestration admission",
+    "no production groundwater-coupling admission",
+    "no MODFLOW adapter or aquifer solver qualification",
+    "no proof here of H_SWAP=H_GW convergence or q_SWAP=-q_GW end-to-end coupling closure",
+    "no process-crash recovery or distributed transaction protocol qualification",
+    "no large-batch throughput qualification",
+    "RB1 remains frozen"
+  ]
+}

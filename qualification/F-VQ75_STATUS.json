@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.fvq75.status.v1",
+  "work_unit": "F-VQ75",
+  "title": "Prescribed-qbot temporal certificate and serialized runtime independent qualification",
+  "branch": "qualification/f-vq75-prescribed-qbot-temporal-runtime-independent-qualification",
+  "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+  "owner_authorities": {
+    "F-SI38": "4658b9f45c9a92f93a6a4b59c5c8aee33820ad94",
+    "F-MR44R_exact_head": "acb63559b5246db33b1958bb0c5bc8c1ba2055c0",
+    "F-MR44R_production_runtime_commit": "6e7687e37daeb996de22b9f5ac7592461ab4675a"
+  },
+  "canonical_base": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+  "tested_head": "d0a2dcadfc1793c02928a9c376aeab7d802a774c",
+  "tested_tree": "af0b7aa177c9bca712d881e83c6db725aea60f29",
+  "workflow_run": 34816553128,
+  "workflow_job": 103888313816,
+  "conclusion": "success",
+  "independent_evidence": {
+    "production_delta_exactly_three_files": true,
+    "reference_source_changed": false,
+    "F-SI38_preservation_replay": "PASS",
+    "F-MR44R_preservation_replay": "PASS",
+    "runtime_replay_attempted_production_patch": false,
+    "positive_qbot_mass_residual_cm": -2.22044604925031308e-16,
+    "temporal_head_inf_bound_cm": 1.23628846478342984e-11,
+    "qualification_only_head_budget_cm": 2.50000000000000009e-11,
+    "normalized_temporal_indicator": 0.494515385913371908,
+    "unsupported_nearby_bottom_mode_fail_closed": true,
+    "O0_O2_semantic_identity": true
+  },
+  "hard_nonclaims": [
+    "The 2.5e-11 cm head budget is qualification-only and is not a production, coupling, or application default.",
+    "F-VQ75 does not itself canonically admit F-SI38 or F-MR44R.",
+    "F-VQ75 does not qualify EB-I18 energy publication.",
+    "No new production or reference source is introduced by F-VQ75."
+  ],
+  "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+  "next_owner": "F-CI62 current-canonical admission of the exact F-SI38 plus F-MR44R production postimage"
+}

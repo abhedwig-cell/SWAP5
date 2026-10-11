@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC40",
+  "title": "MultiSWAP MODFLOW6 Cell Response — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7b864853ca22baa73141b2dec9ed2f3915ef520d"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI99",
+    "gate_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+    "initial_gate_run": 35292387556,
+    "initial_gate_job": 105437813921,
+    "status_head_run": 35292445486,
+    "status_head_job": 105437990087,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ106",
+    "status_head": "29829ebb674bd02019c643cc3b2ad21e1c8cfe03",
+    "final_green_run": 35292192331,
+    "final_green_job": 105437219235,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "admitted_production_blobs": {
+    "src/runtime/mod_modflow6_multiswap_cell_response.f90": "288a274612f6c0be0b3ced149028066a066908ca"
+  },
+  "scientific_decision": [
+    "Each tile response is treated as a local affine law q_i(H)=q_i*+(u_i/dt_s)(H-H_i*).",
+    "Tile responses are reconciled to one explicit common reference head before aggregation.",
+    "Cell coupling storage is u_cell=sum(f_i u_i), giving dq_cell/dH=u_cell/dt_s.",
+    "The raw area-weighted predictor q_u is diagnostic only when tile predictor terminal heads differ.",
+    "Reduction is deterministic in ascending tile-id order with compensated summation and full provenance checks."
+  ],
+  "identity_authority": {
+    "canonical_f_gc31": "Restricted Active-Drainage Lagged Tangent",
+    "f_gc40": "Unique canonical identity for MultiSWAP MODFLOW6 Cell Response",
+    "historical_provisional_f_gc31_multiswap": "SUPERSEDED_IDENTITY_ONLY"
+  },
+  "exclusions": [
+    "MODFLOW6/XMI backend",
+    "prepared-solve orchestration",
+    "Ribasim",
+    "irrigation",
+    "historical provisional F-GC31 MultiSWAP identity"
+  ],
+  "next_permitted_action": "Close F-GC40 with metadata only; proceed serially to the next corrected MODFLOW integration dependency."
+}

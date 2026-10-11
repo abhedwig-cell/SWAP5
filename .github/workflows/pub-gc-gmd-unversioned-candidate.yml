@@ -1,0 +1,29 @@
+name: PUB-GC GMD unversioned publication candidate
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'release/pub-gc-gmd/**'
+      - '.github/workflows/pub-gc-gmd-unversioned-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate unversioned GMD publication candidate
+        env:
+          PUB_GC_CANDIDATE_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUB_GC_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: python release/pub-gc-gmd/validate_unversioned_candidate.py

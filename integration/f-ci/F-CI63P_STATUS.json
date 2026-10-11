@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.fci63p.status.v1",
+  "work_unit": "F-CI63P",
+  "title": "Bottom sensible-energy publication current-canonical postimage reconciliation",
+  "branch": "qualification/f-ci63p-current-canonical-postimage-reconciliation",
+  "decision": "QUALIFIED_F_CI63P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "canonical_preimage": "5e5e498dc56d1df1dd7ebebbf9901c946445a1ab",
+  "f_ci63_final_green_head": "78fdb96520d52fddb1e33b14611fee364de916e7",
+  "canonical_postimage": "e16262d0d9af3c83f40234ab669f0faa66e12519",
+  "owner_candidate": "788ff3c9af90143960a5aa3831f0171160aa8c47",
+  "independent_authority": "77496e5eb0fe8712613ca2959552d612f3c2a29d",
+  "reconciled_head_before_status": "9f957d40053436e44a94e4c0c85c34759f3084d4",
+  "reconciled_tree_before_status": "384237ed903d6eb1daf9b6b30a2489f0d684aafe",
+  "workflow_run": 34833676406,
+  "workflow_job": 103942550025,
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "production_reference_delta_in_reconciliation": false,
+  "full_energy_balance_complete": false,
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "preservation_evidence": {
+    "true_two_parent_promotion_and_live_postimage_lock": "PASS",
+    "exact_seven_canonical_postimage_blobs": "PASS",
+    "reconciliation_scope_allowlist": "PASS",
+    "moving_current_authority_reconciliation": "PASS",
+    "F_CI63_and_F_VQ79_authority_reconciliation": "PASS",
+    "accepted_complete_publication": "PASS",
+    "external_unavailable_hydrology_commit_without_fake_energy": "PASS",
+    "external_stale_hydrology_commit_without_fake_energy": "PASS",
+    "external_identity_mismatch_fail_closed": "PASS",
+    "external_invalid_response_fail_closed": "PASS",
+    "rejected_trial_no_publication": "PASS",
+    "backend_reuse_no_stale_publication": "PASS",
+    "warning_hygiene_O0": "PASS",
+    "warning_hygiene_O2": "PASS",
+    "O0_O2_semantic_identity": "PASS",
+    "FMR44R_preservation_O0": "PASS",
+    "FMR44R_preservation_O2": "PASS",
+    "postimage_mass_rows": 2,
+    "positive_qbot_mass_residual_cm": -2.22044604925031308e-16,
+    "hard_mass_oracle": "PASS",
+    "EB_I19R_postimage_runtime_replay": "PASS"
+  },
+  "moving_current_preservation": {
+    "previous_authority": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "reconciled_production_authority": "e16262d0d9af3c83f40234ab669f0faa66e12519",
+    "marker": "FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS",
+    "seven_energy_source_paths_present": true
+  },
+  "warning_debt": {
+    "qualified_exact_zero_donor_classification_compare": "src/runtime/mod_fmr_bottom_sensible_energy.f90 uses exact zero classification intentionally; no tolerance was introduced for warning suppression",
+    "inherited_general_compiler_warnings": "present in broader replay and not introduced by the F-CI63P reconciliation",
+    "blocking": false
+  },
+  "infrastructure_note": {
+    "initial_one_shot_run": 34832052263,
+    "initial_one_shot_job": 103937395117,
+    "local_gate_before_failed_push": "PASS",
+    "push_failure_reason": "GitHub Actions token lacked permission to update an existing workflow file",
+    "recovery": "The exact already-qualified commit and tree remained in GitHub and the branch was fast-forwarded to that immutable commit through the GitHub connector before independent read-only replay.",
+    "materialized_commit": "9f957d40053436e44a94e4c0c85c34759f3084d4"
+  },
+  "hard_nonclaims": [
+    "F-CI63P closes postimage reconciliation for the admitted bottom sensible-energy publication capability only.",
+    "F-CI63P does not establish a complete SWAP5 Energy Balance.",
+    "F-CI63P does not add or qualify top-boundary, surface, full soil-storage, phase-change, radiation, latent-heat or whole-column energy-budget closure beyond already admitted capabilities.",
+    "The exact-zero bottom donor classification remains exact by contract; no numerical tolerance was introduced merely to silence a compiler warning.",
+    "F-CI63P changes no production or reference source semantics."
+  ],
+  "ready_for_postimage_reconciliation_promotion": true
+}

@@ -1,0 +1,137 @@
+{
+  "schema": "swap5.ppa_wu05a.macropore_authority_contract.v1",
+  "workunit": "PPA-WU05-A",
+  "status": "PARTIAL_AUTHORITY_FREEZE_SOURCE_BYTES_REQUIRED",
+  "authority_layers": {
+    "exact_reference_identity": {
+      "snapshot": "B1.11",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "files": {
+        "SWAP/macropore.f90": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+        "SWAP/macrorate.f90": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+        "SWAP/macroporeoutput.f90": "39a0497cfff82540a7323cecceafc3a17d389eb4708014bbf99f6256b65a8b0a"
+      },
+      "patch_rule": "SWAP-001 is the only admitted B0->B1 patch touching macropore.f90; no later B1 patch changes macropore/macrorate semantics."
+    },
+    "recovered_prior_repository_evidence": {
+      "fpe16": {
+        "commit": "f5e2a12fca96559645feb8d8cd591b600f765d8c",
+        "path": "docs/performance/F-PE16_S12_MACROPORE_MEMORY_RECOVERY.md",
+        "use": "corroborated ownership/state-layout evidence, not a byte-level B1.11 source oracle"
+      },
+      "fpe15": {
+        "commit": "f475e0e050abdc885c016929c2d528fe1f8f0545",
+        "path": "docs/performance/F-PE15_A23AU_MACROPORE_SCRATCH_RECOVERY.md",
+        "use": "corroborated execution-scratch evidence, not full macropore thread-safety authority"
+      },
+      "fsi15": {
+        "commit": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+        "path": "integration/f-si/F-SI15_QUALIFICATION.json",
+        "use": "current architecture precedent: explicit macropore option with active route fail-closed"
+      }
+    }
+  },
+  "state_classification": {
+    "definitive_b1_11_field_census": "NOT_YET_AVAILABLE",
+    "corroborated_committed_or_history_candidates": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
+    "candidate_basis": "F-PE16 repository evidence recovered from exact historical S12 artifacts; exact B1.11 byte source is still required before these names become final migration authority.",
+    "trial_mutation_warning": [
+      "F-PE16 reports SorpDmCp and ThtSrpRefDmCp as trial-mutable under the historical line.",
+      "A future candidate must prove complete rollback coverage for every source-traced trial-mutable committed/history field."
+    ],
+    "worker_scratch": {
+      "rule": "recomputable macrorate/SATFLOW/ABSORPTION/RAPIDDRAIN workspace must not be checkpoint state",
+      "evidence": "F-PE15 proves an extracted helper-scratch subset can be explicit worker/job scratch with exact output preservation; F-PE16 describes a broader S12r scratch design but lacks independent executable qualification.",
+      "exact_field_membership": "HELD_FOR_B1_11_SOURCE_TRACE"
+    },
+    "output_and_diagnostics": {
+      "rule": "reporting/cumulative output state is not commit authority unless exact B1.11 source trace proves physical continuation semantics.",
+      "exact_field_membership": "HELD_FOR_B1_11_SOURCE_TRACE"
+    }
+  },
+  "mass_contract": {
+    "invariants": [
+      "matrix<->macropore exchange is an internal transfer and cancels from whole-column accepted mass when booked consistently",
+      "macropore storage change is physical storage and belongs in accepted state/mass reconciliation",
+      "external top, bottom, drainage and root-related water transfers are booked exactly once by one owner",
+      "gross matrix and macropore partition terms may not be double-counted as independent external fluxes",
+      "rejected trials produce no accepted macropore mass receipt"
+    ],
+    "exact_flux_name_mapping": "HELD_FOR_B1_11_SOURCE_TRACE",
+    "mass_tolerance_change": "FORBIDDEN"
+  },
+  "transaction_contract": {
+    "checkpoint": "all source-traced committed/history macropore state at accepted boundary",
+    "trial": "candidate state only; scratch is worker-local and disposable",
+    "reject": "restore all committed/history fields exactly; discard candidate mass receipts and scratch",
+    "retry": "recompute from same committed macropore+matrix checkpoint under the new numerical span",
+    "commit": "publish macropore state delta and external mass receipts atomically with the accepted Richards interval",
+    "partial_rollback": "FORBIDDEN"
+  },
+  "restart_contract": {
+    "topology": "new explicit optional macropore state layout required before production",
+    "payload_rule": "persist only source-proven continuation state, never worker scratch",
+    "reconstruction_rule": "a field may be omitted from restart only after source-bound proof that it is deterministic from accepted state/configuration",
+    "historical_candidate_fields": [
+      "ICpBtDm",
+      "SorpDmCp",
+      "ThtSrpRefDmCp",
+      "TimAbsCumDmCp",
+      "VlMpDmCp",
+      "WaUnMpDmCp",
+      "VlMpDyCp"
+    ],
+    "final_schema": "HELD_FOR_B1_11_SOURCE_TRACE"
+  },
+  "implementation_hold": {
+    "state": "BLOCKED_BY_EXACT_SOURCE_MATERIALIZATION",
+    "prerequisite": [
+      "materialize byte-exact B0 macropore.f90 and macrorate.f90 matching the pinned B0 member hashes",
+      "apply/verify SWAP-001 to obtain the exact B1.11 macropore postimage",
+      "perform complete cross-call mutable-field and mass-transfer source census",
+      "freeze exact restart schema and candidate/scratch split"
+    ],
+    "forbidden_until_met": [
+      "production macropore state type",
+      "production macropore equations",
+      "production macropore restart admission",
+      "parallel macropore claim",
+      "macropore-related root uptake"
+    ]
+  },
+  "later_slices": [
+    {
+      "id": "PPA-WU05-A1",
+      "scope": "byte-exact B1.11 source materialization and mutable-field census",
+      "type": "AUTHORITY"
+    },
+    {
+      "id": "PPA-WU05-A2",
+      "scope": "typed macropore committed/candidate/restart state DTOs and rollback harness, no flow equations",
+      "type": "ARCHITECTURE"
+    },
+    {
+      "id": "PPA-WU05-A3",
+      "scope": "single-column macropore process/rate migration against exact source oracle",
+      "type": "SCIENCE_IMPLEMENTATION"
+    },
+    {
+      "id": "PPA-WU05-A4",
+      "scope": "full runtime composition with hard mass, restart and current-path preservation",
+      "type": "PRODUCTION_QUALIFICATION"
+    },
+    {
+      "id": "PPA-WU05-A5",
+      "scope": "parallel MultiSWAP/macropore worker ownership",
+      "type": "PARALLEL_QUALIFICATION"
+    }
+  ]
+}

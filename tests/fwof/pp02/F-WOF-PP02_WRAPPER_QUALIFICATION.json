@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP02",
+  "slice": "WOFOST81_COMPOSITE_OWNER_LIFECYCLE",
+  "phase": "QUALIFY",
+  "qualified_files": {
+    "src/crop/mod_wofost81_crop_owner_state.f90": {
+      "git_blob": "689ae451c7ddc3a8c61fbc27a7a5d5ac15e68b5d",
+      "sha256": "9aaae3e40c5767e46d0a5893743174d993525d50590bd85b2d9261857be5c4d9"
+    },
+    "tests/fwof/pp02/test_wofost81_crop_owner_wrapper.f90": {
+      "git_blob": "da7037e3bf27c5436bb0253f64e89d6b3b5d65bf",
+      "sha256": "831cd5c1a4fb8ef0ec2edef303db855b485802fc4d22ef8a3b1909ecbe9386c8"
+    }
+  },
+  "architecture_decision": {
+    "selected": "separate wofost81_crop_owner_state_t composite wrapper",
+    "rejected": "add an optional WOFOST81 N field directly to legacy wofost_crop_owner_state_t",
+    "reason": "the wrapper preserves the existing legacy crop owner byte-for-byte and avoids adding new compile dependencies or lifecycle semantics to every pre-WOFOST81 path",
+    "composition": ["wofost_crop_owner_state_t crop","wofost81_n_owner_state_t nitrogen"]
+  },
+  "compile": {
+    "compiler": "gfortran",
+    "flags": ["-std=f2008","-Wall","-Wextra","-Werror","-O0"],
+    "qualification_stubs": [
+      "canonical transaction_state_t deferred clone interface",
+      "legacy crop-owner validate/clone interface"
+    ],
+    "full_repository_integration_build": "PENDING_DAILY_COMPOSITION_GATE"
+  },
+  "tests": {
+    "result": "F_WOF_PP02_WRAPPER_PASS",
+    "result_sha256": "e5a16a105b1448def485807c7ead8745fb04eb64744a294ee3a40b843ca1a24d",
+    "checks": [
+      "nested legacy crop state validates",
+      "nested WOFOST81 N state validates",
+      "transaction clone preserves both nested owners",
+      "clone mutation cannot mutate committed crop state",
+      "clone mutation cannot mutate committed N state",
+      "invalid nested crop state rejected separately",
+      "invalid nested N mass state rejected separately"
+    ]
+  },
+  "production_reachability": false,
+  "legacy_owner_modified": false,
+  "verdict": "QUALIFIED_VERSIONED_COMPOSITE_OWNER_LIFECYCLE",
+  "next_permitted_action": "Build a WOFOST81 accepted-day process candidate around this versioned composite owner, initially with explicit external non-limiting water and N supply seams. Do not route production runtime to it until component composition and rollback tests pass."
+}

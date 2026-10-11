@@ -1,0 +1,33 @@
+name: F-MIG431 LOW03-P0 bounded solver qualification
+on:
+  push:
+    branches: [work/f-mig431-low03-p0-resistive-head-authority]
+    paths:
+      - '.github/workflows/f-mig431-low03-p0-qualification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Frozen B1.11 flux and Jacobian O0/O2
+        env:
+          LOW03_RESULT: low03_boundary_composition_result.json
+        run: python3 tests/fmig431/run_low03_boundary_composition.py
+      - name: Direct Reference physics, mass, replay, physical restart and preservation O0/O2
+        env:
+          LOW03_SOLVER_RESULT: low03_solver_qualification_result.json
+        run: python3 tests/fmig431/run_low03_solver_qualification.py
+      - name: Persist exact-postimage bounded evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-MIG431-LOW03-P0-bounded-solver-qualification
+          path: |
+            low03_boundary_composition_result.json
+            low03_solver_qualification_result.json
+          if-no-files-found: error
+
+# Qualification revision 2: independently reconstructed compartment mass amounts.

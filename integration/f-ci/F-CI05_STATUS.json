@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI05",
+  "title": "B1.10 Physical Adapter Preimage Qualification",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "b1_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+  "materialized": {
+    "exact_source_seam_manifest": true,
+    "archive_capable_admission_gate": true,
+    "local_exact_source_evidence": true,
+    "controlled_source_port_requirements": true,
+    "canonical_b1_10_physical_adapter": false
+  },
+  "qualification": {
+    "nested_source_archive_identity": "PASS",
+    "source_f90_count": 63,
+    "b1_10_patch_chain_seam_preservation": "PASS",
+    "local_archive_gate": "PASS",
+    "github_actions_run_id": 34082009045,
+    "fci03_regression_job": "PASS",
+    "fci04_regression_job": "PASS",
+    "fci05_static_preimage_job": "PASS",
+    "adapter_admission": "BLOCKED"
+  },
+  "blockers": [
+    "legacy module-global continuation state",
+    "HeadCalc saved numerical scratch/history",
+    "trial-time reporting/output side effects",
+    "legacy forcing path coupled to meteo/file state",
+    "DLL weather exchange path restricted to single-day TEND=TSTART",
+    "accepted unrounded physical mass totals not yet exposed",
+    "scheduled irrigation/crop continuation not qualified for generic intervals"
+  ],
+  "status": "PASS_PHYSICAL_PREIMAGE_ADAPTER_BLOCKED_PENDING_CONTROLLED_SOURCE_PORT"
+}

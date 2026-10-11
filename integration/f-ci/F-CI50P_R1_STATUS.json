@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI50P-R1",
+  "title": "Race-Safe Current-Canonical Postimage Reconciliation after F-CI50",
+  "phase": "FINAL_CLOSEOUT_COMPLETE",
+  "decision": "QUALIFIED_FCI50_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FINALIZED",
+  "branch": "qualification/f-ci50p-current-canonical-postimage-reconciliation-r1",
+  "scientific_source_authority": {
+    "F_CI50_promoted_postimage": "39b8ed3d33c564530feeeb1e1c6d5af0a0be6636",
+    "F_CI50_admission_head": "bbdba02d8aa51204191aea8ccb8f0fcfc0d0fb6b",
+    "F_GC17_closeout": "f0e9465c78237fd974369d0ffcfaba9adc6d7b54",
+    "source_blobs": {
+      "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+      "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+    }
+  },
+  "canonical_lineage": {
+    "race_safe_base": "6c04ab07b4535c119157b5c5bce674b626656f07",
+    "qualified_status_head": "96d274ddebf7c566dba84cdf9402a41c064978c3",
+    "promoted_reconciliation_head": "d7aaa6dd9d581adaa9c8a950b268d11ad84aef48",
+    "promoted_first_parent": "6c04ab07b4535c119157b5c5bce674b626656f07",
+    "promoted_second_parent": "96d274ddebf7c566dba84cdf9402a41c064978c3",
+    "true_two_parent_governance_merge_verified": true
+  },
+  "qualification_evidence": {
+    "first_green_r1_run": 34679334786,
+    "first_green_r1_job": 103514881502,
+    "exact_status_head_run": 34679398163,
+    "exact_status_head_job": 103515049636,
+    "postpromotion_broad_canonical_run": 34679430640,
+    "postpromotion_broad_canonical_conclusion": "success",
+    "postpromotion_current_restricted_preservation_job": 103515332066,
+    "postpromotion_current_restricted_preservation_conclusion": "success"
+  },
+  "prior_attempts": {
+    "canonical_race": {
+      "head": "a8da1d72800df8afd539b21a2040caeed7ead3bd",
+      "run": 34678881436,
+      "job": 103513626602,
+      "classification": "EXPECTED_CANONICAL_RACE_FAIL_CLOSED",
+      "source_or_semantic_defect": false
+    },
+    "one_shot_patcher": {
+      "run": 34679109573,
+      "job": 103514263572,
+      "classification": "OPERATIONAL_GITHUB_ACTIONS_WORKFLOW_PERMISSION_FAILURE",
+      "branch_mutated": false,
+      "authority": false
+    }
+  },
+  "final_state": {
+    "moving_preservation_authority_advanced": true,
+    "groundwater_contract_path_preserved": true,
+    "groundwater_policy_path_preserved": true,
+    "explicit_F_CI50_moving_preservation_marker_present": true,
+    "historical_frozen_workflow_prefix_preserved": true,
+    "production_source_changed_by_F_CI50P_R1": false,
+    "reference_changed_by_F_CI50P_R1": false,
+    "new_physics": false,
+    "solver_functionality_changed": false,
+    "transaction_behavior_changed": false,
+    "scientific_tolerance_changed": false,
+    "mass_conservation_relaxed": false,
+    "predictor_corrector_admitted": false,
+    "MODFLOW_adapter_admitted": false,
+    "production_groundwater_coupling_execution_admitted": false,
+    "architecture_invariants_30_of_30": true,
+    "mass_conservation": "HARD_UNCHANGED",
+    "final_closeout_complete": true
+  },
+  "architecture_audit": "integration/f-ci/F-CI50P_R1_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI50P_R1_EVIDENCE.json",
+  "next_authorized_wave": {
+    "authority": "F-GC16 implementation plan after qualified F-GC17 canonical admission and preservation reconciliation",
+    "parallel_work_units": ["F-GC18", "F-GC19", "F-GC20", "F-GC22"],
+    "F_GC21_gate": "Start only after required outputs of the parallel wave are available for restricted predictor-corrector orchestration."
+  },
+  "next_required_step": "Start the F-GC18, F-GC19, F-GC20 and F-GC22 owner workunits as separate parallel branches from the then-current canonical head. Do not admit predictor-corrector execution or a MODFLOW adapter in those owner workunits unless their qualified scope explicitly owns it."
+}

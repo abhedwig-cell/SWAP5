@@ -1,0 +1,11 @@
+{
+  "schema":"swap5.f_mig431_int12_d.status.v1",
+  "workunit":"F-MIG431-INT12-D",
+  "parent":"PPA-WU04-D",
+  "state":"OWNER_AND_INDEPENDENT_QUALIFICATION_PASS_RECONCILE_BEFORE_ADMISSION",
+  "tested_head":"0be5ac92134c8450b6e3f07a950744b8e8b13a5a",
+  "qualification":{"run":37140154681,"job":111252728760,"conclusion":"success","checks":["Gash process vectors PASS","independent Gash oracle PASS","P0 retry/restart composition PASS","daily application partition/wet-canopy PASS","O0/O2 output identity PASS"]},
+  "preservation":{"p0_run":37140154761,"p0_conclusion":"success","canonical_run":37140154699,"canonical_conclusion":"failure","canonical_failure_attribution":"current-restricted-canonical-preservation fails on pre-existing frozen F-PERF-CANON01-B1 transaction successor drift in src/transaction/mod_transaction_reference.f90; INT12-D does not modify that file; preceding historical/frozen F-CI authority jobs pass"},
+  "scope":{"admitted_candidate":"daily SWMETDETAIL=0 SWINTER=2 Gash source-window aggregate plus P0 progress/restart and daily rain/irrigation/wet-canopy composition","excluded":["detailed meteorology/restint continuation","SWINTER=0/1/3 changes","TOP03/SCV","solver/timestep policy"]},
+  "next":"Reconcile PR #1010 onto current integration/f-ci-canonical, rerun dedicated and relevant preservation gates, then admission review."
+}

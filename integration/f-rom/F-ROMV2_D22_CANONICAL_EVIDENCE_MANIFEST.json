@@ -1,0 +1,27 @@
+{
+  "schema": "swap5.f-romv2-d22.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D22",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d22-native-threshold-response",
+    "pull_request": 467,
+    "pull_request_merged": false,
+    "head": "ad40957754363397ad431af69d95885b11df99c1",
+    "workflow_run": 35463113484,
+    "workflow_job": 105950404333,
+    "artifact_id": 10590790990,
+    "artifact_digest": "sha256:030b31c440e6d50caca0302dff2dc85cdfd98fcf2e81d4c08780d56550b658a2"
+  },
+  "frozen_payload_digests": {
+    "swap_o0_sha256": "5d863a7f63d5dca38048ab5d5095f6c84528f919e472c2d09c0ab63b4b9c6f9c",
+    "swap_o2_sha256": "5d863a7f63d5dca38048ab5d5095f6c84528f919e472c2d09c0ab63b4b9c6f9c",
+    "raw_result_sha256": "dedbb131e159f1f1ac7af87ef2e51d7ac3e03b618533c9fbea59a877b5356f3d",
+    "analyzer_sha256": "81504c3be8fd3ef97279427d56c68d36c66169c634d74327bc2362047c7873fb"
+  },
+  "execution_surfaces_imported": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "parameter_or_gate_retuning_after_exposure": false,
+  "production_rom_authorized": false
+}

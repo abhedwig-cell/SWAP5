@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ35",
+  "title": "Independent Scientific Qualification of F-PM06A Restricted Reference-ET Demand",
+  "branch": "qualification/f-vq35-fpm06a-reference-et-demand",
+  "status": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION",
+  "decision": "QUALIFIED_INDEPENDENT_FPM06A_RESTRICTED_STATELESS_REFERENCE_ET_DEMAND_SCIENTIFIC_ADMISSION",
+  "candidate_closeout": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+  "candidate_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+  "qualification_tested_head": "64212b3eac8a2e091f546b5328c8e31f20ecb8ab",
+  "workflow_run_id": 34449550379,
+  "workflow_job_id": 102781926113,
+  "workflow_conclusion": "success",
+  "independent_grid_cases": 1700,
+  "qualification_output_sha256": "d173d0047a04cb095946797a3d066a03099c610a7dfb6aa39ee1e2c6b19e8221",
+  "production_source_changed_by_fvq35": false,
+  "qualified_scope": "SWETR1_SWMETDETAIL0_SWDIVIDE0_SWINTER0_SWEVAP1_SWREDU0_SWCFBS0_STATELESS_PTRA_PEVA_EPOND_DEMANDS",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "candidate_tested": true,
+    "independently_scientifically_qualified": true,
+    "runtime_bound": false,
+    "canonical_admitted": false
+  },
+  "evidence": "integration/f-vq/F-VQ35_QUALIFICATION.json",
+  "not_qualified": [
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "interception",
+    "wet-canopy partition",
+    "soil evaporation reduction memory",
+    "actual evaporation",
+    "actual root uptake",
+    "runtime composition",
+    "mass-ledger composition",
+    "canonical admission"
+  ],
+  "next_action": "Use a separate canonical-admission/integration workunit to transplant the exact independently qualified F-PM06A production source onto the current canonical lineage, with source-blob preservation and canonical regression gates."
+}

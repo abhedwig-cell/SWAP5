@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC27",
+  "title": "B1.10 cofgen parameter provenance",
+  "phase": "VERIFY",
+  "decision": "PARTIAL_PROVENANCE_MAPPING_ONLY",
+  "branch": "work/f-doc27-cofgen-parameter-provenance",
+  "canonical_start": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+  "content_postimage": "4fee60ed5873cab27729667988772def0b8ea5a6",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "authority": {
+    "production_provider_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "production_provider_blob": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "historical_fsi09_branch": "work/f-si09-b110-constitutive-provider",
+    "historical_fsi09_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "reference_payload_git_blob": "6cfcec4e38b02343ba48e7e6fb5d595158e19653"
+  },
+  "claim_ceiling": {
+    "allowed": [
+      "document source-bound internal roles of cofgen rows used by the frozen default-MvG provider",
+      "document exact dependency of derived cofgen rows 25:42 on input rows 1:24",
+      "state that rows 25:42 are derived provider/oracle working values, not independent input rows",
+      "record unresolved original field names and units explicitly"
+    ],
+    "forbidden": [
+      "assign conventional Van Genuchten parameter names where repository authority does not bind them to a cofgen row",
+      "infer input units from dimensional analysis alone",
+      "claim rows without direct use in the admitted value equations are globally unused",
+      "change production, reference, test, physics or numerical semantics"
+    ]
+  },
+  "acquisition_verdict": "The repository proves the corrected B1.10 oracle identity and exact provider behaviour, but does not expose a separate readable original input-name/unit-to-cofgen(1:24) mapping. Additional SWAP-009/SWAP-013 harness and parser evidence corroborates several semantic roles but does not replace the missing direct parser/fill_cofgen row-binding. F-DOC27 therefore retains the partial provenance map and preserves unresolved entries instead of inventing aliases.",
+  "scope_diff": [
+    "docs/science/index.md",
+    "docs/science/soil-hydraulic-parameter-provenance.md",
+    "integration/f-doc/F-DOC27_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC27_STATUS.json",
+    "mkdocs.yml"
+  ],
+  "production_reference_test_delta": false,
+  "verification": {
+    "pull_request": 179,
+    "qualified_head": "8228711617ed1c0c4b9f06908806d47a05f5b655",
+    "documentation_workflow_run": 35219880812,
+    "documentation_job": 105197114237,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success"
+  },
+  "verdict": "VERIFY_PASS_PENDING_EXACT_HEAD_RECHECK",
+  "next_permitted_action": "RERUN_DOCUMENTATION_GATE_ON_STATUS_CHECKPOINT_HEAD_THEN_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN"
+}

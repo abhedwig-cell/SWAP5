@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.fci64.preregistration.v1",
+  "work_unit": "F-CI64",
+  "title": "Energy-conservation ledger and runtime-owned accepted-receipt current-canonical admission",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "b162e98cc4ad6f85b741a21bd41f3db3d213559b"
+  },
+  "authorities": {
+    "EB_I21R_owner_status": "5d6cea2e6de577fb0267008b2a391770b5bd7a10",
+    "F_VQ85_independent_status": "f0a6d6f83cda86706bec58d2d3557ade1e6b9eaa"
+  },
+  "production_scope": [
+    "src/kernel/mod_energy_conservation_types.f90",
+    "src/runtime/mod_energy_conservation_ledger.f90",
+    "src/runtime/mod_fmr_owned_commit_receipt.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "qualified_blobs": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "cc166e82e51d8e0738fee51b4517626d0a2e890f",
+    "src/runtime/mod_fmr_owned_commit_receipt.f90": "2ab067d160715ff7358dd31efaa12694ef95852c",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "admission_intent": [
+    "Admit the already-qualified generic energy-conservation bookkeeping types and transactional energy ledger without introducing a second water ledger.",
+    "Admit runtime-owned accepted-receipt provenance so energy publication is bound to the exact logical runtime column that performed the physical commit.",
+    "Keep the generic F-KT/F-MR accepted receipt column-agnostic and derive runtime ownership only at the physical commit callsite from the validated executing column id.",
+    "Preserve accepted-only bottom-energy publication, reject/retry rollback behavior, hard water-mass conservation, prescribed-qbot behavior and O0/O2 semantic identity."
+  ],
+  "scope_guards": {
+    "new_energy_physics_in_F_CI64": false,
+    "new_water_mass_booking": false,
+    "second_water_ledger": false,
+    "kernel_column_identity_added": false,
+    "global_owner_id_generator_added": false,
+    "new_persistent_column_state": false,
+    "new_solver_policy": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "hard_nonclaims": [
+    "F-CI64 admits only the qualified energy-ledger primitive and runtime-owned accepted-receipt association; it does not claim the complete SWAP energy balance is finished.",
+    "Runtime column identity is not promoted into the generic kernel transaction receipt or committed state.",
+    "No canonical admission exists until the exact final F-CI64 qualification head is green, promoted by a true two-parent merge with canonical as first parent, and postimage-reconciled."
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "workunit": "F-TB11P",
+  "title": "F-TB11 Current-Canonical Permanent Testbank Preservation Postimage Reconciliation",
+  "scope": "metadata-only post-admission reconciliation",
+  "decision": "FTB11_POSTIMAGE_RECONCILED_AND_CANONICALLY_ADMITTED",
+  "qualification_coverage": "PASS",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "solver_algorithms_changed": false,
+  "physics_changed": false,
+  "drainage_claim_added": false,
+  "source_requalification_required": false,
+  "pre_admission": {
+    "canonical_sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "canonical_tree": "556221f62b4fde616981499eba68ef5460f5d83c",
+    "ftb11_authority_sha": "74bef08dedb060417d549c8d8cf0fedb8b73e997",
+    "ftb11_qualified_head": "0652782c0e66a3ec6caf5c8ae9c114e362d2a00c",
+    "ftb11_qualification_run": 34788482579,
+    "ftb11_qualification_job": 103808222625
+  },
+  "admission": {
+    "pull_request": 111,
+    "merge_method": "merge",
+    "canonical_merge_sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+    "canonical_merge_tree": "f75d63eae4fd8464130f57fef20bb0643a7497c6",
+    "parent_canonical_sha": "379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b",
+    "parent_ftb11_authority_sha": "74bef08dedb060417d549c8d8cf0fedb8b73e997",
+    "true_two_parent_merge": true,
+    "github_signature_verified": true
+  },
+  "postimage": {
+    "canonical_sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+    "canonical_tree": "f75d63eae4fd8464130f57fef20bb0643a7497c6",
+    "src_tree": "73490c41aee380cda01b88da6ceeb9f6637d2ecf",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "tests_tree": "bfdbe47c1c76b4109e9daa4f4aff11182bbbbd6f",
+    "src_tree_unchanged_from_ftb11_baseline": true,
+    "reference_tree_unchanged_from_ftb11_baseline": true,
+    "tests_tree_unchanged_from_ftb11_baseline": true
+  },
+  "post_admission_evidence": {
+    "canonical_push_qualification": {
+      "run": 34788910896,
+      "head_sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "moving_current_canonical_preservation": {
+      "run": 34788910918,
+      "head_sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "solver_seam_postimage_preservation": {
+      "run": 34788910968,
+      "head_sha": "33b84b69824a3cab4383e3aa50849f8f8fdc6a3c",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  },
+  "preserved_capabilities": [
+    "Kernel / Transactions / Generic Time / Mass v1",
+    "State / Persistence / Restart v1",
+    "Serialized MultiSWAP v1",
+    "Full Richards reference solver v1",
+    "Solver Interface / HeadCalc Isolation / Hydraulic Process Boundary v1",
+    "ET / Root Uptake / Surface Evaporation v1"
+  ],
+  "drainage": {
+    "adopted": false,
+    "reason": "F-TB11 did not have a definitive qualified drainage-v1 completion authority at closeout; F-TB11P does not expand that scope."
+  },
+  "governance_note": "F-TB11 remains the immutable pre-admission qualification authority bound to its original canonical baseline. F-TB11P does not rewrite or rebind that authority; it records that PR #111 was admitted as a true merge and that the resulting canonical source/reference postimage is unchanged and fully green under the canonical push qualification.",
+  "terminal_marker": "FTB11_POSTIMAGE_RECONCILED_AND_CANONICALLY_ADMITTED"
+}

@@ -1,0 +1,38 @@
+name: F-TB12 Drainage v1 permanent preservation adoption
+
+on:
+  push:
+    branches:
+      - work/f-tb12-drainage-v1-permanent-preservation-adoption
+    paths:
+      - 'testbank/manifests/F-TB12_*'
+      - 'testbank/runners/run_ftb12_*'
+      - 'integration/f-tb/F-TB12_*'
+      - 'docs/testbank/F-TB12_*'
+      - '.github/workflows/f-tb12-drainage-v1-permanent-preservation-adoption.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-drainage-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch immutable authority namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --force
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run Drainage v1 permanent preservation adoption gate
+        shell: bash
+        run: bash testbank/runners/run_ftb12_drainage_v1_permanent_preservation.sh

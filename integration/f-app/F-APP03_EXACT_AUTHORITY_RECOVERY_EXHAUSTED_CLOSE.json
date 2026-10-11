@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_ACQUIRE_RECOVER_CLOSE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "5a9751734747dfc0c204fca01e9e3df5bef9de06",
+  "reconcile": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "relevant_canonical_delta": "NONE_DETECTED",
+    "f_app03_delta_since_previous_checkpoint": "NONE_BEFORE_THIS_EVIDENCE_ONLY_CHECKPOINT"
+  },
+  "resume_from": {
+    "checkpoint": "integration/f-app/F-APP03_FWIND_READER_DATE_RECOVERY_CLOSE.json",
+    "commit": "5a9751734747dfc0c204fca01e9e3df5bef9de06",
+    "verdict": "F_APP03_BLOCKED_NARROWED_FWIND_READER_AND_JUNE10_DATE_CLOSED_EXECUTABLE_OPERATOR_HUPSEL_VALUE_AND_PREREG_PAYLOAD_MISSING"
+  },
+  "bounded_targeted_recovery": {
+    "scope": [
+      "exact SWAP 4.3.1 MOD_meteo executable FWIND application",
+      "exact official Hupsel swap.swp FWIND value",
+      "exact frozen four-step 2002-06-10 numeric precheck payload and normalization/comparison contract"
+    ],
+    "file_library_surfaces_checked": [
+      "exact MOD_meteo.f90 and source-archive identity/hash searches",
+      "exact official Hupsel swap.swp identity/hash searches",
+      "SWAP_4.3.1_documentatie_code_matrix.xlsx",
+      "SWAP_4.3.1_proposed_fixes.patch",
+      "SWAP_4.3.1 verification-framework and audit artifacts from the original 4.3.1 review period",
+      "historical A21 atmospheric-forcing source and report",
+      "historical A22 crop-boundary report",
+      "F-EB01A exact-4.3.1 energy-accounting audit",
+      "bounded upload-period navigation around the original 4.3.1 review material"
+    ],
+    "github_surfaces_checked": [
+      "live F-APP03 branch delta",
+      "live canonical delta",
+      "surviving A21/A22 branch names",
+      "surviving F-EB01A branch/commit surfaces",
+      "previously exhausted B0, integrated B0/B1 and F-VQ99 authority surfaces"
+    ]
+  },
+  "recovered_or_reconfirmed": {
+    "FWIND_reader": {
+      "statement": "if (rdinqr('fwind')) call rdsdor ('fwind',0.5d0,5.d0,fwind)",
+      "location": "MOD_meteo.f90:279",
+      "meaning": "optional dimensionless static configuration parameter with accepted range 0.5..5.0; separate from raw daily wind",
+      "status": "ALREADY_CLOSED_IN_PREVIOUS_CHECKPOINT"
+    },
+    "A21_binding": {
+      "fact": "historical A21 reads FWIND from swap.swp into a separate wind_factor field while preserving raw daily wind in m/s",
+      "caveat": "A21 initialization default 1.0 is not evidence of the official Hupsel value"
+    },
+    "June10_gate": {
+      "date": "2002-06-10",
+      "shape": "four consecutive real steps",
+      "A22_vs_A21": "byte-identical trace",
+      "status": "ALREADY_CLOSED_IN_PREVIOUS_CHECKPOINT"
+    },
+    "exact_431_lineage_locators": {
+      "proposed_fixes_patch": "contains pristine MOD_meteo context around the meteo-loading loop but not the active FWIND PMdirect operator",
+      "F_EB01A_audit": "cites exact MOD_meteo PM line ranges including Penman-Monteith lines 1933-2002 but does not persist the executable FWIND statement or source payload"
+    }
+  },
+  "not_recovered": [
+    "Exact SWAP 4.3.1 executable statement applying FWIND in the active SWETR=0, SWDIVIDE=1 PMdirect route.",
+    "Exact official Hupsel FWIND value from the hash-identified swap.swp or an immutable exact-authority config trace.",
+    "Exact frozen numeric four-step 2002-06-10 precheck payload, normalization rules and comparison payload."
+  ],
+  "authority_boundary": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "official_MOD_meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "official_hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "raw_exact_payloads_available_in_current_repository_or_file_library_surfaces": false,
+    "public_or_non_byte_identical_material_may_substitute": false
+  },
+  "qualification": {
+    "attempted": false,
+    "reason": "The executable FWIND operator, official Hupsel FWIND value and frozen numeric precheck payload remain unavailable. Observation of a newly reconstructed candidate would violate the preregistered fail-closed order."
+  },
+  "verdict": "F_APP03_BLOCKED_BOUNDED_AVAILABLE_AUTHORITY_SURFACES_EXHAUSTED_EXTERNAL_EXACT_BYTES_OR_TRACE_REQUIRED",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Provide or rematerialize the exact official SWAP_4.3.1.zip matching SHA-256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or at minimum SWAP/MOD_meteo.f90 matching SHA-256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822, or an immutable exact-authority trace containing the active FWIND operator.",
+    "Provide or rematerialize the official Hupsel swap.swp matching SHA-256 a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b, or an immutable exact-authority config trace containing its FWIND value.",
+    "Recover the original frozen four-step 2002-06-10 numeric precheck payload and normalization/comparison contract from its historical qualification workspace or artifact rather than recreating it from desired output.",
+    "Only after all three surfaces close, run the observation-only preregistered precheck. On the first difference above the frozen tolerance, persist that first difference and close BLOCKED without production implementation.",
+    "Only after numeric closure implement the minimum restricted SWETR=0, SWDIVIDE=1, SWINTER=1 typed application composition and independently qualify it."
+  ],
+  "do_not_repeat_without_new_evidence": [
+    "broad repository recovery",
+    "broad File Library recovery",
+    "public SWAP/Hupsel substitution",
+    "inference of FWIND=1.0 from A21 default",
+    "operator inference from parameter name, modern code or remembered formulas",
+    "reconstruction of the frozen precheck payload from desired outputs"
+  ],
+  "exclusions": [
+    "no parser-level FWIND transform",
+    "no output fitting or reverse engineering",
+    "no tolerance widening",
+    "no production physics, solver or timestep changes",
+    "no Ross, EB or groundwater/Richards work",
+    "no broad API or IO modernization",
+    "no whole-Hupsel equivalence claim",
+    "no M1-C3 PASS claim"
+  ]
+}

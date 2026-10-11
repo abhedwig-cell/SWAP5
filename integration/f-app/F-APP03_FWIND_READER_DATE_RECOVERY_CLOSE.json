@@ -1,0 +1,193 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_ACQUIRE_RECOVER_CLOSE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "09a4d10a4963a6d22fd941357be165b77991f73f",
+  "reconcile": {
+    "canonical": {
+      "branch": "integration/f-ci-canonical",
+      "live_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+      "relevant_delta_since_prior_checkpoint": "NONE_DETECTED"
+    },
+    "f_app03": {
+      "live_head_before_this_checkpoint": "09a4d10a4963a6d22fd941357be165b77991f73f",
+      "delta_since_prior_checkpoint": "NONE"
+    },
+    "m1_c3": {
+      "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+      "last_reconciled_head": "9528d24926d8efe8e8fbfb6a7e4f0e4d6ec8c929",
+      "last_reconciled_verdict": "C3_BLOCKED_NARROWED_MISSING_EXECUTABLE_B1_11_APPLICATION_TRACE_AUTHORITY"
+    },
+    "qualification_dependency": {
+      "branch": "work/f-vq102-fapp03-pmdirect-rederivation",
+      "last_reconciled_head": "c1027973ac0199504348917aa32f78e52baaa3f2"
+    }
+  },
+  "immutable_source_identity": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "official_nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "official_MOD_meteo": {
+      "path": "SWAP/MOD_meteo.f90",
+      "sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+      "bytes": 85550,
+      "raw_payload_persisted_in_repository": false
+    },
+    "official_hupsel": {
+      "case": "SWAP_4.3.1/cases/1.hupselbrook",
+      "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+      "meteo_283_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "grass_crp_sha256": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+      "maize_crp_sha256": "2fe2fd36d0d6901775278ee7288d04b95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+      "potato_crp_sha256": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+      "swap_dra_sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+      "raw_payload_persisted_in_repository": false
+    }
+  },
+  "reused_qualified_evidence": {
+    "A13": {
+      "commit": "21508f0d70672d92132c553a344c35f6b7b2296f",
+      "verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+      "daily_records": 1096,
+      "tolerance": 1.0e-12,
+      "mismatches": 0
+    },
+    "A21": {
+      "commit": "155fb7d472121cc9993bb066298b46131a092f90",
+      "facts_reused": [
+        "FWIND is a static configuration field separate from daily wind.",
+        "Raw daily wind remains in m/s and no parser-level FWIND multiplication is authorized.",
+        "The daily Hupsel forcing shadow reproduced 1096 records at 1e-12 tolerance."
+      ]
+    },
+    "A22": {
+      "facts_reused": [
+        "Legacy crop development remains behind LegacyCropAdapter -> CropSnapshot.",
+        "The existing integrated gate consisted of four consecutive real steps on 10 June 2002 and its A22 trace was byte-identical to the A21 trace."
+      ]
+    }
+  },
+  "new_recovery_evidence": {
+    "exact_431_input_inventory": {
+      "artifact": "SWAP_4.3.1_documentatie_code_matrix.xlsx",
+      "authority_class": "HISTORICAL_PROJECT_ARTIFACT_LITERAL_SOURCE_EXTRACTION_HASH_LINKED_TO_OFFICIAL_DISTRIBUTION",
+      "linked_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "FWIND": {
+        "component": "Meteo/ET",
+        "reader": "RDSDOR",
+        "optional": true,
+        "accepted_min": 0.5,
+        "accepted_max": 5.0,
+        "unit": "dimensionless",
+        "source_location": "MOD_meteo.f90:279",
+        "literal_statement": "if (rdinqr('fwind')) call rdsdor ('fwind',0.5d0,5.d0,fwind)"
+      },
+      "scope": "Closes the exact 4.3.1 input-read contract only. It does not by itself establish the downstream executable operator or the official Hupsel value."
+    },
+    "historical_A21_source": {
+      "artifact": "mod_a21_atmospheric_forcing_profile.f90",
+      "authority_class": "HISTORICAL_PROJECT_QUALIFICATION_SOURCE_SUPPORTING_NOT_CURRENT_CANONICAL",
+      "facts": [
+        "A21AtmosphereConfig carries wind_factor separately from A21DailyWeatherRecord.wind_m_s.",
+        "A21 initializes wind_factor to 1.0 but then reads FWIND from swap.swp when supplied.",
+        "The initialization default is not accepted as evidence of the official Hupsel FWIND value."
+      ]
+    },
+    "historical_A22_gate": {
+      "artifact": "README_A22.md",
+      "authority_class": "HISTORICAL_PROJECT_QUALIFICATION_EVIDENCE_SUPPORTING_NOT_CURRENT_CANONICAL",
+      "recovered_date": "2002-06-10",
+      "recovered_gate_shape": "four consecutive real steps",
+      "recovered_noninterference": "A22 trace byte-for-byte identical to A21 trace",
+      "scope": "Closes the calendar date/year of the historical June-10 gate. It does not recover the exact frozen numeric four-step payload, normalization or comparison payload needed for the new observation-only precheck."
+    },
+    "pristine_diff_locator": {
+      "artifact": "S11_cumulative_from_pristine.patch",
+      "finding": "The diff confirms initialize.f90 imports MOD_meteo:fwind in the exact 4.3.1 lineage but does not expose the active PMdirect FWIND operator.",
+      "authority_effect": "SUPPORTING_ONLY"
+    }
+  },
+  "bounded_negative_recovery": {
+    "repository_surfaces_checked": [
+      "B0 source-integrity history",
+      "integrated B0/B1 reference tree",
+      "historical F-VQ99 equivalence tree and qualification surfaces",
+      "current F-APP03 checkpoint history"
+    ],
+    "file_library_surfaces_checked": [
+      "exact 4.3.1 input inventory",
+      "historical A21 source and README",
+      "historical A22 README",
+      "exact-source audit material",
+      "pristine-to-S11 cumulative patch",
+      "4.3.1 fixes/testbank documentation"
+    ],
+    "not_recovered": [
+      "Exact SWAP 4.3.1 executable statement applying FWIND in the active SWETR=0, SWDIVIDE=1 PMdirect route.",
+      "Exact official Hupsel FWIND value from swap.swp or an immutable exact-authority config trace.",
+      "Exact frozen four-step 2002-06-10 numeric precheck payload and normalization/comparison payload."
+    ],
+    "public_locator_status": "Public SWAP and public Hupsel material remain locator/cross-check only because they are not byte-identical exact 4.3.1/Hupsel authority."
+  },
+  "remaining_pmdirect_mapping": {
+    "FWIND": {
+      "legacy_source_variable": "FWIND",
+      "classification": "parameter",
+      "unit": "dimensionless",
+      "optional": true,
+      "accepted_range": "0.5..5.0",
+      "exact_reader": "MOD_meteo.f90:279",
+      "typed_destination": "wind_function_factor",
+      "raw_daily_wind_unit": "m/s",
+      "parser_conversion": "NONE_AUTHORIZED",
+      "sign_convention": "positive factor; no sign inversion authorized",
+      "application_point": "UNRESOLVED_DURABLY",
+      "operator_or_scaling": "UNRESOLVED_DURABLY",
+      "official_hupsel_value": "UNRESOLVED_DURABLY"
+    }
+  },
+  "ten_june_precheck": {
+    "date_authority": "CLOSED_AS_2002-06-10",
+    "historical_gate_shape": "four consecutive real steps",
+    "numeric_precheck_status": "NOT_PERMITTED",
+    "reason": "The exact executable FWIND operator, official Hupsel FWIND value and exact frozen numeric four-step precheck payload are still missing. No value, operator, payload or tolerance may be inferred, fitted or reconstructed from desired output."
+  },
+  "qualification": {
+    "attempted": false,
+    "reason": "No production candidate is permitted before the remaining semantic and frozen-precheck authority closes."
+  },
+  "verdict": "F_APP03_BLOCKED_NARROWED_FWIND_READER_AND_JUNE10_DATE_CLOSED_EXECUTABLE_OPERATOR_HUPSEL_VALUE_AND_PREREG_PAYLOAD_MISSING",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Rematerialize exact SWAP/MOD_meteo.f90 matching SHA-256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822, or recover an immutable exact-authority trace that records the active FWIND executable application point and operator.",
+    "Rematerialize exact official Hupsel swap.swp matching SHA-256 a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b, or recover an immutable exact-authority config trace that records its FWIND value.",
+    "Recover the exact frozen 2002-06-10 four-step precheck payload, normalization and comparison contract from historical qualified material; do not recreate it from desired outputs.",
+    "Only after those three surfaces close, run the observation-only precheck. If the first numeric difference exceeds the frozen tolerance, persist the first difference and close BLOCKED without production implementation.",
+    "Only on numeric closure implement the minimum restricted SWETR=0/SWDIVIDE=1/SWINTER=1 typed application composition and independently qualify it.",
+    "Any current-reference M1-C3 snapshot qualification must use an explicit B1.11-pinned successor rather than mutate historical F-VQ100."
+  ],
+  "exclusions": [
+    "no parser-level FWIND transform",
+    "no assumption FWIND=1.0 for official Hupsel",
+    "no inference of FWIND operator from public non-identical code or remembered formulas",
+    "no output fitting or reverse engineering",
+    "no tolerance widening",
+    "no production physics, solver or timestep changes",
+    "no Ross, EB or groundwater/Richards work",
+    "no broad API or IO modernization",
+    "no raw .met/.crp/.swp -> process-ready forcing shortcut",
+    "no whole-Hupsel equivalence claim from the restricted SWINTER=1 candidate",
+    "no M1-C3 PASS claim"
+  ]
+}

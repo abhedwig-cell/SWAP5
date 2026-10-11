@@ -1,0 +1,190 @@
+{
+  "schema": "swap5.central_regie.open_pr_reconciliation.v1",
+  "date": "2026-09-19",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1bc402b64ca216ba35af8e3a8ed58261550b5f25"
+  },
+  "merged": [
+    {
+      "pr": 388,
+      "merge": "13d1b9920e9f2e01e4e75f23c9a307c398f6e414",
+      "role": "moving preservation LOW02 + ROOT-HYD01"
+    },
+    {
+      "pr": 390,
+      "merge": "1bc402b64ca216ba35af8e3a8ed58261550b5f25",
+      "role": "PUB-GC E7 current-envelope preservation"
+    }
+  ],
+  "closed": [
+    55,
+    56,
+    57,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    74,
+    90,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    102,
+    103,
+    112,
+    114,
+    124,
+    128,
+    129,
+    130,
+    133,
+    140,
+    141,
+    142,
+    156,
+    175,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    233,
+    234,
+    262,
+    341,
+    349,
+    352,
+    385
+  ],
+  "remaining": [
+    {
+      "pr": 58,
+      "class": "CURRENT_AND_ADMISSIBLE",
+      "disposition": "KEEP_INTENTIONAL_CANONICAL_CARRIER"
+    },
+    {
+      "pr": 72,
+      "class": "EVIDENCE_ONLY_RELEVANT",
+      "disposition": "RECONCILE_REQUIRED"
+    },
+    {
+      "pr": 163,
+      "class": "EVIDENCE_ONLY_RELEVANT",
+      "disposition": "RECOMPOSE_REQUIRED"
+    },
+    {
+      "pr": 172,
+      "class": "EVIDENCE_ONLY_RELEVANT",
+      "disposition": "RECOMPOSE_REQUIRED"
+    },
+    {
+      "pr": 181,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 187,
+      "class": "BLOCKED",
+      "disposition": "KEEP_RESEARCH_EVIDENCE"
+    },
+    {
+      "pr": 199,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 207,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 217,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 218,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 219,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 289,
+      "class": "CURRENT_SPECIALIZED_ROM",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 359,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION_TOOLING",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 361,
+      "class": "BLOCKED",
+      "disposition": "PPA_WU05B_SOURCE_STATE_AUTHORITY_UNRESOLVED"
+    },
+    {
+      "pr": 363,
+      "class": "BLOCKED_CONFLICTING_WITH_NEWER_AUTHORITY_CONTEXT",
+      "disposition": "REFRESH_AGAINST_PPA_ROOT_HYD01_BEFORE_IMPLEMENTATION"
+    },
+    {
+      "pr": 365,
+      "class": "CURRENT_SPECIALIZED_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 366,
+      "class": "EVIDENCE_ONLY_RELEVANT",
+      "disposition": "RESEARCH_PREDECESSOR_KEEP"
+    },
+    {
+      "pr": 370,
+      "class": "CURRENT_SPECIALIZED_RESEARCH",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 371,
+      "class": "BLOCKED_STALE_BASE",
+      "disposition": "RECONCILE_POST_388_390_BEFORE_MERGE"
+    },
+    {
+      "pr": 378,
+      "class": "BLOCKED_EVIDENCE_ONLY",
+      "disposition": "OWNER_CONTROLLED"
+    },
+    {
+      "pr": 389,
+      "class": "CURRENT_SPECIALIZED_PUBLICATION",
+      "disposition": "OWNER_CONTROLLED"
+    }
+  ],
+  "ownership": {
+    "src_feature_mutation": false,
+    "solver_new_functionality": false,
+    "coupling_new_method": false,
+    "rom_content": false
+  }
+}

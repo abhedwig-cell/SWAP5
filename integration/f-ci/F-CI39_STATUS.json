@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.fci39_status.v1",
+  "work_unit": "F-CI39",
+  "title": "F-PM06E Restricted Scalar Surface-Evaporation Hydraulic Capacity Canonical Admission",
+  "branch": "qualification/f-ci39-fpm06e-surface-evaporation-capacity-canonical-admission",
+  "source_authority": {
+    "canonical_head": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "canonical_tree": "ea5b54a971cf35ba0f49b1e283d13f7f69304654",
+    "production_composition": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+    "production_tree": "8e518c70f14cb72582936c7ec21744d88743fda4",
+    "production_src_tree": "7264753a19a481043434ba782d4f81bc585fed85",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "candidate": {
+    "owner": "F-PM06E@13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+    "production_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+    "independent_qualification": "F-VQ54@7cf8f6685ca24f855621f872bcf906f346edfa72",
+    "independent_exact_closeout_run": 34544824222,
+    "independent_exact_closeout_job": 103095072355,
+    "production_blobs": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "src/solver/mod_surface_evaporation_capacity_contract.f90": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+    }
+  },
+  "phase": "QUALIFICATION_CANDIDATE_PENDING_EXACT_HEAD_CI",
+  "decision": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY_READY_FOR_CANONICAL_FAST_FORWARD_IF_EXACT_HEAD_CI_GREEN",
+  "qualified_scope": {
+    "hydraulic_family": "B1.10_DEFAULT_MVG",
+    "conductivity_mean_policies": [1, 2, 3, 4, 5, 6],
+    "swkmean_7": "FAIL_CLOSED_NOT_QUALIFIED",
+    "swinter": 0,
+    "swredu": 0,
+    "frost_active": false,
+    "macropore_surface_scaling_active": false,
+    "runtime_composition": false,
+    "full_boundtop": false,
+    "accepted_flux_publication": false,
+    "persistent_state_added": false,
+    "finite_negative_emax_valid": true
+  },
+  "mass_contract": {
+    "emax_is_capacity_only": true,
+    "accepted_top_flux_remains_authoritative": true,
+    "second_mass_booking": false,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "governance": {
+    "fci38_scope_separation_preserved": true,
+    "historical_admission_workflows_retargeted_to_canonical": false,
+    "moving_canonical_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+    "force_update_allowed": false
+  },
+  "state": {
+    "realized": true,
+    "production_composition_persisted": true,
+    "admission_evidence_persisted": true,
+    "tested": false,
+    "qualified_for_canonical_fast_forward": false,
+    "canonical_promoted": false,
+    "post_promotion_canonical_regression_passed": false
+  },
+  "final_gate": {
+    "exact_branch_head_fci39_workflow_success_required": true,
+    "f_vq54_oracle_replay_required": true,
+    "production_tree_identity_required": true,
+    "reference_tree_unchanged_required": true,
+    "architecture_invariants_30_of_30_required": true,
+    "hard_mass_unchanged_required": true,
+    "canonical_must_remain_source_authority_during_qualification": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "canonical_promotion": "SEPARATE_SERIAL_NON_FORCE_ACTION_AFTER_EXACT_HEAD_GREEN",
+  "post_promotion": "REQUIRE_MOVING_FCI_CANONICAL_WORKFLOW_SUCCESS",
+  "exit_target": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY_CANONICAL_AUTHORITY_ESTABLISHED"
+}

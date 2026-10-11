@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "capability": "F-WOF-PP01",
+  "reference_artifact": "tests_Wofost81_PP.zip",
+  "reference_sha256": "99a67a0e5f6bd0881b97950a2ff3fe0f387c0a9e0553f2e36197077fbc15d145",
+  "generator": "PCSE 6.0.13",
+  "model": "WOFOST 8.1",
+  "declared_mode": "potential production",
+  "crop": "Spring Barley 2023",
+  "case_count": 10,
+  "cases": [
+    {"file":"test_Wofost81_PP_001.yaml","sha256":"1d0bf7382362064c679d3f0d3a3dca6be2dafe9c1e78dd106a42770c01c9541b"},
+    {"file":"test_Wofost81_PP_002.yaml","sha256":"e1df42a45f72d2c092159ec40c489f0a833e37d0bc4a42f0cc93d8ab7aef7f05"},
+    {"file":"test_Wofost81_PP_003.yaml","sha256":"afd48e202c6afde343608eabdf1fb12c834e5469fe2bd54204787c66f56c04b5"},
+    {"file":"test_Wofost81_PP_004.yaml","sha256":"63520a83bb4df12f19ec4b067d82e2101d3706a9178f7f57312889e4a75b5bb6"},
+    {"file":"test_Wofost81_PP_005.yaml","sha256":"4dcf725ba9ac0968b1e0fa436df94e658fe7feec4915d4d457fb9c46954360e3"},
+    {"file":"test_Wofost81_PP_006.yaml","sha256":"ef8ddb368a96f68b8b512a20ac5535994100f8bfecfd95376f0416ca8242a38a"},
+    {"file":"test_Wofost81_PP_007.yaml","sha256":"15b24115141f9e235cabdfd0e6a97ffbc0812ab19eaff6188fe9d20ddee4317b"},
+    {"file":"test_Wofost81_PP_008.yaml","sha256":"42f34710e30418a7f3912ec136f6ae89aec82e7183cd5c10f61b66571180d1c1"},
+    {"file":"test_Wofost81_PP_009.yaml","sha256":"5fedb13d58e9470fdcb8cf953735b1812c8d95ddbbf1638f5caa8239801c57b3"},
+    {"file":"test_Wofost81_PP_010.yaml","sha256":"a2aee13d7c2618f0cf9562281e937f44a4feea1053ec75796d9c5521ff74d867"}
+  ],
+  "precision": {
+    "DVS":0.0001,"LAI":0.01,"NamountLV":0.01,"NamountRT":0.01,
+    "NamountSO":0.01,"NamountST":0.01,"NuptakeTotal":0.01,"RD":0.01,
+    "TAGP":0.1,"TRA":0.001,"TWLV":0.1,"TWRT":0.1,"TWSO":0.1,"TWST":0.1
+  },
+  "rules": [
+    "Reference values are immutable external evidence.",
+    "Do not regenerate expected values from current SWAP5.",
+    "Do not relax precision values to obtain PASS.",
+    "A missing or semantically ambiguous mapping is BLOCKED, not PASS.",
+    "Production crop physics must not be changed merely to satisfy this gate."
+  ]
+}

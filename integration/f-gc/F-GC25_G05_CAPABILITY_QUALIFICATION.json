@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "capability": "G05_DIRECT_GROUNDWATER_COMPOSITION",
+  "owner_work": "F-GC25",
+  "risk_class": "R3",
+  "branch": "work/f-gc-g05-direct-groundwater-composition",
+  "base_current_canonical": "d44b2eb48e7187f8ddc622a5f2329d7a24c24aa0",
+  "qualified_source_head": "43c9f09110dea83928ef7d58990c37575d8ca223",
+  "qualification": {
+    "github_actions_run": 34869005146,
+    "job": 104059959530,
+    "runner": "ubuntu-24.04",
+    "compiler_family": "gfortran 13",
+    "result": "SUCCESS",
+    "optimization_profiles": ["O0", "O2"],
+    "gates": [
+      "FGC25_FGC21_OWNER_FIXTURE",
+      "FGC25_NO_MODFLOW_OR_IO_DEPENDENCY",
+      "FGC25_TILE_LINEAGE_LEDGER_PUBLICATION",
+      "FGC25_CELL_PUBLICATION_PREFLIGHT",
+      "FGC25_CANONICAL_TILE_ORDER",
+      "test_fgc25_multiswap_commit",
+      "test_fgc25_single_tile_equivalence",
+      "test_fgc25_multiswap_qualification",
+      "test_fgc25_corrector_tile_fail_closed",
+      "test_fgc25_permutation_determinism",
+      "test_fgc25_multicell_isolation"
+    ]
+  },
+  "inherited_evidence": {
+    "F-GC20": {
+      "qualified_authority": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "use": "Exact qualified tile aggregation production source is inherited and aggregate_groundwater_cell_tiles is called by GC25 topology validation and predictor/corrector aggregation."
+    },
+    "F-GC21": {
+      "owner_fixture": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+      "use": "Single-tile predictor/corrector semantics and equivalence fixture; GC25 preserves the established interface transaction semantics while composing multiple tiles before publication."
+    },
+    "F-GC22": {
+      "qualified_authority": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "use": "Exact qualified accuracy-binding production source is inherited. GC25 consumes a pre-bound groundwater_head_convergence_policy_t; application-to-policy construction remains upstream and is not re-owned or requalified by GC25."
+    },
+    "F-GC24": {
+      "status": "already admitted in current canonical",
+      "use": "Coupled restart/replay remains unchanged by this capability."
+    }
+  },
+  "qualified_contract": {
+    "cell_transaction": "All participating direct-coupled SWAP tile candidates, the one groundwater candidate and all tile mass-ledger publications are recoverably prepared and globally preflighted before first publication.",
+    "failure_atomicity": "A failing predictor/corrector tile or groundwater trial rejects the cell window without publishing another participant in that cell.",
+    "multicell_isolation": "A later failing groundwater cell executed on the same reused worker/executor does not mutate a previously accepted cell and does not publish its own SWAP, groundwater or ledger state.",
+    "aggregation": "Accepted tile transfer is aggregated deterministically using the qualified F-GC20 area-fraction primitive in canonical tile-id order.",
+    "mass_provenance": "One interface ledger remains bound to each real SWAP tile lineage; each ledger receives the area-weighted accepted tile transfer and the groundwater service receives only the aggregate cell exchange.",
+    "bounded_cost": "Restricted two-phase composition performs at most predictor plus one corrector SWAP trajectory per participating tile and one groundwater trial per phase; the qualification test observes exactly four SWAP trajectories for a two-tile cell and eight for two sequential two-tile cells on one reused worker.",
+    "solver_ownership": "No heavy solver object is added per logical column; GC25 receives and reuses the existing worker-local kernel_executor_t.",
+    "external_adapter_boundary": "No MODFLOW type, file IO or concrete external groundwater backend dependency is introduced."
+  },
+  "adversarial_coverage": [
+    "two-or-more tiles per groundwater cell",
+    "single-tile equivalence with established GC21 behavior",
+    "predictor groundwater rejection after all predictor tile trajectories",
+    "corrector groundwater rejection after all predictor and corrector tile trajectories",
+    "partial corrector tile failure after an earlier corrector candidate exists",
+    "bit-identical canonical aggregation under adversarial caller permutation",
+    "end-to-end reversed tile input order",
+    "surface-fraction mass aggregation and exact per-tile conservation",
+    "two independent cells on one reused worker with the second cell failing",
+    "no state bleed from failed later cell into accepted earlier cell",
+    "bounded trajectory and groundwater-trial counts",
+    "O0 and O2 warning-clean qualification"
+  ],
+  "evidence_invalidation": [
+    "change to F-GC20 aggregation semantics or area-fraction contract",
+    "change to GC21/F-KT candidate publication or checkpoint provenance semantics",
+    "change to groundwater prepare/commit reservation semantics",
+    "change to interface mass-ledger prepare/commit semantics",
+    "change to GC22 convergence-policy contract consumed by GC25",
+    "change to canonical tile identity/order semantics",
+    "change to the qualification fixtures or expected failure semantics"
+  ],
+  "adversarial_owner_review": {
+    "result": "PASS",
+    "independent": false,
+    "finding_closed": "Initial coverage lacked explicit cross-cell worker isolation and bounded batching evidence; test_fgc25_multicell_isolation was added before owner qualification.",
+    "remaining_owner_scope_blockers": []
+  },
+  "not_claimed": [
+    "independent F-VQ qualification",
+    "canonical F-CI admission",
+    "F-GC23 whole-window response tangent availability",
+    "F-GC26 concrete external groundwater/MODFLOW adapter conformance",
+    "F-GC27 restricted groundwater coupling end-to-end production admission",
+    "groundwater-coupling-v1 100 percent completion"
+  ],
+  "decision": "OWNER_CAPABILITY_QUALIFIED_READY_FOR_INDEPENDENT_VERIFICATION"
+}

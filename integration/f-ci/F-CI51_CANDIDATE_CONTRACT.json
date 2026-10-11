@@ -1,0 +1,60 @@
+{
+  "work_unit": "F-CI51",
+  "title": "WOF43A Crop ET Canopy View Provider Current-Canonical Recomposition, Qualification Preservation & Canonical Admission",
+  "status": "CURRENT_CANONICAL_RECOMPOSITION_CANDIDATE",
+  "program_authority": {
+    "branch": "regie/f-rg01-post-rb1-program-rebaseline",
+    "commit": "09ef05c60c5e45af218980001c8ad8ec30da2e9e"
+  },
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "eba90d79010b095b6556e93bd8b77a8c28d25560"
+  },
+  "qualified_owner_candidate": {
+    "branch": "work/f-wof43a-crop-et-canopy-view-provider",
+    "production_commit": "b163ae0d2a97694b67dbd2d41a036bfb5d695f87",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785"
+  },
+  "independent_qualification": {
+    "branch": "qualification/f-vq37-fwof43a-crop-et-canopy-view-provider",
+    "closeout": "3dc40ec16620433de2001c9662ebad647909aa48"
+  },
+  "production_scope": {
+    "added": [
+      "src/crop/mod_crop_et_canopy_view_provider.f90"
+    ],
+    "modified": [],
+    "deleted": [],
+    "provider_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+    "direct_dependency": {
+      "path": "src/crop/mod_wofost_rate_table.f90",
+      "required_blob": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5",
+      "action": "preserve_existing_canonical_blob"
+    }
+  },
+  "recomposition_policy": {
+    "union_merge_donor_history": false,
+    "exact_blob_transplant": true,
+    "allow_unrelated_production": false,
+    "canonical_race_requires_reconciliation": true
+  },
+  "qualification_replay": {
+    "owner_test_blob": "0fda482e6d1b129accd00d56ca100971d5f763ea",
+    "independent_test_blob": "70a3e63e9fea0075197e4abf3a78ac9053ad4347",
+    "owner_gate_provenance_blob": "6624184cc18b92fdeed297d039f5dccd427d2512",
+    "independent_gate_provenance_blob": "d01956b6bf88239487cef00dff93dfd783efb7df",
+    "current_canonical_gate": "tests/fci/run_fci51_wof43a_current_canonical_gate.sh",
+    "note": "Legacy owner and F-VQ37 shell wrappers retain donor-lineage diff assumptions and are preserved as provenance. F-CI51 replays their byte-pinned Fortran tests directly on the canonical lineage."
+  },
+  "architecture_assessment": {
+    "io_boundary_changed": false,
+    "persistent_state_changed": false,
+    "time_or_calendar_contract_changed": false,
+    "solver_policy_changed": false,
+    "groundwater_or_coupler_changed": false,
+    "memory_layout_changed": false,
+    "mass_accounting_changed": false,
+    "scope": "restricted crop ET canopy view provider"
+  },
+  "admission_rule": "Fail closed unless the exact provider and dependency blobs, exact recomposition allowlist, owner replay, independent replay, and canonical preservation checks all pass."
+}

@@ -1,0 +1,33 @@
+name: F-GC49C generic live groundwater application service
+on:
+  push:
+    branches: [work/f-gc49c-generic-live-application-service]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/adapter/modflow6_groundwater_application_service.py'
+      - 'tests/fgc/test_fgc49c_generic_application_service.py'
+      - 'tests/fgc/run_fgc49c_generic_application_service.sh'
+      - 'tests/fgc/test_fgc49c_live_generic_application_service.py'
+      - 'tests/fgc/run_fgc49c_live_generic_application_service.sh'
+      - 'docs/integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md'
+      - 'integration/f-gc/F-GC49_STATUS.json'
+      - '.github/workflows/f-gc49c-generic-live-application-service.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  deterministic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install numpy
+      - run: bash tests/fgc/run_fgc49c_generic_application_service.sh
+  live-modflow:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fgc/run_fgc49c_live_generic_application_service.sh

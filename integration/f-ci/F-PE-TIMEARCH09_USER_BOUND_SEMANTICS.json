@@ -1,0 +1,17 @@
+{
+  "work_unit": "F-PE-TIMEARCH09",
+  "status": "QUALIFIED_USER_BOUND_DEMOTION_DESIGN",
+  "dtmax": {
+    "legacy_role": "required_user_numerical_bound_and_active_operating_ceiling",
+    "target_role": "optional_expert_safety_ceiling",
+    "ordinary_user_required_long_term": false
+  },
+  "dtmin": {
+    "legacy_role": "user_bound_and_solver_retry_floor",
+    "target_role": "internal_solver_failure_floor_with_optional_expert_override",
+    "ordinary_user_required_long_term": false
+  },
+  "compatibility_profile": "LEGACY_NUMERICS",
+  "future_default_profile": "AUTO_REFERENCE",
+  "production_behavior_changed": false
+}

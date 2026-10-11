@@ -1,0 +1,85 @@
+{
+  "schema_version": "mp-repeatability-evidence-v1",
+  "workstream": "MP-5",
+  "workload_id": "MP-B01-HUPSEL-SINGLE",
+  "git_baseline": "da99f14490ca81737ae9ab070d77a2197e6799ba",
+  "reference_level": "B0-shadow",
+  "source_identity": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "case": {
+    "source_case": "cases/1.hupselbrook",
+    "period": "2002-01-01 through 2004-12-31",
+    "disposable_fixture_change": "SWCSV changed from 1 to 0, matching the MP-3A shadow-equivalence fixture; no physical process setting changed"
+  },
+  "shadow_build": {
+    "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+    "swap_compile_flags": "-O2 -ffree-line-length-none -fallow-argument-mismatch with TTUTIL module include path",
+    "link_flags": "-O2",
+    "source_transform": "Latin-1 reversible byte mapping; known Intel conditional subset resolved for Linux standalone; original CRLF line endings preserved during observer injection",
+    "ttutil": "GNU TTUTIL rebuild from the supplied distribution, reused from MP-3 tooling",
+    "ttutil_library_sha256": "4e67148644f7f7b502f5c190a41085c3815bc587b7dd2644dd2e567a9d6c4891",
+    "base_executable_sha256": "adc8f69a5de517261c6e4e703a5cecd8eebfb887d702aa146d4aa6c8aac9d443",
+    "instrumented_executable_sha256": "454649f5f6488212eed422407f34153f7590271b125867803b3daf111bd646ee"
+  },
+  "host": {
+    "kernel": "Linux 6.18.35 x86_64",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "visible_logical_cpus": 5,
+    "threads_per_core": 1,
+    "visible_memory_gib": 5.8,
+    "dedicated_host": false,
+    "cpu_affinity_pinned": false
+  },
+  "protocol": {
+    "clock": "Python time.perf_counter_ns around the complete process",
+    "warmup_runs_per_variant": 1,
+    "measured_cycles": 18,
+    "samples_per_variant": 18,
+    "total_measured_samples": 54,
+    "schedule": [
+      ["base", "off", "on"],
+      ["off", "on", "base"],
+      ["on", "base", "off"]
+    ],
+    "schedule_rule": "rotate one position per cycle",
+    "primary_comparison": "off versus on uses the same instrumented executable and changes only SWAP5_MP_MEASURE=0/1",
+    "diagnostic_comparison": "base versus off checks build-layout effects but is not used as the primary observer-overhead estimate"
+  },
+  "physical_output_hashes": {
+    "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+    "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+  },
+  "primary_result": {
+    "comparison": "on/off - 1",
+    "paired_mean": 0.001716688340416772,
+    "paired_median": 0.0034761045702973448,
+    "paired_stdev": 0.03303993093797261,
+    "two_standard_error_scale": 0.015575172810783763,
+    "resolved_above_two_standard_errors": false,
+    "interpretation": "The observed +0.17% paired mean is smaller than the approximately 1.56% two-standard-error noise scale. MP-5 therefore does not resolve a non-zero observer overhead on this host."
+  },
+  "diagnostic_result": {
+    "comparison": "off/base - 1",
+    "paired_mean": -0.0032421163296434594,
+    "paired_median": -0.0026569378910684116,
+    "paired_stdev": 0.025360214450490175,
+    "two_standard_error_scale": 0.01195491974019112,
+    "resolved_above_two_standard_errors": false,
+    "interpretation": "The uninstrumented/instrumented-disabled build difference is also unresolved and demonstrates why executable layout must not be mistaken for observer cost."
+  },
+  "qualification": {
+    "physical_output_equality": true,
+    "overhead_resolved": false,
+    "production_performance_baseline": false,
+    "limitations": [
+      "shadow GNU build, not the supplied Intel B0 executable",
+      "host is not dedicated and CPU affinity was not pinned",
+      "external wall time includes process startup, shutdown and OS scheduling",
+      "observer is only the coarse top-level dynamic-call seam",
+      "no SWAP5 production TX/HY seam is measured",
+      "no B12 or MultiSWAP batch workload is measured"
+    ]
+  }
+}

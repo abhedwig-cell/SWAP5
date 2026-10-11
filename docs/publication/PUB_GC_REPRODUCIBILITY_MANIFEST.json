@@ -1,0 +1,299 @@
+{
+  "schema": "pub-gc-reproducibility-manifest-v1",
+  "date": "2026-09-19",
+  "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+  "scientific_scope": "E1-E7 closed/bounded; E7 closed as REALISTIC_COMPONENT_DOMAIN_LIMIT; current canonical still fails closed for active root extraction/drainage in the mode-5 production groundwater owner; no preregistered primary scientific experiment remains open for the current bounded PUB-GC framing",
+  "publication_assets": {
+    "manuscript": {
+      "path": "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+      "blob": "5c3bd2404fd8f47b653c90b78a8f635c69aeca46"
+    },
+    "claim_ledger": {
+      "path": "docs/publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md",
+      "blob": "b341cd36288654a9b10a7a7dfe586d631b8c4227"
+    },
+    "tables": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md",
+      "blob": "4636972d1e73f44c4547bdeb6c99c867043e06a3"
+    },
+    "figure_manifest": {
+      "path": "docs/publication/figures/PUB_GC_FIGURE_EVIDENCE_MANIFEST.json",
+      "blob": "1549e36780201202cbe2d309f4365eebe117329f"
+    },
+    "figure_generator": {
+      "path": "docs/publication/figures/generate_pub_gc_numeric_figures.py",
+      "blob": "e3843f9a5fb96c6f49899b2788539b7941c86119"
+    },
+    "reference_audit": {
+      "path": "docs/publication/PUB_GC_REFERENCE_AUDIT.md",
+      "blob": "5b03ccdd7a876ba45058013c517243d5e5182675"
+    },
+    "submission_readiness": {
+      "path": "docs/publication/PUB_GC_SUBMISSION_READINESS.md",
+      "blob": "5c1fd452e59879904747ea803ab9149a03e4d6f8"
+    },
+    "notation": {
+      "path": "docs/publication/PUB_GC_NOTATION_AND_UNITS.md",
+      "blob": "547659962f31272e1f7a1800891f85d45ee2511a"
+    },
+    "supplement": {
+      "path": "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md",
+      "blob": "79293b3c55f558345445e142da5f0264368ab493"
+    },
+    "claim_sentence_audit": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md",
+      "blob": "b6834d10f846ec091b4d9d90145ef560d0a36ae4"
+    },
+    "consolidation_status": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md",
+      "blob": "769b288f898c27561ec5293f005b0b5ba309dd88"
+    },
+    "figure_table_plan": {
+      "path": "docs/publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md",
+      "blob": "d16ec9caaa17166d183c54341389e37a177abb93"
+    },
+    "publication_programme": {
+      "path": "docs/publication/PUBLICATION_PROGRAMME.md",
+      "blob": "c135eaf24ca8401268b990c530d077dbae531249"
+    },
+    "e7_figure": {
+      "path": "docs/publication/figures/PUB_GC_F7_REALISTIC_COMPONENT_DOMAIN_LIMIT.svg",
+      "blob": "b1c78a79feb817527e015a500a35478d6c6ab5a5"
+    },
+    "gmd_archival_gate": {
+      "path": "docs/publication/PUB_GC_GMD_ARCHIVAL_GATE.md",
+      "blob": "86280b9380553066842ea5e2da0be296dece1da7"
+    },
+    "e7_result": {
+      "path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+      "blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794"
+    },
+    "e7_application_requirements": {
+      "path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+      "blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad"
+    },
+    "e7_selection_result": {
+      "path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "blob": "e4534f6f71b534e39c73ac3c52f31545af1b6159"
+    },
+    "e7_selected_days": {
+      "path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
+      "blob": "cfc65cfbd680e89d393a8697e09fa056f54f32d2"
+    },
+    "e7_current_canonical_reconciliation": {
+      "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
+      "blob": "9298c0533481ab8de86bb906b1edcf487975b49b"
+    },
+    "e7_current_canonical_reconciliation_narrative": {
+      "path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.md",
+      "blob": "a3c4c2446e11e4b391fee63534488f59b92573ab"
+    }
+  },
+  "evidence": {
+    "E1_E2": {
+      "status": "PASS_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E1_E2_RESULT.json",
+        "blob": "1c573c7287323b986ff44173748e6cf90480caf3"
+      },
+      "source_head": "0022e854000afe5a050303d9a0709f72b7dae518",
+      "workflow_run": 35342313248,
+      "first_failed_sign_hypothesis_run": 35342179045
+    },
+    "E3": {
+      "status": "SUPPORTED_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E3_RESULT.json",
+        "blob": "48b3196dc0c8a67d52c5d3c2c4282c8da4a78787"
+      },
+      "workflow_runs": {
+        "main": 35343426404,
+        "predictor_envelope": 35343968268,
+        "failure_mechanism": 35344946609,
+        "stronger_flux_refinement": 35344946652
+      }
+    },
+    "E4": {
+      "status": "SUPPORTED_RESTRICTED",
+      "result": {
+        "path": "docs/publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.json",
+        "blob": "70e757c70bac9e3d4fe013899c5ba2e95b370486"
+      },
+      "source_head": "c85b1f1ad2a35ad12d917c54e682e8705c508c7e",
+      "workflow_run": 35349233134,
+      "workflow_job": 105613077818
+    },
+    "E5": {
+      "status": "SUPPORTED_RESTRICTED_STOP_INDEPENDENT_ACCELERATE",
+      "result": {
+        "path": "docs/publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.json",
+        "blob": "78a8bce35f370d6c894e8d5e4a26d0b4b1627e38"
+      },
+      "source_head": "41e68a89a52f1f0fac00c8cfe920152ffd4e3fda",
+      "workflow_run": 35351467531,
+      "workflow_job": 105620375280,
+      "artifact_id": 10550095859,
+      "artifact_sha256": "7d19287d89a74848928a566855205ffebd43081ddbb5d19846684f32b265fac4",
+      "workflow_note": "scientific matrix completed; workflow postprocessing summary writer failed afterward"
+    },
+    "E6_active_drainage": {
+      "status": "SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE",
+      "result": {
+        "path": "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json",
+        "blob": "8f420fab688f19b80332850198b4c1ddb1903e4c"
+      },
+      "source_head": "191f1d8ac0ab0b84eff438023f1d32e00c09b925",
+      "workflow_run": 35360873209,
+      "workflow_job": 105651690323,
+      "artifact_id": 10554144629,
+      "artifact_sha256": "00685e242f3dfc85b819900853f5af5bf814291fead48d1e968d3ca74b2cb768"
+    },
+    "E6_state_flux": {
+      "status": "PREDICTOR_ONLY_OR_NO_USEFUL_EXPANSION",
+      "result": {
+        "path": "docs/publication/PUB_GC_E6A_STATE_SCREEN_RESULT.json",
+        "blob": "9c793a785a726da4fc6217e8d3598bb6ed61231b"
+      },
+      "source_head": "97dba8764ca85c7499cbb2402cf5309447621a66",
+      "workflow_run": 35360999577,
+      "workflow_job": 105651945363,
+      "artifact_id": 10554314676,
+      "artifact_sha256": "79dba0e28c8966ae1b0611d0a94d3bc955eb32f61e5961643c6511e073e76ead"
+    }
+  },
+  "E7": {
+    "status": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "preregistration": {
+      "path": "docs/publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md",
+      "blob": "27b73be6988d3308ddafc58a44fb628863d6bd77"
+    },
+    "prerequisite_closure": {
+      "m1_c3_admission_pr": 313,
+      "m1_closeout_pr": 316,
+      "m1_verdict": "M1_CLOSED_CURRENT_CANONICAL",
+      "qualification_path": "integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json",
+      "qualification_blob": "78fe01d7e6b735b84b9bd7501bcb99c51b1433eb",
+      "accepted_intervals": 32518,
+      "drainage_nonzero_intervals": 16507
+    },
+    "exact_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "exact_distribution_size_bytes": 8959314,
+    "selection": {
+      "result_path": "docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json",
+      "result_blob": "e4534f6f71b534e39c73ac3c52f31545af1b6159",
+      "selected_days_path": "docs/publication/PUB_GC_E7_SELECTED_DAYS.csv",
+      "selected_days_blob": "cfc65cfbd680e89d393a8697e09fa056f54f32d2",
+      "median_dynamics_control": "2003-06-17",
+      "high_dynamics_day": "2003-05-20",
+      "median_drainage_out_cm": 0.022586870162615704,
+      "high_drainage_out_cm": 0.9069694038599311,
+      "daily_metrics_sha256": "d532d07a34ad5bdd98730373330bca4b870439eec6783bf9f25b8d58c1906fb3",
+      "scored_days_sha256": "016e6d14a23d5cd5eb0f464167a50f232106cd7cd28c16f11478b04b1d237e6e",
+      "coupled_output_observed_before_freeze": false
+    },
+    "production_boundary": {
+      "bootstrap_source_path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "bootstrap_source_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "ppa_wu01_status_path": "integration/audits/PPA_WU01_STATUS.json",
+      "ppa_wu01_status_blob": "3034a68e8675b958cc15d4ef24a8aeffde7d8375",
+      "ppa_wu03_status_path": "integration/audits/PPA_WU03_STATUS.json",
+      "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+      "groundwater_profile": "all tiles bottom_mode=5",
+      "limiting_guard": "drainage_response_active and root_extraction_active rejected by tile_config_valid before owner-state allocation",
+      "ppa_wu03_broadens_groundwater_process_profile": false,
+      "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "qualification_bootstrap_source_ref": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
+      "qualification_bootstrap_source_blob": "d48c6f077cce3df09c77e6467bdb4a787679b757",
+      "qualification_bootstrap_source_blob_scope": "historical E7 qualification source head",
+      "bootstrap_source_blob_scope": "current-tree path binding at canonical_basis"
+    },
+    "result": {
+      "result_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json",
+      "result_blob": "fe7e7881446a22d4a48e0517a771d3deeb78c794",
+      "narrative_path": "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md",
+      "narrative_blob": "9e7ed5f788f87d378841e8b62d32a24e1293aa64",
+      "outcome": "REALISTIC_COMPONENT_DOMAIN_LIMIT",
+      "loose_completed_windows": 0,
+      "strong_completed_windows": 0,
+      "modflow_e7_windows_executed": 0,
+      "historical_narrative_blob": "201048724dfdcabe1b22a11af72fe22bf071c7fb",
+      "historical_narrative_blob_scope": "historical retained pre-closeout E7 narrative object; object existence verified via GitHub blob lookup on 2026-09-19",
+      "narrative_blob_scope": "current-tree path binding at canonical_basis"
+    },
+    "qualification": {
+      "test_path": "tests/publication/validate_pub_gc_e7_component_domain.py",
+      "test_blob": "396973085161b87be0ecc7072c6ccacb15608068",
+      "workflow_path": ".github/workflows/pub-gc-e7-component-domain.yml",
+      "workflow_blob": "af5babdd67f158aaac8dec02d76f13b133c6057e",
+      "source_head": "d9998d1d813e5efcd43ee9799b69b78fa7668007",
+      "run_id": 35375181814,
+      "job_id": 105698080443,
+      "conclusion": "success",
+      "test_blob_scope": "historical qualification source_head path binding",
+      "workflow_blob_scope": "historical qualification workflow binding"
+    },
+    "safeguards": {
+      "date_replacement": false,
+      "drainage_disabled": false,
+      "window_merging_or_shortening": false,
+      "solver_or_coupling_tolerance_change": false,
+      "production_physics_change": false,
+      "groundwater_calibration": false
+    },
+    "interpretation": "Bounded realistic transferability result: authentic Hupsel process composition exceeds the current production prescribed-head participant domain before outer coupling convergence can be assessed.",
+    "next_permitted_action": "Proceed to journal selection/submission preparation. Do not reopen E7 merely to obtain a positive trajectory; any future active-drainage prescribed-head capability is a new prospective capability.",
+    "current_canonical_reconciliation": {
+      "canonical_basis": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+      "record_path": "docs/publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.json",
+      "record_blob": "9298c0533481ab8de86bb906b1edcf487975b49b",
+      "application_requirements_path": "docs/publication/PUB_GC_E7_APPLICATION_REQUIREMENTS.json",
+      "application_requirements_blob": "055babd247ba2bab65468999c4cdd3cd8a26b0ad",
+      "production_bootstrap_blob": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "serialized_backend_blob": "9bd344a83afd5e10b96178933362dbb7eeea4f30",
+      "ppa_wu02_status_blob": "7be4dbd3531e56992e92da57c699955609b2b09b",
+      "ppa_wu03_status_blob": "cfbc9157c4ad7a66741333e3fef63ea62d744707",
+      "ppa_root_hyd02_result_blob": "5ac799921574082731180356a23f7e983585800b",
+      "ppa_wu04a_status_blob": "75674d84b5eb4d17ae92d7e25696957630fe7fd0",
+      "verdict": "E7_CURRENT_CANONICAL_PRESERVED",
+      "ppa_wu04b_status_blob": "b212fa4dd2705263c1fdf033dc62d0230210b98a",
+      "post_relevant_production_live_delta": {
+        "base": "4d40b8d4b6a1df06ff97fab55497542778431290",
+        "head": "ee83e12504e12ac92fc6c55a8d8e5a134666ed19",
+        "classification": "NO_E7_PRODUCTION_OWNER_EFFECT"
+      },
+      "hydro_memory_acc02_f1_result_blob": "35cd7dd71ed10d7d61ed55abc9a805361f26a8ea",
+      "hydro_memory_acc02_f1_preregistration_blob": "17beb966009e87df0a2cabd513b07ff54b231d18",
+      "hydro_memory_acc02_f1_support_bridge_blob": "b767769f3df5fe698698621a99c53185bcc61093",
+      "hydro_memory_acc02_f2_result_blob": "757760b6d89c0c48583b9b92a10ea5eb07520772",
+      "hydro_memory_acc02_f2_preregistration_blob": "c513fa4c4af275b214c5b7ba97c3d5fff2206dae",
+      "hydro_memory_acc02_f2_support_bridge_blob": "30bdd7c7f50248027c9948a13c9a0c91678a9e8c",
+      "hydro_memory_dyn01_result_blob": "9b67737a416fb1b7806695a18fc57fb06ea2adaa",
+      "hydro_memory_dyn01_preregistration_blob": "387a7ef6f2303aaf80a69fe10e3f4904811e83df"
+    }
+  },
+  "manifest_note": "Current-tree path/blob identities bind the journal-neutral E1-E7 package at canonical_basis. Historical qualification blobs are retained under explicit source-head/historical scope fields and are not presented as current-tree identities. E7 remains closed as a realistic component-domain limit; ACC02-F1/F2 and DYN01 do not widen the production mode-5 root+drainage owner. Remaining GMD blockers are governance/archive/author metadata, not missing hydrological experiments.",
+  "gmd_presubmission": {
+    "status": "REPOSITORY_PREPARATION_COMPLETE_EXTERNAL_GOVERNANCE_ARCHIVE_AUTHOR_FIELDS_OPEN",
+    "policy_checked": "2026-09-19",
+    "package": [
+      "docs/publication/PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md",
+      "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md",
+      "docs/publication/PUB_GC_GMD_PREARCHIVE_INVENTORY.json",
+      "docs/publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.json",
+      "docs/publication/PUB_GC_GMD_FORMATTING_HANDOFF.md",
+      "docs/publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md",
+      "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md",
+      "docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md",
+      "tools/publication/check_pub_gc_gmd_submission.py"
+    ],
+    "unresolved": [
+      "governed successor publication release identifier",
+      "authorized SWAP5 publication-archive licence/redistribution statement",
+      "persistent exact-version archive DOI/PID",
+      "final author/affiliation/contribution/funding/interest metadata",
+      "final figure export binaries"
+    ],
+    "scientific_experiment_required": false
+  }
+}

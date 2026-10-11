@@ -1,0 +1,16 @@
+--- SWAP/readswap.f90
++++ SWAP/readswap.f90
+@@ -606,6 +606,13 @@
+                    any(iHWCKmodel(1:numlay) == 10) .OR. any(iHWCKmodel(1:numlay) == 11)) then
+                   call rdfdor ('h0',-5.0d7,-1.0d5,h0,maho,numlay); h0(1:numlay) = -h0(1:numlay)
+                   call rdfdor ('ha',-1.0d5,0.0d0,ha,maho,numlay);  ha(1:numlay) = -ha(1:numlay)
++                  do lay = 1, numlay
++                     if (iHWCKmodel(lay) >= 8 .AND. iHWCKmodel(lay) <= 11) then
++                        if (ha(lay) <= 0.0d0 .OR. ha(lay) >= h0(lay)) then
++                           call swap_error ('readswap', 'PDI requires 0 < abs(HA) < abs(H0) for every PDI soil layer')
++                        end if
++                     end if
++                  end do
+                   call rdfdor ('apar',-5.0d0,0.0d0,apar,maho,numlay)
+                   call rdfdor ('omega_K',1.0d-8,0.1d0,omega_K,maho,numlay)
+                   call rdfinr ('swvapor',0,1,swvapor,maho,numlay)

@@ -1,0 +1,59 @@
+{
+  "schema": "swap5.f-romv2-d31.source-retrieval-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D31",
+  "phase": "CLOSED_SOURCE_RETRIEVAL_RECONCILIATION_BLOCKED_EXTERNAL_ARCHIVE_ACCESS",
+  "canonical_base": "919bbf76370c2136932daa04ad88135e7d1615a8",
+  "decision": "M2WC70_OFFICIAL_ARCHIVE_CONFIRMED_BUT_RETRIEVAL_BLOCKER_PERSISTS_NO_EQUIVALENT_ORACLE_FOUND",
+  "predecessor_decision": "NATURAL_SURFACE_GW_CONTACT_EVENT_UPDATE_UNDERSPECIFIED_WITHOUT_IMPLEMENTATION_ORACLE",
+  "official_archive": {
+    "repository_page": "https://datacorral.uwyo.edu/repository/M2WC70",
+    "dataset_id": "M2WC70",
+    "resource_url": "https://pathfinder.arcc.uwyo.edu/publications/Computational_Hydrology/M2WC70/M2WC70.zip",
+    "advertised_size_mb": 230,
+    "creator": "Fred L. Ogden",
+    "publication_year": 2015,
+    "rights": "CC0/public-domain dedication according to University of Wyoming DataCorral metadata",
+    "primary_paper_data_model_statement": "Ogden et al. (2015), doi:10.1002/2015WR017126, identifies doi:10.15786/M2WC70 as the code/data source for the eight-month finite-water-content test."
+  },
+  "retrieval_attempt_2026_09_20": {
+    "metadata_page_reachable": true,
+    "official_resource_link_exposed": true,
+    "web_archive_fetch": "TIMEOUT",
+    "direct_execution_download": "FAILED",
+    "archive_materialized": false,
+    "archive_digest_recorded": false,
+    "traceable_public_mirror_found": false
+  },
+  "alternative_source_reconciliation": {
+    "hydpy_garto_author_code_lead_found": true,
+    "hydpy_statement": "HydPy documentation reports that Fred L. Ogden and Cary A. Talbot provided original C source used to check the GARTO implementation.",
+    "equivalent_to_M2WC70_FMC": false,
+    "reason": "GARTO uses a different reduced wetting-front representation and cannot establish the M2WC70 finite-water-content natural surface-front/groundwater-front state conversion by semantic identity.",
+    "companion_2015_papers_sufficient_for_D30_event": false
+  },
+  "authority_boundary": {
+    "D30_reclassified": false,
+    "natural_surface_gw_contact_event_algorithm_authorized": false,
+    "contact_capable_long_window_trajectory_authorized": false,
+    "D29_stage2_reopened": false,
+    "GARTO_rule_substitution_into_FMC_authorized": false,
+    "D28_native_ET_blocker_preserved": true,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "next_admissible_action": [
+    "materialize official M2WC70 archive and record immutable provenance plus digest",
+    "or locate an independently traceable copy of the same authors' FMC implementation",
+    "or locate an equally authoritative implementation description uniquely specifying the natural FMC contact event",
+    "then write a clean-room event specification and preregister a microscopic contact-event preflight before any long-window comparator"
+  ],
+  "prohibited": [
+    "DO_NOT_TREAT_GARTO_AS_SEMANTICALLY_EQUIVALENT_TO_M2WC70_FMC",
+    "DO_NOT_INFER_THE_NATURAL_FMC_CONTACT_EVENT_FROM_HYDROLOGICAL_PLAUSIBILITY",
+    "DO_NOT_REOPEN_D29_STAGE2",
+    "DO_NOT_BYPASS_D28_NATIVE_ET_BLOCKER",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ]
+}

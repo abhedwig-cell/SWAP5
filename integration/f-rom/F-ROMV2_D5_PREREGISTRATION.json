@@ -1,0 +1,205 @@
+{
+  "schema": "swap5.f-romv2-d5.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D5",
+  "title": "Clean-sheet two-layer mass-conservative physical reduction discriminator",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "2abf3a00dcb80455cf1fdee85655eae19e6f761b",
+  "purpose": "Test whether a training-free two-storage physical reduction can retain useful balance and lower-boundary fidelity over the exposed B01 development domain while avoiding nonlinear Richards solves, before investing in a MetaSWAP-like quasi-steady manifold.",
+  "scientific_role": {
+    "class": "DEVELOPMENT_PHYSICAL_REDUCTION_ARCHITECTURE_DISCRIMINATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "literature_precedent": {
+    "two_layer_integrated_Richards": "He et al. (2021, Journal of Hydrology 602, 126797) and He et al. (2022, Journal of Hydrology 613, 128327): vertically averaged two-layer mass-conservative Richards approximations for root-zone/vadose-zone dynamics and dynamic water-table coupling.",
+    "MetaSWAP": "Van Walsum and Groenendijk MetaSWAP: precedent that reduced unsaturated-zone physics can be judged by purpose-dependent hydrological fidelity rather than numerical identity.",
+    "inheritance_boundary": "These are scientific precedents only. D5 uses a clean-sheet formulation frozen below and does not copy implementation code, calibration tables or tuned coefficients from either family."
+  },
+  "authority": {
+    "F_ROMV2": "integration/f-rom/F-ROMV2_STATUS.json",
+    "F_ROMV2_D4": "integration/f-rom/F-ROMV2_D4_STATUS.json",
+    "B01_parameters": {
+      "theta_r": 0.02,
+      "theta_s": 0.427494,
+      "alpha_per_cm": 0.021659,
+      "n": 1.734737,
+      "m_formula": "1 - 1/n",
+      "Ksat_cm_per_day": 31.225016,
+      "Mualem_l": 0.98087
+    },
+    "R16_reference": "Regenerated through the exact D4 research reference harness and integrated-mass numerical authority on the current canonical base.",
+    "production_source_changed": false,
+    "reference_source_changed": false
+  },
+  "exposed_development_workload": {
+    "histories": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "V01",
+      "V02",
+      "V03",
+      "V04"
+    ],
+    "status": "ALREADY_EXPOSED_DEVELOPMENT_DATA",
+    "blind_confirmation": false,
+    "timestep_day": 0.0008,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.0016,
+    "total_depth_cm": 160
+  },
+  "candidate": {
+    "id": "L2_IMC",
+    "name": "two-layer integrated mass-conservative physical reduction",
+    "dynamic_state": [
+      "theta_upper_0_80cm",
+      "theta_lower_80_160cm"
+    ],
+    "state_dimension": 2,
+    "layer_thickness_cm": [
+      80,
+      80
+    ],
+    "training_required": false,
+    "regression_required": false,
+    "lookup_table_required": false,
+    "nonlinear_Richards_solve_required": false,
+    "fallback_to_Richards": false,
+    "clipping_allowed": false,
+    "adaptive_substepping_allowed": false,
+    "hidden_mass_correction": false
+  },
+  "constitutive_relations": {
+    "effective_saturation": "Se=(theta-theta_r)/(theta_s-theta_r), valid only for theta_r < theta < theta_s",
+    "pressure_head_cm": "h=-(Se^(-1/m)-1)^(1/n)/alpha",
+    "conductivity_cm_per_day": "K=Ksat*Se^l*[1-(1-Se^(1/m))^m]^2",
+    "conductivity_mean": "harmonic mean at interfaces",
+    "extrapolation": "none; any state outside open physical theta bounds is fail-closed"
+  },
+  "sign_and_flux_convention": {
+    "model_coordinate": "depth x positive downward",
+    "model_flux": "q positive downward",
+    "mapping_from_native_top_flux": "q_top=-forcing.top_flux_native",
+    "prescribed_bottom_flux_mode": "q_bottom=-forcing.bottom_flux_native",
+    "internal_flux": "q_12=K_harmonic(theta_upper,theta_lower)*(1-(h_lower-h_upper)/80cm)",
+    "prescribed_bottom_head_flux": "q_bottom=K_harmonic(theta_lower,theta_at_bottom_head)*(1-(h_bottom-h_lower)/40cm)",
+    "equilibrium_check": "Uniform pressure head with prescribed flux qeq_native=-K(theta0) gives q_top=q_12=q_bottom=+K(theta0) in the model convention."
+  },
+  "time_integration": {
+    "method": "single explicit Heun predictor-corrector per declared observation interval",
+    "internal_substeps": 1,
+    "derivative_upper": "dtheta_upper/dt=(q_top-q_12)/80cm",
+    "derivative_lower": "dtheta_lower/dt=(q_12-q_bottom)/80cm",
+    "forcing_within_interval": "piecewise constant",
+    "predictor_gate": "predictor theta for both layers must remain strictly within (theta_r,theta_s)",
+    "corrected_gate": "corrected theta for both layers must remain strictly within (theta_r,theta_s)",
+    "bottom_exchange_cm": "dt * 0.5*(q_bottom_stage1+q_bottom_stage2)",
+    "terminal_bottom_flux_cm_per_day": "q_bottom evaluated from corrected end state",
+    "transaction_mass_residual_cm": "80*(theta_upper_new-theta_upper_old)+80*(theta_lower_new-theta_lower_old)-dt*q_top+bottom_exchange",
+    "hard_mass_gate_cm": 1e-12
+  },
+  "seed": {
+    "initial_effective_saturation": 0.85,
+    "initial_layers_equal": true,
+    "seed_forcing": "same gravity-consistent prescribed top/bottom flux used by the R16 research harness",
+    "seed_rule": "run the same fixed Heun method for the two seed intervals; any drift is reported and must satisfy the same physical and hard mass gates"
+  },
+  "hydrological_metrics": [
+    "total storage error",
+    "upper 0-80 cm storage error",
+    "lower 80-160 cm storage error",
+    "cumulative bottom exchange error",
+    "terminal bottom flux magnitude error",
+    "bottom flux sign error count",
+    "flow-reversal step sequence",
+    "systematic bias by history",
+    "maximum and pooled absolute errors",
+    "physical-bound failures",
+    "transaction mass residual"
+  ],
+  "computational_structure": {
+    "state_variables": 2,
+    "nonlinear_Richards_iterations_per_interval": 0,
+    "backtracking_or_retry_policy": false,
+    "constitutive_evaluations_per_interval": "fixed finite count from one Heun predictor-corrector plus terminal diagnostic",
+    "formal_speedup_claim": false,
+    "interpretation": "Structural cost is used only for architecture discrimination. Formal end-to-end timing requires later same-language/current-runtime implementation on an admitted performance host."
+  },
+  "preexisting_comparators": {
+    "R8": {
+      "total_storage_rmse_cm": 0.01799222908987689,
+      "cumulative_bottom_exchange_rmse_cm": 0.017992229089875817,
+      "terminal_bottom_flux_rmse_cm_per_day": 1.6409216789331473,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "R4": {
+      "total_storage_rmse_cm": 0.032146095760015765,
+      "cumulative_bottom_exchange_rmse_cm": 0.0321460957600138,
+      "terminal_bottom_flux_rmse_cm_per_day": 2.5374217809769273,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "R2": {
+      "total_storage_rmse_cm": 0.040708791265067,
+      "cumulative_bottom_exchange_rmse_cm": 0.04070879126506528,
+      "terminal_bottom_flux_rmse_cm_per_day": 3.001711614082716,
+      "bottom_flux_sign_errors": 136,
+      "reversal_mismatch_histories": 8
+    },
+    "C2": "Retained only as a local data-driven comparator where its frozen domain covers; D5 does not retune or reuse C2 blind evidence."
+  },
+  "decision_logic": {
+    "integrity_kill": [
+      "nonfinite state or flux",
+      "predictor or corrected theta outside open B01 physical bounds",
+      "absolute transaction mass residual above 1e-12 cm",
+      "any hidden clipping, correction, adaptive substep or full-order fallback"
+    ],
+    "architecture_positive": "L2_IMC_REMAINS_SERIOUS_BALANCE_FOCUSED_PHYSICAL_REDUCTION_CANDIDATE",
+    "architecture_negative": "L2_IMC_NOT_COMPETITIVE_OR_NOT_ROBUST_IN_EXPOSED_B01_DOMAIN",
+    "positive_rule": [
+      "all 12 histories complete with integrity",
+      "and L2_IMC is non-dominated versus the pre-existing R2 comparator on at least one declared development view",
+      "balance view: both total-storage RMSE and cumulative-bottom-exchange RMSE <= R2 values, with no nonlinear Richards solve",
+      "or transient view: terminal bottom-flux RMSE <= R2 and sign-error count <= R2, with no nonlinear Richards solve"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "purpose_dependent_boundary": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "D5 may retain or reject architecture candidacy but cannot establish application acceptance.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED because root uptake, ET stress and drought memory are absent.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "Can only remain a candidate if bottom-flux sign/reversal evidence is not catastrophically degraded; qualification requires later coupled evidence.",
+    "FAST_EVENT_THRESHOLD": "No qualification can be established from D5.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "No qualification; two layer averages intentionally remove profile detail."
+  },
+  "successor_logic": {
+    "if_positive": "Carry L2_IMC with R8/R4/R2 into purpose-specific validation and later same-runtime performance comparison. A MetaSWAP-like quasi-steady manifold is optional only if it can plausibly improve fidelity/domain/cost.",
+    "if_negative_but_integrity_passes": "Proceed to a separately preregistered quasi-steady/storage-flux manifold because two instantaneous layer states are insufficient.",
+    "if_integrity_fails": "Close L2_IMC. Do not add clipping, adaptive substeps or calibration after exposure; move to a different physical-reduction architecture."
+  },
+  "firewalls": [
+    "NO_TRAINING_OR_CALIBRATION",
+    "NO_POST_RESULT_EQUATION_RETUNING",
+    "NO_ADAPTIVE_SUBSTEPS",
+    "NO_STATE_CLIPPING",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_C2_RETUNING_OR_BLIND_REUSE",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

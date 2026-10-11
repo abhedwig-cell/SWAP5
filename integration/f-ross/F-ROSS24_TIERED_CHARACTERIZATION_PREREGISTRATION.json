@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.f-ross24.tiered-production-characterization-preregistration.v1",
+  "workunit": "F-ROSS24",
+  "phase": "DESIGN",
+  "title": "Admitted tiered RossFast versus Reference production characterization",
+  "branch": "work/f-ross24-tiered-production-characterization",
+  "reconciliation": {
+    "canonical_source": "86969f502015ae259a536a57cc7125c38a3e42e6",
+    "f_ross22_admission_commit": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "admitted_kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "admitted_solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "f_ross22_status": "ADMITTED_CLOSED",
+    "f_ross23_static_baseline": {
+      "result_branch": "work/f-ross23-static-production-characterization",
+      "primary_ratio": 3.107197377836018,
+      "final_regime_ratio": 3.1313316402009623,
+      "purpose": "descriptive historical static baseline only; not a same-run comparator"
+    }
+  },
+  "purpose": "Systematically characterize the canonically admitted K2->K4->K8 RossFast production solver against the Reference Richards solver, separating scientific/robustness behavior from shared-host performance screening.",
+  "measurement_first_rule": "Persist this contract before timing or interpretation. No solver, Reference, tolerance, certificate or selection changes are permitted inside F-ROSS24.",
+  "domain": {
+    "case_count": 216,
+    "materials": "B01..B18 and O01..O18",
+    "effective_saturation": [
+      0.65,
+      0.85,
+      0.98
+    ],
+    "forcing": [
+      "DRYING",
+      "NOMINAL"
+    ],
+    "grid": "16 homogeneous cells x 10 cm",
+    "step_duration_day": 0.0016,
+    "family": "same fixed-flux E0 construction used by F-ROSS23 and the F-ROSS22 all-material production matrix",
+    "exact_pairing": "Reference and RossFast receive identical initial state, parameters, forcing, lower boundary and interval"
+  },
+  "tier_contract": {
+    "K2": {
+      "linear_solves": 6
+    },
+    "K4": {
+      "linear_solves": 18,
+      "meaning": "K2 rejected, K4 recomputed from original base state"
+    },
+    "K8": {
+      "linear_solves": 42,
+      "meaning": "K2 and K4 rejected, K8 recomputed from original base state"
+    },
+    "no_trajectory_reuse": true,
+    "no_K16": true,
+    "no_threshold_retuning": true
+  },
+  "science_metrics": [
+    "route convergence/failure and reason",
+    "RossFast temporal certificate and final tier/work count",
+    "RossFast integrated mass residual",
+    "Reference integrated/native residual availability",
+    "head infinity/RMS difference on paired-valid cases",
+    "theta infinity/RMS difference on paired-valid cases",
+    "storage difference on paired-valid cases",
+    "historical P2E10 threshold classification as descriptive diagnostic only"
+  ],
+  "performance_contract": {
+    "compiler_optimization": "O2",
+    "warmups_per_variant": 2,
+    "measured_pairs": 12,
+    "pair_order": "alternating Reference->RossFast then reverse",
+    "inner_repetitions_per_paired_valid_case": 200,
+    "timed_region": "solve calls only",
+    "cpu_affinity": "pin child process to one visible CPU",
+    "primary_metric": "Fortran CPU_TIME accumulated per paired-valid case",
+    "secondary_metrics": [
+      "whole child CPU",
+      "wall elapsed"
+    ],
+    "per_case_timing": true,
+    "stratification": [
+      "final tier",
+      "material",
+      "B/O family",
+      "effective saturation",
+      "forcing"
+    ],
+    "outlier_deletion": false,
+    "formal_host_boundary": "GitHub-hosted timing is screening only; formal production performance claim requires MP-admitted isolated host"
+  },
+  "analysis_questions": [
+    "Does admitted tiered RossFast remain route-valid across all 216 E0 cases?",
+    "Where Reference Richards does not converge, does tiered RossFast remain valid?",
+    "On paired-valid cases, where is tiered RossFast faster, slower or unresolved relative to Reference?",
+    "How does speed depend on final K2/K4/K8 tier, material, saturation and forcing?",
+    "How much of the static F-ROSS23 performance deficit has been removed descriptively by the admitted cache+tiered production evolution?",
+    "Are any observed direct-state discrepancy patterns concentrated near high saturation?"
+  ],
+  "firewall": [
+    "NO_PRODUCTION_OPTIMIZATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_ADAPTIVE_SELECTION_CHANGE",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_MATERIAL_ENVELOPE_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
+  ],
+  "reused_evidence": [
+    "F-ROSS22 canonical admission and 216/216 production qualification",
+    "F-ROSS23 static 216-case characterization",
+    "F-ROSS16 structural cost attribution"
+  ],
+  "next_permitted_action": "MEASURE: implement only a diagnostic/timing harness for the frozen admitted F-ROSS22 postimage, then execute the preregistered 216-case shared-host screening and regime analysis."
+}

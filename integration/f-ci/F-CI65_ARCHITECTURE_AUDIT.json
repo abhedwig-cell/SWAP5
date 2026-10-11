@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fci65.architecture_audit.v1",
+  "work_unit": "F-CI65",
+  "scope": "Current-canonical admission of independently qualified F-GC24 coupled restart / split-run / replay composition",
+  "canonical_base": "0b7ad240c005d84373b06ee5304edde779cf6e34",
+  "canonical_base_tree": "ea409fe3740cf51a58da856f37bf11d656f83b8d",
+  "authorities": {
+    "F_GC24": "194487ec18374ef6097e3dd687038e326f818be8",
+    "F_VQ86": "0fea1f7a17ccff9f41b4d2dee71feab526313a01"
+  },
+  "recomposition": {
+    "previous_failed_head": "f530cf5c5a85ed528539fc3d36011d0739823187",
+    "failure_classification": "EXPECTED_FAIL_CLOSED_CANONICAL_DRIFT",
+    "canonical_delta": "F-CI64P governance/postimage preservation only; no src/reference overlap with F-GC24 production scope"
+  },
+  "invariants": [
+    {"id":1,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Reuses the single canonical SWAP kernel and adds no coupled special-purpose kernel."},
+    {"id":2,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart runtime remains typed and serialization-neutral; no files, formats, paths or parsing enter the kernel."},
+    {"id":3,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"SWAP committed state, groundwater continuation, interface ledger and coupling origin remain explicit separate carriers."},
+    {"id":4,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Only continuation-relevant committed state crosses restart; transient tokens and scratch remain excluded."},
+    {"id":5,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No Newton vectors, Jacobians, constitutive intermediates or worker scratch are persisted."},
+    {"id":6,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No heavyweight per-column solver ownership or fixed AoS storage layout is introduced."},
+    {"id":7,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart is accepted-boundary only, requires quiescence, and recoverable failures leave local committed publication untouched."},
+    {"id":8,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restore reconstructs committed physical origin only; rejected trial state is not promoted."},
+    {"id":9,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Accepted time is generic and no day, month, year or midnight semantics are introduced."},
+    {"id":10,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No fixed coupling-window duration is encoded in restart or replay."},
+    {"id":11,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Coupling provenance, groundwater continuation, ledger continuation and transactional publication remain explicit runtime responsibilities."},
+    {"id":12,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Head/flux direct-groundwater interface semantics and sign convention are unchanged."},
+    {"id":13,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Committed interface-ledger continuation is exact and no configurable water-mass concession is introduced."},
+    {"id":14,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No interface-sensitivity semantics are changed; F-GC23 whole-window tangent composition remains separate."},
+    {"id":15,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart adds no mandatory extra predictor/corrector or finite-difference coupling reruns."},
+    {"id":16,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Architecture remains compatible with batched MultiSWAP execution; F-GC25 scaling evidence remains separate."},
+    {"id":17,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No one-to-one MODFLOW-cell mapping or tile fraction is persisted in SWAP state."},
+    {"id":18,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No deep-vadose transfer-zone state or law is embedded in SWAP restart."},
+    {"id":19,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No transfer-zone storage is created or destroyed; coupled interface mass remains explicit."},
+    {"id":20,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart depends on common committed-state contracts rather than one Richards implementation."},
+    {"id":21,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Existing SWAP physics is reused without duplicate groundwater-specific process physics."},
+    {"id":22,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No HeadCalc-private arrays or numerical internals enter the restart contract."},
+    {"id":23,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart mechanics do not silently alter physical options or solver policy."},
+    {"id":24,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No unbounded retry or hidden recomputation path is added; bounded-cost integration remains F-GC26 scope."},
+    {"id":25,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Reference mode and full-accuracy solver paths remain available and unchanged."},
+    {"id":26,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Quiescence, provenance rejection, restart status and ledger diagnostics remain explicit and test-visible."},
+    {"id":27,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Restart adapter/state is opt-in and incurs cost only in coupled restart-capable compositions."},
+    {"id":28,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"Runtime/coupler composes the groundwater exchange service and restart adapter; the SWAP kernel does not own system mapping."},
+    {"id":29,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"No .swp, path, calendar, midnight or direct-MODFLOW assumption is introduced."},
+    {"id":30,"assessment":"NO_ADVERSE_ADMISSION_DELTA","evidence":"F-CI65 explicitly audits all 30 architecture invariants before admission."}
+  ],
+  "overall": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "hard_nonclaims": [
+    "This audit does not claim groundwater-coupling-v1 completion.",
+    "F-GC20, F-GC22, F-GC23, F-GC25, F-GC26 and final F-GC27 closure remain separate obligations.",
+    "Postimage preservation is required after canonical promotion."
+  ]
+}

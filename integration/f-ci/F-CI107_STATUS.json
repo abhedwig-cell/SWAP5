@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI107",
+  "title": "RossFast transform-cache canonical admission",
+  "phase": "QUALIFY",
+  "status": "RECOMPOSED_ON_FCI106_CANONICAL_PENDING_EXACT_HEAD_QUALIFICATION",
+  "branch": "integration/f-ci107-rossfast-transform-cache-admission",
+  "canonical_source": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
+  "candidate_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+  "authority_correction": {
+    "prior_misnumbered_id": "F-CI105",
+    "canonical_owner_of_prior_id": "F-GC39",
+    "action": "Renumber only the RossFast cache admission governance workunit; scientific/production candidate is unchanged."
+  },
+  "implementation": {
+    "production_kernel_blob": "2ad2a680e62744451d6763de48585f1bd45d3067",
+    "successor_gate": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+    "fci96_routing": "EXACT_CACHE_BLOB_ROUTE",
+    "canonical_moving_routing": "EXACT_CACHE_BLOB_ROUTE_PRESERVING_FCI106_BACKEND_LINEAGE",
+    "historical_fross13_default_semantics": "PRESERVED"
+  },
+  "exclusions": [
+    "NO_K2_K4_K8_TIERING",
+    "NO_SOLVER_BINDING_CHANGE",
+    "NO_MATERIAL_OR_TABLE_CHANGE",
+    "NO_TRANSACTION_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM"
+  ],
+  "verdict": "READY_FOR_EXACT_HEAD_QUALIFICATION",
+  "next_permitted_action": "Run exact-head F-CI107 owner and current moving-preservation qualification. If green, open canonical admission PR and admit before recomposing F-ROSS22."
+}

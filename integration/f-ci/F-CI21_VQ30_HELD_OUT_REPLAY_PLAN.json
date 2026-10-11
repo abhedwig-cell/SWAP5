@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "stage": "F-VQ30 held-out operator postimage replay",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "persisted_before_long_test": true,
+  "pretest_head": "9e875df5d3624a0feaa6fd1d507c351725dca53d",
+  "materialized_source": {
+    "commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "tree": "7dc94493d44952ad032c02c1d039bc4df0aa8e3f",
+    "postimage_manifest_blob": "868cf8c52c02a6a9b40bd09ad9f51b7c0b635de4"
+  },
+  "authoritative_F_VQ30": {
+    "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
+    "live_head_observed_before_replay": "9372d7962d4d750f7765c0cc03039111eec8ecc3",
+    "live_tree_observed_before_replay": "dfa3332c5ac79caee7a52cc6d7da1189d4c962c7",
+    "qualification_plan_blob": "8bf40e19ba547ec93c4d8ce18d7ac6111707afe7",
+    "held_out_evidence_blob": "39832173174271f4ad97278662467eb4dab13599",
+    "closeout_blob": "6663bcc1149f07962bb9921840958d6d7de628a4",
+    "decision": "QUALIFIED_HELD_OUT_TRANSFER_OF_BOUNDED_STIFFNESS_AWARE_RICHARDS_INDICATOR_READY_FOR_PRODUCTION_OPERATOR_SEAM"
+  },
+  "replay_scope": {
+    "cases": 16,
+    "initial_uniform_heads_cm": [-35.0, -95.0, -185.0, -300.0],
+    "prescribed_bottom_head_jumps_cm": [-0.075, 0.075],
+    "fixed_horizons_day": [0.125, 0.5],
+    "owner_exact_triplet_overlap": 0,
+    "candidate_execution": "current materialized F-SI25 solver-owned evaluate_temporal_indicator production seam",
+    "frozen_expected_result": "F-VQ30 held-out evidence B_inf for each exact case",
+    "finite_comparator_role": "qualification-only frozen N512 comparator retained from F-VQ30; no deep refinement is executed as production indicator work"
+  },
+  "gates": [
+    "exact F-VQ30 plan/evidence/closeout blob locks",
+    "exact F-CI21 materialized temporal production source locks",
+    "16/16 current production-seam executions at O0 and O2",
+    "production B_inf reproduces frozen F-VQ30 held-out B_inf within the same floating comparison envelope used by the SI25 owner replay",
+    "B_inf remains >= frozen E1_512 in all 16 cases",
+    "hard candidate mass residual <= 1e-12 in all cases",
+    "zero additional full nonlinear solves and exactly one additional defect tridiagonal solve",
+    "candidate state, flux, mass and principal solver diagnostics remain observer-noninterfering through the existing F-SI25 production driver assertions",
+    "bitwise-identical O0/O2 production output",
+    "no src or canonical modification"
+  ],
+  "hard_nonclaims": [
+    "B_inf is not a general nonlinear true-error bound.",
+    "N512 is not exact truth.",
+    "No scientific temporal tolerance is selected here.",
+    "No production temporal acceptance or retry policy is admitted here.",
+    "No groundwater coupling release follows from this replay.",
+    "F-VQ28 and F-VQ29 negative evidence remain valid."
+  ],
+  "state": "PLAN_PERSISTED_TEST_PENDING"
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.f-rom0ta4.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA4",
+  "title": "Refined fixed-resolution Reference candidate restart and replay",
+  "execution": {
+    "workflow_run": 35372014491,
+    "workflow_job": 105687963208,
+    "qualification_branch": "qualification/f-rom0ta4-exact-pre-ta5",
+    "executed_head": "0037635443454ce6b7e6d4fe56534874451f8a92",
+    "artifact_id": 10558694242,
+    "artifact_digest": "sha256:1d3781e889817eb9cb08bdaeb7113c43034bff5cb96d673cfede9c8ae829ad92",
+    "conclusion": "success"
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "cases": ["TOP_PLUS","TOP_MINUS"],
+    "refined_dt_day": 0.0008,
+    "restart_split_after_perturbation_intervals": 8,
+    "case_count": 4,
+    "case_pass_count": 4,
+    "failure_marker_count": 0,
+    "post_restart_replay_point_count": 32,
+    "expected_post_restart_replay_point_count": 32
+  },
+  "identity": {
+    "continuous_vs_split_pre_restart_identity_enforced": true,
+    "post_restart_pressure_head_bit_identity": true,
+    "post_restart_water_content_bit_identity": true,
+    "post_restart_ponding_bit_identity": true,
+    "post_restart_groundwater_level_bit_identity": true,
+    "post_restart_mass_residual_bit_identity": true,
+    "post_restart_lineage_identity": true,
+    "post_restart_revision_identity": true,
+    "post_restart_committed_time_bit_identity": true,
+    "wrong_parameter_identity_fail_closed_all_cases": true,
+    "fresh_backend_after_restore": true,
+    "worker_solver_scratch_persisted": false,
+    "repeat_stdout_bitwise_identity": true
+  },
+  "source_authority": {
+    "source_freeze": "PASS",
+    "preregistration_lock": "PASS",
+    "production_or_reference_source_mutated_relative_to_TA4_preregistration": false,
+    "why_pinned_carrier_was_required": "The first rerun of the older PR workflow checked out the live PR head through origin/GITHUB_HEAD_REF and therefore correctly detected the later TA5 source delta. PR 322 pinned the exact pre-TA5 head without relaxing the source-freeze rule.",
+    "later_TA5_reconciliation": "TA5 changes only the Reference-floor admission predicate from bottom_mode==2 to bottom_mode in {2,5}; the retained TA4 bottom_mode=2 path remains semantically admitted and TA5 independently proves the ordinary runtime/core unchanged."
+  },
+  "decision": "REFINED_REFERENCE_CANDIDATE_RESTART_REPLAY_QUALIFIED",
+  "application_budget_used": false,
+  "production_application_admission": false,
+  "rom1a_authorized": false
+}

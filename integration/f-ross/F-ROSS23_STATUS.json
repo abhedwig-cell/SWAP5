@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS23",
+  "title": "Static RossFast versus Reference production characterization",
+  "phase": "CLOSE",
+  "status": "CLOSED",
+  "branch": "work/f-ross23-static-production-characterization",
+  "closing_parent_head": "07f775028291560280877e3bb8682b9272d9b271",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head_at_close": "4d50ca2676cf9404e62b182767686ab677921511",
+  "source_branch": "work/f-ross15-reference-vs-rossfast-performance",
+  "source_head": "33541f4e6f76058a82293e0b0a13c878a33359ef",
+  "relevant_static_dependency_drift": false,
+  "primary_evidence": {
+    "workflow_run": 35335830136,
+    "head": "6a8cd3b7933f1c8fb81fdfe53fecab1abab1f2d2",
+    "artifact_id": 10543402292,
+    "artifact_digest": "sha256:14a032b388c2479408b0366238b5abaffea0b53d1b1b88178ab4240bdd4297d0"
+  },
+  "final_diagnostic_evidence": {
+    "workflow_run": 35337265876,
+    "head": "07f775028291560280877e3bb8682b9272d9b271",
+    "artifact_id": 10543715981,
+    "artifact_digest": "sha256:347c198d823a32aa729dea88b891680f03b57e95d8227cba526421349dcf706b"
+  },
+  "results": {
+    "attempted_cases": 216,
+    "rossfast_route_valid": 216,
+    "reference_route_valid": 213,
+    "reference_invalid_nonconverged_cases": [
+      "B16/Se0.98/NOMINAL",
+      "B17/Se0.98/DRYING",
+      "B18/Se0.98/DRYING"
+    ],
+    "paired_valid": 213,
+    "historical_threshold_diagnostic": {
+      "within": 210,
+      "outside": 3,
+      "outside_cases": [
+        "B05/Se0.98/DRYING",
+        "B05/Se0.98/NOMINAL",
+        "B09/Se0.98/NOMINAL"
+      ]
+    },
+    "primary_rossfast_over_reference_solver_cpu_ratio_mean": 3.107197377836018,
+    "primary_screening_outcome": "SCREENING_REFERENCE_FASTER",
+    "final_regime_replay_ratio_mean": 3.1313316402009623,
+    "individual_case_screening": {
+      "reference_faster": 213,
+      "rossfast_faster": 0,
+      "not_resolved": 0
+    },
+    "regime_screening": {
+      "all_material_groups": "REFERENCE_FASTER",
+      "B_vs_O": "REFERENCE_FASTER_BOTH",
+      "all_Se_levels": "REFERENCE_FASTER",
+      "both_forcing_classes": "REFERENCE_FASTER"
+    }
+  },
+  "interpretation": [
+    "Static RossFast is robust on the full 216-case E0 characterization matrix; no RossFast route failure was observed.",
+    "Direct comparison is complete for 213 cases. The only unpaired cases are three Reference non-convergences at Se=0.98 in B soils.",
+    "Three high-saturation B-material paired cases lie outside one or two historical six-material P2E10 direct-discrepancy thresholds; those thresholds are descriptive here and are not F-ROSS13 extension-material admission gates.",
+    "Static RossFast is materially slower than Reference Richards in the measured solver-only shared-host screen. No paired-valid case or preregistered regime shows a RossFast speed advantage.",
+    "F-ROSS13 scientific qualification remains authoritative; F-ROSS23 adds characterization and does not change production semantics."
+  ],
+  "mutations": [
+    "diagnostic/preregistration/evidence files only",
+    "no production solver mutation",
+    "no Reference mutation",
+    "no tolerance change",
+    "no adaptive selection",
+    "no optimization"
+  ],
+  "production_or_reference_mutation": false,
+  "verdict": "CLOSED_STATIC_ROSSFAST_ROBUST_BUT_NOT_PERFORMANCE_COMPETITIVE_ON_MEASURED_E0_DOMAIN",
+  "durable_result": "integration/f-ross/F-ROSS23_STATIC_CHARACTERIZATION_RESULT.json",
+  "next_permitted_action": "NONE_WITHIN_F_ROSS23. F-ROSS22 is now canonically admitted and closed. Characterization of the admitted tiered solver belongs to a new workunit.",
+  "exclusions": [
+    "NO_OPTIMIZATION",
+    "NO_ADAPTIVE_SELECTION_IN_F_ROSS23",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_TOLERANCE_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
+  ],
+  "canonical_persistence": {
+    "persisted_after_close": true,
+    "persistence_base": "050947affbb00fc7f00dcfba0e93c6359be2d443",
+    "production_or_reference_mutation": false,
+    "note": "Evidence-only canonical persistence after F-ROSS22 admission; scientific result unchanged."
+  }
+}

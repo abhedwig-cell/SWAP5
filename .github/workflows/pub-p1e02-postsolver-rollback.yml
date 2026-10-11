@@ -1,0 +1,24 @@
+name: PUB-P1E02 post-solver rollback
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/publication/test_pub_p1e02_postsolver_rollback.f90'
+      - 'tests/publication/run_pub_p1e02_postsolver_rollback.sh'
+      - '.github/workflows/pub-p1e02-postsolver-rollback.yml'
+      - 'src/**'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+  workflow_dispatch:
+
+jobs:
+  rollback-publication-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run production post-solver rollback experiment
+        run: bash tests/publication/run_pub_p1e02_postsolver_rollback.sh

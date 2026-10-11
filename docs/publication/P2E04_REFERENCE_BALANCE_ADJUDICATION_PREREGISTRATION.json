@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.publication.p2e04-reference-balance-adjudication.v1",
+  "workunit": "PUB-P2E04",
+  "canonical_base": "aa0ac9b0639c50fcfa604201737a9db3d5525821",
+  "status": "PREREGISTERED_BEFORE_ADJUDICATION_EXECUTION",
+  "trigger": "PUB-P2E03 preregistered Reference calibration matrix blocked: 115 of 162 cases failed hard Reference validity; representative probes showed legacy-reference-retry with aggregate residual sum slightly above 1e-12 cm while local balance and head flags were often zero.",
+  "scope": "Reference solver numerical adjudication only. This workunit does not alter, rescue or reinterpret the immutable failed P2E03 matrix.",
+  "firewall": {
+    "rossfast_numerical_solver_execution_allowed": false,
+    "rossfast_discrepancy_inspection_allowed": false,
+    "production_source_change_allowed": false,
+    "reference_source_change_allowed": false,
+    "rossfast_admissibility_threshold_freezing_allowed": false,
+    "p2e03_case_removal_allowed": false
+  },
+  "stage_A_failure_census": {
+    "domain": "exact 162 P2E03 material x Se x forcing x dt cases",
+    "numerical_configuration": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "compartment_balance_tolerance_cm": 1e-12,
+      "total_balance_tolerance_cm": 1e-12,
+      "head_abs_tolerance_cm": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "ponding_tolerance_cm": 1e-12
+    },
+    "classification_at_first_failed_stage": [
+      "ACCEPTED",
+      "RETRY_TOTAL_ONLY: status retry, local balance flags=0, head flags=0, max abs compartment residual <=1e-12, abs residual sum >1e-12",
+      "RETRY_LOCAL_BALANCE: one or more local balance flags",
+      "RETRY_HEAD: one or more head flags",
+      "RETRY_MIXED: both local balance and head flags",
+      "RETRY_OTHER: retry not explained by those observable criteria",
+      "FAILED_OR_INVALID_ROUTE"
+    ],
+    "required_output": "counts by class, failed stage and dt level; retain every case"
+  },
+  "stage_B_iteration_sweep": {
+    "total_balance_tolerance_cm": 1e-12,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "max_iterations": [8, 16, 32, 64],
+    "cases": [
+      "B01 Se=0.65 NOMINAL dt=0.0004 coarse failure archetype",
+      "B01 Se=0.65 DRYING dt=0.0016 half1 failure archetype",
+      "O18 Se=0.85 NOMINAL dt=0.0016 half2 failure archetype",
+      "B12 Se=0.65 WETTING dt=0.0004 full-pass control",
+      "B01 Se=0.85 NOMINAL dt=0.0016 full-pass control"
+    ],
+    "decision_observation": "If a strict 1e-12 failure becomes accepted solely by increasing max_iterations, mark it ITERATION_RESOLVABLE. Otherwise retain the observed residual/flag trajectory without changing criteria."
+  },
+  "stage_C_total_tolerance_sweep": {
+    "max_iterations": 16,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "total_balance_tolerance_cm": [1e-12, 1.25e-12, 1.5e-12, 2e-12, 4e-12, 8e-12, 1.6e-11],
+    "cases": "same five preselected Stage-B cases",
+    "required_observations": [
+      "solver status and route",
+      "published mass residual when accepted",
+      "workspace residual naive sum",
+      "workspace residual reverse-order sum",
+      "workspace residual high-precision accumulated sum when compiler kind is available",
+      "max abs compartment residual",
+      "local balance flag count",
+      "head flag count",
+      "nonlinear iterations and backtracking attempts",
+      "endpoint pressure-head/water-content differences relative to the tightest accepted tolerance for that same trajectory"
+    ],
+    "interpretation_boundary": "This sweep diagnoses numerical sensitivity only. The smallest accepting total tolerance is not automatically a new production tolerance and is not a RossFast admissibility threshold."
+  },
+  "stage_D_conclusion_rules": [
+    "Do not call a retry an arithmetic summation artifact unless alternative accumulation changes the aggregate residual materially relative to the 1e-12 criterion.",
+    "Do not call it an iteration-budget issue unless strict 1e-12 acceptance is recovered at a larger preregistered iteration budget.",
+    "If aggregate-only retries persist at 64 iterations with locally converged residual/head flags, describe them as an observed aggregate residual floor under the current Reference formulation, not as proven floating-point roundoff.",
+    "Any proposal to alter production numerical tolerances or to preregister a replacement calibration matrix must be a later, separate decision after this evidence is frozen."
+  ],
+  "next_permitted_action": "Implement Stage A census first. Stage B/C execution is permitted only with the exact preregistered cases and ladders above; no new RossFast output may be consulted."
+}

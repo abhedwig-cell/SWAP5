@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "candidate": {
+    "name": "CANDIDATE_A",
+    "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "production_source_modification_by_f_ci19": false
+  },
+  "status": "COMPOSITION_AWARE_REPLAY_REQUIRED_BEFORE_CANONICAL_ADMISSION",
+  "principle": "Historical qualification gates remain immutable evidence for their exact historical postimages. A later composition must not weaken those source locks; it needs a new preservation gate that distinguishes source identity from semantic preservation.",
+  "why_historical_runners_cannot_be_reused_verbatim": [
+    {
+      "gate": "F-VQ27",
+      "runner": "tests/fvq/run_fvq27_fmr15_independent_gate.sh",
+      "finding": "The runner requires current production paths to be bit-identical to the F-MR15 closeout and exact F-MR15 blobs. Candidate A intentionally contains later F-KT09 transaction/runtime changes, so the historical runner would fail at its source-immutability boundary before testing composition semantics.",
+      "interpretation": "This is correct historical behavior and must not be relaxed. Build a new F-CI19 preservation gate instead."
+    },
+    {
+      "gate": "F-MQ24",
+      "runner": "tests/multiswap/run_fmq24_gate.sh",
+      "finding": "The runner materializes and requalifies the historical source candidate ffab7d705928170db3e76a5d346caafeb560e605. Running it unchanged would re-prove that old candidate, not Candidate A.",
+      "interpretation": "Reuse its semantic oracles and scope holds in a new composition gate, while preserving the historical runner unchanged."
+    },
+    {
+      "gate": "F-MR06",
+      "runner": "tests/fmr/run_fmr06_gate.sh",
+      "finding": "The runner locks the historical snow/runtime/kernel/transaction blobs and asserts an old three-file production delta. Candidate A contains later qualified runtime and transaction changes.",
+      "interpretation": "The snow physics blob can be inherited by identity where unchanged, but integrated runtime behavior must be re-executed on Candidate A."
+    }
+  ],
+  "fmr15_to_candidate_a_changed_production_surface": {
+    "base_postimage": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+    "candidate_a": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "changed_source_paths": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "interpretation": "The later overlap is concentrated in transaction and canonical-runtime ownership. The prescribed-head solver, adapters, HeadCalc, reference workspace, reference linear solver and serialized F-MR runtime paths are not part of this F-MR15-to-Candidate-A source delta."
+  },
+  "replay_design_rules": [
+    "Do not edit, delete or relax historical F-VQ27, F-MQ24 or F-MR06 blob locks.",
+    "Create new F-CI19 composition-preservation tests on the exact Candidate A tree.",
+    "Reuse existing scientific/runtime oracle programs where their test semantics remain applicable, but compile and execute them against Candidate A production modules.",
+    "Separate unchanged-source inheritance from changed-owner behavioral preservation in machine-readable evidence.",
+    "Any changed source path owned by transactions/runtime requires executed behavioral evidence, not ancestry inference.",
+    "Hard mass conservation is an independent pass/fail gate and may never be traded against temporal acceptance.",
+    "Rejected trials must leave committed state unchanged; A/B/A replay and exact retry checkpoint restoration remain hard gates.",
+    "No production Richards model-certificate claim is made by this replay. The generic F-KT09 seam remains opt-in and model-specific admission remains downstream.",
+    "No scientific scope is broadened while preserving older admissions. Existing holds remain holds unless a separate owner and independent qualification explicitly expand them."
+  ],
+  "required_preservation_groups": {
+    "prescribed_head_fvq27": [
+      "accepted negative qbot",
+      "accepted positive qbot",
+      "bottom-head authority",
+      "bottom-flux seed irrelevance",
+      "qbot mass exactly once",
+      "transaction discard isolation",
+      "A/B/A replay",
+      "zero-tolerance stationary temporal acceptance",
+      "reference linear solver behavior",
+      "O0/O2 result and diagnostic identity"
+    ],
+    "snow_fmq24": [
+      "inactive active and mixed batches 1 2 17 31",
+      "direct snow-state scientific identity where oracle applicable",
+      "nonzero melt as internal transfer",
+      "inactive columns allocate no snow continuation state",
+      "reverse-order column identity",
+      "reverse-order aggregate mass identity",
+      "A/B/A exact repeatability",
+      "checkpoint trial rollback replay commit",
+      "rejected trial committed state unchanged",
+      "authoritative mass complete",
+      "maximum simultaneous real physical solves remains 1",
+      "subdaily and multiday active-snow routes fail closed"
+    ],
+    "fkt09": [
+      "model certificate is explicit opt-in",
+      "external full-versus-two-half remains default",
+      "invalid or unavailable certificate fails closed",
+      "hard mass gate remains independent",
+      "retry restores exact attempt checkpoint",
+      "private accepted substeps are published only after full requested interval completion",
+      "committed kernel state changes only by explicit commit candidate",
+      "certificate diagnostics reach kernel boundary",
+      "no Richards-specific logic in F-KT",
+      "no calendar-specific logic"
+    ],
+    "ci_level": [
+      "canonical transaction regression",
+      "authoritative mass completeness",
+      "no hidden file or calendar dependency",
+      "generic [t0,t1] transaction semantics",
+      "reference mode remains available",
+      "diagnostics remain decision-neutral where specified"
+    ]
+  },
+  "admission_outcomes": [
+    "QUALIFIED_CANDIDATE_A_FOR_RESTRICTED_CANONICAL_ADMISSION",
+    "BLOCKED_CANDIDATE_A_COMPOSITION_REGRESSION"
+  ],
+  "current_outcome": "NOT_TESTED"
+}

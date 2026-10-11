@@ -1,0 +1,122 @@
+{
+  "workunit": "PUB-ME-D2",
+  "publication_owner": "PUB-ME",
+  "doctoral_mapping": "RQ1 / PRESERVE",
+  "status": "QUALIFIED_PRIMARY_RESULT_PENDING_POSTIMAGE_ADMISSION",
+  "design_authority": {
+    "preregistration_head": "b2ebe5825b3c54d9d4eaefe44c33f4c859fa20aa",
+    "design_blob": "61f7133f19cc900971aa454b7bdb16a254468eda",
+    "design_status": "PREREGISTERED_DESIGN_BEFORE_EXECUTION"
+  },
+  "execution_authority": {
+    "branch": "work/pub-me-d2-retry-double-accounting",
+    "initial_execution_base": "dba238b4b20551dcc36e9121ffe25f19a5b1ac0e",
+    "qualified_head_before_result_record": "5a5f56d909ce2606af7d89a931363f1c21a1677d",
+    "primary_fixture_source": "pre-existing F-SI38 prescribed-qbot measurements",
+    "production_source_changed": false,
+    "reference_source_changed": false
+  },
+  "historical_negative_evidence": {
+    "first_attempt_pr": 207,
+    "classification": "BLOCKED_REFERENCE_RETRY_AUTHORITY",
+    "retained": true,
+    "overwritten": false
+  },
+  "primary_fixture": {
+    "top_flux_cm_per_day": 1.0e-6,
+    "bottom_flux_cm_per_day": 1.0e-6,
+    "rejected_dt_day": 1.0e-2,
+    "accepted_reexecution_dt_day": 1.0e-4,
+    "temporal_head_budget_cm": 1.0e-6,
+    "hard_mass_gate_cm": 1.0e-12,
+    "historical_rejected_binf_cm": 3.7091401464253875e-6,
+    "historical_accepted_binf_cm": 1.2363753890795257e-7
+  },
+  "defect_family": {
+    "id": "D2",
+    "name": "retry double-counts scientific exchange/accounting",
+    "fault_operator": "qualification-only accepted side ledger records prescribed throughflow from the rejected physical trial before re-execution, then records the valid accepted transfer after acceptance",
+    "classification": "EARLIER_DETECTION"
+  },
+  "observed_result": {
+    "rejected_binf_cm": 3.7091401464253875e-6,
+    "accepted_binf_cm": 1.2363753890795257e-7,
+    "accepted_total_in_cm": 1.00000000000000004e-10,
+    "accepted_total_out_cm": 1.00000000000000004e-10,
+    "mutant_ledger_in_at_retry_cm": 1.00000000000000002e-8,
+    "mutant_ledger_out_at_retry_cm": 1.00000000000000002e-8,
+    "mutant_final_ledger_in_cm": 1.00999999999999995e-8,
+    "mutant_final_ledger_out_cm": 1.00999999999999995e-8,
+    "clean_and_mutant_canonical_accepted_accounting_identical": true,
+    "clean_and_mutant_accepted_physical_endpoint_bit_identical": true,
+    "net_mass_closure_can_remain_green": true,
+    "O0_O2_semantic_identity": true
+  },
+  "oracle_comparison": {
+    "B0": {
+      "detected": false,
+      "reason": "accepted physical endpoint and canonical accepted transaction result are unchanged by the qualification-only side-ledger fault"
+    },
+    "B1": {
+      "detected": true,
+      "first_failure": "post-acceptance accepted-total regression comparing the external cumulative ledger with canonical accepted transfer totals",
+      "timing": "after acceptance"
+    },
+    "B2": {
+      "detected": true,
+      "first_failure": "accepted ledger is nonzero at retry/re-execution entry immediately after the rejected physical trial",
+      "timing": "before accepted re-execution and before accepted commit"
+    },
+    "classification": "EARLIER_DETECTION"
+  },
+  "qualification": {
+    "workflow": "PUB-ME D2 retry accounting",
+    "run_id": 35286262353,
+    "job_id": 105419166838,
+    "conclusion": "success",
+    "documentation_run_id": 35286262412,
+    "documentation_conclusion": "success",
+    "canonical_qualification_run_id": 35286262378,
+    "canonical_qualification_conclusion": "pending_at_result_freeze"
+  },
+  "scientific_interpretation": {
+    "supported": [
+      "A real Reference Richards long trial can be rejected by the frozen temporal-certificate criterion and re-executed from the unchanged accepted origin at the independently qualified short duration.",
+      "A rejected-trial throughflow can contaminate an external accepted-accounting ledger while leaving the eventual accepted physical endpoint and canonical accepted transaction accounting unchanged.",
+      "Net mass closure alone can remain green when equal rejected inflow and outflow are both double-counted.",
+      "The strong B1 comparator detects the cumulative accepted-ledger mismatch after acceptance, while the B2 transition-authority oracle detects the contamination at retry entry before accepted re-execution. This is EARLIER_DETECTION, not UNIQUE_DETECTION."
+    ],
+    "not_supported": [
+      "D2 does not demonstrate a production SWAP defect; the double-counting operator is qualification-only.",
+      "D2 does not show that regression or conservation testing is generally inadequate.",
+      "D2 does not establish UNIQUE_DETECTION because B1 detects the final accepted-total mismatch.",
+      "D2 does not establish that rollback, retry, accounting ledgers or transactions are novel mechanisms.",
+      "One D2 physical fixture does not by itself establish regime-general protection.",
+      "D1 plus D2 does not by itself close the standalone PUB-ME publication decision without the preregistered replication and remaining-study interpretation."
+    ]
+  },
+  "publication_effect": {
+    "D1_classification": "STRUCTURAL_PREVENTION",
+    "D2_classification": "EARLIER_DETECTION",
+    "materially_distinct_positive_family_count": 2,
+    "minimum_positive_family_count_reached": true,
+    "standalone_pub_me_threshold_closed": false,
+    "remaining_reasons": [
+      "required physical-regime replication where the D2 operator is meaningful is not yet closed",
+      "postimage/canonical qualification and admission of D2 remain pending",
+      "the full D1-D6 study may still weaken or falsify the broader hypothesis",
+      "novelty remains contingent on the continuing literature review"
+    ]
+  },
+  "chronology": {
+    "fixture_frozen_before_primary_execution": true,
+    "B1_B2_oracles_frozen_before_primary_execution": true,
+    "result_dependent_flux_or_tolerance_tuning": false,
+    "harness_repairs_before_success": [
+      "current backend module dependency closure",
+      "accepted temporal-history state treated as a subtype of the public physical-state base for endpoint extraction"
+    ],
+    "scientific_fixture_changed_by_harness_repairs": false
+  },
+  "next_permitted_action": "Run post-result exact-head D2 and canonical qualification. If green, admit/close D2. After admission, preregister the required second physical-regime replication or proceed to D3 only in accordance with the frozen D1-D6 matrix; do not reinterpret D2 as UNIQUE_DETECTION."
+}

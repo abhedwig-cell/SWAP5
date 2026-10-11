@@ -1,0 +1,106 @@
+name: F-CI63P one-shot moving-current reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci63p-current-canonical-postimage-reconciliation
+    paths:
+      - '.github/workflows/fci63p-materialize-moving-current.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock admitted postimage
+        run: |
+          set -euo pipefail
+          postimage=e16262d0d9af3c83f40234ab669f0faa66e12519
+          git fetch -q origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$postimage"
+          git merge-base --is-ancestor "$postimage" HEAD
+          test "$(git hash-object .github/workflows/fci-canonical.yml)" = ebdda0dd0c4d2074b96ce2f3177ed5aa53ad81be
+          echo 'FCI63P_MOVING_CURRENT_PRECONDITION=PASS'
+
+      - name: Reconcile moving-current preservation authority
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          path = Path('.github/workflows/fci-canonical.yml')
+          expected = 'ebdda0dd0c4d2074b96ce2f3177ed5aa53ad81be'
+          actual = subprocess.check_output(['git','hash-object',str(path)], text=True).strip()
+          if actual != expected:
+              raise SystemExit(f'FCI63P workflow blob precondition failed: {actual} != {expected}')
+
+          text = path.read_text()
+          old_auth = '          AUTH=46ed64aba280bf721bce6f99446d0dd4ed00e38f\n'
+          new_auth = '          AUTH=e16262d0d9af3c83f40234ab669f0faa66e12519\n'
+          if text.count(old_auth) != 1:
+              raise SystemExit(f'FCI63P AUTH anchor count {text.count(old_auth)}')
+          text = text.replace(old_auth, new_auth, 1)
+
+          anchor = (
+              '            src/runtime/mod_fmr_serialized_reference_backend.f90\n'
+              '            src/runtime/mod_fmr_serialized_multiswap_runtime.f90\n'
+          )
+          replacement = anchor + (
+              '            src/process/mod_liquid_water_sensible_enthalpy.f90\n'
+              '            src/runtime/mod_fmr_bottom_thermal_carrier.f90\n'
+              '            src/runtime/mod_fmr_bottom_external_thermal_binding.f90\n'
+              '            src/runtime/mod_fmr_bottom_external_thermal_provider.f90\n'
+              '            src/runtime/mod_fmr_bottom_sensible_energy.f90\n'
+          )
+          if text.count(anchor) != 1:
+              raise SystemExit(f'FCI63P dependency anchor count {text.count(anchor)}')
+          text = text.replace(anchor, replacement, 1)
+
+          marker = (
+              "          echo 'FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS'\n"
+              "          echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'\n"
+          )
+          marker_replacement = (
+              "          echo 'FCI62_MOVING_PRESCRIBED_QBOT_TEMPORAL_RUNTIME_PRESERVATION=PASS'\n"
+              "          echo 'FCI63_MOVING_BOTTOM_ENERGY_PUBLICATION_PRESERVATION=PASS'\n"
+              "          echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'\n"
+          )
+          if text.count(marker) != 1:
+              raise SystemExit(f'FCI63P marker anchor count {text.count(marker)}')
+          text = text.replace(marker, marker_replacement, 1)
+          path.write_text(text)
+          print('FCI63P_MOVING_CURRENT_TRANSFORMATION=PASS')
+          PY
+
+          test "$(git diff --name-only)" = '.github/workflows/fci-canonical.yml'
+          git diff --check -- .github/workflows/fci-canonical.yml
+          echo 'FCI63P_EXACT_MOVING_CURRENT_DELTA=PASS'
+
+      - name: Create local reconciliation commit
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/fci-canonical.yml
+          git commit -m 'ci(F-CI63P): advance moving-current preservation to F-CI63 [fci63p-materialized]'
+          echo "FCI63P_LOCAL_HEAD=$(git rev-parse HEAD)"
+          echo "FCI63P_LOCAL_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Qualify reconciled postimage before push
+        run: bash tests/fci/run_fci63p_current_canonical_postimage_reconciliation.sh
+
+      - name: Push only qualified reconciliation commit
+        run: |
+          set -euo pipefail
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'FCI63P_QUALIFIED_RECONCILIATION_PUSHED=PASS'

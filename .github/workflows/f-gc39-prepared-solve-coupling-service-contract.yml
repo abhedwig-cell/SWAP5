@@ -1,0 +1,25 @@
+name: F-GC39 prepared-solve coupling service contract
+
+on:
+  push:
+    branches:
+      - work/f-gc39-prepared-solve-coupling-service-reconciled
+    paths:
+      - 'tests/fgc/support/fgc39_prepared_solve_service_harness.py'
+      - 'tests/fgc/test_fgc39_prepared_solve_service_contract.py'
+      - 'tests/fgc/run_fgc39_prepared_solve_service_contract.sh'
+      - 'docs/integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md'
+      - 'integration/f-gc/F-GC39_STATUS.json'
+      - '.github/workflows/f-gc39-prepared-solve-coupling-service-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-GC39 prepared-solve coupling-service gate
+        run: bash tests/fgc/run_fgc39_prepared_solve_service_contract.sh

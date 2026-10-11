@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 daily meteorological/application composition recovery",
+  "phase": "ACQUIRE_QUALIFY_AUTHORITY_RESTORED",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_parent": "c8822ff02a56116cf39aa26bf77848e165b629af",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "3a3d81206711bbeb4d7ff31ba2eb95741d8f7747",
+    "relevant_delta": "F-AR01 and F-DOC20 documentation/evidence admissions only; no relevant Hupsel application, production-physics, B1 scientific, solver, timestep or tolerance semantic change detected"
+  },
+  "restored_official_distribution": {
+    "artifact_name_received": "SWAP_4.3.1(2).zip",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "matches_controlling_B0_distribution_identity": true,
+    "controlling_identity_record": "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md",
+    "case_path": "SWAP_4.3.1/cases/1.hupselbrook",
+    "raw_payload_persisted_in_repository": false,
+    "note": "The exact user-supplied archive was available for this qualification and matched the pre-existing immutable B0 distribution SHA. This checkpoint persists identities and qualification results, not a new B0 payload copy."
+  },
+  "hupsel_fixture_members": {
+    "283.met": {"sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6", "bytes": 71884},
+    "control_plot.inp": {"sha256": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8", "bytes": 1140},
+    "grass.crp": {"sha256": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882", "bytes": 30659},
+    "maize.crp": {"sha256": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33", "bytes": 24168},
+    "plot_swap.cmd": {"sha256": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357", "bytes": 88},
+    "potato.crp": {"sha256": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707", "bytes": 30701},
+    "run_swap.cmd": {"sha256": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9", "bytes": 51},
+    "swap.dra": {"sha256": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17", "bytes": 11733},
+    "swap.swp": {"sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b", "bytes": 36198}
+  },
+  "independent_rebuild": {
+    "compiler": "GNU Fortran 14.2.0",
+    "ttutil": "official TTUTIL 4.27 source from supplied distribution; 153 objects built without scientific source patches",
+    "swap_source": "official SWAP 4.3.1 nested Fortran source authority from supplied distribution",
+    "qualification_only_preprocessing": [
+      "selected the standalone/non-MultiSWAP side of Intel !DEC$ conditional blocks because GNU Fortran treats !DEC$ as comments",
+      "excluded optional ANIMO, SSS and MultiSWAP branches not active in the supplied standalone Hupsel executable",
+      "did not use global SAVE/-fno-automatic because GNU rejects SAVE semantics in PURE procedures; no scientific equation was modified"
+    ],
+    "run_adjustment": "A disposable case copy set SWCSV=0 instead of SWCSV=1 only to bypass an optional GNU-build CSV output-layer incompatibility; scientific Hupsel forcing, physics and process selectors were unchanged.",
+    "normalized_result_identity": {
+      "normalization": "remove only the generated '* Generated at:' timestamp line",
+      "result.bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result.blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "matches_historical_F_VQ99_A23Y_oracle": true
+    }
+  },
+  "non_interfering_source_trace": {
+    "method": "qualification-only instrumentation of a disposable copy of official MOD_meteo.f90 at the legacy application-composition seams",
+    "daily_records": 1096,
+    "daily_trace_sha256": "bdbc6e14eab802422a2fdb12c052d952a2518620fa69615e2ebd344149986861",
+    "timestep_records": 32518,
+    "timestep_trace_sha256": "7790380a8ff0c136da4c25f9395bbc113d3032d587bcf8c97232220303a754df",
+    "normalized_result_bal_still_exact": true,
+    "normalized_result_blc_still_exact": true,
+    "interpretation": "The instrumentation did not perturb the qualified Hupsel scientific result."
+  },
+  "A12_rederivation_from_exact_authority": {
+    "scope": "Hupsel maize SWINTER=1 interception and ProcessMeteoDT net-rain/wet-canopy composition",
+    "swinter1_daily_records": 384,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641,
+    "unique_positive_interception_days_in_timestep_trace": 65,
+    "VonHHBraden_all_SWINTER1_max_abs_error": 0.0,
+    "VonHHBraden_mismatches": 0,
+    "aintcdt_max_abs_error": 0.0,
+    "net_rain_max_abs_error": 0.0,
+    "wet_fraction_max_abs_error": 0.0,
+    "final_ptra_mix_max_abs_error": 0.0,
+    "mismatches": 0,
+    "effect": "The historical A12 65-day/1641-timestep gate is independently reconstructed from exact 4.3.1 source and fixture authority and is exactly reproduced."
+  },
+  "selectors_confirmed_from_exact_Hupsel_inputs": {
+    "SWETR": 0,
+    "SWDIVIDE": 1,
+    "SWMETDETAIL": 0,
+    "SWRAIN": 0,
+    "SWCROP": 1,
+    "SWCFBS": 0,
+    "RSOIL_s_m": 600.0,
+    "maize_SWCF": 1,
+    "maize_SWINTER": 1,
+    "maize_COFAB": 0.25
+  },
+  "verdict": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+  "effect_on_previous_blocker": "The exact-Hupsel-fixture and summary-only-A12 portions of F-APP03_REPLAYABLE_AUTHORITY_BLOCKER are cleared. Full F-APP03 remains open until the SWETR=0 PMdirect A13 process kernel and its application composition are independently rederived and qualified against this exact oracle, then mapped through current typed contracts.",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "next_permitted_action": "Extend the non-interfering oracle trace with the complete PMdirect internal/result state and dynamic canopy inputs required by MOD_meteo penmon/ETpot. Independently rederive the restricted Hupsel SWETR=0 PMdirect process across the exact oracle. Only after an independent gate passes may a minimal typed production process candidate be implemented and separately admitted.",
+  "prohibited": [
+    "substituting the existing SWETR=1 reference_et process for Hupsel SWETR=0",
+    "using historical A13 summaries as implementation authority when exact MOD_meteo source is now available",
+    "output fitting",
+    "changing Hupsel physics, solver policy, timestep policy or tolerances to obtain PASS",
+    "claiming whole-Hupsel M1 criterion-3 closure from the restored oracle or A12 gate alone"
+  ]
+}

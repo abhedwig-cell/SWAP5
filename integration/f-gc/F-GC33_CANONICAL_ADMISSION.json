@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC33",
+  "title": "MODFLOW6 Linear Response Backend — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_MODFLOW6_LINEAR_RESPONSE_BACKEND",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "1dfdd75345b3c6feb358b521db79bb4a5be1dc1b"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "ae15d47dab2a31c5099ce1b4ff8ee01918153405",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI100",
+    "gate_head": "ae15d47dab2a31c5099ce1b4ff8ee01918153405",
+    "initial_gate_head": "76fd9cf849bda0563d7bc5b8062c9c41564f289c",
+    "initial_gate_run": 35293086626,
+    "initial_gate_job": 105439925071,
+    "status_head_run": 35293208199,
+    "status_head_job": 105440291151,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ107",
+    "status_head": "6e3b1c74e271aaab6dbfa2d130343f054ffd7c38",
+    "final_green_run": 35292999311,
+    "final_green_job": 105439666458,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "dependency_authority": {
+    "upstream": "F-GC40",
+    "upstream_verdict": "CLOSED_CANONICAL_ADMITTED_TYPED_MULTISWAP_AFFINE_CELL_RESPONSE",
+    "historical_provisional_f_gc31_dependency": "SUPERSEDED"
+  },
+  "admitted_production_blobs": {
+    "src/runtime/mod_modflow6_linear_response_backend.f90": "1d3c1af6baab71f63749555339d0c89e8aed4ddf"
+  },
+  "scientific_decision": [
+    "F-GC40 areal affine response q_u(H)=q_ref+s*(H-H_ref) is converted to MODFLOW volume flux Q(H)=A*86400*q_u(H).",
+    "The exact linear package representation is HCOF=A*86400*s and RHS=HCOF*H_ref-A*86400*q_ref.",
+    "Positive outward-from-SWAP flux maps to positive MODFLOW infiltration without an additional sign inversion.",
+    "groundwater_cell_id remains a coupling-domain identity and is not interpreted as a MODFLOW NODELIST index."
+  ],
+  "exclusions": [
+    "XMI pointer access",
+    "API package mutation",
+    "NODELIST mapping",
+    "predictor/corrector orchestration",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Close F-GC33 metadata-only, then proceed serially to F-GC34 typed MODFLOW6 API binding/publication from current canonical."
+}

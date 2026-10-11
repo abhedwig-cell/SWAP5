@@ -1,0 +1,42 @@
+name: PUB-GC E7 realistic component-domain gate
+
+on:
+  push:
+    branches:
+      - docs/pub-gc-e7-component-domain-closeout
+    paths:
+      - 'tests/publication/validate_pub_gc_e7_component_domain.py'
+      - 'docs/publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.json'
+      - 'docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.json'
+      - 'integration/audits/PPA_WU01_STATUS.json'
+      - 'integration/audits/PPA_WU03_STATUS.json'
+      - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - '.github/workflows/pub-gc-e7-component-domain.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'tests/publication/validate_pub_gc_e7_component_domain.py'
+      - 'docs/publication/PUB_GC_E7_*'
+      - 'docs/publication/PUB_GC_*'
+      - 'integration/audits/PPA_WU01_STATUS.json'
+      - 'integration/audits/PPA_WU03_STATUS.json'
+      - 'integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - '.github/workflows/pub-gc-e7-component-domain.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Qualify E7 preregistered realistic component-domain outcome
+        run: python tests/publication/validate_pub_gc_e7_component_domain.py

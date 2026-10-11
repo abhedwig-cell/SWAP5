@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "Current-Canonical Requalification of F-MR28 Reference-ET Root-Uptake Execution Composition",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-current-canonical-recomposition",
+  "canonical_base": "8c16ea58946092024e4b394db87acf91f3fd4abf",
+  "previous_qualification_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "base_drift_classification": "METADATA_ONLY_FCI30_STATUS_CLOSEOUT",
+  "production_candidate": "9492d99e6291dd21ba2c5b394a79b3f877fed0e2",
+  "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "production_delta": ["src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"],
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "qualification_head": "aee653ea4809728a34485e5a0f59821c147c9fa6",
+  "authoritative_workflow": {
+    "run_id": 34471934727,
+    "job_id": 102853611567,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04.5"
+  },
+  "frozen_harness_reuse": {
+    "base_gate_blob": "7dae081b3c57694abb76a25d577380912e7915e6",
+    "v4_wrapper_blob": "c01b469451e7485907e94a7a59860476ab7a8e78",
+    "fvq46_test_blob": "5ea862e6337992afa1af5b2eec50fd0ddbba45a7",
+    "fvq46_output_sha256": "fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0"
+  },
+  "results": {
+    "exact_one_source_recomposition": "PASS",
+    "production_source_immutable_after_candidate": "PASS",
+    "exact_fmr28_donor_blob": "PASS",
+    "strict_compile_o0": "PASS",
+    "strict_compile_o2": "PASS",
+    "fvq46_held_out_active_cases": 192,
+    "fvq46_o0_o2_identity": "PASS",
+    "fvq46_qualified_output_sha_preserved": "PASS",
+    "explicit_chain_oracle": "PASS",
+    "stale_ptra_independence": "PASS",
+    "upstream_et_rejection_contained": "PASS",
+    "invalid_root_geometry_contained": "PASS",
+    "active_unavailable_committed_fail_closed": "PASS",
+    "inactive_dependency_free_zero_route": "PASS",
+    "stateless_a_b_a_identity": "PASS",
+    "full_fci30_parallel_mass_restart_et_ptra_preservation": "PASS",
+    "hard_mass_all_cases": "PASS",
+    "worker_count_independence": "PASS",
+    "deterministic_replay": "PASS",
+    "canonical_publication_order": "PASS",
+    "serialized_sparse_receipts": "PASS",
+    "fci28_restart_and_fci27_et": "PASS",
+    "fci29_ptra_ownership": "PASS"
+  },
+  "supporting_prior_green_run": {
+    "run_id": 34471271742,
+    "job_id": 102851473229,
+    "basis": "same production blob on immediately preceding F-CI30 production-equivalent authority"
+  },
+  "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_ON_CURRENT_FCI30_CANONICAL_READY_FOR_PROMOTION"
+}

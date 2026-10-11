@@ -1,0 +1,25 @@
+name: F-VQ91 EB-I24 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq91-eb-i24-top-liquid-sensible-inflow-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independently-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: F-VQ91 independent EB-I24 qualification
+        run: bash tests/eb/run_f_vq91_eb_i24_independent_gate.sh

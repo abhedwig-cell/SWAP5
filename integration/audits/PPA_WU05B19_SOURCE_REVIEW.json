@@ -1,0 +1,36 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "SOURCE_REVIEW_ONLY_NOT_IMPLEMENTED",
+  "baseline": "a9a35a60409a16ef7fdf3a38d5bcffb6899c2416",
+  "baseline_source": "8e8685b82235d8bdecdd753263525acf1b1888ad",
+  "selected_next_slice": "Rootless ordinary Reference mode2 single-level signed scalar forcing composed with B18 frost/DIVDRA from immutable trial-start carrier. Explicit OFF physical selector, fixed scalar owner distinct from already-materialized nodal or drainage-response forcing. Both normal/low air and explicit separate-infiltration switch remain within B18 admissibility.",
+  "prerequisite": "Exact B18 metadata closeout then source-bound runtime/interface preregistration before production edits",
+  "findings": [
+    "The old serialized DIVDRA wrapper materializes forcing from an external preflight view. It cannot satisfy dynamic frost/trial-start redistribution; it remains unchanged.",
+    "Backend must regenerate one raw/final nodal proposal from each immutable trial-start view and current start temperature/water content. Terminal full and half assessments must independently regenerate both physical proposals and reject branch/geometry/domain disagreements.",
+    "Expose a pure parameter validation wrapper around the unchanged B18 validator if needed; requalify B18 science against that exact current postimage. Distribution grid/dz and default-MvG saturated conductivity must agree exactly with column-owned physical parameters. KSATEXM/direct/tabulated/elastic routes are excluded in this runtime slice.",
+    "New typed forcing scalar and explicit OFF selector need parameter/model copies, ordered finite/domain/mixed-owner preflight, disposable scratch allocation and observation provenance. Reject already-bound nodal rows, response controls and inactive nonzero scalar input.",
+    "Final nodal matrix goes through the existing single source/sink provider; separate final qbot through existing bottom boundary. Accepted receipts follow final nodes, never the raw scalar or an additional mass owner. No physical persistent state or restart schema change is required; immutable parameter/template identity remains the owner of configuration.",
+    "Existing frost-dainage numerical head/temperature budgets remain separate and unchanged. No tolerance/controller/budget weakening or solver arithmetic change.",
+    "Backend/forcing ABI change requires fresh whole-module existing B1..B15 relevant preservation and full original F-APP09/VQ128, scientific/root/SALT/canonical gates. Isolated B18 evidence alone is insufficient for runtime admission."
+  ],
+  "source_sha256": {
+    "src/process/mod_frost_divdra_drainage_effect.f90": "681cd60994fcf58491d4f11b91f0e4b972ed43544fa28be2a6b02b58b9341012",
+    "src/process/mod_frost_geometry_effect.f90": "a1b025631d4f9eed58e3f5f08d22aaa965f9a77c0933b35305812e6f47b3d212",
+    "src/process/mod_frost_hydraulic_effect.f90": "4ae4ed9bf70ccab0b0212a32205f2fcfb4f50172b64942e0320736a0cca35efd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "597723ee7bfcaa951914c21ed85c33a4cf7ad6bc93293ccd37472a57ac441773",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/runtime/mod_fmr_committed_restart.f90": "842d87dc68fef7dda6fbe17371d6ed5e4d3ed1a5fa5d2e5e58d42c12ed088b2f",
+    "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "e91b5bdfceeb344c1161f406642afb90aab8cd61496b0da489e8bc52bed78f8b",
+    "tests/frost/run_ppa_wu05b18_divdra_component.py": "3c9e5111f139b91dfe723f7f4af97ff76507b772ba0254cce3aecdba8502aae8",
+    "tests/frost/test_ppa_wu05b15_normal_runtime.f90": "a7a1d84e1c02f4ced85afa7375926141321eb8468e92740164da7bf4f4bf46b8",
+    "tests/frost/test_ppa_wu05b15_low_air_runtime.f90": "acd7db64ceacefe5788f0609845a7d5809f835e504ed999e745a890f4226b898"
+  },
+  "interfaces_allowed_to_change": "Only separately preregistered backend physical selector/forcing/observation path, an additive B18 validation wrapper, exact canonical source guard and qualification harness/evidence. Existing positive DIVDRA wrappers, process arithmetic, solver/transaction/restart schema remain fixed.",
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "next_action": "Persist B19 bounded runtime contract and large local qualification matrix"
+}

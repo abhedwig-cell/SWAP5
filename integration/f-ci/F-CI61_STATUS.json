@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.fci61.status.v1",
+  "work_unit": "F-CI61",
+  "title": "F-PM14 drainage-response runtime current-canonical admission qualification closeout",
+  "branch": "qualification/f-ci61-fpm14-drainage-response-runtime-current-canonical-admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI61_READY_FOR_CANONICAL_PROMOTION",
+  "restart_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "tree": "a1762b02f8288a4ecfe3d98296c2aefc2e3350cc"
+  },
+  "production_composition": {
+    "branch": "integration/f-ci61-fpm14-drainage-response-production-composition",
+    "sha": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "tree": "9be01a7a1bf364d59689975f5692e03bc09393dc",
+    "production_delta": "EXACT_11_FPM14_BLOBS"
+  },
+  "authorities": {
+    "owner": "work/f-pm14-drainage-response-runtime-closure@52c1a9aebddc435ef3792378f958305a96308ed0",
+    "independent": "qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+    "independent_tested_head": "3dd8b92b9601f4e3e41cd9ff79a37dd293b35641"
+  },
+  "qualification_evidence": {
+    "pre_closeout_head": "37441ee2ad37e3c309ea729589d33c46e3b57070",
+    "workflow_run": 34811956797,
+    "workflow_job": 103874922031,
+    "conclusion": "success",
+    "source_and_live_canonical_locks": "PASS",
+    "exact_11_production_blobs": "PASS",
+    "qualification_scope_allowlist": "PASS",
+    "owner_vq73_and_30_invariant_authorities": "PASS",
+    "VQ73_independent_runtime_replay": "PASS",
+    "precomputed_DIVDRA_preservation_replay": "PASS",
+    "fixed_weir_preservation_replay": "PASS"
+  },
+  "architecture": {
+    "invariants_1_30": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+    "kernel_io_separation": "PRESERVED",
+    "transactionality": "PRESERVED",
+    "generic_time": "PRESERVED_AND_REPLAYED",
+    "mass_conservation": "HARD_PASS_REPLAYED",
+    "single_drainage_transfer_booking": "PASS_REPLAYED",
+    "multiswap": "PRESERVED",
+    "alternative_solver_interface": "PRESERVED",
+    "physics_vs_solver_policy": "PRESERVED",
+    "no_new_persistent_drainage_state": true
+  },
+  "scope_guards": {
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_solver_policy": false,
+    "new_persistent_state": false,
+    "reference_source_changed": false,
+    "qualification_branch_src_or_reference_delta_after_composition": false,
+    "scope_reduced": false
+  },
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "drainage_v1_100_percent_complete": false,
+  "promotion_requirements": [
+    "This exact final F-CI61 status head must pass the F-CI61 workflow.",
+    "Immediately before promotion, live integration/f-ci-canonical must still equal e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557; otherwise recompose and requalify.",
+    "Promotion must be a true two-parent merge with then-live canonical as first parent and the exact final green F-CI61 head as second parent.",
+    "Force, squash and rebase promotion are forbidden.",
+    "After promotion, F-CI61P postimage reconciliation must replay the independent runtime and admitted-route preservation before the admission is closed."
+  ],
+  "hard_nonclaims": [
+    "QUALIFICATION_READY is not canonical admission.",
+    "F-CI61 does not by itself establish drainage-v1 100-percent completion.",
+    "No source semantics beyond the exact independently qualified F-PM14 production blobs are authorized."
+  ],
+  "next_required_step": "Require the exact final status head to pass; recheck live canonical; perform the required two-parent promotion; then execute F-CI61P current-canonical postimage reconciliation."
+}

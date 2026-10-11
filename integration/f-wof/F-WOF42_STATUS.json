@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF42",
+  "status": "QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION",
+  "branch": "work/f-wof42-crop-persistence-layout-completeness",
+  "definitive_tested_head": "ec19be20e8ba71b94b54e8dd6c7d185aac52baa5",
+  "definitive_tested_tree": "d1d2085a549a60a5c566f700d24e0bf7ec98d5f2",
+  "workflow_run": 34374672539,
+  "workflow_conclusion": "success",
+  "qualification_evidence_commit": "bba01f9c14c6df5e586a9ff1e0a5f0247f9fed5f",
+  "production_source_changed_after_definitive_test": false,
+  "qualified_scope": [
+    "all seven current valid owner layouts including zero-length cohort edge",
+    "six invalid owner layouts fail closed",
+    "optional-state minimality",
+    "exact physical continuation reconstruction",
+    "bit-exact real persistence where representation identity is required",
+    "qualified semantic canonicalization of allocated-zero cohorts at external codec boundary",
+    "true-process restart seam by composition with F-WOF40 and production binding with F-WOF41"
+  ],
+  "next_real_blocker": {
+    "classification": "CANONICAL_RUNTIME_COMPOSITION_NOT_NEW_WOF_PHYSICS",
+    "owner": "F-CI20",
+    "reason": "F-WOF42 is qualified on its branch but is not thereby canonically admitted. Its production source lineage and runtime dependencies must be reconciled with the post-FCI19 candidate DAG before composition."
+  },
+  "new_F_WOF43_created": false
+}

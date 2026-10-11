@@ -1,0 +1,210 @@
+{
+  "schema": "swap5.f-romv2-d10.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D10",
+  "title": "Faithful published two-layer integrated Richards comparator on zero-pressure-head envelope",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "d980bbc2d735004a24a80f4fce5020e7f09f84e8",
+  "purpose": "Compare the literature-faithful fixed-H He et al. two-layer equationset against current-canonical R16 and R2 under a matched zero-pressure-head lower boundary before any arbitrary-head SWAP extension.",
+  "literature_authority": "integration/f-rom/F-ROMV2_D9_LITERATURE_RECONCILIATION.json",
+  "scientific_role": {
+    "class": "DEVELOPMENT_LITERATURE_BOUND_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "scope": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "upper_layer_cm": 80,
+    "lower_layer_cm": 80,
+    "bottom_boundary": "zero pressure head h=0 / psi_b=0",
+    "root_sink": 0,
+    "timestep_day": 0.001,
+    "steps_per_history": 64,
+    "seed_intervals": 2,
+    "seed_dt_day": 0.001
+  },
+  "histories": [
+    {
+      "id": "P01",
+      "blocks": [
+        [
+          64,
+          1
+        ]
+      ],
+      "description": "constant gravity-scale top flux"
+    },
+    {
+      "id": "P02",
+      "blocks": [
+        [
+          16,
+          0.5
+        ],
+        [
+          16,
+          1.5
+        ],
+        [
+          16,
+          0.5
+        ],
+        [
+          16,
+          1.5
+        ]
+      ],
+      "description": "slow alternating dry/wet demand"
+    },
+    {
+      "id": "P03",
+      "blocks": [
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          2
+        ]
+      ],
+      "description": "rapid pulse forcing"
+    },
+    {
+      "id": "P04",
+      "blocks": [
+        [
+          8,
+          1
+        ],
+        [
+          16,
+          0.25
+        ],
+        [
+          8,
+          1.75
+        ],
+        [
+          16,
+          0.75
+        ],
+        [
+          16,
+          1.25
+        ]
+      ],
+      "description": "asymmetric forcing memory"
+    }
+  ],
+  "forcing_scale": "factor multiplied by K(theta at Se=0.85), downward-positive in reduced model and mapped to negative native SWAP top flux",
+  "reference_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "numerical_authority": "D4 integrated-mass research policy"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "numerical_authority": "D4 integrated-mass research policy"
+    }
+  },
+  "he2": {
+    "id": "HE2_PUBLISHED_FIXED_H",
+    "state": [
+      "theta_bar_upper",
+      "theta_bar_lower"
+    ],
+    "beta": 0.5,
+    "psi_convention": "positive capillary suction = -pressure head",
+    "interface_flux": "q1=[0.5*K1+0.5*K2]*(1+(psi2-psi1)/80)",
+    "bottom_flux": "q2=Ks*(1-psi2/40) for psi_b=0 and lower thickness 80 cm",
+    "closure": "psi_i=psi(theta_bar_i), K_i=K(theta_bar_i)",
+    "integrator": "iterative Heun predictor-corrector",
+    "corrector_tolerance_theta": 0.0001,
+    "max_corrector_iterations": 100,
+    "clipping": false,
+    "adaptive_substeps": false,
+    "calibration": false,
+    "training": false
+  },
+  "integrity": [
+    "finite theta and fluxes",
+    "theta_r < theta_i < theta_s",
+    "explicit two-layer water ledger",
+    "absolute total transaction mass residual <= 1e-12 cm"
+  ],
+  "metrics": [
+    "upper/lower/total storage error",
+    "cumulative bottom exchange error",
+    "terminal bottom flux error",
+    "bottom-flux sign",
+    "reversal steps",
+    "corrector iterations"
+  ],
+  "decision_logic": {
+    "positive": "HE2_PUBLISHED_CORE_RETAINS_SWAPH_EXTENSION_INTEREST",
+    "negative": "HE2_PUBLISHED_CORE_NOT_COMPETITIVE_ON_ITS_ZERO_HEAD_ENVELOPE",
+    "positive_rule": [
+      "HE2 completes all histories with integrity",
+      "and HE2 is non-dominated versus R2 on at least one matched workload view",
+      "balance view: total-storage RMSE and cumulative-bottom-exchange RMSE both <= R2",
+      "or transient view: bottom-flux RMSE and sign-error count both <= R2"
+    ],
+    "no_weighted_score": true,
+    "no_application_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Preregister HE2_SWAPH as a separately labeled arbitrary-prescribed-head extension; do not call it a literal reproduction.",
+    "if_negative": "Close He-derived extension work for current B01 hydraulic accelerator and retain coarse Richards as physical comparator."
+  },
+  "firewalls": [
+    "NO_ARBITRARY_NONZERO_BOTTOM_HEAD",
+    "NO_POST_RESULT_EQUATION_RETUNING",
+    "NO_PUBLISHED_RMSE_AS_ACCEPTANCE_THRESHOLD",
+    "NO_TRAINING",
+    "NO_CALIBRATION",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false,
+  "seed": {
+    "initial_effective_saturation": 0.85,
+    "intervals": 2,
+    "dt_day": 0.001,
+    "top_flux_factor": 1,
+    "bottom_boundary": "zero pressure head h=0 / psi_b=0 from the first seed interval",
+    "rule": "R16, R2 and HE2 apply the identical published-envelope boundary transition during both seed intervals before P01-P04.",
+    "data_exposure": "FROZEN_BEFORE_ANY_D10_EXECUTION"
+  }
+}

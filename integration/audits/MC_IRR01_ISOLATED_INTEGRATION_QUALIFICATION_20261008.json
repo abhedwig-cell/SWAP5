@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "work_unit": "MC-IRR01",
+  "phase": "ISOLATED_CANONICAL_BASE_OWNER_QUALIFICATION",
+  "base_canonical": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+  "qualified_head": "4ed0a6d62eae82f46d9f79d06b764e141474c9e2",
+  "run_id": 37774945522,
+  "job_id": 113303337172,
+  "conclusion": "success",
+  "checks": [
+    "F_APP07_EXACT_110_INTERVAL_COMPOSITION=PASS",
+    "MC_IRR01_SENSOR_SSDI_RUNTIME_MASS=PASS",
+    "MC_IRR01_SOURCE_RECONSTRUCTION=PASS",
+    "MC_IRR01_MANAGEMENT_POLICY_QUALIFICATION=PASS",
+    "MC_IRR01_NONFINITE_REQUEST=PASS",
+    "MC_IRR01_NONFINITE_INTERVAL=PASS",
+    "MC_IRR01_MANAGEMENT_RESTART_FAIL_CLOSED=PASS"
+  ],
+  "management_output_sha256": "c5cecbbc94df4d742456691d1e81bf4b83cf521736c01cd2eeb6598f98b06d6a",
+  "claim_ceiling": "Exact canonical-base integration F-APP07 owner and bounded production composition qualified. Not proof of all cross-workstream preservation or canonical admission; draft until dependency review and acceptance."
+}

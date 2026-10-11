@@ -1,0 +1,32 @@
+name: F-PE-ELASTIC18R strengthened verification
+
+concurrency:
+  group: f-pe-elastic18r-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic18r-strengthened-verification
+    paths:
+      - 'tests/fpe/test_fpe_elastic18_swap_grid.f90'
+      - 'tests/fpe/run_fpe_elastic18.sh'
+      - 'docs/performance/F-PE-ELASTIC18R_STRENGTHENED_VERIFICATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic18r.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Verify admitted production blob
+        run: |
+          test "$(git hash-object src/adapter/mod_fmr_elastic_storage_swap_grid_normalization.f90)" = "d9138f57a2c0b354b454cf99062b84d8b584d1c2"
+          echo "F_PE_ELASTIC18R_PRODUCTION_BLOB=PASS"
+      - name: Run strengthened preservation
+        run: bash tests/fpe/run_fpe_elastic18.sh

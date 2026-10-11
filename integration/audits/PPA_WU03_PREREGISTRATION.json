@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "workunit": "PPA-WU03",
+  "title": "Atmospheric forcing and normal-input adapter boundary",
+  "state": "PREREGISTERED",
+  "canonical_basis": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "12beef3e91f90f88b101c13af72cd216bccc63e3"
+  },
+  "owner_authority": {
+    "production_owner": "PPA-WU01 / mod_fmr_production_application_bootstrap",
+    "runtime_owner_rule": "PPA-WU01 remains sole FMR, committed-state, transaction, timestep and retry owner",
+    "atmospheric_authorities": [
+      "PPA-ATM-01 resolved typed effective forcing",
+      "F-CI27 restricted generic-time SWETR=1 reference-ET demand",
+      "F-APP06 SWINTER=0 identity composition",
+      "F-APP07 admitted irrigation composition, used only as authority for already-resolved surface irrigation",
+      "F-KT15/F-SI35 dynamic-top boundary"
+    ],
+    "reconciled_not_owned_in_slice": [
+      "F-APP03/F-APP04 SWETR=0 PMdirect",
+      "F-APP05/F-APP08 SWINTER=3 Rutter",
+      "SWINTER=1/2",
+      "full irrigation scheduling/management grammar"
+    ]
+  },
+  "admitted_target_slice": {
+    "time": "generic finite real-valued t0<t1 with explicit forcing span coverage",
+    "precipitation": "nonnegative resolved rate",
+    "evap_demand": "SWETR=1 reference ET with admitted canopy view",
+    "interception": "SWINTER=0 only",
+    "irrigation": "none or already-resolved nonnegative surface rate",
+    "top_boundary": "existing typed dynamic-top request and evaluator",
+    "owner_handoff": "only AVAILABLE pure-flux dynamic-top result may materialize top_flux for PPA-WU01 in this slice"
+  },
+  "forbidden_kernel_surface": [
+    "filenames",
+    "directories",
+    "pathnames",
+    "file units",
+    "parser state",
+    "stream cursors",
+    "line numbers",
+    "legacy record ordering",
+    "implicit daily-loop assumptions",
+    "calendar parsing"
+  ],
+  "forbidden_ownership": [
+    "second FMR owner",
+    "second transaction lifecycle",
+    "second timestep controller",
+    "second retry controller",
+    "second committed-state store"
+  ],
+  "no_new_physics": [
+    "no ET equations",
+    "no interception equations",
+    "no evaporation equations",
+    "no crop equations",
+    "no root-stress equations",
+    "no solver changes",
+    "no tolerance changes"
+  ],
+  "production_mutation_preregistered": [
+    "new stateless outer common-forcing adapter",
+    "one PPA-WU01 owner-facing run_standalone_with_forcing seam that reuses existing state/runtime owner"
+  ],
+  "qualification_matrix": [
+    {
+      "id": "Q1",
+      "requirement": "normal common forcing materializes admitted typed reference-ET and SWINTER=0 top forcing without file semantics"
+    },
+    {
+      "id": "Q2",
+      "requirement": "production computational boundary remains file/parser/cursor/calendar free"
+    },
+    {
+      "id": "Q3",
+      "requirement": "non-integer and subdaily generic-time intervals are accepted when forcing span covers them"
+    },
+    {
+      "id": "Q4",
+      "requirement": "direct typed construction and outer-adapter construction produce identical admitted physics inputs/results"
+    },
+    {
+      "id": "Q5",
+      "requirement": "PPA-WU01 remains the sole runtime and committed-state owner across multiple intervals"
+    },
+    {
+      "id": "Q6",
+      "requirement": "retry/rollback cannot advance or double-consume input; adapter is stateless and A-B-A deterministic"
+    },
+    {
+      "id": "Q7",
+      "requirement": "unsupported selectors, invalid spans/rates and non-flux dynamic-top handoff fail closed"
+    },
+    {
+      "id": "Q8",
+      "requirement": "O0/O2 preservation and stable output identity"
+    },
+    {
+      "id": "Q9",
+      "requirement": "no regression of PPA-WU01, affected F-APP and M1 gates"
+    },
+    {
+      "id": "Q10",
+      "requirement": "independent qualification rederives mapping separately from owner qualification"
+    }
+  ],
+  "exit": "Common precipitation/reference-ET/canopy forcing drives an already-admitted PPA-WU01 standalone profile end-to-end through the new outer boundary, with all Q1-Q10 satisfied and canonical admission recorded.",
+  "exclusions_after_close": [
+    "legacy meteorological file grammar",
+    "calendar/date ingestion",
+    "PMdirect normal-input derivation",
+    "Rutter canopy-state ownership",
+    "SWINTER=1/2",
+    "irrigation event scheduling",
+    "snow/runon ingestion"
+  ]
+}

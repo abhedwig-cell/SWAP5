@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC28",
+  "title": "Groundwater Coupling v1 Completion Audit — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_METADATA_ONLY",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "tree": "763645d4d3d797675f527f2b156c75cf9ccb5eb2"
+  },
+  "historical_frozen_audit": {
+    "head": "4e7da5fd014c0eb799c6637a07dfd2f3e3c487c9",
+    "primary_gap": "G05_END_TO_END_DIRECT_GROUNDWATER_COMPOSITION",
+    "frozen_requirement": "Restricted direct-groundwater production composition spanning qualified tile aggregation, application/temporal binding, accepted whole-window response tangent, coupling restart/replay, MultiSWAP execution/diagnostics and external aquifer adapter conformance, followed by independent qualification and canonical admission.",
+    "technical_closure_obligation_count": 6
+  },
+  "reconcile_authority": {
+    "branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+    "head": "fc5f9cc6bb4cc98f55dbe4ff0160dacdf1d4ee13",
+    "decision": "ALL_SIX_HISTORICAL_G05_TECHNICAL_OBLIGATIONS_HAVE_CURRENT_CANONICAL_CLOSURE_AUTHORITIES"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ98",
+    "branch": "qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit",
+    "checkpoint_head": "22c2c107256de4351541a7dcdf91635d67681ec3",
+    "green_status_head": "f4b3fa43ff453df9b15191fef6f0657b0b8e4e37",
+    "status_blob": "bcde67df0fa7c2b788c18d26c66e6d36301c08b2",
+    "qualification_checkpoint_blob": "43e29af4c8eb8cd5c1dbaab3bd978d213a4ef7a0",
+    "green_status_run": 35034372726,
+    "green_status_job": 104599969590,
+    "final_checkpoint_run": 35034471606,
+    "verdict": "INDEPENDENTLY_QUALIFIED_GROUNDWATER_COUPLING_V1_COMPLETION_AUDIT"
+  },
+  "canonical_admission_gate": {
+    "work_unit": "F-CI88",
+    "branch": "integration/f-ci88-fgc28-groundwater-coupling-v1-completion-audit-admission",
+    "green_head": "9e90dfee2d4febd8a74378e89a8a8bd99f23ba45",
+    "status_blob": "196823663d7a77e60fd5becac12224c9a6168b6e",
+    "workflow_run": 35034629370,
+    "workflow_job": 104600812141,
+    "conclusion": "success",
+    "delta_from_canonical": [
+      ".github/workflows/f-ci88-fgc28-groundwater-coupling-v1-completion-audit-admission.yml",
+      "integration/f-ci/F-CI88_STATUS.json",
+      "tests/integration/run_fci88_fgc28_groundwater_coupling_v1_completion_audit_admission.sh"
+    ],
+    "production_or_reference_delta": false
+  },
+  "closed_frozen_G05_obligations": [
+    "accepted whole-window response tangent and one-corrector composition — F-GC23 / F-VQ95 / F-CI85",
+    "qualified multi-tile area-weighted exact-mass production composition — F-GC20 / F-CI77 and F-GC25",
+    "application/temporal accuracy binding without universal numeric defaults — F-GC22 / F-CI78",
+    "accepted-boundary restart/split-run/replay without prepared/rejected transfer leakage — F-GC24 / F-VQ86 / F-CI65P",
+    "MultiSWAP direct-groundwater execution, deterministic aggregation, transaction isolation and coupling-window diagnostics — F-GC25 / F-VQ87 / F-CI73P",
+    "restricted external groundwater gateway conformance plus end-to-end exact-mass bounded-head admission — F-GC26 / F-VQ96 / F-CI86 plus F-GC27 / F-VQ97 / F-CI87"
+  ],
+  "admitted_production_blobs": {
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_coupling_response.f90": "645141676536ae8289b9d52433798a965c7baa04",
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "preserved_foundation": ["G01", "G02", "G03", "G04"],
+  "production_mutations_in_fgc28": [],
+  "reference_mutations_in_fgc28": [],
+  "scientific_decision": "GROUNDWATER_COUPLING_V1_FROZEN_COMPLETION_DENOMINATOR_CLOSED",
+  "scope_boundary": "This closes the historical frozen F-GC28 groundwater-coupling-v1 denominator only. It does not qualify a broad MODFLOW backend, new groundwater physics, EB, ROSS/RossFast, throughput, parallel speedup, kernel file I/O or any F-GC29 execution.",
+  "next_permitted_action": "CLOSE F-GC28 with a metadata-only canonical closeout after verifying this scientific admission is the sole delta from the preimage and live canonical fast-forwarded without force.",
+  "hard_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production change solely to obtain PASS",
+    "F-GC29 execution"
+  ]
+}

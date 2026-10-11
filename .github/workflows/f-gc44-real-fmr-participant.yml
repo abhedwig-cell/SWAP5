@@ -1,0 +1,21 @@
+name: F-GC44 real FMR participant
+on:
+  push:
+    branches: [work/f-gc44-real-swap-modflow-end-to-end]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_groundwater_swap_participant.f90'
+      - 'tests/fgc/test_fgc44_real_fmr_participant.f90'
+      - 'tests/fgc/run_fgc44_real_fmr_participant.sh'
+      - '.github/workflows/f-gc44-real-fmr-participant.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  real-fmr:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fgc/run_fgc44_real_fmr_participant.sh

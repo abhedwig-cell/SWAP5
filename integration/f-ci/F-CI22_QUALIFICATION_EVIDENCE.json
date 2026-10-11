@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI22",
+  "evidence_type": "restricted_canonical_admission_qualification",
+  "branch": "qualification/f-ci22-temporal-certificate-canonical-admission",
+  "candidate": {
+    "F_CI21_closed_head": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "F_CI21_tree": "130d329a73b76e35eba43b57f441e017115cbea2",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "observed_head": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "tree": "a0c1a4f135589b2b6304427b29341317e867c522",
+    "merge_base_with_candidate": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "candidate_ahead_by": 214,
+    "candidate_behind_by": 0
+  },
+  "successful_qualification": {
+    "tested_head": "5e6c59604324bc4d3fb6132bd6a6e365cc45be68",
+    "workflow_name": "F-CI22 restricted temporal certificate canonical admission",
+    "run_id": 34404110657,
+    "job_id": 102642819984,
+    "conclusion": "success",
+    "terminal_marker": "FCI22_CANONICAL_ADMISSION_GATE PASS_RESTRICTED_FCI21_POSTIMAGE_READY_FOR_FAST_FORWARD_DECISION"
+  },
+  "qualification_markers": [
+    "FCI22_G01_LIVE_REF_LOCKS=PASS",
+    "FCI22_G02_LINEAR_FAST_FORWARD_LINEAGE=PASS",
+    "FCI22_G03_EXACT_SRC_REFERENCE_POSTIMAGE=PASS",
+    "FCI22_G04_QUALIFICATION_SOURCE_IMMUTABILITY=PASS",
+    "FCI22_G04_QUALIFICATION_ONLY_SCOPE=PASS",
+    "FCI22_CANONICAL_ROOT_MANIFEST_UNCHANGED=PASS",
+    "FCI22_G05_FCI21_AUTHORITY_BLOBS=PASS",
+    "FCI22_G06_VQ33_NEGATIVE_EVIDENCE=PASS",
+    "FCI22_G07_SCOPE_AND_NONCLAIMS=PASS",
+    "FCI22_G08_CARRIED_PRESERVATION_SCOPE=PASS",
+    "FCI22_G09_FCI21_POSTIMAGE_REQUALIFICATION=PASS",
+    "FCI22_G10_POST_TEST_POSTIMAGE_IMMUTABILITY=PASS"
+  ],
+  "prior_harness_failure": {
+    "run_id": 34403987175,
+    "job_id": 102642411512,
+    "tested_head": "62f0dc112586b85446230cdb2f53ca2f8c2f6bdb",
+    "classification": "QUALIFICATION_READER_SCHEMA_ONLY",
+    "passed_before_failure": ["G01","G02","G03","G04","G05","G06","G07"],
+    "failure": "F-CI22 reader expected non-existent preservation key replay_result instead of the persisted decision/production_scope schema",
+    "production_source_changed": false,
+    "reference_changed": false,
+    "candidate_changed": false,
+    "scientific_semantics_changed": false,
+    "admission_policy_changed": false,
+    "repair_commit": "5e6c59604324bc4d3fb6132bd6a6e365cc45be68"
+  },
+  "preserved_negative_evidence": {
+    "F_VQ33_remains_failed": true,
+    "F_VQ33_reinterpreted_as_pass": false,
+    "F_VQ33_used_as_positive_evidence": false,
+    "rejected_backend_materialized": false
+  },
+  "preserved_hard_boundaries": {
+    "default_H_budget": null,
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_selected": false,
+    "B_inf_general_nonlinear_true_error_bound_qualified": false,
+    "C_h_general_nonlinear_true_error_bound_qualified": false,
+    "shorter_dt_monotonicity_assumed": false,
+    "mass_gate_precedes_certificate_gate": true,
+    "certificate_rejection_preserves_committed_state": true,
+    "groundwater_coupling_released": false
+  },
+  "carried_preservation": {
+    "F_WOF42_crop_persistence": "PASS",
+    "F_MR18_accepted_commit_receipt": "PASS",
+    "F_MR18_sparse_multiswap_receipt": "PASS"
+  },
+  "qualification_only": {
+    "src_changed_by_F_CI22": false,
+    "reference_changed_by_F_CI22": false,
+    "canonical_ref_changed_by_qualification": false,
+    "canonical_source_manifest_changed": false
+  },
+  "promotion_preconditions_remaining": [
+    "rerun the F-CI22 admission gate on the persisted qualification-evidence head",
+    "persist qualification status/closeout without source or reference drift",
+    "reverify the live canonical ref immediately before promotion",
+    "require a strict fast-forward and use force=false",
+    "verify the canonical ref after promotion"
+  ],
+  "decision": "QUALIFIED_RESTRICTED_FCI21_POSTIMAGE_FOR_CANONICAL_FAST_FORWARD_PENDING_FINAL_RECHECK"
+}

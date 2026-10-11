@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI10",
+  "title": "Generic Physical Interval and Mass Seam Qualification",
+  "branch": "integration/f-ci-canonical",
+  "qualified_source_head": "970d99100a256099343d4b2072ecd543469b23b5",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "worker_local_trial_mass_contract": "PASS",
+    "qualified_profile_storage_seam": "PASS",
+    "canonical_mass_accounting_adapter": "PASS",
+    "source_bound_hupsel_mass_formulation": "PASS_8_OF_8_WITHIN_HARD_1E-6_CM",
+    "max_abs_hupsel_residual_cm": 1.587818254655815e-07,
+    "o0_o2_mass_identity": "PASS",
+    "time_seam_audit": "PASS_BLOCKER_CONFIRMED",
+    "generic_physical_subday_advance": "NOT_ADMITTED",
+    "legacy_timestep_trial_mass_integration": "NOT_YET_MATERIALIZED",
+    "snow_storage": "NOT_ADMITTED",
+    "macropore_storage": "NOT_ADMITTED",
+    "temporal_error_contract": "NOT_ADMITTED",
+    "reference_transaction_execution": "FAIL_CLOSED_NOT_ADMITTED",
+    "canonical_ci": "PASS_RUN_34093648750_JOB_101652946866"
+  },
+  "holds": [
+    "controlled legacy source port wiring b1_10_trial_mass_t into MOD_integral/SWAP",
+    "generic interval/sub-day controller without forced day-start semantics",
+    "snow and macropore persistent storage qualification",
+    "qualified physical temporal-error metric",
+    "execute_reference_interval admission for B1.10 backend"
+  ],
+  "status": "PASS_QUALIFIED_PROFILE_MASS_SEAM_GENERIC_TIME_AND_LEGACY_WIRING_BLOCKED"
+}

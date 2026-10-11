@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.f-romv2-d27.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D27",
+  "decision": "D27_UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_PASS",
+  "adjudication": "TOTAL_UNSTRESSED_UPTAKE_AND_MASS_ACCOUNTING_EQUIVALENT_SPATIAL_EXTRACTION_STRUCTURALLY_NON_EQUIVALENT",
+  "execution": {
+    "workflow_run": 35473248463,
+    "workflow_job": 105977946609,
+    "executed_head": "2f900f1f051c2eca8cc614fad8a32982a7521d73",
+    "execution_pull_request": 479,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10593421258,
+    "artifact_digest": "sha256:543ee579e11615039e6b37e0dfc95b193ff52c9a4a6dc2bf593c92713bdd3468",
+    "workflow_conclusion": "success",
+    "result_sha256": "112eeaf94a712a1fa38ca2b7132d30022dd0026549c499b46cecde8c9fbe9344",
+    "SWAP_o0_o2_stdout_sha256": "9851064dc3e9e754c3d3b0b0804640735b33c9e5cf6bf9ce70732abe43c1c809",
+    "analyzer_sha256": "05e0318163eedd9657280fece8ab93b692b04dc281b756b419345faa79d0ec98"
+  },
+  "frozen_state": {
+    "material": "B01",
+    "bins": 200,
+    "selected_bin": 170,
+    "theta": 0.3663699,
+    "effective_saturation": 0.85,
+    "pressure_head_cm": -29.793709016906483,
+    "root_zone_depth_cm": 30,
+    "whole_column_depth_cm": 160,
+    "process_interval_seconds": 10,
+    "potential_transpiration_cm_per_day": 0.4
+  },
+  "SWAP": {
+    "source_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "root_authority": "F-CI31",
+    "critical_hlim3_cm": -500,
+    "actual_uptake_cm_per_day": 0.4,
+    "sink_rates_cm_per_day": [
+      0.04000000000000001,
+      0.18000000000000005,
+      0.18
+    ],
+    "sink_sum_cm_per_day": 0.4,
+    "uptake_depth_10s_cm": 0.0000462962962962963,
+    "O0_O2_identity": true,
+    "spatial_semantics": "three rooted 10-cm nodes weighted by cumulative root fractions [0,0.1,0.55,1]"
+  },
+  "FMC": {
+    "dtheta": 0.00203747,
+    "rightmost_bin_capacity_depth_cm": 0.0611241,
+    "removed_depth_cm": 0.0000462962962962963,
+    "withdrawal_length_cm": 0.02272244317525966,
+    "post_withdrawal_rightmost_bin_length_cm": 29.977277556824742,
+    "initial_root_zone_storage_cm": 10.991097,
+    "final_root_zone_storage_cm": 10.991050703703703,
+    "root_zone_storage_decrement_cm": 0.00004629629629704368,
+    "initial_whole_column_storage_cm": 58.619184000000004,
+    "final_whole_column_storage_cm": 58.61913770370371,
+    "whole_column_storage_decrement_cm": 0.00004629629629704368,
+    "spatial_semantics": "all interval demand removed from the right-most water-containing moisture bin within the 30-cm root-zone inventory",
+    "native_composite_trajectory_update_claimed": false
+  },
+  "mass_accounting": {
+    "prescribed_total_demand_depth_cm": 0.0000462962962962963,
+    "FMC_root_zone_residual_cm": 7.473812150757264e-16,
+    "FMC_whole_column_residual_cm": 7.473812150757264e-16,
+    "SWAP_minus_FMC_total_uptake_depth_cm": 0,
+    "gate_cm": 1e-14
+  },
+  "scientific_interpretation": {
+    "total_unstressed_uptake_equivalent": true,
+    "spatial_sink_equivalent": false,
+    "statement": "D27 establishes only that the two model families can represent the same prescribed unstressed total uptake depth with explicit mass closure. Their native spatial extraction structures remain intentionally different.",
+    "transport_isolation_value": "The preflight removes a basic mass-accounting ambiguity before later ET research, without asserting that SWAP/Feddes and FMC root-uptake physics are identical."
+  },
+  "external_blocker": {
+    "id": "M2WC70_NATIVE_ET_STATE_UPDATE_ORACLE",
+    "status": "IDENTIFIED_NOT_MATERIALIZED",
+    "consequence": "Native FMC root-active composite trajectories remain unauthorized."
+  },
+  "next": [
+    "ADMIT_D27_ACCOUNTING_EVIDENCE_ONLY",
+    "DO_NOT_PROMOTE_D27_TO_NATIVE_ROOT_ACTIVE_TRAJECTORY_AUTHORITY",
+    "MATERIALIZE_OR_EQUIVALENTLY_RECONCILE_THE_M2WC70_COMPOSITE_ROOT_WITHDRAWAL_STATE_UPDATE_BEFORE_NATIVE_FMC_ET_TRAJECTORIES",
+    "ONLY_AFTER_THAT_AUTHORITY_TEST_WET_ROOT_ACTIVE_TRAJECTORIES_BEFORE_DROUGHT_STRESS_OR_SEASONAL_ET"
+  ],
+  "native_FMC_root_active_trajectory_authorized": false,
+  "drought_stress_feedback_authorized": false,
+  "seasonal_ET_authorized": false,
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

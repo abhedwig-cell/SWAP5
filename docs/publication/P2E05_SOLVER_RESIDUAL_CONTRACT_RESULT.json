@@ -1,0 +1,74 @@
+{
+  "workunit": "PUB-P2E05",
+  "phase": "QUALIFIED_PENDING_ADMISSION",
+  "base_canonical": "dd394f33b8687e457c4d40e9765551b58fe11b6c",
+  "qualified_branch_head": "89338ec65ea0cfe94e009f9e6ac9c2ea8797fd65",
+  "qualified_pull_request_merge_image": "25b36bb57f64a30cb33f6c2265b2a6433d4046e2",
+  "pull_request": 189,
+  "contract_result": {
+    "legacy_field": "unrounded_mass_balance_residual remains numerically backward-compatible but is route-dependent and prohibited for new cross-solver mass qualification",
+    "integrated_field": "integrated_mass_balance_residual_cm is the solver-independent typed publication diagnostic in cm when available",
+    "native_rate_field": "native_balance_rate_residual_cm_per_day exposes a solver-native balance-rate diagnostic when independently defined",
+    "reference_binding": "accepted qualified Reference routes expose the historical HeadCalc residual sum as cm/day and step_duration times that value as integrated cm",
+    "rossfast_binding": "RossFast republishes its historical integrated compatibility residual as integrated cm and leaves the native rate diagnostic unavailable"
+  },
+  "paired_pilot_evidence": {
+    "workflow_run": 35271298449,
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_sha256": "a93cbce7c02e86cba42037b6036417851a9e9a8d259cc5ceccf7c2da54dfbf7f",
+    "reference_integrated_mass_residual_cm": -7.58261162192575e-16,
+    "rossfast_integrated_mass_residual_cm": -3.034218130248305e-15,
+    "reference_native_balance_rate_residual_cm_per_day": -4.739132263703594e-13,
+    "reference_legacy_residual": -4.739132263703594e-13,
+    "rossfast_legacy_residual": -3.034218130248305e-15,
+    "d_h_inf_cm": 2.0079695985941726e-5,
+    "d_h_rms_cm": 8.558480560718121e-6,
+    "d_theta_inf": 2.4182497920799406e-8,
+    "d_theta_rms": 1.030528681570118e-8,
+    "d_storage_cm": 0.0,
+    "scientific_admissibility_evaluated": false,
+    "transaction_level_pair_blocked_temporal_policy_asymmetry": true
+  },
+  "qualification": {
+    "pub_p2e01_e0_paired_pilot": "PASS",
+    "f_ross12_soil_water_solver_adapter": "PASS",
+    "f_ross12_solver_selection_binding": "PASS",
+    "f_ross12_serialized_production_wiring": "PASS",
+    "f_ci58p_postimage_preservation": "PASS",
+    "f_ci96_semantic_successor_preservation": "PASS",
+    "pub_p1e02_post_solver_rollback": "PASS",
+    "pub_p2e02_reference_uncertainty": "PASS",
+    "pub_p2e04_reference_failure_census": "PASS",
+    "pub_p2e04_reference_bc_sweeps": "PASS",
+    "documentation": "PASS",
+    "f_ci_canonical_qualification": {
+      "workflow_run": 35271298485,
+      "result": "PASS",
+      "moving_preservation": "PASS"
+    }
+  },
+  "preserved_authorities": {
+    "status_a": "50346642bd565f79134ea17d5462e544b354998c",
+    "f_ross12": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+    "transaction_reference_blob": "d5a71a526efaebd82054580c3186f8e3545db331"
+  },
+  "qualified_successor_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "dbb441f3529be179d64fb57f9c44336d3d20c540"
+  },
+  "prohibited_changes_verified": {
+    "headcalc_physics_changed": false,
+    "reference_convergence_tolerances_changed": false,
+    "rossfast_hard_mass_tolerance_changed": false,
+    "rossfast_admissibility_threshold_added": false,
+    "p2e03_or_p2e04_history_rewritten": false
+  },
+  "explicit_exclusions": [
+    "the 103 PUB-P2E04 RETRY_LOCAL_BAL cases remain unresolved and are not investigated or repaired by P2E05",
+    "P2E05 does not establish RossFast scientific admissibility",
+    "the typed solver residual is not a replacement for the canonical transaction mass ledger"
+  ],
+  "verdict": "QUALIFIED_PENDING_ADMISSION"
+}

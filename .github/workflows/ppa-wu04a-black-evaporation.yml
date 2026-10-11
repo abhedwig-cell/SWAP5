@@ -1,0 +1,33 @@
+name: PPA-WU04-A Black evaporation admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/process/mod_restricted_surface_evaporation.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/adapter/mod_ppa_wu04a_black_forcing_adapter.f90'
+      - 'tests/fapp/test_ppa_wu04a_black_process.f90'
+      - 'tests/fapp/test_ppa_wu04a_black_runtime.f90'
+      - 'tests/fapp/run_ppa_wu04a_black_evaporation.sh'
+      - 'integration/audits/PPA_WU04A_PREREGISTRATION.json'
+      - 'integration/audits/PPA_WU04A_STATUS.json'
+      - 'docs/audits/PPA_WU04A_BLACK_EVAPORATION_ADMISSION.md'
+      - '.github/workflows/ppa-wu04a-black-evaporation.yml'
+  workflow_dispatch:
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-WU04-A qualification
+        run: bash tests/fapp/run_ppa_wu04a_black_evaporation.sh

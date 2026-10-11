@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC41",
+  "title": "Whole-window SWAP5-MODFLOW6 acceptance and retry",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_WHOLE_WINDOW_ACCEPTANCE_RETRY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "62dfb5a52f665e490830dfb320167786cf67f63e"
+  },
+  "source": {
+    "branch": "work/f-gc41-whole-window-acceptance-retry",
+    "base": "62dfb5a52f665e490830dfb320167786cf67f63e"
+  },
+  "authority": {
+    "predecessor": "F-GC39",
+    "predecessor_verdict": "CLOSED_CANONICAL_ADMITTED_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT",
+    "ownership": "predictor/corrector remains inside the internal SWAP5-MODFLOW coupling service below iMOD Coupler"
+  },
+  "capability_goal": "Define and qualify one atomic whole-window acceptance boundary spanning the retained SWAP candidate, finalized MODFLOW timestep state, and groundwater exchange ledger, with fail-closed reconstruction for a smaller-window retry after an abandoned prepared solve.",
+  "required_invariants": [
+    "SWAP retains ownership of trial, retry and commit semantics.",
+    "MODFLOW prepared-solve nonlinear iteration remains the F-GC38/F-GC39 backend lifecycle.",
+    "No participant is published as accepted unless all three publication participants are ready for the same window and provenance.",
+    "A failed publication preflight must leave SWAP committed state, MODFLOW accepted timestep state and committed exchange ledger unchanged.",
+    "An abandoned prepared solve is never reused as accepted MODFLOW state.",
+    "Retry reconstructs a fresh MODFLOW window from the last accepted timestep state and reruns SWAP from the same accepted origin over the smaller requested window.",
+    "Exchange ledger publication is bound to the exact accepted coupling lineage/window and cannot be committed independently.",
+    "iMOD Coupler does not acquire predictor/corrector or participant commit ownership."
+  ],
+  "qualification_questions": [
+    "What exact MODFLOW6/XMI operation constitutes irreversible timestep publication after finalize_solve?",
+    "Can all participant readiness be proven before the first irreversible publication operation?",
+    "What accepted MODFLOW state must be retained or reconstructed before prepare_time_step so an abandoned prepared solve can be retried at a smaller window?",
+    "What ordering or compensation contract is required if MODFLOW timestep publication cannot be rolled back after SWAP or ledger publication failure?",
+    "How is one coupling lineage/window identity carried across retained SWAP candidate, MODFLOW timestep and prepared ledger token?"
+  ],
+  "existing_reusable_surfaces": [
+    "F-GC39 retained final SWAP candidate and finalized prepared solve contract",
+    "src/adapter/modflow6_prepared_solve_session.py",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90 prepare/commit/abort surface",
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90 existing publication preflight pattern",
+    "kernel committed-state checkpoint/candidate transaction seams"
+  ],
+  "explicit_exclusions": [
+    "new groundwater physics",
+    "new predictor/corrector algorithm",
+    "moving predictor/corrector into iMOD Coupler",
+    "N:1 scaling changes",
+    "Ribasim coupling",
+    "irrigation",
+    "runtime finite-difference tangent fallback"
+  ],
+  "reconcile_verdict": "F-GC41 is a real new decision surface. F-GC39 explicitly stops before finalize_time_step and irreversible SWAP publication; current canonical has no F-GC41 authority. Start with MODFLOW timestep publication/reconstruction semantics before production implementation.",
+  "next_permitted_action": "Open the next separately bounded live whole-window service materialization only if already authorized by groundwater-coupling governance; preserve F-GC41 publication ordering and F-GC39 predictor/corrector ownership.",
+  "modflow_semantics": {
+    "prepare_time_step": "opens/materializes a MODFLOW timestep before prepare_solve; a live timestep is not reused for retry",
+    "prepare_solve": "establishes nonlinear solve with accepted previous-time XOLD",
+    "solve": "updates X while XOLD remains accepted previous-time origin",
+    "finalize_solve": "closes converged solve; F-GC39 crosses this only after coupled convergence",
+    "finalize_time_step": "finishes the MODFLOW timestep; F-GC39 deliberately stops before this boundary",
+    "abort_primitive": "No admitted XMI abort_solve/rollback primitive. Abandoned prepared solve is invalidated, not reused."
+  },
+  "scientific_architectural_decision": [
+    "Last accepted MODFLOW timestep, not abandoned X/XOLD working state, is the retry origin.",
+    "Smaller-window retry requires a fresh MODFLOW timestep lifecycle reconstructed from the last accepted model state with the smaller dt.",
+    "All reversible SWAP and ledger preparation must complete before MODFLOW finalize_time_step.",
+    "F-GC41 must not claim generic distributed atomicity across failures after an irreversible external publication call.",
+    "Use fail-before-publication: ordinary validation and physics rejection must be exhausted before the publication sequence.",
+    "Crash durability/restart during irreversible publication is a separate concern, not rollback."
+  ],
+  "required_coordinator_order": [
+    "retain converged F-GC39 SWAP candidate",
+    "stage and prepare exact-window ledger token",
+    "non-mutating preflight of SWAP candidate/provenance",
+    "non-mutating preflight of MODFLOW timestep-finalization readiness",
+    "preflight ledger token plus exact lineage/window identity",
+    "cross publication point only after all preflights pass",
+    "finalize MODFLOW timestep exactly once",
+    "commit retained SWAP candidate using preflighted identity",
+    "commit prepared ledger token",
+    "advance accepted coupling origin only after publication completes"
+  ],
+  "retry_contract": [
+    "before publication, abort/discard prepared SWAP and ledger state on failure",
+    "invalidate abandoned MODFLOW runtime",
+    "reconstruct MODFLOW from last accepted timestep state",
+    "prepare fresh smaller timestep and prepared solve",
+    "re-enter F-GC39 from immutable accepted SWAP origin",
+    "do not reuse candidate revision, ledger generation, XMI pointer views or prepared-solve session identity"
+  ],
+  "remaining_blocker": "Production implementation must expose or prove non-mutating readiness/preflight seams for retained SWAP candidate and MODFLOW timestep finalization before irreversible call ordering is admitted.",
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "mutations": "metadata only",
+  "production_delta": [
+    "src/adapter/modflow6_prepared_solve_session.py: non-mutating timestep_ready_for_finalize()",
+    "src/adapter/modflow6_prepared_solve_session.py: one-shot finalize_time_step_once()"
+  ],
+  "implementation_head": "0ea0398805c8fed5c7fc450491c5a368df1c52b8",
+  "qualification_surface": [
+    "preflight failures publish nothing and request retry",
+    "all preflights precede first publication",
+    "success publishes MODFLOW then SWAP then ledger exactly once",
+    "post-publication failure is not mislabeled rollback-safe",
+    "retry identities are fresh while accepted SWAP origin is retained",
+    "MODFLOW readiness check is non-mutating and timestep finalization is one-shot"
+  ],
+  "canonical_delta": "branch is 10 ahead / 0 behind canonical 62dfb5a52f665e490830dfb320167786cf67f63e",
+  "qualification_head": "1cd9bf2d9c0480240682e478b58ad1e05912d431",
+  "qualification_run": {
+    "id": 35335417012,
+    "jobs": {
+      "live_modflow": 105569008669,
+      "deterministic": 105569008889
+    },
+    "status": "queued"
+  },
+  "live_modflow_delta": "F-GC38 official MODFLOW6 fixture now calls F-GC41 non-mutating readiness and one-shot finalize_time_step seam, checks zero mutation before publication and blocks a second finalization.",
+  "repair": {
+    "failed_run": 35335417012,
+    "failed_job": 105569008669,
+    "cause": "legacy F-GC38 source guard forbade any finalize_time_step call in prepared-solve adapter; F-GC41 intentionally introduces a narrow publication seam",
+    "fix_head": "a686b1f78504a6fc117a6f8503e1eebfd9d05f0e",
+    "scope": "guard reconciled to forbid timestep acceptance policy ownership while explicitly permitting readiness/finalize seam"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ113",
+    "head": "7630334265837115cb083251c50b7a5124b03cbe",
+    "run": 35336476132,
+    "job": 105572368025,
+    "oracle_step": "success",
+    "final_run_state_at_checkpoint": "in_progress cleanup"
+  },
+  "exact_head_owner_rerun": {
+    "head": "7630334265837115cb083251c50b7a5124b03cbe",
+    "run": 35336476225,
+    "jobs": {
+      "live_modflow": 105572368387,
+      "deterministic": 105572368622
+    },
+    "state": "queued"
+  },
+  "failure_analysis": {
+    "run": 35335417012,
+    "deterministic": "PASS",
+    "live_modflow": "FAIL before model execution",
+    "cause": "F-GC38 static source guard still forbade finalize_time_step( after F-GC41 deliberately introduced the narrow publication seam",
+    "classification": "qualification guard drift, not MODFLOW numerical/scientific failure",
+    "repair_commit": "b632eb45b0ef5558b75d3e7b3957c4ed03bd2bde"
+  },
+  "current_runs": {
+    "owner": {
+      "id": 35336641796,
+      "deterministic_job": 105572894840,
+      "live_modflow_job": 105572895084,
+      "status": "queued"
+    },
+    "independent": {
+      "name": "F-VQ113 F-GC41 independent qualification",
+      "id": 35336641845,
+      "job": 105572895070,
+      "status": "queued"
+    }
+  },
+  "canonical_admission": {
+    "preimage": "b3be8d4c44cd50f9cd0c42cb6c471815ca41bf21",
+    "head": "0daa00ed2002e74aa5d0e75dd421a11b484e408f",
+    "pr": 229,
+    "merge_method": "merge",
+    "canonical_compare_after_merge": "identical"
+  },
+  "qualification": {
+    "owner_run": 35336641796,
+    "deterministic_job": 105572894840,
+    "live_modflow_job": 105572895084,
+    "owner_conclusion": "success",
+    "independent_run": 35336641845,
+    "independent_job": 105572895070,
+    "independent_conclusion": "success",
+    "live_oracles": [
+      "FGC41_LIVE_MODFLOW_TIMESTEP_READINESS_NONMUTATING=PASS",
+      "FGC41_LIVE_MODFLOW_FINALIZE_TIMESTEP_EXACTLY_ONCE=PASS"
+    ],
+    "independent_oracles": [
+      "FVQ113_READINESS_NONMUTATING_SOURCE_ORACLE=PASS",
+      "FVQ113_FINALIZE_TIMESTEP_ONE_SHOT_SOURCE_ORACLE=PASS",
+      "FVQ113_PUBLICATION_ORDER_CONTRACT_PRESENT=PASS",
+      "FVQ113_POST_PUBLICATION_NOT_ROLLBACK_SAFE=PASS",
+      "FVQ113_FRESH_RETRY_IDENTITY_ORACLE_PRESENT=PASS"
+    ]
+  }
+}

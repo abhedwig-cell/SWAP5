@@ -1,0 +1,21 @@
+name: MIGMAC01 bounded B1 CALCGWL qualification
+on:
+  push:
+    branches: [research/ppa-wu05-migmac01-covering-layer]
+    paths: ['reference/swap-4.3.1/patches/MIGMAC01-CALCGWL/**', '.github/workflows/ppa-wu05-migmac01-b1-correction.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  targeted-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Source-bound O0 O2 correction qualification
+        run: |
+          set -o pipefail
+          python reference/swap-4.3.1/patches/MIGMAC01-CALCGWL/standalone_gate.py | tee b1-calcgwl-qualification.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bounded-b1-calcgwl-qualification
+          path: b1-calcgwl-qualification.txt

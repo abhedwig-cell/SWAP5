@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.publication.p2e06-canonical-preservation-reconciliation.v1",
+  "workunit": "PUB-P2E06",
+  "phase": "GOVERNANCE_RECONCILIATION_BEFORE_GATE_PATCH",
+  "canonical_base": "9164ec2218951950c25de03bb3d3bf953d48d635",
+  "pull_request": 190,
+  "failing_workflow_run": 35273273724,
+  "failing_job": 105378076275,
+  "failure": "FCI96_P2E05_SEMANTIC_SUCCESSOR_FAIL out-of-scope P2E05 mutation: .github/workflows/pub-p2e06-reference-local-balance-scaling.yml",
+  "adjudication": "GOVERNANCE_GATE_NOT_FUTURE_COMPOSABLE",
+  "finding": "The P2E05 semantic-successor gate proves exact P2E05 source blobs and semantic replays, but additionally computes its historical allowed-file delta from P2E05_BASE to current HEAD. That makes every later unrelated canonical successor appear to be an out-of-scope P2E05 mutation. The failure is therefore a historical-scope binding defect in the preservation gate, not a P2E06 scientific or production regression.",
+  "bounded_correction": {
+    "p2e05_base": "dd394f33b8687e457c4d40e9765551b58fe11b6c",
+    "p2e05_qualified_head": "ff89a93bf5b49795db5cb04be0c7325c7b060f5c",
+    "rule": "Validate the P2E05 allowed-file delta only over the immutable historical interval P2E05_BASE...P2E05_QUALIFIED_HEAD, require that qualified head to remain an ancestor of current HEAD, then continue exact current-HEAD blob locks and semantic replays. Do not whitelist P2E06 files as P2E05 scope.",
+    "preserve_exact_current_head_blob_locks": true,
+    "preserve_fross12_backend_and_selection_locks": true,
+    "preserve_reference_tree_lock": true,
+    "preserve_semantic_replays": true,
+    "weaken_p2e05_source_authority": false
+  },
+  "excluded": [
+    "no src change",
+    "no reference change",
+    "no P2E06 scientific-test change",
+    "no tolerance or physics change",
+    "no wildcard exception for future source mutations"
+  ],
+  "qualification_required": [
+    "F-CI96 P2E05 semantic successor preservation PASS on PR #190 merge image",
+    "full F-CI canonical qualification PASS",
+    "PUB-P2E06 diagnostic remains O0/O2 identical and PASS"
+  ],
+  "next_permitted_action": "Patch only tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh according to the bounded historical-scope rule."
+}

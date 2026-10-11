@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI101",
+  "capability": "F-GC34",
+  "title": "MODFLOW6 Typed API Binding Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC34",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "0372b44157747dc90fa690810f57e373e670373b",
+    "dependency_authority": "F-GC33 closed canonical linear-response backend"
+  },
+  "owner": {
+    "branch": "work/f-gc34-modflow6-api-binding-reconciled",
+    "checkpoint_head": "2bc4ccb1cbedde8af60cd8390799373ed4310cb1",
+    "exact_head_run": 35293513488,
+    "exact_head_job": 105441215673,
+    "conclusion": "success",
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "status_blob": "bde7290db300dd7368fde0e9be07835981886bc0"
+  },
+  "independent": {
+    "work_unit": "F-VQ108",
+    "status_head": "db4d82d28c5e954ff35f396724d751d1d6f00e8e",
+    "exact_head_run": 35293720666,
+    "exact_head_job": 105441814157,
+    "conclusion": "success",
+    "status_blob": "70d808df2694bbcc160f787cc71ef5eb2daca303",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/runtime/mod_modflow6_api_binding.f90"
+    ],
+    "production_blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "admitted_scope_candidate": [
+    "typed explicit mapping groundwater_cell_id -> package_slot -> modflow_node_id",
+    "atomic publication of NODELIST/HCOF/RHS active prefix followed by NBOUND",
+    "order-independent matching of canonical F-GC33 terms by groundwater_cell_id",
+    "N:1 explicit node mapping without coefficient collapse",
+    "fail-closed no-write behavior on invalid package/binding/term state"
+  ],
+  "exclusions": [
+    "XMI address discovery or pointer acquisition",
+    "MODFLOW6 initialize/prepare/solve/finalize",
+    "predictor/corrector orchestration",
+    "SWAP transaction/commit changes",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical is still the admitted production ancestor, non-force fast-forward canonical to this closed metadata state. Then proceed to a separate current-canonical XMI pointer/timing adapter workunit.",
+  "admission_gate": {
+    "qualified_head": "9dcbcc284e823f00421c2858223ee57511d472e6",
+    "workflow_run": 35293855850,
+    "workflow_job": 105442212609,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI101_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI101_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI101_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI101_IMMUTABLE_PRODUCTION_AND_EVIDENCE_BLOBS",
+      "FCI101_OWNER_STATUS_AUTHORITY",
+      "FCI101_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI101_FGC33_DEPENDENCY_RECONCILED",
+      "FCI101_OWNER_REPLAY",
+      "FCI101_INDEPENDENT_REPLAY"
+    ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "aa9567513e4ff014fa696a402127d5e4b208aa94",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35293917435,
+    "exact_status_head_job": 105442385771,
+    "exact_status_head_conclusion": "success"
+  },
+  "closeout_gate": {
+    "qualified_head": "0c966a2a54cf0ddf072e5a49657e9e8a66a04a9b",
+    "workflow_run": 35294050700,
+    "workflow_job": 105442778535,
+    "conclusion": "success"
+  }
+}

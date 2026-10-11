@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ37",
+  "title": "Independent Qualification of F-WOF43A Restricted Crop-to-ET Canopy View Provider",
+  "branch": "qualification/f-vq37-fwof43a-crop-et-canopy-view-provider",
+  "status": "QUALIFIED_INDEPENDENT_RESTRICTED_CROP_ET_CANOPY_VIEW_PROVIDER_SOURCE_SEMANTICS_READY_FOR_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_INDEPENDENT_RESTRICTED_CROP_ET_CANOPY_VIEW_PROVIDER_SOURCE_SEMANTICS_READY_FOR_CANONICAL_ADMISSION",
+  "candidate": {
+    "owner_work_unit": "F-WOF43A",
+    "owner_closeout": "df72af4d2dc5b3255777733f8a725dca20583785",
+    "production_source_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da"
+  },
+  "qualification": {
+    "tested_head": "8f246c4b1e4ae514efe25eb8e98bc4df80d99248",
+    "tested_tree": "6e7508e540b43d5099a1a7c2cd9e2d8438de473b",
+    "qualification_evidence_commit": "aa9e614204a1bbbbe531f743a563238d84906f29",
+    "initial_workflow_run": 34455347983,
+    "evidence_replay_run": 34455480315,
+    "both_conclusions": "success",
+    "independent_grid_cases": 29000,
+    "independent_edge_cases": 13,
+    "O0_O2_output_identity": true,
+    "output_sha256": "21c9b80523e872dab5d71b68cd76dca1a5d62806d23cdd034a53e373052e9018",
+    "production_source_changed": false,
+    "owner_test_reused_as_oracle": false
+  },
+  "state": {
+    "owner_candidate_qualified": true,
+    "independently_verified": true,
+    "production_source_changed_by_F_VQ37": false,
+    "canonically_admitted": false,
+    "runtime_bound": false,
+    "root_uptake_bound": false,
+    "mass_ledger_bound": false
+  },
+  "qualified_scope": [
+    "vcover = 1-exp(-KDIR*KDIF*LAI)",
+    "CF = AFGEN(CFTB,DVS)",
+    "fco2tra = 1 when CO2 correction is inactive",
+    "fco2tra = AFGEN(CO2TRATB,CO2) when active",
+    "source-bound KDIR/KDIF/CFTB/CO2TRATB/active-CO2 domains",
+    "fixed-crop-compatible and WOFOST-compatible semantic parameter shapes",
+    "non-emerged vegetation-cover semantics",
+    "inactive DVS/CO2 dependency minimality",
+    "CO2-disabled forcing independence",
+    "AFGEN endpoint and interpolation behavior",
+    "fail-closed active invalid inputs under invalid/zero/overflow traps",
+    "stateless deterministic provider suitable for transactional replay"
+  ],
+  "explicit_nonclaims": [
+    "no fixed-crop parser/parameter adapter qualification",
+    "no WOFOST parser/parameter adapter qualification",
+    "no crop snapshot lineage/runtime binding qualification",
+    "no F-PM06A composition qualification",
+    "no ptra-to-root-uptake ownership resolution",
+    "no actual ET flux qualification",
+    "no mass-ledger binding",
+    "no interception/Penman-Monteith/SWREDU qualification",
+    "no calendar-year CO2 selection qualification",
+    "no canonical admission"
+  ],
+  "canonical_admission_rule": "A separate F-CI workunit must determine the live canonical source authority immediately before admission, preserve the exact qualified provider blob, replay the independent F-VQ37 gate on the canonical postimage, and fail closed on source or lineage drift.",
+  "runtime_rule": "Runtime composition remains separate. The canopy view must be bound to the same crop snapshot lineage as the ET evaluation. F-MR23/F-VQ36 may supply the generic-time ET runtime seam, but ptra-to-root-uptake remains blocked until one authoritative ptra ownership seam is reconciled.",
+  "affected_invariants": [2, 3, 4, 5, 6, 7, 8, 9, 13, 16, 21, 22, 23, 27, 29, 30],
+  "next": "Start a separate canonical-admission workunit from the live canonical head. Do not merge from the historical F-WOF43A lineage blindly. Transplant the exact qualified provider source blob and qualification gate/evidence as required by canonical governance."
+}

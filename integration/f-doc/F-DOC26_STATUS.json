@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-DOC26",
+  "title": "Soil-Hydraulic Constitutive Technical Reference",
+  "branch": "work/f-doc26-soil-hydraulic-constitutive-reference",
+  "phase": "VERIFY",
+  "decision": "PASS_READY_FOR_CANONICAL_ADMISSION",
+  "verdict": "PASS_READY_FOR_ADMISSION",
+  "canonical_start": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "5efb2603524145192f80b3472c288c1b6828cf69"
+  },
+  "frozen_status_a_denominator": {
+    "status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+    "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+    "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846"
+  },
+  "scope": [
+    "document the admitted default-MvG constitutive value-provider behind the frozen Richards route",
+    "document exact bounded theta(h), C(h) and K(h,theta) branch semantics from frozen production source",
+    "separate the ordinary value-provider from the separately qualified smooth-route directional-derivative capability",
+    "state branch boundaries, saturation/dry guards, dt-dependent near-saturation capacity floor and explicit nonclaims",
+    "link constitutive science to the existing vertical-flow and Richards numerical references"
+  ],
+  "authorities": {
+    "historical_science_role": "F-DOC18 historical RB1 physical-science authority: theta(h), K(h), C(h) constitutive role only",
+    "value_provider_qualification": "F-SI09 on work/f-si09-b110-constitutive-provider; F-SI09_QUALIFICATION.json and F-SI09_PROVIDER_CONTRACT.json",
+    "frozen_value_provider": {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "ref": "50346642bd565f79134ea17d5462e544b354998c",
+      "blob": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6"
+    },
+    "directional_derivative_owner": {
+      "work_unit": "F-SI37",
+      "branch": "work/f-si37-accepted-step-directional-derivative-seam",
+      "head": "e8e469e433380304acd03212e982e852906de59b",
+      "provider_path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+      "provider_blob": "b1e794d2f0e661a2abb14280a59175e1cf1d5724",
+      "qualification_source_sha": "992d524e3a4f5f7e21ddd9b6992c0e043f66c9fd"
+    }
+  },
+  "claim_ceiling": [
+    "F-SI09 admits only the default MvG analytical branch with SWSOPHY=0 and SWKIMPL=0 inside its bounded profile",
+    "theta(h), C(h) and K(h,theta) may be documented from the exact frozen value-provider branches",
+    "the ordinary provider's dconductivity_dhead output is deliberately zero/reserved because SWKIMPL=1 is not admitted",
+    "F-SI37 separately qualifies an analytic fixed-smooth-route direction and fails sensitivity closed at constitutive/regime switches",
+    "F-SI37 is owner qualification only and does not broaden frozen Status-A physical admission",
+    "cofgen row meanings are not renamed unless an accepted source explicitly establishes the semantic mapping; index notation remains authoritative where mapping is unresolved"
+  ],
+  "hard_nonclaims": [
+    "No admission of SWKIMPL=1 production dK/dh.",
+    "No admission of exponential, bimodal or hydraulic model families 4-12.",
+    "No hysteresis, tabulated hydraulics, elasticity, frost, macropore, conductivity power-tail or saturated-extrapolation claim.",
+    "No claim that the default provider is a single textbook Van Genuchten formula across all heads; near-saturation and air-entry/modified branches are preserved explicitly.",
+    "No invented semantic names for unresolved cofgen indices.",
+    "No production, reference, scientific-formula or solver-semantics mutation by F-DOC26."
+  ],
+  "documentation_postimage": {
+    "qualified_content_head": "d661da1710f9cc3babbc70a15b86e324f95e2e4a",
+    "files": [
+      "docs/science/soil-hydraulic-constitutive-relations.md",
+      "docs/science/soil-water-flow.md",
+      "docs/science/index.md",
+      "mkdocs.yml",
+      "integration/f-doc/F-DOC26_AUTHORITY_MATRIX.md",
+      "integration/f-doc/F-DOC26_STATUS.json"
+    ],
+    "scope_diff": "PASS_DOCUMENTATION_AND_GOVERNANCE_ONLY",
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false
+  },
+  "verification": {
+    "pull_request": 177,
+    "workflow": "Documentation",
+    "workflow_run_id": 35203997763,
+    "workflow_run_number": 631,
+    "workflow_conclusion": "success",
+    "job_id": 105145229964,
+    "repository_documentation_checks": "PASS",
+    "mkdocs_build_strict": "PASS",
+    "pages_deployment_on_pr": "SKIPPED_AS_EXPECTED"
+  },
+  "mutations": [
+    "added bounded soil-hydraulic constitutive technical reference",
+    "linked vertical soil-water reference to constitutive owner page",
+    "added constitutive page to scientific read order and MkDocs navigation",
+    "added F-DOC26 authority matrix and resumable checkpoint"
+  ],
+  "next_permitted_action": "ADMIT_IF_LIVE_CANONICAL_UNCHANGED_OR_NONCONFLICTING_AND_PR_MERGEABLE"
+}

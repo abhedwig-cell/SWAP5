@@ -1,0 +1,83 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 daily meteorological/application composition recovery",
+  "phase": "QUALIFY_A13_PMDIRECT_REDERIVATION",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_parent": "c1027973ac0199504348917aa32f78e52baaa3f2",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_reconciled": "3a3d81206711bbeb4d7ff31ba2eb95741d8f7747",
+    "relevant_delta": "No Hupsel application, ET-process, solver, timestep, tolerance or production-physics semantic change since the authority-restoration checkpoint."
+  },
+  "authority": {
+    "distribution": "SWAP_4.3.1.zip",
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_member": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90",
+    "fixture": "SWAP_4.3.1/cases/1.hupselbrook",
+    "fixture_status": "EXACT_HASH_VERIFIED_AUTHORITY_RESTORED_IN_PREVIOUS_CHECKPOINT",
+    "upstream_checkpoint": "integration/f-app/F-APP03_HUPSEL_AUTHORITY_RESTORED.json"
+  },
+  "qualified_route": {
+    "SWETR": 0,
+    "SWDIVIDE": 1,
+    "SWMETDETAIL": 0,
+    "SWRAIN": 0,
+    "SWCROP": 1,
+    "SWCFBS": 0,
+    "RSOIL_s_m": 600.0,
+    "maize_SWCF": 1,
+    "maize_SWINTER": 1,
+    "maize_COFAB": 0.25
+  },
+  "independent_rederivation": {
+    "method": "Independent Python transcription of the exact SWAP 4.3.1 daily astronomical terms, penmon PMdirect SWDIVIDE=1 equations, ETpot wet/dry partitioning and ProcessMeteoDT wet-fraction transpiration mixing. The oracle calculation does not call the SWAP implementation and was compared against the non-interfering trace emitted by a disposable exact-authority source copy.",
+    "daily_records": 1096,
+    "comparison_tolerance": 1.0e-12,
+    "mismatches_above_tolerance": 0,
+    "max_abs_error": {
+      "es0_mm_d": 1.7763568394002505e-15,
+      "et0_mm_d": 3.552713678800501e-15,
+      "ew0_mm_d": 5.329070518200751e-15,
+      "ep0_mm_d": 1.7763568394002505e-15,
+      "peva_cm_d": 1.6653345369377348e-16,
+      "epond_cm_d": 2.220446049250313e-16,
+      "ptra_dry_cm_d": 3.3306690738754696e-16,
+      "ptra_wet_cm_d": 2.220446049250313e-16,
+      "eintc_cm_d": 4.440892098500626e-16,
+      "wfrac": 7.771561172376096e-16,
+      "ptra_cm_d": 3.3306690738754696e-16
+    }
+  },
+  "historical_A13_scope_recovered": {
+    "maize_SWINTER1_daily_records": 384,
+    "emerged_crop_days": 149,
+    "maize_SWINTER1_timestep_records": 14062,
+    "emerged_crop_timestep_records": 3753,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641,
+    "continuity": "The exact 149 emerged crop days and 65-day/1641-timestep rainy-chain cardinalities independently recover the historical A13 qualification surface."
+  },
+  "scientific_contract_recovered": {
+    "penmon_role": "For SWETR=0 and SWDIVIDE=1, PMdirect computes separate potential soil evaporation, dry-canopy transpiration, wet-canopy evaporation demand and pond evaporation from measured daily weather plus site/canopy resistances.",
+    "ETpot_role": "Converts PMdirect millimetre-per-day outputs to centimetre-per-day process demands, applies FCO2TRA to emerged-crop dry transpiration and constructs wet-canopy transpiration plus interception evaporation capacity.",
+    "ProcessMeteoDT_role": "Combines A12 daily interception with A13 wet-canopy evaporation capacity into bounded wet fraction and mixes wet/dry potential transpiration for the timestep.",
+    "no_crop_factor_application_to_ptra": "The qualified Hupsel PMdirect branch uses SWCF=1 canopy geometry/resistance handling; the reference-ET crop-factor multiplication used by SWETR=1 is not an equivalent substitute."
+  },
+  "verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+  "effect_on_previous_blocker": "The summary-only A13 authority blocker is cleared. Exact Hupsel fixture authority, A12 interception/net-rain semantics and A13 SWETR=0 PMdirect semantics are now independently requalified from the exact SWAP 4.3.1 source and case. F-APP03 remains open only for the minimum typed target implementation/composition and its independent qualification/admission.",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "mutations": [
+    "Added this qualification checkpoint only."
+  ],
+  "next_permitted_action": "Preregister the minimum typed Hupsel SWETR=0 application contract. Implement a separate restricted PMdirect process plus explicit A12/A13 application composition without altering or broadening the admitted SWETR=1 reference-ET contract. Reuse existing downstream root-uptake and serialized-reference forcing seams only where their units and sign contracts are already established. Independently qualify the candidate against the exact 1096-day and 65-day/1641-timestep oracle before any canonical admission.",
+  "prohibited": [
+    "substituting the existing SWETR=1 reference-ET process for Hupsel SWETR=0",
+    "output fitting",
+    "broad ET or IO redesign",
+    "changing solver, timestep, tolerance or physics semantics to obtain PASS",
+    "claiming M1 criterion-3 closure before typed application composition and file replay are independently qualified"
+  ]
+}

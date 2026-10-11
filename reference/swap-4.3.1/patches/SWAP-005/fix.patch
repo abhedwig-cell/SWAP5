@@ -1,0 +1,17 @@
+--- SWAP/MOD_cropdevelopment.f90
++++ SWAP/MOD_cropdevelopment.f90
+@@ -229,9 +229,11 @@
+             !!!end if
+ 
+             ! check sequence of crops
+-            if ((cropstart(i+1) - cropend(i)) < 0.5d0 .AND. i < ifnd) then
+-               message = 'The begin date of crop '//trim(cropfil(i))//' should be larger than the end date of the former crop!'
+-               call swap_error ('croprotation', message)
++            if (i < ifnd) then
++               if ((cropstart(i+1) - cropend(i)) < 0.5d0) then
++                  message = 'The begin date of crop '//trim(cropfil(i))//' should be larger than the end date of the former crop!'
++                  call swap_error ('croprotation', message)
++               end if
+             end if
+ 
+             ! check cropping period

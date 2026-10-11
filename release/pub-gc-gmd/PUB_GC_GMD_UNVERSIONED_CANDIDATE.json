@@ -1,0 +1,108 @@
+{
+  "schema": "swap5.pub_gc_gmd.unversioned_publication_candidate.v1",
+  "date": "2026-09-19",
+  "status": "TECHNICAL_CANDIDATE_FROZEN_R1_L1_NOT_AUTHORIZED",
+  "final_release_authority": false,
+  "publication_release_identifier": null,
+  "software_license_authority": null,
+  "archive_doi_or_pid": null,
+  "scientific_source_authority": {
+    "merge_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "equivalent_qualified_pr_head": "e3ff0580e458ddd76c3e7ee84164c7fc5555a3f3",
+    "tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "same_tree_pr_head_and_merge": true,
+    "src_tree": "573df94cbb1c3f1cb38498e0003f11b8f7e3bcf1",
+    "reference_tree": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4",
+    "rationale": "PR #351 consolidated the current GMD pre-submission package. Its subject head and canonical merge have the same Git tree. Later canonical development is excluded from this publication candidate unless a new candidate is explicitly created."
+  },
+  "predecessor_authority": {
+    "release_id": "SWAP5-RB1-v1",
+    "scientific_source_commit": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+    "relationship": "successor candidate; RB1 remains immutable",
+    "exact_delta": "release/pub-gc-gmd/PUB_GC_GMD_RB1_TO_CANDIDATE_DELTA.json"
+  },
+  "inherited_qualification": {
+    "qualified_tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "pr_351_subject_head": "e3ff0580e458ddd76c3e7ee84164c7fc5555a3f3",
+    "workflow_runs": [
+      {
+        "name": "F-CI canonical qualification",
+        "run_id": 35404532583,
+        "conclusion": "success"
+      },
+      {
+        "name": "Documentation",
+        "run_id": 35404532582,
+        "conclusion": "success"
+      },
+      {
+        "name": "F-GC42 live whole-window service",
+        "run_id": 35404532874,
+        "conclusion": "success"
+      },
+      {
+        "name": "PUB-GC E7 realistic component-domain gate",
+        "run_id": 35404532683,
+        "conclusion": "success"
+      },
+      {
+        "name": "PUB-GC GMD current pre-submission gate",
+        "run_id": 35404532702,
+        "conclusion": "success"
+      }
+    ],
+    "interpretation": "These runs qualified the PR #351 subject head. Because subject head and canonical merge have identical Git trees, the scientific/source tree is identical."
+  },
+  "publication_scope": {
+    "scientific_state": "RQ1-RQ5 closed/bounded",
+    "e7": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "manuscript_type": "GMD Development and technical paper",
+    "regional_hupsel_validation_claimed": false,
+    "realistic_loose_strong_hupsel_windows_executed": false
+  },
+  "critical_publication_blobs": {
+    "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md": "5c3bd2404fd8f47b653c90b78a8f635c69aeca46",
+    "docs/publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md": "79293b3c55f558345445e142da5f0264368ab493",
+    "docs/publication/PUB_GC_REPRODUCIBILITY_MANIFEST.json": "771c842b0f7f78ce9d6829e033a1d23a9f9a61e4",
+    "docs/publication/PUB_GC_MANUSCRIPT_TABLES.md": "4636972d1e73f44c4547bdeb6c99c867043e06a3",
+    "docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json": "12751b77cc2dc9fcccaac4926f15d48e7e849651",
+    "docs/publication/PUB_GC_GMD_PREARCHIVE_INVENTORY.json": "b1e2ef155c0986a9ea29c8a0fb136389c6550b5b",
+    "docs/publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md": "09c70c6ea38967f82ea28de4ecea6c95d4b776ae",
+    "docs/publication/PUB_GC_GMD_SUBMISSION_METADATA_DRAFT.md": "6d25bf556b39bd7d94f94502a31bf5d39cf34a90"
+  },
+  "external_reference_asset": {
+    "name": "SWAP 4.3.1 distribution",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "size_bytes": 8959314,
+    "redistributed": false
+  },
+  "metadata_descendant_policy": {
+    "allowed_paths": [
+      "release/pub-gc-gmd/",
+      ".github/workflows/pub-gc-gmd-unversioned-candidate.yml",
+      "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md"
+    ],
+    "forbidden_without_new_candidate": [
+      "src/",
+      "reference/",
+      "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md",
+      "docs/publication/PUB_GC_E*_RESULT*",
+      "docs/publication/figures/PUB_GC_F*"
+    ]
+  },
+  "unresolved_authority": {
+    "R1": "Final publication release identifier must be supplied by controlled SWAP5 governance.",
+    "L1": "SWAP5 publication archive licence/redistribution statement must be supplied by controlling governance/legal authority.",
+    "A3": "Persistent archive DOI/PID is created only after R1 and L1.",
+    "authors": "Final author/affiliation/contribution/funding/interests metadata remains separate."
+  },
+  "explicit_nonclaims": [
+    "not a final release identifier",
+    "not a software licence decision",
+    "not a public redistribution authorization",
+    "not a DOI/archive claim",
+    "not a GitHub tag/release",
+    "not a requalification of all SWAP5 capabilities beyond the paper's bounded evidence"
+  ]
+}

@@ -1,0 +1,31 @@
+name: F-PE-TIMEINT11 TR-BDF2 cost feasibility
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint11-trbdf2-feasibility
+    paths:
+      - 'docs/performance/F-PE-TIMEINT11_PREREGISTRATION.md'
+      - 'docs/performance/F-PE-TIMEINT11_RESULT.md'
+      - 'docs/performance/F-PE-TIMEINT11_CLOSEOUT.md'
+      - 'tests/fpe/test_fpe_timeint11_cost.f90'
+      - 'tests/fpe/run_fpe_timeint11.py'
+      - 'tests/fpe/run_fpe_timeint11.sh'
+      - '.github/workflows/f-pe-timeint11.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cost:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run two-stage cost lower-bound
+        run: bash tests/fpe/run_fpe_timeint11.sh

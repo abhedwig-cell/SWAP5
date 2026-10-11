@@ -1,0 +1,25 @@
+{
+  "schema": "swap5.sw_rib_adm01.g7.technical_amendment.v1",
+  "work_unit": "SW-RIB-ADM01-G7",
+  "amendment": "TECHNICAL_AMENDMENT_01",
+  "date": "2026-09-23",
+  "classification": "HARNESS_VARIABLE_REPAIR_NOT_SCIENTIFIC_RETUNING",
+  "observation": "Static review found that the E3 Fortran receipt consumer retained one undefined pre-hardening variable name realized_cm and passed first_realized_cm rather than recomposed_realized_cm to the final post-recomposition commit.",
+  "physical_results_used_for_repair": false,
+  "repair": [
+    "Replace undefined realized_cm comparison with recomposed_realized_cm.",
+    "Pass recomposed_realized_cm, not first_realized_cm, to the final E3 commit_candidate call."
+  ],
+  "unchanged": [
+    "all three cases",
+    "Ribasim v2026.1.2 pin",
+    "represented area 100 m2",
+    "0.25 day coupling window",
+    "requested physical transfer volumes",
+    "same-origin Ribasim rerun requirement",
+    "receipt match tolerance 1e-10 cm",
+    "physical mass and realization tolerances",
+    "F-APP09 production postimages"
+  ],
+  "anti_tuning": "No physical inputs or tolerances are changed."
+}

@@ -1,0 +1,158 @@
+{
+  "schema": "swap5.f-romv2-d11.state-of-art-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D11",
+  "phase": "STATE_OF_ART_RECONCILIATION_CLOSED",
+  "canonical_base": "f5988c04ee93d92d54876696b5414bd326360ad9",
+  "decision": "FMC_SMVE_FAITHFUL_COMPARATOR_JUSTIFIED_VZAA_AND_ADAPTIVE_ROM_DEFERRED",
+  "governing_question": "After C2 coverage limits and the D5-D10 physical-reduction no-go sequence, which genuinely distinct vadose-zone reduction class still has enough physical authority and SWAP5 compatibility to justify a clean next comparator?",
+  "predecessor_evidence": {
+    "C2": "Blind local hydraulic state information is strong, but fail-closed state-domain coverage collapses in asymmetric and rapid-switch histories.",
+    "coarse_Richards": "R8/R4/R2 provide the current transparent physical-reduction frontier; R2 is the strongest low-resolution structural comparator retained by F-ROMV2.",
+    "D5_D8": "Instantaneous two-layer Darcy and one/two-segment quasi-steady manifold variants are robust but remain dominated by R2.",
+    "D10": "The literature-faithful He et al. two-layer fixed-H core is dominated by matched R2 on its supported zero-pressure-head B01 envelope; arbitrary-head extension is not authorized."
+  },
+  "sources": [
+    {
+      "family": "FMC_SMVE",
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300.",
+      "doi": "10.1002/2015WR017126",
+      "role": "PRIMARY_PHYSICAL_AND_NUMERICAL_AUTHORITY"
+    },
+    {
+      "family": "FMC_SMVE",
+      "citation": "Ogden et al. (2015), Validation of finite water-content vadose zone dynamics method using column experiments with a moving water table and applied surface flux.",
+      "doi": "10.1002/2014WR016454",
+      "role": "PRIMARY_MOVING_WATER_TABLE_VALIDATION_AUTHORITY"
+    },
+    {
+      "family": "FMC_SMVE",
+      "citation": "Ogden et al. (2017), The Soil Moisture Velocity Equation, Journal of Advances in Modeling Earth Systems 9, 1473-1487.",
+      "doi": "10.1002/2017MS000931",
+      "role": "PRIMARY_DERIVATION_AND_COMPUTATIONAL_AUTHORITY"
+    },
+    {
+      "family": "VZAA",
+      "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467.",
+      "role": "REGIONAL_GROUNDWATER_REDUCTION_PRECEDENT"
+    },
+    {
+      "family": "ADAPTIVE_CLUSTER_ROM",
+      "citation": "Sahoo and Liu (2022), Adaptive model reduction and state estimation of agro-hydrological systems, Computers and Electronics in Agriculture 195, 106825.",
+      "doi": "10.1016/j.compag.2022.106825",
+      "role": "LOCAL_ADAPTIVE_STATE_AGGREGATION_PRECEDENT"
+    }
+  ],
+  "candidate_classes": {
+    "FMC_SMVE": {
+      "scientific_identity": [
+        "Derived from the same unsaturated Darcy/mass-conservation basis as Richards but reformulated in moisture-content/front coordinates.",
+        "Uses finite-water-content finite-volume states and explicit ODE evolution rather than a global nonlinear Richards solve.",
+        "Represents infiltration, falling slugs and groundwater-table dynamics with bidirectional exchange.",
+        "Published formulation supports homogeneous soil layers and layered profiles, surface flux forcing and moving/fixed water-table interaction.",
+        "Mass conservation is a defining numerical property rather than an after-the-fact correction."
+      ],
+      "evidence": [
+        "Published analytical/Richards comparisons report very small cumulative infiltration discrepancies in the studied cases even when profile shape differs.",
+        "Moving-water-table column experiments show comparable water-content performance to HYDRUS-1D across rising/falling groundwater conditions.",
+        "Published SMVE/FMC work reports a vector implementation substantially faster than HYDRUS-1D in its own external benchmark; this is precedent only and not a SWAP5 speed claim."
+      ],
+      "SWAP5_fit": {
+        "explicit_mass_accounting": "STRONG",
+        "lower_boundary_groundwater_interaction": "STRONG",
+        "forward_route_without_online_FOM": "STRONG",
+        "purpose_dependent_profile_vs_flux_tradeoff": "STRONG",
+        "root_uptake_ET_identity": "NOT_YET_RECONCILED",
+        "arbitrary_SWAPPrescribedHead_mapping": "REQUIRES_LITERATURE_BOUND_AUTHORITY_CHECK",
+        "production_readiness": "NOT_AUTHORIZED"
+      },
+      "disposition": "AUTHORIZED_AS_NEXT_LITERATURE_BOUND_RESEARCH_COMPARATOR"
+    },
+    "VZAA": {
+      "scientific_identity": [
+        "Non-iterative sequential vadose-zone approximation designed for regional groundwater models.",
+        "Supports bidirectional saturated-unsaturated exchange and dynamic groundwater-table updating."
+      ],
+      "blockers": [
+        "The published formulation does not provide the same explicit prescribed lower-boundary control required by the current SWAP development envelope.",
+        "Its groundwater-table update uses an empirical soil-specific specific-yield factor whose calibration is scientifically consequential.",
+        "Published coarse discretizations can show material cumulative mass residual; finer vertical/time resolution reduces but does not eliminate the governance mismatch.",
+        "Root water uptake is not yet part of the core published soil-moisture/flux relation."
+      ],
+      "disposition": "DEFER_GENERAL_SWAP5_COMPARATOR_RETAIN_AS_APPLICATION_SPECIFIC_REGIONAL_PRECEDENT"
+    },
+    "ADAPTIVE_CLUSTER_ROM": {
+      "scientific_identity": [
+        "Structure-preserving state aggregation based on clusters of states with similar trajectories.",
+        "Supports multiple operating regions and retains physical grouping better than unrestricted POD."
+      ],
+      "blockers": [
+        "Published adaptive workflow generates full-order trajectories at operating-region transitions, so the published online route is not a standalone forward accelerator.",
+        "Clustering distance threshold and operating-region construction are tuning choices that would need new blind-data governance.",
+        "Primary demonstrated value is reduced state-estimation/MHE dimension rather than direct hydrological forward replacement."
+      ],
+      "disposition": "DEFER_AS_FUTURE_C2_COVERAGE_ARCHITECTURE_NOT_D12_PRIMARY"
+    },
+    "POD_DEIM_HYPERREDUCTION": {
+      "scientific_identity": [
+        "Projection/hyper-reduction can reduce nonlinear evaluation cost and conservative formulations exist in broader finite-volume ROM literature."
+      ],
+      "blockers": [
+        "Richards-specific POD evidence does not establish a compelling 1-D forward speed/value case; nonlinear full-state evaluation can erase nominal dimension reduction.",
+        "Conservation, physical bounds and OOD fail-closed behavior require substantial intrusive design.",
+        "Recent hybrid/deep approaches add training and correction complexity that is not justified before a simpler physics-derived class is tested."
+      ],
+      "disposition": "SECONDARY_FALLBACK_IF_FMC_SMVE_FAILS"
+    },
+    "ROM_ASSISTED_FOM": {
+      "scientific_identity": "ROM prediction used as initial guess or solver aid.",
+      "disposition": "SOLVER_COMPARATOR_HANDOFF_NOT_REDUCED_HYDROLOGICAL_MODEL"
+    }
+  },
+  "selection_basis": {
+    "statement": "D11 does not choose a universal best model. It applies prerequisite filters for the next bounded B01 comparator.",
+    "prerequisites": [
+      "explicit or structurally exact water accounting",
+      "physically meaningful saturated-unsaturated lower-boundary interaction",
+      "online route does not intrinsically require a full-order trajectory",
+      "scientifically declared approximation rather than hidden correction",
+      "plausible purpose-dependent benefit even when pointwise profile identity is relaxed",
+      "clean-room/literature authority can be frozen before SWAP development evidence is consumed"
+    ],
+    "conclusion": "FMC/SMVE is the only reviewed remaining class that currently clears all prerequisites strongly enough to justify a new comparator without first changing F-ROMV2 integrity rules."
+  },
+  "D12_authority": {
+    "authorized": true,
+    "work_unit": "F-ROMV2-D12",
+    "task": "Literature-bound FMC/SMVE equation reconciliation, published benchmark preflight, then a bounded B01 no-sink hydraulic comparator if and only if the preflight closes successfully.",
+    "initial_scope": [
+      "no root extraction or ET in the first SWAP comparison",
+      "homogeneous B01 constitutive relations",
+      "finite-water-content states with explicit water ledger",
+      "groundwater interaction limited to boundary forms directly supported by primary FMC/SMVE authority",
+      "development evidence only; existing D/V histories are exposed and cannot become blind confirmation",
+      "R16 and admitted R2 remain comparators"
+    ],
+    "required_preflight": [
+      "reconstruct the published FMC/SMVE equations and sign conventions from primary sources",
+      "reproduce at least one published analytical or fixed/moving-water-table benchmark before mapping to SWAP",
+      "freeze moisture-bin discretization from literature authority rather than tuning against SWAP outcomes",
+      "show exact/explicit mass closure and physically bounded states",
+      "prove the selected lower-boundary mapping is within literature authority or label any extension separately before execution"
+    ],
+    "code_provenance": "Derive a clean-room research implementation from published equations. Publicly available external code/data may be used only as a secondary oracle after license/provenance review, not copied silently into SWAP5.",
+    "runtime_boundary": "Published HYDRUS speed ratios are external precedent only. No SWAP5 performance claim until a same-runtime admitted performance experiment exists."
+  },
+  "prohibited": [
+    "DO_NOT_IMPLEMENT_VZAA_AS_GENERAL_SWAP5_ROM_FROM_D11",
+    "DO_NOT_RELAX_MASS_OR_BOUNDARY_INTEGRITY_TO_MAKE_VZAA_FIT",
+    "DO_NOT_TUNE_ADAPTIVE_CLUSTER_THRESHOLDS_ON_EXPOSED_V01_V04",
+    "DO_NOT_START_POD_OR_DEEP_ROM_BEFORE_FMC_SMVE_DISCRIMINATION",
+    "DO_NOT_IMPORT_EXTERNAL_RUNTIME_RATIOS_AS_SWAP5_SPEEDUP",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

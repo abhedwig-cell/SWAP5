@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI97",
+  "capability": "F-GC30",
+  "title": "F-GC30 MODFLOW6 Tangent Coupling Drainage-Free Predictor Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "state": "QUALIFIED_ADMISSION_POSTIMAGE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "b142669ddc8c280ef08b31f5af65c120c1cfeaf1",
+    "prior_fvq104_baseline": "dba238b4b20551dcc36e9121ffe25f19a5b1ac0e",
+    "delta_since_fvq104_baseline": "publication-only P2E07 files; no identified F-GC30 dependency source change"
+  },
+  "owner": {
+    "branch": "work/f-gc30-modflow6-tangent-coupling-contract",
+    "qualified_source_head": "e1f086d6f1dc2b60c2b1fc5a2b61b52dc9fa452b",
+    "production_modules": {
+      "src/runtime/mod_modflow6_swap_predictor_response.f90": "e16c9935670643fbbbcb9388eb52ba698764c493",
+      "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90": "15c859e5cb62ba8442879fdec153438e4aadff89",
+      "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90": "47bc673094132e4f128647b467a861c51b2aba50",
+      "src/runtime/mod_modflow6_swap_predictor_origin.f90": "b7bc66ad473ae404f5c0b1e54b0a70d536038c33",
+      "src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90": "f32453168667917a06d8fde483887e1e9a5cbffd"
+    }
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ104",
+    "verifier_branch": "qualification/f-vq104-fgc30-modflow6-tangent-coupling-independent",
+    "status_head": "376b42e274caa09e9f69fb974e292592f5424244",
+    "status_blob": "bc0c2d0ba92643faac81927f21931289b87766a7",
+    "initial_green_run": 35284968348,
+    "initial_green_job": 105415169621,
+    "final_status_green_run": 35285025778,
+    "final_status_green_job": 105415342226,
+    "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
+    "verifier_production_delta": "NONE"
+  },
+  "admission_gate": {
+    "branch": "integration/f-ci97-fgc30-modflow6-tangent-coupling-admission",
+    "qualified_postimage_head": "4a95c966931aa88f2cb501b83284e7fae0b1c8e7",
+    "workflow_run": 35285309088,
+    "workflow_job": 105416191610,
+    "conclusion": "success",
+    "exact_source_delta": "FIVE_ADDITIVE_RUNTIME_MODULES",
+    "owner_production_replay": "PASS",
+    "independent_replay": "PASS",
+    "independent_O0_O2_identity": "PASS",
+    "production_contract_audit": "PASS",
+    "candidate_assembler_noncommitting": "PASS",
+    "active_drainage_analytic_tangent": "FAIL_CLOSED_AS_DESIGNED"
+  },
+  "admitted_contract": [
+    "fixed lower-face hydraulic-head response for prescribed native qbot",
+    "historical u=dt/(dHbot_end/dqbot) and q_u=u*dH/dt-qbot response algebra",
+    "explicit derivative-coverage provenance",
+    "accepted-trajectory tangent is authoritative only when every active state-dependent owner is covered",
+    "predictor origin uses committed accepted SWAP interface head and retains distinct accepted groundwater head residual",
+    "candidate assembler binds lineage, revision, interval, accepted trajectory and bottom-exchange provenance without committing state",
+    "native qbot is recovered from the public terminal outward flux with explicit sign inversion",
+    "centered finite difference remains qualification evidence, not an admitted runtime fallback"
+  ],
+  "exclusions": [
+    "active-drainage analytic tangent",
+    "runtime finite-difference fallback for incomplete process coverage",
+    "MODFLOW6/XMI backend or execution service",
+    "Groundwater Coupling v1 semantic changes",
+    "accepted_storage_change substitution",
+    "irrigation implementation",
+    "Ribasim coupling",
+    "new groundwater physics"
+  ],
+  "verdict": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "next_permitted_action": "Recheck that live integration/f-ci-canonical is exactly b142669ddc8c280ef08b31f5af65c120c1cfeaf1, then non-force fast-forward it to the F-CI97 admission authority successor. After promotion, persist F-GC30 canonical admission and closeout metadata only."
+}

@@ -1,0 +1,136 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-CI81",
+  "title": "RossFast restricted typed in-memory application composition current-canonical admission",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
+  "decision": "ADMITTED_F_ROSS11_TYPED_IN_MEMORY_APPLICATION_COMPOSITION_TO_CANONICAL",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+  "canonical_preimage_tree": "c5ca9f45ce1f0348f24421f0efe0f0f78913f66e",
+  "canonical_admission_commit": "8a49b32339981037041466eda5e434ea53a97086",
+  "canonical_admission_tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
+  "admission_branch": "integration/f-ci81-rossfast-application-composition-admission",
+  "owner_branch": "work/f-ross11-in-memory-application-composition",
+  "owner_closeout_head": "acd0e6ddfb144f553dc396a909c24f8785099b56",
+  "owner_qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+  "qualified_application_runtime_blob": "a1af0d6eb0041565602711251748666f7b959d8e",
+  "owner_closeout_status_blob": "e297e461c41bf04d43b0fb4211ccdbe4bf965bc4",
+  "qualified_candidate": {
+    "head": "7a9fda16868fb10599b76423b2e3ea3acfcb66cb",
+    "tree": "c52ae592131c6f39c91fd654504ab3f2a1c4e40e",
+    "run_id": 34999320240,
+    "job_id": 104483474552,
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "o0_o2_sha256": "357e01c5db8aad112964aa2fb7d870068388f4c8772527ce12a8ae5d7ffde4c7",
+    "six_material_equivalence": {
+      "B01": {"linear_solves": 24, "final_revision": 1},
+      "B12": {"linear_solves": 24, "final_revision": 1},
+      "O01": {"linear_solves": 24, "final_revision": 1},
+      "O05": {"linear_solves": 24, "final_revision": 1},
+      "O14": {"linear_solves": 24, "final_revision": 1},
+      "O18": {"linear_solves": 24, "final_revision": 1}
+    },
+    "reference_model_not_captured": true,
+    "missing_asset_preflight_fail_closed": true,
+    "final_committed_physical_state_matches_direct_authority_route_exactly": true,
+    "artifacts": {
+      "evidence": {
+        "id": 10408946584,
+        "digest": "sha256:8c974806736fa077ece502bcafb111b5d37a1f44ca70d85f8c044d184d952b3e",
+        "size_bytes": 582
+      },
+      "diagnostics": {
+        "id": 10408154160,
+        "digest": "sha256:560bfbf62858af52ce1b313809e1cbe01da740f7a88fb66acd02ad7e0c91c313",
+        "size_bytes": 1907
+      }
+    }
+  },
+  "qualified_governance_head": {
+    "head": "842aedf6174dc71bbd19d83686d02bc52ccc8476",
+    "tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
+    "run_id": 34999628992,
+    "job_id": 104484512869,
+    "conclusion": "success",
+    "production_source_changed_from_scientific_candidate": false,
+    "workflow_metadata_correction_only": true,
+    "artifacts": {
+      "evidence": {
+        "id": 10408687725,
+        "digest": "sha256:7e04dea2ca14caa7ca51d64f842921aaa1f4992f22e6f1b39b2e6e769e72b837",
+        "size_bytes": 581
+      },
+      "diagnostics": {
+        "id": 10409475720,
+        "digest": "sha256:bfa880affb460e74d55cfe4aa67641ad26be11727b90edacc77b979e55e887e3",
+        "size_bytes": 1907
+      }
+    }
+  },
+  "prior_attempts": [
+    {
+      "head": "243ac7613d5e8cfb684f0e2ad8b1aea38ba486ea",
+      "preimage": "9d202705d1d7063ae129166b1049f7555a7ad802",
+      "run_id": 34994993401,
+      "job_id": 104468885999,
+      "verdict": "PASS_SUPERSEDED_BY_RELEVANT_F_KT22_DEPENDENCY_CHANGE"
+    },
+    {
+      "head": "645cc586ce19d935a7d1b8b5a7cb0761132fece6",
+      "run_id": 34998187257,
+      "job_id": 104479678994,
+      "verdict": "FAIL_QUALIFICATION_BUILD_ORDER_ONLY",
+      "scientific_verdict_reached": false
+    },
+    {
+      "head": "2856786d81181a20f4f5285721ab0e8bda34e88c",
+      "run_id": 34999059849,
+      "job_id": 104482595780,
+      "verdict": "FAIL_STALE_CANONICAL_PREIMAGE_GUARD_AFTER_UNRELATED_F_WOF_PP01_ADVANCE",
+      "scientific_verdict_reached": false
+    }
+  ],
+  "admission_proof": {
+    "live_preimage_rechecked_immediately_before_admission": true,
+    "live_preimage_at_admission": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "first_parent_is_exact_preimage": true,
+    "second_parent_is_qualified_governance_head": true,
+    "admission_tree_equals_qualified_governance_tree": true,
+    "canonical_fast_forward_update_succeeded": true,
+    "production_runtime_blob_on_postimage": "a1af0d6eb0041565602711251748666f7b959d8e"
+  },
+  "preservation": {
+    "f_kt22_dependency_chain_preserved": true,
+    "f_wof_pp01_canonical_evidence_preserved": true,
+    "reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "reference_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "legacy_soilwater_blob": "2ab6ea917525cd6f2560860bd55aec1da16be014",
+    "legacy_swap_main_blob": "b6609df617c6b5875c62324570fb8c7d8c0bfe21",
+    "full_richards_task2_blob": "5f51a34b03b63cf7cdf254f6115c2bb2db4ea693"
+  },
+  "mutations": {
+    "production_added": ["src/runtime/mod_fmr_rossfast_application_runtime.f90"],
+    "production_modified": [],
+    "legacy_modified": false,
+    "reference_backend_modified": false,
+    "f_kt22_modified": false,
+    "f_wof_pp01_modified": false,
+    "closeout_is_governance_only": true
+  },
+  "tested": true,
+  "qualified": true,
+  "canonical_admission": true,
+  "hard_nonclaims": [
+    "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
+    "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SWAP_MAIN_WIRING",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
+    "NO_SCIENTIFIC_DOMAIN_BROADENING"
+  ],
+  "next_gap": "The restricted RossFast typed in-memory application path is now canonical. A real external application host/Public API remains a project-wide M1 concern, not an F-ROSS11 extension. Mixed-backend dispatch or broader RossFast science remains separately scoped.",
+  "next_permitted_action": "No further mutation under F-CI81. Reconcile project-wide M1 host/Public-API work if a generic host capability is to be advanced, or open a distinct RossFast capability only for explicitly new requirements."
+}

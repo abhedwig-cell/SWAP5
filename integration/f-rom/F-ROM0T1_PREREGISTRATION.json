@@ -1,0 +1,100 @@
+{
+  "schema": "swap5.f-rom0t1-preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1",
+  "title": "Exact original observation-interval Reference-floor diagnostic",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "purpose": "Complete the exact OBSERVATION_INTERVAL row of the original ROM-0 reference_floor_matrix using accepted F-KT Reference-floor samples on the original B01/B14 E1/E2 fixed-flux cases.",
+  "authority": {
+    "original_ROM0": "integration/f-rom/F-ROM0_PREREGISTRATION.json",
+    "required_dimension": "OBSERVATION_INTERVAL",
+    "required_compare": "0.0016 day vs 0.0008 day at common physical times",
+    "required_cases": [
+      "B01:E1_NOMINAL_FLUX",
+      "B01:E2_DRYING_FLUX",
+      "B14:E1_NOMINAL_FLUX",
+      "B14:E2_DRYING_FLUX"
+    ],
+    "sample_authority": "F-ROM0TA3 F-KT Reference-floor sample/candidate/commit",
+    "mode2_binding": "F-ROM0TA5 preserves already-admitted prescribed-flux mode-2 sample route",
+    "vertical_companion": "ROM-0V1 VERTICAL_REFERENCE_FLOOR_MEASURED",
+    "why_TA1_TA3_do_not_substitute": "TA1/TA3 use the later R1 gravity-steady seed and TOP_PLUS/TOP_MINUS perturbation domain, not the original E1/E2 initial-state/forcing matrix."
+  },
+  "materials": ["B01","B14"],
+  "geometry": {"nodes":16,"dz_cm":10,"depth_cm":160},
+  "initial_state": {
+    "effective_saturation": 0.85,
+    "pressure_profile": "UNIFORM_HEAD_FROM_MVG_EFFECTIVE_SATURATION",
+    "sources_sinks": "ZERO",
+    "ponding_cm": 0.0,
+    "r1_seed_substitution_allowed": false
+  },
+  "cases": [
+    {"id":"B01_E1_NOMINAL_FLUX","material":"B01","top_flux_expression":"0.01*K0","bottom_flux_expression":"-0.004*K0"},
+    {"id":"B01_E2_DRYING_FLUX","material":"B01","top_flux_expression":"-0.005*K0","bottom_flux_expression":"-0.019*K0"},
+    {"id":"B14_E1_NOMINAL_FLUX","material":"B14","top_flux_expression":"0.01*K0","bottom_flux_expression":"-0.004*K0"},
+    {"id":"B14_E2_DRYING_FLUX","material":"B14","top_flux_expression":"-0.005*K0","bottom_flux_expression":"-0.019*K0"}
+  ],
+  "temporal_levels": [
+    {"id":"DT_BASE","dt_day":0.0016,"steps":32},
+    {"id":"DT_REFINED","dt_day":0.0008,"steps":64}
+  ],
+  "common_horizon_day": 0.0512,
+  "common_observation_times": "0.0016, 0.0032, ..., 0.0512 day; compare DT_BASE step j to DT_REFINED step 2*j",
+  "reference_sample_controls": {
+    "policy_id": "ORIGINAL_STRICT_FIXED_FLUX_REFERENCE_SAMPLE",
+    "local_compartment_balance_rate_tolerance_cm_per_day": 1e-12,
+    "total_balance_rate_tolerance_cm_per_day": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12,
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "representation_bounded_total_policy_used": false,
+    "automatic_temporal_subdivision_allowed": false,
+    "failed_residual_used_in_control": false,
+    "empirical_factor": "none"
+  },
+  "measured_outputs_at_each_common_time": [
+    "D_h_inf_cm",
+    "D_h_rms_cm",
+    "D_theta_inf",
+    "D_theta_rms",
+    "D_total_storage_abs_cm",
+    "D_upper_0_40cm_storage_abs_cm",
+    "D_lower_40_160cm_storage_abs_cm",
+    "D_cumulative_top_exchange_abs_cm",
+    "D_cumulative_bottom_exchange_abs_cm",
+    "D_terminal_bottom_flux_abs_cm_per_day"
+  ],
+  "qualification": [
+    "ALL_FOUR_CASES_COMPLETE_BOTH_TEMPORAL_LEVELS",
+    "EVERY_SAMPLE_ONE_PHYSICAL_ADVANCE",
+    "ZERO_INTERNAL_OR_KERNEL_RETRIES",
+    "HARD_MASS_GATE_EVERY_STEP",
+    "STRICT_FIXED_FLUX_CONTROLS_UNCHANGED",
+    "COMMITTED_REVISION_AND_TIME_PROGRESS_EXACTLY",
+    "ALL_COMMON_TIME_METRICS_FINITE",
+    "O0_O2_STDOUT_BITWISE_IDENTITY",
+    "REPEAT_STDOUT_BITWISE_IDENTITY"
+  ],
+  "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD",
+  "positive_decision": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_MEASURED",
+  "negative_decision": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+  "if_positive": "Together with ROM-0V1, reevaluate the complete Q0.1-Q0.6 close gate.",
+  "firewalls": [
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_CASE_SUBSTITUTION",
+    "NO_INITIAL_STATE_SUBSTITUTION",
+    "NO_DT_RETUNING",
+    "NO_REPRESENTATION_POLICY_IMPORT",
+    "NO_TOLERANCE_OR_ITERATION_RETUNING",
+    "NO_THRESHOLD_DERIVATION_FROM_OBSERVED_DIFFERENCES",
+    "NO_PRODUCTION_APPLICATION_ADMISSION",
+    "NO_ROM1_WORK"
+  ],
+  "rom1a_authorized": false
+}

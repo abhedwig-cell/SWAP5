@@ -1,0 +1,38 @@
+--- SWAP/WC_K_models_04_11.f90
++++ SWAP/WC_K_models_04_11.f90
+@@ -456,7 +456,7 @@
+    if (L_NoVap) then
+       Kvap = 0.0d0
+    else
+-      Kvap = Kvap_func (WC, dabs(h), Temp) * Conv
++      Kvap = Kvap_func (WC, h, Temp) * Conv
+    end if
+    K_PDI = Ksat*((1.0d0-OmegaK)*Kcap + OmegaK*Kfilm) + Kvap
+ end if
+@@ -480,7 +480,7 @@
+    if (L_NoVap) then
+       Kvap = 0.0d0
+    else
+-      Kvap = Kvap_func (WC, dabs(h), Temp) * Conv
++      Kvap = Kvap_func (WC, h, Temp) * Conv
+    end if
+    K_PDI_s = Ksat*((1.0d0-OmegaK)*Kcap + OmegaK*Kfilm) + Kvap
+ end if
+@@ -506,7 +506,7 @@
+    if (L_NoVap) then
+       Kvap = 0.0d0
+    else
+-      Kvap = Kvap_func (WC, dabs(h), Temp) * Conv
++      Kvap = Kvap_func (WC, h, Temp) * Conv
+    end if
+    K_PDI_2 = Ksat*((1.0d0-OmegaK)*Kcap + OmegaK*Kfilm) + Kvap
+ end if
+@@ -536,7 +536,7 @@
+    if (L_NoVap) then
+       Kvap = 0.0d0
+    else
+-      Kvap = Kvap_func (WC, dabs(h), Temp) * Conv
++      Kvap = Kvap_func (WC, h, Temp) * Conv
+    end if
+    K_PDI_2_s = Ksat*((1.0d0-OmegaK)*Kcap + OmegaK*Kfilm) + Kvap
+ end if

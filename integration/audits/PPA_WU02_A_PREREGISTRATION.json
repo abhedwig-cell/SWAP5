@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.ppa_wu02.preregistration.v1",
+  "work_unit": "PPA-WU02-A",
+  "title": "Bounded typed prescribed-qbot normal application admission",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "canonical_source_authority": "12beef3e91f90f88b101c13af72cd216bccc63e3",
+  "existing_authority": {
+    "solver": "F-SI38 plus inherited F-SI27 exact source oracle",
+    "runtime": "F-MR44R",
+    "independent": "F-VQ75",
+    "canonical_admission": "F-CI62/F-CI62P",
+    "bootstrap_owner": "PPA-WU01"
+  },
+  "problem": "The production application bootstrap accepts homogeneous bottom_mode=7 standalone profiles and bottom_mode=5 groundwater profiles, while the canonically admitted serialized runtime already supports bottom_mode=2 prescribed qbot.",
+  "permitted_implementation": [
+    "admit a third homogeneous production-application profile with parameters.bottom_mode == 2",
+    "consume existing base_forcing.bottom_flux without changing its units or sign",
+    "keep bottom_mode=5 as the only groundwater-context profile",
+    "keep mode 7 standalone behavior byte-semantically unchanged",
+    "repair PPA-WU01 preservation assertions only as needed to permit later bounded extension"
+  ],
+  "forbidden": [
+    "legacy SW2 parser or file I/O",
+    "sinusoidal/table forcing law",
+    "automatic oven-dry 2-to--2 continuation",
+    "new groundwater architecture or datum mapping",
+    "new solver/Jacobian/physics",
+    "tolerance changes",
+    "mixed-profile admission",
+    "new mass or transaction owner"
+  ],
+  "qualification": [
+    "typed application bottom_mode=2 initializes and runs nonzero qbot through production bootstrap",
+    "hard mass gate",
+    "arbitrary non-calendar time window and committed revision advancement",
+    "O0/O2 output identity",
+    "existing F-VQ75 sign, positive/zero/negative qbot, rollback/retry, temporal and fail-closed authority inherited and replayed where provenance allows",
+    "PPA-WU01 mode7 standalone and mode5 groundwater preservation",
+    "SWBOTB=6 F-APP02/F-CI95 preservation by unchanged bounded adapter",
+    "unsupported application selector fails closed"
+  ],
+  "exit": "CANONICAL_ADMITTED_TYPED_PRESCRIBED_QBOT_NORMAL_APPLICATION_WITHOUT_LEGACY_SWBOTB2_FILE_ADAPTER"
+}

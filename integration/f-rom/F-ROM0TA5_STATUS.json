@@ -1,0 +1,19 @@
+{
+  "schema": "swap5.f-rom0ta5.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA5",
+  "phase": "CLOSED_QUALIFIED",
+  "decision": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
+  "execution": {
+    "workflow_run": 35370006629,
+    "workflow_job": 105681478610,
+    "artifact_id": 10558506628,
+    "artifact_digest": "sha256:e6fbb960a569988050dcebf77b9551a928737407b22e65fe9bf2a4f863e92aab"
+  },
+  "r3_dependency_satisfied": true,
+  "ta4_dependency_satisfied": false,
+  "r3_execution_authorized": false,
+  "reason_r3_still_blocked": "F-ROM0TA4 restart/replay qualification remains required by the preregistration.",
+  "production_application_admission": false,
+  "rom1a_authorized": false
+}

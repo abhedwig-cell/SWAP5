@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC29",
+  "title": "Optional Groundwater Response Sensitivity Service Extension",
+  "phase": "RECONCILE",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "tree": "9b2d60dbe6de57242946aa8c1e0fbab990edaa6e"
+  },
+  "owner": {
+    "branch": "work/f-gc29-groundwater-response-sensitivity-service-extension",
+    "base": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62"
+  },
+  "trigger": {
+    "blocked_consumer": "F-GC23",
+    "consumer_checkpoint": "5f0b81451433242d9e6395272d6f6491fcf3be2a",
+    "consumer_verdict": "BLOCKED_BY_MISSING_GROUNDWATER_SIDE_RESPONSE_SENSITIVITY_CAPABILITY"
+  },
+  "authority": {
+    "F-GC16_plan_path": "integration/f-gc/F-GC16_DEPENDENCY_ORDERED_IMPLEMENTATION_PLAN.json",
+    "F-GC16_plan_blob": "d8b02dcf1c4915634c0a7659f3202604c4d91b88",
+    "contract": "F-GC18 owns checkpoint, predictor-head request, trial response, optional response sensitivity, commit and rollback; F-GC23 consumes accepted provenance-matching SWAP sensitivity with groundwater-side response information",
+    "current_service_path": "src/runtime/mod_groundwater_exchange_service_contract.f90",
+    "current_service_blob": "e99ae052fccd9992b76c12a91422a987dce059e2"
+  },
+  "reconciliation": {
+    "F-GC29_identifier_preexisting": false,
+    "equivalent_current_canonical_capability_found": false,
+    "equivalent_F-GC18_or_F-GC18R_capability_found": false,
+    "current_trial_result_transports_response_derivative": false,
+    "contract_owner_requires_successor_workunit": true,
+    "reason": "The change extends the admitted external-groundwater service contract and therefore cannot be hidden inside F-GC23."
+  },
+  "required_contract": [
+    "optional additive response-sensitivity capability; existing groundwater providers remain source-compatible",
+    "response belongs to one existing groundwater trial candidate and its committed checkpoint origin",
+    "exact generic [t0,t1] window, service, lineage and revision provenance are transported and validated",
+    "unsupported, unavailable, nonsmooth, non-finite, stale or provenance-mismatched response fails closed",
+    "response query does not commit or alter committed groundwater state",
+    "no response is inferred from predictor/corrector secants",
+    "finite difference remains independent qualification/reference only",
+    "no concrete MODFLOW types or groundwater constitutive physics are introduced"
+  ],
+  "compatibility_strategy": {
+    "base_groundwater_exchange_service_t_unchanged": true,
+    "base_groundwater_preparable_exchange_service_t_unchanged": true,
+    "extension_form": "additive opt-in subtype plus wrapper query",
+    "unsupported_provider_behavior": "explicit response unavailable"
+  },
+  "production_allowlist": [
+    "src/runtime/mod_groundwater_exchange_service_contract.f90"
+  ],
+  "qualification_obligations": [
+    "analytic deterministic response agrees with independent finite-difference reference on smooth structural fixtures",
+    "exact candidate/checkpoint/window/lineage/revision provenance",
+    "discarded or stale candidate cannot publish response",
+    "retry/discard path cannot leak response state",
+    "unsupported and nonsmooth providers return explicit unavailable/fail-closed result",
+    "response query leaves committed groundwater state unchanged",
+    "base F-GC18 and F-GC18R behavior preserved",
+    "O0/O2 deterministic identity"
+  ],
+  "production_semantics_changed": false,
+  "next_permitted_action": "Implement only the additive optional service response-sensitivity extension and owner qualification on this branch.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "concrete MODFLOW adapter implementation",
+    "structural finite difference as production response construction",
+    "F-GC23 implementation before F-GC29 canonical admission",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

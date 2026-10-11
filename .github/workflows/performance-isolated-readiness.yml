@@ -1,0 +1,85 @@
+name: Isolated performance runner readiness
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_cpus:
+        description: 'Benchmark CPU list, e.g. 2 or 2-3'
+        required: true
+        default: '0'
+        type: string
+      b0_distribution_path:
+        description: 'Absolute path to the registered SWAP 4.3.1 distribution on the self-hosted runner'
+        required: true
+        default: '/opt/swap5/reference/SWAP_4.3.1.zip'
+        type: string
+      attestation_path:
+        description: 'Absolute path to a completed isolated-runner attestation JSON'
+        required: true
+        default: '/opt/swap5/performance/isolated-runner-attestation.json'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    name: Isolated runner contract gate
+    runs-on: [self-hosted, linux, x64, swap5-performance]
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Validate versioned runner contract
+        run: |
+          python3 -m tools.performance.mp_isolated_runner validate-contract \
+            benchmarks/performance/isolated-runner-contract.json
+          python3 -m tools.performance.mp_isolated_runner validate-readiness \
+            benchmarks/performance/isolated-runner-readiness.json
+
+      - name: Probe runner
+        id: probe
+        continue-on-error: true
+        run: >-
+          python3 -m tools.performance.mp_isolated_runner probe
+          --target-cpus '${{ inputs.target_cpus }}'
+          > runner-snapshot.json
+
+      - name: Verify exact B0 distribution identity
+        id: b0
+        continue-on-error: true
+        run: >-
+          python3 -m tools.performance.mp_b0_shadow verify-b0
+          '${{ inputs.b0_distribution_path }}'
+          > b0-identity.json
+
+      - name: Assess isolated runner contract
+        id: assess
+        continue-on-error: true
+        run: >-
+          python3 -m tools.performance.mp_isolated_runner assess
+          benchmarks/performance/isolated-runner-contract.json
+          runner-snapshot.json
+          '${{ inputs.attestation_path }}'
+          b0-identity.json
+          > runner-assessment.json
+
+      - name: Upload readiness evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: mp-isolated-runner-readiness
+          if-no-files-found: warn
+          path: |
+            runner-snapshot.json
+            b0-identity.json
+            runner-assessment.json
+
+      - name: Enforce readiness gate
+        if: always()
+        run: |
+          test '${{ steps.probe.outcome }}' = 'success'
+          test '${{ steps.b0.outcome }}' = 'success'
+          test '${{ steps.assess.outcome }}' = 'success'
+          echo 'Runner contract ready. This is not yet MP-B01 host admission.'

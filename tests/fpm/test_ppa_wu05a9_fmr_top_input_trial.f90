@@ -1,0 +1,683 @@
+program test_ppa_wu05a9_fmr_top_input_trial
+  use, intrinsic :: iso_fortran_env, only: int64, real64, error_unit
+  use MOD_grid, only: numnod, z, dz, disnod
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_MASS_MISSING_NONE
+  use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
+       kernel_candidate_state_t, kernel_diagnostics_t
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
+  use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
+       fmr_new_b110_committed_state, fmr_new_b110_boesten_macropore_committed_state, &
+       fmr_b110_boesten_macropore_state_t
+  use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window
+  use mod_rutter_source_window_processor, only: initialize_rutter_canopy_state, RUTTER_WINDOW_OK
+  use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
+  use mod_fmr_macropore_configuration, only: initialize_fmr_macropore_standard_config, prepare_fmr_macropore_rapid_reference, fmr_macropore_physical_config_t
+  use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
+  use mod_macropore_single_column_runtime, only: macropore_runtime_policy_t
+  use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_result_t, evaluate_macropore_geometry, &
+       evaluate_macropore_geometry_return
+  use mod_macropore_standard_storage, only: macropore_standard_storage_view_t, canonicalize_macropore_standard_storage
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_macropore_dynamic_shrinkage, only: dynamic_shrinkage_config_t, prepare_clay_kim_option1, &
+       SHRINK_PEAT_DIRECT, SHRINK_PEAT_SEGMENTS, SHRINK_RIGID, SHRINK_KIM, &
+       prepare_clay_kim_option2, prepare_peat_characteristic_points, &
+       evaluate_dynamic_crack_profile, prepare_rapid_drain_reference_kd, derive_dynamic_minimum_subsidence, map_surface_crack_depth_to_node
+  implicit none
+  character(len=1)::constitutive_flag,fit_flag,cover_flag
+  integer::macro_top=1
+
+  integer(int64),parameter :: column_id=508001_int64
+  real(real64),parameter :: dt=1.0e-3_real64
+
+  type(fmr_serialized_reference_backend_t) :: backend
+  type(fmr_serialized_physical_observation_t) :: observation
+  type(fixed_flux_top_boundary_provider_t),target :: top
+  type(fmr_b110_physical_parameters_t),target :: parameters
+  type(fmr_b110_physical_forcing_t) :: forcing
+  type(fmr_b110_physical_state_t) :: physical
+  type(boesten_evaporation_state_t) :: boesten_state
+  type(interception_source_window_t) :: rutter_window
+  integer :: rutter_status
+  type(fmr_logical_column_t) :: column
+  type(fmr_template_t) :: template
+  type(canonical_numerical_config_t) :: config
+  type(kernel_committed_state_t) :: committed
+  type(kernel_checkpoint_t) :: checkpoint
+  type(kernel_result_t) :: result
+  type(kernel_candidate_state_t) :: candidate
+  type(kernel_diagnostics_t) :: diagnostics
+  type(macropore_runtime_policy_t) :: policy
+  type(dynamic_shrinkage_config_t) :: shrinkage
+  type(macropore_geometry_result_t) :: geometry
+  type(macropore_standard_storage_view_t) :: storage_view
+  type(b110_default_mvg_parameters_t),target :: hp
+  type(b110_default_mvg_provider_t) :: hyd
+  class(transaction_state_t),allocatable :: snapshot
+  real(real64),allocatable :: static_volume(:), domain_fraction(:,:), diameter(:)
+  real(real64),allocatable :: probe_dynamic(:),probe_subsidence(:),displacement(:,:)
+  real(real64),allocatable :: theta_s(:),theta_r(:),wall_correction(:),sorp_max(:),sorp_alpha(:)
+  real(real64),allocatable :: conductivity(:),entry_head(:),sorp_fac_parallel(:),ksat_horizontal(:),cdarcy(:,:)
+  integer,allocatable :: potential_bottom(:)
+  real(real64) :: heads(numnod),water(numnod),cond(numnod),cap(numnod),dkdh(numnod)
+  real(real64) :: macro_before, macro_after, trial_dt
+  logical :: ok, did_commit, available
+  logical :: probe_ok
+  logical :: migmac10
+  logical :: migmac10_rutter
+  logical :: migmac11
+  logical :: migmac11_runon, migmac11_no_pond, migmac11_partial
+  logical :: dynamic_enabled
+  logical :: geometry_changes_expected,inner_route
+  character(len=1) :: dynamic_flag
+  integer :: commit_status
+  integer :: nd
+
+  call get_environment_variable('WU05_MIGMAC08_COVER',cover_flag)
+  if(cover_flag=='1' .or. cover_flag=='2')macro_top=3
+  fit_flag='0'
+  call get_environment_variable('WU05_MIGMAC04_FIT',fit_flag)
+  constitutive_flag='0'
+  call get_environment_variable('WU05_MIGMAC03_LAW',constitutive_flag)
+  dynamic_flag='0'
+  call get_environment_variable('WU05_MIGMAC02_DYNAMIC',dynamic_flag)
+  migmac10=.false.
+  migmac10_rutter=.false.
+  migmac11=.false.
+  migmac11_runon=.false.
+  migmac11_no_pond=.false.
+  migmac11_partial=.false.
+  block
+    character(len=1) :: m10_flag
+    character(len=1) :: rutter_flag
+    m10_flag='0'
+    rutter_flag='0'
+    call get_environment_variable('WU05_MIGMAC10',m10_flag)
+    migmac10=m10_flag=='1'
+    call get_environment_variable('WU05_MIGMAC10_RUTTER',rutter_flag)
+    migmac10_rutter=rutter_flag=='1'
+    if(migmac10_rutter)migmac10=.true.
+    block
+      character(len=1)::m11_flag
+      character(len=1)::runon_flag,no_pond_flag,partial_flag
+      m11_flag='0'; runon_flag='0'; no_pond_flag='0'; partial_flag='0'
+      call get_environment_variable('WU05_MIGMAC11',m11_flag)
+      call get_environment_variable('WU05_MIGMAC11_RUNON',runon_flag)
+      call get_environment_variable('WU05_MIGMAC11_NO_POND',no_pond_flag)
+      call get_environment_variable('WU05_MIGMAC11_PARTIAL',partial_flag)
+      migmac11_runon=runon_flag=='1'
+      migmac11_no_pond=no_pond_flag=='1'
+      migmac11_partial=partial_flag=='1'
+      migmac11=m11_flag=='1' .or. migmac11_runon .or. migmac11_no_pond .or. migmac11_partial
+      if(migmac11)migmac10=.true.
+    end block
+  end block
+  trial_dt=dt
+  if(migmac11)trial_dt=dt/32.0_real64
+  dynamic_enabled=dynamic_flag=='1' .or. dynamic_flag=='2' .or. dynamic_flag=='4' .or. dynamic_flag=='5'
+  geometry_changes_expected=dynamic_flag=='1'
+  inner_route=dynamic_enabled .or. dynamic_flag=='3'
+  nd=1
+  if(dynamic_flag=='5')nd=2
+  call initialize_parameters(parameters)
+  call initialize_b110_default_mvg_parameters(hp,parameters%cofgen)
+  call bind_b110_default_mvg_provider(hyd,hp,trial_dt)
+  call initialize_macropore_config(parameters,ok)
+  call require(ok,'physical macropore config initialized')
+  if(migmac11)then
+    parameters%macropore%surface_pond_inflow_enabled=.true.
+    parameters%macropore%surface_pond_threshold_cm=merge(1.0_real64,1.0e-4_real64,migmac11_no_pond)
+    parameters%macropore%surface_macropore_conductivity_cm_per_day=merge(3000.0_real64,3.0_real64,migmac11_partial)
+  end if
+  call require(allocated(parameters%macropore%matrix_area_fraction),'static macro matrix-area fraction derived')
+  call require(all(abs(parameters%macropore%matrix_area_fraction- &
+       (1.0_real64-parameters%macropore%geometry%static_volume_cp/dz))<=1.0e-14_real64),'legacy FrArMtrx default exact')
+  parameters%macropore_active=.true.
+  if(migmac10)then
+    parameters%boesten_evaporation_active=.true.
+    allocate(parameters%boesten_evaporation)
+    parameters%boesten_evaporation%cofred=0.79_real64
+    boesten_state%spev=0.4_real64
+    boesten_state%saev=0.2_real64
+  end if
+
+  heads=-100.0_real64
+  if(dynamic_flag=='4' .or. dynamic_flag=='5')heads=-1000.0_real64
+  call hyd%evaluate(heads,water,cond,cap,dkdh)
+
+  physical%active_nodes=numnod
+  allocate(physical%pressure_head(numnod),physical%water_content(numnod),physical%macropore)
+  if(migmac10_rutter)allocate(physical%rutter)
+  physical%pressure_head=heads
+  physical%water_content=water
+  physical%ponding_depth=merge(0.10_real64,0.0_real64,migmac11)
+  physical%groundwater_level=-1000.0_real64
+  call physical%macropore%initialize(nd,numnod,ok)
+  call require(ok,'macropore continuation initialized')
+  if(migmac10_rutter)then
+    call initialize_rutter_canopy_state(0.0_real64,physical%rutter,rutter_status)
+    call require(rutter_status==RUTTER_WINDOW_OK,'Rutter canopy state initialized')
+  end if
+  physical%macropore%dynamic_volume_cp=0.0_real64
+  
+  call evaluate_dynamic_crack_profile(parameters%macropore%shrinkage,water,water,dz, &
+       parameters%macropore%matrix_area_fraction,physical%macropore%dynamic_volume_cp, &
+       probe_dynamic,probe_ok,probe_subsidence,top_node=macro_top)
+  call require(probe_ok,'MIGMAC02 dry accepted-state crack profile evaluates')
+  if(dynamic_flag=='4' .or. dynamic_flag=='5')physical%macropore%dynamic_volume_cp=probe_dynamic
+  if(geometry_changes_expected)call require(any(probe_dynamic>1.0e-12_real64),'MIGMAC02 dry accepted-state crack volume nonzero')
+  call evaluate_macropore_geometry(parameters%macropore%geometry,physical%macropore%dynamic_volume_cp,geometry)
+  call require(geometry%valid,'initial macropore geometry')
+  physical%macropore%icp_bottom_domain=geometry%bottom_domain
+  physical%macropore%volume_domain_cp=geometry%volume_domain_cp
+  physical%macropore%water_domain_cp=0.0_real64
+  physical%macropore%water_domain_cp(1,numnod)=0.20_real64
+  if(migmac11_partial .and. macro_top==1)then
+    ! A9 capacity is total domain storage, not only the surface compartment.
+    ! Leave only a tiny total residual capacity so the pond receipt must be
+    ! partly accepted and the remainder returned to the shared surface donor.
+    physical%macropore%water_domain_cp=geometry%volume_domain_cp
+    physical%macropore%water_domain_cp(1,1)=max(0.0_real64, &
+         physical%macropore%water_domain_cp(1,1)-1.0e-8_real64)
+  end if
+  if(dynamic_flag=='4' .or. dynamic_flag=='5') &
+       physical%macropore%water_domain_cp=0.85_real64*geometry%volume_domain_cp
+  call canonicalize_macropore_standard_storage(physical%macropore,macro_top,z,dz,storage_view,ok)
+  call require(ok,'initial macropore standard storage canonical')
+  macro_before=sum(physical%macropore%water_domain_cp)
+
+  if(migmac10)then
+    call fmr_new_b110_boesten_macropore_committed_state(committed,column_id,physical,boesten_state,0.0_real64,ok)
+  else
+    call fmr_new_b110_committed_state(committed,column_id,physical,0.0_real64,ok)
+  end if
+  call require(ok,'committed state initialized')
+  call fmr_capture_checkpoint(committed,checkpoint,ok)
+  call require(ok,'checkpoint captured')
+
+  call initialize_forcing(forcing)
+  if(migmac11)then
+    ! Qualify the new pond-derived receipt independently of the older direct
+    ! atmospheric macropore source. Atmospheric rain/irrigation still enter
+    ! the shared dynamic surface donor through the Boesten forcing below.
+    forcing%macropore_top_input=fmr_macropore_top_input_forcing_t()
+  end if
+  if(migmac10_rutter)then
+    if(allocated(forcing%macropore_top_input))deallocate(forcing%macropore_top_input)
+    allocate(forcing%rutter)
+    call initialize_interception_window(508010_int64,0.0_real64,trial_dt,trial_dt,rutter_window,rutter_status)
+    call require(rutter_status==0,'Rutter source window initialized')
+    forcing%rutter%prepared=.true.
+    forcing%rutter%source_window=rutter_window
+    forcing%rutter%process%surface_irrigation_cm_per_day=0.25_real64
+    forcing%rutter%process%vegetation_cover_fraction=0.5_real64
+    forcing%rutter%process%canopy_storage_capacity_cm=0.05_real64
+    forcing%rutter%process%interception_evaporation_capacity_cm_per_day=0.0_real64
+    forcing%rutter%process%potential_transpiration_dry_cm_per_day=0.0_real64
+    forcing%rutter%process%potential_transpiration_wet_cm_per_day=0.0_real64
+    forcing%rutter%potential_bare_soil_evaporation_cm_per_day=0.2_real64
+    forcing%rutter%ponding_max_cm=2.0_real64
+    forcing%rutter%runoff_resistance_day=1.0_real64
+    forcing%rutter%runoff_exponent=1.0_real64
+  end if
+  if(migmac10)then
+    allocate(forcing%boesten_evaporation)
+    forcing%boesten_evaporation%precipitation_rate_cm_per_day=merge(1.0_real64,1.0_real64,migmac11)
+    forcing%boesten_evaporation%irrigation_rate_cm_per_day=0.25_real64
+    if(migmac11_runon)forcing%boesten_evaporation%runon_rate_cm_per_day=5.0_real64
+    forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=0.2_real64
+    forcing%boesten_evaporation%ponding_max_cm=merge(2.0_real64,2.0_real64,migmac11)
+    forcing%boesten_evaporation%runoff_resistance_day=1.0_real64
+    forcing%boesten_evaporation%runoff_exponent=1.0_real64
+  end if
+
+  template%template_id=508001_int64
+  template%physics_topology_id=508002_int64
+  template%vertical_layout_id=508003_int64
+  template%state_layout_id=508004_int64
+  template%solver_interface_id=508005_int64
+  template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_MACROPORE
+  if(migmac10)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE
+  if(migmac10_rutter)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE
+  template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+  template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+
+  column%column_id=column_id
+  column%template_id=template%template_id
+  column%parameter_ref=1_int64
+  column%state_handle=1_int64
+  column%forcing_handle=1_int64
+  column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+
+  config%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+  config%transaction%temporal_tolerance=1.0_real64
+  config%transaction%mass_tolerance=1.0e-9_real64
+  config%transaction%retry_scale=0.5_real64
+  config%transaction%max_retries=4
+  config%max_committed_substeps=16
+  if(migmac11)then
+    ! Pond onset can be a sharper temporal transition than the historical A9
+    ! fixture. Preserve the same full-versus-two-half acceptance tolerance and
+    ! give the transactional controller enough refinement budget to resolve it.
+    config%transaction%max_retries=12
+    config%max_committed_substeps=256
+  end if
+  config%progress_tolerance=0.0_real64
+
+  policy%enabled=.true.
+  policy%inner_richards_exchange_enabled=inner_route
+  policy%max_correctors=80
+  policy%exchange_relative_tolerance=1.0e-10_real64
+  policy%exchange_floor=1.0e-12_real64
+  policy%damping_previous_weight=0.5_real64
+  policy%solver_mass_tolerance_cm=1.0e-9_real64
+  policy%internal_exchange_tolerance_cm=1.0e-9_real64
+
+  call backend%initialize(top)
+  call backend%configure_macropore_policy(policy,ok)
+  call require(ok,'macropore policy configured independently')
+
+  call backend%run_trial(column,template,parameters,committed,forcing,config,0.0_real64,trial_dt,checkpoint, &
+       result,candidate,diagnostics)
+  write(error_unit,'(*(g0))') 'PPA_WU05A9_FMR_DIAG|STATUS=',result%status,'|COMPLETED=',result%completed, &
+       '|ADMISSION_REJECTIONS=',diagnostics%admission_rejections,'|TRANSACTION_CALLS=',diagnostics%transaction_calls, &
+       '|ATTEMPTS=',diagnostics%attempts,'|RETRIES=',diagnostics%retries,'|HEAD_CALC=',diagnostics%headcalc_calls, &
+       '|NONLINEAR=',diagnostics%nonlinear_iterations,'|TEMP_REJ=',diagnostics%temporal_rejections, &
+       '|MASS_REJ=',diagnostics%mass_rejections,'|SOLVER_REJ=',diagnostics%solver_rejections, &
+       '|MAX_STEP_MASS=',diagnostics%max_abs_step_mass_residual,'|CANDIDATE_READY=',candidate%ready()
+  flush(error_unit)
+  call require(result%status==CANONICAL_STATUS_COMPLETED .and. result%completed,'FMR macropore trial completed')
+  call require(result%mass%complete,'FMR macropore mass complete')
+  call require(result%mass%missing_contribution_mask==TX_MASS_MISSING_NONE,'FMR macropore mass missing mask')
+  call require(abs(result%mass%residual)<=1.0e-9_real64,'FMR macropore mass residual')
+  call require(candidate%ready(),'FMR macropore candidate ready')
+  observation=backend%observation()
+  if(migmac11)then
+    call require(observation%macropore_inner_richards_exchange_used, &
+         'MIGMAC11 residual-synchronous inner Richards route used')
+    if(migmac11_no_pond)then
+      call require(observation%macropore_pond_requested_cm==0.0_real64,'MIGMAC11 below-threshold pond request zero')
+      call require(observation%macropore_pond_accepted_cm==0.0_real64,'MIGMAC11 below-threshold pond accepted zero')
+      call require(observation%macropore_pond_returned_cm==0.0_real64,'MIGMAC11 below-threshold pond return zero')
+      call require(observation%macropore_requested_top_cm==0.0_real64,'MIGMAC11 below-threshold aggregate request zero')
+      write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_NO_POND|MASS=',result%mass%residual
+      write(*,'(a)') 'PPA_WU05_MIGMAC11_NO_POND=PASS'
+    else
+      call require(observation%macropore_pond_requested_cm>0.0_real64,'MIGMAC11 pond-derived request active')
+      call require(abs(observation%macropore_pond_accepted_cm+observation%macropore_pond_returned_cm- &
+           observation%macropore_pond_requested_cm)<=1.0e-9_real64,'MIGMAC11 pond A9 receipt exact')
+      call require(abs((observation%macropore_pond_requested_cm-observation%macropore_pond_returned_cm)- &
+           observation%macropore_pond_accepted_cm)<=1.0e-9_real64,'MIGMAC11 net surface debit equals accepted pond inflow')
+      call require(abs(observation%macropore_requested_top_cm-observation%macropore_pond_requested_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond request owns aggregate top receipt')
+      call require(abs(observation%macropore_accepted_top_cm-observation%macropore_pond_accepted_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond accepted owns aggregate top receipt')
+      call require(abs(observation%macropore_returned_surface_cm-observation%macropore_pond_returned_cm)<=1.0e-9_real64, &
+           'MIGMAC11 pure pond return owns aggregate top receipt')
+      if(migmac11_partial)then
+        call require(observation%macropore_pond_accepted_cm>0.0_real64,'MIGMAC11 partial acceptance positive')
+        call require(observation%macropore_pond_returned_cm>0.0_real64,'MIGMAC11 partial return positive')
+        call require(observation%macropore_pond_accepted_cm<observation%macropore_pond_requested_cm, &
+             'MIGMAC11 partial acceptance bounded below request')
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_PARTIAL|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_PARTIAL_RETURN=PASS'
+      else if(migmac11_runon)then
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_RUNON|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_RUNON=PASS'
+      else
+        write(*,'(*(g0))') 'PPA_WU05_MIGMAC11_ACTIVE|POND_REQUESTED=',observation%macropore_pond_requested_cm, &
+             '|POND_ACCEPTED=',observation%macropore_pond_accepted_cm,'|POND_RETURNED=',observation%macropore_pond_returned_cm, &
+             '|MASS=',result%mass%residual
+        write(*,'(a)') 'PPA_WU05_MIGMAC11_ACTIVE_POND=PASS'
+      end if
+    end if
+    call require(abs(result%mass%residual)<=1.0e-9_real64,'MIGMAC11 whole-column mass closure')
+  end if
+  if(migmac10_rutter)then
+    call require(observation%boesten_evaporation_evaluated,'Rutter-Boesten reduction evaluated')
+    call require(observation%macropore_matrix_source_area_partition_used, &
+         'Rutter net source partitioned once across matrix and macropore')
+    call require(abs(observation%boesten_wetting_rate_cm_per_day - &
+         observation%rutter_net_rain_rate_cm_per_day - observation%rutter_net_irrigation_rate_cm_per_day) <= &
+         1.0e-14_real64,'Boesten wetting receives exact post-Rutter net rain plus irrigation')
+    call require(abs(observation%macropore_top_rain_rate_cm_per_day - &
+         observation%rutter_net_rain_rate_cm_per_day) <= 1.0e-14_real64 .and. &
+         abs(observation%macropore_top_irrigation_rate_cm_per_day - &
+         observation%rutter_net_irrigation_rate_cm_per_day) <= 1.0e-14_real64, &
+         'Macropore owner receives each post-Rutter net rate once')
+  end if
+  if(macro_top==1)then
+  if(migmac11)then
+    call require(.not.observation%macropore_top_input_active, &
+         'MIGMAC11 pond receipt independent of explicit top input')
+    call require(.not.observation%macropore_matrix_source_area_partition_used, &
+         'MIGMAC11 candidate area does not activate atmospheric partition')
+  else
+    call require(observation%macropore_top_input_active,'A9 top-input route active')
+  end if
+  if(dynamic_enabled)call require(observation%macropore_inner_richards_exchange_used,'MIGMAC02 inner Richards callback used')
+  if(inner_route .and. migmac10 .and. .not.migmac11)call require(observation%macropore_matrix_source_area_partition_used, &
+       'MIGMAC10 residual-synchronous matrix/macro source partition used')
+  if(.not.migmac11_no_pond)then
+    call require(observation%macropore_requested_top_cm>0.0_real64,'A9 requested top receipt positive')
+    call require(observation%macropore_accepted_top_cm>0.0_real64,'A9 accepted top receipt positive')
+  end if
+  call require(observation%macropore_accepted_top_cm<=observation%macropore_requested_top_cm+1.0e-12_real64, &
+       'A9 accepted top bounded by request')
+  call require(abs(observation%macropore_accepted_top_cm+observation%macropore_returned_surface_cm- &
+       observation%macropore_requested_top_cm)<=1.0e-9_real64,'A9 top receipt exact')
+  end if
+  if(dynamic_flag=='4' .or. dynamic_flag=='5')then
+    call require(observation%macropore_inner_final_exchange_rate_cm_per_day>1.0e-5_real64, &
+         'MIGMAC02 displaced-water matrix receipt active')
+  end if
+  if(dynamic_flag=='5')call require(observation%macropore_rapid_outflow_cm>0.0_real64, &
+       'MIGMAC02 dynamic geometry rapid drainage active')
+
+  ! A trial must not mutate committed authority.
+  call committed%snapshot(snapshot,available)
+  call require(available,'precommit snapshot available')
+  select type(s=>snapshot)
+  class is(fmr_b110_physical_state_t)
+    call require(allocated(s%macropore),'precommit macro state present')
+    call require(abs(sum(s%macropore%water_domain_cp)-macro_before)<=1.0e-14_real64, &
+         'trial leaves committed macropore storage unchanged')
+    if(migmac10)then
+      select type(m10=>snapshot)
+      type is(fmr_b110_boesten_macropore_state_t)
+        call require(m10%boesten_evaporation%spev==boesten_state%spev .and. &
+             m10%boesten_evaporation%saev==boesten_state%saev,'trial leaves Boesten history unchanged')
+      class default
+        error stop 'MIGMAC10 precommit composite state type'
+      end select
+    end if
+  class default
+    error stop 'A8 precommit snapshot type'
+  end select
+  deallocate(snapshot)
+
+  call backend%commit_trial_candidate(committed,candidate,diagnostics,did_commit,commit_status)
+  call require(did_commit,'FMR macropore candidate committed')
+  call require(committed%current_revision()==1_int64,'FMR macropore revision advanced')
+  call require(.not.candidate%ready(),'committed candidate consumed')
+
+  call committed%snapshot(snapshot,available)
+  call require(available,'postcommit snapshot available')
+  select type(s=>snapshot)
+  class is(fmr_b110_physical_state_t)
+    call require(allocated(s%macropore),'postcommit macro state present')
+    call require(s%macropore%ready(),'postcommit macro state ready')
+    macro_after=sum(s%macropore%water_domain_cp)
+    if(migmac10_rutter)then
+      call require(allocated(s%rutter),'postcommit Rutter source state present')
+      call require(s%rutter%source_window_initialized(),'postcommit Rutter source window initialized')
+      call require(abs(s%rutter%accepted_until()-trial_dt)<=1.0e-14_real64,'Rutter source progress committed to endpoint')
+    end if
+    if(constitutive_flag=='7') &
+         call require(all(s%macropore%dynamic_volume_cp(3::3)==0.0_real64),'MIGMAC05 accepted rigid interfaces zero')
+    if(constitutive_flag=='2' .or. constitutive_flag=='4') &
+         call require(all(s%macropore%dynamic_volume_cp(2::2)==0.0_real64),'MIGMAC03 accepted rigid geometry zero')
+    if(geometry_changes_expected)then
+      call require(any(s%macropore%dynamic_volume_cp>1.0e-12_real64),'MIGMAC02 accepted crack geometry changed')
+    else if(dynamic_flag=='4' .or. dynamic_flag=='5')then
+      call require(sum(s%macropore%dynamic_volume_cp)<sum(probe_dynamic),'MIGMAC02 wetting shrinks crack capacity')
+      call evaluate_macropore_geometry(parameters%macropore%geometry,s%macropore%dynamic_volume_cp,geometry)
+      call evaluate_macropore_geometry_return(physical%macropore,geometry,displacement,ok)
+      call require(ok,'MIGMAC02 final displacement oracle valid')
+      call require(sum(displacement)>0.0_real64,'MIGMAC02 water displaced by shrinking macro capacity')
+      write(*,'(*(g0))') 'PPA_WU05_MIGMAC02_WETTING|CAPACITY_LOSS=', &
+           sum(probe_dynamic)-sum(s%macropore%dynamic_volume_cp),'|DISPLACEMENT=',sum(displacement)
+    else
+      call require(all(s%macropore%dynamic_volume_cp==0.0_real64),'MIGMAC02 no-change geometry preserved')
+    end if
+    call require(macro_after>=0.0_real64,'postcommit macro storage nonnegative')
+    call require(abs(sum(s%macropore%water_domain_cp)-macro_after)<=1.0e-14_real64,'macro storage finite identity')
+    if(migmac10)then
+      select type(m10=>snapshot)
+      type is(fmr_b110_boesten_macropore_state_t)
+        call require(m10%boesten_evaporation%spev>=0.0_real64 .and. m10%boesten_evaporation%saev>=0.0_real64, &
+             'MIGMAC10 committed Boesten pair remains valid')
+        call require(m10%boesten_evaporation%saev<boesten_state%saev,'MIGMAC10 rewetting updates SAEV')
+      class default
+        error stop 'MIGMAC10 postcommit composite state type'
+      end select
+    end if
+  class default
+    error stop 'A9 postcommit snapshot type'
+  end select
+
+  write(*,'(*(g0))') 'PPA_WU05A9_FMR_MACRO_TRIAL|MASS=',result%mass%residual, &
+       '|MACRO_BEFORE=',macro_before,'|MACRO_AFTER=',macro_after, &
+       '|HEAD_CALC=',diagnostics%headcalc_calls,'|NONLINEAR=',diagnostics%nonlinear_iterations
+  print '(a)', 'PPA_WU05A9_FMR_MACRO_TRIAL=PASS'
+  if(migmac10)print '(a)','PPA_WU05_MIGMAC10_BOESTEN_MACROPORE_TRIAL=PASS'
+  if(migmac10_rutter)print '(a)','PPA_WU05_MIGMAC10_RUTTER_BOESTEN_MACROPORE_TRIAL=PASS'
+  if(macro_top>1)print '(a)','PPA_WU05_MIGMAC08_COVERED_REFERENCE_TRIAL=PASS'
+  if(cover_flag=='2')print '(a)','PPA_WU05_MIGMAC09_NONRIGID_COVER_TRIAL=PASS'
+  if(geometry_changes_expected)print '(a)', 'PPA_WU05_MIGMAC02_DYNAMIC_REFERENCE_TRANSACTION=PASS'
+  if(dynamic_flag=='2' .or. dynamic_flag=='3')print '(a)', 'PPA_WU05_MIGMAC02_NO_GEOMETRY_CHANGE=PASS'
+  if(dynamic_flag=='4')print '(a)', 'PPA_WU05_MIGMAC02_WETTING_GEOMETRY_RETURN=PASS'
+  if(dynamic_flag=='5')print '(a)', 'PPA_WU05_MIGMAC02_TWO_DOMAIN_GEOMETRY_RAPID_DRAIN=PASS'
+
+contains
+
+  subroutine initialize_parameters(p)
+    type(fmr_b110_physical_parameters_t),intent(out)::p
+    integer::k
+    p%parameter_set_id=508001_int64
+    p%active_nodes=numnod
+    allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
+    p%z=z; p%dz=dz; p%node_distance=disnod(1:numnod)
+    p%cofgen=0.0_real64
+    do k=1,numnod
+      p%cofgen(1,k)=0.02_real64; p%cofgen(2,k)=0.427494_real64; p%cofgen(3,k)=31.225016_real64
+      p%cofgen(4,k)=0.021659_real64; p%cofgen(5,k)=0.98087_real64; p%cofgen(6,k)=1.734737_real64
+      p%cofgen(7,k)=1.0_real64-1.0_real64/p%cofgen(6,k); p%cofgen(8,k)=p%cofgen(4,k)
+      p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
+      p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
+    end do
+    p%bottom_mode=7
+    p%swkimpl=0
+    p%swkmean=1
+    p%swsophy=0
+    p%max_iterations=64
+    p%max_backtracking=24
+    p%min_step_duration=1.0e-12_real64
+    p%compartment_balance_tolerance=1.0e-12_real64
+    p%total_balance_tolerance=1.0e-12_real64
+    p%head_abs_tolerance=1.0e-12_real64
+    p%head_rel_tolerance=1.0e-12_real64
+    p%ponding_tolerance=1.0e-12_real64
+    p%root_extraction_active=.false.
+    p%macropore_active=.false.
+    p%snow_active=.false.
+    p%hysteresis_active=.false.
+    p%tabulated_hydraulics_active=.false.
+    p%direct_retention_active=.false.
+    p%elasticity_active=.false.
+    p%frost_active=.false.
+    p%soil_temperature_active=.false.
+    p%black_evaporation_active=.false.
+    p%boesten_evaporation_active=.false.
+    p%drainage_response_active=.false.
+  end subroutine initialize_parameters
+
+  subroutine initialize_macropore_config(p,initialized)
+    type(fmr_b110_physical_parameters_t),intent(inout)::p
+    logical,intent(out)::initialized
+    integer::k
+    type(fmr_macropore_physical_config_t)::cover_probe
+    logical::cover_ok
+    character(len=1)::reference_flag,partial_flag
+    real(real64)::drain_level
+    real(real64)::reference_kd
+    real(real64)::ref_theta(numnod),ref_cond(numnod),ref_cap(numnod),ref_dk(numnod)
+
+    allocate(static_volume(numnod),domain_fraction(nd,numnod),diameter(numnod),theta_s(numnod),theta_r(numnod), &
+         wall_correction(numnod),sorp_max(numnod),sorp_alpha(numnod),conductivity(numnod),entry_head(numnod), &
+         sorp_fac_parallel(numnod),ksat_horizontal(numnod),cdarcy(nd,numnod),potential_bottom(nd))
+    static_volume=0.25_real64
+    if(macro_top>1)static_volume(1:macro_top-1)=0.0_real64
+    domain_fraction=1.0_real64
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
+    if(nd==2)then
+      domain_fraction(1,:)=0.3_real64
+      domain_fraction(2,:)=0.7_real64
+    end if
+    if(macro_top>1)domain_fraction(:,1:macro_top-1)=0.0_real64
+    diameter=4.0_real64
+    theta_s=0.427494_real64
+    theta_r=0.02_real64
+    wall_correction=0.95_real64
+    sorp_max=0.001_real64
+    sorp_alpha=0.5_real64
+    conductivity=0.0_real64
+    entry_head=-1.0_real64
+    sorp_fac_parallel=0.5_real64
+    ksat_horizontal=0.0_real64
+    cdarcy=0.0_real64
+    potential_bottom=numnod
+
+    shrinkage%enabled=dynamic_enabled
+    shrinkage%surface_crack_area_depth_cm=-0.75_real64
+    shrinkage%surface_crack_area_depth_supplied=.true.
+    allocate(shrinkage%theta_s(numnod),shrinkage%theta_crack(numnod),shrinkage%geometry_factor(numnod),shrinkage%kim(numnod))
+    shrinkage%theta_s=theta_s
+    shrinkage%theta_crack=0.40_real64
+    if(dynamic_flag=='2')shrinkage%theta_crack=0.0_real64
+    shrinkage%geometry_factor=3.0_real64
+    do k=1,numnod
+      call prepare_clay_kim_option1(theta_s(k),0.20_real64,2.0_real64,1.20_real64,shrinkage%kim(k),ok)
+      call require(ok,'MIGMAC02 clay option-1 configuration valid')
+    end do
+    if(constitutive_flag/='0')then
+      allocate(shrinkage%law(numnod),shrinkage%peat(numnod))
+      shrinkage%law=SHRINK_PEAT_DIRECT
+      if(constitutive_flag=='3' .or. constitutive_flag=='4')shrinkage%law=SHRINK_PEAT_SEGMENTS
+      if(constitutive_flag=='2' .or. constitutive_flag=='4')shrinkage%law(2::2)=SHRINK_RIGID
+      shrinkage%peat%void_ratio_zero=0.2_real64
+      shrinkage%peat%transition_moisture_ratio=0.5_real64
+      shrinkage%peat%alpha=1.2_real64
+      shrinkage%peat%beta=3.0_real64
+      shrinkage%peat%p=0.1_real64
+      shrinkage%peat%intermediate_moisture_ratio=0.2_real64
+      shrinkage%peat%intermediate_void_ratio=0.4_real64
+      if(constitutive_flag=='5' .or. constitutive_flag=='6' .or. constitutive_flag=='7')then
+        if(constitutive_flag=='6')shrinkage%law=SHRINK_PEAT_SEGMENTS
+        shrinkage%law(2::2)=SHRINK_KIM
+        if(constitutive_flag=='7')shrinkage%law(3::3)=SHRINK_RIGID
+      end if
+    end if
+
+    if(fit_flag=='1')then
+      do k=1,numnod
+        call prepare_clay_kim_option2(theta_s(k),0.2_real64,0.35_real64,shrinkage%kim(k),ok)
+        call require(ok,'MIGMAC04 clay points prepare')
+      end do
+    else if(fit_flag=='2' .or. fit_flag=='3')then
+      call require(allocated(shrinkage%peat),'MIGMAC04 peat carrier present')
+      do k=1,numnod
+        if(fit_flag=='2')then
+          call prepare_peat_characteristic_points(theta_s(k),0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,0.1_real64,shrinkage%peat(k),ok)
+        else
+          call prepare_peat_characteristic_points(theta_s(k),0.2_real64,0.5_real64,0.1_real64, &
+               0.25_real64,-0.3_real64,shrinkage%peat(k),ok)
+        end if
+        call require(ok,'MIGMAC04 peat points prepare')
+      end do
+    end if
+
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    reference_kd=0.001_real64
+    drain_level=-2.0_real64
+    call get_environment_variable('WU05_MIGMAC07_PARTIAL',partial_flag)
+    if(partial_flag=='1')drain_level=-1.9_real64
+    call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
+    if(reference_flag=='2')then
+      call map_surface_crack_depth_to_node(shrinkage%surface_crack_area_depth_cm,z,dz,macro_top,k,ok)
+      call require(ok,'MIGMAC06 supplied reference crack-node mapping')
+      shrinkage%surface_crack_area_node=k
+      shrinkage%surface_crack_area_node_supplied=.true.
+      call derive_dynamic_minimum_subsidence(shrinkage,dz,ok)
+      call require(ok,'MIGMAC06 supplied reference geometry')
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call prepare_rapid_drain_reference_kd(shrinkage,z,dz,ref_theta,static_volume,domain_fraction(1,:), &
+           diameter,-sum(dz),drain_level,2,3.0_real64,reference_kd,ok)
+      call require(ok,'MIGMAC06 supplied prepared reference valid')
+    end if
+    if(cover_flag=='1')shrinkage%law(1:macro_top-1)=SHRINK_RIGID
+    allocate(p%macropore)
+    call initialize_fmr_macropore_standard_config(p%macropore,macro_top,static_volume,domain_fraction,potential_bottom, &
+         z,dz,diameter,theta_s,theta_r,wall_correction,sorp_max,sorp_alpha,conductivity,entry_head, &
+         sorp_fac_parallel,ksat_horizontal,cdarcy,1.0_real64,1.0_real64,0,initialized,shrinkage=shrinkage, &
+         rapid_enabled=dynamic_flag=='5',rapid_drain_type=2,rapid_drain_level_cm=drain_level, &
+         rapid_area_exponent=3.0_real64,rapid_kd_reference=reference_kd,rapid_resistance_reference_day=20.0_real64, &
+         matrix_area_fraction=1.0_real64-static_volume/dz,covering_minimum_polygon_diameter_cm=10.0_real64, &
+         covering_ksat_cm_per_day=1.0_real64)
+    call get_environment_variable('WU05_MIGMAC06_KD',reference_flag)
+    if(reference_flag=='1')then
+      call hyd%evaluate(drain_level-z,ref_theta,ref_cond,ref_cap,ref_dk)
+      call prepare_fmr_macropore_rapid_reference(p%macropore,z,ref_theta,-sum(dz),initialized)
+      call require(initialized,'MIGMAC06 derived reference config valid')
+      if(macro_top>1)then
+        cover_probe=p%macropore
+        cover_probe%geometry%domain_fraction(1,1)=0.5_real64
+        call prepare_fmr_macropore_rapid_reference(cover_probe,z,ref_theta,-sum(dz),cover_ok)
+        call require(.not.cover_ok,'MIGMAC09 nonzero covering domain fraction fails closed')
+        call require(cover_probe%rate_template%rapid%kd_reference==p%macropore%rate_template%rapid%kd_reference, &
+             'MIGMAC08 invalid cover leaves KD unchanged')
+        cover_probe=p%macropore
+        cover_probe%geometry%static_volume_cp(1)=0.01_real64
+        call prepare_fmr_macropore_rapid_reference(cover_probe,z,ref_theta,-sum(dz),cover_ok)
+        call require(.not.cover_ok,'MIGMAC08 positive covering macropore capacity fails closed')
+        call require(cover_probe%rate_template%rapid%kd_reference==p%macropore%rate_template%rapid%kd_reference, &
+             'MIGMAC08 invalid capacity leaves KD unchanged')
+      end if
+
+    end if
+    if(reference_flag=='1'.or.reference_flag=='2') &
+         print '(a,es24.16)','PPA_WU05_MIGMAC06_REFERENCE_KD=',p%macropore%rate_template%rapid%kd_reference
+  end subroutine initialize_macropore_config
+
+  subroutine initialize_forcing(f)
+    type(fmr_b110_physical_forcing_t),intent(out)::f
+    f%top_flux=0.0_real64
+    f%top_head=0.0_real64
+    f%bottom_flux=0.0_real64
+    f%bottom_head=-100.0_real64
+    allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
+    f%drainage_flux_by_level=0.0_real64
+    f%subsurface_irrigation_source=0.0_real64
+    f%root_extraction_sink=0.0_real64
+    allocate(f%macropore_top_input)
+    f%macropore_top_input=fmr_macropore_top_input_forcing_t()
+    f%macropore_top_input%supplied=.true.
+    f%macropore_top_input%net_rain_rate_cm_per_day=1.0_real64
+    f%macropore_top_input%net_irrigation_rate_cm_per_day=0.25_real64
+    f%macropore_top_input%melt_rate_cm_per_day=0.0_real64
+    f%macropore_top_input%lateral_overland_rate_cm_per_day=0.10_real64
+    if(macro_top>1)f%macropore_top_input=fmr_macropore_top_input_forcing_t()
+  end subroutine initialize_forcing
+
+  subroutine require(condition,label)
+    logical,intent(in)::condition
+    character(len=*),intent(in)::label
+    if(.not.condition)then
+      write(error_unit,'(a,1x,a)') 'PPA_WU05A9_FMR_FAIL',trim(label)
+      flush(error_unit)
+      error stop 1
+    end if
+  end subroutine require
+
+end program test_ppa_wu05a9_fmr_top_input_trial

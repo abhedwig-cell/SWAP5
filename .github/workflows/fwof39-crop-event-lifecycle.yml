@@ -1,0 +1,39 @@
+name: F-WOF39 crop event lifecycle retirement
+
+on:
+  push:
+    branches:
+      - work/f-wof39-crop-event-restart-lifecycle
+    paths:
+      - 'src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/crop/**'
+      - 'tests/fwof/run_fwof39_crop_event_lifecycle_gate.sh'
+      - 'tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh'
+      - 'tests/fwof/run_fwof38_gate_e_failed_then_accepted_retry.sh'
+      - '.github/workflows/fwof39-crop-event-lifecycle.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-lifecycle-retirement:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF39 lifecycle retirement gate
+        run: bash tests/fwof/run_fwof39_crop_event_lifecycle_gate.sh
+      - name: Preserve F-WOF38 atomic crop transaction gate
+        run: bash tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
+      - name: Preserve F-WOF38 failed then accepted retry gate
+        run: bash tests/fwof/run_fwof38_gate_e_failed_then_accepted_retry.sh

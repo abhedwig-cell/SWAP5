@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_plan.v1",
+  "work_unit": "F-CI33",
+  "title": "F-MR33 Restricted DIVDRA Runtime Binding Canonical Source Admission",
+  "branch": "qualification/f-ci33-fmr33-divdra-runtime-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "owner_authority": {
+    "work_unit": "F-MR33",
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "production_path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "production_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "independent_qualification_authority": {
+    "work_unit": "F-VQ49",
+    "closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6",
+    "decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION",
+    "exact_closeout_rerun": {
+      "run": 34483080296,
+      "job": 102890456097,
+      "conclusion": "success",
+      "O0_O2_sha256": "417d2a7fcc44b5744bb02028ac3b719e0e135b80e60d293c20a8fbb0c8c23321"
+    },
+    "science_reopened": false
+  },
+  "canonical_dependency_lock": {
+    "src/process/mod_drainage_spatial_distribution.f90": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac"
+  },
+  "admission_scope": {
+    "add_exact_independently_qualified_runtime_binding_source": true,
+    "modify_existing_production_source": false,
+    "modify_reference_source": false,
+    "modify_solver_or_kernel": false,
+    "modify_process_science": false,
+    "modify_backend_interface": false,
+    "new_runtime_semantics": false,
+    "active_runtime_callsite_composition": false,
+    "canonical_source_availability_only": true
+  },
+  "required_gates": [
+    "exact candidate blob lock against F-MR33 owner closeout",
+    "F-VQ49 qualification decision and candidate lock",
+    "F-VQ49 exact-closeout rerun provenance recorded",
+    "canonical dependency blob locks",
+    "exactly one new src path and no modification of existing production files",
+    "zero reference delta",
+    "static runtime-boundary audit",
+    "O0 and O2 compile-and-smoke replay of publication, zero, rejection and consumer seams",
+    "byte-identical O0/O2 smoke output",
+    "all 30 SWAP architecture invariants audited with no adverse delta",
+    "identical gate rerun on exact F-CI33 qualification closeout before promotion",
+    "live canonical head recheck immediately before non-forced fast-forward",
+    "post-promotion canonical workflow qualification on exact promoted head",
+    "final canonical closeout head workflow requalification"
+  ],
+  "mass_governance": {
+    "mass_conservation_absolute": true,
+    "process_scalar_transfer_authoritative": true,
+    "runtime_binding_may_renormalize": false,
+    "runtime_binding_may_reconstruct_scalar": false,
+    "configurable_mass_tolerance_allowed": false
+  },
+  "promotion_policy": {
+    "fast_forward_only": true,
+    "force": false,
+    "promotion_forbidden_if_canonical_moved": true,
+    "post_promotion_canonical_ci_required": true,
+    "final_governance_head_ci_required": true
+  },
+  "nonclaim": "Canonical admission of this source does not by itself prove that a production runtime orchestrator calls the binding. A separate callsite-composition workunit is required before active execution may be claimed."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.fci89.status.v1",
+  "capability": "F-CI89",
+  "title": "Current-canonical admission of F-WOF-PP03 WOFOST81 runtime activation",
+  "phase": "CLOSE",
+  "state": "CANONICALLY_CLOSED",
+  "canonical_base": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+  "promoted_checkpoint": "0438a60f8e715f8365fd47d41e2ff729a3f1b1c3",
+  "canonical_promotion_mode": "NON_FORCE_FAST_FORWARD",
+  "race_checks": [
+    "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+    "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1"
+  ],
+  "admission_qualification": {
+    "candidate_run_id": 35036010133,
+    "candidate_job_id": 104605164314,
+    "checkpoint_run_id": 35036202248,
+    "checkpoint_job_id": 104605757343,
+    "verdict": "PASS",
+    "runtime_o0_o2_sha256": "7182c28172fc58dd6f5cf31505d2ba70c7936c89731c25e52dabc7de6c5c002b",
+    "markers": [
+      "F_CI89_QUALIFIED_OWNER_BLOBS=PASS",
+      "F_CI89_EXACT_TWO_FILE_PRODUCTION_DELTA=PASS",
+      "F_WOF_PP03_RUNTIME_ACTIVATION_GATE PASS",
+      "F_WOF_PP03_FWO38_FWO39_CURRENT_CONTRACT_PRESERVATION_GATE PASS",
+      "F_CI89_CURRENT_CANONICAL_WOFOST81_RUNTIME_ADMISSION=PASS"
+    ]
+  },
+  "owner": {
+    "capability": "F-WOF-PP03",
+    "qualified_execution_head": "97b7b6c712d003daa67b696faa1e9f207dff4e14",
+    "evidence_head": "83efd2f8fe674dffc9c0524c433009d75246eb1e",
+    "qualification_run_id": 35034651590,
+    "qualification_job_id": 104600883520,
+    "verdict": "PASS"
+  },
+  "production_postimage": [
+    {
+      "path": "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+      "blob": "fb8744fb00439b6eb35a679f1a77b4547a9978d2"
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost81_crop_event_lifecycle.f90",
+      "blob": "5742147b8b3ace2ec40b5295c4df915e9787ea3f"
+    }
+  ],
+  "admitted_scope": [
+    "WOFOST81 runtime transaction over one accepted daily crop event",
+    "atomic WOFOST81 crop owner plus consumed-event receipt publication",
+    "rollback and failed-evolution zero leakage",
+    "duplicate accepted-event fail-closed protection",
+    "committed-receipt-gated source event retirement",
+    "PP02 donor-equivalent N-unlimited request-equals-supply route"
+  ],
+  "preserved_contracts": [
+    "legacy WOFOST runtime source and semantics unchanged",
+    "F-WOF38 atomic crop transaction contract preserved",
+    "F-WOF39 crop-event lifecycle contract preserved",
+    "PP02 numerical preservation remains executable and passing"
+  ],
+  "hard_exclusions": [
+    "no EB",
+    "no ROSS or RossFast",
+    "no groundwater changes",
+    "no new crop physics",
+    "no RD migration",
+    "no TRA migration",
+    "no Soil-N coupling policy",
+    "no tolerance changes"
+  ],
+  "next_permitted_action": "None for F-CI89. Any RD, TRA, Soil-N coupling, alternative duration, or broader WOFOST81 runtime capability requires a separate bounded capability."
+}

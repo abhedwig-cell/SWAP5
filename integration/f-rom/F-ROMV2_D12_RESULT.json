@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.f-romv2-d12.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D12",
+  "decision": "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+  "adjudication": "LITERATURE_BOUND_EQUATION_AUTHORITY_AND_ANALYTICAL_PREFLIGHT_PASS_WITHOUT_SWAP_TRAJECTORY_EXPOSURE",
+  "execution": {
+    "workflow_run": 35450870852,
+    "workflow_job": 105917670077,
+    "executed_head": "bdd20c92121a0d7eb1dffdfef22264283bda8670",
+    "execution_pull_request": 437,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10586825733,
+    "artifact_digest": "sha256:5571783a8ffb9f2ccca24a2467fd6668a541187ae6c37eef5b4e0c690e00333e",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "9ead50aea06e5f9c2f41ff93ecc1358bf9f00408d7ca2c2ee1850c84bd48d8fa",
+    "preflight_stdout_sha256": "ba606f06daebeae9b4bca8fd614e81733b6f1d8dc6f3a9ef25d95ed822493265"
+  },
+  "authority": {
+    "primary_sources": [
+      "10.1002/2015WR017126",
+      "10.1002/2014WR016454",
+      "10.1002/2017MS000931",
+      "10.1029/96WR00069"
+    ],
+    "public_oracle_doi": "10.15786/M22P4H",
+    "public_oracle_used": false,
+    "external_source_code_copied": false,
+    "SWAP_trajectory_evidence_consumed": false
+  },
+  "frozen_discretization": {
+    "moisture_content_bins": 200,
+    "maximum_infiltration_substep_seconds": 10,
+    "tuned_from_SWAP_outcomes": false
+  },
+  "preflight": {
+    "Green_Ampt_single_bin": {
+      "pass": true,
+      "fmc_front_velocity": 11.710248358549814,
+      "green_ampt_front_velocity": 11.710248358549814,
+      "abs_difference": 0
+    },
+    "groundwater_hydrostatic_equilibrium": {
+      "pass": true,
+      "tested_bins": 169,
+      "max_abs_velocity_cm_per_day": 0
+    },
+    "capillary_relaxation_finite_volume": {
+      "pass": true,
+      "before_storage_cm": 0.2368558875,
+      "after_storage_cm": 0.2368558875,
+      "abs_difference_cm": 0
+    },
+    "B01_constitutive_and_capillary_drive": {
+      "pass": true,
+      "bins": 200,
+      "psi_strictly_decreases_with_theta": true,
+      "K_strictly_increases_with_theta": true,
+      "HcM_cm": 14.085215420920257,
+      "tail_refinement_relative_difference": 2.522299853166452e-16
+    },
+    "published_power_law_timescale": {
+      "pass": true,
+      "A_cm_per_h": 2,
+      "K1_cm_per_h": 1,
+      "D1_cm2_per_h": 100,
+      "n_range": [
+        3,
+        9
+      ],
+      "max_leading_front_identity_error_cm": 0
+    }
+  },
+  "D13_authority": {
+    "authorized": true,
+    "role": "SEPARATELY_PREREGISTERED_FMC_SMVE_HYDRAULIC_DEVELOPMENT_COMPARATOR",
+    "required_boundary": "Only a constant-head/water-table configuration directly supported by the reconciled FMC groundwater-front authority.",
+    "preferred_first_envelope": "B01 homogeneous, no ET/root sink, water table at the lower boundary (zero pressure head), using already-exposed development histories only.",
+    "comparators": [
+      "R16",
+      "R2"
+    ],
+    "bin_count": 200,
+    "maximum_infiltration_substep_seconds": 10,
+    "arbitrary_nonzero_SWAP_bottom_head_authorized": false,
+    "blind_confirmation": false
+  },
+  "scientific_boundary": [
+    "D12 verifies equation identity, finite-volume invariants and B01 constitutive compatibility; it does not yet test full FMC trajectory logic.",
+    "The finite-volume bookkeeping rather than the ODE alone is the mass-conservation authority.",
+    "Profile-shape deviations are expected because the advection-like FMC/SMVE reduction neglects the diffusion-like term.",
+    "Root uptake and ET are outside the first comparator."
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "QUALIFY_OWNER_COMPOSITION",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "qualified_head": "3961bb8090887fddccb5a17276ee33f2d4b8cbbe",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "46f7335351393167b92f301c28ed1f235c0892ce",
+    "latest_delta": "F-DOC28 documentation-only Restart v1 technical reference; commit message explicitly preserves frozen Status-A scientific denominator and production/reference/test semantics.",
+    "relevant_fapp04_dependency_change": false
+  },
+  "scientific_denominator": {
+    "f_app03_admission": "a21cdc070c3545ef88c71be3b3b782e1a1adbc06",
+    "pmdirect_process_blob": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+    "independent_a13_rederivation": "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json",
+    "independent_daily_records": 1096,
+    "independent_daily_mismatches_above_1e_12": 0,
+    "independent_process_qualification": "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
+    "restricted_daily_exact_source_records": 384,
+    "restricted_interval_exact_source_records": 14062,
+    "positive_interception_days": 65,
+    "positive_interception_timesteps": 1641
+  },
+  "preregistration": {
+    "application": "integration/f-app/F-APP04_PREREGISTRATION.json",
+    "net_rain_binding": "integration/f-app/F-APP04_NET_RAIN_DYNAMIC_TOP_PREREGISTRATION.json",
+    "independent_qualification_required_before_admission": true
+  },
+  "production_delta": {
+    "exact_files": [
+      "src/runtime/mod_fmr_pmdirect_ptra_root_input_binding.f90",
+      "src/runtime/mod_fmr_pmdirect_surface_evaporation_binding.f90",
+      "src/runtime/mod_fmr_pmdirect_dynamic_top_boundary_binding.f90"
+    ],
+    "root_binding_blob": "89d2d42e85c51d0b174d0382dabd3ec8f7417b68",
+    "surface_binding_blob": "1a67d8a25727c2e821dd11e4853aa925e43cd95b",
+    "dynamic_top_binding_blob": "a6e1ed43bb9ee7cb13d088668c3874a11877980a",
+    "new_physics": false,
+    "solver_changed": false,
+    "transaction_lifecycle_changed": false,
+    "admitted_swetr1_changed": false
+  },
+  "typed_mappings": {
+    "root": "pmdirect interval potential_transpiration_cm_per_day -> crop_root_uptake_input_t%potential_transpiration for emerged crop; canonical zero retained for non-emerged crop",
+    "surface": "pmdirect daily potential_soil_evaporation_cm_per_day / potential_pond_evaporation_cm_per_day -> surface_evaporation_demand_t bare/ponded demand",
+    "dynamic_top": "pmdirect interval net_rain_cm_per_day -> b110_dynamic_top_boundary_request_t%precipitation_rate_cm_per_day by identity mapping",
+    "dynamic_top_sign_authority": "Existing provider forms q0 = precipitation + irrigation + snowmelt + runon - bare-soil evaporation - ponded-water evaporation.",
+    "dynamic_top_unit_authority": "cm/day source and receiver"
+  },
+  "protected_authority": {
+    "dynamic_top_provider_blob": "3eadae0f32aba49534cd58464e28c0af5bc9bf7d",
+    "dynamic_top_solver_adapter_blob": "7a3cc3d01d994ea21bb0b48798cd2fb4aba9495e",
+    "reference_et_process_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "reference_et_runtime_binding_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "reference_et_root_binding_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "surface_runtime_materialization_blob": "b8ff1fb1d9434e952163b6955305c6373dd8ac82"
+  },
+  "qualification": {
+    "workflow": "F-APP04 PMdirect typed bindings",
+    "workflow_run_id": 35275345029,
+    "job_id": 105384500613,
+    "head_sha": "3961bb8090887fddccb5a17276ee33f2d4b8cbbe",
+    "compiler": "GNU Fortran 13.3.0",
+    "new_code_flags": "-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow",
+    "protected_dependency_warning_policy": [
+      "soil-water solver contract: existing unused-dummy warnings remain warnings only",
+      "dynamic-top provider: existing compare-reals warnings remain warnings only"
+    ],
+    "static_gates": {
+      "exact_three_production_bindings": "PASS",
+      "F_APP03_and_SWETR1_protected_blobs": "PASS",
+      "dynamic_top_owner_blobs": "PASS",
+      "no_parallel_runtime_or_solver_coupling": "PASS",
+      "direct_postimage_mapping": "PASS"
+    },
+    "root_surface_owner_regression": "PASS",
+    "dynamic_top_owner_regression": {
+      "net_rain_exact_mapping": "PASS",
+      "all_nonprecipitation_fields_bit_preserved": "PASS",
+      "incoming_precipitation_ignored": "PASS",
+      "zero_net_rain_exact_mapping": "PASS",
+      "nonfinite_net_rain_fail_closed": "PASS",
+      "negative_net_rain_fail_closed": "PASS",
+      "upstream_rejected_fail_closed": "PASS"
+    },
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "974a49a66be38e8a38f53c92f76ce5b4b754785d2fb1856798a4813191e65bea",
+    "workflow_conclusion": "success"
+  },
+  "owner_verdict": "PASS_F_APP04_RESTRICTED_PMDIRECT_TYPED_APPLICATION_COMPOSITION_OWNER_QUALIFICATION",
+  "admission_status": "BLOCKED_PENDING_PREREGISTERED_INDEPENDENT_QUALIFICATION",
+  "whole_hupsel_closed": false,
+  "m1_c3_closed": false,
+  "next_permitted_action": "Create a separate test-only independent qualification surface against this exact F-APP04 postimage. Reuse the independently qualified F-APP03 scientific denominator; independently verify that all three F-APP04 bindings are identity/preservation mappings and fail closed without modifying production code. Only after independent PASS may F-APP04 proceed to admission.",
+  "exclusions": [
+    "SWINTER=3 / Rutter",
+    "SWCF=2",
+    "legacy file-driven M1-C3 adapter",
+    "whole-Hupsel equivalence claim",
+    "new application runtime",
+    "solver, transaction, timestep, retry or tolerance changes"
+  ]
+}

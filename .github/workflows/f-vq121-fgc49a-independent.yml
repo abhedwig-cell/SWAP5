@@ -1,0 +1,19 @@
+name: F-VQ121 F-GC49A independent qualification
+on:
+  push:
+    branches: [work/f-gc49a-application-plan-materialization]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_application_plan.f90'
+      - 'tests/fvq/test_fvq121_fgc49a_application_plan_independent.f90'
+      - 'tests/fvq/run_fvq121_fgc49a_independent.sh'
+      - '.github/workflows/f-vq121-fgc49a-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: bash tests/fvq/run_fvq121_fgc49a_independent.sh

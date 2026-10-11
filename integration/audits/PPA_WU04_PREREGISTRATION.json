@@ -1,0 +1,54 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU04",
+  "title": "Stateful ET/interception scientific review",
+  "protocol": "RECONCILE -> SOURCE AUTHORITY -> SEMANTIC TRACE -> STATE/EVENT/RESTART/ROLLBACK CLASSIFICATION -> MIGRATION CONTRACT -> QUALIFY -> CLOSE",
+  "branch": "audit/ppa-wu04-stateful-et-interception-review",
+  "canonical_base": "8d78c305d12939bb061bbcb248b8a33730494f34",
+  "scope": [
+    "SWINTER=1 Von Hoyningen-Hune/Braden source-window aggregate interception",
+    "SWINTER=2 Gash source-window aggregate interception",
+    "SWREDU=1 Black soil-evaporation reduction continuation state",
+    "SWREDU=2 Boesten-Stroosnijder soil-evaporation reduction continuation state"
+  ],
+  "authority": [
+    "reference/swap-4.3.1/b1-manifest.yml",
+    "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "reference/swap-4.3.1/patches/SWAP-006/fix.patch",
+    "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "integration/f-pm/F-PM06_LEGACY_VARIABLE_CLASSIFICATION.json",
+    "integration/f-pm/F-PM06_STATUS.json"
+  ],
+  "authority_binding": {
+    "b1_snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "b1_11_delta_from_b1_10": "SWAP-011 only, confined to MOD_MvG_functions.f90, WC_K_models_04_11.f90 and MOD_RIA.f90",
+    "et_semantics_consequence": "ET/interception/reduceva source semantics traced by F-PM06 remain valid for B1.11. Earlier SWAP-006 alters only the meteorological dynamic-crop data-loading scan, not ETpot, interception_daily or reduceva."
+  },
+  "required_decisions": [
+    "Distinguish physical committed state from source-window aggregate provenance.",
+    "Freeze retry/rollback semantics without copying legacy pre-retry state mutation.",
+    "Freeze restart semantics, including mid-source-window continuation for SWINTER=1/2.",
+    "Keep potential evaporation/transpiration demands separate from authoritative accepted water-mass fluxes.",
+    "Define implementation slices without production source mutation in PPA-WU04."
+  ],
+  "non_goals": [
+    "production implementation",
+    "new ET/interception equations",
+    "Penman-Monteith qualification",
+    "Rutter redesign",
+    "root-water-uptake expansion",
+    "legacy weather-file parser migration",
+    "solver, tolerance or timestep-policy change",
+    "ROM"
+  ],
+  "pass_conditions": [
+    "B1.11 authority and F-PM06 source trace reconcile without contradiction",
+    "SWINTER=1/2 persistent physical state remains empty and source-window aggregate ownership is explicit",
+    "SWREDU=1 persistent state is exactly LDWET; SWREDU=2 exactly SPEV/SAEV",
+    "restart and retry rules are explicit and fail closed",
+    "mid-window interception continuation is owned by forcing/runtime provenance rather than hidden process state",
+    "no src/ production file changes",
+    "machine-readable contract and narrative review agree"
+  ]
+}

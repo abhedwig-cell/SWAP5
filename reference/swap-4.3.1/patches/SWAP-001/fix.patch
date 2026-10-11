@@ -1,0 +1,12 @@
+--- SWAP/macropore.f90
++++ SWAP/macropore.f90
+@@ -1465,7 +1465,8 @@
+       WaLevDm1 = ZWaLevDm(1)
+       VlMpDm1  = VlMpDm(1)
+       WaSrDm1  = WaUnMpDm(1)
+-      VlMpDm1Cp= VlMpDmCp(1,1:numnod)
++      VlMpDm1Cp = 0.0d0
++      VlMpDm1Cp(1:numnod) = VlMpDmCp(1,1:numnod)
+ 
+ !   - Domain 2: Internal Catchment domain
+       VlMpDm2  = sum(VlMpDm(2:numdm))

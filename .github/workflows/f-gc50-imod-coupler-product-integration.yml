@@ -1,0 +1,36 @@
+name: F-GC50 iMOD Coupler product integration reconcile
+
+on:
+  pull_request:
+    paths:
+      - "docs/integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md"
+      - "integration/f-gc/F-GC50_STATUS.json"
+      - "tests/fgc/test_fgc50_imod_coupler_upstream_contract.py"
+      - "tests/fgc/run_fgc50_imod_coupler_upstream_contract.sh"
+      - ".github/workflows/f-gc50-imod-coupler-product-integration.yml"
+      - "src/adapter/fmr_groundwater_application_runtime.py"
+      - "src/adapter/mod_fmr_groundwater_application_c_api.f90"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-product-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SWAP5
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned iMOD Coupler product source
+        uses: actions/checkout@v4
+        with:
+          repository: Deltares/imod_coupler
+          ref: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+          path: _upstream/imod_coupler
+
+      - name: Verify upstream product and F-GC49D bootstrap boundaries
+        env:
+          FGC50_IMOD_COUPLER_ROOT: ${{ github.workspace }}/_upstream/imod_coupler
+          FGC50_IMOD_COUPLER_SHA: 8907fb13f8301ba1e0f32dd90a64ea475d4896d6
+        run: bash tests/fgc/run_fgc50_imod_coupler_upstream_contract.sh

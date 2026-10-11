@@ -1,0 +1,27 @@
+name: F-CI58 F-SI35 mandatory solver seam current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci58-fsi35-mandatory-solver-seam-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI58 mandatory solver seam admission gate
+        run: bash tests/fci/run_fci58_fsi35_mandatory_solver_seam_current_canonical_admission.sh

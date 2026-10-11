@@ -1,0 +1,76 @@
+{
+  "schema": "swap431.small_medium_throughput_closeout.v1",
+  "date": "2026-10-06",
+  "canonical": "ea4c6548b7693abbd25d428e85227b43e499a814",
+  "workstream": "SWAP431 small/medium source-bounded coverage throughput",
+  "authority": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json"
+  ],
+  "completed": [
+    {
+      "capability": "SW431-RUNON",
+      "disposition": "REPAIRED",
+      "canonical_merge": "ea4c6548b7693abbd25d428e85227b43e499a814",
+      "pr": 1086,
+      "evidence": "integration/audits/SWAP431_RUNON_REPAIR_STATUS.json",
+      "qualification": "PPA-WU03 owner and independent qualification PASS on current-canonical postimage; frozen preservation guard intentionally superseded by admitted Task2 authority change"
+    }
+  ],
+  "reconciled": [
+    {
+      "capability": "WOFOST daylength/AMAX route",
+      "disposition": "COVERED",
+      "basis": "Canonical WOFOST and WOFOST81 assimilation routes already carry/evaluate daylength, solar geometry and maximum-assimilation parameters; no source-bounded repair identified."
+    },
+    {
+      "capability": "F-MIG431-LOW03-A implicit SWBOTB=3",
+      "disposition": "COVERED",
+      "basis": "Canonical admission PR #977 / merge 6f2b1b73a02d1f6492cc31cfea13964d3020854e."
+    },
+    {
+      "capability": "F-MIG431-LOW08-A ordinary SWBOTB=8",
+      "disposition": "COVERED",
+      "basis": "Canonical admission PR #988 / merge 10d80799b04197f775f83686beb6d61304f9850d."
+    },
+    {
+      "capability": "SWBOTB=3 explicit SwBotb3Impl=0",
+      "disposition": "TRUE_GAP",
+      "basis": "LOW03-A authority explicitly records OPEN_NOT_ISSUED_REQUIRES_SEPARATE_GWL_AND_SATURATED_PROFILE_RECONCILE; not a small adapter repair.",
+      "routing": "separate lower-boundary/shared Richards work unit"
+    },
+    {
+      "capability": "SWBOTB=1",
+      "disposition": "TRUE_GAP_PARKED",
+      "basis": "Existing lower-boundary authority records explicit user parking decision; do not resume without reprioritization."
+    },
+    {
+      "capability": "PPA-MGMT broad management/crop-calendar/soil-management",
+      "disposition": "TRUE_GAP",
+      "basis": "Broad application/configuration/event route, not a bounded kernel repair.",
+      "routing": "separate management workstream"
+    },
+    {
+      "capability": "PPA-IRR-OTHER TCS7/SSDI",
+      "disposition": "TRUE_GAP",
+      "basis": "Explicitly excluded from admitted F-APP07 profile and dependent on management configuration.",
+      "routing": "separate bounded irrigation/management unit"
+    },
+    {
+      "capability": "PPA-OUTPUT-LEGACY",
+      "disposition": "NOT_KERNEL_FUNCTIONALITY",
+      "basis": "Legacy file/report family is not automatically required for SWAP431 functional kernel coverage; any compatibility requirement must be separately specified."
+    }
+  ],
+  "excluded_active_workstreams": [
+    "MICRO",
+    "frost",
+    "MIGMAC"
+  ],
+  "stop_reason": "No remaining independent small/medium source-bounded capability was identified that can be safely completed without taking over a separately owned physics/shared-semantics workstream.",
+  "next_master_action": "Use this closeout to remove stale small-gap candidates from the central queue; route explicit SWBOTB3, management/irrigation and parked SWBOTB1 separately."
+}

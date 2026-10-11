@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.f-romv2-d8.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D8",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d8-two-segment-composite-manifold",
+    "pull_request": 431,
+    "pull_request_merged": false,
+    "head": "efe098fcb2a51926fb92c37a60ebd52446a4d598",
+    "workflow_run": 35448009892,
+    "workflow_job": 105910200873,
+    "artifact_id": 10585551503,
+    "artifact_digest": "sha256:5b24db1d8fb089fa20bd4418d822856eb3cebdb4653930faacabe2912c77564d",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "72f683bec3fb8c2ddfe57f793db0a58b5c13ccc8",
+    "preflight_result_sha256": "b26c7e8920b57e8c07994bbc2037e005ea85175ceb9bf8864efaab325a1e249e",
+    "hydrological_result_sha256": "6fb44f6f3db281f50210e51c09f19ea6953e8f23b61eb7018bd51e6e91e6cea3",
+    "R16_stdout_sha256": "e74c3e565c4c4f30c414102f09c6b24d746ea49e4e512d410aeb46641a4fc5fe",
+    "analyzer_sha256": "f8cf5976a7339f7f3247f46bcd2f48549f2fb0a3c76a9bc189bba7244a143dce",
+    "preflight_stdout_sha256": "9eaeffed50bf856e6d8ffe002077b18ed2d0b1d53e91de0d5e0f724696b2249d"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D8_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D8_RESULT.json",
+    "integration/f-rom/F-ROMV2_D8_STATUS.json",
+    "integration/f-rom/F-ROMV2_D8_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D8_QS2_COMPOSITE_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "preflight/evaluator scripts",
+    "R16 reference harness",
+    "compiled 80-cm segment kernel",
+    "execution workflow",
+    "raw artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_search_retuning": false,
+  "post_result_equation_retuning": false,
+  "post_result_segmentation_retuning": false,
+  "application_acceptance_claimed": false,
+  "formal_performance_claimed": false,
+  "production_rom_authorized": false
+}

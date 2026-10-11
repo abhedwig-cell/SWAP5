@@ -1,0 +1,51 @@
+{
+  "schema": "swap5.ppa.walsal01.canonical_admission.v1",
+  "work_unit": "PPA-WU05-E-WALSAL01",
+  "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_SCOPE",
+  "canonical_pr": 1032,
+  "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
+  "qualified_candidate": "63228dc09ffa81fd57c1e197f04ba011cab14dd3",
+  "executed_checkout": "764f93ecacdb559324c071c90e9c9114502c080c",
+  "qualification": "integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json",
+  "source_subtrees": {
+    "src": "af1fce524cdc4cedc9cd5960cbbecf47463e0b88",
+    "tests": "ecd118160ffda98fe9f53d2a60606cfed6528c1d"
+  },
+  "source_manifest_entries_verified": 1046,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05E_WALSAL01_FROST_RECONCILED_REPLAY.json.gz",
+    "sha256": "f4f87e32f8681ada06d278393a0148eb7e78e8f243a06935787e4e59dcf1efd3",
+    "bytes": 74409
+  },
+  "verified_admission_source_identity": true,
+  "gates_passed": 14,
+  "scope": [
+    "Selected matrix mobile dissolved salt with conservative upwind or selected diffusion/dispersion",
+    "Feddes/Bartholomeus/Maas-Hoffman/Walsum composition, seven actual stress cases and selector 4",
+    "Independent partial-node/exact-boundary alpha .7/.8 fixed-Jarvis node sink, loss, water receipt and physical state identity",
+    "Nine invalid geometry cases, pre-stress support validation, missing-after-valid cache isolation and actual application no-publication rejection",
+    "Discard, real salt full/half rejection, attainable-budget adaptive recovery, committed restart with changed current geometry, independent process restart and O0/O2 byte identity"
+  ],
+  "exclusions": [
+    "Salt/frost and salt/Rutter production hybrids",
+    "Macropore salt production and dispersion",
+    "Osmotic-head mode, sorption/decomposition and groundwater/aquifer salt state",
+    "New crop rooting models, coupled salt routes and seasonal field/full legacy equivalence"
+  ],
+  "canonical_root_frost_preserved": "3039e573229b2bf19747f713084ea7a19cb48ed0",
+  "documentation_gates": {
+    "source_checks": {
+      "command": "python tools/docs/check_docs.py",
+      "exit_code": 0
+    },
+    "strict_build": {
+      "command": "python -m mkdocs build --strict",
+      "exit_code": 0
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  },
+  "actions_claim": "Named local current-source gates control this admission. No blanket all-workflows-green claim."
+}

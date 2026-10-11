@@ -1,0 +1,143 @@
+{
+  "schema": "swap5.fci73.status.v1",
+  "work_unit": "F-CI73",
+  "title": "F-GC25 MultiSWAP direct groundwater composition current-canonical admission",
+  "branch": "qualification/f-ci73-fgc25-multiswap-current-canonical-admission",
+  "status": "QUALIFIED_CURRENT_CANONICAL_ADMISSION_SOURCE_NOT_YET_PROMOTED",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "1ef995e682cbc0fbbce8b68281646b0de1bbbcd3",
+    "tree": "c8fbf2cc65451b56a597e3b2264742cb19f62d0b",
+    "live_at_source_closeout": true
+  },
+  "composition": {
+    "sha": "49bb76f21e8f6a5ab6cdb9c241bf437a12520446",
+    "tree": "e318b46129fb6676ae5f05beafa986de40b40cf0",
+    "first_parent": "1ef995e682cbc0fbbce8b68281646b0de1bbbcd3",
+    "exact_frozen_base_composition": true
+  },
+  "tested_source_head": {
+    "sha": "eb421cf7f3b5a2efdb90121bef087aeb438f6100",
+    "tree": "0123752a0a81686ea7c447eda4b4271f5ae3fb79"
+  },
+  "workflow": {
+    "name": "F-CI73 F-GC25 current-canonical admission",
+    "run_id": 34953715277,
+    "job_id": 104330590821,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "python": "3.12.3",
+    "git": "2.55.0"
+  },
+  "owner_authority": {
+    "work_unit": "F-GC25",
+    "owner_branch": "work/f-gc-g05-direct-groundwater-composition",
+    "qualified_source_head": "43c9f09110dea83928ef7d58990c37575d8ca223",
+    "owner_review_head": "251adbb2aeece53cf9b745e488a44b49d67aa3eb",
+    "owner_pr": 122,
+    "exact_owner_postimage_on_composition": true
+  },
+  "independent_authority": {
+    "work_unit": "F-VQ87",
+    "closeout_head": "37c02ac3747bfaacdb8b3408b8228f3deb2b9824",
+    "status": "QUALIFIED_INDEPENDENT_EVIDENCE_NOT_CANONICAL_ADMISSION",
+    "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW",
+    "status_run": 34951933090,
+    "oracle_sha256": "de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
+    "exact_evidence_on_composition": true
+  },
+  "qualified_production_blobs": {
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_multiswap_types.f90": "35f475228886bf04d64efb13bbd84a42bc2678ad",
+    "src/runtime/mod_groundwater_multiswap_topology.f90": "2ce4e9f7083c46e7040493d3029abfc233f59f16",
+    "src/runtime/mod_groundwater_multiswap_swap_phase.f90": "9a69effc9433363e52fcf8d5b40fa2c5d01347a9",
+    "src/runtime/mod_groundwater_multiswap_transaction.f90": "d7d9fa81d9d3d5e619e51625f202a8e425807eda",
+    "src/runtime/mod_groundwater_multiswap_publication.f90": "02bc938fac28231c2c1234dd4ac3c3f8ba617983",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+  },
+  "inherited_authorities": {
+    "F-GC20": {
+      "head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+      "role": "inherited F-GC25 tile aggregation dependency"
+    },
+    "F-GC22": {
+      "head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "role": "inherited F-GC25 application-accuracy binding dependency",
+      "gc25_relevant_upstream_blobs": {
+        "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+        "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+        "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+      }
+    },
+    "F-GC21_fixture": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f"
+  },
+  "gc22_temporal_supersession_reconciliation": {
+    "original_gc22_governance_pin_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "current_canonical_temporal_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
+    "same_blob": false,
+    "classification": "QUALIFIED_CANONICAL_SUPERSESSION_OUTSIDE_F_GC25_EXECUTABLE_BOUNDARY",
+    "F-SI38_candidate_source": "ae8b73d99e3055817284c320ad3e13808da9fd9a",
+    "F-VQ75_run": 34816553128,
+    "F-VQ75_job": 103888313816,
+    "F-VQ75_conclusion": "success",
+    "F-VQ75_preservation_replay": "PASS",
+    "F-CI62P_canonical_postimage": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "F-CI62P_production_canonical_admitted": true,
+    "F-CI62P_moving_current_preservation_reconciled": true,
+    "boundary_finding": "F-GC25 MultiSWAP runtime consumes a pre-bound groundwater_head_convergence_policy_t and does not import mod_reference_richards_temporal_indicator or mod_groundwater_accuracy_binding directly."
+  },
+  "qualification_markers": {
+    "FCI73_EXACT_BASE_COMPOSITION": "PASS",
+    "FCI73_SCOPE_ALLOWLIST": "PASS",
+    "FCI73_OWNER_POSTIMAGE_EXACT": "PASS",
+    "FCI73_FVQ87_EVIDENCE_EXACT": "PASS",
+    "FCI73_FGC20_FGC22_INHERITANCE": "PASS",
+    "F-GC25_MULTISWAP_GROUNDWATER_COMPOSITION_GATE": "PASS",
+    "FCI73_OWNER_GATE_CURRENT_CANONICAL": "PASS",
+    "FCI73_PUBLICATION_BOUNDARY_AUDIT": "PASS",
+    "FVQ87_PREPARE_REJECTION_ATOMICITY": "PASS",
+    "FVQ87_DUPLICATE_TILE_PRETRIAL_REJECTION": "PASS",
+    "FVQ87_STALE_ORIGIN_PRETRIAL_REJECTION": "PASS",
+    "FVQ87_NONCONVERGED_CELL_ROLLBACK": "PASS",
+    "FVQ87_WEIGHTED_MASS_ACTION_REACTION": "PASS",
+    "FVQ87_INDEPENDENT_ORACLE": "PASS",
+    "FCI73_INDEPENDENT_ORACLE_O0_O2_IDENTITY": "PASS",
+    "F_CI73_FINAL_GATE": "PASS"
+  },
+  "qualified_semantics": [
+    "F-GC25 production and owner evidence are byte-identical to the qualified owner source postimage.",
+    "F-VQ87 independent evidence is byte-identical to its successful closeout and its adversarial oracle replays on the current-canonical composition.",
+    "Groundwater preparation rejection, duplicate tile identity and stale origin/revision reject before accepted publication.",
+    "Non-converged cell work rolls back without committed publication leakage.",
+    "Successful accepted publication preserves tile-weighted mass closure and equal-and-opposite groundwater/SWAP exchange.",
+    "Canonical tile ordering is deterministic in the qualified owner cases.",
+    "Global publication preflight precedes the first SWAP commit and no recoverable status path exists in the qualified post-preflight groundwater prepared-commit boundary.",
+    "No MODFLOW or kernel I/O dependency is introduced by F-GC25."
+  ],
+  "promotion_contract": {
+    "required_first_parent": "1ef995e682cbc0fbbce8b68281646b0de1bbbcd3",
+    "required_second_parent": "FINAL_GREEN_F_CI73_STATUS_HEAD",
+    "merge_kind": "true_two_parent_merge",
+    "tree_policy": "promotion merge must preserve the exact final green F-CI73 source tree",
+    "precondition": "integration/f-ci-canonical must still equal the frozen base immediately before promotion",
+    "postcondition": "a separate F-CI73P postimage reconciliation must prove parentage, tree identity, production-blob preservation and moving-current preservation"
+  },
+  "hard_nonclaims": [
+    "This status is not canonical admission; canonical_admission remains false until promotion occurs.",
+    "This status is not postimage reconciliation; postimage_reconciled remains false until F-CI73P completes.",
+    "F-CI73 does not create standalone F-GC20 or F-GC22 admission claims outside their inherited F-GC25 role.",
+    "F-CI73 does not requalify F-SI38 temporal-indicator semantics; it reconciles existing qualified canonical supersession outside the F-GC25 executable boundary.",
+    "F-CI73 does not qualify F-GC23 whole-window response tangent composition or F-GC26 external groundwater adapter conformance.",
+    "F-CI73 does not qualify a MODFLOW backend, throughput or parallel speedup.",
+    "F-CI73 does not claim groundwater-coupling-v1 completion.",
+    "No EB, Ross or RossFast capability is modified or qualified by F-CI73."
+  ],
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "decision": "QUALIFIED_F_CI73_READY_FOR_CANONICAL_PROMOTION",
+  "next_owner": "Promote only if live canonical still equals 1ef995e682cbc0fbbce8b68281646b0de1bbbcd3, using a true two-parent merge with the final green F-CI73 status head as second parent, then perform F-CI73P postimage reconciliation."
+}

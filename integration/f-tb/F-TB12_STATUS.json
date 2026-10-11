@@ -1,0 +1,90 @@
+{
+  "schema": "swap5.ftb12.status.v1",
+  "work_unit": "F-TB12",
+  "title": "Drainage v1 100 percent permanent testbank preservation adoption",
+  "branch": "work/f-tb12-drainage-v1-permanent-preservation-adoption",
+  "phase": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_DRAINAGE_V1_PERMANENT_TESTBANK_PRESERVATION_ADOPTED",
+  "canonical_binding": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "6425fb3290da637357e47618b459f4caf65a78d8",
+    "tree": "40507dd481299ad1f98a9e2779b0ef870c6f66a3",
+    "live_rechecked_before_status": true
+  },
+  "drainage_completion_authority": {
+    "work_unit": "F-PM19",
+    "sha": "84edf5b728795cb62b43b0a2376d3bd8e3d5a5a3",
+    "status_blob": "1d237b26f31c5e83fa7b299e01f47bd9ec6d5ff4",
+    "decision": "QUALIFIED_DRAINAGE_V1_100_PERCENT_COMPLETE",
+    "frozen_denominator_variants": 8,
+    "denominator_changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "mass_conservation_concession": false,
+    "architecture_invariants_1_30": "PASS_ALL_QUALIFIED_OR_PRESERVED"
+  },
+  "independent_runtime_preservation_authority": {
+    "work_unit": "F-VQ76",
+    "sha": "5ee4920ffe680c920b64996159060fc1f509fcd8",
+    "decision": "QUALIFIED_DRAINAGE_RUNTIME_PRESERVED_ON_F_CI62_POSTIMAGE_INDEPENDENTLY",
+    "status_head_workflow_run": 34821454970,
+    "status_head_conclusion": "success"
+  },
+  "qualified_head": {
+    "sha": "e2a093eb7c641597df981d672f71b2919c072af2",
+    "tree": "d736275f23a0545346f77f64f3eb3f31e27ac076",
+    "workflow_run": 34824155411,
+    "workflow_job": 103912284517,
+    "conclusion": "success"
+  },
+  "permanent_tests": {
+    "FTB12_REL_001": "PASS_EXACT_CANONICAL_ZERO_PRODUCTION_DELTA",
+    "FTB12_DRAIN_AUTH_001": "PASS",
+    "FTB12_DRAIN_RUNTIME_001": "PASS",
+    "FTB12_DRAIN_MASS_001": "PASS_HARD_NON_WAIVABLE",
+    "FTB12_DRAIN_RST_001": "PASS",
+    "FTB12_DRAIN_MSW_001": "PASS",
+    "FTB12_DRAIN_TIME_001": "PASS",
+    "FTB12_DRAIN_PRES_001": "PASS"
+  },
+  "executable_replay": {
+    "F_VQ76_full_replay": "PASS",
+    "VQ73_O0": "PASS",
+    "VQ73_O2": "PASS",
+    "VQ74_O0": "PASS",
+    "VQ74_O2": "PASS",
+    "VQ73_O0_O2_exact_identity": true,
+    "VQ74_O0_O2_exact_identity": true,
+    "DIVDRA_fixed_weir_behavioral_preservation": "PASS",
+    "no_persistent_drainage_response_state": "PASS",
+    "HeadCalc_IO_calendar_isolation": "PASS",
+    "architecture_scope_guards": "PASS"
+  },
+  "historical_integrity": {
+    "F_TB11_rewritten": false,
+    "F_TB11P_rewritten": false,
+    "F_TB11_historical_drainage_not_adopted_retained": true,
+    "F_TB11P_historical_no_drainage_scope_expansion_retained": true,
+    "F_TB12_is_additive_adoption": true
+  },
+  "ownership": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "drainage_physics_changed": false,
+    "solver_algorithm_changed": false,
+    "scope_reduced": false,
+    "scope_expanded": false,
+    "fully_implicit_drainage_solver_coupling_added": false,
+    "mass_conservation_concession": false
+  },
+  "canonical_admitted": false,
+  "postimage_reconciled": false,
+  "closed": false,
+  "next_required_action": "Run the same full F-TB12 preservation gate on this exact status head. If green and live canonical remains exact, admit the metadata/testbank preservation package with a true two-parent canonical merge and perform a separate postimage reconciliation without rewriting this historical qualification snapshot.",
+  "hard_bounds": [
+    "Permanent adoption applies only to the unchanged eight-variant frozen Drainage-v1 denominator qualified by F-PM19.",
+    "No new drainage physics, broader reverse exchange, new option, or unstated legacy behavior is adopted.",
+    "Hard mass conservation remains non-waivable.",
+    "Any future change to the protected drainage dependency surface requires fresh current-postimage preservation evidence."
+  ]
+}

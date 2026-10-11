@@ -1,0 +1,25 @@
+name: F-CI37P Current-Canonical Governance Reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci37p-current-canonical-postimage-governance-reconciliation
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci37p-current-canonical-governance-reconciliation.yml'
+      - 'tests/fci/run_fci37p_current_canonical_governance_reconciliation.sh'
+      - 'integration/f-ci/F-CI37P_*.json'
+  workflow_dispatch:
+
+jobs:
+  governance-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Reconcile moving current-postimage governance
+        run: bash tests/fci/run_fci37p_current_canonical_governance_reconciliation.sh

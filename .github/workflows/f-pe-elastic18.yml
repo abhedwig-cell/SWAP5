@@ -1,0 +1,23 @@
+name: F-PE-ELASTIC18 SWAP grid normalization
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic18-clean-admission
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_swap_grid_normalization.f90'
+      - 'tests/fpe/test_fpe_elastic18_swap_grid.f90'
+      - 'tests/fpe/run_fpe_elastic18.sh'
+      - 'docs/performance/F-PE-ELASTIC18_SWAP_GRID_NORMALIZATION_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic18.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch origin integration/f-ci-canonical
+      - run: bash tests/fpe/run_fpe_elastic18.sh

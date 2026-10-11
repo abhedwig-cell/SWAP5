@@ -1,0 +1,148 @@
+site_name: SWAP5 Documentation
+site_description: Scientific, numerical, architectural and verification documentation for the SWAP5 rebuild and Status-A review baseline
+site_author: SWAP development team
+docs_dir: docs
+nav:
+- Home: index.md
+- Getting started: getting-started.md
+- Review SWAP5:
+  - Review guide: review/REVIEW_GUIDE.md
+  - Frozen review baseline: review/REVIEW_BASELINE.md
+  - Frozen publication authority: review/PUBLICATION_AUTHORITY.md
+  - Authority reconciliation: review/AUTHORITY_RECONCILIATION.md
+  - SWAP 4.3.1 and SWAP5 equivalence: review/SWAP431_EQUIVALENCE.md
+- Scientific model:
+  - Overview: science/index.md
+  - Conceptual system and boundaries: science/conceptual-model.md
+  - Water balance, signs and units: science/water-balance-and-conventions.md
+  - Vertical soil-water flow: science/soil-water-flow.md
+  - Soil-hydraulic constitutive relations: science/soil-hydraulic-constitutive-relations.md
+  - Soil-hydraulic parameter provenance: science/soil-hydraulic-parameter-provenance.md
+  - Hydrological boundary conditions: science/hydrological-boundary-conditions.md
+  - Groundwater coupling and lower boundary: science/groundwater-coupling.md
+  - Evapotranspiration and root-water uptake: science/evapotranspiration-root-uptake.md
+  - Surface evaporation: science/surface-evaporation.md
+  - Drainage: science/drainage.md
+  - Drainage-v1 formulations: science/drainage-formulations.md
+  - WOFOST81 crop state and SWAP coupling: science/wofost-crop-coupling.md
+  - Restricted one-call-daily Snow: science/restricted-snow.md
+- Status-A capabilities:
+  - Overview: capabilities/index.md
+  - Reference preservation: capabilities/reference-preservation.md
+  - Restart v1: capabilities/restart-v1.md
+  - Serialized MultiSWAP v1: capabilities/serialized-multiswap-v1.md
+  - Drainage: capabilities/drainage.md
+  - WOFOST admitted runtime: capabilities/wofost-runtime.md
+  - Restricted Snow: capabilities/restricted-snow.md
+  - Groundwater Coupling v1: capabilities/groundwater-coupling-v1.md
+- Numerical formulation:
+  - Overview: numerics/index.md
+  - Richards discretisation and nonlinear solve: numerics/richards-solver.md
+  - Transactional time stepping and acceptance: numerics/transactional-time-stepping.md
+- Current Status-A:
+  - Current status and scope: status-a/CURRENT_STATUS.md
+  - Current architecture: status-a/CURRENT_ARCHITECTURE.md
+  - Theory, code and evidence traceability: status-a/TRACEABILITY.md
+  - Deliberate future scope: status-a/FUTURE_SCOPE.md
+  - Documentation reconciliation: status-a/DOCUMENTATION_RECONCILIATION_MATRIX.md
+  - Documentation refresh closeout: status-a/CLOSEOUT.md
+  - Post-Status-A current canonical state: status-a/POST_STATUS_A_CURRENT_STATE.md
+- Architecture:
+  - Target architecture overview: architecture/overview.md
+  - Historical implementation status (2026-09-04): architecture/implementation-status.md
+  - Target component ownership map: architecture/component-map.md
+  - Legacy migration:
+    - Migration map: architecture/legacy-migration.md
+    - Migration slices and gates: architecture/migration-slices.md
+    - M3 gate evidence: architecture/m3-gate-evidence.md
+    - Control, I/O and accounting: architecture/legacy-migration-control.md
+    - State, solver and hydraulics: architecture/legacy-migration-hydraulic.md
+    - Process physics: architecture/legacy-migration-processes.md
+    - Crop, solute and WOFOST-soil: architecture/legacy-migration-biophysics.md
+  - Core invariants: architecture/invariants.md
+  - Data ownership: architecture/data-ownership.md
+- Architecture decisions:
+  - Decision log: decisions/index.md
+  - ADR-0001 One kernel, I/O outside: decisions/ADR-0001-one-kernel-io-outside.md
+  - ADR-0002 Transactional time stepping: decisions/ADR-0002-transactional-time-stepping.md
+  - ADR-0003 Worker-owned scratch: decisions/ADR-0003-worker-owned-scratch.md
+  - ADR-0004 MultiSWAP execution templates: decisions/ADR-0004-multiswap-execution-templates.md
+  - ADR-0005 Reference baseline chain: decisions/ADR-0005-reference-baseline-chain.md
+- Verification:
+  - Verification principles: verification/principles.md
+  - Test bank authority: verification/test-bank.md
+  - Reference baselines: verification/reference-baselines.md
+  - B0 source integrity: verification/b0-source-integrity.md
+  - B1 snapshot history: verification/b1-snapshots.md
+  - B1.5p1 provenance repair: verification/b1-5p1-provenance-repair.md
+  - VQ-1 integration: verification/vq-1-integration.md
+  - VQ-1b B0 hardening rerun: verification/vq-1b-rerun-evidence.md
+  - VQ-1c B1.5p1 identity: verification/vq-1c-b1.5p1-evidence.md
+  - VQ-1c2 B1.5p1 reconstruction: verification/vq-1c2-b1.5p1-reconstruction.md
+  - VQ-1c3 targeted correction qualification: verification/vq-1c3-b1.5p1-targeted-qualification.md
+  - VQ-1d B2 entrypoint gate: verification/vq-1d-b2-entrypoint-gate.md
+  - Mass-accounting contract: verification/mass-accounting-contract.md
+  - F-AR01 recovered legacy ZIP reconciliation: verification/F-AR01_LEGACY_ZIP_RECONCILIATION.md
+  - F-TB13 legacy analytical reference preservation: verification/F-TB13_LEGACY_ANALYTICAL_REFERENCE_PRESERVATION.md
+  - SWAP-009 B1 candidate: verification/swap-009-b1-candidate.md
+  - SWAP-011 B1 candidate: verification/swap-011-b1-candidate.md
+  - Theory-code discrepancy register: verification/theory-code-discrepancy-register.md
+- Performance:
+  - MultiSWAP measurement architecture: performance/multiswap-measurement-architecture.md
+  - MP-2 measurement collector: performance/mp-2-measurement-collector.md
+  - MP-3 B0 shadow observation: performance/mp-3-b0-shadow-observation.md
+  - MP-4 workload catalog: performance/mp-4-workload-catalog.md
+  - MP-5 repeatability and overhead: performance/mp-5-repeatability-overhead.md
+  - MP-6 controlled CPU baseline: performance/mp-6-controlled-cpu-baseline.md
+  - MP-7 host admission: performance/mp-7-host-admission.md
+  - MP-8 isolated runner contract: performance/mp-8-isolated-runner-contract.md
+- Legacy:
+  - SWAP 4.3.1 baseline: legacy/swap-4.3.1-baseline.md
+- Research and publication:
+  - Publication programme: publication/PUBLICATION_PROGRAMME.md
+  - PUB-GC COUPLE living manuscript: publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md
+  - PUB-GC COUPLE claim-evidence ledger: publication/PUB_GC_COUPLE_CLAIM_EVIDENCE_LEDGER.md
+  - PUB-GC E1 E2 preregistration: publication/PUB_GC_E1_E2_PREREGISTRATION.md
+  - PUB-GC E1 E2 results: publication/PUB_GC_E1_E2_RESULT.md
+  - PUB-GC E4 response identity: publication/PUB_GC_E4_RESPONSE_IDENTITY_RESULT.md
+  - PUB-GC E5 information value: publication/PUB_GC_E5_INFORMATION_VALUE_RESULT.md
+  - Paper 1 model evolution: publication/PAPER1_MODEL_EVOLUTION_RESEARCH_DESIGN.md
+  - Paper 2 solver admissibility: publication/PAPER2_SOLVER_ADMISSIBILITY_RESEARCH_DESIGN.md
+  - PUB-RC ACCELERATE research design: publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md
+  - PUB-RC ACCELERATE prior art: publication/PUB_RC_ACCELERATE_LITERATURE_REGISTER.md
+  - Broader coupling publishability review: publication/PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md
+- Development:
+  - Repository knowledge map: development/knowledge-map.md
+  - Project control: development/SWAP5_PROJECT_CONTROL.md
+  - Parallel workstreams: development/workstreams.md
+  - Workstream execution and recovery: development/workstream-execution-protocol.md
+  - Quality governance after Status A: development/quality-governance-a-aa.md
+  - Status-A to Status-AA evidence planning: development/status-a-aa-gap-register.md
+  - Lessons register: development/lessons-register.md
+  - Documentation workflow: development/documentation.md
+  - Online publication: development/publication.md
+theme:
+  name: material
+  language: en
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+  - search.suggest
+  - search.highlight
+plugins:
+- search
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- footnotes
+- md_in_html
+- tables
+- toc:
+    permalink: true
+- pymdownx.details
+- pymdownx.highlight
+- pymdownx.inlinehilite
+- pymdownx.superfences
+strict: true

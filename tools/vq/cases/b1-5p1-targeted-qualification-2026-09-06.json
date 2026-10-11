@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1c3",
+  "reference_snapshot": "B1.5p1",
+  "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+  "source_identity": {
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_reconstructed_member_count": 63,
+    "b1_reconstructed_source_bytes": 1860109,
+    "b1_reconstructed_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30"
+  },
+  "gates": {
+    "SWAP-001": {
+      "gate": "shape_mismatch_microreproducer_plus_full_macropore_smoke",
+      "passed": true,
+      "micro_b0": {
+        "run_rc": 2,
+        "source_sha256": "346aabe68fbb24aa311036835df06aca0177888938028b1658c7968ed55b4c10",
+        "exe_sha256": "0f04318b00183087cb818d8e82de1a1ca0ee55cd32572620176797c34be505c3",
+        "observation": "array_shape_mismatch_5000_112"
+      },
+      "micro_b1": {
+        "run_rc": 0,
+        "source_sha256": "b8db44b66542e1f4e5fe5ae6848dc211cc0619a6697a519ecaf0c6910bda807a",
+        "exe_sha256": "e5e9b450d6a39c8a84a111c3090df108556cfc2e987ff81bc83297e1567a619e",
+        "observation": "normal_completion_active_copy_and_zero_tail_verified"
+      },
+      "full_swap": {
+        "case": "3.macroporeflow targeted 1998-01-01..1998-01-02",
+        "input_variant": [
+          "TEND=1998-01-02",
+          "SWCSV=0 output-only"
+        ],
+        "swap_swp_sha256": "a06a55c33cc6d148867a5e33404101dacfd286bfd70a0c731fc0f5b89aa29706",
+        "strict_flags": [
+          "-finit-local-zero",
+          "-fcheck=all"
+        ],
+        "b0_exe_sha256": "b3a6a7859b4655d9536683af72077e686989f7a2a4a06ff4306d0ecd0db8cedc",
+        "b1_exe_sha256": "4762164bf27a7ccf1129b5110d76e052347749be556205ac78522c388931bcd2",
+        "b0_observation": "VlMpDm1Cp array bound mismatch 5000/112; no swap.ok",
+        "b1_observation": "legacy return 100; swap.ok; no swap.err"
+      }
+    },
+    "SWAP-005": {
+      "gate": "non_short_circuit_snan_microreproducer",
+      "passed": true,
+      "b0": {
+        "run_rc": -8,
+        "source_sha256": "548597bbc1bb5b0c1af219dcb3b1ec75db51f347f6d278e3d00a5e4a7b1496f3",
+        "exe_sha256": "c0e00a4d498159f4a42ee970a8bda5b14f233925077210714a5f46b0b5764a33",
+        "observation": "SIGFPE_on_signaling_nan_in_unused_i_plus_1_record"
+      },
+      "b1": {
+        "run_rc": 0,
+        "source_sha256": "c91d274119b9d30a9e1945fccd93127e83e6f6e0f4b0a77b47e5c2b6096bcf85",
+        "exe_sha256": "d296454198d845af4bfd92b2d7bf47accd1a86ae3a3c8a08158277cc99859ee5",
+        "observation": "normal_completion_without_inactive_record_access"
+      }
+    },
+    "SWAP-006": {
+      "gate": "sentinel_snan_microreproducer",
+      "passed": true,
+      "b0": {
+        "run_rc": -8,
+        "source_sha256": "c4484d28bac0424fe3f0a48c49ced5cb1bfcfc1199fbd7a85c2a6a79f85b8808",
+        "exe_sha256": "7d984f523d077efc5f85a50a67c7494694fd144dd60c56dc1674ab0553dd68ad",
+        "observation": "SIGFPE_when_scan_enters_unused_sentinel_record"
+      },
+      "b1": {
+        "run_rc": 0,
+        "source_sha256": "23e786730d60a90b8e11b06518abae81aeb686d5d3c437993ca57edbfadc89fe",
+        "exe_sha256": "915a35f1f18493f7b5e3c5c78f1cd1419240dd342e2ef93d6424cb6873d51feb",
+        "observation": "normal_completion_bounded_to_1_ifnd"
+      }
+    },
+    "SWAP-007": {
+      "gate": "strict_fpe_full_grass",
+      "passed": true,
+      "case_swap_swp_sha256": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "b0": {
+        "run_rc": -8,
+        "exe_sha256": "96ca1110dacad7a429e0f90f2f23d1152473e77a925a6b09cc771b37e4da8e74",
+        "swap_ok": false,
+        "observation": "SIGFPE_in_oxygenstress_call_chain"
+      },
+      "b1": {
+        "run_rc": 100,
+        "exe_sha256": "abef2ce620a41ee58ca4b9d5fb83117597fe80475eb0f624e6ccb3ccbcccadbb",
+        "swap_ok": true,
+        "swap_err_empty": true,
+        "observation": "legacy_normal_completion"
+      }
+    },
+    "SWAP-008": {
+      "gate": "defined_intent_contract_plus_solver_equivalence",
+      "passed": true,
+      "contract_difference": "B0 consumes incoming arrays declared INTENT(OUT); B1 declares those arrays INTENT(INOUT)",
+      "numerical_difference_expected": false,
+      "b0": {
+        "run_rc": 0,
+        "exe_sha256": "b8595a8897b5045b57250492fe18b92fda5116684347f9f0857fb26980555b86",
+        "solution": [0.1951219512195122, 0.21951219512195125, 0.9268292682926829],
+        "max_residual": 0.0
+      },
+      "b1": {
+        "run_rc": 0,
+        "exe_sha256": "4db4147ae0368497ce05a940b004731bc400541695528ec7ef812a22c6d109e6",
+        "solution": [0.1951219512195122, 0.21951219512195125, 0.9268292682926829],
+        "max_residual": 0.0
+      }
+    }
+  },
+  "qualification": {
+    "all_admitted_corrections_targeted_gate": "PASS",
+    "control_edges_from_vq_1c2": "PASS",
+    "vq_corrected_reference_oracle": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "hard_machine_precision_mass_oracle": "NOT_AVAILABLE_FROM_LEGACY_REPORTS",
+    "scope_note": "Qualified for B1 corrected-reference comparisons with explicit expected-difference handling; not a claim of exhaustive coverage of every SWAP 4.3.1 option combination."
+  }
+}

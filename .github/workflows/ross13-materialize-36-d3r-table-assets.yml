@@ -1,0 +1,118 @@
+name: F-ROSS13 materialize 36 RossFast D3R table assets
+
+on:
+  push:
+    branches:
+      - work/f-ross13-36-material-production-envelope
+    paths:
+      - 'integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json'
+      - 'tests/ross/materialize_ross13_table_asset.py'
+      - 'tests/ross/assemble_ross13_table_manifest.py'
+      - '.github/workflows/ross13-materialize-36-d3r-table-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ross13-table-materialization-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        material: [B01, B02, B03, B04, B05, B06, B07, B08, B09, B10, B11, B12, B13, B14, B15, B16, B17, B18, O01, O02, O03, O04, O05, O06, O07, O08, O09, O10, O11, O12, O13, O14, O15, O16, O17, O18]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout F-ROSS13 candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pin F-ROSS13 base and F-ROSS01 table authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 95748d047325e74adf6d06eba978dea61bd51a7d HEAD
+          test "$(git hash-object integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json)" = 01fa631a245f3011b1007b2888b0528b111ee17f
+          git fetch --no-tags origin work/f-ross01-fast-mfp-feasibility
+          test "$(git rev-parse FETCH_HEAD)" = 04807fdcf45453a59b7f6c99fe97f1286c172833
+          git worktree add --detach "$RUNNER_TEMP/f-ross01-research" FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object integration/f-ross/F-ROSS01_D3G02R_BOUND_AUTHORITY.json)" = ff32bce4597e245eef0028556fce476074ab1cb8
+          test "$(git -C "$RUNNER_TEMP/f-ross01-research" hash-object experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py)" = 94520eb13a86cf224f90dd1649a4f9ad3afecfce
+
+      - name: Install pinned research dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+
+      - name: Materialize fingerprint-locked portable table asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          python3 tests/ross/materialize_ross13_table_asset.py \
+            --research-root "$RUNNER_TEMP/f-ross01-research" \
+            --material "${{ matrix.material }}" \
+            --asset-out "out/${{ matrix.material }}_log_mobility_f32.hex" \
+            --metadata-out "out/ross13-${{ matrix.material }}.json"
+
+      - name: Upload asset shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: ross13-material-${{ matrix.material }}-${{ github.run_id }}
+          path: out/*
+
+  persist:
+    needs: materialize
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch tip
+        uses: actions/checkout@v4
+        with:
+          ref: work/f-ross13-36-material-production-envelope
+          fetch-depth: 0
+
+      - name: Download all fingerprint-locked table shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ross13-material-*-${{ github.run_id }}
+          path: shards
+          merge-multiple: true
+
+      - name: Verify six admitted assets are bit-identical
+        shell: bash
+        run: |
+          set -euo pipefail
+          for material in B01 B12 O01 O05 O14 O18; do
+            cmp "shards/${material}_log_mobility_f32.hex" "assets/rossfast/d3r/${material}_log_mobility_f32.hex"
+          done
+
+      - name: Assemble 36-material registry and install assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/rossfast/d3r
+          for material in B01 B02 B03 B04 B05 B06 B07 B08 B09 B10 B11 B12 B13 B14 B15 B16 B17 B18 O01 O02 O03 O04 O05 O06 O07 O08 O09 O10 O11 O12 O13 O14 O15 O16 O17 O18; do
+            test -f "shards/${material}_log_mobility_f32.hex"
+            cp "shards/${material}_log_mobility_f32.hex" "assets/rossfast/d3r/${material}_log_mobility_f32.hex"
+          done
+          python3 tests/ross/assemble_ross13_table_manifest.py \
+            --shards shards \
+            --output assets/rossfast/d3r/manifest.json
+
+      - name: Persist immutable 36-material asset set
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add assets/rossfast/d3r
+          if git diff --cached --quiet; then
+            echo 'ROSS13_TABLE_ASSETS_ALREADY_EXACT'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'F-ROSS13: persist exact 36-material D3R table assets'
+          git push origin HEAD:work/f-ross13-36-material-production-envelope

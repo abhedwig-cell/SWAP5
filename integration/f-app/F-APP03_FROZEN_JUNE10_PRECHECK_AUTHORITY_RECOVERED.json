@@ -1,0 +1,117 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "ACQUIRE_PRECHECK_AUTHORITY_PASS",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "2cbb535a9d6105ff4d660d95fe4c6fa82875b966",
+  "canonical_head": "5efb2603524145192f80b3472c288c1b6828cf69",
+  "resume_from": {
+    "checkpoint": "integration/f-app/F-APP03_EXACT_AUTHORITY_ACQUIRE_PASS.json",
+    "commit": "2cbb535a9d6105ff4d660d95fe4c6fa82875b966"
+  },
+  "recovered_historical_authority": {
+    "workspace": "/SWAP 4.3.1 Technical Audit & Verification/",
+    "artifacts": [
+      "a17_soilwater_trace.csv",
+      "mod_a17_soilwater_driver.f90",
+      "A20_TO_A21_DRIVER.patch",
+      "A21_INTEGRATED_COMPARISON.csv",
+      "A21_SHADOW_SUMMARY.csv",
+      "README_A21.md",
+      "README_A22.md"
+    ],
+    "interpretation": "The retained A17/A20 trace, literal A20-to-A21 driver patch and A21/A22 qualification summaries together recover the frozen comparison payload and comparison logic referred to by the later F-APP03 fail-closed FWIND checkpoints. No new oracle values are reconstructed from desired output."
+  },
+  "frozen_gate_selection": {
+    "target_steps": 4,
+    "date": "2002-06-10",
+    "t1900_lower_inclusive": 37416.0,
+    "t1900_upper_exclusive": 37417.0,
+    "minimum_dt_days": 0.039,
+    "observed_dt_days": 0.04,
+    "restricted_selectors": [
+      "SWMACRO=0",
+      "SWBOTB=6",
+      "SWKIMPL=0",
+      "FLDTMIN=false",
+      "DRAMET=2",
+      "IPOS=2",
+      "SWDIVD=1",
+      "NRLEVS=1",
+      "SWINTER=1",
+      "SWDIVIDE=1",
+      "SWCF=1",
+      "crop emerged",
+      "SWWRTNONOX=0",
+      "FTOPH=false",
+      "no snowmelt/runon",
+      "QSSDI=0",
+      "QBOT=0"
+    ]
+  },
+  "comparison_contract": {
+    "process_tolerance": 5.0e-12,
+    "legacy_oracles_are_inputs": false,
+    "fields_compared_before_independent_solve": [
+      "potential soil evaporation vs PEVA",
+      "potential pond evaporation vs EPOND",
+      "dry/wet potential transpiration vs PTRA_DRY/PTRA_WET",
+      "daily/timestep interception vs AINTC/AINTCDT",
+      "net rain/net irrigation vs NRAIDT/NIRD",
+      "wet fraction/mixed PTRA/reduced evaporation vs WFRAC/PTRA/EMPREVA",
+      "root total/vector vs QROT",
+      "groundwater level vs legacy GWL",
+      "drainage total/vector vs legacy drainage sink",
+      "legacy subsurface source expected zero"
+    ],
+    "route_checks": [
+      "Newton routes identical",
+      "backtracking routes identical",
+      "qtop identical for selected steps"
+    ]
+  },
+  "frozen_a17_a20_trace": {
+    "header": ["step","time","dt","start_diff","net_rain","reduced_evap","ptra","root_sum","gwl","drain_sum","qtop_demand","qtop_legacy","legacy_it","a17_it","legacy_backtracks","a17_backtracks","max_dh","max_dtheta","pond_diff"],
+    "rows": [
+      [1,37416.0,0.04,0.0,0.4059387429487849,0.03428079420720431,0.1806735915459958,0.1806735915459958,-103.52309844003598,0.0,-0.3716579487415806,-0.3716579487415806,3,3,3,3,2.220446049250313e-16,0.0,0.0],
+      [2,37416.04,0.04,2.220446049250313e-16,0.4059387429487849,0.03425451531926637,0.1806735915459958,0.1806735915459958,-103.59959940130751,0.0,-0.3716842276295185,-0.3716842276295185,3,3,3,3,2.220446049250313e-16,0.0,0.0],
+      [3,37416.08,0.04,2.220446049250313e-16,0.4059387429487849,0.03422829677324213,0.1806735915459958,0.1806735915459958,-103.67623320799896,0.0,-0.3717104461755428,-0.3717104461755428,3,3,3,3,1.998401444325281e-15,0.0,0.0],
+      [4,37416.12,0.04,1.998401444325281e-15,0.4059387429487849,0.03420213833857267,0.1806735915459958,0.1806735915459958,-103.75285116218322,0.0,-0.3717366046102123,-0.3717366046102123,3,3,3,3,1.7763568394002499e-15,0.0,0.0]
+    ]
+  },
+  "a21_frozen_result": {
+    "steps": 4,
+    "max_numeric_delta_A21_vs_A20": 1.1102230246251565e-16,
+    "field_of_max_delta": "ptra",
+    "newton_routes_identical": true,
+    "backtracking_routes_identical": true,
+    "max_end_state_dh_vs_legacy_cm": 3.979039320256561e-13,
+    "max_end_state_dtheta_vs_legacy": 2.775557561562891e-16,
+    "gate": "PASS_AUTHORITATIVE_RAW_METEO_MULTISTEP",
+    "a22_relation": "A22 reports the complete four-step 2002-06-10 trace byte-for-byte identical to A21."
+  },
+  "qualification": {
+    "attempted": false,
+    "reason": "Persist-early rule: frozen gate authority recovered and checkpointed before observation-only replay."
+  },
+  "verdict": "ACQUIRE_PASS_FROZEN_2002_06_10_PRECHECK_PAYLOAD_AND_COMPARISON_CONTRACT_RECOVERED",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Rebuild and run the byte-verified official SWAP 4.3.1 Hupsel authority using the already-qualified GNU Fortran 14.2/TTUTIL 4.27 qualification method.",
+    "Use only disposable non-interfering instrumentation if required to observe the frozen 2002-06-10 legacy fields.",
+    "Compare against this frozen payload/contract without fitting or tolerance changes.",
+    "At the first difference above 5e-12 or route mismatch, persist it and close BLOCKED without production implementation.",
+    "Only if the observation-only precheck closes may the minimum restricted typed SWETR=0/SWDIVIDE=1/SWINTER=1 application composition be implemented."
+  ]
+}

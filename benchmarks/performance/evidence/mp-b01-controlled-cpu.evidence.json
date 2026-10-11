@@ -1,0 +1,79 @@
+{
+  "schema_version": "mp-controlled-cpu-evidence-v1",
+  "workstream": "MP-6",
+  "workload_id": "MP-B01-HUPSEL-SINGLE",
+  "git_baseline": "dd2e0d1b9ecac671e8b02f703c7b3b8510fe36e0",
+  "reference_level": "B0-shadow",
+  "protocol_file": "benchmarks/performance/cpu-baseline-protocol.json",
+  "source_identity": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "executable": {
+    "kind": "clean GNU instrumented shadow build from MP-5",
+    "sha256": "454649f5f6488212eed422407f34153f7590271b125867803b3daf111bd646ee",
+    "same_binary_for_off_and_on": true
+  },
+  "host": {
+    "kernel": "Linux 6.18.35 x86_64",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "visible_logical_cpus": 5,
+    "child_target_affinity_cpus": [0],
+    "dedicated_host": false,
+    "frequency_governor_metadata_available": false,
+    "load1_during_measured_samples_min": 0.169921875,
+    "load1_during_measured_samples_max": 0.703125,
+    "load1_during_measured_samples_mean": 0.52880859375
+  },
+  "measurement_semantics": {
+    "primary": "child process user+system CPU time from resource.RUSAGE_CHILDREN delta",
+    "secondary": "monotonic process wall elapsed from time.perf_counter_ns",
+    "observer_internal": "Fortran system_clock dynamic-call elapsed time when enabled",
+    "note": "CPU time and monotonic elapsed time are distinct quantities and are not relabeled as each other."
+  },
+  "protocol_execution": {
+    "warmup_runs_per_variant": 3,
+    "measured_pairs": 44,
+    "measured_runs": 88,
+    "paired_order": "alternating off,on / on,off",
+    "expected_exit_code": 100,
+    "post_hoc_timing_outlier_removal": false
+  },
+  "physical_output_hashes": {
+    "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+    "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+  },
+  "primary_child_cpu_result": {
+    "paired_mean_relative_delta": 0.011710757911173786,
+    "paired_median_relative_delta": 0.000911757986834516,
+    "paired_stdev": 0.08527070736122078,
+    "minimum_detectable_relative_effect": 0.02571008562957868,
+    "target_resolution_relative": 0.01,
+    "target_resolution_qualified": false,
+    "observed_effect_resolved": false
+  },
+  "secondary_wall_result": {
+    "paired_mean_relative_delta": 0.011463888704416515,
+    "paired_median_relative_delta": 0.0018227743181944422,
+    "paired_stdev": 0.08532598916979366,
+    "minimum_detectable_relative_effect": 0.02572675372201218,
+    "target_resolution_qualified": false,
+    "observed_effect_resolved": false
+  },
+  "diagnostics": {
+    "largest_child_cpu_pair_delta": 0.47212712454933636,
+    "smallest_child_cpu_pair_delta": -0.1749665917259493,
+    "mean_involuntary_context_switches_per_run": 12.079545454545455,
+    "max_involuntary_context_switches_per_run": 34,
+    "projected_pairs_for_1pct_resolution_if_observed_noise_were_stationary": 291
+  },
+  "qualification": {
+    "physical_output_equality": true,
+    "affinity_enforced": true,
+    "protocol_exercised": true,
+    "one_percent_cpu_baseline_qualified": false,
+    "observer_overhead_resolved": false,
+    "production_performance_baseline": false,
+    "interpretation": "Affinity alone did not make this shared host sufficiently repeatable. The 2.57% operational detection floor exceeds the predeclared 1% target; no non-zero or zero observer-overhead claim is made."
+  }
+}

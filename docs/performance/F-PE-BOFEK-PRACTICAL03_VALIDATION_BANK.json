@@ -1,0 +1,17 @@
+{
+  "work_unit":"F-PE-BOFEK-PRACTICAL03",
+  "status":"PREREGISTERED_UNEXPOSED_VALIDATION_BANK",
+  "horizon_day":0.12,
+  "materials":["B01","B12","O05","O14"],
+  "regimes":[
+    {"id":"DRY3","class":"DRY","h0_cm":-250.0,"rain_cm_day":1.0},
+    {"id":"TRANS3","class":"TRANSITION","h0_cm":-60.0,"rain_cm_day":5.0},
+    {"id":"WET3","class":"WET","h0_cm":-25.0,"rain_cm_day":11.0},
+    {"id":"POND3","class":"POND","h0_cm":-8.0,"rain_cm_day":20.0}
+  ],
+  "policy":{
+    "B12":{"all":"halfmax"},
+    "O14":{"POND":"halfmax","otherwise":"regime"},
+    "default_regime":{"DRY":"dtmax_x4","TRANSITION":"dtmax_x4","WET":"halfmax","POND":"max"}
+  }
+}

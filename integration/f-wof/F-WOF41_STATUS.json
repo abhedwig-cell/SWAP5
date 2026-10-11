@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF41",
+  "title": "Production Binding of WOFOST Owner-Controlled Persistence API",
+  "branch": "work/f-wof41-production-owner-persistence-api",
+  "base": "e8cbe0b9a86d78492d34f0873cafe424895b4a99",
+  "production_implementation": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "PRODUCTION_WOFOST_OWNER_CONTROLLED_PERSISTENCE_VIEW_AND_RECONSTRUCTION_API_WITH_RESTRICTED_TRUE_PROCESS_RESTART_PRESERVATION",
+  "production_files": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "production_source_commit": "1a239012f33bb794dee9a48edee3cfa9ed6daab8",
+  "production_blobs": {
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "61ffdf21a00c23924184c9117d91d84a88544d1a",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90": "dad15717e5794b7489c9fecf6dbc17e12435c61e"
+  },
+  "qualification": {
+    "definitive_tested_head": "d884b2c5db6f28a1277918096d18717e481218d6",
+    "run": 34372766022,
+    "job": 102537860108,
+    "conclusion": "success",
+    "production_source_exact_F_WOF40_candidate": true,
+    "direct_production_owner_compile": true,
+    "O0": "PASS",
+    "O2": "PASS",
+    "F_WOF38_atomic_publication_preserved": true,
+    "F_WOF39_lifecycle_retirement_preserved": true,
+    "two_separate_OS_process_restart": true,
+    "fresh_reconstruction": true,
+    "stale_receipt_replay_rejected": true,
+    "later_event_continues": true,
+    "continuous_vs_restarted_endpoint_exact": true,
+    "retired_accepted_window_not_persisted": true,
+    "negative_payload_count": 10,
+    "negative_payloads_fail_closed": true,
+    "external_representation_O0_O2_identity": true
+  },
+  "API_boundary": {
+    "authoritative_event_identity_private": true,
+    "persistence_view_serialization_neutral": true,
+    "persistence_view_commit_authority": false,
+    "reconstruction_validated_before_ready_publication": true,
+    "owner_file_IO": false,
+    "owner_path_dependency": false,
+    "owner_parser_codec_dependency": false,
+    "kernel_file_IO": false
+  },
+  "persistent_state_boundary": {
+    "crop_owner_continuation": true,
+    "last_consumed_event_receipt": true,
+    "F_KT_lineage_revision_time_separate": true,
+    "parameters": false,
+    "forcing": false,
+    "solver_scratch": false,
+    "warm_start_state": false,
+    "retired_accepted_window_cache": false,
+    "derived_crop_views": false
+  },
+  "post_test_housekeeping": {
+    "one_shot_materialization_workflow_removed": true,
+    "removal_commit": "8f30b2f92c6c79611182fe5b4d6340f3381dfc21",
+    "only_change_after_test_before_closeout_docs": ".github/workflows/fwof41-materialize-production-owner-api.yml removed",
+    "production_source_changed_after_test": false
+  },
+  "scope_holds": {
+    "single_kernel_preserved": true,
+    "crop_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "mass_tolerance_relaxed": false,
+    "new_commit_authority_added": false,
+    "lineage_revision_setter_added": false,
+    "mid_transaction_restart_claimed": false,
+    "full_MultiSWAP_restart_claimed": false,
+    "canonical_promotion": false
+  },
+  "evidence": "integration/f-wof/F-WOF41_QUALIFICATION_EVIDENCE.json",
+  "closeout_docs_begin": "b3fcd93416204ab33343599164f417d422d15555",
+  "post_test_closeout_docs_only_after_housekeeping": true,
+  "not_qualified": [
+    "production SWAP-wide restart serialization or file format",
+    "all optional WOFOST crop-state layouts",
+    "active unretired accepted-window persistence",
+    "mid-transaction trial/candidate persistence",
+    "full MultiSWAP checkpoint/restart orchestration and storage layout",
+    "canonical promotion"
+  ],
+  "recommended_next": "Qualify persistence completeness across the currently supported optional WOFOST crop-owner state layouts and prove that inactive options incur no hidden persistent state or restart dependency before designing any broader runtime checkpoint orchestration.",
+  "affected_invariants": [1,2,3,4,5,7,8,9,21,23,27,29,30],
+  "decision": "QUALIFIED_PRODUCTION_OWNER_PERSISTENCE_API_WITH_TRUE_PROCESS_RESTART_PRESERVED",
+  "status": "QUALIFIED_PRODUCTION_OWNER_PERSISTENCE_API_SCOPE_COMPLETE"
+}

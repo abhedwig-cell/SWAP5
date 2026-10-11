@@ -1,0 +1,31 @@
+name: F-CI64 EB energy-ledger owned-receipt current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci64-eb-energy-ledger-owned-receipt-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tested head identity
+        run: |
+          echo "FCI64_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "FCI64_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI64 fail-closed admission gate
+        run: bash tests/fci/run_fci64_eb_energy_ledger_owned_receipt_current_canonical_admission.sh

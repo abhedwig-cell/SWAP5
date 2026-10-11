@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.fci78.status.v1",
+  "work_unit": "F-CI78",
+  "capability": "F-GC22",
+  "title": "F-GC22 application and temporal accuracy binding current-canonical admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "reconciled_base": "993673abae05570026dcc55a305679b09472e1d8",
+    "scientific_admission_head": "08ca7a06c4a47e9e0efe635185b0078748bd95c2",
+    "admitted_checkpoint_parent": "967b0372a485ea8d1b165e373e00024c93838f14",
+    "admitted_tree": "87af733d6ae5680d36ebbcc10c80c8724027b33c",
+    "merge_pr": 146,
+    "true_two_parent_merge": true,
+    "first_parent": "993673abae05570026dcc55a305679b09472e1d8",
+    "second_parent": "967b0372a485ea8d1b165e373e00024c93838f14",
+    "merge_tree_equals_green_checkpoint_tree": true
+  },
+  "owner_authority": {
+    "branch": "work/f-gc22-application-temporal-accuracy-binding",
+    "qualified_source_head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+    "first_qualified_head": "5415f96302a84447773fbe870f48fe8b832e6008",
+    "production_path": "src/runtime/mod_groundwater_accuracy_binding.f90",
+    "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "owner_qualification_run": 34680342414,
+    "owner_qualification_job": 103517735283
+  },
+  "direct_dependency_blobs": {
+    "application_accuracy_contract": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+    "application_accuracy_adapter": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "groundwater_coupling_policy": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+  },
+  "temporal_dependency_reconciliation": {
+    "owner_preregistered_temporal_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "admitted_current_canonical_temporal_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
+    "supersession_authority": "F-SI38 via F-VQ75 and F-CI62/F-CI62P",
+    "canonical_postimage": "46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "independent_evidence": "F-VQ75",
+    "postimage_reconciled": true,
+    "fresh_gc22_scientific_requalification_required": false
+  },
+  "qualification": {
+    "initial_current_canonical_gate_head": "325cf3493ae52ccf6a560ee68749b51e3f9016f5",
+    "initial_gate_run": 34983040938,
+    "initial_gate_job": 104427972917,
+    "clean_admission_checkpoint": "967b0372a485ea8d1b165e373e00024c93838f14",
+    "clean_checkpoint_run": 34983349758,
+    "clean_checkpoint_job": 104429055934,
+    "clean_checkpoint_conclusion": "success",
+    "O0_O2_owner_contract_replay": "PASS",
+    "owner_authority_exact": "PASS",
+    "owner_test_blob_exact": "PASS",
+    "direct_accuracy_dependencies_exact": "PASS",
+    "temporal_supersession_FCI62P_bound": "PASS",
+    "FVQ75_independent_temporal_evidence_reused": "PASS",
+    "application_interface_accuracy_separation": "PASS",
+    "temporal_interface_tolerance_separation": "PASS",
+    "no_universal_project_numeric_default": "PASS"
+  },
+  "contract_preserved": [
+    "application accuracy remains distinct from coupling/interface accuracy",
+    "temporal error budget remains distinct from interface tolerance",
+    "interface allocation remains explicit and governed",
+    "temporal plus interface allocation remains bounded by the application budget",
+    "no universal project-specific numeric default is introduced",
+    "upstream application, temporal and binding provenance remain distinct and visible"
+  ],
+  "reused_immutable_evidence": [
+    "F-GC22 owner qualification at c50f3770ae8e4bee7c276a080be00156218944f1",
+    "F-VQ75 independent F-SI38 temporal preservation qualification",
+    "F-CI62P canonical postimage reconciliation at 46ed64aba280bf721bce6f99446d0dd4ed00e38f",
+    "immutable F-GC22 owner test blob 18c4fa82b1d5c51a3cc0126e31086627a51b453e"
+  ],
+  "branch_hygiene_remediation": {
+    "transient_connector_file": "tmp",
+    "transient_add_commit": "d46886f71b2b1e7423bddf51d9381b3aad22ad3d",
+    "transient_remove_commit": "b740805deb5563a1e41cca227fb0f251e3952204",
+    "disposition": "EXCLUDED_FROM_ADMITTED_LINEAGE",
+    "method": "rebuilt clean checkpoint 967b0372a485ea8d1b165e373e00024c93838f14 directly from frozen canonical base using the already green qualified tree",
+    "canonical_or_production_impact": false
+  },
+  "mutations": [
+    "Added F-CI78 governance status, preservation harness and workflow through PR #146",
+    "No F-GC22 production source changed",
+    "No groundwater physics or coupling semantics changed",
+    "No fresh independent GC22 lifecycle was run because the only dependency drift was independently qualified and canonically reconciled"
+  ],
+  "verdict": "PASS/CLOSED: F-GC22 application and temporal accuracy binding is canonically admitted at scientific merge head 08ca7a06c4a47e9e0efe635185b0078748bd95c2. The admitted tree is exactly the green clean checkpoint tree. The F-GC22 production blob and direct accuracy-policy dependencies remain owner-exact; the temporal-indicator supersession is covered by F-SI38/F-VQ75/F-CI62P evidence.",
+  "next_permitted_action": "F-CI78 is closed. Any downstream groundwater composition, including F-GC23, must reconcile independently against the new live canonical and remains outside this workunit.",
+  "hard_exclusions": [
+    "No EB changes",
+    "No ROSS or RossFast changes",
+    "No F-GC23 work",
+    "No new groundwater semantics"
+  ]
+}

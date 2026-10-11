@@ -1,0 +1,31 @@
+{
+  "schema_version": "mp-isolated-runner-contract-v1",
+  "required_runner_labels": ["self-hosted", "linux", "x64", "swap5-performance"],
+  "target_resolution_relative": 0.01,
+  "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "requirements": {
+    "require_linux": true,
+    "require_target_cpus_in_affinity": true,
+    "require_target_cpus_in_cpuset": true,
+    "require_unbounded_cgroup_cpu_quota": true,
+    "require_frequency_metadata": true,
+    "require_reserved_smt_siblings": true,
+    "require_b0_distribution_identity": true,
+    "require_final_mp7_host_admission": true
+  },
+  "required_attestation_fields": [
+    "isolation_method",
+    "reserved_cpus",
+    "runner_dedicated_to_benchmark",
+    "unrelated_workloads_excluded",
+    "frequency_policy_controlled"
+  ],
+  "policy": {
+    "contract_readiness_is_not_host_admission": true,
+    "host_admission_requires_mp7_protocol": true,
+    "cpu_baseline_requires_host_admission": true,
+    "post_hoc_pair_extension_forbidden": true,
+    "physical_output_equality_required": true,
+    "full_window_throttling_must_be_zero": true
+  }
+}

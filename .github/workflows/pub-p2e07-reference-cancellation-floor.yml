@@ -1,0 +1,36 @@
+name: PUB-P2E07 Reference cancellation floor
+
+on:
+  push:
+    branches:
+      - work/pub-p2e07-reference-cancellation-floor
+    paths:
+      - 'docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_PREREGISTRATION.json'
+      - 'tests/publication/test_pub_p2e07_reference_cancellation_floor.f90'
+      - 'tests/publication/run_pub_p2e07_reference_cancellation_floor.sh'
+      - '.github/workflows/pub-p2e07-reference-cancellation-floor.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_PREREGISTRATION.json'
+      - 'docs/publication/P2E07_REFERENCE_CANCELLATION_FLOOR_RESULT.json'
+      - 'tests/publication/test_pub_p2e07_reference_cancellation_floor.f90'
+      - 'tests/publication/run_pub_p2e07_reference_cancellation_floor.sh'
+      - '.github/workflows/pub-p2e07-reference-cancellation-floor.yml'
+      - 'src/**'
+      - 'reference/**'
+  workflow_dispatch:
+
+jobs:
+  reference-cancellation-floor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Diagnose exact P2E06 Reference cancellation floor
+        run: bash tests/publication/run_pub_p2e07_reference_cancellation_floor.sh

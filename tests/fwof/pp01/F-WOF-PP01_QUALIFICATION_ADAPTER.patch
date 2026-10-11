@@ -1,0 +1,69 @@
+--- donor/wofost.f90
++++ qualification/wofost.f90
+@@ -363,8 +363,9 @@
+       use MOD_grid, only: zbotcp
+       use MOD_integral, only: iqrot_day, iptra_day
+       use MOD_swap_base, only: swcropsnm
+-      use plant_interface, only: icrop, cropend, fl_cropemergence, fl_cropharvest, ipgass, igass, imres, ipgasspot, igasspot, imrespot, dvs
++      use plant_interface, only: icrop, cropend, fl_cropemergence, fl_cropharvest, ipgass, igass, imres, ipgasspot, igasspot, imrespot, dvs, rd
+       use MOD_wofost_nut, only: read_wofost_nut, initialize_wofost_nut, demand_wofost_nut, update_wofost_nut, fstr
++      use wofost_soil_interface, only: NdemandSoil, NsupplySoil
+       use variables, only: t1900, date
+       
+       implicit none
+@@ -412,6 +413,19 @@
+          if (swcropsnm == 1 .AND. wofost_version /= WOFOST_VERSION_81) call initialize_wofost_nut ()
+          if (wofost_version == WOFOST_VERSION_81) call initialize_wofost81_n_runtime()
+ 
++         ! F-WOF-PP01 qualification-only trace. This source copy is never
++         ! admitted as production code; it observes the immutable donor route.
++         if (wofost_version == WOFOST_VERSION_81) then
++            open(unit=998, file='pp01_daily.csv', status='replace', action='write')
++            write(998,'(a)') 'DATE,PHASE,DVS,LAI,NamountLV,NamountRT,NamountSO,NamountST,NuptakeTotal,RD,TAGP,TRA_POT,TRA_ACT,TWLV,TWRT,TWSO,TWST,WLV,DWLV,WRT,DWRT,WST,DWST'
++            write(998,'(a,",INIT,",22(es24.16,:,","))') trim(date), dvs, s_act%lai, n81_act%namountlv, n81_act%namountrt, &
++                 n81_act%namountso, n81_act%namountst, n81_act%nuptake_total, rd, &
++                 (s_act%wlv+s_act%dwlv+s_act%wst+s_act%dwst+s_act%wso), 0.d0, 0.d0, &
++                 (s_act%wlv+s_act%dwlv), (s_act%wrt+s_act%dwrt), s_act%wso, (s_act%wst+s_act%dwst), &
++                 s_act%wlv, s_act%dwlv, s_act%wrt, s_act%dwrt, s_act%wst, s_act%dwst
++            close(998)
++         end if
++
+          ! determine compartment for temperature sum
+          nodtsum = 0
+          if (sw_wofost == 3) then
+@@ -459,6 +473,11 @@
+          ! nitrogen stress reduction of pgass to gass
+          if (swcropsnm == 1 .AND. wofost_version /= WOFOST_VERSION_81) reltr = min(reltr, fstr)
+ 
++         ! F-WOF-PP01 external-state adapter: Allard/PCSE supplies SM=0.3,
++         ! explicitly non-limiting. Preserve donor physics but replace the
++         ! SWAP soil-water coupling reduction by the oracle boundary value.
++         if (wofost_version == WOFOST_VERSION_81) reltr = 1.d0
++
+          ! update wofost status (actual)
+          call update_wofost (s_act, r_act, m_act, reltr)
+          call update_wofost_interface (s_act, r_act)
+@@ -505,7 +524,22 @@
+          
+          ! update wofost nut
+          if (swcropsnm == 1 .AND. wofost_version /= WOFOST_VERSION_81) call update_wofost_nut()
+-         if (swcropsnm == 1 .AND. wofost_version == WOFOST_VERSION_81) call apply_wofost81_n_runtime_supply()
++         if (swcropsnm == 1 .AND. wofost_version == WOFOST_VERSION_81) then
++            ! F-WOF-PP01 external-state adapter: NAVAIL=100 kg N/ha each day is
++            ! non-limiting for these oracle cases. Return the donor's bounded
++            ! crop-N soil request exactly; RNUPTAKEMAX remains enforced inside
++            ! prepare_wofost81_n_request and all crop-N state transitions remain
++            ! the production donor implementation.
++            NsupplySoil = NdemandSoil
++            call apply_wofost81_n_runtime_supply()
++            open(unit=998, file='pp01_daily.csv', status='old', position='append', action='write')
++            write(998,'(a,",POST,",22(es24.16,:,","))') trim(date), dvs, s_act%lai, n81_act%namountlv, n81_act%namountrt, &
++                 n81_act%namountso, n81_act%namountst, n81_act%nuptake_total, rd, &
++                 (s_act%wlv+s_act%dwlv+s_act%wst+s_act%dwst+s_act%wso), iptra_day, iqrot_day, &
++                 (s_act%wlv+s_act%dwlv), (s_act%wrt+s_act%dwrt), s_act%wso, (s_act%wst+s_act%dwst), &
++                 s_act%wlv, s_act%dwlv, s_act%wrt, s_act%dwrt, s_act%wst, s_act%dwst
++            close(998)
++         end if
+         
+       case (9)
+ 

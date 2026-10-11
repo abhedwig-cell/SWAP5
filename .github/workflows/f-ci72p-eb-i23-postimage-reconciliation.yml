@@ -1,0 +1,183 @@
+name: F-CI72P EB-I23 current-canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci72p-eb-i23-current-canonical-postimage-reconciliation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile-postimage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify two-parent promotion and exact tree identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          PREIMAGE=3ff0f42299767d5ad5f07d031698dfcf7969ed0d
+          PROMOTED=bcab94b39a319f744d00a108281a12f85cfc194c
+          POSTIMAGE=77acdd880bb0613f5a3ab857c4ecdc69aab27149
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$POSTIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^1")" = "$PREIMAGE"
+          test "$(git rev-parse "$POSTIMAGE^2")" = "$PROMOTED"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "$(git rev-parse "$PROMOTED^{tree}")"
+          test "$(git rev-parse "$POSTIMAGE^{tree}")" = "cd1bb986b0e19f8efd3dfb1e4a55184334b4815a"
+          echo 'FCI72P_TRUE_TWO_PARENT_PROMOTION=PASS'
+          echo 'FCI72P_PROMOTED_TREE_IDENTITY=PASS'
+
+      - name: Verify exact admitted EB-I23 postimage and inherited authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=77acdd880bb0613f5a3ab857c4ecdc69aab27149
+          declare -A BLOBS=(
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90]=e9fde2d51d2c8cb76ae2def4b7e4a3acaf356d4a
+            [tests/eb/EB-I23_CONTRACT.md]=56bfd4f1350e569e6f651ca4ada13550af93f986
+            [tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh]=fb14542ecccb4b731c12134e069976e968f1e3f3
+            [tests/eb/run_f_vq90_eb_i23_independent_gate.sh]=2e306978b629997e73c607ef98ae1bdb0a684207
+            [qualification/F-VQ90_STATUS.json]=c4255d910af0fa40d7a856ee8dad7d7791119cdd
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=3506b453ba6a00111d182f29db8cbfb288001854
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+          )
+          for path in "${!BLOBS[@]}"; do
+            test "$(git rev-parse "$POSTIMAGE:$path")" = "${BLOBS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"
+          done
+          test "$(git rev-parse HEAD:src)" = "$(git rev-parse "$POSTIMAGE:src")"
+          test "$(git rev-parse HEAD:reference)" = "$(git rev-parse "$POSTIMAGE:reference")"
+          echo 'FCI72P_PRODUCTION_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI72P_REFERENCE_POSTIMAGE_IDENTITY=PASS'
+          echo 'FCI72P_IMMUTABLE_F_VQ90_EVIDENCE=PASS'
+
+      - name: Require governance-only reconciliation delta and preserve nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          POSTIMAGE=77acdd880bb0613f5a3ab857c4ecdc69aab27149
+          git diff --name-only "$POSTIMAGE" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/f-ci72p-eb-i23-postimage-reconciliation.yml
+          .github/workflows/fci72-eb-i23-moving-preservation.yml
+          EOF
+          if test -f integration/f-ci/F-CI72P_STATUS.json; then
+            echo 'integration/f-ci/F-CI72P_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool integration/f-ci/F-CI72_STATUS.json >/dev/null
+          python3 -m json.tool qualification/F-VQ90_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_F_CI72_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI72_STATUS.json
+          grep -Fq '"decision": "QUALIFIED_EB_I23_INDEPENDENT"' qualification/F-VQ90_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI72_STATUS.json
+          if test -f integration/f-ci/F-CI72P_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI72P_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI72P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"' integration/f-ci/F-CI72P_STATUS.json
+            grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI72P_STATUS.json
+            grep -Fq '"postimage_reconciled": true' integration/f-ci/F-CI72P_STATUS.json
+            grep -Fq '"moving_preservation_installed": true' integration/f-ci/F-CI72P_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI72P_STATUS.json
+          fi
+          MODULE=src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+          grep -Fq 'output%accepted_substeps == 1' "$MODULE"
+          grep -Fq 'boundary%top_advective_available = .false.' "$MODULE"
+          ! grep -Fq 'boundary%top_advective_available = .true.' "$MODULE"
+          grep -Fq 'publication%bottom_conductive_outward_j_m2_value = 0.0_real64' "$MODULE"
+          grep -Fq 'No qualified canonical top-water donor-temperature authority exists' "$MODULE"
+          echo 'FCI72P_GOVERNANCE_ONLY_DELTA=PASS'
+          echo 'FCI72P_HARD_NONCLAIMS_PRESERVED=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay EB-I23 postimage runtime O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          MODULE_SRC=(
+            tests/fsi/fsi04_real_headcalc_stubs.f90
+            src/runtime/mod_a23bu_worker_execution_context.f90
+            src/transaction/mod_transaction_reference.f90
+            src/transaction/mod_fkt_temporal_indicator_history.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_runtime_core.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/solver/mod_process_hydraulic_view.f90
+            src/process/mod_drainage_process.f90
+            src/process/mod_drainage_tabulated_response.f90
+            src/process/mod_drainage_hooghoudt_equivalent_depth.f90
+            src/process/mod_drainage_hooghoudt_ipos1_response.f90
+            src/process/mod_drainage_hooghoudt_ipos23_response.f90
+            src/process/mod_drainage_ernst_ipos45_preparation.f90
+            src/process/mod_drainage_ernst_ipos45_response.f90
+            src/process/mod_drainage_empirical_interflow_response.f90
+            src/process/mod_drainage_multilevel_aggregation.f90
+            src/runtime/mod_fmr_drainage_response_binding.f90
+            src/process/mod_soil_temperature_contract.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_reference_richards_state_binding.f90
+            src/solver/mod_reference_linear_solver.f90
+            src/solver/mod_b110_default_mvg_provider.f90
+            src/solver/mod_b110_source_sink_provider.f90
+            src/solver/mod_fixed_flux_top_boundary_provider.f90
+            src/solver/mod_reference_richards_temporal_indicator.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            src/adapter/mod_b110_serialized_context_binding.f90
+            src/process/mod_snow_process.f90
+            src/solver/mod_b110_root_sink_provider.f90
+            src/process/mod_restricted_fixed_weir_surface_water.f90
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+            src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+            src/runtime/mod_fmr_bottom_sensible_energy.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/runtime/mod_fmr_accepted_commit_receipt.f90
+            src/runtime/mod_fmr_owned_commit_receipt.f90
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/process/mod_linear_mixture_sensible_storage.f90
+            src/kernel/mod_energy_conservation_types.f90
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+            src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+          )
+          for opt in 0 2; do
+            OUT="$RUNNER_TEMP/fci72p-o${opt}"
+            mkdir -p "$OUT"
+            objects=()
+            for source in "${MODULE_SRC[@]}"; do
+              obj="$OUT/$(basename "${source%.*}").o"
+              gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$obj"
+              objects+=("$obj")
+            done
+            gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90 -o "$OUT/test.o"
+            gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+            "$OUT/test" > "$OUT/output.txt" 2>&1
+            grep -Fq 'EB_I23_ACCEPTED_SINGLE_SUBSTEP_PARTIAL_MATERIALIZATION=PASS' "$OUT/output.txt"
+            grep -Fq 'EB_I23_BOTTOM_ADVECTIVE_UNAVAILABLE_FAIL_CLOSED=PASS' "$OUT/output.txt"
+            grep -Fq 'EB_I23_REJECTED_TRIAL_NO_PUBLICATION=PASS' "$OUT/output.txt"
+            grep -Fq 'EB_I23_SENSIBLE_BOUNDARY_RUNTIME_MATERIALIZATION_GATE=PASS' "$OUT/output.txt"
+            cat "$OUT/output.txt"
+          done
+          cmp -s "$RUNNER_TEMP/fci72p-o0/output.txt" "$RUNNER_TEMP/fci72p-o2/output.txt"
+          echo 'FCI72P_RUNTIME_REPLAY=PASS'
+          echo 'FCI72P_O0_O2_IDENTITY=PASS'
+          echo 'FCI72P_FULL_ENERGY_BALANCE_NONCLAIM=PASS'

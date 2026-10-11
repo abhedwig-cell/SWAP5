@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ104",
+  "title": "Independent qualification of F-GC30 MODFLOW6 tangent predictor response",
+  "verifier_branch": "qualification/f-vq104-fgc30-modflow6-tangent-coupling-independent",
+  "canonical_baseline": "dba238b4b20551dcc36e9121ffe25f19a5b1ac0e",
+  "owner": {
+    "work_unit": "F-GC30",
+    "qualified_source_head": "e1f086d6f1dc2b60c2b1fc5a2b61b52dc9fa452b",
+    "production_modules": {
+      "src/runtime/mod_modflow6_swap_predictor_response.f90": "e16c9935670643fbbbcb9388eb52ba698764c493",
+      "src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90": "15c859e5cb62ba8442879fdec153438e4aadff89",
+      "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90": "47bc673094132e4f128647b467a861c51b2aba50",
+      "src/runtime/mod_modflow6_swap_predictor_origin.f90": "b7bc66ad473ae404f5c0b1e54b0a70d536038c33",
+      "src/runtime/mod_modflow6_swap_predictor_candidate_assembler.f90": "f32453168667917a06d8fde483887e1e9a5cbffd"
+    }
+  },
+  "verifier_evidence": {
+    "qualified_verifier_head": "e82d466fb92b5bd2b22616fbe0bdd5bd2233de28",
+    "workflow_run_id": 35284968348,
+    "workflow_job_id": 105415169621,
+    "conclusion": "success",
+    "compiler": "GNU Fortran on ubuntu-24.04",
+    "optimization_modes": [
+      "O0",
+      "O2"
+    ],
+    "O0_O2_output_identity": true
+  },
+  "independence": {
+    "verifier_production_delta": "NONE",
+    "owner_modules_loaded_as_pinned_git_donors": true,
+    "owner_test_reused": false,
+    "independent_fixture": true,
+    "independent_finite_difference_oracle": "centered lower-face derivative with constitutive state perturbation",
+    "candidate_assembler_verification": "independent static provenance/noncommit audit plus compile against current canonical",
+    "production_finite_difference_runtime_fallback_admitted": false
+  },
+  "verified_claims": [
+    "fixed lower-face Darcy reconstruction and its qbot derivative agree with an independent centered finite difference",
+    "drainage-free accepted-trajectory tangent coverage is authoritative only on the explicitly covered envelope",
+    "active drainage remains available only as non-authoritative partial tangent information and fails closed",
+    "historical u=dt/(dHbot/dqbot) and q_u=u*dH/dt-qbot algebra including SI translation are independently reproduced",
+    "predictor origin uses the committed accepted SWAP interface head and preserves the distinct groundwater head residual",
+    "uncommitted and nonconservative predictor origins fail closed",
+    "candidate assembler contains explicit lineage, revision, interval, accepted-trajectory and bottom-exchange provenance guards",
+    "candidate assembler recovers native qbot only as -terminal_bottom_outward_flux_native",
+    "candidate assembler contains no commit/publication action",
+    "all five owner production modules compile unchanged against the current canonical dependency surface",
+    "O0 and O2 verifier outputs are identical"
+  ],
+  "markers": [
+    "FVQ104_OWNER_STATIC_CONTRACT=PASS",
+    "FVQ104_CANDIDATE_PROVENANCE_GUARDS=PASS",
+    "FVQ104_NONCOMMITTING_ASSEMBLER=PASS",
+    "FVQ104_INDEPENDENT_BOTTOM_FACE_FD=PASS",
+    "FVQ104_DRAINAGE_TANGENT_FAIL_CLOSED=PASS",
+    "FVQ104_INDEPENDENT_U_QU_ALGEBRA=PASS",
+    "FVQ104_RESPONSE_COVERAGE_FAIL_CLOSED=PASS",
+    "FVQ104_ORIGIN_SWAP_HEAD_PROVENANCE=PASS",
+    "FVQ104_ORIGIN_FAIL_CLOSED=PASS",
+    "FVQ104_INDEPENDENT_NUMERICAL_ORACLE=PASS",
+    "FVQ104_VERIFIER_PRODUCTION_DELTA=PASS:NONE",
+    "FVQ104_O0_O2_IDENTITY=PASS"
+  ],
+  "verdict": "INDEPENDENTLY_QUALIFIED_FOR_ADMISSION_REVIEW",
+  "canonical_admission": false,
+  "preserved_limits": [
+    "no active-drainage analytic tangent",
+    "no MODFLOW6/XMI backend",
+    "no runtime finite-difference fallback admission",
+    "no Groundwater Coupling v1 semantic change",
+    "no accepted_storage_change substitution",
+    "no irrigation or Ribasim coupling"
+  ],
+  "next_permitted_action": "Create a separate current-canonical admission gate for the exact five F-GC30 owner production blobs. Preserve F-VQ104 and owner evidence immutably; admit only the drainage-free non-committing predictor-response envelope."
+}

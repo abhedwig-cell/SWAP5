@@ -1,0 +1,123 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed process",
+  "phase": "IMPLEMENT_QUALIFY_PROCESS",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "expected_parent": "9aab3741beec7127fb83f4bf27d0210322d60944",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "95748d047325e74adf6d06eba978dea61bd51a7d",
+    "delta_from_last_reconciled_canonical": "F-DOC26 documentation-only admission; commit message explicitly preserves frozen Status-A scientific denominator and production/reference source unchanged",
+    "relevant_fapp03_semantic_delta": false
+  },
+  "authority": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "exact_MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "official_Hupsel_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "confirmed_Hupsel_FWIND": 1.0,
+    "confirmed_FWIND_operator": "ud = max(win * fwind, 0.0001d0)",
+    "upstream_contract": "integration/f-app/F-APP03_TYPED_SWETR0_PREREGISTRATION.json",
+    "upstream_precheck": "integration/f-app/F-APP03_FROZEN_JUNE10_OBSERVATION_PRECHECK_PASS.json"
+  },
+  "implemented_scope": {
+    "selectors": [
+      "SWETR=0",
+      "SWDIVIDE=1",
+      "SWMETDETAIL=0",
+      "SWRAIN=0",
+      "SWINTER=1",
+      "SWCF=1"
+    ],
+    "source_file": "src/process/mod_pmdirect_swetr0_process.f90",
+    "source_commit": "f84890dbe28084515dec0936b65fa5c7a12efaad",
+    "source_git_blob_sha1": "fcf35da81011543bac7cf0c71bcbd7ac34b09b64",
+    "source_sha256": "66a4551c55941d80554c4b374b564fea98124d934c92e5314ad91c51fbc9d6c4",
+    "properties": [
+      "pure typed process; no file path, file unit, parser state or mutable meteorological cursor",
+      "daily PMdirect Penman-Monteith demand for soil, pond, dry canopy and wet canopy",
+      "FWIND applied only at the exact legacy wind-operator point",
+      "SWINTER=1 Von Hoyningen-Hune/Braden daily interception",
+      "ProcessMeteoDT wet/dry canopy transpiration mixing",
+      "no import of plant_interface or MOD_cropdevelopment"
+    ],
+    "scientific_semantics": "Re-expression of exact SWAP 4.3.1 restricted-route equations behind typed values; no new physics."
+  },
+  "persistent_regression": {
+    "file": "tests/fapp/test_fapp03_pmdirect_swetr0_process.f90",
+    "commit": "9aab3741beec7127fb83f4bf27d0210322d60944",
+    "git_blob_sha1": "0dad4e6c770b01b6b6f3292b8eaeef5b09853620",
+    "sha256": "9049ff3e0b3b2dc0e7c89af0d1addd5210596b188fe85daa4ac7790752ca3b3c",
+    "vectors": [
+      "20 May 2002 / DOY 140 dry emerged-canopy vector",
+      "10 June 2002 / DOY 161 positive-interception vector",
+      "DOY 300 non-emerged-crop vector"
+    ],
+    "tolerance": 1e-12,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identical": true,
+    "output_sha256": "e63f6d5afb43ef930852ffc5b4a37ad0fda1c3eb78b15cd206ae153a3674f9d6"
+  },
+  "independent_exact_source_oracle": {
+    "method": "Qualification-only writes added to a disposable GNU-build copy of exact MOD_meteo.f90 at ETpot and ProcessMeteoDT after the relevant legacy calculations. No public module interface, equation, state, solver, timestep or tolerance was changed.",
+    "compiler": "GNU Fortran 14.2.0",
+    "run_adjustment": "Disposable Hupsel copy used SWCSV=0 instead of SWCSV=1 solely to bypass the previously qualified GNU CSV-output portability issue; official input authority remains the unmodified swap.swp hash above.",
+    "normalized_reference_result": {
+      "normalization": "remove only generated '* Generated at:' timestamp line",
+      "result_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "result_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "instrumentation_preserved_both_hashes": true
+    },
+    "restricted_daily_trace": {
+      "records": 384,
+      "sha256": "d7adda3dddfc7333e8e68001f57b6370dbff2a7d46b9bb0948d60c3df6ad4255"
+    },
+    "restricted_interval_trace": {
+      "records": 14062,
+      "sha256": "100545cba09780241a5045b5125c8ee2c63c00a36d1b1d9f696a3a9ad0c0d4bb",
+      "positive_interception_days": 65,
+      "positive_interception_steps": 1641
+    }
+  },
+  "full_oracle_qualification": {
+    "transient_harness_sha256": "b782c6f4e928554e14aa63f259feb35cb28ecf43346d34fe60ca9288859478d4",
+    "tolerance": 1e-12,
+    "daily_records": 384,
+    "interval_records": 14062,
+    "daily_mismatches": 0,
+    "interval_mismatches": 0,
+    "max_daily_abs_error": 5.551115123125783e-17,
+    "max_interval_abs_error": 1.1102230246251565e-16,
+    "positive_interception_days": 65,
+    "positive_interception_steps": 1641,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_summary_identical": true,
+    "summary_sha256": "7771eb260ca03b461dfa8cffd401e903ec447ff6d443e0c6a13747339a3aab0f",
+    "strict_flags": "-std=f2008 -pedantic-errors -Wall -Wextra -Werror -ffree-line-length-none"
+  },
+  "verdict": "PASS_RESTRICTED_PMDIRECT_PROCESS_IMPLEMENTED_AND_INDEPENDENTLY_QUALIFIED",
+  "production_source_changed": true,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "runtime_binding_changed": false,
+  "m1_c3_closed": false,
+  "whole_hupsel_closed": false,
+  "exclusions": [
+    "SWINTER=3 / Rutter within-day interception",
+    "SWCF=2 crop-height route",
+    "generic ET redesign",
+    "legacy file parser migration",
+    "solver, Richards, timestep or tolerance changes",
+    "whole-Hupsel or M1 criterion-3 equivalence claim"
+  ],
+  "next_permitted_action": "Add the smallest runtime binding that maps already-resolved typed weather/site/canopy values to this process and binds its ptra/peva/epond/net-rain outputs into the existing root-uptake, surface-evaporation and dynamic top-boundary seams. Fail closed outside the preregistered selector set. Then qualify retry/read-only forcing behaviour and the bound process values before any whole-Hupsel claim.",
+  "prohibited": [
+    "import legacy parser/file semantics into the process module",
+    "silently handle SWINTER=3 or SWCF=2 by fallback or inference",
+    "replace PMdirect with the existing SWETR=1 reference-ET process",
+    "change physics or numerical policy to obtain a passing replay"
+  ]
+}

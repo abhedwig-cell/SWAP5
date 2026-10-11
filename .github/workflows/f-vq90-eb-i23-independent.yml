@@ -1,0 +1,25 @@
+name: F-VQ90 EB-I23 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq90-eb-i23-sensible-boundary-runtime-independent-qualification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independently-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: F-VQ90 independent EB-I23 qualification
+        run: bash tests/eb/run_f_vq90_eb_i23_independent_gate.sh

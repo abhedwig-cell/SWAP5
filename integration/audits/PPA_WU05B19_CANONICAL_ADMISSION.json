@@ -1,0 +1,65 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_RUNTIME",
+  "admitted": true,
+  "runtime_admitted": true,
+  "aggregate_frost_migration_complete": false,
+  "authorization": "User explicitly answered Ja to canonical admission and merging PR #1078 after applicable gates pass.",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical_branch": "integration/f-ci-canonical",
+  "pr": 1078,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1078",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "candidate_head": "fdbcfa0adc616dc18283dedf5c845e2ea527a32f",
+  "ci_tested_proposed_merge": "0becf3bcebc3127bf20db2ab3c276feaf3b1e4a6",
+  "actual_canonical_merge": "811ad186fa8f06386c73baa6abd8e19307cc8dc5",
+  "candidate_proposed_and_actual_merge_tree": "62b5b98d0856433877f41a1426e1374199e515b4",
+  "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "verification": {
+    "actual_merge_parents_are_baseline_and_candidate": true,
+    "candidate_proposed_and_actual_whole_trees_equal": true,
+    "actual_source_equals_qualified_source": true,
+    "remote_canonical_fetched_at_actual_merge": true,
+    "normal_merge_api_used_without_protection_bypass": true
+  },
+  "controlling_gate": {
+    "workflow": "PPA-WU05B19 source-bound runtime admission",
+    "run_id": 37454134330,
+    "job_id": 112237861478,
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37454134330",
+    "status": "completed",
+    "conclusion": "success",
+    "inherited_complete_gates": 11,
+    "fresh_runtime_receipts": 56,
+    "optimization_levels": [0, 2],
+    "normal_preservation_complete_executions": 32,
+    "low_air_preservation_complete_executions": 48,
+    "falsification_tests": 10,
+    "fresh_moving_canonical_and_strict_docs": "passed",
+    "receipt_matrix_stdout_stderr_driver_source_hashes_verified": true,
+    "o0_o2_stdout_byte_identity_verified": true
+  },
+  "ci_artifact": {
+    "id": 11409166202,
+    "name": "PPA-WU05B19-admission",
+    "path": "docs/audits/evidence/PPA_WU05B19_CI_ADMISSION.zip",
+    "bytes": 73250,
+    "sha256": "2ec123c654605102e7560fad67227bbcd2429193f9309b33f8bd80dd0d660c88",
+    "github_digest_and_downloaded_bytes_match": true
+  },
+  "qualification_evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_LOCAL_REPLAY.json.gz",
+    "sha256": "d74b5df08b04bb7f720d49921e233bc0975105e0fbcb8fbb510afd7f3c4dcfb6",
+    "historical_snapshot_unchanged": true
+  },
+  "scope": "Default-OFF single-level signed frost/DIVDRA runtime on rootless ordinary serialized Reference, prescribed constant bottom mode2, normal and guarded low-air routes, separate infiltration option, immutable trial-start regeneration and one existing mass ledger.",
+  "nonclaims": ["latent heat or ice-water phase change", "excluded owner/provider/history hybrids", "full winter or practical performance qualification", "blanket success of inherited CI", "aggregate frost migration closure"],
+  "inherited_ci_disposition": "integration/audits/PPA_WU05B19_REMOTE_CHECK_RECONCILIATION.json",
+  "retained_negative_observations": [
+    "Original duration-receipt assumption, executable permission interruption and seven OOM kills remain in qualification evidence; incomplete runs were not counted as passes.",
+    "First admission workflow run was superseded after a missing historical local-only ancestor was diagnosed. The moving guard successor is an exact one-token lineage replacement, enforced against the sealed original script; checks and source pins remain unchanged.",
+    "Fresh local case23 O2 stdout was found truncated and rejected by hash verification. Both optimization cases were rerun and all 56 complete receipts reverified; no physics or numerical budget was relaxed.",
+    "Frozen B15 source-pin rejection and unchanged publication compile-list failure remain explicitly routed; neither is relabelled as a passing scientific test."
+  ],
+  "snapshot_policy": "Original contract, qualification report, summary and replay retain historical admission flags. This record and current status own actual canonical admission. Metadata-only closeout does not change the admitted production source."
+}

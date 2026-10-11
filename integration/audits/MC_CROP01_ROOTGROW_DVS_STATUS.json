@@ -1,0 +1,51 @@
+{
+  "schema": "swap431.mc_crop01.rootgrow_dvs.v2",
+  "capability_id": "SW431-CROP-ROOTGROW-DVS",
+  "branch": "work/swap431-crop-root-cluster-20261007",
+  "canonical_baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "source_authority": {
+    "snapshot": "B1.11",
+    "member": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "semantics": "SWRD=1 actual and potential root depth are recalculated as min(AFGEN(RDTB,DVS),RDM); no independent root-depth continuation state."
+  },
+  "ownership": {
+    "root_depth": "derived read-only geometry from committed crop DVS and immutable RDTB/RDM",
+    "root_profile": "ephemeral typed materialization from root depth, soil compartment bottoms and immutable relative density table",
+    "water_mass": "unchanged existing nodewise root_extraction_sink owner",
+    "persistent_state_added": false,
+    "restart_implication": "none; DVS remains owned and persisted by the existing crop owner"
+  },
+  "implementation": [
+    "src/crop/mod_crop_root_depth_dvs.f90",
+    "src/crop/mod_crop_root_profile_static.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "qualification": {
+    "workflow": "SWAP431 crop rootgrow DVS qualification",
+    "run_id": 37625663326,
+    "job_id": 112806649364,
+    "conclusion": "success",
+    "merge_postimage": "102aee6b46dc2fc8a4ab2e8ab24be24f1f7c642b",
+    "checks": [
+      "SWRD1 AFGEN interpolation, endpoint clamping and RDM clipping at O0/O2",
+      "B1.11-style static root-profile materialization at O0/O2",
+      "production Reference ET -> typed crop root input -> existing root uptake chain at O0/O2",
+      "sink total equals potential transpiration in unstressed fixture; no second mass owner",
+      "inactive/persistent-state semantics inherited because resolver and profile are stateless"
+    ],
+    "markers": [
+      "SW431_CROP_ROOTGROW_DVS_COMPONENT=PASS twice",
+      "SW431_CROP_ROOTGROW_DVS_PROFILE=PASS twice",
+      "SW431_CROP_ROOTGROW_DVS_RUNTIME=PASS twice"
+    ]
+  },
+  "preservation": [
+    "existing WOFOST and WOFOST81 crop owners remain distinct and unchanged except a read-only derived method on the common owner",
+    "existing root-sink ownership unchanged",
+    "root frost, salinity and MICRO routes not reopened or modified"
+  ],
+  "disposition": "ADMISSION_READY_BOUNDED_SWRD1",
+  "claim_ceiling": "Only SWRD=1 DVS-table root depth plus static profile production binding. Does not admit SWRD2 growth/history, SWRD3 biomass depth, adaptive root density, oxygen growth suppression, constant absolute LRV, sowing, rotation, fixed crop or other WOFOST selectors."
+}

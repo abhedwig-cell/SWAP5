@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.ppa_root_hyd02.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD02",
+  "title": "Restricted prescribed-root accepted-trajectory tangent coverage",
+  "canonical_base": "8cf184955a0f366ef85bc38dd64c19aa639b7098",
+  "trigger": {
+    "hydro_memory_acc02": "ACC02_GOVERNANCE_QUALIFIED",
+    "acc02_head": "cca3013f818a4cd9989025a0420785fc3beb5257",
+    "blocker": "F-GC30 accepted-trajectory directional service rejects any associated root_sink and the MODFLOW6 tangent endpoint consequently cannot claim root-uptake derivative coverage."
+  },
+  "scientific_semantics": {
+    "admitted_root_provider": "b110_root_sink_provider_t only",
+    "provider_semantics": "prescribed bound root-extraction vector; evaluate() does not derive sink from pressure head, water content, or groundwater-control coordinate during a trial",
+    "direct_derivative_wrt_groundwater_control": "exactly zero",
+    "equivalence_oracle": "same physical sink vector carried through the already admitted generic sink route must produce identical accepted trajectory directional state and integrated bottom-exchange derivative"
+  },
+  "production_allowlist": [
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+    "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90"
+  ],
+  "required_changes": [
+    "add explicit prescribed-root directional coverage provenance to step, trajectory, and publication contracts",
+    "allow only valid concrete b110_root_sink_provider_t through the Reference-Richards accepted-step directional eligibility guard",
+    "treat its direct root-sink derivative as zero while retaining the physical root sink in the principal Richards solve",
+    "propagate root coverage conjunctively across all accepted substeps",
+    "permit MODFLOW6 tangent endpoint root_uptake_covered only when root uptake is active and the accepted trajectory explicitly reports complete prescribed-root coverage"
+  ],
+  "fail_closed": [
+    "all other root_sink_provider_t implementations remain directional-unavailable",
+    "unbound, wrong-sized, or nonfinite prescribed root sink remains unavailable/failed",
+    "state-dependent Feddes or other dynamic root-stress logic is not admitted",
+    "no finite-difference runtime fallback",
+    "no new nonlinear solve",
+    "no change to temporal, mass, solver, retry, or application-accuracy tolerances"
+  ],
+  "qualification": [
+    "ROOT versus mathematically equivalent GENERIC sink physical endpoint identity",
+    "ROOT versus GENERIC final pressure-head and water-content directional identity",
+    "ROOT versus GENERIC integrated bottom-exchange derivative identity",
+    "multi-substep trajectory root coverage remains complete",
+    "MODFLOW6 tangent endpoint becomes authoritative only with explicit root_uptake_active=true and complete root coverage",
+    "unsupported root provider remains fail-closed",
+    "O0/O2 output identity",
+    "preserve F-KT21 and F-GC31 directional behavior"
+  ],
+  "decision_rules": {
+    "pass": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+    "fail": "BLOCKED_PRESCRIBED_ROOT_TANGENT_NOT_EQUIVALENT_OR_NOT_FAIL_CLOSED"
+  },
+  "nonclaims": [
+    "no dynamic root-water-stress derivative",
+    "no Feddes derivative",
+    "no new root physics",
+    "no Stage 0 scientific result",
+    "no production project coupling admission by this workunit alone"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "work_unit": "F-PE-DYNTOP-PREDICT03",
+  "status": "PREREGISTERED_BLIND_VALIDATION_BANK",
+  "horizon_day": 0.12,
+  "materials": ["B01","B12","O05","O14"],
+  "regimes": [
+    {"id":"DRY4","class":"DRY","h0_cm":-180.0,"rain_cm_day":2.0},
+    {"id":"TRANS4","class":"TRANSITION","h0_cm":-85.0,"rain_cm_day":3.0},
+    {"id":"WET4","class":"WET","h0_cm":-35.0,"rain_cm_day":9.0},
+    {"id":"POND4","class":"POND","h0_cm":-12.0,"rain_cm_day":16.0}
+  ],
+  "classifier": {
+    "rule": "H0",
+    "requires_two_step_history": true,
+    "requires_predictor_available": true,
+    "requires_runoff_potential_false": true,
+    "r_last_max": 0.10
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "cycle_count": 18,
+  "measured_internal_dynamic_seconds": {
+    "cv": 0.024389037621025414,
+    "max": 0.993261463,
+    "mean": 0.9413461435555556,
+    "median": 0.9404136835000001,
+    "min": 0.912121665,
+    "n": 18,
+    "stdev": 0.022958526509583636
+  },
+  "paired_comparison": {
+    "baseline_variant": "off",
+    "measured_variant": "on",
+    "relative_delta": {
+      "max": 0.05792668830294345,
+      "mean": 0.001716688340416772,
+      "median": 0.0034761045702973448,
+      "min": -0.09827549086248921,
+      "n": 18,
+      "stdev": 0.03303993093797261
+    },
+    "resolved_above_two_se": false,
+    "two_standard_error_scale": 0.015575172810783763
+  },
+  "physical_output_hashes": {
+    "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+    "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+  },
+  "sample_count": 54,
+  "schema_version": "mp-repeatability-samples-v1",
+  "variants": {
+    "base": {
+      "cv": 0.022312004467570968,
+      "max": 0.995993552,
+      "mean": 0.952549082111111,
+      "median": 0.9505672505,
+      "min": 0.92624875,
+      "n": 18,
+      "stdev": 0.021253279375643735
+    },
+    "off": {
+      "cv": 0.026034375696071654,
+      "max": 1.02601138,
+      "mean": 0.9492479789444445,
+      "median": 0.9449880420000001,
+      "min": 0.921622988,
+      "n": 18,
+      "stdev": 0.02471307851257638
+    },
+    "on": {
+      "cv": 0.0242461650389331,
+      "max": 1.001902435,
+      "mean": 0.950339384,
+      "median": 0.9514698115,
+      "min": 0.920351708,
+      "n": 18,
+      "stdev": 0.023042085547462017
+    }
+  }
+}

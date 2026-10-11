@@ -1,0 +1,64 @@
+{
+  "cpu_baseline_established": false,
+  "final": {
+    "measured_sample_throttled_events": 0,
+    "measured_sample_throttled_usec": 0,
+    "pair_count": 21,
+    "paired_child_cpu": {
+      "max": 0.06543510466560742,
+      "mean": 0.004729356728534066,
+      "median": -0.0012545885810276713,
+      "min": -0.059487053595314476,
+      "minimum_detectable_relative_effect": 0.013515882374080036,
+      "n": 21,
+      "stdev": 0.030968777031670603
+    },
+    "paired_wall_elapsed": {
+      "max": 0.0655855833993717,
+      "mean": 0.004626073879999836,
+      "median": -0.0013039384607176352,
+      "min": -0.059371402097256776,
+      "minimum_detectable_relative_effect": 0.013404478831400142,
+      "n": 21,
+      "stdev": 0.030713519448162176
+    },
+    "physical_output_hashes": {
+      "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+      "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+    }
+  },
+  "gates": {
+    "cpu_resolution_qualified": false,
+    "deterministic_cpu_selection": true,
+    "no_measured_sample_throttling": true,
+    "no_qualification_window_throttling": false,
+    "physical_output_equality": true,
+    "preflight_cpu_cv_within_limit": true
+  },
+  "host": {
+    "cpu_max": "400000 100000",
+    "cpuset": "0-4",
+    "qualification_window_throttled_events": 2,
+    "qualification_window_throttled_usec": 65370
+  },
+  "host_admitted_for_cpu_baseline": false,
+  "pilot": {
+    "pair_count": 10,
+    "paired_child_cpu": {
+      "max": 0.06935735916245278,
+      "mean": 0.019481932665784296,
+      "median": 0.014712449121100701,
+      "min": -0.0067429167053858485,
+      "n": 10,
+      "stdev": 0.022540643137182608
+    },
+    "required_final_pairs": 21
+  },
+  "schema_version": "mp-host-admission-summary-v1",
+  "selected_cpu": 3,
+  "selected_cpu_preflight": {
+    "child_cpu_cv": 0.008118458111565915,
+    "wall_elapsed_cv": 0.007478899873318218
+  },
+  "target_resolution_relative": 0.01
+}

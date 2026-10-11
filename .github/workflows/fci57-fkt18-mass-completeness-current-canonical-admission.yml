@@ -1,0 +1,26 @@
+name: F-CI57 F-KT18 mass-completeness current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci57-fkt18-mass-completeness-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI57 fail-closed admission gate
+        run: bash tests/fci/run_fci57_fkt18_mass_completeness_current_canonical_admission.sh

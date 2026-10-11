@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.architecture_invariant_audit.v1",
+  "work_unit": "F-CI40",
+  "candidate": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+  "production_delta": ["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+  "result": "30_OF_30_NO_ADVERSE_DELTA",
+  "findings": {
+    "kernel_io_separation": "PASS_RUNTIME_ONLY_NO_KERNEL_IO_ADDED",
+    "data_separation": "PASS_EFFECTIVE_FORCING_IS_EXPLICIT_READ_ONLY_INPUT",
+    "compact_persistent_state": "PASS_NO_EFFECTIVE_FORCING_PERSISTENCE",
+    "scratch_per_worker": "PASS_CALLER_RESOLVED_EPHEMERAL_FORCING",
+    "transactional_timesteps": "PASS_SHARED_EXECUTOR_PRESERVES_CHECKPOINT_TRIAL_COMMIT_DISCARD",
+    "cheap_recomputation": "PASS_NO_COMMITTED_STATE_MUTATION_BEFORE_COMMIT",
+    "generic_time": "PASS_T0_T1_UNCHANGED",
+    "coupling_readiness": "PASS_NO_COUPLING_CONTRACT_REGRESSION",
+    "mass_conservation": "PASS_INCOMPLETE_MASS_REJECTS_AND_ONLY_ACCEPTED_TRANSFERS_AGGREGATE",
+    "multiswap_primary": "PASS_GENERIC_RESOLVED_COLUMN_SEAM_SUPPORTS_FUTURE_WORKER_COMPOSITION",
+    "alternative_solver_boundary": "PASS_NO_SOIL_SOLVER_INTERNAL_COUPLING_ADDED",
+    "physics_vs_solver_policy": "PASS_NO_PHYSICS_OPTION_MUTATION",
+    "diagnostics": "PASS_EXISTING_RUNTIME_DIAGNOSTICS_PRESERVED",
+    "optional_functionality": "PASS_NO_PERSISTENT_OPTIONAL_FORCING_STATE",
+    "runtime_owns_composition": "PASS_RESOLUTION_REMAINS_RUNTIME_RESPONSIBILITY",
+    "no_silent_dependencies": "PASS_NO_FILE_CALENDAR_OR_MODFLOW_ASSUMPTION_ADDED"
+  },
+  "scope_holds": [
+    "active parallel DIVDRA remains out of scope",
+    "drainage-specific worker pools remain out of scope",
+    "forcing registry remains immutable",
+    "effective forcing is not mass state and is not a second ledger path"
+  ],
+  "reference_mode": "UNCHANGED",
+  "mass_policy": "ABSOLUTE_UNCHANGED"
+}

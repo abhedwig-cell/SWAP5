@@ -1,0 +1,24 @@
+# SWAP-002 B1.10 admission checklist
+
+- [x] stable audit ID exists (`SWAP-002`)
+- [x] B0 defect reproduced and logically demonstrated
+- [x] intended `iTill` semantics established from downstream use and audit review
+- [x] isolated minimal patch contains only `set_iTill`
+- [x] canonical B0 target SHA pinned
+- [x] ordered B1.9 preimage equals canonical B0 and is explicitly pinned
+- [x] stored patch SHA pinned
+- [x] corrected target SHA pinned
+- [x] historical six-case semantic test retained
+- [x] fresh compiled six-case gate passes candidate and exposes B0 failures
+- [x] previous-event load semantics checked
+- [x] SWAP-003 excluded
+- [x] SWAP-004 excluded
+- [x] no solver-policy change
+- [x] no mass-tolerance change
+- [x] expected-difference envelope documented
+- [x] prospective B1.10 source-tree identity independently reconstructed
+- [x] B1.10 snapshot/manifest/pin integrated
+- [x] B2 handoff repinned to B1.10, still fail-closed
+- [ ] Documentation CI PASS
+- [ ] VQ reference qualification CI PASS
+- [ ] PR merged and issue closed

@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.publication.p2-e0-stage0-result.v1",
+  "workunit": "PUB-P2E01",
+  "publication_class": "PUB_P2_RESULT",
+  "research_programme_base": "40752b92e50b5000ac53892421336520fc62e518",
+  "current_admission_base_after_p1e01": "45b9dc1c4ae9a859c1f7f159d7a452c2dace2770",
+  "reconciliation_note": "PUB-P1E01 is documentation/data only and has no overlap with P2 production dependencies or publication test files. P2 must nevertheless re-run its PR checks against the post-P1E01 merge candidate before admission.",
+  "solver_seam_pilot_head": "e7d3802052cb82b9cc4b2978ef4b2ef144c8fce5",
+  "solver_seam_workflow_run": 35263864032,
+  "solver_seam_job": 105346002741,
+  "solver_seam_verdict": "PAIRED_EXTRACTION_READY",
+  "optimization_qualification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "outputs_identical": true,
+    "output_sha256": "bf854934b47e3e060f20a86f2b1c49601aae58f8be332f68d9963e13335be3c5"
+  },
+  "case": {
+    "case_id": "P2-E0-PILOT-B01-HM101",
+    "material": "B01",
+    "nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_head_cm": -101.0,
+    "step_duration_day": 0.0016,
+    "top_boundary": "prescribed flux 0.01*K(h0)",
+    "bottom_boundary": "prescribed flux -0.004*K(h0)"
+  },
+  "observations": {
+    "reference_route": "legacy-reference-bound",
+    "alternative_route": "rossfast-d3r",
+    "reference_nonlinear_iterations": 3,
+    "reference_linear_solves": 3,
+    "alternative_linear_solves": 24,
+    "reference_mass_residual_cm": -4.73913226370359375e-13,
+    "alternative_mass_residual_cm": -3.03421813024830518e-15,
+    "D_h_inf_cm": 2.00796959859417257e-5,
+    "D_h_rms_cm": 8.55848056071812140e-6,
+    "D_theta_inf": 2.41824979207994062e-8,
+    "D_theta_rms": 1.03052868157011792e-8,
+    "D_storage_cm": 0.0,
+    "D_qtop_prescribed_cm_per_day": 0.0,
+    "D_qbot_prescribed_cm_per_day": 0.0
+  },
+  "interpretation_limits": {
+    "scientific_admissibility_evaluated": false,
+    "state_equivalence_claim_allowed": false,
+    "predicted_flux_equivalence_claim_allowed": false,
+    "performance_claim_allowed": false,
+    "prescribed_flux_identity_is_independent_solver_evidence": false,
+    "note": "Raw discrepancies are retained as observations only. Scientific head, water-content and storage tolerances must be preregistered from an independent rationale before Stage 1."
+  },
+  "transaction_level_probe": {
+    "workflow_run": 35263199238,
+    "job": 105343772771,
+    "verdict": "BLOCKED_TEMPORAL_POLICY_ASYMMETRY",
+    "observed_failure": "Reference route did not commit under the F-ROSS12 model-certificate transaction policy.",
+    "adjudication": "The transaction mode requires a valid model certificate. RossFast supplies its admitted model certificate; the simple Reference E0 composition does not expose the same certificate under the same continuation layout. This is a comparison-design blocker, not evidence of Reference solver nonconvergence."
+  },
+  "next_permitted_action": "Predeclare independent scientific state/storage tolerance rationale, then freeze the broader six-material E0 solver-seam matrix. Transaction-level solver comparison remains separate until a common temporal acceptance policy is qualified."
+}

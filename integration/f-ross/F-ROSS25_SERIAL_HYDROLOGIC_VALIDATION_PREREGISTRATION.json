@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.f-ross25.serial-hydrologic-validation-preregistration.v1",
+  "workunit": "F-ROSS25",
+  "phase": "DESIGN",
+  "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
+  "branch": "work/f-ross25-serial-hydrologic-validation",
+  "canonical_source": "b1f23b069f733f1d711699b9d3cd4b8acaec968b",
+  "purpose": "Validate temporal composition of the canonically admitted F-ROSS22 tiered RossFast solver over multi-interval unsaturated trajectories without widening the admitted production envelope.",
+  "authority": {
+    "f_ross22_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "f_ross24_characterization": "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json",
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "claim_boundary": {
+    "what_is_extended": "temporal composition and trajectory accumulation only",
+    "what_is_not_extended": [
+      "geometry",
+      "material catalog",
+      "heterogeneous profiles",
+      "root/source-sink production support",
+      "dynamic top boundary/ponding",
+      "groundwater boundary modes",
+      "energy coupling",
+      "MultiSWAP mixed-solver operation"
+    ]
+  },
+  "domain": {
+    "materials": "all 36 admitted B01..B18 and O01..O18 materials",
+    "geometry": "16 homogeneous cells x 10 cm",
+    "profiles": {
+      "WET_GRADIENT": {
+        "top_head_cm": -40,
+        "bottom_head_cm": -120
+      },
+      "MID_GRADIENT": {
+        "top_head_cm": -180,
+        "bottom_head_cm": -650
+      },
+      "DRY_GRADIENT": {
+        "top_head_cm": -1200,
+        "bottom_head_cm": -4200
+      }
+    },
+    "profile_construction": "Historical Gate-D log10(-h) gradient with N241 table-coordinate fraction clamped to [0.2,0.8].",
+    "forcing_policies": {
+      "ZERO_SHARED": "identical q_top=0 and q_bottom_up=0 for both routes; provably inside the admitted state-local flux envelope whenever K>0",
+      "NOMINAL_SHARED": "identical paired forcing each interval, q_top=0.01*sqrt(Ktop_ref*Ktop_ross) and q_bottom_up=-0.004*sqrt(Kbottom_ref*Kbottom_ross); proceed only while the common flux is independently inside both routes' unchanged state-local production envelopes"
+    },
+    "intervals_per_trajectory": 32,
+    "interval_day": 0.0016,
+    "total_duration_day": 0.0512,
+    "trajectory_count": 216,
+    "route_pairing": "Both routes start from exactly the same initial state. At every interval they receive exactly the same boundary fluxes. Each route advances from its own previous terminal state.",
+    "source_sink": "zero",
+    "ponding": "none",
+    "bottom_mode": "prescribed flux only"
+  },
+  "metrics": [
+    "per-interval route validity and first failure interval/reason",
+    "per-interval RossFast final K2/K4/K8 tier and temporal indicator",
+    "per-interval RossFast integrated mass residual",
+    "cumulative external water transfer and storage closure",
+    "paired head infinity/RMS difference at intervals 1,2,4,8,16,32",
+    "paired theta infinity/RMS difference at intervals 1,2,4,8,16,32",
+    "paired storage difference at intervals 1,2,4,8,16,32",
+    "final profile/state discrepancy",
+    "tier escalation frequency over trajectory",
+    "paired common-forcing envelope loss, if any"
+  ],
+  "analysis_rules": [
+    "Do not use single-interval P2E10 thresholds as admission gates for serial trajectories.",
+    "Separate RossFast route failure, Reference failure, paired forcing-envelope loss, and accumulated route divergence.",
+    "A Reference failure does not count as a RossFast failure.",
+    "Any RossFast failure on an otherwise admitted serial state/forcing pair is a negative result and must be reported.",
+    "Do not generalize beyond the exact homogeneous 16x10cm fixed-flux production envelope."
+  ],
+  "firewall": [
+    "NO_PRODUCTION_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_TIER_LADDER_CHANGE",
+    "NO_MATERIAL_OR_GEOMETRY_WIDENING",
+    "NO_NEW_BOUNDARY_MODE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_DOMAIN_RETUNING_AFTER_RESULTS"
+  ],
+  "next_permitted_action": "IMPLEMENT_AND_MEASURE: build only the diagnostic serial-trajectory harness for this frozen contract, run all 216 trajectories, persist the complete result, then analyze and close."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.fdoc29_status.v1",
+  "work_unit": "F-DOC29",
+  "title": "Serialized MultiSWAP v1 technical reference",
+  "branch": "work/f-doc29-serialized-multiswap-technical-reference",
+  "phase": "VERIFY",
+  "decision": "DOCUMENTATION_VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "canonical_start": "46f7335351393167b92f301c28ed1f235c0892ce",
+  "canonical_reconciled_at_verify": "46f7335351393167b92f301c28ed1f235c0892ce",
+  "documentation_content_head": "9cd353ea404c4f247c8b40e40834c571631553e7",
+  "pull_request": 191,
+  "documentation_verification": {
+    "workflow_run": 35275460791,
+    "workflow_job": 105384885775,
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS"
+  },
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "frozen_source_owners": [
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90@1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/runtime/mod_fmr_runtime_core.f90@43eef1979e0202f8ecc92f73eb7d8025dab515a4",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90@9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "src/runtime/mod_fmr_restart_state_contract.f90@872c28bbc345f40073396cce57e4eb43c71de850",
+    "src/kernel/mod_kernel_committed_persistence.f90@ffd886c3401fc12739a456fe60a8741c12b9848b"
+  ],
+  "completion_authority": {
+    "work_unit": "F-MR42",
+    "closeout": "e370f95c2e50c2fef46fe99eac11522046560938",
+    "decision": "QUALIFIED_SERIALIZED_MULTISWAP_V1_100_PERCENT_COMPLETE",
+    "validated_head": "9e4ae6b872f3aafe51c9312979e7ed88c877ff3d",
+    "workflow_run": 34746257468,
+    "workflow_job": 103694630332,
+    "conclusion": "success"
+  },
+  "preservation_authority": {
+    "historical_permanent_testbank": "F-TB11@74bef08dedb060417d549c8d8cf0fedb8b73e997",
+    "stable_test_id": "FTB11-MSW-001",
+    "status_a_current_preservation": "same-tree F-GC29 serialized MultiSWAP observable and aggregate-mass replay plus retained mixed-smoke/permanent suites"
+  },
+  "verified_scope_delta": [
+    "docs/capabilities/serialized-multiswap-v1.md",
+    "integration/f-doc/F-DOC29_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC29_STATUS.json"
+  ],
+  "claim_boundary_notes": [
+    "Batch registry preflight is not whole-batch atomic commit.",
+    "The frozen multi-column orchestrator is mod_fmr_serialized_multiswap_runtime.f90; the serialized reference backend is per-column physical execution authority.",
+    "Deterministic v1 ordering is template_id then column_id.",
+    "Column commits are individually authoritative; a later rejected column does not retroactively roll back an earlier accepted column.",
+    "Aggregate diagnostics report composed per-column authority and do not override per-column transaction or mass gates."
+  ],
+  "forbidden_claims": [
+    "parallel/concurrent real-physics MultiSWAP",
+    "arbitrary thread/process safety",
+    "whole-batch atomic commit/rollback",
+    "worker scaling, SIMD/GPU, 100k-column throughput or general speedup",
+    "RossFast or mixed Reference/RossFast MultiSWAP inside frozen Status-A",
+    "broad direct-groundwater/MODFLOW MultiSWAP beyond separate authorities",
+    "automatic future-process MultiSWAP safety",
+    "filesystem/byte-format or cross-version restart",
+    "mid-transaction restart or persistent solver scratch"
+  ],
+  "mutation_scope": "documentation_and_governance_only",
+  "production_source_changes": [],
+  "reference_source_changes": [],
+  "test_changes": [],
+  "verdict": "VERIFIED_PENDING_EXACT_HEAD_DOCUMENTATION_GATE",
+  "next_permitted_action": "Require repository documentation checks and strict MkDocs build on this status-only head; then guarded merge PR #191 if canonical and head remain unchanged/relevant-delta clean."
+}

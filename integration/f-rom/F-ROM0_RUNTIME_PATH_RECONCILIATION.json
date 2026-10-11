@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.f-rom0.runtime-path-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0",
+  "phase": "RUNTIME_PATH_RECONCILED",
+  "canonical": "0c7a76bafeab1b1e1c57f5615340178d45bec268",
+  "source_locks": {
+    "src/runtime/mod_canonical_interval_runtime.f90": "0b50dda5caf3b73a82561d7b0ba1e92386a08fee",
+    "src/runtime/mod_canonical_contracts.f90": "3962c270a7579b7403764674302445fe15ef5f72",
+    "src/transaction/mod_transaction_reference.f90": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "src/kernel/mod_kernel_transactions.f90": "e4db4ede8162c8be877c8cad9f1babd57ba451b6",
+    "src/runtime/mod_fmr_checkpoint_orchestrator.f90": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+    "src/solver/mod_soil_water_solver_contract.f90": "40a1ddc05fb8e2c1822763de645fd07a094568a3"
+  },
+  "accepted_path": [
+    {
+      "layer": "FMR orchestration",
+      "symbol": "fmr_trial_from_checkpoint",
+      "file": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "meaning": "starts a bounded trial from committed authority and immutable checkpoint"
+    },
+    {
+      "layer": "kernel",
+      "symbol": "kernel_executor_t%advance_interval",
+      "file": "src/kernel/mod_kernel_transactions.f90",
+      "meaning": "clones committed physical state and calls the canonical interval runtime without mutating external committed state"
+    },
+    {
+      "layer": "canonical runtime",
+      "symbol": "run_canonical_interval",
+      "file": "src/runtime/mod_canonical_interval_runtime.f90",
+      "meaning": "owns private working state, transaction retries/substeps and whole-request completion; only a completed canonical interval moves working state to its candidate authority"
+    },
+    {
+      "layer": "transaction",
+      "symbol": "execute_reference_interval",
+      "file": "src/transaction/mod_transaction_reference.f90",
+      "meaning": "executes full/half trials, evaluates solver/mass/temporal acceptance, retries from checkpoint and publishes only accepted transaction state"
+    },
+    {
+      "layer": "FMR commit",
+      "symbol": "fmr_commit_candidate",
+      "file": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "meaning": "delegates candidate commit to kernel commit semantics"
+    },
+    {
+      "layer": "kernel commit",
+      "symbol": "kernel_executor_t%commit_candidate",
+      "file": "src/kernel/mod_kernel_transactions.f90",
+      "meaning": "atomically replaces committed physical state, increments revision and advances committed time only after provenance/time validation"
+    }
+  ],
+  "observation_surface": {
+    "committed_snapshot": "kernel_committed_state_t%snapshot",
+    "interval_result": "kernel_result_t / canonical_result_t-derived accepted mass and diagnostics",
+    "accepted_bottom_exchange": "canonical_result_t bottom-interface exchange fields",
+    "accepted_retry_diagnostics": "canonical_run_diagnostics_t via kernel result diagnostics",
+    "rule": "Research observations are taken after successful FMR commit. Candidate/rejected state observations, if retained for numerical diagnostics, are tagged separately and never enter the accepted trajectory library."
+  },
+  "key_semantic_findings": [
+    "run_canonical_interval keeps the externally committed state untouched until the full requested interval completes.",
+    "execute_reference_interval retries from a checkpoint when solver, mass or temporal acceptance fails.",
+    "kernel commit is the external committed-state mutation boundary.",
+    "The superseded direct-solver pilot sat below these acceptance/commit layers and therefore cannot define ROM reference trajectories."
+  ],
+  "implementation_firewall": [
+    "NO_SRC_MUTATION_FOR_ROM0_INITIAL_HARNESS",
+    "NO_REFERENCE_MUTATION",
+    "NO_RETRY_POLICY_CHANGE",
+    "NO_TIMESTEP_POLICY_CHANGE",
+    "NO_SOLVER_SELECTION_CHANGE",
+    "NO_DIRECT_SOLVER_ATTEMPT_AS_ACCEPTED_STATE"
+  ],
+  "decision": "PATH_SUFFICIENT_FOR_ROM0_PREREGISTRATION",
+  "blocker": null
+}

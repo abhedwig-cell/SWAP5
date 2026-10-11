@@ -1,0 +1,31 @@
+name: PPA-WU04 stateful ET interception scientific review
+
+on:
+  pull_request:
+    paths:
+      - 'docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md'
+      - 'integration/audits/PPA_WU04_*.json'
+      - 'integration/audits/production_physics_application_envelope_gap_register.json'
+      - 'tests/fvq/validate_ppa_wu04_stateful_et_interception_review.py'
+      - '.github/workflows/ppa-wu04-stateful-et-interception-review.yml'
+  workflow_dispatch:
+
+jobs:
+  authority-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate B1.11 authority and zero production delta
+        run: python3 tests/fvq/validate_ppa_wu04_stateful_et_interception_review.py --mode authority
+
+  independent-contract-review:
+    needs: authority-review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independently validate state restart rollback and mass contract
+        run: python3 tests/fvq/validate_ppa_wu04_stateful_et_interception_review.py --mode independent

@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.fci39_post_promotion_gate.v1",
+  "work_unit": "F-CI39",
+  "title": "Post-Promotion Broad Canonical Requalification Gate",
+  "canonical_source_admission": {
+    "head": "25ed89861e592420b4bbdb6e42a4c083337ebabc",
+    "parent_source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+    "promotion_method": "NON_FORCE_FAST_FORWARD"
+  },
+  "pre_promotion_gate": {
+    "workflow": "F-CI39 F-PM06E surface evaporation capacity canonical admission",
+    "run": 34545646563,
+    "job": 103097547625,
+    "head": "25ed89861e592420b4bbdb6e42a4c083337ebabc",
+    "conclusion": "success"
+  },
+  "required_post_promotion_gate": {
+    "workflow": "F-CI canonical qualification",
+    "exact_canonical_head_required": true,
+    "frozen_prior_authorities_required": true,
+    "frozen_fci39_source_authority_required": true,
+    "moving_fci39_capability_preservation_required": true,
+    "hard_mass_policy": "UNCHANGED_ABSOLUTE",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+    "no_further_mutation_required_after_green_exact_head": true
+  },
+  "decision": "FCI39_CANONICAL_AUTHORITY_ESTABLISHED_IF_THIS_EXACT_CANONICAL_HEAD_HAS_GREEN_BROAD_CANONICAL_WORKFLOW"
+}

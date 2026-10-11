@@ -1,0 +1,49 @@
+{
+  "baseline_variant": "off",
+  "measured_variant": "on",
+  "metrics": {
+    "child_cpu_seconds": {
+      "minimum_detectable_relative_effect": 0.02571008562957868,
+      "observed_effect_resolved": false,
+      "relative_delta": {
+        "max": 0.47212712454933636,
+        "mean": 0.011710757911173786,
+        "median": 0.000911757986834516,
+        "min": -0.1749665917259493,
+        "n": 44,
+        "stdev": 0.08527070736122078
+      },
+      "resolution_multiplier": 2.0,
+      "target_resolution_qualified": false,
+      "target_resolution_relative": 0.01
+    },
+    "wall_elapsed_seconds": {
+      "minimum_detectable_relative_effect": 0.02572675372201218,
+      "observed_effect_resolved": false,
+      "relative_delta": {
+        "max": 0.4719030897439682,
+        "mean": 0.011463888704416515,
+        "median": 0.0018227743181944422,
+        "min": -0.17611009912545972,
+        "n": 44,
+        "stdev": 0.08532598916979366
+      },
+      "resolution_multiplier": 2.0,
+      "target_resolution_qualified": false,
+      "target_resolution_relative": 0.01
+    }
+  },
+  "pair_count": 44,
+  "physical_output_hashes": {
+    "result.bal": "8225c618e5a36243ab1a48f689c3ef09f28985bbdf501d38c6fdfb84f6fa7e7e",
+    "result.blc": "d013c4ecc7bbdde76b5f0e03483dbc9d15e6b64c936eebe50a3e2624d5c8b66a"
+  },
+  "primary_metric": "child_cpu_seconds",
+  "production_baseline_resolution_qualified": false,
+  "sample_count": 88,
+  "schema_version": "mp-cpu-baseline-summary-v1",
+  "secondary_metric": "wall_elapsed_seconds",
+  "target_affinity_cpus": [
+    0
+  ]
+}

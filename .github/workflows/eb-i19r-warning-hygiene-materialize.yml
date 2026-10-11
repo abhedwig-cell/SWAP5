@@ -1,0 +1,72 @@
+name: EB-I19R one-shot warning-hygiene materialization
+
+on:
+  push:
+    branches:
+      - work/eb-i19r-production-bottom-energy-warning-hygiene
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[eb-i19r-materialized]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pin canonical and source preconditions
+        run: |
+          set -euo pipefail
+          canonical=5e5e498dc56d1df1dd7ebebbf9901c946445a1ab
+          base=b2ba462cfade41eb68643db75ca28e234a123a02
+          git fetch -q origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$canonical"
+          git merge-base --is-ancestor "$base" HEAD
+          test "$(git hash-object src/runtime/mod_fmr_serialized_reference_backend.f90)" = a4b4891f5e7223691264eff80cdfc6dbb3851a5a
+          test "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = 345febcbb567084163928b81b6bc0303f31d05d9
+          test "$(git hash-object src/runtime/mod_fmr_bottom_sensible_energy.f90)" = 1f3d6f975278f960feac4388b0cdd36a0f5f162d
+          echo 'EB_I19R_PREMATERIALIZATION_LOCK=PASS'
+
+      - name: Apply bounded warning-hygiene transformation
+        run: |
+          set -euo pipefail
+          python3 tests/eb/_apply_eb_i19r_warning_hygiene.py
+          changed="$(git diff --name-only | sort)"
+          expected=$'src/runtime/mod_fmr_bottom_sensible_energy.f90\nsrc/runtime/mod_fmr_serialized_multiswap_runtime.f90\nsrc/runtime/mod_fmr_serialized_reference_backend.f90'
+          if test "$changed" != "$expected"; then
+            printf 'Unexpected remediation delta:\n%s\n' "$changed" >&2
+            exit 193
+          fi
+          git diff --check -- \
+            src/runtime/mod_fmr_bottom_sensible_energy.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          echo 'EB_I19R_EXACT_WARNING_HYGIENE_DELTA=PASS'
+
+      - name: Create local remediation commit
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add \
+            src/runtime/mod_fmr_bottom_sensible_energy.f90 \
+            src/runtime/mod_fmr_serialized_reference_backend.f90 \
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m 'refactor(EB-I19R): make bottom-energy evaluation order explicit [eb-i19r-materialized]'
+          echo "EB_I19R_LOCAL_CANDIDATE_HEAD=$(git rev-parse HEAD)"
+          echo "EB_I19R_LOCAL_CANDIDATE_TREE=$(git rev-parse HEAD^{tree})"
+
+      - name: Qualify warning-hygiene candidate before push
+        run: bash tests/eb/run_eb_i19r_warning_hygiene_gate.sh
+
+      - name: Push only qualified remediation commit
+        run: |
+          set -euo pipefail
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'EB_I19R_QUALIFIED_REMEDIATION_PUSHED=PASS'

@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF38",
+  "title": "Atomic WOFOST Crop-Owner and Accepted-Event Receipt Transaction Qualification",
+  "branch": "work/f-wof38-atomic-crop-owner-delivery-transaction",
+  "base": {
+    "work_unit": "F-WOF37",
+    "commit": "11cdb93c12b573bbb7c29736061f51700b3e5f36",
+    "status": "QUALIFIED_RESTRICTED_PREPUBLICATION_CROP_EVENT_COMPOSITION_SCOPE_COMPLETE"
+  },
+  "design_precommit": "integration/f-wof/F-WOF38_DESIGN_PRECOMMIT.json",
+  "definitive_qualification_head": "3c4db4d63109f92c906da6d4b51c231ed6b30dc7",
+  "post_test_cleanup_head": "ee6cec8ceb9379efe81deec3834badfb2206a58e",
+  "production_implementation": {
+    "implemented": true,
+    "files": [
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+    ],
+    "exact_source_delta_from_F_WOF37": true,
+    "kernel_source_changed": false,
+    "transaction_core_source_changed": false,
+    "canonical_runtime_source_changed": false,
+    "solver_source_changed": false,
+    "crop_physics_source_changed": false,
+    "root_uptake_or_ET_physics_changed": false,
+    "mass_accounting_physics_changed": false
+  },
+  "architecture": {
+    "commit_authority": "existing F-KT kernel candidate and commit only",
+    "transaction_state": "WOFOST-specific runtime transaction_state_t containing the physical crop owner plus compact last-consumed accepted-event identity receipt",
+    "event_identity": "opaque source provenance derived from the frozen F-WOF34 accepted crop-event token",
+    "atomic_publication": "crop-owner candidate and matching event-consumption receipt are fields of one F-KT candidate and are published by one F-KT commit",
+    "generic_external_candidate_adoption_api_added": false,
+    "legacy_event_delivered_used_as_atomic_route_commit_authority": false,
+    "mixed_legacy_and_atomic_delivery_route_admitted": false
+  },
+  "gate_A_event_identity": {
+    "workflow_run": 34349159872,
+    "workflow_job": 102457874941,
+    "tested_head": "583d14b4c6c7450bbfccbfee771ea5fab6b73331",
+    "conclusion": "success",
+    "markers": [
+      "FWOF38_GATE_A_DISPOSABLE_IDENTITY_API_PATCH=PASS",
+      "FWOF38_GATE_A_FWO34_EXACT_TRANSCRIPT_PRESERVATION=PASS",
+      "FWOF38_GATE_A_IDENTITY_O0=PASS",
+      "FWOF38_GATE_A_IDENTITY_O2=PASS",
+      "FWOF38_GATE_A_IDENTITY_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FWOF38_GATE_A_EVENT_IDENTITY_API_GATE PASS"
+    ],
+    "F_WOF34_exact_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007"
+  },
+  "main_atomic_gate": {
+    "workflow_run": 34351035923,
+    "workflow_job": 102464079686,
+    "tested_head": "d3c804c1d357cfd294a43e32ba542cdc57bcc724",
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true,
+    "qualified_properties": [
+      "rejected physical trial contributes zero to the crop event carrier",
+      "accepted physical event yields the exact frozen carrier",
+      "precommit crop owner and receipt remain unchanged",
+      "same crop checkpoint replays an identical owner-plus-receipt candidate",
+      "rollback leaves both crop owner and receipt at the checkpoint",
+      "one F-KT revision publishes crop owner and matching receipt together",
+      "legacy event_delivered is not a second commit authority on this route",
+      "duplicate source event causes zero additional crop advancement",
+      "failed crop evolution causes zero owner or receipt mutation",
+      "fixed one-day crop event forbids retry dt shrinking",
+      "F-WOF33 two-phase crop-window regression remains green"
+    ]
+  },
+  "gate_E_failed_then_accepted_retry": {
+    "workflow_run": 34351639767,
+    "workflow_job": 102466086390,
+    "tested_head": "3c4db4d63109f92c906da6d4b51c231ed6b30dc7",
+    "conclusion": "success",
+    "oracle": "qualification-only overlay on the already-qualified main F-WOF38 harness",
+    "marker": "FWOF38_GATE_E_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS",
+    "properties": [
+      "an intentionally failed crop trial leaves the committed crop transaction at revision 0",
+      "the retry starts from the same still-committed crop checkpoint and the same accepted physical source event",
+      "the valid retry produces the same crop owner as the direct qualified path",
+      "the retry remains candidate-only until explicit F-KT commit",
+      "one successful commit advances the committed transaction to exactly revision 1",
+      "the committed receipt is ready and matches the accepted source event"
+    ],
+    "O0_O2_output_identity": true
+  },
+  "qualification_discovered_hardening": {
+    "finding": "GNU Fortran O2 with strict warnings exposed logical expressions that combined impure validation calls with .and.; Fortran does not guarantee short-circuit evaluation.",
+    "production_repair_commit": "3eaa234ae261929ec2a28c3a2552fb5f6c10d531",
+    "repair": "replace compiler-dependent logical chains in ready/validation paths by explicit sequential guards",
+    "warning_suppression_used": false,
+    "semantic_effect": "evaluation order is explicit and compiler-independent; no physics or acceptance tolerance was changed"
+  },
+  "water_and_mass": {
+    "new_crop_transaction_water_storage": false,
+    "new_crop_transaction_water_flux": false,
+    "crop_transaction_water_ledger": "complete zero-water ledger because PTRA/QROT water accounting remains owned by the already-qualified physical F-WOF36 path",
+    "physical_mass_conservation_contract_changed": false,
+    "mass_conservation_relaxed": false
+  },
+  "invariant_assessment": {
+    "7_transactional_timesteps": "PASS_WITHIN_QUALIFIED_WOFOST_CROP_EVENT_ROUTE",
+    "8_recompute_and_replay": "PASS_SAME_CHECKPOINT_REPLAY_AND_FAILED_THEN_ACCEPTED_RETRY",
+    "13_mass_conservation": "PASS_NO_NEW_WATER_TRANSFER_OR_LEDGER_CONCESSION",
+    "16_multiswap": "DIRECTIONALLY_COMPATIBLE_NOT_FULL_LAYOUT_QUALIFICATION",
+    "28_runtime_coupler_composition": "PASS_WOFOST_SPECIFIC_COMPOSITION_REMAINS_IN_RUNTIME_NOT_CROP_KERNEL",
+    "30_architecture_change_qualification": "PASS_DESIGN_PRECOMMIT_PLUS_O0_O2_AND_EXPLICIT_FAILURE_RETRY_GATES"
+  },
+  "post_test_changes": {
+    "from_definitive_qualification_head_to_post_test_cleanup_head": [
+      "remove .github/workflows/fwof38-fix-atomic-gate-zero-oracle.yml",
+      "remove .github/workflows/fwof38-materialize-event-identity.yml"
+    ],
+    "production_source_changed": false,
+    "qualification_test_changed": false
+  },
+  "not_qualified": [
+    "restart or crash durability of an active accepted crop window and crop transaction receipt",
+    "persistent serialization format for the receipt",
+    "mixed use of the legacy commit_wofost_crop_event_delivery path with the new atomic receipt path",
+    "runtime cleanup or lifecycle retirement semantics for a legacy accepted window after atomic receipt commit",
+    "arbitrary subdaily WOFOST crop evolution",
+    "arbitrary multi-day single-call WOFOST crop evolution",
+    "calendar-derived scheduling or midnight semantics",
+    "full MultiSWAP memory-layout, SoA or batching qualification of the new WOFOST transaction state",
+    "canonical promotion of the F-WOF38 branch",
+    "potential WOFOST shadow, nutrients, soybean, grass, oxygen IALPWET or other optional WOFOST routes outside the inherited restricted scope"
+  ],
+  "decision": "QUALIFIED_IN_MEMORY_ATOMIC_WOFOST_CROP_OWNER_AND_ACCEPTED_EVENT_RECEIPT_FKT_PUBLICATION",
+  "status": "QUALIFIED_RESTRICTED_ATOMIC_CROP_EVENT_PUBLICATION_SCOPE_COMPLETE"
+}

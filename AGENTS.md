@@ -1,0 +1,133 @@
+# SWAP5 agent guide
+
+This file is a repository entry point for coding and research agents. It is navigational. It does not replace architecture decisions, qualified evidence, work-unit status records, or accepted integration contracts.
+
+## Source of truth
+
+Use repository state as authority. Chat history, local scratch notes, generated summaries, and remembered branch state are working context only.
+
+When starting material work:
+
+1. Read the exact target branch and HEAD commit and pin that ref for the current phase.
+2. When resuming an existing work unit, read its versioned status/recovery record first if the path is known. Use it as navigation to the recovery point, relevant paths and dependency surface; it is not a substitute for the owning authority.
+3. Reconcile only the relevant live delta since the recorded checkpoint/reconciliation state. For current SWAP5 scope questions, read `docs/status-a/CURRENT_STATUS.md`, `docs/status-a/CURRENT_ARCHITECTURE.md`, and `docs/status-a/TRACEABILITY.md` before relying on older migration/status material.
+4. Read the relevant accepted capability documentation and work-unit evidence.
+5. Identify the owning workstream and interfaces touched.
+6. State which architecture invariants are affected.
+7. Distinguish implemented, persisted, tested, qualified, preserved, and canonically admitted state.
+
+If repository state and chat context disagree, repository state wins.
+
+## Autonomous execution across chats
+
+For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; exact-head scientific plus F-CI preservation; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
+
+## Read first
+
+For most work, start here:
+
+- `docs/status-a/CURRENT_STATUS.md` - current admitted Status-A scope and bounded claims.
+- `docs/status-a/CURRENT_ARCHITECTURE.md` - actual current state/execution ownership boundaries.
+- `docs/status-a/TRACEABILITY.md` - distributed contract, implementation, qualification, admission and preservation authority.
+- `docs/status-a/FUTURE_SCOPE.md` - deliberate non-admitted scope that is not automatically a blocker.
+- `docs/development/knowledge-map.md` - task-oriented map of repository authority and evidence.
+- `docs/architecture/invariants.md` - normative architecture invariants.
+- `docs/development/workstreams.md` - workstream ownership, integration boundaries, and coordination rules.
+- `docs/development/workstream-execution-protocol.md` - checkpoint, recovery, connector-efficient retrieval, and qualification discipline.
+- `docs/development/documentation.md` - documentation status labels and docs-as-code rules.
+- `docs/verification/principles.md` - verification and reference policy.
+- `docs/decisions/` - accepted architecture decisions and rationale.
+
+Then read the work-unit-specific status, integration, qualification, or evidence files for the change being made.
+
+Older `docs/architecture/implementation-status.md`, `D3a_IMPLEMENTATION_STATUS_MAP.md` and target component/migration maps remain historical or target-design evidence. They must not override a later Status-A/canonical acceptance authority for present-state claims.
+
+## Hard rules
+
+- Do not invent current state from filenames, chat summaries, or branch names. Re-read the repository.
+- Do not treat a target architecture document or historical migration status as proof of current implementation/admission.
+- Do not silently change a shared interface. Record the design decision or interface contract first when required.
+- Do not weaken mass conservation, transactional state semantics, restart semantics, or accepted boundary contracts to make a test pass.
+- Rejected trials must not modify committed physical state.
+- Keep physical options separate from numerical execution policy.
+- Keep production Full Richards available as the reference production path unless an accepted authority explicitly changes that status.
+- Alternative or research solvers must remain behind explicit compatibility contracts. They must not acquire hidden dependencies on production solver internals.
+- Verification evidence can qualify a claim only for the scope actually tested.
+- Immutable evidence is inherited only while its relevant dependency surface remains unchanged. Requalify affected capabilities, not unrelated ones.
+- Performance evidence does not establish physical equivalence or a broad portable speed guarantee.
+- Preserve legacy behaviour only when the accepted reference policy says it is part of the qualified baseline. Confirmed legacy defects are handled through the reference qualification process.
+- Absence from the current Status-A denominator is not a defect unless an applicable acceptance authority makes it one.
+
+## Work-unit discipline
+
+For a material work unit, maintain a recoverable Git state before expensive or timeout-sensitive work. Follow `docs/development/workstream-execution-protocol.md`.
+
+For operational continuity, use local shell/Git/Python/gfortran and focused tests when available, with GitHub connector access as an independent fallback. A local DNS or checkout failure is not evidence that the repository or legacy sources are unavailable. Follow the recovery ladder and local-first qualification rules in `docs/development/workstream-execution-protocol.md`. Work autonomously across meaningful phases, including justified shared-architecture changes with explicit contracts and preservation gates.
+
+A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
+
+For connector-mediated repository work, use the retrieval order `status first -> exact ref -> relevant delta -> bounded files -> search only if needed`. Treat a search result as a locator rather than branch authority unless the search is explicitly scoped to the pinned target ref; re-read located paths at the exact target SHA before relying on them. Do not perform broad repository recovery when a valid status record and unchanged dependency surface make it unnecessary.
+
+A useful handoff identifies at least:
+
+```text
+WORKSTREAM
+WORK UNIT
+BASELINE
+STATUS / RECOVERY RECORD
+SCOPE
+FILES / COMPONENTS TOUCHED
+RELEVANT PATHS / DEPENDENCY SURFACE
+INTERFACES CHANGED
+INVARIANTS AFFECTED
+IMPLEMENTATION STATUS
+TEST STATUS
+QUALIFICATION STATUS
+DEPENDENCIES / BLOCKERS
+NEXT SAFE STEP
+RECOVERY POINT
+```
+
+Do not report `tested` or `qualified` unless the named gate actually completed against the persisted postimage.
+
+## Change strategy
+
+Prefer the smallest change that satisfies the accepted contract.
+
+Before editing code or contracts:
+
+1. Locate the owning authority.
+2. Search for dependent interfaces and tests only after using the work-unit status/recovery paths and exact-ref bounded retrieval where available.
+3. Check current canonical integration state and applicable Status-A/successor scope authority.
+4. Decide whether the change is implementation, documentation, verification, or a design decision.
+5. Preserve existing qualified behaviour unless the work unit explicitly changes it.
+6. Reopen a previously admitted capability only when dependency evidence or an explicit acceptance requirement justifies it.
+
+When several authorities appear relevant, use `docs/development/knowledge-map.md` and `docs/status-a/TRACEABILITY.md` to determine what each document can and cannot establish.
+
+## Validation
+
+Run the narrowest relevant checks first, then the declared broader gates.
+
+Documentation changes should follow `docs/development/documentation.md`, including:
+
+```bash
+python -m pip install -r requirements-docs.txt
+python tools/docs/check_docs.py
+mkdocs build --strict
+```
+
+For code or numerical work, use the work-unit-specific verification and qualification gates. Do not substitute an unrelated green CI result for the required evidence.
+
+## Documentation language
+
+Use status language that makes authority and time explicit. Useful labels include:
+
+- **Baseline** - verified behaviour in a named reference version.
+- **Current / canonically admitted** - part of the named current accepted boundary.
+- **Target architecture** - accepted design, not necessarily implemented.
+- **Historical snapshot** - valid evidence for its recorded state, not present-state authority.
+- **Proposed** - not yet accepted.
+- **Qualified** - supported by named verification evidence.
+
+Keep claims narrow enough that a future agent can trace each one to code, a contract, a decision, or evidence.

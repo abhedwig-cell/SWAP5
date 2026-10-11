@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.fci59p.pre_registration.v1",
+  "work_unit": "F-CI59P",
+  "title": "F-CI59 Atomic Surface Publication Current-Canonical Postimage Reconciliation",
+  "canonical_postimage": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+  "canonical_postimage_tree": "577d2251ac5bcfa08c62918068f9d4e8168f48a0",
+  "pre_admission_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "admission_head": "97dbb3e92b05b32368d41bfe57b74bd49017b88b",
+  "admission_pr": 109,
+  "postpromotion_canonical_workflow_run": 34780675957,
+  "owner_authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "independent_authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+  "required_source_identity": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "scope": "metadata/test/workflow only; zero src or reference delta from canonical postimage",
+  "exit": "qualify only if true two-parent ancestry, exact production identities, successful postpromotion canonical workflow, independent authority and permanent preservation all reconcile without adverse architecture delta"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.governance_reconciliation.v1",
+  "workunit": "F-CI-FSI39-PRESERVATION-RECONCILIATION",
+  "date": "2026-09-18",
+  "branch": "work/f-ci-preserve-fsi39-successor",
+  "canonical_base": "79bc0b03398d762112542791c967646a8dc2c37a",
+  "trigger": {
+    "workflow_run": 35365933102,
+    "failed_job": 105669233396,
+    "gate": "current-restricted-canonical-preservation",
+    "failure": "FCI_CANONICAL_P2E05_PRESERVATION_FAIL admitted dependency drift: src/solver/mod_b110_default_mvg_provider.f90"
+  },
+  "authority_reconciliation": {
+    "fsi39_merge_commit": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
+    "fsi39_is_ancestor_of_canonical": true,
+    "fsi39_owner_qualification": {
+      "run_id": 35353574323,
+      "conclusion": "success"
+    },
+    "independent_fvQ127_qualification": {
+      "run_id": 35353574382,
+      "conclusion": "success"
+    },
+    "exact_qualified_postimages": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "556ed83dee4d5b159f1de7ae797af7106a0abe2e"
+    },
+    "current_canonical_postimages": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "556ed83dee4d5b159f1de7ae797af7106a0abe2e"
+    },
+    "verdict": "CURRENT_CANONICAL_MATCHES_EXACT_QUALIFIED_FSI39_SUCCESSOR"
+  },
+  "repair": {
+    "mutated_files": [
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "production_mutation": "NONE",
+    "semantics": "Move provider out of the frozen pre-F-SI39 byte-identity surface and accept only the exact F-SI39 provider/backend blobs when the admitted F-SI39 merge is an ancestor. Pre-F-SI39 lineages retain the prior exact authority checks.",
+    "tolerance_change": "NONE",
+    "solver_change": "NONE",
+    "physics_change": "NONE"
+  },
+  "admission_condition": "Canonical qualification must pass with the lineage-aware exact-successor gate before this governance repair is merged."
+}

@@ -1,0 +1,193 @@
+{
+  "schema": "swap5.f-romv2-d19.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D19",
+  "title": "Exact-contact FMC falling-slug to groundwater-front merge comparator",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+  "canonical_base": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
+  "purpose": "Directly test the primary-source FMC falling-slug/groundwater merge and post-merge hydrology from an exact-contact finite-volume state, avoiding the event-reachability limitation that closed D18.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_EXACT_CONTACT_TRANSITION_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D13": "FMC groundwater-front branch retained research candidacy.",
+    "D15": "Exact-contact slug/groundwater merge accounting primitive passed.",
+    "D16": "Falling-slug redistribution branch retained research candidacy.",
+    "D17": "Separated simultaneous surface+groundwater composition retained research candidacy.",
+    "D18": "Natural D17-to-hiatus event search did not reach merge within the frozen horizon; merge hydrology remained unadjudicated.",
+    "non_authoritative_feasibility": "A later duplicate-D18 synthetic half-step-gap preflight demonstrated contact-state executability but is explicitly FEASIBILITY_ONLY_NOT_CONFIRMATORY and is not scientific evidence for D19."
+  },
+  "primary_source_authority": {
+    "citation": "Ogden et al. (2015), Water Resources Research 51, 4282-4300",
+    "doi": "10.1002/2015WR017126",
+    "retained_rules": [
+      "falling slugs advance with Eq.19 and preserve length",
+      "when a falling slug encounters a groundwater front it merges into that front",
+      "the groundwater front is raised toward the surface by the merged slug length",
+      "groundwater-front evolution follows Eq.21",
+      "capillary relaxation and finite-volume bookkeeping are mass conservative"
+    ]
+  },
+  "frozen_identity": {
+    "material": "B01",
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "process_step_seconds": 10,
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087
+  },
+  "histories": [
+    {
+      "id": "X25",
+      "groundwater_lambda": 0.25
+    },
+    {
+      "id": "X50",
+      "groundwater_lambda": 0.5
+    },
+    {
+      "id": "X75",
+      "groundwater_lambda": 0.75
+    },
+    {
+      "id": "X125",
+      "groundwater_lambda": 1.25
+    }
+  ],
+  "exact_contact_initial_state": {
+    "groundwater_front": "H_j=lambda*abs(psi(theta_j)), using the four already-qualified D13 lambdas.",
+    "slug_length_cm": 5,
+    "groundwater_top_depth": "z_gw,j=160-H_j",
+    "slug_bottom_depth": "z_slug_bottom,j=z_gw,j",
+    "slug_top_depth": "z_slug_top,j=z_gw,j-5 cm",
+    "geometry_contract": "0 < z_slug_top < z_slug_bottom = z_gw < 160 for every active bin.",
+    "physical_profile_identity": "Pre-merge slug interval [z_gw-5,z_gw] plus groundwater interval [z_gw,160] has exactly the same occupied physical interval as the post-merge groundwater interval [z_gw-5,160].",
+    "finite_volume_storage_pre": "S=theta_i*160+dtheta*sum_j(5+H_j).",
+    "merge_rule": "At t=0 remove each touching slug and set H_j <- H_j+5 cm.",
+    "merge_storage_requirement": "Pre-merge and post-merge finite-volume storage must agree within 1e-14 cm.",
+    "exact_SWAP_mapping": "R16/R2 are initialized from the physical occupied interval [160-(H_j+5),160] for every active bin, which is identical before and after exact-contact representation merge.",
+    "initial_storage_identity_tolerance_cm": 1e-12
+  },
+  "post_merge_dynamics": {
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "fixed zero pressure head / fixed water table at z=160 cm",
+    "process": "D13 Eq.21 groundwater-front forward-Euler step followed by conservative capillary relaxation",
+    "observation_step_seconds": 10,
+    "process_steps_per_observation": 1,
+    "observation_steps": 64,
+    "root_sink": "zero",
+    "ET": "zero",
+    "drainage": "zero",
+    "subsurface_irrigation": "zero",
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "internal_preflight_before_SWAP_trajectories": {
+    "trajectory_data_consumed": false,
+    "checks": [
+      "all four exact-contact initial geometries are finite and physical",
+      "all 99 slugs per history touch but do not overlap their same-bin groundwater front",
+      "all 99 merges occur at t=0 by the primary-source rule",
+      "merge-only finite-volume storage drift <=1e-14 cm",
+      "post-merge H_j are finite, positive and <=160 cm",
+      "exact post-merge physical state maps to R16 and R2 storage within 1e-12 cm",
+      "all 64 FMC post-merge steps complete under unchanged D13 Eq.21 plus relaxation",
+      "max absolute per-step global water-ledger residual <=1e-12 cm"
+    ],
+    "failure_rule": "Any failure closes D19 before R16/R2 generation. Do not change lambda, slug length, bins, process step, equations or exact-contact geometry inside D19."
+  },
+  "SWAP_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "development reference"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "admitted physical-reduction comparator"
+    },
+    "numerical_authority": "D4 strict-first integrated-water-depth research policy with hard accepted transaction mass gate 1e-12 cm.",
+    "initialization": "exact cell-average mapping of the post-merge physical interval state",
+    "top_boundary": "zero prescribed flux",
+    "bottom_boundary": "zero pressure head"
+  },
+  "hydrological_metrics": {
+    "all_64_steps": [
+      "total-storage RMSE versus R16",
+      "cumulative-bottom-exchange RMSE versus R16",
+      "mapped 16-cell theta RMSE versus R16",
+      "upper/lower 80-cm storage RMSE",
+      "terminal bottom-flux RMSE versus R16",
+      "bottom-flux sign-error count"
+    ],
+    "early_post_merge_steps_1_8": [
+      "total-storage RMSE",
+      "cumulative-bottom-exchange RMSE",
+      "mapped 16-cell theta RMSE",
+      "terminal bottom-flux RMSE"
+    ],
+    "diagnostics": [
+      "merge count",
+      "merge-only storage residual",
+      "per-history bias",
+      "max/p95 profile error",
+      "FMC mass residual",
+      "R16/R2 research reattempt counts"
+    ],
+    "no_weighted_score": true
+  },
+  "decision_logic": {
+    "positive": "FMC_EXACT_CONTACT_MERGE_RETAINS_RESEARCH_CANDIDACY",
+    "negative": "FMC_EXACT_CONTACT_MERGE_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "internal preflight passes before SWAP trajectory exposure",
+      "all four matched histories complete with integrity",
+      "FMC all-step total-storage RMSE <= R2",
+      "FMC all-step cumulative-bottom-exchange RMSE <= R2",
+      "FMC all-step mapped-theta RMSE <= R2",
+      "FMC all-step terminal bottom-flux RMSE <= R2 with no more sign errors",
+      "FMC early post-merge total-storage, cumulative-bottom-exchange, mapped-theta and terminal-bottom-flux RMSE are each <= matched R2"
+    ],
+    "all_views_required": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Retain contact/merge as qualified bounded FMC research behavior. The next priority becomes a longer purpose-specific hydraulic horizon or rainfall/ponding threshold experiment before any formal runtime frontier.",
+    "if_negative": "Do not retune merge/contact construction. Preserve D13/D16/D17 positive non-contact envelopes and restrict FMC candidacy accordingly."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_EVENT_HORIZON_TUNING",
+    "NO_CONTACT_GAP",
+    "NO_LAMBDA_RETUNING",
+    "NO_SLUG_LENGTH_RETUNING",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_MERGE_RULE_RETUNING",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_ET_ROOT_UPTAKE",
+    "NO_RAINFALL_RUNOFF_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

@@ -1,0 +1,56 @@
+{
+  "work_unit": "F-SI38",
+  "title": "Prescribed-qbot Temporal Certificate Operator",
+  "status": "QUALIFIED_SOURCE_CAPABILITY_NOT_CANONICAL_ADMITTED",
+  "base_canonical": "e79b0272edb544ec4c8000a4d6869274f1ab3ae5",
+  "qualified_exact_head": "9b93a4341f722dd19aa667b4975bbfce5a637353",
+  "qualified_tree": "9d7d3010a3b235d5f25814672b1bcf04b7dc1e79",
+  "workflow_run": 34815146569,
+  "workflow_job": 103884165405,
+  "production_source": {
+    "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "candidate_source_commit": "ae8b73d99e3055817284c320ad3e13808da9fd9a",
+    "qualified_semantics": [
+      "bottom_mode=2 is admitted to the existing restricted reference-Richards temporal-indicator envelope when the existing provider, conductivity-policy, history and mass prerequisites hold",
+      "prescribed-qbot is a Neumann boundary in the defect operator and therefore contributes zero bottom-head stiffness",
+      "bottom_mode=5 retains the existing Dirichlet bottom-face stiffness K_b/(0.5*dz_b)",
+      "unsupported bottom modes remain fail-closed as boundary-envelope-deferred"
+    ]
+  },
+  "qualification": {
+    "mode2_matrix_cases": 10,
+    "qbot_values_per_day": [-1.0e-6, -1.0e-10, 0.0, 1.0e-10, 1.0e-6],
+    "step_durations_day": [1.0e-2, 1.0e-4],
+    "hard_mass_gate": 1.0e-12,
+    "independent_operator_oracle": "local Thomas solve reconstructing the Neumann defect operator independently of production reference_tridag",
+    "wrong_dirichlet_distinguished_cases": 4,
+    "optimization_levels": ["O0", "O2"],
+    "o0_o2_semantic_identity": true,
+    "extra_full_nonlinear_trajectories_for_indicator": 0,
+    "extra_tridiagonal_solves_for_indicator": 1,
+    "candidate_and_solver_diagnostic_noninterference": true,
+    "mode5_FSI25_preservation": {
+      "pass": true,
+      "Binf_cm": 2.12285124671350023e-2,
+      "mass_residual_cm": 5.55111512312578270e-16,
+      "extra_nonlinear": 0,
+      "extra_tridiag": 1
+    }
+  },
+  "hard_nonclaims": [
+    "No universal or application-specific H_budget is selected by F-SI38.",
+    "No canonical admission is claimed by this source qualification.",
+    "No new Richards physics, mass policy, transaction policy or retry policy is introduced.",
+    "No macropore, root-sink, dynamic-top or other previously deferred temporal-indicator envelope is admitted.",
+    "F-SI38 does not by itself qualify the serialized runtime path or EB-I18."
+  ],
+  "architecture_invariants": {
+    "mass_conservation_absolute": true,
+    "physics_solver_policy_separated": true,
+    "generic_time_preserved": true,
+    "transactional_acceptance_unchanged": true,
+    "no_silent_application_accuracy_default": true,
+    "optional_capability_fail_closed": true
+  },
+  "next_owner_handoff": "F-MR44 serialized prescribed-qbot runtime binding may compose this exact qualified production source with the production fixed-flux top provider and an explicit test-only head budget; EB-I18 remains blocked until that runtime transaction is qualified."
+}

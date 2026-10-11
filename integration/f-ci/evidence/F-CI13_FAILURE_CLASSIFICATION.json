@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI13",
+  "qualified_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+  "canonical_workflow_run": 34104845258,
+  "canonical_job": 101687946143,
+  "compiler": "GNU Fortran 13.3.0",
+  "gate_result": "FCI13_GATE_PASS",
+  "dependency_chain": "PASS_FCI03_THROUGH_FCI13",
+  "source_audit": {
+    "headcalc_blob": "225b9f2cc1ecff01414b5691799103b92bc068c5",
+    "fci11_swap_part05_preimage_blob": "beb729ff8b399c5522c9e54a7a8429bb0a1504e5",
+    "fci13_swap_part05_postimage_blob": "48fcc9d6f8cb95ef3ef773b27077c8368fdf72f9",
+    "fci11_timecontrol_part05_blob": "fe351d7c1c9dfd7edbd831acb527049cb8e4a9b5"
+  },
+  "classification": [
+    {
+      "path": "HeadCalc TRIDAG singularity",
+      "class": "INTERNAL_ALTERNATIVE_SOLVER",
+      "outer_trial_status": "NONE_IF_ALTERNATIVE_SOLVER_RETURNS"
+    },
+    {
+      "path": "HeadCalc nonconvergence above dtmin",
+      "class": "INTERNAL_RETRY",
+      "outer_trial_status": "NONE"
+    },
+    {
+      "path": "HeadCalc persistent nonconvergence at minimum dt",
+      "class": "RETRYABLE_NUMERICAL",
+      "outer_trial_status": "B1_10_TRIAL_STATUS_RETRYABLE_NUMERICAL"
+    },
+    {
+      "path": "unsupported or invalid configuration via swap_error",
+      "class": "FATAL_CONTRACT",
+      "outer_trial_status": "FAIL_FAST_NOT_RETRYABLE"
+    }
+  ],
+  "executed_checks": {
+    "static_exact_source_pins": "PASS",
+    "success_status_path": "PASS_O0_O2",
+    "retryable_status_and_state_restore": "PASS_O0_O2_DETERMINISTIC_FAILURE_TESTDOUBLE",
+    "fatal_invalid_interval": "PASS_O0_O2",
+    "fatal_unprepared_interval": "PASS_O0_O2",
+    "scalar_temporal_negative_control": "PASS_FAIL_CLOSED",
+    "older_canonical_gates": "PASS"
+  },
+  "qualification_limit": "The real B1.10 terminal minimum-dt nonconvergence branch is exact-source-bound and its canonical guard is exact-postimage-bound, but this qualification did not force a real Hupsel/B1.10 hydrological case into that terminal branch. Executable failure semantics were tested with a deterministic legacy testdouble.",
+  "scope": {
+    "canonical_worker_path_only": true,
+    "standalone_legacy_behavior_unchanged": true,
+    "physics_formulas_changed": false,
+    "solver_tolerances_changed": false,
+    "retry_policy_changed": false,
+    "mass_tolerance_changed": false,
+    "calendar_rules_changed": false
+  }
+}

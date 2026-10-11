@@ -1,0 +1,20 @@
+name: PPA-WU05-C3A PERF01 stages
+on:
+  push:
+    branches: [research/ppa-wu05c3a-zero-waste-performance]
+    paths:
+      - 'tests/performance/benchmark_bartholomeus_c3a_stages.f90'
+      - 'tests/performance/run_bartholomeus_c3a_stages.py'
+      - 'src/physics/oxygen/**'
+      - '.github/workflows/ppa-wu05c3a-perf01-stages.yml'
+  workflow_dispatch:
+jobs:
+  stages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tests/performance/run_bartholomeus_c3a_stages.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c3a-stage-result
+          path: c3a_stage_result.json

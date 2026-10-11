@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI21",
+  "evidence_type": "negative_evidence_and_remediation_lineage_reconciliation",
+  "historical_failed_unit": "F-VQ33",
+  "historical_failed_authority": {
+    "branch": "qualification/f-vq33-richards-head-budget-certificate",
+    "plan_blob": "cafab880cceb89a44ecee9e61bdde9f1afd85b5c",
+    "status_blob": "a353d8e137c85616fcda06e167c5acce66c9955f",
+    "status_commit": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "candidate_source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "rejected_backend_blob": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "failed_gate": "G09_diagnostics_and_cost_shape",
+    "executable_cases_started": false,
+    "negative_transfer": false,
+    "must_remain_failed": true
+  },
+  "failed_claim": {
+    "required_diagnostic": "preserve the native supplied H_budget value even when the supplied value is invalid",
+    "source_contradiction": "the rejected candidate replaced invalid negative, NaN and positive-infinity supplied budget values by 0.0 in the diagnostic carrier",
+    "scientific_formula_affected": false,
+    "mass_ordering_affected": false,
+    "rollback_semantics_affected": false,
+    "diagnostic_contract_affected": true
+  },
+  "owner_remediation": {
+    "branch": "work/f-kt11-richards-head-budget-certificate-policy",
+    "remediation_closeout_blob": "2fbad35692f47b79a9e792168042ff9ac097c905",
+    "handoff_blob": "51890fca7138021385f3366167ade92ef6daffb4",
+    "remediated_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "remediated_source_tree": "d24f20559653b028d7967bf57da37da432803221",
+    "remediated_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "owner_workflow_run": 34359330293,
+    "owner_decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITH_COMPLETE_INVALID_BUDGET_DIAGNOSTICS_READY_FOR_FRESH_INDEPENDENT_PRODUCTION_QUALIFICATION",
+    "supplemental_owner_cases": [
+      "INVALID_NEGATIVE_BUDGET",
+      "INVALID_NAN_BUDGET",
+      "INVALID_POSITIVE_INFINITY_BUDGET"
+    ],
+    "invalid_supplied_native_value_preserved_diagnostically": true
+  },
+  "F_CI21_postimage_reconciliation": {
+    "production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "postimage_manifest_blob": "868cf8c52c02a6a9b40bd09ad9f51b7c0b635de4",
+    "current_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "current_backend_is_rejected_F_VQ33_candidate": false,
+    "current_backend_is_remediated_F_KT11_candidate": true,
+    "rejected_backend_materialized": false,
+    "remediated_backend_materialized": true
+  },
+  "interpretation": {
+    "F_VQ33_reinterpreted_as_pass": false,
+    "F_VQ33_reopened": false,
+    "old_candidate_allowed_as_positive_evidence": false,
+    "fresh_independent_qualification_required": "F-VQ34",
+    "F_VQ34_may_use_F_VQ33_as_positive_evidence": false,
+    "F_VQ34_must_lock_F_VQ33_failure_before_execution": true
+  },
+  "architecture_relevance": {
+    "diagnostics_are_runtime_contract": true,
+    "physics_solver_policy_separation_preserved": true,
+    "mass_conservation_semantics_unchanged": true,
+    "transactional_semantics_unchanged": true,
+    "no_silent_invalid_budget_repair": true,
+    "production_source_changed_by_this_reconciliation": false
+  },
+  "decision": "PRESERVE_FVQ33_FAILURE_AND_REQUIRE_FVQ34_FOR_POSITIVE_REMEDIATED_QUALIFICATION"
+}

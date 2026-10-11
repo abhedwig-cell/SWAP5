@@ -1,0 +1,32 @@
+name: F-VQ37 independent F-WOF43A crop-to-ET canopy qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq37-fwof43a-crop-et-canopy-view-provider
+    paths:
+      - 'src/crop/mod_crop_et_canopy_view_provider.f90'
+      - 'src/crop/mod_wofost_rate_table.f90'
+      - 'tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90'
+      - 'tests/fvq/test_fvq37_crop_et_canopy_view_independent.f90'
+      - 'tests/fvq/run_fvq37_fwof43a_crop_et_canopy_view_independent_gate.sh'
+      - 'integration/f-vq/F-VQ37_SOURCE_REDERIVATION.json'
+      - 'integration/f-vq/F-VQ37_QUALIFICATION.json'
+      - 'integration/f-vq/F-VQ37_STATUS.json'
+      - '.github/workflows/fvq37-fwof43a-crop-et-canopy-view-provider.yml'
+  workflow_dispatch:
+
+jobs:
+  independently-qualify-crop-et-canopy-view:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ37 independent qualification gate
+        run: bash tests/fvq/run_fvq37_fwof43a_crop_et_canopy_view_independent_gate.sh

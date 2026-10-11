@@ -1,0 +1,31 @@
+name: F-WOF40 owner persistence candidate
+
+on:
+  push:
+    branches:
+      - work/f-wof40-true-process-restart
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'tools/fwof40_materialize_persistence_candidate.py'
+      - 'tests/fwof/run_fwof40_owner_persistence_candidate_gate.sh'
+      - 'integration/f-wof/F-WOF40_TRUE_PROCESS_RESTART_CONTRACT.json'
+      - '.github/workflows/fwof40-owner-persistence-candidate.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-owner-persistence-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF40 owner persistence candidate gate
+        run: bash tests/fwof/run_fwof40_owner_persistence_candidate_gate.sh

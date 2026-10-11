@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.fdoc28_status.v1",
+  "work_unit": "F-DOC28",
+  "title": "Restart v1 technical reference",
+  "branch": "work/f-doc28-restart-technical-reference",
+  "phase": "VERIFY",
+  "decision": "DOCUMENTATION_VERIFIED_PENDING_ADMISSION",
+  "canonical_start": "74051e113fcef19e021d69854f3ab99066eb30cb",
+  "canonical_reconciled_at_verify": "4b945b19d0b5f984d10bc750bb403174158a886b",
+  "canonical_delta_adjudication": "Later canonical work does not modify docs/capabilities/restart-v1.md and does not change the frozen Status-A Restart-v1 source denominator used by this workunit; F-DOC28 remains documentation-only and independently mergeable.",
+  "documentation_content_head": "b96a25686a1ded774ab244170a06c7cc796660d9",
+  "verified_pr_head": "0f651a80da7f8750a2f9673a37a891c291f0902c",
+  "pull_request": 180,
+  "documentation_verification": {
+    "workflow_run": 35240908214,
+    "workflow_job": 105268795473,
+    "conclusion": "success",
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS"
+  },
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "scientific_production_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "scientific_production_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "frozen_source_owners": [
+    {
+      "path": "src/kernel/mod_kernel_committed_persistence.f90",
+      "blob": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+      "role": "serialization-neutral committed-state persistence carrier, trusted reconstruction and restore"
+    },
+    {
+      "path": "src/runtime/mod_fmr_committed_restart.f90",
+      "blob": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+      "role": "Restart-v1 decoded record/bundle, export, validation and atomic restore publication"
+    },
+    {
+      "path": "src/runtime/mod_fmr_restart_state_contract.f90",
+      "blob": "872c28bbc345f40073396cce57e4eb43c71de850",
+      "role": "template-to-physical-state compatibility boundary"
+    },
+    {
+      "path": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+      "role": "committed checkpoint versus candidate trial/commit/discard ownership boundary"
+    }
+  ],
+  "qualification_authority": {
+    "work_unit": "F-KT16",
+    "commit": "37a91f16078badaa675235f1230d225a21c9e010",
+    "decision": "QUALIFIED_STATE_PERSISTENCE_RESTART_V1_100_PERCENT_COMPLETE",
+    "qualified_head": "81b2492f947df063742aa5998355d97d721af699",
+    "workflow_run": 34746928353,
+    "workflow_job": 103696445028,
+    "conclusion": "success"
+  },
+  "preservation_authority": {
+    "historical_permanent_testbank": "docs/testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md",
+    "stable_test_id": "FTB11-RST-001",
+    "independent_preservation_support": {
+      "work_unit": "F-VQ65",
+      "authority_commit": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+      "preservation_result": "restart_serialized_multiswap=PASS"
+    },
+    "status_a_current_preservation": "docs/status-a/TRACEABILITY.md Restart v1 row: same-tree restart observable and mass-preservation replay"
+  },
+  "permitted_claims": [
+    "Restart v1 persists committed continuation state and provenance, not arbitrary process memory.",
+    "The frozen FMR restart record schema is version 2 and delegates committed-state reconstruction to kernel persistence schema version 1.",
+    "A restart bundle carries parameter-set identity; per-column records carry stable column/parameter/template identity, lineage, revision, committed time binding and typed physical continuation state.",
+    "Immutable parameter payload, forcing, solver/Newton/Jacobian scratch and worker warm starts are not components of the frozen restart record.",
+    "Export is sourced from ready committed state and fails closed on structural/template/state incompatibility.",
+    "Restore validates schema, parameter-set identity, template identity, parameter references, physical-state family and uninitialized targets before publication.",
+    "Restore is atomic at the runtime registry boundary: candidate committed states are built first and the target registry is assigned only after all records succeed.",
+    "Checkpoint/trial orchestration keeps committed checkpoint authority separate from candidate trial state; candidates are explicitly committed or discarded.",
+    "The persistence boundary is serialization-neutral and does not define a filesystem or byte format."
+  ],
+  "forbidden_claims": [
+    "No mid-transaction trial-state or disposable worker-scratch persistence qualification.",
+    "No filesystem or byte-format standardization claim.",
+    "No future-major-schema migration qualification.",
+    "No distributed crash-recovery protocol qualification.",
+    "No deep-vadose or broad MODFLOW restart qualification.",
+    "No parallel/concurrent real-physics MultiSWAP restart claim beyond separately admitted authority.",
+    "No new production functionality, physics, numerical policy or restart semantics."
+  ],
+  "verified_scope_delta": [
+    "docs/capabilities/restart-v1.md",
+    "integration/f-doc/F-DOC28_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC28_STATUS.json"
+  ],
+  "current_mutation_scope": "documentation_and_governance_only",
+  "production_source_changes": [],
+  "reference_source_changes": [],
+  "test_changes": [],
+  "verdict": "VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "next_permitted_action": "Require repository documentation checks and strict MkDocs build on this status-only head, then guarded admission to current integration/f-ci-canonical if canonical remains relevant-delta clean."
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI12",
+  "classification": "QUALIFIED_TEST_OR_CONTRACT",
+  "qualified_source_head": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+  "canonical_ci": {
+    "run_id": 34102787767,
+    "job_id": 101681229677,
+    "job": "fci12-physical-transaction-advance",
+    "compiler": "GNU Fortran 13.3.0",
+    "result": "FCI12_GATE_PASS",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI12"
+  },
+  "admitted": {
+    "generic_physical_interval_executor_binding": true,
+    "unrounded_trial_mass_projection": true,
+    "qualified_profile_storage_projection": true,
+    "failed_testdouble_trial_state_isolation": true,
+    "worker_diagnostics_projection": true,
+    "unit_explicit_water_temporal_characterization": true
+  },
+  "not_admitted": {
+    "recoverable_legacy_solver_failure_status": true,
+    "complete_optional_process_temporal_characterization": true,
+    "scalar_temporal_error_metric": true,
+    "scalar_temporal_tolerance_policy": true,
+    "execute_reference_interval_for_b1_10": true,
+    "real_b1_10_reference_model_end_to_end": true,
+    "snow_macropore_complete_storage": true,
+    "reentrant_parallel_legacy_backend": true
+  },
+  "evidence_scope": "The F-CI12 gate is a production-binding and transaction-semantics qualification against a deterministic legacy testdouble. Physical generic-interval and hard-mass evidence remains the qualified F-CI11 Hupsel source-bound evidence; it is not duplicated or relabelled here.",
+  "policy_note": "Full-versus-two-half state differences are characterized as raw unit-explicit diagnostics only. F-CI12 does not turn them into an acceptance metric or numerical policy."
+}

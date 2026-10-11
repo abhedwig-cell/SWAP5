@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI58",
+  "title": "F-SI35 Mandatory Production Soil-Water Solver Seam Current-Canonical Admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI58_READY_FOR_CANONICAL_PROMOTION",
+  "restart_canonical": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+  "production_composition": "040627c77720829c297a0ba06e908efce683133c",
+  "owner_authority": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+  "owner_source_authority": "5898e6616dbb6871a9f52d489038235ba1172cae",
+  "independent_authority": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
+  "finding_authority": "b522fe150610f900f253eeea9bf78329107de362",
+  "production_blobs": {
+    "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+    "src/legacy/b1_10_port/soilwater.f90": "c1850ea7fa82a1ed8974af57e1da95aa11a771be"
+  },
+  "first_green_qualification": {
+    "head": "9a21acc9ac214107f2c9d619216c5d7817845c3e",
+    "run": 34771121342,
+    "job": 103760782668,
+    "conclusion": "success",
+    "source_bound_fsi35_replay": true,
+    "production_wide_headcalc_audit": "ZERO_PRODUCTION_INTERFACE_VIOLATIONS",
+    "standalone_worker_solver_seam_equivalence": "PASS",
+    "accepted_rejected_retry_transaction_semantics": "PASS",
+    "dynamic_top_boundary_regimes": "PASS",
+    "prescribed_qbot_interface_sensitivity": "PASS",
+    "hard_mass_qualified_profile": "PASS",
+    "worker_scratch_isolation": "PASS",
+    "F_SI31_research_isolation": "PASS",
+    "process_hydraulic_view": "PASS",
+    "serialized_multiswap": "PRESERVED_SOURCE_IDENTITY",
+    "groundwater_coupling": "PRESERVED_SOURCE_IDENTITY",
+    "current_canonical_lock": "PASS"
+  },
+  "architecture_audit": "30_OF_30_NO_ADVERSE_DELTA_FOR_FSI35_CANONICAL_ADMISSION",
+  "composition_verified": true,
+  "owner_and_independent_source_identity": true,
+  "production_interface_violation_count": 0,
+  "denominator_changed": false,
+  "scope_reduced": false,
+  "rossfast_production_requirement": false,
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "solver_interface_v1_qualified_100_percent": false,
+  "promotion_requirements": [
+    "This final status head itself must pass the F-CI58 admission workflow before promotion.",
+    "Immediately before promotion, integration/f-ci-canonical must still equal the restart canonical or F-CI58 must be recomposed and requalified.",
+    "Promotion must be a true two-parent merge with the then-live canonical as first parent and the exact final qualified F-CI58 head as second parent.",
+    "Force, squash and rebase promotion are forbidden.",
+    "Postpromotion reconciliation must prove the admitted production blobs, zero HeadCalc production-interface violations, broad current-canonical preservation and F-SI34 blocker closure before F-SI v1 100 percent is claimed."
+  ],
+  "hard_nonclaims": [
+    "No canonical admission yet.",
+    "No F-SI v1 100 percent claim before postpromotion reconciliation.",
+    "No denominator change or scope reduction.",
+    "No Full Richards algorithm rewrite or new physics.",
+    "No RossFast production requirement or admission.",
+    "The legacy compatibility path preserves existing frozen-v1 production coverage behind the common solver service; it is not promoted as a new F-SI33 reference profile."
+  ],
+  "closeout_policy": "Freeze this qualification branch once the workflow is green on this exact final status head. Do not add a self-referential metadata commit merely to record that later run."
+}

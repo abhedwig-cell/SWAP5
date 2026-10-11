@@ -1,0 +1,25 @@
+name: F-CI43 restricted soil-temperature canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci43-fpm07b-restricted-soil-temperature-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-CI43 exact source-bound canonical admission
+        run: bash tests/fci/run_fci43_restricted_soil_temperature_canonical_admission.sh

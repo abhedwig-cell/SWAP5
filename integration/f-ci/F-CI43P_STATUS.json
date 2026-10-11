@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI43P",
+  "title": "Current Canonical Postimage & Historical-Gate Governance Reconciliation after F-CI43",
+  "branch": "qualification/f-ci43p-current-canonical-postimage-governance-reconciliation",
+  "phase": "QUALIFIED_RECONCILIATION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI43_PROMOTED_POSTIMAGE_AND_FCI42_HISTORICAL_GATE_SCOPE_RECONCILIATION",
+  "promoted_canonical": "13c16dc1c089e02c5f669f9596a13127bfbdb31f",
+  "F_CI43_authority": "a9f1123f2c6a5f08ffa51b491afda18fc4ab2060",
+  "F_VQ58_authority": "5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "first_green_reconciliation": {
+    "head": "9fa929bdfaa19240cda91c23890e025741574b1f",
+    "run": 34614658070,
+    "job": 103313453448,
+    "conclusion": "success",
+    "oracle_output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+  },
+  "state": {
+    "F_CI43_canonical_promotion_verified": true,
+    "moving_canonical_gate_green_on_promoted_head": true,
+    "scientific_postimage_unchanged": true,
+    "reference_unchanged": true,
+    "historical_F_CI42_stale_trigger_identified": true,
+    "historical_F_CI42_stale_trigger_removed_on_reconciliation_branch": true,
+    "moving_canonical_gate_preserved": true,
+    "runtime_callsite_composed": false,
+    "RB1_modified_or_reopened": false,
+    "governance_remediation_promoted": false
+  },
+  "classification": {
+    "F_CI42_failure_on_F_CI43_promotion": "GOVERNANCE_DEFECT_NOT_SCIENTIFIC_DEFECT",
+    "reason": "the frozen F-CI42 exact-admission runner rejects any later legitimate src delta when incorrectly triggered on the moving canonical branch"
+  },
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_promoted_F_CI43_head": true,
+    "require_exact_status_head_reconciliation_success": true,
+    "require_no_src_reference_or_oracle_delta": true,
+    "require_bounded_governance_only_delta": true,
+    "require_true_two_parent_merge": true,
+    "force_update_forbidden": true,
+    "require_final_moving_canonical_gate_success": true,
+    "require_F_CI42_not_triggered_on_final_canonical_push": true
+  },
+  "next_required_step": "Run this exact metadata closeout head. If green and canonical remains at the F-CI43 promoted head, promote the governance-only reconciliation by a true two-parent merge, then require the moving canonical workflow to pass and confirm F-CI42 no longer triggers."
+}

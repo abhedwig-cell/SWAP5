@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF39",
+  "title": "Crop-Event Restart Boundary and Accepted-Window Lifecycle Retirement Qualification",
+  "branch": "work/f-wof39-crop-event-restart-lifecycle",
+  "base": {
+    "work_unit": "F-WOF38",
+    "commit": "68003aabea313eb1723329230d6f9bfd42a7c861",
+    "status": "QUALIFIED_RESTRICTED_ATOMIC_CROP_EVENT_PUBLICATION_SCOPE_COMPLETE"
+  },
+  "design_precommit": "integration/f-wof/F-WOF39_DESIGN_PRECOMMIT.json",
+  "definitive_tested_head": "09c3452dd28aa7fb50c483a7fc3702e0ca69b2c2",
+  "production_implementation": {
+    "implemented": true,
+    "file": "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
+    "kernel_source_changed": false,
+    "transaction_core_source_changed": false,
+    "crop_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "file_IO_added": false
+  },
+  "restart_boundary": {
+    "true_process_restart_qualified": false,
+    "blocker_at_F_WOF39_qualification": "BLOCKED_BY_MISSING_GENERIC_FKT_COMMITTED_STATE_RESTORE_PERSISTENCE_CONTRACT",
+    "crop_owner_or_receipt_state_missing": false,
+    "WOFOST_specific_lineage_or_revision_import_added": false,
+    "WOFOST_specific_serializer_added": false,
+    "scope_decision": "true restart remains owned by generic F-KT persistence; F-WOF39 qualifies only derived accepted-window lifecycle retirement"
+  },
+  "lifecycle_contract": {
+    "pre_matching_receipt": "zero mutation",
+    "matching_committed_receipt": "retire only legacy delivered/cache state through the existing validated token path",
+    "crop_owner_mutation": false,
+    "receipt_mutation": false,
+    "F_KT_revision_mutation": false,
+    "committed_physical_state_mutation": false,
+    "second_publication_authority_created": false,
+    "after_retirement_event_due": false,
+    "repeated_reconciliation": "nonmutating idempotent lifecycle result"
+  },
+  "qualification_gate": {
+    "workflow": "F-WOF39 crop event lifecycle retirement",
+    "run": 34356935349,
+    "job": 102483887947,
+    "tested_head": "09c3452dd28aa7fb50c483a7fc3702e0ca69b2c2",
+    "conclusion": "success",
+    "markers": [
+      "FWOF39_PRECOMMIT_NO_MATCH_ZERO_MUTATION=PASS",
+      "FWOF39_MATCHING_RECEIPT_RETIREMENT_ONLY=PASS",
+      "FWOF39_OWNER_RECEIPT_REVISION_UNCHANGED=PASS",
+      "FWOF39_REPLAY_IDEMPOTENT_ZERO_MUTATION=PASS",
+      "FWOF39_LIFECYCLE_RETIREMENT_GATE PASS"
+    ],
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true
+  },
+  "preservation": {
+    "F_WOF38_main_atomic_gate": "PASS",
+    "F_WOF38_main_atomic_O0_O2_output_identity": true,
+    "F_WOF38_failed_then_accepted_retry_gate": "PASS",
+    "F_WOF38_failed_then_accepted_same_checkpoint_exactly_once": true,
+    "same_workflow_run": 34356935349
+  },
+  "mass_and_physics": {
+    "new_water_storage": false,
+    "new_water_flux": false,
+    "new_physical_transfer": false,
+    "mass_tolerance_relaxed": false,
+    "crop_physics_changed": false
+  },
+  "invariant_assessment": {
+    "3_explicit_data_separation": "PASS_LIFECYCLE_CACHE_REMAINS_RUNTIME_DERIVED_STATE",
+    "7_transactional_timesteps": "PASS_NO_SECOND_PUBLICATION_AUTHORITY",
+    "8_recompute_and_replay": "PASS_RECONCILIATION_IDEMPOTENT",
+    "13_mass_conservation": "PASS_NO_PHYSICAL_TRANSFER_OR_ACCOUNTING_CHANGE",
+    "16_multiswap": "DIRECTIONALLY_COMPATIBLE_COMPACT_RUNTIME_OPERATION_NOT_FULL_LAYOUT_QUALIFICATION",
+    "28_runtime_coupler_composition": "PASS_LIFECYCLE_RECONCILIATION_REMAINS_RUNTIME_OWNED",
+    "29_no_silent_dependencies": "PASS_NO_FILE_CALENDAR_OR_MIDNIGHT_DEPENDENCY_ADDED",
+    "30_architecture_change_qualification": "PASS_SOURCE_BOUND_DESIGN_PLUS_EXECUTABLE_O0_O2_AND_PRESERVATION_GATES"
+  },
+  "not_qualified": [
+    "true process/crash restart",
+    "generic F-KT committed-state persistence or restore",
+    "serialization format or filesystem adapter",
+    "mid-transaction checkpoint or candidate persistence",
+    "canonical promotion",
+    "full MultiSWAP checkpoint/restart"
+  ],
+  "decision": "QUALIFIED_DERIVED_ACCEPTED_WINDOW_LIFECYCLE_RETIREMENT_WITH_TRUE_RESTART_HELD_FOR_GENERIC_FKT_PERSISTENCE",
+  "status": "QUALIFIED_ACCEPTED_WINDOW_LIFECYCLE_RETIREMENT_TRUE_RESTART_BLOCKED_BY_GENERIC_FKT_PERSISTENCE"
+}

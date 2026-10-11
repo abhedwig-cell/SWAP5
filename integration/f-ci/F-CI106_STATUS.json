@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI106",
+  "title": "Current-canonical serialized Reference backend successor-preservation reconciliation",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "QUALIFY",
+  "branch": "work/f-ci106-fgc31-successor-preservation-reconciliation",
+  "canonical_preimage": "3252e6a65d105da6c6606cc9f2b31a4c1070a49f",
+  "problem": "The moving preservation gate still required the historical F-ROSS12 serialized backend blob after independently qualified canonical successors F-GC31/F-CI98 and F-GC44 had legitimately changed that backend.",
+  "authority_chain": {
+    "status_a": "50346642bd565f79134ea17d5462e544b354998c",
+    "fross12": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+    "fross13_production": "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+    "fgc31_reconciled": "49a4685474a2d8df53c77c45e87a6c243316a97c",
+    "fgc44_production": "04e5db63356e48256997fad9daea9e77040c29e6"
+  },
+  "backend_postimages": {
+    "historical_fross12": "19d07cac9285142d14a6e9c53706fb73d016d5ad",
+    "admitted_fgc31": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+    "admitted_fgc44": "4597c833e7f45beaef04ffcc592ca6a4fcbd0395"
+  },
+  "repair": {
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "scientific_semantics_changed": false,
+    "changed_files": [
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "tests/publication/run_pub_p2e01_e0_paired_pilot.sh"
+    ],
+    "lineage_policy": "Historical F-ROSS12 remains immutable. Current heads use the exact admitted F-GC31 postimage after F-GC31 and the exact admitted F-GC44 postimage after F-GC44. No wildcard successor allowance.",
+    "compile_dependency_repairs": [
+      "current serialized backend requires mod_b110_smooth_freatic_projection",
+      "current serialized backend requires mod_fmr_drainage_qbot_directional_binding"
+    ]
+  },
+  "qualification": {
+    "exact_head": "7de9e179112caef91adc5e651db59a955075391e",
+    "fci96": {
+      "run": 35341875464,
+      "conclusion": "success"
+    },
+    "broad_fci": {
+      "run": 35341875504,
+      "conclusion": "success"
+    },
+    "ross12_serialized_wiring": {
+      "run": 35341875523,
+      "conclusion": "success"
+    },
+    "pub_p2e01": {
+      "run": 35341875456,
+      "conclusion": "success"
+    },
+    "fgc42_regression": {
+      "run": 35341875718,
+      "conclusion": "success"
+    }
+  },
+  "prequalification_failures": [
+    {
+      "classification": "stale successor authority",
+      "detail": "initial repair recognized F-GC31 but current canonical had a later exact F-GC44 serialized-backend successor"
+    },
+    {
+      "classification": "test harness dependency closure",
+      "detail": "legacy current-backend replay compile lists omitted two modules required by admitted F-GC31/F-GC44 backend source"
+    }
+  ],
+  "verdict": "PASS_CURRENT_CANONICAL_SUCCESSOR_PRESERVATION_RECONCILED",
+  "next_permitted_action": "Qualify this evidence-only status head. If broad canonical qualification remains green and live canonical has not moved incompatibly, merge PR 238 and then re-reconcile F-APP05 PR 231 against the resulting canonical."
+}

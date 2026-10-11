@@ -1,0 +1,20 @@
+name: F-VQ115 F-GC43 independent qualification
+on:
+  push:
+    branches: [work/f-gc43-production-swap-participant]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
+      - 'tests/fgc/test_fgc43_production_swap_participant.f90'
+      - 'docs/integration/F-GC43_PRODUCTION_SWAP_PARTICIPANT.md'
+      - 'tests/fvq/test_fvq115_fgc43_independent.py'
+      - 'tests/fvq/run_fvq115_fgc43_independent.sh'
+      - '.github/workflows/f-vq115-fgc43-independent.yml'
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq115_fgc43_independent.sh

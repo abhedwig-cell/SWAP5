@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "audit_id": "SWAP-010",
+  "gate": "representative_full_model7_production_and_mass",
+  "source_predecessor": {
+    "snapshot": "B1.6",
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "target_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "standard_executable_sha256": "a8f4cacd4cb1b05427c56f7eae9d8e6b84d23d32431bf63a3afaab00c9b75da9",
+    "diagnostic_executable_sha256": "e028fd4375abcc76a554674e7198a973df3d1d2c59ae8f43ed9f1eb9c5cd23ab"
+  },
+  "candidate": {
+    "target_sha256": "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e",
+    "prospective_source_manifest_sha256": "62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba",
+    "standard_executable_sha256": "2158972aa4840ee5fda0e51679a8195234005ba63d3ca267d6183b18f77de18c",
+    "diagnostic_executable_sha256": "b32636b06fb11e59bfa4305e8fa1f43c16964301664ef7f10133c50b4bc8eca6"
+  },
+  "compiler": "GNU Fortran 14.2.0",
+  "case": {
+    "period": "1980-01-01..1980-01-02",
+    "hydraulic_model": 7,
+    "initial_pressure_head_cm": -1000.0,
+    "bottom_boundary": "zero_flux",
+    "crop": "bare_soil",
+    "rain_cm": 0.0,
+    "etref_mm_per_day": 5.0,
+    "hard_mass_criterion_cm": 1e-6,
+    "swap_swp_sha256": "d038ee57f58b100bdfaa5445b1e0ef72f06b0f26caaca5fa2f5419e4608f650e",
+    "met_sha256": "48c269785405464476ca49dd315e12ae67e782fb0e6d3cd0322155d0ab8fb3bc"
+  },
+  "standard_runs": {
+    "predecessor": {
+      "returncode": 100,
+      "swap_ok": true,
+      "result_dwb_present": true,
+      "newton_histogram": {"4": 9997, "5": 3},
+      "total_backtracking_cycles": 40003
+    },
+    "candidate": {
+      "returncode": 100,
+      "swap_ok": true,
+      "result_dwb_present": false,
+      "newton_histogram": {"2": 57},
+      "total_backtracking_cycles": 114
+    },
+    "rounded_bal_timestamp_normalized_sha256_both": "2cce07ee3eb4ba3ed248d25cf47ed11827e55af7f4412ea8b44a6b7f3a13cafc"
+  },
+  "high_precision_output_differences": {
+    "day_1_max_abs_head_cm": 0.42965344900767377,
+    "day_2_max_abs_head_cm": 0.2364111967719964,
+    "day_1_max_abs_theta": 3.8263637562652164e-05,
+    "day_2_max_abs_theta": 2.025980343201006e-05,
+    "day_1_max_abs_flux_record": 1.6716248040307105e-05,
+    "day_2_max_abs_flux_record": 5.559920786110152e-06
+  },
+  "unrounded_mass": {
+    "criterion_cm": 1e-6,
+    "predecessor_max_abs_residual_cm": 1.5789125609178001e-06,
+    "candidate_max_abs_residual_cm": 1.0036789788170353e-08,
+    "candidate_gate": "PASS",
+    "predecessor_sensitive_case_gate": "FAIL"
+  },
+  "decision": "PASS_CANDIDATE"
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "swap5.hydro_memory.acc02_f1.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC02-F1",
+  "title": "Live MODFLOW6 root-active single-window coupling feasibility under governed accuracy",
+  "decision": "ACC02_F1_PASS_LIVE_ROOT_ACTIVE_SINGLE_WINDOW",
+  "authority": {
+    "canonical_base": "7ea315285904783225741b350be292974afeec92",
+    "branch": "research/hydro-memory-acc02-f1",
+    "qualified_head": "ea5ecd1cae5435b017373f034eb91a3a0455e0ca",
+    "workflow_run": 35439142243,
+    "workflow_job": 105886820595,
+    "conclusion": "success"
+  },
+  "frozen_accuracy": {
+    "h_app_cm": 0.4,
+    "temporal_budget_cm": 0.1,
+    "interface_tolerance_m": 0.001,
+    "root_total_cm_per_day": 0.02,
+    "fixed_point_max_iterations": 6,
+    "flux_iteration_tolerance_m_per_s": 1e-15,
+    "hard_mass_tolerance_cm": 1e-12
+  },
+  "observed": {
+    "coupling_iterations": 2,
+    "accepted_substeps": 1,
+    "predictor_retries": 0,
+    "max_temporal_indicator": 0.008953861377725887,
+    "first_iteration_head_residual_m": -9.85170167666638e-10,
+    "first_iteration_flux_residual": -3.8801228124754076e-15,
+    "final_h_swap_m": -0.7150050677373663,
+    "final_h_groundwater_m": -0.7150050677373678,
+    "final_head_residual_m": 1.5543122344752192e-15,
+    "final_flux_residual": 6.10887690236235e-21,
+    "ledger_exchange_m": -1.1679695071757646e-12,
+    "o0_o2_behavior_identity": true
+  },
+  "pass_evidence": [
+    "ACC01/ACC02 governed accuracy authorities locked",
+    "prescribed-root accepted-trajectory coverage complete and MODFLOW tangent endpoint authoritative",
+    "predictor temporal indicator below governed limit",
+    "live MODFLOW6 6.8.0 used",
+    "coupled fixed point satisfied governed head residual and frozen flux criterion in two iterations",
+    "SWAP hard mass gate passed",
+    "publication preflights passed before commit",
+    "MODFLOW timestep, SWAP state and interface ledger each committed exactly once",
+    "MODFLOW 6.8.0 asset SHA-256 gate passed",
+    "O0/O2 behavior identity passed"
+  ],
+  "interpretation_amendment": {
+    "id": "ACC02-F1-A1",
+    "nature": "intermediate-iterate lifecycle interpretation only",
+    "observed_before_change": "The first implementation required every intermediate prepared-solve iterate to report modflow_converged=true even when the coupled fixed-point residuals had not yet converged.",
+    "correction": "Treat intermediate prepared solves as admissible fixed-point iterates when the prepared-solve API returns OK and all values are finite; require the coupled fixed point to satisfy the preregistered head and flux convergence gates within six iterations.",
+    "unchanged": [
+      "MODFLOW version and IMS tolerances",
+      "maximum six coupling iterations",
+      "0.001 m interface tolerance",
+      "1e-15 m/s flux criterion",
+      "0.1 cm temporal budget",
+      "0.02 cm/day root sink",
+      "hard mass tolerance",
+      "production physics and solver source"
+    ],
+    "rationale": "The preregistration governs convergence of the coupled fixed point, not convergence classification of each intermediate iterate before the boundary response is updated."
+  },
+  "stage0_authorized": false,
+  "downstream": "ACC02-F2 multiple consecutive live root-active coupling windows under the same frozen accuracy contract."
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC23",
+  "title": "Whole-Window Coupling Response Tangent & One-Corrector Composition",
+  "status": "CANONICALLY_ADMITTED_CLOSED",
+  "canonical_admission_work_unit": "F-CI85",
+  "canonical_admission_head": "b95f66161ddaa7294661ab19e0f11cb7929879d5",
+  "canonical_close_checkpoint": "94dba83e74dd88c31fa14087609d761ca961c2ab",
+  "owner_qualified_source": "20edbe2bfcecca24541fa2885fe9ff4e8c1fb172",
+  "independent_qualification_work_unit": "F-VQ95",
+  "independent_qualification_checkpoint": "da64ffb1f4cd5105e2809a02ddae02f50a9c853b",
+  "production_source": "src/runtime/mod_groundwater_coupling_response.f90",
+  "production_source_blob": "645141676536ae8289b9d52433798a965c7baa04",
+  "historical_owner_verdict": "BLOCKED_BY_UPSTREAM_WHOLE_WINDOW_SENSITIVITY_CAPABILITY",
+  "historical_owner_verdict_superseded": true,
+  "superseding_basis": "F-SI37, F-KT21 and F-KT22 provide the admitted accepted whole-window SWAP sensitivity chain; F-GC29 provides the admitted provenance-bound groundwater response sensitivity; owner, independent and canonical admission qualification all passed.",
+  "admitted_semantics": [
+    "accepted whole-window bottom-interface response tangent only",
+    "exact generic [t0,t1] provenance and same committed coupling origin",
+    "rejected and discarded trajectory work contributes zero",
+    "SW_STEP_CONTROL_BOTTOM_HEAD only",
+    "unavailable, nonsmooth, stale, mismatched or ill-conditioned tangent fails closed",
+    "finite difference remains qualification reference/fallback only, not structural normal path",
+    "no LOCAL_TERMINAL relabel and no covers_requested_interval scope upgrade",
+    "F-GC21 mass, commit and rollback ownership remains unchanged"
+  ],
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "broad MODFLOW adapter work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

@@ -1,0 +1,144 @@
+name: F-CI79 EB-I25 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci79-eb-i25-multisubstep-sensible-boundary-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock live canonical and qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=1f33328e2ddc0d28450d35647c1c97f293b1e622
+          OWNER=08be50f248f3e169a3f1aeebd263cfe95b0dccd0
+          INDEPENDENT=8c76942f73bf1278f5b02bc50435439c1099505f
+          git fetch origin integration/f-ci-canonical work/eb-i25-accepted-multisubstep-sensible-boundary qualification/f-vq93-eb-i25-accepted-multisubstep-sensible-boundary-independent-qualification
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git merge-base --is-ancestor "$CANONICAL" HEAD
+          test "$(git rev-parse "$OWNER:src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90")" = fc88731c12c8af5136aad13bda2a7da3d768dc4c
+          test "$(git rev-parse "$OWNER:src/runtime/mod_fmr_serialized_reference_backend.f90")" = 960ea116cad81e8c0db8a579982f4999b3d085ed
+          test "$(git rev-parse "$OWNER:src/runtime/mod_fmr_top_sensible_boundary_carrier.f90")" = 299717757082ff06e98bd3aaec2c0b8b3013ea21
+          test "$(git rev-parse "$INDEPENDENT:qualification/F-VQ93_STATUS.json")" = 6c8ca7093aae525b6fdfd34d76e5db24ba1d039c
+          echo 'FCI79_LIVE_CANONICAL_LOCK=PASS'
+          echo 'FCI79_QUALIFIED_AUTHORITY_LOCK=PASS'
+
+      - name: Lock exact admitted postimage and inherited dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          declare -A ADMITTED=(
+            [.github/workflows/eb-i25-multisubstep-sensible-boundary.yml]=139d1bc9259787f845f7d2360546793eff0a2198
+            [src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90]=fc88731c12c8af5136aad13bda2a7da3d768dc4c
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=960ea116cad81e8c0db8a579982f4999b3d085ed
+            [src/runtime/mod_fmr_top_sensible_boundary_carrier.f90]=299717757082ff06e98bd3aaec2c0b8b3013ea21
+            [tests/eb/EB-I25_CHECKPOINT.json]=8312d7091ae4d2157a5ccb7b98d32148971cbcd9
+            [tests/eb/EB-I25_CONTRACT.md]=e4b267ce56cde057d56a52f68ed9aa330a478385
+            [tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh]=5d817f170b11e2cb6184b59a52df8e9974c4c3a3
+            [tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90]=c3026f171eeb1f604a5a8e8aa3db9886335a5fb2
+            [.github/workflows/f-vq93-eb-i25-independent.yml]=a9fb9d061c1ce8f1e281e77917bb1164e6f367be
+            [tests/eb/run_f_vq93_eb_i25_independent_gate.sh]=9e6073b9bc5f7f14e54500223c43a62e5682c90e
+            [qualification/F-VQ93_STATUS.json]=6c8ca7093aae525b6fdfd34d76e5db24ba1d039c
+          )
+          for path in "${!ADMITTED[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "${ADMITTED[$path]}"
+          done
+          CANONICAL=1f33328e2ddc0d28450d35647c1c97f293b1e622
+          DEPS=(
+            src/runtime/mod_fmr_bottom_thermal_carrier.f90
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+            src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90
+            src/process/mod_liquid_water_sensible_enthalpy.f90
+            src/process/mod_external_liquid_water_temperature.f90
+            src/process/mod_whole_column_sensible_energy_accounting.f90
+            src/process/mod_restricted_soil_temperature.f90
+            src/process/mod_soil_temperature_contract.f90
+          )
+          for path in "${DEPS[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$CANONICAL:$path")"
+          done
+          echo 'FCI79_EXACT_QUALIFIED_POSTIMAGE=PASS'
+          echo 'FCI79_INHERITED_DEPENDENCY_LOCK=PASS'
+
+      - name: Require bounded admission delta and hard nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=1f33328e2ddc0d28450d35647c1c97f293b1e622
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i25-multisubstep-sensible-boundary.yml
+          .github/workflows/f-ci79-eb-i25-current-canonical-admission.yml
+          .github/workflows/f-vq93-eb-i25-independent.yml
+          qualification/F-VQ93_STATUS.json
+          src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+          src/runtime/mod_fmr_serialized_reference_backend.f90
+          src/runtime/mod_fmr_top_sensible_boundary_carrier.f90
+          tests/eb/EB-I25_CHECKPOINT.json
+          tests/eb/EB-I25_CONTRACT.md
+          tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh
+          tests/eb/run_f_vq93_eb_i25_independent_gate.sh
+          tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90
+          EOF
+          if test -f integration/f-ci/F-CI79_STATUS.json; then
+            echo 'integration/f-ci/F-CI79_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool qualification/F-VQ93_STATUS.json >/dev/null
+          grep -Fq '"decision": "QUALIFIED_EB_I25_INDEPENDENT"' qualification/F-VQ93_STATUS.json
+          grep -Fq '"qualified_checkpoint_head": "08be50f248f3e169a3f1aeebd263cfe95b0dccd0"' qualification/F-VQ93_STATUS.json
+          grep -Fq '"canonical_head_at_qualification": "1f33328e2ddc0d28450d35647c1c97f293b1e622"' qualification/F-VQ93_STATUS.json
+          grep -Fq '"accepted_external_full_half_top_liquid_outflow": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"multiple_outer_committed_runtime_substeps": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"snow_or_melt_thermal_provenance": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"whole_column_sensible_residual_publication": false' qualification/F-VQ93_STATUS.json
+          grep -Fq '"full_energy_balance_complete": false' qualification/F-VQ93_STATUS.json
+          grep -Fq 'publication%carrier_sample_count_value /= 2' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+          grep -Fq 'if (any_outflow) then' src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90
+          grep -Fq 'call self%top_sensible_boundary_carrier%restore_from(typed%top_sensible_boundary_carrier)' src/runtime/mod_fmr_serialized_reference_backend.f90
+          if test -f integration/f-ci/F-CI79_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI79_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI79_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI79_STATUS.json
+            grep -Fq '"canonical_admission": false' integration/f-ci/F-CI79_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI79_STATUS.json
+          fi
+          git diff --check "$CANONICAL" HEAD
+          echo 'FCI79_EXACT_BOUNDED_DELTA=PASS'
+          echo 'FCI79_HARD_NONCLAIMS_PRESERVED=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay exact independent qualification and owner evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          INDEPENDENT=8c76942f73bf1278f5b02bc50435439c1099505f
+          WT="${RUNNER_TEMP}/swap5-fci79-fvq93"
+          cleanup() { git worktree remove --force "$WT" >/dev/null 2>&1 || true; }
+          trap cleanup EXIT
+          git worktree add --detach "$WT" "$INDEPENDENT" >/dev/null
+          (cd "$WT" && bash tests/eb/run_f_vq93_eb_i25_independent_gate.sh) | tee fci79-fvq93.txt
+          grep -Fq 'F_VQ93_INDEPENDENT_QUALIFICATION=PASS' fci79-fvq93.txt
+          grep -Fq 'F_VQ93_EXACT_OWNER_RUNTIME_REPLAY=PASS' fci79-fvq93.txt
+          grep -Fq 'F_VQ93_INDEPENDENT_CARRIER_ROLLBACK_ORACLE=PASS' fci79-fvq93.txt
+          grep -Fq 'F_VQ93_SAMPLE_COUNT_BROADENING_MUTANT_REJECTED=PASS' fci79-fvq93.txt
+          grep -Fq 'F_VQ93_OUTFLOW_BROADENING_MUTANT_REJECTED=PASS' fci79-fvq93.txt
+          grep -Fq 'F_VQ93_ROLLBACK_REMOVAL_MUTANT_REJECTED=PASS' fci79-fvq93.txt
+          echo 'FCI79_OWNER_REPLAY=PASS'
+          echo 'FCI79_INDEPENDENT_REPLAY=PASS'
+          echo 'FCI79_ADVERSARIAL_GUARDS=PASS'
+          echo 'FCI79_NO_SCOPE_BROADENING=PASS'

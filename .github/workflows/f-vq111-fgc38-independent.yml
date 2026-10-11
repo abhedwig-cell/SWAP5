@@ -1,0 +1,31 @@
+name: F-VQ111 F-GC38 independent prepared-solve qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq111-fgc38-prepared-solve-independent
+    paths:
+      - 'tests/fvq/test_fvq111_fgc38_prepared_solve_independent.py'
+      - 'tests/fvq/run_fvq111_fgc38_prepared_solve_independent.sh'
+      - 'qualification/F-VQ111_STATUS.json'
+      - '.github/workflows/f-vq111-fgc38-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler and pinned Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install             git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902             git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Independent F-GC38 live prepared-solve qualification
+        run: bash tests/fvq/run_fvq111_fgc38_prepared_solve_independent.sh

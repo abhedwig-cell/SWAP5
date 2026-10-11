@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.f-romv2-d21.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D21",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "stage1": {
+    "branch": "work/f-romv2-d21-rain-ponding-runoff-preflight",
+    "pull_request": 464,
+    "pull_request_merged": false,
+    "head": "2ed98f1d9969a3a7ae7c31fd5a8c7fd8574b37ef",
+    "workflow_run": 35462604315,
+    "workflow_job": 105949034359,
+    "artifact_id": 10590430843,
+    "artifact_digest": "sha256:cfb0f9672b461ee94777de924a99fc49b679636f99f2ebedceb68d2dc8d1d805"
+  },
+  "stage2": {
+    "branch": "work/f-romv2-d21-fmc-coupled-boundary-micro",
+    "pull_request": 465,
+    "pull_request_merged": false,
+    "head": "9b83253b3dc5f328e5808b63c59cfa455c60d0fb",
+    "workflow_run": 35462751043,
+    "workflow_job": 105949431873,
+    "artifact_id": 10590176859,
+    "artifact_digest": "sha256:2660f42dc1f63f8a23c58a3241c2bca69d5cf00462a40db294866b5803ccc656"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D21_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D21_STAGE2_AUTHORIZATION.json",
+    "integration/f-rom/F-ROMV2_D21_RESULT.json",
+    "integration/f-rom/F-ROMV2_D21_STATUS.json",
+    "integration/f-rom/F-ROMV2_D21_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D21_RAIN_PONDING_RUNOFF_ADJUDICATION.md"
+  ],
+  "execution_surfaces_imported": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "R16_R2_threshold_trajectories_generated": false,
+  "production_rom_authorized": false
+}

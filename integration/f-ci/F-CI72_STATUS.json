@@ -1,0 +1,99 @@
+{
+  "schema": "swap5.fci72.status.v1",
+  "work_unit": "F-CI72",
+  "title": "EB-I23 sensible-boundary runtime materialization current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI72_READY_FOR_CANONICAL_PROMOTION",
+  "branch": "qualification/f-ci72-eb-i23-sensible-boundary-runtime-current-canonical-admission",
+  "canonical_base": {
+    "sha": "3ff0f42299767d5ad5f07d031698dfcf7969ed0d",
+    "tree": "aceb705154caa4f72159c21015b6873551532789"
+  },
+  "authorities": {
+    "EB_I23_owner_head": "94832bb80534c2edb324c1c9e0cbb54df3678246",
+    "F_VQ90_independent_head": "0f750e71681d9b36f0e06388dac01b4e65272667"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "4cc4cd2dba7ac5e2c56ac13c53a558e4ca11f013",
+    "green_tree_before_status": "99a4393bf8f2b00846e070e5f82412c490adaad0",
+    "workflow_run": 34950827977,
+    "workflow_job": 104321124561,
+    "runner": "ubuntu-24.04",
+    "live_canonical_lock": "PASS",
+    "owner_authority_lock": "PASS",
+    "independent_authority_lock": "PASS",
+    "dependency_surface_lock": "PASS",
+    "exact_bounded_delta": "PASS",
+    "single_substep_conductive_guard": "PASS",
+    "top_advective_fail_closed": "PASS",
+    "explicit_restricted_bottom_zero_preserved": "PASS",
+    "owner_replay": "PASS",
+    "independent_replay": "PASS",
+    "residual_sign_mutant_rejected": "PASS",
+    "missing_bottom_donor_as_zero_mutant_rejected": "PASS",
+    "multi_substep_broadening_mutant_rejected": "PASS",
+    "top_advective_broadening_mutant_rejected": "PASS",
+    "no_full_energy_balance_broadening": "PASS"
+  },
+  "production_postimage": {
+    "src/runtime/mod_eb_i23_sensible_boundary_runtime.f90": "35dda86ca51bd91040af0672a43e2961c8db64fd"
+  },
+  "inherited_dependency_authorities": {
+    "src/process/mod_restricted_soil_temperature.f90": "fa4e1d7b48d3515e6569c9080d497178c25c4e85",
+    "src/process/mod_soil_temperature_contract.f90": "baa13df3975de2c699b0ec910477bcfa9b47f15e",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "3506b453ba6a00111d182f29db8cbfb288001854",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/process/mod_liquid_water_sensible_enthalpy.f90": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850"
+  },
+  "scope": {
+    "accepted_single_substep_conductive_materialization": true,
+    "explicit_bottom_conductive_restricted_boundary_condition": true,
+    "receipt_owned_bottom_advective_materialization": true,
+    "missing_bottom_donor_fail_closed": true,
+    "accepted_transaction_provenance_bound": true,
+    "mass_carried_reference_temperature_provenance": true,
+    "top_advective_materialized": false,
+    "multi_substep_conductive_materialization": false,
+    "runtime_materialization_complete": false,
+    "whole_column_sensible_residual_publication": false,
+    "canonical_admission": false,
+    "postimage_reconciled": false,
+    "full_energy_balance_complete": false
+  },
+  "scope_guards": {
+    "new_energy_physics_in_F_CI72": false,
+    "new_solver_policy": false,
+    "new_water_mass_booking": false,
+    "reference_source_changed": false,
+    "new_IO_contract": false,
+    "top_water_temperature_authority_added": false,
+    "historical_I08_or_I10R2_imported": false,
+    "surface_radiation_added": false,
+    "latent_heat_added": false,
+    "vapor_energy_added": false,
+    "phase_change_added": false,
+    "full_energy_balance_completion_claim": false
+  },
+  "ready_for_canonical_promotion": true,
+  "hard_nonclaims": [
+    "F-CI72 status alone is not canonical admission.",
+    "F-CI72 admits only the bounded EB-I23 accepted sensible-boundary runtime materialization if promoted.",
+    "No qualified top mass-carried sensible-energy donor-temperature authority is introduced.",
+    "No conductive aggregation over accepted multi-substep trajectories is introduced.",
+    "No complete four-category EB-I22 runtime boundary materialization is claimed.",
+    "No whole-column sensible residual is published in production.",
+    "No radiation, latent heat, vapor energy, freeze-thaw enthalpy, snow phase-change closure, pressure/chemical/salinity enthalpy, or complete SWAP5 Energy Balance is claimed."
+  ],
+  "next_capability_dependencies": [
+    "Qualified top-water thermal provenance / donor-temperature authority for top mass-carried sensible energy.",
+    "Rollback-safe thermal boundary-energy carrier for accepted multi-substep whole-interval conductive materialization."
+  ],
+  "promotion_requirements": [
+    "This exact final status head must pass the F-CI72 workflow.",
+    "Live integration/f-ci-canonical must still equal 3ff0f42299767d5ad5f07d031698dfcf7969ed0d immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI72 status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI72 status-head tree.",
+    "Postimage reconciliation is required before F-CI72 closeout or any broader Energy Balance completion claim."
+  ]
+}

@@ -1,0 +1,29 @@
+name: F-CI50 F-GC17 typed groundwater interface canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci50-fgc17-typed-groundwater-interface-canonical-admission
+  workflow_dispatch:
+
+jobs:
+  exact-head-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact head start
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-GC17 canonical admission gate
+        run: python3 tests/fci/run_fci50_fgc17_canonical_admission.py
+      - name: Exact head end
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          live="$(git ls-remote origin "refs/heads/$GITHUB_REF_NAME" | awk '{print $1}')"
+          test "$live" = "$GITHUB_SHA"

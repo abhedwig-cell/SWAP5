@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC27",
+  "title": "Restricted Direct-Groundwater V1 End-to-End Qualification",
+  "admission_kind": "METADATA_ONLY_CAPABILITY_ADMISSION",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "5e4386f06a230c71eba103fd8e12fec97e7fae6d",
+    "tree": "1ab2485fe70a996970e65c349fb7332c77886587"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ97",
+    "authority_head": "d45abdfb7fbd3f1ce5f68866586c5e9e67252f54",
+    "tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+    "status_blob": "b0293312470949f3483a6ac284106962ae62285e",
+    "qualify_checkpoint_blob": "d949444063bfb74a35ca47355edd8e50f75b0229",
+    "workflow_run_id": 35031745967,
+    "workflow_job_id": 104591583793,
+    "compiler": "GNU Fortran 13.3.0",
+    "oracle_sha256": "b05c239a74873d0ae0df29905cabef0ab3fe8c6b3859e00fc22eeb61b444d3dd",
+    "verdict": "INDEPENDENTLY_QUALIFIED"
+  },
+  "admission_gate": {
+    "work_unit": "F-CI87",
+    "branch": "integration/f-ci87-fgc27-restricted-direct-groundwater-e2e-admission",
+    "head": "16f389d82c660e2f1c109e40d6c26a5dd6bfb9f0",
+    "workflow_run_id": 35032025064,
+    "workflow_job_id": 104592470019,
+    "conclusion": "success",
+    "markers": [
+      "FCI87_METADATA_ONLY_DELTA=PASS",
+      "FCI87_CURRENT_CANONICAL_PRODUCTION_LOCKED=PASS",
+      "FCI87_FVQ97_IMMUTABLE_AUTHORITY=PASS",
+      "FCI87_OWNERSHIP_BOUNDARIES_PRESERVED=PASS",
+      "FCI87_FGC27_CURRENT_CANONICAL_ADMISSION=PASS",
+      "F-CI87 F-GC27 ADMISSION GATE PASS"
+    ]
+  },
+  "admitted_production_blobs": {
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_coupling_response.f90": "645141676536ae8289b9d52433798a965c7baa04",
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849",
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "inherited_independent_authorities": {
+    "F-GC23_F-VQ95": "da64ffb1f4cd5105e2809a02ddae02f50a9c853b",
+    "F-GC24_F-VQ86": "0fea1f7a17ccff9f41b4d2dee71feab526313a01",
+    "F-GC26_F-VQ96": "ae97f0d47c183a64e470be5badca220d95a65cb0"
+  },
+  "production_mutations": [],
+  "scientific_decision": [
+    "The restricted direct-groundwater v1 composition is independently qualified end-to-end on the current canonical production image.",
+    "The admitted execution preserves one predictor plus one corrector from the same committed origin, fail-closed smaller-window handling, exact action/reaction interface mass semantics, GC22 accuracy ownership, GC20/GC25 MultiSWAP composition and the GC26 external gateway boundary.",
+    "F-GC23 response-tangent composition and F-GC24 restart remain separately owned admitted capabilities; F-GC27 does not fold their semantics into F-GC21."
+  ],
+  "verdict": "CANONICALLY_ADMITTED_METADATA_ONLY",
+  "next_permitted_action": "CLOSE F-GC27 by recording canonical closeout metadata only.",
+  "exclusions": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production changes solely to obtain PASS", "F-GC28 work"]
+}

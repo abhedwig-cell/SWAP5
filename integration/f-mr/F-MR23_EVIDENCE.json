@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR23",
+  "title": "Restricted Reference-ET Demand Generic-Time Runtime Binding Evidence",
+  "branch": "work/f-mr23-reference-et-demand-runtime-binding",
+  "base": {
+    "canonical_head": "f49e17c6627717d5dea181808a122f2e35960739",
+    "canonical_F_CI24_decision": "QUALIFIED_CLOSED_FPM06A_RESTRICTED_REFERENCE_ET_CANONICAL_SOURCE_ADMISSION",
+    "ET_process_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "canonical_interval_contract_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"
+  },
+  "candidate": {
+    "tested_head": "3965b15ad0432b46134513eb13ec02a17f7d6b17",
+    "runtime_source": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "source_delta_from_base": ["src/runtime/mod_fmr_reference_et_demand_binding.f90"],
+    "ahead_by": 5,
+    "behind_by": 0,
+    "merge_base": "f49e17c6627717d5dea181808a122f2e35960739"
+  },
+  "workflow": {
+    "run_id": 34451733335,
+    "job_id": 102788773639,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "443f03b0fcc30a8e669c2db690eb94d2bd095606cbff11f75d82aa9cd88730d5"
+  },
+  "gate_results": {
+    "single_runtime_source_delta": "PASS",
+    "qualified_ET_source_lock": "PASS",
+    "canonical_time_contract_lock": "PASS",
+    "generic_time_contract_static": "PASS",
+    "no_hydraulic_root_or_mass_binding": "PASS",
+    "no_persistent_runtime_state": "PASS",
+    "arbitrary_subday_interval": "PASS",
+    "forcing_span_containment": "PASS",
+    "rate_not_implicitly_time_integrated": "PASS",
+    "invalid_time_fail_closed": "PASS",
+    "process_rejection_fail_closed": "PASS",
+    "nonemerged_canopy_semantics": "PASS",
+    "stateless_A_B_A_identity": "PASS"
+  },
+  "time_semantics": {
+    "kernel_interval": "generic [t0,t1]",
+    "forcing_record": "explicit validity [forcing_t0,forcing_t1]",
+    "required_relation": "forcing_t0 <= t0 < t1 <= forcing_t1",
+    "daily_forcing_may_cover_subdaily_kernel_interval": true,
+    "midnight_assumption": false,
+    "implicit_one_day_integration": false,
+    "output_semantics": "rates only"
+  },
+  "ownership": {
+    "potential_ET_demand_owner": "canonically admitted F-PM06A process",
+    "runtime_time_and_forcing_validity_owner": "F-MR23 binding",
+    "crop_state_owner_changed": false,
+    "root_uptake_called": false,
+    "hydraulic_view_consumed": false,
+    "mass_ledger_written": false,
+    "persistent_state_added": false
+  },
+  "architectural_note": "The existing crop_root_uptake_input_t still contains potential_transpiration. F-MR23 deliberately does not wire the new ET owner into that contract because doing so before ownership reconciliation would leave two plausible ptra producers. A later composition workunit must resolve that seam explicitly.",
+  "decision": "RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_BINDING_READY_FOR_INDEPENDENT_QUALIFICATION"
+}

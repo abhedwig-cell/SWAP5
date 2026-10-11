@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC48",
+  "title": "Generic groundwater topology composition",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED_GENERIC_GROUNDWATER_TOPOLOGY",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "source": {
+    "branch": "work/f-gc48-generic-groundwater-topology",
+    "base": "585a8719242bf58e4c37c6283298dfad7b20a0ae"
+  },
+  "predecessors": [
+    "F-GC40 deterministic N:1 cell-response reduction",
+    "F-GC45 real N:1 application",
+    "F-GC46 real multi-cell application",
+    "F-GC47 mixed N:1 plus 1:1 application",
+    "F-GC34 MODFLOW API slot binding"
+  ],
+  "goal": "Replace qualification-specific topology wiring with one typed deterministic production topology model that maps admitted SWAP participants to admitted groundwater cells and MODFLOW API slots without changing predictor/corrector, transaction, publication or physics semantics.",
+  "reconcile_findings": [
+    "groundwater_direct_tile_binding_t is cell-local and contains tile id, cell id and area fraction only",
+    "modflow6_api_slot_binding_t is package-local and independently maps cell id to package slot/node",
+    "mod_groundwater_multiswap_topology canonicalizes tiles only inside one cell",
+    "F-GC45-F-GC47 prove N:1, multi-cell and mixed topologies but encode topology in qualification bridges",
+    "no canonical global typed topology authority currently binds tiles, lineages, ledgers, cells and API slots together"
+  ],
+  "invariants": [
+    "each tile id and SWAP lineage id has exactly one topology owner",
+    "each ledger id has exactly one tile owner",
+    "each groundwater cell has exactly one package slot and MODFLOW node",
+    "each tile references an existing groundwater cell",
+    "each groundwater cell has at least one tile",
+    "area fractions close to one independently per groundwater cell",
+    "coupling and groundwater lineage/service metadata are identical for tiles sharing one groundwater cell",
+    "canonical order is groundwater_cell_id then tile_id; API order is package_slot",
+    "validation completes before any downstream composition mutation",
+    "no scientific assertion that N:1 aggregation is physically transferable"
+  ],
+  "exclusions": [
+    "predictor/corrector redesign",
+    "new groundwater physics",
+    "runtime FD tangent fallback",
+    "physics-envelope expansion",
+    "SCALE heterogeneous-transferability policy"
+  ],
+  "next_permitted_action": "Open F-GC49 generic groundwater application orchestration from canonical. First implement the production Fortran application-plan materializer consuming this admitted topology; then qualify before adding the production participant bridge or generic live service.",
+  "current_head": "bc7f41a63a71cc551e2b8aea05b8ee10d76cf529",
+  "implemented": [
+    "production mod_groundwater_topology_composition with normalized tile and cell contracts",
+    "global uniqueness validation for tile ids, SWAP lineages, ledger ids, cell ids, coupling ids, groundwater lineages, package slots and MODFLOW nodes",
+    "per-cell fraction closure and orphan/missing-cell validation",
+    "canonical cell and cell/tile ordering independent of input permutation",
+    "materialization to admitted groundwater_direct_tile_binding_t for F-GC40",
+    "materialization to admitted modflow6_api_slot_binding_t for F-GC34",
+    "owner regressions for F-GC45 N:1, F-GC46 multi-cell and F-GC47 mixed topology",
+    "F-VQ120 independent executable downstream compatibility qualification"
+  ],
+  "admission_criteria": [
+    "exact-head F-GC48 owner O0/O2 qualification green",
+    "exact-head F-VQ120 downstream compatibility O0/O2 qualification green",
+    "canonical delta reconciled with no conflicting topology/runtime authority",
+    "PR mergeable",
+    "scope remains topology/ownership only and does not claim heterogeneous transferability"
+  ],
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "canonical_admission": {
+    "original_base": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
+    "qualified_content_head": "883314cf645e5f5a5b36f73c4135ae90722bcf4f",
+    "reconciled_head": "06d904a21a4a721f42d8c6e34a437c3f61eaea62",
+    "canonical_preimage": "d39a8c5140fd8c5e118454656748b25f0a98f9df",
+    "merge_head": "bc7f41a63a71cc551e2b8aea05b8ee10d76cf529",
+    "pr": 250,
+    "merge_method": "merge"
+  },
+  "qualification": {
+    "owner": {
+      "run": 35344897568,
+      "job": 105599067560,
+      "conclusion": "success",
+      "qualified_head": "883314cf645e5f5a5b36f73c4135ae90722bcf4f",
+      "oracles": [
+        "FGC48_TYPED_TOPOLOGY_ONLY=PASS",
+        "FGC48_NO_SOLVER_TRANSACTION_OR_PHYSICS_OWNERSHIP=PASS",
+        "FGC48_FGC45_N1_TOPOLOGY_REGRESSION=PASS",
+        "FGC48_FGC46_MULTICELL_TOPOLOGY_REGRESSION=PASS",
+        "FGC48_FGC47_MIXED_TOPOLOGY_REGRESSION=PASS",
+        "FGC48_CANONICAL_ORDER_INVARIANCE=PASS",
+        "FGC48_GLOBAL_OWNERSHIP_FAIL_CLOSED=PASS",
+        "FGC48_PER_CELL_FRACTION_CLOSURE=PASS",
+        "FGC48_API_SLOT_NODE_MAPPING=PASS",
+        "FGC48_O0_O2_OUTPUT_IDENTITY=PASS"
+      ]
+    },
+    "independent": {
+      "work_unit": "F-VQ120",
+      "run": 35344897601,
+      "job": 105599067270,
+      "conclusion": "success",
+      "qualified_head": "883314cf645e5f5a5b36f73c4135ae90722bcf4f",
+      "oracles": [
+        "FVQ120_GENERIC_TO_FGC40_N1_BINDING=PASS",
+        "FVQ120_GENERIC_TO_FGC40_1TO1_BINDING=PASS",
+        "FVQ120_GENERIC_TO_FGC34_API_BINDING=PASS",
+        "FVQ120_CANONICAL_SLOT_NODE_PUBLICATION=PASS",
+        "FVQ120_UNMAPPED_API_TAIL_PRESERVED=PASS",
+        "FVQ120_O0_O2_OUTPUT_IDENTITY=PASS"
+      ]
+    }
+  },
+  "canonical_drift_reconciliation": {
+    "commits_between_original_base_and_preimage": 36,
+    "compile_runtime_dependency_overlap": [],
+    "overlap_count": 0,
+    "disposition": "Green owner and F-VQ120 evidence reused because none of the fifteen F-GC48 compile/runtime dependencies changed. The reconciled branch tree placed the exact nine qualified F-GC48 artifacts on current canonical before merge."
+  },
+  "admitted_capability": [
+    "one normalized typed topology authority for tile/SWAP-lineage/ledger/cell/fraction ownership",
+    "one normalized typed cell authority for coupling/service/groundwater-lineage/MODFLOW slot/node ownership",
+    "global uniqueness and fail-closed missing/orphan ownership validation",
+    "per-cell area-fraction closure",
+    "deterministic canonical cell and cell/tile ordering",
+    "materialization to admitted F-GC40 groundwater_direct_tile_binding_t",
+    "materialization to admitted F-GC34 modflow6_api_slot_binding_t",
+    "one topology contract reproducing F-GC45 N:1, F-GC46 multi-cell and F-GC47 mixed topology shapes"
+  ],
+  "evidence_boundary": {
+    "statement": "Topology and ownership authority only.",
+    "not_claimed": [
+      "predictor/corrector redesign",
+      "groundwater physics change",
+      "heterogeneous N:1 transferability",
+      "physics-envelope expansion",
+      "generic application orchestration"
+    ]
+  }
+}

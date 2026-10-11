@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.fci61.pre_registration.v1",
+  "work_unit": "F-CI61",
+  "title": "F-PM14 drainage-response runtime current-canonical admission",
+  "branch": "qualification/f-ci61-fpm14-drainage-response-runtime-current-canonical-admission",
+  "restart_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "e7b512cb4d7f400ed8e1d7aeb24f6dfe165ac557",
+    "tree": "a1762b02f8288a4ecfe3d98296c2aefc2e3350cc"
+  },
+  "production_composition": {
+    "branch": "integration/f-ci61-fpm14-drainage-response-production-composition",
+    "sha": "c7444233b0f23d4f0a845ef5639287e77099291b",
+    "tree": "9be01a7a1bf364d59689975f5692e03bc09393dc",
+    "exact_production_files": 11
+  },
+  "owner_authority": "work/f-pm14-drainage-response-runtime-closure@52c1a9aebddc435ef3792378f958305a96308ed0",
+  "independent_authority": "qualification/f-vq73-fpm14-drainage-response-runtime-independent-qualification@ea40e2d850aa9b4b23b25ba6b4a63ffd39811001",
+  "independent_tested_head": "3dd8b92b9601f4e3e41cd9ff79a37dd293b35641",
+  "objective": "Admit only the exact independently qualified F-PM14 production blobs onto the live current canonical, with fresh independent runtime and admitted-route preservation replay.",
+  "scope_guards": {
+    "new_physics": false,
+    "new_mass_booking": false,
+    "new_solver_policy": false,
+    "new_persistent_state": false,
+    "reference_source_change": false,
+    "production_source_beyond_exact_fpm14_blobs": false,
+    "scope_reduction": false
+  },
+  "promotion_policy": {
+    "live_canonical_must_remain_restart_canonical_until_promotion": true,
+    "true_two_parent_merge_required": true,
+    "canonical_first_parent_required": true,
+    "exact_green_fci61_head_second_parent_required": true,
+    "force_squash_rebase_forbidden": true,
+    "postimage_reconciliation_required": true
+  },
+  "hard_nonclaims": [
+    "This pre-registration is not canonical admission.",
+    "F-PM14/F-VQ73/F-CI61 alone do not establish drainage-v1 100-percent completion.",
+    "No production semantics beyond the exact independently qualified F-PM14 blobs are admitted by this workunit."
+  ]
+}

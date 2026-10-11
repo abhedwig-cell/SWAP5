@@ -1,0 +1,25 @@
+name: F-GC35 MODFLOW6 XMI package adapter
+
+on:
+  push:
+    branches:
+      - work/f-gc35-modflow6-xmi-package-adapter-reconciled
+    paths:
+      - 'src/adapter/modflow6_xmi_package_adapter.py'
+      - 'tests/fgc/test_fgc35_modflow6_xmi_package_adapter.py'
+      - 'tests/fgc/run_fgc35_modflow6_xmi_package_adapter.sh'
+      - 'docs/integration/F-GC35_MODFLOW6_XMI_PACKAGE_ADAPTER.md'
+      - 'integration/f-gc/F-GC35_STATUS.json'
+      - '.github/workflows/f-gc35-modflow6-xmi-package-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-GC35 XMI package adapter gate
+        run: bash tests/fgc/run_fgc35_modflow6_xmi_package_adapter.sh

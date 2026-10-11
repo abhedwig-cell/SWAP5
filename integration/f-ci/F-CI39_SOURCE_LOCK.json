@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.fci_source_lock.v1",
+  "work_unit": "F-CI39",
+  "canonical_pre_admission": {
+    "head": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "tree": "ea5b54a971cf35ba0f49b1e283d13f7f69304654"
+  },
+  "production_composition": {
+    "commit": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
+    "tree": "8e518c70f14cb72582936c7ec21744d88743fda4",
+    "src_tree": "7264753a19a481043434ba782d4f81bc585fed85",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "owner_candidate": {
+    "commit": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+    "tree": "8e518c70f14cb72582936c7ec21744d88743fda4",
+    "parent": "adf79478f55458c05444ad9b90e52644e6cf36b6"
+  },
+  "authorities": {
+    "owner_closeout": "13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+    "independent_closeout": "7cf8f6685ca24f855621f872bcf906f346edfa72",
+    "independent_exact_head_run": 34544824222
+  },
+  "production_blobs": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+  },
+  "allowed_production_delta": [
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90"
+  ],
+  "reference_delta_allowed": false,
+  "runtime_delta_allowed": false
+}

@@ -1,0 +1,39 @@
+{
+  "work_unit": "F-CI21",
+  "stage": "SI25_scientific_replay",
+  "tested_head": "72bcab5d6f0f1c81edbda20a9d03cae4df671ff8",
+  "materialized_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+  "materialized_source_tree": "7dc94493d44952ad032c02c1d039bc4df0aa8e3f",
+  "source_base": "ed0219402072f121856d82cb6068ab74c70f34d1",
+  "workflow": {
+    "name": "F-CI21 SI25 scientific replay",
+    "run_id": 34390736625,
+    "job_id": 102598120121,
+    "conclusion": "success"
+  },
+  "qualified_fixture_locks": {
+    "fsi24_owner_oracle": "ecacaf1c004c7118f1ada388c672166d9ad19345",
+    "fsi25_production_driver": "c125c6a2ab706920b7e2a5c6f1c855520b192223",
+    "fsi23_c2_evidence": "cac160dbbdbb89b172d2afa055994d918abb0bbc",
+    "fsi18_reference_tridag_generator": "bf25c4c7fefaa59811255b0bc25c041522ab008e",
+    "real_headcalc_stub": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+    "fixed_top_provider": "942c56e3ba2b1739506e1d5b0ac889e6fd163ea7"
+  },
+  "results": {
+    "cases": 15,
+    "cases_O0_pass": 15,
+    "cases_O2_pass": 15,
+    "O0_O2_output_identity": true,
+    "owner_replay_pass": true,
+    "owner_replay_max_abs_diff": 0.0,
+    "operator_ownership_and_cost_guard": true,
+    "candidate_state_noninterference": true,
+    "principal_flux_and_mass_noninterference": true,
+    "solver_diagnostics_noninterference": true,
+    "additional_full_nonlinear_solves": 0,
+    "additional_defect_tridiagonal_solves": 1,
+    "route": "reference-richards-defect-bound"
+  },
+  "decision": "SI25_SCIENTIFIC_REPLAY_QUALIFIED_ON_WOF42_MATERIALIZED_POSTIMAGE",
+  "canonical_modified": false
+}

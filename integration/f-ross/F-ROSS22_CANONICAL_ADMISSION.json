@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-ross22.canonical-admission.v1",
+  "workunit": "F-ROSS22",
+  "phase": "ADMITTED",
+  "status": "CLOSED",
+  "canonical_preimage": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+  "canonical_admission_commit": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+  "pull_request": 244,
+  "production_delta": {
+    "allowed": [
+      "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90"
+    ],
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "immutable_qualification": {
+    "qualified_science_head": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+    "result_blob": "2f83ae1fd15e6242f54942b5b8487798d18b6764",
+    "workflow_run": 35315107030,
+    "artifact_id": 10533894447,
+    "artifact_digest": "sha256:c8af583f1ae52448cc279c5788fb54b742162f9b1386ab08239c86be2bc03167"
+  },
+  "final_admission_evidence": {
+    "exact_owner_head": "4d5ecba3530893a4a9937b3df6620189d9472bc7",
+    "owner_gate_workflow": 35344459815,
+    "owner_gate_artifact": 10546693713,
+    "owner_gate_digest": "sha256:30f40135b9cddb4f95d20796a34a03fd7f1f6963eac21dc9bc4b38eb22757d16",
+    "fci96_workflow": 35344459834,
+    "p2e01_workflow": 35344459904,
+    "serialized_workflow": 35344460016,
+    "all_pass": true
+  },
+  "reconciliation": {
+    "fci106": "ADMITTED",
+    "fci107": "ADMITTED",
+    "final_wrapper_only_delta_after_owner_gate": true,
+    "relevant_production_dependency_drift_after_owner_gate": false
+  },
+  "exclusions": [
+    "NO_THRESHOLD_RETUNING",
+    "NO_TRAJECTORY_REUSE",
+    "NO_K16_FALLBACK",
+    "NO_REFERENCE_MUTATION",
+    "NO_MODEL_OR_PROVIDER_WIDENING",
+    "NO_FORMAL_SPEEDUP_CLAIM_FROM_SHARED_HOST"
+  ],
+  "next_permitted_action": "NONE_WITHIN_F_ROSS22"
+}

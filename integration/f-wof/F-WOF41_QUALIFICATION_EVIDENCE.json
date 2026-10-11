@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF41",
+  "title": "Production Binding of WOFOST Owner-Controlled Persistence API",
+  "branch": "work/f-wof41-production-owner-persistence-api",
+  "base": {
+    "work_unit": "F-WOF40",
+    "closeout_head": "e8cbe0b9a86d78492d34f0873cafe424895b4a99",
+    "definitive_tested_head": "2394431312932df27e52d77b25475f72f11fa38d",
+    "workflow_run": 34371941978,
+    "status": "QUALIFIED_RESTRICTED_TRUE_PROCESS_RESTART_CANDIDATE_PRODUCTION_OWNER_API_BINDING_OPEN"
+  },
+  "contract": "integration/f-wof/F-WOF41_PRODUCTION_OWNER_PERSISTENCE_API_CONTRACT.json",
+  "production_materialization": {
+    "source_commit": "1a239012f33bb794dee9a48edee3cfa9ed6daab8",
+    "method": "ONE_SHOT_MECHANICAL_MATERIALIZATION_FROM_F_WOF40_QUALIFIED_CANDIDATE",
+    "materialization_workflow_run": 34372507491,
+    "materialization_job": 102536984360,
+    "changed_production_files_only": [
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+    ],
+    "lineage_blob": "61ffdf21a00c23924184c9117d91d84a88544d1a",
+    "crop_transaction_blob": "dad15717e5794b7489c9fecf6dbc17e12435c61e",
+    "exact_F_WOF40_candidate_equivalence": true,
+    "production_owner_source_generated_in_positive_qualification_path": false,
+    "one_shot_materialization_workflow_retired_after_success": true,
+    "one_shot_workflow_retirement_commit": "8f30b2f92c6c79611182fe5b4d6340f3381dfc21"
+  },
+  "production_API": {
+    "event_identity_persistence_type": "fmr_wofost_crop_event_identity_persistence_t",
+    "event_identity_export": "export_wofost_crop_event_identity_persistence",
+    "event_identity_reconstruct": "reconstruct_wofost_crop_event_identity_from_persistence",
+    "crop_transaction_persistence_type": "fmr_wofost_crop_transaction_persistence_t",
+    "crop_transaction_export": "export_fmr_wofost_crop_transaction_persistence",
+    "crop_transaction_reconstruct": "reconstruct_fmr_wofost_crop_transaction_from_persistence",
+    "authoritative_event_identity_remains_private": true,
+    "persistence_view_is_serialization_neutral_data_not_commit_authority": true,
+    "reconstruction_validates_before_ready_state_publication": true
+  },
+  "definitive_qualification": {
+    "workflow": "F-WOF41 production owner persistence API",
+    "run": 34372766022,
+    "job": 102537860108,
+    "tested_head": "d884b2c5db6f28a1277918096d18717e481218d6",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "O0": "PASS",
+    "O2": "PASS",
+    "markers": [
+      "FWOF38_ATOMIC_CROP_TRANSACTION_O0=PASS",
+      "FWOF38_ATOMIC_CROP_TRANSACTION_O2=PASS",
+      "FWOF38_ATOMIC_CROP_TRANSACTION_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FWOF39_PRECOMMIT_NO_MATCH_ZERO_MUTATION=PASS",
+      "FWOF39_MATCHING_RECEIPT_RETIREMENT_ONLY=PASS",
+      "FWOF39_OWNER_RECEIPT_REVISION_UNCHANGED=PASS",
+      "FWOF39_REPLAY_IDEMPOTENT_ZERO_MUTATION=PASS",
+      "FWOF39_LIFECYCLE_RETIREMENT_GATE PASS",
+      "FWOF41_PRODUCTION_SOURCE_EXACT_FWO40_CANDIDATE=PASS",
+      "FWOF41_PRODUCTION_OWNER_RESTART_O0=PASS",
+      "FWOF41_PRODUCTION_OWNER_RESTART_O2=PASS",
+      "FWOF40_CONTINUOUS_TWO_EVENT_REFERENCE=PASS",
+      "FWOF40_PRODUCER_COMMIT_RETIRE_WRITE_AND_EXIT=PASS",
+      "FWOF40_FRESH_PROCESS_RECONSTRUCTION=PASS",
+      "FWOF40_RESTORED_RECEIPT_REJECTS_STALE_EVENT=PASS",
+      "FWOF40_NEW_EVENT_CONTINUES_AFTER_RESTART=PASS",
+      "FWOF41_PRODUCTION_OWNER_API_DIRECT_COMPILE=PASS",
+      "FWOF41_TWO_SEPARATE_OS_PROCESSES_PRODUCER_THEN_CONSUMER=PASS",
+      "FWOF41_CONTINUOUS_VERSUS_PROCESS_RESTART_ENDPOINT_EXACT=PASS",
+      "FWOF41_RETIRED_ACCEPTED_WINDOW_NOT_PERSISTED=PASS",
+      "FWOF41_EXTERNAL_NEGATIVE_CASES_FAIL_CLOSED=PASS",
+      "FWOF41_EXTERNAL_REPRESENTATION_O0_O2_IDENTITY=PASS",
+      "FWOF41_PRODUCTION_OWNER_PERSISTENCE_QUALIFICATION_GATE PASS"
+    ]
+  },
+  "source_bound_equivalence": {
+    "reference_candidate_base_head": "2394431312932df27e52d77b25475f72f11fa38d",
+    "candidate_materializer": "tools/fwof40_materialize_persistence_candidate.py",
+    "expected_candidate_regenerated_from_reference_base": true,
+    "expected_lineage_cmp_current_production": "EXACT",
+    "expected_crop_transaction_cmp_current_production": "EXACT",
+    "claim": "production API is byte-exact to the owner persistence candidate already executable-qualified by F-WOF40"
+  },
+  "restart_preservation": {
+    "producer_consumer_separate_OS_processes": true,
+    "fresh_committed_state_reconstruction": true,
+    "lineage_revision_time_preserved": true,
+    "crop_owner_continuation_preserved": true,
+    "last_consumed_receipt_preserved": true,
+    "stale_already_consumed_event_rejected": true,
+    "stale_replay_zero_candidate_and_revision_mutation": true,
+    "later_distinct_event_commits": true,
+    "continuous_vs_restarted_endpoint_exact": true,
+    "retired_accepted_window_cache_not_persisted": true,
+    "external_representation_O0_O2_identity": true
+  },
+  "negative_qualification": {
+    "external_payload_case_count": 10,
+    "all_fail_closed": true,
+    "owner_nonfinite_state_rejected": true,
+    "invalid_receipt_revision_rejected": true,
+    "invalid_schema_layout_codec_rejected": true,
+    "malformed_structure_rejected": true,
+    "no_ready_committed_state_published_on_rejection": true
+  },
+  "preservation": {
+    "F_WOF38_atomic_crop_publication": "PASS",
+    "F_WOF38_failed_and_replay_semantics": "PASS",
+    "F_WOF39_lifecycle_retirement": "PASS",
+    "crop_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "numerical_tolerance_changed": false,
+    "new_commit_authority_added": false,
+    "lineage_or_revision_setter_added": false,
+    "rollback_semantics_changed": false
+  },
+  "persistent_state_policy": {
+    "included": [
+      "authoritative crop owner continuation state",
+      "last-consumed-event receipt persistence view when present"
+    ],
+    "F_KT_owned_provenance_reconstructed_separately": [
+      "lineage",
+      "revision",
+      "committed time"
+    ],
+    "excluded": [
+      "parameters",
+      "forcing",
+      "solver scratch",
+      "warm-start vectors",
+      "retired accepted-window cache",
+      "event delivery cache",
+      "derived crop views"
+    ]
+  },
+  "IO_boundary": {
+    "kernel_file_IO_added": false,
+    "owner_module_file_IO_added": false,
+    "owner_module_path_dependency_added": false,
+    "owner_module_parser_or_codec_added": false,
+    "external_text_codec_role": "QUALIFICATION_ADAPTER_ONLY",
+    "production_SWAPS_wide_restart_format_defined": false
+  },
+  "invariant_assessment": {
+    "1_single_kernel": "PASS_NO_SPECIAL_RESTART_KERNEL",
+    "2_kernel_IO_separation": "PASS_SERIALIZATION_NEUTRAL_OWNER_API_ONLY",
+    "3_explicit_data_separation": "PASS_PERSISTENCE_VIEW_EXCLUDES_PARAMETERS_FORCING_AND_SCRATCH",
+    "4_compact_persistent_state": "PASS_ONLY_OWNER_CONTINUATION_AND_RECEIPT_IN_CROP_VIEW",
+    "5_scratch_per_worker": "PASS_NO_SCRATCH_PERSISTENCE",
+    "7_transactional_timesteps": "PASS_ONLY_COMMITTED_STATE_RECONSTRUCTION_NO_TRIAL_PUBLICATION",
+    "8_recompute_and_warm_start": "PASS_STALE_REPLAY_REJECTED_AND_LATER_EVENT_CONTINUES",
+    "9_generic_time": "PASS_NO_CALENDAR_BOUNDARY_ASSUMPTION",
+    "21_reuse_SWAPS_physics": "PASS_NO_CROP_PHYSICS_FORK",
+    "23_physics_solver_policy_separation": "PASS_NO_SOLVER_POLICY_IN_PERSISTENCE_VIEW",
+    "27_optional_functionality_scales_with_use": "DIRECTIONALLY_COMPATIBLE_CROP_PERSISTENCE_STATE_ONLY_FOR_CROP_TRANSACTION_NOT_FULL_MULTISWAP_LAYOUT_QUALIFICATION",
+    "29_no_silent_dependencies": "PASS_NO_FILE_PATH_MIDNIGHT_OR_DIRECT_COUPLING_ASSUMPTION_IN_OWNER_API",
+    "30_architecture_change_qualification": "PASS_CONTRACT_EXACT_SOURCE_EQUIVALENCE_DIRECT_PRODUCTION_O0_O2_PROCESS_SPLIT_NEGATIVE_AND_PRESERVATION_GATES"
+  },
+  "post_test_housekeeping": {
+    "tested_head": "d884b2c5db6f28a1277918096d18717e481218d6",
+    "housekeeping_head_before_closeout_docs": "8f30b2f92c6c79611182fe5b4d6340f3381dfc21",
+    "compare_ahead_by": 1,
+    "only_change": "remove .github/workflows/fwof41-materialize-production-owner-api.yml",
+    "production_source_changed_after_test": false
+  },
+  "not_qualified": [
+    "production SWAP-wide restart serialization or file format",
+    "all optional WOFOST crop-state layouts",
+    "active unretired accepted-window persistence",
+    "mid-transaction trial or candidate persistence",
+    "full MultiSWAP checkpoint/restart orchestration and storage layout",
+    "canonical promotion"
+  ],
+  "decision": "QUALIFIED_PRODUCTION_OWNER_PERSISTENCE_API_WITH_TRUE_PROCESS_RESTART_PRESERVED",
+  "status": "QUALIFIED_PRODUCTION_OWNER_PERSISTENCE_API_SCOPE_COMPLETE"
+}

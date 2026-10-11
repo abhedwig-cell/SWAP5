@@ -1,0 +1,15 @@
+name: F-PE-ZERO-WASTE01 poisoned workspace
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  poison-workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run poisoned-workspace equivalence gate
+        run: bash tests/fpe/run_fpe_zero_waste01_poison_workspace.sh

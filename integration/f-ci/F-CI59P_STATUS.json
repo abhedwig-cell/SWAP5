@@ -1,0 +1,47 @@
+{
+  "schema": "swap5.fci59p.status.v1",
+  "work_unit": "F-CI59P",
+  "branch": "qualification/f-ci59p-current-canonical-postimage-reconciliation",
+  "phase": "QUALIFIED_READY_FOR_CANONICAL_METADATA_ADMISSION",
+  "decision": "QUALIFIED_F_CI59P_ATOMIC_SURFACE_PUBLICATION_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "canonical_postimage": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+  "canonical_postimage_tree": "577d2251ac5bcfa08c62918068f9d4e8168f48a0",
+  "source_admission": {
+    "work_unit": "F-CI59",
+    "pull_request": 109,
+    "merge_sha": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+    "true_two_parent_merge": true,
+    "parent_1": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+    "parent_2": "97dbb3e92b05b32368d41bfe57b74bd49017b88b"
+  },
+  "authorities": {
+    "owner": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+    "independent": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+    "admission": "qualification/f-ci59-fmr43-surface-publication-current-canonical-admission@97dbb3e92b05b32368d41bfe57b74bd49017b88b"
+  },
+  "qualification": {
+    "postpromotion_canonical_run": 34780675957,
+    "postpromotion_canonical_conclusion": "success",
+    "postimage_reconciliation_run": 34780873666,
+    "postimage_reconciliation_job": 103787534262,
+    "postimage_reconciliation_conclusion": "success",
+    "F_VQ71_postimage_replay": "PASS_O0_O2",
+    "permanent_preservation": "PASS"
+  },
+  "scope": {
+    "F_CI59P_production_source_changed": false,
+    "F_CI59P_reference_source_changed": false,
+    "new_physics": false,
+    "kernel_changed": false,
+    "mass_authority_changed": false,
+    "denominator_changed": false,
+    "scope_reduced": false
+  },
+  "FPM09_closure_gaps": {
+    "G01": "CLOSED_BY_F_MR43",
+    "G02": "CLOSED_BY_F_VQ71",
+    "G03": "CLOSED_POSTIMAGE_RECONCILED_BY_F_CI59_AND_F_CI59P"
+  },
+  "closed": true,
+  "next": "canonically persist this metadata/test-only reconciliation, require post-merge canonical workflows to remain green, then rerun the frozen F-PM09 completeness audit with denominator unchanged"
+}

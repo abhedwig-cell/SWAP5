@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC27",
+  "title": "Restricted Direct-Groundwater V1 End-to-End Qualification",
+  "phase": "CLOSE",
+  "canonical_scientific_admission": {
+    "commit": "8ee638cc2a2fa9fe1f8930e9f2983b0bc47cdbc5",
+    "tree": "d63b692032de07f45376b32dde5dc73937ffe667",
+    "admission_record": "integration/f-gc/F-GC27_CANONICAL_ADMISSION.json",
+    "admission_record_blob": "c64e3270c9174db839077dacd4b350932af462e3"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ97",
+    "authority_head": "d45abdfb7fbd3f1ce5f68866586c5e9e67252f54",
+    "tested_head": "5566d4888ae2395fc8d38e9e6ab07d4ff83f9b07",
+    "workflow_run_id": 35031745967,
+    "workflow_job_id": 104591583793,
+    "oracle_sha256": "b05c239a74873d0ae0df29905cabef0ab3fe8c6b3859e00fc22eeb61b444d3dd",
+    "verdict": "INDEPENDENTLY_QUALIFIED"
+  },
+  "current_canonical_admission_gate": {
+    "work_unit": "F-CI87",
+    "branch_head": "16f389d82c660e2f1c109e40d6c26a5dd6bfb9f0",
+    "workflow_run_id": 35032025064,
+    "workflow_job_id": 104592470019,
+    "conclusion": "success"
+  },
+  "closed_contract": [
+    "restricted predictor plus exactly one corrector from the same committed coupling origin",
+    "rejected/nonconverged work is unpublished and requests a smaller outer window rather than same-window retry",
+    "exact SWAP/groundwater action-reaction sign pairing and committed interface mass accounting",
+    "F-GC20 area-weighted MultiSWAP aggregation without silent fraction normalization",
+    "F-GC22 separation of application accuracy, temporal allocation and interface convergence tolerance",
+    "F-GC25 MultiSWAP topology/transaction/publication composition",
+    "F-GC26 external groundwater gateway unit/sign/provenance boundary and shared-backend isolation",
+    "F-GC23 whole-window response tangent remains a separately owned admitted capability",
+    "F-GC24 committed coupled restart remains a separately owned admitted capability"
+  ],
+  "admitted_production_blobs": {
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_coupling_response.f90": "645141676536ae8289b9d52433798a965c7baa04",
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849",
+    "src/runtime/mod_groundwater_coupling_contract.f90": "fc598d14eabafcb025bb55621f7b00d6d1816f10",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc"
+  },
+  "production_mutations_in_fgc27": [],
+  "failed_run_disposition": {
+    "run_id": 35031229456,
+    "classification": "QUALIFICATION_HARNESS_BUILD_DEPENDENCY_OMISSION",
+    "production_defect_established": false
+  },
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "next_permitted_action": "F-GC28 — groundwater-coupling v1 completion audit may be handled as a separate bounded workunit; it is not started by this closeout.",
+  "exclusions_preserved": ["EB", "ROSS/RossFast", "new groundwater physics", "broad MODFLOW", "new Richards solver policy", "new mass/convergence tolerance", "kernel file IO", "calendar assumptions", "production changes solely to obtain PASS", "F-GC28 execution"]
+}

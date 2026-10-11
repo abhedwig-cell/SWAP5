@@ -1,0 +1,172 @@
+name: F-CI72 EB-I23 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci72-eb-i23-sensible-boundary-runtime-current-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock live canonical and qualified authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=3ff0f42299767d5ad5f07d031698dfcf7969ed0d
+          OWNER=94832bb80534c2edb324c1c9e0cbb54df3678246
+          INDEPENDENT=0f750e71681d9b36f0e06388dac01b4e65272667
+          git fetch origin integration/f-ci-canonical
+          test "$(git rev-parse origin/integration/f-ci-canonical)" = "$CANONICAL"
+          git merge-base --is-ancestor "$CANONICAL" HEAD
+          git merge-base --is-ancestor "$OWNER" HEAD
+          git merge-base --is-ancestor "$INDEPENDENT" HEAD
+
+          declare -A OWNER_BLOBS=(
+            [src/runtime/mod_eb_i23_sensible_boundary_runtime.f90]=35dda86ca51bd91040af0672a43e2961c8db64fd
+            [tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90]=e9fde2d51d2c8cb76ae2def4b7e4a3acaf356d4a
+            [tests/eb/EB-I23_CONTRACT.md]=56bfd4f1350e569e6f651ca4ada13550af93f986
+            [tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh]=fb14542ecccb4b731c12134e069976e968f1e3f3
+            [.github/workflows/eb-i23-sensible-boundary-runtime-materialization.yml]=f67bc84761f51506d26db6a2d6f08b3387050701
+          )
+          for path in "${!OWNER_BLOBS[@]}"; do
+            test "$(git rev-parse "$OWNER:$path")" = "${OWNER_BLOBS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${OWNER_BLOBS[$path]}"
+          done
+
+          declare -A VQ_BLOBS=(
+            [tests/eb/run_f_vq90_eb_i23_independent_gate.sh]=2e306978b629997e73c607ef98ae1bdb0a684207
+            [.github/workflows/f-vq90-eb-i23-independent.yml]=cdfa00c13cdff7d459c55e89485d3a4e14345e5b
+            [qualification/F-VQ90_STATUS.json]=c4255d910af0fa40d7a856ee8dad7d7791119cdd
+          )
+          for path in "${!VQ_BLOBS[@]}"; do
+            test "$(git rev-parse "$INDEPENDENT:$path")" = "${VQ_BLOBS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${VQ_BLOBS[$path]}"
+          done
+          echo 'FCI72_LIVE_CANONICAL_LOCK=PASS'
+          echo 'FCI72_OWNER_AUTHORITY_LOCK=PASS'
+          echo 'FCI72_INDEPENDENT_AUTHORITY_LOCK=PASS'
+
+      - name: Lock inherited dependency surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=3ff0f42299767d5ad5f07d031698dfcf7969ed0d
+          declare -A DEPS=(
+            [src/process/mod_restricted_soil_temperature.f90]=fa4e1d7b48d3515e6569c9080d497178c25c4e85
+            [src/process/mod_soil_temperature_contract.f90]=baa13df3975de2c699b0ec910477bcfa9b47f15e
+            [src/runtime/mod_fmr_serialized_reference_backend.f90]=3506b453ba6a00111d182f29db8cbfb288001854
+            [src/runtime/mod_fmr_serialized_multiswap_runtime.f90]=1aa2454048d0e480becaee34f596f20f1a7bd66e
+            [src/process/mod_liquid_water_sensible_enthalpy.f90]=2247370ee34fac73a0e2d0b9fa15e171467aded3
+            [src/process/mod_whole_column_sensible_energy_accounting.f90]=c00efd8cdb4de947de16e1d32ae4c9f4d0590850
+          )
+          for path in "${!DEPS[@]}"; do
+            test "$(git rev-parse "$CANONICAL:$path")" = "${DEPS[$path]}"
+            test "$(git rev-parse "HEAD:$path")" = "${DEPS[$path]}"
+          done
+          echo 'FCI72_DEPENDENCY_SURFACE_LOCK=PASS'
+
+      - name: Require exact bounded admission delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          CANONICAL=3ff0f42299767d5ad5f07d031698dfcf7969ed0d
+          git diff --name-only "$CANONICAL" HEAD | sort > changed.txt
+          cat > allowed.txt <<'EOF'
+          .github/workflows/eb-i23-sensible-boundary-runtime-materialization.yml
+          .github/workflows/f-ci72-eb-i23-current-canonical-admission.yml
+          .github/workflows/f-vq90-eb-i23-independent.yml
+          qualification/F-VQ90_STATUS.json
+          src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+          tests/eb/EB-I23_CONTRACT.md
+          tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh
+          tests/eb/run_f_vq90_eb_i23_independent_gate.sh
+          tests/eb/test_eb_i23_sensible_boundary_runtime_materialization.f90
+          EOF
+          if test -f integration/f-ci/F-CI72_STATUS.json; then
+            echo 'integration/f-ci/F-CI72_STATUS.json' >> allowed.txt
+          fi
+          sort -o allowed.txt allowed.txt
+          diff -u allowed.txt changed.txt
+          python3 -m json.tool qualification/F-VQ90_STATUS.json >/dev/null
+          python3 - <<'PY'
+          import json
+          d=json.load(open('qualification/F-VQ90_STATUS.json', encoding='utf-8'))
+          assert d['decision']=='QUALIFIED_EB_I23_INDEPENDENT'
+          assert d['qualified_owner_head']=='94832bb80534c2edb324c1c9e0cbb54df3678246'
+          assert d['canonical_head']=='3ff0f42299767d5ad5f07d031698dfcf7969ed0d'
+          e=d['evidence']
+          assert all(e.values())
+          q=d['qualified_scope']
+          assert q['accepted_single_substep_conductive_materialization'] is True
+          assert q['receipt_owned_bottom_advective_materialization'] is True
+          assert q['missing_bottom_donor_fail_closed'] is True
+          assert q['top_advective_materialized'] is False
+          assert q['multi_substep_conductive_materialization'] is False
+          assert q['runtime_materialization_complete'] is False
+          assert q['whole_column_sensible_residual_publication'] is False
+          assert q['full_energy_balance_complete'] is False
+          assert q['canonical_admission'] is False
+          PY
+          if test -f integration/f-ci/F-CI72_STATUS.json; then
+            python3 -m json.tool integration/f-ci/F-CI72_STATUS.json >/dev/null
+            grep -Fq '"decision": "QUALIFIED_F_CI72_READY_FOR_CANONICAL_PROMOTION"' integration/f-ci/F-CI72_STATUS.json
+            grep -Fq '"canonical_admission": false' integration/f-ci/F-CI72_STATUS.json
+            grep -Fq '"full_energy_balance_complete": false' integration/f-ci/F-CI72_STATUS.json
+          fi
+          echo 'FCI72_EXACT_BOUNDED_DELTA=PASS'
+
+      - name: Guard EB-I23 hard nonclaims
+        shell: bash
+        run: |
+          set -euo pipefail
+          MODULE=src/runtime/mod_eb_i23_sensible_boundary_runtime.f90
+          grep -Fq 'output%accepted_substeps == 1' "$MODULE"
+          grep -Fq 'boundary%top_advective_available = .false.' "$MODULE"
+          ! grep -Fq 'boundary%top_advective_available = .true.' "$MODULE"
+          grep -Fq 'publication%bottom_conductive_outward_j_m2_value = 0.0_real64' "$MODULE"
+          grep -Fq 'No qualified canonical top-water donor-temperature authority exists' "$MODULE"
+          grep -Fq 'No qualified top mass-carried sensible-energy donor-temperature authority is introduced.' qualification/F-VQ90_STATUS.json
+          echo 'FCI72_SINGLE_SUBSTEP_CONDUCTIVE_GUARD=PASS'
+          echo 'FCI72_TOP_ADVECTIVE_FAIL_CLOSED=PASS'
+          echo 'FCI72_EXPLICIT_RESTRICTED_BOTTOM_ZERO_PRESERVED=PASS'
+          echo 'FCI72_NO_FULL_ENERGY_BALANCE_BROADENING=PASS'
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Replay exact owner and independent qualifications
+        shell: bash
+        run: |
+          set -euo pipefail
+          OWNER=94832bb80534c2edb324c1c9e0cbb54df3678246
+          INDEPENDENT=0f750e71681d9b36f0e06388dac01b4e65272667
+          OWNER_TREE="${RUNNER_TEMP}/fci72-owner-${GITHUB_RUN_ID}"
+          VQ_TREE="${RUNNER_TEMP}/fci72-vq-${GITHUB_RUN_ID}"
+          cleanup() {
+            git worktree remove --force "$OWNER_TREE" >/dev/null 2>&1 || true
+            git worktree remove --force "$VQ_TREE" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          git worktree add --detach "$OWNER_TREE" "$OWNER" >/dev/null
+          (cd "$OWNER_TREE" && bash tests/eb/run_eb_i23_sensible_boundary_runtime_materialization_gate.sh) | tee owner-replay.txt
+          git worktree add --detach "$VQ_TREE" "$INDEPENDENT" >/dev/null
+          (cd "$VQ_TREE" && bash tests/eb/run_f_vq90_eb_i23_independent_gate.sh) | tee independent-replay.txt
+          grep -Fq 'EB_I23_SENSIBLE_BOUNDARY_RUNTIME_MATERIALIZATION_GATE=PASS' owner-replay.txt
+          grep -Fq 'F_VQ90_INDEPENDENT_QUALIFICATION=PASS' independent-replay.txt
+          grep -Fq 'F_VQ90_RESIDUAL_SIGN_MUTANT_REJECTED=PASS' independent-replay.txt
+          grep -Fq 'F_VQ90_MISSING_AS_ZERO_MUTANT_REJECTED=PASS' independent-replay.txt
+          grep -Fq 'F_VQ90_MULTISUBSTEP_BROADENING_MUTANT_REJECTED=PASS' independent-replay.txt
+          grep -Fq 'F_VQ90_TOP_ADVECTIVE_BROADENING_MUTANT_REJECTED=PASS' independent-replay.txt
+          echo 'FCI72_OWNER_REPLAY=PASS'
+          echo 'FCI72_INDEPENDENT_REPLAY=PASS'
+          echo 'FCI72_ADMISSION_QUALIFICATION=PASS'

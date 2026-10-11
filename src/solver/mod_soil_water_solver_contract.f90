@@ -1,0 +1,484 @@
+module mod_soil_water_solver_contract
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  implicit none
+  private
+
+  integer, parameter, public :: SW_SOLVE_NOT_RUN = 0
+  integer, parameter, public :: SW_SOLVE_CONVERGED = 1
+  integer, parameter, public :: SW_SOLVE_RETRY_ADVISED = 2
+  integer, parameter, public :: SW_SOLVE_FAILED = 3
+
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_NOT_RUN = 0
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_AVAILABLE = 1
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_UNAVAILABLE = 2
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_FAILED = 3
+
+  integer, parameter, public :: SW_TOP_BOUNDARY_NOT_RUN = 0
+  integer, parameter, public :: SW_TOP_BOUNDARY_AVAILABLE = 1
+  integer, parameter, public :: SW_TOP_BOUNDARY_UNAVAILABLE = 2
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_NONE = 0
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_FLUX = 1
+  integer, parameter, public :: SW_TOP_BOUNDARY_REGIME_HEAD = 2
+
+  type, public :: soil_water_parameter_set_t
+     integer(int64) :: parameter_set_id = 0_int64
+     integer :: active_nodes = 0
+     real(real64), allocatable :: z(:)
+     real(real64), allocatable :: dz(:)
+     real(real64), allocatable :: node_distance(:)
+  end type soil_water_parameter_set_t
+
+  type, public :: soil_water_physical_state_t
+     integer :: active_nodes = 0
+     real(real64), allocatable :: pressure_head(:)
+     real(real64), allocatable :: water_content(:)
+     real(real64) :: ponding_depth = 0.0_real64
+     real(real64) :: groundwater_level = 0.0_real64
+  end type soil_water_physical_state_t
+
+  type, public :: soil_water_boundary_conditions_t
+     integer :: top_mode = 0
+     integer :: bottom_mode = 0
+     real(real64) :: top_flux = 0.0_real64
+     real(real64) :: top_head = 0.0_real64
+     real(real64) :: bottom_flux = 0.0_real64
+     real(real64) :: bottom_head = 0.0_real64
+     ! Mode3 head is external total head; flux is independent extra qbot.
+     real(real64) :: bottom_external_resistance_days = 0.0_real64
+     logical :: bottom_include_half_cell = .true.
+     ! Optional candidate macro surface-area fraction for source-aware dynamic
+     ! top boundaries. Negative preserves the existing unpartitioned route.
+     real(real64) :: macropore_surface_area_fraction = -1.0_real64
+     logical :: matrix_source_area_partition = .false.
+  end type soil_water_boundary_conditions_t
+
+  type, public :: soil_water_physical_config_t
+     logical :: macropore_active = .false.
+     ! Immutable matrix cross-section. Absence preserves the unit-area route.
+     real(real64), allocatable :: matrix_area_fraction(:)
+  end type soil_water_physical_config_t
+
+  type, public :: soil_water_numerical_config_t
+     integer :: max_iterations = 0
+     integer :: max_backtracking = 0
+     integer :: conductivity_implicit_mode = 0
+     integer :: conductivity_mean_method = 0
+     real(real64) :: min_step_duration = 0.0_real64
+     real(real64) :: compartment_balance_tolerance = 0.0_real64
+     real(real64) :: total_balance_tolerance = 0.0_real64
+     real(real64) :: head_abs_tolerance = 0.0_real64
+     real(real64) :: head_rel_tolerance = 0.0_real64
+     real(real64) :: ponding_tolerance = 0.0_real64
+  end type soil_water_numerical_config_t
+
+  type, public :: soil_water_top_boundary_result_t
+     integer :: status = SW_TOP_BOUNDARY_NOT_RUN
+     integer :: regime = SW_TOP_BOUNDARY_REGIME_NONE
+     real(real64) :: actual_top_flux = 0.0_real64
+     real(real64) :: surface_head = 0.0_real64
+     real(real64) :: surface_face_conductivity = 0.0_real64
+     real(real64) :: candidate_ponding_depth = 0.0_real64
+     real(real64) :: bare_soil_evaporation = 0.0_real64
+     real(real64) :: ponded_water_evaporation = 0.0_real64
+     real(real64) :: runoff_depth = 0.0_real64
+     real(real64) :: net_potential_surface_flux = 0.0_real64
+     real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
+     logical :: surface_head_derivative_available = .false.
+     real(real64) :: surface_head_dpressure_head_top = 0.0_real64
+     logical :: carries_surface_mass_terms = .false.
+     logical :: runoff_potential = .false.
+     logical :: runoff_resolved = .false.
+     character(len=48) :: route = 'not-run'
+  end type soil_water_top_boundary_result_t
+
+  integer, parameter, public :: CONSTITUTIVE_DEMAND_WATER_CONTENT = 1
+  integer, parameter, public :: CONSTITUTIVE_DEMAND_CONDUCTIVITY = 2
+  integer, parameter, public :: CONSTITUTIVE_DEMAND_CAPACITY = 4
+  integer, parameter, public :: CONSTITUTIVE_DEMAND_DKDH = 8
+
+  type, abstract, public :: constitutive_hydraulics_provider_t
+   contains
+     procedure(constitutive_evaluate_ifc), deferred :: evaluate
+     procedure :: evaluate_demand => constitutive_evaluate_demand_fallback
+     procedure :: evaluate_water_content_increment => constitutive_water_content_increment_fallback
+     procedure :: supports_point_conductivity => constitutive_supports_point_conductivity_fallback
+     procedure :: evaluate_point_conductivity => constitutive_evaluate_point_conductivity_unavailable
+  end type constitutive_hydraulics_provider_t
+
+  type, abstract, public :: source_sink_provider_t
+   contains
+     procedure(source_sink_evaluate_ifc), deferred :: evaluate
+  end type source_sink_provider_t
+
+  type, abstract, public :: root_sink_provider_t
+   contains
+     procedure(root_sink_evaluate_ifc), deferred :: evaluate
+  end type root_sink_provider_t
+
+  ! Frozen F-SI28 ABI: simple providers remain flux-only and keep the exact
+  ! legacy explicit-provider signature.
+  type, abstract, public :: top_boundary_provider_t
+   contains
+     procedure(top_boundary_evaluate_ifc), deferred :: evaluate
+  end type top_boundary_provider_t
+
+  ! F-SI30 opt-in sibling. Rich dynamic surface physics is isolated from the
+  ! already-qualified fixed-flux provider ABI and pays no cost when unused.
+  type, abstract, public :: dynamic_top_boundary_provider_t
+   contains
+     procedure(dynamic_top_boundary_evaluate_ifc), deferred :: evaluate
+  end type dynamic_top_boundary_provider_t
+
+  type, abstract, public :: macropore_exchange_provider_t
+   contains
+     procedure(macropore_rate_evaluate_ifc), deferred :: evaluate_rate
+     procedure(macropore_derivative_evaluate_ifc), deferred :: evaluate_derivative
+     procedure :: set_candidate_pond_lateral => default_set_candidate_pond_lateral
+     procedure :: candidate_pond_lateral => default_candidate_pond_lateral
+     procedure :: permits_source_freezing => default_macropore_source_freezing
+  end type macropore_exchange_provider_t
+
+  type, public :: hydraulic_evaluation_context_t
+     class(constitutive_hydraulics_provider_t), pointer :: constitutive => null()
+     class(source_sink_provider_t), pointer :: source_sink => null()
+     class(root_sink_provider_t), pointer :: root_sink => null()
+     class(top_boundary_provider_t), pointer :: top_boundary => null()
+     class(dynamic_top_boundary_provider_t), pointer :: dynamic_top_boundary => null()
+     class(macropore_exchange_provider_t), pointer :: macropore => null()
+  end type hydraulic_evaluation_context_t
+
+  type, public :: soil_water_solve_request_t
+     type(soil_water_parameter_set_t), pointer :: parameters => null()
+     type(soil_water_physical_state_t) :: base_state
+     type(soil_water_boundary_conditions_t) :: boundary
+     type(soil_water_physical_config_t) :: physical
+     type(soil_water_numerical_config_t) :: numerical
+     type(hydraulic_evaluation_context_t) :: evaluation
+     real(real64) :: step_duration = 0.0_real64
+     logical :: request_interface_sensitivity = .false.
+  end type soil_water_solve_request_t
+
+  type, public :: soil_water_solver_diagnostics_t
+     integer :: nonlinear_iterations = 0
+     integer :: jacobian_builds = 0
+     integer :: linear_solves = 0
+     integer :: backtracking_attempts = 0
+     integer :: alternative_solver_calls = 0
+     integer :: internal_retries = 0
+     integer :: interface_sensitivity_backsolves = 0
+     integer :: constitutive_evaluations = 0
+     integer :: constitutive_initial_full_evaluations = 0
+     integer :: constitutive_candidate_full_evaluations = 0
+     integer :: constitutive_candidate_demand_evaluations = 0
+     integer :: constitutive_capacity_only_evaluations = 0
+     integer :: constitutive_candidate_terminal_evaluations = 0
+     integer :: constitutive_candidate_capacity_reuses = 0
+     integer :: workspace_full_resets = 0
+     integer(int64) :: workspace_zeroed_bytes = 0_int64
+     character(len=32) :: route = 'not-run'
+  end type soil_water_solver_diagnostics_t
+
+  type, public :: soil_water_interface_sensitivity_t
+     logical :: available = .false.
+     real(real64) :: dh_bottom_dq_bottom = 0.0_real64
+     character(len=24) :: method = 'not-available'
+  end type soil_water_interface_sensitivity_t
+
+  type, public :: soil_water_solve_result_t
+     integer :: status = SW_SOLVE_NOT_RUN
+     logical :: retry_advised = .false.
+     type(soil_water_physical_state_t) :: candidate_state
+     real(real64) :: top_flux = 0.0_real64
+     real(real64) :: bottom_flux = 0.0_real64
+     ! Compatibility-only legacy diagnostic. Historical producers assigned
+     ! route-specific physical dimensions to this field, so new code must not
+     ! use it as a solver-independent mass gate.
+     real(real64) :: unrounded_mass_balance_residual = 0.0_real64
+     ! Solver-independent typed diagnostic: time-integrated balance/equation
+     ! residual in cm. This is not the canonical transaction mass ledger.
+     logical :: integrated_mass_balance_residual_available = .false.
+     real(real64) :: integrated_mass_balance_residual_cm = 0.0_real64
+     ! Optional solver-native equation-balance rate residual in cm/day. The
+     ! Reference HeadCalc route exposes this directly; other solvers may leave
+     ! it unavailable when no equivalent native rate diagnostic exists.
+     logical :: native_balance_rate_residual_available = .false.
+     real(real64) :: native_balance_rate_residual_cm_per_day = 0.0_real64
+     type(soil_water_solver_diagnostics_t) :: diagnostics
+     type(soil_water_interface_sensitivity_t) :: interface_sensitivity
+  end type soil_water_solve_result_t
+
+  type, public :: soil_water_temporal_indicator_request_t
+     logical :: previous_right_derivative_available = .false.
+     real(real64), allocatable :: previous_right_derivative(:)
+  end type soil_water_temporal_indicator_request_t
+
+  type, public :: soil_water_temporal_indicator_result_t
+     integer :: status = SW_TEMPORAL_INDICATOR_NOT_RUN
+     logical :: available = .false.
+     character(len=40) :: route = 'not-run'
+     integer :: additional_full_nonlinear_solves = 0
+     integer :: additional_tridiagonal_solves = 0
+     real(real64) :: raw_m_norm = 0.0_real64
+     real(real64) :: defect_m_norm = 0.0_real64
+     real(real64) :: bounded_m_norm = 0.0_real64
+     real(real64) :: head_inf_bound = 0.0_real64
+     real(real64) :: min_mass_weight = 0.0_real64
+     real(real64), allocatable :: current_right_derivative(:)
+  end type soil_water_temporal_indicator_result_t
+
+  type, abstract, public :: soil_water_solver_workspace_base_t
+  end type soil_water_solver_workspace_base_t
+
+  type, abstract, public :: soil_water_solver_t
+   contains
+     procedure(soil_water_solve_ifc), deferred :: solve
+     procedure :: evaluate_temporal_indicator => soil_water_temporal_indicator_unavailable
+  end type soil_water_solver_t
+
+  public :: validate_soil_water_request
+  public :: evaluate_resistive_bottom_boundary
+
+  abstract interface
+     subroutine constitutive_evaluate_ifc(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
+       import :: constitutive_hydraulics_provider_t, real64
+       class(constitutive_hydraulics_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
+     end subroutine constitutive_evaluate_ifc
+
+     subroutine source_sink_evaluate_ifc(self, pressure_head, water_content, source, sink)
+       import :: source_sink_provider_t, real64
+       class(source_sink_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
+       real(real64), intent(out) :: source(:)
+       real(real64), intent(out) :: sink(:)
+     end subroutine source_sink_evaluate_ifc
+
+     subroutine root_sink_evaluate_ifc(self, pressure_head, water_content, root_sink)
+       import :: root_sink_provider_t, real64
+       class(root_sink_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
+       real(real64), intent(out) :: root_sink(:)
+     end subroutine root_sink_evaluate_ifc
+
+     subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, requested, &
+                                           actual_top_flux, surface_head, runoff_flux)
+       import :: top_boundary_provider_t, soil_water_boundary_conditions_t, real64
+       class(top_boundary_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head_top
+       real(real64), intent(in) :: water_content_top
+       type(soil_water_boundary_conditions_t), intent(in) :: requested
+       real(real64), intent(out) :: actual_top_flux
+       real(real64), intent(out) :: surface_head
+       real(real64), intent(out) :: runoff_flux
+     end subroutine top_boundary_evaluate_ifc
+
+     subroutine dynamic_top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, candidate_ponding_depth, &
+                                                   requested, result)
+       import :: dynamic_top_boundary_provider_t, soil_water_boundary_conditions_t, &
+            soil_water_top_boundary_result_t, real64
+       class(dynamic_top_boundary_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head_top
+       real(real64), intent(in) :: water_content_top
+       real(real64), intent(in) :: candidate_ponding_depth
+       type(soil_water_boundary_conditions_t), intent(in) :: requested
+       type(soil_water_top_boundary_result_t), intent(out) :: result
+     end subroutine dynamic_top_boundary_evaluate_ifc
+
+     subroutine macropore_rate_evaluate_ifc(self, pressure_head, water_content, exchange_flux, active, &
+                                              surface_area_fraction)
+       import :: macropore_exchange_provider_t, real64
+       class(macropore_exchange_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
+       real(real64), intent(out) :: exchange_flux(:)
+       logical, intent(out) :: active
+       real(real64), intent(out), optional :: surface_area_fraction
+     end subroutine macropore_rate_evaluate_ifc
+
+     subroutine macropore_derivative_evaluate_ifc(self, pressure_head, water_content, capacity, &
+                                                   dexchange_dhead, derivative_available, active)
+       import :: macropore_exchange_provider_t, real64
+       class(macropore_exchange_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
+       real(real64), intent(in) :: capacity(:)
+       real(real64), intent(out) :: dexchange_dhead(:)
+       logical, intent(out) :: derivative_available
+       logical, intent(out) :: active
+     end subroutine macropore_derivative_evaluate_ifc
+
+     subroutine soil_water_solve_ifc(self, request, workspace, result)
+       import :: soil_water_solver_t, soil_water_solve_request_t, soil_water_solve_result_t
+       import :: soil_water_solver_workspace_base_t
+       class(soil_water_solver_t), intent(inout) :: self
+       type(soil_water_solve_request_t), intent(in) :: request
+       class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+       type(soil_water_solve_result_t), intent(out) :: result
+     end subroutine soil_water_solve_ifc
+  end interface
+
+contains
+
+  subroutine default_set_candidate_pond_lateral(self, amount_cm)
+    class(macropore_exchange_provider_t), intent(inout) :: self
+    real(real64), intent(in) :: amount_cm
+  end subroutine default_set_candidate_pond_lateral
+
+  real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+    class(macropore_exchange_provider_t), intent(in) :: self
+    amount_cm=0.0_real64
+  end function default_candidate_pond_lateral
+
+  logical function default_macropore_source_freezing(self) result(permitted)
+    class(macropore_exchange_provider_t),intent(in)::self
+    permitted=.true.
+  end function default_macropore_source_freezing
+
+  subroutine constitutive_evaluate_demand_fallback(self, pressure_head, demand_mask, water_content, conductivity, &
+                                                    capacity, dconductivity_dhead)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:)
+    integer, intent(in) :: demand_mask
+    real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
+
+    if (demand_mask < 0) error stop 'constitutive demand mask must be nonnegative'
+    call self%evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
+  end subroutine constitutive_evaluate_demand_fallback
+
+  subroutine constitutive_water_content_increment_fallback(self, pressure_head, previous_pressure_head, &
+                                                             water_content, previous_water_content, increment)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), previous_pressure_head(:)
+    real(real64), intent(in) :: water_content(:), previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+    if (size(pressure_head) /= size(previous_pressure_head) .or. &
+        size(pressure_head) /= size(water_content) .or. size(pressure_head) /= size(previous_water_content) .or. &
+        size(pressure_head) /= size(increment)) error stop 'constitutive storage increment shape mismatch'
+    increment = water_content - previous_water_content
+    if (.not. same_type_as(self,self)) increment = water_content - previous_water_content
+  end subroutine constitutive_water_content_increment_fallback
+
+  logical function constitutive_supports_point_conductivity_fallback(self) result(supported)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    supported = .false.
+    if (.not. same_type_as(self,self)) supported = .false.
+  end function constitutive_supports_point_conductivity_fallback
+
+  subroutine constitutive_evaluate_point_conductivity_unavailable(self, node_index, pressure_head, water_content, &
+                                                                   conductivity, available)
+    class(constitutive_hydraulics_provider_t), intent(in) :: self
+    integer, intent(in) :: node_index
+    real(real64), intent(in) :: pressure_head, water_content
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: available
+    conductivity = 0.0_real64
+    available = .false.
+    if (node_index < 1 .or. .not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
+    if (.not. same_type_as(self,self)) return
+  end subroutine constitutive_evaluate_point_conductivity_unavailable
+
+  pure subroutine evaluate_resistive_bottom_boundary(boundary, head, elevation, distance, conductivity, &
+                                                    flux, conductance, ok)
+    type(soil_water_boundary_conditions_t), intent(in) :: boundary
+    real(real64), intent(in) :: head, elevation, distance, conductivity
+    real(real64), intent(out) :: flux, conductance
+    logical, intent(out) :: ok
+    real(real64) :: resistance, half_resistance, difference
+    flux=0.0_real64; conductance=0.0_real64; ok=.false.
+    if (boundary%bottom_mode /= 3) return
+    if (.not. ieee_is_finite(boundary%bottom_head)) return
+    if (.not. ieee_is_finite(boundary%bottom_flux)) return
+    if (.not. ieee_is_finite(boundary%bottom_external_resistance_days)) return
+    if (boundary%bottom_head < -10000.0_real64 .or. boundary%bottom_head > 1000.0_real64) return
+    if (abs(boundary%bottom_flux) > 100.0_real64) return
+    resistance=boundary%bottom_external_resistance_days
+    if (resistance < 0.0_real64 .or. resistance > 100000.0_real64) return
+    if (.not. ieee_is_finite(head) .or. .not. ieee_is_finite(elevation)) return
+    if (abs(head) > 1.0e10_real64 .or. abs(elevation) > 1.0e6_real64) return
+    if (boundary%bottom_include_half_cell) then
+       if (.not. ieee_is_finite(distance) .or. .not. ieee_is_finite(conductivity)) return
+       if (distance <= 0.0_real64 .or. conductivity <= 0.0_real64) return
+       if (conductivity < 1.0_real64) then
+          if (distance > huge(distance)*conductivity) return
+       end if
+       half_resistance=distance/conductivity
+       if (half_resistance > huge(resistance)-resistance) return
+       resistance=half_resistance+resistance
+    end if
+    if (resistance <= tiny(resistance)) return
+    conductance=1.0_real64/resistance
+    difference=boundary%bottom_head-(head+elevation)
+    if (abs(difference) > 1.0_real64) then
+       if (conductance > huge(flux)/abs(difference)) then
+          conductance=0.0_real64
+          return
+       end if
+    end if
+    flux=difference/resistance+boundary%bottom_flux
+    ok=ieee_is_finite(flux) .and. ieee_is_finite(conductance)
+  end subroutine evaluate_resistive_bottom_boundary
+
+  subroutine validate_soil_water_request(request, ok)
+    type(soil_water_solve_request_t), intent(in) :: request
+    logical, intent(out) :: ok
+    integer :: n
+
+    ok = .false.
+    if (.not. associated(request%parameters)) return
+    n = request%parameters%active_nodes
+    if (n <= 0) return
+    if (.not. allocated(request%parameters%z)) return
+    if (.not. allocated(request%parameters%dz)) return
+    if (.not. allocated(request%parameters%node_distance)) return
+    if (size(request%parameters%z) /= n) return
+    if (size(request%parameters%dz) /= n) return
+    if (size(request%parameters%node_distance) /= n) return
+    if (request%base_state%active_nodes /= n) return
+    if (.not. allocated(request%base_state%pressure_head)) return
+    if (.not. allocated(request%base_state%water_content)) return
+    if (size(request%base_state%pressure_head) /= n) return
+    if (size(request%base_state%water_content) /= n) return
+    if (allocated(request%physical%matrix_area_fraction)) then
+      if (size(request%physical%matrix_area_fraction) /= n) return
+      if (any(.not. ieee_is_finite(request%physical%matrix_area_fraction))) return
+      if (any(request%physical%matrix_area_fraction <= 0.0_real64) .or. &
+          any(request%physical%matrix_area_fraction > 1.0_real64)) return
+    end if
+    if (request%step_duration <= 0.0_real64) return
+    if (.not. associated(request%evaluation%constitutive)) return
+    if (request%boundary%bottom_mode /= 3) then
+       if (.not. ieee_is_finite(request%boundary%bottom_external_resistance_days)) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+    end if
+    ok = .true.
+  end subroutine validate_soil_water_request
+
+  subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+    class(soil_water_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    type(soil_water_temporal_indicator_request_t), intent(in) :: indicator_request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
+
+    indicator_result = soil_water_temporal_indicator_result_t()
+    if (indicator_request%previous_right_derivative_available .and. &
+        .not. allocated(indicator_request%previous_right_derivative)) then
+       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+       indicator_result%route = 'indicator-history-invalid'
+       return
+    end if
+
+    ! Fail closed by default. This deliberate no-op leaves request, solve result,
+    ! solver and worker workspace untouched; alternative soil-water solvers are
+    ! not required to emulate a Richards-specific operator.
+    indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+    indicator_result%route = 'solver-indicator-unavailable'
+  end subroutine soil_water_temporal_indicator_unavailable
+
+end module mod_soil_water_solver_contract

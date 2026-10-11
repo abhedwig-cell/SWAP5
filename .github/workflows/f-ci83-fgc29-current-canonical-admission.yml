@@ -1,0 +1,24 @@
+name: F-CI83 F-GC29 current-canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci83-fgc29-groundwater-response-sensitivity-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission-postimage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify checked-out admission head
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI83 exact-source admission qualification
+        run: bash tests/fci/run_fci83_fgc29_current_canonical_admission.sh

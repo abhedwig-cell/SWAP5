@@ -1,0 +1,42 @@
+name: PPA-LOW02-TIME legacy prescribed-qbot application
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fapp/test_ppa_low02_time_application_admission.f90'
+      - 'tests/fapp/run_ppa_low02_time_application_admission.sh'
+      - 'tests/fvq/test_ppa_low02_time_independent.f90'
+      - 'tests/fvq/run_ppa_low02_time_independent.sh'
+      - 'integration/audits/PPA_LOW02_TIME_*.json'
+      - 'docs/audits/PPA_LOW02_TIME_*.md'
+      - '.github/workflows/ppa-low02-time.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-LOW02-TIME owner qualification
+        run: bash tests/fapp/run_ppa_low02_time_application_admission.sh
+
+  independent-qualification:
+    needs: owner-qualification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: PPA-LOW02-TIME independent qualification
+        run: bash tests/fvq/run_ppa_low02_time_independent.sh

@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.fci59p.evidence.v1",
+  "work_unit": "F-CI59P",
+  "canonical_postimage": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+  "canonical_postimage_tree": "577d2251ac5bcfa08c62918068f9d4e8168f48a0",
+  "true_two_parent_admission": {
+    "parent_1": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+    "parent_2": "97dbb3e92b05b32368d41bfe57b74bd49017b88b",
+    "result": "PASS"
+  },
+  "owner_authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "independent_authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+  "source_admission_authority": "qualification/f-ci59-fmr43-surface-publication-current-canonical-admission@97dbb3e92b05b32368d41bfe57b74bd49017b88b",
+  "postpromotion_canonical_workflow": {
+    "run": 34780675957,
+    "head_sha": "648c3a2a90655ae053c2fd020563b3c4adce458b",
+    "conclusion": "success"
+  },
+  "postimage_reconciliation_workflow": {
+    "run": 34780873666,
+    "job": 103787534262,
+    "tested_head": "72b06b1c6ff4556b6d9e0fc2f02b3e2cc865689a",
+    "conclusion": "success"
+  },
+  "source_identity": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "c7c5b7d3357e4e6739c8f647d6232baca45563e6",
+    "src/process/mod_restricted_surface_evaporation.f90": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "observations": {
+    "zero_production_reference_delta_by_F_CI59P": "PASS",
+    "live_canonical_lock": "PASS",
+    "permanent_preservation_source_bound": "PASS",
+    "F_VQ71_postimage_O0": "PASS",
+    "F_VQ71_postimage_O2": "PASS",
+    "F_VQ71_O0_O2_identity": "PASS",
+    "same_origin_stale_alternate": "PASS_CLOSED",
+    "cross_lineage_precommit": "PASS_CLOSED",
+    "historical_split_publication_api": "PASS_CLOSED",
+    "mass_conservation": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "cross_executor_MultiSWAP_compatibility": "PASS"
+  },
+  "architecture_invariants": {
+    "1": "PASS",
+    "2": "PASS",
+    "4": "PASS_NO_NEW_PERSISTENT_STATE",
+    "5": "PASS_PRIVATE_LOCAL_PUBLICATION_CARRIER",
+    "7": "PASS",
+    "9": "PASS",
+    "13": "PASS_NO_SECOND_MASS_AUTHORITY",
+    "16": "PASS_CROSS_EXECUTOR_VERIFIED",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS_REFERENCE_UNCHANGED",
+    "26": "PASS",
+    "27": "PASS",
+    "29": "PASS",
+    "30": "PASS"
+  },
+  "closure": {
+    "FPM09_G01": "CLOSED_BY_F_MR43",
+    "FPM09_G02": "CLOSED_BY_F_VQ71",
+    "FPM09_G03": "CLOSED_BY_F_CI59_PLUS_F_CI59P_POSTIMAGE_RECONCILIATION"
+  },
+  "decision": "QUALIFIED_F_CI59P_ATOMIC_SURFACE_PUBLICATION_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION"
+}

@@ -1,0 +1,142 @@
+name: F-CI68 RossFast D3R kernel selector routing
+
+on:
+  push:
+    branches:
+      - qualification/f-ci68-rossfast-d3r-kernel-selector-routing
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_checkpoint_orchestrator.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/runtime/mod_rossfast_d3r_execution_policy.f90'
+      - 'tests/fci/test_fci68_rossfast_d3r_kernel_selector_routing.f90'
+      - 'tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh'
+      - 'integration/f-ci/F-CI68_STATUS.json'
+      - '.github/workflows/fci68-rossfast-d3r-kernel-selector-routing.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fci68-rossfast-d3r-kernel-selector-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  routing-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Lock F-CI68 canonical preimage and immutable authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=67b702e983f5104c80c8c16fb5e2570d969cce9e
+          LIVE="$(git ls-remote origin refs/heads/integration/f-ci-canonical | awk '{print $1}')"
+          test "$LIVE" = "$BASE"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = d5a71a526efaebd82054580c3186f8e3545db331
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" = 3cbb81b25626e6574ae83416f088dc52882f91fc
+          test "$(git rev-parse HEAD:src/runtime/mod_canonical_interval_runtime.f90)" = b12327aa6e77bdbf4586fe0bed82cf0e7704f237
+          test "$(git rev-parse HEAD:src/runtime/mod_rossfast_d3r_execution_policy.f90)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
+
+      - name: Enforce bounded F-CI68 surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=67b702e983f5104c80c8c16fb5e2570d969cce9e
+          allowed=(
+            .github/workflows/fci68-rossfast-d3r-kernel-selector-routing.yml
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh
+            tests/fci/test_fci68_rossfast_d3r_kernel_selector_routing.f90
+            integration/f-ci/F-CI68_STATUS.json
+          )
+          mapfile -t changed < <(git diff --name-only "$BASE..HEAD")
+          for path in "${changed[@]}"; do
+            ok=0
+            for candidate in "${allowed[@]}"; do
+              [[ "$path" == "$candidate" ]] && ok=1 && break
+            done
+            [[ "$ok" -eq 1 ]] || { echo "FCI68_UNEXPECTED_PATH $path" >&2; exit 68; }
+          done
+          test -z "$(git diff --name-only "$BASE..HEAD" -- src/transaction src/runtime/mod_canonical_contracts.f90 src/runtime/mod_canonical_interval_runtime.f90 src/runtime/mod_rossfast_d3r_execution_policy.f90)"
+          if grep -Eqi 'rossfast' src/kernel/mod_kernel_transactions.f90 src/runtime/mod_fmr_checkpoint_orchestrator.f90; then
+            echo 'FCI68_GENERIC_LAYER_CONTAINS_ROSSFAST_SPECIFIC_POLICY' >&2
+            exit 68
+          fi
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI68 kernel selector routing gate
+        shell: bash
+        run: |
+          set -o pipefail
+          bash tests/fci/run_fci68_rossfast_d3r_kernel_selector_routing.sh 2>&1 | tee F-CI68_GATE.log
+
+      - name: Upload F-CI68 gate diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci68-gate-diagnostics-${{ github.run_id }}
+          path: F-CI68_GATE.log
+          if-no-files-found: warn
+
+      - name: Persist F-CI68 evidence payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, subprocess
+          def sh(*args): return subprocess.check_output(args, text=True).strip()
+          payload={
+            'workunit':'F-CI68',
+            'status':'PASS',
+            'qualification':'ROSSFAST_D3R_SELECTOR_ROUTED_THROUGH_KERNEL_AND_CHECKPOINT_ORCHESTRATOR',
+            'tested_head':sh('git','rev-parse','HEAD'),
+            'tested_tree':sh('git','rev-parse','HEAD^{tree}'),
+            'canonical_preimage':'67b702e983f5104c80c8c16fb5e2570d969cce9e',
+            'production_blobs':{
+              'kernel':sh('git','hash-object','src/kernel/mod_kernel_transactions.f90'),
+              'checkpoint_orchestrator':sh('git','hash-object','src/runtime/mod_fmr_checkpoint_orchestrator.f90')
+            },
+            'immutable_authorities':{
+              'transaction':'d5a71a526efaebd82054580c3186f8e3545db331',
+              'contracts':'3cbb81b25626e6574ae83416f088dc52882f91fc',
+              'interval_runtime':'b12327aa6e77bdbf4586fe0bed82cf0e7704f237',
+              'rossfast_d3r_policy':'a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9'
+            },
+            'qualified':{
+              'default_absent_selector_path_preserved':True,
+              'selector_reaches_kernel_runtime_through_checkpoint_orchestrator':True,
+              'd3r_0p0012_composes_as_two_private_transactions':True,
+              'committed_state_unchanged_until_explicit_candidate_commit':True,
+              'single_external_kernel_commit_after_outer_completion':True,
+              'off_grid_request_fails_before_transaction':True,
+              'generic_kernel_and_orchestrator_contain_no_rossfast_policy':True
+            },
+            'remaining_gap':'SERIALIZED_FMR_BACKEND_SELECTOR_FORWARDING_AND_EXACT_BACKEND_COMPOSITION_QUALIFICATION',
+            'nonclaims':[
+              'NO_SERIALIZED_FMR_BACKEND_ADMISSION_YET',
+              'NO_CONCRETE_ROSSFAST_HYDRAULIC_MODEL_ADMISSION',
+              'NO_NEW_ROSSFAST_PHYSICS',
+              'NO_RUNTIME_PERFORMANCE_QUALIFICATION',
+              'NO_ARBITRARY_DURATION_GENERALIZATION',
+              'NO_A10_HETEROGENEOUS_BOTTOM_GROUNDWATER_MULTISWAP_FULLRICHARDS_GENERALIZATION'
+            ]
+          }
+          open('F-CI68_EVIDENCE.json','w').write(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          PY
+
+      - name: Upload F-CI68 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci68-rossfast-d3r-kernel-selector-${{ github.run_id }}
+          path: F-CI68_EVIDENCE.json

@@ -1,0 +1,89 @@
+{
+  "schema": "swap5.fci_postimage_evidence.v1",
+  "work_unit": "F-CI46P",
+  "title": "F-CI46 External Accuracy Runtime Adapter Current-Canonical Postimage Reconciliation Evidence",
+  "status": "QUALIFIED_PRE_CLOSEOUT",
+  "authority": {
+    "prepromotion_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "promoted_canonical": "c65471e544b5fa25ab13f944b9db13bd47fba8fa",
+    "promoted_tree": "46f56a4f22c64fc4a1ae68668182098a8153df8b",
+    "F_CI46_exact_green_authority": "f87c1ec05293f43f60e87c6436a0f6cf5e2041df",
+    "F_GC14_final_authority": "6d91bedc305504cc2fa08b196e6a9903c48c9461",
+    "adapter_blob": "9212d600e89c85287e9280832c7e0a94befb642e",
+    "F_CI46_status_blob": "3c49657ad84294c4c48e080dba3726bdd3f1734a",
+    "F_CI46_architecture_audit_blob": "0aa0654c1057e20c3be1ed82ed6e0a106c71ba66"
+  },
+  "promotion_topology": {
+    "first_parent": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "second_parent": "f87c1ec05293f43f60e87c6436a0f6cf5e2041df",
+    "true_two_parent_merge": true,
+    "force_update_used": false,
+    "promoted_source_delta": [
+      "src/runtime/mod_coupling_application_accuracy_adapter.f90"
+    ],
+    "reference_tree_unchanged": true
+  },
+  "first_green_postimage_reconciliation": {
+    "head": "731100b49d5a5ecb9f5a1d8ac15ebf480685f144",
+    "workflow_run": 34645140220,
+    "workflow_job": 103413994022,
+    "conclusion": "success"
+  },
+  "qualification_results": {
+    "current_canonical_pin": "PASS",
+    "true_two_parent_promotion": "PASS",
+    "exact_one_blob_promoted_source_scope": "PASS",
+    "no_postpromotion_production_or_reference_delta": "PASS",
+    "F_CI46_authority_preserved": "PASS",
+    "fail_closed_binding_preserved": "PASS",
+    "nonfinite_guard_inheritance_preserved": "PASS_WITH_EXPLICIT_SCOPE",
+    "reconciliation_scope": "PASS",
+    "diff_check": "PASS",
+    "exact_F_GC14_executable_replay": "PASS",
+    "dynamic_rejection_matrix": "PASS_12_OF_12",
+    "O0_O2_repeated_run_determinism": "PASS",
+    "numeric_H_app_set": false,
+    "numeric_A_temporal_set": false,
+    "external_source_bytes_verified_by_adapter": false,
+    "production_SWAP_MODFLOW_admission": false,
+    "mass_conservation_relaxed": false
+  },
+  "broad_canonical_regression_context": {
+    "classification": "PRE_EXISTING_MOVING_PRESERVATION_GOVERNANCE_DEBT_NOT_INTRODUCED_BY_F_CI46",
+    "broad_checks_all_green": false,
+    "failing_job_name": "current-restricted-canonical-preservation",
+    "failure_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "moving_preservation_authority_reported_by_job": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "pre_F_CI46_evidence": {
+      "canonical_head": "c7379b6b5b5f529ff96de3087379712bd665276a",
+      "workflow_run": 34643889299,
+      "workflow_job": 103410410009,
+      "conclusion": "failure"
+    },
+    "post_F_CI46_evidence": {
+      "canonical_head": "c65471e544b5fa25ab13f944b9db13bd47fba8fa",
+      "workflow_run": 34644943806,
+      "workflow_job": 103413832816,
+      "conclusion": "failure"
+    },
+    "mechanical_non_attribution": {
+      "backend_blob_pre_F_CI46": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+      "backend_blob_post_F_CI46": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+      "backend_changed_by_F_CI46": false,
+      "F_CI46_promoted_src_delta_is_only_adapter": true
+    },
+    "governance_basis": "F-CI38 defines this job family as a moving canonical preservation gate. The debt is therefore real governance debt, but it predates F-CI46 and cannot be remediated inside F-CI46P without violating reconciliation scope.",
+    "required_follow_up": "Separate moving-preservation authority reconciliation/remediation. Do not mutate F-CI46/F-CI46P production source or reinterpret the F-GC14/F-CI46 admission."
+  },
+  "hard_nonclaims": [
+    "F-CI46P does not claim that every broad canonical check is green",
+    "F-CI46P does not remediate the pre-existing current-restricted-canonical-preservation debt",
+    "no real project H_app or A_temporal is qualified",
+    "no real project direct temporal head-error budget is qualified",
+    "the adapter does not verify external source bytes or compute source digests",
+    "no production SWAP-MODFLOW coupling is admitted",
+    "no mass-conservation relaxation is introduced",
+    "RB1 is not reopened"
+  ],
+  "exact_head_requirement": "This evidence commit must itself pass the F-CI46P reconciliation workflow before final status/closeout is written."
+}

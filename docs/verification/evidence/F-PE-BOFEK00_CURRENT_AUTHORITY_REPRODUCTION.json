@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00",
+  "phase": "CURRENT_AUTHORITY_REPRODUCTION",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "reproduction_branch_head": "354892af8bb2cd994d1c305ee542b5ddadf1840d",
+  "workflow": {
+    "name": "F-PE-BOFEK00 wet-regime correctness gate",
+    "run_id": 36402438433,
+    "head_sha": "354892af8bb2cd994d1c305ee542b5ddadf1840d",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "historical_authority": {
+    "pull_request": 161,
+    "reconciliation": "docs/verification/F-AR01_LEGACY_ZIP_RECONCILIATION.md",
+    "package": "SWAP_4.3.1_ponding_jacobian_patch_for_Marius.zip",
+    "package_sha256": "e0403c4387742cc9a6819729d80b09ba3175579cedf3ae8ed47030cedc930d07",
+    "core_patch_sha256": "101cd0edd9e22f494582b5536cd82ccd849d2f881c20cda3cf224f2a63e4e1ee",
+    "payload_materialized_in_current_repo": false
+  },
+  "source_preimages_confirmed": {
+    "headcalc_first_row_head_boundary_term": "Kf/d only; no dHs/dh1 term",
+    "dynamic_top_candidate_runoff_gate": true,
+    "dynamic_top_absolute_runoff_zero_gate_cm": 1e-6
+  },
+  "jacobian_reproduction": {
+    "synthetic_smooth_branch": {
+      "K_cm_per_day": 10.0,
+      "distance_cm": 1.0,
+      "dt_day": 0.01,
+      "runoff_resistance_day": 0.1
+    },
+    "ponded_no_runoff": {
+      "central_fd": 9.0909090921798,
+      "derived_correct": 9.09090909090909,
+      "current_headcalc_term": 10.0,
+      "current_term_is_incomplete": true
+    },
+    "active_linear_runoff": {
+      "central_fd": 9.16666667016841,
+      "derived_correct": 9.166666666666666,
+      "current_headcalc_term": 10.0,
+      "current_term_is_incomplete": true
+    },
+    "classification": "BUG/CORRECTNESS",
+    "timestep_controller_used": false
+  },
+  "branch_selection_reproduction": {
+    "candidate_ponding_cm": 0.06,
+    "ponding_max_cm": 0.05,
+    "runoff_resistance_day": 0.1,
+    "absolute_runoff_gate_cm": 1e-6,
+    "dt_small_day": 1e-6,
+    "dt_large_day": 1e-4,
+    "runoff_small_cm": 1.0000000000000001e-7,
+    "runoff_large_cm": 1.0000000000000003e-5,
+    "small_selects_no_runoff": true,
+    "large_selects_analytical_runoff": true,
+    "analytical_active_solution_exists_both": true,
+    "classification": "BUG/CORRECTNESS",
+    "timestep_controller_used": false
+  },
+  "independent_existing_wet_case": {
+    "authority": "F-ROMV2-D21",
+    "result_path": "integration/f-rom/F-ROMV2_D21_RESULT.json",
+    "provider_o0_o2_identity": "PASS",
+    "selected_active_linear_runoff_factor_Ksat": 4.0,
+    "ponding_max_cm": 0.0036140064814814818,
+    "note": "Used only as current wet-regime authority/context, not as the Jacobian oracle."
+  },
+  "policy": {
+    "DTMIN_changed": false,
+    "DTMAX_changed": false,
+    "NUMBIT_CRIT_changed": false,
+    "FACT_DT_INCREASE_changed": false,
+    "FACT_DT_DECREASE_changed": false,
+    "tolerances_changed": false
+  },
+  "classification": "DEFECT_CONFIRMED_CURRENT_REFERENCE",
+  "next": "Construct a minimal correction candidate only after this preregistered current-authority reproduction."
+}

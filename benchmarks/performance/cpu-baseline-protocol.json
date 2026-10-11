@@ -1,0 +1,45 @@
+{
+  "affinity": {
+    "required": true,
+    "target_cpus": [
+      0
+    ]
+  },
+  "claim_rules": {
+    "effect_resolved": "abs(mean paired relative delta) > resolution_multiplier * paired_stdev / sqrt(n)",
+    "post_hoc_timing_outlier_deletion_allowed": false,
+    "target_resolution_qualified": "minimum detectable relative effect <= target_resolution_relative",
+    "zero_overhead_claim_allowed": false
+  },
+  "executable_sha256": "454649f5f6488212eed422407f34153f7590271b125867803b3daf111bd646ee",
+  "expected_exit_code": 100,
+  "physical_outputs": [
+    "result.bal",
+    "result.blc"
+  ],
+  "pilot_paired_stdev": 0.03303993093797261,
+  "pilot_source": "MP-5 paired on/off wall-time repeatability",
+  "predeclared_pairs": 44,
+  "primary_metric": "child_cpu_seconds",
+  "purpose": "controlled single-column CPU baseline and observer-overhead resolution check",
+  "resolution_multiplier": 2.0,
+  "schedule": "paired alternating off/on then on/off",
+  "schema_version": "mp-cpu-baseline-plan-v1",
+  "secondary_metric": "wall_elapsed_seconds",
+  "target_resolution_relative": 0.01,
+  "variants": {
+    "off": {
+      "environment": {
+        "SWAP5_MP_MEASURE": "0"
+      }
+    },
+    "on": {
+      "environment": {
+        "SWAP5_MP_MEASURE": "1"
+      },
+      "metrics_file": "mp_shadow_metrics.json"
+    }
+  },
+  "warmup_runs_per_variant": 3,
+  "workload_id": "MP-B01-HUPSEL-SINGLE"
+}

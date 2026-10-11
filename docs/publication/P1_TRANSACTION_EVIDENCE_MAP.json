@@ -1,0 +1,106 @@
+{
+  "schema": "swap5.publication.p1-transaction-evidence.v2",
+  "workunit": "PUB-P1E02",
+  "canonical_base": "ea42125a8dd0c48648c011f664676f3f6135f939",
+  "rule": "Count only evidence that exercises current production physics/runtime for production-proven claims. Harness-only and pre-solver fail-closed tests remain separate classes.",
+  "claims": [
+    {
+      "claim_id": "P1-TX01",
+      "claim": "an accepted production interval commits exactly once",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "mode2 equilibrium requires final_revision == 1",
+        "positive prescribed-qbot route requires final_revision == 1",
+        "both routes execute the serialized Reference backend with real HeadCalc"
+      ],
+      "limits": "Restricted prescribed-qbot Reference production route; not a universal proof for every optional-process composition."
+    },
+    {
+      "claim_id": "P1-TX02",
+      "claim": "hard mass accounting is closed on accepted production intervals",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90 plus tests/fvq/run_fvq75_prescribed_qbot_temporal_runtime_independent.sh",
+      "evidence": [
+        "accepted route requires mass.complete",
+        "absolute mass residual <= 1e-12",
+        "positive bottom inflow has explicit positive total_in and total_out",
+        "FVQ75 independently replays the production route and checks transfer closure"
+      ],
+      "limits": "Accepted-route conservation is distinct from rollback, which is covered separately by PUB-P1E02."
+    },
+    {
+      "claim_id": "P1-TX03",
+      "claim": "non-day and non-calendar-aligned physical intervals execute through production physics",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "equilibrium duration is 0.25 day",
+        "positive-qbot duration is 1.0e-4 day",
+        "the positive-qbot route executes one principal HeadCalc trajectory and commits"
+      ],
+      "limits": "The fixture starts at numeric t0=0; it proves generic duration semantics, not every calendar adapter interpretation."
+    },
+    {
+      "claim_id": "P1-TX04",
+      "claim": "unsupported requests fail before physical execution and leave revision unchanged",
+      "status": "PRODUCTION_PROVEN_PRE_SOLVER_FAIL_CLOSED",
+      "authority": "tests/fmr/test_fmr44r_serialized_prescribed_qbot_runtime.f90",
+      "evidence": [
+        "nearby unowned bottom mode has committed=false",
+        "final_revision == 0",
+        "solver_executed=false"
+      ],
+      "limits": "Pre-solver rejection remains a separate failure class from the post-solver rollback qualified by PUB-P1E02."
+    },
+    {
+      "claim_id": "P1-TX05",
+      "claim": "a physically executed but rejected production trial leaves committed physical state unchanged",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "docs/publication/P1_POSTSOLVER_ROLLBACK_RESULT.json",
+      "evidence": [
+        "real serialized Reference route executes three HeadCalc trajectories before rejection",
+        "committed revision remains 0",
+        "committed time is unchanged",
+        "pressure head and water-content arrays are bit-identical before and after",
+        "ponding and groundwater-level state are bit-identical before and after",
+        "O0/O2 experiment output is identical"
+      ],
+      "limits": "Qualified for the focused Reference bottom-mode-2 zero-flux fixture. It demonstrates transaction semantics, not every optional-process combination."
+    },
+    {
+      "claim_id": "P1-TX06",
+      "claim": "rejected-trial water transfers never enter committed/accepted water totals",
+      "status": "PRODUCTION_PROVEN_RESTRICTED_REFERENCE_ROUTE",
+      "authority": "docs/publication/P1_POSTSOLVER_ROLLBACK_RESULT.json",
+      "evidence": [
+        "three real HeadCalc trajectories execute before rejection",
+        "accepted_transaction_count remains 0",
+        "accepted total_in remains exactly 0",
+        "accepted total_out remains exactly 0",
+        "no external commit is published"
+      ],
+      "limits": "This directly qualifies accepted-ledger exclusion for the focused rejection fixture; it does not claim all diagnostic carriers have identical semantics."
+    },
+    {
+      "claim_id": "P1-TX07",
+      "claim": "rerunning the same committed physical state is deterministic within the declared build envelope",
+      "status": "PARTIAL_PRODUCTION_EVIDENCE",
+      "authority": "FMR44R/FVQ75 O0-O2 semantic identity plus PUB-P1E02 O0/O2 identity",
+      "evidence": [
+        "FMR44R output is identical between O0 and O2",
+        "FVQ75 independently replays the same production capability",
+        "PUB-P1E02 rollback experiment is identical between O0 and O2"
+      ],
+      "why_not_closed": "Optimization-invariant independent runs are strong reproducibility evidence but are not an explicit same-process checkpoint -> run -> restore -> rerun identity experiment."
+    },
+    {
+      "claim_id": "P1-TX08",
+      "claim": "numerical warm-start variation does not change accepted physical output beyond a declared tolerance",
+      "status": "MISSING_CURRENT_PRODUCTION_EVIDENCE",
+      "historical_evidence": "TX-WARM-01 exists in the old synthetic VQ suite",
+      "why_not_closed": "Historical VQ evidence explicitly did not execute production physics. No current production warm-start perturbation qualification has been pinned for Paper 1."
+    }
+  ],
+  "publication_conclusion": "PUB-P1E02 closes the focused post-solver rollback and rejected-transfer exclusion gaps. The remaining transaction-specific publication gaps are explicit checkpoint/run/restore/rerun identity and production warm-start invariance; end-to-end legacy application preservation remains a separate P1-Q06 problem."
+}

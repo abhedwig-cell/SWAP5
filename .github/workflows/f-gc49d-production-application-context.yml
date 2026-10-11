@@ -1,0 +1,37 @@
+name: F-GC49D production FMR application context ABI
+on:
+  push:
+    branches: [work/f-gc49d-production-application-context-abi]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/adapter/mod_fmr_groundwater_application_c_api.f90'
+      - 'src/adapter/fmr_groundwater_application_runtime.py'
+      - 'tests/fgc/support/mod_fgc49d_application_context_fixture.f90'
+      - 'tests/fgc/test_fgc49d_production_application_context.py'
+      - 'tests/fgc/run_fgc49d_production_application_context.sh'
+      - 'tests/fgc/test_fgc49d_live_production_application_context.py'
+      - 'tests/fgc/run_fgc49d_live_production_application_context.sh'
+      - 'integration/f-gc/F-GC49_STATUS.json'
+      - '.github/workflows/f-gc49d-production-application-context.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  production-context:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: python3 -m pip install numpy
+      - run: bash tests/fgc/run_fgc49d_production_application_context.sh
+  live-modflow:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fgc/run_fgc49d_live_production_application_context.sh

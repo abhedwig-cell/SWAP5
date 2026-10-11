@@ -1,0 +1,107 @@
+{
+  "schema": "pub-gc-e6-active-drainage-result-v1",
+  "date": "2026-09-18",
+  "status": "SUPPORTED_NEGATIVE_COMPONENT_ENVELOPE",
+  "execution": {
+    "source_branch": "work/pub-gc-e6-active-drainage-live-coupling",
+    "source_head": "191f1d8ac0ab0b84eff438023f1d32e00c09b925",
+    "workflow_run": 35360873209,
+    "workflow_job": 105651690323,
+    "conclusion": "success",
+    "artifact_id": 10554144629,
+    "artifact_name": "pub-gc-e6-active-drainage",
+    "artifact_sha256": "00685e242f3dfc85b819900853f5af5bf814291fead48d1e968d3ca74b2cb768"
+  },
+  "fixture": {
+    "authority": "F-GC31 / F-CI98 restricted active-drainage lagged tangent",
+    "window_day": 0.01,
+    "predictor_qbot_cm_per_day": 0.002,
+    "top_flux_cm_per_day": 0,
+    "initial_pressure_head_cm": [
+      -2.2,
+      -1.2,
+      -0.2,
+      0.8
+    ],
+    "drainage_levels": [
+      {
+        "groundwater_depth": [
+          0.5,
+          2.5
+        ],
+        "signed_exchange_rate": [
+          0.004,
+          0.001
+        ]
+      },
+      {
+        "groundwater_depth": [
+          0.5,
+          2.5
+        ],
+        "signed_exchange_rate": [
+          0.002,
+          -0.001
+        ]
+      }
+    ],
+    "fully_implicit_drainage_admitted": false
+  },
+  "predictor": {
+    "h_start_m": 0.013002105263157895,
+    "h_end_m": 0.012932896258566275,
+    "reference_head_m": 0.012932896258566275,
+    "hcof_m2_per_day": 0.05760442426568357,
+    "rhs_m3_per_day": 0.0007689787879260247,
+    "q_bot_predictor_cm_per_day": 0.002,
+    "q_u_cm_per_day": -0.0023986744863501285,
+    "u_A": 0.0005760442426568357,
+    "bottom_outward_exchange_native": -0.00002,
+    "terminal_bottom_outward_flux_native": -0.002,
+    "storage_start_native": 1.268460977508856,
+    "storage_end_native": 1.2684570022677368,
+    "storage_change_native": -0.000003975241119169581,
+    "total_in_native": 0.00002,
+    "total_out_native": 0.00002397524111934321,
+    "mass_residual_native": 1.736282016599755e-16,
+    "mass_complete": true,
+    "drainage_tangent_coverage": true
+  },
+  "reference_corrector": {
+    "participant_status": 6,
+    "participant_status_name": "GW_SWAP_PARTICIPANT_TRIAL_FAILED",
+    "kernel_result_status": 101,
+    "kernel_result_status_name": "KERNEL_STATUS_NOT_ADMITTED",
+    "completed": false,
+    "candidate_ready": false,
+    "transaction_calls": 0,
+    "accepted_substeps": 0,
+    "attempts": 0,
+    "retries": 0,
+    "solver_rejections": 0,
+    "temporal_rejections": 0,
+    "temporal_unavailable_rejections": 0,
+    "mass_rejections": 0,
+    "internal_retries": 0,
+    "mass_complete": false,
+    "authoritative_state_unchanged": true
+  },
+  "structural_cause": {
+    "head_forcing_materializer_requirement": "fmr_groundwater_profile_admitted requires bottom_mode == 5 for prescribed-head trials",
+    "smooth_drainage_projection_requirement": "fmr_serialized_execution_admitted requires bottom_mode == 2 when drainage_qbot_smooth_freatic_projection is active",
+    "interpretation": "The admitted F-GC31 drainage tangent is a prescribed-qbot response capability. Under unchanged production semantics it is not an admitted prescribed-head corrector profile.",
+    "production_change_required_to_expand": false,
+    "production_change_made": false
+  },
+  "live_modflow": {
+    "executed": false,
+    "reason": "Preregistered participant-parity stop rule: the reference prescribed-head corrector is not admitted even at the predictor reference head."
+  },
+  "conclusions": [
+    "The active-drainage F-GC31 predictor is valid, mass-complete and exposes drainage-covered finite-window response information.",
+    "The same fixture cannot be used as the head-driven SWAP corrector required by the current live coupling experiment without expanding production physics/admission semantics.",
+    "The failure occurs before any transaction attempt, so it is not evidence of Richards solver failure, temporal rejection, mass rejection, MODFLOW failure or outer coupling divergence.",
+    "The live MODFLOW specific-yield matrix was correctly skipped under the preregistered stop rule."
+  ],
+  "next_disposition": "Continue E6 through the separately preregistered accepted-state/flux screen; do not widen the drainage corrector profile merely to create a positive publication case."
+}

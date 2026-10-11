@@ -1,0 +1,35 @@
+{
+  "schema": "pub-gc-e3r-result-summary-v1",
+  "date": "2026-09-18",
+  "source_head": "775554022f565e722dbc40dc6e01ecda6c3777b2",
+  "workflow_run": 35344946652,
+  "artifact_id": 10546947701,
+  "artifact_digest": "sha256:a602d93ce2acceb70e412e8691c78845bc6e333ad2fa71cacc4c31759dda02e7",
+  "case_count": 24,
+  "status_counts": {
+    "CONVERGED": 20,
+    "SWAP_LOOSE_TRIAL_FAILED": 3,
+    "SWAP_ITERATIVE_TRIAL_FAILED": 1
+  },
+  "max_abs_iterative_correction_m": 1.8311455685093847e-9,
+  "max_abs_iterative_q_correction_m_per_s": 6.1084368016444556e-15,
+  "max_abs_iterative_head_displacement_m": 4.663317287878499e-9,
+  "max_abs_loose_head_displacement_m": 2.836535117900496e-9,
+  "max_loose_relative_flux_mismatch": 0.4970141418187621,
+  "stronger_flux_1e3_day": {
+    "qbot_cm_per_day": 0.0001,
+    "converged_count": 4,
+    "head_correction_range_m": [-1.8311455685093847e-9, -1.6006793668310593e-9],
+    "q_correction_max_abs_m_per_s": 6.1084368016444556e-15,
+    "outer_iterations_range": [3,5]
+  },
+  "long_window_high_flux": {
+    "window_day": 0.01,
+    "qbot_cm_per_day": 0.0001,
+    "converged_count": 0,
+    "loose_trial_failures": 3,
+    "iterative_trial_failures": 1,
+    "failing_head_offset_abs_range_m": [9.029784031611143e-9, 5.6664411496321065e-8]
+  },
+  "decision": "WEAK_FEEDBACK_CONTROL_CONFIRMED_COMPONENT_CORRECTOR_ENVELOPE_LIMITS_STRONGER_CASE"
+}

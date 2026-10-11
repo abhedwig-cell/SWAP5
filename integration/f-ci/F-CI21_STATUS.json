@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "Controlled Dependency-Closed Temporal Certificate Materialization onto WOF42 Spine",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "base": {
+    "workunit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1",
+    "tree": "e9884e86e9af677de4b150afa1ca208e46b27292"
+  },
+  "materialized_production_source": {
+    "commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "production_delta_count": 8,
+    "dependency_closed": true
+  },
+  "qualification": {
+    "closeout_evidence_commit": "aac82a9f5c73a7f99a73266e08bfe1fee28aa991",
+    "qualification_head_closeout_readiness_run": 34400337386,
+    "qualification_head_closeout_readiness_job": 102630371355,
+    "qualification_head_closeout_readiness_conclusion": "success",
+    "qualification_head_materialization_run": 34400337379,
+    "qualification_head_materialization_job": 102630371127,
+    "qualification_head_materialization_conclusion": "success"
+  },
+  "closeout": {
+    "path": "integration/f-ci/F-CI21_CLOSEOUT.json",
+    "commit": "543c911c436fe1ac94b658299119a5c94813bb4b",
+    "decision": "CLOSED_QUALIFIED_TEMPORAL_CERTIFICATE_MATERIALIZATION_CANONICAL_REF_UNCHANGED",
+    "closeout_head_readiness_run": 34400532381,
+    "closeout_head_readiness_job": 102631028056,
+    "closeout_head_readiness_conclusion": "success",
+    "closeout_head_materialization_run": 34400532437,
+    "closeout_head_materialization_job": 102631027699,
+    "closeout_head_materialization_conclusion": "success"
+  },
+  "component_status": {
+    "production_materialized": true,
+    "source_and_compile_qualified": true,
+    "F_SI25_scientific_owner_replay_qualified": true,
+    "F_VQ30_held_out_operator_replay_qualified": true,
+    "F_VQ31_transaction_history_replay_qualified": true,
+    "F_VQ32_head_budget_normalization_replay_qualified": true,
+    "F_VQ33_remains_failed": true,
+    "F_KT11_remediated_backend_materialized": true,
+    "F_VQ34_remediated_policy_replay_qualified": true,
+    "F_WOF42_crop_persistence_preserved": true,
+    "F_MR18_accepted_commit_receipt_preserved": true,
+    "F_MR18_sparse_multiswap_receipt_preserved": true,
+    "closeout_readiness_qualified": true,
+    "formal_closeout_persisted": true
+  },
+  "negative_evidence": {
+    "F_VQ33_decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "must_remain_failed": true,
+    "reinterpreted_as_pass": false,
+    "used_as_positive_evidence": false,
+    "rejected_backend_materialized": false
+  },
+  "qualified_policy_scope": {
+    "formula": "C_h=B_inf/H_budget",
+    "explicit_H_budget_required": true,
+    "H_budget_must_be_finite_positive": true,
+    "default_H_budget": null,
+    "invalid_budget_fail_closed": true,
+    "native_invalid_budget_value_retained_diagnostically": true,
+    "mass_gate_precedes_certificate_gate": true,
+    "certificate_rejection_preserves_committed_state": true,
+    "indicator_additional_full_nonlinear_trajectories": 0,
+    "indicator_additional_defect_tridiagonal_solves_with_history": 1
+  },
+  "hard_nonclaims": {
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_selected": false,
+    "B_inf_general_nonlinear_true_error_bound_qualified": false,
+    "C_h_general_nonlinear_true_error_bound_qualified": false,
+    "shorter_dt_monotonicity_assumed": false,
+    "groundwater_coupling_released": false,
+    "canonical_admission_completed": false
+  },
+  "canonical_state": {
+    "canonical_source_manifest_modified": false,
+    "canonical_ref_modified": false,
+    "canonical_admission_required_separately": true
+  },
+  "architecture_invariants": {
+    "single_kernel": "PASS",
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS",
+    "scratch_per_worker": "PASS_WITHIN_SCOPE",
+    "transactional_time_steps": "PASS",
+    "cheap_recompute_and_correct_committed_origin": "PASS_WITHIN_SCOPE",
+    "generic_time": "PASS",
+    "mass_conservation": "PASS_HARD",
+    "bounded_indicator_cost": "PASS",
+    "multiswap_primary_use_preserved": "PASS",
+    "alternative_solver_openness": "PASS",
+    "no_HeadCalc_internal_exposure": "PASS",
+    "physics_solver_policy_separation": "PASS",
+    "reference_mode_preserved": "PASS",
+    "runtime_diagnostics": "PASS",
+    "optional_functionality_scales_with_use": "PASS",
+    "no_silent_dependencies": "PASS",
+    "architecture_change_explicitly_tested": "PASS"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "canonical_modified": false
+  },
+  "decision": "QUALIFIED_DEPENDENCY_CLOSED_TEMPORAL_CERTIFICATE_MATERIALIZATION_READY_FOR_SEPARATE_CANONICAL_ADMISSION"
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.fci65.status.v1",
+  "work_unit": "F-CI65",
+  "title": "F-GC24 coupled restart / split-run / replay current-canonical admission",
+  "phase": "QUALIFICATION_CLOSEOUT_READY_FOR_PROMOTION",
+  "decision": "QUALIFIED_F_CI65_READY_FOR_CANONICAL_PROMOTION",
+  "branch": "qualification/f-ci65-fgc24-coupled-restart-current-canonical-admission",
+  "canonical_base": {
+    "sha": "0b7ad240c005d84373b06ee5304edde779cf6e34",
+    "tree": "ea409fe3740cf51a58da856f37bf11d656f83b8d"
+  },
+  "authorities": {
+    "F_GC24_owner_closeout": "194487ec18374ef6097e3dd687038e326f818be8",
+    "F_GC24_qualified_source": "ed919a7039fb446d2248d4faeedbfc3d6735b962",
+    "F_VQ86_independent_status": "0fea1f7a17ccff9f41b4d2dee71feab526313a01"
+  },
+  "qualification_evidence": {
+    "green_head_before_status": "8945ce449303cbd77a7c1838c45d5091590ec150",
+    "green_tree_before_status": "6e1dfcbc27351d8006ec6c80f93feaa55c268cf0",
+    "workflow_run": 34849407571,
+    "workflow_job": 103993234856,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "live_canonical_lock": "PASS",
+    "exact_three_file_production_postimage": "PASS",
+    "owner_and_independent_authorities": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+    "committed_only_quiescence_and_no_io_static_audit": "PASS",
+    "owner_true_process_split_replay": "PASS",
+    "independent_fvq86_oracle_O0": "PASS",
+    "independent_fvq86_oracle_O2": "PASS",
+    "independent_fvq86_oracle_O0_O2_identity": "PASS",
+    "independent_oracle_sha256": "c6a4fa3855924125a966356a737703bee65df5bd66c84af4c0df6de8ffc6c144"
+  },
+  "recomposition_history": {
+    "initial_failed_head": "f530cf5c5a85ed528539fc3d36011d0739823187",
+    "initial_failed_run": 34848883783,
+    "initial_failed_job": 103991487650,
+    "classification": "EXPECTED_FAIL_CLOSED_CANONICAL_DRIFT",
+    "finding": "The first F-CI65 attempt correctly stopped because F-CI64P advanced live canonical from 52d66ba612096184327f58a076ef22bd0119e237 to 0b7ad240c005d84373b06ee5304edde779cf6e34. F-CI64P changed governance/postimage preservation only and did not overlap F-GC24 production src/reference.",
+    "production_defect_established": false
+  },
+  "production_postimage": {
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_exchange_service_contract.f90": "e99ae052fccd9992b76c12a91422a987dce059e2",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "a867e04b088f61f686f693d07e470c3e9c33bdec"
+  },
+  "scope_guards": {
+    "new_groundwater_physics": false,
+    "new_solver_policy": false,
+    "new_mass_tolerance": false,
+    "new_kernel_io": false,
+    "new_calendar_assumption": false,
+    "new_modflow_specific_dependency": false,
+    "new_persistent_solver_scratch": false,
+    "whole_window_response_tangent_claim": false,
+    "multiswap_scaling_claim": false,
+    "bounded_cost_coupling_claim": false,
+    "groundwater_coupling_v1_complete_claim": false
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_ADMISSION_DELTA",
+  "ready_for_canonical_promotion": true,
+  "canonical_admission": false,
+  "postimage_reconciled": false,
+  "hard_nonclaims": [
+    "F-CI65 status alone is not canonical admission.",
+    "F-CI65 admits only the qualified F-GC24 coupled restart / split-run / replay composition.",
+    "F-CI65 does not close F-GC20 or F-GC22 current-canonical requalification.",
+    "F-CI65 does not close F-GC23 whole-window response tangent composition.",
+    "F-CI65 does not close F-GC25 MultiSWAP scaling qualification.",
+    "F-CI65 does not close F-GC26 bounded-cost response-aware integration or F-GC27 final GC closure.",
+    "F-CI65 is not a groundwater-coupling-v1 100 percent completion claim.",
+    "No F-CI65 closeout exists until postimage reconciliation succeeds against the promoted moving canonical."
+  ],
+  "promotion_requirements": [
+    "This exact final status head must pass the F-CI65 workflow.",
+    "Live integration/f-ci-canonical must still equal the frozen canonical base immediately before promotion.",
+    "Promotion must be a true two-parent merge with canonical as first parent and the exact final green F-CI65 status head as second parent.",
+    "The promoted tree must be exactly the final green F-CI65 status-head tree.",
+    "Postimage reconciliation is required before F-CI65 closeout or any broader groundwater-coupling completion claim."
+  ]
+}

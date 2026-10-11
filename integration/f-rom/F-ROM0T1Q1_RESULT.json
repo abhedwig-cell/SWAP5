@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.f-rom0t1q1-result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "ROM-0T1Q1",
+  "title": "Strict-first P2E21 successor Reference policy and exact temporal-floor qualification",
+  "execution": {
+    "workflow_run": 35377103955,
+    "workflow_job": 105704256667,
+    "executed_head": "e9b8e7b82aaea469d43dceb32b864f7d44cf62e8",
+    "artifact_id": 10560697863,
+    "artifact_digest": "sha256:17fcdd923a1249172064c1672d112340e276081184a7b504b96828ad1c95fe96",
+    "conclusion": "success",
+    "o0_o2_stdout_sha256": "60d484cb3c9d77f62e8ad19eb23f5428bf4bc12c21231f30d377b58564625ec9",
+    "repeat_stdout_sha256": "60d484cb3c9d77f62e8ad19eb23f5428bf4bc12c21231f30d377b58564625ec9",
+    "analyzed_result_sha256": "c8ac2d767ed5d099dc238bd27b92272b1af746a128ad158d503e3326e9c5bb27"
+  },
+  "authority": {
+    "original_T1_decision_retained": "ORIGINAL_TEMPORAL_REFERENCE_FLOOR_NOT_MEASURABLE_UNDER_FROZEN_CONTROL",
+    "original_T1_reclassified": false,
+    "successor_policy_constants_selected_from_T1_results": false,
+    "independent_pre_T1_authorities": [
+      "PUB-P2E19 integrated-invariant balance scaling",
+      "PUB-P2E20 candidate-blind Reference construction",
+      "PUB-P2E21 representation-bounded total Reference policy"
+    ],
+    "compartment_integrated_allowance_cm": 1.6e-15,
+    "total_integrated_bound_formula": "max(1.6e-15, 0.5 * sum_i((spacing(theta_s_material)+spacing(theta_base_i))*dz_i))",
+    "observed_failed_residual_used_to_choose_policy": false,
+    "automatic_dt_subdivision_used": false,
+    "production_or_reference_source_mutated": false
+  },
+  "strict_provenance": {
+    "base_0_0016_four_cases_complete": true,
+    "refined_fixed_control_provenance_reproduced": true,
+    "original_strict_refined_accepted_overlap_expected": 87,
+    "original_strict_refined_accepted_overlap_observed": 87,
+    "all_87_overlap_steps_bit_neutral": true
+  },
+  "successor": {
+    "all_four_refined_0_0008_trajectories_complete": true,
+    "case_pass_count": 4,
+    "fallback_count": 25,
+    "fallback_count_by_case": {
+      "B01_E1_NOMINAL_FLUX": 9,
+      "B01_E2_DRYING_FLUX": 14,
+      "B14_E1_NOMINAL_FLUX": 0,
+      "B14_E2_DRYING_FLUX": 2
+    },
+    "all_fallback_triggers_inside_preexisting_integrated_bounds": true,
+    "head_mixed_or_other_fallback_count": 0,
+    "max_abs_committed_transaction_mass_residual_cm": 2.173319846570515e-14,
+    "hard_transaction_mass_gate_cm": 1e-12,
+    "hard_mass_gate_pass": true
+  },
+  "temporal_floor": {
+    "comparison": "0.0016 day strict base versus 0.0008 day qualified strict-first successor",
+    "matrix": [
+      "B01_E1_NOMINAL_FLUX",
+      "B01_E2_DRYING_FLUX",
+      "B14_E1_NOMINAL_FLUX",
+      "B14_E2_DRYING_FLUX"
+    ],
+    "geometry": "16x10 cm over 160 cm",
+    "common_endpoint_count_total": 128,
+    "common_endpoint_count_per_case": 32,
+    "all_metrics_finite": true,
+    "threshold_rule": "MEASURE_ONLY_NO_POST_RESULT_NUMERICAL_ACCEPTANCE_THRESHOLD",
+    "max_over_time": {
+      "B01_E1_NOMINAL_FLUX": {
+        "D_h_inf_cm": 0.02109512745959563,
+        "D_h_rms_cm": 0.006441395660030423,
+        "D_theta_inf": 5.6842260454770255e-05,
+        "D_theta_rms": 1.7401074222398103e-05,
+        "D_total_storage_abs_cm": 2.842170943040401e-14,
+        "D_upper_0_40cm_storage_abs_cm": 2.2228103848220826e-05,
+        "D_lower_40_160cm_storage_abs_cm": 2.2228103837562685e-05,
+        "D_cumulative_top_exchange_abs_cm": 2.3852447794681098e-18,
+        "D_cumulative_bottom_exchange_abs_cm": 2.710505431213761e-20,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0
+      },
+      "B01_E2_DRYING_FLUX": {
+        "D_h_inf_cm": 0.02080887384689234,
+        "D_h_rms_cm": 0.0063522800819273305,
+        "D_theta_inf": 5.609896100833289e-05,
+        "D_theta_rms": 1.7166755532202693e-05,
+        "D_total_storage_abs_cm": 2.842170943040401e-14,
+        "D_upper_0_40cm_storage_abs_cm": 2.1903600595507555e-05,
+        "D_lower_40_160cm_storage_abs_cm": 2.1903600597283912e-05,
+        "D_cumulative_top_exchange_abs_cm": 1.1926223897340549e-18,
+        "D_cumulative_bottom_exchange_abs_cm": 2.6020852139652106e-18,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0
+      },
+      "B14_E1_NOMINAL_FLUX": {
+        "D_h_inf_cm": 0.00010395926022965796,
+        "D_h_rms_cm": 4.9101287785674485e-05,
+        "D_theta_inf": 2.9214742514049874e-08,
+        "D_theta_rms": 1.378548327232308e-08,
+        "D_total_storage_abs_cm": 2.842170943040401e-14,
+        "D_upper_0_40cm_storage_abs_cm": 3.0393465522138285e-12,
+        "D_lower_40_160cm_storage_abs_cm": 3.0269120543380268e-12,
+        "D_cumulative_top_exchange_abs_cm": 5.082197683525802e-21,
+        "D_cumulative_bottom_exchange_abs_cm": 3.3881317890172014e-21,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0
+      },
+      "B14_E2_DRYING_FLUX": {
+        "D_h_inf_cm": 0.00010239594908512117,
+        "D_h_rms_cm": 4.836650087334546e-05,
+        "D_theta_inf": 2.8774993887648037e-08,
+        "D_theta_rms": 1.3579177699219091e-08,
+        "D_total_storage_abs_cm": 2.1316282072803006e-14,
+        "D_upper_0_40cm_storage_abs_cm": 2.9771740628348198e-12,
+        "D_lower_40_160cm_storage_abs_cm": 2.9629632081196178e-12,
+        "D_cumulative_top_exchange_abs_cm": 2.541098841762901e-21,
+        "D_cumulative_bottom_exchange_abs_cm": 1.3552527156068805e-20,
+        "D_terminal_bottom_flux_abs_cm_per_day": 0.0
+      }
+    }
+  },
+  "decision": "T1_SUCCESSOR_REFERENCE_POLICY_QUALIFIED_AND_TEMPORAL_FLOOR_MEASURED",
+  "production_policy_admitted": false,
+  "rom1a_authorized": false
+}

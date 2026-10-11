@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS02",
+  "title": "RossFast D3R restricted canonical model binding",
+  "status": "CLOSED_POSITIVE_STRUCTURAL_PRODUCTION_BINDING_CANDIDATE",
+  "decision": "QUALIFIED_RESTRICTED_CANONICAL_MODEL_BINDING_SEAM_PENDING_REAL_KERNEL_IMPLEMENTATION_AND_CANONICAL_ADMISSION",
+  "base": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "67b702e983f5104c80c8c16fb5e2570d969cce9e",
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_d3r_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+  },
+  "inherited_research_authority": {
+    "source_branch": "work/f-ross01-fast-mfp-feasibility",
+    "capability_flow_reconciliation_blob": "591c9ee4caa8e30a2f72303d4972664192d295c4",
+    "d2_status_blob": "ea67fefaa3bce7d7b650416978bb808573e8ca9c",
+    "d3r_status_blob": "faf1894cb9f67440b394a6d2977e215b5ae2761c",
+    "d3g02r3_status_blob": "87b091b991706853dcac1ac08b5401a4f9d3c151",
+    "d3g02r_bound_authority_blob": "ff32bce4597e245eef0028556fce476074ab1cb8",
+    "reuse_rule": "Only exact restricted D2/D3R/D3G02R3 semantics are inherited; broader RossFast scientific gates remain open."
+  },
+  "candidate": {
+    "qualified_head": "0aaf381e363dfaac9247ac6f6af59983d7eea714",
+    "binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "test_blob": "006dd381e96e07fa2aa6cd3e22a67b723a8ac0e6",
+    "runner_blob": "28f951a6aa92d0d2344c730d051a5e4303410086",
+    "workflow_blob": "c24e7ec23078d62ef42cedefcf8d1394d6ec602f"
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "constitutive_family": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "pressure_head_envelope_cm": {
+      "lower_exclusive": -10000.0,
+      "upper_exclusive": -1.0
+    },
+    "state_consistency_tolerance": 2e-12,
+    "top_boundary": "STATE_LOCAL_RESTRICTED_PRESCRIBED_FLUX",
+    "bottom_boundary": "STATE_LOCAL_RESTRICTED_PRESCRIBED_FLUX",
+    "boundary_envelope_fraction": 0.02,
+    "distributed_sources_sinks": false,
+    "root_sink": false,
+    "ponding": false,
+    "groundwater_level_state": false,
+    "internal_substeps": [2, 4, 8, 16],
+    "sigma": 0.5,
+    "hard_mass_tolerance_cm": 1e-12,
+    "outer_horizon_day": 0.0016,
+    "retry_scale": 0.5,
+    "max_full_retry_index": 8,
+    "minimum_full_duration_day": 0.00000625,
+    "temporal_certificate_resolution_floor": 1e-10,
+    "temporal_certificate_accuracy_tolerance": 1e-5
+  },
+  "ownership": {
+    "numerical_kernel_owns": [
+      "candidate_hydraulic_state",
+      "model_temporal_certificate",
+      "optional_local_terminal_sensitivity",
+      "solver_work_counters"
+    ],
+    "binding_owns": [
+      "frozen_material_and_geometry_admission",
+      "head_theta_constitutive_consistency",
+      "state_local_boundary_flux_envelope",
+      "prescribed_flux_external_mass_ledger",
+      "bottom_interface_exchange_sign_and_integral"
+    ],
+    "canonical_transaction_runtime_owns": [
+      "mass_acceptance",
+      "temporal_acceptance",
+      "retry_and_rollback",
+      "accepted_state_commit",
+      "accepted_only_result_publication"
+    ],
+    "kernel_mass_ledger_authority": false,
+    "kernel_commit_authority": false
+  },
+  "qualification": {
+    "workflow_run_id": 34894935004,
+    "job_id": 104146448291,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_profiles": ["O0", "O2"],
+    "o0_o2_output_sha256": "00515f336c203d114449e155fca979c67062f7b7dc9140aa4f75ab3b9b8e7ac0",
+    "checks": {
+      "binding_contract_drift_rejected": true,
+      "full_interval_commits_once": true,
+      "temporal_retry_composes_remainder": true,
+      "malformed_candidate_fails_closed": true,
+      "binding_owned_mass_gate_rejects_wrong_candidate_storage": true,
+      "constitutively_inconsistent_candidate_fails_closed": true,
+      "missing_temporal_certificate_fails_closed": true,
+      "forcing_outside_state_local_envelope_fails_closed": true,
+      "o0_o2_outputs_identical": true
+    }
+  },
+  "net_surface": [
+    ".github/workflows/ross02-production-binding.yml",
+    "src/runtime/mod_rossfast_d3r_model_binding.f90",
+    "tests/ross/run_ross02_rossfast_d3r_model_binding.sh",
+    "tests/ross/test_ross02_rossfast_d3r_model_binding.f90",
+    "integration/f-ross/F-ROSS02_STATUS.json"
+  ],
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_CONCRETE_FORTRAN_ROSSFAST_NUMERICAL_KERNEL_IMPLEMENTATION",
+    "NO_MOD_SOILWATER_ROUTE",
+    "NO_SOLVER_SELECTOR_ADMISSION",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_SCIENTIFIC_QUALIFICATION"
+  ],
+  "relationship_to_parallel_fci68": {
+    "branch": "qualification/f-ci68-rossfast-d3r-kernel-selector-routing",
+    "disposition": "NOT_A_DEPENDENCY_OF_F_ROSS02_CLOSEOUT",
+    "reason": "Selector routing cannot make RossFast executable without a concrete qualified numerical kernel behind this binding and is therefore not treated as production admission evidence here."
+  },
+  "next_gap": "IMPLEMENT_AND_QUALIFY_A_CONCRETE_FORTRAN_ROSSFAST_D3R_TRIAL_KERNEL_BEHIND_THIS_EXACT_BINDING_WITHOUT_BROADENING_THE_ADMITTED_DOMAIN"
+}

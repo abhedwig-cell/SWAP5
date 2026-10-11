@@ -1,0 +1,21 @@
+name: F-VQ113 F-GC41 independent qualification
+on:
+  push:
+    branches: [work/f-gc41-whole-window-acceptance-retry]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/adapter/modflow6_prepared_solve_session.py'
+      - 'tests/fgc/support/fgc41_whole_window_acceptance_harness.py'
+      - 'tests/fgc/test_fgc41_whole_window_acceptance_retry.py'
+      - 'tests/fvq/test_fvq113_fgc41_independent.py'
+      - 'tests/fvq/run_fvq113_fgc41_independent.sh'
+      - '.github/workflows/f-vq113-fgc41-independent.yml'
+permissions:
+  contents: read
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq113_fgc41_independent.sh

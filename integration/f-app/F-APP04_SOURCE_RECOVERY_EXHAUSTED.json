@@ -1,0 +1,110 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP04",
+  "title": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "decision": "EXACT_SOURCE_RECOVERY_EXHAUSTED_WITHIN_AVAILABLE_AUTHORITIES",
+  "verdict": "BLOCKED_MISSING_EXACT_SOURCE_MATERIALIZATION",
+  "branch": "work/f-app04-hupsel-swetr0-pmdirect-typed-composition",
+  "supersedes_checkpoint_commit": "b5b2b3e51466e1e432919b2b1b617f4484a9b2ca",
+  "preregistration_commit": "391800f60871c8403aab1ef7871267425bccec30",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head_reconciled": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+    "tree": "b1b52c8d78d3c2d908b7effde04ffe42c8b1f3a9",
+    "relevant_delta_since_preregistration": "NONE",
+    "note": "F-ROSS12 remains an unrelated adapter-only canonical admission; F-APP04 neither depends on nor modifies RossFast."
+  },
+  "controlling_exact_identity": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "required_member": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_meteo.f90",
+    "f_app03_head": "21508f0d70672d92132c553a344c35f6b7b2296f",
+    "a12_status": "PASS_EXACT_HUPSEL_AUTHORITY_RESTORED_AND_A12_REDERIVED",
+    "a13_status": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+    "a13_daily_records": 1096,
+    "a13_tolerance": 1e-12,
+    "a13_mismatches_above_tolerance": 0
+  },
+  "bounded_recovery_surfaces_checked": [
+    {
+      "surface": "F-APP03 branch history and commits",
+      "result": "Source identity, trace hashes and exact rederivation evidence are persisted; exact official archive/member bytes and independent Python oracle source are not. F-APP03 explicitly records raw_payload_persisted_in_repository=false."
+    },
+    {
+      "surface": "F-APP03 GitHub Actions",
+      "result": "The retained lineage-recovery artifact contains only public Hupsel lineage evidence, not the later ephemeral official distribution or MOD_meteo member."
+    },
+    {
+      "surface": "2026-09-06 B0 source execution lineage",
+      "result": "b0_source_runner.py and PASS_B0_SOURCE_EXECUTION evidence prove the exact distribution was available as runtime input, but the integration commit 528f83ed8f29bb734430744dbc5fd517debfdc9a has zero Actions runs. The PR34 head ran Documentation only and retained zero artifacts. The archive was therefore not recoverable from GitHub Actions/PR artifacts."
+    },
+    {
+      "surface": "historical VQ and B0 branches",
+      "result": "vq/vq-1-bootstrap, b0-source-integrity-gate and integrated-b0-b1-reference contain metadata, gates and patch layouts but no MOD_meteo.f90 or SWAP.ZIP blob. The removed B0 placeholder was only reference/swap-4.3.1/b0/.keep and explicitly carried no model semantics."
+    },
+    {
+      "surface": "current B1.11 and SWAP-011 reconstruction lineage",
+      "result": "Current cumulative/reference patches do not contain a MOD_meteo hunk sufficient to reconstruct the full PMdirect body."
+    },
+    {
+      "surface": "historical A23/performance branches and retained patches",
+      "result": "Exact 4.3.1 provenance and partial MOD_meteo contexts are retained, including cumulative patches and source-line reports, but no complete penmon/ETpot/ProcessMeteoDT body or lossless patch chain covering it. F-PE14 independently records that missing source lineage must not be reconstructed from report prose."
+    },
+    {
+      "surface": "public SWAP-model/SWAP history",
+      "result": "A pre-refactor legacy penmon implementation and later mechanical ET refactor are publicly available and scientifically useful lineage, but they are not the controlling SWAP 4.3.1 source identity and therefore cannot satisfy the preregistered exact migration authority."
+    },
+    {
+      "surface": "public SWAP-model/swap-testcases Hupsel fixture",
+      "result": "Previously probed public Hupsel lineage is not byte-identical to the complete official F-VQ99/F-APP03 fixture and cannot replace the controlling case authority."
+    },
+    {
+      "surface": "File Library semantic search and 2026-09-16 inventory",
+      "result": "No SWAP_4.3.1(2).zip or exact MOD_meteo source member is available as a retrievable file object. Derived documentation/evidence remains available."
+    },
+    {
+      "surface": "File Library 2026-08-28 through 2026-08-29 inventory",
+      "result": "Contains verification framework outputs, proposed/cumulative patches, documentation-code matrices and reports referencing the exact distribution SHA, but no retrievable full source archive/package."
+    }
+  ],
+  "what_remains_valid_and_must_be_reused": [
+    "F-APP03 exact distribution and Hupsel fixture identities",
+    "F-APP03 A12 exact rederivation",
+    "F-APP03 A13 independent 1096-day rederivation with fixed 1e-12 tolerance and zero mismatches",
+    "F-APP04 preregistered typed boundary, cardinalities, outputs and noninterference requirements",
+    "existing admitted SWETR=1 reference-ET implementation unchanged",
+    "existing admitted downstream typed root-uptake, drainage and bottom-boundary contracts where their units/signs are already established"
+  ],
+  "not_authorized": [
+    "implementing from generic Penman-Monteith literature",
+    "promoting the older/public penmon source to SWAP 4.3.1 authority without exact identity evidence",
+    "reconstructing missing arithmetic from F-EB01A or A23 report prose",
+    "inferring scalar defaults or units",
+    "widening the preregistered 1e-12 tolerance",
+    "fitting production output to the retained oracle",
+    "implementing the M1-C3 legacy file adapter before F-APP04 typed composition is admitted"
+  ],
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "governance_evidence_only": true
+  },
+  "scientific_interpretation": {
+    "scientific_difference_found": false,
+    "qualification_failure_found": false,
+    "blocker_type": "MISSING_REPRODUCIBLE_EXACT_SOURCE_MATERIALIZATION",
+    "note": "The retained F-APP03 oracle remains positive evidence for exact A12/A13 behaviour. This checkpoint does not weaken, replace or reinterpret that evidence."
+  },
+  "downstream_state": {
+    "F_APP04": "BLOCKED_PENDING_EXACT_SOURCE_REMATERIALIZATION",
+    "M1_C3": "PAUSED_DEPENDENT_ON_F_APP04_TYPED_COMPOSITION",
+    "whole_application_SWAP431_to_SWAP5_equivalence": "NOT_YET_ESTABLISHED"
+  },
+  "next_permitted_action": "Supply or recover either the exact official SWAP 4.3.1 outer archive whose SHA-256 is 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360, or the exact nested MOD_meteo.f90 member with a verifiable chain to nested SWAP.ZIP SHA-256 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151. Then verify identity, persist a source-materialization checkpoint, bind only the restricted penmon/ETpot/ProcessMeteoDT scalars and operation order, and resume IMPLEMENT without repeating A12/A13 or preregistration.",
+  "resume_boundary": "Stop here. Further repository-only searching is not a permitted substitute for missing exact source bytes; resume when a new material source authority appears."
+}

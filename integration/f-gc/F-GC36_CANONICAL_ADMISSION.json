@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC36",
+  "title": "Live MODFLOW6 F-GC34 Bridge — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_LIVE_MODFLOW6_FGC34_BRIDGE",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "aadde02fc35e7bdaddb1604c6f8a7284f43db813"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "3b28d4424b8089401db34f79ef5cb4246c791e48",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI103",
+    "initial_gate_head": "2f8a647890bb1b8e154693916153e305aeb43398",
+    "initial_gate_run": 35295615586,
+    "initial_gate_job": 105447426969,
+    "status_head_run": 35295711477,
+    "status_head_job": 105447704794,
+    "conclusion": "success"
+  },
+  "owner_qualification": {
+    "checkpoint_head": "8d6f723d4de9b3cc47bb5012b67237aa7fc8febb",
+    "exact_head_run": 35295173564,
+    "exact_head_job": 105446133349,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ110",
+    "status_head": "ab2093ba1e2efe70e4bce17e74289f400d0ecfbd",
+    "exact_head_run": 35295373589,
+    "exact_head_job": 105446725154,
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "admitted_production_blobs": {
+    "src/adapter/mod_modflow6_fgc34_c_bridge.f90": "5c5577715c9c150f72de7bfccaf966cd72db5add",
+    "src/adapter/modflow6_fgc34_ctypes_publisher.py": "ccf16f446ae9aaab34dae6f432082d70569faad9"
+  },
+  "live_runtime_evidence": {
+    "modflow6": "6.8.0",
+    "modflow6_asset_sha256": "33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e",
+    "xmipy": "9769f8cd4bc6153c71bcc360f602a931b102d902",
+    "flopy": "1a783da6582f8203190a8d6b1d7a60659022afdb",
+    "owner_fixture": "1x3 single API slot with analytical head/sign closure",
+    "independent_fixture": "1x4 two API slots with shuffled identities and independent 2x2 analytical closure"
+  },
+  "ownership": [
+    "production bridge and ctypes publisher marshal F-GC34 terms only",
+    "MODFLOW initialize/prepare/solve/finalize remains externally owned",
+    "F-GC36 does not own SWAP predictor/corrector or coupling convergence"
+  ],
+  "exclusions": [
+    "production MODFLOW solve driver",
+    "SWAP predictor/corrector orchestration",
+    "prepared-solve iterative coupling",
+    "production head exchange",
+    "Ribasim",
+    "irrigation",
+    "performance/scaling"
+  ],
+  "next_permitted_action": "Close F-GC36 metadata-only. Then rematerialize F-GC38 prepared-solve iterative backend from current canonical before materializing the real internal coupling service."
+}

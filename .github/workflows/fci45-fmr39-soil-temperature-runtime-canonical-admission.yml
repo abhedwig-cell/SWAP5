@@ -1,0 +1,29 @@
+name: F-CI45 F-MR39 soil-temperature runtime canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission
+    paths:
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - src/runtime/mod_fmr_restart_state_contract.f90
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-CI45 exact F-MR39 current-canonical admission
+        run: bash tests/fci/run_fci45_fmr39_soil_temperature_runtime_canonical_admission.sh

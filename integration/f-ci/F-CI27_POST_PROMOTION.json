@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI27",
+  "title": "F-MR23 Restricted Reference-ET Generic-Time Runtime Binding Canonical Admission",
+  "promotion": {
+    "previous_canonical_head": "f49e17c6627717d5dea181808a122f2e35960739",
+    "promoted_candidate_head": "0bdd4767fd387b9f6916c0736d2636f48bf7f4e1",
+    "method": "NON_FORCED_FAST_FORWARD",
+    "force": false,
+    "pre_promotion_compare": {
+      "ahead_by": 20,
+      "behind_by": 0,
+      "merge_base": "f49e17c6627717d5dea181808a122f2e35960739"
+    },
+    "production_source_delta": ["src/runtime/mod_fmr_reference_et_demand_binding.f90"],
+    "post_src_tree": "4121255813971a360949efc3fb17ab6c8f87a799",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "first_post_promotion_canonical_run": {
+    "run_id": 34455444773,
+    "head": "0bdd4767fd387b9f6916c0736d2636f48bf7f4e1",
+    "event": "push",
+    "conclusion": "failure",
+    "historical_fci03_through_fci18": "PASS",
+    "frozen_fci19_candidate_preservation": "PASS",
+    "frozen_fci19_source_lineage": "PASS",
+    "fci27_forward_lineage_authority_gate": "PASS",
+    "failed_step": "Reexecute admitted F-PM06A structural candidate",
+    "failure_classification": "CANONICAL_GATE_COMPOSITION_ERROR_NOT_PRODUCTION_OR_SCIENTIFIC_FAILURE",
+    "failure_detail": "The F-PM06A owner gate is intentionally source-delta-bound to its original candidate. On the later F-CI27 canonical postimage it correctly observed both the admitted ET process source and the newly admitted runtime binding, so replaying that owner gate at current canonical HEAD was invalid."
+  },
+  "canonical_gate_remediation": {
+    "commit": "76eab7a3f37ccce875c11bda312ec264394922b8",
+    "production_source_changed": false,
+    "reference_changed": false,
+    "only_changed_file_from_promoted_candidate": ".github/workflows/fci-canonical.yml",
+    "remediation": "Replay F-CI24, F-PM06A and F-VQ35 on frozen F-CI24 canonical authority f49e17c6627717d5dea181808a122f2e35960739; replay F-CI27, F-MR23 and F-VQ36 on the current canonical postimage.",
+    "reason": "Owner qualification gates remain candidate-scoped while canonical composition gates verify source preservation across later admissions."
+  },
+  "successful_post_remediation_canonical_run": {
+    "run_id": 34455713171,
+    "head": "76eab7a3f37ccce875c11bda312ec264394922b8",
+    "event": "push",
+    "conclusion": "success",
+    "jobs": {
+      "historical_fci03_through_fci18": 102801483792,
+      "frozen_fci19_candidate_preservation": 102801483450,
+      "frozen_fci19_source_lineage": 102801483771,
+      "frozen_fci24_reference_et_authority": 102801483764,
+      "current_restricted_canonical_postimage": 102801683791
+    },
+    "fci24_fpm06a_fvq35_frozen_authority": "PASS",
+    "fci27_forward_lineage_authority": "PASS",
+    "fmr23_owner_runtime_gate_current_postimage": "PASS",
+    "fvq36_independent_runtime_qualification_current_postimage": "PASS",
+    "independent_grid_cases": 13824,
+    "exact_post_src_tree": "PASS",
+    "reference_tree_unchanged": "PASS"
+  },
+  "scope_after_promotion": {
+    "reference_ET_process_canonical": true,
+    "reference_ET_generic_time_runtime_evaluator_canonical": true,
+    "potential_ET_outputs_are_rates": true,
+    "persistent_runtime_binding_state": false,
+    "root_uptake_binding": false,
+    "ptra_ownership_reconciled": false,
+    "mass_ledger_binding": false,
+    "accepted_interval_rate_integration": false,
+    "actual_soil_evaporation": false,
+    "actual_pond_evaporation": false,
+    "interception": false
+  },
+  "remaining_blocker": "Before potential_transpiration from this runtime evaluator may be connected to root uptake, ownership must be reconciled with crop_root_uptake_input_t, which already contains potential_transpiration. No direct binding is admitted by F-CI27."
+}

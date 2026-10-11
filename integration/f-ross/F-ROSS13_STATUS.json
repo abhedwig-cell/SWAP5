@@ -1,0 +1,190 @@
+{
+  "schema_version": 9,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS13",
+  "title": "RossFast D3R 36-material production envelope",
+  "branch": "work/f-ross13-36-material-production-envelope",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "CLOSED",
+  "status": "CLOSED_AFTER_CANONICAL_ADMISSION_AND_POSTIMAGE_PRESERVATION",
+  "purpose": "Expand only the admitted RossFast D3R Staringreeks material catalog from the six F-ROSS12 materials to the full 36-material unimodal Mualem-van Genuchten KSATFIT catalog while preserving solver, geometry, transaction, retry, commit and production routing contracts.",
+  "canonical_reconciliation": {
+    "current_canonical": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "admission_canonical": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "latest_canonical_commit": "F-DOC31_CONNECTOR_EFFICIENT_RECOVERY_DOCUMENTATION_ONLY",
+    "rossfast_relevant_dependency_change_since_admission": false,
+    "current_model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "current_table_provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+  },
+  "acquire_evidence": {
+    "historical_face_table_holdout_run": 34339656739,
+    "pinned_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "fingerprint_authority_blob": "01fa631a245f3011b1007b2888b0528b111ee17f",
+    "asset_materialization_run": 35206159810,
+    "asset_materialization_result": "PASS_36_OF_36_EXISTING_SIX_BYTE_IDENTICAL"
+  },
+  "transient_qualification": {
+    "qualification_head": "fbaee2199233da46a672a19ee71625632c94317e",
+    "contract_blob": "382a9f9d153669377e8eba05461594a37d132e4b",
+    "result_blob": "4be26de45d9fe75825bb482580ce6a9b098dedf0",
+    "workflow_run": 35213506527,
+    "material_count": 36,
+    "base_case_count": 288,
+    "failed_materials": [],
+    "fingerprint_failures": [],
+    "anchor_semantic_failures": [],
+    "inadmissible_transition_route_count": 0,
+    "decision": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING"
+  },
+  "implementation": {
+    "production_mutation_started": true,
+    "workflow_head": "f45288ba2725618311de550bc4de6b355970558e",
+    "workflow_run": 35276076787,
+    "workflow_job": 105386919963,
+    "production_commit": "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+    "mutation_surface": [
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90"
+    ],
+    "exact_two_file_mutation_surface": "PASS",
+    "model_binding_preimage_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "table_provider_preimage_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "model_binding_postimage_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "table_provider_postimage_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "production_push_rule": "QUALIFY_BEFORE_PUSH",
+    "qualified_production_widening_pushed": true
+  },
+  "implementation_qualification": {
+    "production_provider_gate": {
+      "result": "PASS",
+      "material_count": 36,
+      "all_36_catalog": "PASS",
+      "all_36_provider_assets": "PASS",
+      "unknown_material_fail_closed": "PASS",
+      "parameter_drift_fail_closed": "PASS",
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_output_sha256": "c7bf816157b360927b985a6a3bcc3e8847f81f1c965bbe63cd9085eceeb92311"
+    },
+    "ross12_unit_semantic_successor_preservation": {
+      "result": "PASS",
+      "unchanged_authorities": "PASS",
+      "model_provider_intentional_successor_scope": "PASS",
+      "o0": "PASS",
+      "o2": "PASS",
+      "adapter_oracle": "PASS",
+      "selection_oracle": "PASS",
+      "adapter_o0_o2_sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888",
+      "selection_o0_o2_sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c"
+    },
+    "serialized_production_preservation": {
+      "result": "PASS",
+      "permanent_production_static": "PASS",
+      "real_b01_production_route": "PASS",
+      "material_drift_fail_closed": "PASS",
+      "unsupported_root_physics_fail_closed": "PASS",
+      "solver_route": "rossfast-d3r",
+      "mass_complete": true,
+      "observed_mass_residual_cm": -3.03421813024830518e-15,
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_sha256": "96d31ea2d5ed05ef92a78820fd4cd1f70b9ea013ab982e9850d18551f516c4e2"
+    }
+  },
+  "canonical_admission": {
+    "pull_request": 193,
+    "pr_head": "b2fc87dd7af174cc0e69b5de920c8cf8abe44367",
+    "base_at_open": "fc6c4e00d3b94f39dee5a30d68f4c6ef22385f9e",
+    "merge_commit": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "status": "ADMITTED",
+    "premerge_f_ci_canonical_run": 35278118469,
+    "premerge_f_ci96_run": 35278118461,
+    "premerge_result": "PASS"
+  },
+  "postimage_preservation": {
+    "canonical_head": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "f_ci_canonical_run": 35278487727,
+    "f_ci96_successor_preservation_run": 35278487809,
+    "f_ci51p_moving_preservation_run": 35278487792,
+    "f_ci58p_postimage_reconciliation_run": 35278487753,
+    "result": "PASS",
+    "current_canonical_postimages_still_exact": true,
+    "production_or_reference_mutation_after_admission": false
+  },
+  "prior_implementation_attempts": [
+    {
+      "workflow_run": 35275440205,
+      "result": "HARNESS_DEPENDENCY_INCOMPLETE_BEFORE_MATERIAL_RUNTIME_TEST",
+      "scientific_or_provider_failure_observed": false
+    },
+    {
+      "workflow_run": 35275590142,
+      "result": "PROVIDER_GATE_PASS_PRESERVATION_BLOCKED_BY_OBSOLETE_PREIMAGE_LOCK",
+      "scientific_or_solver_semantic_failure_observed": false
+    }
+  ],
+  "closure_cleanup": {
+    "closure_pr": 197,
+    "stale_trigger_run": 35280476683,
+    "stale_trigger_job": 105400962799,
+    "classification": "STALE_ONE_SHOT_IMPLEMENTATION_PREIMAGE_GUARD_AFTER_SUCCESSFUL_ADMISSION",
+    "failed_guard": "The one-shot production-widening workflow still required the pre-widening model/provider blobs after the admitted postimages were already present.",
+    "scientific_or_production_regression_observed": false,
+    "cleanup_removed": [
+      ".github/workflows/ross13-apply-36-material-production-envelope.yml",
+      "tests/ross/apply_ross13_production_widening.py"
+    ],
+    "permanent_preservation_retained": [
+      "tests/ross/test_ross13_36_material_production_envelope.f90",
+      "tests/ross/run_ross13_36_material_production_envelope.sh",
+      "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+      "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "integration/f-ross/F-ROSS13_TRANSIENT_36_MATERIAL_QUALIFICATION_RESULT.json"
+    ],
+    "production_or_reference_mutation": false
+  },
+  "hard_exclusions": [
+    "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
+    "NO_CELL_THICKNESS_GENERALIZATION",
+    "NO_HETEROGENEOUS_PROFILE_GENERALIZATION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_GROUNDWATER_OR_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_ENERGY_OR_SOIL_TEMPERATURE_COUPLING",
+    "NO_PONDING_OR_DYNAMIC_TOP_BOUNDARY_GENERALIZATION",
+    "NO_MULTISWAP_MIXED_SOLVER_ADMISSION",
+    "NO_AUTOMATIC_FALLBACK",
+    "NO_TRANSACTION_OR_SOLVER_ABI_CHANGE",
+    "NO_RUNTIME_TABLE_GENERATION",
+    "NO_CRITERION_RETUNING_TO_FORCE_PASS"
+  ],
+  "recovery": {
+    "last_reconciled_head": "ad8b651daee16b300e75f0bbdb7f6070d7c99af2",
+    "last_reconciled_upstream": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "relevant_paths": [
+      "integration/f-ross/F-ROSS13_STATUS.json",
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh"
+    ],
+    "dependency_surface": [
+      "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+      "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "reference"
+    ]
+  },
+  "verdict": "CLOSED",
+  "admission_boundary": "CANONICAL_ADMITTED_AND_POSTIMAGE_PRESERVED",
+  "close": {
+    "closed_from_canonical_admission": "d36207b4207cbb61ccabafb2f6288083abd4c7f2",
+    "verified_against_current_canonical": "8e0de81a62527bc7d8e49068f1ffd4a8a85aeec3",
+    "open_implementation_or_governance_blockers": [],
+    "production_or_reference_mutation_in_close": false,
+    "next_permitted_action": "NONE_WITHIN_F_ROSS13. Any extension beyond the admitted 36-material 16-cell 10-cm prescribed-flux RossFast envelope requires a separately governed work unit."
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fci58p.postimage_reconciliation_preregistration.v1",
+  "work_unit": "F-CI58P",
+  "title": "F-SI35 Mandatory Production Soil-Water Solver Seam Current-Canonical Postimage Reconciliation",
+  "kind": "POST_PROMOTION_RECONCILIATION_AND_PRESERVATION",
+  "base_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "tree": "8710a9f8b9657c5efc613f17a994f0a6e6ce1f1d"
+  },
+  "canonical_admission": {
+    "work_unit": "F-CI58",
+    "pull_request": 107,
+    "preimage_sha": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "admission_head_sha": "daaa41509a55be43c00cd6b92cf2ddf9590e35db",
+    "merge_sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "required_parent_1": "267f2a6ec61f78d3ba4ce75b3e5a7fdc08479135",
+    "required_parent_2": "daaa41509a55be43c00cd6b92cf2ddf9590e35db",
+    "merge_method": "merge_commit"
+  },
+  "qualified_source": {
+    "owner_source_sha": "5898e6616dbb6871a9f52d489038235ba1172cae",
+    "owner_qualification_head": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+    "independent_qualification": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
+    "production_composition": "040627c77720829c297a0ba06e908efce683133c",
+    "production_blobs": {
+      "src/adapter/mod_b110_production_soil_water_task2.f90": "3090e1d3d5701a87b3624412ad88590e17369d63",
+      "src/legacy/b1_10_port/soilwater.f90": "c1850ea7fa82a1ed8974af57e1da95aa11a771be"
+    }
+  },
+  "gap_authority": {
+    "work_unit": "F-SI34",
+    "head": "b522fe150610f900f253eeea9bf78329107de362",
+    "decision": "SOLVER_INTERFACE_HEADCALC_ISOLATION_V1_FINAL_CLOSURE_GAPS_IDENTIFIED"
+  },
+  "postpromotion_broad_qualification": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 34774219679,
+    "head_sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "must_be_revalidated_by_gate": true
+  },
+  "scope": {
+    "production_source_changes_allowed": false,
+    "new_physics_allowed": false,
+    "full_richards_algorithm_change_allowed": false,
+    "denominator_change_allowed": false,
+    "scope_reduction_allowed": false,
+    "rossfast_production_requirement_added": false,
+    "purpose": "Reconcile the admitted F-SI35 source with the current canonical postimage, permanently preserve the seam, and determine whether the frozen F-SI v1 completion target can now be claimed."
+  },
+  "required_evidence": [
+    "true two-parent F-CI58 canonical admission ancestry",
+    "exact qualified production blob identity",
+    "zero production-interface HeadCalc violations",
+    "mandatory soil_water_solver_t dispatch for standalone and worker Task2",
+    "postpromotion broad canonical workflow success",
+    "source-bound F-SI35 numerical replay on the admitted postimage",
+    "accepted/rejected/retry transaction preservation",
+    "hard mass and boundary preservation",
+    "sensitivity and diagnostics preservation",
+    "worker scratch and process hydraulic view preservation",
+    "serialized MultiSWAP and groundwater coupling preservation",
+    "F-SI31 research contract isolation",
+    "30 of 30 architecture invariants with no adverse delta",
+    "explicit closure of F-SI34 G1 through G5"
+  ],
+  "target_if_and_only_if_all_evidence_passes": "QUALIFIED_SOLVER_INTERFACE_HEADCALC_ISOLATION_HYDRAULIC_PROCESS_BOUNDARY_V1_100_PERCENT_COMPLETE"
+}

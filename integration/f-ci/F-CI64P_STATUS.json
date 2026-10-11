@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.fci64p.status.v1",
+  "work_unit": "F-CI64P",
+  "title": "Energy-conservation ledger and runtime-owned accepted-receipt current-canonical postimage reconciliation",
+  "branch": "qualification/f-ci64p-current-canonical-postimage-reconciliation",
+  "decision": "QUALIFIED_F_CI64P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "canonical_preimage": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+  "f_ci64_final_green_head": "a7d8cff4719194c9ea2770902f1713649f59483f",
+  "canonical_postimage": "52d66ba612096184327f58a076ef22bd0119e237",
+  "authorities": {
+    "EB_I21R_owner_status": "5d6cea2e6de577fb0267008b2a391770b5bd7a10",
+    "F_VQ85_independent_status": "f0a6d6f83cda86706bec58d2d3557ade1e6b9eaa",
+    "F_CI64_admission_status": "a7d8cff4719194c9ea2770902f1713649f59483f"
+  },
+  "promotion_structure": {
+    "merge_commit": "52d66ba612096184327f58a076ef22bd0119e237",
+    "first_parent": "b162e98cc4ad6f85b741a21bd41f3db3d213559b",
+    "second_parent": "a7d8cff4719194c9ea2770902f1713649f59483f",
+    "merge_tree": "426291c690546ab5faaa96e1498e991372f2c3e7",
+    "green_admission_tree": "426291c690546ab5faaa96e1498e991372f2c3e7",
+    "true_two_parent_merge": true,
+    "tree_identity": "PASS"
+  },
+  "production_postimage": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/runtime/mod_energy_conservation_ledger.f90": "cc166e82e51d8e0738fee51b4517626d0a2e890f",
+    "src/runtime/mod_fmr_owned_commit_receipt.f90": "2ab067d160715ff7358dd31efaa12694ef95852c",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "reconciliation_evidence": {
+    "green_head_before_status": "bf8d49621583fe5a8b57c3549d7bf3ba5696b631",
+    "green_tree_before_status": "8f376c4561cd33e2d875270630fcb7e28edd1060",
+    "workflow_run": 34848446588,
+    "workflow_job": 103990010768,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "true_two_parent_promotion_and_live_postimage_lock": "PASS",
+    "exact_four_canonical_postimage_blobs": "PASS",
+    "reconciliation_scope_allowlist": "PASS",
+    "moving_current_authority_reconciliation": "PASS",
+    "F_CI64_and_F_VQ85_authority_reconciliation": "PASS",
+    "invalid_owner_precommit_fail_closed": "PASS",
+    "real_columns_scalar_receipt_alias_reproduced": "PASS",
+    "generic_receipt_export_compatibility": "PASS",
+    "foreign_column_receipt_fail_closed": "PASS",
+    "rightful_owner_commit_exactly_once": "PASS",
+    "independent_promoted_receipt_attack_O0_O2": "PASS",
+    "promoted_tree_equals_green_admission_tree": "PASS"
+  },
+  "moving_current_preservation": {
+    "previous_authority": "e16262d0d9af3c83f40234ab669f0faa66e12519",
+    "new_authority": "52d66ba612096184327f58a076ef22bd0119e237",
+    "F_CI63_bottom_energy_preservation_retained": true,
+    "F_CI64_energy_ledger_owned_receipt_preservation_added": true,
+    "F_CI62_prescribed_qbot_preservation_retained": true,
+    "production_reference_source_changed_by_reconciliation": false
+  },
+  "infrastructure_recovery": {
+    "one_shot_run": 34847735860,
+    "one_shot_job": 103987679314,
+    "local_qualified_commit": "d83486f77ff26227ce5b1bbebb10e635da61f5e6",
+    "local_qualified_tree": "8f376c4561cd33e2d875270630fcb7e28edd1060",
+    "local_gate_result": "PASS",
+    "push_result": "REJECTED_WORKFLOW_PERMISSION_ONLY",
+    "push_failure_reason": "GitHub Actions token lacked workflows permission to update .github/workflows/fci-canonical.yml.",
+    "recovery_pr": 119,
+    "recovery_merge_commit": "bf8d49621583fe5a8b57c3549d7bf3ba5696b631",
+    "recovery_tree_equals_local_qualified_tree": true,
+    "remote_read_only_requalification": "PASS"
+  },
+  "architecture_invariants": "30_OF_30_NO_ADVERSE_POSTIMAGE_RECONCILIATION_DELTA",
+  "production_canonical_admitted": true,
+  "postimage_reconciled": true,
+  "moving_current_preservation_reconciled": true,
+  "production_reference_delta_in_reconciliation": false,
+  "full_energy_balance_complete": false,
+  "ready_for_postimage_reconciliation_promotion": true,
+  "canonical_contains_this_reconciliation_metadata": false,
+  "hard_nonclaims": [
+    "F-CI64P closes postimage reconciliation only for the bounded F-CI64 energy-ledger and runtime-owned accepted-receipt capability.",
+    "F-CI64P does not claim the complete SWAP5 Energy Balance is finished.",
+    "F-CI64P does not establish top-boundary, surface, full-soil-storage, phase-change, radiation, latent-heat or whole-column energy closure beyond already separately qualified capabilities.",
+    "F-CI64P changes no production or reference source semantics.",
+    "The failed one-shot workflow run was an authorization failure at push time after the local reconciliation gate had passed; it is not counted as qualification evidence for the final remote postimage."
+  ],
+  "promotion_requirements": [
+    "This exact status head must pass the read-only F-CI64P postimage workflow.",
+    "Live integration/f-ci-canonical must still equal 52d66ba612096184327f58a076ef22bd0119e237 immediately before promotion.",
+    "Promotion must be a true two-parent merge with current canonical as first parent and the exact final green F-CI64P status head as second parent.",
+    "The promoted reconciliation must introduce no src or reference delta relative to 52d66ba612096184327f58a076ef22bd0119e237.",
+    "The canonical moving-current preservation workflow must remain green after promotion before F-CI64P final closeout."
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": 12,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF-PP02",
+  "title": "SWAP5 WOFOST81 Migration Preservation",
+  "phase": "QUALIFY",
+  "repository": "abhedwig-cell/SWAP5",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "reconciled_head": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "last_checked_live_head": "6530b8bc3f37c675828a8373ef4c5e4bf9141b62",
+    "relevant_crop_or_wofost_delta_at_last_check": false,
+    "admission_reconcile_required": true
+  },
+  "branch": "work/f-wof-pp02-wofost81-migration-preservation",
+  "qualified_execution_head": "a1f08076a2c0470118463ed6215d53bebfb555ca",
+  "qualification_evidence_commit": "de49d199ad45ad424706900d6736bd57a80097b8",
+  "admitted_reference": {
+    "capability": "F-WOF-PP01",
+    "qualified_outputs": ["DVS","LAI","NamountLV","NamountRT","NamountSO","NamountST","NuptakeTotal","TAGP","TWLV","TWRT","TWSO","TWST"],
+    "outside_surface": ["RD","TRA"]
+  },
+  "qualification_evidence": [
+    "tests/fwof/pp02/F-WOF-PP02_KERNEL_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_CONTRACT_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_WRAPPER_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_RATE_CORRECTION_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_LEAF_STRUCTURE_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_ONE_DAY_CANDIDATE_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_REPOSITORY_INTEGRATION_QUALIFICATION.json",
+    "tests/fwof/pp02/F-WOF-PP02_TEN_CASE_PRESERVATION_QUALIFICATION.json"
+  ],
+  "migration_progress": {
+    "source_faithful_process_kernels": "QUALIFIED",
+    "versioned_parameter_and_n_state": "QUALIFIED",
+    "versioned_composite_owner": "QUALIFIED",
+    "daily_assimilation_and_rate_correction": "QUALIFIED",
+    "wofost81_leaf_structure": "QUALIFIED",
+    "two_phase_daily_owner_composition": "QUALIFIED",
+    "full_repository_integration_compile_and_run": "QUALIFIED",
+    "ten_case_preservation_gate": "QUALIFIED"
+  },
+  "ten_case_preservation": {
+    "status": "PASS",
+    "cases": 10,
+    "states": 1045,
+    "accepted_transitions": 1035,
+    "first_divergences": 0,
+    "workflow_run_id": 35020067169,
+    "compiler": "GNU Fortran 13.3.0",
+    "artifact_id": 10417351690,
+    "artifact_zip_sha256": "a211ac6e04076f95532a0a16a0e96f2014173d7bc2ea61fe665477de46ebd055",
+    "o0_binary_sha256": "5913cb2d8de83bd73dfbfb8dc831c780fa97c2ac18f06cea72bc41caaeb33d53",
+    "o2_binary_sha256": "9565e8e715e86e3efe14d03e1d714a40d4d2b5a7612f8d1e7336ec6df2ad81a1",
+    "o0_o2_byte_identity": true,
+    "combined_replay_sha256": "99d52842fbe057f68254ad3c46336e479aca9dd228ddcf0a5b7ae1d6ca998ed1",
+    "combined_summary_sha256": "7b798cf131e3e04eeacf13e7320d264bd2d4ec0c9f560d6ae3d5e8074b291b46",
+    "maximum_observed_absolute_deviation": 7.275957614183426e-12,
+    "maximum_deviation_variable": "TAGP",
+    "minimum_oracle_margin_note": "all observed deviations are floating-point roundoff and remain orders of magnitude below the unchanged PP01 tolerances",
+    "RD_included": false,
+    "TRA_included": false
+  },
+  "repository_integration": {
+    "one_day_workflow_run_id": 35006619148,
+    "one_day_transcript_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+    "qualification_stubs_used": false,
+    "pp02_targets_warnings_as_errors": true
+  },
+  "scientific_interpretation": "The SWAP5 WOFOST81 migration candidate preserves all 12 admitted WOFOST-owned trajectories across all ten independent Allard/PCSE potential-production cases. The complete 1045-state replay passes the original PP01 precisions with only floating-point roundoff. RD and TRA remain deliberately outside the equivalence surface. Runtime activation has not been introduced by this qualification campaign.",
+  "verdict": "QUALIFIED_TEN_CASE_WOFOST81_MIGRATION_PRESERVATION_READY_FOR_ADMISSION_RECONCILE",
+  "mutations": {
+    "existing_legacy_production_source_modified": false,
+    "legacy_wofost_path_changed": false,
+    "runtime_behavior_changed": false,
+    "canonical_changed_by_pp02": false,
+    "RD_changed": false,
+    "TRA_changed": false,
+    "tolerances_changed": false
+  },
+  "next_permitted_action": "RECONCILE current integration/f-ci-canonical against the last checked canonical head. If no dependency affecting PP02 production semantics or qualification evidence changed, admit the qualified PP02 modules and immutable evidence without runtime activation; otherwise fail fast and requalify only the affected surface.",
+  "exclusions": ["no EB","no ROSS/RossFast","no groundwater work","no RD migration","no TRA migration","no maize blocker work","no tolerance changes","no replacement of existing legacy WOFOST path","no runtime activation in PP02 admission"]
+}

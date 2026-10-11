@@ -1,0 +1,29 @@
+name: F-VQ108 F-GC34 independent qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq108-fgc34-api-binding-independent
+    paths:
+      - 'tests/fvq/test_fvq108_fgc34_independent.f90'
+      - 'tests/fvq/run_fvq108_fgc34_independent.sh'
+      - 'qualification/F-VQ108_STATUS.json'
+      - '.github/workflows/f-vq108-fgc34-independent.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Independent F-GC34 qualification
+        run: bash tests/fvq/run_fvq108_fgc34_independent.sh

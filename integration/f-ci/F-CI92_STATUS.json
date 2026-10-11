@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI92",
+  "title": "Current-canonical moving-preservation authority rebind",
+  "phase": "QUALIFY_COMPLETE_ADMISSION_READY",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_PRESERVATION_AUTHORITY_REBIND",
+  "canonical_preimage": "8f592dcc1651913b2b24356fd6379e7fafa817a4",
+  "stale_authority": "b4e637885eafa6c193257cd11fa5b6fb45c18fa3",
+  "replacement_authority": "50346642bd565f79134ea17d5462e544b354998c",
+  "replacement_authority_role": "Status-A scientific production baseline",
+  "triggering_failure": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 35075819205,
+    "job_id": 104728323958,
+    "first_failed_path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "reason": "broad moving-current byte-lock still compared current canonical to pre-F-CI75 authority"
+  },
+  "reconciliation": {
+    "current_worker_blob": "f96a66c0185d96ba48258f8560db275fa7fed58c",
+    "fci75_owner_worker_blob": "f96a66c0185d96ba48258f8560db275fa7fed58c",
+    "fci75_merge": "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+    "fci75_owner_authority": "19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "fci75_independent_authority": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a",
+    "fci75_explicitly_supersedes_older_moving_blob_locks": true,
+    "status_a_baseline_to_current_src_delta": "NONE",
+    "status_a_baseline_to_current_production_delta": "NONE"
+  },
+  "qualification": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 35076683856,
+    "run_conclusion": "success",
+    "current_restricted_job_id": 104731121013,
+    "current_restricted_job_conclusion": "success",
+    "full_dependency_surface_against_replacement_authority": "PASS",
+    "frozen_authority_jobs": "PASS",
+    "transaction_reference_guard_unchanged": true,
+    "exact_tested_head_before_status_evidence_commit": "e13cd47e9663ef797458c673eb9afb9b50e70418"
+  },
+  "mutation": [
+    ".github/workflows/fci-canonical.yml",
+    "integration/f-ci/F-CI92_STATUS.json"
+  ],
+  "production_source_change": false,
+  "reference_source_change": false,
+  "scientific_semantics_change": false,
+  "admission_rule": "merge only after the exact final PR head replays F-CI canonical qualification successfully",
+  "nonclaims": [
+    "NO_REQUALIFICATION_OF_NEW_PHYSICS",
+    "NO_PRODUCTION_READMISSION",
+    "NO_EB_CHANGE",
+    "NO_ROSSFAST_CHANGE",
+    "NO_HASH_SUBSTITUTION_FOR_FKT21_SEMANTIC_QUALIFICATION"
+  ]
+}

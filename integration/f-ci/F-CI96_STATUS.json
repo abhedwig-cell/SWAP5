@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI96",
+  "title": "F-ROSS12 dependency-aware postimage and moving-preservation reconciliation",
+  "phase": "QUALIFIED_READY_FOR_ADMISSION",
+  "decision": "ADMIT_FROSS12_POSTIMAGE_SUCCESSOR_PRESERVATION",
+  "canonical_preimage": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+  "previous_canonical_preimage": "95d24660b51257119d5ee5fd25f2011e20b1dfa6",
+  "canonical_delta_reconcile": {
+    "new_admission": "F-DOC23",
+    "admission_commit": "2a6eb532c922add0afbc15fdf7f3bee11ed8ea33",
+    "source_or_reference_delta": false,
+    "classification": "documentation_and_mkdocs_only",
+    "fross12_authority_affected": false,
+    "interpretation": "The canonical delta since the previous F-CI96 preimage changes documentation/governance only. No src/**, reference/**, RossFast production, solver-contract or F-CI96 scientific dependency surface changed."
+  },
+  "status_a_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "fross12_production_admission": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+  "triggering_failures": {
+    "fci72": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "fci74": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "fci79": "moving preservation failed before semantic assertions because the serialized Reference backend was pinned to the pre-F-ROSS12 blob",
+    "broad_fci": "current-restricted-canonical preservation still compared the serialized Reference backend to the frozen Status-A baseline"
+  },
+  "replay_scope_correction": {
+    "failed_fci96_run": 35184296629,
+    "rossfast_adapter_passed_before_failure": true,
+    "rossfast_selection_binding_passed_before_failure": true,
+    "rossfast_serialized_production_wiring_passed_before_failure": true,
+    "failure_classification": "INVALID_REPLAY_ENTRYPOINT",
+    "failure_detail": "The historical EB independent qualification runner requires frozen evidence files and preimage context that are intentionally absent from the moving current-postimage candidate.",
+    "scientific_regression_indicated": false,
+    "correct_owner": "F-CI72/F-CI74/F-CI79 moving-preservation workflows own EB-I23/I24/I25 successor preservation; F-CI96 owns F-ROSS12 postimage preservation and RossFast replay."
+  },
+  "historical_authority_policy": {
+    "retain_status_a_and_eb_historical_authorities": true,
+    "rewrite_historical_evidence": false,
+    "weaken_unrelated_blob_locks": false,
+    "successor_exception_scope": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ]
+  },
+  "fross12_successor_authority": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "19d07cac9285142d14a6e9c53706fb73d016d5ad",
+    "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90": "cca61af52bde3eed12b756547277cc2776589648",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "6d6f66273483c19c1d2318dad518c537186a0ae7"
+  },
+  "reconciliation_scope": {
+    "production_source_change": false,
+    "reference_source_change": false,
+    "scientific_semantics_change": false,
+    "governance_only": true,
+    "moving_preservation_workflows": [
+      ".github/workflows/fci72-eb-i23-moving-preservation.yml",
+      ".github/workflows/fci74-eb-i24-moving-preservation.yml",
+      ".github/workflows/fci79-eb-i25-moving-preservation.yml",
+      ".github/workflows/fci-canonical.yml"
+    ]
+  },
+  "qualification_plan": {
+    "exact_src_tree_equals_fross12_admission": true,
+    "exact_reference_tree_equals_fross12_admission": true,
+    "rossfast_adapter_o0_o2": true,
+    "rossfast_selection_binding_o0_o2": true,
+    "rossfast_serialized_production_wiring_o0_o2": true,
+    "eb_i23_moving_preservation_owned_by_fci72": true,
+    "eb_i24_moving_preservation_owned_by_fci74": true,
+    "eb_i25_moving_preservation_owned_by_fci79": true,
+    "historical_eb_independent_replay_in_fci96": false,
+    "broad_fci_required": true
+  },
+  "qualification_evidence": {
+    "qualified_head": "793cbebe71e92bb101325d81029a7447233e31f4",
+    "fci96": {"run_id": 35186015122, "result": "PASS"},
+    "fci72": {"run_id": 35186015058, "result": "PASS"},
+    "fci74": {"run_id": 35186015141, "result": "PASS"},
+    "fci79": {"run_id": 35186015034, "result": "PASS"},
+    "broad_fci": {"run_id": 35186015031, "result": "PASS"},
+    "interpretation": "All owned successor-preservation and broad canonical qualification gates passed on the same candidate head after reconciliation to canonical preimage 2a6eb532c922add0afbc15fdf7f3bee11ed8ea33."
+  },
+  "mutations_so_far": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci72-eb-i23-moving-preservation.yml",
+    ".github/workflows/fci74-eb-i24-moving-preservation.yml",
+    ".github/workflows/fci79-eb-i25-moving-preservation.yml",
+    ".github/workflows/fci96-fross12-postimage-preservation.yml",
+    "tests/fci/run_fci96_fross12_postimage_preservation.sh",
+    "integration/f-ci/F-CI96_STATUS.json"
+  ],
+  "next_permitted_action": "Re-run the path-triggered qualification gates after this evidence-only checkpoint. If they remain green and canonical has no src/** or reference/** delta, admit PR 168 as the governance-only F-ROSS12 postimage successor-preservation repair.",
+  "final_verdict": "PASS"
+}

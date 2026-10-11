@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.ppa_root_hyd02.result.v1",
+  "date": "2026-09-19",
+  "work_unit": "PPA-ROOT-HYD02",
+  "title": "Restricted prescribed-root accepted-trajectory tangent coverage",
+  "decision": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+  "authority": {
+    "canonical_base": "8cf184955a0f366ef85bc38dd64c19aa639b7098",
+    "branch": "work/hydro-memory-cap02-prescribed-root-tangent",
+    "qualified_source_head": "55451eec38a877412e3eef59c3c103a33156ceee",
+    "workflow_run": 35438255509,
+    "workflow_job": 105884524353,
+    "conclusion": "success"
+  },
+  "production_delta": [
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+    "src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90"
+  ],
+  "admitted_semantics": {
+    "root_provider": "b110_root_sink_provider_t",
+    "physical_sink_retained": true,
+    "direct_root_sink_derivative_wrt_coupling_control": 0,
+    "root_coverage_provenance_explicit": true,
+    "multi_substep_coverage_conjunctive": true,
+    "modflow_tangent_endpoint_authoritative_with_prescribed_root": true
+  },
+  "observed": {
+    "reference_flux_cm_per_day": -0.1626392064213146,
+    "accepted_substeps": 2,
+    "retries": 4,
+    "physical_head_diff_root_generic_cm": 0,
+    "directional_head_diff_root_generic": 0,
+    "integrated_exchange_direction_diff_root_generic": 0,
+    "endpoint_direction_diff_root_generic": 0
+  },
+  "qualification": [
+    "ROOT/GENERIC physical identity PASS",
+    "ROOT/GENERIC accepted-trajectory directional identity PASS",
+    "ROOT prescribed-root coverage provenance PASS",
+    "MODFLOW tangent endpoint authoritative with active prescribed root PASS",
+    "zero additional full nonlinear solves PASS",
+    "F-KT21 accepted-trajectory preservation PASS",
+    "F-GC31 active-drainage tangent preservation PASS",
+    "PPA-ROOT-HYD01 temporal-certificate preservation PASS",
+    "O0/O2 exact output identity PASS"
+  ],
+  "fail_closed": [
+    "all root_sink_provider_t implementations other than concrete b110_root_sink_provider_t remain unavailable",
+    "unbound/wrong-size/nonfinite prescribed root state is rejected",
+    "dynamic/Feddes root-stress derivatives are not admitted",
+    "runtime finite-difference fallback is not admitted"
+  ],
+  "nonclaims": [
+    "no new root physics",
+    "no dynamic root-water-stress derivative",
+    "no tolerance or accuracy-budget change",
+    "no Stage 0 scientific result",
+    "no real live-MODFLOW root-active application admission by this workunit alone"
+  ],
+  "downstream": "Admit to canonical, then execute ACC02-F1 by extending the already admitted F-GC44 real-SWAP + live-MODFLOW6 qualification fixture with prescribed root extraction and the governed ACC01/ACC02 accuracy budgets."
+}

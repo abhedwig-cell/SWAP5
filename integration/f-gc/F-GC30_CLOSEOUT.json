@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC30",
+  "title": "MODFLOW6 Tangent Coupling Contract — Drainage-Free Predictor Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_DRAINAGE_FREE_ENVELOPE",
+  "canonical_admission": {
+    "production_admission_head": "657cd4a595c82ae1e95a4722bb276f0087a3ab54",
+    "admission_metadata_head": "863f236596129d0ede3e975526553ea7f0a969ed",
+    "preimage": "b142669ddc8c280ef08b31f5af65c120c1cfeaf1",
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "result": "live canonical deltas after F-VQ104 were publication-only and did not touch the F-GC30 dependency surface"
+    },
+    "QUALIFY": {
+      "owner_head": "e1f086d6f1dc2b60c2b1fc5a2b61b52dc9fa452b",
+      "owner_workflow_run": 35284524659,
+      "result": "drainage-free production predictor/tangent/candidate binding qualified under O0 and O2 with output identity"
+    },
+    "INDEPENDENT_QUALIFY": {
+      "work_unit": "F-VQ104",
+      "final_status_head": "376b42e274caa09e9f69fb974e292592f5424244",
+      "final_status_run": 35285025778,
+      "result": "independent lower-face FD, u/q_u algebra, origin provenance and fail-closed coverage qualified; verifier production delta NONE"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI97",
+      "gate_head": "4a95c966931aa88f2cb501b83284e7fae0b1c8e7",
+      "workflow_run": 35285309088,
+      "workflow_job": 105416191610,
+      "result": "exact five-module admission postimage replayed owner and independent qualification successfully"
+    }
+  },
+  "admitted_capability": [
+    "typed MODFLOW6-oriented SWAP predictor response",
+    "fixed prescribed-qbot lower-face hydraulic-head reconstruction",
+    "accepted-trajectory qbot tangent to fixed lower-face response",
+    "committed predictor-origin provenance",
+    "non-committing candidate-to-response assembler"
+  ],
+  "preserved_limits": [
+    "active drainage analytic tangent remains blocked until exact production groundwater-level directional semantics are qualified",
+    "root uptake or any other state-dependent owner without derivative coverage remains fail closed",
+    "centered finite difference is not admitted as runtime fallback",
+    "no MODFLOW6/XMI backend is admitted",
+    "Groundwater Coupling v1 transaction/commit semantics are unchanged",
+    "no irrigation or Ribasim coupling is included",
+    "accepted_storage_change is not reinterpreted as coupling storage"
+  ],
+  "next_permitted_action": "Open a new bounded workunit for one of the remaining decision surfaces: active-drainage derivative closure, production runtime FD fallback for incomplete analytic coverage, or concrete MODFLOW6/XMI execution. Do not reopen F-GC30 to expand its admitted envelope."
+}

@@ -1,0 +1,26 @@
+name: F-CI22 restricted temporal certificate canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci22-temporal-certificate-canonical-admission
+    paths:
+      - 'integration/f-ci/F-CI22_*'
+      - 'tests/fci/run_fci22_canonical_admission_gate.sh'
+      - '.github/workflows/fci22-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  canonical-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Qualify exact F-CI21 postimage for restricted canonical admission
+        run: bash tests/fci/run_fci22_canonical_admission_gate.sh

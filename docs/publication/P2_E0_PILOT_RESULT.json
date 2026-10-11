@@ -1,0 +1,68 @@
+{
+  "schema": "swap5.publication.p2-e0-pilot-result.v1",
+  "workunit": "PUB-P2E01",
+  "publication_class": "PUB_P2_RESULT",
+  "canonical_base": "40752b92e50b5000ac53892421336520fc62e518",
+  "source_commit": "a9dbcd3f062ea40db0051b1029c4335aef51ca55",
+  "workflow": {
+    "name": "PUB-P2E01 E0 paired pilot",
+    "run_id": 35263527334,
+    "job_id": 105344883959,
+    "conclusion": "success",
+    "optimization_modes": ["O0", "O2"],
+    "o0_o2_output_sha256": "364ecd862bb45b2323346385d2d43112385624434de06a196ac59acf30c70c6d"
+  },
+  "layer_a_fixed_interval_solver_seam": {
+    "verdict": "PAIRED_EXTRACTION_READY",
+    "scientific_admissibility_evaluated": false,
+    "predicted_flux_equivalence_evaluated": false,
+    "case_id": "P2-E0-PILOT-B01-HM101",
+    "material_id": "B01",
+    "active_nodes": 16,
+    "cell_thickness_cm": 10.0,
+    "initial_pressure_head_cm": -101.0,
+    "initial_water_content": 0.228084203679746855,
+    "step_duration_day": 1.0,
+    "prescribed_top_flux_cm_per_day": 0.00137867256205942185,
+    "prescribed_bottom_flux_cm_per_day": -0.000551469024823768653,
+    "reference": {
+      "route": "legacy-reference-bound",
+      "nonlinear_iterations": 3,
+      "internal_retries": 0,
+      "linear_solves": 3,
+      "mass_residual_cm": -1.26968531174997956e-13
+    },
+    "alternative": {
+      "route": "rossfast-d3r",
+      "linear_solves": 24,
+      "mass_residual_cm": -3.03421813024830518e-15
+    },
+    "raw_pairwise_discrepancy": {
+      "D_h_inf_cm": 2.00796959859417257e-05,
+      "D_h_rms_cm": 8.55848056420583038e-06,
+      "D_theta_inf": 2.41824979207994062e-08,
+      "D_theta_rms": 1.03052868156725620e-08,
+      "D_storage_cm": 0.0
+    },
+    "interpretation_boundary": [
+      "Raw discrepancies are observations only and do not establish scientific equivalence or interchangeability.",
+      "Scientific state/storage admissibility tolerances were intentionally not chosen from these observed discrepancies.",
+      "Top and bottom fluxes are prescribed in E0 and therefore cannot establish predicted-flux equivalence.",
+      "Linear-solve counts are algorithm-specific work diagnostics and are not a performance comparison."
+    ]
+  },
+  "layer_b_operational_application_substitution": {
+    "verdict": "ROUTE_EXECUTION_GAP",
+    "interpretation": "The current production RossFast route is qualified with its model temporal certificate. The Reference route does not automatically share that same temporal acceptance contract. A full application-level comparison would therefore change both solver and temporal execution policy and must be treated as a separate operational substitution experiment rather than as a pure solver-only treatment.",
+    "scientific_difference_found": false,
+    "next_requirement": "Define and preregister the operational treatment, including which timestep/acceptance-policy differences are part of solver substitution, before comparing full accepted trajectories."
+  },
+  "next_permitted_action": "Predeclare scientifically defensible state and storage tolerances independently of the observed pilot discrepancy, then freeze a Stage-1 Layer-A E0 sampling design across the six admitted materials. Keep Layer-B operational substitution separate until its treatment definition is explicit.",
+  "explicit_nonclaims": [
+    "RossFast is scientifically equivalent to Reference",
+    "RossFast is interchangeable with Reference",
+    "RossFast predicts boundary fluxes equivalently in E0",
+    "RossFast is faster because it uses a particular number of internal or linear solves",
+    "the Layer-B production route failure is a scientific solver failure"
+  ]
+}

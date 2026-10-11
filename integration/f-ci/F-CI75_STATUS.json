@@ -1,0 +1,88 @@
+{
+  "workunit": "F-CI75",
+  "capability": "F-KT21 accepted-trajectory directional sensitivity canonical admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "state": "CLOSED_CANONICAL_ADMITTED",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "reconciled_base": "70fae8bb570b56ff0f1002e14c6c67e6adb6be53",
+    "scientific_admission_head": "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+    "admitted_checkpoint_parent": "fe1929a2f8db443bb32526dc5dedcde6c3961add",
+    "post_admission_tree_identity": "PASS: compare fe1929a2f8db443bb32526dc5dedcde6c3961add..60294b4f66a2fcd19132d7c6f23457c4962b17e1 contains zero file differences",
+    "merge_pr": 143
+  },
+  "admission_branch": {
+    "branch": "integration/f-ci75-fkt21-canonical-admission",
+    "qualification_evidence_head": "d96d728649963daab6a6147c967d3c9daa85664d",
+    "qualified_checkpoint_head": "fe1929a2f8db443bb32526dc5dedcde6c3961add"
+  },
+  "owner_authority": {
+    "branch": "work/f-kt21-accepted-trajectory-directional-sensitivity-composition",
+    "qualification_record_head": "eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "qualified_production_postimage_parent": "19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "owner_gate_replay": "PASS"
+  },
+  "independent_authority": {
+    "workunit": "F-VQ92",
+    "branch": "qualification/f-vq92-fkt21-accepted-trajectory-independent",
+    "head": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a",
+    "immutable_authority_check": "PASS",
+    "independent_oracle_replay": "PASS"
+  },
+  "qualification": {
+    "workflow": "F-CI75 F-KT21 current-canonical admission",
+    "evidence_run_id": 34968694539,
+    "evidence_job_id": 104379323959,
+    "evidence_conclusion": "success",
+    "checkpoint_run_id": 34968797886,
+    "checkpoint_conclusion": "success",
+    "canonical_base_lock": "PASS",
+    "scope_lock": "PASS",
+    "owner_postimage_exact": "PASS",
+    "owner_composition_shell_exact": "PASS",
+    "owner_shell_base_unchanged": "PASS",
+    "transaction_reference_inherited_exact": "PASS",
+    "fsi37_inherited_dependencies_exact": "PASS",
+    "vq92_exact_payload_replay": "PASS",
+    "fkt21_owner_gate_replay": "PASS",
+    "vq92_independent_oracle_replay": "PASS",
+    "fsi35_typed_seam_headcalc_isolation": "PASS",
+    "fsi35_semantic_preservation_replay": "PASS",
+    "moving_current_worker_semantics_requalified": "PASS",
+    "O0_O2": "PASS"
+  },
+  "preservation_disposition": {
+    "historical_F_CI58P_F_SI35_byte_lock": "SUPERSEDED_BY_SEMANTIC_REQUALIFICATION",
+    "historical_moving_current_worker_context_byte_lock": "SUPERSEDED_BY_SEMANTIC_REQUALIFICATION",
+    "reason": "F-KT21 intentionally changes the two byte-locked composition surfaces. Their underlying semantic preservation oracles passed on the exact admitted postimage; the superseded historical blob identities are not semantic admission requirements."
+  },
+  "reused_immutable_evidence": [
+    "F-KT21 owner qualification record at eee5f15a742d11b268d2a872a4c376e1f2c475c0",
+    "F-KT21 qualified production postimage at 19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+    "F-VQ92 independent qualification at f4f98637e963e07e2bedf7ef6acbcaab36e07e5a"
+  ],
+  "tests_and_evidence": [
+    "F-KT21 owner qualification gate at O0 and O2",
+    "F-VQ92 independent accepted-trajectory oracle at O0 and O2 with identical output",
+    "F-SI35 typed solver seam and HeadCalc production-interface isolation",
+    "F-KT15 production Task2 semantic preservation at O0 and O2",
+    "F-KT15 production surface-regime and hard-mass preservation at O0 and O2",
+    "F-SI35 standalone/worker Task2 dispatch equivalence at O0 and O2",
+    "Post-admission merge-tree identity: zero file differences between qualified checkpoint and canonical merge"
+  ],
+  "verdict": "PASS/CLOSED: F-KT21 accepted-trajectory directional sensitivity is canonically admitted at scientific merge head 60294b4f66a2fcd19132d7c6f23457c4962b17e1. The admitted tree is exactly the green F-CI75 checkpoint tree. Independent F-VQ92 and the required semantic preservation replays are green.",
+  "mutations": [
+    "Minimal owner-qualified F-KT21 composition admitted through PR #143",
+    "Already-canonical F-SI37 primitives were not replaced",
+    "Historical byte-lock governance was superseded only where intentional KT21 composition changed the locked surfaces",
+    "This CLOSE record is governance/status only and introduces no production change"
+  ],
+  "next_permitted_action": "F-CI75 is closed. Any downstream F-KT22/F-GC23 work must reconcile against the new live canonical independently and remains outside this workunit.",
+  "exclusions": [
+    "No EB changes",
+    "No ROSS or RossFast changes",
+    "No groundwater-coupling composition broadening",
+    "No production semantics changes merely to obtain PASS"
+  ]
+}

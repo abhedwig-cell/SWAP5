@@ -1,0 +1,206 @@
+{
+  "work_unit": "PPA-WU05B16",
+  "phase": "A_REFERENCE_OWNER_ADJUDICATION_ONLY",
+  "status": "QUALIFIED_REFERENCE_OWNER_EVIDENCE_NOT_RUNTIME_ADMITTED",
+  "production_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+  "baseline": "b38dcd9febacebd94581465160e65224e8059621",
+  "completed_gates": {
+    "work_unit": "PPA-WU05B16",
+    "phase": "A_REFERENCE_OWNER_ADJUDICATION_ONLY",
+    "status": "LOCAL_REFERENCE_PROBE_COMPLETE_NOT_RUNTIME_ADMITTED",
+    "baseline": "b38dcd9febacebd94581465160e65224e8059621",
+    "production_source": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+    "counts": {
+      "cases": 4536,
+      "low_air": 3024,
+      "normal_air": 1512,
+      "blocked": 1008,
+      "equality": 1008,
+      "surviving": 1008,
+      "near_zero_replacement": 2448,
+      "scaled": 576,
+      "original_small_flux_early_return": 1488,
+      "nonzero_nodal_reporting_residual": 192
+    },
+    "optimization_byte_identity": true,
+    "max_independent_partition_error": 2.7755575615628914e-17,
+    "max_nodal_level_residual": 2.43440267944095e-11,
+    "max_physical_report_net_residual": 2.43440267944095e-11,
+    "residual_examples": [
+      {
+        "case": 2269,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          -0.01,
+          20.0,
+          1.0
+        ],
+        "nodal": -0.10999999999705071,
+        "level": -0.11000000000000001,
+        "bottom": -0.01,
+        "residual": 2.9493074649167283e-12
+      },
+      {
+        "case": 2270,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          -0.01,
+          20.0,
+          4.0
+        ],
+        "nodal": -0.10999999997565599,
+        "level": -0.11000000000000001,
+        "bottom": -0.01,
+        "residual": 2.43440267944095e-11
+      },
+      {
+        "case": 2271,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          -0.01,
+          200.0,
+          1.0
+        ],
+        "nodal": -0.1099999999992414,
+        "level": -0.11000000000000001,
+        "bottom": -0.01,
+        "residual": 7.586153927263695e-13
+      },
+      {
+        "case": 2272,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          -0.01,
+          200.0,
+          4.0
+        ],
+        "nodal": -0.1099999999992414,
+        "level": -0.11000000000000001,
+        "bottom": -0.01,
+        "residual": 7.586153927263695e-13
+      },
+      {
+        "case": 2273,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          0.0,
+          20.0,
+          1.0
+        ],
+        "nodal": -0.09999999999731884,
+        "level": -0.1,
+        "bottom": 0.0,
+        "residual": 2.6811608488941374e-12
+      },
+      {
+        "case": 2274,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          0.0,
+          20.0,
+          4.0
+        ],
+        "nodal": -0.09999999997786907,
+        "level": -0.1,
+        "bottom": 0.0,
+        "residual": 2.213093597269733e-11
+      },
+      {
+        "case": 2275,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          0.0,
+          200.0,
+          1.0
+        ],
+        "nodal": -0.09999999999931035,
+        "level": -0.1,
+        "bottom": 0.0,
+        "residual": 6.896566651093394e-13
+      },
+      {
+        "case": 2276,
+        "input": [
+          1,
+          -1.5,
+          -2.0,
+          0.0,
+          -0.1,
+          0.0,
+          200.0,
+          4.0
+        ],
+        "nodal": -0.09999999999931035,
+        "level": -0.1,
+        "bottom": 0.0,
+        "residual": 6.896566651093394e-13
+      }
+    ],
+    "source_sha256": {
+      "tests/frost/test_ppa_wu05b16_divdra_globals.f90": "92f855a16c850c67cdaa28bcbebbc7bb8594302e420e073e51f94999556039d3",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+      "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+      "tests/frost/test_ppa_wu05b16_divdra_owner.f90": "39f0a0e7d5a4ed6d32ac1d43a4b29371da6917bfd65117ee56a7019a1ed8024e"
+    },
+    "driver_sha256": "e87ffc0649fb37a2d8acd8885425e1e2e92d4c245472bc624bd04aa063179f1d",
+    "input_sha256": "f3ca5f450ab3c692b395d138472e2efeb1f5e30dcbd7ef6b7762e3d7ffb37f83",
+    "build": "/tmp/ppa-wu05b16-owner-2_amhu_a",
+    "output_sha256": "cc1d968fff5b3c28e14bfbde3bde5c0c92a8a5b95ed84e70cd3d0d04fcbada44",
+    "executables": {
+      "o0": "382de0d09f0fa8a407386bf11e02332dfce1970cc69524d90f398e7693c3f636",
+      "o2": "ab5966fdde80f80149880fc934a288baf689b05a283268cf4af8b7ac9dceb826"
+    },
+    "claim": "Complete unchanged original FrozenBounds+DIVDRA controlled process composition only; no full legacy simulation, hard-mass gate or production admission.",
+    "initial_original_tiny_scalar_disappearance_cases": 1296,
+    "max_independently_predicted_tiny_unsaturated_omission": 2.4344012916621693e-11,
+    "max_conservative_geometric_partition_closure": 2.7755575615628914e-17,
+    "owner_adjudication": "Nodal sink and bottom remain separate. Low-air surviving non-tiny scalar becomes raw+qbot, so bottom minus drainage equals -raw. Near-zero surviving scalar becomes qbot, so net is zero. Blocked scalar/bottom are zero. This is actual spatial redistribution, not the SWDIVD0 reporting-only defect.",
+    "bounded_numerical_finding": "Separate infiltration skips positive unsaturated transmissivity <=1e-8, while the total transmissivity denominator includes it; independently predicted omitted flux explains the nonzero final nodal/level residual. No correction is applied or qualified here. Original abs(scalar)<=1e-10 early return is separately retained and diagnosed."
+  },
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B16_REFERENCE_OWNER_REPLAY.json.gz",
+    "sha256": "d66196bc89a9fcdc7fd43c652091aed68af3a2be81492d6a4cdf2d31af79305f",
+    "bytes": 231903,
+    "manifest_count": 21
+  },
+  "reference_bodies_unchanged": true,
+  "production_unchanged": true,
+  "corrected_reference_overlay_applied": false,
+  "runtime_qualified": false,
+  "scope": "Full unchanged original single-level controlled process composition; no production runtime admission",
+  "findings": [
+    "Low-air non-tiny surviving qdrain becomes raw+qbot; positive upward bottom minus positive nodal drainage gives -raw. This is actual spatial redistribution; no inherited SWDIVD0 reporting defect.",
+    "Near-zero surviving scalar becomes qbot, retaining bottom; their net is zero. Fully blocked scalar and bottom are zero.",
+    "1296 original initial tiny-rate cases have scalar retained but all-zero nodal distribution at the 1e-10 early return. This retained threshold is an explicit future fail-closed domain, not an automatic correction.",
+    "192 final separate-infiltration cases retain a small nodal/scalar residual: positive unsaturated transmissivity <=1e-8 is omitted while total transmissivity includes it. Independent conservative integration predicts the omission and closes to 2.78e-17. Preregister bounded numerical correction before any corrected-reference qualification or runtime parity."
+  ],
+  "next_action": "PPA-WU05B17: separately preregister and qualify the bounded positive-unsaturated-transmissivity omission correction; retain all original small-scalar, sign, geometry and scalar/qbot policies."
+}

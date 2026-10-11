@@ -1,0 +1,127 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 daily meteorological/application composition recovery",
+  "phase": "RECONCILE_REPLAYABLE_AUTHORITY",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "live_head": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "delta_from_previous_checkpoint_basis": "F-AR01 legacy ZIP reconciliation; documentation/evidence only; no SWAP5 production or B1 semantic change"
+  },
+  "branch_precheckpoint_head": "155fb7d472121cc9993bb066298b46131a092f90",
+  "purpose": "Refine the F-APP03 blocker after recovering durable A21/A22 evidence and historical A12/A13 qualification lineage. Distinguish known historical semantics from replayable present authority. No production mapping may be implemented from remembered or summary-only formulas.",
+  "durable_recovered_authorities": {
+    "A21": {
+      "status": "DURABLE_SOURCE_AND_QUALIFICATION_EVIDENCE_RECOVERED_EXTERNAL_TO_REPOSITORY",
+      "source": "mod_a21_atmospheric_forcing_profile.f90 in user File Library",
+      "support": ["README_A21.md", "A21_DEPENDENCY_AUDIT.txt"],
+      "qualified_hupsel_branch": {
+        "SWETR": 0,
+        "SWDIVIDE": 1,
+        "SWMETDETAIL": 0,
+        "SWRAIN": 0
+      },
+      "semantics": [
+        "raw daily radiation, Tmin, Tmax, vapour pressure, wind, gross rain, ETref and wet fraction are materialized into immutable time-keyed records",
+        "radiation input is converted by *1000 to J m-2 d-1",
+        "rain input is converted by *0.1 to cm d-1",
+        "ETref input is converted by *0.1 from mm d-1 to cm d-1",
+        "forcing lookup is read-only by accepted model time and does not advance a mutable meteorological pointer"
+      ],
+      "qualification": {
+        "hupsel_daily_records": 1096,
+        "mismatches_at_1e_12": 0,
+        "integrated_route": "Newton/backtracking route identity retained; qtop identical in selected steps; O0/O2 byte-identical in the historical A21 gate"
+      }
+    },
+    "A22": {
+      "status": "DURABLE_QUALIFICATION_RECORD_RECOVERED_EXTERNAL_TO_REPOSITORY",
+      "source": "README_A22.md in user File Library",
+      "qualified_boundary": "legacy crop development -> LegacyCropAdapter -> CropSnapshot -> A12/A13/A14",
+      "maize_crop_snapshots": 3403,
+      "invalid_snapshots": 0,
+      "integrated_relation": "A22 trace was byte-identical to A21 for the qualified four-step route",
+      "nonclaim": "A22 does not provide native crop development or independently replay A12/A13 source code."
+    },
+    "F_APP02": {
+      "status": "CURRENT_CANONICAL_ADMITTED",
+      "admission": "F-CI95 / PR #160",
+      "semantic_binding": "legacy SWBOTB=6 -> typed bottom_mode=2, bottom_flux=+0.0 cm d-1",
+      "effect": "The F-VQ100 bottom-boundary contract blocker is cleared."
+    }
+  },
+  "historical_qualification_lineage_not_currently_replayable": {
+    "classification": "HISTORICAL_QUALIFICATION_LEAD_NOT_CURRENT_SOURCE_AUTHORITY",
+    "A12": {
+      "known_scope": "Hupsel SWINTER=1 interception/net precipitation",
+      "known_module_name": "mod_a12_interception.f90",
+      "known_relation": "Von Hoyningen-Hune/Braden SWINTER=1 interception was explicitly separated before A21/A22 and fed the wet-canopy/net-rain chain",
+      "historical_formula_lead": "Aintc = 0.1 / (1/(COFAB*LAI) + 1/(P*VCOVER)), with P = gross rain + irrigation",
+      "historical_gate_summary": "65 rainy days / 1641 timesteps; interception exact; net-rain maximum error approximately 1.39e-17",
+      "expected_artifact_name": "SWAP5_A12_interception_net_rain.zip",
+      "exact_source_or_artifact_bytes_currently_materialized": false
+    },
+    "A13": {
+      "known_scope": "Hupsel PMdirect crop-atmosphere ET for SWETR=0, SWDIVIDE=1, SWCF=1, SWINTER=1",
+      "known_module_name": "mod_a13_crop_atmosphere_et.f90",
+      "known_outputs": ["peva", "epond", "ptra_dry", "ptra_wet", "eintc", "wfrac", "ptra"],
+      "historical_wet_canopy_formula_leads": [
+        "ptra_wet = (ptra_dry/(ptra_dry+ew))*ptra_dry",
+        "eintc = (ew/(ptra_dry+ew))*ew"
+      ],
+      "known_composition": "A12 supplies wet-canopy fraction/interception context and A13 mixes wet/dry potential transpiration; CF is not applied to ptra in the qualified PMdirect branch",
+      "historical_gate_summary": "149 crop days and a 65-day rainy-chain gate were near-machine-precision equivalent, with strict/O0/O2 qualification reported",
+      "expected_records": ["README_A13.md", "149-day reference CSV", "65-day rainy-chain CSV", "10-Jun detail CSV"],
+      "exact_source_or_artifact_bytes_currently_materialized": false
+    },
+    "governance_rule": "These A12/A13 facts are recovery leads only. They are not sufficient authority for new production implementation until the exact source/artifact bytes or an independently equivalent source reconstruction are materialized and hash/provenance checked."
+  },
+  "exact_hupsel_fixture_authority": {
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "F_VQ99_283_met_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "F_VQ99_swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "F_AR01_recent_recovery": {
+      "canonical_commit": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+      "finding": "F-AR01 proves that the exact canonical distribution with the same SHA-256 was available during 2026-09-16 reconciliation.",
+      "persistent_bytes_in_repository": false,
+      "persistent_archive_or_artifact_locator_recorded": false
+    },
+    "F_VQ99_action_artifacts": {
+      "production_tree_export": "contains SWAP5 production tree, not the official 4.3.1 distribution/case bytes",
+      "equivalence_evidence": "contains qualification logs/status, not the official 4.3.1 distribution/case bytes"
+    },
+    "current_status": "EXACT_FIXTURE_IDENTITY_KNOWN_BUT_RAW_BYTES_NOT_DURABLY_REMATERIALIZABLE_FROM_CURRENT_REPOSITORY_FILE_LIBRARY_OR_RECORDED_ACTION_ARTIFACTS"
+  },
+  "current_decision_surface": {
+    "what_is_known": [
+      "raw Hupsel daily meteorological parsing, units and time semantics from A21",
+      "crop snapshot producer/consumer boundary from A22",
+      "historical A12 interception/net-rain and A13 SWETR=0 PMdirect qualification lineage",
+      "legacy SWBOTB=6 typed zero-flux binding is now canonical"
+    ],
+    "what_is_not_replayable": [
+      "exact A12 source/artifact bytes",
+      "exact A13 source/artifact bytes",
+      "exact raw official Hupsel swap.swp and 283.met fixture bytes",
+      "an independently rerunnable source-to-process-ready forcing qualification that combines A21+A22+A12+A13 against current canonical"
+    ]
+  },
+  "verdict": "F_APP03_BLOCKED_MISSING_REPLAYABLE_A12_A13_SOURCE_AND_EXACT_HUPSEL_FIXTURE",
+  "effect_on_M1_C3": "Criterion 3 remains NOT CLOSED. The blocker is no longer unknown generic application semantics; it is the absence of replayable, hash-verified authority for the historically qualified Hupsel SWETR=0/interception composition and exact raw fixture required to qualify the adapter topology on current canonical.",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "scientific_semantics_changed": false,
+  "mutations": [
+    "Added this replayable-authority blocker checkpoint only."
+  ],
+  "next_permitted_action": "Rematerialize the exact authority-pinned SWAP 4.3.1 archive/case or exact historical A12/A13 artifacts and verify their hashes/provenance. Then preregister a minimal Hupsel SWETR=0 application-composition contract from A21 raw weather + A22 crop snapshot through A12 interception/net rain + A13 PMdirect ET and existing admitted root-uptake/backend seams. Independently qualify before production admission. If exact authority cannot be rematerialized, retain fail-closed status.",
+  "prohibited": [
+    "implementing A12/A13 from assistant memory or summary-only records",
+    "output fitting",
+    "substituting the admitted SWETR=1 ET path for Hupsel SWETR=0",
+    "claiming whole-Hupsel equivalence from component evidence alone",
+    "changing physics, solver policy, tolerance, legacy default route, or broad IO/API architecture merely to obtain PASS",
+    "claiming M1 criterion-3 closure"
+  ]
+}

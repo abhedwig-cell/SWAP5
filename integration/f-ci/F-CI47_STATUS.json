@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.fci47_status.v1",
+  "work_unit": "F-CI47",
+  "title": "Moving Canonical Preservation Authority Reconciliation After F-CI41 Through F-CI46",
+  "branch": "qualification/f-ci47-moving-preservation-authority-reconciliation",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_MOVING_CANONICAL_PRESERVATION_AUTHORITY_RECONCILIATION_FOR_PROMOTION",
+  "canonical_base": "e765d96ee80af0629fb399e18bf58124dade7641",
+  "stale_moving_authority": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+  "target_moving_authority": "e765d96ee80af0629fb399e18bf58124dade7641",
+  "first_green_candidate": {
+    "head": "27c84ad29fb9aa2aa4fcc7fe2a138460e6a5669d",
+    "run": 34646169129,
+    "job": 103417365230,
+    "conclusion": "success"
+  },
+  "state": {
+    "exact_nine_post_F_CI40_source_deltas_provenanced": true,
+    "old_dependency_surface_retained": true,
+    "exact_seven_later_admitted_paths_added": true,
+    "historical_workflow_prefix_byte_identical": true,
+    "candidate_moving_preservation_passes": true,
+    "production_source_changed": false,
+    "reference_changed": false,
+    "scientific_tolerance_changed": false,
+    "historical_authority_rewritten": false,
+    "mass_conservation_relaxed": false,
+    "RB1_reopened": false,
+    "all_30_architecture_invariants_reconciled": true,
+    "canonical_promoted": false,
+    "post_promotion_broad_canonical_green": false
+  },
+  "architecture_audit": "integration/f-ci/F-CI47_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI47_EVIDENCE.json",
+  "promotion_gate": {
+    "require_live_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI47_success": true,
+    "require_src_tree_identity_to_base": true,
+    "require_reference_tree_identity_to_base": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "require_post_promotion_broad_canonical_success": true,
+    "require_current_restricted_canonical_preservation_job_success": true
+  },
+  "final_validity_rule": "F-CI47 is finally closed only when this exact status head is green, canonical is advanced from the exact pinned base by a true two-parent merge containing this head, and the broad F-CI canonical workflow succeeds on that promoted merge including current-restricted-canonical-preservation. No production or reference mutation is permitted to obtain that result.",
+  "hard_nonclaims": [
+    "no new science, physics or solver behavior",
+    "no performance qualification",
+    "no weakening or disabling of moving preservation",
+    "no immutable historical admission authority rewrite",
+    "no numeric H_app or A_temporal qualification",
+    "no production SWAP-MODFLOW admission",
+    "no mass-conservation relaxation",
+    "no RB1 modification or reopening"
+  ],
+  "next_required_step": "Require the automatically triggered full F-CI47 gate on this exact status/evidence head to finish green. If canonical remains exactly e765d96ee80af0629fb399e18bf58124dade7641, promote by a true two-parent merge and require the broad canonical workflow, especially current-restricted-canonical-preservation, to finish green on that promoted merge."
+}

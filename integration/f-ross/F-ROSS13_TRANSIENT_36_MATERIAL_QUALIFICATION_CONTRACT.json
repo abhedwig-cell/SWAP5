@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS13",
+  "gate": "TRANSIENT_36_MATERIAL_D3R_QUALIFICATION",
+  "status": "CONTRACT_FROZEN_BEFORE_QUALIFICATION_TOOLING",
+  "production_implementation": false,
+  "purpose": "Qualify transient RossFast D3R timestep and piecewise adjacent-cell behavior for the 30 Staringreeks materials not covered by historical Gate F/R1 before any production allowlist widening, while first reproducing the six historically qualified materials as harness anchors.",
+  "canonical_base": "95748d047325e74adf6d06eba978dea61bd51a7d",
+  "branch_head_before_contract": "56231d2abced4f2de56192f72c77d58e837cb0fa",
+  "immutable_authority": {
+    "historical_research_head": "04807fdcf45453a59b7f6c99fe97f1286c172833",
+    "historical_r1_workflow": {
+      "path": ".github/workflows/ross01-gate-f-r1-piecewise-timestep-route.yml",
+      "blob_sha": "c839e3dda306ce4b06ae825372821cbd2ea1d66f"
+    },
+    "historical_r1_contract": {
+      "path": "integration/f-ross/F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_CONTRACT.json",
+      "blob_sha": "f8d0304d28201133f90332b424da957165af68e7"
+    },
+    "historical_r1_result": {
+      "path": "integration/f-ross/F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_RESULT.json",
+      "blob_sha": "1507366822ca3b5ff22f9cc94b92adc732b7ad67",
+      "run": 34365245795
+    },
+    "historical_r1_runner": {
+      "path": "experiments/ross/run_ross01_gate_f_r1_piecewise_timestep_route.py",
+      "blob_sha": "29b006e051492b7540f0c5c17ca469cfabc6f2c5"
+    },
+    "historical_gate_f_runner": {
+      "path": "experiments/ross/run_ross01_gate_f_timestep_convergence.py",
+      "blob_sha": "bafda0fb4ed6da606c3a1837208200dbcdb05c65"
+    },
+    "material_catalog": {
+      "path": "integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+      "blob_sha": "76596a00296318b871a9109ed6187bb86ccfae32",
+      "material_count": 36
+    },
+    "f_ross13_fingerprint_authority": {
+      "path": "integration/f-ross/F-ROSS13_36_MATERIAL_N241_FINGERPRINT_AUTHORITY.json",
+      "blob_sha": "01fa631a245f3011b1007b2888b0528b111ee17f"
+    },
+    "f_ross13_asset_manifest": {
+      "path": "assets/rossfast/d3r/manifest.json",
+      "blob_sha_at_contract_freeze": "5e2fc1e42fa6c62cd6e570b7d45ce7e6b9089db6",
+      "asset_materialization_commit": "264eb136ad4dffc94035179b98aa518b6a75f2a1"
+    }
+  },
+  "historical_semantics_reused_without_retuning": {
+    "hydraulic_family": "C1R base MvG/KSATFIT N241 float32 bilinear log-mobility",
+    "homogeneous": true,
+    "unsaturated_only": true,
+    "sigma": 0.5,
+    "horizon_day": 0.0016,
+    "step_counts": [2, 4, 8, 16],
+    "dt_days": [0.0008, 0.0004, 0.0002, 0.0001],
+    "profiles": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "source_sink_patterns": ["zero", "mixed_local_source_and_sink"],
+    "reference_solver": "DOP853",
+    "reference_rtol": 1e-11,
+    "reference_atol_theta": 1e-13,
+    "reference_max_step_coarse_day": 0.000025,
+    "reference_max_step_fine_day": 0.0000125,
+    "candidate_algebra": "historical Gate F/R1 one factorization plus one normal backsolve per accepted step",
+    "mass_ledger": "historical Gate F/R1 ledger",
+    "sigma_or_dt_retuning": false
+  },
+  "anchor_replay": {
+    "purpose": "Prove that the F-ROSS13 qualification harness reproduces the historical R1 semantics before extension-material evidence is interpreted.",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "cell_counts": [4, 16, 64],
+    "expected_base_case_count_per_material": 18,
+    "expected_total_base_cases": 108,
+    "historical_expected_matrix": [
+      {"material": "B01", "pass": true, "base_initial_gate_f_pass": true, "piecewise_transition_route_count": 0},
+      {"material": "B12", "pass": true, "base_initial_gate_f_pass": true, "piecewise_transition_route_count": 0},
+      {"material": "O01", "pass": true, "base_initial_gate_f_pass": true, "piecewise_transition_route_count": 0},
+      {"material": "O05", "pass": true, "base_initial_gate_f_pass": true, "piecewise_transition_route_count": 0},
+      {"material": "O14", "pass": true, "base_initial_gate_f_pass": false, "base_failed_metrics": ["candidate_table_cell_transition_count"], "base_nontransition_hard_gates_pass": true, "piecewise_transition_route_count": 8, "inadmissible_transition_route_count": 0, "exact_node_endpoint_count": 0, "max_transitioning_components_per_transition_trial": 1, "max_abs_cell_displacement_on_transition_route": 1},
+      {"material": "O18", "pass": true, "base_initial_gate_f_pass": true, "piecewise_transition_route_count": 0}
+    ],
+    "admission_rule": "All six anchors must pass current frozen R1 gates and reproduce the historical semantic matrix before extension-material results may count as qualification evidence. Floating diagnostic values are re-evaluated against the frozen hard thresholds; unspecified historical package versions prevent a false bitwise-float replay claim."
+  },
+  "extension_qualification": {
+    "purpose": "Qualify only the production-relevant material-axis extension while keeping the existing F-ROSS12 geometry fixed.",
+    "materials": ["B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B10", "B11", "B13", "B14", "B15", "B16", "B17", "B18", "O02", "O03", "O04", "O06", "O07", "O08", "O09", "O10", "O11", "O12", "O13", "O15", "O16", "O17"],
+    "cell_counts": [16],
+    "cell_thickness_cm": 10.0,
+    "expected_base_case_count_per_material": 6,
+    "expected_total_base_cases": 180,
+    "rule": "Every extension material must satisfy the unchanged historical temporal, physical, numerical and piecewise-route gates. No criterion may be weakened based on material identity."
+  },
+  "piecewise_route_policy": {
+    "normal_route": "No N241 interpolation-cell change during an accepted trial.",
+    "transition_route": "Exactly one state component may move exactly one adjacent N241 cell during an otherwise valid accepted trial; derivatives remain those assembled from accepted start-state cells and the next step reassembles from the new cell.",
+    "exact_internal_node_endpoint": "fail closed",
+    "more_than_one_transitioning_component_per_trial": "fail closed",
+    "more_than_one_cell_displacement": "fail closed",
+    "cross_node_derivative_averaging": "forbidden",
+    "extra_factorizations_due_to_transition_route": 0,
+    "extra_backsolves_due_to_transition_route": 0,
+    "retry_count_due_to_transition_route": 0
+  },
+  "hard_temporal_gates": {
+    "max_reference_coarse_vs_fine_theta_span_normalized": 1e-9,
+    "max_finest_candidate_theta_span_normalized_error": 1e-5,
+    "max_finest_candidate_state_change_relative_error": 0.005,
+    "refinement_errors_nonincreasing": true,
+    "minimum_observed_order_in_informative_cases": 1.0,
+    "median_observed_order_in_informative_cases": 1.5
+  },
+  "hard_physical_and_numerical_gates": {
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-12,
+    "candidate_domain_failure_count": 0,
+    "candidate_head_envelope_failure_count": 0,
+    "candidate_nonfinite_count": 0,
+    "candidate_input_mutation_count": 0,
+    "reference_nonfinite_count": 0,
+    "table_bitwise_unchanged": true,
+    "initial_state_bitwise_unchanged_outside_trial_sequences": true,
+    "inadmissible_transition_route_count": 0
+  },
+  "qualification_execution_order": [
+    "PIN_AND_VERIFY_HISTORICAL_AUTHORITY",
+    "RUN_SIX_ANCHOR_REPLAY",
+    "REQUIRE_ALL_ANCHORS_PASS_AND_SEMANTICALLY_MATCH_HISTORICAL_MATRIX",
+    "RUN_THIRTY_EXTENSION_MATERIALS_ON_16_X_10CM_GEOMETRY",
+    "AGGREGATE_FAIL_CLOSED_RESULT",
+    "PERSIST_RESULT_AND_CHECKPOINT",
+    "ONLY_THEN_CONSIDER_PRODUCTION_ALLOWLIST_WIDENING"
+  ],
+  "hard_exclusions": [
+    "NO_PRODUCTION_SOURCE_MUTATION_IN_THIS_GATE",
+    "NO_PROVIDER_OR_MODEL_BINDING_ALLOWLIST_WIDENING_IN_THIS_GATE",
+    "NO_GRID_OR_CELL_COUNT_GENERALIZATION",
+    "NO_CELL_THICKNESS_GENERALIZATION",
+    "NO_HETEROGENEOUS_PROFILE_GENERALIZATION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_PRODUCTION_ADMISSION",
+    "NO_GROUNDWATER_OR_BOTTOM_BOUNDARY_GENERALIZATION",
+    "NO_ENERGY_OR_SOIL_TEMPERATURE_COUPLING",
+    "NO_PONDING_OR_DYNAMIC_TOP_BOUNDARY_GENERALIZATION",
+    "NO_MULTISWAP_MIXED_SOLVER_ADMISSION",
+    "NO_AUTOMATIC_FALLBACK",
+    "NO_TRANSACTION_OR_SOLVER_ABI_CHANGE",
+    "NO_RUNTIME_TABLE_GENERATION",
+    "NO_CRITERION_RETUNING_TO_FORCE_PASS"
+  ],
+  "exit": {
+    "pass": "TRANSIENT_36_MATERIAL_D3R_QUALIFIED_FOR_PRODUCTION_ALLOWLIST_WIDENING_REVIEW",
+    "fail": "PRODUCTION_ALLOWLIST_WIDENING_REMAINS_BLOCKED_CLASSIFY_MATERIAL_TEMPORAL_MASS_ROUTE_REFERENCE_OR_HARNESS_FAILURE"
+  }
+}

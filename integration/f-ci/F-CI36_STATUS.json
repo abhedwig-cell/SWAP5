@@ -1,0 +1,19 @@
+{
+  "schema":"swap5.fci36_status.v1",
+  "work_unit":"F-CI36",
+  "title":"Restricted Serialized DIVDRA Active Runtime Callsite Canonical Admission",
+  "branch":"qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission",
+  "phase":"CANONICAL_ADMITTED_CLOSED_PENDING_EXTERNAL_EXACT_FINAL_HEAD_REQUALIFICATION",
+  "decision":"QUALIFIED_CLOSED_CANONICAL_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_ADMISSION",
+  "canonical_base":"c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "qualification_closeout":"9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d",
+  "owner_closeout":"a543775abeea4760dba2ea5c99c47fe4862c845f",
+  "independent_closeout":"716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+  "candidate":{"composition_path":"src/runtime/mod_fmr_divdra_serialized_composition.f90","composition_blob":"5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5","runtime_path":"src/runtime/mod_fmr_divdra_serialized_runtime.f90","runtime_blob":"9a384658ec37b68d2ef911e741aa89707dcb3e77","src_postimage_tree":"91afa55dfcfdeedd2dd166f804a2dc91c5ee3e30","reference_tree":"9d08625217d7c0a7385df9da6a04183bcd9cb9e6","generic_serialized_runtime_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd"},
+  "qualification":{"decisive_prepromotion_run":34526688177,"exact_closeout_rerun":34526933380,"exact_closeout_job":103038002583,"output_sha256":"a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87","exact_closeout_artifact_id":10171928086,"exact_closeout_artifact_zip_sha256":"148a9eb44f2fa4f995ac2493b5ca81fb9eeadb1f43d1755c0790554f55f232d2","architecture_invariants_audited":30,"architecture_violations":0},
+  "promotion":{"non_forced_fast_forward":true,"promoted_from":"c0fc660c1e68064f77f4ec4f3376d385fbe88b4a","promoted_to":"9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d","post_promotion_dedicated_run":34527042039,"post_promotion_dedicated_conclusion":"success","post_promotion_artifact_id":10171963231,"post_promotion_artifact_digest":"sha256:248e9e574012ddb8f8a7ccc5d7190f547d3215d0be746094d3b0511512e216ad","post_promotion_broad_run":34527042042,"post_promotion_broad_conclusion":"success","moving_current_job":103038917566,"moving_current_job_conclusion":"success"},
+  "state":{"plan_persisted":true,"candidate_overlay_persisted":true,"candidate_blob_identity_verified":true,"gate_persisted":true,"workflow_persisted":true,"broad_canonical_moving_authority_updated":true,"architecture_audit_persisted":true,"evidence_persisted":true,"tested":true,"independent_authority_verified":true,"qualified_for_fast_forward":true,"exact_closeout_head_rerun_passed":true,"canonical_ref_advanced":true,"post_promotion_replays_passed":true,"closed":true,"final_governance_head_requalification_pending":true},
+  "qualified_scope":"RESTRICTED_SERIALIZED_SINGLE_LEVEL_POSITIVE_DIVDRA_ACTIVE_RUNTIME_CALLSITE_USING_EXPLICIT_HYDRAULIC_VIEWS_AND_EXTERNAL_SCALAR_TRANSFER",
+  "nonclaims":["drainage exchange-law science","fully implicit or trial-state drainage response","surface-water-controlled drainage","parallel active DIVDRA","negative/infiltration or multilevel drainage","HeadCalc/Jacobian drainage mutation","reference source modification","generic serialized runtime modification"],
+  "terminal_rule":"This status commit is the final governance mutation for F-CI36. It is authoritative as CLOSED only if the dedicated F-CI36 gate and broad F-CI canonical qualification both subsequently pass on this exact final canonical status head, with unchanged candidate blobs, src tree, reference tree and output hash. Successful external exact-head requalification satisfies final_governance_head_requalification_pending without another status mutation."
+}

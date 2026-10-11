@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.fci59.evidence.v1",
+  "work_unit": "F-CI59",
+  "restart_canonical": "4fae08472c053d1b3d43d3d0b4f9b61956e7b646",
+  "production_composition_authority": "2d8b08c06b67132f57b2c757f493d1b31a954a92",
+  "qualified_head_tested": "04b37ce0656491611e9cfc1610ddb0aba48aa746",
+  "workflow_run": 34780440432,
+  "workflow_job": 103786356223,
+  "owner_authority": "work/f-mr43-atomic-surface-evaporation-accepted-publication@c8ff545cf720db467389c67ac2f9a595e57277ed",
+  "independent_authority": "qualification/f-vq71-fmr43-atomic-surface-evaporation-publication@f2f410bb74ef40c23fcc16048bb54f9301b989db",
+  "admitted_product_blobs": {
+    "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "b8ff1fb1d9434e952163b6955305c6373dd8ac82",
+    "src/runtime/mod_fmr_surface_evaporation_accepted_publication.f90": "f0f3ce5c16a66c2058c22a529e176d6b06446649"
+  },
+  "observations": {
+    "exact_two_file_production_composition": "PASS",
+    "reference_unchanged": "PASS",
+    "kernel_FKT20_dependency": "ABSENT",
+    "permanent_canonical_preservation_gate": "PASS",
+    "independent_authority_bound": "PASS",
+    "atomic_publication_structure": "PASS",
+    "historical_split_api_attack_O0": "PASS_CLOSED",
+    "historical_split_api_attack_O2": "PASS_CLOSED",
+    "same_origin_stale_alternate": "PASS_CLOSED",
+    "cross_lineage_precommit": "PASS_CLOSED",
+    "cross_executor_positive": "PASS",
+    "mass_regression": "NONE",
+    "second_mass_authority": "ABSENT",
+    "O0_O2_semantic_identity": "PASS",
+    "architecture_audit": "PASS_FOR_BOUNDED_RUNTIME_DELTA"
+  },
+  "decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION",
+  "promoted": false
+}

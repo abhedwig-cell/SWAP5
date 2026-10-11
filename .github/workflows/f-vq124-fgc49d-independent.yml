@@ -1,0 +1,24 @@
+name: F-VQ124 F-GC49D independent qualification
+on:
+  push:
+    branches: [work/f-gc49d-production-application-context-abi]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/adapter/mod_fmr_groundwater_application_c_api.f90'
+      - 'src/adapter/fmr_groundwater_application_runtime.py'
+      - 'src/adapter/modflow6_groundwater_application_service.py'
+      - 'tests/fvq/test_fvq124_fgc49d_independent.py'
+      - 'tests/fvq/run_fvq124_fgc49d_independent.sh'
+      - 'integration/f-gc/F-GC49_STATUS.json'
+      - '.github/workflows/f-vq124-fgc49d-independent.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fvq/run_fvq124_fgc49d_independent.sh

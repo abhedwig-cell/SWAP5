@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF39",
+  "title": "Crop-Event Restart Boundary and Accepted-Window Lifecycle Retirement Qualification",
+  "branch": "work/f-wof39-crop-event-restart-lifecycle",
+  "base": "68003aabea313eb1723329230d6f9bfd42a7c861",
+  "production_implementation": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "DERIVED_ACCEPTED_WINDOW_RETIREMENT_AFTER_MATCHING_ALREADY_COMMITTED_F_WOF38_CROP_RECEIPT",
+  "production_files": [
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
+  ],
+  "qualification": {
+    "definitive_tested_head": "09c3452dd28aa7fb50c483a7fc3702e0ca69b2c2",
+    "run": 34356935349,
+    "job": 102483887947,
+    "conclusion": "success",
+    "precommit_noninterference": true,
+    "matching_receipt_retirement_only": true,
+    "owner_receipt_revision_unchanged": true,
+    "event_due_false_after_retirement": true,
+    "replay_idempotent": true,
+    "O0_O2_output_identity": true,
+    "F_WOF38_main_gate_preserved": true,
+    "F_WOF38_failed_then_accepted_retry_preserved": true
+  },
+  "restart_boundary": {
+    "true_process_restart_qualified": false,
+    "blocker_at_qualification": "BLOCKED_BY_MISSING_GENERIC_FKT_COMMITTED_STATE_RESTORE_PERSISTENCE_CONTRACT",
+    "crop_specific_restore_or_serializer_added": false,
+    "generic_F_KT_problem_not_locally_bypassed": true
+  },
+  "scope_holds": {
+    "kernel_source_changed": false,
+    "transaction_core_source_changed": false,
+    "crop_physics_changed": false,
+    "water_mass_accounting_changed": false,
+    "mass_tolerance_relaxed": false,
+    "file_IO_dependency_added": false,
+    "legacy_event_delivered_as_atomic_commit_authority": false,
+    "second_publication_authority_added": false,
+    "canonical_promotion": false
+  },
+  "evidence": "integration/f-wof/F-WOF39_QUALIFICATION_EVIDENCE.json",
+  "closeout_docs_begin": "d1b915ed6ba684deae8c1779a84c6ea410356aff",
+  "post_test_closeout_docs_only": true,
+  "not_qualified": [
+    "true process/crash restart",
+    "generic committed-state restore/persistence",
+    "serialization or restart file format",
+    "mid-transaction restart",
+    "full MultiSWAP checkpoint/restart",
+    "canonical promotion"
+  ],
+  "recommended_next": "Use the separate generic F-KT committed-state persistence work to qualify true process restart, then add a dependent WOFOST restart qualification without changing the already-qualified lifecycle retirement authority model.",
+  "affected_invariants": [3,4,7,8,9,13,16,28,29,30],
+  "decision": "QUALIFIED_DERIVED_ACCEPTED_WINDOW_LIFECYCLE_RETIREMENT_WITH_TRUE_RESTART_HELD_FOR_GENERIC_FKT_PERSISTENCE",
+  "status": "QUALIFIED_ACCEPTED_WINDOW_LIFECYCLE_RETIREMENT_TRUE_RESTART_BLOCKED_BY_GENERIC_FKT_PERSISTENCE"
+}

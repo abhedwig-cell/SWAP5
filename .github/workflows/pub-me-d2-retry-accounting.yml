@@ -1,0 +1,26 @@
+name: PUB-ME D2 retry accounting
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publications/PUB-ME_D2_EXECUTION_CHECKPOINT.md'
+      - 'tests/publication/test_pub_me_d2_retry_accounting.f90'
+      - 'tests/publication/run_pub_me_d2_retry_accounting.sh'
+      - 'tests/publication/pub_me_d2_directional_service_stub.f90'
+      - 'tests/publication/pub_me_d2_fortran_closure.py'
+      - '.github/workflows/pub-me-d2-retry-accounting.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: D2 retry-accounting experiment
+        run: bash tests/publication/run_pub_me_d2_retry_accounting.sh

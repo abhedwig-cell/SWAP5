@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR25",
+  "title": "F-CI27-Source-Bound Restricted Restart Recomposition",
+  "branch": "work/f-mr25-fci27-restart-recomposition",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "canonical_authority": "F-CI27",
+  "purpose": "Recompose the already qualified restricted committed-boundary restart implementation onto the current F-CI27 canonical postimage without modifying the admitted reference-ET runtime binding or any existing canonical production source.",
+  "production_delta_expected": [
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "source_blobs_to_reuse_exactly": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "source_provenance": {
+    "F_MR24_closeout": "52f281b162077ccc9dfa42c8ed133dd1d26c6a21",
+    "F_MR24_production_composition": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+    "F_CI26_independent_requalification_branch": "qualification/f-ci26-fmr21-restart-canonical-requalification",
+    "F_CI26_last_green_requalification_head": "bbb6b0f408d7875ccdffc7e83cbb4aeb42d9d24b"
+  },
+  "current_canonical_dependency_locks": {
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/kernel/mod_kernel_committed_persistence.f90": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163"
+  },
+  "required_owner_gates": [
+    "exact two-file production delta from F-CI27 canonical base",
+    "exact restart blob identity with F-MR24/F-CI26 qualified implementation",
+    "all locked canonical dependency blobs unchanged",
+    "F-CI27 ET runtime owner and independent scientific qualification preserved on the composed postimage",
+    "restart O0 and O2 matrix including 1,2,7,8,17,31,32 columns",
+    "exact lineage/revision/time and interval mass continuation",
+    "continuous-versus-restarted endpoint identity and deterministic replay",
+    "malformed or wrong-family state rejected before atomic registry publication",
+    "accepted-commit-receipt API preserved"
+  ],
+  "hard_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No unregistered state-family or backend admission.",
+    "No change to ET physics, ET runtime ownership, root uptake, or mass-ledger ownership.",
+    "No canonical promotion is performed by this owner workunit."
+  ],
+  "persist_early": true,
+  "state": {
+    "plan_persisted": true,
+    "production_recomposed": false,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false
+  }
+}

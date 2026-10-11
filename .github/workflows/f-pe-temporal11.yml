@@ -1,0 +1,37 @@
+name: F-PE-TEMPORAL11 production admission
+
+on:
+  push:
+    branches:
+      - work/f-pe-temporal11-production-admission
+  pull_request:
+    paths:
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/fpe/run_fpe_temporal11_*.sh'
+      - 'tests/fpe/test_fpe_temporal11_*.f90'
+      - 'docs/performance/F-PE-TEMPORAL11_*.md'
+      - '.github/workflows/f-pe-temporal11.yml'
+  workflow_dispatch:
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tested head identity
+        run: |
+          echo "TEMPORAL11_TESTED_HEAD=$(git rev-parse HEAD)"
+          echo "TEMPORAL11_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Scope guard
+        run: |
+          git fetch --quiet origin integration/f-ci-canonical
+          changed_src="$(git diff --name-only origin/integration/f-ci-canonical...HEAD -- src | sort)"
+          printf 'TEMPORAL11_CHANGED_PRODUCTION_SOURCE=%s\n' "$changed_src"
+          test "$changed_src" = 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - name: Run production admission
+        run: bash tests/fpe/run_fpe_temporal11_admission.sh
+      - name: Diff hygiene
+        run: git diff --check

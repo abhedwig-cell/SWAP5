@@ -1,0 +1,118 @@
+{
+  "schema": "swap5.f-romv2-d9.literature-reconciliation.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D9",
+  "title": "Published integrated two-layer Richards authority reconciliation",
+  "phase": "LITERATURE_RECONCILIATION_CLOSED",
+  "canonical_base": "2a18ecbd884b85f064847ccac4c400f1cf4ad351",
+  "decision": "PUBLISHED_TWO_LAYER_INTEGRATED_RICHARDS_FAITHFUL_COMPARATOR_AUTHORIZED_WITH_BOUNDARY_ENVELOPE",
+  "sources": [
+    {
+      "citation": "He, J., Hantush, M.M., Kalin, L., Rezaeianzadeh, M., Isik, S. (2021). A two-layer numerical model of soil moisture dynamics: Model development. Journal of Hydrology 602, 126797.",
+      "doi": "10.1016/j.jhydrol.2021.126797",
+      "role": "PRIMARY_EQUATION_AND_NUMERICAL_AUTHORITY"
+    },
+    {
+      "citation": "He, J., Hantush, M.M., Kalin, L., Isik, S. (2022). Two-Layer numerical model of soil moisture dynamics: Model assessment and Bayesian uncertainty estimation. Journal of Hydrology 613A, 128327.",
+      "doi": "10.1016/j.jhydrol.2022.128327",
+      "role": "PRIMARY_VALIDATION_AND_APPLICATION_ENVELOPE_AUTHORITY"
+    },
+    {
+      "citation": "Corrigendum to the 2022 assessment paper. Journal of Hydrology 613A, 128424.",
+      "doi": "10.1016/j.jhydrol.2022.128424",
+      "role": "KNOWN_CORRIGENDUM_TO_REVIEW_BEFORE_MANUSCRIPT_CLAIMS"
+    }
+  ],
+  "model_identity": {
+    "coordinate": "z positive downward",
+    "capillary_head": "psi is positive suction / negative of pressure head",
+    "flux_sign": "q positive downward",
+    "state": [
+      "theta_bar_1: thickness-averaged water content of upper layer",
+      "theta_bar_2: thickness-averaged water content of lower vadose layer"
+    ],
+    "ode_upper": "h*d(theta_bar_1)/dt = q0 - q1 - h*S_bar",
+    "ode_lower": "(H-h)*d(theta_bar_2)/dt - theta_2s*dH/dt = q1 - q2",
+    "fixed_H_specialization": "For fixed H, dH/dt=0 and the lower equation is an ordinary fixed-control-volume balance.",
+    "beta": "(H-h)/H",
+    "interface_head_approximation": "psi_interface = beta*psi_bar_1 + (1-beta)*psi_bar_2",
+    "interface_conductivity_approximation": "K_interface = beta*K_bar_1 + (1-beta)*K_bar_2",
+    "closure_approximations": [
+      "psi_bar_i approximated by psi_i(theta_bar_i)",
+      "K_bar_i approximated by K_i(theta_bar_i)"
+    ],
+    "interface_flux": "q1 = [beta*K_bar_1+(1-beta)*K_bar_2] * [1 + (2/H)*(psi_bar_2-psi_bar_1)]",
+    "free_drainage_bottom_flux": "q2 = K_bar_2",
+    "zero_pressure_head_bottom_flux": "q2 = Ks2 * [1 + 2*(psi_b-psi_bar_2)/(H-h)], with psi_b=0 for the shallow-water-table tests",
+    "numerical_scheme": "Heun predictor-corrector with iterative corrector",
+    "corrector_convergence": "abs(theta_bar_i^(j+1,p)-theta_bar_i^(j+1,p-1)) <= epsilon",
+    "published_epsilon_theta": 0.0001,
+    "published_time_step_days": 0.001
+  },
+  "validation_evidence": {
+    "2021": [
+      "Three representative homogeneous soil textures compared against HYDRUS-1D.",
+      "Free-drainage and zero-pressure-head/water-table bottom boundaries.",
+      "Layer-averaged water contents and cumulative fluxes generally agreed well with HYDRUS.",
+      "Dynamic-water-table desaturation scenario demonstrated moving-H formulation."
+    ],
+    "2022": [
+      "231 soil textures and varying upper/lower layer thicknesses.",
+      "Free-drainage and zero-pressure-head bottom boundaries.",
+      "Contrasting-permeability layered profiles.",
+      "Field-scale SCAN application with Bayesian calibration/uncertainty analysis.",
+      "Performance degrades with thicker lower vadose zones and, especially under shallow-water-table conditions, coarse textures.",
+      "Authors explicitly identify the approximations psi_bar≈psi(theta_bar) and K_bar≈K(theta_bar) and first-order truncation as major structural error sources."
+    ],
+    "purpose": "The literature evaluates layer-mean moisture and fluxes rather than pointwise profile identity, matching F-ROMV2 purpose-dependent fidelity."
+  },
+  "relation_to_swap5_candidates": {
+    "D5_L2_IMC": "Not a reproduction. D5 used two dynamic 80-cm averages but direct instantaneous Darcy gradients and harmonic conductivities.",
+    "D7_QS1": "Not a reproduction. D7 used one dynamic total-storage coordinate plus quasi-steady profile reconstruction.",
+    "D8_QS2_COMPOSITE": "Not a reproduction. D8 used two independently conserved segment storages with quasi-steady subprofile reconstruction.",
+    "He_model_distinction": "The published model derives the interface flux analytically from vertically integrated Richards balances and first-order/Taylor approximations of layer-average head and conductivity."
+  },
+  "swap5_reproduction_scope": {
+    "faithful_fixed_geometry_subset": {
+      "total_depth_cm": 160,
+      "upper_layer_thickness_cm": 80,
+      "lower_layer_thickness_cm": 80,
+      "H_fixed": true,
+      "root_sink": "zero for the first hydraulic reproduction",
+      "material": "B01 homogeneous Van Genuchten/Mualem parameters",
+      "top_boundary": "prescribed flux only in first reproduction",
+      "bottom_boundaries": [
+        "zero-pressure head h_pressure=0 cm / psi_b=0, faithful shallow-water-table published case",
+        "free drainage only if current research Reference seam exposes the same physical boundary without source mutation"
+      ],
+      "time_integration": "iterative Heun, epsilon_theta=1e-4; same declared forcing interval as the SWAP5 comparator unless a separate time-step sensitivity workunit is preregistered"
+    },
+    "unsupported_as_faithful_without_extension": [
+      "arbitrary nonzero unsaturated prescribed bottom pressure head, including the current D/V h≈-30 cm challenge values",
+      "claims for SWAP-specific runoff/ponding/root uptake/frost/macropore/oxygen processes",
+      "heterogeneous B01/B14 transfer without separate authority"
+    ]
+  },
+  "extension_firewall": {
+    "arbitrary_prescribed_head": "A mathematically natural replacement of Ks at the lower boundary by K(psi_b), or any other generalized prescribed-head expression, is not labeled a faithful He et al. reproduction unless directly supported by primary source authority.",
+    "current_DV_histories": "The existing D01-D08/V01-V04 mixed-head workload cannot by itself serve as a faithful full-envelope reproduction test because its nonzero prescribed bottom heads lie outside the clearly validated zero-head/free-drainage literature envelope.",
+    "successor": "First test the faithful published zero-head subset. Only if scientifically useful may a separately named HE2_SWAPH extension be preregistered for arbitrary prescribed head."
+  },
+  "next_authority": {
+    "authorized_work_unit": "F-ROMV2-D10",
+    "authorized_task": "Implement an evidence-only faithful fixed-H, zero-sink, homogeneous-B01 two-layer comparator using the published interface and zero-pressure-head bottom flux equations and iterative Heun corrector.",
+    "comparison_reference": "Current-canonical R16 Reference route under matched top-flux forcing and zero-pressure-head lower boundary.",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "prohibited": [
+    "DO_NOT_PRESENT_D5_D7_OR_D8_AS_REPRODUCTIONS_OF_HE_ET_AL",
+    "DO_NOT_USE_ARBITRARY_NONZERO_BOTTOM_HEAD_AS_PUBLISHED_AUTHORITY_WITHOUT_A_SEPARATE_EXTENSION_LABEL",
+    "DO_NOT_IMPORT_PUBLISHED_RMSE_VALUES_AS_SWAP5_ACCEPTANCE_THRESHOLDS",
+    "DO_NOT_CLAIM_SPEEDUP_FROM_PUBLISHED_CPU_COMPARISONS",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

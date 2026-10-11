@@ -1,0 +1,39 @@
+name: PPA-ROOT-HYD01 net root extraction diagnosis
+
+on:
+  push:
+    branches:
+      - work/ppa-root-hyd01-net-root-extraction
+    paths:
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90'
+      - 'tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh'
+      - 'tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh'
+      - '.github/workflows/ppa-root-hyd01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  r1-equivalence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run restricted root temporal equivalence gate
+        run: bash tests/fapp/run_ppa_root_hyd01_sink_equivalence.sh
+
+  preserve-current-temporal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve F-SI38, F-SI25 and FMR44R behavior
+        run: bash tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh

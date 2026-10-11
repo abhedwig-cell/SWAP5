@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI21",
+  "evidence_type": "materialized_postimage_preservation_replay",
+  "replayed_qualification": "F-VQ31",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "tested_head": "5cb2d269761c795f1c2fd20a10c6bde1b584cc5f",
+  "production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+  "materialized_source_postimage": {
+    "path": "integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json",
+    "blob": "868cf8c52c02a6a9b40bd09ad9f51b7c0b635de4"
+  },
+  "historical_authority": {
+    "branch": "qualification/f-vq31-transaction-composed-richards-temporal-history",
+    "plan_path": "integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json",
+    "plan_blob": "6695f9be69c4485e24ebcba802927ce90af8beac",
+    "independent_evidence_blob": "b68ba117ae470d4a6b2ca3b55b9c1697cbcd1923",
+    "closeout_blob": "82064e357abe5d941850fcaa4eb8dcdf49e1b4af",
+    "historical_decision": "QUALIFIED_INDEPENDENT_TRANSACTION_COMPOSITION_OF_RICHARDS_TEMPORAL_INDICATOR_HISTORY_READY_FOR_SEPARATE_SCIENTIFIC_TEMPORAL_ACCEPTANCE_WORK",
+    "authority_claim_extended": false
+  },
+  "workflow": {
+    "name": "F-CI21 VQ31 transaction-history postimage replay",
+    "run_id": 34395972918,
+    "head": "5cb2d269761c795f1c2fd20a10c6bde1b584cc5f",
+    "conclusion": "success",
+    "jobs": {
+      "transaction_lifecycle": {"job_id": 102615646904, "conclusion": "success"},
+      "disjoint_composition": {"job_id": 102615647122, "conclusion": "success"},
+      "real_richards_binding": {"job_id": 102615647220, "conclusion": "success"},
+      "cross_stream_regressions": {"job_id": 102615647276, "conclusion": "success"},
+      "frozen_fvq30_transaction_regression": {"job_id": 102615647457, "conclusion": "success"}
+    }
+  },
+  "frozen_contract_replay": {
+    "disjoint_cases": 12,
+    "frozen_fvq30_cases": 16,
+    "exact_triplet_overlap_with_prior_matrices": 0,
+    "hard_mass_tolerance": 1e-12,
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false,
+    "matrix_changed": false,
+    "formula_changed": false,
+    "tolerance_changed": false
+  },
+  "transaction_lifecycle": {
+    "clone_isolation": "PASS",
+    "temporal_retry_history": "PASS",
+    "solver_retry_history": "PASS",
+    "mass_retry_history": "PASS",
+    "no_unqualified_certificate": "PASS",
+    "a_b_a_history_isolation": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "real_richards_binding": {
+    "compile_o0": "PASS",
+    "compile_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "base_headcalc_calls": 3,
+    "history_headcalc_calls": 3,
+    "base_linear_solves": 9,
+    "history_linear_solves": 10,
+    "additional_full_nonlinear_trajectories": 0,
+    "additional_linear_defect_solves": 1,
+    "representative_first_B_inf": 3.13153319757037229e-5,
+    "physics_mass_cost_noninterference": "PASS",
+    "transaction_history_rollback_commit": "PASS",
+    "raw_B_inf_unqualified_certificate_nonpromotion": "PASS"
+  },
+  "disjoint_composition": {
+    "cases": 12,
+    "o0_o2_identity": "PASS",
+    "direct_transaction_match": "PASS",
+    "max_B_inf_absolute_difference": 0.0,
+    "max_mass_residual": 0.0,
+    "bounded_cost": "PASS",
+    "hard_mass_noninterference": "PASS"
+  },
+  "frozen_fvq30_transaction_regression": {
+    "cases": 16,
+    "o0_o2_identity": "PASS",
+    "max_B_inf_absolute_difference": 0.0,
+    "max_mass_residual": 0.0,
+    "additional_tridiagonal_solves_per_case": 1,
+    "additional_full_nonlinear_solves_per_case": 0,
+    "transactional_replay": "PASS"
+  },
+  "cross_stream_preservation": {
+    "fsi25_owner_cases": 15,
+    "fsi25_owner_max_B_inf_absolute_difference": 0.0,
+    "fsi25_o0_o2_identity": "PASS",
+    "fsi25_noninterference_and_cost": "PASS",
+    "snow_multiswap_batches": [1, 2, 17, 31],
+    "snow_mixed_active_inactive": "PASS",
+    "snow_reverse_order_column_identity": "PASS",
+    "snow_a_b_a_repeatability": "PASS",
+    "snow_optional_state_scaling": "PASS",
+    "snow_aggregate_mass": "PASS",
+    "max_simultaneous_real_physical_solves": 1,
+    "snow_o0_o2_identity": "PASS"
+  },
+  "test_only_materialization_adaptations": [
+    {
+      "reason": "F-VQ31 predates the qualified F-KT11 head-budget certificate materialization",
+      "change": "replace obsolete blanket static prohibition of any certificate availability with a guard that requires explicit supplied and finite-positive head budget before normalization and certificate availability",
+      "production_source_changed": false,
+      "qualification_semantics_changed": false
+    },
+    {
+      "reason": "the current MultiSWAP runtime includes the later F-MR18 accepted-commit receipt dependency",
+      "change": "add mod_fmr_accepted_commit_receipt.f90 to historical test compile lists only",
+      "production_source_changed": false,
+      "qualification_semantics_changed": false
+    },
+    {
+      "reason": "F-CI21 is a materialized postimage rather than a literal descendant of the historical F-SI25 work branch",
+      "change": "replace the historical F-SI25 literal ancestry/source-diff precondition with exact contract, oracle and current postimage blob identity checks inside the test-only overlay",
+      "production_source_changed": false,
+      "qualification_semantics_changed": false
+    }
+  ],
+  "invariant_checks": {
+    "transactional_steps_and_rollback": "PASS",
+    "mass_conservation_hard_gate": "PASS",
+    "bounded_certificate_cost": "PASS",
+    "optional_state_isolation": "PASS",
+    "physical_and_numerical_policy_separation": "PASS",
+    "multiswap_serialized_isolation": "PASS",
+    "production_source_unchanged_by_replay": true,
+    "io_changes": false
+  },
+  "replay_result": "PASS_MATERIALIZED_FVQ31_TRANSACTION_HISTORY_BEHAVIOR_PRESERVED",
+  "hard_nonclaims": [
+    "This replay does not qualify B_inf as a general nonlinear true-error upper bound.",
+    "This replay selects no new scientific temporal normalization, head budget or application tolerance.",
+    "This replay admits no new production temporal acceptance or retry policy.",
+    "This replay does not qualify arbitrary restart-file persistence or forcing, event or topology discontinuity continuation.",
+    "This replay does not introduce or qualify empirical rescue factors, q_cap, Nmin or deep production refinement trajectories.",
+    "This replay does not release F-GC02, groundwater coupling or F-PE.",
+    "This evidence preserves the historical F-VQ31 qualified claim on the F-CI21 postimage and does not supersede or broaden that claim."
+  ],
+  "next_required_replay": "F-VQ32 Richards head-budget normalization"
+}

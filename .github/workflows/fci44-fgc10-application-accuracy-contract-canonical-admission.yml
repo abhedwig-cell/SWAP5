@@ -1,0 +1,26 @@
+name: F-CI44 F-GC10 application accuracy contract canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci44-fgc10-application-accuracy-contract-canonical-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-CI44 exact source-bound canonical admission
+        run: bash tests/fci/run_fci44_fgc10_application_accuracy_contract_canonical_admission.sh

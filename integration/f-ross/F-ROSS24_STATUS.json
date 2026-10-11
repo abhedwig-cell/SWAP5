@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS24",
+  "title": "Admitted tiered RossFast production characterization",
+  "phase": "CLOSE",
+  "status": "CLOSED",
+  "branch": "work/f-ross24-tiered-production-characterization",
+  "canonical_source": "86969f502015ae259a536a57cc7125c38a3e42e6",
+  "production_or_reference_mutation": false,
+  "admitted_postimage": {
+    "kernel": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+  },
+  "verdict": "CLOSED_ADMITTED_TIERED_ROSSFAST_ROBUST_AND_AGGREGATE_SCREENING_FASTER_THAN_REFERENCE_ON_MEASURED_E0_DOMAIN",
+  "exclusions": [
+    "NO_PRODUCTION_OPTIMIZATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_ADAPTIVE_SELECTION_CHANGE",
+    "NO_ARCHITECTURE_CHANGE",
+    "NO_MATERIAL_ENVELOPE_CHANGE",
+    "NO_FORMAL_PERFORMANCE_CLAIM_FROM_SHARED_HOST"
+  ],
+  "next_permitted_action": "NONE_WITHIN_F_ROSS24. Optional formal performance replay requires an MP-admitted isolated host; broader hydrological validation requires a separately preregistered workunit.",
+  "implementation": {
+    "harness": "tests/ross/test_ross24_tiered_production_characterization.f90",
+    "runner": "tools/performance/f_ross24_paired_screen.py",
+    "wrapper": "tests/ross/run_ross24_tiered_production_characterization.sh",
+    "workflow": ".github/workflows/f-ross24-tiered-production-characterization.yml",
+    "production_or_reference_mutation": false
+  },
+  "live_canonical_at_close": "01e133b3da79468618e6c89a74533efff1ccdaaf",
+  "relevant_dependency_drift": false,
+  "measurement_evidence": {
+    "head": "a75bb520272edc3a2547794f76e36c2a336f07b5",
+    "workflow_run": 35348535778,
+    "job": 105610811820,
+    "artifact_id": 10548670877,
+    "artifact_digest": "sha256:fee7b5ffa0103057c6d5ba902a1167d16e01148cd969d88072906f77229b4fe1",
+    "result": "PASS"
+  },
+  "results": {
+    "attempted_cases": 216,
+    "rossfast_route_valid": 216,
+    "reference_route_valid": 213,
+    "paired_valid": 213,
+    "tier_distribution": {
+      "K2": 212,
+      "K4": 2,
+      "K8": 2
+    },
+    "aggregate_rossfast_over_reference_ratio": 0.8228088245864688,
+    "mean_reference_over_rossfast_speedup": 1.215754902694907,
+    "screening_outcome": "SCREENING_ROSSFAST_FASTER",
+    "individual_case_outcomes": {
+      "rossfast_faster": 185,
+      "reference_faster": 20,
+      "not_resolved": 8
+    }
+  },
+  "durable_result": "integration/f-ross/F-ROSS24_TIERED_CHARACTERIZATION_RESULT.json"
+}

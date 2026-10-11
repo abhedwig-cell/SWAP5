@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.f-romv2-d10.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D10",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d10-he-two-layer-zero-head",
+    "pull_request": 434,
+    "pull_request_merged": false,
+    "head": "b11fd5ec8debcfa2145574bf28bcdb0cdb6ef18d",
+    "workflow_run": 35449382543,
+    "workflow_job": 105913774233,
+    "artifact_id": 10586298491,
+    "artifact_digest": "sha256:0b89a9b02af68c5d0d8cf4a42b403623cded1f4feba9d6b834cc13965a4f2f56",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preregistration_blob": "8b4cbc76d872e7e8eb259c93a09de848e7a0a64f",
+    "R16_o0_o2_sha256": "f97b46d4d5f92bde993b7a63afe74eaa37716b98cf4a49e90562e802f6055aea",
+    "R2_o0_o2_sha256": "3fd69af0e61b668e3df84dce3558ac17b9999299dfe329b85bcf68a77c68478a",
+    "result_sha256": "8e9cd1b2a31aec95be809f3bf647d5c06ea518d87007e2b61448535c8d427c02",
+    "analyzer_sha256": "5d7806616fc293a2dfff72cab4060d4b839d86281ae418ed7feb2991c9af203b"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D10_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D10_RESULT.json",
+    "integration/f-rom/F-ROMV2_D10_STATUS.json",
+    "integration/f-rom/F-ROMV2_D10_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D10_HE_TWO_LAYER_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d10_zero_head_comparators.f90",
+    "tests/rom/analyze_f_romv2_d10_he_two_layer.py",
+    "tests/rom/run_f_romv2_d10_he_two_layer.sh",
+    ".github/workflows/f-romv2-d10-he-two-layer.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "arbitrary_nonzero_bottom_head_extension_implemented": false,
+  "post_result_equation_retuning": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

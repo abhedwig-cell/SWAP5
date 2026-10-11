@@ -1,0 +1,46 @@
+{
+  "schema": "swap5.bounded_execution_preregistration.v1",
+  "workunit": "PPA-WU05-A",
+  "title": "Macropore source/state/mass/transaction authority",
+  "protocol": "RECONCILE -> SOURCE MATERIALIZATION -> STATE/MASS TRACE -> CLASSIFY -> FREEZE CONTRACT -> QUALIFY -> CLOSE_OR_BLOCK",
+  "branch": "audit/ppa-wu05a-macropore-authority",
+  "canonical_base": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+  "parent_authority": "PPA-WU05",
+  "scope": [
+    "B1.11 macropore/macrorate source authority",
+    "persistent versus candidate versus result versus worker-scratch ownership",
+    "mass-transfer ownership",
+    "restart topology",
+    "retry/rollback contract"
+  ],
+  "non_goals": [
+    "production macropore implementation",
+    "macropore physics equation change",
+    "legacy compatibility mutation",
+    "parallel macropore execution",
+    "macropore root uptake",
+    "frost or advanced root stress",
+    "ROM"
+  ],
+  "exact_reference_identity": {
+    "snapshot": "B1.11",
+    "manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "macropore_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+    "macrorate_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "macroporeoutput_sha256": "39a0497cfff82540a7323cecceafc3a17d389eb4708014bbf99f6256b65a8b0a",
+    "macropore_patch_authority": "SWAP-001 only"
+  },
+  "recovered_repository_evidence": [
+    "work/f-pe16-s12-macropore-memory-recovery@f5e2a12fca96559645feb8d8cd591b600f765d8c",
+    "work/f-pe15-a23au-macropore-scratch-recovery@f475e0e050abdc885c016929c2d528fe1f8f0545",
+    "work/f-si15-explicit-macropore-option@fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
+  ],
+  "pass_conditions": [
+    "all claims distinguish exact source identity from corroborated prior evidence",
+    "current production fail-closed boundary remains explicit",
+    "state candidate list is not promoted to definitive B1.11 census without exact bytes",
+    "mass and rollback invariants are frozen at owner level",
+    "no src/reference production mutation",
+    "blocker is explicit if exact B1.11 source bytes remain unavailable"
+  ]
+}

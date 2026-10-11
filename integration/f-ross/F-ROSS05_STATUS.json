@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-ROSS05",
+  "title": "RossFast D3R transactional selector composition",
+  "status": "CLOSED_POSITIVE_RESTRICTED_TRANSACTIONAL_SELECTOR_COMPOSITION",
+  "decision": "QUALIFIED_EXACT_F_ROSS04_PROVIDER_F_ROSS03_KERNEL_AND_F_CI68_SELECTOR_TRANSPORT_COMPOSITION_ON_THE_TESTED_D3R_DOMAIN_PENDING_SERIALIZED_FMR_MOD_SOILWATER_BACKEND_ROUTING_AND_CANONICAL_ADMISSION",
+  "parent": {
+    "branch": "work/f-ross04-d3r-table-provider",
+    "head": "8466ae15b37dc2654e038c646e9b92c2907f77ef",
+    "status_blob": "e4ae23777d3f329822bf74051f4b139c04a59877",
+    "asset_manifest_blob": "1266d15149af5feb8d7fb0a5ef90d41b5881fd55"
+  },
+  "inherited_authorities": {
+    "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+    "canonical_contracts_blob": "3cbb81b25626e6574ae83416f088dc52882f91fc",
+    "canonical_interval_runtime_blob": "b12327aa6e77bdbf4586fe0bed82cf0e7704f237",
+    "rossfast_d3r_execution_policy_blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+    "rossfast_d3r_model_binding_blob": "9f29ba7a08844692ba2628c7869d23713409f92b",
+    "f_ross03_table_kernel_blob": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+    "f_ross04_table_provider_blob": "afc05eb3001d91f66ca542978c3c6795283a7ac0",
+    "f_ci68_kernel_transport_blob": "d3a53385e3707f05e5396bbd6f218633b9803f65",
+    "f_ci68_checkpoint_orchestrator_blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908",
+    "f_ci68_status_blob": "4661b9c53101c04718a18709a4652b36e45c7f18",
+    "f_ross03_status_blob": "6733b7a5ddd4b9761c9bdad26a5c7e21c8e92c7c"
+  },
+  "candidate": {
+    "precloseout_qualified_head": "f289087bce71d00674b19341a6aa0216f5b3252d",
+    "adapter_blob": "dabd5da97e7a4d5990cb5a0f07928aa9f03a6c1e",
+    "test_blob": "fdea535d14fb6713c1ecc38ae397ecbc6058825c",
+    "runner_blob": "ba55c5c61d23e17be58f2d10659a7bf5e6d70513",
+    "workflow_blob": "ab12c4743e1bbe580ca051501c640d5e782a9c13"
+  },
+  "composition_contract": {
+    "real_provider_to_real_table_kernel": true,
+    "real_table_kernel_to_f_ross02_model_binding": true,
+    "f_ross02_model_binding_to_generic_fkt_model_adapter": true,
+    "fci68_optional_selector_transport_reused_unchanged": true,
+    "generic_kernel_and_checkpoint_orchestrator_remain_rossfast_policy_free": true,
+    "f_ross03_exact_internal_substeps_narrowed_to_8": true,
+    "production_selector_semantics_unchanged": true,
+    "qualification_only_chain_selector_changes_production_policy": false,
+    "runtime_table_generation": false
+  },
+  "qualified_scope": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "material_count": 6,
+    "grid": "1D_VERTICAL_UNIFORM_16_CELLS_DZ_10_CM",
+    "outer_horizon_day": 0.0016,
+    "table_kernel_equal_internal_substeps": 8,
+    "production_selector_route_tested": true,
+    "qualification_only_two_window_chain_tested": true,
+    "transaction_retries_private_to_candidate_execution": true,
+    "candidate_publication": "ONE_EXPLICIT_FKT_COMMIT_AFTER_FULL_OUTER_COMPLETION",
+    "optimization_profiles": ["O0", "O2"]
+  },
+  "qualification": {
+    "workflow_run_id": 34941964889,
+    "job_id": 104292487907,
+    "tested_head": "f289087bce71d00674b19341a6aa0216f5b3252d",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "all_six_materials_production_selector_pass": true,
+    "all_six_materials_real_kernel_chain_pass": true,
+    "o0_o2_output_identity": true,
+    "o0_o2_output_sha256": "088322ff0684554557e8d819d2c56aead0577ec87549d356e594c7cfe30daaf8",
+    "wrong_internal_substep_count_fails_before_transaction": true,
+    "off_grid_outer_request_fails_before_transaction": true,
+    "committed_state_unchanged_until_explicit_publish": true,
+    "one_external_revision_increment_after_publish": true,
+    "artifacts": {
+      "diagnostics": {
+        "id": 10386010756,
+        "digest": "sha256:fddfa94ba1e2621b2aa54fe5928940542d791384bdd3631325d99fd16ffd45bd",
+        "size_bytes": 1637
+      },
+      "evidence": {
+        "id": 10386155066,
+        "digest": "sha256:dda70a65fd34ac4d5b494b890d64990b268e519b81145d351ba44f1a22120098",
+        "size_bytes": 1317
+      }
+    }
+  },
+  "production_admission": false,
+  "canonical_admission": false,
+  "hard_nonclaims": [
+    "NO_MOD_SOILWATER_OR_SERIALIZED_FMR_BACKEND_ROUTE",
+    "NO_NEW_ROSSFAST_PHYSICS_OR_TABLE_SEMANTICS",
+    "NO_CLAIM_THAT_PRODUCTION_POLICY_FORCES_TWO_HALF_WINDOWS",
+    "NO_DYNAMIC_TOP_BOUNDARY_ADMISSION",
+    "NO_PRESCRIBED_HEAD_BOTTOM_BOUNDARY_ADMISSION",
+    "NO_GROUNDWATER_ADMISSION",
+    "NO_ROOT_OR_GENERAL_SOURCE_SINK_ADMISSION",
+    "NO_HETEROGENEOUS_OR_ARBITRARY_GRID_ADMISSION",
+    "NO_ARBITRARY_INITIAL_PROFILE_OR_FORCING_ADMISSION",
+    "NO_ARBITRARY_DURATION_GENERALIZATION",
+    "NO_MULTISWAP_PERFORMANCE_QUALIFICATION",
+    "NO_FULL_RICHARDS_EQUIVALENCE_GENERALIZATION",
+    "NO_OVERALL_ROSSFAST_PRODUCTION_ADMISSION"
+  ],
+  "next_gap": "RECONCILE_WITH_EXISTING_F_CI69_SERIALIZED_FMR_SELECTOR_FORWARDING_AND_THEN_QUALIFY_THE_EXACT_MOD_SOILWATER_BACKEND_ROUTE_WITHOUT_BROADENING_THE_F_ROSS02_DOMAIN"
+}

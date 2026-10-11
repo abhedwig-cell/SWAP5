@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15-LINEAGE-RECONCILIATION",
+  "recorded_date": "2026-09-12",
+  "decision": "SINGLE_KT15_PRODUCTION_LINEAGE_RESTORED",
+  "hard_rule": "Only work/f-kt15-task2-solver-service-production-composition is a production owner authority. No other KT15 branch may receive substantive production development.",
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "e537baf521e633c432a9f33de495fab9f18e918d",
+    "contains_KT15": false
+  },
+  "branches": [
+    {
+      "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+      "head": "eacdacb60524221d0c286571444271089347dbcc",
+      "classification": "HISTORICAL_SUPERSEDED",
+      "ancestry_against_current_canonical": {
+        "status": "diverged",
+        "merge_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
+        "ahead_by": 72,
+        "behind_by": 34
+      },
+      "reason": "Historically qualified donor/source-reconciliation line. Its own status forbids direct canonical merge after canonical advancement; carry-forward is allowed only through clean recomposition and requalification."
+    },
+    {
+      "branch": "work/f-kt15-task2-solver-service-production-composition",
+      "head": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "head_tree": "f981d8b26f340d5710021cd08682045579bcd63a",
+      "classification": "DEFINITIVE_ACTIVE_OWNER",
+      "ancestry_against_current_canonical": {
+        "status": "ahead",
+        "merge_base": "e537baf521e633c432a9f33de495fab9f18e918d",
+        "ahead_by": 34,
+        "behind_by": 0
+      },
+      "qualified_production_candidate": {
+        "sha": "8ca0b0fb587cdb4dfb7cc5037f571406778f38c8",
+        "tree": "d1cada565e11f2bf7cdd96940fb3615637761b5a",
+        "primary_run": 34675363793,
+        "primary_run_conclusion": "success",
+        "qualification_canonical_at_that_run": "4f62af04df8ad686a8066f6c164cdcf79d319999"
+      },
+      "true_current_canonical_ancestry_postimage": {
+        "sha": "9465be74c01fe6455466e5ba7f62a761986ad450",
+        "tree": "5cc9841e1506021f1be84dbe4608bd9f6ce562a6",
+        "parents": [
+          "73558f28953755f3893945cf88f8223645f8c1d6",
+          "e537baf521e633c432a9f33de495fab9f18e918d"
+        ],
+        "canonical_delta_since_primary_candidate_basis": "metadata_only_no_src_or_reference_delta",
+        "exact_head_run": 34675799563,
+        "exact_head_run_conclusion": "success"
+      },
+      "final_closeout_exact_head_run": 34675851064,
+      "final_closeout_exact_head_run_conclusion": "success",
+      "post_ancestry_source_mutation": false,
+      "note": "9465be74 -> 48336cb changes only integration/f-kt/F-KT15_CLOSEOUT.json. The production source postimage is therefore frozen at the green true-current-canonical-ancestry postimage."
+    },
+    {
+      "branch": "work/f-kt15r-current-canonical-transaction-composition",
+      "head": "75cfe0a79980695d2762682bcf1a7eb79cf9c0b8",
+      "classification": "ABANDONED_DUPLICATE",
+      "ancestry_against_current_canonical": {
+        "status": "diverged",
+        "merge_base": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+        "ahead_by": 4,
+        "behind_by": 8
+      },
+      "reason": "Earlier current-canonical recomposition attempt with preregistration/architecture audit but no surviving final authority. Its core mod_kernel_transactions and dynamic-top adapter blobs match the later qualified recomposition, while the later recomposition and definitive Task2 lineage supersede its ownership role."
+    },
+    {
+      "branch": "work/f-kt15r-production-solver-service-current-canonical-recomposition",
+      "head": "1b3d8ba6cc70d74a124f20f01f0c47a102763ae0",
+      "classification": "REMEDIATION_ANCESTOR",
+      "ancestry_against_current_canonical": {
+        "status": "diverged",
+        "merge_base": "4f62af04df8ad686a8066f6c164cdcf79d319999",
+        "ahead_by": 4,
+        "behind_by": 1
+      },
+      "relation_to_definitive_owner": {
+        "is_ancestor": true,
+        "definitive_owner_ahead_by": 31,
+        "definitive_owner_behind_by": 0
+      },
+      "reason": "Qualified clean recomposition that repaired the historical KT15 source line on then-current canonical and became a strict ancestor of the definitive Task2 owner."
+    }
+  ],
+  "relevant_upstream": {
+    "F_KT14_branch": "work/f-kt14-interface-sensitivity-result-transport",
+    "F_KT14_current_head": "9796f1d32d73018ed5266af80524677abc5ec906",
+    "F_KT14_role": "accepted-only interface-sensitivity result transport upstream authority consumed by F-KT15 qualification"
+  },
+  "definitive_production_delta_against_current_canonical": [
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+    "src/adapter/mod_b110_production_soil_water_task2.f90",
+    "src/adapter/mod_b1_10_reference_model.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/adapter/mod_soil_water_transaction_result_bridge.f90",
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/legacy/b1_10_port/soilwater.f90",
+    "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/solver/mod_reference_richards_workspace.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/transaction/mod_transaction_reference.f90"
+  ],
+  "transaction_and_architecture_gate": {
+    "checkpoint_trial_retry_commit_rollback": "PASS",
+    "rejected_trial_mutates_no_committed_state": "PASS",
+    "single_solver_service_hydraulic_authority_per_trial": "PASS",
+    "duplicate_solver_state": "NOT_INTRODUCED",
+    "solver_scratch_persistence": "NOT_INTRODUCED",
+    "deterministic_replay": "PASS_O0_O2_IDENTITY_AND_WORKER_ISOLATION_WITHIN_QUALIFIED_SCOPE",
+    "restart_compatibility": "PRESERVED_NO_NEW_PERSISTENT_STATE; CANONICAL_ADMISSION_REPLAY_STILL_REQUIRED",
+    "mass_conservation": "PASS_HARD_GATE_NO_TOLERANCE_RELAXATION",
+    "generic_t0_t1": "PASS_NO_CALENDAR_OR_FIXED_COUPLING_WINDOW_ASSUMPTION",
+    "one_kernel": "PASS",
+    "runtime_solver_ownership_inversion": "NOT_INTRODUCED"
+  },
+  "canonical_admission": {
+    "branch": "qualification/f-ci49-fkt15-task2-solver-service-canonical-admission",
+    "head_before_this_metadata_record": "dce3ac71ce7844c03fb23f2fdb0940e9a9216f7b",
+    "role": "QUALIFICATION_INPUT_ONLY",
+    "source_allowlist_size": 17,
+    "source_rule": "all 17 production paths byte-identical to definitive F-KT15 donor authority",
+    "status": "OPEN_NOT_YET_CANONICAL_ADMITTED",
+    "observed_open_or_queued_actions_runs_before_this_record": 0,
+    "qualification_still_required": true
+  },
+  "next_workunit": "Continue only F-CI49 canonical-admission qualification from its current metadata-plus-source-composition lineage. Do not start or resume any KT15 production implementation branch unless F-CI49 finds a concrete source defect requiring a single-owner remediation workunit.",
+  "production_changes_in_this_reconciliation": false
+}

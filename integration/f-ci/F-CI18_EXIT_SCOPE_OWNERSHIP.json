@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI18",
+  "title": "F-CI Exit Scope and Ownership Qualification",
+  "canonical_branch": "integration/f-ci-canonical",
+  "basis_head": "e17b43e3dda7d178c4c81035308308448823e38d",
+  "b1_oracle": "B1.10",
+  "production_source_changed": false,
+  "gate_contract_changed": false,
+  "interpretation_rule": "A gate is qualified when the canonical development baseline itself satisfies the unchanged gate contract. Broader capability or independent release qualification may remain as an explicit downstream hold only when the baseline stays fail-closed for that unavailable capability and transaction correctness, provenance and hard mass conservation are not weakened.",
+  "non_delegable": [
+    "canonical source/provenance integrity",
+    "transaction correctness and rollback isolation",
+    "hard mass-conservation semantics for every admitted execution path",
+    "fail-closed behavior for unavailable reference numerical policy or unqualified optional-process coverage",
+    "single canonical development baseline"
+  ],
+  "downstream_holds_do_not_mean_admission": true,
+  "decisions": {
+    "CI-G01": {
+      "title": "Canonical source/provenance",
+      "fci17_status": "QUALIFIED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI",
+      "basis": ["F-CI03/F-CI05/F-CI09 source provenance", "F-CI17 canonical baseline registry"],
+      "downstream_holds": []
+    },
+    "CI-G02": {
+      "title": "B1.10 corrected-reference completeness",
+      "fci17_status": "BLOCKED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for corrected-reference identity and reconstructible patch chain; F-VQ for independent production-reference execution qualification",
+      "basis": [
+        "reference/swap-4.3.1/snapshots/B1.10.yml defines the complete ordered corrected-reference patch chain, B0 archive identity, 63-member source tree, byte count and B1.10 manifest",
+        "F-CI05 qualifies exact nested B1.10 source archive identity and 63-file physical preimage",
+        "F-VQ01 claim FVQ-C02 independently qualifies B1.10 corrected-reference identity/admission"
+      ],
+      "scope_correction": "F-CI16 treated end-to-end execution through the new reference route and optional-process migration coverage as corrected-oracle completeness. Those are downstream execution/qualification capabilities, not missing members of the B1.10 oracle.",
+      "downstream_holds": [
+        "F-VQ must qualify real source-bound B1.10 execution through the production reference route before that route is admitted.",
+        "Optional-process temporal behavior and complete snow/macropore storage accounting remain fail-closed until their production integration and VQ qualification are complete."
+      ]
+    },
+    "CI-G03": {
+      "title": "Transaction semantics",
+      "fci17_status": "QUALIFIED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI",
+      "basis": ["F-CI03/F-CI07/F-CI08/F-CI09/F-CI13 qualified transaction, retry, rollback and failed-trial isolation semantics"],
+      "downstream_holds": []
+    },
+    "CI-G04": {
+      "title": "State/scratch ownership separation",
+      "fci17_status": "TESTED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for ownership boundary; downstream solver-integration and qualification work for full backend reentrancy",
+      "basis": ["F-CI03 worker execution context and no-I/O/no-SAVE checks", "F-CI07 worker-local legacy trial capsule", "F-CI08 qualified state classification and worker-local rollback context"],
+      "scope_correction": "The gate requires explicit ownership separation, not completion of full parallel/reentrant legacy-backend execution.",
+      "downstream_holds": [
+        "Full HeadCalc/Newton/backend reentrancy and parallel execution qualification remains downstream; it may not reintroduce persistent solver scratch into column state."
+      ]
+    },
+    "CI-G05": {
+      "title": "Explicit reference numerical policy",
+      "fci17_status": "BLOCKED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for explicit fail-closed policy contract; F-VQ for independently justified numeric temporal limits",
+      "basis": [
+        "F-CI14 qualifies endpoint metrics, lagged diagnostic state, unit-aware max-of-ratios normalization, zero-limit semantics and optional-process fail-closed behavior",
+        "F-CI14 explicitly sets numerical_defaults=NONE and production execute_reference_interval=FAIL_CLOSED_NOT_ADMITTED",
+        "F-VQ05 temporal-profile readiness explicitly owns independent numeric-profile qualification and forbids reuse of solver or mass tolerances"
+      ],
+      "scope_correction": "An explicit reference numerical policy may correctly be fail-closed when no qualified numeric profile exists. Requiring F-VQ to invent/qualify those values before the canonical baseline can exit would make F-CI circular.",
+      "downstream_holds": [
+        "F-VQ must independently qualify source-bound per-metric B1.10 temporal limits before production reference execution is admitted.",
+        "Solver-convergence and hard mass-balance tolerances remain separate and may never be substituted for temporal-accuracy limits."
+      ]
+    },
+    "CI-G06": {
+      "title": "Canonical generic [t0,t1] kernel/entrypoint contract",
+      "fci17_status": "TESTED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for generic interval contract and production seam; F-VQ for broader real-reference qualification",
+      "basis": ["F-CI11 qualified non-midnight and cross-day generic interval seam", "F-CI12 production physical interval executor plus transaction/reference binding contract", "No calendar-day assumption is admitted by the canonical interface"],
+      "scope_correction": "The gate is a kernel/entrypoint contract gate; universal real-B1.10 reference execution is a broader qualification claim and remains separately fail-closed.",
+      "downstream_holds": [
+        "Real B1.10 end-to-end generic reference execution remains unadmitted until its numerical profile and active-process scope are independently qualified."
+      ]
+    },
+    "CI-G07": {
+      "title": "Canonical results, unrounded mass accounting and transaction diagnostics",
+      "fci17_status": "TESTED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for canonical result/mass/diagnostic contracts; downstream production integration and F-VQ for additional optional-process coverage",
+      "basis": ["F-CI10 qualified trial-mass contract, storage seam and canonical mass adapter", "F-CI11 qualified unrounded legacy trial-mass wiring with hard mass conservation", "F-CI12 worker diagnostics and failed-trial isolation"],
+      "scope_correction": "The canonical contracts are present and source-bound. Missing optional-process coverage is not permission to omit its storage; such configurations stay unadmitted until covered.",
+      "downstream_holds": [
+        "Snow/macropore and other newly admitted optional-process result/storage paths require complete mass accounting before admission and independent VQ afterward.",
+        "Hard mass conservation is not delegated or relaxed."
+      ]
+    },
+    "CI-G08": {
+      "title": "Executable VQ/focused qualification against the canonical source",
+      "fci17_status": "TESTED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for executable focused canonical qualification; F-VQ for independent release qualification",
+      "basis": ["F-CI03 through F-CI17 canonical qualification chain is executable and PASS on exact canonical postimages", "F-VQ01 through F-VQ04 demonstrate an independent qualification layer pinned to exact earlier F-CI source/evidence heads"],
+      "scope_correction": "The unchanged gate explicitly permits VQ/focused qualification. Requiring final independent F-VQ against a baseline that F-CI has not yet released is circular.",
+      "downstream_holds": [
+        "F-VQ must consume the final F-CI exit head explicitly before making release-level physics/reference claims."
+      ]
+    },
+    "CI-G09": {
+      "title": "Build, regression and hard mass-conservation qualification",
+      "fci17_status": "TESTED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI for canonical build/focused regression/hard-mass baseline; F-VQ for expansion of the independent regression matrix",
+      "basis": ["F-CI10 source-bound Hupsel max absolute mass residual 1.587818254655815e-7 cm with O0/O2 identity", "F-CI11 source-bound max absolute mass residual 1.8590012175467852e-7 cm with O0/O2 identity", "F-CI03 through F-CI17 full canonical dependency chain PASS"],
+      "scope_correction": "F-CI must prove that its admitted baseline builds, regresses and conserves mass. It need not complete every future physics/regression workload before downstream work can start.",
+      "downstream_holds": [
+        "F-VQ must expand source-bound regression and hard-mass coverage for every subsequently admitted physics/profile.",
+        "No fallback, performance mode or downstream solver path may weaken hard mass conservation."
+      ]
+    },
+    "CI-G10": {
+      "title": "Single canonical development baseline with competing production lines retired/superseded",
+      "fci17_status": "QUALIFIED",
+      "proposed_status": "QUALIFIED",
+      "owner": "F-CI",
+      "basis": ["F-CI17 machine-readable supersession registry and qualified canonical workflow"],
+      "downstream_holds": ["Historical branches remain provenance-only and may not become competing production baselines without a new explicit governance decision."]
+    }
+  },
+  "proposed_exit": {
+    "all_required_gates": "QUALIFIED",
+    "downstream_release_allowed": true,
+    "meaning": "CANONICAL_DEVELOPMENT_BASELINE only; not a claim that all future physics, reentrancy, MultiSWAP, coupling or independent release qualification is complete."
+  }
+}

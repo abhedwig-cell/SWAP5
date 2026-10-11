@@ -1,0 +1,190 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Restricted Hupsel SWETR=0 PMdirect typed application composition",
+  "phase": "RECONCILE_ACQUIRE_RECOVER_CLOSE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "a5e968281d2297841128b08a9d3e769b654e6eae",
+  "resume_anchor_requested": "df061f4eb60d9ccbba47b9fb98af68f15e605fd2",
+  "reconcile": {
+    "canonical": {
+      "branch": "integration/f-ci-canonical",
+      "live_head": "99fa5160d90c296ff5aec5c7f607ffa9e8b7bfd3",
+      "relevant_delta": "RossFast adapter-only admission after the previous F-APP03 reconcile; no Hupsel application, PMdirect, meteorological forcing, crop composition, production-physics, solver, timestep, tolerance, or B1 reference semantic change detected for this workunit."
+    },
+    "f_app03": {
+      "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+      "live_head_before_this_checkpoint": "a5e968281d2297841128b08a9d3e769b654e6eae",
+      "delta_from_df061f4": "Exactly one evidence-only checkpoint commit, adding integration/f-app/F-APP03_TYPED_SWETR0_MAPPING_CLOSE.json; no production or reference source change."
+    },
+    "m1_c3": {
+      "branch": "work/m1-c3-legacy-file-to-typed-application-mapping",
+      "live_head": "9528d24926d8efe8e8fbfb6a7e4f0e4d6ec8c929",
+      "live_verdict": "C3_BLOCKED_NARROWED_MISSING_EXECUTABLE_B1_11_APPLICATION_TRACE_AUTHORITY"
+    },
+    "qualification_dependency": {
+      "branch": "work/f-vq102-fapp03-pmdirect-rederivation",
+      "live_head": "c1027973ac0199504348917aa32f78e52baaa3f2",
+      "role": "Exact Hupsel authority restoration checkpoint used by the later A13 independent rederivation; no newer dependency delta detected."
+    }
+  },
+  "reused_immutable_evidence": {
+    "official_distribution": {
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "identity_record": "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md"
+    },
+    "official_nested_source_archive": {
+      "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "identity_record": "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md"
+    },
+    "official_MOD_meteo_member": {
+      "path": "SWAP/MOD_meteo.f90",
+      "sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+      "bytes": 85550,
+      "identity_record": "reference/swap-4.3.1/b0/file-manifest.sha256",
+      "payload_persisted_in_repository": false
+    },
+    "official_hupsel": {
+      "case": "SWAP_4.3.1/cases/1.hupselbrook",
+      "swap_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+      "meteo_283_sha256": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "authority_checkpoint": "integration/f-app/F-APP03_HUPSEL_AUTHORITY_RESTORED.json",
+      "raw_payload_persisted_in_repository": false
+    },
+    "A21": {
+      "checkpoint_commit": "155fb7d472121cc9993bb066298b46131a092f90",
+      "source_class": "historical external qualification material, supporting but not current canonical source payload",
+      "facts_reused": [
+        "FWIND is a separate static configuration field from daily wind_speed_m_s.",
+        "The daily parser transformations persisted by A21 alter radiation, rain and ETref units but do not apply FWIND to raw wind.",
+        "The Hupsel daily meteorological surface reproduced 1096 legacy daily records with zero mismatch at 1e-12."
+      ]
+    },
+    "A22": {
+      "fact_reused": "Legacy crop development remains behind LegacyCropAdapter -> CropSnapshot; no raw crop-file shortcut into PMdirect is authorized."
+    },
+    "A13": {
+      "checkpoint_commit": "21508f0d70672d92132c553a344c35f6b7b2296f",
+      "file": "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json",
+      "verdict": "PASS_A13_PMDIRECT_REDERIVED_FROM_EXACT_AUTHORITY",
+      "daily_records": 1096,
+      "comparison_tolerance": 1.0e-12,
+      "mismatches_above_tolerance": 0,
+      "scope_reused": "Restricted SWETR=0, SWDIVIDE=1 PMdirect/ETpot/ProcessMeteoDT semantics and their already-qualified daily weather/site/canopy inputs."
+    },
+    "typed_preregistration": {
+      "commit": "df061f4eb60d9ccbba47b9fb98af68f15e605fd2",
+      "file": "integration/f-app/F-APP03_TYPED_SWETR0_PREREGISTRATION.json"
+    }
+  },
+  "new_bounded_recovery_evidence": {
+    "public_swap_ref": {
+      "repository": "SWAP-model/SWAP",
+      "ref": "24599aa0fa8c3b420562d8f8642bc76d4308b906",
+      "files_checked": [
+        "src/io/readmeteo.f90",
+        "src/atmos/penmon.f90",
+        "src/atmos/meteoday.f90",
+        "src/io/readswap.f90"
+      ],
+      "finding": "This public ref can locate raw-wind and Penman-Monteith code surfaces, but it is not the byte-identified SWAP 4.3.1 B0 source member and therefore cannot replace the exact MOD_meteo authority. No FWIND occurrence was recovered from the fetched candidate files. The commit itself is a later public repository state, not the B0 source payload.",
+      "authority_class": "LOCATOR_AND_CROSS_CHECK_ONLY_NOT_SEMANTIC_AUTHORITY"
+    },
+    "public_release_history": {
+      "repository": "SWAP-model/SWAP",
+      "release_found": "v4.2.0 only",
+      "commits_between_2026_06_20_and_2026_07_10": 0,
+      "effect": "No public 4.3.1 commit/tag/release was recovered that can be hash-linked to the B0 MOD_meteo member."
+    },
+    "public_hupsel_template": {
+      "repository": "SWAP-model/swap-testcases",
+      "main_head_checked": "a839e2e905f34dd264ad0c739f638454b3023def",
+      "path": "cases/hupselbrook/legacy/swap_linux.swp.template",
+      "fwind_occurrence": false,
+      "effect": "Cannot establish the official Hupsel FWIND value because this public fixture lineage was already proven non-byte-identical to the official F-VQ99 Hupsel fixture."
+    },
+    "workflow_artifact_recovery": {
+      "exact_authority_checkpoint_head": "c1027973ac0199504348917aa32f78e52baaa3f2",
+      "a13_checkpoint_head": "21508f0d70672d92132c553a344c35f6b7b2296f",
+      "workflow_runs_for_exact_authority_head": 0,
+      "workflow_runs_for_a13_head": 0,
+      "recoverable_artifact_with_exact_MOD_meteo_or_FWIND_trace": false
+    }
+  },
+  "remaining_pmdirect_input_mapping": {
+    "already_closed_by_reused_evidence": [
+      "daily radiation",
+      "daily Tmin/Tmax",
+      "daily vapour pressure",
+      "raw daily wind speed",
+      "gross rain",
+      "reference ET field semantics where applicable to the atmospheric record",
+      "wet fraction field semantics where applicable to the atmospheric record",
+      "proven unit conversions",
+      "crop-development -> LegacyCropAdapter -> CropSnapshot canopy semantics",
+      "restricted A13 PMdirect site/canopy/process semantics other than the durable FWIND application mapping"
+    ],
+    "only_unclosed_field": {
+      "name": "FWIND",
+      "legacy_source_variable": "FWIND",
+      "classification": "parameter",
+      "input_contract": "Optional positive wind-function factor, historically represented separately from daily wind; accepted input range approximately 0.5..5 in the recovered 4.3.1 input inventory.",
+      "unit": "dimensionless factor",
+      "raw_daily_wind_unit": "m/s",
+      "parser_conversion": "NONE_AUTHORIZED",
+      "sign_convention": "positive factor; no sign inversion is authorized",
+      "typed_destination": "wind_function_factor",
+      "application_point": "UNRESOLVED_DURABLY: exact SWAP 4.3.1 executable statement(s) showing where/how FWIND modifies the active SWETR=0, SWDIVIDE=1 PMdirect calculation are not present in durable repository evidence.",
+      "scale_or_operator": "UNRESOLVED_DURABLY; must not be inferred from name, modern code, remembered formulas, or desired output.",
+      "official_hupsel_value": "UNRESOLVED_DURABLY: exact swap.swp bytes were transiently hash-verified during authority restoration but were not persisted, and the non-identical public template cannot substitute for them.",
+      "immutable_identity_evidence": [
+        "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md",
+        "reference/swap-4.3.1/b0/file-manifest.sha256",
+        "integration/f-app/F-APP03_HUPSEL_AUTHORITY_RESTORED.json",
+        "integration/f-app/F-APP03_SOURCE_AUTHORITY_RECOVERY.json",
+        "integration/f-app/F-APP03_A13_PMDIRECT_REDERIVATION.json"
+      ]
+    }
+  },
+  "ten_june_precheck": {
+    "preregistered_date": "2002-06-10",
+    "status": "NOT_PERMITTED",
+    "reason": "The preregistered order requires FWIND and the remaining PMdirect input mapping to be closed before observing the 10-June integration candidate. Assuming FWIND=1, mutating raw wind, fitting the candidate, or widening tolerance would violate the frozen fail-closed rule."
+  },
+  "qualification": {
+    "attempted": false,
+    "reason": "No production candidate is permitted before the FWIND semantic mapping closes. Production implementation and qualification oracle therefore remain independent and unobserved in this bounded run."
+  },
+  "verdict": "F_APP03_BLOCKED_DURABLE_431_FWIND_EXECUTABLE_AUTHORITY_STILL_MISSING_AFTER_LIVE_RECHECK",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "timestep_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "new_branch": "NONE",
+    "checkpoint_only": true
+  },
+  "next_permitted_action": [
+    "Rematerialize the exact official SWAP 4.3.1 MOD_meteo.f90 bytes matching SHA-256 5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822, or the exact official Hupsel swap.swp bytes matching SHA-256 a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b, or an immutable exact-authority trace/config artifact that records both FWIND application semantics and the official Hupsel value.",
+    "From that exact authority only, persist the FWIND executable application point, operator/scaling, value, units and typed binding without modifying raw .met wind.",
+    "Then run the already-intended observation-only 2002-06-10 precheck with the frozen payload/normalization/tolerance from the existing F-APP03 evidence. If the first numeric difference exceeds the frozen tolerance, persist it and close BLOCKED without implementation.",
+    "Only if that precheck closes numerically may the minimum restricted typed SWETR=0/SWDIVIDE=1/SWINTER=1 application composition be implemented and independently qualified.",
+    "Any current-reference snapshot qualification for M1-C3 must use an explicit B1.11-pinned successor rather than mutating historical F-VQ100."
+  ],
+  "exclusions": [
+    "no parser-level FWIND transform",
+    "no assumption that FWIND is numerically neutral",
+    "no inference from the non-byte-identical public Hupsel template",
+    "no output fitting or reverse engineering",
+    "no production physics, solver, timestep or tolerance change",
+    "no Ross or EB work",
+    "no groundwater/Richards reopening",
+    "no broad API or IO modernization",
+    "no raw .met/.crp/.swp -> process-ready forcing shortcut",
+    "no SWINTER=3/SWCF=2 whole-Hupsel claim in this restricted candidate",
+    "no M1-C3 PASS claim"
+  ]
+}

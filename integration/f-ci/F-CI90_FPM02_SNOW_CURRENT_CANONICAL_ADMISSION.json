@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI90",
+  "capability": "F-PM02_RESTRICTED_ONE_CALL_DAILY_SNOW_CURRENT_CANONICAL_ADMISSION",
+  "phase": "ADMIT",
+  "status": "ADMISSION_READY",
+  "canonical_parent": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+  "owner_authority": {
+    "branch": "work/f-pm02-snow-admission",
+    "close_head": "89a834f56317b516acca33b73ab94238ae30204d",
+    "qualified_snow_source_commit": "2becebfe747663ea3b896d7d19f4381c32df77db"
+  },
+  "independent_scientific_authority": {
+    "work_unit": "F-VQ16",
+    "closeout": "98712959d811c788c77842eede4c6f558cca1c11",
+    "decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "reused_without_reopening": true
+  },
+  "historical_runtime_authorities": {
+    "f_vq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "f_mq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "f_mr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605"
+  },
+  "current_canonical_qualification": {
+    "qualification_branch": "integration/f-pm02-snow-current-canonical-closure",
+    "qualification_checkpoint": "d70868dab78a5c0ea7bbc36442acda48d39b424b",
+    "decisive_head": "25d83778dcade34225b4630059fd43142f95193d",
+    "workflow_run": 35036685895,
+    "workflow_job": 104607256514,
+    "artifact_id": 10424015478,
+    "artifact_digest": "sha256:87f105b46c8d7bbba67278583376eeb061f0e91d5adb3e7fc497524abb69930e",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "historical_f_vq17_output_identity": true,
+    "conclusion": "success"
+  },
+  "admitted_source_lock": {
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend_blob": "9b4d6f7d6b63d66fe2e46eb9c46d70d08e32db13",
+    "serialized_multiswap_runtime_blob": "1aa2454048d0e480becaee34f596f20f1a7bd66e"
+  },
+  "current_canonical_drift_reconciliation": {
+    "qualification_base": "3baf2aa135e3bf257942d9e6c5928990c2d1b2e1",
+    "admission_parent": "bf0fb81daf0f0fee53566a426886eaa0d0ad2832",
+    "delta": "F-CI89 WOFOST81 runtime activation only",
+    "relevant_snow_runtime_dependencies_changed": false,
+    "source_blobs_unchanged": true,
+    "evidence_inheritance_valid": true
+  },
+  "admitted_scope": {
+    "snow_semantics": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "scientific_identity": "BITWISE_WHERE_PREVIOUSLY_QUALIFIED",
+    "unsupported_duration_policy": "FAIL_CLOSED_FOR_SUBDAILY_MULTIDAY_AND_ARBITRARY_DURATION",
+    "transaction_policy": "CHECKPOINT_TRIAL_RETRY_COMMIT_WITH_REJECTED_TRIAL_ISOLATION",
+    "mass_policy": "SNOW_STORAGE_AND_EXTERNAL_TERMS_COMPLETE_WITH_MELT_INTERNAL_TRANSFER_NOT_DOUBLE_COUNTED",
+    "multiswap": "RESTRICTED_SERIALIZED_REAL_PHYSICS_ONLY",
+    "max_simultaneous_real_physical_solves": 1
+  },
+  "holds": {
+    "subdaily_snow_admitted": false,
+    "multiday_snow_admitted": false,
+    "arbitrary_duration_snow_admitted": false,
+    "parallel_real_physics_admitted": false,
+    "new_richards_physics_admitted": false,
+    "performance_claim": false,
+    "general_swap5_production_release": false
+  },
+  "production_source_changed_by_admission": false,
+  "reference_source_changed_by_admission": false,
+  "decision": "ADMIT_CURRENT_CANONICAL_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_CAPABILITY",
+  "blockers": [],
+  "next_permitted_action": "Fast-forward integration/f-ci-canonical only if its live head remains the exact admission parent, then persist CLOSE without modifying production source."
+}

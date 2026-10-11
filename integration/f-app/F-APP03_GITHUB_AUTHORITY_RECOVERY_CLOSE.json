@@ -1,0 +1,143 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-APP03",
+  "capability": "Hupsel SWETR=0 daily meteorological/application composition recovery",
+  "phase": "ACQUIRE_RECOVER_CLOSE",
+  "branch": "work/f-app03-hupsel-daily-meteo-recovery",
+  "branch_precheckpoint_head": "297ebe01b1d005f9d792badbf37d8215390d653e",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head_reconciled": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+    "current_corrected_reference": "B1.11",
+    "note": "F-AR01 is documentation/evidence only and does not alter SWAP5 production semantics; B1.11 remains the current corrected reference and numerically supersedes B1.10."
+  },
+  "purpose": "Exhaust the currently reachable GitHub-side recovery paths for an exact replayable Hupsel fixture or historical A12/A13 authority before any application-composition implementation. Only byte-exact or independently provenance-qualified authority may clear the blocker.",
+  "f_vq99_authority": {
+    "reference_materialization_commit": "e459f65303baa51f45057ced86ff4c959d5f76cd",
+    "official_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "official_hupsel_file_sha256": {
+      "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+      "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+      "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+      "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+      "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+      "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+      "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+      "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+    }
+  },
+  "github_recovery": {
+    "swap_model_swap_testcases": {
+      "repository": "SWAP-model/swap-testcases",
+      "initial_import_commit": "a1b15843e9e9732713bed1ee41d09c16c3136593",
+      "provenance": "The initial import states that case inputs were seeded from the canonical in-repository regression suite plus material from the retired private SWAP-model/swap-cases repository.",
+      "probe_workflow_commit": "297ebe01b1d005f9d792badbf37d8215390d653e",
+      "run_id": 35109516287,
+      "run_conclusion": "success",
+      "artifact_id": 10451926444,
+      "artifact_name": "f-app03-swapmodel-hupsel-lineage-recovery",
+      "artifact_digest": "sha256:e3e75e5907160203a4f64b413ac3f762e21b7225ca5189f7e5c8eac40dca70f5",
+      "observed_sha256": {
+        "283.met": "ec92d20437787134a0bd91e7fb0c5553c4ed57f592dc3f7c28e156c0c425a6d8",
+        "grassd.crp": "338abcf9779bc24931f0767979ba49cdc8a6041df39be01b965bf58c4377feb4",
+        "maizes.crp": "8f7b14a3cfc02a9315b76288b828625ce685de1ec292076b60dd3c29a911263d",
+        "potatod.crp": "8c0c212eab2cf9f3befe6ce78c1c53c757f6d156d5192062896815a44f8fa322",
+        "swap.dra": "fc0b5327073a1c1dfa2f20a2731bd299e2c2e3d4a839e5e1e9a5a832049096b3",
+        "swap_linux.swp.template": "8d004f413f15e4aef5fe114d5b528b530eed26c8c62609dd08057eb200e18b3d",
+        "swap_windows.swp.template": "f582ad79b4a76cf0e69ea4e92d5806ef76c2b7635f65e6e032d27249781fa53a"
+      },
+      "raw_matches_against_f_vq99": {
+        "283.met": false,
+        "grass_crop": false,
+        "maize_crop": false,
+        "potato_crop": false,
+        "swap.dra": false,
+        "swap.swp_linux_template": false,
+        "swap.swp_windows_template": false
+      },
+      "missing_official_members": [
+        "control_plot.inp",
+        "plot_swap.cmd",
+        "run_swap.cmd"
+      ],
+      "verdict": "SUPPORTING_LINEAGE_ONLY_NOT_F_VQ99_RAW_AUTHORITY"
+    },
+    "retired_private_swap_cases": {
+      "repository": "SWAP-model/swap-cases",
+      "lost_gitlink": "9b29177da4bdc690f7c854fb003f4e30df708ca7",
+      "gitlink_source_commit": "40b6ce99916b8008c5898997008e586829e92cb7",
+      "recorded_history_state": "PRIVATE_REPOSITORY_HISTORY_REWRITTEN_AND_PINNED_OBJECT_NO_LONGER_AVAILABLE",
+      "direct_commit_fetch": "NOT_FOUND",
+      "global_commit_search": "NO_MATCH",
+      "public_fork_or_mirror_with_exact_object": "NOT_FOUND",
+      "effect": "The lost private tree cannot currently serve as a replayable authority source."
+    },
+    "swap_model_swap_release_search": {
+      "repository": "SWAP-model/SWAP",
+      "available_release_tags": ["v4.2.0"],
+      "swap_4_3_1_release_or_tag_found": false,
+      "swap_4_3_1_case_bundle_found": false,
+      "note": "The public repository explicitly begins from the 4.2.0 line; no 4.3.1 release/tag or control_plot asset was found."
+    },
+    "f_ar01_recent_exact_asset_use": {
+      "pr": 161,
+      "head": "bc9672b500d709c2877b225af7a73debf3337ef9",
+      "merge": "289e64e1ba826aa7ebb42b8ae5c5a80575a223c4",
+      "evidence_file": "docs/verification/evidence/F-AR01_LEGACY_ZIP_RECONCILIATION.json",
+      "finding": "F-AR01 proves that exact SWAP 4.3.1 audit packages and the canonical distribution were available during the same-day reconciliation, but its durable evidence records names/hashes/dispositions only, not reusable payload locators.",
+      "workflow_runs_checked": [35103319577, 35103319896],
+      "workflow_artifacts": "NONE",
+      "durable_exact_distribution_payload_found": false
+    },
+    "historical_a12_a13": {
+      "known_from_prior_recovery": [
+        "A12 Hupsel SWINTER=1 interception/net-precipitation qualification lineage",
+        "A13 Hupsel SWETR=0 PMdirect crop-atmosphere ET qualification lineage"
+      ],
+      "exact_source_or_artifact_bytes_found_on_current_github": false,
+      "matching_current_branch_or_pr_found": false,
+      "note": "Historical semantic summaries remain leads only; they do not authorize implementation from remembered formulas or desired outputs."
+    }
+  },
+  "qualification_feasibility": {
+    "f_ci95_bottom_boundary_contract": "AVAILABLE_AND_CANONICAL",
+    "f_vq100_historical_b1_10_snapshot_replay": "SEMANTIC_BOTTOM_CONTRACT_UNBLOCKED_BUT_OPERATIONALLY_BLOCKED_MISSING_EXACT_EXECUTABLE_REFERENCE_ASSET_OR_PERSISTED_SNAPSHOTS",
+    "current_b1_11_snapshot_claim": "REQUIRES_EXPLICIT_SUCCESSOR_AFTER_REFERENCE_ASSET_RECOVERY_BECAUSE_B1_11_NUMERICALLY_SUPERSEDES_B1_10",
+    "application_composition_qualification_now": "NOT_PERMITTED_WITHOUT_REPLAYABLE_SOURCE_AUTHORITY"
+  },
+  "verdict": "F_APP03_BLOCKED_EXACT_REPLAYABLE_HUPSEL_AND_A12_A13_AUTHORITY_NOT_RECOVERABLE_FROM_CURRENT_GITHUB_SURFACES",
+  "effect_on_m1_c3": "M1 criterion 3 remains blocked. GitHub-side lineage narrows provenance and confirms the old private-case history was rewritten, but none of the recovered public copies is byte-equivalent to the F-VQ99 official Hupsel fixture. No production file adapter or application mapping may be implemented from these non-matching copies.",
+  "mutations": {
+    "production_source": "NONE",
+    "reference_source": "NONE",
+    "physics": "NONE",
+    "solver_policy": "NONE",
+    "tolerances": "NONE",
+    "legacy_semantics": "NONE",
+    "qualification_probe_workflow_only": true,
+    "checkpoint_only": true
+  },
+  "evidence_added": [
+    ".github/workflows/f-app03-swap-model-lineage-recovery.yml",
+    "GitHub Actions run 35109516287 / artifact 10451926444",
+    "this checkpoint"
+  ],
+  "next_permitted_action": [
+    "Recover the exact official SWAP_4.3.1 distribution or Hupsel case bytes matching the F-VQ99 hashes from a durable external/user-supplied source, then immediately materialize them into a governed immutable evidence location allowed by repository/licensing policy.",
+    "Alternatively recover the exact historical A12/A13 source/artifact bytes or already-preregistered F-VQ100 snapshot payloads with provenance sufficient to establish authority.",
+    "On exact B0/Hupsel recovery, resume original F-VQ100 only for its frozen historical B1.10 claim using the six preregistered dates/payload/tolerances and F-CI95 SWBOTB=6 binding.",
+    "For current B1.11 snapshot equivalence, preregister an explicit F-VQ100 successor after asset recovery; do not mutate the frozen B1.10 preregistration.",
+    "Only after process-ready snapshot/application authority is qualified and admitted may M1-C3 implement the thin legacy file adapter and attempt full reference-equivalent file execution."
+  ],
+  "exclusions": [
+    "no production implementation from public non-matching Hupsel copies",
+    "no A12/A13 reconstruction from summary-only formulas",
+    "no reverse engineering from desired output",
+    "no frozen-snapshot adapter as M1-C3 closure",
+    "no new groundwater or Richards physics",
+    "no solver/timestep/tolerance change",
+    "no wholesale IO/API modernization",
+    "no whole-Hupsel or M1-C3 PASS claim"
+  ]
+}

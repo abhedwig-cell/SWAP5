@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.publication.p2e04-stage-bc-target-construction.v1",
+  "workunit": "PUB-P2E04",
+  "status": "FROZEN_BEFORE_STAGE_BC_EXECUTION",
+  "purpose": "Resolve how the five already-preregistered cases are materialized as identical solver-input target trajectories for iteration and total-balance sensitivity. This clarification does not add, remove or substitute cases or ladder values.",
+  "targets": [
+    {
+      "id": "F1_B01_NOMINAL_COARSE",
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "NOMINAL",
+      "target_dt_day": 0.0004,
+      "base_state": "uniform preregistered initial state",
+      "preregistered_role": "coarse failure archetype"
+    },
+    {
+      "id": "F2_B01_DRYING_HALF1",
+      "material": "B01",
+      "Se": 0.65,
+      "forcing": "DRYING",
+      "target_dt_day": 0.0008,
+      "base_state": "uniform preregistered initial state",
+      "preregistered_role": "half1 failure archetype of coarse dt 0.0016 day"
+    },
+    {
+      "id": "F3_O18_NOMINAL_HALF2",
+      "material": "O18",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "target_dt_day": 0.0008,
+      "base_state": "candidate produced once by the fixed precursor half1 solve from the uniform initial state over 0.0008 day using max_iterations=16 and all declared 1e-12 tolerances",
+      "precursor_requirement": "precursor must converge on legacy-reference-bound and its candidate state is copied unchanged into every Stage B/C target solve",
+      "preregistered_role": "half2 failure archetype of coarse dt 0.0016 day"
+    },
+    {
+      "id": "C1_B12_WETTING_COARSE",
+      "material": "B12",
+      "Se": 0.65,
+      "forcing": "WETTING",
+      "target_dt_day": 0.0004,
+      "base_state": "uniform preregistered initial state",
+      "preregistered_role": "full-pass control"
+    },
+    {
+      "id": "C2_B01_NOMINAL_COARSE",
+      "material": "B01",
+      "Se": 0.85,
+      "forcing": "NOMINAL",
+      "target_dt_day": 0.0016,
+      "base_state": "uniform preregistered initial state",
+      "preregistered_role": "full-pass control"
+    }
+  ],
+  "stage_B": {
+    "max_iterations": [8,16,32,64],
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "total_balance_tolerance_cm": 1e-12,
+    "other_head_and_ponding_tolerances": 1e-12
+  },
+  "stage_C": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "total_balance_tolerance_cm": [1e-12,1.25e-12,1.5e-12,2e-12,4e-12,8e-12,1.6e-11],
+    "other_head_and_ponding_tolerances": 1e-12
+  },
+  "endpoint_comparison_rule": "For each target, the first accepted Stage-C result in ascending total-balance tolerance is the within-target endpoint reference. Later accepted results are compared against it. If no Stage-C value accepts, endpoint sensitivity is reported unavailable.",
+  "summation_diagnostics": "At each target/configuration, record the Reference workspace residual sum in forward intrinsic order, reverse scalar order, and real128 scalar accumulation where supported by the gfortran CI compiler.",
+  "scope_boundary": "The Stage-A census result is not used to choose or alter these targets. In particular, no newly identified RETRY_LOCAL_BAL case is added post hoc."
+}

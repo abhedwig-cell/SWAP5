@@ -1,0 +1,43 @@
+{
+  "work_unit": "PPA-MICRO02-06-B15-LOW-AIR",
+  "status": "LOCAL_RUNTIME_O0_O2_PASS_ADDITIONAL_ACTIVATION_O0_O2_AND_131072_REFINEMENT_O0_PASS_PRESERVATION_PENDING",
+  "tested_commit": "4002c655c3056bb1d3953831ccf80cecd8b01364",
+  "production_source_tree": "ac822aafd5403547a2c7ffad5c3ba02c9fa36496",
+  "compiler": "GNU Fortran 13.3.0",
+  "runtime_command": "python tests/frost/run_ppa_wu05b15_runtime.py --route low_air --micro-successor --build /tmp/ppa-wu05b15-low-air-runtime-micro-clean",
+  "runtime": {
+    "configurations_per_optimization": 6,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_byte_identity": true,
+    "combined_output_sha256": "9d4393f5593f50b55b24de2ab968fa40f472aabf2d5d98b4c54e42576e3f7a22"
+  },
+  "additional": {
+    "activation_O0": "PASS",
+    "activation_O2": "PASS",
+    "activation_O0_O2_byte_identity": true,
+    "refinement_131072_O0": "PASS",
+    "refinement_output_sha256": "e4eca4b4931109e3600c5808b40fa0164c1c971d0dad46db1d5bd54adc4ebb60",
+    "build_path_note": "The isolated replay copy of the additional runner changed only its temporary build-root suffix from -micro to -micro-clean to consume the fresh pinned runtime build; test bodies and assertions were unchanged."
+  },
+  "runner_sha256": {
+    "runtime": "24c1f18729eb68cd0cec154de7824cf02c7bca569b4dff3002e991aa3a61aad3",
+    "additional_local_path_adapted": "36e6553d2b2edcc72b5dac6e02188e391463ebccb107bfe0c41b81784fdcd01c"
+  },
+  "replay_zip": "PPA_MICRO_B15_LOW_AIR_LOCAL_REPLAY.zip",
+  "replay_zip_sha256": "35fa183b7e58e74f7558c3bd90b7add66a5f4fd5a54d12f5015f8f5e271351f0",
+  "replay_zip_bytes": 18752,
+  "claim_ceiling": "Local low-air runtime and bounded additional controls, plus persisted PR-merge low-air B15 runtime/additional/incumbent preservation qualification. No canonical admission claim.",
+  "persisted_pr_merge_qualification": {
+    "workflow_run_id": 37432003317,
+    "workflow_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37432003317",
+    "conclusion": "success",
+    "pr_head": "3d0e5f2effd9bb4855ec831890ca1335cbaaba42",
+    "tested_merge_head": "5c3a761ecf65e5bf4c0d051c92e0d5c0f12a909b",
+    "production_source_tree": "ac822aafd5403547a2c7ffad5c3ba02c9fa36496",
+    "jobs_passed": 9,
+    "jobs_total": 9,
+    "low_air_highest_runtime": "PASS",
+    "scope": "low-air actual runtime, additional controls and incumbent preservation at O0/O2"
+  }
+}

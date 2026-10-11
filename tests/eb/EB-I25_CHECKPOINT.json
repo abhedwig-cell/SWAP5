@@ -1,0 +1,96 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "capability": "EB-I25",
+  "title": "Accepted external full/half two-half sensible-boundary runtime materialization",
+  "phase": "QUALIFY_COMPLETE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "1f33328e2ddc0d28450d35647c1c97f293b1e622",
+  "canonical_tree": "934877112b44e5648fd659d64531ed8facc35d23",
+  "source_branch": "work/eb-i25-accepted-multisubstep-sensible-boundary",
+  "qualified_owner_head": "7aa467dca8c691bf72a0276c0757a568ae574845",
+  "reconciliation_head": "1ce9d26183d8e3d26b34a378e411c48c863fd369",
+  "relevant_dependencies": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90@canonical": "3506b453ba6a00111d182f29db8cbfb288001854",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1aa2454048d0e480becaee34f596f20f1a7bd66e",
+    "src/runtime/mod_fmr_bottom_thermal_carrier.f90": "c371be3e22eaa6da70ca8cbb060bc42d1e0e0bfb",
+    "src/runtime/mod_eb_i23_sensible_boundary_runtime.f90": "35dda86ca51bd91040af0672a43e2961c8db64fd",
+    "src/runtime/mod_eb_i24_top_liquid_sensible_inflow_runtime.f90": "5f27ff7a4fa67a3991c622d960a7133857dab1c2",
+    "src/process/mod_liquid_water_sensible_enthalpy.f90": "2247370ee34fac73a0e2d0b9fa15e171467aded3",
+    "src/process/mod_external_liquid_water_temperature.f90": "64b85363e764d2c6e2777f5f1258abb3ac9e5abf"
+  },
+  "qualified_owner_blobs": {
+    "src/runtime/mod_eb_i25_multisubstep_sensible_boundary_runtime.f90": "fc88731c12c8af5136aad13bda2a7da3d768dc4c",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "960ea116cad81e8c0db8a579982f4999b3d085ed",
+    "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90": "299717757082ff06e98bd3aaec2c0b8b3013ea21",
+    "tests/eb/test_eb_i25_multisubstep_sensible_boundary_runtime.f90": "c3026f171eeb1f604a5a8e8aa3db9886335a5fb2",
+    "tests/eb/EB-I25_CONTRACT.md": "e4b267ce56cde057d56a52f68ed9aa330a478385",
+    "tests/eb/run_eb_i25_multisubstep_sensible_boundary_gate.sh": "5d817f170b11e2cb6184b59a52df8e9974c4c3a3"
+  },
+  "state_delta": {
+    "canonical_advanced_since_prior_checkpoint": true,
+    "dependency_change_detected": false,
+    "evidence_invalidated": false,
+    "reason": "Canonical advanced through F-CI78 before qualification. EB-I25 was reconciled by two-parent merge 1ce9d261; relevant EB transaction, I23 and I24 authorities remained unchanged."
+  },
+  "reused_evidence": {
+    "EB_I23": "admitted and postimage-preserved through F-CI72P",
+    "EB_I24": "admitted and postimage-preserved through F-CI74P",
+    "EB_I23R_I24R_two_half_fixture": "a7a6e8564318f29d84197ba870aa6fddb7f09cf9 established the reachable temporal-history external full/half fixture and the one-canonical-commit/two-internal-half distinction"
+  },
+  "diagnostics": [
+    {
+      "run": 34983346428,
+      "job": 104429045525,
+      "finding": "Original no-history/CONTINUATION_NONE fixture was rejected before temporal acceptance; no scientific I25 verdict."
+    },
+    {
+      "run": 34986149921,
+      "job": 104438632067,
+      "finding": "Positive-flux external-full/half outflow fixture is rejected before commit; accepted two-half outflow remains a hard nonclaim."
+    }
+  ],
+  "owner_qualification": {
+    "run": 34986684267,
+    "job": 104440463648,
+    "runner": "ubuntu-24.04",
+    "live_canonical_lock": "PASS",
+    "inherited_authority_blobs": "PASS",
+    "bounded_delta": "PASS",
+    "static_contract": "PASS",
+    "two_half_accepted_aggregation": "PASS",
+    "missing_top_donor_fail_closed": "PASS",
+    "outflow_fixture_rejected_no_publication": "PASS",
+    "single_substep_i24_equivalence": "PASS",
+    "rejected_trial_no_publication": "PASS",
+    "O0_O2_identity": "PASS",
+    "verdict": "QUALIFIED_EB_I25_OWNER"
+  },
+  "candidate_scope": {
+    "rollback_safe_top_boundary_carrier": true,
+    "accepted_external_full_half_top_conductive_aggregation": true,
+    "accepted_external_full_half_snow_inactive_top_liquid_inflow": true,
+    "one_canonical_commit_two_internal_half_samples": true,
+    "accepted_external_full_half_top_liquid_outflow": false,
+    "multiple_outer_committed_runtime_substeps": false,
+    "snow_or_melt_thermal_provenance": false,
+    "new_thermodynamic_law": false,
+    "whole_column_sensible_residual_publication": false,
+    "full_energy_balance": false
+  },
+  "verdict": "QUALIFIED_EB_I25_OWNER",
+  "mutations": [
+    "Reconciled existing EB-I25 work with current canonical without changing inherited EB semantics.",
+    "Corrected route discrimination: accepted_substeps counts canonical commits; external full/half internal trajectory authority comes from exactly two rollback-owned carrier samples.",
+    "Reused the already-qualified temporal-history external full/half physical fixture instead of tuning solver physics.",
+    "Narrowed outflow claim to rejected-fixture/no-publication; defensive outflow guard remains code but accepted two-half outflow is unqualified."
+  ],
+  "next_permitted_action": "Require this checkpoint-only head to replay the clean owner gate successfully. Then create F-VQ93 independent qualification pinned to the resulting exact owner head and these immutable production/test authorities.",
+  "exclusions": [
+    "No Ross or RossFast changes.",
+    "No full Energy Balance completion claim.",
+    "No accepted external-full/half top liquid outflow qualification.",
+    "No multiple outer committed runtime-substep aggregation.",
+    "No snow/melt thermal provenance.",
+    "No production semantic changes merely to force a qualification pass."
+  ]
+}

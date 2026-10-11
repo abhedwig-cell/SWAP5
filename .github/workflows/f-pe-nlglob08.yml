@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB08 post-stationarity tail drift
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB08*.md'
+      - 'tests/fpe/run_fpe_nlglob08*.py'
+      - 'tests/fpe/run_fpe_nlglob08*.sh'
+      - '.github/workflows/f-pe-nlglob08.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob08-tail-drift
+    paths:
+      - 'docs/performance/F-PE-NLGLOB08*.md'
+      - 'tests/fpe/run_fpe_nlglob08*.py'
+      - 'tests/fpe/run_fpe_nlglob08*.sh'
+      - '.github/workflows/f-pe-nlglob08.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob08-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  tail-drift-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered tail-drift attribution
+        run: bash tests/fpe/run_fpe_nlglob08.sh

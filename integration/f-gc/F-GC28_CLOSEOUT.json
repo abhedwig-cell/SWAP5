@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC28",
+  "title": "Groundwater Coupling v1 Completion Audit — Closeout",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "CLOSED_CANONICAL_ADMITTED",
+  "canonical_scientific_admission": {
+    "commit": "077664d63487e420b8e5d4f3496fa24ed220d108",
+    "tree": "9a27f03c32a3739f0d7017ae21d3c997a63cb880",
+    "parent": "dffc021507460ab1a613dfd2e916def7f3db1ea7",
+    "admission_file": "integration/f-gc/F-GC28_CANONICAL_ADMISSION.json",
+    "admission_blob": "93e313285c31e4e01a27f6b26ad0f438637c9bba",
+    "admission_delta_file_count": 1,
+    "production_or_reference_delta": false,
+    "promoted_non_force_fast_forward": true
+  },
+  "bounded_execution": {
+    "RECONCILE": {
+      "owner_branch": "work/f-gc28-groundwater-coupling-v1-completion-audit",
+      "checkpoint_head": "fc5f9cc6bb4cc98f55dbe4ff0160dacdf1d4ee13",
+      "result": "all six historical frozen G05 technical closure obligations mapped to current-canonical authorities"
+    },
+    "QUALIFY": {
+      "work_unit": "F-VQ98",
+      "branch": "qualification/f-vq98-fgc28-groundwater-coupling-v1-completion-audit",
+      "checkpoint_head": "22c2c107256de4351541a7dcdf91635d67681ec3",
+      "green_status_head": "f4b3fa43ff453df9b15191fef6f0657b0b8e4e37",
+      "green_status_run": 35034372726,
+      "green_status_job": 104599969590,
+      "checkpoint_run": 35034471606,
+      "result": "INDEPENDENTLY_QUALIFIED_GROUNDWATER_COUPLING_V1_COMPLETION_AUDIT"
+    },
+    "ADMIT": {
+      "work_unit": "F-CI88",
+      "branch": "integration/f-ci88-fgc28-groundwater-coupling-v1-completion-audit-admission",
+      "green_head": "9e90dfee2d4febd8a74378e89a8a8bd99f23ba45",
+      "workflow_run": 35034629370,
+      "workflow_job": 104600812141,
+      "result": "GROUNDWATER_COUPLING_V1_FROZEN_COMPLETION_DENOMINATOR_QUALIFIED_FOR_CANONICAL_ADMISSION"
+    }
+  },
+  "closed_frozen_G05_obligations": {
+    "whole_window_response_tangent": "F-GC23 / F-VQ95 / F-CI85",
+    "tile_aggregation_exact_mass": "F-GC20 / F-CI77 with F-GC25 composition",
+    "application_temporal_accuracy_binding": "F-GC22 / F-CI78",
+    "restart_replay": "F-GC24 / F-VQ86 / F-CI65P",
+    "multiswap_execution_transaction_diagnostics": "F-GC25 / F-VQ87 / F-CI73P",
+    "external_gateway_and_end_to_end": "F-GC26 / F-VQ96 / F-CI86 plus F-GC27 / F-VQ97 / F-CI87"
+  },
+  "preserved_foundation": ["G01", "G02", "G03", "G04"],
+  "production_blobs_preserved": {
+    "src/runtime/mod_groundwater_predictor_corrector_window.f90": "fa2a5a45d558fbaaea242438915cdb7420b6503c",
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_coupling_response.f90": "645141676536ae8289b9d52433798a965c7baa04",
+    "src/runtime/mod_groundwater_coupled_restart.f90": "0596933ff3ae89c61ab7a0913189a4fa3179e50b",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f",
+    "src/adapter/mod_groundwater_external_gateway.f90": "f307f17e2fd20983432f91e91ac90aaae8311849"
+  },
+  "production_mutations_in_fgc28": [],
+  "reference_mutations_in_fgc28": [],
+  "scientific_close": "The historical frozen F-GC28 groundwater-coupling-v1 completion denominator is closed on current canonical evidence. This is a bounded v1 closure claim, not a claim of broad MODFLOW backend qualification or unrestricted groundwater coupling generality.",
+  "preserved_exclusions": [
+    "EB",
+    "ROSS/RossFast",
+    "new groundwater physics",
+    "broad MODFLOW implementation",
+    "new Richards solver policy",
+    "new mass or convergence tolerance",
+    "kernel file IO",
+    "calendar assumptions",
+    "production change solely to obtain PASS",
+    "F-GC29 execution"
+  ],
+  "next_permitted_action": "Any further groundwater work must be opened as a separate bounded workunit against the then-live canonical. F-GC29 was not started or modified by F-GC28."
+}

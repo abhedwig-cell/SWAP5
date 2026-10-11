@@ -1,0 +1,48 @@
+name: PPA WU05 C3Q Oxygen Oracle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  kernel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run persisted pure-kernel gates
+        run: |
+          gfortran --version
+          bash tests/physics/run_ppa_wu05c3q_kernel.sh
+
+  oracle:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate pinned B0 archive
+        id: archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          candidates=(
+            "reference/swap-4.3.1/b0/SWAP_4.3.1.zip"
+            "reference/swap-4.3.1/SWAP_4.3.1.zip"
+            "tools/SWAP_4.3.1.zip"
+          )
+          for p in "${candidates[@]}"; do
+            if [[ -f "$p" ]]; then echo "path=$p" >> "$GITHUB_OUTPUT"; exit 0; fi
+          done
+          echo "Pinned B0 archive is not stored as a repository payload; VQ reconstruction identity exists but runner requires archive bytes." >&2
+          exit 2
+      - name: Install compiler
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run C3Q oracle
+        run: |
+          python3 tools/vq/c3q_run_oracle.py --archive "${{ steps.archive.outputs.path }}" --work-dir /tmp/ppa-wu05-c3q
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ppa-wu05-c3q-oracle
+          path: |
+            /tmp/ppa-wu05-c3q/c3q_oracle_result.json
+            /tmp/ppa-wu05-c3q/run/2.grassgrowth/c3q_oxygen_trace.csv
+          if-no-files-found: warn

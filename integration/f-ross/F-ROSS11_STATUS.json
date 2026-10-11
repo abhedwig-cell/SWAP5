@@ -1,0 +1,95 @@
+{
+  "schema": "swap5.bounded_execution_checkpoint.v1",
+  "workunit": "F-ROSS11",
+  "title": "RossFast restricted typed in-memory application composition",
+  "phase": "CLOSED_CANONICAL_ADMISSION",
+  "decision": "CANONICALLY_ADMITTED_THIN_TYPED_IN_MEMORY_APPLICATION_COMPOSITION_VIA_F_CI81",
+  "branch": "work/f-ross11-in-memory-application-composition",
+  "canonical_base": "7fe22e7c0c145e4e539dca2e9a24b8140dac5a2a",
+  "canonical_base_tree": "b33082976b6739a6ff637ccd38dc92067ba800c4",
+  "qualified_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+  "qualified_tree": "961ccd3c69582e1f7fdc4c8229e01ab84a4ecaa5",
+  "prerequisite_admission": {
+    "workunit": "F-CI80",
+    "admitted_capabilities": ["F-ROSS02", "F-ROSS03", "F-ROSS04", "F-ROSS05", "F-ROSS06", "F-ROSS07", "F-ROSS08", "F-ROSS09", "F-ROSS10"]
+  },
+  "qualified_blobs": {
+    "application_runtime": "a1af0d6eb0041565602711251748666f7b959d8e",
+    "test": "3fd4e85e6a9dd7a30161abd814bca3ff37b83caf",
+    "runner": "5f80183d3cbf5c122275f4d92dcdeecb360246c4",
+    "workflow": "d7bc968398413851198c9b8c1cebfd831718deb2"
+  },
+  "qualified_contract": {
+    "typed_in_memory_config_is_input": true,
+    "application_columns_and_templates_are_typed_inputs": true,
+    "parameter_forcing_state_and_numerical_registries_are_typed_inputs": true,
+    "f_ross09_is_sole_config_semantic_authority": true,
+    "f_ross08_is_sole_application_routing_materializer": true,
+    "f_ross07_is_sole_restricted_rossfast_batch_dispatch_authority": true,
+    "complete_config_validation_precedes_asset_registry_binding": true,
+    "complete_asset_preflight_remains_owned_by_f_ross07_before_first_physical_transaction": true,
+    "file_adapter_can_feed_the_typed_config_but_is_not_imported_by_production_runtime": true
+  },
+  "owner_qualification": {
+    "workflow_run_id": 34994419792,
+    "job_id": 104466949526,
+    "tested_head": "a799f5437e28794fbf9bf2ef811f9944805ce22f",
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "artifacts": {
+      "evidence": {
+        "id": 10406389699,
+        "digest": "sha256:9717ede593c9c90756468a14aada0c3e5dc815c5af3f9f7e6448cb518d4b270e"
+      },
+      "diagnostics": {
+        "id": 10406682446,
+        "digest": "sha256:019e7a254c977554e1c4095ca8ec076d8cbed77575bb33af16256e4729ef6f12"
+      }
+    }
+  },
+  "independent_canonical_qualification": {
+    "workunit": "F-CI81",
+    "canonical_preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "scientific_candidate_head": "7a9fda16868fb10599b76423b2e3ea3acfcb66cb",
+    "scientific_run_id": 34999320240,
+    "scientific_job_id": 104483474552,
+    "scientific_conclusion": "success",
+    "governance_head": "842aedf6174dc71bbd19d83686d02bc52ccc8476",
+    "governance_replay_run_id": 34999628992,
+    "governance_replay_job_id": 104484512869,
+    "governance_replay_conclusion": "success",
+    "o0_o2_sha256": "357e01c5db8aad112964aa2fb7d870068388f4c8772527ce12a8ae5d7ffde4c7",
+    "six_material_direct_authority_equivalence": true,
+    "exact_final_committed_physical_state_equivalence": true,
+    "reference_model_not_captured": true,
+    "missing_assets_fail_closed_before_state_mutation": true
+  },
+  "canonical_admission_record": {
+    "workunit": "F-CI81",
+    "preimage": "aa25126ee19e25c60bd266951b7494ba635efeca",
+    "admission_commit": "8a49b32339981037041466eda5e434ea53a97086",
+    "admission_tree": "e263597b221eae82c43ad526043a28b7a7e2142c",
+    "first_parent_is_exact_preimage": true,
+    "second_parent_is_qualified_governance_head": true,
+    "production_runtime_blob_admitted": "a1af0d6eb0041565602711251748666f7b959d8e"
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admission": true,
+  "canonical_admission": true,
+  "hard_nonclaims": [
+    "NO_PUBLIC_API_OR_M1_EXIT_CLAIM",
+    "NO_LEGACY_SWP_GRAMMAR_OR_PARSER_CHANGE",
+    "NO_SWAP_MAIN_WIRING",
+    "NO_SW_SOLVE_REINTERPRETATION",
+    "NO_REFERENCE_RICHARDS_CAPTURE",
+    "NO_MIXED_REFERENCE_AND_ROSSFAST_MULTISWAP_DISPATCH",
+    "NO_AUTOMATIC_CONFIG_OR_ASSET_DISCOVERY",
+    "NO_NEW_ROSSFAST_PHYSICS_TABLE_RETRY_OR_ROUTING_SEMANTICS",
+    "NO_SCIENTIFIC_DOMAIN_BROADENING_BEYOND_THE_CANONICAL_RESTRICTED_STACK"
+  ],
+  "next_gap": "NO_FURTHER_ROSS_SPECIFIC_RUNTIME_GAP_WITHIN_THE_RESTRICTED_TYPED_IN_MEMORY_SCOPE. A real external application host or Public API is a project-wide M1 concern; mixed reference/RossFast dispatch or scientific-domain broadening requires a separate explicit capability and qualification campaign.",
+  "next_permitted_action": "Do not extend F-ROSS11. Continue only through a separately owned project-wide M1 host/Public-API capability or a separately scoped RossFast capability with new requirements."
+}

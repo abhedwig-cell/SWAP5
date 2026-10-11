@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.canonical_source_admission_evidence.v1",
+  "work_unit": "F-CI32",
+  "candidate_head": "287ab45ab1292686ad6beecdd69b5a2fc116cc82",
+  "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "qualified_source": {
+    "path": "src/process/mod_drainage_spatial_distribution.f90",
+    "blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "F_VQ47_scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "F_VQ47_administrative_head": "12fef763fbf664972a9f26a02b666def5009fc1a"
+  },
+  "canonical_dependency": {
+    "path": "src/solver/mod_process_hydraulic_view.f90",
+    "blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "same_on_base_owner_and_candidate": true
+  },
+  "tree_locks": {
+    "pre_src": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+    "post_src": "f18948aef9a8755903951475078f218024ad3c42",
+    "reference": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "first_decisive_ci": {
+    "workflow_run": 34479260752,
+    "job": 102877638293,
+    "head": "287ab45ab1292686ad6beecdd69b5a2fc116cc82",
+    "conclusion": "success",
+    "authority_fetch": "success",
+    "exact_source_admission_gate_and_smoke": "success",
+    "final_admission_scope_diff": "success",
+    "O0_O2_smoke_output_identical": true
+  },
+  "scope_result": {
+    "scientific_requalification_performed": false,
+    "new_drainage_physics": false,
+    "runtime_binding": false,
+    "existing_production_source_modified": false,
+    "reference_source_modified": false,
+    "architecture_invariants_all_30_audited": true,
+    "adverse_architecture_delta_found": false
+  },
+  "promotion_preconditions": {
+    "canonical_must_still_equal_clean_base": true,
+    "exact_closeout_head_rerun_required": true,
+    "fast_forward_only": true,
+    "post_promotion_canonical_workflow_required": true
+  }
+}

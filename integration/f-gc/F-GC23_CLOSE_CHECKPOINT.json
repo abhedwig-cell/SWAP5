@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "capability": "F-GC23",
+  "phase": "CLOSE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_admission_preclose_head": "b95f66161ddaa7294661ab19e0f11cb7929879d5",
+  "admission_work_unit": "F-CI85",
+  "admission_branch": "integration/f-ci85-fgc23-whole-window-response-tangent-admission",
+  "owner_branch": "work/f-gc23-whole-window-response-tangent-one-corrector-composition",
+  "owner_qualified_source": "20edbe2bfcecca24541fa2885fe9ff4e8c1fb172",
+  "owner_qualify_checkpoint": "a5660705ab8564026a344c37d09e386acdee0df2",
+  "independent_qualification": {
+    "work_unit": "F-VQ95",
+    "checkpoint": "da64ffb1f4cd5105e2809a02ddae02f50a9c853b",
+    "workflow_run_id_initial": 35024429812,
+    "workflow_run_id_persisted_postimage": 35024568605,
+    "conclusion": "success"
+  },
+  "canonical_admission": {
+    "qualified_postimage": "b95f66161ddaa7294661ab19e0f11cb7929879d5",
+    "workflow_run_id_initial": 35024685584,
+    "workflow_run_id_persisted_postimage": 35024746143,
+    "conclusion": "success",
+    "promotion": "non-force fast-forward"
+  },
+  "production_source": "src/runtime/mod_groundwater_coupling_response.f90",
+  "production_source_blob": "645141676536ae8289b9d52433798a965c7baa04",
+  "preserved_dependencies": {
+    "F_GC20_source_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "F_GC22_source_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "F_GC21_mass_commit_rollback_source_blob": "fa2a5a45d558fbaaea242438915cdb7420b6503c"
+  },
+  "closed_contract": {
+    "accepted_whole_window_bottom_interface_tangent": true,
+    "same_committed_origin_and_exact_generic_window_provenance": true,
+    "accepted_trajectory_only": true,
+    "rejected_retry_zero_contribution": true,
+    "rollback_and_input_mutation_free_response_composition": true,
+    "deterministic_o0_o2": true,
+    "unavailable_or_nonsmooth_tangent_fails_closed": true,
+    "bottom_head_control_only": true,
+    "local_terminal_relabel_forbidden": true,
+    "covers_requested_interval_scope_upgrade_forbidden": true,
+    "finite_difference_reference_only": true,
+    "no_structural_extra_full_nonlinear_solve": true,
+    "groundwater_mass_commit_rollback_ownership_unchanged": true
+  },
+  "response_definition": {
+    "swap_native_tangent": "D = d(integral qbot dt_day)/d(hbot_cm)",
+    "groundwater_interface_tangent": "dq_GW/dH_SWAP = D/(Delta_t_day*86400)",
+    "residual_jacobian": "J = 1 - (dH_GW/dq_GW)*D/(Delta_t_day*86400)",
+    "one_corrector": "H_corrector = H_predictor - r_H/J"
+  },
+  "verdict": "CANONICALLY_ADMITTED_CLOSED",
+  "next_permitted_action": "Downstream consumers may consume F-GC23 as a canonical capability without reopening its scientific semantics. Any change to the tangent scope, corrector policy, groundwater mass ownership, or production source requires a new owning workunit and requalification.",
+  "exclusions": [
+    "EB",
+    "ROSS",
+    "RossFast",
+    "new groundwater physics",
+    "broad MODFLOW adapter work",
+    "F-GC24 implementation",
+    "F-GC25 implementation",
+    "F-GC26 implementation"
+  ]
+}

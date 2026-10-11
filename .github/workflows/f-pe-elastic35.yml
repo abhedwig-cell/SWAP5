@@ -1,0 +1,41 @@
+name: F-PE-ELASTIC35 row interchange parser
+
+concurrency:
+  group: f-pe-elastic35-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic35-row-interchange-parser
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_row_interchange_file_adapter.f90'
+      - 'tests/fpe/prepare_fpe_elastic35_fixtures.py'
+      - 'tests/fpe/test_fpe_elastic35_row_interchange_parser.f90'
+      - 'tests/fpe/run_fpe_elastic35.sh'
+      - 'docs/performance/F-PE-ELASTIC35_ROW_INTERCHANGE_PARSER_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic35.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/elastic35-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Qualify row interchange parser
+        run: bash tests/fpe/run_fpe_elastic35.sh "$RUNNER_TEMP/elastic35-pdok"

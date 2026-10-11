@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-DOC",
+  "work_unit": "F-DOC34",
+  "title": "Status-A reference preservation technical reference",
+  "phase": "VERIFY",
+  "decision": "CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+  "branch": "work/f-doc34-reference-preservation-technical-reference",
+  "canonical_start": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+  "content_postimage": "3c64d5ef035f1bd089bbf93448b0189686c9ad97",
+  "verified_content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
+  "frozen_status_a_authority": "992a5c657bfe10a10100f92e0cb77c4825ae65b6",
+  "frozen_scientific_baseline": "50346642bd565f79134ea17d5462e544b354998c",
+  "frozen_scientific_tree": "3b085d7dea3d3f3fce42ad9d8f259a8350205846",
+  "authority": {
+    "status_a_release_readiness": {
+      "path": "tests/qualification/status-a-baseline-20260916/STATUS_A_RELEASE_READINESS_BASELINE.md",
+      "blob": "336a94b22ef508343fa322d7a0cfa84cb9eb30c6"
+    },
+    "permanent_testbank": {
+      "path": "docs/testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md",
+      "blob": "7fa2b1acbdb9964b14cdc987caec915f18e2caf1"
+    },
+    "permanent_replay_runner": {
+      "path": "testbank/runners/run_ftb11_current_source_replays.sh",
+      "blob": "fbfd57f20feae026feeea821043787b83ed35a43"
+    },
+    "full_richards_reference_completion": {
+      "work_unit": "F-SI33",
+      "commit": "8a162a7b4aa7a67778ed9be454cfcd67d01276ce",
+      "status_blob": "bd5c582bd249168b71af974e167d29741bf49393",
+      "decision": "QUALIFIED_FULL_RICHARDS_REFERENCE_SOLVER_V1_100_PERCENT_COMPLETE"
+    }
+  },
+  "reconciliation": {
+    "stale_literal_path_finding": "Current reviewer-facing traceability rendered historical suite labels such as tests/run-baseline.sh as literal repository paths although those files are absent from the frozen scientific and Status-A trees. F-DOC34 corrects current navigation without modifying the historical release-readiness evidence record.",
+    "fgc29_name_ambiguity": "Current documentation now distinguishes the release-readiness umbrella same-tree preservation attribution from integration/f-gc/F-GC29_* response-sensitivity records."
+  },
+  "claim_ceiling": {
+    "allowed": [
+      "explain immutable qualification evidence versus moving/current-source preservation replay",
+      "explain exact frozen Status-A/scientific commit and tree binding",
+      "explain F-SI33 Full Richards reference preservation and F-TB11 stable preservation roles",
+      "state that O0/O2/reference checksum and closure evidence is bounded to the qualified fixtures and denominator named by its authority",
+      "prospectively replace stale literal test-path navigation in current documentation with concrete authority paths"
+    ],
+    "forbidden": [
+      "claim universal bitwise equivalence for every possible SWAP input",
+      "claim that all historical SWAP options are covered by Status-A preservation",
+      "treat a successful regression suite as proof for future changed dependency surfaces",
+      "promote RossFast or other post-Status-A work into the frozen denominator",
+      "rewrite historical qualification evidence as if stale narrative labels never existed",
+      "change production, reference, tests, physics or numerical semantics"
+    ]
+  },
+  "scope_diff": [
+    "docs/capabilities/index.md",
+    "docs/capabilities/reference-preservation.md",
+    "docs/status-a/TRACEABILITY.md",
+    "integration/f-doc/F-DOC34_AUTHORITY_MATRIX.md",
+    "integration/f-doc/F-DOC34_STATUS.json",
+    "mkdocs.yml"
+  ],
+  "scope_check": {
+    "changed_file_count": 6,
+    "production_src_changed": false,
+    "reference_changed": false,
+    "tests_changed": false,
+    "scientific_denominator_changed": false
+  },
+  "verification": {
+    "pull_request": 201,
+    "content_head": "573d3a6a0ff347b087b8f51adef05781fbcf215b",
+    "content_workflow_run": 35283720886,
+    "content_workflow_job": 105411255464,
+    "repository_documentation_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "workflow_conclusion": "success",
+    "status_only_exact_head_rerun": "PENDING"
+  },
+  "production_reference_test_delta": false,
+  "verdict": "CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
+  "next_permitted_action": "REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_PR_MERGEABILITY"
+}

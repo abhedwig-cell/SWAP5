@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-GC38",
+  "title": "MODFLOW6 Prepared-Solve Iterative Backend — Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "ADMIT",
+  "verdict": "CANONICALLY_ADMITTED_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND",
+  "canonical_preimage": {
+    "branch": "integration/f-ci-canonical",
+    "head": "7964a5e8d8c0cb35262cb598bf3eafc9c886c77f"
+  },
+  "canonical_production_admission": {
+    "promoted_head": "ecb92c0ea5217a63626c8d54e2130e2eac284cb4",
+    "non_force_fast_forward": true,
+    "admission_gate": "F-CI104",
+    "initial_gate_head": "de9ac14dd43fe652ee7c5125f41bdec886a6ecc4",
+    "initial_gate_run": 35313751143,
+    "initial_gate_job": 105500908859,
+    "status_head_run": 35313853761,
+    "status_head_job": 105501217871,
+    "conclusion": "success"
+  },
+  "independent_qualification": {
+    "work_unit": "F-VQ111",
+    "status_head": "9329d95d2c69ac8cf565e0775952b5ddc36f673e",
+    "final_green_run": 35313584074,
+    "final_green_job": 105500410072,
+    "verifier_production_delta": "NONE",
+    "owner_test_reused": false,
+    "max_path_difference_m": 2.3120538816812086e-10
+  },
+  "admitted_production_blobs": {
+    "src/adapter/modflow6_prepared_solve_session.py": "d26a11b292c114083d4de15c32f0a56fc45db833"
+  },
+  "ownership_boundary": {
+    "position": "below internal SWAP5-MODFLOW coupling service",
+    "imod_coupler_role": "coarse orchestration only",
+    "backend_owns": [
+      "prepare_solve/solve/finalize_solve session lifecycle",
+      "fixed accepted XOLD guard",
+      "live F-GC34 republishing between solve iterations",
+      "live MXITER fail-closed enforcement"
+    ],
+    "backend_does_not_own": [
+      "SWAP predictor/corrector science",
+      "coupling residual/convergence policy",
+      "finalize_time_step/timestep acceptance",
+      "whole-window rollback/reconstruction"
+    ]
+  },
+  "exclusions": [
+    "predictor/corrector ownership in iMOD Coupler",
+    "SWAP scientific orchestration",
+    "whole-window rollback/reconstruction",
+    "Ribasim",
+    "irrigation"
+  ],
+  "next_permitted_action": "Close F-GC38 metadata-only, then reconcile F-GC39 against closed canonical F-GC38 and authoritative F-GC37 internal-service ownership contract."
+}

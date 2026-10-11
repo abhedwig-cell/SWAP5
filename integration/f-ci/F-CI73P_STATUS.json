@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.fci73p.status.v1",
+  "work_unit": "F-CI73P",
+  "title": "F-GC25 current-canonical postimage reconciliation and moving preservation",
+  "phase": "POSTIMAGE_RECONCILIATION_CLOSEOUT",
+  "decision": "QUALIFIED_F_CI73P_CURRENT_CANONICAL_POSTIMAGE_RECONCILIATION",
+  "branch": "qualification/f-ci73p-fgc25-current-canonical-postimage-reconciliation",
+  "promotion": {
+    "preimage": "1ef995e682cbc0fbbce8b68281646b0de1bbbcd3",
+    "promoted_F_CI73_head": "b2f5d7773dd426294a837e4de861472e1a8ee866",
+    "production_admission": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
+    "promoted_tree": "55cb32c19015aed358cc4239d83c80082f1bd89e",
+    "true_two_parent_promotion": true,
+    "promoted_tree_identity": true
+  },
+  "authorities": {
+    "F_GC25_owner_head": "43c9f09110dea83928ef7d58990c37575d8ca223",
+    "F_GC25_owner_review_head": "251adbb2aeece53cf9b745e488a44b49d67aa3eb",
+    "F_VQ87_independent_head": "37c02ac3747bfaacdb8b3408b8228f3deb2b9824",
+    "F_CI73_final_head": "b2f5d7773dd426294a837e4de861472e1a8ee866"
+  },
+  "initial_postimage_evidence": {
+    "tested_head": "5c720bb538db105f917abe829d7ac3b3482314a5",
+    "tested_tree": "043522501464b15398be1c832f8f6821d566d188",
+    "workflow_run": 34955056357,
+    "workflow_job": 104335003471,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "python": "3.12.3",
+    "git": "2.55.0",
+    "promotion_parentage_tree": "PASS",
+    "governance_only_delta": "PASS",
+    "production_blobs_preserved": "PASS",
+    "immutable_F_VQ87_evidence": "PASS",
+    "F_GC20_F_GC22_inheritance": "PASS",
+    "owner_gate_current_canonical": "PASS",
+    "publication_boundary_audit": "PASS",
+    "independent_F_VQ87_oracle": "PASS",
+    "independent_oracle_sha256": "de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
+    "O0_O2_semantic_identity": "PASS"
+  },
+  "production_authority_blobs": {
+    "src/runtime/mod_groundwater_tile_aggregation.f90": "d62ecba039d9bef178acde6900b81e9d5b0931eb",
+    "src/runtime/mod_groundwater_accuracy_binding.f90": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+    "src/runtime/mod_groundwater_multiswap_types.f90": "35f475228886bf04d64efb13bbd84a42bc2678ad",
+    "src/runtime/mod_groundwater_multiswap_topology.f90": "2ce4e9f7083c46e7040493d3029abfc233f59f16",
+    "src/runtime/mod_groundwater_multiswap_swap_phase.f90": "9a69effc9433363e52fcf8d5b40fa2c5d01347a9",
+    "src/runtime/mod_groundwater_multiswap_transaction.f90": "d7d9fa81d9d3d5e619e51625f202a8e425807eda",
+    "src/runtime/mod_groundwater_multiswap_publication.f90": "02bc938fac28231c2c1234dd4ac3c3f8ba617983",
+    "src/runtime/mod_groundwater_multiswap_coupler.f90": "f2bf0e7d144fd3c0b9dc18f24f24eb4ffb7ffa0f"
+  },
+  "inherited_authorities": {
+    "F_GC20": {
+      "head": "54dc9cc930468d9f376f596fe2c1b6f45938b59b",
+      "production_blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb"
+    },
+    "F_GC22": {
+      "head": "c50f3770ae8e4bee7c276a080be00156218944f1",
+      "production_blob": "b8ac03e810c73519b433f7851c6fd143ba26676a",
+      "gc25_relevant_upstream_blobs": {
+        "src/runtime/mod_coupling_application_accuracy_contract.f90": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
+        "src/runtime/mod_coupling_application_accuracy_adapter.f90": "9212d600e89c85287e9280832c7e0a94befb642e",
+        "src/runtime/mod_groundwater_coupling_policy.f90": "5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976"
+      }
+    }
+  },
+  "evidence_reuse": {
+    "F_VQ87_requalified": false,
+    "dependency_change_detected": false,
+    "reason": "F-VQ87 is reused as immutable independent evidence because the admitted F-GC25 production, owner-test and relevant dependency blobs are byte-identical to the independently qualified authorities. F-CI73P additionally replays the adversarial oracle at O0 and O2 and requires the qualified oracle hash."
+  },
+  "scope": {
+    "production_canonical_admitted": true,
+    "postimage_reconciled": true,
+    "moving_preservation_installed": true,
+    "src_changed_by_F_CI73P": false,
+    "reference_changed_by_F_CI73P": false,
+    "new_scientific_semantics": false,
+    "standalone_F_GC20_admission_claim": false,
+    "standalone_F_GC22_admission_claim": false,
+    "F_GC23_qualified": false,
+    "F_GC26_qualified": false,
+    "MODFLOW_backend_qualified": false,
+    "groundwater_coupling_v1_complete": false
+  },
+  "temporal_supersession_reconciliation": {
+    "original_F_GC22_governance_pin_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "canonical_superseding_blob": "b648502dea7dfd5de8279bcfa06908c705dcfd2f",
+    "classification": "QUALIFIED_CANONICAL_SUPERSESSION_OUTSIDE_F_GC25_EXECUTABLE_BOUNDARY",
+    "requalified_by_F_CI73P": false
+  },
+  "hard_nonclaims": [
+    "F-CI73P changes no production or reference source and introduces no new scientific semantics.",
+    "F-CI73P does not create standalone F-GC20 or F-GC22 canonical admission claims outside their inherited F-GC25 role.",
+    "F-CI73P does not requalify F-SI38 temporal-indicator semantics.",
+    "F-CI73P does not qualify F-GC23 whole-window response tangent composition or F-GC26 external groundwater adapter conformance.",
+    "F-CI73P does not qualify a MODFLOW backend, throughput or parallel speedup.",
+    "F-CI73P does not claim groundwater-coupling-v1 completion.",
+    "No EB, Ross or RossFast capability is modified or qualified by F-CI73P."
+  ],
+  "closeout_requirements": [
+    "This exact final F-CI73P status head must pass the F-CI73P workflow.",
+    "The F-CI73P governance merge must preserve the admitted F-GC25 production and reference trees.",
+    "The moving-preservation workflow must pass on the resulting canonical postimage."
+  ]
+}

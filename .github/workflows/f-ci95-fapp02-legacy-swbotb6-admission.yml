@@ -1,0 +1,51 @@
+name: F-CI95 F-APP02 legacy SWBOTB6 canonical admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci95-fapp02-legacy-swbotb6-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run bounded F-CI95 admission gate
+        shell: bash
+        run: |
+          chmod +x tests/fci/run_fci95_fapp02_admission.sh
+          tests/fci/run_fci95_fapp02_admission.sh | tee F-CI95_GATE.log
+      - name: Record evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "work_unit=F-CI95"
+            echo "owner_work_unit=F-APP02"
+            echo "qualification=F-VQ102"
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "binding_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90 || true)"
+            grep -E '^FCI95_' F-CI95_GATE.log || true
+          } > F-CI95_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci95-evidence
+          path: F-CI95_EVIDENCE.txt
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci95-diagnostics
+          path: F-CI95_GATE.log
+          if-no-files-found: warn

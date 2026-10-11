@@ -1,0 +1,88 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0-DEP01",
+  "parent_work_unit": "F-MIG431-LOW03-P0",
+  "state": "SEMANTIC_SUCCESSOR_ACCEPTED_CLOSED",
+  "date": "2026-10-02",
+  "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+  "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
+  "branch_recovery_point": "28616cc050938efd1170867496cd27fe869c3ebc",
+  "pull_request": 975,
+  "owning_authority": "central F-MIG431 lower-boundary / shared solver contract reconciliation",
+  "scope": "Dependency-aware semantic preservation of existing RossFast/common typed bindings before LOW03-P0 canonical production admission",
+  "qualified_postimage": "3407286de38d8d11219678257874afd3c44320a7",
+  "completed_bounded_solver_qualification": {
+    "run": 36970096511,
+    "job": 110722079851,
+    "result": "success",
+    "meaning": "Source-bound direct Reference solver, mass, replay, physical restart and six existing application tests only; not complete transitive shared-contract preservation"
+  },
+  "trigger": {
+    "run": 36970385712,
+    "job": 110722929276,
+    "runner": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+    "failure": "FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90"
+  },
+  "baseline_adjudication": {
+    "canonical_contract_blob": "1afbb686be7c3e95c4311abbf65d6a601296a62d",
+    "candidate_contract_blob": "ca4ba32ffe78b6b8950ac95fe11d249cef3e6090",
+    "historical_guard_expected_contract_blob": "f67cbe5b4612e8f4230f58f81cbffd3d44336c0d",
+    "guard_would_already_reject_canonical": true,
+    "classification": "The red hash guard alone is not proof of a LOW03 regression: current canonical already differs. LOW03 nevertheless makes an additional shared-contract mutation, so existing RossFast evidence cannot simply be inherited without semantic requalification.",
+    "no_physical_regression_established": true
+  },
+  "held_fixed": [
+    "No RossFast thresholds/kernel/model/provider/selection/transaction changes",
+    "No weakening or deleting historical hash guards",
+    "No silent successor hash allowlisting",
+    "No new application mode3 allowlist",
+    "No C ABI/datum/groundwater/ledger/restart changes"
+  ],
+  "required_next_gates": [
+    "Reconcile shared typed-contract successor against current canonical, not only old BOFEK00 hash",
+    "Locally qualify existing 36-material provider envelope and 216-case K2/K4/K8 production certificate under the new contract",
+    "Qualify adapter/selection semantic successor, serialized production wiring and paired solver-seam preservation",
+    "Prove mode3/resistance defaults cannot leak into RossFast or directional/default shared bindings; unsupported modes fail closed",
+    "Persist exact-input semantic successor evidence and explicit central acceptance before any guard successor recognition or LOW03-P0 merge"
+  ],
+  "gate_locators": [
+    "tests/ross/run_ross13_36_material_production_envelope.sh",
+    "tests/ross/run_fross22_admission_all_material.sh",
+    "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+    "tests/ross/run_ross12_serialized_production_wiring.sh",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh"
+  ],
+  "unrelated_findings": [
+    {
+      "run": 36970385759,
+      "job": 110722929759,
+      "failure": "FCI93_FAIL M1-C3 dynamic-top adapter blob drift",
+      "classification": "Dynamic-top adapter is not changed by LOW03; inherited snapshot mismatch, not automatically a LOW03 physics failure"
+    },
+    {
+      "run": 36970385690,
+      "failure": "Missing existing direct-retention provider module in historical compile list",
+      "classification": "No adjacent compile-list repair authorized here"
+    }
+  ],
+  "canonical_production_delta": [],
+  "canonical_mode3_admitted": false,
+  "branch_count_added": 0,
+  "low03_application_issued": false,
+  "parked_selectors": [
+    1
+  ],
+  "active_sequence": [
+    3,
+    8
+  ],
+  "closed_at": "2026-10-02",
+  "accepted_qualification": {
+    "run": 36971466508,
+    "job": 110726138312,
+    "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+    "artifact_id": 11212276848,
+    "artifact_digest": "sha256:2bc97a2fb4439661ce4c4ea5afff9b81b1530badcead2775a94e008baa0dc9a2",
+    "result": "PASS"
+  },
+  "closure": "All six existing numerical programs pass on exact current canonical and candidate at O0/O2, complete stdout identity across four runs; candidate fail-closed default/unsupported-mode tests pass. Historical guard unchanged. Bounded shared dependency closure accepted by central lower-boundary regie; no global CI-green claim."
+}

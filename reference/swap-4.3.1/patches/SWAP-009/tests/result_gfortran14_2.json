@@ -1,0 +1,65 @@
+{
+  "gate": "SWAP-009-exact-candidate-PDI-hydraulic-function-level",
+  "status": "PASS",
+  "scope": "function-level actual WC_K_models_04_11 PDI vapor path; not full SWAP",
+  "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+  "compile_flags": "-std=f2018 -ffree-line-length-none -O0 -fcheck=all -ffpe-trap=invalid,zero,overflow -Wall -Wextra",
+  "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "b0_target_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+  "stored_patch_sha256": "43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66",
+  "corrected_target_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+  "target_occurrences": 4,
+  "model": 8,
+  "temperature_c": 20.0,
+  "ratio_tolerance": 1e-09,
+  "comparisons": [
+    {
+      "h_cm": -100000.0,
+      "old_kvap": 7.404679626052402e-08,
+      "corrected_kvap": 6.405073190232646e-08,
+      "old_over_corrected_kvap": 1.156064795222652,
+      "independent_kelvin_ratio": 1.1560647951960363,
+      "relative_ratio_error": 2.3022583789890894e-11,
+      "water_content_delta": 0.0,
+      "k_no_vap_delta": 0.0,
+      "old_total_k": 0.015811179541498136,
+      "corrected_total_k": 0.015811169545433778,
+      "old_over_corrected_total_k": 1.0000006322153672,
+      "pass": true
+    },
+    {
+      "h_cm": -1000000.0,
+      "old_kvap": 1.6626260788933037e-07,
+      "corrected_kvap": 3.8991758945748634e-08,
+      "old_over_corrected_kvap": 4.264044823437194,
+      "independent_kelvin_ratio": 4.264044823431949,
+      "relative_ratio_error": 1.2301891663809935e-12,
+      "water_content_delta": 0.0,
+      "k_no_vap_delta": 0.0,
+      "old_total_k": 0.0005001662621563617,
+      "corrected_total_k": 0.0005000389913074182,
+      "old_over_corrected_total_k": 1.0002545218496077,
+      "pass": true
+    },
+    {
+      "h_cm": -10000000.0,
+      "old_kvap": 0.00012950665362738541,
+      "corrected_kvap": 6.517401381965038e-11,
+      "old_over_corrected_kvap": 1987090.3453292965,
+      "independent_kelvin_ratio": 1987090.3453166387,
+      "relative_ratio_error": 6.370036456608933e-12,
+      "water_content_delta": 0.0,
+      "k_no_vap_delta": 0.0,
+      "old_total_k": 0.0001453180419282285,
+      "corrected_total_k": 1.581145347485689e-05,
+      "old_over_corrected_total_k": 9.190682068496159,
+      "pass": true
+    }
+  ],
+  "remaining_gates": [
+    "B1.5p1 VQ integration/identity acceptance",
+    "representative full SWAP PDI production-path regression",
+    "hard water-balance evidence for full production-path regression"
+  ]
+}

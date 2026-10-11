@@ -1,0 +1,42 @@
+{
+  "schema":"swap5.fci35_status.v2",
+  "work_unit":"F-CI35",
+  "title":"Parallel Committed-Boundary Restart Composition Current-Canonical Admission",
+  "phase":"CLOSED_CANONICAL_ADMITTED",
+  "decision":"QUALIFIED_CLOSED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION_CANONICAL_CAPABILITY_ADMISSION",
+  "pre_admission_canonical_base":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "canonical_capability_admission_head":"43790409c689c8ceca372794a1ff3244254c04e5",
+  "independent_authority":{"work_unit":"F-MQ29","closeout":"5ea88d81a63e6c706c87e99ac360f91f08711fc1","decision":"QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION"},
+  "owner_authority":{"work_unit":"F-MR32","candidate":"1e27f2758d9dbed11350aec5a089662921826d21","closeout":"eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4"},
+  "pre_admission_replays":[{"run":34497825051,"job":102940675165,"head":"692db28996832bdd2a569148bdc45fd98c7612fe","conclusion":"success"},{"run":34498146756,"job":102941792510,"head":"43790409c689c8ceca372794a1ff3244254c04e5","conclusion":"success"}],
+  "post_promotion_replay":{"run":34498274424,"job":102942219732,"head":"43790409c689c8ceca372794a1ff3244254c04e5","branch":"integration/f-ci-canonical","conclusion":"success"},
+  "attempt_1":{"run":34497466250,"job":102939467747,"conclusion":"failure","classification":"QUALIFICATION_WRAPPER_OBSERVABILITY_DEFECT_NOT_SCIENTIFIC_OR_PRODUCTION_DEFECT","canonical_ref_advanced_during_failure":false},
+  "state":{"realized":true,"persisted":true,"tested":true,"independently_qualified":true,"architecture_invariants_reviewed":true,"canonical_ref_advanced":true,"post_promotion_replay_passed":true,"canonical_admitted":true,"closed":true},
+  "production_delta":[],
+  "reference_delta":[],
+  "qualified_scope":[
+    "restricted real-physics MultiSWAP committed-boundary restart followed by parallel continuation",
+    "serialized, 2-worker and 4-worker committed restart origins",
+    "2-worker and 4-worker continuation including 2-to-4 and 4-to-2 worker transitions",
+    "whole-registry atomic restore before parallel dispatch",
+    "worker scratch reconstructed after restore and not persisted",
+    "changed caller-order scientific identity with deterministic canonical result publication",
+    "held-out 3,5,9,16,23,33-column independent qualification",
+    "restart negative fail-closed matrix preservation",
+    "hard per-column water-mass residual <= 1e-12 cm and complete authoritative aggregate mass identity",
+    "O0/O2 exact output identity within the frozen restricted profile"
+  ],
+  "nonclaims":[
+    "mid-transaction restart",
+    "trial-state persistence",
+    "worker/Newton/Jacobian/warm-start persistence",
+    "restart byte or file format",
+    "cross-version migration",
+    "new parallel physics family",
+    "production-scale performance or speedup",
+    "general SWAP5 release qualification"
+  ],
+  "architecture_invariants":"integration/f-ci/F-CI35_INVARIANT_REVIEW.json",
+  "post_promotion_certificate":"integration/f-ci/F-CI35_POST_PROMOTION.json",
+  "closeout_rule":"This final governance closeout commit must itself pass the F-CI35 canonical-admission workflow; the external closeout is authoritative only after that exact-head replay is green."
+}

@@ -1,0 +1,184 @@
+{
+  "schema": "swap5.f-ross25.serial-hydrologic-validation-summary.v1",
+  "workunit": "F-ROSS25",
+  "phase": "CLOSED",
+  "title": "Admitted tiered RossFast serial hydrologic trajectory validation",
+  "preregistration": "integration/f-ross/F-ROSS25_SERIAL_HYDROLOGIC_VALIDATION_PREREGISTRATION.json",
+  "measurement_authority": {
+    "head": "9230f3c5417cf76a937c0016e71f5b9ebdce425e",
+    "workflow_run": 35350469193,
+    "job": 105617121612,
+    "artifact_id": 10549829161,
+    "artifact_digest": "sha256:0a91babdcb3e2ed1eb46b333e92d958e890cd3f5fd46a7eaa918ad9832fb8b48",
+    "artifact_file": "F-ROSS25_SERIAL_VALIDATION_RESULT.json",
+    "execution_conclusion": "PASS"
+  },
+  "production_authority": {
+    "f_ross22_admission": "8875e46b28cf2462948ca1952ed283cb2c7483eb",
+    "kernel_blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+    "solver_blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+    "model_binding_blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+    "provider_blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+    "production_or_reference_mutation": false
+  },
+  "domain": {
+    "trajectories": 216,
+    "intervals_per_trajectory": 32,
+    "total_duration_day": 0.0512,
+    "materials": "B01..B18 and O01..O18",
+    "profiles": [
+      "WET_GRADIENT",
+      "MID_GRADIENT",
+      "DRY_GRADIENT"
+    ],
+    "forcing_policies": [
+      "ZERO_SHARED",
+      "NOMINAL_SHARED"
+    ]
+  },
+  "aggregate": {
+    "rossfast_valid_all_32_intervals": 173,
+    "reference_valid_all_32_intervals": 210,
+    "paired_complete_32_intervals": 167,
+    "envelope_loss": 0,
+    "rossfast_failures": 43,
+    "reference_failures": 6,
+    "accepted_rossfast_intervals_by_tier": {
+      "K2": 5475,
+      "K4": 0,
+      "K8": 0
+    }
+  },
+  "rossfast_failures": {
+    "reason": "STATUS_NOT_CONVERGED",
+    "all_first_failure_interval": 2,
+    "all_policy": "NOMINAL_SHARED",
+    "by_profile": {
+      "WET_GRADIENT": 36,
+      "MID_GRADIENT": 7,
+      "DRY_GRADIENT": 0
+    },
+    "failure_ids": [
+      2,
+      8,
+      14,
+      20,
+      26,
+      32,
+      34,
+      38,
+      44,
+      50,
+      56,
+      62,
+      68,
+      74,
+      76,
+      80,
+      86,
+      88,
+      92,
+      98,
+      104,
+      110,
+      116,
+      122,
+      128,
+      134,
+      140,
+      142,
+      146,
+      148,
+      152,
+      158,
+      164,
+      170,
+      176,
+      182,
+      188,
+      190,
+      194,
+      200,
+      206,
+      212,
+      214
+    ]
+  },
+  "reference_failures": {
+    "reason": "STATUS_NOT_CONVERGED",
+    "count": 6,
+    "ids": [
+      91,
+      97,
+      103,
+      199,
+      205,
+      211
+    ],
+    "note": "All six occurred on WET_GRADIENT ZERO_SHARED trajectories while RossFast remained valid."
+  },
+  "stratified": {
+    "ZERO_SHARED": {
+      "trajectories": 108,
+      "rossfast_valid_all": 108,
+      "reference_valid_all": 102,
+      "paired_complete": 102
+    },
+    "NOMINAL_SHARED": {
+      "trajectories": 108,
+      "rossfast_valid_all": 65,
+      "reference_valid_all": 108,
+      "paired_complete": 65
+    },
+    "WET_GRADIENT": {
+      "trajectories": 72,
+      "rossfast_valid_all": 36,
+      "reference_valid_all": 66,
+      "paired_complete": 30
+    },
+    "MID_GRADIENT": {
+      "trajectories": 72,
+      "rossfast_valid_all": 65,
+      "reference_valid_all": 72,
+      "paired_complete": 65
+    },
+    "DRY_GRADIENT": {
+      "trajectories": 72,
+      "rossfast_valid_all": 72,
+      "reference_valid_all": 72,
+      "paired_complete": 72
+    }
+  },
+  "discrepancy_on_complete_trajectories": {
+    "max_final_head_inf_cm": 0.09484979175972796,
+    "max_final_theta_inf": 0.00008354831330278922,
+    "max_final_storage_diff_cm": 2.842170943040401e-14
+  },
+  "interpretation": [
+    "The numerical records from workflow 35350469193 are retained as historical measurement evidence, but the scientific classification is withdrawn.",
+    "The serial harness checked the public top-flux envelope with the wrong sign relative to the production RossFast adapter. Therefore the 43 interval-2 NOMINAL_SHARED rejections cannot be classified as intrinsic RossFast solver failures from this run.",
+    "A corrected replay must distinguish true route failure from production-envelope loss without changing the preregistered states, forcing values, tolerances or tier ladder."
+  ],
+  "scientific_verdict": "WITHDRAWN_PENDING_CORRECTED_REPLAY",
+  "firewall": [
+    "NO_PRODUCTION_MUTATION",
+    "NO_REFERENCE_MUTATION",
+    "NO_TOLERANCE_CHANGE",
+    "NO_CERTIFICATE_THRESHOLD_CHANGE",
+    "NO_TIER_LADDER_CHANGE",
+    "NO_MATERIAL_OR_GEOMETRY_WIDENING",
+    "NO_NEW_BOUNDARY_MODE",
+    "NO_PERFORMANCE_CLAIM",
+    "NO_DOMAIN_RETUNING_AFTER_RESULTS"
+  ],
+  "interpretation_status": "SUPERSEDED_INVALID_PREFLIGHT_CLASSIFICATION",
+  "initial_reported_scientific_verdict": "NEGATIVE_SERIAL_COMPOSITION_NOT_UNIVERSALLY_VALID_IN_PREREGISTERED_DOMAIN",
+  "correction": {
+    "defect_class": "MECHANICAL_HARNESS_PREFLIGHT_SIGN_BUG",
+    "prior_measurement_retained": true,
+    "prior_solver_failure_interpretation_valid": false,
+    "prior_envelope_loss_count_valid": false,
+    "repair_commit": "fd22ea1fc994d33763741a3c06ec0ea9051c8225",
+    "corrected_replay": "PENDING"
+  }
+}

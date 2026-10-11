@@ -1,0 +1,36 @@
+name: F-SI39 B1.11 KSATEXM preservation
+
+on:
+  push:
+    branches:
+      - work/f-si39-b110-ksatexm-preservation
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fsi/test_fsi39_b110_ksatexm.f90'
+      - 'tests/fsi/run_fsi39_b110_ksatexm.sh'
+      - 'integration/f-si/F-SI39_*'
+      - '.github/workflows/f-si39-b110-ksatexm.yml'
+  pull_request:
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fsi/test_fsi39_b110_ksatexm.f90'
+      - 'tests/fsi/run_fsi39_b110_ksatexm.sh'
+      - 'integration/f-si/F-SI39_*'
+      - '.github/workflows/f-si39-b110-ksatexm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fsi/run_fsi39_b110_ksatexm.sh

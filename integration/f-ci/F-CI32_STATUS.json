@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.canonical_source_admission_status.v1",
+  "work_unit": "F-CI32",
+  "title": "Remediated Restricted DIVDRA Spatial Distribution Canonical Source Admission",
+  "qualification_branch": "qualification/f-ci32-fpm08br-divdra-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "QUALIFIED_CLOSED_CANONICAL_SOURCE_ADMISSION_REQUIRES_FINAL_GOVERNANCE_HEAD_RECHECK",
+  "decision": "QUALIFIED_CLOSED_REMEDIATED_RESTRICTED_DIVDRA_CANONICAL_SOURCE_ADMISSION",
+  "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "candidate": {
+    "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "scientific_administrative_head": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "post_src_tree": "f18948aef9a8755903951475078f218024ad3c42",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "dependency": {
+    "path": "src/solver/mod_process_hydraulic_view.f90",
+    "canonical_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "owner_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "resolved": true
+  },
+  "qualification": {
+    "first_decisive_head": "287ab45ab1292686ad6beecdd69b5a2fc116cc82",
+    "first_decisive_run": 34479260752,
+    "first_decisive_job": 102877638293,
+    "first_decisive_conclusion": "success",
+    "canonical_workflow_preparation_head": "1aede22f31257bfdd46e866ddfc33f16c8de0dc8",
+    "canonical_workflow_preparation_run": 34479433026,
+    "canonical_workflow_preparation_job": 102878203256,
+    "canonical_workflow_preparation_conclusion": "success",
+    "exact_promotion_head": "1d3f0f64771e593264ea037485030cd27a6958ee",
+    "exact_promotion_head_run": 34479550209,
+    "exact_promotion_head_job": 102878593444,
+    "exact_promotion_head_conclusion": "success",
+    "O0_O2_smoke_output_identical": true,
+    "exact_source_delta_verified": true,
+    "zero_reference_delta_verified": true
+  },
+  "canonical_admission": {
+    "pre_admission_head": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "promoted_head": "1d3f0f64771e593264ea037485030cd27a6958ee",
+    "promotion_method": "non_forced_fast_forward",
+    "post_promotion_run": 34479613064,
+    "post_promotion_conclusion": "success",
+    "frozen_fci31_job": 102879044431,
+    "frozen_fci31_conclusion": "success",
+    "current_fci32_postimage_job": 102879337095,
+    "current_fci32_postimage_conclusion": "success",
+    "promoted_source_delta": [
+      "src/process/mod_drainage_spatial_distribution.f90"
+    ],
+    "existing_production_source_modified": false,
+    "reference_tree_modified": false,
+    "runtime_binding_added": false
+  },
+  "state": {
+    "live_authorities_rechecked": true,
+    "clean_branch_created_from_current_canonical": true,
+    "plan_persisted": true,
+    "pretest_status_persisted": true,
+    "candidate_source_persisted": true,
+    "candidate_source_blob_exact": true,
+    "admission_gate_persisted": true,
+    "workflow_persisted": true,
+    "canonical_lineage_workflow_prepared": true,
+    "architecture_audit_persisted": true,
+    "architecture_audited_all_30": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_ci_passed": true,
+    "production_source_admitted": true,
+    "runtime_bound": false,
+    "scientific_scope_reopened": false,
+    "new_drainage_physics": false,
+    "reference_source_modified": false,
+    "closed": true,
+    "final_governance_head_requalification_pending": true
+  },
+  "scope_guard": {
+    "canonical_source_admission_only": true,
+    "scientific_scope_reopened": false,
+    "new_drainage_physics": false,
+    "runtime_binding": false,
+    "runtime_composition": false,
+    "existing_production_source_modified": false,
+    "reference_source_modified": false
+  },
+  "next_stage": "separate DIVDRA runtime binding/composition workunit followed by genuinely independent runtime qualification; do not infer runtime consumption from F-CI32 source admission"
+}

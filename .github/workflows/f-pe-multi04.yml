@@ -1,0 +1,70 @@
+name: F-PE-MULTI04 production groundwater parallel admission
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_groundwater_participant_registry.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'tests/fpe/run_fpe_multi04_*.sh'
+      - 'docs/performance/F-PE-MULTI04_*.md'
+      - '.github/workflows/f-pe-multi04.yml'
+  workflow_dispatch:
+
+jobs:
+  p1-candidate-backend-ownership:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify worker-owned candidate lifecycle
+        run: bash tests/fpe/run_fpe_multi04_p1_backend_ownership.sh
+
+  p1b-application-context-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify production application-context 1/2/4-worker identity
+        run: bash tests/fpe/run_fpe_multi04_p1b_application_context_identity.sh
+
+  p1c-application-context-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify production TEMPORAL08 application-context scaling
+        run: bash tests/fpe/run_fpe_multi04_p1c_application_context_scaling.sh
+
+  p2-hybrid-production-scheduling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify frozen mixed-cost production hybrid scheduling
+        run: bash tests/fpe/run_fpe_multi04_p2_hybrid_production_scheduling.sh
+
+  p3p4-live-worker4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Qualify live MODFLOW6 worker4 publication and coupling identity
+        run: bash tests/fpe/run_fpe_multi04_p3p4_live_worker4.sh
+

@@ -1,0 +1,29 @@
+name: F-CI21 SI25 scientific replay
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'src/**'
+      - 'tests/fci/run_fci21_si25_scientific_replay.sh'
+      - 'tests/fsi/**'
+      - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
+      - 'integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json'
+      - '.github/workflows/fci21-si25-scientific-replay.yml'
+  workflow_dispatch:
+
+jobs:
+  replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+      - name: Run F-CI21 SI25 scientific replay
+        run: bash tests/fci/run_fci21_si25_scientific_replay.sh

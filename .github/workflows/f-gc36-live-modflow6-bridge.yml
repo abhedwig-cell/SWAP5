@@ -1,0 +1,39 @@
+name: F-GC36 live MODFLOW6 F-GC34 bridge
+
+on:
+  push:
+    branches:
+      - work/f-gc36-live-modflow6-fgc34-bridge-reconciled
+    paths:
+      - 'src/adapter/mod_modflow6_fgc34_c_bridge.f90'
+      - 'src/adapter/modflow6_fgc34_ctypes_publisher.py'
+      - 'src/adapter/modflow6_xmi_package_adapter.py'
+      - 'src/runtime/mod_modflow6_api_binding.f90'
+      - 'src/runtime/mod_modflow6_linear_response_backend.f90'
+      - 'tests/fgc/test_fgc36_live_modflow6_bridge.py'
+      - 'tests/fgc/run_fgc36_live_modflow6_bridge.sh'
+      - 'docs/integration/F-GC36_LIVE_MODFLOW6_FGC34_BRIDGE.md'
+      - 'integration/f-gc/F-GC36_STATUS.json'
+      - '.github/workflows/f-gc36-live-modflow6-bridge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install \
+            git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 \
+            git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run live MODFLOW6 bridge gate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash tests/fgc/run_fgc36_live_modflow6_bridge.sh

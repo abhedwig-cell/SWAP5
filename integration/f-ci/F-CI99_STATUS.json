@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI99",
+  "capability": "F-GC40",
+  "title": "MultiSWAP MODFLOW6 Cell Response Canonical Admission",
+  "protocol": "Bounded Execution Protocol",
+  "phase": "CLOSE",
+  "verdict": "CLOSED_CANONICAL_ADMITTED_F_GC40",
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "pre_admission_head": "7b864853ca22baa73141b2dec9ed2f3915ef520d",
+    "authority_note": "Canonical F-GC31 remains Restricted Active-Drainage Lagged Tangent. F-GC40 is the corrected unique identity for the MultiSWAP cell response."
+  },
+  "owner": {
+    "branch": "work/f-gc40-multiswap-modflow6-cell-response",
+    "checkpoint_head": "7993c143eaa1cf8d6580fdd7bde0ae05b07b5b4d",
+    "exact_head_run": 35291954717,
+    "exact_head_job": 105436502540,
+    "conclusion": "success",
+    "production_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "status_blob": "4ff6dfa168d82ffffd351a6acad2dea2c3bc3ae1"
+  },
+  "independent": {
+    "work_unit": "F-VQ106",
+    "status_head": "29829ebb674bd02019c643cc3b2ad21e1c8cfe03",
+    "exact_head_run": 35292192331,
+    "exact_head_job": 105437219235,
+    "conclusion": "success",
+    "status_blob": "b9d5c19e8c936ff2ea28ca83ffaf7e59a0af4bdc",
+    "production_delta": "NONE",
+    "owner_test_reused": false
+  },
+  "postimage": {
+    "expected_production_delta": [
+      "src/runtime/mod_modflow6_multiswap_cell_response.f90"
+    ],
+    "production_blob": "288a274612f6c0be0b3ced149028066a066908ca",
+    "owner_replay_required": true,
+    "independent_replay_required": true
+  },
+  "exclusions": [
+    "MODFLOW6/XMI backend",
+    "prepared-solve orchestration",
+    "Ribasim",
+    "irrigation",
+    "historical provisional F-GC31 MultiSWAP identity"
+  ],
+  "next_permitted_action": "Qualify this exact final closeout status head. If green and canonical is still the admitted production ancestor, non-force fast-forward canonical to this closed metadata state. Then proceed to current-canonical materialization of the next MODFLOW integration dependency; do not reopen F-GC40.",
+  "admission_gate": {
+    "qualified_head": "9ccdb287fa29fb1ed697ad255fda56cd153c99f0",
+    "workflow_run": 35292387556,
+    "workflow_job": 105437813921,
+    "conclusion": "success",
+    "pass_markers": [
+      "FCI99_CLEAN_CURRENT_CANONICAL_ANCESTRY",
+      "FCI99_OWNER_AND_INDEPENDENT_EVIDENCE_ANCESTRY",
+      "FCI99_EXACT_ONE_PRODUCTION_FILE_DELTA",
+      "FCI99_IMMUTABLE_PRODUCTION_AND_EVIDENCE_BLOBS",
+      "FCI99_OWNER_STATUS_AUTHORITY",
+      "FCI99_INDEPENDENT_STATUS_AUTHORITY",
+      "FCI99_IDENTITY_COLLISION_CORRECTED",
+      "FCI99_OWNER_REPLAY",
+      "FCI99_INDEPENDENT_REPLAY"
+    ]
+  },
+  "canonical_admission": {
+    "production_admission_head": "59503d621d74c06d6df956f8e3a752c365cab2a1",
+    "promoted_non_force_fast_forward": true,
+    "exact_status_head_run": 35292445486,
+    "exact_status_head_job": 105437990087,
+    "exact_status_head_conclusion": "success"
+  },
+  "closeout_gate": {
+    "qualified_head": "64bb145b8f55dcf56b3d90f692430ef6fa75e5ad",
+    "workflow_run": 35292572819,
+    "workflow_job": 105438369676,
+    "conclusion": "success"
+  }
+}

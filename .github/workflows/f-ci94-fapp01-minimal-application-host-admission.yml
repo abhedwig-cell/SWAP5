@@ -1,0 +1,91 @@
+name: F-CI94 F-APP01 current-canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci94-fapp01-minimal-application-host-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Verify exact admission projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='9b6adac8fb2f915640dbe4e33c4406a835d6d6a1'
+          HOST='src/runtime/mod_fmr_soil_water_application_host.f90'
+          EXPECTED_HOST_BLOB='daca18b77673608436425e81ecd397ef3e35e4b2'
+          EXPECTED_OWNER_STATUS='53f391a9a8e2a2f977fa7834e9f763d11746298d'
+          EXPECTED_VQ_STATUS='ffbf7922d55266c9a1a1bcd0a78fda74f84300f6'
+
+          git merge-base --is-ancestor "${BASE}" HEAD
+          test "$(git rev-parse HEAD:${HOST})" = "${EXPECTED_HOST_BLOB}"
+          test "$(git rev-parse HEAD:integration/f-app/F-APP01_STATUS.json)" = "${EXPECTED_OWNER_STATUS}"
+          test "$(git rev-parse HEAD:integration/f-vq/F-VQ101_STATUS.json)" = "${EXPECTED_VQ_STATUS}"
+
+          mapfile -t src_delta < <(git diff --name-only "${BASE}"...HEAD -- 'src/**' 'reference/**')
+          test "${#src_delta[@]}" -eq 1
+          test "${src_delta[0]}" = "${HOST}"
+
+          if grep -R -n -E '^[[:space:]]*use[[:space:]]+mod_fmr_soil_water_application_host' src --include='*.f90' | grep -v "^${HOST}:"; then
+            echo 'FCI94_FAIL=generic host already wired into another production source'
+            exit 1
+          fi
+
+          echo 'FCI94_EXACT_HOST_BLOB=PASS'
+          echo 'FCI94_ONLY_PRODUCTION_DELTA_IS_GENERIC_HOST=PASS'
+          echo 'FCI94_NO_PRODUCTION_CALLSITE_WIRING=PASS'
+          echo 'FCI94_OWNER_AND_VQ_STATUS_LOCKS=PASS'
+      - name: Replay owner qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x tests/runtime/run_fapp01_minimal_soil_water_application_host.sh
+          tests/runtime/run_fapp01_minimal_soil_water_application_host.sh | tee F-CI94_OWNER_REPLAY.log
+      - name: Replay independent qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x tests/fvq/run_fvq101_fapp01_independent.sh
+          tests/fvq/run_fvq101_fapp01_independent.sh | tee F-CI94_INDEPENDENT_REPLAY.log
+      - name: Record admission evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo 'work_unit=F-CI94'
+            echo "head=$(git rev-parse HEAD)"
+            echo "tree=$(git rev-parse HEAD^{tree})"
+            echo "host_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_soil_water_application_host.f90 || true)"
+            echo "compiler=$(gfortran --version | head -n1 || true)"
+            grep -E 'FAPP01_|FVQ101_' F-CI94_OWNER_REPLAY.log F-CI94_INDEPENDENT_REPLAY.log 2>/dev/null || true
+          } > F-CI94_EVIDENCE.txt
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci94-evidence
+          path: F-CI94_EVIDENCE.txt
+          if-no-files-found: error
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ci94-diagnostics
+          path: |
+            F-CI94_OWNER_REPLAY.log
+            F-CI94_INDEPENDENT_REPLAY.log
+          if-no-files-found: warn

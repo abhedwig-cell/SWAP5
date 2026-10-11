@@ -1,0 +1,31 @@
+{
+  "schema": "swap431.mc_crop01.b111_germination_sum_recovery.v1",
+  "workstream": "MC-CROP01",
+  "work_unit": "B111 germination temperature-sum candidate",
+  "baseline": "5df74f95a8443cc62152f9df4c317957579af087",
+  "checkpoint_commit": "e66e291c2b8447d3cfcaf96cb6f78e5c1b3e1739",
+  "source_identity": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "blob": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "lines": "755-777"
+  },
+  "relevant_paths": [
+    "src/crop/mod_crop_b111_germination_sum_candidate.f90",
+    "tests/fmig431/test_crop_b111_germination_sum_candidate.f90",
+    "tests/fmig431/run_crop_b111_germination_sum_candidate.sh"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": "Local gfortran -std=f2008 -fcheck=all -ffpe-trap=invalid,zero,overflow -Werror; O0 and O2 PASS, output identity PASS, prior to exact remote checkpoint; local code and remote counterpart same text except verified renamed germination flag",
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "publication_authority": false,
+  "limitations": [
+    "Untrusted caller TAV; no meteorological owner certificate",
+    "No F-KT cross-owner binding, restart, retry or physical crop event",
+    "No exact-head F-CI, broader integrated preservation or admission"
+  ],
+  "next_action": "Validate GitHub exact remote postimage against tested local files; establish historical normal MOD_meteo writer and owner certificate; add source-derived independent oracle and tests; run local O0/O2 and necessary exact-head preservation before PR admission.",
+  "github_actions_started": false
+}

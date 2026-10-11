@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.f-romv2-d14.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D14",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d14-fmc-surface-kinematics",
+    "pull_request": 441,
+    "pull_request_merged": false,
+    "head": "25e2d39db6eb5638c9e27520002886197de73e49",
+    "workflow_run": 35452867795,
+    "workflow_job": 105922955937,
+    "artifact_id": 10587342866,
+    "artifact_digest": "sha256:c8fade42571ebe039085acd1f88f2e9067733bdd5fd89757ce24ca092800a61b",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "raw_result_sha256": "cb2149f837f2b2821bedf24bcd274d819d0751026be274153129d4681f8e9e9a",
+    "stdout_sha256": "85d78a7453d2573fd8d76eaa3f483c96a3456b6818bfe0601b0b4a9ee4a96446"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D14_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D14_RESULT.json",
+    "integration/f-rom/F-ROMV2_D14_STATUS.json",
+    "integration/f-rom/F-ROMV2_D14_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D14_FMC_SURFACE_KINEMATICS_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d14_surface_kinematics.py",
+    ".github/workflows/f-romv2-d14-surface-kinematics.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "bin_or_substep_retuned_after_result": false,
+  "SWAP_trajectory_evidence_consumed": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

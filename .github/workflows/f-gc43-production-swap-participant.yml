@@ -1,0 +1,23 @@
+name: F-GC43 production SWAP participant
+on:
+  push:
+    branches: [work/f-gc43-production-swap-participant]
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_groundwater_swap_transaction_participant.f90'
+      - 'tests/fgc/test_fgc43_production_swap_participant.f90'
+      - 'tests/fgc/run_fgc43_production_swap_participant.sh'
+      - 'integration/f-gc/F-GC43_STATUS.json'
+      - '.github/workflows/f-gc43-production-swap-participant.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-GC43 production SWAP participant gate
+        run: bash tests/fgc/run_fgc43_production_swap_participant.sh

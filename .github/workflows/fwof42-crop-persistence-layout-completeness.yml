@@ -1,0 +1,40 @@
+name: F-WOF42 crop persistence layout completeness
+
+on:
+  push:
+    branches:
+      - work/f-wof42-crop-persistence-layout-completeness
+    paths:
+      - 'src/crop/mod_wofost_actual_biomass_state.f90'
+      - 'src/crop/mod_wofost_crop_owner_state.f90'
+      - 'src/crop/mod_wofost_one_day_structural_evolution.f90'
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'tools/fwof40_materialize_persistence_candidate.py'
+      - 'tools/fwof40_order_external_adapter_validation.py'
+      - 'tools/fwof42_patch_bit_exact_oracle.py'
+      - 'tests/fwof/mod_fwof40_external_crop_restart_adapter.f90'
+      - 'tests/fwof/test_fwof42_crop_persistence_layouts.f90'
+      - 'tests/fwof/run_fwof42_crop_persistence_layout_gate.sh'
+      - 'tests/fwof/run_fwof41_production_owner_persistence_gate.sh'
+      - 'integration/f-wof/F-WOF42_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_CONTRACT.json'
+      - '.github/workflows/fwof42-crop-persistence-layout-completeness.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-crop-persistence-layout-completeness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF42 crop persistence layout completeness gate
+        run: bash tests/fwof/run_fwof42_crop_persistence_layout_gate.sh

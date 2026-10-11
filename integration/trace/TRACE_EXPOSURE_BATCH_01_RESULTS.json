@@ -1,0 +1,48 @@
+{
+  "schema": "trace.exposure_batch_results.v1",
+  "batch": "TRACE-EXPOSURE-B01",
+  "closed_date": "2026-09-19",
+  "design": "PLANNED_STRATIFIED_NONRANDOM",
+  "protocol_version": "v0.2",
+  "totals": {
+    "scientific_elements": 6,
+    "candidate_triggers": 2,
+    "confirmed_discrepancies": 0,
+    "excluded_candidates": 2,
+    "closed_null_elements": 6
+  },
+  "by_model": {
+    "SWAP": {
+      "scientific_elements": 3,
+      "candidate_triggers": 0,
+      "confirmed_discrepancies": 0,
+      "excluded_candidates": 0,
+      "closed_null_elements": 3
+    },
+    "ANIMO": {
+      "scientific_elements": 3,
+      "candidate_triggers": 2,
+      "confirmed_discrepancies": 0,
+      "excluded_candidates": 2,
+      "closed_null_elements": 3
+    }
+  },
+  "candidates": [
+    {
+      "trace_id": "TRACE-ANIMO-0001",
+      "status": "EXCLUDED",
+      "mechanism": "TEMPORALLY_SCOPED_SUCCESSOR_AUTHORITY_NOT_SIMULTANEOUS_CURRENT_CONFLICT"
+    },
+    {
+      "trace_id": "TRACE-ANIMO-0002",
+      "status": "EXCLUDED",
+      "mechanism": "INTENTIONAL_PRE_REVIEW_AUTHORING_FREEZE_WITH_SEPARATE_POST_REVIEW_STATUS_AUTHORITY"
+    }
+  ],
+  "interpretation": {
+    "prevalence_inference_permitted": false,
+    "candidate_trigger_rate_descriptive_only": true,
+    "protocol_change_required": false,
+    "next_batch_requires_preinspection_registration": true
+  }
+}

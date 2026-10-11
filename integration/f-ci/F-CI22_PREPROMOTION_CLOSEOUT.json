@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI22",
+  "artifact": "prepromotion_qualification_closeout",
+  "title": "Restricted Temporal Certificate Canonical Admission Pre-Promotion Closeout",
+  "candidate": {
+    "source_workunit": "F-CI21",
+    "closed_head": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "tree": "130d329a73b76e35eba43b57f441e017115cbea2",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "qualification_authority": {
+    "evidence_commit": "022d322c80298d4955e28ae611f6d53dc0a5f794",
+    "successful_runs": [34404110657, 34404236711],
+    "latest_evidence_head_run": 34404236711,
+    "latest_evidence_head_conclusion": "success"
+  },
+  "admission_verdict": {
+    "candidate_is_linear_descendant_of_pinned_canonical": true,
+    "candidate_behind_canonical_by": 0,
+    "candidate_F_CI21_ahead_of_pinned_canonical_by": 214,
+    "qualification_changed_src": false,
+    "qualification_changed_reference": false,
+    "F_VQ33_failure_retained": true,
+    "hard_nonclaims_retained": true,
+    "F_CI21_postimage_requalified_on_F_CI22": true,
+    "ready_for_final_live_fast_forward_recheck": true
+  },
+  "promotion_constraints": {
+    "expected_pre_promotion_canonical_head": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "force_update_allowed": false,
+    "live_ref_recheck_required": true,
+    "strict_fast_forward_required": true,
+    "canonical_regression_after_promotion_required": true,
+    "promotion_is_restricted_scope_only": true
+  },
+  "not_admitted_by_this_closeout": [
+    "a default or application-specific H_budget",
+    "a universal temporal tolerance",
+    "a general nonlinear true-error-bound interpretation of B_inf or C_h",
+    "shorter-dt monotonicity",
+    "groundwater coupling or F-GC02 release",
+    "reinterpretation of F-VQ33 as positive evidence"
+  ],
+  "state": {
+    "qualification_complete": true,
+    "qualification_closed": true,
+    "canonical_ref_advanced": false,
+    "overall_F_CI22_closed": false
+  },
+  "decision": "PREPROMOTION_QUALIFICATION_CLOSED_READY_FOR_STRICT_CANONICAL_FAST_FORWARD_RECHECK"
+}

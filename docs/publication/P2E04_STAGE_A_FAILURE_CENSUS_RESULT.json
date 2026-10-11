@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.publication.p2e04-stage-a-failure-census-result.v1",
+  "workunit": "PUB-P2E04",
+  "canonical_base": "aa0ac9b0639c50fcfa604201737a9db3d5525821",
+  "workflow_run": 35267472341,
+  "job": 105358122427,
+  "domain": "exact preregistered 162-case P2E03 Reference domain",
+  "numerical_configuration": {
+    "max_iterations": 16,
+    "max_backtracking": 8,
+    "compartment_balance_tolerance_cm": 1e-12,
+    "total_balance_tolerance_cm": 1e-12,
+    "head_abs_tolerance_cm": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "ponding_tolerance_cm": 1e-12
+  },
+  "counts": {
+    "ACCEPTED": 47,
+    "RETRY_TOTAL_ONLY": 12,
+    "RETRY_LOCAL_BAL": 103,
+    "RETRY_HEAD": 0,
+    "RETRY_MIXED": 0,
+    "RETRY_OTHER": 0,
+    "FAILED_OR_INVALID": 0
+  },
+  "counts_by_coarse_dt_day": {
+    "0.0016": {
+      "ACCEPTED": 46,
+      "RETRY_TOTAL_ONLY": 5,
+      "RETRY_LOCAL_BAL": 3
+    },
+    "0.0004": {
+      "ACCEPTED": 1,
+      "RETRY_TOTAL_ONLY": 7,
+      "RETRY_LOCAL_BAL": 46
+    },
+    "0.0001": {
+      "ACCEPTED": 0,
+      "RETRY_TOTAL_ONLY": 0,
+      "RETRY_LOCAL_BAL": 54
+    }
+  },
+  "first_failed_stage": {
+    "COARSE": 90,
+    "HALF1": 21,
+    "HALF2": 4
+  },
+  "optimization_qualification": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "outputs_identical": true,
+    "output_sha256": "6a4c286a77e877ec128678c4ae3dde5b0767d85bdd18c48d1cb5f9324ec48851"
+  },
+  "interpretation": {
+    "preliminary_total_only_hypothesis_overturned": true,
+    "dominant_observed_class": "RETRY_LOCAL_BAL",
+    "temporal_pattern": "Failure frequency rises sharply as the requested timestep becomes smaller under the same absolute 1e-12 compartment-balance criterion.",
+    "head_convergence_implicated": false,
+    "unexplained_retry_class_present": false,
+    "roundoff_conclusion_allowed": false,
+    "conservation_defect_conclusion_allowed": false,
+    "note": "The census establishes classification, not cause. The dominant local-compartment residual floor must be investigated separately from the minority aggregate-total-only class."
+  },
+  "preregistered_stage_b_c_scope_note": "Stages B and C remain restricted to the five cases frozen before this census. Because those cases emphasize the previously observed TOTAL_ONLY archetypes and controls, they do not constitute an adjudication of the newly established dominant LOCAL_BAL class. No post-census case substitution or addition is permitted inside P2E04.",
+  "next_permitted_action": "Execute P2E04 Stages B and C exactly as preregistered on the original five target cases. If the dominant LOCAL_BAL class remains scientifically relevant afterward, open a separate preregistered workunit for that class rather than modifying P2E04 post hoc."
+}

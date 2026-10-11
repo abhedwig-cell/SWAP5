@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI57",
+  "title": "F-KT18 Fail-Closed Mass Completeness Current-Canonical Admission",
+  "date": "2026-09-13",
+  "restart_canonical": "c19a04721a05c6a00ba264e7477969807dcb258f",
+  "production_composition": "3e294113dfcfdf93744f314bca6f7e38de1783ee",
+  "owner_authority": "66fd08ca96d8be69cf6f996202e21ce624db526b",
+  "independent_authority": "b1fd9e15a22d4dd68997ec38c074ce343eec0a70",
+  "finding_authority": "c14bd8c7f67e015bf1bd4bdcfa88eb97470194da",
+  "blocking_gap": "F-KT17-G01",
+  "production_delta": [
+    "src/transaction/mod_transaction_reference.f90"
+  ],
+  "transaction_blob": "d5a71a526efaebd82054580c3186f8e3545db331",
+  "admission_policy": {
+    "live_canonical_must_remain_restart_canonical_until_promotion": true,
+    "qualification_head_may_not_change_production_source": true,
+    "independent_F_VQ65_authority_replay_required": true,
+    "true_two_parent_merge_required": true,
+    "force_squash_rebase_forbidden": true,
+    "postpromotion_reconciliation_required": true,
+    "100_percent_claim_before_postpromotion_reconciliation": false
+  }
+}

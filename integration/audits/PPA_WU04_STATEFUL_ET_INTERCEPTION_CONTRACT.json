@@ -1,0 +1,283 @@
+{
+  "schema": "swap5.ppa_wu04.stateful_et_interception_contract.v1",
+  "workunit": "PPA-WU04",
+  "authority": {
+    "reference_family": "SWAP-4.3.1-corrected",
+    "snapshot": "B1.11",
+    "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+    "relevant_b1_11_member_identities": {
+      "SWAP/MOD_meteo.f90": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+      "SWAP/swap.f90": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "SWAP/swapoutput.f90": "9fe6d939bd5213777a8a63a9b99ce154cd1aaa0e15b74895e41a33c2acac05ee",
+      "SWAP/variables.f90": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+      "SWAP/interface_plant.f90": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+      "SWAP/boundtop.f90": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+      "SWAP/MOD_cropdevelopment.f90": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+    },
+    "b1_11_delta_from_b1_10": {
+      "patch": "SWAP-011",
+      "targets": [
+        "SWAP/MOD_MvG_functions.f90",
+        "SWAP/WC_K_models_04_11.f90",
+        "SWAP/MOD_RIA.f90"
+      ],
+      "et_interception_reduction_semantics_changed": false
+    },
+    "earlier_mod_meteo_correction": {
+      "patch": "SWAP-006",
+      "corrected_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+      "scope": "dynamic crop meteorological data-loading scan around MOD_meteo line 260",
+      "touches_ETpot_interception_daily_reduceva": false
+    },
+    "source_trace": "integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md",
+    "variable_classification": "integration/f-pm/F-PM06_LEGACY_VARIABLE_CLASSIFICATION.json"
+  },
+  "invariants": {
+    "actual_surface_evaporation_owner": "surface hydraulic/top-boundary process",
+    "actual_root_water_uptake_owner": "root-water-uptake process",
+    "crop_state_owner": "crop owner",
+    "snow_state_owner": "snow process",
+    "potential_demands_are_authoritative_mass_fluxes": false,
+    "rejected_trial_may_mutate_committed_et_state": false,
+    "retry_must_restart_from_same_committed_process_state": true,
+    "numerical_retry_policy_owned_by_et_process": false,
+    "hidden_calendar_day_kernel_state_allowed": false
+  },
+  "options": {
+    "SWINTER_1": {
+      "legacy_method": "Von Hoyningen-Hune/Braden daily/source-window aggregate interception",
+      "persistent_physical_state": [],
+      "accepted_process_aggregate": [
+        "aintc"
+      ],
+      "trial_results": [
+        "aintcdt",
+        "nraidt",
+        "wfrac",
+        "potential_transpiration_after_wet_dry_blend"
+      ],
+      "required_inputs": [
+        "explicit source-window identity and [t0,t1]",
+        "gross precipitation and applicable sprinkling irrigation for that source window",
+        "read-only canopy snapshot valid for the source window",
+        "method-specific immutable interception parameters",
+        "snow/precipitation partition as read-only external result where active"
+      ],
+      "event_semantics": [
+        "source-window boundary",
+        "precipitation/irrigation forcing event boundaries used for deterministic apportionment"
+      ],
+      "restart": {
+        "physical_process_state": "NONE",
+        "required_runtime_continuation": [
+          "source_window_id/provenance",
+          "exact aggregate aintc or deterministic ability to recompute it from immutable source-window inputs",
+          "accepted amount/fraction already apportioned within a partially consumed source window"
+        ],
+        "owner": "forcing/runtime cursor and accepted process-aggregate receipt, not interception physical state",
+        "rule": "Restart inside a source window must neither repeat nor lose any part of the already computed aggregate."
+      },
+      "retry_rollback": {
+        "rule": "Do not re-evaluate the nonlinear daily/source-window formula on each smaller hydraulic retry subspan.",
+        "allowed": "Recompute the same full source-window aggregate from identical immutable inputs, then deterministically apportion the retry subspan.",
+        "rejected_trial_effect": "No committed physical state and no accepted aggregate-progress mutation."
+      },
+      "mass": {
+        "accepted_canopy_loss": "Exactly-once accepted interception/canopy evaporation contribution.",
+        "gross_to_net_identity": "Net rain/sprinkling must be consistent with the same accepted aggregate; gross and net quantities may not both be ledgered as independent water inputs."
+      },
+      "production_status": "NOT_IMPLEMENTED"
+    },
+    "SWINTER_2": {
+      "legacy_method": "Gash daily/source-window aggregate interception",
+      "persistent_physical_state": [],
+      "accepted_process_aggregate": [
+        "aintc"
+      ],
+      "trial_results": [
+        "aintcdt",
+        "nraidt",
+        "wfrac",
+        "potential_transpiration_after_wet_dry_blend"
+      ],
+      "required_inputs": [
+        "explicit source-window identity and [t0,t1]",
+        "gross precipitation and applicable sprinkling irrigation for that source window",
+        "read-only canopy snapshot valid for the source window",
+        "method-specific immutable Gash parameters/tables",
+        "explicit time coordinate for any time-indexed table lookup"
+      ],
+      "event_semantics": [
+        "source-window boundary",
+        "precipitation/irrigation forcing event boundaries used for deterministic apportionment"
+      ],
+      "restart": {
+        "physical_process_state": "NONE",
+        "required_runtime_continuation": [
+          "source_window_id/provenance",
+          "exact aggregate aintc or deterministic ability to recompute it from immutable source-window inputs",
+          "accepted amount/fraction already apportioned within a partially consumed source window"
+        ],
+        "owner": "forcing/runtime cursor and accepted process-aggregate receipt, not interception physical state",
+        "rule": "Restart inside a source window must preserve remaining aggregate identity exactly."
+      },
+      "retry_rollback": {
+        "rule": "The nonlinear Gash aggregate belongs to the source window, not to the current numerical retry span.",
+        "forbidden": "Independent Gash formula evaluation on arbitrary retry subdivisions followed by summation.",
+        "rejected_trial_effect": "No accepted aggregate-progress mutation."
+      },
+      "mass": {
+        "accepted_canopy_loss": "Exactly-once accepted interception/canopy evaporation contribution.",
+        "source_window_closure": "Sum of accepted apportioned interception over the consumed source window equals the frozen source-window aggregate, subject only to floating-point representation."
+      },
+      "production_status": "NOT_IMPLEMENTED"
+    },
+    "SWREDU_1": {
+      "legacy_method": "Black empirical bare-soil evaporation reduction",
+      "persistent_physical_state": [
+        "ldwet"
+      ],
+      "restart": {
+        "state": [
+          "ldwet"
+        ],
+        "reconstruction_from_hydraulic_profile_allowed": false,
+        "accepted_boundary_only": true,
+        "option_tag_required": "SWREDU=1"
+      },
+      "inputs": [
+        "potential bare-soil evaporation demand",
+        "net rain/net sprinkling wetting on explicit span",
+        "read-only accepted/candidate surface ponding view",
+        "committed ldwet"
+      ],
+      "outputs": [
+        "empirical bare-soil evaporation demand empreva",
+        "candidate ldwet"
+      ],
+      "events": [
+        "wetting onset/reset represented by forcing event",
+        "ponded-surface branch/reset",
+        "accepted interval endpoint"
+      ],
+      "retry_rollback": {
+        "legacy_hazard": "reduceva mutates ldwet before the legacy SoilWater retry loop.",
+        "target_rule": "Read ldwet only from committed checkpoint, create trial-local candidate, discard it on rejection, and recompute a smaller retry from the same committed ldwet.",
+        "forbidden": "Carry a mutated rejected-trial ldwet into the retry."
+      },
+      "mass": {
+        "process_state_delta_is_water_mass": false,
+        "empreva_is_mass_sink": false,
+        "authoritative_mass_owner": "surface hydraulic/top-boundary accepted actual soil/pond evaporation"
+      },
+      "production_status": "NOT_IMPLEMENTED"
+    },
+    "SWREDU_2": {
+      "legacy_method": "Boesten-Stroosnijder empirical bare-soil evaporation reduction",
+      "persistent_physical_state": [
+        "spev",
+        "saev"
+      ],
+      "restart": {
+        "state": [
+          "spev",
+          "saev"
+        ],
+        "reconstruction_from_hydraulic_profile_allowed": false,
+        "accepted_boundary_only": true,
+        "option_tag_required": "SWREDU=2",
+        "pair_is_atomic": true
+      },
+      "inputs": [
+        "potential bare-soil evaporation demand",
+        "net rain/net sprinkling wetting on explicit span",
+        "read-only accepted/candidate surface ponding view",
+        "committed spev and saev"
+      ],
+      "outputs": [
+        "empirical bare-soil evaporation demand empreva",
+        "candidate spev",
+        "candidate saev"
+      ],
+      "events": [
+        "wetting onset/reset represented by forcing event",
+        "ponded-surface branch/reset",
+        "accepted interval endpoint"
+      ],
+      "retry_rollback": {
+        "legacy_hazard": "reduceva mutates spev/saev before the legacy SoilWater retry loop.",
+        "target_rule": "Treat spev/saev as one atomic candidate state pair derived from the same committed checkpoint; discard both on rejection.",
+        "forbidden": "Advance either scalar twice across failed-then-accepted retries."
+      },
+      "mass": {
+        "process_state_delta_is_water_mass": false,
+        "empreva_is_mass_sink": false,
+        "authoritative_mass_owner": "surface hydraulic/top-boundary accepted actual soil/pond evaporation"
+      },
+      "production_status": "NOT_IMPLEMENTED"
+    }
+  },
+  "composition_rules": [
+    "SWINTER=1/2 aggregate provenance and SWREDU state are independent ownership surfaces and may be implemented in separate slices.",
+    "Interception net precipitation/sprinkling becomes wetting input to SWREDU only through an explicit trial result; no hidden module-global sharing.",
+    "SWREDU trial state and actual hydraulic evaporation must commit atomically in the same outer accepted transaction even though only the actual evaporation is a water-mass flux.",
+    "Restart records must be option-discriminated. Runtime option switching is not admitted by this review.",
+    "A rejected hydraulic trial leaves committed LDWET/SPEV/SAEV and accepted interception aggregate progress unchanged.",
+    "Existing SWINTER=3 Rutter production authority is not modified or broadened by PPA-WU04."
+  ],
+  "required_implementation_qualification": {
+    "common": [
+      "exact source-equation oracle against B1.11-equivalent ET routines",
+      "O0/O2 output identity",
+      "A/B/A deterministic replay",
+      "rejected-trial immutability",
+      "failed-then-accepted retry from identical committed state",
+      "restart roundtrip at accepted boundary",
+      "exactly-once accepted mass receipt",
+      "PPA-WU01 and PPA-WU03 preservation"
+    ],
+    "SWINTER_1_2": [
+      "full-source-window aggregate oracle",
+      "partition conservation over arbitrary numerical substeps",
+      "mid-source-window restart without duplicate/lost aggregate",
+      "proof that independent formula evaluation per retry substep is absent"
+    ],
+    "SWREDU_1_2": [
+      "state-layout minimality",
+      "option-discriminated restart",
+      "ponding/wetting reset oracle",
+      "retry with changed dt equals direct retry from same checkpoint for the accepted retry span"
+    ]
+  },
+  "migration_slices": [
+    {
+      "id": "PPA-WU04-A",
+      "scope": "SWREDU=1 Black typed transactional process with LDWET restart",
+      "priority": 1,
+      "rationale": "High application relevance, one-scalar state, bounded retry/restart problem.",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "PPA-WU04-B",
+      "scope": "SWREDU=2 Boesten-Stroosnijder typed transactional process with atomic SPEV/SAEV restart",
+      "priority": 2,
+      "rationale": "Same owner seam as A with a two-scalar atomic continuation state.",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "PPA-WU04-C",
+      "scope": "SWINTER=1 VonHHBraden source-window aggregate processor",
+      "priority": 3,
+      "rationale": "No physical storage state, but requires explicit aggregate provenance and mid-window restart accounting.",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "PPA-WU04-D",
+      "scope": "SWINTER=2 Gash source-window aggregate processor",
+      "priority": 4,
+      "rationale": "Shares C runtime envelope but retains independent nonlinear scientific oracle.",
+      "state": "DEFINED_NOT_IMPLEMENTED"
+    }
+  ],
+  "review_verdict": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_IMPLEMENTATION_HELD"
+}

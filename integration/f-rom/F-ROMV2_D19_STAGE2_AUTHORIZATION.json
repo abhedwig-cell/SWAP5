@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.f-romv2-d19.stage2-authorization.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D19",
+  "phase": "STAGE2_AUTHORIZED_AFTER_IMMUTABLE_FMC_PREFLIGHT",
+  "frozen_preregistration_blob": "6dcce48d78ad4ff66c3d8453b08acdb7bc0f4640",
+  "original_preregistration_base": "6ec1c53c1ed051beae6e750a36cbf279a88a87a1",
+  "stage2_execution_base": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+  "canonical_reconciliation": {
+    "advanced_after_stage1": true,
+    "delta_class": "OWNERSHIP_DISJUNCT_HYDRO_MEMORY_RESEARCH_ONLY",
+    "F_ROM_source_or_reference_delta": false,
+    "scientific_design_changed": false
+  },
+  "stage1_preflight": {
+    "execution_pull_request": 455,
+    "workflow_run": 35459320729,
+    "workflow_job": 105940197024,
+    "executed_head": "09ed8ab34c1d8edec87e87083e5c46360f6b2333",
+    "artifact_id": 10589417168,
+    "artifact_digest": "sha256:7406d7faf80e451a9b24845fb053126c9da8df25ff46ff31d627cba350b5af6a",
+    "decision": "D19_FMC_EXACT_CONTACT_MERGE_PREFLIGHT_PASS",
+    "SWAP_trajectory_evidence_consumed": false,
+    "histories": [
+      "X25",
+      "X50",
+      "X75",
+      "X125"
+    ],
+    "merge_count_per_history": 99,
+    "reported_merge_storage_residual_cm": 0,
+    "reported_max_abs_step_mass_residual_cm": 0
+  },
+  "stage2": {
+    "SWAP_trajectory_generation_authorized": true,
+    "comparators": [
+      "R16",
+      "R2"
+    ],
+    "metrics_and_gates": "EXACTLY_AS_FROZEN_IN_D19_PREREGISTRATION",
+    "preregistration_mutation_authorized": false,
+    "parameter_or_equation_retuning_authorized": false
+  },
+  "production_rom_authorized": false
+}

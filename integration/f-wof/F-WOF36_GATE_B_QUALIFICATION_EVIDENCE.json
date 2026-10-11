@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "gate": "B",
+  "title": "Physical Trial PTRA/QROT Accepted-Window Binding Qualification Evidence",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "runtime_owner_handoff": {
+    "work_unit": "F-MR18",
+    "closeout_head": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
+    "status": "QUALIFIED_GENERIC_ACCEPTED_COMMIT_RECEIPT_AND_SERIALIZED_MULTISWAP_SPARSE_ROUTING_F_WOF36_RESUME_ALLOWED"
+  },
+  "production_source_delta_from_fmr18": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_physical_trial_binding.f90"
+  ],
+  "production_implementation": {
+    "trial_payload_is_runtime_local": true,
+    "persistent_solver_scratch_added": false,
+    "persistent_per_column_optional_state_added": false,
+    "sparse_wofost_binding": true,
+    "candidate_state_root_uptake_recomputed": false,
+    "richards_forcing_rewritten_by_binding": false,
+    "crop_state_mutated_by_binding": false,
+    "mass_accounting_changed": false,
+    "root_uptake_physics_changed": false,
+    "et_physics_changed": false,
+    "fkt_commit_authority_changed": false
+  },
+  "compile_qualification": {
+    "workflow_run": 34339285383,
+    "workflow_job": 102425987768,
+    "conclusion": "success",
+    "o0": "PASS",
+    "o2": "PASS",
+    "exact_two_file_production_source_delta": "PASS"
+  },
+  "real_physics_qualification": {
+    "tested_head": "43709fa2a34d9cc230dc0a59229f2d3875ea244f",
+    "workflow_run": 34343810174,
+    "workflow_job": 102440536097,
+    "conclusion": "success",
+    "fixture": {
+      "historical_source": "qualification/f-vq15-fmr05-serialized-multiswap",
+      "historical_test_blob": "51dc410308c1d0e6a8aa8c7ad26d08b87333d0a1",
+      "real_backend": "serialized reference Richards/HeadCalc runtime",
+      "root_sink_active": true,
+      "root_sink_definition": "small deterministic nonzero root_extraction_sink physically supplied to Richards",
+      "mass_balance_fixture_policy": "equal per-node subsurface irrigation source balances the positive root sink, following the already-qualified F-MR09 positive-root fixture precedent",
+      "mass_tolerance_relaxed": false,
+      "fmr09_precedent_branch": "qualification/f-vq21-fmr09-root-sink-runtime",
+      "fmr09_precedent_workflow_run": 34250935461,
+      "fmr09_precedent_workflow_job": 102144878533
+    },
+    "disposable_comparator_note": {
+      "frozen_fmr05_source_changed": false,
+      "finding": "The frozen historical comparator mixed .AND. and .EQV. without parentheses. Because .EQV. has lower precedence than .AND. in Fortran, the raw expression was not the intended conjunction of pairwise predicates.",
+      "qualification_only_repair": "Each .EQV. predicate was parenthesized in the disposable derivative. No compared field, exact comparison, bitwise comparison, or acceptance criterion was removed or relaxed."
+    },
+    "passed_markers": [
+      "FWOF36_GATE_B_EXACT_TWO_FILE_SOURCE_DELTA=PASS",
+      "FWOF36_GATE_B_REAL_PHYSICS_FIXTURE_MATERIALIZED=PASS",
+      "FWOF36_GATE_B_O0=PASS",
+      "FWOF36_GATE_B_O2=PASS",
+      "FWOF36_GATE_B_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FWOF36_GATE_B_PHYSICAL_AND_MASS_IDENTITY=PASS",
+      "FWOF36_GATE_B_EXACT_QROT_PTRA_INTEGRALS=PASS",
+      "FWOF36_GATE_B_BATCH_AND_INPUT_ORDER_IDENTITY=PASS",
+      "FWOF36_GATE_B_A_B_A_REPLAY=PASS",
+      "FWOF36_GATE_B_INVALID_PTRA_PRECOMMIT_ZERO_MUTATION=PASS",
+      "FWOF36_GATE_B_WINDOW_MISMATCH_PRECOMMIT_ZERO_MUTATION=PASS",
+      "FWOF36_GATE_B_PHYSICAL_REJECTION_ZERO_CONTRIBUTION=PASS",
+      "FWOF36_GATE_B_EMPTY_BINDING_PHYSICAL_IDENTITY=PASS",
+      "FWOF36_GATE_B_TRUE_SINGLE_COLUMN_MULTISWAP_IDENTITY=PASS",
+      "FWOF36_GATE_B_REJECT_THEN_ACCEPT_RETRY_EXACTLY_ONCE=PASS",
+      "FWOF36_GATE_B_DUPLICATE_ACCEPTED_INTERVAL_ZERO_EXTRA_CONTRIBUTION=PASS",
+      "FWOF36_GATE_B_PHYSICAL_BINDING_TEST PASS",
+      "FWOF36_GATE_B_FWO34_EXACT_TRANSCRIPT_PRESERVATION=PASS",
+      "FWOF36_GATE_B_PHYSICAL_BINDING_GATE PASS"
+    ]
+  },
+  "composition_preservation": {
+    "tested_head": "ff156b2e891654d9959ec333a83c82b8d0e512f5",
+    "workflow_run": 34343434719,
+    "workflow_job": 102439337809,
+    "conclusion": "success",
+    "post_preservation_delta_to_definitive_real_physics_head": [
+      "tests/fwof/run_fwof36_gate_b_physical_binding_gate_v2.sh"
+    ],
+    "production_source_delta_after_preservation": false,
+    "passed_markers": [
+      "FWOF36_PRESERVATION_EXACT_TWO_FILE_PRODUCTION_DELTA=PASS",
+      "FWOF36_PRESERVATION_FWO34_EXACT_TRANSCRIPT=PASS",
+      "FWOF36_PRESERVATION_FCI19_NESTED_FMR15_RECEIPT_DEPENDENCY=PASS",
+      "FWOF36_PRESERVATION_FCI19_CANONICAL_SEMANTICS=PASS",
+      "FWOF36_PRESERVATION_FWO33_EXACT_CLOSEOUT=PASS",
+      "FWOF36_GATE_B_PRESERVATION_GATE PASS"
+    ],
+    "fwof34_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "fwof33_transcript_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f",
+    "fci19_hard_mass": "PASS",
+    "fci19_rollback_replay": "PASS",
+    "fci19_o0_o2": "PASS"
+  },
+  "qualified_semantics": {
+    "qrot_rate": "sum of the exact root_extraction_sink vector physically supplied to that trial",
+    "qrot_extra_dz_factor": false,
+    "ptra_rate": "canonical same-trial crop_root_uptake_input_t.potential_transpiration",
+    "same_checkpoint_lineage_revision_interval_binding": true,
+    "accepted_side_effect_authority": "qualified F-MR18 accepted commit receipt derived from F-KT commit",
+    "prevalidated_invalid_ptra_qrot_can_commit": false,
+    "prevalidated_window_mismatch_can_commit": false,
+    "physical_rejection_contributes_to_window": false,
+    "rejected_then_accepted_retry_contribution_count": 1,
+    "duplicate_already_accepted_interval_extra_contribution_count": 0,
+    "accepted_qrot_integral": "qrot_rate * accepted interval duration",
+    "accepted_ptra_integral": "ptra_rate * accepted interval duration",
+    "true_single_column_equals_corresponding_multiswap_column": true,
+    "batch_size_and_input_order_deterministic": true,
+    "a_b_a_replay_deterministic": true,
+    "inactive_empty_binding_uses_existing_physical_route": true,
+    "physical_result_identity_with_uninstrumented_route": true,
+    "mass_identity_with_uninstrumented_route": true,
+    "o0_o2_output_identity": true
+  },
+  "invariant_assessment": {
+    "3_explicit_data_separation": "PASS: physical forcing remains forcing; PTRA/QROT trial contribution is runtime-local scratch; accepted-window state remains separate",
+    "4_compact_persistent_state": "PASS: no persistent per-column receipt or trial scratch added",
+    "5_scratch_per_worker": "PASS: trial contribution is runtime-local and discarded on rejection",
+    "6_scalable_layout": "PASS_WITHIN_SERIALIZED_REFERENCE_SCOPE: sparse binding ids avoid WOFOST state for inactive columns",
+    "7_transactional_timesteps": "PASS: rejected attempt leaves committed state and accepted window unchanged; accepted retry admits exactly once",
+    "8_cheap_recompute_warm_start": "PASS_AT_CONTRACT_LEVEL: retry reuses the same committed origin without contaminating accepted state",
+    "9_generic_time": "PASS: binding uses generic t0/t1 and interval duration, no calendar assumption",
+    "13_mass_conservation": "PASS: hard mass preservation retained; fixture closes mass without tolerance relaxation",
+    "16_multiswap_primary": "PASS: sparse MultiSWAP route and true n=1 equivalence qualified",
+    "21_swap_physics_reuse": "PASS: existing root-sink forcing and Richards route reused without physics duplication",
+    "23_physics_solver_policy_separation": "PASS: no numerical policy or physical option silently changed by binding",
+    "25_reference_mode": "PASS: qualification uses serialized reference Richards/HeadCalc backend",
+    "26_diagnostics_runtime": "PASS_WITHIN_EXISTING_RUNTIME_DIAGNOSTIC_SCOPE: physical results and statuses remain exposed",
+    "27_optional_functionality_scales_with_use": "PASS: empty sparse binding follows existing route without WOFOST window allocation",
+    "28_runtime_coupler_composition": "PASS: WOFOST accepted-window composition remains runtime-owned outside crop kernel and F-KT",
+    "29_no_silent_dependencies": "PASS: no midnight/day/file/MODFLOW assumptions added",
+    "30_architecture_change_qualification": "PASS: compile, real-physics, retry, n=1/MultiSWAP and preservation gates all passed"
+  },
+  "not_qualified": [
+    "restart or crash atomicity across external persistence of an active accepted crop window",
+    "historical multi-day B1.10 crop trajectory equivalence",
+    "calendar-derived WOFOST scheduling",
+    "new or changed Feddes/root-uptake physics",
+    "new or changed ET physics",
+    "candidate-state root-uptake recomputation",
+    "oxygen IALPWET aggregate",
+    "nutrients, soybean, grass or potential-crop production binding",
+    "canonical promotion of the composed F-WOF36 source tree"
+  ],
+  "superseded_diagnostic_runs": [
+    {
+      "run": 34339587781,
+      "classification": "QUALIFICATION_HARNESS_COMPILE_ERROR",
+      "production_semantic_failure": false
+    },
+    {
+      "run": 34339816854,
+      "classification": "QUALIFICATION_HARNESS_TEMPORARY_ROOT_ERROR",
+      "production_semantic_failure": false
+    },
+    {
+      "run": 34339922180,
+      "classification": "INVALID_UNBALANCED_POSITIVE_ROOT_SINK_FIXTURE_PLUS_HISTORICAL_COMPARATOR_PRECEDENCE_FINDING",
+      "production_semantic_failure": false,
+      "resolution": "Use already-qualified F-MR09 balanced positive-root fixture semantics and repair only the disposable comparator precedence."
+    }
+  ],
+  "decision": "QUALIFIED_PHYSICAL_TRIAL_PTRA_QROT_ACCEPTED_WINDOW_BINDING",
+  "status": "QUALIFIED_GATE_B_RESTRICTED_PHYSICAL_BINDING_SCOPE"
+}

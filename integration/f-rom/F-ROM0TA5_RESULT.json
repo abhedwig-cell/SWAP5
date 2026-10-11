@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.f-rom0ta5.result.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROM0TA5",
+  "title": "Prescribed-head Reference-floor sample binding qualification",
+  "execution": {
+    "workflow_run": 35370006629,
+    "workflow_job": 105681478610,
+    "executed_head": "a388a4f14002fafd1cd8e3471675222672d01eb7",
+    "artifact_id": 10558506628,
+    "artifact_digest": "sha256:e6fbb960a569988050dcebf77b9551a928737407b22e65fe9bf2a4f863e92aab",
+    "conclusion": "success"
+  },
+  "source_scope": {
+    "changed_production_file": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "semantic_change": "REFERENCE_FLOOR_SAMPLE_ADMISSION_ALLOWS_BOTTOM_MODE_2_OR_5",
+    "kernel_reference_floor_sample_core_changed": false,
+    "transaction_core_changed": false,
+    "canonical_interval_runtime_changed": false,
+    "reference_solver_binding_changed": false,
+    "reference_tree_changed": false
+  },
+  "matrix": {
+    "materials": ["B01","B14"],
+    "bottom_modes": [2,5],
+    "optimization_levels": [0,2],
+    "rows": 8,
+    "all_rows_pass": true,
+    "o0_o2_output_identity": true
+  },
+  "observed_rows_o2": [
+    {"material":"B01","bottom_mode":2,"mass_residual_cm":0.0,"bottom_exchange_cm":0.0031391984712307998,"terminal_bottom_flux_cm_day":3.9239980890384993,"nonlinear_iterations":1},
+    {"material":"B01","bottom_mode":5,"mass_residual_cm":0.0,"bottom_exchange_cm":0.0031391984712307998,"terminal_bottom_flux_cm_day":3.9239980890384993,"nonlinear_iterations":1},
+    {"material":"B14","bottom_mode":2,"mass_residual_cm":0.0,"bottom_exchange_cm":0.000016274963796660516,"terminal_bottom_flux_cm_day":0.020343704745825645,"nonlinear_iterations":1},
+    {"material":"B14","bottom_mode":5,"mass_residual_cm":0.0,"bottom_exchange_cm":0.000016274963796660516,"terminal_bottom_flux_cm_day":0.020343704745825645,"nonlinear_iterations":1}
+  ],
+  "invariants": {
+    "source_scope_gate": "PASS",
+    "reference_tree_immutable": "PASS",
+    "preregistration_and_ta3_authority": "PASS",
+    "ta3_fail_closed_sample_core_preserved": "PASS",
+    "ordinary_runtime_core_unchanged": "PASS",
+    "hard_mass_gate_preserved": true,
+    "application_budget_used": false,
+    "production_application_admission": false
+  },
+  "decision": "PRESCRIBED_HEAD_REFERENCE_FLOOR_SAMPLE_BINDING_QUALIFIED",
+  "important_nonclaim": "The qualification establishes mode-5 sample binding and accounting on the frozen B01/B14 pure-hydraulic profile. It does not itself establish the R3 prescribed-head perturbation trajectories or bidirectional reachability.",
+  "rom1a_authorized": false
+}
