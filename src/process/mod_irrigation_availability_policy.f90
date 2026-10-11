@@ -11,13 +11,15 @@ module mod_irrigation_availability_policy
 
 contains
 
-  pure subroutine apply_irrigation_availability(enabled, fraction, configured_rate_positive, rate, duration, status)
+  pure subroutine apply_irrigation_availability(enabled, fraction, configured_rate_positive, rate, duration, status, surface_application)
     logical, intent(in) :: enabled
     real(real64), intent(in) :: fraction
     logical, intent(in) :: configured_rate_positive
     real(real64), intent(inout) :: rate
     real(real64), intent(inout) :: duration
     integer, intent(out) :: status
+    logical, intent(in), optional :: surface_application
+    logical :: scale_surface_rate
 
     status = IRR_AVAIL_INVALID
     if (.not. ieee_is_finite(rate)) return
@@ -34,7 +36,11 @@ contains
     ! Literal B1.11 postselection TASK=4 semantics:
     !   gird = gird * f_irr_avail
     !   if (irr_rate > 0.0d0) dt_irr_event = dt_irr_event * f_irr_avail
-    rate = rate * fraction
+    scale_surface_rate = .true.
+    if (present(surface_application)) scale_surface_rate = surface_application
+    ! TASK4 never modifies qssdi. A subsurface event only inherits the
+    ! positive-configured-rate duration change, not the gird rate change.
+    if (scale_surface_rate) rate = rate * fraction
     if (configured_rate_positive) duration = duration * fraction
     status = IRR_AVAIL_OK
   end subroutine apply_irrigation_availability

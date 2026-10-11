@@ -48,6 +48,9 @@ module mod_irrigation_process
     integer :: active_nodes = 0
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
+    ! Explicit source-authorized compartment interval; zero retains single-node API.
+    integer :: ssdi_first_node = 0
+    integer :: ssdi_last_node = 0
     integer :: timing_criterion = 7
     real(real64) :: irr_rate_cm_per_day = 0.0_real64
     integer :: tcs7_knot_count = 0
@@ -291,6 +294,12 @@ contains
     end if
 
     if (committed_state%active_event) then
+      ! An in-flight event still needs a valid spatial source map. Reject a
+      ! changed/out-of-range map before indexing the source vector.
+      if (.not. valid_scheduled_ssdi_layout(parameters)) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
       if (committed_state%active_event_origin /= IRRIGATION_EVENT_SCHEDULED) then
         diagnostics%status = IRRIGATION_INVALID_STATE
         return
@@ -405,10 +414,19 @@ contains
       depth = min(depth, parameters%maximum_depth_cm)
     end if
 
-    if (parameters%salinity_excess_enabled .and. request%solute_enabled .and. &
-        request%sensor_concentration > parameters%salinity_threshold) then
-      depth = depth * (1.0_real64 + 0.01_real64*parameters%salinity_excess_percent)
-      diagnostics%salinity_excess_applied = .true.
+    if (parameters%salinity_excess_enabled .and. request%solute_enabled) then
+      if (.not. ieee_is_finite(request%sensor_concentration)) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      if (request%sensor_concentration < 0.0_real64) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      if (request%sensor_concentration > parameters%salinity_threshold) then
+        depth = depth * (1.0_real64 + 0.01_real64*parameters%salinity_excess_percent)
+        diagnostics%salinity_excess_applied = .true.
+      end if
     end if
 
     call normalize_scheduled_event_rate(depth, parameters%irr_rate_cm_per_day, effective_rate, duration, ok)
@@ -417,7 +435,8 @@ contains
       return
     end if
     call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
-         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status, &
+         surface_application=.false.)
     if (availability_status /= IRR_AVAIL_OK) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
@@ -505,6 +524,20 @@ contains
     valid_event = .true.
   end function valid_event
 
+  pure logical function valid_scheduled_ssdi_layout(parameters)
+    type(scheduled_irrigation_parameters_t), intent(in) :: parameters
+    valid_scheduled_ssdi_layout = .false.
+    if (parameters%active_nodes <= 0) return
+    if (parameters%ssdi_first_node == 0 .and. parameters%ssdi_last_node == 0) then
+      if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
+    else
+      if (parameters%ssdi_first_node < 1) return
+      if (parameters%ssdi_last_node < parameters%ssdi_first_node) return
+      if (parameters%ssdi_last_node > parameters%active_nodes) return
+    end if
+    valid_scheduled_ssdi_layout = .true.
+  end function valid_scheduled_ssdi_layout
+
   pure logical function valid_scheduled_parameters(parameters)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
 
@@ -512,7 +545,7 @@ contains
     if (.not. parameters%scheduled_irrigation_enabled) return
     if (parameters%active_nodes <= 0) return
     if (parameters%sensor_node < 1 .or. parameters%sensor_node > parameters%active_nodes) return
-    if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
+    if (.not. valid_scheduled_ssdi_layout(parameters)) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
     if (parameters%irr_rate_cm_per_day < 0.0_real64) return
     select case (parameters%timing_criterion)
@@ -655,8 +688,14 @@ contains
     fluxes%active_duration = active_duration
     allocate(fluxes%subsurface_source(parameters%active_nodes))
     fluxes%subsurface_source = 0.0_real64
-    fluxes%subsurface_source(parameters%single_ssdi_node) = rate
-    fluxes%external_inflow_amount = rate * active_duration
+    if (parameters%ssdi_first_node == 0 .and. parameters%ssdi_last_node == 0) then
+      fluxes%subsurface_source(parameters%single_ssdi_node) = rate
+    else
+      ! B1.11 scheduled rates/depths are per selected compartment. Do not
+      ! silently normalize them into a total-profile quantity.
+      fluxes%subsurface_source(parameters%ssdi_first_node:parameters%ssdi_last_node) = rate
+    end if
+    fluxes%external_inflow_amount = sum(fluxes%subsurface_source) * active_duration
   end subroutine apply_scheduled_event
 
   pure subroutine normalize_scheduled_event_rate(depth, configured_rate, effective_rate, duration, ok)

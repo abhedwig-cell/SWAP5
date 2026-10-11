@@ -1,5 +1,6 @@
 program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, irrigation_state_t
   use mod_fmr_scheduled_irrigation_application
@@ -147,7 +148,7 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not. c%active_event .and. abs(q(3)-0.12_real64) < tol,19)
   call require(abs(d%external_inflow_amount_cm-0.06_real64) < tol,20)
 
-  ! Literal TASK=4 availability: positive configured rate scales both rate and event duration.
+  ! Literal TASK=4 changes gird, not qssdi; SSDI rate is unchanged.
   p%irr_rate_cm_per_day = 0.48_real64
   r = scheduled_irrigation_request_t()
   r%t0 = 2700.0_real64
@@ -160,17 +161,17 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   h%water_content(2) = 0.20_real64
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. c%active_event,21)
-  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.015_real64) < tol,22)
+  call require(abs(q(3)-0.48_real64) < tol .and. abs(d%external_inflow_amount_cm-0.03_real64) < tol,22)
   ! Availability halves the duration (0.25 -> 0.125 day). The persisted rate
-  ! must remain 0.24 cm/day for the second half, without reapplying availability.
+  ! must remain 0.48 cm/day for the second half, without reapplying availability.
   s = c
   r%t0 = 2700.0625_real64
   r%t1 = 2700.125_real64
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,27)
-  call require(abs(q(3)-0.24_real64) < tol .and. abs(d%external_inflow_amount_cm-0.015_real64) < tol,28)
+  call require(abs(q(3)-0.48_real64) < tol .and. abs(d%external_inflow_amount_cm-0.03_real64) < tol,28)
 
-  ! Zero-rate fallback keeps the one-day duration and scales only the generated rate.
+  ! TASK4 leaves both qssdi and one-day duration unchanged for zero configured rate.
   p%irr_rate_cm_per_day = 0.0_real64
   r%t0 = 2800.0_real64
   r%t1 = 2801.0_real64
@@ -178,7 +179,32 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   s = irrigation_state_t()
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,23)
-  call require(abs(q(3)-0.06_real64) < tol .and. abs(d%external_inflow_amount_cm-0.06_real64) < tol,24)
+  call require(abs(q(3)-0.12_real64) < tol .and. abs(d%external_inflow_amount_cm-0.12_real64) < tol,24)
+
+  ! Literal scheduled SSDI assigns the same per-compartment rate throughout
+  ! the selected interval; authoritative inflow is the SUM, never one rate.
+  p%ssdi_first_node = 2
+  p%ssdi_last_node = 4
+  p%irr_rate_cm_per_day = 0.48_real64
+  r%availability_scaling_enabled = .false.
+  r%t0 = 2900.0_real64
+  r%t1 = 2900.25_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,29)
+  call require(abs(q(1)) < tol .and. all(abs(q(2:4)-0.48_real64) < tol),30)
+  call require(abs(d%external_inflow_amount_cm-0.36_real64) < tol,31)
+  p%ssdi_last_node = 5
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_UPSTREAM_REJECTED .and. .not.allocated(q),32)
+  p%ssdi_last_node = 4
+  r%solute_enabled = .true.
+  p%salinity_excess_enabled = .true.
+  r%sensor_concentration = ieee_value(0.0_real64,ieee_quiet_nan)
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_UPSTREAM_REJECTED .and. .not.allocated(q),33)
+  print '(A)','MC_IRR01_MULTI_NODE_SSDI_SOURCE_SUM=PASS'
+  print '(A)','MC_IRR01_SALINITY_NONFINITE_FAIL_CLOSED=PASS'
 
   print '(A)','MC_IRR01_AVAIL_SENSOR_POLICY=PASS'
   print '(A)','MC_IRR01_TCS7_RUNTIME_BINDING=PASS'

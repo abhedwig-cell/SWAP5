@@ -309,3 +309,11 @@ Every specialized chat should begin with the same four operations:
 The old #72/#163/#172 housekeeping queue is closed. Central regie should not invent a replacement cleanup queue. The next central action is event-driven: a genuinely qualified specialized admission candidate, explicit preservation drift, a deliberate project-control refresh, or a resolved shared-authority conflict. PR #486 remains blocked until its storage/drainage authority is resolved.
 
 This ordering is a routing decision, not a scientific priority ranking.
+
+## MC-IRR01 bounded successor admission (2026-10-11)
+
+PR #1198 is READY_FOR_REGIE and reconciled against canonical `24a69ee415366c4c9d508806bd48bf14c002ea86`. The irrigation owner corrected literal SSDI availability/spatial mapping and added atomic management-to-production Richards execution. Central admission imports that qualified delta without changing shared crop/root, solute, drainage, solver or hydrologic state contracts.
+
+Owner run `38122332488` and F-CI run `38122332557` completed successfully on scientific head `0b421925c28f63bfa3024da303f283e9e9fe35ff`. Production/scientific test blobs are unchanged in preservation successor `2fa04e1f416a3fad5dfb96d90dc4c565778eafbf`; its complete local O0/O2 preservation passed with the irrigation owner gate exercised on every backend route. The only moving canonical delta was unrelated crop preservation/governance metadata.
+
+The physical witness is limited to twelve initial, forcing-consistent 4.8e-8 cm impulses. It does not establish realistic-rate forcing transitions, whole-run restart or general rainfall/evaporation composition. Five #1195 capability admissions remain; eleven full capabilities remain ACTIVE_MIGRATION. The F-KT owner must qualify the event forcing-history interface; MC-CROP01 supplies crop/root lifecycle authority and MC-SOL01 supplies accepted sensor concentration authority. The exact remaining gates are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Master owner PR #1072 receives a bounded annotation delta with no disposition/count promotion.

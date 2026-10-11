@@ -71,8 +71,22 @@ contains
       return
     end if
 
-    if (.not. allocated(scheduled_source) .or. size(scheduled_source) /= parameters%active_nodes .or. &
-        any(.not. ieee_is_finite(scheduled_source)) .or. any(scheduled_source < 0.0_real64)) then
+    if (.not. allocated(scheduled_source)) then
+      candidate_management = committed_management
+      diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
+      return
+    end if
+    if (size(scheduled_source) /= parameters%active_nodes) then
+      candidate_management = committed_management
+      diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
+      return
+    end if
+    if (any(.not. ieee_is_finite(scheduled_source))) then
+      candidate_management = committed_management
+      diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
+      return
+    end if
+    if (any(scheduled_source < 0.0_real64)) then
       candidate_management = committed_management
       bound_forcing = base_forcing
       diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
@@ -85,7 +99,12 @@ contains
         diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
         return
       end if
-      if (any(abs(base_forcing%subsurface_irrigation_source) > epsilon(1.0_real64))) then
+      if (any(.not. ieee_is_finite(base_forcing%subsurface_irrigation_source))) then
+        candidate_management = committed_management
+        diagnostics%status = FMR_IRR_FORCING_BIND_INVALID_SOURCE
+        return
+      end if
+      if (any(base_forcing%subsurface_irrigation_source /= 0.0_real64)) then
         candidate_management = committed_management
         bound_forcing = base_forcing
         diagnostics%status = FMR_IRR_FORCING_BIND_SOURCE_CONFLICT
