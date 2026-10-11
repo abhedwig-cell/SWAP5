@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
-  "phase": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "phase": "CANONICAL_BOUNDED_PUBLICATION_BOUNDARY_ADMITTED",
   "implemented": true,
   "tested": true,
   "qualified": true,
@@ -25,7 +25,7 @@
     "O0/O2 and continuous/restored identity",
     "After first outer committed interval, failed next segment retains common accepted prefix and coherent continuation; second short retry equals clean two-segment state"
   ],
-  "next_action": "Admit bounded test/evidence record. Central RT/HY with MC-CROP01 still decides managed profile, allocation preparation seam, per-completed-segment receipt publication and schema-tagged joint irrigation continuation before shared implementation.",
+  "next_action": "Central RT/HY with MC-CROP01 decides managed profile, allocation preparation seam, per-completed-segment receipt publication and schema-tagged joint irrigation continuation before shared implementation. Existing one-column publication boundary is now qualified; no additional physical transaction owner is warranted by this probe.",
   "recovery_branch": "work/mc-irr01-publication-probe-20261011",
   "fullcap_promotions": 0,
   "first_probe_result": "PASS_O0_O2_ONE_INTERNAL_PREFIX_DISCARDED_JOINT_RESTART_CLEAN_RETRY",
@@ -89,7 +89,7 @@
     "workflows",
     "mastercap dispositions5 admitted11 active"
   ],
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "validation": {
     "production_and_original_crop_fixture_byte_identity": "PASS",
     "documentation_source": "PASS",
@@ -155,5 +155,16 @@
     }
   },
   "last_reconciled_upstream": "7315be4f",
-  "upstream_reconciliation": "PR1209 bootstrap and updated owner driver requalified O0/O2 with default file_weather_dayend=false; later7315be4f changes only crop status/control documentation and is preserved. No dayend mode qualification inherited."
+  "upstream_reconciliation": "PR1209 bootstrap and updated owner driver requalified O0/O2 with default file_weather_dayend=false; later7315be4f changes only crop status/control documentation and is preserved. No dayend mode qualification inherited.",
+  "canonical_admission": {
+    "pr": 1210,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1210",
+    "head": "9192c08c0aa035657f537279b66431df387a89f2",
+    "merge": "9fa425420b9f4803e0d95c43f90f9962a24ff037",
+    "tree": "27a3593255cb32f92864476f6ecd8311c964f315",
+    "verified_canonical_tree_equals_qualified_submission": true,
+    "production_delta": "NONE",
+    "master_disposition_changes": 0,
+    "new_actions_dispatched": 0
+  }
 }
