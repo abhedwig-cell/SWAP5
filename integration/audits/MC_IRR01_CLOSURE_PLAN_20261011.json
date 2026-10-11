@@ -45,7 +45,7 @@
       "capability_id": "SW431-IRR-TCS7",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Qualify non-cancelling pressure-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+      "next_gate": "Sensor+DCS1/DCS2 and one/three-node non-cancelling storage plus in-flight event/physical restart are proven in the tiny strict-budget envelope. Qualify realistic pressure-triggered onset/end and whole-run rainfall/evaporation/lifecycle composition.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -54,7 +54,7 @@
       "capability_id": "SW431-IRR-TCS8",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Qualify non-cancelling moisture-triggered physical application at realistic rates and sensor+DCS1 source-reachable combinations.",
+      "next_gate": "Sensor+DCS1/DCS2 and one/three-node non-cancelling storage plus in-flight event/physical restart are proven in the tiny strict-budget envelope. Qualify realistic moisture-triggered onset/end and whole-run rainfall/evaporation/lifecycle composition.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -63,7 +63,7 @@
       "capability_id": "SW431-IRR-DCS1",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Combine sensor and root management depth paths under source order, with authoritative rainfall and evolving crop/root parameters; physical lifecycle proof.",
+      "next_gate": "Common sensor/root source depth calculation and rainfall deduction are now bound to physical runtime. Bind authoritative rainfall and evolving crop/root parameters, and qualify realistic whole-run lifecycle/restart.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -88,7 +88,7 @@
       "capability_id": "SW431-IRR-SSDI",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Multi-node process mapping and literal availability are tested; qualify multi-node real storage response and repeated event onset/end with accepted temporal history.",
+      "next_gate": "One and three-node full-rate source allocation now changes real Richards storage and survives in-flight physical/event restart. Qualify realistic rates, repeated event onset/end with retained history and whole-run forcing composition.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -105,7 +105,7 @@
       "capability_id": "SW431-IRR-LIMIT",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Management DCS1 min/max is literal-tested; bind common limit ordering for sensor/DCS1 and saline source-reachable combinations.",
+      "next_gate": "Common DCSLIM-before-salt ordering now executes through the sensor/root physical bindings. Qualify complete runtime limits with accepted salt concentration, evolving roots and realistic event/restart envelope.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -114,7 +114,7 @@
       "capability_id": "SW431-IRR-SALTEXCESS",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "MC-SOL01 owner must supply accepted sensor concentration/state identity; scalar caller input is not complete salt-state runtime authority. Verify physical excess with depth limits and restart.",
+      "next_gate": "Scalar salt excess after DCSLIM, availability and in-flight physical/event restart are proven in the tiny envelope. MC-SOL01 accepted sensor concentration/state identity and actual solute-enabled runtime remain required.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -139,7 +139,7 @@
       "capability_id": "SW431-IRR-AVAIL",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Literal TASK4 correction proven; bind external allocation provider to event identity and qualify multi-day physical restriction/restart under realistic rates.",
+      "next_gate": "Literal TASK4 surface/SSDI distinction and duration restriction plus in-flight physical/event restart are proven. Bind external allocation provider to persistent event identity; qualify multi-day realistic restriction/restart.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false
@@ -174,7 +174,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "next_action": "Central F-KT owner: establish and qualify irrigation onset/end history contract without discarding accepted state or weakening temporal acceptance. Then finish crop/root and salt-state bindings plus source-reachable sensor/DCS1, multi-node physics and whole-run restart. All eleven remain ACTIVE_MIGRATION until those gates pass.",
+  "next_action": "Diagnose realistic retained-history forcing onset/end under central F-KT ownership; bind authoritative root/lifecycle, salt and allocation state. The source sensor+DCS1 and bounded multi-node physical/restart gaps are closed by #1199. Eleven complete-capability gates remain open.",
   "reconciled_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
   "candidate_pr": 1198,
   "functional_coverage_closed": false,
@@ -295,5 +295,20 @@
   "qualification_claim_scope": "Literal source correction and bounded atomic initial-impulse runtime only; no fullcap promotion",
   "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
   "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
-  "canonical_verification_scope": "All qualified production and scientific test blobs byte-exact. Whole canonical tree also contains concurrent four-path F-CI93 diagnostic metadata commit 64b9fb3d; no source/test change. Reconciled and retained."
+  "canonical_verification_scope": "All qualified production and scientific test blobs byte-exact. Whole canonical tree also contains concurrent four-path F-CI93 diagnostic metadata commit 64b9fb3d; no source/test change. Reconciled and retained.",
+  "runtime_successor": {
+    "pull_request": 1199,
+    "canonical_merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "evidence": "integration/audits/MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
+    "qualified_scope": "12 tiny strict-budget sensor/depth/spatial/restart cases O0/O2; fullcap promotion count zero",
+    "next_gates": {
+      "TCS7": "Sensor+DCS1/DCS2 and one/three-node non-cancelling storage plus in-flight event/physical restart are proven in the tiny strict-budget envelope. Qualify realistic pressure-triggered onset/end and whole-run rainfall/evaporation/lifecycle composition.",
+      "TCS8": "Sensor+DCS1/DCS2 and one/three-node non-cancelling storage plus in-flight event/physical restart are proven in the tiny strict-budget envelope. Qualify realistic moisture-triggered onset/end and whole-run rainfall/evaporation/lifecycle composition.",
+      "DCS1": "Common sensor/root source depth calculation and rainfall deduction are now bound to physical runtime. Bind authoritative rainfall and evolving crop/root parameters, and qualify realistic whole-run lifecycle/restart.",
+      "SSDI": "One and three-node full-rate source allocation now changes real Richards storage and survives in-flight physical/event restart. Qualify realistic rates, repeated event onset/end with retained history and whole-run forcing composition.",
+      "LIMIT": "Common DCSLIM-before-salt ordering now executes through the sensor/root physical bindings. Qualify complete runtime limits with accepted salt concentration, evolving roots and realistic event/restart envelope.",
+      "SALTEXCESS": "Scalar salt excess after DCSLIM, availability and in-flight physical/event restart are proven in the tiny envelope. MC-SOL01 accepted sensor concentration/state identity and actual solute-enabled runtime remain required.",
+      "AVAIL": "Literal TASK4 surface/SSDI distinction and duration restriction plus in-flight physical/event restart are proven. Bind external allocation provider to persistent event identity; qualify multi-day realistic restriction/restart."
+    }
+  }
 }

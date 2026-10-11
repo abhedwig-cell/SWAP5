@@ -801,5 +801,29 @@
     "master_reconciliation_checkpoint": "0990b105c871bf2d082d8ba20787a14b61de877b",
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43"
+  },
+  "mc_irr01_sensor_depth_successor_20261011": {
+    "pull_request": 1199,
+    "canonical_merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "owner_run": 38125769643,
+    "fci_run": 38125769591,
+    "status": "BOUNDED_SENSOR_DEPTH_RUNTIME_ADMITTED_FULL_COVERAGE_OPEN",
+    "scope": "Source DCS1/DCS2+DCSLIM reuse for TCS7/8, one/three-node physical water ownership, atomic failure and in-flight physical/event restart",
+    "shared_interfaces_changed": false,
+    "preservation": "Exact source guard and full existing owner successor, O0/O2, local and remote F-CI passed",
+    "fullcap_promotions": 0,
+    "closure_record": "integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json",
+    "numerical_dependency": {
+      "owner": "central F-KT / hydraulic numerical authority",
+      "fixture": "tests/f-app07/run_mc_irr01_realistic_event.sh",
+      "diagnostic": "1 cm at 48 cm/day after accepted no-irrigation history; O0 first profile failed after 291252 temporal rejects, zero mass rejects",
+      "required_action": "Diagnose and qualify source onset/end accuracy and forcing composition with retained accepted history, source-backed shared contract if necessary; no budget weakening or history discard."
+    },
+    "independent_remaining_bindings": [
+      "MC-CROP01 evolving root and daystart lifecycle authority",
+      "MC-SOL01 accepted sensor concentration and solute-enabled runtime",
+      "external allocation provider persistent event identity"
+    ],
+    "continuation": "Reuse canonical bounded code/evidence. All eleven fullcaps remain active until complete source-reachable runtime authority exists."
   }
 }

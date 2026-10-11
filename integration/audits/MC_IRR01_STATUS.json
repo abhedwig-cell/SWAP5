@@ -4,7 +4,7 @@
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cadcc63d3296e12e6a0634ee7095693454b60005",
-  "last_reconciled_upstream": "cadcc63d3296e12e6a0634ee7095693454b60005",
+  "last_reconciled_upstream": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "MC-IRR01 is canonically admitted. Functional-coverage owner PR #1072 must reconcile its moving master from canonical cadcc63d3296e12e6a0634ee7095693454b60005; do not infer unrestricted irrigation coverage from this bounded admission.",
+  "next_action": "Five fullcaps remain admitted; eleven remain ACTIVE_MIGRATION. Bounded #1198/#1199 source/runtime/restart routes admitted. Continue from runtime envelope record for central retained-history numerical qualification, authoritative root/lifecycle and solute/allocation bindings.",
   "recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -253,5 +253,24 @@
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
     "master_reconciliation_checkpoint": "0990b105c871bf2d082d8ba20787a14b61de877b"
+  },
+  "runtime_successor_20261011": {
+    "pull_request": 1199,
+    "record": "integration/audits/MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
+    "canonical_merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "admission_head": "54683938c5b41322b11ca99be6adde53e7986551",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "bounded_scope_qualified": true,
+    "canonical_admitted": true,
+    "owner_run": 38125769643,
+    "fci_run": 38125769591,
+    "full_functional_coverage_closed": false,
+    "retained_admitted_capabilities": 5,
+    "retained_active_migration_capabilities": 11,
+    "new_fullcap_promotions": 0,
+    "realistic_event_envelope": "FAIL O0 first profile: 291252 temporal rejects, zero mass rejects, despite increased effort; O2 unqualified",
+    "next_action": "Five fullcaps remain admitted; eleven remain ACTIVE_MIGRATION. Bounded #1198/#1199 source/runtime/restart routes admitted. Continue from runtime envelope record for central retained-history numerical qualification, authoritative root/lifecycle and solute/allocation bindings."
   }
 }
