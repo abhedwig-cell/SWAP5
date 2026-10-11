@@ -1603,7 +1603,7 @@
         "blocker": "Original WU04C trial completed=false/committed=false after legacy-reference-retry. Missing canonical pathnames are not missing physical capabilities: active owners use later typed replacements. Ten shared src paths diverge, including HeadCalc, backend, bootstrap, irrigation, restart and solver contract.",
         "next_action": "Keep original reconciliation history. Owner maps each unique source/runtime candidate to current capability and successor before selective recovery; never whole-tree merge or blind supersession.",
         "current_lineage_audit_20261011": {
-          "status": "IMPLEMENTED_PERSISTED_CHECKPOINT_QUALIFICATION_PENDING",
+          "status": "CANONICALLY_ADMITTED_MECHANICAL_ARCHIVE_AND_ROUTING_ONLY",
           "canonical_base": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
           "original_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
           "report": "integration/audits/PPA_RECONCILE01_CURRENT_LINEAGE_20261011.json",
@@ -1645,11 +1645,11 @@
           },
           "implemented": true,
           "persisted": true,
-          "tested": false,
-          "qualified": false,
-          "canonically_admitted": false,
+          "tested": true,
+          "qualified": true,
+          "canonically_admitted": true,
           "recovery_point": "qualification/regie-pr700-lineage-20261011",
-          "next_action": "Verify complete deterministic report/archive regeneration, independent archive/Git members and strict documentation gates; admit only this mechanical audit. PR700 retains scientific owner decisions.",
+          "next_action": "Scientific owners adjudicate150 absent historical source pathnames and10 divergent shared contracts against typed successors. Keep original PR700 open; select bounded recovery only after source-backed owner disposition and required physical qualification.",
           "interfaces_changed": false,
           "invariants_affected": [],
           "coverage_delta": 0,
@@ -1658,7 +1658,46 @@
             "canonical source and named owner-authority paths at8216240d",
             "reproducer and audit/archive postimages"
           ],
-          "owner_decisions": "150 absent source pathnames and10 divergent shared files remain unresolved scientifically. Domain entrypoints and lexical matches are navigation only, never approved equivalents."
+          "owner_decisions": "150 absent source pathnames and10 divergent shared files remain unresolved scientifically. Domain entrypoints and lexical matches are navigation only, never approved equivalents.",
+          "checkpoint_commit": "e1dd3d02d8b769339cc259fe5013a28dbc497bcb",
+          "checkpoint_tree": "9deccbf9bb4a0311c661e45890b62f4e9b243d3f",
+          "qualification": {
+            "tested_remote_commit": "e1dd3d02d8b769339cc259fe5013a28dbc497bcb",
+            "tested_tree": "9deccbf9bb4a0311c661e45890b62f4e9b243d3f",
+            "gates": {
+              "full_deterministic_Git_report_archive_regeneration": "PASS",
+              "independent_862_original_Git_postimages_and_executable_modes": "PASS",
+              "863_unique_archive_members_and_decoded_SHA256": "PASS",
+              "all_curated_canonical_entrypoint_blobs": "PASS",
+              "six_scientific_execution_subtrees_unchanged": "PASS src/tests/reference/testbank/.github/assets",
+              "documentation_source_checker": "PASS",
+              "strict_mkdocs": "PASS exit0 using python -m mkdocs build --strict",
+              "JSON_whitespace": "PASS"
+            },
+            "commands": [
+              "python tools/verification/reconcile_ppa_reconcile01.py --canonical 8216240ddcbfcf1c8ea44219cc7149f90fa9408c --verify",
+              "independent tar/member comparison with git show and git hash-object for every original path",
+              "python tools/docs/check_docs.py",
+              "python -m mkdocs build --strict",
+              "git diff --check"
+            ],
+            "mechanical_only": true,
+            "physical_tests_run": false,
+            "scientific_preservation_rerun": false,
+            "negative_environment_diagnostic": "Bare mkdocs executable was outside PATH (exit127); installed module route completed exit0. No missing dependency or successful bare command is claimed.",
+            "final_receipt_docs": "Documentation source and strict MkDocs are rerun after the receipt update; their success is a prerequisite to publishing this postimage."
+          },
+          "live_queue": {
+            "canonical_checked_before_admission": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+            "open_count": 16,
+            "owner_candidates": 15,
+            "intentional_carrier": 58,
+            "census_authority": "finalization_frost_regie_closeout_20261011.nan_guard_admission.fresh_open_pr_census",
+            "all_original_open_heads_unchanged": true,
+            "new_owner_admission_ready_proposal_observed": false,
+            "integration_carrier_rule": "PR58 follows current canonical; all fifteen specialized owner heads/branches match the existing frost census. Its older PR58 SHA is historical."
+          },
+          "admission_ref": "integration/f-ci-canonical"
         }
       },
       {
