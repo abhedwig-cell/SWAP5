@@ -1698,6 +1698,33 @@
             "integration_carrier_rule": "PR58 follows current canonical; all fifteen specialized owner heads/branches match the existing frost census. Its older PR58 SHA is historical."
           },
           "admission_ref": "integration/f-ci-canonical"
+        },
+        "gash_semantic_map_20261011": {
+          "work_unit": "PPA-RECONCILE01-GASH-SOURCE-DISPOSITION",
+          "canonical_base": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+          "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+          "status": "PERSISTED_DIAGNOSTIC_NOT_YET_TESTED",
+          "implemented": true,
+          "persisted": true,
+          "tested": false,
+          "qualified": false,
+          "next_action": "Run exact historical/current paired640 Gash inputs and six partition edges at O0/O2; rerun existing INT12-D owner/independent gates; verify admitted FCI93 compile identities before reconciling its stale discrepancy row.",
+          "scope": "Verification and source-recovery disposition only; production/reference unchanged, no physical equivalence or fullcap claim.",
+          "interfaces_changed": false,
+          "invariants_affected": [],
+          "owner": "Central regie with PPA-WU04-D/INT12 source and HeadCalc preservation authorities",
+          "read_only_authorities": [
+            "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json",
+            "integration/f-ci/F-CI93_STATUS.json",
+            "integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json"
+          ],
+          "test_paths": [
+            "tests/fpm/run_pr700_interception_source_disposition.py",
+            "tests/fpm/test_pr700_gash_source_disposition.f90",
+            "tests/fpm/run_f_mig431_int12_d.sh"
+          ],
+          "recovery_point": "qualification/regie-pr700-interception-map-20261011",
+          "blocked_science": "Original PR700 shared runtime/source admission is still owner-controlled; this diagnostic cannot authorize a production repair or whole-tree merge."
         }
       },
       {
