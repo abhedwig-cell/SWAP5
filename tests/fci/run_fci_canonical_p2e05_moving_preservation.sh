@@ -331,6 +331,7 @@ check_b19_micro_root_recomposition() {
   local crop_hydraulic_provenance_changed=0
   local crop_hydraulic_provenance_changed=0
   local irrigation_owner_changed=0
+  local nlglob14z47_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -404,6 +405,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
@@ -428,6 +430,14 @@ check_b19_micro_root_recomposition() {
     bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||
       fail 'MC-IRR01 exact owner and composed-path O0/O2 preservation failed'
     echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
+  fi
+  if (( nlglob14z47_changed )); then
+    test "$(git rev-parse HEAD:src/runtime/mod_moving_interface_manager.f90)" = \
+      "fc3805e1f106b5de1ee3a492920d0c21eba7bd1d" ||
+      fail 'unqualified F-PE-NLGLOB14Z47 moving-interface manager blob'
+    bash tests/fpe/run_fpe_nlglob14z47.sh ||
+      fail 'F-PE-NLGLOB14Z47 exact eligibility successor O0/O2 preservation failed'
+    echo 'FCI_CANONICAL_NLGLOB14Z47_EXACT_ELIGIBILITY_SUCCESSOR=PASS'
   fi
   if (( ppa_weather_guard_changed )); then
     test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
