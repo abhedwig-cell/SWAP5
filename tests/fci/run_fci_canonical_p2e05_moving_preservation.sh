@@ -91,6 +91,37 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 
+# Bounded MC-HEAT01 successor: exact owner code and immutable qualification
+# runners only. Unrecognized thermal/backend changes remain fail-closed.
+mc_heat01_exact_successor=0
+MC_HEAT01_QUALIFIED=decd2e67b8a182f1448a173b18bbc232749dd5b5
+MC_HEAT01_BACKEND=01d1981cc7aebb1553463b1cee955bb21da05fe6
+if git merge-base --is-ancestor "$MC_HEAT01_QUALIFIED" HEAD && \
+   [[ "$(git rev-parse HEAD:src/process/mod_soil_temperature_contract.f90)" == 2c358fa353226846ce6c6e4e561aa59e5de94620 ]] && \
+   [[ "$(git rev-parse HEAD:src/process/mod_restricted_soil_temperature.f90)" == 6d881983c8d97c6d82854c59a2dc6c9fd36f7350 ]] && \
+   [[ "$(git rev-parse HEAD:$BACKEND)" == "$MC_HEAT01_BACKEND" ]]; then
+  mc_heat01_exact_successor=1
+fi
+
+verify_mc_heat01_owner_successor() {
+  (( mc_heat01_exact_successor )) || return 0
+  local path
+  for path in tests/fmig431/run_mc_heat01_runtime.sh \
+              tests/fmig431/run_mc_heat01_thermal_boundary.sh \
+              tests/fmig431/test_mc_heat01_runtime.f90 \
+              tests/fmig431/test_mc_heat01_thermal_boundary.f90 \
+              tests/fci/test_fci43_restricted_soil_temperature_independent.f90 \
+              reference/swap-4.3.1/b1_11_frost_source/SWAP/temperature.f90; do
+    test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$MC_HEAT01_QUALIFIED:$path")" || \
+      fail "MC-HEAT01 immutable qualification dependency drift: $path"
+  done
+  bash tests/fmig431/run_mc_heat01_thermal_boundary.sh || fail 'MC-HEAT01 process/default F-VQ58 O0/O2 preservation'
+  bash tests/fmig431/run_mc_heat01_runtime.sh || fail 'MC-HEAT01 original runtime/transaction/restart O0/O2 preservation'
+  bash tests/fkt/run_fkt22_fmr_runtime_gate.sh || fail 'MC-HEAT01 FKT22 serialized trajectory preservation'
+  bash tests/frost/run_ppa_wu05b_frost_runtime.sh || fail 'MC-HEAT01 bounded frost runtime preservation'
+  echo 'FCI_CANONICAL_MC_HEAT01_EXACT_OWNER_DEFAULT_RUNTIME_FROST_SUCCESSOR=PASS'
+}
+
 git merge-base --is-ancestor "$AUTH" HEAD || fail 'Status-A authority not ancestor'
 git merge-base --is-ancestor "$FROSS12_AUTH" HEAD || fail 'F-ROSS12 authority not ancestor'
 if git merge-base --is-ancestor "$FPERF_B1_ADMISSION" HEAD; then
@@ -180,6 +211,10 @@ dependency_surface=(
 dependency_authority="$(git rev-parse HEAD^1)"
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 for path in "${dependency_surface[@]}"; do
+  case "$path" in
+    src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90)
+      if (( mc_heat01_exact_successor )); then continue; fi ;;
+  esac
   test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
     fail "candidate changed current canonical dependency from $dependency_authority: $path"
 done
@@ -369,10 +404,16 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
-      src/kernel/mod_kernel_transactions.f90|src/runtime/mod_fmr_serialized_reference_backend.f90 )
+      src/kernel/mod_kernel_transactions.f90 )
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
+      src/runtime/mod_fmr_serialized_reference_backend.f90 )
+        (( crop_fkt_b110_exact_successor || mc_heat01_exact_successor )) ||
+          fail "unqualified shared serialized backend source change: $candidate_path"
+        ;;
+      src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90 )
+        (( mc_heat01_exact_successor )) || fail "unqualified MC-HEAT01 source change: $candidate_path" ;;
       src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
@@ -689,7 +730,9 @@ check_b19_micro_root_recomposition() {
       fail 'crop unified physical/calendar persistence replay failed'
   fi
   for candidate_path in "$BACKEND" src/runtime/mod_fmr_production_application_bootstrap.f90; do
-    if (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+    if (( mc_heat01_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+      test "$(git rev-parse "HEAD:$candidate_path")" = "$MC_HEAT01_BACKEND" || fail 'MC-HEAT01 shared backend exact successor drift'
+    elif (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
       test "$(git rev-parse "HEAD:$candidate_path")" = "b218ac657db52612bc12da671716c97430200f0a" ||
         fail 'crop B110 certified successor backend postimage drift'
     else
@@ -731,7 +774,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     # surface while preserving B19 behavior; accept only that exact successor.
     if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
       check_b19_micro_root_recomposition
-      if (( crop_fkt_b110_exact_successor )); then
+      if (( mc_heat01_exact_successor )); then
+        test "$(git rev-parse HEAD:$BACKEND)" = "$MC_HEAT01_BACKEND" || fail 'MC-HEAT01 exact backend drift'
+      elif (( crop_fkt_b110_exact_successor )); then
         test "$(git rev-parse HEAD:$BACKEND)" = "b218ac657db52612bc12da671716c97430200f0a" ||
           fail 'B19/MICRO crop B110 exact successor backend drift'
       else
@@ -1183,7 +1228,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = \
        "$(git rev-parse "$dependency_authority:src/solver/mod_b110_default_mvg_provider.f90")" || \
     fail 'candidate changed current default-MvG provider target postimage'
-  if (( crop_fkt_b110_exact_successor )); then
+  if (( mc_heat01_exact_successor )); then
+    backend_authority="$MC_HEAT01_BACKEND"
+  elif (( crop_fkt_b110_exact_successor )); then
     backend_authority="b218ac657db52612bc12da671716c97430200f0a"
   fi
   test "$(git rev-parse HEAD:$BACKEND)" = "$backend_authority" || \
@@ -1257,6 +1304,7 @@ else
   bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh
 fi
 
+verify_mc_heat01_owner_successor
 echo 'FCI34_MOVING_ROOT_ATTRIBUTION_PRESERVATION=PASS'
 echo 'FCI35_MOVING_PARALLEL_RESTART_DEPENDENCY_PRESERVATION=PASS'
 echo 'FCI36_MOVING_DIVDRA_ACTIVE_RUNTIME_PRESERVATION=PASS'
