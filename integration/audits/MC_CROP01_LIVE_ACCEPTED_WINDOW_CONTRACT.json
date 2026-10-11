@@ -1,0 +1,58 @@
+{
+  "workstream": "MC-CROP01",
+  "baseline": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
+  "canonical_reconciled": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+  "scope": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window. Initial model day creates one existing crop owner from authenticated weather and actual initial accepted soil through existing initialization authority; completed preparation/sowing/germination phases persist. Actual wet-to-dry hydraulic preparation and delayed sowing/germination are qualified locally in the same physical production route.",
+  "owners": [
+    "mod_kernel_transactions",
+    "mod_fmr_wofost_accepted_window_lineage",
+    "mod_fmr_wofost_crop_transaction",
+    "mod_fmr_wofost_crop_event_lifecycle",
+    "mod_crop_lifecycle_continuation",
+    "mod_crop_weather_day_owner"
+  ],
+  "interfaces": [
+    "bootstrap run_weather_crop_daystart orchestrates caller-owned existing crop executor/parameters/committed carrier; no additional crop state owner",
+    "bootstrap privately retains existing accepted-window objects; callers cannot construct or inject a window"
+  ],
+  "invariants": [
+    "Only actually accepted hydrology admits window contribution",
+    "All trial window compatibility checks precede physical commit",
+    "Rejected hydro and crop trials do not advance committed state or event delivery",
+    "Daystart is independent of same-day hydrology end acceptance",
+    "Persistent lifecycle values read from existing committed crop owner; no caller-set continuation proof"
+  ],
+  "limits": [
+    "Pre-emergence root-free profile only; no WOFOST growth/solar/radiation claim",
+    "No shared headed-surface physics changes",
+    "Joint continuation is opaque and serialization-neutral; an external disk codec is still required.",
+    "Initial crop creation is qualified in a scheduled root-free profile; full historical initial-day event equivalence, simulated thermal sowing, emerged growth and rotation/fallow remain open."
+  ],
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "continuation_contract": {
+    "representation": "Opaque serialization-neutral application continuation; existing F-KT persistence snapshots retain the parameter certificate and owner provenance; immutable file source bytes, existing weather owner and accepted/delivered windows travel together.",
+    "configuration": "Private deep copy of the originally validated bounded file-weather configuration, not caller-reconstructed physical coefficients or numeric source IDs.",
+    "restore": "Only a fresh/closed application and an uninitialized crop carrier; all source snapshots validate before startup publication. No overwrite or rollback of a live owner.",
+    "scientific_scope": "Continuous next-day physical execution after disposal and restoration of the real application, crop carrier and bound crop executor. Not a disk codec or external archive format."
+  },
+  "local_source_tree": "56317f7db66878e57ee4bc6930dd685ac857ea43",
+  "local_production_commit": "5716ecba6bfbc97f50dd0f20827d9c29435be29a",
+  "local_O0_O2": "PASS twelve actual production executions with hydraulic preparation delay, scheduled sowing, dry-soil germination, retained completed phases and coherent initial/pending/accepted continuation",
+  "initial_day_successor_contract": {
+    "authority": "Existing initialize_fmr_wofost_crop_transaction_state plus kernel_committed_state%initialize; no FKT interval/event semantics are altered.",
+    "source": "Existing certified weather/soil daily preflight and daily lifecycle composition derive initial prepared/sown/germination fields from authentic first source day.",
+    "publication": "Creation of one previously-uninitialized existing crop carrier, at actual initial accepted soil time/revision zero; not an invented positive accepted hydro window or a zero-duration FKT trial.",
+    "exactly_once": "Positive stable crop identity/lineage and uninitialized target required; repeat or late initialization fails before publication. Original crop continuation inputs remain owner-derived thereafter.",
+    "completed_phases": "Existing prepared/sown flags prevent re-running completed entry conditions; already germinated state uses existing mode0 no further temperature-sum accumulation while emergence remains unimplemented.",
+    "restart": "Opaque continuation distinguishes initial crop creation and pending next-day event from already consumed event; accepts only private actual owner provenance and publishes only fresh owners.",
+    "limits": "Scheduled sowing and root-free/no-heat profile; does not qualify simulated thermal sowing, emergence, WOFOST growth, root/rotation/fallow or disk codec."
+  },
+  "central_preservation": "PASS exact production source and frozen eight-case snapshot; twelve-case qualification/source guard PASS with identical production. Full admission preservation remains BLOCKED by unchanged canonical headed fixture."
+}

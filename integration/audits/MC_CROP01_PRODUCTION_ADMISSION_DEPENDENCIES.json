@@ -1,0 +1,163 @@
+{
+  "workstream": "MC-CROP01",
+  "routing": "BLOCKED_SHARED_PRESERVATION_AUTHORITY: central admission and existing headed-surface owner",
+  "canonical": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+  "pr": 1197,
+  "exact_qualified_head": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
+  "additional_successor_branch": "work/mc-crop01-live-window-20261011",
+  "failed_job": 114403244876,
+  "failure": "HeadCalc: dynamic head regime omitted surface-head derivative",
+  "scientific_assertion_kept": "FKT15_PRODUCTION_ATMOSPHERIC_HEAD and PONDED_HEAD and SURFACE_HARD_MASS; failure is at derivative completeness check before broad publication",
+  "diagnosis": "Non-M1 Task2 dynamic provider binding omits fixed_top_node_conductivity; current head regime requires surface derivative. M1 binding already supplies fixed conductivity. No owner physics changed or assertion waived.",
+  "source_closure_count": 27,
+  "new_production_intersection": [],
+  "source_closure": [
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "7b16c3fcf58179f1491104a1dce3279010b4178a",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "blob": "5418b6a1a9f651e818678f347c9cd8399693eb82",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "blob": "8cf848d0ac85602bcde434d76189990f30c11dcb",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "1ae4eea78df6b27dc982b8318402f78728394aa7",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+      "blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_source_sink_provider.f90",
+      "blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_core.f90",
+      "blob": "4079f23ac63a60efb80e499029346fac88f8a780",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "blob": "8de39d457ee85ef930c021be360648c490b2c732",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "blob": "63b89538e7466437a6af38a69d76a8043b206370",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_surface_evaporation_capacity_contract.f90",
+      "blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+      "blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/process/mod_restricted_surface_evaporation.f90",
+      "blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "blob": "abe2d699017300e890eeb69a56448bb071660d2d",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+      "blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+      "blob": "28aa42572ee202e7a25f790c175927c832ee849b",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+      "blob": "e381db141cf8c2b148dd944b98a73a7612a00296",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "4e3f764980da5d1bd34b7e971a826903ab4bab21",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+      "blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19",
+      "canonical_unchanged": true
+    },
+    {
+      "path": "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "blob": "2a17e9a203a9fc257550e2a9036f3f918421235e",
+      "canonical_unchanged": true
+    }
+  ],
+  "first_day_boundary": "Initial startup boundary implemented and O0/O2 tested via existing initialize_fmr_wofost_crop_transaction_state/kernel initialization, authenticated first source day and actual accepted initial soil at revision zero. No prior hydro event fabricated; positive next-day events still require real prior accepted window. Scheduled un-emerged profile only; broad historical initial event equivalence remains unqualified.",
+  "next_safe_action": "Finish exact current full central preservation; preserve consolidated branch. Central/headed owner determines unchanged FCI93 failure disposition. Next crop owner block adds emergence and authentic WOFOST solar/radiation with admitted root/heat interfaces, then harvest/rotation/fallow and external joint disk codec.",
+  "canonical_reconciliation_successor": {
+    "head": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+    "production_delta": [
+      "src/runtime/mod_moving_interface_manager.f90"
+    ],
+    "focused_compile_closure_count": 215,
+    "intersection": [],
+    "central_preservation_delta": "Admitted exact NLGLOB14Z47 moving-interface eligibility; retain its added exact source/owner guard when composing with MC-CROP01 successor.",
+    "action": "Canonical merged cleanly; source guard baseline refreshed; new combined full local central preservation required and running. Existing old qualified postimage retained."
+  }
+}
