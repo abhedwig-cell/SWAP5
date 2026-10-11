@@ -386,6 +386,15 @@ verify_mc_irr01_owner_successor() {
   )
   irrigation_owner_blobs[src/runtime/mod_fmr_management_irrigation_forcing_binding.f90]=649006fb63395fa2980bae8e6853eedc6f122bed
   irrigation_owner_blobs[src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90]=649143a63dd29df8e1ec5b15ac75e8244d05c87f
+  local root_salt_successor=0
+  if [[ "$(git rev-parse HEAD:src/process/mod_irrigation_process.f90)" == a917a2c7b912cd85e19d22ddfe3468683e936a3e ]] &&
+     [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_scheduled_management_irrigation_application.f90)" == 4f5bbd6147b6d67ab31db4bb53f68ec00d25d3e3 ]]; then
+    git merge-base --is-ancestor 9d95eacb6619f7fece1d3bfe7b3e068304836ecd HEAD || fail 'root salt successor lineage'
+    test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac || fail 'root salt shared storage prerequisite'
+    irrigation_owner_blobs[src/process/mod_irrigation_process.f90]=a917a2c7b912cd85e19d22ddfe3468683e936a3e
+    irrigation_owner_blobs[src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=4f5bbd6147b6d67ab31db4bb53f68ec00d25d3e3
+    root_salt_successor=1
+  fi
   for candidate_path in "${!irrigation_owner_blobs[@]}"; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
       fail "unqualified MC-IRR01 owner blob: $candidate_path"
@@ -397,7 +406,16 @@ verify_mc_irr01_owner_successor() {
   bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'
   bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'
   bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh || fail 'MC-IRR01 sensor depth physical/restart composition'
-  echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
+  if (( root_salt_successor )); then
+    test "$(git rev-parse HEAD:tests/mc-irr01/run_mc_irr01_literal_root_salt.sh)" = a734c0fdf9f1169fcb0ff30db4fd7766005774a4 || fail 'root salt literal gate identity'
+    test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_root_salt_realistic.sh)" = 461b1d570e7f163cc0c194f2604c6890441dba84 || fail 'root salt physical gate identity'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_root_salt_realistic.f90)" = 02e5bbe0b49d02ef97c12ad5831449fc4b553178 || fail "root salt physical fixture identity: tests/f-app07/test_mc_irr01_root_salt_realistic.f90"
+    test "$(git rev-parse HEAD:tests/f-app07/mc_irr01_realistic_headcalc_stubs.f90)" = 88795f8ca83afa4754e78f1bec32dc8aea598e30 || fail "root salt physical fixture identity: tests/f-app07/mc_irr01_realistic_headcalc_stubs.f90"
+    bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh || fail 'root salt source semantics preservation'
+    bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh || fail 'root salt physical source/depth/availability preservation'
+    echo 'FCI_CANONICAL_MC_IRR01_ROOT_SALT_SUCCESSOR=PASS'
+  fi
+  echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
   irrigation_owner_verified=1
 }
 

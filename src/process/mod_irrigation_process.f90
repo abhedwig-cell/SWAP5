@@ -134,8 +134,35 @@ module mod_irrigation_process
 
   public :: evaluate_fixed_irrigation_interval
   public :: evaluate_scheduled_irrigation_interval
+  public :: apply_irrigation_salinity_excess
 
 contains
+
+  ! B1.11 TASK3: after DCSLIM, before rates and TASK4. Shared by all TCS routes.
+  pure subroutine apply_irrigation_salinity_excess(enabled, solute_enabled, threshold, percent, concentration, &
+                                                   depth, applied, ok)
+    logical, intent(in) :: enabled, solute_enabled
+    real(real64), intent(in) :: threshold, percent, concentration
+    real(real64), intent(inout) :: depth
+    logical, intent(out) :: applied, ok
+    applied = .false.
+    ok = .true.
+    if (.not. enabled) return
+    ok = .false.
+    if (.not. ieee_is_finite(threshold) .or. .not. ieee_is_finite(percent)) return
+    if (threshold < 0.0_real64 .or. threshold > 100.0_real64) return
+    if (percent < 0.0_real64 .or. percent > 100.0_real64) return
+    ok = .true.
+    if (.not. solute_enabled) return
+    ok = .false.
+    if (.not. ieee_is_finite(concentration)) return
+    if (concentration < 0.0_real64) return
+    if (concentration > threshold) then
+      depth = depth * (1.0_real64 + 0.01_real64*percent)
+      applied = .true.
+    end if
+    ok = .true.
+  end subroutine apply_irrigation_salinity_excess
 
   pure subroutine evaluate_fixed_irrigation_interval(parameters, committed_state, request, &
                                                        candidate_state, fluxes, diagnostics)
@@ -414,19 +441,12 @@ contains
       depth = min(depth, parameters%maximum_depth_cm)
     end if
 
-    if (parameters%salinity_excess_enabled .and. request%solute_enabled) then
-      if (.not. ieee_is_finite(request%sensor_concentration)) then
-        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
-        return
-      end if
-      if (request%sensor_concentration < 0.0_real64) then
-        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
-        return
-      end if
-      if (request%sensor_concentration > parameters%salinity_threshold) then
-        depth = depth * (1.0_real64 + 0.01_real64*parameters%salinity_excess_percent)
-        diagnostics%salinity_excess_applied = .true.
-      end if
+    call apply_irrigation_salinity_excess(parameters%salinity_excess_enabled, request%solute_enabled, &
+         parameters%salinity_threshold, parameters%salinity_excess_percent, request%sensor_concentration, &
+         depth, diagnostics%salinity_excess_applied, ok)
+    if (.not. ok) then
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
     end if
 
     call normalize_scheduled_event_rate(depth, parameters%irr_rate_cm_per_day, effective_rate, duration, ok)

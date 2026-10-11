@@ -1,0 +1,62 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "QUALIFIED_OWNER_RUNTIME_COMPLETION",
+  "baseline": "d620326c",
+  "source_authority": "B1.11 SWAP/irrigation.f90 TASK3 lines 589-595 applies scalar salt excess after DCSLIM for every scheduled timing criterion, not only sensor triggers",
+  "reconciliation": "Existing sensor production applies the scalar modifier. Root TCS2/3/4/6 runtime has no salt fields and bypasses that modifier. This is a real runtime binding gap, separate from the separately admitted PR1015 matrix mobile-salt authority and its irrigation runtime binding.",
+  "design": "Extract existing scalar modifier without changing its operation into irrigation-owned common pure routine; reuse it in both sensor and root management production paths. Add default-disabled salt parameters/request values only to irrigation-owned types. Apply after depth limits, before rate normalization and TASK4 availability. No crop/root, hydraulic, drainage, solute or shared physical state changes.",
+  "invariants": [
+    "Single mass owner",
+    "Rejected trial preserves committed event/physical state",
+    "No duplicate salt implementation",
+    "Existing default-disabled behavior preserved",
+    "In-flight event does not reselect salt or depth"
+  ],
+  "verification_required": [
+    "Existing literal source and owner O0/O2 preservation",
+    "Source-oracle scalar salt cases root triggers with DCSLIM and TASK4",
+    "Real physical root onset, mass, event restart with salt/availability",
+    "Exact-head scientific and F-CI canonical preservation before admission"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "fullcap_promotions": 0,
+  "external_authority_remaining": "Configured scalar route qualified here. PR1015 already admits matrix mobile salt; accepted-state concentration binding is the independent next work unit, not missing salt physics.",
+  "next_action": "Safe canonical admission after live overlap and exact scientific dependency surface verification; no full-capability promotion.",
+  "local_science": {
+    "literal_source_cases": 48,
+    "literal_result": "PASS O0/O2",
+    "physical_cases": 12,
+    "physical_result": "PASS O0/O2",
+    "profiles": 3,
+    "physical_profile_sha256": "b08597ddbb0c61296ab7ca4e0dbc26765f23bb5a20c9db4a32336d308405ccc6",
+    "physical_cluster_sha256": "85621b3fc56b86fd6d256c09325c760065593de31ad4a60fdac5716ef06a8a04",
+    "existing_owner": "PASS O0/O2 with unchanged composition/sensor output hashes",
+    "limits": "Configured scalar concentration; actual solute authority and whole crop lifecycle not qualified."
+  },
+  "qualification": {
+    "tested_persisted_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "science": "PASS O0/O2",
+    "integrated_F_CI": "PASS full lineage-aware preservation",
+    "scientific_dependency_subtrees": {
+      "src": "4636b52b9a4c1a3158ad1e166695aa52ad9e8252",
+      "tests": "2051e7cedeb2418321e6395249e732140efce790",
+      "tools": "6192aa5cf46c7e6301f5f1891e9c10fe4b68f230",
+      ".github": "c06ebf675f157c70ddf4fe24cb416cb5d12ba4d5"
+    },
+    "inheritance": "Admission candidate preserves all src/tests/tools/.github trees byte-exact. Only evidence and unrelated canonical control records differ.",
+    "evidence_archive": "integration/audits/evidence/MC_IRR01_ROOT_SALT_20261011.tar.gz.b64",
+    "archive_sha256": "0c53413b424d4f9d57621293076698fc18be9cb8a2037ead8141eb532b9faf0b",
+    "log_sha256": {
+      "irr-root-salt-exact-moving-fci.log": "5f7340df8aee2710057564820b266bba3d8c1317524b842ea757f89a0eb4d31c",
+      "irr-root-salt-realistic-full.log": "9e631b657344582b4a724745a2d68436779fcb6e3bed6efdccbed617c28eddee",
+      "irr-root-salt-realistic-sensor-preservation.log": "9b72b3d45b04a46b850ff62c9fbea39435bbe62e17fbe064f1f71bbae53f7bd1",
+      "irr-root-salt-realistic-off-preservation.log": "31d27a66f838e271660579b862fb5de8ee7cf6f27cf93661f75f54344e7d18ba",
+      "irr-root-salt-existing-owner.log": "13e9706b7c833ec9ace0b1ad47622f4472ae0932dfc8205da2a527a1ea56063d",
+      "irr-root-salt-literal-common.log": "f1edf4a7c0f09987d7e3f28d57db5348a40cfa7de3b569107011dae20a88d54f"
+    }
+  }
+}
