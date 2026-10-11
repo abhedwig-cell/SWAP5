@@ -109,6 +109,7 @@ program test_crop_file_weather_production
   type(reference_et_demand_canopy_view_t)::canopy
   type(fmr_serialized_column_result_t),allocatable::results(:)
   integer(int64),allocatable::revisions(:)
+  real(real64),allocatable::admitted_morning_soil(:)
   character(1024)::path,altered_path,bad_path,backup_path
   real(real64)::k,day,tmin,tmax,rain,etref,hgerm,before_time,previous_storage,initial_head
   integer::s,d,i
@@ -761,6 +762,14 @@ contains
         call ps%temporal_history_snapshot(derivative,ok);call require(ok,'rooted actual Richards history')
         bits=[ps%pressure_head,ps%water_content,profile,derivative,weight,wo%development_stage,total_uptake, &
              wo%biomass%root_biomass,wo%biomass%stem_biomass,wo%biomass%leaf_area_sum()]
+        soil_after=[ps%pressure_head,ps%water_content,profile,derivative,total_uptake]
+        if(.not.dayend.and.j==1) admitted_morning_soil=soil_after
+        if(dayend) then
+          call require(allocated(admitted_morning_soil),'admitted morning hydrological oracle available')
+          call require(all(transfer(soil_after,[0_int64],size(soil_after))== &
+               transfer(admitted_morning_soil,[0_int64],size(admitted_morning_soil))), &
+               'day-end rephasing preserves entire admitted hydrology and actual uptake bitwise')
+        end if
       class default
         call require(.false.,'rooted temporal soil owner')
       end select
@@ -794,6 +803,7 @@ contains
     end do
     if(dayend) then
       print '(a)','CROP_DAYEND_CURRENT_WINDOW_FINAL_FLUSH_RETRY_RESTART_O0_O2=PASS'
+      print '(a)','CROP_DAYEND_ADMITTED_HYDROLOGY_ROOT_UPTAKE_BITWISE=PASS'
     else
       print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
       print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
