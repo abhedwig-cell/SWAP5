@@ -1,0 +1,35 @@
+{
+  "workstream": "MC-CROP01",
+  "status": "IMPLEMENTED_PERSISTED_TESTED_BOUNDED_LOCAL_PRESERVATION_PASS_NOT_CANONICALLY_ADMITTED",
+  "canonical": "74a49c15a0e300b3f6a38ca5310889d9a29d2c63",
+  "owned_surface": "Existing production bootstrap initialization; source-backed construction of existing wofost_crop_owner_state_t",
+  "source": "SWAP/wofost.f90 initialize_wofost, SHA256 3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b in verified B111 archive",
+  "allowed_interface": "Optional paired initial dry weight and existing WOFOST rate bundle on initialize_weather_crop_daystart; no change to existing default call",
+  "eligibility": "Fresh actual accepted initial F-KT soil; authenticated first weather day; SWPREP=0, SWSOW=0, germ_mode=0. Source flags all true, so existing lifecycle invariants hold without the pending shared initialization decision.",
+  "publication": "Construct validated WOFOST biomass/leaf cohort/phenology on detached candidate, then existing crop transaction-state and kernel initialization publish exactly once. Initialization is not a fabricated positive hydrological receipt.",
+  "read_only_owners": [
+    "WOFOST rate/table/biomass/crop-owner APIs",
+    "F-WOF38/F-WOF40 state initialization and persistence",
+    "Existing DVS/static-profile root owner",
+    "F-KT physical soil and parameter certificate"
+  ],
+  "held_fixed": [
+    "Historical independent task2 flag conflict",
+    "Existing lifecycle implication guards",
+    "HeadCalc and Task2 physics",
+    "Root and heat physics",
+    "Existing source/reference and numerical assertions"
+  ],
+  "qualification": [
+    "Literal initialize_wofost arithmetic extracted from authenticated archive",
+    "O0/O2 owner initialization and mass partition",
+    "Real production authenticated startup and existing root view",
+    "Invalid input/repeat initialization zero crop publication",
+    "Joint existing soil/crop continuation restore",
+    "Existing twelve-case weather production and full exact canonical-parent preservation"
+  ],
+  "limits": "Immediate initialization only. Does not admit thermal/delayed emergence, daily emerged-crop hydrology/growth, vernalisation, SWINCO3, harvest/rotation/fallow or external disk serialization. Partition sum must satisfy strict biomass conservation; wider historical approximate table admissibility remains outside this profile.",
+  "state_owner": "Existing WOFOST and F-KT owners only; initializer is a stateless constructor",
+  "initial_optional_state": "Initial biomass and common phenology allocated in existing owner; saturated-LAI rate carryover absent at emergence, as required by existing optional-state semantics. Structural evolution alone owns later carryover activation.",
+  "evidence": "integration/audits/MC_CROP01_IMMEDIATE_EMERGENCE_EVIDENCE.json"
+}
