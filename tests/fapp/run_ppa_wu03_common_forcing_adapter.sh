@@ -163,6 +163,7 @@ for opt in 0 2; do
     fail "runtime O$opt"
   }
   grep '^PPA_WU03_' "$OUT/output.txt" > "$OUT/stable.txt"
+  grep -Fq 'PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS' "$OUT/output.txt" || fail "missing continuous two-day accepted weather O$opt"
   grep -Fq 'PPA-WU03 COMMON FORCING OWNER GATE PASS' "$OUT/output.txt" || fail "missing final marker O$opt"
   echo "PPA_WU03_O${opt}=PASS"
 done

@@ -54,7 +54,10 @@ program test_ppa_wu03_common_forcing_adapter
   integer(int64), allocatable :: direct_revisions(:), adapter_revisions(:)
   real(real64) :: conductivity0, irrigation_rate, preliminary_evap, qtarget
   real(real64), parameter :: RUNON_PROBE = 0.003_real64
-  real(real64) :: nan_value
+  real(real64) :: nan_value, crop_day_tav
+  real(real64),parameter :: transition_start(3)=[T2,4100.75_real64,4101.0_real64]
+  real(real64),parameter :: transition_end(3)=[4100.75_real64,4101.0_real64,4101.125_real64]
+  integer :: weather_day_index
   integer :: status, direct_status, adapter_status
 
   call initialize_application_config(app_config, conductivity0)
@@ -222,6 +225,62 @@ program test_ppa_wu03_common_forcing_adapter
        'PPA-WU01 retains committed-state ownership')
 
   print '(a)', 'PPA_WU03_WEATHER_GUARDED_TWO_COMMITTED_INTERVALS=PASS'
+
+  ! Continue the same physical owner through the next meteorological
+  ! midnight.  Unlike independently reconstructed daystart fixtures, this
+  ! checks each sequential PPA-WU01 accepted interval in one live instance.
+  input_a=normal_input
+  input_a%forcing_t0=4100.0_real64
+  input_a%forcing_t1=4102.0_real64
+  input_a%reference_et%t0=input_a%forcing_t0
+  input_a%reference_et%t1=input_a%forcing_t1
+  do weather_day_index=1,3
+    input_a%interval%t0=transition_start(weather_day_index)
+    input_a%interval%t1=transition_end(weather_day_index)
+    if(weather_day_index==3) then
+      ! Before ingesting day 4101 no valid future-day forcing is authorized.
+      call materialize_ppa_wu03_common_forcing(forcing_config,input_a,base_request, &
+           result_a1,diag_a1,weather,71_int64,3_int64,1_int64,4100.0_real64)
+      call require(diag_a1%status==PPA_WU03_WEATHER_REJECTED.and..not.result_a1%valid, &
+           'old weather cannot authorize next-day forcing')
+      call adapter_app%copy_committed_revisions(adapter_revisions,adapter_status)
+      call require(adapter_status==FMR_APP_BOOT_OK.and.all(adapter_revisions==4_int64), &
+           'rejected next-day weather cannot commit hydrology')
+      call ingest_weather_day(weather,71_int64,3_int64,4101.0_real64,11.0_real64,15.0_real64,status)
+      call require(status==WEATHER_DAY_OK,'next meteorological day accepted')
+      call weather%read_day(71_int64,3_int64,2_int64,4101.0_real64,crop_day_tav,status)
+      call require(status==WEATHER_DAY_OK.and.crop_day_tav==13.0_real64, &
+           'crop daily TAV uses same next-day owner')
+    end if
+    if(weather_day_index==3) then
+      call materialize_ppa_wu03_common_forcing(forcing_config,input_a,base_request, &
+           result_a1,diag_a1,weather,71_int64,3_int64,2_int64,4101.0_real64)
+    else
+      call materialize_ppa_wu03_common_forcing(forcing_config,input_a,base_request, &
+           result_a1,diag_a1,weather,71_int64,3_int64,1_int64,4100.0_real64)
+    end if
+    call require(diag_a1%status==PPA_WU03_OK.and.result_a1%valid, &
+         'weather authorizes contiguous accepted hydrology')
+    call direct_app%run_standalone(transition_start(weather_day_index), &
+         transition_end(weather_day_index),direct_results,direct_status)
+    call adapter_app%run_standalone_with_forcing(transition_start(weather_day_index), &
+         transition_end(weather_day_index),adapter_forcing,adapter_results,adapter_status)
+    call require(direct_status==FMR_APP_BOOT_OK.and.adapter_status==FMR_APP_BOOT_OK, &
+         'contiguous weather guarded PPA-WU01 physical acceptance')
+    call require(abs(direct_results(1)%mass%storage_end-adapter_results(1)%mass%storage_end)<=TOL, &
+         'contiguous accepted hydrological storage identity')
+    call direct_app%copy_committed_revisions(direct_revisions,direct_status)
+    call adapter_app%copy_committed_revisions(adapter_revisions,adapter_status)
+    call require(all(direct_revisions==int(weather_day_index+2,int64)).and. &
+         all(adapter_revisions==int(weather_day_index+2,int64)), &
+         'contiguous accepted revisions belong to existing owner')
+  end do
+  call materialize_ppa_wu03_common_forcing(forcing_config,input_a,base_request, &
+       result_a1,diag_a1,weather,71_int64,3_int64,1_int64,4100.0_real64)
+  call require(diag_a1%status==PPA_WU03_WEATHER_REJECTED.and..not.result_a1%valid, &
+       'stale weather identity rejected after midnight')
+  print '(a)','PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS'
+
 
   ! Stateless A-B-A materialization proves that retries or repeated requests
   ! cannot consume or advance hidden adapter input.
