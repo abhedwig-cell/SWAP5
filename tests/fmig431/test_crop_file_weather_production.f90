@@ -66,7 +66,7 @@ program test_crop_file_weather_production
   config%tiles(1)%parameters%total_balance_tolerance=HARD_MASS_GATE
   ! Real atmospheric forcing is nonsteady. The accepted production mass
   ! threshold remains unchanged; no forcing is reverse-engineered to steady.
-  config%numerical%max_committed_substeps=8192
+  config%numerical%max_committed_substeps=262144
   call app%initialize(config,s);call require(s==FMR_APP_BOOT_OK,'production bootstrap')
   controls%germ_mode=2
   controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
