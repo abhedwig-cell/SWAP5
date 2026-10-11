@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+  "last_reconciled_upstream": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -33,7 +33,8 @@
     "owner_dispatch_review": "Exact-head source inspection PASS (bounded): frost B19 guard excludes ordinary signed/root/multilevel; FMR root binding dispatches macro Feddes not MICRO; Hupsel adapter only bounded TCS1/fixed/Rutter.",
     "canonical_177_commit_delta": "Scoped PASS: 177 commits and 73 paths compared, crop merged PR1172..1193 cross-checked; bounded admission only, no complete cap closure established",
     "latest_recount": "Structural 243-row count and open queue=108; formal exact-source checker not executed",
-    "bounded_crop_receipt_reconciliation": "PASS: one SW431-CROP-SOW row updated from obsolete no-owner claim; all other rows/dispositions/counts and full false-closure guard unchanged. Exact later canonical source/qualification receipt retained; no full source census checker claim."
+    "bounded_crop_receipt_reconciliation": "PASS: one SW431-CROP-SOW row updated from obsolete no-owner claim; all other rows/dispositions/counts and full false-closure guard unchanged. Exact later canonical source/qualification receipt retained; no full source census checker claim.",
+    "latest_irr_owner_reconciliation": "PASS: 16 owner IDs mapped to 243-entry ledger; 5 admitted, 11 shared-application-blocked, no ungrounded promotions; full Python checker NOT RUN."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -65,7 +66,7 @@
     "active_without_listed_production_source_authority": 47,
     "confirmed_missing_production_entries_claim_scope": "Incomplete admitted routes, not necessarily absent algorithms"
   },
-  "next_action": "Review remaining eleven MC-IRR01 entries against bounded canonical #1195; reconcile other subsystems with exact authority; run full source hash checker in a runnable verified tree.",
+  "next_action": "Joint RT/HY + MC-CROP01 authentic weather/root/material management hook for 11 MC-IRR01 capabilities; exact O0/O2 + F-CI; review remaining subsystems separately and run full byte-exact coverage checker.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -81,7 +82,9 @@
     "integration/audits/evidence/SWAP431_SHARED_OWNER_LOCATOR_GROUPS_20261009.json",
     "integration/audits/evidence/SWAP431_SHARED_OWNER_SOURCE_AUDIT_20261009.json",
     "integration/audits/evidence/SWAP431_OWNER_DISPATCH_PROOF_20261009.json",
-    "integration/audits/evidence/SWAP431_CANONICAL_177COMMIT_DELTA_20261011.json"
+    "integration/audits/evidence/SWAP431_CANONICAL_177COMMIT_DELTA_20261011.json",
+    "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+    "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -106,7 +109,7 @@
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
     "frost_DIVDRA": "B19 canonically admitted at 811ad186; bounded single-level runtime entry closed. Ordinary frost-off and multilevel successors remain separate.",
-    "MC_IRR01": "PR1126 qualified on 4ed0a6d62 (run 37774945522); current branch is 260 commits behind canonical and one ahead, no admission. TCS7/SSDI qualified runtime evidence is not canonical.",
+    "MC_IRR01": "PR1198/1199/1200/1201/1203/1205 canonically admitted bounded physical runtime; owner disposition record at e35ea0c confirms 5 fullcap ADMITTED and 11 BLOCKED_SHARED_APPLICATION_AUTHORITY, not independent missing algorithms.",
     "MC_CROP_FKT_B110": "PR1160 now canonically admitted at 3bb0e8c; source-exact admission checks 37943443887, 37943443484 and 37943443221 success. Bounded hydrothermal owner; does not close whole SW431-CROP-SOW."
   },
   "unresolved_review_ids": [
@@ -126,7 +129,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "0365a19427f44905dcde19de0028d67dfc79428e",
+  "last_reconciled_head": "377aad1887320544763b87cc13b6e5023f0d9324",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
