@@ -1,0 +1,893 @@
+{
+  "workstream": "MC-CROP01",
+  "profile": "Authentic root-free production, immediate WOFOST initialization and admitted thermal air-boundary/simulated sowing integration",
+  "canonical": "669a75ff996938fd0538c715ec43fe93d06b74de",
+  "source_head": "b5932b248ab85668664bb8044b978f6c14487a95",
+  "source_tree": "8bedf86f259dbc316f3cf76a9ae175ba1b9c4c69",
+  "ordered_compile_and_runner_dependencies": [
+    {
+      "path": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+      "blob": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639"
+    },
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "7b16c3fcf58179f1491104a1dce3279010b4178a"
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed"
+    },
+    {
+      "path": "src/process/mod_root_micro_matric_flux_table.f90",
+      "blob": "e512da036ef39d9d3fd30a8fab168b5bd7b8026b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_micro_mvg_table_binding.f90",
+      "blob": "56586e8746a68df22724e0d0bae275c62e4883bf"
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "33a0880325be36116dcbb781006b6283da5dac69"
+    },
+    {
+      "path": "src/transaction/mod_fkt_temporal_indicator_history.f90",
+      "blob": "78884becbfa2fdaba74726608f9e37a303ae4c58"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05_perch19_reduction_controller.f90",
+      "blob": "005f848939c83d3547eacdc301ab61eb9457ff62"
+    },
+    {
+      "path": "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "blob": "5418b6a1a9f651e818678f347c9cd8399693eb82"
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "blob": "8cf848d0ac85602bcde434d76189990f30c11dcb"
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+      "blob": "a74c1877c0bfdd1e6df070f78928d9509ef2d0da"
+    },
+    {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob": "764483414f037502660d33711693063985064d72"
+    },
+    {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "9d6e931b4cb3562c946aa6c2c0cd1fcb49407490"
+    },
+    {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob": "da7a00b6aec996cff504d8d30a90e51a8cce2162"
+    },
+    {
+      "path": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "blob": "0dceaa2d108d5c7e1263e0f424a056a8df585908"
+    },
+    {
+      "path": "src/adapter/mod_fmr_mode7_temporal_head_envelope.f90",
+      "blob": "eb1efda6255eb57aaa2ef20d6de7b4d979659338"
+    },
+    {
+      "path": "src/runtime/mod_fmr_runtime_core.f90",
+      "blob": "4180a808d25f6598dbf8a70577d17ec4d8fae128"
+    },
+    {
+      "path": "src/runtime/mod_interception_source_window_runtime.f90",
+      "blob": "ce18e441907eb24e142d226ff19230611e9dafee"
+    },
+    {
+      "path": "src/process/mod_rutter_interception_process.f90",
+      "blob": "fd6ba136e02c13add1933ca6d63f25b2e7c5d822"
+    },
+    {
+      "path": "src/process/mod_rutter_event_integrator.f90",
+      "blob": "0c2b558049cecaf9d619a23cf2b8a02bc42c84ce"
+    },
+    {
+      "path": "src/runtime/mod_rutter_source_window_processor.f90",
+      "blob": "f9865aa242456fae082b60ce1acb72dd9c9ee210"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bottom_thermal_carrier.f90",
+      "blob": "c371be3e22eaa6da70ca8cbb060bc42d1e0e0bfb"
+    },
+    {
+      "path": "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90",
+      "blob": "299717757082ff06e98bd3aaec2c0b8b3013ea21"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "1ae4eea78df6b27dc982b8318402f78728394aa7"
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+      "blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_core.f90",
+      "blob": "4079f23ac63a60efb80e499029346fac88f8a780"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "blob": "8de39d457ee85ef930c021be360648c490b2c732"
+    },
+    {
+      "path": "src/solver/mod_b110_source_sink_provider.f90",
+      "blob": "d6c57add72387e5c0022a44319fff08046194aac"
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "blob": "fb226f133bd48d8ab945f111c76897aeff49facf"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "blob": "63b89538e7466437a6af38a69d76a8043b206370"
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "8862ff35d17d309389c0f151cd296ca3a0729029"
+    },
+    {
+      "path": "src/process/mod_restricted_surface_evaporation.f90",
+      "blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    {
+      "path": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "blob": "abe2d699017300e890eeb69a56448bb071660d2d"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+      "blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+      "blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19"
+    },
+    {
+      "path": "src/runtime/mod_fmr_soil_water_application_host.f90",
+      "blob": "daca18b77673608436425e81ecd397ef3e35e4b2"
+    },
+    {
+      "path": "src/runtime/mod_rossfast_d3r_execution_policy.f90",
+      "blob": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9"
+    },
+    {
+      "path": "src/runtime/mod_rossfast_d3r_model_binding.f90",
+      "blob": "5442fd7e7a2f392c9b796cd17c76b17977259f22"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_table_kernel.f90",
+      "blob": "438ee46e012e9eb183b8f2532437e2fe56aa18ed"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_table_provider.f90",
+      "blob": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca"
+    },
+    {
+      "path": "src/solver/mod_rossfast_d3r_soil_water_solver.f90",
+      "blob": "2b134c36097aed2a44a56bfe8e2194b15aa063aa"
+    },
+    {
+      "path": "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90",
+      "blob": "cca61af52bde3eed12b756547277cc2776589648"
+    },
+    {
+      "path": "src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+      "blob": "a1e9fecbc68251f664aa145d741b2e1a9856be21"
+    },
+    {
+      "path": "src/solver/mod_b111_profile_groundwater_projection.f90",
+      "blob": "45925fe02cbe22c6f7ae2a597f4f88f0837a672c"
+    },
+    {
+      "path": "src/process/mod_root_micro_de_willigen_process.f90",
+      "blob": "f74d81e700439e9cf9b79678260efbddf7932cdd"
+    },
+    {
+      "path": "src/adapter/mod_b110_serialized_context_binding.f90",
+      "blob": "06c266375d6186c6d2b49ced6c338a357ff28aa3"
+    },
+    {
+      "path": "src/process/mod_snow_process.f90",
+      "blob": "54702d71b4c84dce2842813549bd14c57301a383"
+    },
+    {
+      "path": "src/solver/mod_process_hydraulic_view.f90",
+      "blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
+    },
+    {
+      "path": "src/solver/mod_b110_smooth_freatic_projection.f90",
+      "blob": "e83c1013a1d96508740619a71cfa1dbfdd665d61"
+    },
+    {
+      "path": "src/process/mod_soil_temperature_contract.f90",
+      "blob": "2c358fa353226846ce6c6e4e561aa59e5de94620"
+    },
+    {
+      "path": "src/crop/mod_crop_bartholomeus_input.f90",
+      "blob": "8c05a94d73112b0d1fcb7d89d5b4d70f875c8636"
+    },
+    {
+      "path": "src/process/mod_bartholomeus_runtime_input.f90",
+      "blob": "e95e01a5912cf55c1c1b378db21a9effccf6c7a0"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90",
+      "blob": "4b6c2cee70a8a191d7e11c1b6d75c3f510aab67b"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90",
+      "blob": "b250bd616f0271400a1ecc33f0d101ef7123b6a1"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_temperature.f90",
+      "blob": "efe6c3c18a909619f081ca2c50405b4e06b7edab"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_waterfilm.f90",
+      "blob": "55996a60ca48678b846d16cf24413fe6a4757bcf"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90",
+      "blob": "5f2c774f2aa72876521274e64b35f495cf1e8553"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90",
+      "blob": "b6f7c7ed7ece16e149072abdf48a5478a00e3e48"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bartholomeus_activation.f90",
+      "blob": "a485bc2b79e79039494bc086ff3c419251a5c551"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bartholomeus_contract.f90",
+      "blob": "32a378f40cf5cf9135bc0fb401d522c45720cc67"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_micro.f90",
+      "blob": "72da51ea5ca8ebc26827554582533282601fcb3a"
+    },
+    {
+      "path": "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90",
+      "blob": "9a230dd666db65b39e4871c861a4a4eec7fdcb6e"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_macro.f90",
+      "blob": "f7fe63a1274c5317dc35e38c7c3f02881d89b7dd"
+    },
+    {
+      "path": "src/physics/oxygen/mod_oxygen_scalar_bracket.f90",
+      "blob": "185b9718110f2dca6ca116ed53ba5707b835aa75"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_response.f90",
+      "blob": "0b9608a9efd7203c7d432bfc69d292423f51558a"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_microbial.f90",
+      "blob": "9b5c80c0f21031fdaa5985de9df3c390728bffec"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_response_assembly.f90",
+      "blob": "14772865a2dfa0b79d78c7eb31dde1176c5f1792"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90",
+      "blob": "9590a87c3cd1490b1a78f83f8d8cdd4ff04221bd"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_profile_response.f90",
+      "blob": "0a4189a62ecd902461846a4a7d7877dc9d85dd4e"
+    },
+    {
+      "path": "src/physics/oxygen/mod_bartholomeus_factor_provider.f90",
+      "blob": "ffb4094d3d80c152218ca2e82164c64ed5827393"
+    },
+    {
+      "path": "src/process/mod_root_water_uptake_process.f90",
+      "blob": "e483357c0ca78cfe963e31d6f7cf665b88d8cf4f"
+    },
+    {
+      "path": "src/process/mod_root_uptake_oxygen_composition.f90",
+      "blob": "c64692973a32f0574f72cae92e8bc48898cda728"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bartholomeus_execution.f90",
+      "blob": "bbb54add00a52fdb4acefafaea2129f814ccdff7"
+    },
+    {
+      "path": "src/process/mod_root_uptake_compensation.f90",
+      "blob": "a19db82afe85b2c7b34fa8a2da0922581c662fbb"
+    },
+    {
+      "path": "src/process/mod_frost_geometry_effect.f90",
+      "blob": "b4067615db7059f7061f4555cec6ec9c1312fe4c"
+    },
+    {
+      "path": "src/process/mod_frost_bottom_boundary_effect.f90",
+      "blob": "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b"
+    },
+    {
+      "path": "src/process/mod_frost_drainage_effect.f90",
+      "blob": "333149580aea22f57a0bdc0cd33a7d1c4245766a"
+    },
+    {
+      "path": "src/process/mod_frost_low_air_drainage_effect.f90",
+      "blob": "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91"
+    },
+    {
+      "path": "src/process/mod_drainage_spatial_distribution.f90",
+      "blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+    },
+    {
+      "path": "src/process/mod_frost_divdra_drainage_effect.f90",
+      "blob": "7694877000b154682fe8d39591fd08d4a33010ce"
+    },
+    {
+      "path": "src/process/mod_root_frost_stress.f90",
+      "blob": "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38"
+    },
+    {
+      "path": "src/runtime/mod_root_uptake_compensation_execution.f90",
+      "blob": "6affaec2e7a55544e722ed1204ca9e5de555b478"
+    },
+    {
+      "path": "src/process/mod_drainage_process.f90",
+      "blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+    },
+    {
+      "path": "src/process/mod_drainage_tabulated_response.f90",
+      "blob": "03ea81ed05c50b41194000c5215c231819889b58"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_equivalent_depth.f90",
+      "blob": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_ipos1_response.f90",
+      "blob": "74eab52a181f21406d58fb267fb5e9829a98c91a"
+    },
+    {
+      "path": "src/process/mod_drainage_hooghoudt_ipos23_response.f90",
+      "blob": "af9517fae0beba11ba08313a8b6b5d65aa73177e"
+    },
+    {
+      "path": "src/process/mod_drainage_ernst_ipos45_preparation.f90",
+      "blob": "fa1d5d400bb32be42e78889c0ff2a3bcab335142"
+    },
+    {
+      "path": "src/process/mod_drainage_ernst_ipos45_response.f90",
+      "blob": "6640afbe25e8770a8ac8e5a6d9a1126cf39b1098"
+    },
+    {
+      "path": "src/process/mod_drainage_empirical_interflow_response.f90",
+      "blob": "37e12f2b89bd0fcac12a2d95a70afc14600ab10c"
+    },
+    {
+      "path": "src/process/mod_drainage_extended_exchange.f90",
+      "blob": "d55e24c9d5cce03c71e4cc5f304dfdd699ca5a56"
+    },
+    {
+      "path": "src/process/mod_drainage_multilevel_aggregation.f90",
+      "blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb"
+    },
+    {
+      "path": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "blob": "263cf55b2c336d149ba41b4d04f510e10c4207e2"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+      "blob": "28aa42572ee202e7a25f790c175927c832ee849b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90",
+      "blob": "481dc8cb1af683053614de3a11c4155acb34b413"
+    },
+    {
+      "path": "src/process/mod_restricted_soil_temperature.f90",
+      "blob": "6d881983c8d97c6d82854c59a2dc6c9fd36f7350"
+    },
+    {
+      "path": "src/process/mod_frost_hydraulic_effect.f90",
+      "blob": "2c8adba7986e7d85749c4c36d26530748fbbab9e"
+    },
+    {
+      "path": "src/solver/mod_frost_hydraulic_provider.f90",
+      "blob": "08492a7272860629c9ffee34968c9cc29952bd58"
+    },
+    {
+      "path": "src/process/mod_restricted_fixed_weir_surface_water.f90",
+      "blob": "16da4f6ec3d120b5a40f17ef04fb8faa457f4eaa"
+    },
+    {
+      "path": "src/runtime/mod_macropore_continuation_state.f90",
+      "blob": "7b670c656998903f6c7da77182c2e2c6f5ab14ae"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_unponded_activation.f90",
+      "blob": "9e4533801862146495f430089b2c489e3a22a21a"
+    },
+    {
+      "path": "src/runtime/mod_rfm_unponded_surface_composition.f90",
+      "blob": "0107156b127d185df2d93d9de0ec18153072a245"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_preferential_router.f90",
+      "blob": "24a100a0f2a063238c072545bdf30dea48a68f3f"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_surface_event_age.f90",
+      "blob": "93210151f1324dfeedf3fd67dd6616ffdcb5bd67"
+    },
+    {
+      "path": "src/runtime/mod_rfm_physical_state.f90",
+      "blob": "5b65fa3b7931cb753e88fe89756f98ab50c8bc49"
+    },
+    {
+      "path": "src/runtime/mod_rfm_runtime_configuration.f90",
+      "blob": "b7ae18153af28361080d3943d799aa88f5ef7950"
+    },
+    {
+      "path": "src/runtime/mod_rfm_surface_forcing.f90",
+      "blob": "e089ab8fe49ceaa12f077ddb0cd2eba03bd0a60f"
+    },
+    {
+      "path": "src/runtime/mod_rfm_matrix_source_provider.f90",
+      "blob": "a4c8f5ac05413166a7b8d5dd11cccc3645cabe42"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_surface_sorptivity.f90",
+      "blob": "fdf3e7d681ce95c7412c3b9dc1ed14f478da9cd2"
+    },
+    {
+      "path": "src/runtime/mod_fmr_rfm_activation_binding.f90",
+      "blob": "85dda0d7c34b0d1bb8c383c9c3175704fc91f6fe"
+    },
+    {
+      "path": "src/runtime/mod_rfm_wall_hydraulic_history_binding.f90",
+      "blob": "347862ee5004ca8d9e8f7c02a47e2d2f4b62380d"
+    },
+    {
+      "path": "src/process/macropore/mod_rfm_endpoint_release.f90",
+      "blob": "12bea67e8d488756aac61cbd531b3965927bf8da"
+    },
+    {
+      "path": "src/runtime/mod_rfm_ic_storage_geometry.f90",
+      "blob": "4b69a940585c618135f2e867ffa91431005fa89f"
+    },
+    {
+      "path": "src/runtime/mod_rfm_ic_hydrostatic_head.f90",
+      "blob": "ee48d2173971a2f65ba5d29aed820e143f3c9f99"
+    },
+    {
+      "path": "src/runtime/mod_rfm_whole_column_candidate_ledger.f90",
+      "blob": "8508717bd9312ab98d76346cf06ec1c1c6e5e8b9"
+    },
+    {
+      "path": "src/runtime/mod_rfm_production_candidate_composer.f90",
+      "blob": "cb7daff530763a32342d7f772c450db022f84056"
+    },
+    {
+      "path": "src/runtime/mod_rfm_live_trial_preparer.f90",
+      "blob": "987c87622e1eb69ca42cdbb67103db7ca01c194e"
+    },
+    {
+      "path": "src/process/mod_solute_macropore_exchange.f90",
+      "blob": "c2b4fe876aec162af9b750dc13866b56c95b22ef"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_salt_state.f90",
+      "blob": "f7680e48ed3cd751e9bb2e6a76293f876f52ac96"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_advection_dispersion.f90",
+      "blob": "87eaef3ebf2a5e931b0a783cebc9ba9cdac22e38"
+    },
+    {
+      "path": "src/runtime/mod_fmr_base_salt_temporal_policy.f90",
+      "blob": "14052a57d8a6b24a63ed2b713bdf6e80d0e2c904"
+    },
+    {
+      "path": "src/process/mod_solute_mobile_macro_salt_transport.f90",
+      "blob": "45b8087006a29221212d17c2bf6aec81d3b02bcf"
+    },
+    {
+      "path": "src/process/mod_solute_water_face_flux_reconstruction.f90",
+      "blob": "1b0fe6c8dcb4a9311a034c2030cf7388b02e6273"
+    },
+    {
+      "path": "src/process/mod_root_salinity_response.f90",
+      "blob": "719ee43d19f647c7a5ea4bb522936e690f3cc106"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_rapid_drain_rate.f90",
+      "blob": "3ab246025321e0ffacfa98e6d98bff2f972fb1bc"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a5_top_partition.f90",
+      "blob": "4796cbade0753a133ab2b1bb1f5a5f0ee3d62026"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90",
+      "blob": "c78a2442a9b52f15e754c57445fd90be01aa9592"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
+      "blob": "bdb659ad8aa313c18c7f2331a0cdbd3683585d10"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
+      "blob": "5c2864fedcf6954eee0b589034ccb439e63f1cb1"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+      "blob": "0940483ea678098f53c1c1b42fdd2a3c57e1788c"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_saturated_sources.f90",
+      "blob": "38c2faa37c862064a1ae0a2ae3d5872800142814"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90",
+      "blob": "08e6eff1b15ed113ea2b4949bc6a35191e79969f"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_rate_bundle.f90",
+      "blob": "6fa9e0fa7af2b7af3ae3352b318771e15c65ab80"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90",
+      "blob": "fb6a09d7bfa3f382a007309bc6ca5cef3a783ee7"
+    },
+    {
+      "path": "src/process/macropore/mod_macropore_dynamic_shrinkage.f90",
+      "blob": "155c4366125485cdf15035cef2ddfecee8f99bd9"
+    },
+    {
+      "path": "src/runtime/mod_fmr_macropore_configuration.f90",
+      "blob": "6252fe57038e7f0769177ea3481cd860e0870ebe"
+    },
+    {
+      "path": "src/runtime/mod_fmr_macropore_top_input.f90",
+      "blob": "430c8c16ba398563ef9555fba761e2e784b3de53"
+    },
+    {
+      "path": "src/solver/mod_macropore_exchange_overlay_provider.f90",
+      "blob": "b0c21dd8b05cd121e1de35c2860ca14e7b9c5bf6"
+    },
+    {
+      "path": "src/process/macropore/mod_macropore_standard_storage.f90",
+      "blob": "971741a8b2244e47cc64cc94d337d2a543001c6f"
+    },
+    {
+      "path": "src/runtime/mod_macropore_standard_rate_adapter.f90",
+      "blob": "7f8fa0da8835db91d240e9c7bc26ef3197eb6700"
+    },
+    {
+      "path": "src/process/macropore/mod_macropore_covering_layer_input.f90",
+      "blob": "7e32820d47508a05fd584abe7a03de15531a8acf"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a6_vertical_flux_reconstruction.f90",
+      "blob": "09ef64a9630e1d2be67c1fe7f9ab8b9049a8fb90"
+    },
+    {
+      "path": "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90",
+      "blob": "608c0ca8aa5c2366c54faea6d31a3c814791a098"
+    },
+    {
+      "path": "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90",
+      "blob": "8f9d7f76bec22dae31835e16e9ced87b3a9c1f0d"
+    },
+    {
+      "path": "src/runtime/mod_macropore_single_column_runtime.f90",
+      "blob": "83caa6bfffbf469b52c96a1bd31208d98f548ad0"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
+      "blob": "4c8113baa91af8ceac9e2b8b3284108c0cb0933a"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_cauchy_bottom_boundary_provider.f90",
+      "blob": "73a4a5727bce558749c7fb230fb5e047d000fe64"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "01d1981cc7aebb1553463b1cee955bb21da05fe6"
+    },
+    {
+      "path": "src/kernel/mod_kernel_committed_persistence.f90",
+      "blob": "ffd886c3401fc12739a456fe60a8741c12b9848b"
+    },
+    {
+      "path": "src/crop/mod_wofost_actual_biomass_state.f90",
+      "blob": "feab0672b38e1c9668ac418cbe9d800f032cf4d8"
+    },
+    {
+      "path": "src/crop/mod_wofost_rate_table.f90",
+      "blob": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5"
+    },
+    {
+      "path": "src/crop/mod_crop_root_depth_dvs.f90",
+      "blob": "23ebc55a423ca698a1fa0b3c3de512de93197766"
+    },
+    {
+      "path": "src/crop/mod_crop_root_depth_biomass.f90",
+      "blob": "4d9f4ffed0d56b1d8f0615e9e66354b5eb617c65"
+    },
+    {
+      "path": "src/crop/mod_crop_root_profile_static.f90",
+      "blob": "6860bdd13b8b384d5e7f70eb1c2070e7129db7d1"
+    },
+    {
+      "path": "src/crop/mod_crop_root_uptake_input_contract.f90",
+      "blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521"
+    },
+    {
+      "path": "src/crop/mod_wofost_crop_owner_state.f90",
+      "blob": "1e900ec01740ddcedcfc8038ae808cd0aa1fd4b8"
+    },
+    {
+      "path": "src/crop/mod_wofost_one_day_structural_evolution.f90",
+      "blob": "0e5759e025cca3a50c23c6b5e2aa2e034108ff1c"
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "blob": "ff78d0a085b6f464a523e350f3e590d57981464d"
+    },
+    {
+      "path": "src/crop/mod_wofost_rate_parameters.f90",
+      "blob": "b2e2b86e2f0b8be3f569604523b4891af40016b5"
+    },
+    {
+      "path": "src/crop/mod_wofost_one_day_rate_state_view.f90",
+      "blob": "eb0cf889676b617fef0542bc1b87e14b4f8b650c"
+    },
+    {
+      "path": "src/crop/mod_wofost_potential_shadow_state.f90",
+      "blob": "2bd1644c0ce091ad35003993fc6029eb1d83d4f6"
+    },
+    {
+      "path": "src/crop/mod_wofost_prepare_assimilation.f90",
+      "blob": "693d49de918206dcd490082881720fdd7f2a048a"
+    },
+    {
+      "path": "src/crop/mod_wofost_finalize_rates.f90",
+      "blob": "8e4668a5974d0cd4953bafaa866b6d4eedf052d7"
+    },
+    {
+      "path": "src/crop/mod_wofost_potential_shadow_daily.f90",
+      "blob": "95a8d4521a4044fb73035cd7b6822e9a0b2617ae"
+    },
+    {
+      "path": "src/crop/mod_crop_root_anaerobic_extension_gate.f90",
+      "blob": "7f4503648a4979b200764b94e90a4605e5355410"
+    },
+    {
+      "path": "src/crop/mod_wofost_two_phase_crop_window.f90",
+      "blob": "a411093e3af6921a3410df7b9c2c7337dace68e8"
+    },
+    {
+      "path": "src/crop/mod_crop_preparation_sowing_preflight.f90",
+      "blob": "c0cf1e5a047601fcb76f67a84117d47857620173"
+    },
+    {
+      "path": "src/crop/mod_crop_germination_preflight.f90",
+      "blob": "d61d86a2b79a7d4f9687988e666fd907d9fff245"
+    },
+    {
+      "path": "src/crop/mod_crop_lifecycle_daily_composition.f90",
+      "blob": "46be669c222cee0e1390d4e912ab4d92121d157b"
+    },
+    {
+      "path": "src/crop/mod_crop_lifecycle_continuation.f90",
+      "blob": "20998ae022455fa83658b0930f2b64ad932b27dc"
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+      "blob": "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509"
+    },
+    {
+      "path": "src/crop/mod_crop_weather_day_owner.f90",
+      "blob": "60df1fe8e9cc9715b85db1885435ffb2b08bda14"
+    },
+    {
+      "path": "src/crop/mod_crop_b111_sowing_node.f90",
+      "blob": "6cec89ea77e19e5ab56b9ccece4c66102cd44a31"
+    },
+    {
+      "path": "src/crop/mod_crop_b110_grid_sowing_preflight.f90",
+      "blob": "9d07b8a3211d0af7b9e82bf71a2a7effbc95350d"
+    },
+    {
+      "path": "src/crop/mod_crop_b111_pressure_head_average.f90",
+      "blob": "eaf8e3deb6e2a569dce0536e0001c43da64590be"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90",
+      "blob": "6b19fe1504ec43c316ca9504fe79b2a6c21f97a6"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_certified_germination_moisture.f90",
+      "blob": "105085868556be207f81a1042686b038756f329f"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_certified_daily_preflight.f90",
+      "blob": "3c6242ee6e052478eb107600c21a7d30858a76c7"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_weather_day_preflight.f90",
+      "blob": "8a99fb56d1b88d47989560c526d99a3888c841dd"
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+      "blob": "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7"
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
+      "blob": "a3ae3d607a1b82e5beeffac01d4b84ff4d63a384"
+    },
+    {
+      "path": "src/crop/mod_wofost_emergence_initialization.f90",
+      "blob": "22847445e59e64238ae3de843dcd1f0723b2d11d"
+    },
+    {
+      "path": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+      "blob": "6798b3296b426950bf028814585c3f5de9be950b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_owned_commit_receipt.f90",
+      "blob": "2ab067d160715ff7358dd31efaa12694ef95852c"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bottom_external_thermal_binding.f90",
+      "blob": "ed2a2ee36add299ebb5f8bde276da2f3b360cc28"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bottom_external_thermal_provider.f90",
+      "blob": "885cc50ad1f5cfc17843e412c0f5dfdb989d553b"
+    },
+    {
+      "path": "src/process/mod_liquid_water_sensible_enthalpy.f90",
+      "blob": "2247370ee34fac73a0e2d0b9fa15e171467aded3"
+    },
+    {
+      "path": "src/runtime/mod_fmr_bottom_sensible_energy.f90",
+      "blob": "6c7e9b9ed77d116104fd6299a6404037a2548960"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "blob": "d320ea43f8dd0958c841c86a00beb22282588656"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_coupling_contract.f90",
+      "blob": "fc598d14eabafcb025bb55621f7b00d6d1816f10"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+      "blob": "f3bf2effebc772b1e3417232d2baabe49ebb8da0"
+    },
+    {
+      "path": "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+      "blob": "47f18ca9241c00429bf35096fef8aac35726c2d7"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+      "blob": "2f5e913032b66a1faa784c3c84a192d253035e1e"
+    },
+    {
+      "path": "src/runtime/mod_fmr_groundwater_swap_participant.f90",
+      "blob": "49ba8ef25f524e67672bf7239670f79c48a5bcc0"
+    },
+    {
+      "path": "src/runtime/mod_fmr_groundwater_participant_registry.f90",
+      "blob": "f487ff8398f70c0735d43962c8d4984c5f2dd2cd"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+      "blob": "a867e04b088f61f686f693d07e470c3e9c33bdec"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_tile_aggregation.f90",
+      "blob": "d62ecba039d9bef178acde6900b81e9d5b0931eb"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_multiswap_types.f90",
+      "blob": "35f475228886bf04d64efb13bbd84a42bc2678ad"
+    },
+    {
+      "path": "src/runtime/mod_modflow6_swap_predictor_response.f90",
+      "blob": "e16c9935670643fbbbcb9388eb52ba698764c493"
+    },
+    {
+      "path": "src/runtime/mod_modflow6_multiswap_cell_response.f90",
+      "blob": "288a274612f6c0be0b3ced149028066a066908ca"
+    },
+    {
+      "path": "src/runtime/mod_modflow6_linear_response_backend.f90",
+      "blob": "f879dc118b628ebe2401443d9aaeb25b37dd6574"
+    },
+    {
+      "path": "src/runtime/mod_modflow6_api_binding.f90",
+      "blob": "780ed4bf3a8bdf067db40f4aedd800832144eca6"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_topology_composition.f90",
+      "blob": "d20290a612a462ef0f96f4e006edee09ef7546e9"
+    },
+    {
+      "path": "src/runtime/mod_groundwater_application_plan.f90",
+      "blob": "e5b97bddf9b8685ff0c852dd99e2d449aae48768"
+    },
+    {
+      "path": "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "blob": "eb1fe3881b53209e01aba7bec0d69a8160bb29c6"
+    },
+    {
+      "path": "src/process/mod_reference_et_demand_process.f90",
+      "blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae"
+    },
+    {
+      "path": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+      "blob": "8c679f911c9a82c498258224d83f5fce3cb09163"
+    },
+    {
+      "path": "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
+      "blob": "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_groundwater_application_context.f90",
+      "blob": "f1a9b4b54f57fca990892c72834c4d5b6e3bd052"
+    },
+    {
+      "path": "src/adapter/mod_fmr_groundwater_application_c_api.f90",
+      "blob": "003ed6fcfedace887e0739155c2e5863494c483b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "blob": "7b6904941b72c87fe82c032c1a80c15b5e7c6562"
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "4e3f764980da5d1bd34b7e971a826903ab4bab21"
+    },
+    {
+      "path": "tests/fmig431/test_crop_file_weather_production.f90",
+      "blob": "bd28b388d558ad9e1ca5921ec3f9e0b1a684ed96"
+    },
+    {
+      "path": "tests/fmig431/run_crop_file_weather_production.sh",
+      "blob": "f848713d8638a7e8da03c53922cc8d83e7b35f0b"
+    }
+  ],
+  "geometry": "Runner rewrites only linked qualification grid to the same explicit four-node 30cm geometry, not production HeadCalc or coefficient owners",
+  "oracle": "Authenticated MOD_meteo literal daily TAV and MOD_cropdevelopment literal germination case(3) plus coefficient expressions, compiled separately without rewriting arithmetic; actual certified accepted soil sample supplies h_average callback; literal authenticated initialize_wofost initialization with constant qualified tables for bounded immediate startup",
+  "restart_layouts": "Existing template ID for soil; existing crop FWO40 codec layout904001; opaque parameter certificate is retained by kernel persistence",
+  "source_head_kind": "Exact public source/test postimage of full local central PASS. Qualification is bounded and does not close mandatory additional FCI93 headed gate or admit canonical.",
+  "current_phase": "AUTHENTIC_THERMAL_SOWING_IMPLEMENTED_QUALIFICATION_PENDING",
+  "previous_qualified_public_source_postimage": "27fe22ff2d7490d04e8dd8134925802504a6bc10",
+  "qualified_public_source_postimage": "b5932b248ab85668664bb8044b978f6c14487a95",
+  "candidate_public_source_postimage": "b5932b248ab85668664bb8044b978f6c14487a95"
+}

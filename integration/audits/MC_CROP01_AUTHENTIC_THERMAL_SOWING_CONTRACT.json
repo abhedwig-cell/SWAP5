@@ -1,0 +1,13 @@
+{
+  "workstream": "MC-CROP01",
+  "status": "IMPLEMENTATION_CONTRACT_NOT_ADMITTED",
+  "canonical": "669a75ff996938fd0538c715ec43fe93d06b74de",
+  "scope": "Bind authentic daily TAV to the admitted numerical air-temperature/no-snow thermal owner within root-free mode7 file-weather production; simulated sowing reads only the actual previously accepted thermal profile.",
+  "source": "Verified B111 temperature.f90: numeric snow-free air boundary TeTop=tav; MOD_meteo tav=(tmx+tmn)*0.5d0. No new thermal equation or numerical policy.",
+  "owned_surface": ["Existing production bootstrap file-weather adapter/profile selection", "Integrated authentic weather/hydrology/thermal/crop regression and exact preservation records"],
+  "read_only_owners": ["MC-HEAT01 process, contract, serialized thermal backend and existing thermal restart", "F-KT physical commit and certified crop hydrothermal sampler", "Crop lifecycle and WOFOST transaction owners", "MC-IRR01 sensor admission"],
+  "allowed_interface": "Private tile validator admits only explicitly selected file-weather root-free numeric AIR/zero-bottom-flux/no-snow thermal layout. Existing non-weather defaults and other thermal selections remain fail-closed.",
+  "held_fixed": ["HeadCalc/Task2 and FCI93 mandatory additional gate", "Historical independent task2 flag conflict", "Root, frost, snow and irrigation production physics", "Lifecycle implication guards", "Energy/water mass tolerances and transactional publication"],
+  "qualification": ["Actual contiguous multi-day authentic meteorology and physical soil-temperature transactions", "Cold accepted daystart delays sowing; previous-day authentic TAV warms actual accepted profile before following-day sowing", "Invalid thermal selectors/source substitution fail closed", "Crop event retry/no duplicate and joint soil/thermal/weather/crop restore", "O0/O2 exact identity and existing full owner/current-canonical preservation"],
+  "limits": "Not delayed physical emergence, active WOFOST growth, thermal reference trajectory equivalence for arbitrary soils, Snow/heat joint layout or external disk codec. Mandatory additional admission and central historical flag decision remain open."
+}
