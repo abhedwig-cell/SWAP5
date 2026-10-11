@@ -1,0 +1,36 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "0de42a6abe22e7efbe1be352202ed9637a1dc3b2",
+  "phase": "PERSISTED_REALISTIC_HISTORY_REFINEMENT_PROBE",
+  "allowed_changes": [
+    "Irrigation owner tests and qualification evidence",
+    "Owned irrigation parameter/source resolver with no shared contract mutation after reconciliation"
+  ],
+  "excluded_changes": [
+    "Shared hydraulic state, solver, history implementation",
+    "Crop/root and solute ownership"
+  ],
+  "invariants": [
+    3,
+    7,
+    9,
+    13,
+    21,
+    22,
+    23,
+    29
+  ],
+  "scientific_question": "Does existing production execution accept a one-centimetre SSDI event at 48 cm/day with pre-existing accepted no-irrigation derivative history, and converge under independent budget refinement?",
+  "numerical_profiles_cm": [
+    1e-06,
+    1e-07,
+    1e-08
+  ],
+  "mass_gate_cm": 1e-12,
+  "profile_acceptance": "Middle profile must approach fine reference more closely than coarse profile; max head difference <2e-3 cm and water-content difference <2e-6. These are newly declared experimental profile targets, not relaxation of the existing 2.5e-11 witness or any production default.",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "next_action": "Run O0/O2 onset, rollback and refinement. Failure is diagnostic, not evidence of a missing production interface without further analysis."
+}
