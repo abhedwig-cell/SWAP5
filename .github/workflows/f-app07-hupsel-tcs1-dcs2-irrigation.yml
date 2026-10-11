@@ -81,3 +81,8 @@ jobs:
         run: |
           bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh
           bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh
+
+      - name: MC-IRR01 accepted matrix salt physical and event restart O0/O2
+        run: |
+          bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh
+          bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh
