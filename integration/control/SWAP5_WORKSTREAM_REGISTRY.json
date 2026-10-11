@@ -804,7 +804,10 @@
   },
   "solver_macropore_regie_closeout_20261011": {
     "canonical_base": "10b94cbdcd902889c71444d611c68c0460a17cae",
-    "stage": "FIVE_SUPERSEDED_OR_OWNER_COMPLETED_CARRIERS_PRESERVED_READY_FOR_CLOSURE",
+    "stage": "FIVE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
+    "canonical_evidence_checkpoint": "317682c55fa01fd247d4db584ac24a648a6c513b",
+    "canonical_evidence_tree": "7861465ce512e763650161f81d929429356bf4f6",
+    "closure_recovery_comments": {"743": 6107973257, "762": 6107973568, "924": 6107973899, "961": 6107974180, "968": 6107974501},
     "archive": "integration/audits/evidence/SOLVER_MACROPORE_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "d320dfd295986ddad001cf8168bf99563b33266510f6fff15d1a018be62edd14",
     "archive_verification": "All 74 changed files from five exact original heads; extracted member Git blob identities and SHA256 verified. Original branches retained. Archived source/workflow files are not executable canonical admission.",
@@ -821,7 +824,7 @@
     ],
     "preservation": "Metadata/archive-only; src/tests/reference/tools/workflows/assets unchanged from canonical10b94cbdc. Reuse exact unchanged qualified scientific dependency surface; no numerical rerun or Actions justified.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; existing A8/PERCH21/A26 and research bounds remain unchanged.",
-    "next_action": "Verify canonical evidence checkpoint, close five carriers with recovery comments, persist final dispositions and verify PR states. Remaining implementation and shared semantic gates stay with existing owners."
+    "next_action": "Five carriers closed after byte-verified canonical evidence persistence. Reuse the selected canonical authorities, not archived source. Unique implementation, physical release/temporal acceptance and shared semantic gates stay with existing owners."
   },
   "frozen_research_regie_closeout_20261011": {
     "canonical_base": "3d326d8fef3529d7a65737d9e4af0c86a41f06f8",

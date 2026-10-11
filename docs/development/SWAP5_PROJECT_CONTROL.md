@@ -344,6 +344,8 @@ Reconciled at canonical `10b94cbdcd902889c71444d611c68c0460a17cae`. The A8, PERC
 
 The full 74-file deltas of these exact original heads are preserved in `integration/audits/evidence/SOLVER_MACROPORE_REGIE_CLOSEOUT_20261011.tar.gz.b64`; decoded SHA256 `d320dfd295986ddad001cf8168bf99563b33266510f6fff15d1a018be62edd14`. Every extracted member matches the original Git blob and SHA256. Original branches remain retained. No older source/state/backend or archived workflow is replayed over current MIGMAC, thermal, crop or irrigation ownership. Historical scientific evidence remains bound to its original scope and run, not represented as a fresh benchmark.
 
+All five historical PRs are now closed after evidence checkpoint `317682c55fa01fd247d4db584ac24a648a6c513b` was fetched and its tree verified. Recovery comments for #743/#762/#924/#961/#968 are `6107973257` / `6107973568` / `6107973899` / `6107974180` / `6107974501`.
+
 PR #740 retains 119 unique source/calibration/research files and needs an ELASTIC-owner census; later mineral ELAS admissions do not by themselves supersede every result. PR #987 remains branch-only A28 approximation work under its RFM owner, with Q4 long-history/replay/rollback qualification pending and fixed64 as default. Neither is admitted or closed by this batch.
 
 This delta is metadata/evidence only: scientific source, tests, reference, tools and workflows are unchanged. No numerical rerun, Actions or new capability-count promotion is justified. Existing shared-authority blockers remain open.
