@@ -1,0 +1,21 @@
+name: MC-CROP01 file weather production
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_swap_daily_weather_file_adapter.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'tests/fmig431/*crop_file_weather*'
+      - 'tests/fci/run_crop_file_weather_production_successor.sh'
+      - '.github/workflows/swap431-crop-file-weather-production.yml'
+jobs:
+  authentic-four-day-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - run: bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only
+      - run: bash tests/fmig431/run_crop_file_weather_production.sh

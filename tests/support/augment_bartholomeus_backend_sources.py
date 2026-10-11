@@ -31,7 +31,10 @@ if complete:
         for name in re.findall(r"^\s*module\s+(\w+)\s*$", (root / source).read_text(), re.M | re.I):
             modules[name.lower()] = source
 for source in (arg for arg in arguments if arg != "--all"):
-    if complete or pathlib.Path(source).name == "mod_fmr_serialized_reference_backend.f90":
+    if complete or pathlib.Path(source).name in {
+        "mod_fmr_serialized_reference_backend.f90",
+        "mod_fmr_production_application_bootstrap.f90",
+    }:
         visit(source)
     elif source not in seen:
         seen.add(source)
