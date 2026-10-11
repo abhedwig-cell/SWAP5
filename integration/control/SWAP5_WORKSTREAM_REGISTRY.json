@@ -136,6 +136,18 @@
         ],
         "pub_gc_submission": "HELD",
         "hupsel_rerun_authorized": false,
+        "held_gwl_head_discriminator_and_shared_contract_20261011": {
+          "baseline": "767503dfeac3ea5f550a2925a02ef2a906262865",
+          "record": "integration/f-gc/F-GC_FIXED_GWL_HEAD_PROFILE_20261011.json",
+          "contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+          "qualification": "Six actual head-driven drainage trials PASS O0/O2 exact stdout. Held GWL fixes D despite changed head/bottom transfer; independent GWL change alters D. Separate component budgets close.",
+          "response_limit": "Held-carrier response is not evolving phreatic feedback, analytic drainage tangent or production admission.",
+          "shared_contract": "Concrete proposed lagged-head projection/complete directional coverage, separate physical storage/path receipts and owner preservation gates. Pending RT/HY response review and F-GC application admission.",
+          "checkpoint": "38c8026efd44c90fc0e679a51a76230d91ef3761",
+          "recovery_branch": "qualification/regie-drainage-fixed-gwl-head-20261011",
+          "next_gate": "RT/HY review and selective head-profile response implementation, not further held-carrier scans or wholesale PR486 import. Joint live mixed-path budgets/receipts/restart remain required.",
+          "production_changed": false
+        },
         "current_source_drainage_profile_replay_20261011": {
           "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
           "record": "integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json",
