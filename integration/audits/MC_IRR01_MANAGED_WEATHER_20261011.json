@@ -48,8 +48,15 @@
     "root_allocation": "PASS O0/O2 unchanged hash0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
     "allocation_guards": "PASS O0/O2 unchanged hashb33e3272922226f7082248eb0527696921cdf0e5858059d506fad1ef3890ef61",
     "highest_normal": "PASS 12 configurations O0/O2 identity",
-    "highest_low_air": "RUNNING existing session82127",
-    "full_current_moving_FCI": "PENDING complete highest archive"
+    "highest_low_air": "PASS all12 fresh-process configurations O0/O2 identity",
+    "full_current_moving_FCI": "PENDING complete highest archive",
+    "highest_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_HIGHEST_20261011.tar.gz.b64",
+      "sha256": "6cfa2fff89d9912e910723be44380eff437d169cf68a9bffb23542bfb635d0c1"
+    },
+    "compiled_dependencies_per_route": 234,
+    "continuation": "Original serial scientific checker retained, exact executable copies, locked per-case cache; no duplicate scientific launch. Scheduling helper remotely persisted028ab2d2 before use.",
+    "inheritance": "Highest compiled source/fixture dependency blobs verified against current HEAD; rain fixture and its F-CI pin are outside both highest compile closures."
   },
   "limits": [
     "One root-free bottom7 file-weather column, BASE/soluteNONE/nonthermal, TCS7/8 DCS2 SSDI.",

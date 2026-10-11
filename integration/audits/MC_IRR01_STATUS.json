@@ -364,7 +364,7 @@
     "qualified": false,
     "canonical_admitted": false,
     "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
-    "next_action": "Persist rain-present fixture then focused O0/O2 while existing highest O2 completes; complete archive and full F-CI.",
+    "next_action": "Persist complete highest archive then full current moving F-CI on this same source/test postimage.",
     "test_paths": [
       "tests/f-app07/run_mc_irr01_managed_weather.sh",
       "tests/f-app07/test_mc_irr01_managed_weather.f90"
@@ -377,11 +377,16 @@
     },
     "focused_result": "PASS actual managed weather O0/O2 12 profiles; root allocation and negative guard preservation PASS unchanged hashes",
     "highest_normal_result": "PASS all12 configurations O0/O2 identity",
-    "highest_low_air_result": "RUNNING existing local session82127; no second run",
-    "full_fci_result": "NOT_STARTED waits complete highest archive",
+    "highest_low_air_result": "PASS all12 configurations O0/O2 identity",
+    "full_fci_result": "PENDING",
     "reconciled_live_canonical": "22d99c734bb119a1b99275ae8595f7d35f0ca678",
     "canonical_delta": "Only registry/project control historical recovery archive/tool; source/tests/owner postimages unchanged",
     "pre_rain_extension_tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
-    "rain_extension": "Same actual production matrix now adds authenticated Jan21 1.4mm rain with positive ET; previous Jan20 had zero rain. Source and both highest compile closures unchanged; updated fixture O0/O2 pending."
+    "rain_extension": "Same actual production matrix now adds authenticated Jan21 1.4mm rain with positive ET; previous Jan20 had zero rain. Source and both highest compile closures unchanged; updated fixture O0/O2 pending.",
+    "highest_preservation_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_HIGHEST_20261011.tar.gz.b64",
+      "sha256": "6cfa2fff89d9912e910723be44380eff437d169cf68a9bffb23542bfb635d0c1"
+    },
+    "highest_preservation_result": "PASS 24 fresh process configurations; exact approved two-source successor"
   }
 }
