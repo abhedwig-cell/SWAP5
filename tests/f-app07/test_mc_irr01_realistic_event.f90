@@ -93,7 +93,8 @@ program test_mc_irr01_realistic_event
            top_provider,t0-expected_duration,t0,1,result_control,diag_control,aggregate_control,dispatch_control,run_control)
       if (.not.result_control(1)%completed) write(*,*) 'PRELUDE_DIAGNOSTIC=',dispatch_control, &
            result_control(1)%admission_status,result_control(1)%kernel_status,result_control(1)%solver_status, &
-           result_control(1)%accepted_substeps,result_control(1)%temporal_rejections,result_control(1)%mass_rejections
+           result_control(1)%accepted_substeps,result_control(1)%temporal_rejections,result_control(1)%mass_rejections, &
+           result_control(1)%solver_rejections
       call require(result_control(1)%completed .and. states_irrigation(1)%current_revision()>0_int64, 'accepted pre-event history')
       pre_revision=states_irrigation(1)%current_revision()
       theta0 = initial_state%water_content(1)
