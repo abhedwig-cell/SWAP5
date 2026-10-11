@@ -1140,6 +1140,73 @@
     "next_action": "Two historical E2E carriers are closed with fixed full owner/tested recovery refs. Master owner reconciles four thermal admissions and later bounded irrigation annotations; ELASTIC/PPA owners adjudicate unique source corpora. Preserve active PERF03 and all production workstreams."
   },
   "publication_regie_closeout_20261011": {
+    "d6_g1_current_requalification": {
+      "stage": "QUALIFIED_PENDING_SAFE_CANONICAL_ADMISSION",
+      "canonical_base": "31b0db16ce2f9463e316495e92e3b02faf8d4d8d",
+      "owner": "PUB-ME D6/F-CI98 and physical D2 replication/Reference qualification",
+      "original_heads": {
+        "218": "8c96b3360593978b99b31430cef9d1c4c31de061",
+        "219": "fa9cc6c456cd7c4dc65709818841fc716de93c03"
+      },
+      "original_paths": {
+        "218": [
+          ".github/workflows/pub-me-d6-fci98-successor-replay.yml",
+          "docs/publications/PUB-ME_D6_FCI98_SUCCESSOR_REPLAY.md",
+          "tests/publication/run_pub_me_d6_fci98_successor_replay.sh"
+        ],
+        "219": [
+          ".github/workflows/pub-me-g1-d2-reverse-flow-replication.yml",
+          "docs/publications/PUB-ME_G1_D2_FCI98_RECONCILIATION.md",
+          "docs/publications/PUB-ME_G1_D2_REPLICATION_CHECKPOINT.md",
+          "docs/publications/PUB-ME_G1_D2_REPLICATION_PREREGISTRATION.md",
+          "docs/publications/PUB-ME_G1_D2_REPLICATION_RESULT.md",
+          "tests/publication/pub_me_g1_d2_fortran_closure.py",
+          "tests/publication/run_pub_me_g1_d2_reverse_flow_replication.sh",
+          "tests/publication/test_pub_me_g1_d2_reverse_flow_replication.f90"
+        ]
+      },
+      "scope": "Carry unique publication tests and historical design/results unchanged onto current canonical; only runner workunit source-delta base rebound. No production/reference, scientific fixture, comparator, numerical threshold, semantic SHA or classification adjustment. Historical result records stay historical; current qualification and preservation are separately recorded.",
+      "required_gates": [
+        "Exact D6 fixture/result/design identity and O0/O2 historical semantic SHA",
+        "Exact G1 fixture/preregistration and current-backend O0/O2 classification/output identity",
+        "Current dependency audit and mandatory F-CI preservation inheritance/requalification",
+        "Canonical tree and evidence archive verification before original carrier closure"
+      ],
+      "remaining": "Both bounded science gates PASS; safe admission, exact canonical verification and two original carrier closures remain. Distinct whole-model/novelty/programme gaps stay owner-controlled.",
+      "qualified_executable_head": "240961d6e6debd1e71230ffa5e5602268bc0651a",
+      "qualification": {
+        "d6": "PASS O0/O2 exact9563ed157258f1993a826a9ef498498cafa45254266818d877db73bb28c88643 EARLIER_DETECTION",
+        "g1": "PASS O0/O2 exact current41cde3050cfac802ce9cade44ec20bb482295f5c85b1dd0bdeea29b02eea1875 REPLICATED_EARLIER_DETECTION",
+        "g1_rejected_binf_cm": "3.70914009594682831e-6",
+        "g1_accepted_binf_cm": "1.23637586137866410e-7",
+        "g1_historical_tolerance": "Unchanged65536*epsilon*max(1,abs(current),abs(historical)); numeric output is newly recorded, not asserted historical byte identity."
+      },
+      "dependency_counts": {
+        "d6_source": 5,
+        "g1_modules": 152,
+        "g1_manual_headcalc_and_fixture": 2
+      },
+      "archive": {
+        "path": "integration/audits/evidence/PUB_ME_D6_G1_REGIE_QUALIFICATION_20261011.tar.gz.b64",
+        "decoded_sha256": "d3caa9bdad344ca37c21dc51b3035850822369fb0cd69d52d7c347a86a9ff5a5",
+        "members": 24,
+        "original_changed_postimages": 11,
+        "qualified_selective_postimages": 9
+      },
+      "preservation": {
+        "source_reference": "Byte-identical canonical base; no production/reference delta",
+        "canonical_workflow": "Unchanged; all14 frozen checkout refs inherit terminal SUCCESS38132433375 at5155c3df427fbb91fd391a9aa98f85ffad75b10b",
+        "current_moving": "Existing admitted #1202/#1203 complete local F-CI and O0/O2 proofs; exact27 and three176-path dependency audit already canonical at31b0db16. Both archives and all12 recorded raw log hashes reverified in this phase. This publication replay changes none of those production/test/runner dependencies.",
+        "fci93_archive_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349",
+        "accepted_salt_archive_sha256": "2b20f4b2bd2120ded570a6872ba8b58cbe16fdab9a1a064eea0e3771808bc35a",
+        "new_actions": 0,
+        "duplicate_numerical_preservation_runs": 0
+      },
+      "original_failed_F_CI": [
+        35290039531,
+        35290392946
+      ]
+    },
     "canonical_base": "a787f6340328a06885a145f6d88a52d921a458e7",
     "stage": "FOUR_PR_CARRIERS_CLOSED_EXPORT_CANONICALLY_ADMITTED",
     "canonical_evidence_checkpoint": "d620326cd0adfe7e2d1e27ca55704a83b230663e",
