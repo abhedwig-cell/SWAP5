@@ -242,7 +242,7 @@ Their owners may close them after confirming that unique evidence is already pre
 
 ### Owner-controlled research/publication PRs
 
-PRs #359, #365, #371, #389, #181, #199, #217, #218 and #219 stay with their specialized owners and must reconcile to current canonical before any merge with shared consequences.
+PRs #365, #371, #389, #181, #199, #218 and #219 stay with their specialized owners and must reconcile to current canonical before any merge with shared consequences. The later publication closeout below records the bounded export successor for #359 and historical completed synthesis disposition for #217.
 
 PR #187 is an immutable blocked PUB-P2E03 experiment and must not be merged as positive evidence.
 
@@ -435,6 +435,37 @@ Closure receipt: #1001 and #1005 are closed, not merged, with recovery comments 
 
 Actions accounting correction after final live verification: creation of the four fixed recovery refs triggered the historical broad A26 push workflow. Runs `38133822089`, `38133822470`, `38133823582` and `38133823679` are all COMPLETED/SUCCESS; exact jobs/refs are recorded in the existing registry. No run remains queued/running. These automatic A26 replays do not establish E2E production admission. Account for historical broad push triggers before further recovery-ref creation; no repeated numerical run or workflow change is made in this closeout.
 
+## Publication evidence and export closeout (2026-10-11)
+
+Reconciled from canonical `a787f6340328a06885a145f6d88a52d921a458e7`, retaining #1200 stable-storage admission. The existing registry field `publication_regie_closeout_20261011` records exact original heads, historical terminal checks, current dependency drift, qualification and closure recovery. No new global ledger or production capability count is created.
+
+Original postimages for #187 (eight files), #207 (five) and #217 (four) are durable before closure at canonical evidence checkpoint `d620326cd0adfe7e2d1e27ca55704a83b230663e`. Archive `integration/audits/evidence/PUBLICATION_REGIE_CLOSEOUT_20261011.tar.gz.b64` decodes to SHA256 `5d0670fd44a9fc71f2893928c1f12a921e050733b337939f8e382f278d7708ff`; its manifest binds exact original Git blobs and modes. These original branches remain intact.
+
+- #187 is a completed immutable blocked calibration experiment: 47/162 valid and 115 invalid at the initial O0 matrix, with no threshold freeze or RossFast execution. Later P2E04 balance adjudication and P2E09 threshold freeze are separate authorities. Its failed calibration remains negative.
+- #207 is a completed immutable blocked first D2 attempt. Neither CLEAN nor MUTANT executed after compilation failure; no detection or production-defect verdict follows. Later canonical D2 success is a separate experiment.
+- #217 is a completed historical cross-defect adjudication, `GO_NARROWED_CLAIM__NOT_MANUSCRIPT_READY`. D1/D3 structural prevention and D2/D4/D5/D6 earlier detection do not establish unique/higher ultimate detection, whole-model equivalence, statistical independence or current dependency qualification. Preserve G1 complete file-driven E2E, G2 checkpoint/run/restore/rerun, G3 warm-start invariance, G4 additional hydrologic replication and G5 literature closure as PUB-ME programme gates.
+
+### Bounded export-tooling qualification
+
+The two-path #359 successor recomposes its original export guards on current canonical, with a proportional presentation margin of 10% instead of 1.5%. Original owner run `35426072539`, job `105852120580`, failed because F5 touched the right page edge; that exact diagnostic was reproduced locally. All seven governed SVGs remain byte-identical to both current canonical and the original owner head. Plot coordinates, text and scientific claims are unchanged. Both independent exports pass embedded fonts, one-page/aspect geometry, strict nonblank/no-page-edge Poppler rendering, per-figure size and flat ZIP/total-size gates; the F5 title, panels, axes, legend and limitation note were visually inspected.
+
+PDF and ZIP bytes differed between the two independent exports: repeatability remains **NOT_PROVEN** despite SOURCE_DATE_EPOCH and fixed ZIP metadata. No byte-identity promise is made. The workflow retains that explicit classification. Local qualification uses the workflow's exact CairoSVG 2.8.2, Pillow 12.3.0 and pypdf 6.1.1. Complete manifests, original failure, second-export log and original/qualified tooling postimages are preserved in `integration/audits/evidence/PUBLICATION_EXPORT_REGIE_QUALIFICATION_20261011.tar.gz.b64`, decoded SHA256 `52f9757f2922c8e49771cb50b3fac855c95280f7cae8d7a4cf772e7fd494d806`.
+
+This qualifies presentation tooling only. Concurrent #1201 was already admitted by its owner at `73796d85ba8de962673390a40d1be54e9c152d53`; that live base is retained in full. Its source/tests trees equal qualified owner `70eedcd157d1f0874823f350293a145ca26ae4c2`, and all qualification-archive log hashes were verified, including terminal full moving F-CI PASS. Root scalar salt, realistic sensor half-event restart and source-off remain bounded owner admissions; accepted solute concentration binding is separate and no fullcap promotion follows. The export's SVG/plan dependencies are unchanged by #1201. Production, scientific tests and reference equal this live canonical base, so their existing O0/O2 and F-CI evidence is inherited without another numerical run. No submission, archive release, production capability or scientific manuscript admission follows from the export. #486 storage partition/exclusive drainage and #371 finalization holds remain authoritative.
+
+### Remaining publication owners and decisive blockers
+
+| PR | Owner | Remaining gate |
+| --- | --- | --- |
+| #181, #199 | PUB-GC contract / PUB-ME literature programme | Consolidate unique contract/preregistration material and complete dated backward/forward literature closure. #199 depends on #181. |
+| #218 | PUB-ME D6 / F-CI98 preservation | Four of five declared source dependencies drift. Original test/result equality and historical focused O0/O2 success do not qualify current transaction/direction/sensitivity/publication semantics. Reconcile current scope and complete mandatory preservation; historical F-CI failed. |
+| #219 | PUB-ME physical replication / Reference execution | Reconcile evolved Reference/HeadCalc dependencies and rerun required qualification/preservation. Historical focused O0/O2 succeeded but F-CI failed. Its G1 D2 replication is distinct from #217 G1 complete file-driven E2E. |
+| #365 | DIF-P0 research | H3 requires a second independent iterative Richards method. RossFast cannot be relabelled as such; P0A authority binding does not close Phase0. |
+| #371, #486 | PUB-GC finalization / central F-GC admission | Release, license/archive PID and author metadata remain unresolved. CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP hold submission; no Hupsel rerun authorized. |
+| #389 | PUB-Stromingen editorial | Internal review only; refresh public NHI terms/status and resolve owner editorial/authorship choices before external publication. |
+| #587 | PUB-GC scientific/editorial handoff | Consolidate unique fixed-interface theory/manual draft with #486 authority. Handoff does not establish new production or novelty evidence. |
+
+Evidence is persisted and export qualification completed; canonical tooling verification and PR closure receipts follow in the same active batch. These completed historical work units add zero production capabilities. Master coverage remains owned by #1072; no disposition promotion follows from publication cleanup. Existing specialized implementation remains untouched.
 ## MC-IRR01 root salt and realistic event admission (2026-10-11)
 
 PR #1201 is admitted at `73796d85ba8de962673390a40d1be54e9c152d53`. Root TCS2/3/4/6 share the historical TASK3 salt modifier with sensor scheduling, preserving DCSLIM-before-salt-before-TASK4 order. Literal 48 cases, realistic root and sensor physical/event restart, source-off and complete local F-CI preservation passed O0/O2 on persisted `70eedcd157d1f0874823f350293a145ca26ae4c2`. Admission preserves all scientific dependency subtrees exactly. All 15 canonical paths verified; immutable full logs are versioned. No numerical thresholds, solute owner or crop/root state changed; no full-capability promotion.

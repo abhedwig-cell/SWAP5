@@ -1178,5 +1178,206 @@
       "trigger_observation": "Four fixed-ref creation pushes triggered the historical A26 workflow. Every run reached terminal success and was verified during this turn. These automatic runs are not E2E admission qualification or new physical evidence; no further dispatch/rerun. Future fixed-ref preservation must account for old broad push triggers."
     },
     "next_action": "Two historical E2E carriers are closed with fixed full owner/tested recovery refs. Master owner reconciles four thermal admissions and later bounded irrigation annotations; ELASTIC/PPA owners adjudicate unique source corpora. Preserve active PERF03 and all production workstreams."
+  },
+  "publication_regie_closeout_20261011": {
+    "canonical_base": "a787f6340328a06885a145f6d88a52d921a458e7",
+    "stage": "EXPORT_QUALIFIED_CANONICAL_IMPORT_AND_FOUR_CLOSURES_PENDING",
+    "canonical_evidence_checkpoint": "d620326cd0adfe7e2d1e27ca55704a83b230663e",
+    "canonical_evidence_tree": "763d8b98cc80d570eda14dda410eec05d39c3d8a",
+    "archive": {
+      "path": "integration/audits/evidence/PUBLICATION_REGIE_CLOSEOUT_20261011.tar.gz.b64",
+      "decoded_sha256": "5d0670fd44a9fc71f2893928c1f12a921e050733b337939f8e382f278d7708ff",
+      "blob": "712d51ba998ad0fd76443bea527fe6817fb72273",
+      "original_postimages": 17,
+      "rule": "Decode base64 then gzip/tar; MANIFEST.json binds each exact original Git blob,SHA256 and mode. Archive all original changed postimages before closing. Original branches retained; no new recovery refs."
+    },
+    "closures": [
+      {
+        "pr": 187,
+        "head": "64a500cfecf76217ed5589026aae8d69c313fc53",
+        "original_branch": "work/pub-p2e03-reference-calibration-matrix",
+        "owner": "PUB-P2E03 reference calibration",
+        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_EXPERIMENT_READY_FOR_CLOSURE",
+        "files": 8,
+        "result": "First matrix at O0:47/162 valid,115 invalid; no prospective threshold and no RossFast execution. Original failed calibration remains negative. Later P2E04 adjudication and P2E09 threshold freeze are separate authorities.",
+        "runs": [
+          {
+            "id": 35267202091,
+            "result": "FAILURE",
+            "role": "owner calibration"
+          },
+          {
+            "id": 35267202113,
+            "result": "SUCCESS",
+            "role": "failure probe"
+          },
+          {
+            "id": 35267202249,
+            "result": "SUCCESS",
+            "role": "docs"
+          },
+          {
+            "id": 35267202278,
+            "result": "SUCCESS",
+            "role": "historical F-CI"
+          }
+        ]
+      },
+      {
+        "pr": 207,
+        "head": "85cd4aca49fceb4a33d31a9e47d6be3b9fa1f684",
+        "original_branch": "work/pub-me-d2-retry-accounting",
+        "owner": "PUB-ME D2 retry-accounting",
+        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_FIRST_ATTEMPT_READY_FOR_CLOSURE",
+        "files": 5,
+        "result": "First attempt failed compilation with divergent stub dependencies; neither CLEAN nor MUTANT executed. It has no detection or production-defect verdict. Later canonical PUB-ME_D2_RESULT.json is a separate successful experiment.",
+        "runs": [
+          {
+            "id": 35285387536,
+            "result": "FAILURE",
+            "role": "owner"
+          },
+          {
+            "id": 35285387546,
+            "result": "SUCCESS",
+            "role": "docs"
+          },
+          {
+            "id": 35285387551,
+            "result": "SUCCESS",
+            "role": "historical F-CI"
+          }
+        ]
+      },
+      {
+        "pr": 217,
+        "head": "68074c4fa3b5edb21cb0c51f39d43548e174c6be",
+        "original_branch": "work/pub-me-cross-defect-adjudication",
+        "owner": "PUB-ME scientific programme",
+        "disposition": "COMPLETED_HISTORICAL_NARROWED_CLAIM_ADJUDICATION_READY_FOR_CLOSURE",
+        "files": 4,
+        "result": "GO_NARROWED_CLAIM__NOT_MANUSCRIPT_READY. D1/D3 structural prevention; D2/D4/D5/D6 earlier detection. No unique/higher ultimate detection, whole-model equivalence or statistical independence claim. Archive preserves historical synthesis without inheriting current dependency qualification.",
+        "runs": [
+          {
+            "id": 35289832475,
+            "result": "SUCCESS",
+            "role": "docs"
+          }
+        ],
+        "remaining_gaps": [
+          "G1:P1-Q06 complete file-driven E2E preservation",
+          "G2:production checkpoint/run/restore/rerun identity",
+          "G3:production warm-start invariance",
+          "G4:additional qualified hydrologic replication",
+          "G5:dated backward/forward literature closure"
+        ]
+      }
+    ],
+    "export_admission": {
+      "pr": 359,
+      "owner": "PUB-GC governed figure export",
+      "original_head": "63eb57c3a3009f9c8e0743d24596b4f6c4379866",
+      "qualified_local_head": "4762447b6b3c52a16d295a684736f62a28563e97",
+      "paths": [
+        "tools/publication/export_pub_gc_gmd_figures.py",
+        ".github/workflows/pub-gc-gmd-figure-export.yml"
+      ],
+      "repair": "Recompose original export hardening and enlarge proportional presentation viewBox margin from1.5% to10%, retaining all scientific source SVGs and original strict clipping/font/aspect/size guards.",
+      "qualification": "Both independent exports PASS all7 structural/render gates; original F5 failure reproduced byte-exact diagnostic locally. Original owner35426072539/job105852120580 failed on F5 page edge.",
+      "pdf_byte_repeatable": false,
+      "zip_byte_repeatable": false,
+      "repeatability_claim": "NOT_PROVEN; SOURCE_DATE_EPOCH/fixed ZIP metadata do not establish PDF byte identity. No release/submission or production-capability admission.",
+      "archive": {
+        "path": "integration/audits/evidence/PUBLICATION_EXPORT_REGIE_QUALIFICATION_20261011.tar.gz.b64",
+        "decoded_sha256": "52f9757f2922c8e49771cb50b3fac855c95280f7cae8d7a4cf772e7fd494d806",
+        "members": 9,
+        "contents": "Both manifests, original failure and second-export logs, qualification and original/qualified2-path postimages."
+      },
+      "preservation": "src/tests/reference equal live73796d85; concurrent #1201 exact source/tests owner postimage and full local F-CI archive verified. Export dependencies (SVGs/plan) unchanged since qualified4762447; no numerical requalification needed."
+    },
+    "remaining_blockers": [
+      {
+        "prs": [
+          181,
+          199
+        ],
+        "owner": "PUB-GC scientific contract / PUB-ME literature programme",
+        "blocker": "80 unique contract paths and38 literature/preregistration paths require owner consolidation; #199 is based on #181. G5 literature closure remains prospective, not completed."
+      },
+      {
+        "prs": [
+          218
+        ],
+        "owner": "PUB-ME D6 / F-CI98 preservation",
+        "blocker": "Four of five declared dependency blobs drift at current canonical. Original D6 test/result unchanged but old focused O0/O2 success35290039627 cannot qualify changed transaction/direction/sensitivity/publication semantics. Original F-CI35290039531 failed; owner must reconcile and replay current dependency surface with mandatory preservation."
+      },
+      {
+        "prs": [
+          219
+        ],
+        "owner": "PUB-ME physical replication / Reference execution",
+        "blocker": "Original O0/O2 replication35290392967 success; F-CI35290392946 failure. Real Reference backend/HeadCalc evolved since execution base. Requalify current numerical dependency scope before admission. #219 G1 means D2 directional replication; it does not close #217 G1 P1-Q06 file-driven E2E."
+      },
+      {
+        "prs": [
+          365
+        ],
+        "owner": "DIF-P0 difficulty research",
+        "blocker": "H3 needs a genuinely second independent iterative Richards method. RossFast is a different formulation and cannot be relabelled. P0A authority binding is closed but Phase0 is not; P0B-F remain owner-controlled."
+      },
+      {
+        "prs": [
+          371,
+          486
+        ],
+        "owner": "PUB-GC finalization and central F-GC CSR admission authority",
+        "blocker": "R1 release,L1 license/A3 archive PID and author metadata remain unresolved/null in finalization authority. #486 separately holds submission on CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP; no Hupsel rerun authorized."
+      },
+      {
+        "prs": [
+          389
+        ],
+        "owner": "PUB-Stromingen publication/editorial",
+        "blocker": "Internal review only; refresh current public NHI terms/status before external publication. Authorship and editorial decisions require their existing owners."
+      },
+      {
+        "prs": [
+          587,
+          486
+        ],
+        "owner": "PUB-GC scientific/editorial handoff",
+        "blocker": "Unique fixed-interface theory/manual draft requires owner consolidation with #486 storage/drainage holds; theory handoff is not production or novelty evidence."
+      }
+    ],
+    "open_original_heads": {
+      "181": "12ab02b7c9543c32b6a9690b90ca5f9094b3bcfc",
+      "199": "25e04dc60e311c699330d6f81d03da82ca9fa0dc",
+      "218": "8c96b3360593978b99b31430cef9d1c4c31de061",
+      "219": "fa9cc6c456cd7c4dc65709818841fc716de93c03",
+      "365": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
+      "371": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8",
+      "389": "92bcecf3302ab495afe8bd2fcfbd38b86135193a",
+      "587": "ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3"
+    },
+    "validation": {
+      "source_tests_reference": "BYTE_IDENTICAL_TO_LIVE_CANONICAL73796d85",
+      "new_capability_admissions": 0,
+      "new_manually_dispatched_actions": 0,
+      "new_recovery_refs": 0,
+      "docs": "PASS documentation source, strict MkDocs and JSON"
+    },
+    "next_action": "Publish qualified bounded export/evidence and current control record under canonical SHA lease; verify full tree; then close187207217 and359 with receipts; retain owner blockers and publication hold.",
+    "canonical_admission_base": "73796d85ba8de962673390a40d1be54e9c152d53",
+    "concurrent_admission_reconciled": {
+      "pr": 1201,
+      "canonical_merge": "73796d85ba8de962673390a40d1be54e9c152d53",
+      "qualified_owner_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+      "source_tree": "4636b52b9a4c1a3158ad1e166695aa52ad9e8252",
+      "tests_tree": "2051e7cedeb2418321e6395249e732140efce790",
+      "evidence_archive": "integration/audits/evidence/MC_IRR01_ROOT_SALT_20261011.tar.gz.b64",
+      "archive_sha256": "0c53413b424d4f9d57621293076698fc18be9cb8a2037ead8141eb532b9faf0b",
+      "verification": "All owner log SHA256 and canonical src/tests identities verified; full moving F-CI log ends FCI_CANONICAL_LINEAGE_AWARE_GATE PASS. Preserve owner admission without production edits or reruns.",
+      "scope": "Configured scalar root salt, realistic sensor half-event restart and source-off; actual accepted solute concentration binding remains separate, no fullcap promotions."
+    }
   }
 }
