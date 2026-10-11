@@ -25,7 +25,7 @@ module mod_fmr_wofost_crop_transaction
        export_wofost_crop_event_identity_persistence, &
        reconstruct_wofost_crop_event_identity_from_persistence
   use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t, &
-       propose_crop_lifecycle_continuation, CROP_CONT_OK
+       propose_crop_lifecycle_continuation, CROP_CONT_OK, CROP_PROFILE_BOUNDED, CROP_PROFILE_B111_TASK2
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
   use mod_crop_germination_preflight, only: crop_germination_candidate_t
   implicit none
@@ -90,6 +90,7 @@ module mod_fmr_wofost_crop_transaction
     type(fmr_wofost_root_growth_carrier_t) :: root_growth_carrier
     logical :: receipt_present = .false.
     logical :: lifecycle_present = .false.
+    integer :: lifecycle_schema_version = 1
     type(crop_lifecycle_continuation_t) :: lifecycle
     type(fmr_wofost_crop_event_identity_persistence_t) :: receipt
   contains
@@ -191,6 +192,11 @@ contains
     end if
     if (self%lifecycle_present) then
       if (.not. self%lifecycle%ready()) return
+      if(self%lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
+        if(self%lifecycle_schema_version/=2) return
+      else
+        if(self%lifecycle_schema_version/=1) return
+      end if
       if (self%lifecycle%last_event_identity%ready()) then
         if (.not. self%receipt_present) return
         if (.not. self%receipt%ready()) return
@@ -201,6 +207,7 @@ contains
       end if
     else
       if (self%lifecycle%valid) return
+      if (self%lifecycle_schema_version/=1) return
     end if
     if (self%receipt_present) then
       if (.not. self%receipt%ready()) return
@@ -225,6 +232,7 @@ contains
     if (allocated(state%lifecycle)) then
       view%lifecycle = state%lifecycle
       view%lifecycle_present = .true.
+      if(state%lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) view%lifecycle_schema_version=2
     end if
     if (allocated(state%potential_shadow)) then
       view%potential_shadow = state%potential_shadow
@@ -404,9 +412,17 @@ contains
       ! Validate crop-gating invariants before supplying the physical trial.
       ! The F-KT crop transaction remains the only acceptance authority.
       if (lifecycle_plan%preparation_delay < 0 .or. lifecycle_plan%sowing_delay < 0) return
-      if (lifecycle_plan%sown .and. .not. lifecycle_plan%prepared) return
-      if (lifecycle_plan%germinated .and. .not. lifecycle_plan%sown) return
-      if (lifecycle_plan%emergence_eligible .neqv. lifecycle_plan%germinated) return
+      select case(lifecycle_plan%initialization_profile)
+      case(CROP_PROFILE_BOUNDED)
+        if (lifecycle_plan%sown .and. .not. lifecycle_plan%prepared) return
+        if (lifecycle_plan%germinated .and. .not. lifecycle_plan%sown) return
+        if (lifecycle_plan%emergence_eligible .neqv. lifecycle_plan%germinated) return
+      case(CROP_PROFILE_B111_TASK2)
+        if (lifecycle_plan%emergence_eligible .neqv. &
+             (lifecycle_plan%prepared.and.lifecycle_plan%sown.and.lifecycle_plan%germinated)) return
+      case default
+        return
+      end select
       if (lifecycle_plan%germination_evaluated) then
         if (.not. (lifecycle_plan%prepared .and. lifecycle_plan%sown)) return
         if (.not. lifecycle_germination%valid) return
@@ -415,7 +431,8 @@ contains
         if (lifecycle_germination%next_temperature_sum < 0.0_real64) return
       else
         if (lifecycle_plan%prepared .and. lifecycle_plan%sown) return
-        if (lifecycle_plan%germinated .or. lifecycle_plan%emergence_eligible) return
+        if (lifecycle_plan%emergence_eligible) return
+        if (lifecycle_plan%initialization_profile==CROP_PROFILE_BOUNDED.and.lifecycle_plan%germinated) return
       end if
       forcing%lifecycle_plan = lifecycle_plan
       forcing%lifecycle_germination = lifecycle_germination

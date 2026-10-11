@@ -22,7 +22,8 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_crop_weather_physical_event_composition, only: &
        propose_weather_crop_physical_event, CROP_EVENT_COMPOSE_OK
   use mod_fmr_wofost_crop_event_lifecycle, only: reconcile_committed_crop_event_receipt, FMR_WOF39_OK
-  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t, &
+       initialize_b111_crop_lifecycle,CROP_PROFILE_BOUNDED,CROP_PROFILE_B111_TASK2,CROP_CONT_OK
   use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
   use mod_wofost_emergence_initialization, only: initialize_wofost_emergence_owner, WOFOST_EMERGENCE_INIT_OK
   use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
@@ -63,6 +64,8 @@ module mod_fmr_production_application_bootstrap
   use mod_crop_weather_day_owner, only: weather_day_owner_t, initialize_weather_day_owner, &
        ingest_weather_day, WEATHER_DAY_OK
   use mod_fmr_crop_weather_day_preflight, only: propose_weather_day_crop_preflight, CROP_WEATHER_PREFLIGHT_OK
+  use mod_fmr_crop_certified_hydrothermal_forcing, only: &
+       sample_certified_committed_crop_hydrothermal_forcing,CROP_CERT_FORCE_OK
   use mod_fmr_crop_certified_daily_preflight, only: crop_certified_daily_preflight_t
   use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t, &
        ppa_wu03_common_forcing_input_t, ppa_wu03_common_forcing_result_t, &
@@ -102,6 +105,7 @@ module mod_fmr_production_application_bootstrap
   ! Physical controls only. Live continuation is read exclusively from the
   ! existing committed crop owner; creation starts with zero continuation.
   type, public :: fmr_application_crop_daystart_controls_t
+    integer :: initialization_profile=CROP_PROFILE_BOUNDED
     real(real64) :: zprep=-5.0_real64,zsow=-5.0_real64,ztempsow=-5.0_real64,zgerm=-5.0_real64
     integer :: swprep=0,swsow=0,germ_mode=1
     real(real64) :: hprep_threshold=-100.0_real64,hsow_threshold=-100.0_real64,sow_temperature=0.0_real64
@@ -591,22 +595,29 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
-  subroutine production_application_begin_weather_day(self,record,controls,candidate,status)
+  subroutine production_application_begin_weather_day(self,record,controls,candidate,status,task2_only)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(swap_daily_weather_record_t), intent(in) :: record
     type(fmr_application_crop_daystart_controls_t), intent(in) :: controls
     type(crop_certified_daily_preflight_t), intent(out) :: candidate
     integer, intent(out) :: status
+    logical, intent(in), optional :: task2_only
     type(weather_day_owner_t) :: pending_weather
     type(fmr_wofost_accepted_window_t) :: pending_window
     type(kernel_checkpoint_t) :: day_checkpoint
-    logical :: new_day
+    logical :: new_day,initialize_only
     real(real64) :: day,tmin,tmax,rain,etref,time
     logical :: available
     integer :: s
     integer(int64) :: pending_revision
     candidate=crop_certified_daily_preflight_t();status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
+    initialize_only=.false.
+    if(present(task2_only)) initialize_only=task2_only
+    if(initialize_only) then
+      if(self%crop_daystart_active.or.self%previous_weather_window%ready()) return
+      if(self%committed(1)%current_revision()/=0_int64) return
+    end if
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(size(self%committed)/=1.or.associated(self%active_context)) return
     if(self%parameters(1)%bottom_mode/=7.or.self%weather_epoch_day==0) return
@@ -640,6 +651,7 @@ contains
       pending_revision=1_int64
     end if
     status=FMR_APP_BOOT_CROP_PREFLIGHT_FAILED
+    if(.not.initialize_only) then
     call propose_weather_day_crop_preflight(self%committed(1), &
          self%committed(1)%current_lineage_id(),self%committed(1)%current_revision(),time, &
          pending_weather,1_int64,1_int64,pending_revision,day, &
@@ -649,6 +661,7 @@ contains
          controls%germ_mode,controls%temperature_sum,controls%optimal_sum,controls%base_temperature, &
          controls%max_effective_temperature,controls%dry_head,controls%wet_head,controls%water_response_a,candidate,s)
     if(s/=CROP_WEATHER_PREFLIGHT_OK.or..not.candidate%valid) return
+    end if
     ! Weather acquisition is independent of acceptance of today's future
     ! trajectory. This publishes no crop event or lifecycle transition.
     if(new_day) then
@@ -804,8 +817,8 @@ contains
     type(fmr_wofost_crop_transaction_state_t) :: state
     type(kernel_committed_state_t) :: pending_crop
     class(transaction_state_t), allocatable :: physical
-    real(real64) :: day,tmin,tmax,rain,etref,time
-    integer :: s
+    real(real64) :: day,tmin,tmax,rain,etref,time,initial_hprep,initial_hsow,initial_tsoil
+    integer :: s,initial_sowing_node
     logical :: available
     status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
@@ -835,15 +848,50 @@ contains
     initial_controls=controls
     initial_controls%prep_delay=0;initial_controls%sow_delay=0
     initial_controls%temperature_sum=0.0_real64
-    call self%begin_weather_day(record,initial_controls,daily,status)
+    select case(controls%initialization_profile)
+    case(CROP_PROFILE_B111_TASK2)
+      call initialize_b111_crop_lifecycle(crop_identity,controls%swprep,controls%swsow,controls%germ_mode,lifecycle,s)
+      if(s/=CROP_CONT_OK) return
+      if(lifecycle%prepared.and.lifecycle%sown.and.lifecycle%germinated.and..not.initial_owner%crop_emerged) return
+      if(controls%swsow==1) then
+        ! Task2 locates the sowing compartment; read the same certified
+        ! immutable geometry used by subsequent simulated-sowing daystarts.
+        call sample_certified_committed_crop_hydrothermal_forcing(self%committed(1), &
+             self%committed(1)%current_lineage_id(),self%committed(1)%current_revision(),time, &
+             controls%zprep,controls%zsow,controls%ztempsow,initial_hprep,initial_hsow, &
+             initial_tsoil,initial_sowing_node,s)
+        if(s/=CROP_CERT_FORCE_OK.or.initial_sowing_node<1) return
+      end if
+      ! Source cropemergence executes task2 and, for delayed emergence,
+      ! task3 in this same first daystart. These are distinct operations;
+      ! neither waits for today's future hydrological acceptance.
+      if(initial_owner%crop_emerged) then
+        call self%begin_weather_day(record,initial_controls,daily,status,task2_only=.true.)
+      else
+        call self%begin_weather_day(record,initial_controls,daily,status)
+      end if
+    case(CROP_PROFILE_BOUNDED)
+      call self%begin_weather_day(record,initial_controls,daily,status)
+    case default
+      return
+    end select
     if(status/=FMR_APP_BOOT_OK) return
     status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    if(controls%initialization_profile==CROP_PROFILE_BOUNDED) then
     call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s)
     if(s/=CROP_DAILY_OK.or..not.plan%valid) return
     lifecycle%valid=.true.;lifecycle%crop_identity=crop_identity
     lifecycle%prepared=plan%prepared;lifecycle%sown=plan%sown;lifecycle%germinated=plan%germinated
     lifecycle%preparation_delay=plan%preparation_delay;lifecycle%sowing_delay=plan%sowing_delay
     if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
+    else if(.not.initial_owner%crop_emerged) then
+      call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s, &
+           previous_sown=lifecycle%sown,previous_germinated=lifecycle%germinated)
+      if(s/=CROP_DAILY_OK.or..not.plan%valid) return
+      lifecycle%prepared=plan%prepared;lifecycle%sown=plan%sown;lifecycle%germinated=plan%germinated
+      lifecycle%preparation_delay=plan%preparation_delay;lifecycle%sowing_delay=plan%sowing_delay
+      if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
+    end if
     lifecycle%emerged=initial_owner%crop_emerged
     call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle)
     if(s/=FMR_WOF38_OK) return
@@ -874,6 +922,7 @@ contains
     type(fmr_application_crop_daystart_controls_t) :: effective_controls
     type(crop_certified_daily_preflight_t) :: daily
     type(crop_lifecycle_continuation_t) :: lifecycle
+    type(crop_lifecycle_continuation_t), allocatable :: historical_current
     type(wofost_crop_owner_state_t) :: owner
     type(wofost_one_day_forcing_t) :: crop_forcing
     type(fmr_wofost_crop_event_forcing_t) :: event
@@ -898,6 +947,17 @@ contains
     class default
       return
     end select
+    if(controls%initialization_profile/=lifecycle%initialization_profile) return
+    if(lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
+      ! Source emergence is checked from the previous accepted flags before
+      ! task3. Until delayed WOFOST/root initialization is qualified, refuse
+      ! this boundary rather than publish another pre-emergence daily event.
+      if(lifecycle%prepared.and.lifecycle%sown.and.lifecycle%germinated) then
+        status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
+      allocate(historical_current,source=lifecycle)
+    end if
     self%crop_daystart_active=.true.
     if(self%accepted_crop_lineage/=0_int64) then
       if(crop_committed%current_lineage_id()/=self%accepted_crop_lineage.or. &
@@ -938,7 +998,8 @@ contains
          effective_controls%prep_delay,effective_controls%sow_delay,effective_controls%max_prep_delay, &
          effective_controls%max_sow_delay,effective_controls%germ_mode,effective_controls%temperature_sum, &
          effective_controls%optimal_sum,effective_controls%base_temperature,effective_controls%max_effective_temperature, &
-         effective_controls%dry_head,effective_controls%wet_head,effective_controls%water_response_a,event,s)
+         effective_controls%dry_head,effective_controls%wet_head,effective_controls%water_response_a,event,s, &
+         historical_current=historical_current)
     status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
     if(s/=CROP_EVENT_COMPOSE_OK.or..not.event%ready()) return
     call crop_committed%capture_checkpoint(checkpoint,available)

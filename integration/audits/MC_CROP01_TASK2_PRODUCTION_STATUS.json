@@ -1,0 +1,149 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Historical task2/task3 independent pre-emergence production profile",
+  "baseline": "da9ef1e5d37cd49f996dc48e24fcd09110cff777",
+  "recovery_branch": "work/mc-crop01-task2-admission-20261011",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "scientific_predecessor": "7372dccf4a5c9d23354257a8e9326f90074814db",
+  "predecessor_scope": "Full pre-frost central preservation, PPA owner/preservation and focused O0/O2 passed; retained predecessor evidence only. Current composed source is independently qualified below.",
+  "relevant_paths": [
+    "src/crop/mod_crop_lifecycle_continuation.f90",
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/MC_CROP01_HISTORICAL_INITIALIZATION_DECISION.json",
+    "integration/audits/PPA_WU05B_NAN_GUARD_STATUS.json"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/run_crop_task2_frost_successor.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/fapp/run_ppa_wu03_preservation.sh"
+  ],
+  "next_action": "Admit bounded current qualified profile after exact canonical/PR overlap check; then implement delayed physical emergence and full annual crop/root/weather production in one dependency-ordered batch.",
+  "blockers": [
+    "Delayed physical emergence, grown root/canopy/WOFOST daily production, harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open."
+  ],
+  "master_coverage": "ACTIVE_MIGRATION; no count or full lifecycle closure.",
+  "frost_successor_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TASK2_COMPLETE_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "1f7cc1e539d36c7d577b3709f05c4c0e58624fbc0676e179a1b7eae6992d3fb6",
+    "complete_configurations": 24,
+    "required_configurations": 24,
+    "partial_only": false
+  },
+  "local_stage": "CURRENT full moving, PPA owner/preservation and COMPLETE24 frost highest routes terminal PASS; bounded admission pending.",
+  "predecessor_qualification": {
+    "head": "7372dccf4a5c9d23354257a8e9326f90074814db",
+    "tree": "e8883d60de3880c0ef0d8476b4822ec3e0d18944",
+    "full_moving_exit_code": 0,
+    "PPA_owner_and_preservation_exit_code": 0,
+    "qualified_bounded_profile": true,
+    "canonically_admitted": false
+  },
+  "current_focused": {
+    "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+    "O0_O2_exit_code": 0,
+    "semantic_records_identical_to_predecessor": 184,
+    "claim_limit": "Focused actual weather/crop/thermal/restart and source task2/task3 profile only; no full current preservation claim"
+  },
+  "evidence_paths": [
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64",
+    "integration/audits/evidence/MC_CROP01_TASK2_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64"
+  ],
+  "evidence_sha256": {
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64": "57811f8c11dcbc4932d49cd0bd827637e5453e479de7f8fa6e549a85b5f53241",
+    "integration/audits/evidence/MC_CROP01_TASK2_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f"
+  },
+  "partial_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TASK2_PARTIAL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "5c8d2d04660a27a0c51ff7918f8c8bb412add1eb98e09b29a859643a73081a63",
+    "complete_configurations": 13,
+    "required_configurations": 24,
+    "partial_only": true
+  },
+  "last_reconciled_upstream": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+  "test_scope": "Explicit historical task2/task3 pre-emergence production profile, actual thermal delayed sowing/germination, schema2 restart, four-day physical default weather cases. Delayed physical emergence/root/growth/harvest/rotation/fallow and external disk serialization remain open.",
+  "status": "CURRENT_SOURCE_QUALIFIED_PRESERVED_BOUNDED_PROFILE_READY_FOR_ADMISSION",
+  "current_full_qualification": {
+    "head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+    "tree": "266cc830cbc28eb23a2b1c98e287acc5d450d320",
+    "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+    "archive": "integration/audits/evidence/MC_CROP01_TASK2_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f",
+    "terminal_exit_codes": {
+      "current-full-moving.log": 0,
+      "current-ppa-owner.log": 0,
+      "current-ppa-preservation.log": 0,
+      "complete-original-low-air-controller.log": 0,
+      "current-documentation.log": 0
+    },
+    "terminal_markers": {
+      "current-full-moving.log": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+      "current-ppa-owner.log": "PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS",
+      "current-ppa-preservation.log": "PPA-WU03 PRESERVATION GATE PASS",
+      "complete-original-low-air-controller.log": "PPA_WU05B15_LOW_AIR_O0_O2_IDENTITY=PASS"
+    },
+    "scientific_subtrees": {
+      "src": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+      "tests": "b2229484aaf67bcca94c2e8920e7bcae9071b50a",
+      "reference": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+      "tools": "4a61dbf6fee190ec9766ef8c4cf71dcb94a00bed",
+      ".github": "2ffb197ba9b917a7cc6af6131d38f6b05d107199",
+      "assets": "7ac3bc00de529145efce5f476326283e65c66206"
+    },
+    "inheritance_rule": "Final admission metadata may inherit only with exact unchanged src/tests/reference/tools/workflows/assets trees; no whole-lifecycle promotion."
+  },
+  "owned_surface": "Existing lifecycle flags/profile and F-WOF38 physical owner persistence; existing application daystart and event composition.",
+  "read_only_authorities": [
+    "B1.11 MOD_cropdevelopment/MOD_meteo/wofost exact bundled sources",
+    "Existing crop physical lifecycle contract",
+    "Current F-KT/PPA/WOFOST/root/irrigation admission authorities"
+  ],
+  "allowed_interfaces": "Explicit optional source profile, existing daily composition continuation flags and explicit lifecycle schema2; bounded profile remains default.",
+  "held_fixed_interfaces": "All HeadCalc/solver/mass/tolerance/root uptake/thermal/irrigation physics and owners; original highest frost runner/science/budgets/flags.",
+  "dependency_surface": "Five pinned crop/runtime production modules; full current compile dependency/source closure, unchanged reference and original frost science.",
+  "canonical_admission_owner": "Central SWAP5 regie under user-delegated full MC-CROP01 workstream and selected historical startup profile authority.",
+  "remaining_dependency_order": [
+    {
+      "step": "Delayed physical emergence plus rooted annual growth",
+      "source": "SWAP/MOD_cropdevelopment.f90 cropemergence previous accepted flags; SWAP/MOD_meteo.f90 astro; SWAP/wofost.f90 initialize/rates",
+      "source_meteo_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+      "owners": [
+        "Existing F-WOF38/F-WOF40 physical crop transaction",
+        "Existing WOFOST owner and emergence initializer",
+        "Existing DVS/static/adaptive root owners and accepted root-uptake bindings",
+        "Existing PPA-WU03/reference ET/F-KT owners"
+      ],
+      "required_changes": [
+        "Derive radiation and astronomy from the same immutable file record and qualified site/calendar parameters, preserving literal arithmetic and units.",
+        "Keep morning task2/task3/current-day germination independent of future same-day hydro acceptance; active WOFOST rate window must retain its own same-day weather and accepted uptake, not substitute next-day weather.",
+        "Initialize emerged biomass/root view only inside matching existing F-KT candidate. Enable positive transpiration/real root sink through the existing shared bindings after declared profile admission.",
+        "Jointly preserve actual accepted hydraulic/thermal/root/crop/weather/event origins across reject/retry/restart."
+      ],
+      "qualification": "Multi-day delayed emergence -> nonzero biomass and actual uptake; literal source astronomy/growth oracle; source identity, hard mass, rollback/exactly-once and restart O0/O2; affected owner and full F-CI preservation."
+    },
+    {
+      "step": "Harvest, rotation and fallow",
+      "owners": [
+        "Existing crop/calendar/rotation receipt and physical lifecycle owner",
+        "Existing root/canopy/hydraulic owners"
+      ],
+      "required_changes": [
+        "Accepted F-KT crop termination and root/canopy teardown once; calendar publication follows exact receipt.",
+        "New crop task2 initialization occurs on a candidate of the existing owner, not repeated initial application creation.",
+        "Two crops with real intervening fallow, hydro continuation, rejected boundary retry and joint restart.",
+        "Source-backed SWINCO=3 and external whole-system disk codec remain separate required boundaries."
+      ],
+      "qualification": "Two physical crop seasons plus fallow, source harvest/start precedence, zero duplicate events, O0/O2, restart and reference/preservation; no full master closure before all gates."
+    }
+  ]
+}
