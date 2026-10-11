@@ -14,10 +14,25 @@
     "original_head": "2f1b90d05746341ff9acfbf3276a8ee6d5a12b01",
     "source_scope": "One exact guard blob0dd5b541; no frost formula, threshold, layout, interface, forcing, temporal policy or state-owner change.",
     "stage": "PERSISTED_CURRENT_SOURCE_QUALIFICATION_PENDING",
-    "required_gates": ["Original focused invalid-input O0/O2", "Existing provider/effect O0/O2", "Existing bounded runtime/restart O0/O2", "All six highest configurations normal and low_air O0/O2 through sealed unchanged B15 oracle body", "Full moving F-CI with explicitly scoped source routing and immutable highest evidence", "Safe canonical admission and original PR closure"],
+    "required_gates": [
+      "Original focused invalid-input O0/O2",
+      "Existing provider/effect O0/O2",
+      "Existing bounded runtime/restart O0/O2",
+      "All six highest configurations normal and low_air O0/O2 through sealed unchanged B15 oracle body",
+      "Full moving F-CI with explicitly scoped source routing and immutable highest evidence",
+      "Safe canonical admission and original PR closure"
+    ],
     "next_action": "Run local science gates on persisted current canonical composition; preserve raw logs before F-CI. Historical missing local source blocker is resolved by complete current Git checkout.",
     "qualified": false,
-    "new_physics": false
+    "new_physics": false,
+    "partial_recovery_archive": {
+      "path": "integration/audits/evidence/FROST_NAN_GUARD_QUALIFICATION_20261011.tar.gz.b64",
+      "decoded_sha256": "4e906d27bba02193b280c12ccfc4930ae41d4c4074e7b768258a9799ac2614ed",
+      "members": 44,
+      "stage": "PARTIAL_RECOVERY_NOT_QUALIFIED",
+      "completed": "Original/provider/bounded/independent O0/O2, complete12 normal highest configurations, first full moving terminal PASS; all original5 postimages and4 historical failed full job logs retained.",
+      "pending": "Complete existing low-air; combined current full moving on5bb1b2e61."
+    }
   },
   "admitted": false,
   "relevant_paths": [
