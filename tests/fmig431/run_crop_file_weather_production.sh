@@ -66,7 +66,7 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
       "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" ./*.o -o test
-    for moisture in neutral dry; do
+    for moisture in neutral dry hydraulic; do
       for mode in continuous restart; do
         output="$moisture-$mode"
         ./test "$BUILD/weather.999" "$BUILD/altered.999" "$BUILD/bad.999" "$BUILD/backup.999" "$mode" "$moisture" > "$output.txt" 2> "$output.diagnostics" || \
@@ -80,8 +80,11 @@ for opt in 0 2; do
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 cmp "$BUILD/o0/dry-restart.txt" "$BUILD/o2/dry-restart.txt"
+cmp "$BUILD/o0/hydraulic-restart.txt" "$BUILD/o2/hydraulic-restart.txt"
+cat "$BUILD/o0/hydraulic-restart.txt"
 cat "$BUILD/o0/output.txt"
 cat "$BUILD/o0/dry-restart.txt"
 echo 'CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS'
 echo 'CROP_FILE_WEATHER_CONTINUOUS_RESTORED_O0_O2_IDENTICAL=PASS'
 echo 'CROP_FILE_WEATHER_NEUTRAL_DRY_CONTINUOUS_RESTORED_O0_O2=PASS'
+echo 'CROP_FILE_WEATHER_HYDRAULIC_CONTINUOUS_RESTORED_O0_O2=PASS'

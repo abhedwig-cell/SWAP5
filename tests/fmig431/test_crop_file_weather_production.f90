@@ -79,7 +79,8 @@ program test_crop_file_weather_production
   call get_command_argument(5,continuation_mode)
   call require(trim(continuation_mode)=='continuous'.or.trim(continuation_mode)=='restart','explicit replay mode')
   call get_command_argument(6,moisture_mode)
-  call require(trim(moisture_mode)=='neutral'.or.trim(moisture_mode)=='dry','explicit hydraulic qualification mode')
+  call require(trim(moisture_mode)=='neutral'.or.trim(moisture_mode)=='dry'.or. &
+       trim(moisture_mode)=='hydraulic','explicit hydraulic qualification mode')
   call restored_app%restore_weather_crop_continuation(empty_restart,joint_crop,s)
   call require(s==FMR_APP_BOOT_INVALID_CONFIG.and..not.restored_app%ready().and..not.joint_crop%ready(), &
        'empty joint continuation cannot initialize owners')
@@ -128,6 +129,9 @@ program test_crop_file_weather_production
     controls%dry_head=-50.0_real64
     controls%water_response_a=1.0_real64
   end if
+  if(trim(moisture_mode)=='hydraulic') then
+    controls%swprep=1;controls%hprep_threshold=-85.0_real64
+  end if
   controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
   controls%ztempsow=-1.0_real64;controls%zgerm=-1.0_real64
   call app%begin_weather_day(empty,controls,candidate,s)
@@ -156,7 +160,7 @@ program test_crop_file_weather_production
     call app%begin_weather_day(record,controls,candidate,s)
     call require(s==FMR_APP_BOOT_OK.and.candidate%valid,'production meteorology before future hydrology acceptance')
     call require(candidate%hgerm==hgerm,'crop reads actual same-owner accepted soil')
-    if(trim(moisture_mode)=='neutral'.or.tmax+tmin<=0.0_real64) then
+    if(trim(moisture_mode)/='dry'.or.tmax+tmin<=0.0_real64) then
       call require(candidate%germination%next_temperature_sum==max(0.0_real64,b111_daily_tav(tmin,tmax)), &
            'historical source-derived daily TAV with cold-day germination stop')
     else
@@ -179,11 +183,19 @@ program test_crop_file_weather_production
       call require(s==FMR_APP_BOOT_OK.and.crop_committed%current_revision()==0_int64, &
            'first-day crop initialized through existing authority without invented event')
       call read_lifecycle(crop_committed,lifecycle)
-      accepted_germination_sum=candidate%germination%next_temperature_sum
-      call require(lifecycle%prepared.and.lifecycle%sown.and..not.lifecycle%germinated.and. &
-           lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
-           lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0.and. &
-           .not.lifecycle%last_event_identity%ready(),'authentic initial lifecycle owns zero-based continuation')
+      if(trim(moisture_mode)=='hydraulic') then
+        accepted_germination_sum=0.0_real64
+        call require(hgerm>controls%hprep_threshold.and..not.lifecycle%prepared.and..not.lifecycle%sown.and. &
+             .not.lifecycle%germinated.and.lifecycle%preparation_delay==1.and.lifecycle%sowing_delay==0.and. &
+             lifecycle%germination_temperature_sum==0.0_real64,'actual initial wet soil blocks preparation and germination publication')
+      else
+        accepted_germination_sum=candidate%germination%next_temperature_sum
+        call require(lifecycle%prepared.and.lifecycle%sown.and..not.lifecycle%germinated.and. &
+             lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
+             lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0, &
+             'authentic initial lifecycle owns zero-based continuation')
+      end if
+      call require(.not.lifecycle%last_event_identity%ready(),'initial lifecycle has no invented positive event')
       call app%initialize_weather_crop_daystart(record,controls,initial_owner,1_int64,931_int64,crop_committed,s)
       call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.crop_committed%current_revision()==0_int64, &
            'repeat first-day creation cannot replace accepted crop')
@@ -206,7 +218,7 @@ program test_crop_file_weather_production
       expected_germination_sum=repeated%germination%next_temperature_sum
       if(lifecycle%germinated) then
         call require(expected_germination_sum==accepted_germination_sum,'completed germination retained without further accumulation')
-      else if(trim(moisture_mode)=='neutral') then
+      else if(trim(moisture_mode)/='dry') then
         call require(expected_germination_sum==accepted_germination_sum+max(0.0_real64,b111_daily_tav(tmin,tmax)), &
              'neutral accepted physical crop retains exact historical TAV oracle')
       else if(tmax+tmin>0.0_real64) then
@@ -245,15 +257,24 @@ program test_crop_file_weather_production
       accepted_germination_sum=expected_germination_sum
       call require(lifecycle%revision==int(d-20,int64).and.lifecycle%prepared.and.lifecycle%sown.and. &
            lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
-           lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0,'existing crop continuation owns actual values')
-      call require(lifecycle%germinated.eqv.(d>=21),'physical germination threshold reached and retained')
+           lifecycle%preparation_delay==lifecycle%sowing_delay,'existing crop continuation owns actual values')
+      if(trim(moisture_mode)=='hydraulic') then
+        call require(lifecycle%preparation_delay==1,'one actual blocked preparation day retained by crop owner')
+        call require(lifecycle%germinated.eqv.(d>=22),'germination only after actual hydraulic preparation and sowing')
+        if(d==21) call require(hgerm<=controls%hprep_threshold,'accepted previous-day soil enables actual preparation')
+        if(d==22) call require(hgerm>controls%hprep_threshold.and.lifecycle%prepared, &
+             'completed preparation persists when later soil would block a new preparation')
+      else
+        call require(lifecycle%preparation_delay==0,'scheduled crop retains zero preparation delay')
+        call require(lifecycle%germinated.eqv.(d>=21),'physical germination threshold reached and retained')
+      end if
       call app%run_weather_crop_daystart(record,bad_controls,crop_kernel,crop_parameters, &
            crop_config,crop_committed,crop_result,s)
       call require(s==FMR_APP_BOOT_CROP_EVENT_DELIVERED.and.crop_committed%current_revision()==int(d-20,int64), &
            'accepted crop event published exactly once')
     end if
     if(d==20) then
-      if(trim(moisture_mode)=='neutral') call require( &
+      if(trim(moisture_mode)/='dry') call require( &
            candidate%germination%next_temperature_sum==(7.7_real64+3.2_real64)*0.5_real64, &
            'literal historical temperature sum from actual first source day')
       ! Same pathname, changed bytes: a pathname-only provenance check would
@@ -394,6 +415,7 @@ program test_crop_file_weather_production
   print '(a)', 'CROP_FILE_WEATHER_INITIAL_DAY_OWNER_CREATION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PENDING_DAYSTART_RESTORE=PASS'
   print '(a)', 'CROP_FILE_WEATHER_COMPLETED_PHASE_RETENTION=PASS'
+  if(trim(moisture_mode)=='hydraulic') print '(a)', 'CROP_FILE_WEATHER_HYDRAULIC_PREPARATION_PHASE_TRANSITION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
   subroutine print_exact_postimage(soil,crop,storage)
