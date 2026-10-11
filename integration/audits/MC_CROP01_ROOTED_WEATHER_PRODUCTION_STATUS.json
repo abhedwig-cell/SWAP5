@@ -2,11 +2,11 @@
   "workstream": "MC-CROP01",
   "unit": "Delayed emergence and same-day rooted weather growth",
   "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
-  "status": "IMPLEMENTED_PERSISTED_LOCAL_O0_O2_PENDING",
+  "status": "FOCUSED_O0_O2_PASS_OWNER_AND_FCI_PRESERVATION_RUNNING",
   "stages": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "preserved": false,
     "canonically_admitted": false
@@ -30,7 +30,7 @@
     "Literal authenticated astro/emergence arithmetic oracle and existing WOFOST growth owner/reference gates",
     "Affected owner preservation, full F-CI, exact source successor plus highest frost compile-closure preservation"
   ],
-  "next_action": "Implement complete dependent composition, persist, run local O0/O2; no canonical admission until declared scientific and preservation gates pass.",
+  "next_action": "Finish declared owner/highest frost gates, seal exact source archive, execute full current F-CI, persist all evidence, verify public PR postimage and merge only after admission requirements pass. Then continue harvest/rotation/fallow.",
   "files": [
     "src/adapter/mod_swap_daily_weather_file_adapter.f90",
     "src/crop/mod_crop_lifecycle_continuation.f90",
@@ -38,5 +38,36 @@
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
     "tests/fmig431/run_crop_file_weather_production.sh",
     "tests/fmig431/test_crop_file_weather_production.f90"
+  ],
+  "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+  "focused_qualification": {
+    "test_head": "092a93dcde1021a93a4e61757c63088e22473275",
+    "command": "bash tests/fmig431/run_crop_file_weather_production.sh",
+    "exit_code": 0,
+    "log_sha256": "3f121e427dc7a686d10619969e73f4bfc2619956dce3ad6f3b2dcbaf49627d32",
+    "scope": [
+      "Existing four-day root-free neutral/dry/hydraulic production cases preserved",
+      "Seven-day rooted production through cold delayed sowing -> accepted germination -> next morning candidate-only TDWI emergence -> four growth completions and five days positive root extraction",
+      "O0/O2 and two in-process uninterrupted/pending-restart trajectories; full leaf cohort, crop continuation, soil pressure/water/heat and Richards derivative postimages compared bitwise",
+      "Literal authenticated astronomy/TAV and emergence arithmetic; actual preceding-day uptake in committed receipt; separate owner-composition oracle with next-day weather negative witness"
+    ],
+    "scientific_boundaries": [
+      "Homogeneous four-node/30cm qualification soil and explicitly supplied latitude52/crop parameters; no full Andelst soil/crop trajectory claim",
+      "Restricted annual IDSL1, ROOT_COMP_OFF, reference ET, AIR/no-snow/default-MVG standalone bottom7; detailed meteorology, CO2 correction, oxygen/compensation and alternate root profiles not claimed",
+      "Joint opaque in-process owner continuation; external disk codec and true process-level whole-application restart not claimed"
+    ]
+  },
+  "negative_diagnostics": [
+    {
+      "failed_assertion": "actual positive WOFOST biomass and development",
+      "cause": "Pre-emergence-only fixture carried default leaf_lifespan=0 into active growth. Day4 total fell from12.522320977437758 to10.070246513860187 while development remained positive. Existing source leaf-age owner behaved correctly.",
+      "resolution": "Rooted test explicitly supplies physically meaningful leaf_lifespan40 through existing parameters; strict positive net growth assertion retained. No production growth/leaf-owner arithmetic changed."
+    }
+  ],
+  "preservation_running": [
+    "Original highest normal/low-air frost controller at both O0/O2",
+    "Existing F-WOF38 physical lifecycle constructor/negative/restart preservation",
+    "Existing certified soil/lifecycle/rotation, MICRO02/03 and B19 current-owner preservation",
+    "PPA-WU03 shared weather/interval owner O0/O2"
   ]
 }

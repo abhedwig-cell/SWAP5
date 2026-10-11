@@ -91,7 +91,9 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
-  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+    python3 tests/fmig431/run_crop_rooted_weather_frost_successor.py --verify-only
+  elif [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
     python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
   else
     python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only
@@ -261,6 +263,12 @@ dependency_surface=(
   src/runtime/mod_groundwater_coupled_restart.f90
 )
 dependency_authority="$(git rev-parse HEAD^1)"
+# A metadata checkpoint cannot hide this material crop change from the
+# owning preservation gates. This exact successor compares to its admitted
+# canonical source baseline, even when the immediate parent has the same src.
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+  dependency_authority=e35ea0c6801ad0c225ff02e60f24996d2bc0156d
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -656,7 +664,12 @@ check_b19_micro_root_recomposition() {
   fi
   if (( crop_event_constructor_changed )); then
     expected_crop_blob=3c6fea3ca43b35b563f25f5dbbd24e90e89b4509
-    if (( crop_file_weather_exact_successor )); then expected_crop_blob=0f7fccc714a908083f4550394ca1fdd28f354d47; fi
+    if (( crop_file_weather_exact_successor )); then
+      expected_crop_blob=0f7fccc714a908083f4550394ca1fdd28f354d47
+      if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd ]]; then
+        expected_crop_blob=39b4f75c92ea44d6b4e4be326ddf731f54522dfd
+      fi
+    fi
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_wofost_crop_transaction.f90)" = "$expected_crop_blob" ||
       fail 'unqualified WOFOST crop event constructor source'
     bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||

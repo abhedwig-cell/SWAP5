@@ -41,7 +41,11 @@ program test_crop_file_weather_production
   use mod_wofost_rate_parameters
   use mod_crop_et_canopy_view_provider,only: construct_crop_et_canopy_parameters,CROP_ET_CANOPY_OK
   use mod_wofost_rate_table
-  use mod_wofost_one_day_structural_evolution, only: wofost_one_day_update_parameters_t
+  use mod_wofost_one_day_structural_evolution, only: wofost_one_day_update_parameters_t, &
+       wofost_one_day_forcing_t,wofost_accepted_window_aggregates_t,wofost_one_day_rate_packet_t
+  use mod_wofost_two_phase_crop_window,only: wofost_two_phase_crop_window_t, &
+       wofost_crop_window_begin_diagnostics_t,wofost_crop_window_complete_diagnostics_t, &
+       begin_wofost_one_day_crop_window,complete_wofost_one_day_crop_window,WOFOST_CROP_WINDOW_OK
   use mod_fmr_production_application_bootstrap, only: FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE, &
        FMR_APP_BOOT_CROP_EVENT_DELIVERED,FMR_APP_BOOT_CROP_TRANSACTION_FAILED,FMR_APP_BOOT_INVALID_CONFIG,FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
        fmr_weather_crop_application_continuation_t
@@ -499,14 +503,20 @@ contains
     type(kernel_result_t)::cr
     type(swap_daily_weather_record_t)::wr,prior_wr
     type(fmr_serialized_column_result_t),allocatable::rr(:)
-    type(wofost_crop_owner_state_t)::empty_owner,wo
+    type(wofost_crop_owner_state_t)::empty_owner,wo,before_owner,expected_owner,wrong_owner
+    type(fmr_wofost_crop_transaction_persistence_t)::crop_view
+    type(wofost_rate_parameter_bundle_t)::bundle
+    type(wofost_one_day_update_parameters_t)::update
+    type(wofost_accepted_window_aggregates_t)::aggregates
+    real(real64),allocatable::crop_bits(:),expected_crop_bits(:)
     type(crop_lifecycle_continuation_t)::life
     class(transaction_state_t),allocatable::ps
     real(real64)::dist(numnod),wd,tmn,tmx,rain,etref,solar(6),expected_solar(6),rad
-    real(real64)::uptake,total_uptake,previous_weight,weight,bits(3*numnod+6),expected_bits(3*numnod+6)
+    real(real64)::uptake,prior_uptake,total_uptake,previous_weight,weight,bits(4*numnod+6),expected_bits(4*numnod+6)
     real(real64),allocatable::profile(:),derivative(:)
     integer::st,j,q,d,iday
     logical::ok
+    call make_bundle(bundle);update%leaf_lifespan=40.0_real64
     tc=config;tc%file_weather_rooted=.true.
     ! Explicit bounded site parameter, not a claim of Andelst site geometry.
     tc%file_weather_latitude=52.0_real64;tc%file_weather_emergence_dry_weight=10.0_real64
@@ -561,6 +571,7 @@ contains
           call ta%initialize_weather_crop_daystart(wr,c,empty_owner,19_int64,941_int64,cs,st)
           call require(st==FMR_APP_BOOT_OK,'rooted initial historical cold sowing')
         else
+          before_owner=wo
           if(d==2.or.d==3) then
             call ta%run_weather_crop_daystart(wr,c,ck,bad_cp,cn,cs,cr,st)
             call require(st==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.cs%current_revision()==int(d-1,int64), &
@@ -585,6 +596,8 @@ contains
         select type(ps)
         type is(fmr_wofost_crop_transaction_state_t)
           call ps%snapshot_owner(wo,ok);call require(ok,'existing accepted biomass owner')
+          call export_fmr_wofost_crop_transaction_persistence(ps,crop_view,ok,st)
+          call require(ok.and.crop_view%ready(),'rooted physical persistence and receipt coherence')
         class default
           call require(.false.,'rooted crop physical owner type')
         end select
@@ -598,6 +611,20 @@ contains
             if(.not.(weight>previous_weight.and.wo%development_stage>0.0_real64)) &
                  write(*,*) 'ROOTED_GROWTH_DIAGNOSTIC',d,weight,previous_weight,wo%development_stage
             call require(weight>previous_weight.and.wo%development_stage>0.0_real64,'actual positive WOFOST biomass and development')
+          end if
+          if(d>=3) then
+            call require(crop_view%receipt%t0==real(d-1,real64).and.crop_view%receipt%t1==real(d,real64).and. &
+                 crop_view%receipt%actual_root_uptake_integral==prior_uptake, &
+                 'grown crop receipt contains its own actual previous accepted root extraction')
+            aggregates%actual_root_uptake=crop_view%receipt%actual_root_uptake_integral
+            aggregates%potential_transpiration=crop_view%receipt%potential_transpiration_integral
+            call expected_growth_from_record(before_owner,prior_wr,d,bundle,update,aggregates,expected_owner)
+            call compare_complete_wofost_owners(wo,expected_owner)
+            if(d==3) then
+              call expected_growth_from_record(before_owner,wr,d,bundle,update,aggregates,wrong_owner)
+              call require(sum(wrong_owner%biomass%leaf_biomass)/=sum(wo%biomass%leaf_biomass), &
+                   'discriminator proves next morning weather would produce the wrong growth postimage')
+            end if
           end if
           previous_weight=weight
         end if
@@ -618,7 +645,7 @@ contains
         if(d<2) call require(uptake==0.0_real64,'pre-emergence root sink is physically zero')
         if(d>=2) call require(uptake>0.0_real64,'emerged crop drives actual nonzero soil extraction')
         total_uptake=total_uptake+uptake
-        prior_wr=wr
+        prior_uptake=uptake;prior_wr=wr
       end do
       call ta%copy_committed_for_crop(1,ss,st);call require(st==FMR_APP_BOOT_OK,'rooted final accepted soil')
       call ss%snapshot(ps,ok);call require(ok,'rooted final physical postimage')
@@ -627,16 +654,24 @@ contains
         call copy_soil_temperature_profile(ps%soil_temperature,profile,st)
         call require(st==SOIL_TEMP_OK,'rooted final actual thermal owner')
         call ps%temporal_history_snapshot(derivative,ok);call require(ok,'rooted actual Richards history')
-        bits=[ps%pressure_head,ps%water_content,profile,weight,wo%development_stage,total_uptake, &
+        bits=[ps%pressure_head,ps%water_content,profile,derivative,weight,wo%development_stage,total_uptake, &
              wo%biomass%root_biomass,wo%biomass%stem_biomass,wo%biomass%leaf_area_sum()]
       class default
         call require(.false.,'rooted temporal soil owner')
       end select
+      crop_bits=complete_wofost_owner_values(wo)
       if(j==1) then
+        expected_crop_bits=crop_bits
         expected_bits=bits
       else
         call require(all(transfer(bits,[0_int64],size(bits))==transfer(expected_bits,[0_int64],size(bits))), &
              'rooted uninterrupted/restored complete observable identity')
+        call require(size(crop_bits)==size(expected_crop_bits),'same restarted leaf cohort count')
+        call require(all(transfer(crop_bits,[0_int64],size(crop_bits))== &
+             transfer(expected_crop_bits,[0_int64],size(crop_bits))),'entire restarted biomass/leaf/thermal-history crop owner identity')
+        do q=1,size(crop_bits)
+          write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_OWNER_BITS=',q,transfer(crop_bits(q),0_int64)
+        end do
         do q=1,size(bits)
           write(*,'(a,i0,1x,z16.16)') 'CROP_ROOTED_WEATHER_POSTIMAGE_BITS=',q,transfer(bits(q),0_int64)
         end do
@@ -646,6 +681,61 @@ contains
     end do
     print '(a)','CROP_ROOTED_WEATHER_DELAYED_EMERGENCE_GROWTH_UPTAKE_RETRY_RESTART=PASS'
     print '(a)','CROP_ROOTED_WEATHER_LITERAL_ASTRO=PASS'
+    print '(a)','CROP_ROOTED_WEATHER_SAME_DAY_GROWTH_DISCRIMINATOR=PASS'
+  end subroutine
+
+  subroutine expected_growth_from_record(before,record,d,bundle,update,aggregates,expected)
+    type(wofost_crop_owner_state_t),intent(in)::before
+    type(swap_daily_weather_record_t),intent(in)::record
+    integer,intent(in)::d
+    type(wofost_rate_parameter_bundle_t),intent(in)::bundle
+    type(wofost_one_day_update_parameters_t),intent(in)::update
+    type(wofost_accepted_window_aggregates_t),intent(in)::aggregates
+    type(wofost_crop_owner_state_t),intent(out)::expected
+    type(wofost_one_day_forcing_t)::forcing
+    type(wofost_two_phase_crop_window_t)::window
+    type(wofost_crop_window_begin_diagnostics_t)::begin_diagnostics
+    type(wofost_crop_window_complete_diagnostics_t)::end_diagnostics
+    type(wofost_one_day_rate_packet_t)::rates
+    real(real64)::wd,tmn,tmx,rain,etref,rad,solar(6),ignored(6)
+    integer::iday,st
+    logical::ok
+    call record%values(wd,tmn,tmx,rain,etref,ok);call require(ok,'oracle authentic preceding weather')
+    call record%growth_values(52.0_real64,iday,rad,ignored,ok);call require(ok,'oracle source radiation')
+    call b111_astro_oracle(iday,52.0_real64,rad,solar)
+    forcing%minimum_temperature=tmn
+    forcing%average_temperature=b111_daily_tav(tmn,tmx)
+    forcing%daytime_average_temperature=(tmx+forcing%average_temperature)*0.5_real64
+    forcing%global_radiation=rad;forcing%daylength_hours=solar(1);forcing%photoperiodic_daylength_hours=solar(2)
+    forcing%sinld=solar(3);forcing%cosld=solar(4);forcing%diffuse_perpendicular_radiation=solar(5)
+    forcing%daily_sine_solar_elevation_integral=solar(6)
+    call begin_wofost_one_day_crop_window(before,forcing,real(d-1,real64),real(d,real64),0.0_real64, &
+         0.0_real64,bundle,window,begin_diagnostics,st)
+    call require(st==WOFOST_CROP_WINDOW_OK,'existing scientifically admitted same-day phase A owner')
+    call complete_wofost_one_day_crop_window(window,bundle,update,aggregates,expected,rates,end_diagnostics,st)
+    call require(st==WOFOST_CROP_WINDOW_OK.and.end_diagnostics%candidate_built,'existing same-day phase B accepted-uptake owner')
+  end subroutine
+  function complete_wofost_owner_values(owner) result(values)
+    type(wofost_crop_owner_state_t),intent(in)::owner
+    real(real64),allocatable::values(:)
+    values=[owner%development_stage,owner%biomass%root_biomass,owner%biomass%stem_biomass, &
+         owner%biomass%storage_biomass,owner%biomass%exponential_leaf_area_index, &
+         owner%biomass%leaf_biomass,owner%biomass%specific_leaf_area,owner%biomass%leaf_age, &
+         owner%evolution_continuation%temperature_sum,owner%evolution_continuation%minimum_temperature_history]
+    if(allocated(owner%b110_reference_compatibility)) &
+         values=[values,owner%b110_reference_compatibility%lai_exponential_rate_carryover]
+  end function
+  subroutine compare_complete_wofost_owners(actual,expected)
+    type(wofost_crop_owner_state_t),intent(in)::actual,expected
+    real(real64),allocatable::a(:),e(:)
+    a=complete_wofost_owner_values(actual);e=complete_wofost_owner_values(expected)
+    call require(size(a)==size(e),'source-composed growth keeps all owner cohorts/carryover')
+    call require(all(transfer(a,[0_int64],size(a))==transfer(e,[0_int64],size(e))), &
+         'production growth exactly equals prior weather plus actual accepted physical uptake owner result')
+    call require((actual%crop_emerged.eqv.expected%crop_emerged).and. &
+         (actual%evolution_continuation%anthesis_reached.eqv.expected%evolution_continuation%anthesis_reached).and. &
+         actual%evolution_continuation%minimum_temperature_history_count== &
+         expected%evolution_continuation%minimum_temperature_history_count,'same complete structural evolution flags')
   end subroutine
 
   subroutine test_authentic_thermal_sowing(historical,finish_germination)
