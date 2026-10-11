@@ -41,6 +41,12 @@ program test_crop_file_weather_production
   call read_swap_daily_weather_file(trim(bad_path),1999,1,20,record,s)
   call require(s/=SWAP_WEATHER_FILE_OK.and..not.record%ready(),'malformed daily record rejected')
   call initialize_application_config(config,k)
+  ! Explicit 30 cm, four-compartment homogeneous test soil. The legacy
+  ! four-node linkage stubs are not the authority for production geometry.
+  ! Weather bytes are Andelst; no Andelst soil/reference trajectory claim.
+  config%tiles(1)%parameters%z=10.0_real64*z
+  config%tiles(1)%parameters%dz=10.0_real64*dz
+  config%tiles(1)%parameters%node_distance=[2.5_real64,5.0_real64,7.5_real64,10.0_real64]
   config%file_weather_daystart=.true.
   ! Use the admitted nonsteady Richards history certificate (ROOT-HYD01),
   ! not the base full/half bit-identity comparator used by steady WU03.
