@@ -119,7 +119,12 @@
     "initial_persisted_recovery": "00573c0e9afc376714a85ae223767d91554d6ee8",
     "owner_head": "decd2e67b8a182f1448a173b18bbc232749dd5b5",
     "recovery_branch": "integration/regie-mc-heat01-live-20261011",
-    "stage": "RECOMPOSED_PENDING_EXACT_HEAD_MOVING_PRESERVATION",
+    "stage": "EXACT_HEAD_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+    "qualified_head": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
+    "qualified_tree": "b42d3c30b3e584659a69c8ef51a32c065ba5ce4e",
+    "qualified_source_tree": "6c6534eabc150455eec2c184020c658b091c794e",
+    "last_reconciled_canonical": "99249e0f238e61abc78b69e6e5a0aebf342d38ed",
+    "later_canonical_delta": "Only three MC-IRR01 audit/status JSONs changed from 3cc40d599 to 99249e0f2; src/tests/reference/tools/workflows/assets unchanged. Those owner receipts are retained; no third numerical run is justified.",
     "reconciliation": "Conflict-free two-parent composition; all three production paths unchanged on canonical since owner-qualified base e3b968547. Later sensor-depth/event-restart irrigation admission 3cc40d599 is retained, including its F-CI exact source pins and additional preservation gates. Owner thermal production blobs copied exactly; no new thermal physics or active owner source edited.",
     "negative_guards": {
       "unknown_thermal_contract_blob": "PASS_FAIL_CLOSED_EXIT_1_BEFORE_COMPILE",
@@ -129,8 +134,36 @@
     },
     "central_delta": "Bounded F-CI successor recognition pins exact three production blobs, owner ancestry, immutable owner tests/runners, default oracle and source authority. Original process/runtime O0/O2, FKT22 and frost runtime gates remain required.",
     "invariants": "Preserve water mass, trial/accept/retry/rollback, restart schema and committed ownership; keep Snow/thermal layout and event-order blocker open.",
-    "qualification": "PENDING_NOT_ADMITTED",
-    "next_action": "Persist checkpoint remotely, execute exact-head moving F-CI locally through terminal status; diagnose actual failures without weakening assertions, then admit only four capabilities if all necessary gates pass."
+    "qualification": "PASS_EXACT_HEAD_OWNER_AND_MOVING_FCI_O0_O2",
+    "gate_command": "bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "gate_exit_code": 0,
+    "gate_terminal_marker": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+    "gate_log_sha256": "e15e75bf71cc54985466b0053bcbdb28637ca01471f91fc7f793c61099654e59",
+    "owner_outputs": {
+      "thermal_process_o0_o2_repeat_identity": "979a4cefda74c96607077c7125385da7edd02d6291bae06494956b80d38789d7",
+      "thermal_runtime_o0_o2_repeat_identity": "c87100f0b41e15c27f1a42e4f4e64eb1c831efdffb7d1c6604f50a03f65276bc",
+      "original_fvq58_default_o0_o2_identity": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "fkt22_trajectory_o0_o2": "PASS",
+      "bounded_frost_runtime_o0_o2": "PASS",
+      "rossfast_and_current_irrigation_preservation": "PASS_IN_COMPLETE_MOVING_GATE"
+    },
+    "frozen_fci_inheritance": "All 14 immutable checkout refs and complete fci-canonical workflow equal qualified canonical 491236f87; inherit their terminal SUCCESS from run38121781430. Moving gate is newly executed on f177b589; frozen jobs are not redundantly rerun.",
+    "durable_log_archive": "integration/audits/evidence/MC_HEAT01_REGIE_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_archive_sha256": "b9f04a141cbc2bae855f0b73dd7e4110c5786117a4ea7978a00ffc0d086232c6",
+    "eb_i25_adjudication": {
+      "baseline": "3cc40d599970ef3f85f4dc29c4ef0b09874d92b1",
+      "candidate": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
+      "command": "bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh",
+      "result_both": "EXIT_1_O0_AFTER_SAME_TWO_PASS_MARKERS_AT_EXTERNAL_FULL_HALF_OUTFLOW_FIXTURE_REJECTED_BEFORE_COMMIT",
+      "baseline_log_sha256": "5179c5093b5a25e285d22d4e5d13aeb03789b20d8b22340ec2d124ed4e83ea92",
+      "candidate_log_sha256": "69b943cf33ce1cd1a1e496d86b68a955e41eaf4def6a70e9d6efc2962580d5b3",
+      "owner": "F-KT22/EB-I25 accepted energy-ledger admission authority",
+      "disposition": "OPEN_INVESTIGATING_BASELINE_EQUIVALENT_FAILURE_NOT_A_PASS; no claim about unexecuted O2 or broader EB routes"
+    },
+    "required_check_policy": "Only four independently qualified thermal capabilities are eligible. Named owner/default/runtime/trajectory/frost and complete moving F-CI gates pass; EB-I25 and F-CI93 remain separate explicit open authority debt. No assertion/tolerance changes or claim of global green CI.",
+    "actions_policy": "No new Actions or manual dispatches. Publish skip-ci qualification/admission receipts after exact local gates; this avoids repeating unchanged frozen/numerical evidence and does not waive a failing science gate.",
+    "documentation_validation": "Source checker and JSON PASS; strict MkDocs unavailable locally (module absent).",
+    "next_action": "Safe canonical fast-forward with lease on 99249e0f2, verify exact three production blobs and preservation runner, then record admission and route four bounded dispositions to master owner PR1072. Keep Snow and EB-I25 held open."
   },
   "next_action": "Central live recomposition recovery is integration/regie-mc-heat01-live-20261011. Mastercoverage remains with PR1072 owner. Snow/thermal shared interface remains open."
 }
