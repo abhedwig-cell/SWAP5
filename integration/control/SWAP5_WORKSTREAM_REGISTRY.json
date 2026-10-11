@@ -804,7 +804,10 @@
   },
   "frozen_research_regie_closeout_20261011": {
     "canonical_base": "3d326d8fef3529d7a65737d9e4af0c86a41f06f8",
-    "stage": "FOUR_OWNER_CLOSED_OR_FROZEN_CARRIERS_EVIDENCE_PRESERVED_READY_FOR_PR_CLOSURE",
+    "stage": "FOUR_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
+    "canonical_evidence_checkpoint": "226fd8d09f533645dce086010120dc500f88a625",
+    "canonical_evidence_tree": "c76710a22a7a3a37fb0be3fc7a80ed5779645532",
+    "closure_recovery_comments": {"670": 6107903063, "897": 6107903517, "912": 6107903903, "915": 6107904251},
     "archive": "integration/audits/evidence/FROZEN_RESEARCH_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "8df53b50c76c00f9a988138e680e93f989f0a339091616f9c80b2034c567cd89",
     "archive_verification": "All 90 original changed files from four exact PR heads, including cumulative ELASTIC46-57B research lineage. Decode/extract verifies each original Git blob and SHA256. Original branches retained; no research source or workflow is imported into executable canonical paths.",
@@ -822,7 +825,7 @@
     ],
     "preservation": "Metadata/evidence-only. src/tests/reference/tools/workflows/assets unchanged from canonical3d326d8fe; inherit existing exact dependency-surface qualification, no new numerical rerun or Actions justified.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; frozen peat line is deliberately inactive, not a missing production requirement.",
-    "next_action": "After verified canonical evidence persistence close four original carriers, record recovery comment IDs, verify final canonical and PR states; leave unique active specialized work untouched."
+    "next_action": "Four carriers are closed with byte-verified canonical evidence. Reopen only under existing owner conditions. Leave unique active specialized work untouched; central admission requires qualified owner readiness or an explicit shared-authority resolution."
   },
   "perf02_e2e_regie_closeout_20261011": {
     "canonical_base": "669a75ff996938fd0538c715ec43fe93d06b74de",
