@@ -76,6 +76,10 @@ Until the candidate is qualified and admitted, current canonical implementation 
 
 Exact source hash, runners, tested envelope, rejected envelope and all sixteen capability dispositions are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Full MC-IRR01 coverage remains open; PR #1195's five bounded admissions are retained.
 
+## EB-I25 accepted outflow fixture (2026-10-11)
+
+`TCD-EBI25-ACCEPTED-OUTFLOW`, `INVESTIGATING`: fresh explicit-worktree runs of `tests/fkt/run_fkt22_eb_i25_preservation_gate.sh` on untouched canonical `3cc40d599970ef3f85f4dc29c4ef0b09874d92b1` and thermal candidate `f177b589516e7c775bf884b6f2e39e154f5e0fba` both exit 1 at O0. Both first pass `EB_I25_TWO_HALF_ACCEPTED_AGGREGATION` and `EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED`, then fail with `external full-half outflow fixture rejected before commit`. O2 is not reached. This is an observed baseline-equivalent failure, not a passing EB qualification or an established cause. Owner: existing F-KT22/EB-I25 accepted energy-ledger admission authority. No production, assertion or tolerance was changed. Paired exact-head log hashes and durable six-log archive are recorded in `integration/audits/MC_HEAT01_STATUS.json`; the issue remains open independently of the four bounded thermal admissions.
+
 ## Resolution rule
 
 Closing an entry must preserve:

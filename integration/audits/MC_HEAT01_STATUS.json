@@ -2,10 +2,11 @@
   "schema": "swap431.mc_heat01.status.v1",
   "work_unit": "MC-HEAT01",
   "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-  "checkpoint_commit": "1afde5d7",
-  "last_reconciled_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
-  "last_reconciled_upstream": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
-  "stage": "FOUR_CAPABILITIES_QUALIFIED_FOR_CENTRAL_ADMISSION_ONE_SHARED_INTERFACE_BLOCKER",
+  "owner_historical_checkpoint": "1afde5d7",
+  "checkpoint_commit": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "last_reconciled_head": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "last_reconciled_upstream": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "stage": "FOUR_CAPABILITIES_CANONICALLY_ADMITTED_ONE_SHARED_INTERFACE_BLOCKER",
   "implemented": true,
   "persisted": true,
   "tested": {
@@ -35,10 +36,10 @@
     "SW431-TEMP-SNOW"
   ],
   "capability_state": {
-    "SW431-TEMP-ANALYTIC": "PRODUCTION_IMPLEMENTED_QUALIFIED_FOR_CENTRAL_ADMISSION",
-    "SW431-TEMP-BC3": "PRODUCTION_IMPLEMENTED_QUALIFIED_FOR_CENTRAL_ADMISSION",
-    "SW431-TEMP-BC4": "PRODUCTION_IMPLEMENTED_QUALIFIED_FOR_CENTRAL_ADMISSION",
-    "SW431-TEMP-BOTTOM2": "PRODUCTION_IMPLEMENTED_QUALIFIED_FOR_CENTRAL_ADMISSION",
+    "SW431-TEMP-ANALYTIC": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BC3": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BC4": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BOTTOM2": "CANONICALLY_ADMITTED",
     "SW431-TEMP-SNOW": "SOURCE_EXACT_PROCESS_COMPONENT_PASS_RUNTIME_BINDING_BLOCKED"
   },
   "source_authority": {
@@ -119,7 +120,11 @@
     "initial_persisted_recovery": "00573c0e9afc376714a85ae223767d91554d6ee8",
     "owner_head": "decd2e67b8a182f1448a173b18bbc232749dd5b5",
     "recovery_branch": "integration/regie-mc-heat01-live-20261011",
-    "stage": "EXACT_HEAD_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+    "stage": "CANONICALLY_ADMITTED_EXACT_SOURCE_VERIFIED",
+    "canonical_admission_commit": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+    "canonical_admission_tree": "42a1978eb0da34bdbdd2e2162e659380b0886f97",
+    "canonical_verification": "Fetched remote canonical equals published admission tree; src/tests/reference/tools/workflows/assets equal exact qualified f177b589. All three owner production blobs and original four scientific test/runner blobs preserved exactly. Lease on 99249e0f2 succeeded without force.",
+    "pull_request_disposition": "PR1196 closed and GitHub merged=true; initial recomposition merge 30246dc50da6f015eae8d0117ca8d0b23cc5b07f retained in canonical ancestry. Final scientific admission is e326931dbc3a518ec93574ba6cdf3024628eaddc.",
     "qualified_head": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
     "qualified_tree": "b42d3c30b3e584659a69c8ef51a32c065ba5ce4e",
     "qualified_source_tree": "6c6534eabc150455eec2c184020c658b091c794e",
@@ -163,7 +168,7 @@
     "required_check_policy": "Only four independently qualified thermal capabilities are eligible. Named owner/default/runtime/trajectory/frost and complete moving F-CI gates pass; EB-I25 and F-CI93 remain separate explicit open authority debt. No assertion/tolerance changes or claim of global green CI.",
     "actions_policy": "No new Actions or manual dispatches. Publish skip-ci qualification/admission receipts after exact local gates; this avoids repeating unchanged frozen/numerical evidence and does not waive a failing science gate.",
     "documentation_validation": "Source checker and JSON PASS; strict MkDocs unavailable locally (module absent).",
-    "next_action": "Safe canonical fast-forward with lease on 99249e0f2, verify exact three production blobs and preservation runner, then record admission and route four bounded dispositions to master owner PR1072. Keep Snow and EB-I25 held open."
+    "next_action": "Master owner PR1072 reconciles only the four admitted capability dispositions from this receipt. Keep Snow, Frost-SNOW, EB-I25 and F-CI93 open under their existing owners; no global coverage-count claim."
   },
-  "next_action": "Central live recomposition recovery is integration/regie-mc-heat01-live-20261011. Mastercoverage remains with PR1072 owner. Snow/thermal shared interface remains open."
+  "next_action": "Four capabilities admitted; durable recovery is integration/regie-mc-heat01-live-20261011. Mastercoverage disposition reconciliation remains with PR1072 owner. Snow/thermal shared interface remains open."
 }
