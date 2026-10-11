@@ -1601,7 +1601,65 @@
         },
         "authority": "integration/audits/PPA_RECONCILE01_STATUS.json at original head",
         "blocker": "Original WU04C trial completed=false/committed=false after legacy-reference-retry. Missing canonical pathnames are not missing physical capabilities: active owners use later typed replacements. Ten shared src paths diverge, including HeadCalc, backend, bootstrap, irrigation, restart and solver contract.",
-        "next_action": "Keep original reconciliation history. Owner maps each unique source/runtime candidate to current capability and successor before selective recovery; never whole-tree merge or blind supersession."
+        "next_action": "Keep original reconciliation history. Owner maps each unique source/runtime candidate to current capability and successor before selective recovery; never whole-tree merge or blind supersession.",
+        "current_lineage_audit_20261011": {
+          "status": "IMPLEMENTED_PERSISTED_CHECKPOINT_QUALIFICATION_PENDING",
+          "canonical_base": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+          "original_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+          "report": "integration/audits/PPA_RECONCILE01_CURRENT_LINEAGE_20261011.json",
+          "reproducer": "tools/verification/reconcile_ppa_reconcile01.py",
+          "archive": {
+            "path": "integration/audits/evidence/PPA_RECONCILE01_ORIGINAL_POSTIMAGES_20261011.tar.gz.b64",
+            "decoded_sha256": "5a0e47c8ceb9df9f87030f42a0c87e06a4f338510eecc0eec8c30fe11381ab5c",
+            "original_postimages": 862,
+            "members": 863
+          },
+          "summary": {
+            "paths": 862,
+            "identity": {
+              "ABSENT_PATH": 773,
+              "DIVERGENT_PATH": 89
+            },
+            "source_paths": 160,
+            "source_identity": {
+              "ABSENT_PATH": 150,
+              "DIVERGENT_PATH": 10
+            },
+            "source_owner_routes": {
+              "weather_interception": 14,
+              "irrigation": 27,
+              "shared_solver": 9,
+              "lower_boundary": 15,
+              "macropore": 58,
+              "solute": 21,
+              "frost": 2,
+              "oxygen": 4,
+              "compensated_roots": 2,
+              "salinity": 1,
+              "micro": 2,
+              "shared_runtime": 5
+            },
+            "source_exact_blob_locators": 0,
+            "source_same_module_locators": 9,
+            "source_unique_declaration_locators": 10
+          },
+          "implemented": true,
+          "persisted": true,
+          "tested": false,
+          "qualified": false,
+          "canonically_admitted": false,
+          "recovery_point": "qualification/regie-pr700-lineage-20261011",
+          "next_action": "Verify complete deterministic report/archive regeneration, independent archive/Git members and strict documentation gates; admit only this mechanical audit. PR700 retains scientific owner decisions.",
+          "interfaces_changed": false,
+          "invariants_affected": [],
+          "coverage_delta": 0,
+          "dependency_surface": [
+            "exact historical head5fcd9769",
+            "canonical source and named owner-authority paths at8216240d",
+            "reproducer and audit/archive postimages"
+          ],
+          "owner_decisions": "150 absent source pathnames and10 divergent shared files remain unresolved scientifically. Domain entrypoints and lexical matches are navigation only, never approved equivalents."
+        }
       },
       {
         "pr": 1008,
@@ -2874,8 +2932,7 @@
       "original_head_and_branch_retained": true,
       "new_actions": 0,
       "master_handoff_comment": 6109956480,
-      "fresh_open_pr_census":
-[
+      "fresh_open_pr_census": [
         {
           "pr": 1117,
           "head": "b6b894513fcdcf66e94824742c129616ddd7aed1",
