@@ -700,7 +700,15 @@
       {
         "pr": 1103,
         "owner": "HYD/HYST",
-        "blocker": "Active specialized qualification remains owner-controlled; no central admission claim."
+        "blocker": "Owner-controlled integrated qualification is terminal FAILED, not queued. Exact-head analytical and POWER tests pass locally O0/O2; runtime test first fails F2008 compilation, and the isolated constant-stop test repair exposes MODEL2 production-trial failure. Current-canonical recomposition and preservation remain required; no central admission claim.",
+        "regie_diagnostic_20261011": {
+          "report": "integration/audits/SWAP431_HYD1103_REGIE_DIAGNOSTIC_20261011.json",
+          "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
+          "test_only_recovery": "aa2a298029efcf241b4adfab3ac2fd0637432a97",
+          "recovery_branch": "qualification/regie-hyd1103-test-portability-20261011",
+          "owner_branch_unchanged": true,
+          "next_action": "HYD/HYST owner may reuse the assertion-preserving F2008 test repair, then diagnose the MODEL2 production trial without weakening fail-closed admission, mass or transaction assertions. Recompose the original two-source delta against current canonical and qualify affected owner/F-CI preservation before an exact admission proposal."
+        }
       },
       {
         "prs": [
