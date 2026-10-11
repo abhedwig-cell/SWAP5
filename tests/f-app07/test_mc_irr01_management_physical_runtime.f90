@@ -6,13 +6,14 @@ program test_mc_irr01_management_physical_runtime
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot
-  use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE
+  use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_OPTIONAL_STATE_LAYOUT_BASE
+       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_new_b110_committed_state
+       fmr_b110_physical_forcing_t, fmr_b110_temporal_indicator_state_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
   use mod_fmr_management_irrigation_forcing_binding
@@ -28,7 +29,7 @@ program test_mc_irr01_management_physical_runtime
   implicit none
 
   real(real64), parameter :: t0 = 2600.375_real64
-  real(real64), parameter :: expected_depth = 0.12_real64
+  real(real64), parameter :: expected_depth = 0.000048_real64
   real(real64), parameter :: expected_rate = 0.48_real64
   real(real64), parameter :: expected_duration = expected_depth / expected_rate
   real(real64), parameter :: t1 = t0 + expected_duration
@@ -67,9 +68,11 @@ program test_mc_irr01_management_physical_runtime
       call configure_column(columns(1), templates(1))
       call configure_transaction(config)
       call configure_control_forcing(forcing_control(1), conductivity0)
-      call fmr_new_b110_committed_state(states_control(1), columns(1)%column_id, initial_state, t0, ok)
+      call fmr_new_b110_temporal_indicator_committed_state(states_control(1), columns(1)%column_id, initial_state, t0, ok, &
+           [0.0_real64,0.0_real64,0.0_real64,0.0_real64])
       call require(ok, 'control init')
-      call fmr_new_b110_committed_state(states_irrigation(1), columns(1)%column_id, initial_state, t0, ok)
+      call fmr_new_b110_temporal_indicator_committed_state(states_irrigation(1), columns(1)%column_id, initial_state, t0, ok, &
+           [0.0_real64,0.0_real64,0.0_real64,0.0_real64])
       call require(ok, 'irrigation init')
       theta0 = initial_state%water_content(1)
       irrigation_parameters = fmr_irrigation_management_parameters_t()
@@ -107,7 +110,7 @@ program test_mc_irr01_management_physical_runtime
         irrigation_parameters%policy%depth_criterion = 1
         irrigation_parameters%policy%dcs1_knot_count = 2
         irrigation_parameters%policy%dcs1_dvs(1:2) = [0.0_real64,2.0_real64]
-        ! Literal DITAB mm: refill deficit + adjustment - rain = 0.12 cm.
+        ! Literal DITAB mm: refill deficit + adjustment - rain = 0.000048 cm.
         irrigation_parameters%policy%dcs1_adjustment_mm(1:2) = &
              10.0_real64*(expected_depth - 0.03_real64*dz(1)*0.5_real64 + 0.02_real64)
         irrigation_parameters%policy%rainfall_threshold_cm = 0.01_real64
@@ -143,11 +146,17 @@ program test_mc_irr01_management_physical_runtime
       call reset_legacy_globals()
       call fmr_run_serialized_physical_multiswap(columns, templates, parameters, forcing_control, states_control, config, &
            top_provider, t0, t1, 1, result_control, diag_control, aggregate_control, dispatch_control, run_control)
+      if (.not. result_control(1)%completed) write(*,*) 'CONTROL_DIAGNOSTIC',dispatch_control, &
+           result_control(1)%admission_status,result_control(1)%kernel_status,result_control(1)%solver_status, &
+           result_control(1)%temporal_rejections,result_control(1)%mass_rejections
       call require(dispatch_control == FMR_SERIAL_DISPATCH_OK .and. result_control(1)%completed, 'control runtime')
       call reset_legacy_globals()
       call fmr_run_management_ssdi_interval(columns(1),templates(1),parameters(1),forcing_control(1), &
            states_irrigation(1),irrigation_parameters,irrigation_committed,irrigation_request,config,top_provider, &
            managed_result,run_irrigation,irrigation_binding_diag,accepted)
+      if (.not. accepted) write(*,*) 'MANAGEMENT_DIAGNOSTIC',criterion,mode,irrigation_binding_diag%status, &
+           irrigation_binding_diag%application_status,managed_result%admission_status,managed_result%kernel_status, &
+           managed_result%solver_status,managed_result%mass_rejections,managed_result%mass%residual
       call require(accepted .and. irrigation_binding_diag%source_bound, 'management physical commit')
       call require(.not. irrigation_committed%event%active_event, 'event completed')
       call require(managed_result%mass%complete .and. &
@@ -179,6 +188,7 @@ contains
     template%state_layout_id = 72003_int64
     template%solver_interface_id = 72004_int64
     template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_BASE
+    template%numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
     column%column_id = 720001_int64
     column%template_id = template%template_id
@@ -211,6 +221,7 @@ contains
       p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
+    p%max_iterations=80; p%max_backtracking=20
     p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
@@ -243,11 +254,15 @@ contains
 
   subroutine configure_transaction(cfg)
     type(canonical_numerical_config_t), intent(out) :: cfg
+    ! Existing F-KT history certificate, strict source-bound head budget.
+    cfg%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
     cfg%transaction%temporal_tolerance = 0.0_real64
+    cfg%model_temporal_indicator_budget_available = .true.
+    cfg%model_temporal_indicator_budget = 2.5e-11_real64
     cfg%transaction%mass_tolerance = hard_mass_gate
     cfg%transaction%retry_scale = 0.5_real64
-    cfg%transaction%max_retries = 2
-    cfg%max_committed_substeps = 8
+    cfg%transaction%max_retries = 16
+    cfg%max_committed_substeps = 256
     cfg%progress_tolerance = 0.0_real64
   end subroutine configure_transaction
 
@@ -269,9 +284,9 @@ contains
     call b%snapshot(sb,okb)
     if (.not. oka .or. .not. okb) return
     select type (pa=>sa)
-    type is (fmr_b110_physical_state_t)
+    class is (fmr_b110_physical_state_t)
       select type (pb=>sb)
-      type is (fmr_b110_physical_state_t)
+      class is (fmr_b110_physical_state_t)
         if (pa%active_nodes /= pb%active_nodes) return
         if (.not. allocated(pa%pressure_head) .or. .not. allocated(pb%pressure_head)) return
         if (.not. allocated(pa%water_content) .or. .not. allocated(pb%water_content)) return

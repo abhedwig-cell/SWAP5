@@ -417,7 +417,8 @@ contains
       return
     end if
     call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
-         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status, &
+         surface_application=.false.)
     if (availability_status /= IRR_AVAIL_OK) then
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return

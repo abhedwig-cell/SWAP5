@@ -188,7 +188,8 @@ contains
       return
     end if
     call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
-         parameters%rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+         parameters%rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status, &
+         surface_application=parameters%application_type /= IRRIGATION_APPLICATION_SSDI)
     if (availability_status /= IRR_AVAIL_OK) then
       candidate_state = committed_state
       diagnostics%status = FMR_IRR_MGMT_APP_INVALID_PARAMETERS
