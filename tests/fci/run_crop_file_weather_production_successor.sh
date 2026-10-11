@@ -18,6 +18,12 @@ test "$(git rev-parse HEAD:src/crop/mod_wofost_emergence_initialization.f90)" = 
 while IFS= read -r path; do
   case "$path" in
     src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90) ;;
+    src/runtime/mod_fmr_irrigation_allocation_binding.f90)
+      # Disjoint MC-IRR01 successor. It is absent from the immutable crop
+      # compile closure; full irrigation preservation owns its execution.
+      # No wildcard allowance for any further source or owner mutation.
+      test "$(git rev-parse "HEAD:$path")" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail "unqualified irrigation allocation successor: $path"
+      ;;
     *) fail "unqualified additional production mutation: $path" ;;
   esac
 done < <(git diff --name-only "$BASE" HEAD -- src)
