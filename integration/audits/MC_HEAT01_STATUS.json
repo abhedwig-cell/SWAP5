@@ -3,7 +3,7 @@
   "work_unit": "MC-HEAT01",
   "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
   "checkpoint_commit": "1afde5d7",
-  "last_reconciled_head": "1afde5d7",
+  "last_reconciled_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
   "last_reconciled_upstream": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
   "stage": "FOUR_CAPABILITIES_QUALIFIED_FOR_CENTRAL_ADMISSION_ONE_SHARED_INTERFACE_BLOCKER",
   "implemented": true,
@@ -18,6 +18,7 @@
     "fkt22_stdout_sha256": "fd8fba7cee2b05c86749c1d5eee239edb626677740afc293d4350c205a5aa3c2",
     "frost_runtime_preservation": "PASS at O0/O2 with semantic identity and frozen-boundary fail-closed behavior",
     "frost_stdout_sha256": "0282ab4d151c1fc27f9efd4b9ce6658d5d48a88bc2f59404b8090216adee4f98",
+    "eb_i25_preservation_adjudication": "INHERITED_CANONICAL_FAILURE, the O0 outflow-fixture assertion fails identically on canonical e3b9685470639355e1899b95c25f9a7ddee15fe6 and PR head af5f048bfb08e9796aebae08d8daaf4a9663dee2 before any MC-HEAT01-specific assertion; no thermal regression",
     "documentation_source_checks": "PASS",
     "documentation_stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
     "diff_check": "PASS"
@@ -96,6 +97,16 @@
       "detail": "The source-exact snow resistance formula passes as a thermal component. Production still rejects simultaneous snow_active and soil_temperature_active because the two capabilities have separate optional-state layouts and Snow is an outer one-day event while thermal execution is per accepted Richards substep. No owner-authorized combined layout or sampling instant exists."
     }
   ],
+  "remote_admission": {
+    "pull_request": 1196,
+    "adjudicated_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
+    "adjudicated_tree": "c682392fd9736e61554e9d95ae53b0efc98f6307",
+    "mergeable": true,
+    "mastercoverage_handoff_pr": 1072,
+    "mastercoverage_handoff_comment_id": 6105981484,
+    "remote_check_adjudication_comment_id": 6106017024,
+    "actions_policy": "No workflow was manually dispatched or rerun. Repository-wide path-insensitive and historical exact-postimage checks were adjudicated against their owning baselines."
+  },
   "qualification_evidence": "integration/audits/evidence/MC_HEAT01_LOCAL_QUALIFICATION.json",
   "next_action": "Publish the exact rebased postimage for central admission of the four qualified capabilities; reconcile PR #1072 through its existing coverage owner; keep SW431-TEMP-SNOW open until a combined Snow/thermal optional-state layout and event-order contract is owner-admitted."
 }

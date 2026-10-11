@@ -85,6 +85,30 @@
       "stdout_sha256": "0282ab4d151c1fc27f9efd4b9ce6658d5d48a88bc2f59404b8090216adee4f98"
     },
     {
+      "command": "bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh",
+      "result": "INHERITED_CANONICAL_FAILURE",
+      "optimization": [
+        0
+      ],
+      "branch_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
+      "canonical_head": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+      "branch_terminal_markers": [
+        "EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS",
+        "EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS",
+        "EB_I25_TEST_FAIL external full-half outflow fixture rejected before commit",
+        "FKT22_EB_I25_PRESERVATION_FAIL EB-I25 runtime O0"
+      ],
+      "canonical_terminal_markers": [
+        "EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS",
+        "EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS",
+        "EB_I25_TEST_FAIL external full-half outflow fixture rejected before commit",
+        "FKT22_EB_I25_PRESERVATION_FAIL EB-I25 runtime O0"
+      ],
+      "adjudication": "The exact failure exists on the current canonical base without MC-HEAT01. EB-I25 owns shared hydrological transaction semantics excluded by preregistration, so this is recorded as inherited baseline debt and is not changed here.",
+      "remote_workflow_run": 38116291556,
+      "remote_failing_job": 114402048846
+    },
+    {
       "command": "python3 tools/docs/check_docs.py",
       "result": "PASS",
       "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
@@ -103,8 +127,13 @@
   },
   "admission": {
     "canonical_admitted": false,
+    "pull_request": 1196,
+    "adjudicated_remote_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
+    "adjudicated_remote_tree": "c682392fd9736e61554e9d95ae53b0efc98f6307",
     "admission_owner": "central F-CI/regie",
     "mastercoverage_owner": "PR #1072 SWAP431-MASTER-COVERAGE",
+    "mastercoverage_handoff_comment_id": 6105981484,
+    "remote_check_adjudication_comment_id": 6106017024,
     "requested_mastercoverage_changes": {
       "SW431-TEMP-ANALYTIC": "QUALIFIED_IMPLEMENTATION_PR",
       "SW431-TEMP-BC3": "QUALIFIED_IMPLEMENTATION_PR",
