@@ -340,6 +340,8 @@ HYDRO-MEMORY #366/#378 are already explicitly classified above as superseded liv
 
 Full unique research history is preserved without wholesale merging: original heads are frozen under `recovery/regie-pr495-20261011-07c89de1`, `recovery/regie-pr496-20261011-76daff05`, `recovery/regie-pr576-20261011-41799780`, `recovery/regie-pr366-20261011-e79d8901` and `recovery/regie-pr378-20261011-979113fb`. Each remote ref was fetched and exact head/tree verified before closure. The existing registry records complete SHAs, trees, terminal authority paths, limits and reopen requirements. Keep these recovery refs fixed; original branches also remain retained.
 
+All five carriers #495/#496/#576/#366/#378 are now closed after fetched canonical recovery checkpoint `2fb38420c24ee82c7d0df2582345d99a6ed912fe` was tree-verified. Recovery comment IDs are `6108085622` / `6108085864` / `6108086117` / `6108086392` / `6108086621`. No new Actions were created by the recovery refs; all pre-existing runs on those exact historical heads are terminal.
+
 Keep #528 analytical coupling research and #540/#559/#581 Ribasim qualification carriers owner-controlled. Their original records do not establish the missing final qualification. Expected scientific sign/storage or12h transfer discrepancies must not be bypassed, and product BMI clock qualification does not constitute SWAP production admission.
 
 This round changes only the two existing metadata authorities. Scientific dependency trees remain unchanged; zero capability promotions, new Actions, candidate simulations or external acquisitions are required.

@@ -804,7 +804,10 @@
   },
   "rom_hydro_regie_closeout_20261011": {
     "canonical_base": "9d95eacb6619f7fece1d3bfe7b3e068304836ecd",
-    "stage": "FIVE_TERMINAL_OR_SUPERSEDED_CARRIERS_RECOVERABLE_READY_FOR_CLOSURE",
+    "stage": "FIVE_CARRIERS_CLOSED_COMPLETE_RESEARCH_HEADS_PRESERVED",
+    "canonical_evidence_checkpoint": "2fb38420c24ee82c7d0df2582345d99a6ed912fe",
+    "canonical_evidence_tree": "4bf4e1f78ecc00d85f714467baafa99f626eb4fb",
+    "closure_recovery_comments": {"495": 6108085622, "496": 6108085864, "576": 6108086117, "366": 6108086392, "378": 6108086621},
     "preservation_method": "Complete original Git heads frozen under dedicated recovery refs before closure, fetched and head/tree verified. Preserve entire unique research corpus without duplicating it or merging research implementation. Do not move or delete these recovery refs during subsequent owner work.",
     "closure_candidates": [
       {"pr": 495, "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa", "tree": "ba0b2b23bc0e334d5306e953dce1c2ffa3a7ee9e", "recovery_ref": "recovery/regie-pr495-20261011-07c89de1", "owner": "F-ROM Layer-ROM research", "disposition": "COMPLETED_CORE_FEASIBILITY_RESEARCH_APPLICATION_SELECTION_BLOCKED", "authority": "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json at original head", "claim_boundary": "Frozen L4/L6/R8 frontier and shared-host cost screen; no universal minimum, application sufficiency or production ROM admission. Unique core curves, candidate and negative evidence remain on the full recovery head."},
@@ -821,7 +824,7 @@
     ],
     "preservation": "Two existing metadata authorities only; src/tests/reference/tools/workflows/assets unchanged. No new candidate simulation, external data acquisition, workflow dispatch or scientific qualification claim.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; research-carrier closure is not scientific blocker resolution.",
-    "next_action": "After canonical recovery metadata verifies, close five old carriers and record their recovery comment IDs. Keep quantitative ROM acceptance, HYDRO-MEMORY Stage0 and coupling shared-authority gates with their existing owners."
+    "next_action": "Five carriers closed with fixed full-head recovery. Keep quantitative ROM acceptance, HYDRO-MEMORY Stage0 and coupling shared-authority gates with their existing owners; no candidate execution until independent authority permits it."
   },
   "solver_macropore_regie_closeout_20261011": {
     "canonical_base": "10b94cbdcd902889c71444d611c68c0460a17cae",
