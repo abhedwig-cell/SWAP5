@@ -226,17 +226,15 @@
       ],
       "open_prs": [
         389,
-        181,
-        199,
         587
       ],
       "current_blockers": [
         "PR #486 holds submission on CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP.",
         "PUB-GC release/archive finalization still depends on explicit release/licence/archive metadata.",
         "PUB-P2E03 first calibration matrix and first D2 attempt are immutable negative evidence preserved before closing their completed historical carriers.",
-        "Remaining PUB-ME181/199 contract/literature stack requires owner consolidation. Current bounded D6 and directional D2 replay blockers are closed; broader programme gaps remain."
+        "Historical181/199 stack consolidation is closed; PUB-ME programme G1-G5 and final novelty/literature gates remain. Current bounded D6 and directional D2 replay blockers are closed; broader programme gaps remain."
       ],
-      "current_reconciliation": "publication_regie_closeout_20261011.d6_g1_current_requalification: bounded D6/current reverse-D2 admitted; original218/219 closed. finalization_frost_regie_closeout_20261011 retains mechanical371 admission and original closure.",
+      "current_reconciliation": "publication_regie_closeout_20261011.contract_literature_consolidation:89 historical documents admitted, original181/199 closed; bounded current D6/reverse-D2 and mechanical finalization retain their own canonical evidence.",
       "next_gate": "Publication owners resolve the exact remaining gates in publication_regie_closeout_20261011; final release/submission holds remain."
     }
   ],
@@ -282,18 +280,6 @@
       "class": "OWNER_CONTROLLED",
       "owner": "PUBLICATIONS",
       "action": "CONTINUE_DRAFT_UNDER_PUBLICATION_FIREWALL"
-    },
-    {
-      "pr": 181,
-      "class": "OWNER_CONTROLLED",
-      "owner": "PUBLICATIONS",
-      "action": "RECONCILE_PORTFOLIO_DOCUMENTATION_BEFORE_ANY_MERGE"
-    },
-    {
-      "pr": 199,
-      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
-      "owner": "PUBLICATIONS",
-      "action": "OWNER_CONSOLIDATION_REQUIRED"
     }
   ],
   "central_admission_queue": {
@@ -314,9 +300,7 @@
       371,
       378,
       389,
-      181,
       187,
-      199,
       207,
       217
     ],
@@ -1939,12 +1923,9 @@
     },
     "remaining_blockers": [
       {
-        "prs": [
-          181,
-          199
-        ],
-        "owner": "PUB-GC scientific contract / PUB-ME literature programme",
-        "blocker": "80 unique contract paths and38 literature/preregistration paths require owner consolidation; #199 is based on #181. G5 literature closure remains prospective, not completed."
+        "prs": [],
+        "owner": "PUB-ME scientific/literature programme",
+        "blocker": "Historical181/199 documentary carriers closed after admission. Programme G1/P1-Q06,G2 checkpoint/restore/rerun,G3 warm-start,G4 hydrologic replication,G5 dated literature/final novelty adjudication remain; exact gates in contract_literature_consolidation."
       },
       {
         "prs": [
@@ -1978,8 +1959,6 @@
       }
     ],
     "open_original_heads": {
-      "181": "12ab02b7c9543c32b6a9690b90ca5f9094b3bcfc",
-      "199": "25e04dc60e311c699330d6f81d03da82ca9fa0dc",
       "365": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
       "389": "92bcecf3302ab495afe8bd2fcfbd38b86135193a",
       "587": "ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3"
@@ -1996,7 +1975,7 @@
       "new_canonical_actions": 0,
       "coverage": "Bounded #1201 irrigation annotation and previous four thermal dispositions handed to active master1072; no global count/capability promotion."
     },
-    "next_action": "Six original publication carriers closed, export/finalizer tooling and current D6/reverse-D2 bounded evidence admitted. Existing owners retain contract/literature, independent Richards comparator, scientific release/governance and editorial/theory gaps; do not promote production fullcaps.",
+    "next_action": "Historical programme/literature documentary stack consolidated and181/199 closed; remaining scientific/literature/release/editorial gates remain owner-controlled. Theory587 historical transfer under archival qualification.",
     "canonical_admission_base": "73796d85ba8de962673390a40d1be54e9c152d53",
     "concurrent_admission_reconciled": {
       "pr": 1201,
@@ -2033,7 +2012,7 @@
       359
     ],
     "contract_literature_consolidation": {
-      "stage": "DOCUMENTATION_QUALIFIED_READY_FOR_CANONICAL_ARCHIVAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_TWO_ORIGINAL_CARRIERS_CLOSED",
       "canonical_base": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
       "original_heads": {
         "181": "12ab02b7c9543c32b6a9690b90ca5f9094b3bcfc",
@@ -2685,7 +2664,7 @@
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonical_admission": false,
+      "canonical_admission": "3bf921f50539284652d9bd1b136388947320f9c4",
       "scope": "Historical/prospective research-documentation admission only; no production/fullcap or global count promotion. Frozen design bytes retained, no new scientific or novelty adjudication.",
       "remaining_owner_gates": [
         {
@@ -2720,11 +2699,60 @@
           ]
         }
       ],
-      "next_action": "Local documentation/JSON/archive qualification, safe canonical publication, verify original PR identities, close only historical carriers after evidence persistence.",
+      "next_action": "Existing PUB-ME programme/scientific publication owners close named remaining gates; historical PR stack consolidation complete.",
       "preservation": "Production/tests/reference/tools/workflows/assets unchanged relative to current43b912d44; current crop full moving O0/O2 evidence inherited with exact src tree87fc3103 and executed test dependencies unchanged. No duplicate numerical run.",
       "validation": "PASS all121 archive members/all118 exact original Git postimages;89 selected docs/YAML and frozen design bytes; JSON, whitespace, docs source and strict MkDocs. Six science/execution subtrees exactly unchanged; zero new Actions.",
       "qualified_documentary_checkpoint": "f4f55df7a876798f9e1bdecf71a6c38aba3d883d",
-      "admission_lease_base": "8973c710a90e2524ecb6c5d85419d89f5410075c"
+      "admission_lease_base": "8973c710a90e2524ecb6c5d85419d89f5410075c",
+      "canonical_tree": "51a4ea1b5e2d0aa56dfe77aecb0bf59a5270162c",
+      "canonical_verified": true,
+      "closed_prs": [
+        181,
+        199
+      ],
+      "closure_comments": {
+        "181": 6109113348,
+        "199": 6109113608
+      },
+      "closure_rule": "CLOSED/UNMERGED; original heads unchanged and branches retained.",
+      "historical_consolidation_blocker": {
+        "prs": [
+          181,
+          199
+        ],
+        "owner": "PUB-GC scientific contract / PUB-ME literature programme",
+        "blocker": "80 unique contract paths and38 literature/preregistration paths require owner consolidation; #199 is based on #181. G5 literature closure remains prospective, not completed."
+      }
+    },
+    "theory_handoff_closeout": {
+      "stage": "QUALIFIED_ARCHIVAL_EDITORIAL_SUCCESSOR_READY_FOR_ADMISSION",
+      "canonical_base": "3bf921f50539284652d9bd1b136388947320f9c4",
+      "original_head": "ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3",
+      "owner": "PUB-GC editorial/theory owner; central F-GC #486 for shared physical authority",
+      "archive": {
+        "path": "integration/audits/evidence/PUB_GC_THEORY_HANDOFF_CLOSEOUT_20261011.tar.gz.b64",
+        "decoded_sha256": "35fc92668810d008ce04d5d50de8c3df95628f935e453811dff6f5a0dfaae394",
+        "members": 5,
+        "original_pr_postimages": 2
+      },
+      "selected_paths": [
+        "docs/publication/PUB_GC_COUPLE_FIXED_INTERFACE_THEORY_HANDOFF.md",
+        "docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md"
+      ],
+      "scope": "Dated historical handoff plus manuscript provenance link/current submission hold. Original entire manuscript remains byte-identical between scope guard and appended historical link. No scientific interpretation/admission or novelty update.",
+      "qualified": true,
+      "canonical_admission": false,
+      "remaining_owner_gates": [
+        "CSR-B1-STORAGE-PARTITION (central F-GC #486)",
+        "CSR-B2-DRAINAGE-OWNERSHIP (central F-GC #486)",
+        "Substantive Methods/mathematical-context revision (PUB-GC scientific/editorial owner)",
+        "Dated novelty/literature closure (PUB-GC)",
+        "Release/licence/archive/author metadata (PUB-GC release/editorial)"
+      ],
+      "next_action": "Docs/JSON/archive qualification, safe canonical archival admission, verify original PR head, close historical587 after persistence.",
+      "preservation": "Six production/executable/reference subtrees unchanged; inherit current O0/O2/full moving F-CI, no numerical rerun or new Action.",
+      "tested": true,
+      "validation": "PASS all5 archive members/both original Git blobs and byte-retained current manuscript; docs source, strict MkDocs, JSON/whitespace; all six science/execution subtrees unchanged. No new mathematical/scientific adjudication."
     }
   },
   "fci93_non_m1_fixed_k_central_20261011": {
