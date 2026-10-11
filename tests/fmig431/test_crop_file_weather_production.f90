@@ -28,7 +28,10 @@ program test_crop_file_weather_production
   use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_state_t, &
        fmr_wofost_crop_transaction_model_t, fmr_wofost_crop_transaction_parameters_t, &
        initialize_fmr_wofost_crop_transaction_state, construct_fmr_wofost_crop_transaction_parameters, FMR_WOF38_OK
-  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
+  use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_persistence_t, &
+       export_fmr_wofost_crop_transaction_persistence,reconstruct_fmr_wofost_crop_transaction_from_persistence
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t,CROP_PROFILE_B111_TASK2, &
+       initialize_b111_crop_lifecycle,CROP_CONT_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
   use mod_soil_temperature_contract, only: SOIL_TEMP_TOP_AIR_TEMPERATURE, SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX
@@ -43,6 +46,27 @@ program test_crop_file_weather_production
        fmr_weather_crop_application_continuation_t
   implicit none
   interface
+    subroutine b111_prep3_oracle(sampled_head,h_prep,delay_prep,max_delay_prep,delay_sow,fl_prep)
+      import real64
+      real(real64),intent(in)::sampled_head,h_prep
+      integer,intent(inout)::delay_prep,delay_sow
+      integer,intent(in)::max_delay_prep
+      logical,intent(out)::fl_prep
+    end subroutine
+    subroutine b111_sow3_oracle(sampled_head,h_sow,soil_temperature,tempsow,delay_sow,max_delay_sow,fl_sow)
+      import real64
+      real(real64),intent(in)::sampled_head,h_sow,soil_temperature,tempsow
+      integer,intent(inout)::delay_sow
+      integer,intent(in)::max_delay_sow
+      logical,intent(out)::fl_sow
+    end subroutine
+    subroutine b111_task2_oracle(sw_prep,sw_sow,sw_germ,fl_prep,fl_sow,fl_germ,delay_prep,delay_sow,tsumgerm)
+      import real64
+      integer,intent(in)::sw_prep,sw_sow,sw_germ
+      logical,intent(out)::fl_prep,fl_sow,fl_germ
+      integer,intent(out)::delay_prep,delay_sow
+      real(real64),intent(out)::tsumgerm
+    end subroutine
     function b111_daily_tav(tmin,tmax) result(tav)
       import real64
       real(real64),intent(in)::tmin,tmax
@@ -141,6 +165,8 @@ program test_crop_file_weather_production
   config%numerical%max_committed_substeps=262144
   call test_immediate_startup()
   call test_authentic_thermal_sowing()
+  call test_authentic_thermal_sowing(.true.)
+  call test_authentic_thermal_sowing(.true.,.true.)
   call app%initialize(config,s);call require(s==FMR_APP_BOOT_OK,'production bootstrap')
   call app%run_standalone(T0,T1,results,s)
   call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(results),'enabled file-weather path rejects unbound hydrology bypass')
@@ -452,14 +478,15 @@ program test_crop_file_weather_production
   if(trim(moisture_mode)=='hydraulic') print '(a)', 'CROP_FILE_WEATHER_HYDRAULIC_PREPARATION_PHASE_TRANSITION=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
-  subroutine test_authentic_thermal_sowing()
+  subroutine test_authentic_thermal_sowing(historical,finish_germination)
+    logical,intent(in),optional::historical,finish_germination
     type(fmr_production_application_config_t)::tc,invalid_tc
     type(fmr_production_application_bootstrap_t)::ta,invalid_app
     type(kernel_committed_state_t)::cs,ss
     type(fmr_weather_crop_application_continuation_t)::saved
     type(fmr_application_crop_daystart_controls_t)::c
     type(crop_certified_daily_preflight_t)::p
-    type(crop_lifecycle_continuation_t)::life
+    type(crop_lifecycle_continuation_t)::life,accepted_life
     type(wofost_crop_owner_state_t)::empty_owner
     type(fmr_wofost_crop_transaction_parameters_t)::cp
     type(canonical_numerical_config_t)::cn
@@ -472,8 +499,14 @@ contains
     real(real64),allocatable::profile(:)
     real(real64)::dist(numnod),bits_values(3*numnod),expected_values(3*numnod),warm
     real(real64)::wd,wmin,wmax,wrain,wet
-    integer::st,j,q
-    logical::ok
+    integer::st,j,q,initial_delay
+    logical::ok,source_profile,finish
+    source_profile=.false.
+    if(present(historical)) source_profile=historical
+    finish=.false.
+    if(present(finish_germination)) finish=finish_germination
+    call require(.not.finish.or.source_profile,'bounded previous-day emergence test selects historical profile')
+    initial_delay=1
     tc=config
     tc%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     tc%tiles(1)%parameters%soil_temperature_active=.true.
@@ -499,14 +532,17 @@ contains
     call ta%initialize(tc,st);call require(st==FMR_APP_BOOT_OK,'authentic thermal production application')
     call initialize_crop(cs,cp,cn);call ck%bind_model(cm)
     c%swprep=0;c%swsow=1;c%germ_mode=2;c%optimal_sum=100.0_real64
+    if(source_profile) c%initialization_profile=CROP_PROFILE_B111_TASK2
+    if(finish) c%optimal_sum=1.0_real64
     c%hsow_threshold=100.0_real64;c%sow_temperature=0.0001_real64
     c%zprep=-1.0_real64;c%zsow=-1.0_real64;c%ztempsow=-1.0_real64;c%zgerm=-1.0_real64
     call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
     call require(st==SWAP_WEATHER_FILE_OK,'thermal authentic first weather record')
+    if(source_profile) call test_historical_task2_matrix(tc,wr)
     call ta%initialize_weather_crop_daystart(wr,c,empty_owner,3_int64,933_int64,cs,st)
     call require(st==FMR_APP_BOOT_OK,'cold initial simulated sowing physical publication')
     call read_lifecycle(cs,life)
-    call require(life%prepared.and..not.life%sown.and.life%sowing_delay==1.and. &
+    call require(life%prepared.and..not.life%sown.and.life%sowing_delay==initial_delay.and. &
          life%germination_temperature_sum==0.0_real64,'cold accepted profile postpones sowing before future hydrology')
     do q=0,63
       call ta%run_weather_interval(wr,real(q,real64)/64.0_real64,real(q+1,real64)/64.0_real64, &
@@ -529,7 +565,7 @@ contains
       call require(st==FMR_APP_BOOT_OK.and.cr%completed.and.cs%current_revision()==1_int64, &
            'physical thermal sowing accepted before day21 hydrology')
       call read_lifecycle(cs,life)
-      call require(life%prepared.and.life%sown.and..not.life%germinated.and.life%sowing_delay==1, &
+      call require(life%prepared.and.life%sown.and.(life%germinated.eqv.finish).and.life%sowing_delay==initial_delay, &
            'existing crop owner persists thermally accepted sowing and prior delay')
       call wr%values(wd,wmin,wmax,wrain,wet,ok)
       call require(ok.and.life%germination_temperature_sum==b111_daily_tav(wmin,wmax), &
@@ -542,6 +578,19 @@ contains
         call require(st==FMR_APP_BOOT_OK.and.rr(1)%committed,'following actual thermal hydrology')
         call require(abs(rr(1)%mass%residual)<=HARD_MASS_GATE,'following physical water mass')
       end do
+      if(finish) then
+        accepted_life=life
+        call read_swap_daily_weather_file(trim(path),1999,1,22,wr,st)
+        call require(st==SWAP_WEATHER_FILE_OK,'authentic next-day emergence boundary weather')
+        call ta%run_weather_crop_daystart(wr,c,ck,cp,cn,cs,cr,st)
+        call require(st==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and.cs%current_revision()==1_int64, &
+             'previous-day complete flags cannot silently publish another pre-emergence event')
+        call read_lifecycle(cs,life)
+        call require(life%revision==accepted_life%revision.and.(life%emerged.eqv.accepted_life%emerged).and. &
+             life%germination_temperature_sum==accepted_life%germination_temperature_sum.and. &
+             life%preparation_delay==accepted_life%preparation_delay.and.life%sowing_delay==accepted_life%sowing_delay, &
+             'unadmitted emergence boundary leaves accepted lifecycle unchanged')
+      end if
       call ta%copy_committed_for_crop(1,ss,st);call require(st==FMR_APP_BOOT_OK,'accepted joint thermal snapshot')
       call ss%snapshot(ps,ok);call require(ok,'real physical thermal postimage')
       select type(ps)
@@ -575,6 +624,91 @@ contains
       end if
     end do
     print '(a)', 'CROP_FILE_WEATHER_THERMAL_SOWING_PHYSICAL_RESTART=PASS'
+    if(source_profile) print '(a)', 'CROP_B111_TASK2_THERMAL_DAYSTART_PHYSICAL_RESTART=PASS'
+    if(finish) print '(a)', 'CROP_B111_PREVIOUS_DAY_EMERGENCE_BOUNDARY_FAIL_CLOSED=PASS'
+  end subroutine
+  subroutine test_historical_task2_matrix(tc,wr)
+    type(fmr_production_application_config_t),intent(in)::tc
+    type(swap_daily_weather_record_t),intent(in)::wr
+    type(fmr_production_application_bootstrap_t)::ma
+    type(fmr_application_crop_daystart_controls_t)::mc
+    type(kernel_committed_state_t)::ms
+    type(fmr_weather_crop_application_continuation_t)::saved
+    type(wofost_crop_owner_state_t)::empty_owner
+    type(crop_lifecycle_continuation_t)::life
+    type(wofost_rate_parameter_bundle_t)::bundle
+    type(fmr_wofost_crop_transaction_persistence_t)::view
+    type(fmr_wofost_crop_transaction_state_t)::reconstructed
+    class(transaction_state_t),allocatable::physical
+    integer::ip,is,ig,st,dp,ds
+    logical::fp,fs,fg
+    real(real64)::sum,wd,tmn,tmx,rain,etref
+    logical::ok
+    call make_bundle(bundle)
+    call wr%values(wd,tmn,tmx,rain,etref,ok)
+    call require(ok,'authenticated startup meteo values')
+    do ip=0,1
+      do is=0,1
+        do ig=0,2
+          mc=fmr_application_crop_daystart_controls_t()
+          mc%initialization_profile=CROP_PROFILE_B111_TASK2
+          mc%swprep=ip;mc%swsow=is;mc%germ_mode=ig
+          ! Initial model counters come from initialization, not caller state.
+          mc%prep_delay=99;mc%sow_delay=99;mc%temperature_sum=999.0_real64
+          call b111_task2_oracle(ip,is,ig,fp,fs,fg,dp,ds,sum)
+          call initialize_b111_crop_lifecycle(7_int64,ip,is,ig,life,st)
+          call require(st==CROP_CONT_OK,'distinct source task2 initialization phase')
+          call require((life%prepared.eqv.fp).and.(life%sown.eqv.fs).and.(life%germinated.eqv.fg).and. &
+               life%preparation_delay==dp.and.life%sowing_delay==ds.and. &
+               life%germination_temperature_sum==sum.and.life%task2_initialized.and. &
+               life%initialization_profile==CROP_PROFILE_B111_TASK2,'literal source task2 twelve selector flags/counters')
+          call ma%initialize(tc,st);call require(st==FMR_APP_BOOT_OK,'task2 matrix physical application')
+          if(ip==0.and.is==0.and.ig==0) then
+            call ma%initialize_weather_crop_daystart(wr,mc,empty_owner,7_int64,937_int64,ms,st, &
+                 initial_dry_weight=10.0_real64,initial_rate_parameters=bundle)
+          else
+            call ma%initialize_weather_crop_daystart(wr,mc,empty_owner,7_int64,937_int64,ms,st)
+          end if
+          call require(st==FMR_APP_BOOT_OK.and.ms%current_revision()==0_int64,'source startup owner, no hydro event')
+          if(.not.(fp.and.fs.and.fg)) then
+            if(.not.fp) call b111_prep3_oracle(H0_CM,mc%hprep_threshold,dp,mc%max_prep_delay,ds,fp)
+            if(fp.and..not.fs) call b111_sow3_oracle(H0_CM,mc%hsow_threshold,0.0_real64, &
+                 mc%sow_temperature,ds,mc%max_sow_delay,fs)
+            if(fp.and.fs) call b111_germination_oracle(ig,sum,mc%optimal_sum,mc%base_temperature, &
+                 mc%max_effective_temperature,b111_daily_tav(tmn,tmx),H0_CM,mc%dry_head,mc%wet_head, &
+                 mc%water_response_a,fg)
+          end if
+          call read_lifecycle(ms,life)
+          call require((life%prepared.eqv.fp).and.(life%sown.eqv.fs).and.(life%germinated.eqv.fg).and. &
+               life%preparation_delay==dp.and.life%sowing_delay==ds.and. &
+               transfer(life%germination_temperature_sum,0_int64)==transfer(sum,0_int64), &
+               'full source cropemergence task2 then task3 same first daystart')
+          call ms%snapshot(physical,ok);call require(ok,'historical profile transaction snapshot')
+          select type(physical)
+          type is(fmr_wofost_crop_transaction_state_t)
+            call export_fmr_wofost_crop_transaction_persistence(physical,view,ok,st)
+            call require(ok.and.view%ready().and.view%lifecycle_schema_version==2,'explicit historical persistence schema')
+            view%lifecycle_schema_version=1
+            call reconstruct_fmr_wofost_crop_transaction_from_persistence(view,reconstructed,ok,st)
+            call require(.not.ok.and..not.reconstructed%ready(),'old schema cannot reinterpret historical task2 profile')
+          class default
+            call require(.false.,'historical physical crop owner type')
+          end select
+          deallocate(physical)
+          call ma%capture_weather_crop_continuation(ms,saved,st)
+          call require(st==FMR_APP_BOOT_OK,'independent source flags have joint restart')
+          call ma%close(st);ms=kernel_committed_state_t()
+          call ma%restore_weather_crop_continuation(saved,ms,st)
+          call require(st==FMR_APP_BOOT_OK,'restore independent task2 source flags')
+          call read_lifecycle(ms,life)
+          call require((life%prepared.eqv.fp).and.(life%sown.eqv.fs).and.(life%germinated.eqv.fg).and. &
+               life%preparation_delay==dp.and.life%sowing_delay==ds.and.life%germination_temperature_sum==sum, &
+               'task2 profile/counters retained through actual owner restart')
+          call ma%close(st);ms=kernel_committed_state_t()
+        end do
+      end do
+    end do
+    print '(a)', 'CROP_B111_TASK2_LITERAL_12_SELECTORS_JOINT_RESTART=PASS'
   end subroutine
   subroutine test_immediate_startup()
     type(fmr_production_application_bootstrap_t)::initial_app

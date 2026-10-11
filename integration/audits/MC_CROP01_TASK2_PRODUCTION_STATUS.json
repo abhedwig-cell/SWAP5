@@ -1,0 +1,37 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Historical task2/task3 independent pre-emergence production profile",
+  "baseline": "da9ef1e5d37cd49f996dc48e24fcd09110cff777",
+  "recovery_branch": "work/mc-crop01-task2-reconciled-20261011",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "scientific_predecessor": "7372dccf4a5c9d23354257a8e9326f90074814db",
+  "predecessor_scope": "Focused weather/crop O0/O2 and PPA owner/preservation PASS; full central preservation still running. Pre-frost source only; no automatic inheritance of changed compile dependencies.",
+  "relevant_paths": [
+    "src/crop/mod_crop_lifecycle_continuation.f90",
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/MC_CROP01_HISTORICAL_INITIALIZATION_DECISION.json",
+    "integration/audits/PPA_WU05B_NAN_GUARD_STATUS.json"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/run_crop_task2_frost_successor.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/fapp/run_ppa_wu03_preservation.sh"
+  ],
+  "next_action": "Run both complete six-configuration frost routes at O0/O2 on exact combined source; compare all outputs to immutable admitted archive. Then current weather/owner and central qualification/admission.",
+  "blockers": [
+    "Newly admitted frost whole-source archive verifier rejects any further crop source postimage. Do not waive; qualify exact composed highest-route successor and preserve original evidence.",
+    "Delayed physical emergence, grown root/canopy/WOFOST daily production, harvest/rotation/fallow and external joint disk codec remain open."
+  ],
+  "master_coverage": "ACTIVE_MIGRATION; no count or full lifecycle closure."
+}
