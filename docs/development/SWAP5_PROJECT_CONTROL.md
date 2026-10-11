@@ -553,3 +553,30 @@ This establishes the bounded fixed-dt external-release clock lattice only. It do
 All four incremental original PR postimages, original/tested stage dependencies, later owner/successor dispositions and all three complete raw job logs are preserved before closure in `integration/audits/evidence/RIBASIM_REGIE_CLOSEOUT_20261011.tar.gz.b64` (82 members; decoded SHA256 `f76e5e8b834925ad74f3b449a98e7da77ac02ae78485e5b7707551f5916577c7`). Every byte/hash and Git postimage was verified. Production/tests/reference/tools/workflows/assets remain exactly the live canonical base, so existing scientific O0/O2/F-CI is inherited without numerical reruns. Original branches remain; no new Actions, dispatches or recovery refs.
 
 Remaining: #528 PB01 isolated sign/orientation/storage findings still need their F-GC production-contract/shared-authority disposition; no automatic sign repair. #953/#956 retain TOP03 transaction/accepted-window/external-storage/restart/numerical qualification. Actual SWAP-Ribasim management/application and scientific composition remain separately owner-controlled. Closing these historical carriers discharges none of those production gates.
+
+Canonical evidence checkpoint `3844a7739cfee2cf6d29e1d99cb01578b24ed82d`, tree `061837dde032820e4202a389161e882aaa980fd9`, was safely leased and fetched/verified before closure. #540/#559/#581 are CLOSED/UNMERGED with original heads and branches retained; closure comments `6108932388`/`6108932708`/`6108932995`. The three former pending carrier rows are resolved by the same existing registry authority. Fresh queue:21 open PRs,20 owner candidates plus integration PR58.
+
+### Remaining owner gates at this closeout
+
+These are the existing decisive gates for the remaining original owner candidates, not a claim of missing sources or authorization for regie to develop production physics. Exact current heads remain the fresh PR census; detailed evidence/recovery stays in the existing owning authorities and earlier dated regie records.
+
+| PR | Existing owner | Decisive remaining gate |
+| --- | --- | --- |
+| #1197 | MC-CROP01 / shared application admission | Exact owner weather/daystart/bootstrap/dispatcher postimage qualification and preservation before shared irrigation application composition. Complete crop lifecycle/joint restart remains a separate MC-CROP01 fullcap gate. |
+| #1119 | PPA-WU05B frost | Recompose bounded/highest and F-CI preservation against current exact dependencies; focused normal/low-air success alone does not admit the candidate. |
+| #1098, #1103, #1117 | SW431 nutrient/solute/hydraulic state owners | Owner-controlled source/layout/binding, mass and restart qualification; consolidated #1117 is a qualification carrier, not a blanket production admission proposal. |
+| #1072 | SWAP431 mastercoverage | Reconcile four already admitted thermal dispositions and newest bounded irrigation/interface annotations; qualify current dependency inheritance before any global recount. |
+| #1009 | F-MIG431-INT12 SWINTER1 composition | Real physical accepted-source-window/E2E proof and current crop overlap preservation; simulated FMR result is insufficient. |
+| #1008 | PPA oxygen PERF03 research | Complete preregistered full Bartholomeus-route attribution; performance observation does not establish new science/production equivalence. |
+| #987 | PPA RFM A27/A28 research | Q4 long-history/trusted replay/nonpublication rollback proof; opt-in approximation stays branch-only, fixed64 default/reference retained. |
+| #953, #956 | SW-RIB TOP02/TOP03 shared surface/numerical/restart admission | Combined production transaction/exactly-once mass, accepted window, external body/storage ownership, transient/restart and affected preservation. Component qualification alone cannot admit either shared semantic route. |
+| #740 | F-PE ELASTIC source/calibration research | Final owner disposition of unique M5 inverse-stress/20-kPa wet-state mechanical corpus and scale-transfer routing; later M1 h=-100 admission is not same-policy supersession. |
+| #700 | PPA migration reconciliation | Map unique historical862-path corpus to admitted typed successors and resolve ten divergent shared production owners. Original incomplete trial does not qualify wholesale migration/source replay. |
+| #528 | F-GC fixed-interface analytical/shared admission | PB01 sign/orientation/storage findings require production-contract reconciliation; isolated exact physical tangent/root proof cannot authorize changing production signs. |
+| #486 | Central F-GC admission | CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP; submission held, no Hupsel rerun. |
+| #181, #199 | PUB-GC contract / PUB-ME literature programme | Consolidate80 unique contract and38 literature/preregistration paths; complete dated backward/forward literature closure. Research novelty remains provisional. |
+| #365 | DIF-P0 research | H3 needs a second independent iterative nonlinear Richards method; RossFast cannot be relabelled. P0A binding does not close all Phase0 gates. |
+| #389 | PUB-Stromingen editorial | Internal review only; owner authorship/editorial choices and current public NHI terms/status before external publication. |
+| #587 | PUB-GC scientific/editorial handoff | Consolidate unique fixed-interface theory/manual draft with #486 physical authority; handoff is not production or novelty qualification. |
+
+PUB-GC release/governance/archive/editorial R1/L1/A3/author metadata and42 placeholders remain release gates after mechanical #371 closure. Snow/thermal shared state/event timing, EB-I25/F-KT22 energy-ledger investigation, wider PUB-ME programme G1/G2/G3/G4/G5 and fullcap/application composition retain their existing separate authorities; no dummy research closure or PR count promotes those scientific dispositions.

@@ -748,7 +748,7 @@
   },
   "rom_hydro_regie_closeout_20261011": {
     "ribasim_research_resolution": {
-      "stage": "EVIDENCE_RECONCILED_PENDING_CANONICAL_PRESERVATION_AND_THREE_CLOSURES",
+      "stage": "THREE_RESOLVED_RESEARCH_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
       "canonical_base": "5f9e8504c2015bc6017366e161e907b4f38125e2",
       "research_owner_head": "045ebe022856ddb72318a98edbd5237011876456",
       "owner": "Ribasim/RibaMod research clock/application and physical intervention authorities; central regie for archival closeout only",
@@ -853,7 +853,46 @@
       "production_capability_admissions": 0,
       "new_actions": 0,
       "new_dispatches": 0,
-      "new_recovery_refs": 0
+      "new_recovery_refs": 0,
+      "canonical_evidence_checkpoint": "3844a7739cfee2cf6d29e1d99cb01578b24ed82d",
+      "canonical_evidence_tree": "061837dde032820e4202a389161e882aaa980fd9",
+      "canonical_verified": "Fetched full tree equals qualified local metadata/archive postimage. src/tests/reference/tools/workflows/assets all identical to live5f9e8504. All82 archive members and exact original/tested/owner Git blobs verified.",
+      "closed_prs": [
+        540,
+        559,
+        581
+      ],
+      "closure_comments": {
+        "540": 6108932388,
+        "559": 6108932708,
+        "581": 6108932995
+      },
+      "closure_state": "All three CLOSED/UNMERGED, original heads unchanged and original branches retained. No active workstream branch modified.",
+      "remaining_open_prs": [
+        1197,
+        1119,
+        1117,
+        1103,
+        1098,
+        1072,
+        1009,
+        1008,
+        987,
+        956,
+        953,
+        740,
+        700,
+        587,
+        528,
+        486,
+        389,
+        365,
+        199,
+        181,
+        58
+      ],
+      "remaining_open_count": 21,
+      "validation": "PASS terminal raw log/source identities, all frozen H11 grids, decoded archive/full member hashes, canonical tree/scientific subtree preservation, JSON/whitespace/documentation source/strict MkDocs. Zero production admissions/new Actions/dispatches/recovery refs."
     },
     "canonical_base": "9d95eacb6619f7fece1d3bfe7b3e068304836ecd",
     "stage": "FIVE_CARRIERS_CLOSED_COMPLETE_RESEARCH_HEADS_PRESERVED",
@@ -869,10 +908,13 @@
       {"pr": 378, "head": "979113fb5776b45a0c7d8d0923e486c0d522a8be", "tree": "9c1ec186578a01847e745bb1a2c6a3222ec73437", "recovery_ref": "recovery/regie-pr378-20261011-979113fb", "owner": "HYDRO-MEMORY with PPA root/hydraulic authority", "disposition": "HISTORICAL_CAP01_BLOCKER_SUPERSEDED_AS_LIVE_GATE", "authority": "Existing PROJECT-CONTROL and later canonical ROOT-HYD01/ACC/DYN lineage", "claim_boundary": "Original failed unbalanced-root diagnostic remains preserved, not retrospectively green. Later bounded research capability replaces that historical live gate; Stage0, owner production envelope and all remaining shared coupling/accuracy gates remain explicit."}
     ],
     "remaining_reviewed_candidates": [
-      {"pr": 528, "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda", "owner": "F-GC fixed-interface analytical research", "class": "UNIQUE_RESEARCH_KEEP_OPEN_PENDING_FINAL_OWNER_DISPOSITION", "next_action": "Preserve PB01 sign/orientation and storage falsification evidence; no interpretation of expected scientific failure as a CI defect to bypass."},
-      {"pr": 540, "head": "68cff57a6c67537d909dea790d37c0f59db04c49", "owner": "Ribasim BMI management-clock authority", "class": "QUALIFICATION_ONLY_OBSERVABILITY_REPLAY_NOT_ADMISSION_READY", "next_action": "Reconcile19I v2 with current research result; original record does not establish final qualification. Frozen model/assertions unchanged."},
-      {"pr": 559, "head": "19bcdc3df91b13f297fbb1bfff7da0d8095869c7", "owner": "RibaMod/Ribasim delayed-transfer product authority", "class": "QUALIFICATION_ONLY_FULL_TRAJECTORY_DIAGNOSIS_PENDING", "next_action": "Original20E2 v8 record is unqualified; prior12h mismatch must be diagnosed from full accepted trajectory and unchanged reciprocal ledger, not called green from commit naming."},
-      {"pr": 581, "head": "10ff41ed84b87ed6fe691b6b944ced3c84d15099", "owner": "Ribasim exact-release BMI clock-lattice authority", "class": "QUALIFICATION_ONLY_FROZEN_FOUR_CASE_GRID_PENDING", "next_action": "Original20H11 record remains implemented/persisted but not qualified; existing product qualification is separate from SWAP production admission."}
+      {
+        "pr": 528,
+        "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+        "owner": "F-GC fixed-interface analytical research",
+        "class": "UNIQUE_RESEARCH_KEEP_OPEN_PENDING_FINAL_OWNER_DISPOSITION",
+        "next_action": "Preserve PB01 sign/orientation and storage falsification evidence; no interpretation of expected scientific failure as a CI defect to bypass."
+      }
     ],
     "preservation": "Two existing metadata authorities only; src/tests/reference/tools/workflows/assets unchanged. No new candidate simulation, external data acquisition, workflow dispatch or scientific qualification claim.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; research-carrier closure is not scientific blocker resolution.",
