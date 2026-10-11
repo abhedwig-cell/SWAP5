@@ -354,5 +354,20 @@
     "new_scientific_qualification": false,
     "new_fullcap_admissions": 0,
     "next_action": "Central RT/HY and MC-CROP01 reconcile overlapping bootstrap successor and decide preparation-only allocation seam, application publication and joint continuation contract. Then implement and qualify ROOT_FREE_SENSOR_APPLICATION before ROOTED_SALINE_WEEKLY_APPLICATION. No rerun of unchanged admitted independent runtime gates."
+  },
+  "managed_weather_checkpoint": {
+    "baseline": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+    "branch": "work/mc-irr01-managed-weather-20261011",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false,
+    "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
+    "next_action": "Compile and qualify actual root-free file-weather management, joint continuation and atomic failure; reconcile MC-CROP01 live overlap before admission.",
+    "test_paths": [
+      "tests/f-app07/run_mc_irr01_managed_weather.sh",
+      "tests/f-app07/test_mc_irr01_managed_weather.f90"
+    ]
   }
 }
