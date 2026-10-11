@@ -1167,7 +1167,15 @@
       "interfaces_changed": false,
       "invariants_affected": "None; retain transaction, mass, retry/restart and ownership authorities.",
       "numerical_reruns": "Not required for metadata-only research disposition; no current qualification claim",
-      "new_actions": 0
+      "manually_dispatched_actions": 0,
+      "canonical_metadata_actions": 0,
+      "automatic_recovery_ref_actions": [
+        {"run": 38133822089, "job": 114453454092, "ref": "recovery/regie-pr1001-20261011-162dd96e", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
+        {"run": 38133822470, "job": 114453455070, "ref": "recovery/regie-pr1001-tested-20261011-33cc1fdf", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
+        {"run": 38133823582, "job": 114453458191, "ref": "recovery/regie-pr1005-20261011-6e0b78a8", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
+        {"run": 38133823679, "job": 114453458685, "ref": "recovery/regie-pr1005-tested-20261011-e2ce3812", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"}
+      ],
+      "trigger_observation": "Four fixed-ref creation pushes triggered the historical A26 workflow. Every run reached terminal success and was verified during this turn. These automatic runs are not E2E admission qualification or new physical evidence; no further dispatch/rerun. Future fixed-ref preservation must account for old broad push triggers."
     },
     "next_action": "Two historical E2E carriers are closed with fixed full owner/tested recovery refs. Master owner reconciles four thermal admissions and later bounded irrigation annotations; ELASTIC/PPA owners adjudicate unique source corpora. Preserve active PERF03 and all production workstreams."
   }
