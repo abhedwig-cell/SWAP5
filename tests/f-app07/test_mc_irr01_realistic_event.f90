@@ -196,6 +196,8 @@ program test_mc_irr01_realistic_event
       if (.not. accepted) write(*,*) 'MANAGEMENT_DIAGNOSTIC',criterion,mode,irrigation_binding_diag%status, &
            irrigation_binding_diag%application_status,managed_result%admission_status,managed_result%kernel_status, &
            managed_result%solver_status,managed_result%temporal_rejections,managed_result%mass_rejections,managed_result%mass%residual
+      if (.not.accepted) write(*,*) 'PROGRESS_DIAGNOSTIC accepted_steps, time, revision, requested_t1=', &
+           managed_result%accepted_substeps,managed_result%final_committed_time,managed_result%final_revision,t1
       if (.not. accepted) then
         call fmr_prepare_management_ssdi_forcing(irrigation_parameters,irrigation_committed,irrigation_request, &
              states_irrigation(1),forcing_control(1),irrigation_candidate,forcing_irrigation(1),irrigation_binding_diag)
