@@ -830,6 +830,19 @@ and243 counts are unchanged against the previous master head. The master PR
 remains draft and crop full lifecycle remains ACTIVE_MIGRATION. This is a
 bounded owner-receipt update, not a new full census/source checker result.
 
+The next source-bound harvest/rotation inspection exposes a shared phase
+decision, not a missing-source blocker. After accepted EOD growth, crop and
+soil time equal the next morning; historical new-season initialization must
+follow authentic weather but precede its own hydrology. Current F-KT rejects
+zero/nonpositive intervals. New initialization cannot reset a carrier,
+replay a consumed receipt or depend on same-day end acceptance. The existing
+central RT/HY/F-KT and crop/calendar owners must resolve accepted boundary
+publication or a qualified retained-positive-window schedule for adjacent
+and fallow-separated crops. Exact source, rejected shortcuts, dependent
+implementation and two-crop/restart gates are persisted in
+`docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md`; this is a proposed
+decision boundary, not implemented/qualified harvest or capability closure.
+
 ## MC-IRR01 existing weather publication boundary qualified (2026-10-11)
 
 Requalified against admitted PR1209 at canonical `be5a1476`, the actual admitted one-column root-free default-MVG bottom7 weather application is exercised through `run_weather_interval` with authentic Jan20 Andelst input, reference ET0.2355mm/day and the existing configured four-node homogeneous test soil. The isolated probe reuses the byte-pinned original crop/weather runner, weather/source extraction, geometry, module ordering, compiler flags and O0/O2. It only caps internal accepted substeps at1; production, incumbent tests and mass tolerances remain unchanged.
