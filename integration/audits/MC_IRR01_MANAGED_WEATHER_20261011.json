@@ -2,29 +2,29 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "cluster": "ROOT_FREE_SENSOR_APPLICATION",
-  "baseline": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
-  "tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
-  "source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
+  "baseline": "2173a327e6380720718da31c155eb777b41721a3",
+  "tested_head": "b259ac7a72666394a348d781f4b4f926e4ec6951",
+  "source_tree": "7935df21fa926ded5244677417295dd7072e9f86",
   "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
   "implementation": "Actual run_weather_interval -> authenticated common forcing -> existing sensor/depth/provider preparation -> ordinary model dispatcher -> actual F-KT certificate -> joint private soil/weather-window/event/receipt publication.",
   "implemented": true,
   "persisted": true,
-  "focused_tested": false,
+  "focused_tested": true,
   "qualified": false,
   "preserved": false,
   "canonical_admitted": false,
   "fullcap_promotions": 0,
   "focused_evidence": {
-    "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_FOCUSED_20261011.tar.gz.b64",
-    "sha256": "24381c293e27474562ca1af18ae0201f60a6c8153b546455f1c688b78f3490dc"
+    "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_TASK2_FOCUSED_20261011.tar.gz.b64",
+    "sha256": "84e1ee311160b24a905b44f2cba9ba3f1bd2eaeee68627964e0c25d7021debf9"
   },
   "science": {
     "opts": [
       0,
       2
     ],
-    "managed_positive_cases_executed": 48,
-    "count_authority": "Runner 2opts x3moisture x2continuation x4managed cases. It prints only three O0 representative outputs, containing12 case markers; all other outputs are compared before terminal PASS.",
+    "managed_positive_cases_executed": 192,
+    "count_authority": "2opts x3moisture x2continuation x2startup profiles x2authentic weather days x2sensor criteria x2spatial ranges;48 representative records printed, remaining output comparisons required before terminal PASS.",
     "criteria": [
       7,
       8
@@ -42,21 +42,30 @@
     "mass": "Hard water balance unchanged; same-weather unmanaged control input difference .05cm per selected node; rain/evaporation preserved.",
     "restart": "Actual continuous/restored heads, water, mass and numerical histories identical; accepted soil/crop/weather/window/event/provider joint opaque bundle.",
     "event": "Frozen provider41rev7 ignores changed99rev88 expired fraction0 in flight; fresh42rev8 after event; stale next provider rejected atomically.",
-    "failure": "Missing crop/provider, rooted/saline/DCS1 guards; incomplete dispatch accepted_substeps1 preserves published soil time/revision/event/receipt."
+    "failure": "Missing crop/provider, rooted/saline/DCS1 guards; incomplete dispatch accepted_substeps1 preserves published soil time/revision/event/receipt.",
+    "startup_profiles": [
+      "bounded compatibility",
+      "source B111 task2 immediate emerged owner"
+    ],
+    "weather_days": {
+      "1999-01-20": "rain0 positiveET",
+      "1999-01-21": "rain1.4mm positiveET"
+    }
   },
   "preservation": {
     "root_allocation": "PASS O0/O2 unchanged hash0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
     "allocation_guards": "PASS O0/O2 unchanged hashb33e3272922226f7082248eb0527696921cdf0e5858059d506fad1ef3890ef61",
-    "highest_normal": "PASS 12 configurations O0/O2 identity",
-    "highest_low_air": "PASS all12 fresh-process configurations O0/O2 identity",
-    "full_current_moving_FCI": "PENDING complete highest archive",
+    "highest_normal": "PASS12 current composed source",
+    "highest_low_air": "PASS12 current composed source",
+    "full_current_moving_FCI": "PENDING",
     "highest_archive": {
-      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_HIGHEST_20261011.tar.gz.b64",
-      "sha256": "6cfa2fff89d9912e910723be44380eff437d169cf68a9bffb23542bfb635d0c1"
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_TASK2_HIGHEST_20261011.tar.gz.b64",
+      "sha256": "283781b7f9f9acd7fd16c32b82e05e4ce76cc06cd0c55426b19164eab64417cb"
     },
     "compiled_dependencies_per_route": 234,
     "continuation": "Original serial scientific checker retained, exact executable copies, locked per-case cache; no duplicate scientific launch. Scheduling helper remotely persisted028ab2d2 before use.",
-    "inheritance": "Highest compiled source/fixture dependency blobs verified against current HEAD; rain fixture and its F-CI pin are outside both highest compile closures."
+    "inheritance": "Highest compiled source/fixture dependency blobs verified against current HEAD; rain fixture and its F-CI pin are outside both highest compile closures.",
+    "immutable_output_comparison": "All24 current highest outputs identical to qualified pre-task2 outputs; original science/compiler/flags/budgets untouched."
   },
   "limits": [
     "One root-free bottom7 file-weather column, BASE/soluteNONE/nonthermal, TCS7/8 DCS2 SSDI.",
@@ -72,15 +81,23 @@
     "crop_successor_changed": false,
     "overlap": "Held serial; crop-owner production held fixed; future crop bootstrap successor must reconcile this management publication/hook."
   },
-  "next_action": "Complete existing low-air highest O0/O2; persist complete highest archive; run full current moving F-CI; then safe central admission and bounded master reconciliation.",
+  "next_action": "Persist current source-bound complete highest/focused archives then full current moving F-CI without source/test changes.",
   "rain_extension": "PENDING authentic Jan21 rain1.4mm/positiveET addition; prior focused48 cases only rain-free Jan20.",
   "current_task2_composition": {
     "base": "2173a327e6380720718da31c155eb777b41721a3",
     "bootstrap_postimage": "fa6efa3a0355bb86fea277554ea6f017798596b1",
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "canonical_admitted": false,
     "predecessor_source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
     "required": "Focused actual managed wet/dry + current crop/task2 O0/O2, complete highest24 and full moving F-CI"
+  },
+  "pre_task2_scope": {
+    "tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
+    "source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
+    "focused_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_FOCUSED_20261011.tar.gz.b64",
+      "sha256": "24381c293e27474562ca1af18ae0201f60a6c8153b546455f1c688b78f3490dc"
+    }
   }
 }

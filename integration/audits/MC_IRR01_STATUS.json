@@ -360,25 +360,25 @@
     "branch": "work/mc-irr01-managed-weather-current-20261011",
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "canonical_admitted": false,
     "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
-    "next_action": "Persist explicit current historical task2 + bounded managed fixture; qualify192 cases O0/O2, complete already-running highest24 then full current F-CI.",
+    "next_action": "Persist current source-bound complete highest/focused archives then full current moving F-CI without source/test changes.",
     "test_paths": [
       "tests/f-app07/run_mc_irr01_managed_weather.sh",
       "tests/f-app07/test_mc_irr01_managed_weather.f90"
     ],
-    "tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
-    "source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
+    "tested_head": "b259ac7a72666394a348d781f4b4f926e4ec6951",
+    "source_tree": "7935df21fa926ded5244677417295dd7072e9f86",
     "focused_evidence": {
-      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_FOCUSED_20261011.tar.gz.b64",
-      "sha256": "24381c293e27474562ca1af18ae0201f60a6c8153b546455f1c688b78f3490dc"
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_TASK2_FOCUSED_20261011.tar.gz.b64",
+      "sha256": "84e1ee311160b24a905b44f2cba9ba3f1bd2eaeee68627964e0c25d7021debf9"
     },
-    "focused_result": "PASS actual managed weather O0/O2 12 profiles; root allocation and negative guard preservation PASS unchanged hashes",
+    "focused_result": "PASS192 O0/O2 authentic dry/wet, bounded/historical task2, TCS7/TCS8, SSDI1/3, physical/window/crop/event/provider restart and incomplete dispatch atomicity",
     "highest_normal_result": "PENDING current task2 composition",
-    "highest_low_air_result": "PENDING current task2 composition",
-    "full_fci_result": "PENDING current task2 composition; previous source gate remains running in separate original worktree",
+    "highest_low_air_result": "PASS all12 configurations O0/O2 identity",
+    "full_fci_result": "PENDING current composed source; predecessor full FCI completed exit0",
     "reconciled_live_canonical": "22d99c734bb119a1b99275ae8595f7d35f0ca678",
     "canonical_delta": "Only registry/project control historical recovery archive/tool; source/tests/owner postimages unchanged",
     "pre_rain_extension_tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
@@ -389,7 +389,23 @@
     },
     "reconciliation": "Canonical task2 PR1206 adopted. Four crop source files and current crop fixture/runner held byte-identical to canonical. Bootstrap3-way merge preserves both owners; no source replay. Both preservation scripts retain current crop guards and add only exact managed source/test postimages.",
     "pre_task2_highest_preservation_result": "PASS 24 fresh process configurations; exact approved two-source successor",
-    "highest_preservation_result": "PENDING actual canonical task2 + managed composition",
-    "current_task2_compatibility_result": "PASS actual managed wet/dry96 cases O0/O2 on composed source with bounded initialization; explicit historical task2 coupling192 matrix pending"
+    "highest_preservation_result": "PASS current task2 composition24, both O0/O2 identities, all outputs identical to fully qualified predecessor",
+    "current_task2_compatibility_result": "PASS actual managed wet/dry96 cases O0/O2 on composed source with bounded initialization; explicit historical task2 coupling192 matrix pending",
+    "pre_task2_full_qualification": {
+      "archive": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_PRE_TASK2_FULL_20261011.tar.gz.b64",
+      "sha256": "f7574b143cb3a199fc596ceaa904286df6857143fba58c6c7d0f62d335dea4fd",
+      "source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
+      "tests_tree": "8b9ebb3f44de6dae30eadeb7a92843c7f01ad88e",
+      "tested_head": "ef284167d06e412ce1e9f688942992be45b19b59",
+      "focused_O0_O2": "PASS96",
+      "highest": "PASS24",
+      "full_FCI": "PASS exit0",
+      "canonical_admitted": false,
+      "reason": "Superseded before admission by canonical crop task2 PR1206; current combined source is qualifying separately."
+    },
+    "highest_preservation_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_TASK2_HIGHEST_20261011.tar.gz.b64",
+      "sha256": "283781b7f9f9acd7fd16c32b82e05e4ce76cc06cd0c55426b19164eab64417cb"
+    }
   }
 }
