@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "QUALIFIED_OWNER_SUBSCOPE_PRESERVATION_RUNNING",
+  "phase": "READY_FOR_REGIE_RECONCILED_BOUNDED_ADMISSION",
   "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
   "source_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "master_head": "e4c5a9583494c31052178f841d62c0388f93e525",
@@ -173,8 +173,8 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "next_action": "Finish exact preservation and owner Actions; reconcile current canonical delta, then central bounded admission. Keep full coverage open until all named owner and physical composition gates pass.",
+  "qualified": true,
+  "next_action": "Central ADMIT of qualified bounded scope; verify canonical tree and publish eleven exact open-gate annotations to master owner. Full coverage requires central F-KT forcing-history contract and crop/solute owner bindings.",
   "reconciled_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
   "candidate_pr": 1198,
   "functional_coverage_closed": false,
@@ -227,10 +227,17 @@
       "sensor_runtime_output_sha256": "2ee223a75ed4d82c83d3ee7b5d04446dcacc9c2f7bdba25a798b240631452681"
     },
     "preservation": {
-      "result": "RUNNING",
+      "result": "PASS",
       "runner": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
       "remote_owner_run": 38122332488,
-      "remote_fci_run": 38122332557
+      "remote_fci_run": 38122332557,
+      "local_postimage": "2fa04e1f416a3fad5dfb96d90dc4c565778eafbf",
+      "local_log_sha256": "7ed268fd82ab8d512194a2b9bc500991bba3bd25d94d67cd6fb4f13e6c0aeca4",
+      "remote_owner_conclusion": "success",
+      "remote_fci_conclusion": "success",
+      "frozen_jobs": "ALL_SUCCESS",
+      "moving_job_id": 114419969306,
+      "local_irrigation_owner_successor": "PASS"
     }
   },
   "negative_evidence": [
@@ -247,5 +254,36 @@
     "retained_active_migration": 11,
     "promotion_count": 0,
     "stale_claim_correction": "Replace missing implementation assertions by existing policy / bounded physical route / explicit remaining source-reachable gaps. No fullcap promotion from a tiny initial impulse or isolated literal oracle."
-  }
+  },
+  "production_postimages": {
+    "src/process/mod_irrigation_availability_policy.f90": {
+      "git_blob": "aed1ca5ae88a02da2493978bceca77805fe51eb4",
+      "sha256": "cd75bbfeb2670cc073418305166c3118aae5ef7ebdaf7edeeffd602ae4a4205f"
+    },
+    "src/process/mod_irrigation_process.f90": {
+      "git_blob": "c14ce960691c9a8835253b5aa576fc3eef9c11ec",
+      "sha256": "9aa3269014be23298769a4fc934a9f25676fcbcd4f3fd4861d232bfa011d3b56"
+    },
+    "src/runtime/mod_fmr_management_irrigation_forcing_binding.f90": {
+      "git_blob": "649006fb63395fa2980bae8e6853eedc6f122bed",
+      "sha256": "574a893876e2319b87cc6087dfee18a8914fc199fe28d893b03e03e880dffcc3"
+    },
+    "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90": {
+      "git_blob": "1104bc35080780bf95d8b8ef85d02f1e1f2f803d",
+      "sha256": "669ba8dde7bdf3d3e84929f060a75069cd0a97e769a16dc96315da09aea6c8ce"
+    },
+    "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90": {
+      "git_blob": "cb19ae772cad71c293a9097c2e8a24585f5e870e",
+      "sha256": "ec93f600b00a7f25cb752d79fe1c49012a56d461b1ad2037857bd157705e9475"
+    }
+  },
+  "preservation_dependency_reconciliation": {
+    "canonical_base": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+    "delta_from_scientific_base": "Only eight F-CI51P/F-CI93 governance, crop-preservation and documentation paths; no src change",
+    "scientific_source_and_test_inheritance": "Exact production and scientific test blobs unchanged from qualified owner run 38122332488",
+    "preservation_successor_commit": "2fa04e1f416a3fad5dfb96d90dc4c565778eafbf",
+    "preservation_successor_tree": "ec420bc648711b7f6ea83bc3f4e926f89f2d881b",
+    "successor_reason": "Execute irrigation exact-owner check also on backend routes bypassing B19/MICRO recomposition; no guard relaxation"
+  },
+  "qualification_claim_scope": "Literal source correction and bounded atomic initial-impulse runtime only; no fullcap promotion"
 }

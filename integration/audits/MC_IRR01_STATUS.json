@@ -233,5 +233,22 @@
       1126
     ],
     "status": "CANONICALLY_ADMITTED_AND_VERIFIED"
+  },
+  "closure_successor_20261011": {
+    "pull_request": 1198,
+    "baseline": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+    "record": "integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json",
+    "status": "READY_FOR_REGIE_RECONCILED_BOUNDED_ADMISSION",
+    "implemented": true,
+    "persisted": true,
+    "scientific_owner_qualified": true,
+    "owner_run": 38122332488,
+    "fci_run": 38122332557,
+    "canonical_admitted": false,
+    "full_functional_coverage_closed": false,
+    "retained_admitted_capabilities": 5,
+    "retained_active_migration_capabilities": 11,
+    "shared_admission_dependency": "F-KT forcing onset/end with preserved accepted temporal history; MC-CROP01 root/lifecycle and MC-SOL01 accepted sensor state remain owner-controlled",
+    "new_fullcap_promotions": 0
   }
 }
