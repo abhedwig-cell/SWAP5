@@ -7,5 +7,18 @@
   "qualified": false,
   "owned_surface": "Irrigation tests and evidence only",
   "shared_sources_unchanged": true,
-  "next_action": "Run three fixed refinement budgets at O0/O2 for 1-cm pulse followed by equal-duration zero-source interval, retain accepted derivative history, mass gate 1e-12"
+  "next_action": "Qualify twelve realistic TCS7/TCS8 x depth policy x 1/3-node restart cases at the declared coarse profile. Shared source remains fixed to PR1200 candidate.",
+  "source_off_local_science": {
+    "result": "PASS O0/O2 bit-identical three fixed profiles",
+    "postimage": "83c9da049c3f743858617484efb1a2c1d84f24e1",
+    "output_sha256": "5159cecd0a327069f9e77ad9525bf4b0fce45369d8d0ff129b981be8eb64c548",
+    "head_errors": [
+      2.838270455640668e-05,
+      6.638208134290835e-06
+    ],
+    "water_errors": [
+      2.734075543742165e-08,
+      6.394514362462189e-09
+    ]
+  }
 }
