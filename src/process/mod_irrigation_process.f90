@@ -2,6 +2,7 @@ module mod_irrigation_process
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_irrigation_availability_policy, only: apply_irrigation_availability, IRR_AVAIL_OK
   implicit none
   private
 
@@ -47,10 +48,20 @@ module mod_irrigation_process
     integer :: active_nodes = 0
     integer :: sensor_node = 0
     integer :: single_ssdi_node = 0
+    integer :: timing_criterion = 7
     real(real64) :: irr_rate_cm_per_day = 0.0_real64
     integer :: tcs7_knot_count = 0
     real(real64) :: tcs7_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: tcs7_pressure_head(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    integer :: tcs8_knot_count = 0
+    real(real64) :: tcs8_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    real(real64) :: tcs8_water_content(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
+    logical :: depth_limit_enabled = .false.
+    real(real64) :: minimum_depth_cm = 0.0_real64
+    real(real64) :: maximum_depth_cm = huge(0.0_real64)
+    logical :: salinity_excess_enabled = .false.
+    real(real64) :: salinity_threshold = 0.0_real64
+    real(real64) :: salinity_excess_percent = 0.0_real64
     integer :: dcs2_knot_count = 0
     real(real64) :: dcs2_dvs(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
     real(real64) :: dcs2_depth_cm(IRRIGATION_MAX_SCHEDULED_KNOTS) = 0.0_real64
@@ -63,6 +74,7 @@ module mod_irrigation_process
     integer :: active_event_index = 0
     real(real64) :: active_event_start = 0.0_real64
     real(real64) :: active_event_end = 0.0_real64
+    real(real64) :: active_event_rate_cm_per_day = 0.0_real64
   end type irrigation_state_t
 
   type, public :: irrigation_management_request_t
@@ -80,6 +92,10 @@ module mod_irrigation_process
     logical :: crop_emerged = .false.
     logical :: irrigation_window_open = .false.
     logical :: fixed_event_already_selected = .false.
+    logical :: solute_enabled = .false.
+    real(real64) :: sensor_concentration = 0.0_real64
+    logical :: availability_scaling_enabled = .false.
+    real(real64) :: availability_fraction = 1.0_real64
   end type scheduled_irrigation_request_t
 
   type, public :: irrigation_flux_result_t
@@ -107,6 +123,9 @@ module mod_irrigation_process
     logical :: triggered = .false.
     real(real64) :: interpolated_threshold = 0.0_real64
     real(real64) :: interpolated_depth = 0.0_real64
+    logical :: depth_limited = .false.
+    logical :: salinity_excess_applied = .false.
+    logical :: availability_applied = .false.
     logical :: external_inflow_is_reconciliation_only = .true.
   end type irrigation_diagnostics_t
 
@@ -232,6 +251,7 @@ contains
     candidate_state%active_event_index = event_index
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
+    candidate_state%active_event_rate_cm_per_day = 0.0_real64
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
@@ -253,7 +273,8 @@ contains
     type(irrigation_state_t), intent(out) :: candidate_state
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
-    real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1
+    real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1, effective_rate
+    integer :: availability_status
     logical :: ok, finishes_at_event_end
 
     candidate_state = committed_state
@@ -309,7 +330,8 @@ contains
         effective_t0 = committed_state%active_event_start
       effective_t1 = request%t1
       if (finishes_at_event_end) effective_t1 = event_end
-      call apply_scheduled_event(parameters, effective_t1-effective_t0, duration, fluxes)
+      call apply_scheduled_event(parameters, committed_state%active_event_rate_cm_per_day, &
+                                 effective_t1-effective_t0, duration, fluxes)
       fluxes%event_remains_active = .not. finishes_at_event_end
       if (finishes_at_event_end) then
         fluxes%event_finished = .true.
@@ -340,14 +362,29 @@ contains
       return
     end if
 
-    call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
-                          request%dvs, threshold, ok)
-    if (.not. ok) then
+    select case (parameters%timing_criterion)
+    case (7)
+      call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
+                            request%dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+    case (8)
+      call restricted_afgen(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count, &
+                            request%dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%water_content(parameters%sensor_node) > threshold) return
+    case default
       diagnostics%status = IRRIGATION_INVALID_PARAMETERS
       return
-    end if
-    diagnostics%interpolated_threshold = threshold
-    if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+    end select
     diagnostics%triggered = .true.
 
     call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
@@ -362,12 +399,31 @@ contains
       return
     end if
 
-    duration = depth / parameters%irr_rate_cm_per_day
-    if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64 .or. &
-        duration > IRRIGATION_MAX_EVENT_DURATION) then
+    if (parameters%depth_limit_enabled) then
+      if (depth < parameters%minimum_depth_cm .or. depth > parameters%maximum_depth_cm) diagnostics%depth_limited = .true.
+      depth = max(depth, parameters%minimum_depth_cm)
+      depth = min(depth, parameters%maximum_depth_cm)
+    end if
+
+    if (parameters%salinity_excess_enabled .and. request%solute_enabled .and. &
+        request%sensor_concentration > parameters%salinity_threshold) then
+      depth = depth * (1.0_real64 + 0.01_real64*parameters%salinity_excess_percent)
+      diagnostics%salinity_excess_applied = .true.
+    end if
+
+    call normalize_scheduled_event_rate(depth, parameters%irr_rate_cm_per_day, effective_rate, duration, ok)
+    if (.not. ok) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
     end if
+    call apply_irrigation_availability(request%availability_scaling_enabled, request%availability_fraction, &
+         parameters%irr_rate_cm_per_day > 0.0_real64, effective_rate, duration, availability_status)
+    if (availability_status /= IRR_AVAIL_OK) then
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
+    end if
+    diagnostics%availability_applied = request%availability_scaling_enabled
+    if (effective_rate <= 0.0_real64 .or. duration <= 0.0_real64) return
     event_end = request%t0 + duration
     finishes_at_event_end = same_time(request%t1, event_end)
     if (request%t1 > event_end .and. .not. finishes_at_event_end) then
@@ -383,10 +439,11 @@ contains
     candidate_state%active_event_index = 0
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
+    candidate_state%active_event_rate_cm_per_day = effective_rate
 
     effective_t1 = request%t1
     if (finishes_at_event_end) effective_t1 = event_end
-    call apply_scheduled_event(parameters, effective_t1-request%t0, duration, fluxes)
+    call apply_scheduled_event(parameters, effective_rate, effective_t1-request%t0, duration, fluxes)
     fluxes%event_started = .true.
     fluxes%event_remains_active = .not. finishes_at_event_end
     if (finishes_at_event_end) then
@@ -408,7 +465,9 @@ contains
         valid_state = state%active_event_index >= 1 .and. &
                       state%next_fixed_event_index == state%active_event_index + 1
       case (IRRIGATION_EVENT_SCHEDULED)
-        valid_state = state%active_event_index == 0
+        valid_state = state%active_event_index == 0 .and. &
+                      ieee_is_finite(state%active_event_rate_cm_per_day) .and. &
+                      state%active_event_rate_cm_per_day > 0.0_real64
       case default
         valid_state = .false.
       end select
@@ -455,10 +514,29 @@ contains
     if (parameters%sensor_node < 1 .or. parameters%sensor_node > parameters%active_nodes) return
     if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%irr_rate_cm_per_day)) return
-    if (parameters%irr_rate_cm_per_day <= 0.0_real64) return
-    if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
+    if (parameters%irr_rate_cm_per_day < 0.0_real64) return
+    select case (parameters%timing_criterion)
+    case (7)
+      if (.not. valid_table(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count)) return
+    case (8)
+      if (.not. valid_table(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count)) return
+      if (any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) < 0.0_real64) .or. &
+          any(parameters%tcs8_water_content(1:parameters%tcs8_knot_count) > 1.0_real64)) return
+    case default
+      return
+    end select
     if (.not. valid_table(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count)) return
     if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count) < 0.0_real64)) return
+    if (parameters%depth_limit_enabled) then
+      if (.not. ieee_is_finite(parameters%minimum_depth_cm) .or. .not. ieee_is_finite(parameters%maximum_depth_cm)) return
+      if (parameters%minimum_depth_cm < 0.0_real64 .or. parameters%maximum_depth_cm < parameters%minimum_depth_cm) return
+    end if
+    if (parameters%salinity_excess_enabled) then
+      if (.not. ieee_is_finite(parameters%salinity_threshold) .or. parameters%salinity_threshold < 0.0_real64 .or. &
+          parameters%salinity_threshold > 100.0_real64) return
+      if (.not. ieee_is_finite(parameters%salinity_excess_percent) .or. parameters%salinity_excess_percent < 0.0_real64 .or. &
+          parameters%salinity_excess_percent > 100.0_real64) return
+    end if
     valid_scheduled_parameters = .true.
   end function valid_scheduled_parameters
 
@@ -490,7 +568,14 @@ contains
     if (.not. allocated(hydraulic_view%water_content)) return
     if (size(hydraulic_view%pressure_head) /= hydraulic_view%active_nodes) return
     if (size(hydraulic_view%water_content) /= hydraulic_view%active_nodes) return
-    if (.not. ieee_is_finite(hydraulic_view%pressure_head(parameters%sensor_node))) return
+    select case (parameters%timing_criterion)
+    case (7)
+      if (.not. ieee_is_finite(hydraulic_view%pressure_head(parameters%sensor_node))) return
+    case (8)
+      if (.not. ieee_is_finite(hydraulic_view%water_content(parameters%sensor_node))) return
+    case default
+      return
+    end select
     valid_scheduled_hydraulic_view = .true.
   end function valid_scheduled_hydraulic_view
 
@@ -557,9 +642,9 @@ contains
     end if
   end subroutine apply_event
 
-  pure subroutine apply_scheduled_event(parameters, active_duration, event_duration, fluxes)
+  pure subroutine apply_scheduled_event(parameters, rate, active_duration, event_duration, fluxes)
     type(scheduled_irrigation_parameters_t), intent(in) :: parameters
-    real(real64), intent(in) :: active_duration, event_duration
+    real(real64), intent(in) :: rate, active_duration, event_duration
     type(irrigation_flux_result_t), intent(inout) :: fluxes
 
     fluxes%applied = .true.
@@ -570,9 +655,35 @@ contains
     fluxes%active_duration = active_duration
     allocate(fluxes%subsurface_source(parameters%active_nodes))
     fluxes%subsurface_source = 0.0_real64
-    fluxes%subsurface_source(parameters%single_ssdi_node) = parameters%irr_rate_cm_per_day
-    fluxes%external_inflow_amount = parameters%irr_rate_cm_per_day * active_duration
+    fluxes%subsurface_source(parameters%single_ssdi_node) = rate
+    fluxes%external_inflow_amount = rate * active_duration
   end subroutine apply_scheduled_event
+
+  pure subroutine normalize_scheduled_event_rate(depth, configured_rate, effective_rate, duration, ok)
+    real(real64), intent(in) :: depth, configured_rate
+    real(real64), intent(out) :: effective_rate, duration
+    logical, intent(out) :: ok
+
+    effective_rate = 0.0_real64
+    duration = 0.0_real64
+    ok = .false.
+    if (.not. ieee_is_finite(depth) .or. depth <= 0.0_real64) return
+    if (.not. ieee_is_finite(configured_rate) .or. configured_rate < 0.0_real64) return
+    if (configured_rate <= epsilon(1.0_real64)) then
+      effective_rate = depth
+      duration = 1.0_real64
+    else
+      effective_rate = configured_rate
+      duration = depth / effective_rate
+      if (.not. ieee_is_finite(duration) .or. duration <= 0.0_real64) return
+      if (duration > IRRIGATION_MAX_EVENT_DURATION) then
+        effective_rate = depth / IRRIGATION_MAX_EVENT_DURATION
+        duration = IRRIGATION_MAX_EVENT_DURATION
+      end if
+    end if
+    ok = ieee_is_finite(effective_rate) .and. effective_rate > 0.0_real64 .and. &
+         ieee_is_finite(duration) .and. duration > 0.0_real64 .and. duration <= IRRIGATION_MAX_EVENT_DURATION
+  end subroutine normalize_scheduled_event_rate
 
   pure logical function same_time(a, b)
     real(real64), intent(in) :: a, b
@@ -591,6 +702,7 @@ contains
     state%active_event_index = 0
     state%active_event_start = 0.0_real64
     state%active_event_end = 0.0_real64
+    state%active_event_rate_cm_per_day = 0.0_real64
   end subroutine clear_active_event
 
 end module mod_irrigation_process

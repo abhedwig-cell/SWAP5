@@ -400,6 +400,85 @@
       "reason": "Retained as immutable reconciliation history; not the current routing map."
     }
   ],
+  "integration_reconciliation_20261011": {
+    "reconciliation_base": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+    "canonical_recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
+    "open_pr_count_after_reconciliation": 116,
+    "admitted_clusters": [
+      {
+        "work_unit": "MC-IRR01",
+        "pull_request": 1195,
+        "admission_head": "4ed4fa44c05b93c44d53c2f62a97d2307e29cca9",
+        "canonical_merge": "cadcc63d3296e12e6a0634ee7095693454b60005",
+        "owner": "irrigation management / F-APP07",
+        "scope": "Bounded qualified irrigation scheduling, policy, application, retry/restart, sensor/SSDI mass routing and finite guards.",
+        "owner_run": 38115056270,
+        "owner_result": "PASS_O0_O2",
+        "fci_run": 38115056145,
+        "fci_result": "PASS_ALL_FROZEN_AND_MOVING_CURRENT",
+        "qualification_reconciliation": "Production and test blobs match qualified integration head 4ed0a6d62eae82f46d9f79d06b764e141474c9e2. Central regie added only bounded exact preservation and admission metadata.",
+        "production_physics_changed_by_regie": false
+      }
+    ],
+    "closed_superseded_prs": [
+      623,
+      624,
+      625,
+      1073,
+      1074,
+      1075,
+      1076,
+      1097,
+      1104,
+      1105,
+      1111,
+      1113,
+      1121,
+      1122,
+      1126,
+      1129
+    ],
+    "closure_rule": "Each closed PR has an explicit PR-thread successor/recovery comment. Exact ancestor heads and unique evidence remain reachable from the named canonical successor or persistent recovery commit.",
+    "classified_live_blockers": [
+      {
+        "pr": 1120,
+        "owner": "CI/workflow governance",
+        "blocker": "Proposed pull-request path filters omit dynamically resolved compile dependencies: the observed CO2 closure is 13 paths for 3 owned sources and the root runtime resolves approximately 169 source dependencies for 4 named sources. Replace static incomplete lists with a generated/conservative dependency surface or a fail-closed trigger strategy."
+      },
+      {
+        "pr": 1083,
+        "owner": "PPA-WU03/runon",
+        "blocker": "Owner checks passed historically, but preservation carries a stale protected task2 source pin and later fails the moving B19/MICRO exact tree. Recompose the bounded delta on current canonical and replace stale broad pins with bounded successors."
+      },
+      {
+        "pr": 1119,
+        "owner": "PPA-WU05B frost",
+        "blocker": "Focused normal and low-air runtime checks pass, but bounded/highest preservation and F-CI use broad whole-src or exact-tree pins that conflict with later canonical. Recompose within the frost owner; central regie does not alter active frost semantics."
+      },
+      {
+        "pr": 1103,
+        "owner": "HYD/HYST",
+        "blocker": "Active specialized qualification remains owner-controlled; no central admission claim."
+      },
+      {
+        "prs": [1098, 1117],
+        "owner": "NUT/SOL",
+        "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal."
+      },
+      {
+        "pr": 1072,
+        "owner": "functional-coverage master",
+        "blocker": "Recompute the moving functional-coverage master from canonical cadcc63d3296e12e6a0634ee7095693454b60005 and incorporate the bounded MC-IRR01 admission before publishing fresh global counts."
+      },
+      {
+        "pr": 486,
+        "owner": "F-GC shared admission authority",
+        "blocker": "Resolve non-overlapping storage partition and one-owner-per-drainage-path authority before admission."
+      }
+    ],
+    "intentional_open_carrier": 58,
+    "action_policy": "No manual duplicate workflow dispatches were used. Unrelated broad publication/workflow failures are not treated as qualification evidence for MC-IRR01."
+  },
   "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central regie has no residual #72/#163/#172 housekeeping queue. New central work is event-driven: qualified specialized admission, shared-authority resolution, preservation drift, or deliberate control refresh.",
   "historical_closed_prs": [
     {

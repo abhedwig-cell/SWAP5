@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "work_unit": "MC-IRR01",
+  "phase": "QUALIFY_SHARED_EVENT_AND_ROUTING_SLICE",
+  "qualified_head": "38ff813a2e3e09764a628824e3c8d1a607bc7619",
+  "workflow_run_id": 37625736830,
+  "job_id": 112806892095,
+  "conclusion": "success",
+  "scope": [
+    "SW431-IRR-FIXED-SPRINK",
+    "SW431-IRR-SCHED-SURF",
+    "SW431-IRR-FREQ",
+    "SW431-IRR-RATE-DAILY",
+    "SW431-IRR-RATE-CAP"
+  ],
+  "preservation": [
+    "SW431-IRR-TCS1",
+    "SW431-IRR-FIXED-SURF",
+    "SW431-IRR-MININTERVAL",
+    "F-APP07 exact 110 active Hupsel interval composition"
+  ],
+  "results": {
+    "process_O0": "PASS",
+    "process_O2": "PASS",
+    "process_output_sha256": "8c8bb9f7d6a7b9084ce1aed1708916db99b3b4f677311c8c98c5d916a0c38b98",
+    "exact_110_interval_composition": "PASS",
+    "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c"
+  },
+  "semantics": [
+    "TCSFIX=0 bypasses minimum-interval suppression without rewriting dayfix",
+    "IRR_RATE=0 normalizes to depth/day for a one-day event",
+    "configured duration >1 day normalizes to depth/day and one-day duration while preserving event depth",
+    "normalized effective event rate is candidate state and survives split continuation",
+    "fixed sprinkling routes through interception",
+    "scheduled surface irrigation bypasses interception and binds gross=net to dynamic top"
+  ],
+  "invariants": [
+    3,
+    7,
+    9,
+    13,
+    21,
+    23,
+    29
+  ],
+  "claim_ceiling": "No claim for TCS2/3/4/6/7/8, DCS1, SSDI runtime binding, DCSLIM, salinity excess, or TASK4 availability."
+}

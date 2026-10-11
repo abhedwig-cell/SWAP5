@@ -118,6 +118,8 @@ module mod_fmr_production_application_bootstrap
 
   type, public :: fmr_production_application_config_t
     logical :: file_weather_daystart = .false.
+    ! Gregorian ordinal corresponding to model time zero; explicit, immutable.
+    integer :: file_weather_epoch_day = 0
     real(real64) :: initial_time = 0.0_real64
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
@@ -156,6 +158,7 @@ module mod_fmr_production_application_bootstrap
     type(weather_day_owner_t) :: weather
     type(swap_daily_weather_record_t) :: weather_record
     integer(int64) :: weather_revision=0_int64
+    integer :: weather_epoch_day=0
   contains
     procedure, public :: initialize => production_application_initialize
     procedure, public :: ready => production_application_ready
@@ -266,6 +269,11 @@ contains
       return
     end if
     if(config%file_weather_daystart) then
+      if(config%file_weather_epoch_day<1.or.config%file_weather_epoch_day>3652059) then
+        status=FMR_APP_BOOT_INVALID_CONFIG
+        return
+      end if
+      self%weather_epoch_day=config%file_weather_epoch_day
       if(n/=1.or..not.standalone_profile.or. &
            config%tiles(1)%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
            (config%tiles(1)%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE.and. &
@@ -548,10 +556,11 @@ contains
     if(.not.self%ready()) return
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(size(self%committed)/=1.or.associated(self%active_context)) return
-    if(self%parameters(1)%bottom_mode/=7) return
+    if(self%parameters(1)%bottom_mode/=7.or.self%weather_epoch_day==0) return
     status=FMR_APP_BOOT_WEATHER_REJECTED
     call record%values(day,tmin,tmax,rain,etref,available)
     if(.not.available) return
+    day=day-real(self%weather_epoch_day,real64)
     call self%committed(1)%current_time(time,available)
     if(.not.available) return
     if(time/=day) return
@@ -616,7 +625,7 @@ contains
     if(.not.self%ready()) return
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(size(self%committed)/=1.or.associated(self%active_context)) return
-    if(self%parameters(1)%bottom_mode/=7) return
+    if(self%parameters(1)%bottom_mode/=7.or.self%weather_epoch_day==0) return
     ! This first application profile is the existing base, root-free,
     ! snow-free default-MVG pure-flux WU03 profile. Do not accidentally enable
     ! a stateful evaporation or root-uptake route through an outer adapter.
@@ -629,6 +638,7 @@ contains
     if(.not.self%weather_record%same_input(record)) return
     call record%values(day,tmin,tmax,rain,etref,available)
     if(.not.available) return
+    day=day-real(self%weather_epoch_day,real64)
     if(.not.ieee_is_finite(t0).or..not.ieee_is_finite(t1)) return
     call self%committed(1)%current_time(time,available)
     if(.not.available) return
@@ -1402,7 +1412,7 @@ contains
     self%ordinary_lysimeter_application = .false.
     self%weather=weather_day_owner_t()
     self%weather_record=swap_daily_weather_record_t()
-    self%weather_revision=0_int64
+    self%weather_revision=0_int64;self%weather_epoch_day=0
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap

@@ -20,7 +20,7 @@ program test_crop_file_weather_production
   use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t
   use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
   implicit none
-  real(real64),parameter::T0=729774.0_real64,T1=T0+1.0_real64,H0_CM=-75.0_real64,HARD_MASS_GATE=1.0e-12_real64
+  real(real64),parameter::T0=0.0_real64,T1=T0+1.0_real64,H0_CM=-75.0_real64,HARD_MASS_GATE=1.0e-12_real64
   type(fmr_production_application_config_t)::config,reject_config
   type(fmr_production_application_bootstrap_t)::app,reject_app
   type(fmr_application_crop_daystart_controls_t)::controls,bad_controls
@@ -37,7 +37,7 @@ program test_crop_file_weather_production
   logical::available
   call get_command_argument(1,path);call get_command_argument(2,altered_path);call get_command_argument(3,bad_path)
   call get_command_argument(4,backup_path)
-  call require(swap_weather_calendar_day(1999,1,20)==int(T0),'explicit Gregorian epoch')
+  call require(swap_weather_calendar_day(1999,1,20)==729774,'explicit Gregorian epoch')
   call require(swap_weather_calendar_day(2000,2,29)>0.and.swap_weather_calendar_day(1900,2,29)==0,'leap calendar')
   call read_swap_daily_weather_file(trim(bad_path),1999,1,20,record,s)
   call require(s/=SWAP_WEATHER_FILE_OK.and..not.record%ready(),'malformed daily record rejected')
@@ -46,6 +46,7 @@ program test_crop_file_weather_production
   ! four-node linkage stubs are not the authority for production geometry.
   ! Weather bytes are Andelst; no Andelst soil/reference trajectory claim.
   config%file_weather_daystart=.true.
+  config%file_weather_epoch_day=swap_weather_calendar_day(1999,1,20)
   ! Use the admitted nonsteady Richards history certificate (ROOT-HYD01),
   ! not the base full/half bit-identity comparator used by steady WU03.
   config%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -78,6 +79,7 @@ program test_crop_file_weather_production
     call read_swap_daily_weather_file(trim(path),1999,1,d,record,s)
     call require(s==SWAP_WEATHER_FILE_OK.and.record%ready(),'actual historical daily weather file read')
     call record%values(day,tmin,tmax,rain,etref,available)
+    day=day-real(config%file_weather_epoch_day,real64)
     call require(available.and.day==T0+real(d-20,real64),'calendar record time binding')
     if(d==20) call require(tmin==3.2_real64.and.tmax==7.7_real64.and.rain==0.0_real64.and. &
          etref==0.2355_real64,'authentic Andelst first day input')
@@ -144,6 +146,7 @@ program test_crop_file_weather_production
         print *, 'RUN_STATUS',s,d,i
         if(allocated(results)) then
           print *, 'RUNTIME_COMPLETED',results(1)%completed,results(1)%committed
+          print *, 'RUNTIME_COMMIT',results(1)%commit_status,results(1)%accepted_substeps
           print *, 'RUNTIME_DIAGNOSTICS',results(1)%kernel_status,results(1)%admission_status, &
                results(1)%solver_status,results(1)%solver_rejections,results(1)%temporal_rejections, &
                results(1)%mass_rejections,results(1)%mass%residual
