@@ -2,7 +2,7 @@
   "workstream": "MC-CROP01",
   "work_unit": "Authentic daily weather input to existing production application and prior-accepted-soil crop daystart",
   "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-  "last_reconciled_upstream": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+  "last_reconciled_upstream": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -121,7 +121,7 @@
   "master_coverage_handoff": {
     "owner": "Functional-coverage master PR #1072 and central regie",
     "registry": "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
-    "canonical_reverified": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+    "canonical_reverified": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
     "disposition": "MC-CROP01 OPEN/ACTIVE_MIGRATION; no master denominator or ADMITTED count change because no canonical admission",
     "evidence": "integration/audits/MC_CROP01_LIVE_WINDOW_LOCAL_EVIDENCE.json",
     "new_bounded_implementation": "Authentic daily physical production integration, initial existing-owner creation, hydraulic preparation delay, scheduled sowing, moisture-sensitive germination, exactly-once previous accepted-window events, and opaque joint initial/pending/accepted continuation"
@@ -140,9 +140,10 @@
     "hydrologic_crop_consistency": "PASS tested actual previous accepted soil, hydraulic delayed preparation and dry-head germination in continuous Full Richards production",
     "transaction_rollback_restart": "PASS tested reject/retry/no duplicate events and opaque joint initial/pending/accepted owner restore; external disk/calendars OPEN",
     "scientific_regression_equivalence": "PASS full current-canonical O0/O2 twelve-case physical production, exact continuous/restored postimages and central owner preservation; full historical initialization/trajectory equivalence NOT CLAIMED",
-    "canonical_admission": "NOT ADMITTED: canonical7ceb5ff0 reconciled, original PR1197 draft head unchanged, current-canonical successor preserved; unchanged headed fixture and historical initialization semantic boundaries BLOCKED",
+    "canonical_admission": "NOT ADMITTED: latest canonical4fab8a28 central debt routing inherited, original PR1197 draft head immutable, current source153ed189 full central qualified at canonical7ceb5ff0; no guard waiver and no MC-CROP01 closure.",
     "master_coverage": "OPEN; no global counts or capability closure promoted",
     "limitations": "Scheduled root-free daily mode7; no simulated thermal sowing, emerged growth/root uptake, harvest/rotation/fallow or external joint restart codec"
   },
-  "live_canonical_reconciliation": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40"
+  "live_canonical_reconciliation": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+  "latest_authority_delta": "Metadata only versus scientific-tested canonical7ceb5ff0. No production/test/reference/qualification dependency changed; source/test postimage and full central PASS retained."
 }

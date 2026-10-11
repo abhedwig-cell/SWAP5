@@ -169,5 +169,25 @@
     "existing_owner_constraint": "mod_crop_lifecycle_continuation ready() requires sown=>prepared; admitted daily composition suppresses sown while preparation is blocked and derives sowing delay from preparation. Current production startup deliberately reuses that existing bounded owner/composition contract.",
     "claim_ceiling": "Existing-owner creation and hydraulic daily candidate behavior are implemented/tested, but literal historical task2 flag/delay semantics, SWINCO3 and immediate initial emergence remain NOT QUALIFIED. The twelve-case dry/wet regression is not evidence of complete historical initialization equivalence.",
     "required_authority": "Resolve the historical initialization-versus-daily-state representation in the existing crop owner with central admission authority before physical emergence/root initialization and broad historical equivalence; do not silently change admitted invariants or invent a second crop owner."
+  },
+  "latest_central_authority": {
+    "head": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
+    "delta_from_tested_canonical": "Only docs/development/SWAP5_PROJECT_CONTROL.md and integration/control/SWAP5_WORKSTREAM_REGISTRY.json; no production, test, source/reference or scientific gate change",
+    "disposition": "Central records preexisting FCI51P crop provider pin drift and FCI58P/FCI93 Task2 pin drift as owner/admission-authority debt; explicitly no guard waiver or implicit successor authority",
+    "FCI51P": {
+      "run": 38120232502,
+      "job": 114413253495,
+      "expected_provider": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+      "actual_provider": "040299d7fac3499f5b72f3b166cb08973530885d",
+      "owner": "F-CI central preservation with crop/MC-CROP owner"
+    },
+    "FCI58P_FCI93": {
+      "run": 38120232531,
+      "job": 114413253835,
+      "expected_task2": "0406d3180262b06a5a393b605cc553a912a26aa0",
+      "actual_task2": "2a17e9a203a9fc257550e2a9036f3f918421235e",
+      "owner": "F-CI central preservation with Task2/PPA-WU03 owner"
+    },
+    "relationship_to_our_negative": "These canonical workflows fail earlier at old exact pins. Our explicit current-source PPA replay proceeds beyond the pin and fails the actual unchanged non-M1 derivative completeness assertion. Neither failure layer is waived or replaced by a general green workflow."
   }
 }

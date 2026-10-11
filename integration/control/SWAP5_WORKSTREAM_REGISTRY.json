@@ -654,7 +654,47 @@
     ],
     "untouched_active_specialized_prs": [486, 924, 961, 968, 1072, 1083, 1098, 1103, 1117, 1119, 1120, 1196, 1197],
     "intentional_open_carrier": 58,
-    "action_policy": "No manual duplicate workflow dispatches were used. Necessary path-triggered PR and canonical F-CI runs were polled to terminal success. Unrelated broad publication/workflow results are not treated as admission evidence."
+    "verified_control_postimage": {
+      "head": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
+      "canonical_fci_run": 38120232542,
+      "canonical_fci_job": 114413534831,
+      "canonical_fci_result": "SUCCESS",
+      "fgc_fixed_interface_run": 38120232503,
+      "fgc_fixed_interface_result": "SUCCESS"
+    },
+    "historical_preservation_blockers": [
+      {
+        "workflow": "F-CI51P WOF43A",
+        "run": 38120232502,
+        "job": 114413253495,
+        "result": "FAILURE",
+        "path": "src/crop/mod_crop_et_canopy_view_provider.f90",
+        "expected_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+        "actual_blob": "040299d7fac3499f5b72f3b166cb08973530885d",
+        "dependency_blob_preserved": "5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5",
+        "owner": "F-CI central preservation authority with crop/MC-CROP owner",
+        "next_action": "Reconcile admitted crop successor and exact qualification before changing the historical preservation pin."
+      },
+      {
+        "workflow": "F-CI58P / F-CI93 F-SI35",
+        "run": 38120232531,
+        "job": 114413253835,
+        "result": "FAILURE_M1C3_TASK2_SUCCESSOR_BLOB_DRIFT",
+        "path": "src/adapter/mod_b110_production_soil_water_task2.f90",
+        "expected_blob": "0406d3180262b06a5a393b605cc553a912a26aa0",
+        "actual_blob": "2a17e9a203a9fc257550e2a9036f3f918421235e",
+        "historical_authorities_successor_lineage_receipt": "PASS",
+        "downstream_reconciliation": "SKIPPED",
+        "owner": "F-CI central preservation authority with Task2/PPA-WU03 owner",
+        "next_action": "Qualify and bind the admitted runon successor without replaying old Task2 implementation."
+      }
+    ],
+    "historical_preservation_drift_preexisting": {
+      "compared_heads": ["e3b9685470639355e1899b95c25f9a7ddee15fe6", "44a031a83b5b9da5f8a76e4e8859396e57a48cd0", "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40"],
+      "actual_provider_dependency_task2_blobs_identical": true,
+      "guards_or_active_owner_implementation_modified": false
+    },
+    "action_policy": "No manual duplicate workflow dispatches were used. Necessary path-triggered PR and canonical F-CI runs were polled to terminal success. Unrelated broad publication/workflow results are not treated as admission evidence. Historical preservation failures are recorded explicitly with exact heads, blobs and owning authorities."
   },
   "continuation_rule": "Every active chat starts by reconciling its declared authority against current integration/f-ci-canonical and reads this registry plus current quality governance. Central regie has no residual #72/#163/#172 housekeeping queue. New central work is event-driven: qualified specialized admission, shared-authority resolution, preservation drift, or deliberate control refresh.",
   "historical_closed_prs": [
