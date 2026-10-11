@@ -30,6 +30,8 @@ module mod_fmr_scheduled_management_irrigation_application
     integer :: application_type = IRRIGATION_APPLICATION_SPRINKLER
     integer :: active_nodes = 0
     integer :: single_ssdi_node = 0
+    integer :: ssdi_first_node = 0
+    integer :: ssdi_last_node = 0
     real(real64) :: rate_cm_per_day = 0.0_real64
   end type fmr_irrigation_management_parameters_t
 
@@ -240,7 +242,13 @@ contains
     select case(parameters%application_type)
     case(IRRIGATION_APPLICATION_SPRINKLER,IRRIGATION_APPLICATION_SURFACE)
     case(IRRIGATION_APPLICATION_SSDI)
-      if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
+      if (parameters%ssdi_first_node == 0 .and. parameters%ssdi_last_node == 0) then
+        if (parameters%single_ssdi_node < 1 .or. parameters%single_ssdi_node > parameters%active_nodes) return
+      else
+        if (parameters%ssdi_first_node < 1) return
+        if (parameters%ssdi_last_node < parameters%ssdi_first_node) return
+        if (parameters%ssdi_last_node > parameters%active_nodes) return
+      end if
     case default
       return
     end select
@@ -291,11 +299,17 @@ contains
     case(IRRIGATION_APPLICATION_SSDI)
       allocate(flux%subsurface_source(parameters%active_nodes))
       flux%subsurface_source = 0.0_real64
-      flux%subsurface_source(parameters%single_ssdi_node) = rate
+      if (parameters%ssdi_first_node == 0 .and. parameters%ssdi_last_node == 0) then
+        flux%subsurface_source(parameters%single_ssdi_node) = rate
+      else
+        flux%subsurface_source(parameters%ssdi_first_node:parameters%ssdi_last_node) = rate
+      end if
     case default
       return
     end select
     flux%external_inflow_amount = rate*active_duration
+    if (parameters%application_type == IRRIGATION_APPLICATION_SSDI) &
+      flux%external_inflow_amount = sum(flux%subsurface_source)*active_duration
     ok = ieee_is_finite(flux%external_inflow_amount) .and. flux%external_inflow_amount >= 0.0_real64
   end subroutine apply_flux
 

@@ -1,5 +1,6 @@
 program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, irrigation_state_t
   use mod_fmr_scheduled_irrigation_application
@@ -179,6 +180,31 @@ program test_mc_irr01_scheduled_tcs7_ssdi_runtime_binding
   call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
   call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,23)
   call require(abs(q(3)-0.12_real64) < tol .and. abs(d%external_inflow_amount_cm-0.12_real64) < tol,24)
+
+  ! Literal scheduled SSDI assigns the same per-compartment rate throughout
+  ! the selected interval; authoritative inflow is the SUM, never one rate.
+  p%ssdi_first_node = 2
+  p%ssdi_last_node = 4
+  p%irr_rate_cm_per_day = 0.48_real64
+  r%availability_scaling_enabled = .false.
+  r%t0 = 2900.0_real64
+  r%t1 = 2900.25_real64
+  s = irrigation_state_t()
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_OK .and. .not.c%active_event,29)
+  call require(abs(q(1)) < tol .and. all(abs(q(2:4)-0.48_real64) < tol),30)
+  call require(abs(d%external_inflow_amount_cm-0.36_real64) < tol,31)
+  p%ssdi_last_node = 5
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_UPSTREAM_REJECTED .and. .not.allocated(q),32)
+  p%ssdi_last_node = 4
+  r%solute_enabled = .true.
+  p%salinity_excess_enabled = .true.
+  r%sensor_concentration = ieee_value(0.0_real64,ieee_quiet_nan)
+  call fmr_apply_scheduled_tcs8_dcs2_single_node_ssdi(p,s,r,h,c,q,d)
+  call require(d%status == FMR_SCHEDULED_IRR_UPSTREAM_REJECTED .and. .not.allocated(q),33)
+  print '(A)','MC_IRR01_MULTI_NODE_SSDI_SOURCE_SUM=PASS'
+  print '(A)','MC_IRR01_SALINITY_NONFINITE_FAIL_CLOSED=PASS'
 
   print '(A)','MC_IRR01_AVAIL_SENSOR_POLICY=PASS'
   print '(A)','MC_IRR01_TCS7_RUNTIME_BINDING=PASS'

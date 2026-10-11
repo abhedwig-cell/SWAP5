@@ -61,3 +61,9 @@ jobs:
         run: bash tests/mc-irr01/run_mc_irr01_source_reconstruction.sh
       - name: MC-IRR01 shared management policy
         run: bash tests/mc-irr01/run_mc_irr01_management_policy.sh
+      - name: MC-IRR01 exact literal management and TASK4 oracles
+        run: |
+          bash tests/mc-irr01/run_mc_irr01_literal_management.sh
+          bash tests/mc-irr01/run_mc_irr01_literal_availability.sh
+      - name: MC-IRR01 management real physical binding and rollback
+        run: bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh

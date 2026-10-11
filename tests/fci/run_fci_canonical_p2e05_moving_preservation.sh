@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 26872)
+Total output lines: 1289
+
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -405,31 +408,37 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_management_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
   if (( irrigation_owner_changed )); then
     declare -A irrigation_owner_blobs=(
-      [src/process/mod_irrigation_availability_policy.f90]=1aafbf42f8bd004f60b93c59c880c2f254feab25
-      [src/process/mod_irrigation_process.f90]=639ccc263d6329568880e9baf35f05a0295850ed
+      [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
+      [src/process/mod_irrigation_process.f90]=c14ce960691c9a8835253b5aa576fc3eef9c11ec
       [src/process/mod_irrigation_root_zone_summary.f90]=81fb9e35d1fe0026bf5719175a3af8f3d080592e
       [src/process/mod_scheduled_irrigation_management_policy.f90]=09bc5a840bad171ffc7d478ea68dda6047fd4535
       [src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90]=88a3f5c3f78624ec2da91252de932c4c36ac7ea0
       [src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90]=e952aa327319bf23a7336d0740670e8f802cd147
       [src/runtime/mod_fmr_irrigation_management_restart.f90]=2fc1090a9871d3373840c88f2ef13093f733c11f
       [src/runtime/mod_fmr_scheduled_irrigation_application.f90]=91a8b3f50d3f041c69ad2f6e8e88482c058a9eca
-      [src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90]=91cafcb89973359509e51ff0cad67e9667e26c57
-      [src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=c7f84e7100ce88808a8b0797c8bd9867d7017b9d
+      [src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90]=1104bc35080780bf95d8b8ef85d02f1e1f2f803d
+      [src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=cb19ae772cad71c293a9097c2e8a24585f5e870e
       [src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90]=f604dfbcd28258af4e6339f15138b158e946ed45
     )
+    irrigation_owner_blobs[src/runtime/mod_fmr_management_irrigation_forcing_binding.f90]=649006fb63395fa2980bae8e6853eedc6f122bed
     for candidate_path in "${!irrigation_owner_blobs[@]}"; do
       test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
         fail "unqualified MC-IRR01 owner blob: $candidate_path"
     done
     bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||
       fail 'MC-IRR01 exact owner and composed-path O0/O2 preservation failed'
-    echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
+    bash tests/mc-irr01/run_mc_irr01_management_policy.sh || fail 'MC-IRR01 management preservation'
+    bash tests/mc-irr01/run_mc_irr01_literal_management.sh || fail 'MC-IRR01 exact B1.11 management oracle'
+    bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'
+    bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'
+    echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
   fi
   if (( nlglob14z47_changed )); then
     test "$(git rev-parse HEAD:src/runtime/mod_moving_interface_manager.f90)" = \
@@ -699,176 +708,7 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
     provider_authority="$FCI110_PROVIDER"
     backend_authority="$FCI110_BACKEND"
-    echo 'FCI_CANONICAL_FCI110_REFERENCE_BACKEND_BASELINE=ACTIVE'
-  fi
-  if git merge-base --is-ancestor "$DIR01_ADMISSION" HEAD; then
-    provider_authority="$DIR01_PROVIDER"
-    backend_authority="$DIR01_BACKEND"
-    echo 'FCI_CANONICAL_DIR01_REFERENCE_SUCCESSOR=ACTIVE'
-  fi
-  if git merge-base --is-ancestor "$BALTOL02_ADMISSION" HEAD; then
-    backend_authority="$BALTOL02_BACKEND"
-    echo 'FCI_CANONICAL_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
-  fi
-  if git merge-base --is-ancestor a0630beff3b7b329ede3e57a10620116e5b1f456 HEAD; then
-    # B19 is an exact production-tree authority. A later independently
-    # qualified MICRO02-06 successor changes the shared backend/bootstrap
-    # surface while preserving B19 behavior; accept only that exact successor.
-    if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
-      check_b19_micro_root_recomposition
-      if (( crop_fkt_b110_exact_successor )); then
-        test "$(git rev-parse HEAD:$BACKEND)" = "b218ac657db52612bc12da671716c97430200f0a" ||
-          fail 'B19/MICRO crop B110 exact successor backend drift'
-      else
-      test "$(git rev-parse HEAD:$BACKEND)" = "$(git rev-parse "$dependency_authority:$BACKEND")" || fail 'B19+MICRO current-target serialized backend drift'
-      fi
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "$(git rev-parse "$dependency_authority:src/runtime/mod_fmr_production_application_bootstrap.f90")" || fail 'B19+MICRO current-target application bootstrap drift'
-      echo 'FCI_CANONICAL_PPA_WU05B19_MICRO06_EXACT_SUCCESSOR=ACTIVE'
-    else
-      check_b19_micro_root_recomposition
-      echo 'FCI_CANONICAL_PPA_WU05B19_EXACT_RUNTIME_CANDIDATE=ACTIVE'
-    fi
-    git merge-base --is-ancestor a9a35a60409a16ef7fdf3a38d5bcffb6899c2416 HEAD || fail 'B19 lost B18 component admission'
-    backend_authority="$(git rev-parse HEAD:$BACKEND)"
-  elif git merge-base --is-ancestor e2bb41f2e3173a6c32465e5792e1fe7386a68679 HEAD; then
-    git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail "PPA-WU05B15 lost B10 composed closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B15 exact additive table-validator postimage drift"
-    git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B15 lost normal-drain and guarded reference admissions"
-    git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail "PPA-WU05B15 lost selected salt/root frost admission"
-    if test "$(git rev-parse HEAD:src)" = "ac822aafd5403547a2c7ffad5c3ba02c9fa36496"; then
-      # Independently exercise B15 normal and low-air routes on this exact
-      # MICRO successor in the bounded frost qualification before admission.
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "b7d8d3a1626a82e408434b584abda2c9fe5a520c" || \
-        fail "PPA-WU05B15 MICRO successor serialized backend drift"
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "32a218d3a08ca56e43ff4df35c56b3e3b67bf947" || \
-        fail "PPA-WU05B15 MICRO successor application bootstrap drift"
-      echo 'FCI_CANONICAL_PPA_WU05B15_MICRO_SOURCE_SUCCESSOR=ACTIVE'
-    else
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "57c349f3660aadbeb28e65b01a21a7f15ce4e832" || \
-        fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
-      test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "a8b0f4eba2d28ac21a6494268b337a288ffadf59" || \
-        fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
-    fi
-    test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_low_air_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_root_frost_stress.f90"
-    if git merge-base --is-ancestor 4c0615bfdb3a3e12db2b988eff97db749cca0511 HEAD; then
-      test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "a19db82afe85b2c7b34fa8a2da0922581c662fbb" || \
-        fail "PPA-WU05B15 concurrent exact-root admitted postimage drift"
-      echo 'FCI_CANONICAL_PPA_WU05B15_EXACT01_ROOT_RECONCILIATION=ACTIVE'
-    else
-    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "4c6172384a1255bfe4b2fb809ae159fe624a91a0" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
-    fi
-    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/process/mod_frost_hydraulic_effect.f90"
-    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "08492a7272860629c9ffee34968c9cc29952bd58" || \
-      fail "PPA-WU05B15 exact linear-response low-air postimage drift: src/solver/mod_frost_hydraulic_provider.f90"
-    git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail "PPA-WU05B15 lost admitted B8 source/closeout"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_drainage_response_binding.f90)" = "263cf55b2c336d149ba41b4d04f510e10c4207e2" || fail "PPA-WU05B15 generator postimage drift: src/runtime/mod_fmr_drainage_response_binding.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_process.f90)" = "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa" || fail "PPA-WU05B15 generator postimage drift: src/process/mod_drainage_process.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_multilevel_aggregation.f90)" = "70d35512ef7c5958f7e4bf284cba104a7b641fdb" || fail "PPA-WU05B15 generator postimage drift: src/process/mod_drainage_multilevel_aggregation.f90"
-    git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail "PPA-WU05B15 lost exact B11 admitted closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_ipos1_response.f90)" = "74eab52a181f21406d58fb267fb5e9829a98c91a" || fail "PPA-WU05B15 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_ipos1_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_ipos23_response.f90)" = "af9517fae0beba11ba08313a8b6b5d65aa73177e" || fail "PPA-WU05B15 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_ipos23_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_ernst_ipos45_response.f90)" = "6640afbe25e8770a8ac8e5a6d9a1126cf39b1098" || fail "PPA-WU05B15 exact scientific postimage drift: src/process/mod_drainage_ernst_ipos45_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_equivalent_depth.f90)" = "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108" || fail "PPA-WU05B15 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_equivalent_depth.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_ernst_ipos45_preparation.f90)" = "fa1d5d400bb32be42e78889c0ff2a3bcab335142" || fail "PPA-WU05B15 exact scientific postimage drift: src/process/mod_drainage_ernst_ipos45_preparation.f90"
-    git merge-base --is-ancestor 703b70c49dbc5fb4f2c54381608432d13bb67cf7 HEAD || fail "PPA-WU05B15 lost exact B12 closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_empirical_interflow_response.f90)" = "37e12f2b89bd0fcac12a2d95a70afc14600ab10c" || fail "PPA-WU05B15 exact empirical response postimage drift"
-    git merge-base --is-ancestor 0511717b6c428d18dc223c9e81fd73da3bf5c3fd HEAD || fail "PPA-WU05B15 lost exact B13 closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_extended_exchange.f90)" = "d55e24c9d5cce03c71e4cc5f304dfdd699ca5a56" || fail "PPA-WU05B15 exact signed process postimage drift"
-    backend_authority="$(git rev-parse HEAD:$BACKEND)"
-    echo "FCI_CANONICAL_PPA_WU05B15_EXACT_HIGHEST_RESPONSE_CANDIDATE=ACTIVE"
-
-    git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail "PPA-WU05B15 lost admitted B9 source/closeout"
-    git merge-base --is-ancestor f72d72622264111edbadca1bfc49690a47b287a9 HEAD || fail "PPA-WU05B15 lost exact B14 closeout"
-  elif git merge-base --is-ancestor 1dd301194c86c292a6d0bd29553a03921ea2d4d1 HEAD; then
-    git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail "PPA-WU05B14 lost B10 composed closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B14 exact additive table-validator postimage drift"
-    git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B14 lost normal-drain and guarded reference admissions"
-    git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail "PPA-WU05B14 lost selected salt/root frost admission"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "8965a420a7ac819feebbfa51f4d30f8af0165c49" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "a8b0f4eba2d28ac21a6494268b337a288ffadf59" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_frost_low_air_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_frost_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_root_frost_stress.f90"
-    if git merge-base --is-ancestor 4c0615bfdb3a3e12db2b988eff97db749cca0511 HEAD; then
-      test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "a19db82afe85b2c7b34fa8a2da0922581c662fbb" || \
-        fail "PPA-WU05B14 concurrent exact-root admitted postimage drift"
-      echo 'FCI_CANONICAL_PPA_WU05B14_EXACT01_ROOT_RECONCILIATION=ACTIVE'
-    else
-    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "4c6172384a1255bfe4b2fb809ae159fe624a91a0" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
-    fi
-    test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" = "2c8adba7986e7d85749c4c36d26530748fbbab9e" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/process/mod_frost_hydraulic_effect.f90"
-    test "$(git rev-parse HEAD:src/solver/mod_frost_hydraulic_provider.f90)" = "08492a7272860629c9ffee34968c9cc29952bd58" || \
-      fail "PPA-WU05B14 exact linear-response low-air postimage drift: src/solver/mod_frost_hydraulic_provider.f90"
-    git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail "PPA-WU05B14 lost admitted B8 source/closeout"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_drainage_response_binding.f90)" = "263cf55b2c336d149ba41b4d04f510e10c4207e2" || fail "PPA-WU05B14 generator postimage drift: src/runtime/mod_fmr_drainage_response_binding.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_process.f90)" = "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa" || fail "PPA-WU05B14 generator postimage drift: src/process/mod_drainage_process.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_multilevel_aggregation.f90)" = "70d35512ef7c5958f7e4bf284cba104a7b641fdb" || fail "PPA-WU05B14 generator postimage drift: src/process/mod_drainage_multilevel_aggregation.f90"
-    git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail "PPA-WU05B14 lost exact B11 admitted closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_ipos1_response.f90)" = "74eab52a181f21406d58fb267fb5e9829a98c91a" || fail "PPA-WU05B14 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_ipos1_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_ipos23_response.f90)" = "af9517fae0beba11ba08313a8b6b5d65aa73177e" || fail "PPA-WU05B14 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_ipos23_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_ernst_ipos45_response.f90)" = "6640afbe25e8770a8ac8e5a6d9a1126cf39b1098" || fail "PPA-WU05B14 exact scientific postimage drift: src/process/mod_drainage_ernst_ipos45_response.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_hooghoudt_equivalent_depth.f90)" = "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108" || fail "PPA-WU05B14 exact scientific postimage drift: src/process/mod_drainage_hooghoudt_equivalent_depth.f90"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_ernst_ipos45_preparation.f90)" = "fa1d5d400bb32be42e78889c0ff2a3bcab335142" || fail "PPA-WU05B14 exact scientific postimage drift: src/process/mod_drainage_ernst_ipos45_preparation.f90"
-    git merge-base --is-ancestor 703b70c49dbc5fb4f2c54381608432d13bb67cf7 HEAD || fail "PPA-WU05B14 lost exact B12 closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_empirical_interflow_response.f90)" = "37e12f2b89bd0fcac12a2d95a70afc14600ab10c" || fail "PPA-WU05B14 exact empirical response postimage drift"
-    git merge-base --is-ancestor 0511717b6c428d18dc223c9e81fd73da3bf5c3fd HEAD || fail "PPA-WU05B14 lost exact B13 closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_extended_exchange.f90)" = "d55e24c9d5cce03c71e4cc5f304dfdd699ca5a56" || fail "PPA-WU05B14 exact signed process postimage drift"
-    backend_authority="$(git rev-parse HEAD:$BACKEND)"
-    echo "FCI_CANONICAL_PPA_WU05B14_EXACT_EXTENDED_RESPONSE_CANDIDATE=ACTIVE"
-
-    git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail "PPA-WU05B14 lost admitted B9 source/closeout"
-  elif git merge-base --is-ancestor 74e851cda073dd0d0adf1e9d578d1bd059ab63f4 HEAD; then
-    git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail "PPA-WU05B13 lost B10 composed closeout"
-    test "$(git rev-parse HEAD:src/process/mod_drainage_tabulated_response.f90)" = "03ea81ed05c50b41194000c5215c231819889b58" || fail "PPA-WU05B13 exact additive table-validator postimage drift"
-    git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail "PPA-WU05B13 lost normal-drain and guarded reference admissions"
-    git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail "PPA-WU05B13 lost selected salt/root frost admission"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "9e2198ca2bb7ce6142f0cde17d14902b81c55aeb" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/runtime/mod_fmr_serialized_reference_backend.f90"
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = "a8b0f4eba2d28ac21a6494268b337a288ffadf59" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_geometry_effect.f90)" = "b4067615db7059f7061f4555cec6ec9c1312fe4c" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_frost_geometry_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_low_air_drainage_effect.f90)" = "4b6cf0b24fc3c2b8e39c982dcc6c80294ab08a91" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_frost_low_air_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_drainage_effect.f90)" = "333149580aea22f57a0bdc0cd33a7d1c4245766a" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_frost_drainage_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_frost_bottom_boundary_effect.f90)" = "5dbf9052bdc65fc5fb1830f74da70b3e912adb7b" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_frost_bottom_boundary_effect.f90"
-    test "$(git rev-parse HEAD:src/process/mod_root_frost_stress.f90)" = "a99d870ac2911dd0b9cfe1aef3a0fd299dcfcf38" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_root_frost_stress.f90"
-    if git merge-base --is-ancestor 4c0615bfdb3a3e12db2b988eff97db749cca0511 HEAD; then
-      test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "a19db82afe85b2c7b34fa8a2da0922581c662fbb" || \
-        fail "PPA-WU05B13 concurrent exact-root admitted postimage drift"
-      echo 'FCI_CANONICAL_PPA_WU05B13_EXACT01_ROOT_RECONCILIATION=ACTIVE'
-    else
-    test "$(git rev-parse HEAD:src/process/mod_root_uptake_compensation.f90)" = "4c6172384a1255bfe4b2fb809ae159fe624a91a0" || \
-      fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
+    echo 'FCI_CANONIC…4872 tokens truncated…r-response low-air postimage drift: src/process/mod_root_uptake_compensation.f90"
     fi
     test "$(git rev-parse HEAD:src/runtime/mod_root_uptake_compensation_execution.f90)" = "6affaec2e7a55544e722ed1204ca9e5de555b478" || \
       fail "PPA-WU05B13 exact linear-response low-air postimage drift: src/runtime/mod_root_uptake_compensation_execution.f90"

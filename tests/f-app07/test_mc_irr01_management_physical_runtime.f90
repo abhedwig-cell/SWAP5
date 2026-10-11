@@ -8,19 +8,21 @@ program test_mc_irr01_management_physical_runtime
   use variables, only: legacy_qrot => qrot
   use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_executor_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_OPTIONAL_STATE_LAYOUT_BASE, &
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_b110_temporal_indicator_state_t, fmr_new_b110_temporal_indicator_committed_state
+       fmr_b110_physical_forcing_t, fmr_b110_temporal_indicator_state_t, &
+       fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, fmr_new_b110_temporal_indicator_committed_state
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
-       fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
+       fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK, &
+       fmr_execute_serialized_resolved_physical_column
   use mod_fmr_management_irrigation_forcing_binding
   use mod_fmr_scheduled_management_irrigation_application
   use mod_fmr_irrigation_management_restart
   use mod_irrigation_process, only: IRRIGATION_APPLICATION_SSDI
-  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, &
@@ -28,9 +30,9 @@ program test_mc_irr01_management_physical_runtime
        evaluate_scheduled_irrigation_interval, IRRIGATION_OK, IRRIGATION_EVENT_SCHEDULED
   implicit none
 
-  real(real64), parameter :: t0 = 2600.375_real64
-  real(real64), parameter :: expected_depth = 0.000048_real64
-  real(real64), parameter :: expected_rate = 0.48_real64
+  real(real64), parameter :: t0 = 0.375_real64
+  real(real64), parameter :: expected_depth = 0.000000048_real64
+  real(real64), parameter :: expected_rate = 0.00048_real64
   real(real64), parameter :: expected_duration = expected_depth / expected_rate
   real(real64), parameter :: t1 = t0 + expected_duration
   real(real64), parameter :: head0 = -75.0_real64
@@ -46,17 +48,23 @@ program test_mc_irr01_management_physical_runtime
   type(fmr_column_diagnostics_t), allocatable :: diag_control(:), diag_irrigation(:)
   type(fmr_aggregate_diagnostics_t) :: aggregate_control, aggregate_irrigation
   type(fmr_serialized_batch_diagnostics_t) :: run_control, run_irrigation
-  type(fmr04_fixed_flux_top_provider_t), target :: top_provider
-  type(canonical_numerical_config_t) :: config
+  type(fixed_flux_top_boundary_provider_t), target :: top_provider
+  type(canonical_numerical_config_t) :: config, rejected_config
   type(fmr_management_forcing_binding_diagnostics_t) :: irrigation_binding_diag
   type(fmr_irrigation_management_parameters_t) :: irrigation_parameters
-  type(fmr_irrigation_management_request_t) :: irrigation_request
+  type(fmr_irrigation_management_request_t) :: irrigation_request, crossing_request
   type(fmr_irrigation_management_state_t) :: irrigation_committed, irrigation_candidate, restored
   type(fmr_irrigation_management_restart_record_t) :: restart
   type(fmr_serialized_column_result_t) :: managed_result
   integer :: criterion, mode, rst_status
   real(real64) :: theta0
+  real(real64) :: initial_irrigation_derivative(numnod)
   logical :: accepted
+  type(fmr_serialized_reference_backend_t) :: debug_backend
+  type(fmr_serialized_physical_observation_t) :: observation
+  type(kernel_executor_t) :: debug_transaction
+  type(fmr_column_diagnostics_t) :: debug_diag
+  integer :: calls
   real(real64) :: conductivity0, total_in_delta, total_out_delta, tolerance
   integer :: dispatch_control, dispatch_irrigation
   logical :: ok
@@ -72,7 +80,7 @@ program test_mc_irr01_management_physical_runtime
            [0.0_real64,0.0_real64,0.0_real64,0.0_real64])
       call require(ok, 'control init')
       call fmr_new_b110_temporal_indicator_committed_state(states_irrigation(1), columns(1)%column_id, initial_state, t0, ok, &
-           [0.0_real64,0.0_real64,0.0_real64,0.0_real64])
+           initial_irrigation_derivative)
       call require(ok, 'irrigation init')
       theta0 = initial_state%water_content(1)
       irrigation_parameters = fmr_irrigation_management_parameters_t()
@@ -100,8 +108,8 @@ program test_mc_irr01_management_physical_runtime
       irrigation_parameters%policy%tcs3_fraction(1:2) = 0.1_real64
       irrigation_parameters%policy%tcs4_knot_count = 2
       irrigation_parameters%policy%tcs4_dvs(1:2) = [0.0_real64,2.0_real64]
-      irrigation_parameters%policy%tcs4_depletion_mm(1:2) = 0.1_real64
-      irrigation_parameters%policy%tcs6_threshold_mm = 0.1_real64
+      irrigation_parameters%policy%tcs4_depletion_mm(1:2) = 0.01_real64
+      irrigation_parameters%policy%tcs6_threshold_mm = 0.01_real64
       irrigation_parameters%policy%depth_criterion = 2
       irrigation_parameters%policy%dcs2_knot_count = 2
       irrigation_parameters%policy%dcs2_dvs(1:2) = [0.0_real64,2.0_real64]
@@ -143,6 +151,26 @@ program test_mc_irr01_management_physical_runtime
       call require(irrigation_candidate%policy%weekly_day_counter == 6, 'rejected policy unchanged')
       call configure_control_forcing(forcing_control(1),conductivity0)
 
+      ! Event-end split is a rejected candidate, not a consumed weekly day.
+      crossing_request = irrigation_request
+      crossing_request%t1 = t1 + 0.1_real64
+      call fmr_prepare_management_ssdi_forcing(irrigation_parameters,irrigation_committed,crossing_request, &
+           states_irrigation(1),forcing_control(1),irrigation_candidate,forcing_irrigation(1),irrigation_binding_diag)
+      call require(irrigation_binding_diag%split_required, 'explicit event-end split')
+      call require(irrigation_candidate%policy%weekly_day_counter == 6 .and. &
+           .not.irrigation_candidate%event%active_event, 'split does not consume management')
+      ! Missing required temporal authority rejects actual physical execution;
+      ! neither the live F-KT revision nor management state may be published.
+      rejected_config = config
+      rejected_config%model_temporal_indicator_budget_available = .false.
+      call reset_legacy_globals()
+      call fmr_run_management_ssdi_interval(columns(1),templates(1),parameters(1),forcing_control(1), &
+           states_irrigation(1),irrigation_parameters,irrigation_committed,irrigation_request,rejected_config,top_provider, &
+           managed_result,run_irrigation,irrigation_binding_diag,accepted)
+      call require(.not.accepted .and. states_irrigation(1)%current_revision() == 0_int64, 'physical reject rollback')
+      call require(irrigation_committed%policy%weekly_day_counter == 6 .and. &
+           .not.irrigation_committed%event%active_event, 'physical reject keeps management')
+
       call reset_legacy_globals()
       call fmr_run_serialized_physical_multiswap(columns, templates, parameters, forcing_control, states_control, config, &
            top_provider, t0, t1, 1, result_control, diag_control, aggregate_control, dispatch_control, run_control)
@@ -156,7 +184,19 @@ program test_mc_irr01_management_physical_runtime
            managed_result,run_irrigation,irrigation_binding_diag,accepted)
       if (.not. accepted) write(*,*) 'MANAGEMENT_DIAGNOSTIC',criterion,mode,irrigation_binding_diag%status, &
            irrigation_binding_diag%application_status,managed_result%admission_status,managed_result%kernel_status, &
-           managed_result%solver_status,managed_result%mass_rejections,managed_result%mass%residual
+           managed_result%solver_status,managed_result%temporal_rejections,managed_result%mass_rejections,managed_result%mass%residual
+      if (.not. accepted) then
+        call fmr_prepare_management_ssdi_forcing(irrigation_parameters,irrigation_committed,irrigation_request, &
+             states_irrigation(1),forcing_control(1),irrigation_candidate,forcing_irrigation(1),irrigation_binding_diag)
+        call debug_backend%initialize(top_provider)
+        calls=0
+        call fmr_execute_serialized_resolved_physical_column(debug_backend,debug_transaction,columns(1),templates(1), &
+             parameters(1),forcing_irrigation(1),states_irrigation(1),config,t0,t1,managed_result,debug_diag,run_irrigation,calls)
+        observation=debug_backend%observation()
+        write(*,*) 'CERTIFICATE_REASON=',observation%temporal_certificate_unavailable_reason, &
+             ' ROUTE=',observation%temporal_indicator_route,' BOUND=',observation%temporal_head_inf_bound, &
+             ' NORMALIZED=',observation%temporal_normalized_indicator
+      end if
       call require(accepted .and. irrigation_binding_diag%source_bound, 'management physical commit')
       call require(.not. irrigation_committed%event%active_event, 'event completed')
       call require(managed_result%mass%complete .and. &
@@ -176,6 +216,7 @@ program test_mc_irr01_management_physical_runtime
   print '(A)', 'MC_IRR01_MANAGEMENT_REAL_RICHARDS=PASS'
   print '(A)', 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS'
   print '(A)', 'MC_IRR01_MANAGEMENT_PHYSICAL_STATE_RESPONSE=PASS'
+  print '(A)', 'MC_IRR01_MANAGEMENT_PHYSICAL_REJECTION_ROLLBACK=PASS'
 
 contains
 
@@ -221,8 +262,8 @@ contains
       p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%max_iterations=80; p%max_backtracking=20
-    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
+    p%max_iterations=80; p%max_backtracking=20; p%min_step_duration=1.0e-10_real64
+    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
 
@@ -231,6 +272,11 @@ contains
     heads = head0
     call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
     conductivity0 = conductivity(1)
+    ! Source-bound initial RIGHT derivative for the test's irrigation forcing.
+    ! Uniform heads and equal prescribed boundary fluxes cancel matrix flux;
+    ! the only remaining rate is qssdi/(C*dz) at compartment 3.
+    initial_irrigation_derivative = 0.0_real64
+    initial_irrigation_derivative(3) = expected_rate/(capacity(3)*p%dz(3))
     state%active_nodes = numnod
     allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head = heads
@@ -261,8 +307,8 @@ contains
     cfg%model_temporal_indicator_budget = 2.5e-11_real64
     cfg%transaction%mass_tolerance = hard_mass_gate
     cfg%transaction%retry_scale = 0.5_real64
-    cfg%transaction%max_retries = 16
-    cfg%max_committed_substeps = 256
+    cfg%transaction%max_retries = 24
+    cfg%max_committed_substeps = 10000
     cfg%progress_tolerance = 0.0_real64
   end subroutine configure_transaction
 
