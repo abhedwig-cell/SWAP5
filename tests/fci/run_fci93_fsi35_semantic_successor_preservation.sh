@@ -86,8 +86,24 @@ PY
   else
     [[ "$(git rev-parse "HEAD:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'M1-C3 Task2 successor blob drift'
   fi
-  [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == "$M1C3_TOP_ADAPTER_BLOB" ]] || fail 'M1-C3 dynamic-top adapter blob drift'
-  [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == "$M1C3_TOP_PROVIDER_BLOB" ]] || fail 'M1-C3 dynamic-top provider blob drift'
+  MIGMAC11=8cd14e459913f77f412e12125ccda597a841e22d
+  if git merge-base --is-ancestor "$MIGMAC11" HEAD; then
+    python3 - <<'PY'
+import json
+s=json.load(open('integration/audits/PPA_WU05_MIGMAC11_STATUS.json'))
+assert s['canonical_admission_commit']=='8cd14e459913f77f412e12125ccda597a841e22d'
+q=s['qualification_runs']['exact_admitted_canonical_postimage']
+assert q['head']==s['canonical_admission_commit'] and q['conclusion']=='success'
+assert q['run_id']==37615105739
+print('FCI93_MIGMAC11_SUCCESSOR_RECEIPT=PASS')
+PY
+    for path in src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90 src/solver/mod_b110_dynamic_top_boundary_provider.f90; do
+      [[ "$(git rev-parse "HEAD:$path")" == "$(git rev-parse "$MIGMAC11:$path")" ]] || fail "MIGMAC11 top successor drift: $path"
+    done
+  else
+    [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == "$M1C3_TOP_ADAPTER_BLOB" ]] || fail 'M1-C3 dynamic-top adapter blob drift'
+    [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == "$M1C3_TOP_PROVIDER_BLOB" ]] || fail 'M1-C3 dynamic-top provider blob drift'
+  fi
   [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$FCI75:$SOILWATER")" ]] || fail 'M1-C3 changed legacy SoilWater'
   [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$STATUS_A:$SOILWATER")" ]] || fail 'M1-C3 SoilWater differs from Status-A'
   echo 'FCI93_CURRENT_M1C3_SEMANTIC_SUCCESSOR_BLOBS=PASS'
@@ -98,7 +114,15 @@ else
   done
   echo 'FCI93_CURRENT_FSI35_SUCCESSOR_BLOBS=PASS'
 fi
-[[ "$(git rev-parse "HEAD:$TX")" == "$TX_BLOB" ]] || fail 'transaction-reference dependency drift'
+D2=4fd57c8c8ed321baf6a74214a9720adc899e324d
+if git merge-base --is-ancestor "$D2" HEAD; then
+  [[ "$(git rev-parse "$STATUS_A:$TX")" == "$TX_BLOB" ]] || fail 'historical transaction-reference drift'
+  [[ "$(git rev-parse "HEAD:$TX")" == "$(git rev-parse "$D2:$TX")" ]] || fail 'D2 transaction successor drift'
+  [[ "$(git rev-parse "26557cfdab5a66cc28b91dd51faa9682cccf3c98:$TX")" == "$(git rev-parse "$D2:$TX")" ]] || fail 'qualified D2 transaction admission drift'
+  echo 'FCI93_D2_ACCEPTED_RESULT_TRANSACTION_SUCCESSOR=PASS'
+else
+  [[ "$(git rev-parse "HEAD:$TX")" == "$TX_BLOB" ]] || fail 'transaction-reference dependency drift'
+fi
 
 # F-CI93 is a semantic preservation gate for F-SI35, not a repository-wide
 # production freeze. Later admitted capabilities may add or change unrelated
@@ -187,6 +211,10 @@ MODULES=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/adapter/mod_b110_production_soil_water_task2.f90
 )
+# Resolve later admitted transitive compile prerequisites. The explicitly
+# materialized immutable F-KT15 stubs take precedence over other test stubs.
+# This changes compile closure only, never semantic assertions or flags.
+mapfile -t MODULES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULES[@]}")
 
 run_replay(){
   local opt="$1"
