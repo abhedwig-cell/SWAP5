@@ -330,6 +330,24 @@ Owner run `38122332488` and F-CI run `38122332557` completed successfully on sci
 
 The physical witness is limited to twelve initial, forcing-consistent 4.8e-8 cm impulses. It does not establish realistic-rate forcing transitions, whole-run restart or general rainfall/evaporation composition. Five #1195 capability admissions remain; eleven full capabilities remain ACTIVE_MIGRATION. The F-KT owner must qualify the event forcing-history interface; MC-CROP01 supplies crop/root lifecycle authority and MC-SOL01 supplies accepted sensor concentration authority. The exact remaining gates are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Master owner PR #1072 receives a bounded annotation delta with no disposition/count promotion.
 
+## Solver/macropore historical-carrier closeout (2026-10-11)
+
+Reconciled at canonical `10b94cbdcd902889c71444d611c68c0460a17cae`. The A8, PERCH and A26 old carriers are superseded by explicit owner canonical closeouts, not new implementations:
+
+| Historical PR | Selected authority | Bounded disposition |
+|---|---|---|
+| #924 A8 | #923 / `9bad713b0`, `PPA_WU05A8_CLOSEOUT.md` | Standard single-column Reference FMR admitted; alternative source/dynamic-crack files are preserved, not declared admitted. |
+| #961 PERCH20 | #963/#964 PERCH21, `PPA_WU05_PERCH21_RESULT.md` | Perched/current-iterate/retry/restart successor admitted, owner and postmerge preservation complete. |
+| #968 A26 reconciliation | #969 / `695b1b382`, `PPA_WU05A26_CLOSEOUT.md` | Bounded accepted-state-frozen first-order live RFM admitted; shared backend has identical 28,779 Fortran tokens to admission despite formatting differences. |
+| #743 TIMEINT12 | Original explicit negative closeout and canonical `F-PE-TIMEINT12_CLOSEOUT.md` | Fully implicit dynamic-top route not qualified; only six of twelve physical cases complete. No dynamic-top BDF2 production claim. |
+| #762 initial TIMEINT17 | Canonical requalification closeout and 2026-09-29 handoff | Initial carrier superseded by 96/96 same-route research qualification; general release/desaturation and production event semantics remain open. |
+
+The full 74-file deltas of these exact original heads are preserved in `integration/audits/evidence/SOLVER_MACROPORE_REGIE_CLOSEOUT_20261011.tar.gz.b64`; decoded SHA256 `d320dfd295986ddad001cf8168bf99563b33266510f6fff15d1a018be62edd14`. Every extracted member matches the original Git blob and SHA256. Original branches remain retained. No older source/state/backend or archived workflow is replayed over current MIGMAC, thermal, crop or irrigation ownership. Historical scientific evidence remains bound to its original scope and run, not represented as a fresh benchmark.
+
+PR #740 retains 119 unique source/calibration/research files and needs an ELASTIC-owner census; later mineral ELAS admissions do not by themselves supersede every result. PR #987 remains branch-only A28 approximation work under its RFM owner, with Q4 long-history/replay/rollback qualification pending and fixed64 as default. Neither is admitted or closed by this batch.
+
+This delta is metadata/evidence only: scientific source, tests, reference, tools and workflows are unchanged. No numerical rerun, Actions or new capability-count promotion is justified. Existing shared-authority blockers remain open.
+
 ## Frozen and completed research-carrier closeout (2026-10-11)
 
 Reconciled at canonical `3d326d8fef3529d7a65737d9e4af0c86a41f06f8`. Four original owner records already establish a completed or inactive bounded work unit, without production admission:
