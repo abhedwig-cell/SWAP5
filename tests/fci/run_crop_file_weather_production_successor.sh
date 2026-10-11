@@ -10,6 +10,13 @@ cd "$ROOT"
 # daily growth, root coupling or external disk codec admission.
 BASE=0d9f2c5da26e2214c3b19d56acdc734bf62d33f4
 fail(){ echo "CROP_FILE_WEATHER_SOURCE_SUCCESSOR_FAIL $*" >&2; exit 1; }
+verify_crop_frost_highest(){
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
+    python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
+  else
+    python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only
+  fi
+}
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled canonical baseline absent'
 test "$(git rev-parse HEAD:src/adapter/mod_swap_daily_weather_file_adapter.f90)" = eb1fe3881b53209e01aba7bec0d69a8160bb29c6 || fail 'postimage drift: src/adapter/mod_swap_daily_weather_file_adapter.f90'
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = bc04a4239b2b0d8ef21f962af14be6ef28fbe436 || fail 'postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
@@ -30,7 +37,7 @@ src/crop/mod_crop_lifecycle_continuation.f90|src/crop/mod_crop_lifecycle_daily_c
       # Complete highest/current F-CI archive and affected crop owner O0/O2
       # evidence are required; no allowance for an arbitrary frost postimage.
       test "$(git rev-parse "HEAD:$path")" = 0dd5b541af936d292d23575f798c3cdd5be19c47 || fail "unqualified frost invalid-input successor: $path"
-      python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost invalid-input qualified archive'
+      verify_crop_frost_highest || fail 'frost invalid-input qualified archive'
       ;;
 
     src/runtime/mod_fmr_irrigation_allocation_binding.f90)

@@ -90,13 +90,20 @@ BALTOL02_BACKEND=a5d472636f50a715cf64016ad9d500b401b0ebb1
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
+verify_crop_frost_highest(){
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
+    python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
+  else
+    python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only
+  fi
+}
 
 # The existing PR1119 invalid-input guard changes no finite-input formula.
 # Admit this exact blob only with complete current-source highest-route
 # evidence and the original invalid-input oracle. Other source drift remains
 # subject to every existing owning gate and exact postimage check below.
 if [[ "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" == 0dd5b541af936d292d23575f798c3cdd5be19c47 ]]; then
-  python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
+  verify_crop_frost_highest || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
   bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'
   bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'
   echo 'FCI_CANONICAL_FROST_NAN_GUARD_EXACT_SCIENTIFIC_SUCCESSOR=PASS'
@@ -511,7 +518,7 @@ check_b19_micro_root_recomposition() {
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
       src/process/mod_frost_hydraulic_effect.f90 )
-        python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only ||
+        verify_crop_frost_highest ||
           fail 'unqualified frost hydraulic guard source change'
         ;;
       src/legacy/b1_10_port/headcalc.f90 )
