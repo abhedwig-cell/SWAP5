@@ -2,13 +2,13 @@
   "workstream": "MC-CROP01",
   "unit": "Actual current-weather day-end and final growth window",
   "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
-  "status": "FOCUSED_OWNER_AND_COMPLETE_FROST_PASS_FULL_PRESERVATION_PENDING",
+  "status": "QUALIFIED_PRESERVED_BOUNDED_DAYEND_PRODUCTION_PENDING_ADMISSION",
   "stages": {
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
-    "preserved": false,
+    "qualified": true,
+    "preserved": true,
     "canonically_admitted": false
   },
   "contract": "docs/science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md",
@@ -54,12 +54,33 @@
     "crop/PPA/cross-owner and full moving F-CI preservation",
     "complete24 highest frost configurations and144 immutable fine comparisons"
   ],
-  "next_action": "Observe focused O0/O2, qualify affected owners and complete highest frost closure; archive exact raw outputs before full moving F-CI and safe bounded admission.",
+  "next_action": "Verify exact remote execution/archive postimage, live canonical overlap and PR-head admission conditions; safely admit only the bounded current-day growth completion, reconcile master coverage, then continue harvest/output/reset and calendar/fallow/new-season through existing owners.",
   "canonical_admission_owner": "Delegated MC-CROP01 central application authority",
   "qualification_diagnostics": [
-    "Focused archive sealing attempted before the final strengthened runner was terminal. It failed closed on its missing final PASS marker and created no archive. The final focused exit is intentionally pending until its controller returns."
+    "Early focused archive sealing failed closed on a missing terminal PASS and created no archive. The subsequent strengthened runner terminated with exit0 before successful sealing; no production change or numerical weakening was made for this diagnostic.",
+    "Complete frost sealing first refused a dirty documentary receipt; that observed terminal-exit receipt was committed before successful sealing. All24 fresh configurations/144 fine comparisons are verified against the immutable original authority."
   ],
   "full_lifecycle_closed": false,
+  "qualification_postimage": {
+    "head": "9825deeef3c6c51dc28702e92291dcbdf7f439cf",
+    "tree": "7b4cc7f6f47f3ec1b558566aadbb8096bb457a97",
+    "full_FCI_terminal_exit": 0,
+    "PPA_preservation_terminal_exit": 0,
+    "clean_and_head_unchanged_at_both_terminal_boundaries": true,
+    "subsequent_canonical_reconciled": "a8436806f9d757e8b08adbd90312717bb68828e6",
+    "subsequent_delta": "Seven independent drainage documentary/evidence/new-probe paths; no production source or qualified execution dependency change. Preserve peer PROJECT-CONTROL and registry fields. All archive members, source tree, compile dependencies and full execution delta blobs independently verify on the admission candidate.",
+    "new_Actions_dispatched": 0,
+    "master_count_delta": 0
+  },
+  "next_lifecycle_block": {
+    "authority": "integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json:next_lifecycle_dependencies",
+    "historical_order": "SWAP/swap.f90 lines491/511/514/521/535: accepted hydrology -> growth3 -> harvest4 -> integral/output -> reset. The present block completes growth3 only, including the final authentic day without future weather.",
+    "harvest_gate": "Authenticated wofost task4: abs(t1900-cropend-1.d0)<0.1d0; annual sw_harv>0 additionally dvs>=dvsend. cropdevelopment4 marks harvest day and resets extraction/interception before later reset_crop.",
+    "existing_owners": ["F-WOF38 candidate/committed crop and end-status observation", "mod_crop_lifecycle_continuation", "existing root/canopy views", "mod_crop_rotation_calendar/transition", "mod_fmr_crop_rotation_receipt_binding", "mod_fmr_crop_physical_calendar_restart_coherence", "existing opaque production joint continuation"],
+    "required_changes": "Compose source-bound harvest and immutable end-status observation into the existing positive daily F-KT candidate, then owned reset for following-day zero canopy/extraction. Do not relax inactive-owner no-biomass invariants or introduce a zero-duration event/new owner. Reconcile new-season crop identity/parameters/task2 initialization and calendar checkpoints with physical receipts. Extend joint continuation across harvested/fallow/new-season phases; current calendar restart validator intentionally refuses those phases.",
+    "required_integral_regression": "Two authentic crop periods with intervening fallow and continuous actual accepted hydrology; maturity and calendar harvest, output-before-reset, positive/zero/positive extraction, rejected harvest/start candidates and rollback, exactly-once events, restart in every phase, O0/O2, owner/full F-CI and complete affected frost closure.",
+    "status": "INVESTIGATED_NOT_IMPLEMENTED_OR_QUALIFIED"
+  },
   "remaining": [
     "harvest/output/reset",
     "calendar/fallow/new-season boundary authority",
@@ -94,5 +115,12 @@
     "required_configurations": 24,
     "partial_only": false,
     "dependency_blob_count": 227
+  },
+  "full_qualification": {
+    "path": "integration/audits/evidence/MC_CROP01_DAYEND_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "d74e236b8a8c15b0a3b290477dc3827385b9003dcda60ddc80da5b04ef102e6b",
+    "members": 5,
+    "scientific_head": "9825deeef3c6c51dc28702e92291dcbdf7f439cf",
+    "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7"
   }
 }

@@ -1,6 +1,6 @@
 # MC-CROP01 current-window day-end production contract
 
-Status: proposed implementation/qualification contract, 2026-10-11. Baseline
+Status: implemented, qualified and preserved; admission pending, 2026-10-11. Baseline
 canonical `1e689fd2c31bac468df01540b314ea128be4554a`; PR1207 remains the
 admitted morning-delivery profile until successor admission.
 

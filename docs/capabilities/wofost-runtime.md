@@ -108,7 +108,7 @@ and a legacy CLI front end remain separate open requirements.
 
 ## MC-CROP01 current-day growth completion successor
 
-**Implemented and focused/owner O0/O2 tested; broader preservation and
+**Implemented, persisted, O0/O2 tested, qualified and preserved;
 canonical admission pending (2026-10-11).** The owning receipt is
 `integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json`, under the
 [current-window contract](../science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md).
@@ -125,6 +125,13 @@ integrated regression completes five emerged growth days, including the last
 actual meteorological day, and retains full bitwise hydrology/uptake identity
 with the admitted morning profile. Full crop/soil/heat/Richards O0/O2,
 candidate rejection/retry, duplicate and foreign-owner refusal are checked.
+
+The full moving F-CI and PPA-WU03 preservation controllers both terminated
+with exit0 on clean head `9825deeef3c6c51dc28702e92291dcbdf7f439cf`, source
+tree `b52c70dc50742fdbf5b03f71ec68709b191d0ec7`. Complete highest frost
+qualification covers24 fresh configurations and144 fine comparisons,
+byte-identical to the original authority. Raw owner, frost and full-controller
+archives and exact execution postimages are pinned by the owning receipt.
 
 This is growth completion, not the complete historical day-end chain.
 Harvest, output-before-reset, physical rotation/fallow/new-season authority,

@@ -162,3 +162,121 @@ Exact checkpoint, current compile manifest, full raw logs and source recovery
 are recorded in
 `integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json`;
 the replay is `tests/fgc/run_fgc31_current_drainage_profile_boundary.sh`.
+
+### Proposed head-driven drainage contract for owner review
+
+**Proposed, not production admission.** Central F-GC separates three response
+profiles. A reported groundwater-level carrier and a physical phreatic state
+are not interchangeable, even if a trial closes its numerical water balance.
+
+| Profile | Drainage input during a trial | Response authority |
+| --- | --- | --- |
+| Current F-GC31 qbot | Smooth pressure-state projection, lagged per accepted substep | Admitted restricted qbot tangent; unchanged |
+| Held-GWL head discriminator | Explicit reported GWL held throughout the window | Separate research component profile; no claim of evolving phreatic feedback |
+| Proposed lagged head drainage | Smooth projection from each substep's physical origin, with head-driven accepted trajectory | Requires RT/HY response qualification and separate F-GC application admission |
+
+The explicitly different held-GWL discriminator now passes six actual Reference
+trials at O0/O2 with exact stdout identity on baseline `767503df`. Reported GWL
+carriers are `-0.3` and `-1.5 cm`; head perturbations are `-1e-5`, zero and
+`+1e-5 m` around the existing predictor reference. The original pressure state
+is retained while these carriers are deliberately varied independently. They
+are research selectors, not an actual field water-table assignment.
+
+Over `0.01 day`, drainage is respectively `6e-5` and `3e-5 cm` in all three
+head trials. The separate bottom exchange responds to head, with centered
+native-rate slopes `-5.726905493164124` and `-5.725488201324679 cm/day per m`.
+Both the reported complete budget and independent `deltaS + D + bottom_out`
+close in all six cases, with maximum absolute residual `6.776263578034403e-21 cm`.
+The trials retain the origin's pressure/water/GWL, revision and time. Existing
+qbot and smooth-head negative controls also pass. These are finite-difference
+response diagnostics; an analytic head/drainage tangent was not requested.
+
+The result demonstrates actual head-driven component drainage with a held
+carrier, while explicitly showing its missing head-to-drainage feedback.
+Complete evidence and the proposed owner handoff are in
+`integration/f-gc/F-GC_FIXED_GWL_HEAD_PROFILE_20261011.json`.
+
+The proposed extension retains the existing drainage laws and bottom-compartment
+distribution. It does not introduce fully implicit drainage inside the Newton
+residual. Its explicit configuration must distinguish a held carrier from a
+projected physical state; disabling the existing qbot projection flag cannot
+silently select the proposed response. A component contract does not widen the
+production application NONE gate.
+
+#### Physical and directional meaning
+
+For accepted substep `n`, let `x_n(H)` be the physical origin of that substep
+within the candidate trajectory. The first origin is the same immutable
+committed state for every outer corrector. Later origins are accepted states
+inside that trial. The proposed lagged response is:
+
+```text
+g_n(H) = P(x_n(H))
+D_l,n(H) = L_l(g_n(H), c_l,n) * dt_n
+D_l,window(H) = sum over accepted n of D_l,n(H)
+```
+
+`P` is an explicitly qualified phreatic projection. `L_l` is the existing
+authoritative law for physical drainage path `l`, with externally held controls
+`c_l,n`. `H` is the prescribed lower-face head in the accepted datum. It is not
+assigned to `g_n` by identity. The solver uses the lagged drainage contribution
+unchanged within each substep's Newton solve. On a retry, rejected state,
+projection and drainage amount have no authority.
+
+For a fixed qualified sequence of substep durations and smooth branches, the
+required drainage direction is the accepted trajectory chain:
+
+```text
+dD_l,window/dH = sum over accepted n of
+    dt_n * (dL_l/dg_n) * (dP/dx_n) * (dx_n/dH)
+```
+
+The first origin has zero direction with respect to the newly varied head;
+later accepted substep origins may have nonzero direction. Direct head-dependent
+controls or changing substep durations require separately declared derivative
+terms and qualification. This contract does not silently ignore them. Finite
+differences qualify the analytic direction only when the accepted duration
+sequence and physical branch remain the same. Counts alone do not establish
+that condition. Kinks, saturated branches, below-profile sentinels and missing
+source/sink coverage remain fail-closed rather than becoming fabricated zero
+derivatives.
+
+The head-control coordinate already exists in
+`mod_soil_water_accepted_step_direction_contract`; the proposed extension must
+bind the complete drainage direction to that coordinate. Existing qbot-specific
+projection/binding code is source authority for its admitted envelope, not
+automatic authority to remove its bottom-mode guards. Runtime finite differences
+must not become the production response path.
+
+#### Storage, route receipts and implementation boundary
+
+SWAP retains its physical column storage and its drainage donor leg. A separate
+MODFLOW-owned route requires independently justified physical groundwater
+storage and path identity. The existing HEAD_STATE_CAPACITANCE proxy cannot be
+relabelled as that donor merely because a DRN package can be configured. Distinct
+path declarations still require physical provenance; aliases of the same path
+must be rejected before accepted publication.
+
+The lower-face transfer and each drainage path retain separate signed amounts
+and receipts. Each component budget must contain its own actual physical legs;
+no diagnostic aggregate is an additional transfer. Receipt publication follows
+committed-origin provenance and the existing all-preflights-before-publication
+transaction. New route-specific schema/state is a reviewed RT/F-KT change, not
+a reinterpretation of the existing per-cell selector.
+
+The source surfaces for a selective RT/HY candidate are the smooth projection,
+drainage directional binding, serialized Reference backend and accepted-step
+directional service. Shared owners must review configuration, control-coordinate
+binding, accepted-step coverage and exported route amounts before implementation.
+Existing qbot guards, drainage laws, lower-face signs, mass acceptance, retry
+policy, crop/root/frost/irrigation owners and production NONE profile are held
+fixed until their specifically declared qualification/admission gates pass.
+
+The concrete owner gate requires O0/O2 physical trajectories and complete
+budgets, same-origin head perturbations with complete analytic drainage/bottom
+directions, smooth and excluded-branch witnesses, unchanged qbot/held-profile
+controls, rejected-trial nonpublication and affected RT/HY/F-KT preservation.
+Actual mixed-path SWAP/MODFLOW execution, unit/area conversion, exactly-once
+receipts and joint continuous/restarted identity remain mandatory before
+production application admission. This proposal supplies the reviewable contract;
+it does not claim those gates have run.
