@@ -65,9 +65,46 @@
     }
   ],
   "preservation_running": [
-    "Original highest normal/low-air frost controller at both O0/O2",
-    "Existing F-WOF38 physical lifecycle constructor/negative/restart preservation",
-    "Existing certified soil/lifecycle/rotation, MICRO02/03 and B19 current-owner preservation",
-    "PPA-WU03 shared weather/interval owner O0/O2"
-  ]
+    "Original highest low-air controller six fresh configurations at each O0/O2; preserve unmodified assertions and budgets"
+  ],
+  "recovery_branch": "work/mc-crop01-rooted-weather-20261011",
+  "remote_recovery": {
+    "head": "5328f2b6924841bbb4a19e84ba26c733715f3a3f",
+    "tree": "83b16e18dc14321ef8b706d651fff0e2c7681b92",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "note": "Exact immutable source/test postimage persisted through GitHub Git-data route before final preservation; subsequent receipts and canonical documentary reconciliation remain to publish."
+  },
+  "canonical_reconciliation": {
+    "head": "8acdf60e1da367f482fe9d2aadb9a849670b69b8",
+    "production_source_unchanged": true,
+    "paths": "Eight regie source-disposition/HYD diagnostic documentary and isolated test paths merged without conflict; no shared crop/root/heat/solver implementation change."
+  },
+  "completed_preservation": {
+    "crop_lifecycle_owner": {
+      "exit_code": 0,
+      "terminal_marker": "SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS",
+      "log_sha256": "4ceba50231597f0f2694f2611475105cda14e0a0d470625f86296e9daeda7b25"
+    },
+    "PPA_WU03_owner": {
+      "exit_code": 0,
+      "terminal_marker": "PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS",
+      "log_sha256": "72fd4f8b0f44bd566d2a101faeae94978f49761ecfec4f187e184c88e5f38330"
+    },
+    "shared_crop_root_B19": {
+      "exit_code": 0,
+      "terminal_marker": "CROP_FKT_B110_SHARED_OWNER_SCIENTIFIC_SUCCESSOR=PASS",
+      "log_sha256": "19f75e73670345648a97ff14345707eb4d9d76fcea07371b8fe1c63fb1292f81"
+    },
+    "highest_normal": {
+      "exit_code": 0,
+      "terminal_marker": "PPA_WU05B15_NORMAL_O0_O2_IDENTITY=PASS",
+      "log_sha256": "37348bdc16870794587c5469cd1a987b08ebc29afb39fa13e5c1b23fa00b662a"
+    }
+  },
+  "preservation_prerequisite_failure": {
+    "command": "bash tests/fapp/run_ppa_wu03_preservation.sh",
+    "exit_code": 1,
+    "cause": "Exact new source successor intentionally requires complete frost_successor_evidence archive. Archive is not yet available while the original low-air controller is running; earlier PPA/FCI93/FSI35 checks passed.",
+    "action": "Seal all24 original normal/low-air configurations; verify archive/source closure; rerun complete PPA preservation and full moving F-CI. No assertion bypass or science code change."
+  }
 }

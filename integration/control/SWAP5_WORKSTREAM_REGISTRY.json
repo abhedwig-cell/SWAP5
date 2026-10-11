@@ -700,7 +700,15 @@
       {
         "pr": 1103,
         "owner": "HYD/HYST",
-        "blocker": "Active specialized qualification remains owner-controlled; no central admission claim."
+        "blocker": "Owner-controlled integrated qualification is terminal FAILED, not queued. Exact-head analytical and POWER tests pass locally O0/O2; runtime test first fails F2008 compilation, and the isolated constant-stop test repair exposes MODEL2 production-trial failure. Current-canonical recomposition and preservation remain required; no central admission claim.",
+        "regie_diagnostic_20261011": {
+          "report": "integration/audits/SWAP431_HYD1103_REGIE_DIAGNOSTIC_20261011.json",
+          "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
+          "test_only_recovery": "aa2a298029efcf241b4adfab3ac2fd0637432a97",
+          "recovery_branch": "qualification/regie-hyd1103-test-portability-20261011",
+          "owner_branch_unchanged": true,
+          "next_action": "HYD/HYST owner may reuse the assertion-preserving F2008 test repair, then diagnose the MODEL2 production trial without weakening fail-closed admission, mass or transaction assertions. Recompose the original two-source delta against current canonical and qualify affected owner/F-CI preservation before an exact admission proposal."
+        }
       },
       {
         "prs": [
@@ -1698,6 +1706,48 @@
             "integration_carrier_rule": "PR58 follows current canonical; all fifteen specialized owner heads/branches match the existing frost census. Its older PR58 SHA is historical."
           },
           "admission_ref": "integration/f-ci-canonical"
+        },
+        "gash_semantic_map_20261011": {
+          "work_unit": "PPA-RECONCILE01-GASH-SOURCE-DISPOSITION",
+          "canonical_base": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+          "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+          "status": "CANONICALLY_RECONCILED_BOUNDED_HISTORICAL_SOURCE_POLICY_MISMATCH",
+          "implemented": true,
+          "persisted": true,
+          "tested": true,
+          "qualified": true,
+          "next_action": "Use admitted INT12-D for its existing daily scope; retain the historical graph as dated incompatible source evidence. Other historical source mappings and application composition remain owner-controlled.",
+          "scope": "Verification and source-recovery disposition only; production/reference unchanged, no physical equivalence or fullcap claim.",
+          "interfaces_changed": false,
+          "invariants_affected": [],
+          "owner": "Central regie with PPA-WU04-D/INT12 source and HeadCalc preservation authorities",
+          "read_only_authorities": [
+            "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json",
+            "integration/f-ci/F-CI93_STATUS.json",
+            "integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json"
+          ],
+          "test_paths": [
+            "tests/fpm/run_pr700_interception_source_disposition.py",
+            "tests/fpm/test_pr700_gash_source_disposition.f90",
+            "tests/fpm/run_f_mig431_int12_d.sh"
+          ],
+          "recovery_point": "qualification/regie-pr700-interception-map-20261011",
+          "blocked_science": "Original PR700 shared runtime/source admission is still owner-controlled; this diagnostic cannot authorize a production repair or whole-tree merge.",
+          "checkpoint_commit": "c4588e3618d79805352f12d56f6c4a1182cf0a13",
+          "checkpoint_tree": "927ef19dbbccd5812177ff9eb9255ad6e5bd590e",
+          "canonical_ref": "integration/f-ci-canonical",
+          "canonically_admitted_scope": "Source-recovery disposition and bounded diagnostic only; no new production capability or physical correction.",
+          "final_qualification": "Archive-first runner O0/O2 PASS with the same f17579c37138d6d30dfdbd336e72b321631b7e982579dba8a954fef3deeb1abd stdout hash; existing INT12-D owner/independent O0/O2 PASS; docs source/strict MkDocs PASS. Production/reference/workflow/testbank/asset trees and all incumbent tests unchanged.",
+          "result_record": "integration/audits/PPA_RECONCILE01_GASH_SOURCE_DISPOSITION_20261011.json",
+          "coverage_delta": 0,
+          "fci93_discrepancy_reconciliation": {
+            "source_admission": "d8b2640890203c3444f3d65b8918e31b52cdf74f",
+            "PR": 1202,
+            "current_native_compile_blob_matches": 27,
+            "archive_decoded_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349",
+            "all6_raw_log_hashes": "VERIFIED; original negative prototype exit1 remains negative",
+            "disposition": "Close stale TCD-FSI35-HEADED-DERIVATIVE row for the admitted bounded non-M1 SWKIMPL0 repair; retain diagnosis as historical evidence. No general headed or global preservation claim."
+          }
         }
       },
       {
