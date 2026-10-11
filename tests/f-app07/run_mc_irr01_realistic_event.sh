@@ -3,7 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-mc-irr01-realistic-event-${GITHUB_RUN_ID:-local}-$$"
 rm -rf "$BUILD"; mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+cleanup(){ if [[ ${MC_IRR01_KEEP_BUILD:-0} == 1 ]]; then echo "MC_IRR01_DIAGNOSTIC_BUILD=$BUILD"; else rm -rf "$BUILD"; fi; }
+trap cleanup EXIT
 cd "$ROOT"
 fail(){ echo "MC_IRR01_MANAGEMENT_PHYSICAL_FAIL $*" >&2; exit 1; }
 TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
