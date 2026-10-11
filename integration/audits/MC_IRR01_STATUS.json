@@ -2,9 +2,9 @@
   "schema_version": 1,
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
-  "checkpoint_commit": "d1875355b2bc83514c0852c0caac2b98703c3810",
-  "last_reconciled_head": "d1875355b2bc83514c0852c0caac2b98703c3810",
-  "last_reconciled_upstream": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
+  "last_reconciled_head": "cadcc63d3296e12e6a0634ee7095693454b60005",
+  "last_reconciled_upstream": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -64,8 +64,8 @@
     23,
     29
   ],
-  "next_action": "Run the existing F-APP07 owner gate once on persisted admission candidate d1875355b2bc83514c0852c0caac2b98703c3810, verify required canonical preservation, then admit or return the bounded cluster. Do not repeat owner qualification for metadata-only successors.",
-  "recovery_point": "integration/regie-mc-irr01-admission-20261011@d1875355b2bc83514c0852c0caac2b98703c3810",
+  "next_action": "MC-IRR01 is canonically admitted. Functional-coverage owner PR #1072 must reconcile its moving master from canonical cadcc63d3296e12e6a0634ee7095693454b60005; do not infer unrestricted irrigation coverage from this bounded admission.",
+  "recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
   "qualification": {
@@ -192,8 +192,9 @@
       "irrigation_transaction_restart": false
     },
     "production_physics_changed_by_regie": false,
-    "canonical_admission": false,
-    "status": "PERSISTED_CURRENT_CANONICAL_ADMISSION_CANDIDATE"
+    "canonical_admission": true,
+    "canonical_merge": "cadcc63d3296e12e6a0634ee7095693454b60005",
+    "status": "CANONICALLY_ADMITTED"
   },
   "preservation_reconciliation_20261011": {
     "owner_run": 38114644489,
@@ -203,6 +204,34 @@
     "fci_run": 38114644478,
     "fci_first_attempt": "14 frozen jobs PASS; moving-current guard failed closed on first previously unknown MC-IRR01 source path",
     "repair": "Exact-pin all eleven qualified MC-IRR01 production blobs and rerun the existing complete F-APP07 O0/O2 gate inside moving preservation; no wildcard source allowance",
-    "next_action": "Persist preservation repair, observe the single automatically triggered exact-head owner/F-CI runs to terminal status, then admit only if both pass."
+    "next_action": "Completed by exact-head runs and canonical squash admission."
+  },
+  "canonical_admission_20261011": {
+    "pull_request": 1195,
+    "admission_head": "4ed4fa44c05b93c44d53c2f62a97d2307e29cca9",
+    "canonical_merge": "cadcc63d3296e12e6a0634ee7095693454b60005",
+    "merge_method": "squash",
+    "owner_gate": {
+      "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+      "run_id": 38115056270,
+      "conclusion": "success",
+      "O0_O2": "PASS"
+    },
+    "canonical_preservation": {
+      "workflow": "F-CI canonical qualification",
+      "run_id": 38115056145,
+      "moving_job_id": 114398715430,
+      "conclusion": "success",
+      "frozen_jobs": "ALL_PASS",
+      "moving_current": "PASS"
+    },
+    "qualified_blob_reconciliation": "All production and test blobs in the isolated candidate are byte-identical to qualified integration head 4ed0a6d62eae82f46d9f79d06b764e141474c9e2; only admission metadata and bounded F-CI preservation were advanced.",
+    "coverage_reconciliation": "Bounded capability scope is admitted. The independently owned moving functional-coverage master in PR #1072 must recompute from this canonical merge before publishing fresh global counts.",
+    "production_physics_changed_by_regie": false,
+    "superseded_prs": [
+      1097,
+      1126
+    ],
+    "status": "CANONICALLY_ADMITTED_AND_VERIFIED"
   }
 }
