@@ -159,7 +159,7 @@
       "prepare_seam": "Expose a preparation-only helper from mod_fmr_irrigation_allocation_binding that reuses existing receipt_matches, provider-at-selection logic and frozen event receipt update. Reuse fmr_prepare_sensor_depth_ssdi_forcing / existing root management preparation; do not copy the allocation algorithm into bootstrap.",
       "forcing_order": "Authenticate same weather record and derive ordinary rain/ET/TAV with current common-forcing owner. Resolve accepted irrigation inputs, then add SSDI as its separately accounted spatial source to this already materialized effective forcing. DCS1 rain subtraction must use the historical daily selection amount, not an arbitrary subinterval amount; source-time interpretation requires a literal B1.11 oracle before admission. Literal daily-rain oracle now passes288 cases at O0/O2 with strict-threshold equality and daily-vs-quarter-window negative witness; record integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json. This removes the source-arithmetic unknown, not the shared publication/profile gate.",
       "execution": "Use existing run_standalone_with_forcing/model-bound dispatcher. Calling fmr_run_allocated_* directly instead would bypass the application-owned weather window and dispatcher; existing standalone wrapper success does not qualify the application hook.",
-      "publication": "Keep management/event/weekly/receipt candidates private. Before physical dispatch, prevalidate weather and management admission. Publish both only from an actual completed accepted physical revision and its certificate. Resolve the dispatcher partial-progress/failure case explicitly: reject inconsistent weather/irrigation prefixes or stage the complete joint application through the existing owner checkpoint/continuation mechanisms. Never restore only management after physical state has advanced.",
+      "publication": "Keep management/event/weekly/receipt candidates private. Before physical dispatch, prevalidate weather and management admission. Publish both only from an actual completed accepted physical revision and its certificate. Resolve the dispatcher partial-progress/failure case explicitly: reject inconsistent weather/irrigation prefixes or stage the complete joint application through the existing owner checkpoint/continuation mechanisms. Never restore only management after physical state has advanced. Existing single-column dispatcher atomicity is now physically witnessed at O0/O2: incomplete internally progressed candidates are discarded, while a completed earlier segment remains committed across later segment failure and joint restart. For this profile no extra detached whole-application transaction is justified merely by incomplete one-column dispatch. Managed event splitting still requires irrigation/weather receipts to publish at each completed segment and return the common accepted prefix on later failure. Multi-column batch atomicity is not inherited.",
       "time": "Split intervals at active event end and required owner weather/calendar boundaries using existing scheduler semantics. A request spanning event expiry must neither stretch the source nor lose its tail. Event selection, retry and external-provider freshness occur once at the correct accepted opportunity.",
       "continuation": "Extend fmr_weather_crop_application_continuation_t with schema-tagged irrigation configuration and fmr_allocated_irrigation_restart_t. Capture soil/crop/weather/window/event/weekly/provider identity at a common accepted boundary. Restore and validate all candidate objects before publishing any owner; existing active-object overwrite rejection remains. Opaque joint continuation and external disk codec remain separate claims.",
       "shared_paths_allowed_after_decision": [
@@ -211,6 +211,15 @@
       "head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
       "canonically_admitted": false,
       "observation": "Source comparison only; no qualification inheritance from unadmitted branch. Historical task2 initializer changes the bootstrap and lifecycle persistence. Daystart explicitly refuses delayed emergence once historical prep/sow/germination flags are complete."
+    },
+    "existing_publication_boundary_qualification_20261011": {
+      "record": "integration/audits/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.json",
+      "scope": "Actual admitted one-column root-free weather application; no inserted irrigation",
+      "result": "PASS internal accepted incomplete rollback, complete common-prefix preservation, joint opaque restart and clean retry O0/O2",
+      "does_not_accept_shared_interface": true,
+      "requalified_crop_pr": 1209,
+      "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7",
+      "file_weather_dayend": false
     }
   },
   "current_owner_reconciliation_20261011": {
