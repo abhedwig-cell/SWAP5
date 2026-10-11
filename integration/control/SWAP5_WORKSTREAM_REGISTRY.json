@@ -1562,6 +1562,43 @@
     "closed_prs": [
       361,
       371
-    ]
+    ],
+    "concurrent_admissions_reconciled": {
+      "canonical_base": "73da18b9395c112a3a4eaa81c9e3fba4414ec8e8",
+      "disposition": "OWNER_ADMISSIONS_VERIFIED_NO_DUPLICATE_MERGE_OR_IMPLEMENTATION",
+      "admissions": [
+        {
+          "pr": 1202,
+          "head": "c3ec083300780cfce027448059ba0cc8b5e651b4",
+          "merge": "d8b2640890203c3444f3d65b8918e31b52cdf74f",
+          "authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011",
+          "archive_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349",
+          "resolved_blocker": "Central non-M1 fixed-K headed derivative binding; no crop lifecycle/fullcap promotion"
+        },
+        {
+          "pr": 1203,
+          "head": "1ec4b281da27fefade4b3fd4a6b68bac8aca982f",
+          "merge": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
+          "authority": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+          "archive_sha256": "2b20f4b2bd2120ded570a6872ba8b58cbe16fdab9a1a064eea0e3771808bc35a",
+          "scope": "Same accepted matrix salt/water sensor12/root24 physical/event restart and negative guards at O0/O2; no independent bottom7 irrigation or fullcap admission"
+        }
+      ],
+      "mutual_dependency_preservation": {
+        "fci93": "All27 exact native compile dependency blobs match the existing manifest at current canonical; accepted-salt binding is outside that closure.",
+        "accepted_salt": "For each restart,root_restart,guards fixture, recursively resolve USE modules over tracked src plus the same two explicit test stubs as its runner. Each closure has176 paths including fixture; all source blobs match qualified PR1203 head and excludes changed Task2 adapter. The manual legacy headcalc compile path, both stubs and all six fixture/runner blobs also match exactly.",
+        "evidence": "Both decoded archive hashes and every recorded raw log hash verified; owner/independent O0/O2 and terminal full moving F-CI PASS retained. Initial failing diagnostics remain negative. No new numerical run needed for unchanged dependency postimages."
+      },
+      "finalizer_and_closures_preserved": "All four finalizer paths and complete evidence archive match b6ee8e97bf23cd408f77bcfb4685a869a51f2e62; prior closure receipts and registry section retained.",
+      "master_handoff": {
+        "pr": 1072,
+        "observed_head": "5680665f7a6b8f73af01c97102a880bc02ea94f5",
+        "comment": 6108731792,
+        "remaining": "Four admitted thermal capabilities still ACTIVE_MIGRATION with stale implementation-absence claims; master owner reconcile from e326931dbc3a518ec93574ba6cdf3024628eaddc. PR1200/1201 bounded annotations retained; add1203 bounded annotation and1202 closed central defect, without fullcap/global-count inference."
+      },
+      "remaining_application_owner_gate": "MC-CROP01 #1197 and central shared bootstrap/dispatcher application/restart contract; exact interface and evidence requirements in integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json. Independent external allocation successor remains irrigation-owner qualification.",
+      "actions": "Zero new Actions/dispatches/recovery refs; zero in-progress runs. The sole queued historical A26 run37642390231 is unrelated old branch4dc02866825c6bcd24de81944c2b39e5fb0ca878 from2026-10-07, not an admission dependency.",
+      "open_pr_census": "26 open:25 bounded/active owner candidates plus canonical integration PR58; both new1202/1203 CLOSED/MERGED, both original361/371 CLOSED/UNMERGED. Existing owner/blocker classifications retained."
+    }
   }
 }
