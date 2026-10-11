@@ -87,6 +87,7 @@
         call require(same_bits(accepted_t,0.0_real64).and.same_bits(before_amount,0.0_real64), &
              'real rejection changed source progress')
         call require(committed%current_revision()==0_int64,'real rejection changed physical revision')
+        write(*,'(A)') 'INT12C_REAL_PREFLIGHT_REJECTION_ZERO_PROGRESS=PASS'
         p%bottom_mode=2
         call prepare_fmr_interception_source_window_trial(owner,endpoints(i),request_amount,status)
         call require(status==FMR_INTWIN_OK,'real rejected physical retry preparation')
@@ -101,6 +102,22 @@
              config,t0,endpoints(i),result,diag,runtime,physical_calls)
       write(*,'(A,I2,2L2,I5,2I5)') 'INT12C_REAL_ENDPOINT_STATUS=',i,result%completed,result%committed, &
            result%kernel_status,result%accepted_substeps,result%solver_rejections
+      write(*,'(A,A,A,6I8)') 'INT12C_REAL_DIAGNOSTICS=',trim(result%admission_status), &
+           ' attempts/retries/temporal/mass/headcalc/solver-status=',diag%attempts,diag%retries, &
+           result%temporal_rejections,result%mass_rejections,result%solver_headcalc_calls,result%solver_status
+      if(.not.result%committed)then
+        call accept_fmr_interception_source_window_result(owner,result%column_id,result%requested_t0, &
+             result%requested_t1,result%committed,result%accepted_substeps,result%initial_revision, &
+             result%final_revision,result%final_committed_time,result%final_committed_time_bound,accepted_amount,status)
+        call require(status==FMR_INTWIN_NO_ACCEPTED_COMMIT,'failed endpoint advanced source adapter')
+        call fmr_interception_source_window_progress(owner,accepted_t,before_amount,complete,status)
+        call require(same_bits(accepted_t,t0).and.same_bits(before_amount,accepted_sum), &
+             'failed endpoint changed source progress')
+        call require(committed%current_revision()==initial_revision,'failed endpoint changed physical revision')
+        call committed%current_time(reported_time,ok)
+        call require(ok.and.same_bits(reported_time,t0),'failed endpoint changed physical time')
+        write(*,'(A)') 'INT12C_REAL_FAILED_ENDPOINT_ZERO_PROGRESS=PASS'
+      end if
       call require(result%completed.and.result%committed,'real physical endpoint completed and committed')
       call require(result%solver_headcalc_calls>0,'real physical endpoint actually executed HeadCalc')
       call require(result%mass%complete.and.abs(result%mass%residual)<=hard_mass_gate,'real endpoint hard mass')

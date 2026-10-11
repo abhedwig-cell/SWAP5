@@ -7,7 +7,7 @@
   "candidate_source_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
   "candidate_source_recovery": "tests/fpm/recovered/mod_fmr_interception_source_window_binding.f90",
   "implementation_status": "isolated qualification fixture implemented; no production changes",
-  "test_status": "pending O0/O2 real FMR execution on persisted fixture",
+  "test_status": "initial O0 positive gate failed at first endpoint; persisted additional diagnostics and both-optimization failure capture before rerun",
   "qualification_status": "not admitted; original ten admission gates remain authoritative",
   "scope": "Admitted PMdirect SWINTER1 daily vector apportioned to 0.01 day, four unequal spans, fixed-flux net-rain receiver, root inactive. Actual FMR committed-result fields feed byte-exact recovered candidate adapter.",
   "endpoints_days": [0.002, 0.004, 0.007, 0.01],

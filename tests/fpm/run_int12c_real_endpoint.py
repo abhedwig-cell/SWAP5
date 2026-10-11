@@ -47,6 +47,7 @@ markers = ['FMR44R_MODE2_EQUILIBRIUM_TRANSACTION=PASS',
            'INT12C_REAL_PREFLIGHT_REJECT_RETRY_PROGRESS=PASS',
            'INT12C_REAL_COMPANION_PROGRESS_RESTORE=PASS',
            'INT12C_REAL_NET_RAIN_AND_INTERCEPTION_ACCOUNTING=PASS']
+results = []
 with tempfile.TemporaryDirectory(prefix='swap5-int12c-real-') as temp:
     for opt in [0, 2]:
         out = Path(temp)/('o'+str(opt))
@@ -60,11 +61,13 @@ with tempfile.TemporaryDirectory(prefix='swap5-int12c-real-') as temp:
         exe = out/'test'
         subprocess.run(['gfortran', '-fopenmp', '-O'+str(opt), *objects, '-o', str(exe)], check=True)
         with (evidence/('o'+str(opt)+'.txt')).open('wb') as stdout:
-            subprocess.run([str(exe)], stdout=stdout, stderr=subprocess.STDOUT, check=True)
+            run = subprocess.run([str(exe)], stdout=stdout, stderr=subprocess.STDOUT)
         output = (evidence/('o'+str(opt)+'.txt')).read_text()
         print(output, end='', flush=True)
-        for marker in markers:
-            assert marker in output, marker
-        print('INT12C_REAL_O'+str(opt)+'=PASS', flush=True)
+        results.append({'optimization': opt, 'returncode': run.returncode,
+                        'missing_markers': [marker for marker in markers if marker not in output]})
+        print('INT12C_REAL_O'+str(opt)+'_RETURN_CODE='+str(run.returncode), flush=True)
+(evidence/'results.json').write_text(json.dumps(results, indent=2)+'\n')
+assert all(r['returncode'] == 0 and not r['missing_markers'] for r in results), 'real endpoint positive gate failed; both optimization results preserved'
 assert (evidence/'o0.txt').read_bytes() == (evidence/'o2.txt').read_bytes(), 'O0/O2 semantic drift'
 print('INT12C_REAL_O0_O2_SEMANTIC_IDENTITY=PASS')
