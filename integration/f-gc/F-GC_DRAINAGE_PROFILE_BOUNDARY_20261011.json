@@ -1,0 +1,36 @@
+{
+  "work_unit": "F-GC-DRAINAGE-PROFILE-BOUNDARY-20261011",
+  "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "status": "PREREGISTERED_CURRENT_SOURCE_COMPONENT_REPLAY_PENDING",
+  "owner": "central F-GC; RT/HY owns physical drainage/head-profile extension",
+  "invariants": [7, 12, 13, 14, 23, 28, 30],
+  "production_delta": "NONE",
+  "interfaces_changed": "NONE",
+  "historical_authorities": [
+    "integration/f-ci/F-CI98_STATUS.json",
+    "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_PREREGISTRATION.md",
+    "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.md",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json"
+  ],
+  "original_fixture_head": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
+  "original_fixture_blob": "d3bce268758ec489accab7e10888655bf14dc910",
+  "test_paths": [
+    "tests/fgc/recovered/test_fgc31_active_drainage_production_tangent.f90",
+    "tests/fgc/run_fgc31_current_drainage_profile_boundary.sh"
+  ],
+  "scope": "Replay original F-GC31 physical fixture and unchanged six assertions against current production dependencies; add actual materializer/backend mode5 negative control with physical-origin/provenance preservation.",
+  "harness_changes": "Recover historical owner driver, add separate negative-control subroutine; complete current compile dependencies with existing augment helper. No original physical parameters, FD epsilon, tolerances or scientific assertions changed.",
+  "preregistered_gates": [
+    "Original multi-substep active-drainage physical tangent fixture at O0/O2",
+    "Original coverage, same-backend centered FD, physical identity and no extra nonlinear solve assertions",
+    "Actual head materializer preserves active controls; backend rejects smooth mode5 before transaction",
+    "Rejected mode5 candidate unavailable, zero transaction calls/accepted steps, physical origin and revision/time preserved",
+    "O0/O2 exact stdout identity"
+  ],
+  "stop_rule": "Report actual failure; do not widen the backend profile or weaken old assertions to obtain a coupled fixture.",
+  "not_claimed": ["Live MODFLOW drainage", "Joint mixed-path drainage", "Production active-drainage admission", "Joint restart qualification"],
+  "tested": false,
+  "qualified": false,
+  "next_action": "Run persisted current-source component replay at O0/O2; classify profile intersection and record exact evidence.",
+  "remaining_shared_gate": "Define reviewed head-driven SWAP drainage response/storage semantics and route carrier; then physical distinct-path SWAP/MODFLOW budgets, tangents, transaction and restart qualification."
+}
