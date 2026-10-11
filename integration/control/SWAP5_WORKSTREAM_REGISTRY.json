@@ -226,24 +226,22 @@
         "Publication tooling must consume canonical capability; it does not confer production authority."
       ],
       "open_prs": [
-        359,
         371,
         389,
         181,
         199,
-        207,
-        217,
         218,
         219,
-        187
+        587
       ],
       "current_blockers": [
-        "PR #486 creates a shared-authority watch: the old E7 application-domain interpretation may be superseded if the coupling-semantics repair is qualified and admitted.",
+        "PR #486 holds submission on CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP.",
         "PUB-GC release/archive finalization still depends on explicit release/licence/archive metadata.",
-        "PUB-P2E03 first calibration matrix remains an immutable blocked experiment.",
+        "PUB-P2E03 first calibration matrix and first D2 attempt are immutable negative evidence preserved before closing their completed historical carriers.",
         "PUB-ME PR stack is research evidence and requires owner-side consolidation rather than central replay."
       ],
-      "next_gate": "Publication owners reconcile their branches to current canonical and return only cross-workstream admission/preservation changes to central regie."
+      "current_reconciliation": "publication_regie_closeout_20261011; #187/#207/#217 completed historical carriers closed and #359 qualified presentation-tooling successor admitted at38129aba14e44b70bb436feee46c10922cb5ea56",
+      "next_gate": "Publication owners resolve the exact remaining gates in publication_regie_closeout_20261011; final release/submission holds remain."
     }
   ],
   "open_pr_inventory": [
@@ -290,12 +288,6 @@
       "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"
     },
     {
-      "pr": 359,
-      "class": "OWNER_CONTROLLED",
-      "owner": "PUBLICATIONS",
-      "action": "RECONCILE_AND_CONTINUE_IF_STILL_REQUIRED"
-    },
-    {
       "pr": 371,
       "class": "RECONCILE_REQUIRED",
       "owner": "PUBLICATIONS",
@@ -314,25 +306,7 @@
       "action": "RECONCILE_PORTFOLIO_DOCUMENTATION_BEFORE_ANY_MERGE"
     },
     {
-      "pr": 187,
-      "class": "BLOCKED_HISTORICAL_EXPERIMENT",
-      "owner": "PUBLICATIONS",
-      "action": "DO_NOT_MERGE_AS_POSITIVE_EVIDENCE"
-    },
-    {
       "pr": 199,
-      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
-      "owner": "PUBLICATIONS",
-      "action": "OWNER_CONSOLIDATION_REQUIRED"
-    },
-    {
-      "pr": 207,
-      "class": "BLOCKED_HISTORICAL_EXPERIMENT",
-      "owner": "PUBLICATIONS",
-      "action": "PRESERVE_NEGATIVE_EVIDENCE_DO_NOT_MERGE_AS_POSITIVE_RESULT"
-    },
-    {
-      "pr": 217,
       "class": "OWNER_CONTROLLED_RESEARCH_STACK",
       "owner": "PUBLICATIONS",
       "action": "OWNER_CONSOLIDATION_REQUIRED"
@@ -1181,7 +1155,7 @@
   },
   "publication_regie_closeout_20261011": {
     "canonical_base": "a787f6340328a06885a145f6d88a52d921a458e7",
-    "stage": "EXPORT_QUALIFIED_CANONICAL_IMPORT_AND_FOUR_CLOSURES_PENDING",
+    "stage": "FOUR_PR_CARRIERS_CLOSED_EXPORT_CANONICALLY_ADMITTED",
     "canonical_evidence_checkpoint": "d620326cd0adfe7e2d1e27ca55704a83b230663e",
     "canonical_evidence_tree": "763d8b98cc80d570eda14dda410eec05d39c3d8a",
     "archive": {
@@ -1197,7 +1171,7 @@
         "head": "64a500cfecf76217ed5589026aae8d69c313fc53",
         "original_branch": "work/pub-p2e03-reference-calibration-matrix",
         "owner": "PUB-P2E03 reference calibration",
-        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_EXPERIMENT_READY_FOR_CLOSURE",
+        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_EXPERIMENT_CLOSED",
         "files": 8,
         "result": "First matrix at O0:47/162 valid,115 invalid; no prospective threshold and no RossFast execution. Original failed calibration remains negative. Later P2E04 adjudication and P2E09 threshold freeze are separate authorities.",
         "runs": [
@@ -1221,14 +1195,15 @@
             "result": "SUCCESS",
             "role": "historical F-CI"
           }
-        ]
+        ],
+        "state": "CLOSED_UNMERGED"
       },
       {
         "pr": 207,
         "head": "85cd4aca49fceb4a33d31a9e47d6be3b9fa1f684",
         "original_branch": "work/pub-me-d2-retry-accounting",
         "owner": "PUB-ME D2 retry-accounting",
-        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_FIRST_ATTEMPT_READY_FOR_CLOSURE",
+        "disposition": "COMPLETED_IMMUTABLE_BLOCKED_FIRST_ATTEMPT_CLOSED",
         "files": 5,
         "result": "First attempt failed compilation with divergent stub dependencies; neither CLEAN nor MUTANT executed. It has no detection or production-defect verdict. Later canonical PUB-ME_D2_RESULT.json is a separate successful experiment.",
         "runs": [
@@ -1247,14 +1222,15 @@
             "result": "SUCCESS",
             "role": "historical F-CI"
           }
-        ]
+        ],
+        "state": "CLOSED_UNMERGED"
       },
       {
         "pr": 217,
         "head": "68074c4fa3b5edb21cb0c51f39d43548e174c6be",
         "original_branch": "work/pub-me-cross-defect-adjudication",
         "owner": "PUB-ME scientific programme",
-        "disposition": "COMPLETED_HISTORICAL_NARROWED_CLAIM_ADJUDICATION_READY_FOR_CLOSURE",
+        "disposition": "COMPLETED_HISTORICAL_NARROWED_CLAIM_ADJUDICATION_CLOSED",
         "files": 4,
         "result": "GO_NARROWED_CLAIM__NOT_MANUSCRIPT_READY. D1/D3 structural prevention; D2/D4/D5/D6 earlier detection. No unique/higher ultimate detection, whole-model equivalence or statistical independence claim. Archive preserves historical synthesis without inheriting current dependency qualification.",
         "runs": [
@@ -1270,7 +1246,8 @@
           "G3:production warm-start invariance",
           "G4:additional qualified hydrologic replication",
           "G5:dated backward/forward literature closure"
-        ]
+        ],
+        "state": "CLOSED_UNMERGED"
       }
     ],
     "export_admission": {
@@ -1293,7 +1270,12 @@
         "members": 9,
         "contents": "Both manifests, original failure and second-export logs, qualification and original/qualified2-path postimages."
       },
-      "preservation": "src/tests/reference equal live73796d85; concurrent #1201 exact source/tests owner postimage and full local F-CI archive verified. Export dependencies (SVGs/plan) unchanged since qualified4762447; no numerical requalification needed."
+      "preservation": "src/tests/reference equal live73796d85; concurrent #1201 exact source/tests owner postimage and full local F-CI archive verified. Export dependencies (SVGs/plan) unchanged since qualified4762447; no numerical requalification needed.",
+      "canonical_commit": "38129aba14e44b70bb436feee46c10922cb5ea56",
+      "canonical_tree": "7ea8e9f6f99df582093eeb73ee64372bb6aa6596",
+      "canonical_verified": true,
+      "disposition": "SELECTIVE_QUALIFIED_TOOLING_ADMISSION_ORIGINAL_PR_CLOSED_UNMERGED",
+      "canonical_admission_lease_base": "d8414c1ba11bee9f061622fd2495f631a57d2383"
     },
     "remaining_blockers": [
       {
@@ -1364,9 +1346,14 @@
       "new_capability_admissions": 0,
       "new_manually_dispatched_actions": 0,
       "new_recovery_refs": 0,
-      "docs": "PASS documentation source, strict MkDocs and JSON"
+      "docs": "PASS documentation source, strict MkDocs and JSON",
+      "pr_states": "ALL_FOUR_CLOSED_UNMERGED_AND_ORIGINAL_HEADS_UNCHANGED",
+      "canonical_full_tree": "PASS_FETCHED_TREE7ea8e9f6f99df582093eeb73ee64372bb6aa6596_MATCHES_LOCAL_POSTIMAGE",
+      "new_automatic_actions": 0,
+      "new_canonical_actions": 0,
+      "coverage": "Bounded #1201 irrigation annotation and previous four thermal dispositions handed to active master1072; no global count/capability promotion."
     },
-    "next_action": "Publish qualified bounded export/evidence and current control record under canonical SHA lease; verify full tree; then close187207217 and359 with receipts; retain owner blockers and publication hold.",
+    "next_action": "Four carriers are closed and presentation-tooling successor admitted. Publication owners resolve the exact remaining seven blocker groups; central shared admission authority retains #486 holds. Preserve active specialized implementation and master1072 ownership.",
     "canonical_admission_base": "73796d85ba8de962673390a40d1be54e9c152d53",
     "concurrent_admission_reconciled": {
       "pr": 1201,
@@ -1378,6 +1365,29 @@
       "archive_sha256": "0c53413b424d4f9d57621293076698fc18be9cb8a2037ead8141eb532b9faf0b",
       "verification": "All owner log SHA256 and canonical src/tests identities verified; full moving F-CI log ends FCI_CANONICAL_LINEAGE_AWARE_GATE PASS. Preserve owner admission without production edits or reruns.",
       "scope": "Configured scalar root salt, realistic sensor half-event restart and source-off; actual accepted solute concentration binding remains separate, no fullcap promotions."
-    }
+    },
+    "closure_comments": {
+      "187": 6108514300,
+      "207": 6108514640,
+      "217": 6108514976,
+      "359": 6108515347
+    },
+    "classification_comments": {
+      "181": 6108518930,
+      "199": 6108519029,
+      "218": 6108519194,
+      "219": 6108519297,
+      "365": 6108519397,
+      "371": 6108519497,
+      "389": 6108519607,
+      "587": 6108519737
+    },
+    "coverage_handoff_comment": 6108519849,
+    "closed_prs": [
+      187,
+      207,
+      217,
+      359
+    ]
   }
 }
