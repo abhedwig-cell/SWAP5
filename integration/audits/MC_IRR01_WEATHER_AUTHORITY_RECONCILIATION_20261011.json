@@ -1,0 +1,128 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "phase": "LOCAL_SOURCE_POLICY_VERIFIED_SHARED_INTERFACE_DECISION_OPEN",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "scope": "Irrigation-owned source rain policy oracle and current crop/application dependency reconciliation; no shared production interface change",
+  "recovery_branch": "work/mc-irr01-weather-authority-20261011",
+  "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+  "test_paths": [
+    "tests/mc-irr01/run_mc_irr01_literal_daily_rain.py"
+  ],
+  "held_fixed": [
+    "all production code",
+    "all shared interface decisions",
+    "five admitted and eleven active fullcap dispositions",
+    "existing numerical and mass acceptance policies"
+  ],
+  "blockers": [
+    "Shared managed-weather publication and joint continuation interface still requires central RT/HY with MC-CROP01 decision."
+  ],
+  "source_authority": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+  "crop_admission": {
+    "pr": 1207,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+    "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+    "merge_commit": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "verified_merge_tree": "ff7e271145e4fa2bed4cfc91d9b91a6460f471cb",
+    "verified_source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "scientific_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "canonical_source_archive_and_execution_dependency_verification": "PASS",
+    "full_capability": false,
+    "scope": "Bounded authentic daily rooted production, delayed physical emergence and four active growth completions; full historical day-end/harvest/rotation/fallow and external disk restart remain open."
+  },
+  "relevant_paths": [
+    "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json",
+    "integration/audits/MC_IRR01_STATUS.json",
+    "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/process/mod_scheduled_irrigation_management_policy.f90"
+  ],
+  "checkpoint_commit": "d4a233592f0ec5b02ba8c4c6b76afc34ab222ad6",
+  "last_reconciled_upstream": "767503dfeac3ea5f550a2925a02ef2a906262865",
+  "qualification": {
+    "source_policy_oracle": "PASS_O0_O2_288_CASES",
+    "shared_application_hook": false,
+    "canonical_admitted": false,
+    "fullcap_promotions": 0,
+    "command": "python tests/mc-irr01/run_mc_irr01_literal_daily_rain.py",
+    "log_sha256": "fadf9acff12128cc080906bd79a3f6804a19849af6c0493db6c71ae36728e04c",
+    "test_git_blob": "bf5143486e1d28e074526171dfe6633b443b2850",
+    "policy_git_blob": "2f135457852c7256d25c19afc9eba3dd06b52f4b",
+    "scope": "Literal extracted B1.11 DCS1/DCS2 rainfall/depth/limit arithmetic, ordinary standalone daystart ordering and daily meteo assignment/sum. Detailed forcing trajectories, DLL/MultiSWAP timing and managed production application are not qualified."
+  },
+  "current_dependency_postimages": {
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "851cb80954e1be909f6ec54661c0b12b80f225cd",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90": "39b4f75c92ea44d6b4e4be326ddf731f54522dfd",
+    "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90": "14b8d5e07c7abb08416a3d64e05fc06e9737af4a",
+    "src/runtime/mod_fmr_irrigation_allocation_binding.f90": "ab5ac97c5017da9ba0560e674fb5888e422de5e5",
+    "src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90": "649143a63dd29df8e1ec5b15ac75e8244d05c87f",
+    "src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90": "a9ba5313efc564fd26d3951457aa40f1d92cb214",
+    "src/process/mod_scheduled_irrigation_management_policy.f90": "2f135457852c7256d25c19afc9eba3dd06b52f4b"
+  },
+  "remaining_root_authority": "Current bootstrap derives uptake from accepted crop owner DVS plus configured file_weather_root_depth/root_density/maximum_root_depth; it does not read snapshot_root_growth. Positive physical uptake is admitted, but this is not independent proof of evolving-root management threshold authority.",
+  "source_selection_rule": {
+    "ordinary_daily": "Meteo(2) before Irrigation(3), before timestep Meteo(3); grai=arai(meteo_rec)",
+    "detailed_daily": "grai=sum of arai(i_rec) over daily detailed records",
+    "rain_threshold": "Strict grai > raithreshold. Equality makes no deduction.",
+    "DCS1": "Whole daily gross rain deduction before depth clipping; DCS2 remains independent of rain.",
+    "negative_witness": "Daily rain0.6cm, threshold0.5cm, cdef2cm, adjustment-1mm:1.3cm gift. Quarter-day rain0.15cm incorrectly yields1.9cm.",
+    "claim_limit": "Standalone scheduled daily selection only; no DLL/MultiSWAP or interception/snow temporal equivalence claimed."
+  },
+  "unchanged_surfaces": {
+    "production_code": true,
+    "workflows": true,
+    "existing_runners": true,
+    "master_ledger": true,
+    "fullcap_counts": {
+      "admitted": 5,
+      "active": 11
+    }
+  },
+  "evidence": {
+    "archive": "integration/audits/evidence/MC_IRR01_DAILY_RAIN_SOURCE_POLICY_20261011.tar.gz.b64",
+    "decoded_sha256": "03b81b7988f73f38d535c09e67a58d7775b1b262a48f9d26fe2bd514a47ce4c0",
+    "members": 3
+  },
+  "validation": {
+    "documentation_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "archive_source_postimages_and_16_dispositions": "PASS",
+    "whitespace": "PASS",
+    "full_FCI": "NOT_REQUIRED_FOR_THIS_TEST_AND_AUTHORITY_ONLY_DELTA_NO_PRODUCTION_OR_EXISTING_EXECUTION_SURFACE_CHANGE"
+  },
+  "remote_destination_verification": {
+    "repository_full_name": "abhedwig-cell/SWAP5",
+    "repository_id": 1357193305,
+    "visibility": "public",
+    "connected_account_push_permission": true,
+    "clone_url": "https://github.com/abhedwig-cell/SWAP5.git",
+    "scope": "Dedicated noncanonical branch; public-source oracle and authority reconciliation only; no production, workflows, existing runners or master changes"
+  },
+  "remote_persistence": {
+    "completed": true,
+    "local_review_head": "e3f4b3c4",
+    "blocked_action": "Push dedicated work/mc-irr01-weather-authority-20261011 branch to https://github.com/abhedwig-cell/SWAP5.git",
+    "automatic_approval_review": "REJECTED",
+    "stated_reason": "Transcript lacks end-user authorization specifying this code/audit/evidence payload and public GitHub destination. Public visibility and connected account push permission were verified, but publication remained rejected.",
+    "required_next_step": "Resolved by explicit user continuation authorization and supported connected Git-data publication; prior rejected push retained as history.",
+    "historical_blocker_resolved": true,
+    "initial_rejection_retained_as_history": true
+  },
+  "publication_recovery_20261011": {
+    "explicit_user_authorization": "Ga door following the exact branch/payload publication request",
+    "direct_git_push": "Failed: could not read Username for https://github.com: No such device or address",
+    "supported_fallback": "Connected GitHub Git-data API, with exact local/remote blob and tree verification",
+    "canonical_reconciled": "767503dfeac3ea5f550a2925a02ef2a906262865",
+    "delta": "Seven isolated drainage documentary/fixture/evidence paths; no production or irrigation dependency changes; preserve both PROJECT-CONTROL additions and both registry updates.",
+    "remote_complete": true,
+    "remote_head": "1b7a46510ce35031bfbe73248f78a2d28e409d36",
+    "remote_tree": "63b0417696d634127a0752d778568af1e1c6d2d2",
+    "remote_blobs_verified": 8,
+    "pull_request": 1208,
+    "canonical_admitted": false
+  }
+}
