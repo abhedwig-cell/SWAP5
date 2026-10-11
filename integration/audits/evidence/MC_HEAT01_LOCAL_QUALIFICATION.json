@@ -92,6 +92,15 @@
       ],
       "branch_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
       "canonical_head": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+      "canonical_replay_provenance": {
+        "previous_execution": "SUPERSEDED: the earlier shell command created a canonical worktree but ran the gate from the MC-HEAT01 worktree; that execution did not prove baseline equivalence.",
+        "verified_execution_directory": "/tmp/swap5-baseline-verify-gB5tjI",
+        "head_checked_before_execution": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+        "canonical_backend_blob": "b218ac657db52612bc12da671716c97430200f0a",
+        "exit_code": 1,
+        "full_compilation_and_runtime_log_sha256": "cb54ec822d21e638bd315c5ab91b44f24051308287d11bbb2cb3ebd34a546583",
+        "result": "The correctly located replay reproduces the same O0 outflow assertion failure and supports the inherited-baseline classification."
+      },
       "branch_terminal_markers": [
         "EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS",
         "EB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS",

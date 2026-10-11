@@ -101,12 +101,17 @@
     "pull_request": 1196,
     "adjudicated_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
     "adjudicated_tree": "c682392fd9736e61554e9d95ae53b0efc98f6307",
-    "mergeable": true,
+    "mergeability_observation": "Connector reported mergeable=false for bb11e73cb484dda681a36caf0cb372b1a6cdf7ca. This boolean alone does not identify conflicts or required-check policy; central regie must independently inspect the merge state.",
+    "final_workflow_head": "bb11e73cb484dda681a36caf0cb372b1a6cdf7ca",
+    "final_workflow_census": {"total": 55, "success": 26, "failure": 29, "nonterminal": 0},
+    "central_handoff_pr": 58,
+    "central_handoff_comment_id": 6106500226,
+    "canonical_replay_provenance_correction": "The earlier baseline attempt executed in the wrong worktree. A fresh explicit-working-directory replay on e3b9685470639355e1899b95c25f9a7ddee15fe6 now confirms the inherited EB-I25 failure. Exact provenance is in the qualification evidence.",
     "mastercoverage_handoff_pr": 1072,
     "mastercoverage_handoff_comment_id": 6105981484,
     "remote_check_adjudication_comment_id": 6106017024,
     "actions_policy": "No workflow was manually dispatched or rerun. Repository-wide path-insensitive and historical exact-postimage checks were adjudicated against their owning baselines."
   },
   "qualification_evidence": "integration/audits/evidence/MC_HEAT01_LOCAL_QUALIFICATION.json",
-  "next_action": "Publish the exact rebased postimage for central admission of the four qualified capabilities; reconcile PR #1072 through its existing coverage owner; keep SW431-TEMP-SNOW open until a combined Snow/thermal optional-state layout and event-order contract is owner-admitted."
+  "next_action": "Central F-CI/regie must reconcile PR #1196 and independently adjudicate merge/check state before canonical admission. Mastercoverage changes remain with PR #1072's owner. Keep SW431-TEMP-SNOW open until a combined Snow/thermal optional-state layout and event-order contract is owner-admitted."
 }
