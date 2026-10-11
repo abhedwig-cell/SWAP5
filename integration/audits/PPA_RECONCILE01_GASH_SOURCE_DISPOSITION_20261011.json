@@ -1,0 +1,74 @@
+{
+  "schema": "swap5.ppa_reconcile01.gash_source_disposition.v1",
+  "work_unit": "PPA-RECONCILE01-GASH-SOURCE-DISPOSITION",
+  "canonical_base": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+  "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+  "tested_remote_checkpoint": "7d1615436fefdb8bfafe6d81c0f158a58eec8a38",
+  "tested_tree": "f758eb210c29eba49102ac53afcc93753ab7fb56",
+  "scope": "Actual compiled historical Gash and shared partition helper versus existing admitted daily SWINTER2 process/application on640 valid one-day constant-table inputs and six partition edges. Not general API/units equivalence, historical whole-runtime execution or physical E2E qualification.",
+  "source_authority": "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json: admitted23a5768771a93a338daba78ab117682ee1e459f2 explicitly preserves grai rather than rpd and daily0.001cm partition threshold. No new physical correctness verdict about this legacy rule.",
+  "tested": true,
+  "qualified": true,
+  "qualified_scope": "BOUNDED_DIAGNOSTIC_AND_SOURCE_RECOVERY_DISPOSITION_ONLY",
+  "driver_stdout": "PR700_GASH_SOURCE|CASES=640|COMMON=580|BRANCH_DIFFERENT=60\nPR700_GASH_PARTITION|CASES=6|THRESHOLD_DIFFERENT=2\nPR700_GASH_NOT_SAME_POLICY_SUPERSESSION=PASS\n",
+  "driver_stdout_sha256": "f17579c37138d6d30dfdbd336e72b321631b7e982579dba8a954fef3deeb1abd",
+  "runner_identity_marker": "PR700_GASH_SOURCE_DISPOSITION_O0_O2_IDENTITY=PASS",
+  "observations": {
+    "Gash_vectors": 640,
+    "bounded_common_formula": 580,
+    "rain_plus_irrigation_crossing_differences": 60,
+    "partition_edges": 6,
+    "1e_minus5_vs1e_minus3_threshold_differences": 2,
+    "optimization": "O0 and O2; complete diagnostic stdout byte-identical",
+    "tolerance": 1e-14
+  },
+  "owner_replay": {
+    "command": "bash tests/fpm/run_f_mig431_int12_d.sh",
+    "terminal_exit": 0,
+    "stdout": " F-MIG431-INT12-D GASH PROCESS PASS\n F-VQ INT12-D INDEPENDENT GASH ORACLE PASS\n F-MIG431-INT12-D P0 COMPOSITION PASS\n F-MIG431-INT12-D DAILY APPLICATION PASS\nF-MIG431-INT12-D-O0-O2=PASS\n",
+    "scope": "Existing process/independent/P0 retry-restart/daily snow-partition-wet-canopy owner vectors and O0/O2 output identity; not application-wide admission."
+  },
+  "historical_graph_disposition": [
+    {
+      "path": "src/process/mod_gash_interception.f90",
+      "blob": "e6005eb1d3965f8da44bb88038ba1db518638727",
+      "disposition": "DO_NOT_REPLAY_UNCHANGED_FOR_ADMITTED_DAILY_GASH",
+      "basis": "Compiled source-policy mismatch"
+    },
+    {
+      "path": "src/adapter/mod_ppa_wu04d_gash_forcing_adapter.f90",
+      "blob": "f23c7fafdf861339604f9cc9fed6d966ca425198",
+      "disposition": "DO_NOT_REPLAY_UNCHANGED_FOR_ADMITTED_DAILY_GASH",
+      "basis": "Exact archived source imports and propagates the tested mismatched Gash/partition policy; adapter itself was not compiled in the diagnostic."
+    },
+    {
+      "path": "src/adapter/mod_ppa_wu04d_production_forcing_adapter.f90",
+      "blob": "7af46c4d3fd06d7a229b8649ac9334a9b7674afe",
+      "disposition": "DO_NOT_REPLAY_UNCHANGED_FOR_ADMITTED_DAILY_GASH",
+      "basis": "Exact archived source imports and propagates the tested mismatched Gash/partition policy; adapter itself was not compiled in the diagnostic."
+    }
+  ],
+  "canonical_targets": [
+    {
+      "path": "src/process/mod_gash_interception_process.f90",
+      "blob": "5e79e6e576f45a38f7ea297cb46a5d95454508ca"
+    },
+    {
+      "path": "src/process/mod_gash_daily_application.f90",
+      "blob": "090f46b0a91cb5dfba0441767210540d256ea765"
+    },
+    {
+      "path": "src/runtime/mod_gash_source_window_binding.f90",
+      "blob": "f2f90c73a198cabf3a5f0ce68fc6595575502b91"
+    },
+    {
+      "path": "src/runtime/mod_interception_source_window_runtime.f90",
+      "blob": "ce18e441907eb24e142d226ff19230611e9dafee"
+    }
+  ],
+  "negative_oracles_retained": true,
+  "original_PR700": "OPEN; all other source/runtime rows retain owning decisions. No wholesale supersession.",
+  "coverage_delta": 0,
+  "production_reference_workflow_changed": false,
+  "next_action": "Use admitted INT12-D for its existing daily scope; retain the historical graph as dated incompatible source evidence. Other historical source mappings and application composition remain owner-controlled."
+}

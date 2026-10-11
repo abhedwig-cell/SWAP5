@@ -1703,12 +1703,12 @@
           "work_unit": "PPA-RECONCILE01-GASH-SOURCE-DISPOSITION",
           "canonical_base": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
           "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
-          "status": "PERSISTED_DIAGNOSTIC_NOT_YET_TESTED",
+          "status": "QUALIFIED_BOUNDED_NONCANONICAL_POLICY_MISMATCH_READY_FOR_RECONCILIATION",
           "implemented": true,
           "persisted": true,
-          "tested": false,
-          "qualified": false,
-          "next_action": "Run exact historical/current paired640 Gash inputs and six partition edges at O0/O2; rerun existing INT12-D owner/independent gates; verify admitted FCI93 compile identities before reconciling its stale discrepancy row.",
+          "tested": true,
+          "qualified": true,
+          "next_action": "Use admitted INT12-D for its existing daily scope; retain the historical graph as dated incompatible source evidence. Other historical source mappings and application composition remain owner-controlled.",
           "scope": "Verification and source-recovery disposition only; production/reference unchanged, no physical equivalence or fullcap claim.",
           "interfaces_changed": false,
           "invariants_affected": [],
@@ -1724,7 +1724,19 @@
             "tests/fpm/run_f_mig431_int12_d.sh"
           ],
           "recovery_point": "qualification/regie-pr700-interception-map-20261011",
-          "blocked_science": "Original PR700 shared runtime/source admission is still owner-controlled; this diagnostic cannot authorize a production repair or whole-tree merge."
+          "blocked_science": "Original PR700 shared runtime/source admission is still owner-controlled; this diagnostic cannot authorize a production repair or whole-tree merge.",
+          "checkpoint_commit": "7d1615436fefdb8bfafe6d81c0f158a58eec8a38",
+          "checkpoint_tree": "f758eb210c29eba49102ac53afcc93753ab7fb56",
+          "result_record": "integration/audits/PPA_RECONCILE01_GASH_SOURCE_DISPOSITION_20261011.json",
+          "coverage_delta": 0,
+          "fci93_discrepancy_reconciliation": {
+            "source_admission": "d8b2640890203c3444f3d65b8918e31b52cdf74f",
+            "PR": 1202,
+            "current_native_compile_blob_matches": 27,
+            "archive_decoded_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349",
+            "all6_raw_log_hashes": "VERIFIED; original negative prototype exit1 remains negative",
+            "disposition": "Close stale TCD-FSI35-HEADED-DERIVATIVE row for the admitted bounded non-M1 SWKIMPL0 repair; retain diagnosis as historical evidence. No general headed or global preservation claim."
+          }
         }
       },
       {

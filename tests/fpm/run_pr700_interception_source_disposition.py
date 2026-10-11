@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Compare exact PR700 source with the accepted daily Gash policy, not E2E physics."""
+import base64
 import hashlib
+import io
 import json
 from pathlib import Path
 import subprocess
 import tempfile
+import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 OLD = "5fcd9769c30379f461ce047f410638b0d3311f96"
@@ -20,7 +23,14 @@ def git(*args):
 
 def main():
     report = json.loads((ROOT / "integration/audits/PPA_RECONCILE01_CURRENT_LINEAGE_20261011.json").read_text())
+    assert report["historical_head"] == OLD
     rows = {r["path"]: r for r in report["rows"]}
+    encoded = (ROOT / report["archive"]["path"]).read_bytes()
+    archive_bytes = base64.b64decode(encoded)
+    assert hashlib.sha256(archive_bytes).hexdigest() == report["archive"]["decoded_sha256"]
+    # Canonical archive first: a fresh clone need not fetch an old owner branch.
+    with tarfile.open(fileobj=io.BytesIO(archive_bytes), mode="r:gz") as archive:
+        historical_sources = {path: archive.extractfile("original/" + path).read() for path in OLD_PATHS}
     current = git("rev-parse", CURRENT).decode().strip()
     receipt = json.loads((ROOT / "integration/audits/F-MIG431-INT12-D_CLOSEOUT.json").read_text())
     assert receipt["status"] == "CANONICAL_ADMITTED_CLOSED"
@@ -30,8 +40,8 @@ def main():
         build = Path(directory)
         sources = []
         for path in OLD_PATHS:
-            raw = git("show", OLD + ":" + path)
-            blob = git("rev-parse", OLD + ":" + path).decode().strip()
+            raw = historical_sources[path]
+            blob = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
             assert blob == rows[path]["historical_blob"]
             assert hashlib.sha256(raw).hexdigest() == rows[path]["historical_sha256"]
             target = build / Path(path).name
