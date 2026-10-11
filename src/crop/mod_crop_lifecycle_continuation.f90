@@ -9,6 +9,7 @@ module mod_crop_lifecycle_continuation
   private
   integer, parameter, public :: CROP_CONT_OK=0, CROP_CONT_INVALID=1, CROP_CONT_STALE=2, &
        CROP_CONT_DUPLICATE=3, CROP_CONT_ORDER=4
+  integer, parameter, public :: CROP_PROFILE_BOUNDED=0, CROP_PROFILE_B111_TASK2=1
   type, public :: crop_lifecycle_continuation_t
     logical :: valid=.false.
     integer(int64) :: revision=0_int64
@@ -17,11 +18,33 @@ module mod_crop_lifecycle_continuation
     logical :: prepared=.false., sown=.false., germinated=.false., emerged=.false., harvested=.false.
     integer :: preparation_delay=0, sowing_delay=0
     real(real64) :: germination_temperature_sum=0.0_real64
+    integer :: initialization_profile=CROP_PROFILE_BOUNDED
+    logical :: task2_initialized=.false.
   contains
     procedure :: ready => continuation_ready
   end type
-  public :: propose_crop_lifecycle_continuation
+  public :: propose_crop_lifecycle_continuation, initialize_b111_crop_lifecycle
 contains
+  ! Literal preparation(2), sowing(2), germination(2) for a new model crop.
+  ! No daily processing, meteorological accumulation or physical event.
+  pure subroutine initialize_b111_crop_lifecycle(crop_identity,swprep,swsow,germ_mode,candidate,status)
+    integer(int64), intent(in) :: crop_identity
+    integer, intent(in) :: swprep,swsow,germ_mode
+    type(crop_lifecycle_continuation_t), intent(out) :: candidate
+    integer, intent(out) :: status
+    candidate=crop_lifecycle_continuation_t();status=CROP_CONT_INVALID
+    if(crop_identity<=0_int64.or.swprep<0.or.swprep>1.or.swsow<0.or.swsow>1) return
+    if(germ_mode<0.or.germ_mode>2) return
+    candidate%valid=.true.;candidate%crop_identity=crop_identity
+    candidate%initialization_profile=CROP_PROFILE_B111_TASK2
+    candidate%task2_initialized=.true.
+    candidate%prepared=swprep/=1
+    candidate%sown=swsow/=1
+    candidate%germinated=germ_mode<1
+    if(.not.candidate%ready()) return
+    status=CROP_CONT_OK
+  end subroutine
+
   pure logical function continuation_ready(self) result(ok)
     class(crop_lifecycle_continuation_t), intent(in) :: self
     ok=.false.
@@ -29,8 +52,17 @@ contains
     if(self%preparation_delay<0.or.self%sowing_delay<0) return
     if(.not.ieee_is_finite(self%germination_temperature_sum)) return
     if(self%germination_temperature_sum<0.0_real64) return
-    if(self%sown.and..not.self%prepared) return
-    if(self%germinated.and..not.self%sown) return
+    select case(self%initialization_profile)
+    case(CROP_PROFILE_BOUNDED)
+      if(self%task2_initialized) return
+      if(self%sown.and..not.self%prepared) return
+      if(self%germinated.and..not.self%sown) return
+    case(CROP_PROFILE_B111_TASK2)
+      if(.not.self%task2_initialized) return
+      if(self%emerged.and..not.(self%prepared.and.self%sown.and.self%germinated)) return
+    case default
+      return
+    end select
     if(self%emerged.and..not.self%germinated) return
     ok=.true.
   end function
@@ -63,11 +95,16 @@ contains
       return
     end if
     if(.not.plan%valid) return
+    if(plan%initialization_profile/=current%initialization_profile) return
     if(plan%preparation_delay<current%preparation_delay.or. &
          plan%sowing_delay<current%sowing_delay) return
-    if(plan%sown.and..not.plan%prepared) return
-    if(plan%germinated.and..not.plan%sown) return
-    if(plan%emergence_eligible.neqv.plan%germinated) return
+    if(current%initialization_profile==CROP_PROFILE_BOUNDED) then
+      if(plan%sown.and..not.plan%prepared) return
+      if(plan%germinated.and..not.plan%sown) return
+      if(plan%emergence_eligible.neqv.plan%germinated) return
+    else
+      if(plan%emergence_eligible.neqv.(plan%prepared.and.plan%sown.and.plan%germinated)) return
+    end if
     if(current%prepared.and..not.plan%prepared) return
     if(current%sown.and..not.plan%sown) return
     if(current%germinated.and..not.plan%germinated) return
@@ -80,7 +117,12 @@ contains
       if(.not.ieee_is_finite(germination%next_temperature_sum)) return
       if(germination%next_temperature_sum<current%germination_temperature_sum) return
     else
-      if(plan%germinated.or.plan%emergence_eligible) return
+      if(current%initialization_profile==CROP_PROFILE_BOUNDED) then
+        if(plan%germinated.or.plan%emergence_eligible) return
+      else
+        if(plan%germinated.neqv.current%germinated) return
+        if(plan%emergence_eligible) return
+      end if
     end if
     if(current%revision==huge(current%revision)) return
     candidate%prepared=plan%prepared
