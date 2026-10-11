@@ -619,12 +619,29 @@
       {
         "pr": 1120,
         "owner": "CI/workflow governance",
-        "blocker": "Proposed pull-request path filters omit dynamically resolved compile dependencies: the observed CO2 closure is 13 paths for 3 owned sources and the root runtime resolves approximately 169 source dependencies for 4 named sources. Replace static incomplete lists with a generated/conservative dependency surface or a fail-closed trigger strategy."
+        "blocker": "Historical proposed filters omitted transitive compile dependencies; bounded conservative successor implemented, pending local validation and canonical admission.",
+        "continuation_20261011": {
+          "baseline": "0de42a6abe22e7efbe1be352202ed9637a1dc3b2",
+          "recovery_branch": "integration/regie-nextbatch-20261011",
+          "scope": "PR and owner-branch push filters for crop CO2/rootgrow workflows only; conservative src/** and tests/** plus each workflow itself. Jobs, commands, numerical tests and branch selections unchanged.",
+          "invariants": "All existing and future source/test dependencies trigger qualification; docs-only changes skip these two workflows. No production/state/physics interface changes.",
+          "stage": "IMPLEMENTED_PENDING_VALIDATION_NOT_ADMITTED",
+          "next_action": "Persist checkpoint, verify exact compile-closure path coverage, PR/push parity, unchanged job definitions and owner O0/O2; publish only bounded trigger successor if all required checks pass."
+        }
       },
       {
         "pr": 1083,
         "owner": "PPA-WU03/runon",
-        "blocker": "Owner checks passed historically, but preservation carries a stale protected task2 source pin and later fails the moving B19/MICRO exact tree. Recompose the bounded delta on current canonical and replace stale broad pins with bounded successors."
+        "blocker": "Historical candidate is superseded by already admitted PR1086; no missing runon implementation delta remains. F-CI93 derivative debt remains separately owned and must not be mistaken for missing runon admission.",
+        "supersession_20261011": {
+          "historical_head": "3ac2ca2b56de887e512412c63faaf5c363688467",
+          "canonical_successor": "ea4c6548b7693abbd25d428e85227b43e499a814",
+          "successor_pr": 1086,
+          "scope": "All six original changed paths are present in the successor. Current Task2 is identical to historical candidate; common-forcing adapter/test/runner differences are later admitted weather-guard additions, not missing runon semantics.",
+          "qualification_authority": "integration/audits/SWAP431_SMALL_MEDIUM_THROUGHPUT_CLOSEOUT_20261006.json#completed",
+          "evidence_preservation": "Retain original PR head and branch plus admitted successor containing source, test assertions, runner prerequisite additions and bounded audit record. No branch deletion.",
+          "next_action": "Close historical PR as superseded after durable recovery and verify closed state; no new runon implementation or duplicate scientific qualification."
+        }
       },
       {
         "pr": 1119,
