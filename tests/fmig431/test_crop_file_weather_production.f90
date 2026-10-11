@@ -87,7 +87,15 @@ program test_crop_file_weather_production
     do i=0,1
       call app%run_weather_interval(record,day+real(i,real64)*0.5_real64, &
            day+real(i+1,real64)*0.5_real64,forcing_config,canopy,results,s)
-      if(s/=FMR_APP_BOOT_OK) print *, 'RUN_STATUS',s,d,i
+      if(s/=FMR_APP_BOOT_OK) then
+        print *, 'RUN_STATUS',s,d,i
+        if(allocated(results)) then
+          print *, 'RUNTIME_COMPLETED',results(1)%completed,results(1)%committed
+          print *, 'RUNTIME_DIAGNOSTICS',results(1)%kernel_status,results(1)%admission_status, &
+               results(1)%solver_status,results(1)%solver_rejections,results(1)%temporal_rejections, &
+               results(1)%mass_rejections,results(1)%mass%residual
+        end if
+      end if
       call require(s==FMR_APP_BOOT_OK,'file-derived hydrological production interval')
       call require(size(results)==1.and.results(1)%completed.and.results(1)%committed,'actual FKT accept')
       call require(abs(results(1)%mass%residual)<=HARD_MASS_GATE,'unchanged hard water mass gate')
