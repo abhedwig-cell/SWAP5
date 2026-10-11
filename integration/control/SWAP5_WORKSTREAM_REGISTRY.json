@@ -619,14 +619,36 @@
       {
         "pr": 1120,
         "owner": "CI/workflow governance",
-        "blocker": "Historical proposed filters omitted transitive compile dependencies; bounded conservative successor implemented, pending local validation and canonical admission.",
+        "blocker": "CLOSED_BY_QUALIFIED_CONSERVATIVE_TRIGGER_SUCCESSOR; historical incomplete filters are not admitted.",
         "continuation_20261011": {
           "baseline": "0de42a6abe22e7efbe1be352202ed9637a1dc3b2",
           "recovery_branch": "integration/regie-nextbatch-20261011",
           "scope": "PR and owner-branch push filters for crop CO2/rootgrow workflows only; conservative src/** and tests/** plus each workflow itself. Jobs, commands, numerical tests and branch selections unchanged.",
           "invariants": "All existing and future source/test dependencies trigger qualification; docs-only changes skip these two workflows. No production/state/physics interface changes.",
-          "stage": "IMPLEMENTED_PENDING_VALIDATION_NOT_ADMITTED",
-          "next_action": "Persist checkpoint, verify exact compile-closure path coverage, PR/push parity, unchanged job definitions and owner O0/O2; publish only bounded trigger successor if all required checks pass."
+          "stage": "QUALIFIED_BOUNDED_TRIGGER_SUCCESSOR",
+          "tested_checkpoint": "fe697c2161fd42307e892300dc3806c0dba1bfbb",
+          "validation": {
+            "compile_closure_paths": {"co2": 13, "root_profile": 9, "root_runtime": 169},
+            "covered_dependency_paths_with_runners_and_workflow": {"co2": 15, "rootgrow": 175},
+            "pr_push_filter_parity": "PASS",
+            "job_commands_options_timeouts_branch_selections_dispatch_unchanged": "PASS",
+            "transitive_source_stub_and_future_source_test_path_probes": "PASS",
+            "docs_readme_and_control_only_changes_excluded": "PASS",
+            "owner_o0_o2": {"co2": "PASS_BYTE_IDENTICAL", "depth": "PASS_BOTH", "profile": "PASS_BOTH", "physical_runtime": "PASS_BOTH"},
+            "log_sha256": {
+              "co2": "91bec0a59439a6bfa3b982a537b5909812e8f4f15eb57498932efb02c4a9cbdd",
+              "depth": "b264840e5a4be5931f9c76898c5a4ebbf51b186444940f0bda632641f937396f",
+              "profile": "eef8b1000fbe7d872bdf1dcf8b55754a2c04e40274c971583556ae49fcd60ded",
+              "runtime": "e79b6168fefd6ffa10df31c18998857a90e3709c11433dbee0440a1ab78cddec"
+            },
+            "commands": ["python tests/fmig431/run_swap431_crop_co2_response.py", "bash tests/fmig431/run_crop_root_depth_dvs.sh", "python tests/fmig431/run_crop_rootgrow_dvs_profile.py", "python tests/fmig431/run_crop_rootgrow_dvs_runtime.py"],
+            "unchanged_production_tree": "00fd7b47acefbbf6433adb6237cf09d4747f1255",
+            "unchanged_tests_tree": "d1bd576f3bcda0232ddc64cda9f365da032db024",
+            "unchanged_reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
+          },
+          "preservation": "No F-CI runner, production, reference, test or scientific assertion change. Retain baseline capability evidence on the exact unchanged dependency surface; F-CI93 remains separately blocked. Trigger selection is validated locally; no global green CI or measured queue-speed claim.",
+          "publication_policy": "Skip duplicate CI only for this locally qualified trigger/control successor: all numerical jobs and dependency trees are unchanged, trigger coverage is conservative and independently validated. No numerical gate waiver.",
+          "next_action": "Verify canonical fast-forward and exact workflow/source/test blobs, then close historical PR1120 with persistent checkpoint. Reopen only on relevant trigger/job/dependency drift."
         }
       },
       {
@@ -640,7 +662,8 @@
           "scope": "All six original changed paths are present in the successor. Current Task2 is identical to historical candidate; common-forcing adapter/test/runner differences are later admitted weather-guard additions, not missing runon semantics.",
           "qualification_authority": "integration/audits/SWAP431_SMALL_MEDIUM_THROUGHPUT_CLOSEOUT_20261006.json#completed",
           "evidence_preservation": "Retain original PR head and branch plus admitted successor containing source, test assertions, runner prerequisite additions and bounded audit record. No branch deletion.",
-          "next_action": "Close historical PR as superseded after durable recovery and verify closed state; no new runon implementation or duplicate scientific qualification."
+          "closure": "PR1083 closed as superseded, recovery comment 6107233728; original branch retained",
+          "next_action": "No RUNON admission work remains for this duplicate; preserve separate F-CI93 derivative debt and original source evidence."
         }
       },
       {

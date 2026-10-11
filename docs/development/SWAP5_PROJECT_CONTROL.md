@@ -78,8 +78,8 @@ PR #58 remains the intentional canonical carrier. After both admissions and all 
 
 | PR | Owner | Required resolution |
 |---|---|---|
-| #1120 | CI/workflow governance | Replace incomplete static PR path filters with a generated/conservative dependency surface or fail-closed trigger strategy. Observed compile closure exceeds the proposed lists: CO2 13 resolved paths for 3 owned sources; root runtime about 169 dependencies for 4 named sources. |
-| #1083 | PPA-WU03/runon | Recompose the bounded delta on current canonical and replace the stale protected task2 pin and broad B19/MICRO tree assumptions with bounded successors. |
+| #1120 | CI/workflow governance | Historical incomplete candidate superseded by the qualified conservative trigger successor below. No remaining dependency-coverage blocker for these two filters. |
+| #1083 | PPA-WU03/runon | Closed as superseded by admitted #1086 / `ea4c6548b`; original six-path source/test delta is preserved. F-CI93 derivative debt is separate. |
 | #1119 | PPA-WU05B frost | Keep focused finite-guard work under the frost owner; recompose broad whole-source/exact-tree preservation against current canonical. |
 | #1103 | HYD/HYST | Finish the active specialized qualification; no central semantics change or admission claim. |
 | #1098, #1117 | NUT/SOL | Complete owner-controlled consolidated qualification and source/restart gates; #1117 is not an admission proposal. |
@@ -112,6 +112,14 @@ F-CI93 is **not repaired or admitted**. Initial diagnostic recovery `78bc8fc2c2a
 **Final bounded closeout:** exact canonical code postimage `491236f87d713f97a6ea809a241b066bb717b761` passed F-CI run `38121781430` (all 14 frozen jobs and moving-current job `114418101477`) and repaired F-CI51P run `38121781333`, job `114417817024`. Crop preservation is closed. The final receipt updates documentation/status only, carries exact unchanged code/workflow qualification, and uses `[skip ci]` to avoid repeating those gates.
 
 F-GC closeout run `38121781326`, job `114417816972`, failed after PPA-WU01 bootstrap owner O0/O2 passed: FloPy `get_modflow` release retrieval returned `HTTP Error 403: rate limit exceeded`. The production/reference and F-GC workflow/runner blobs are unchanged from previous green run `38120739493`; this is external executable-provisioning failure, not a scientific regression claim, and the remaining full closeout was not completed. F-GC CI/provisioning owns the authorized route restoration. No duplicate rerun or permission workaround was attempted. Documentation source checks and JSON validation pass; strict MkDocs was not executed because the local environment lacks the module.
+
+### Conservative crop trigger and RUNON duplicate closeout 2026-10-11
+
+Reconciliation baseline is canonical `0de42a6abe22e7efbe1be352202ed9637a1dc3b2`, including the later bounded MC-IRR01 #1198 admission. Historical RUNON PR #1083 is closed as superseded by already admitted #1086 / `ea4c6548b7693abbd25d428e85227b43e499a814`. The original six-path implementation/test delta is present in that successor; all five source/test paths are byte-identical there. Later canonical weather guards preserve the runon carrier and assertions. Original head `3ac2ca2b56de887e512412c63faaf5c363688467` and branch remain available. This resolves duplicate queue debt, not the separately confirmed non-M1 derivative defect.
+
+The #1120 trigger successor uses conservative `src/**`, `tests/**` and workflow-self filters on both pull requests and the existing owner-branch pushes. This covers the dynamically resolved CO2 13-path and physical rootgrow 169-path closures, the nine-path root-profile closure, shell component dependencies, stubs and future source/test additions. It excludes documentation/control-only changes. Jobs, numerical commands, options, timeouts, branch selections and dispatch behaviour are unchanged. Exact tested checkpoint `fe697c2161fd42307e892300dc3806c0dba1bfbb` passed path-coverage and positive/negative trigger probes, PR/push parity and job-definition identity; original CO2, depth, profile and physical runtime gates all pass locally at O0/O2. CO2 outputs are byte-identical; the other runners establish separate O0 and O2 passes without an output-identity claim. Exact commands, hashes and unchanged production/test/reference trees are in the existing registry's `continuation_20261011` for #1120.
+
+This is bounded CI trigger qualification and retains baseline scientific/preservation evidence on unchanged dependency trees. It does not close F-CI93, assert global green CI, promote a master capability count or measure queue speed. A `[skip ci]` publication avoids duplicate numerical jobs for the already validated workflow/control-only postimage. The functional-coverage master remains with #1072, and active crop, irrigation, heat, frost, hydraulics and NUT/SOL implementations remain with their owners.
 
 Specialized workstreams may research, implement and qualify inside their declared ownership. They do not acquire canonical authority merely by producing a branch or PR.
 
