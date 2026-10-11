@@ -2,18 +2,74 @@
   "workstream": "MC-CROP01",
   "unit": "Actual current-weather day-end and final growth window",
   "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
-  "status": "IMPLEMENTED_PERSISTED_FOCUSED_RUNNING_NOT_QUALIFIED",
-  "stages": {"implemented": true, "persisted": true, "tested": false, "qualified": false, "preserved": false, "canonically_admitted": false},
+  "status": "FOCUSED_OWNER_PASS_COMPLETE_LOW_AIR_AND_FULL_PRESERVATION_PENDING",
+  "stages": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
   "contract": "docs/science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md",
   "recovery_branch": "work/mc-crop01-dayend-20261011",
   "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
   "source_blob": "23c2db74b1254e5e97e608764d186a59eeb694d5",
-  "owned_surface": ["src/runtime/mod_fmr_production_application_bootstrap.f90", "tests/fmig431/test_crop_file_weather_production.f90", "tests/fci/run_crop_file_weather_production_successor.sh", "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh", "tests/fmig431/run_crop_rooted_weather_frost_successor.py"],
-  "held_fixed": ["all crop/root/heat/hydraulic process arithmetic", "F-KT executor positive interval and commit contracts", "hard mass and temporal criteria", "original highest frost runners and source authority", "legacy admitted default morning profile"],
-  "invariants": [3, 4, 7, 9, 13, 21, 29, 30],
-  "qualification_required": ["seven authentic days with five same-day active growth completions including final day", "full crop/soil/heat/Richards O0/O2 and pending/completed restart identity", "partial/invalid/duplicate rejection, no soil replay, next-morning no duplicate growth", "crop/PPA/cross-owner and full moving F-CI preservation", "complete24 highest frost configurations and144 immutable fine comparisons"],
+  "observed_terminal_exit_codes": {
+    "dayend-focused-final.log": 0,
+    "dayend-owner.log": 0,
+    "dayend-ppa.log": 0,
+    "dayend-cross.log": 0,
+    "dayend-frost-normal.log": 0
+  },
+  "owned_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/fmig431/test_crop_file_weather_production.f90",
+    "tests/fci/run_crop_file_weather_production_successor.sh",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/fmig431/run_crop_rooted_weather_frost_successor.py"
+  ],
+  "held_fixed": [
+    "all crop/root/heat/hydraulic process arithmetic",
+    "F-KT executor positive interval and commit contracts",
+    "hard mass and temporal criteria",
+    "original highest frost runners and source authority",
+    "legacy admitted default morning profile"
+  ],
+  "invariants": [
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    29,
+    30
+  ],
+  "qualification_required": [
+    "seven authentic days with five same-day active growth completions including final day",
+    "full crop/soil/heat/Richards O0/O2 and pending/completed restart identity",
+    "partial/invalid/duplicate rejection, no soil replay, next-morning no duplicate growth",
+    "crop/PPA/cross-owner and full moving F-CI preservation",
+    "complete24 highest frost configurations and144 immutable fine comparisons"
+  ],
   "next_action": "Observe focused O0/O2, qualify affected owners and complete highest frost closure; archive exact raw outputs before full moving F-CI and safe bounded admission.",
   "canonical_admission_owner": "Delegated MC-CROP01 central application authority",
+  "qualification_diagnostics": [
+    "Focused archive sealing attempted before the final strengthened runner was terminal. It failed closed on its missing final PASS marker and created no archive. The final focused exit is intentionally pending until its controller returns."
+  ],
   "full_lifecycle_closed": false,
-  "remaining": ["harvest/output/reset", "calendar/fallow/new-season boundary authority", "broader meteorological/root profiles", "external disk continuation"]
+  "remaining": [
+    "harvest/output/reset",
+    "calendar/fallow/new-season boundary authority",
+    "broader meteorological/root profiles",
+    "external disk continuation"
+  ],
+  "focused_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_DAYEND_FOCUSED_OWNER_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "3a965bac89823f61f7723bd832de658611862f45f133294d2d6c2a76a4548318",
+    "members": 5,
+    "scientific_head": "8a7eb3d40e5b5717a13b0329ee05fe812f031dca",
+    "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7"
+  }
 }
