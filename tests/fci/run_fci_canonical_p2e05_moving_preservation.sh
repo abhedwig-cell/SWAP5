@@ -633,14 +633,18 @@ check_b19_micro_root_recomposition() {
     echo 'FCI_CANONICAL_CROP_POSITIVE_WINDOW_BRIDGE=PASS'
   fi
   if (( crop_event_constructor_changed )); then
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_wofost_crop_transaction.f90)" = "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509" ||
+    expected_crop_blob=3c6fea3ca43b35b563f25f5dbbd24e90e89b4509
+    if (( crop_file_weather_exact_successor )); then expected_crop_blob=0f7fccc714a908083f4550394ca1fdd28f354d47; fi
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_wofost_crop_transaction.f90)" = "$expected_crop_blob" ||
       fail 'unqualified WOFOST crop event constructor source'
     bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||
       fail 'physical F-KT crop lifecycle constructor O0/O2 negatives failed'
     echo 'FCI_CANONICAL_CROP_EVENT_CONSTRUCTOR_EXACT=PASS'
   fi
   if (( crop_weather_event_changed )); then
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_physical_event_composition.f90)" = "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7" ||
+    expected_crop_blob=8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7
+    if (( crop_file_weather_exact_successor )); then expected_crop_blob=14b8d5e07c7abb08416a3d64e05fc06e9737af4a; fi
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_crop_weather_physical_event_composition.f90)" = "$expected_crop_blob" ||
       fail 'unqualified source for weather-to-physical crop event composition'
     bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||
       fail 'weather-to-physical crop event gate O0/O2 failed'
@@ -786,8 +790,17 @@ check_b19_micro_root_recomposition() {
     # No unconditional source allowlisting or modification of frozen physics.
     test -f tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'missing qualified lifecycle B19/MICRO cross-preservation gate'
-    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
-      fail 'lifecycle B19/MICRO cross-preservation failed'
+    if (( crop_file_weather_exact_successor )); then
+      # Exact historical profile is verified above. The old cross-wrapper
+      # pins pre-admission backend/bootstrap blobs; retain its physical
+      # tests through the admitted current-owner scientific successor.
+      bash tests/fmig431/run_crop_previous_day_emergence_gate.sh || fail 'previous-day emergence failed'
+      bash tests/fmig431/run_crop_lifecycle_continuation.sh || fail 'lifecycle continuation failed'
+      bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh || fail 'current lifecycle B19/MICRO preservation failed'
+    else
+      bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+        fail 'lifecycle B19/MICRO cross-preservation failed'
+    fi
   fi
   if (( crop_hydraulic_provenance_changed )); then
     # Fail closed unless the exact source dependency closure compiles O0/O2,

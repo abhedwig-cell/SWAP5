@@ -5,6 +5,7 @@ module mod_crop_lifecycle_daily_composition
   private
   integer, parameter, public :: CROP_DAILY_OK=0, CROP_DAILY_INVALID=1
   type, public :: crop_daily_lifecycle_candidate_t
+    integer :: initialization_profile=0
     logical :: valid=.false.
     logical :: prepared=.false.
     logical :: sown=.false.
@@ -18,11 +19,13 @@ module mod_crop_lifecycle_daily_composition
 contains
   ! Source ordering: a proposed germination step is never published as a
   ! physical event. It is eligible only after preparation and sowing.
-  pure subroutine compose_crop_lifecycle_daily_candidate(prep_sow,germination,plan,status)
+  pure subroutine compose_crop_lifecycle_daily_candidate(prep_sow,germination,plan,status, &
+       previous_sown,previous_germinated)
     type(crop_preparation_sowing_candidate_t), intent(in) :: prep_sow
     type(crop_germination_candidate_t), intent(in) :: germination
     type(crop_daily_lifecycle_candidate_t), intent(out) :: plan
     integer, intent(out) :: status
+    logical, intent(in), optional :: previous_sown,previous_germinated
     plan=crop_daily_lifecycle_candidate_t()
     status=CROP_DAILY_INVALID
     if(.not.prep_sow%valid) return
@@ -36,6 +39,14 @@ contains
       plan%germination_evaluated=.true.
       plan%germinated=germination%complete
       plan%emergence_eligible=germination%complete
+    end if
+    if(present(previous_sown).neqv.present(previous_germinated)) return
+    if(present(previous_sown).and.present(previous_germinated)) then
+      plan%initialization_profile=1
+      if(prep_sow%blocked_preparation) plan%sowing_delay=plan%preparation_delay
+      if(.not.plan%prepared) plan%sown=previous_sown
+      if(.not.(plan%prepared.and.plan%sown)) plan%germinated=previous_germinated
+      plan%emergence_eligible=plan%prepared.and.plan%sown.and.plan%germinated
     end if
     plan%valid=.true.
     status=CROP_DAILY_OK

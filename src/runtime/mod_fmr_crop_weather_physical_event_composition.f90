@@ -7,6 +7,7 @@ module mod_fmr_crop_weather_physical_event_composition
   use mod_fmr_crop_certified_daily_preflight, only: crop_certified_daily_preflight_t
   use mod_crop_lifecycle_daily_composition, only: &
        crop_daily_lifecycle_candidate_t,compose_crop_lifecycle_daily_candidate,CROP_DAILY_OK
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t,CROP_PROFILE_B111_TASK2
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
        fmr_wofost_crop_event_token_t, fmr_wofost_crop_event_identity_t, &
        fmr_wofost_crop_event_identity_persistence_t, &
@@ -32,7 +33,7 @@ contains
        hprep_threshold,hsow_threshold,sow_temperature, &
        prep_delay,sow_delay,max_prep_delay,max_sow_delay, &
        germ_mode,temperature_sum,optimal_sum,base_temperature, &
-       max_effective_temperature,dry_head,wet_head,water_response_a,forcing,status)
+       max_effective_temperature,dry_head,wet_head,water_response_a,forcing,status,historical_current)
     type(kernel_committed_state_t),intent(in)::committed
     integer(int64),intent(in)::lineage,revision,source,epoch,weather_revision,lifecycle_revision
     real(real64),intent(in)::time,day,zprep,zsow,ztempsow,zgerm
@@ -45,6 +46,7 @@ contains
          dry_head,wet_head,water_response_a
     type(fmr_wofost_crop_event_forcing_t),intent(out)::forcing
     integer,intent(out)::status
+    type(crop_lifecycle_continuation_t),intent(in),optional::historical_current
     type(crop_certified_daily_preflight_t)::daily
     type(crop_daily_lifecycle_candidate_t)::plan
     integer::s
@@ -66,6 +68,13 @@ contains
     status=CROP_EVENT_COMPOSE_ORDER
     call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s)
     if(s/=CROP_DAILY_OK.or..not.plan%valid) return
+    if(present(historical_current)) then
+      if(.not.historical_current%ready()) return
+      if(historical_current%initialization_profile/=CROP_PROFILE_B111_TASK2) return
+      call compose_crop_lifecycle_daily_candidate(daily%preparation,daily%germination,plan,s, &
+           previous_sown=historical_current%sown,previous_germinated=historical_current%germinated)
+      if(s/=CROP_DAILY_OK.or..not.plan%valid) return
+    end if
     status=CROP_EVENT_COMPOSE_PHYSICAL
     ! A valid but foreign accepted crop window is not an event for this
     ! certified committed soil daystart. The opaque event owner derives the
