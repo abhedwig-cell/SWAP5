@@ -69,13 +69,14 @@ cat "$BUILD/o0/cluster.txt"
 echo "MC_IRR01_REALISTIC_ROOT_CLUSTER_SHA256=$(sha256sum "$BUILD/o0/cluster.txt" | awk '{print $1}')"
 echo 'MC_IRR01_REALISTIC_ROOT_CLUSTER_O0_O2=PASS' 
 python3 - "$BUILD/o0/output.txt" <<'PY'
-import sys,numpy as np
+import sys
 lines=open(sys.argv[1]).read().splitlines()
-heads=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')])
-theta=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')])
-assert heads.shape==(3,5) and theta.shape==(3,5)
-eh=np.max(abs(heads[:2,1:]-heads[2,1:]),axis=1); ew=np.max(abs(theta[:2,1:]-theta[2,1:]),axis=1)
-print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh.tolist(),'THETA=',ew.tolist())
+heads=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')]
+theta=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')]
+assert len(heads)==len(theta)==3 and all(len(row)==5 for row in heads+theta)
+eh=[max(abs(a-b) for a,b in zip(row[1:],heads[2][1:])) for row in heads[:2]]
+ew=[max(abs(a-b) for a,b in zip(row[1:],theta[2][1:])) for row in theta[:2]]
+print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh,'THETA=',ew)
 assert eh[1] < eh[0] and ew[1] < ew[0], 'refinement does not reduce error'
 assert eh[1] < 2e-3 and ew[1] < 2e-6, 'declared refined profile accuracy target missed'
 print('MC_IRR01_EVENT_REFINEMENT=PASS')
