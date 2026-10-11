@@ -12,13 +12,13 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 gate = (ROOT / "tests/fahl/run_fahl49_application_scale.sh").read_text()
 module_block = gate.split("MODULE_SRC=(", 1)[1].split(")\n# Additive C3A", 1)[0]
 sources = re.findall(r"^  (src/\S+\.f90|tests/\S+\.f90)$", module_block, re.M)
+sources.extend(["src/kernel/mod_kernel_committed_persistence.f90",
+                "src/runtime/mod_fmr_restart_state_contract.f90",
+                "src/runtime/mod_fmr_committed_restart.f90"])
 sources = subprocess.check_output(
     ["python3", "tests/support/augment_bartholomeus_backend_sources.py", *sources],
     cwd=ROOT, text=True,
 ).splitlines()
-sources.extend(["src/kernel/mod_kernel_committed_persistence.f90",
-                "src/runtime/mod_fmr_restart_state_contract.f90",
-                "src/runtime/mod_fmr_committed_restart.f90"])
 outputs = []
 preservation_outputs = []
 with tempfile.TemporaryDirectory(prefix="ppa-micro03-") as tmp:

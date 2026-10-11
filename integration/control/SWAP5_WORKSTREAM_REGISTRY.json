@@ -476,7 +476,24 @@
       {
         "name": "initial_canonical_and_irrigation_cleanup",
         "count": 16,
-        "prs": [623, 624, 625, 1073, 1074, 1075, 1076, 1097, 1104, 1105, 1111, 1113, 1121, 1122, 1126, 1129],
+        "prs": [
+          623,
+          624,
+          625,
+          1073,
+          1074,
+          1075,
+          1076,
+          1097,
+          1104,
+          1105,
+          1111,
+          1113,
+          1121,
+          1122,
+          1126,
+          1129
+        ],
         "successors": "Exact canonical ancestors, unified admissions, current central checkpoints and MC-IRR01."
       },
       {
@@ -484,23 +501,59 @@
         "count": 31,
         "successor_groups": [
           {
-            "prs": [599, 600, 601, 604, 607, 608, 610, 617, 618, 619, 620, 621],
+            "prs": [
+              599,
+              600,
+              601,
+              604,
+              607,
+              608,
+              610,
+              617,
+              618,
+              619,
+              620,
+              621
+            ],
             "successor": "F-CI110 / PR #626 / canonical a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a"
           },
           {
-            "prs": [669, 671, 672, 673, 674, 675, 676, 677, 678, 679, 680, 686],
+            "prs": [
+              669,
+              671,
+              672,
+              673,
+              674,
+              675,
+              676,
+              677,
+              678,
+              679,
+              680,
+              686
+            ],
             "successor": "F-PE-SYSTEM-CLOSE01; SETUP04 PR #681 at 71813645a5acbacd7cd900aee6f619dc1039e8e1 and reconciled closeout 3b744aa69c6a0b1317d04b0d98704d7086b38a95"
           },
           {
-            "prs": [807, 822, 891, 910],
+            "prs": [
+              807,
+              822,
+              891,
+              910
+            ],
             "successor": "Canonical ELASTIC18/ELASTIC21/ELASTIC45/mineral-ELAS authorities; PR #822 specifically selects PR #821 at e355dacf50fcc0cceb77e02f73b78eddebcbeced plus closeout #823 at fed1d42a3f95b2396c071f6f9e76ec8cb66943cd"
           },
           {
-            "prs": [973],
+            "prs": [
+              973
+            ],
             "successor": "PPA-WU05-C3A PR #962 at 179673b16b84bc48fa5e0e83341a8a8e80b2211a"
           },
           {
-            "prs": [990, 995],
+            "prs": [
+              990,
+              995
+            ],
             "successor": "Canonical issue-#989 storage-ownership fix 23f5d3cff78e055426b48ec93f57c1cb9880759c"
           }
         ]
@@ -510,27 +563,50 @@
         "count": 17,
         "successor_groups": [
           {
-            "prs": [602, 605, 609, 611, 612, 613, 614, 615, 616],
+            "prs": [
+              602,
+              605,
+              609,
+              611,
+              612,
+              613,
+              614,
+              615,
+              616
+            ],
             "successor": "F-CI110 / PR #626 at a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a plus F-PE-SYSTEM-CLOSE01"
           },
           {
-            "prs": [634],
+            "prs": [
+              634
+            ],
             "successor": "Selected canonical REPAIR01 successor"
           },
           {
-            "prs": [635],
+            "prs": [
+              635
+            ],
             "successor": "PR #637 at c64737c89953888c311e005a2a0077964f358498"
           },
           {
-            "prs": [636],
+            "prs": [
+              636
+            ],
             "successor": "PROFILE05R2 PR #638 at ef177a64f8f0e6618fd6896f9db266e99d22c710"
           },
           {
-            "prs": [639],
+            "prs": [
+              639
+            ],
             "successor": "PROFILE06 PR #640 at 59a53d80534d6603a462fe4219094c6a75dd896f"
           },
           {
-            "prs": [654, 657, 658, 659],
+            "prs": [
+              654,
+              657,
+              658,
+              659
+            ],
             "successor": "F-PE-SYSTEM-CLOSE01 negative/observation-only authority"
           }
         ]
@@ -577,20 +653,37 @@
           "canonical_actions_observed": 0,
           "tested_checkpoint": "fe697c2161fd42307e892300dc3806c0dba1bfbb",
           "validation": {
-            "compile_closure_paths": {"co2": 13, "root_profile": 9, "root_runtime": 169},
-            "covered_dependency_paths_with_runners_and_workflow": {"co2": 15, "rootgrow": 175},
+            "compile_closure_paths": {
+              "co2": 13,
+              "root_profile": 9,
+              "root_runtime": 169
+            },
+            "covered_dependency_paths_with_runners_and_workflow": {
+              "co2": 15,
+              "rootgrow": 175
+            },
             "pr_push_filter_parity": "PASS",
             "job_commands_options_timeouts_branch_selections_dispatch_unchanged": "PASS",
             "transitive_source_stub_and_future_source_test_path_probes": "PASS",
             "docs_readme_and_control_only_changes_excluded": "PASS",
-            "owner_o0_o2": {"co2": "PASS_BYTE_IDENTICAL", "depth": "PASS_BOTH", "profile": "PASS_BOTH", "physical_runtime": "PASS_BOTH"},
+            "owner_o0_o2": {
+              "co2": "PASS_BYTE_IDENTICAL",
+              "depth": "PASS_BOTH",
+              "profile": "PASS_BOTH",
+              "physical_runtime": "PASS_BOTH"
+            },
             "log_sha256": {
               "co2": "91bec0a59439a6bfa3b982a537b5909812e8f4f15eb57498932efb02c4a9cbdd",
               "depth": "b264840e5a4be5931f9c76898c5a4ebbf51b186444940f0bda632641f937396f",
               "profile": "eef8b1000fbe7d872bdf1dcf8b55754a2c04e40274c971583556ae49fcd60ded",
               "runtime": "e79b6168fefd6ffa10df31c18998857a90e3709c11433dbee0440a1ab78cddec"
             },
-            "commands": ["python tests/fmig431/run_swap431_crop_co2_response.py", "bash tests/fmig431/run_crop_root_depth_dvs.sh", "python tests/fmig431/run_crop_rootgrow_dvs_profile.py", "python tests/fmig431/run_crop_rootgrow_dvs_runtime.py"],
+            "commands": [
+              "python tests/fmig431/run_swap431_crop_co2_response.py",
+              "bash tests/fmig431/run_crop_root_depth_dvs.sh",
+              "python tests/fmig431/run_crop_rootgrow_dvs_profile.py",
+              "python tests/fmig431/run_crop_rootgrow_dvs_runtime.py"
+            ],
             "unchanged_production_tree": "00fd7b47acefbbf6433adb6237cf09d4747f1255",
             "unchanged_tests_tree": "d1bd576f3bcda0232ddc64cda9f365da032db024",
             "unchanged_reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
@@ -626,7 +719,10 @@
         "blocker": "Active specialized qualification remains owner-controlled; no central admission claim."
       },
       {
-        "prs": [1098, 1117],
+        "prs": [
+          1098,
+          1117
+        ],
         "owner": "NUT/SOL",
         "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal."
       },
@@ -642,7 +738,21 @@
         "blocker": "Resolve non-overlapping storage partition and one-owner-per-drainage-path authority before admission."
       }
     ],
-    "untouched_active_specialized_prs": [486, 924, 961, 968, 1072, 1083, 1098, 1103, 1117, 1119, 1120, 1196, 1197],
+    "untouched_active_specialized_prs": [
+      486,
+      924,
+      961,
+      968,
+      1072,
+      1083,
+      1098,
+      1103,
+      1117,
+      1119,
+      1120,
+      1196,
+      1197
+    ],
     "intentional_open_carrier": 58,
     "verified_control_postimage": {
       "head": "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40",
@@ -702,7 +812,11 @@
       "next_action": "Restore the authorized executable provisioning route, then qualify the existing exact code postimage if needed. Do not classify this download failure as a scientific pass or regression; no duplicate rerun or permission workaround was attempted."
     },
     "historical_preservation_drift_preexisting": {
-      "compared_heads": ["e3b9685470639355e1899b95c25f9a7ddee15fe6", "44a031a83b5b9da5f8a76e4e8859396e57a48cd0", "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40"],
+      "compared_heads": [
+        "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+        "44a031a83b5b9da5f8a76e4e8859396e57a48cd0",
+        "7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40"
+      ],
       "actual_provider_dependency_task2_blobs_identical": true,
       "guards_or_active_owner_implementation_modified": false
     },
@@ -859,20 +973,106 @@
     "stage": "FIVE_CARRIERS_CLOSED_COMPLETE_RESEARCH_HEADS_PRESERVED",
     "canonical_evidence_checkpoint": "2fb38420c24ee82c7d0df2582345d99a6ed912fe",
     "canonical_evidence_tree": "4bf4e1f78ecc00d85f714467baafa99f626eb4fb",
-    "closure_recovery_comments": {"495": 6108085622, "496": 6108085864, "576": 6108086117, "366": 6108086392, "378": 6108086621},
+    "closure_recovery_comments": {
+      "495": 6108085622,
+      "496": 6108085864,
+      "576": 6108086117,
+      "366": 6108086392,
+      "378": 6108086621
+    },
     "preservation_method": "Complete original Git heads frozen under dedicated recovery refs before closure, fetched and head/tree verified. Preserve entire unique research corpus without duplicating it or merging research implementation. Do not move or delete these recovery refs during subsequent owner work.",
     "closure_candidates": [
-      {"pr": 495, "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa", "tree": "ba0b2b23bc0e334d5306e953dce1c2ffa3a7ee9e", "recovery_ref": "recovery/regie-pr495-20261011-07c89de1", "owner": "F-ROM Layer-ROM research", "disposition": "COMPLETED_CORE_FEASIBILITY_RESEARCH_APPLICATION_SELECTION_BLOCKED", "authority": "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json at original head", "claim_boundary": "Frozen L4/L6/R8 frontier and shared-host cost screen; no universal minimum, application sufficiency or production ROM admission. Unique core curves, candidate and negative evidence remain on the full recovery head."},
-      {"pr": 496, "head": "76daff05127700f03a24625e7489e60a049c111c", "tree": "131bcd8178163453abf7454f8374156625468fe5", "recovery_ref": "recovery/regie-pr496-20261011-76daff05", "owner": "F-ROM purpose/application acceptance authority", "disposition": "COMPLETED_APP0_AUTHORITY_REVIEW_CLOSED_SCIENTIFIC_BLOCKER", "authority": "integration/f-rom/LAYER_ROM_APP0_AUTHORITY_CLOSEOUT.json at original head", "claim_boundary": "No defensible independent application tolerance, no numerical envelope or validation route selected; no new candidate responses viewed. Later ROM-ACCEPT576 is the authority successor, not a passing application qualification."},
-      {"pr": 576, "head": "41799780d068fd2952aab82d799af28198a64526", "tree": "9e50841ab134a7971018ede8b55ba19d1a8701f9", "recovery_ref": "recovery/regie-pr576-20261011-41799780", "owner": "Independent ROM purpose/application acceptance authority", "disposition": "ROM_ACCEPT01_CLOSED_NO_CURRENT_ACCEPTANCE_RUN_AUTHORIZED", "authority": "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json at original head", "remaining_blockers": ["GW-R independent recharge/bias/temporal envelope or governed response mapping", "GW-D complete original population or independently governed new population; separate component structural-error allocation", "SCI-P depth-resolved absolute/profile/timing fidelity contract"], "claim_boundary": "Formal end-to-end GW-D envelope and partial SCI-P correlation endpoint remain distinct from reduced-model acceptance. Public LHM archive is qualified but does not reproduce withheld original measurement population. Candidate performance is not a reopen trigger."},
-      {"pr": 366, "head": "e79d8901bb833c885e4eb9ca73d54b14d466ed05", "tree": "84a6c86ac30ed3caedc039fe86c009146677758c", "recovery_ref": "recovery/regie-pr366-20261011-e79d8901", "owner": "HYDRO-MEMORY research", "disposition": "HISTORICAL_CAPABILITY_GATE_SUPERSEDED_AS_LIVE_AUTHORITY", "authority": "Existing PROJECT-CONTROL explicitly routes366/378 as superseded by canonical ACC/DYN evidence", "successors": ["HYDRO_MEMORY_ACC02_F1_RESULT.json", "HYDRO_MEMORY_ACC02_F2_RESULT.json", "HYDRO_MEMORY_DYN01_RESULT.json", "HYDRO_MEMORY_DYN02_VIEW01_RESULT.json"], "claim_boundary": "Bounded root-active research coupling exists; Stage0 remains unauthorized, no unrestricted production bootstrap or coupling-semantic promotion."},
-      {"pr": 378, "head": "979113fb5776b45a0c7d8d0923e486c0d522a8be", "tree": "9c1ec186578a01847e745bb1a2c6a3222ec73437", "recovery_ref": "recovery/regie-pr378-20261011-979113fb", "owner": "HYDRO-MEMORY with PPA root/hydraulic authority", "disposition": "HISTORICAL_CAP01_BLOCKER_SUPERSEDED_AS_LIVE_GATE", "authority": "Existing PROJECT-CONTROL and later canonical ROOT-HYD01/ACC/DYN lineage", "claim_boundary": "Original failed unbalanced-root diagnostic remains preserved, not retrospectively green. Later bounded research capability replaces that historical live gate; Stage0, owner production envelope and all remaining shared coupling/accuracy gates remain explicit."}
+      {
+        "pr": 495,
+        "head": "07c89de1c2ffdf32718d22e68acb1fe07a40d6aa",
+        "tree": "ba0b2b23bc0e334d5306e953dce1c2ffa3a7ee9e",
+        "recovery_ref": "recovery/regie-pr495-20261011-07c89de1",
+        "owner": "F-ROM Layer-ROM research",
+        "disposition": "COMPLETED_CORE_FEASIBILITY_RESEARCH_APPLICATION_SELECTION_BLOCKED",
+        "authority": "integration/f-rom/LAYER_ROM_RESEARCH_PHASE_CLOSEOUT.json at original head",
+        "claim_boundary": "Frozen L4/L6/R8 frontier and shared-host cost screen; no universal minimum, application sufficiency or production ROM admission. Unique core curves, candidate and negative evidence remain on the full recovery head."
+      },
+      {
+        "pr": 496,
+        "head": "76daff05127700f03a24625e7489e60a049c111c",
+        "tree": "131bcd8178163453abf7454f8374156625468fe5",
+        "recovery_ref": "recovery/regie-pr496-20261011-76daff05",
+        "owner": "F-ROM purpose/application acceptance authority",
+        "disposition": "COMPLETED_APP0_AUTHORITY_REVIEW_CLOSED_SCIENTIFIC_BLOCKER",
+        "authority": "integration/f-rom/LAYER_ROM_APP0_AUTHORITY_CLOSEOUT.json at original head",
+        "claim_boundary": "No defensible independent application tolerance, no numerical envelope or validation route selected; no new candidate responses viewed. Later ROM-ACCEPT576 is the authority successor, not a passing application qualification."
+      },
+      {
+        "pr": 576,
+        "head": "41799780d068fd2952aab82d799af28198a64526",
+        "tree": "9e50841ab134a7971018ede8b55ba19d1a8701f9",
+        "recovery_ref": "recovery/regie-pr576-20261011-41799780",
+        "owner": "Independent ROM purpose/application acceptance authority",
+        "disposition": "ROM_ACCEPT01_CLOSED_NO_CURRENT_ACCEPTANCE_RUN_AUTHORIZED",
+        "authority": "integration/f-rom/ROM_ACCEPT_01_CLOSEOUT.json at original head",
+        "remaining_blockers": [
+          "GW-R independent recharge/bias/temporal envelope or governed response mapping",
+          "GW-D complete original population or independently governed new population; separate component structural-error allocation",
+          "SCI-P depth-resolved absolute/profile/timing fidelity contract"
+        ],
+        "claim_boundary": "Formal end-to-end GW-D envelope and partial SCI-P correlation endpoint remain distinct from reduced-model acceptance. Public LHM archive is qualified but does not reproduce withheld original measurement population. Candidate performance is not a reopen trigger."
+      },
+      {
+        "pr": 366,
+        "head": "e79d8901bb833c885e4eb9ca73d54b14d466ed05",
+        "tree": "84a6c86ac30ed3caedc039fe86c009146677758c",
+        "recovery_ref": "recovery/regie-pr366-20261011-e79d8901",
+        "owner": "HYDRO-MEMORY research",
+        "disposition": "HISTORICAL_CAPABILITY_GATE_SUPERSEDED_AS_LIVE_AUTHORITY",
+        "authority": "Existing PROJECT-CONTROL explicitly routes366/378 as superseded by canonical ACC/DYN evidence",
+        "successors": [
+          "HYDRO_MEMORY_ACC02_F1_RESULT.json",
+          "HYDRO_MEMORY_ACC02_F2_RESULT.json",
+          "HYDRO_MEMORY_DYN01_RESULT.json",
+          "HYDRO_MEMORY_DYN02_VIEW01_RESULT.json"
+        ],
+        "claim_boundary": "Bounded root-active research coupling exists; Stage0 remains unauthorized, no unrestricted production bootstrap or coupling-semantic promotion."
+      },
+      {
+        "pr": 378,
+        "head": "979113fb5776b45a0c7d8d0923e486c0d522a8be",
+        "tree": "9c1ec186578a01847e745bb1a2c6a3222ec73437",
+        "recovery_ref": "recovery/regie-pr378-20261011-979113fb",
+        "owner": "HYDRO-MEMORY with PPA root/hydraulic authority",
+        "disposition": "HISTORICAL_CAP01_BLOCKER_SUPERSEDED_AS_LIVE_GATE",
+        "authority": "Existing PROJECT-CONTROL and later canonical ROOT-HYD01/ACC/DYN lineage",
+        "claim_boundary": "Original failed unbalanced-root diagnostic remains preserved, not retrospectively green. Later bounded research capability replaces that historical live gate; Stage0, owner production envelope and all remaining shared coupling/accuracy gates remain explicit."
+      }
     ],
     "remaining_reviewed_candidates": [
-      {"pr": 528, "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda", "owner": "F-GC fixed-interface analytical research", "class": "UNIQUE_RESEARCH_KEEP_OPEN_PENDING_FINAL_OWNER_DISPOSITION", "next_action": "Preserve PB01 sign/orientation and storage falsification evidence; no interpretation of expected scientific failure as a CI defect to bypass."},
-      {"pr": 540, "head": "68cff57a6c67537d909dea790d37c0f59db04c49", "owner": "Ribasim BMI management-clock authority", "class": "QUALIFICATION_ONLY_OBSERVABILITY_REPLAY_NOT_ADMISSION_READY", "next_action": "Reconcile19I v2 with current research result; original record does not establish final qualification. Frozen model/assertions unchanged."},
-      {"pr": 559, "head": "19bcdc3df91b13f297fbb1bfff7da0d8095869c7", "owner": "RibaMod/Ribasim delayed-transfer product authority", "class": "QUALIFICATION_ONLY_FULL_TRAJECTORY_DIAGNOSIS_PENDING", "next_action": "Original20E2 v8 record is unqualified; prior12h mismatch must be diagnosed from full accepted trajectory and unchanged reciprocal ledger, not called green from commit naming."},
-      {"pr": 581, "head": "10ff41ed84b87ed6fe691b6b944ced3c84d15099", "owner": "Ribasim exact-release BMI clock-lattice authority", "class": "QUALIFICATION_ONLY_FROZEN_FOUR_CASE_GRID_PENDING", "next_action": "Original20H11 record remains implemented/persisted but not qualified; existing product qualification is separate from SWAP production admission."}
+      {
+        "pr": 528,
+        "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+        "owner": "F-GC fixed-interface analytical research",
+        "class": "UNIQUE_RESEARCH_KEEP_OPEN_PENDING_FINAL_OWNER_DISPOSITION",
+        "next_action": "Preserve PB01 sign/orientation and storage falsification evidence; no interpretation of expected scientific failure as a CI defect to bypass."
+      },
+      {
+        "pr": 540,
+        "head": "68cff57a6c67537d909dea790d37c0f59db04c49",
+        "owner": "Ribasim BMI management-clock authority",
+        "class": "QUALIFICATION_ONLY_OBSERVABILITY_REPLAY_NOT_ADMISSION_READY",
+        "next_action": "Reconcile19I v2 with current research result; original record does not establish final qualification. Frozen model/assertions unchanged."
+      },
+      {
+        "pr": 559,
+        "head": "19bcdc3df91b13f297fbb1bfff7da0d8095869c7",
+        "owner": "RibaMod/Ribasim delayed-transfer product authority",
+        "class": "QUALIFICATION_ONLY_FULL_TRAJECTORY_DIAGNOSIS_PENDING",
+        "next_action": "Original20E2 v8 record is unqualified; prior12h mismatch must be diagnosed from full accepted trajectory and unchanged reciprocal ledger, not called green from commit naming."
+      },
+      {
+        "pr": 581,
+        "head": "10ff41ed84b87ed6fe691b6b944ced3c84d15099",
+        "owner": "Ribasim exact-release BMI clock-lattice authority",
+        "class": "QUALIFICATION_ONLY_FROZEN_FOUR_CASE_GRID_PENDING",
+        "next_action": "Original20H11 record remains implemented/persisted but not qualified; existing product qualification is separate from SWAP production admission."
+      }
     ],
     "preservation": "Two existing metadata authorities only; src/tests/reference/tools/workflows/assets unchanged. No new candidate simulation, external data acquisition, workflow dispatch or scientific qualification claim.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; research-carrier closure is not scientific blocker resolution.",
@@ -883,20 +1083,90 @@
     "stage": "FIVE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
     "canonical_evidence_checkpoint": "317682c55fa01fd247d4db584ac24a648a6c513b",
     "canonical_evidence_tree": "7861465ce512e763650161f81d929429356bf4f6",
-    "closure_recovery_comments": {"743": 6107973257, "762": 6107973568, "924": 6107973899, "961": 6107974180, "968": 6107974501},
+    "closure_recovery_comments": {
+      "743": 6107973257,
+      "762": 6107973568,
+      "924": 6107973899,
+      "961": 6107974180,
+      "968": 6107974501
+    },
     "archive": "integration/audits/evidence/SOLVER_MACROPORE_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "d320dfd295986ddad001cf8168bf99563b33266510f6fff15d1a018be62edd14",
     "archive_verification": "All 74 changed files from five exact original heads; extracted member Git blob identities and SHA256 verified. Original branches retained. Archived source/workflow files are not executable canonical admission.",
     "closure_candidates": [
-      {"pr": 743, "head": "689453d0b198d0686bf2bfe14a3b7340198a66ad", "owner": "F-PE TIMEINT dynamic-top numerical research", "disposition": "COMPLETED_NEGATIVE_FULLY_IMPLICIT_ROUTE_CARRIER", "authority": "Original PR explicitly closes TIMEINT12/TIMEINT12A; canonical docs/performance/F-PE-TIMEINT12_CLOSEOUT.md", "claim_boundary": "Analytical smooth same-route derivative qualified; fully implicit dynamic-top completes only6/12. No dynamic-top BDF2 production admission, timestep tuning or numerical default change.", "archived_files": 6, "remaining_owner_gate": "Separate operator/solver robustness and event-semantic work; preserve negative evidence rather than report failed route as positive admission."},
-      {"pr": 762, "head": "983458913e6c6326e9b02803b87783a1ad9242da", "owner": "F-PE TIMEINT/NLGLOB numerical research", "disposition": "HISTORICAL_INITIAL_UNSPLIT_CARRIER_SUPERSEDED_BY_CANONICAL_REQUALIFICATION", "authority": "docs/performance/F-PE-TIMEINT17_REQUALIFICATION_CLOSEOUT.md and F-PE-TIMEINT17_HANDOFF_2026-09-29.md", "qualification": "run36563812241 job109390767276; 96/96 same-route research bank", "claim_boundary": "Positive same-route research policy only; physical release/desaturation and general event semantics remain unqualified. LEGACY_NUMERICS production default unchanged.", "archived_files": 5},
-      {"pr": 924, "head": "e49045db96c7cae78c6ae5d9eb9ac028ce6e38ca", "owner": "PPA macropore A8 / MIGMAC", "disposition": "ALTERNATIVE_A8_CARRIER_SUPERSEDED_BY_CANONICAL_PR923", "successor": "9bad713b0d2ab24d40fcf937d11c850d3fb52a22", "authority": "docs/audits/PPA_WU05A8_CLOSEOUT.md; qualification36821554854 and postmerge36821651670 SUCCESS", "claim_boundary": "Only the admitted bounded standard single-column Reference FMR route. This carrier is not byte-identical wholesale to admission923: unique dynamic-crack/source differences are archived, not declared admitted. Do not replay historical backend/state files over later MIGMAC/thermal/irrigation.", "archived_files": 27},
-      {"pr": 961, "head": "08c7792cd9955f9782a6f74e85c9548f1402b765", "owner": "PPA macropore PERCH / MIGMAC", "disposition": "PERCH20_CANDIDATE_SUPERSEDED_BY_CANONICAL_PERCH21", "successor_prs": [963, 964], "successor": "9d174a5a6", "authority": "docs/audits/PPA_WU05_PERCH21_RESULT.md canonical admission/closeout", "qualification": "Owner36906093634 and postmerge36907018287 SUCCESS; PERCH20 restart/transaction, PERCH19 active retry, A10 and RFM preserved", "claim_boundary": "Qualified perched/current-iterate/retry/restart successor only; archived historical source is not automatically admitted or equivalent to current backend.", "archived_files": 20},
-      {"pr": 968, "head": "fb0ae8fc24fb16e256416d920c846d5e2f742b0a", "owner": "PPA bounded live RFM A26", "disposition": "RECONCILIATION_CARRIER_SUPERSEDED_BY_CANONICAL_PR969", "successor": "695b1b382cc7452a5c45b57bbc30bc009a1a0f1f", "authority": "docs/audits/PPA_WU05A26_CLOSEOUT.md", "qualification": "Reconciled36922167441 job110570615817 and postmerge36924536424 SUCCESS", "proof": "Shared backend differs from admission969 only in whitespace/continuation formatting: all28779 lexical Fortran tokens equal with string literals preserved. Nine changed files remain byte-exact against current canonical; all sixteen originals archived.", "claim_boundary": "Accepted-state-frozen first-order RFM/Reference split; no monolithic coupling or new RFM default.", "archived_files": 16}
+      {
+        "pr": 743,
+        "head": "689453d0b198d0686bf2bfe14a3b7340198a66ad",
+        "owner": "F-PE TIMEINT dynamic-top numerical research",
+        "disposition": "COMPLETED_NEGATIVE_FULLY_IMPLICIT_ROUTE_CARRIER",
+        "authority": "Original PR explicitly closes TIMEINT12/TIMEINT12A; canonical docs/performance/F-PE-TIMEINT12_CLOSEOUT.md",
+        "claim_boundary": "Analytical smooth same-route derivative qualified; fully implicit dynamic-top completes only6/12. No dynamic-top BDF2 production admission, timestep tuning or numerical default change.",
+        "archived_files": 6,
+        "remaining_owner_gate": "Separate operator/solver robustness and event-semantic work; preserve negative evidence rather than report failed route as positive admission."
+      },
+      {
+        "pr": 762,
+        "head": "983458913e6c6326e9b02803b87783a1ad9242da",
+        "owner": "F-PE TIMEINT/NLGLOB numerical research",
+        "disposition": "HISTORICAL_INITIAL_UNSPLIT_CARRIER_SUPERSEDED_BY_CANONICAL_REQUALIFICATION",
+        "authority": "docs/performance/F-PE-TIMEINT17_REQUALIFICATION_CLOSEOUT.md and F-PE-TIMEINT17_HANDOFF_2026-09-29.md",
+        "qualification": "run36563812241 job109390767276; 96/96 same-route research bank",
+        "claim_boundary": "Positive same-route research policy only; physical release/desaturation and general event semantics remain unqualified. LEGACY_NUMERICS production default unchanged.",
+        "archived_files": 5
+      },
+      {
+        "pr": 924,
+        "head": "e49045db96c7cae78c6ae5d9eb9ac028ce6e38ca",
+        "owner": "PPA macropore A8 / MIGMAC",
+        "disposition": "ALTERNATIVE_A8_CARRIER_SUPERSEDED_BY_CANONICAL_PR923",
+        "successor": "9bad713b0d2ab24d40fcf937d11c850d3fb52a22",
+        "authority": "docs/audits/PPA_WU05A8_CLOSEOUT.md; qualification36821554854 and postmerge36821651670 SUCCESS",
+        "claim_boundary": "Only the admitted bounded standard single-column Reference FMR route. This carrier is not byte-identical wholesale to admission923: unique dynamic-crack/source differences are archived, not declared admitted. Do not replay historical backend/state files over later MIGMAC/thermal/irrigation.",
+        "archived_files": 27
+      },
+      {
+        "pr": 961,
+        "head": "08c7792cd9955f9782a6f74e85c9548f1402b765",
+        "owner": "PPA macropore PERCH / MIGMAC",
+        "disposition": "PERCH20_CANDIDATE_SUPERSEDED_BY_CANONICAL_PERCH21",
+        "successor_prs": [
+          963,
+          964
+        ],
+        "successor": "9d174a5a6",
+        "authority": "docs/audits/PPA_WU05_PERCH21_RESULT.md canonical admission/closeout",
+        "qualification": "Owner36906093634 and postmerge36907018287 SUCCESS; PERCH20 restart/transaction, PERCH19 active retry, A10 and RFM preserved",
+        "claim_boundary": "Qualified perched/current-iterate/retry/restart successor only; archived historical source is not automatically admitted or equivalent to current backend.",
+        "archived_files": 20
+      },
+      {
+        "pr": 968,
+        "head": "fb0ae8fc24fb16e256416d920c846d5e2f742b0a",
+        "owner": "PPA bounded live RFM A26",
+        "disposition": "RECONCILIATION_CARRIER_SUPERSEDED_BY_CANONICAL_PR969",
+        "successor": "695b1b382cc7452a5c45b57bbc30bc009a1a0f1f",
+        "authority": "docs/audits/PPA_WU05A26_CLOSEOUT.md",
+        "qualification": "Reconciled36922167441 job110570615817 and postmerge36924536424 SUCCESS",
+        "proof": "Shared backend differs from admission969 only in whitespace/continuation formatting: all28779 lexical Fortran tokens equal with string literals preserved. Nine changed files remain byte-exact against current canonical; all sixteen originals archived.",
+        "claim_boundary": "Accepted-state-frozen first-order RFM/Reference split; no monolithic coupling or new RFM default.",
+        "archived_files": 16
+      }
     ],
     "retained_unique_candidates": [
-      {"pr": 740, "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51", "owner": "F-PE ELASTIC source/calibration research", "disposition": "HISTORICAL_UNIQUE_RESEARCH_REQUIRES_OWNER_CENSUS", "reason": "119 unique changed files, including mechanical-source corpus and preregistered/negative branches. Later ELASTIC14/69 admissions alone do not prove all unique research is superseded. No wholesale merge or closure."},
-      {"pr": 987, "head": "29c788b325bee9339dfde429a3bd90d44910d38d", "owner": "PPA RFM A27/A28 research", "disposition": "ACTIVE_BRANCH_ONLY_APPROXIMATION_NOT_FOR_CANONICAL_ADMISSION", "reason": "Targets A27 research branch; Q1-Q3 branch-qualified, Q4 long-history/trusted replay/non-publication rollback pending. Fixed64 remains default/reference; no approximation promotion."}
+      {
+        "pr": 740,
+        "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+        "owner": "F-PE ELASTIC source/calibration research",
+        "disposition": "HISTORICAL_UNIQUE_RESEARCH_REQUIRES_OWNER_CENSUS",
+        "reason": "119 unique changed files, including mechanical-source corpus and preregistered/negative branches. Later ELASTIC14/69 admissions alone do not prove all unique research is superseded. No wholesale merge or closure."
+      },
+      {
+        "pr": 987,
+        "head": "29c788b325bee9339dfde429a3bd90d44910d38d",
+        "owner": "PPA RFM A27/A28 research",
+        "disposition": "ACTIVE_BRANCH_ONLY_APPROXIMATION_NOT_FOR_CANONICAL_ADMISSION",
+        "reason": "Targets A27 research branch; Q1-Q3 branch-qualified, Q4 long-history/trusted replay/non-publication rollback pending. Fixed64 remains default/reference; no approximation promotion."
+      }
     ],
     "preservation": "Metadata/archive-only; src/tests/reference/tools/workflows/assets unchanged from canonical10b94cbdc. Reuse exact unchanged qualified scientific dependency surface; no numerical rerun or Actions justified.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; existing A8/PERCH21/A26 and research bounds remain unchanged.",
@@ -907,21 +1177,85 @@
     "stage": "FOUR_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
     "canonical_evidence_checkpoint": "226fd8d09f533645dce086010120dc500f88a625",
     "canonical_evidence_tree": "c76710a22a7a3a37fb0be3fc7a80ed5779645532",
-    "closure_recovery_comments": {"670": 6107903063, "897": 6107903517, "912": 6107903903, "915": 6107904251},
+    "closure_recovery_comments": {
+      "670": 6107903063,
+      "897": 6107903517,
+      "912": 6107903903,
+      "915": 6107904251
+    },
     "archive": "integration/audits/evidence/FROZEN_RESEARCH_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "8df53b50c76c00f9a988138e680e93f989f0a339091616f9c80b2034c567cd89",
     "archive_verification": "All 90 original changed files from four exact PR heads, including cumulative ELASTIC46-57B research lineage. Decode/extract verifies each original Git blob and SHA256. Original branches retained; no research source or workflow is imported into executable canonical paths.",
     "closure_candidates": [
-      {"pr": 670, "head": "5dc280bab40abcb3393f05079609f25a6232476a", "owner": "F-PE MultiSWAP performance / trusted-host operator", "disposition": "OWNER_CLOSED_HOST_CAPACITY_BLOCKED", "authority": "docs/performance/F-PE-MULTI05_CLOSEOUT.md at exact original head", "archived_files": 6, "claim_boundary": "Production worker default1/admitted2/4 unchanged; oversubscribed8/12/16/24 results do not qualify real-core scaling.", "reentry": "Owner reopens only with trusted swap5-highcore execution host; preserve frozen harness, exact q/tangent checksums and oversubscription classification. No self-hosted workflow dispatch authorized by this closeout."},
-      {"pr": 897, "head": "cab8817de055794c858ae480b315d7da9eeab8c9", "owner": "F-PE ELASTIC controller research", "disposition": "COMPLETED_QUALIFIED_BOUNDED_RESEARCH_CARRIER", "authority": "docs/performance/F-PE-ELASTIC57B_RESULT.md at exact original head; run36707407177 job109860824691", "archived_files": 68, "claim_boundary": "Research-only nine-step ladder, eight retries, exact C-SAFE/C-BOUNDED equivalence; no production admission or independent temporal budget.", "reentry": "Separate owner work unit must establish independent physical temporal budget and transaction policy; do not reopen completed monotonicity finding without new dependency evidence."},
-      {"pr": 912, "head": "970b3f589bf20fcfd75726344d34b5266e3db1d1", "owner": "F-PE ELASTIC peat-source research", "disposition": "COMPLETED_NEGATIVE_SOURCE_FEASIBILITY_SUPERSEDED_BY_FROZEN_PR915", "authority": "docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_RESULT.md at exact original head; run36760261048 job110040720986", "archived_files": 4, "claim_boundary": "DIRECT_BHRGT_PEAT_ROUTE_INSUFFICIENT; five high-organic non-peat intervals descriptive only. No post-hoc peat relabeling or automatic peat ELAS assignment.", "reentry": "Use frozen ELASTIC72B source-access/identifiability route only if its explicit reopening criteria are satisfied."},
-      {"pr": 915, "head": "f8b7fd5181029e833d716e31ff6a78a9c5211df1", "owner": "F-PE ELASTIC peat research / prioritization authority", "disposition": "FROZEN_NOT_ACTIVE_NO_CURRENT_ACTION_REQUIRED", "authority": "docs/performance/F-PE-ELASTIC72B_RESEARCH_FREEZE_2026-09-30.md at exact original head", "archived_files": 12, "claim_boundary": "PEAT_ELAS_LINE_FROZEN_LOW_CURRENT_PRIORITY; not an active admission blocker or evidence that peat elasticity is absent.", "reentry": "Only material application sensitivity, low-cost available raw NOBV data, unexplained mass/storage error or new decision-relevant independent evidence. More time or runner capacity alone is insufficient; no acquisition, fitting or Actions while frozen."}
+      {
+        "pr": 670,
+        "head": "5dc280bab40abcb3393f05079609f25a6232476a",
+        "owner": "F-PE MultiSWAP performance / trusted-host operator",
+        "disposition": "OWNER_CLOSED_HOST_CAPACITY_BLOCKED",
+        "authority": "docs/performance/F-PE-MULTI05_CLOSEOUT.md at exact original head",
+        "archived_files": 6,
+        "claim_boundary": "Production worker default1/admitted2/4 unchanged; oversubscribed8/12/16/24 results do not qualify real-core scaling.",
+        "reentry": "Owner reopens only with trusted swap5-highcore execution host; preserve frozen harness, exact q/tangent checksums and oversubscription classification. No self-hosted workflow dispatch authorized by this closeout."
+      },
+      {
+        "pr": 897,
+        "head": "cab8817de055794c858ae480b315d7da9eeab8c9",
+        "owner": "F-PE ELASTIC controller research",
+        "disposition": "COMPLETED_QUALIFIED_BOUNDED_RESEARCH_CARRIER",
+        "authority": "docs/performance/F-PE-ELASTIC57B_RESULT.md at exact original head; run36707407177 job109860824691",
+        "archived_files": 68,
+        "claim_boundary": "Research-only nine-step ladder, eight retries, exact C-SAFE/C-BOUNDED equivalence; no production admission or independent temporal budget.",
+        "reentry": "Separate owner work unit must establish independent physical temporal budget and transaction policy; do not reopen completed monotonicity finding without new dependency evidence."
+      },
+      {
+        "pr": 912,
+        "head": "970b3f589bf20fcfd75726344d34b5266e3db1d1",
+        "owner": "F-PE ELASTIC peat-source research",
+        "disposition": "COMPLETED_NEGATIVE_SOURCE_FEASIBILITY_SUPERSEDED_BY_FROZEN_PR915",
+        "authority": "docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_RESULT.md at exact original head; run36760261048 job110040720986",
+        "archived_files": 4,
+        "claim_boundary": "DIRECT_BHRGT_PEAT_ROUTE_INSUFFICIENT; five high-organic non-peat intervals descriptive only. No post-hoc peat relabeling or automatic peat ELAS assignment.",
+        "reentry": "Use frozen ELASTIC72B source-access/identifiability route only if its explicit reopening criteria are satisfied."
+      },
+      {
+        "pr": 915,
+        "head": "f8b7fd5181029e833d716e31ff6a78a9c5211df1",
+        "owner": "F-PE ELASTIC peat research / prioritization authority",
+        "disposition": "FROZEN_NOT_ACTIVE_NO_CURRENT_ACTION_REQUIRED",
+        "authority": "docs/performance/F-PE-ELASTIC72B_RESEARCH_FREEZE_2026-09-30.md at exact original head",
+        "archived_files": 12,
+        "claim_boundary": "PEAT_ELAS_LINE_FROZEN_LOW_CURRENT_PRIORITY; not an active admission blocker or evidence that peat elasticity is absent.",
+        "reentry": "Only material application sensitivity, low-cost available raw NOBV data, unexplained mass/storage error or new decision-relevant independent evidence. More time or runner capacity alone is insufficient; no acquisition, fitting or Actions while frozen."
+      }
     ],
     "retained_owner_controlled_candidates": [
-      {"pr": 953, "head": "76067cced09715e42220301d2410656851ec7013", "owner": "SW-RIB TOP02/TOP03 shared surface admission authority", "class": "QUALIFIED_COMPONENT_NOT_PRODUCTION_ADMISSION_READY", "authority": "TOP02 O0/O2 run36879950150 job110428879694, recovery comment5934059796", "blocker": "TOP03 transaction and exactly-once mass publication remain required; do not merge external-head provider in isolation."},
-      {"pr": 956, "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d", "owner": "SW-RIB TOP03 surface/contact with Richards numerical and restart authorities", "class": "UNIQUE_ACTIVE_RESEARCH_NOT_ADMISSION_READY", "blocker": "Research contact/nearsaturation probes are not production-qualified. Accepted-window carrier, external body/storage ownership, rollback/Restart v1, transient acceptance, calibration and full production preservation remain open. No research discriminator/Jacobian patch admitted."},
-      {"pr": 1001, "head": "162dd96e95d138b2750888fbbb79b411d0dee007", "owner": "PPA-WU05-C3A performance", "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"},
-      {"pr": 1005, "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e", "owner": "PPA-WU05-C3A performance", "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"}
+      {
+        "pr": 953,
+        "head": "76067cced09715e42220301d2410656851ec7013",
+        "owner": "SW-RIB TOP02/TOP03 shared surface admission authority",
+        "class": "QUALIFIED_COMPONENT_NOT_PRODUCTION_ADMISSION_READY",
+        "authority": "TOP02 O0/O2 run36879950150 job110428879694, recovery comment5934059796",
+        "blocker": "TOP03 transaction and exactly-once mass publication remain required; do not merge external-head provider in isolation."
+      },
+      {
+        "pr": 956,
+        "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+        "owner": "SW-RIB TOP03 surface/contact with Richards numerical and restart authorities",
+        "class": "UNIQUE_ACTIVE_RESEARCH_NOT_ADMISSION_READY",
+        "blocker": "Research contact/nearsaturation probes are not production-qualified. Accepted-window carrier, external body/storage ownership, rollback/Restart v1, transient acceptance, calibration and full production preservation remain open. No research discriminator/Jacobian patch admitted."
+      },
+      {
+        "pr": 1001,
+        "head": "162dd96e95d138b2750888fbbb79b411d0dee007",
+        "owner": "PPA-WU05-C3A performance",
+        "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"
+      },
+      {
+        "pr": 1005,
+        "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e",
+        "owner": "PPA-WU05-C3A performance",
+        "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"
+      }
     ],
     "preservation": "Metadata/evidence-only. src/tests/reference/tools/workflows/assets unchanged from canonical3d326d8fe; inherit existing exact dependency-surface qualification, no new numerical rerun or Actions justified.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; frozen peat line is deliberately inactive, not a missing production requirement.",
@@ -932,21 +1266,77 @@
     "stage": "THREE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
     "canonical_evidence_checkpoint": "73fa4fabb562946942c431f948b2082f65ef1ca6",
     "canonical_evidence_tree": "4cb4217713230e8e95506eeb2cbbd939ae981676",
-    "closure_recovery_comments": {"986": 6107779714, "1003": 6107779932, "1007": 6107780208},
+    "closure_recovery_comments": {
+      "986": 6107779714,
+      "1003": 6107779932,
+      "1007": 6107780208
+    },
     "archive": "integration/audits/evidence/PERF02_E2E_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "1d69faf79329e8ca2cc389cf1a397c36481360dd478991c8e774ba42d0306ebe",
     "archive_verification": "26 original changed files from the three exact PR heads; decoded tar member content checked against original SHA256; original Git blobs are reconstructed by git hash-object. Original branches retained.",
     "closed_candidates": [
-      {"pr": 986, "head": "f8a2de3bed000d3d45db7517b5e0b5f0441a78f8", "disposition": "SUPERSEDED_BY_CANONICALLY_ADMITTED_PR998", "successor": "c618cef80e53c3b1a670a76ebb0470aa837a37e1", "owner": "PPA-WU05-C3A oxygen performance", "proof": "Both production blobs, all eight PERF02 performance test/runner blobs and both frozen preregistration/derivation documents equal canonical exactly. Interim result is retained verbatim plus canonical final admission qualification; active-chain runner differs only in gate object filename. Four old workflow definitions and original result/runner are archived rather than imported.", "qualification_authority": "PR998 run37108700027 job111162196759; original O0/O2 boundary/B1.11/application qualification remains historical admitted evidence, not a newly run benchmark"},
-      {"pr": 1003, "head": "5eb05d0dccffdf5ffe5b1e8320c8382dae44e5eb", "disposition": "COMPLETED_NEGATIVE_RESEARCH_CARRIER", "owner": "PPA-WU05-C3A oxygen performance", "authority": "docs/audits/PPA_WU05C3A_E2E03_CLOSEOUT.md at original head explicitly NEGATIVE CHARACTERIZATION, CLOSED", "next_route": "Read-only gate classification moved to existing longer workload in PR1007; no accepted growing-season frequency claim. Archive preserves closeout and both unique research files."},
-      {"pr": 1007, "head": "0d3b27e09b887cbb9bea1fe789dc1d7241fa7bf7", "disposition": "COMPLETED_RESEARCH_DECISION_B_CARRIER", "owner": "PPA-WU05-C3A oxygen performance", "authority": "docs/audits/PPA_WU05C3A_E2E05_CLOSEOUT.md at original head: RESEARCH_CLOSEOUT_DECISION_B; run37125862510", "next_route": "PR1008 PERF03 stress-route attribution. All five unique files including preregistered holdout, negative fixture findings and final limited-niche interpretation are archived. No automatic research-code admission or broad speed claim."}
+      {
+        "pr": 986,
+        "head": "f8a2de3bed000d3d45db7517b5e0b5f0441a78f8",
+        "disposition": "SUPERSEDED_BY_CANONICALLY_ADMITTED_PR998",
+        "successor": "c618cef80e53c3b1a670a76ebb0470aa837a37e1",
+        "owner": "PPA-WU05-C3A oxygen performance",
+        "proof": "Both production blobs, all eight PERF02 performance test/runner blobs and both frozen preregistration/derivation documents equal canonical exactly. Interim result is retained verbatim plus canonical final admission qualification; active-chain runner differs only in gate object filename. Four old workflow definitions and original result/runner are archived rather than imported.",
+        "qualification_authority": "PR998 run37108700027 job111162196759; original O0/O2 boundary/B1.11/application qualification remains historical admitted evidence, not a newly run benchmark"
+      },
+      {
+        "pr": 1003,
+        "head": "5eb05d0dccffdf5ffe5b1e8320c8382dae44e5eb",
+        "disposition": "COMPLETED_NEGATIVE_RESEARCH_CARRIER",
+        "owner": "PPA-WU05-C3A oxygen performance",
+        "authority": "docs/audits/PPA_WU05C3A_E2E03_CLOSEOUT.md at original head explicitly NEGATIVE CHARACTERIZATION, CLOSED",
+        "next_route": "Read-only gate classification moved to existing longer workload in PR1007; no accepted growing-season frequency claim. Archive preserves closeout and both unique research files."
+      },
+      {
+        "pr": 1007,
+        "head": "0d3b27e09b887cbb9bea1fe789dc1d7241fa7bf7",
+        "disposition": "COMPLETED_RESEARCH_DECISION_B_CARRIER",
+        "owner": "PPA-WU05-C3A oxygen performance",
+        "authority": "docs/audits/PPA_WU05C3A_E2E05_CLOSEOUT.md at original head: RESEARCH_CLOSEOUT_DECISION_B; run37125862510",
+        "next_route": "PR1008 PERF03 stress-route attribution. All five unique files including preregistered holdout, negative fixture findings and final limited-niche interpretation are archived. No automatic research-code admission or broad speed claim."
+      }
     ],
     "remaining_reviewed_candidates": [
-      {"pr": 1001, "head": "162dd96e95d138b2750888fbbb79b411d0dee007", "class": "UNIQUE_MEASUREMENT_ONLY_RESEARCH_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Owner adjudicates final measurement disposition; two research files absent from canonical, no duplicate declaration."},
-      {"pr": 1005, "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e", "class": "UNIQUE_SEQUENTIAL_HOST_RESEARCH_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Owner supplies final host qualification/closeout; workflow registration alone does not preserve the two unique code/runner files."},
-      {"pr": 1008, "head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be", "class": "ACTIVE_PERF03_RESEARCH_SUCCESSOR_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Finish frozen cost attribution before any exact-preserving optimization proposal; four unique files absent from canonical."},
-      {"pr": 1009, "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c", "class": "RESTRICTED_COMPOSITION_CANDIDATE_PENDING_FULL_OWNER_GATES", "owner": "PPA-WU04-C interception/application with MC-CROP01", "next_action": "Reconcile unique adapter with current crop/runtime owner, complete all ten preregistered gates and preservation. Dedicated test uses simulated FMR result fields; it is not full physical FMR execution. Old whole-src delta guard is incompatible with current canonical. INT12-D/E do not supersede this SWINTER1 slice."},
-      {"pr": 700, "head": "5fcd9769c30379f461ce047f410638b0d3311f96", "class": "HISTORICAL_NONADMISSION_SYNCHRONIZATION_KEEP_OPEN_PENDING_OWNER_CENSUS", "owner": "PPA migration/application", "next_action": "Owner reconciles 862-file historical carrier against selective later admissions. Its failed WU04C checkpoint is not admission evidence; no wholesale merge or blanket supersession."}
+      {
+        "pr": 1001,
+        "head": "162dd96e95d138b2750888fbbb79b411d0dee007",
+        "class": "UNIQUE_MEASUREMENT_ONLY_RESEARCH_KEEP_OPEN",
+        "owner": "PPA-WU05-C3A performance",
+        "next_action": "Owner adjudicates final measurement disposition; two research files absent from canonical, no duplicate declaration."
+      },
+      {
+        "pr": 1005,
+        "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e",
+        "class": "UNIQUE_SEQUENTIAL_HOST_RESEARCH_KEEP_OPEN",
+        "owner": "PPA-WU05-C3A performance",
+        "next_action": "Owner supplies final host qualification/closeout; workflow registration alone does not preserve the two unique code/runner files."
+      },
+      {
+        "pr": 1008,
+        "head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be",
+        "class": "ACTIVE_PERF03_RESEARCH_SUCCESSOR_KEEP_OPEN",
+        "owner": "PPA-WU05-C3A performance",
+        "next_action": "Finish frozen cost attribution before any exact-preserving optimization proposal; four unique files absent from canonical."
+      },
+      {
+        "pr": 1009,
+        "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+        "class": "RESTRICTED_COMPOSITION_CANDIDATE_PENDING_FULL_OWNER_GATES",
+        "owner": "PPA-WU04-C interception/application with MC-CROP01",
+        "next_action": "Reconcile unique adapter with current crop/runtime owner, complete all ten preregistered gates and preservation. Dedicated test uses simulated FMR result fields; it is not full physical FMR execution. Old whole-src delta guard is incompatible with current canonical. INT12-D/E do not supersede this SWINTER1 slice."
+      },
+      {
+        "pr": 700,
+        "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+        "class": "HISTORICAL_NONADMISSION_SYNCHRONIZATION_KEEP_OPEN_PENDING_OWNER_CENSUS",
+        "owner": "PPA migration/application",
+        "next_action": "Owner reconciles 862-file historical carrier against selective later admissions. Its failed WU04C checkpoint is not admission evidence; no wholesale merge or blanket supersession."
+      }
     ],
     "preservation": "Metadata/archive-only delta; src/tests/reference/tools/workflows/assets unchanged against qualified canonical669a75ff9. Inherit exact unchanged thermal/current-irrigation moving F-CI qualification f177b589 and unchanged frozen evidence; no numerical rerun or new Actions justified.",
     "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; master owner PR1072 need not promote any disposition from these research closures.",
@@ -959,12 +1349,23 @@
     "qualified_head": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
     "status_authority": "integration/audits/MC_HEAT01_STATUS.json",
     "recovery_branch": "integration/regie-mc-heat01-live-20261011",
-    "admitted_capabilities": ["SW431-TEMP-ANALYTIC", "SW431-TEMP-BC3", "SW431-TEMP-BC4", "SW431-TEMP-BOTTOM2"],
-    "withheld_capabilities": ["SW431-TEMP-SNOW"],
+    "admitted_capabilities": [
+      "SW431-TEMP-ANALYTIC",
+      "SW431-TEMP-BC3",
+      "SW431-TEMP-BC4",
+      "SW431-TEMP-BOTTOM2"
+    ],
+    "withheld_capabilities": [
+      "SW431-TEMP-SNOW"
+    ],
     "production": "Exact owner blobs; no central production development",
     "preservation": "Exact-head full local moving F-CI and owner O0/O2 PASS; 14 unchanged frozen refs inherit terminal SUCCESS run38121781430; zero new Actions",
     "master_owner_pr": 1072,
-    "remaining_authorities": ["Snow/thermal layout and event-order authority", "F-KT22/EB-I25 accepted energy-ledger authority; baseline-equivalent O0 failure INVESTIGATING", "HeadCalc/dynamic-top authority for separate F-CI93 defect"],
+    "remaining_authorities": [
+      "Snow/thermal layout and event-order authority",
+      "F-KT22/EB-I25 accepted energy-ledger authority; baseline-equivalent O0 failure INVESTIGATING",
+      "HeadCalc/dynamic-top authority for separate F-CI93 defect"
+    ],
     "historical_queue_reconciliation": "Supersedes earlier untouched-active PR1196 snapshot only; other specialized queues remain owner-controlled."
   },
   "mc_irr01_sensor_depth_successor_20261011": {
@@ -1012,10 +1413,22 @@
     "stage": "TWO_HISTORICAL_E2E_CARRIERS_CLOSED_REMAINING_OWNERS_EXPLICIT",
     "canonical_evidence_checkpoint": "a22e5b924f54e2010d862ef962c7cbb957097196",
     "canonical_evidence_tree": "39762dcb48eb1b96e682e28d07bd7d29348c6f13",
-    "closure_comments": {"1001": 6108331856, "1005": 6108332130},
-    "classification_comments": {"740": 6108338364, "700": 6108338461},
+    "closure_comments": {
+      "1001": 6108331856,
+      "1005": 6108332130
+    },
+    "classification_comments": {
+      "740": 6108338364,
+      "700": 6108338461
+    },
     "coverage_handoff_comment": 6108338589,
-    "local_validation": {"json": "PASS", "documentation_source": "PASS", "strict_mkdocs": "PASS", "whitespace": "PASS", "scientific_dependency_trees": "IDENTICAL_TO_CANONICAL_BASE87a9516e4"},
+    "local_validation": {
+      "json": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "whitespace": "PASS",
+      "scientific_dependency_trees": "IDENTICAL_TO_CANONICAL_BASE87a9516e4"
+    },
     "canonical_delta_reconciled": {
       "since": "8f90abfa6e3b3d854eaea39d044e01a675a71abf",
       "admission": 1200,
@@ -1222,10 +1635,34 @@
       "manually_dispatched_actions": 0,
       "canonical_metadata_actions": 0,
       "automatic_recovery_ref_actions": [
-        {"run": 38133822089, "job": 114453454092, "ref": "recovery/regie-pr1001-20261011-162dd96e", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
-        {"run": 38133822470, "job": 114453455070, "ref": "recovery/regie-pr1001-tested-20261011-33cc1fdf", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
-        {"run": 38133823582, "job": 114453458191, "ref": "recovery/regie-pr1005-20261011-6e0b78a8", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"},
-        {"run": 38133823679, "job": 114453458685, "ref": "recovery/regie-pr1005-tested-20261011-e2ce3812", "workflow": "PPA-WU05-A26 live trial preparer", "result": "COMPLETED_SUCCESS"}
+        {
+          "run": 38133822089,
+          "job": 114453454092,
+          "ref": "recovery/regie-pr1001-20261011-162dd96e",
+          "workflow": "PPA-WU05-A26 live trial preparer",
+          "result": "COMPLETED_SUCCESS"
+        },
+        {
+          "run": 38133822470,
+          "job": 114453455070,
+          "ref": "recovery/regie-pr1001-tested-20261011-33cc1fdf",
+          "workflow": "PPA-WU05-A26 live trial preparer",
+          "result": "COMPLETED_SUCCESS"
+        },
+        {
+          "run": 38133823582,
+          "job": 114453458191,
+          "ref": "recovery/regie-pr1005-20261011-6e0b78a8",
+          "workflow": "PPA-WU05-A26 live trial preparer",
+          "result": "COMPLETED_SUCCESS"
+        },
+        {
+          "run": 38133823679,
+          "job": 114453458685,
+          "ref": "recovery/regie-pr1005-tested-20261011-e2ce3812",
+          "workflow": "PPA-WU05-A26 live trial preparer",
+          "result": "COMPLETED_SUCCESS"
+        }
       ],
       "trigger_observation": "Four fixed-ref creation pushes triggered the historical A26 workflow. Every run reached terminal success and was verified during this turn. These automatic runs are not E2E admission qualification or new physical evidence; no further dispatch/rerun. Future fixed-ref preservation must account for old broad push triggers."
     },
@@ -1802,5 +2239,21 @@
       "actions": "Zero new Actions/dispatches/recovery refs; zero in-progress runs. The sole queued historical A26 run37642390231 is unrelated old branch4dc02866825c6bcd24de81944c2b39e5fb0ca878 from2026-10-07, not an admission dependency.",
       "open_pr_census": "26 open:25 bounded/active owner candidates plus canonical integration PR58; both new1202/1203 CLOSED/MERGED, both original361/371 CLOSED/UNMERGED. Existing owner/blocker classifications retained."
     }
+  },
+  "mc_crop01_current_production_qualification_20261011": {
+    "status": "QUALIFIED_PRESERVED_ADMISSION_PENDING",
+    "authority": "integration/audits/MC_CROP01_FILE_WEATHER_PRODUCTION_STATUS.json",
+    "full_moving_head": "5b3c8475cc156bee28845e78eb278b1b664be9c9",
+    "distinct_PASS_markers": 290,
+    "PPA_WU03": "owner and preservation O0/O2 PASS",
+    "canonical_admission": false,
+    "full_capability": false,
+    "master_count_delta": 0,
+    "remaining": [
+      "legacy CLI orchestration",
+      "historical delayed emergence and root/growth production",
+      "harvest/rotation/fallow production",
+      "external disk continuation codec"
+    ]
   }
 }
