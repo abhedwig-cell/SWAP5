@@ -38,6 +38,21 @@ module mod_fmr_production_application_bootstrap
        GW_TOPOLOGY_OK, GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_tile_predictor_input_t, &
        groundwater_cell_area_input_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
+  use mod_swap_daily_weather_file_adapter, only: swap_daily_weather_record_t
+  use mod_crop_weather_day_owner, only: weather_day_owner_t, initialize_weather_day_owner, &
+       ingest_weather_day, WEATHER_DAY_OK
+  use mod_fmr_crop_weather_day_preflight, only: propose_weather_day_crop_preflight, CROP_WEATHER_PREFLIGHT_OK
+  use mod_fmr_crop_certified_daily_preflight, only: crop_certified_daily_preflight_t
+  use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t, &
+       ppa_wu03_common_forcing_input_t, ppa_wu03_common_forcing_result_t, &
+       ppa_wu03_common_forcing_diagnostics_t, materialize_ppa_wu03_common_forcing, &
+       bind_ppa_wu03_flux_result_to_effective_forcing, PPA_WU03_OK
+  use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
+  use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
+       b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
+  use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, &
        FMR_GW_APP_CONTEXT_OK
   use mod_fmr_groundwater_application_c_api, only: register_fmr_groundwater_application_context, &
@@ -57,6 +72,20 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_PLAN_FAILED = 8
   integer, parameter, public :: FMR_APP_BOOT_CONTEXT_FAILED = 9
   integer, parameter, public :: FMR_APP_BOOT_RUNTIME_FAILED = 10
+  integer, parameter, public :: FMR_APP_BOOT_WEATHER_REJECTED = 11
+  integer, parameter, public :: FMR_APP_BOOT_CROP_PREFLIGHT_FAILED = 12
+
+  ! Physical controls only; persistent lifecycle values remain caller-supplied
+  ! until the existing crop transaction owner is integrated with this route.
+  type, public :: fmr_application_crop_daystart_controls_t
+    real(real64) :: zprep=-5.0_real64,zsow=-5.0_real64,ztempsow=-5.0_real64,zgerm=-5.0_real64
+    integer :: swprep=0,swsow=0,germ_mode=1
+    real(real64) :: hprep_threshold=-100.0_real64,hsow_threshold=-100.0_real64,sow_temperature=0.0_real64
+    integer :: prep_delay=0,sow_delay=0,max_prep_delay=100,max_sow_delay=100
+    real(real64) :: temperature_sum=0.0_real64,optimal_sum=100.0_real64,base_temperature=0.0_real64
+    real(real64) :: max_effective_temperature=30.0_real64,dry_head=-1000.0_real64,wet_head=-10.0_real64
+    real(real64) :: water_response_a=1.0_real64
+  end type
 
   ! F-PE-TEMPORAL08 bounded fixed-interface groundwater temporal policy.
   ! This remains participant-local; generic canonical numerical configuration
@@ -88,6 +117,7 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    logical :: file_weather_daystart = .false.
     real(real64) :: initial_time = 0.0_real64
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(canonical_numerical_config_t) :: numerical
@@ -121,6 +151,11 @@ module mod_fmr_production_application_bootstrap
     type(groundwater_application_plan_t), pointer :: active_plan => null()
     type(fmr_groundwater_application_context_t), pointer :: active_context => null()
     integer(int64) :: active_context_handle = 0_int64
+    ! The existing weather owner is reused; the record is immutable forcing,
+    ! not a second owner of meteorological state or of crop physical state.
+    type(weather_day_owner_t) :: weather
+    type(swap_daily_weather_record_t) :: weather_record
+    integer(int64) :: weather_revision=0_int64
   contains
     procedure, public :: initialize => production_application_initialize
     procedure, public :: ready => production_application_ready
@@ -128,6 +163,9 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: groundwater_worker_count => production_application_groundwater_worker_count
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
+    procedure, public :: begin_weather_day => production_application_begin_weather_day
+    procedure, public :: run_weather_interval => production_application_run_weather_interval
+    procedure, public :: copy_committed_for_crop => production_application_copy_committed_for_crop
     procedure, public :: materialize_groundwater_context => production_application_materialize_groundwater_context
     procedure, public :: release_groundwater_context => production_application_release_groundwater_context
     procedure, public :: copy_committed_revisions => production_application_copy_committed_revisions
@@ -225,6 +263,14 @@ contains
     if (.not. groundwater_profile .and. config%groundwater_parallel_workers /= 1) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
+    end if
+    if(config%file_weather_daystart) then
+      if(n/=1.or..not.standalone_profile.or. &
+           config%tiles(1)%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
+           config%tiles(1)%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE) then
+        status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+        return
+      end if
     end if
     if (groundwater_profile) then
       do i = 1, n
@@ -338,8 +384,13 @@ contains
                config%tiles(i)%initial_state, config%initial_time, ok, &
                initial_rutter_storage_cm=config%tiles(i)%initial_rutter_canopy_storage_cm)
         else
-          call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
-               config%tiles(i)%initial_state, config%initial_time, ok)
+          if(config%file_weather_daystart) then
+            call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+                 config%tiles(i)%initial_state, config%initial_time, ok,parameters=self%parameters(i))
+          else
+            call fmr_new_b110_committed_state(self%committed(i), config%tiles(i)%tile_id, &
+                 config%tiles(i)%initial_state, config%initial_time, ok)
+          end if
         end if
       case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
         if (allocated(config%tiles(i)%initial_right_derivative)) then
@@ -444,6 +495,155 @@ contains
     if (.not. self%ready()) return
     count = self%groundwater_parallel_workers
   end function production_application_groundwater_worker_count
+
+  subroutine production_application_copy_committed_for_crop(self, tile, snapshot, status)
+    class(fmr_production_application_bootstrap_t), intent(in) :: self
+    integer, intent(in) :: tile
+    type(kernel_committed_state_t), intent(out) :: snapshot
+    integer, intent(out) :: status
+    snapshot=kernel_committed_state_t();status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_INVALID_CONFIG
+    if(tile<1.or.tile>size(self%committed)) return
+    ! Intrinsic derived-type assignment deep-copies the private allocatable
+    ! physical carrier. It cannot write back into the application authority.
+    snapshot=self%committed(tile)
+    status=FMR_APP_BOOT_OK
+  end subroutine
+
+  subroutine production_application_begin_weather_day(self,record,controls,candidate,status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(swap_daily_weather_record_t), intent(in) :: record
+    type(fmr_application_crop_daystart_controls_t), intent(in) :: controls
+    type(crop_certified_daily_preflight_t), intent(out) :: candidate
+    integer, intent(out) :: status
+    type(weather_day_owner_t) :: pending_weather
+    real(real64) :: day,tmin,tmax,rain,etref,time
+    logical :: available
+    integer :: s
+    integer(int64) :: pending_revision
+    candidate=crop_certified_daily_preflight_t();status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(size(self%committed)/=1.or.associated(self%active_context)) return
+    if(self%parameters(1)%bottom_mode/=7) return
+    status=FMR_APP_BOOT_WEATHER_REJECTED
+    call record%values(day,tmin,tmax,rain,etref,available)
+    if(.not.available) return
+    call self%committed(1)%current_time(time,available)
+    if(.not.available) return
+    if(time/=day) return
+    pending_weather=self%weather;pending_revision=self%weather_revision
+    if(pending_revision==0_int64) then
+      ! Private local namespace only. Authentication is the opaque file
+      ! record, never these compatibility source/epoch numbers.
+      call initialize_weather_day_owner(pending_weather,1_int64,1_int64,s)
+      if(s/=WEATHER_DAY_OK) return
+    end if
+    if(self%weather_record%ready()) then
+      if(self%weather_record%same_input(record)) then
+        ! Exact repeated daystart reuses the same weather revision.
+      else
+        call ingest_weather_day(pending_weather,1_int64,1_int64,day,tmin,tmax,s)
+        if(s/=WEATHER_DAY_OK) return
+        pending_revision=pending_revision+1_int64
+      end if
+    else
+      call ingest_weather_day(pending_weather,1_int64,1_int64,day,tmin,tmax,s)
+      if(s/=WEATHER_DAY_OK) return
+      pending_revision=1_int64
+    end if
+    status=FMR_APP_BOOT_CROP_PREFLIGHT_FAILED
+    call propose_weather_day_crop_preflight(self%committed(1), &
+         self%committed(1)%current_lineage_id(),self%committed(1)%current_revision(),time, &
+         pending_weather,1_int64,1_int64,pending_revision,day, &
+         controls%zprep,controls%zsow,controls%ztempsow,controls%zgerm,controls%swprep,controls%swsow, &
+         controls%hprep_threshold,controls%hsow_threshold,controls%sow_temperature, &
+         controls%prep_delay,controls%sow_delay,controls%max_prep_delay,controls%max_sow_delay, &
+         controls%germ_mode,controls%temperature_sum,controls%optimal_sum,controls%base_temperature, &
+         controls%max_effective_temperature,controls%dry_head,controls%wet_head,controls%water_response_a,candidate,s)
+    if(s/=CROP_WEATHER_PREFLIGHT_OK.or..not.candidate%valid) return
+    ! Weather acquisition is independent of acceptance of today's future
+    ! trajectory. This publishes no crop event or lifecycle transition.
+    self%weather=pending_weather;self%weather_record=record;self%weather_revision=pending_revision
+    status=FMR_APP_BOOT_OK
+  end subroutine
+
+  subroutine production_application_run_weather_interval(self,record,t0,t1,forcing_config,canopy,results,status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(swap_daily_weather_record_t), intent(in) :: record
+    real(real64), intent(in) :: t0,t1
+    type(ppa_wu03_common_forcing_config_t), intent(in) :: forcing_config
+    type(reference_et_demand_canopy_view_t), intent(in) :: canopy
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    integer, intent(out) :: status
+    type(ppa_wu03_common_forcing_input_t) :: input
+    type(ppa_wu03_common_forcing_result_t) :: common
+    type(ppa_wu03_common_forcing_diagnostics_t) :: diagnostics
+    type(b110_dynamic_top_boundary_request_t) :: request
+    type(b110_dynamic_top_boundary_result_t) :: top
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(fmr_b110_physical_forcing_t) :: effective(1)
+    class(transaction_state_t), allocatable :: physical
+    real(real64) :: day,tmin,tmax,rain,etref,time
+    logical :: available
+    integer :: s
+    status=FMR_APP_BOOT_NOT_READY
+    if(.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(size(self%committed)/=1.or.associated(self%active_context)) return
+    if(self%parameters(1)%bottom_mode/=7) return
+    ! This first application profile is the existing base, root-free,
+    ! snow-free default-MVG pure-flux WU03 profile. Do not accidentally enable
+    ! a stateful evaporation or root-uptake route through an outer adapter.
+    if(self%templates(1)%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
+         self%parameters(1)%root_extraction_active.or.self%parameters(1)%snow_active.or. &
+         self%parameters(1)%tabulated_hydraulics_active.or.self%parameters(1)%direct_retention_active.or. &
+         self%parameters(1)%frost_active.or.self%parameters(1)%hysteresis_active.or. &
+         self%parameters(1)%macropore_active.or.self%parameters(1)%soil_temperature_active) return
+    status=FMR_APP_BOOT_WEATHER_REJECTED
+    if(.not.self%weather_record%same_input(record)) return
+    call record%values(day,tmin,tmax,rain,etref,available)
+    if(.not.available) return
+    if(.not.ieee_is_finite(t0).or..not.ieee_is_finite(t1)) return
+    call self%committed(1)%current_time(time,available)
+    if(.not.available) return
+    if(t0/=time) return
+    input%interval%t0=t0;input%interval%t1=t1
+    input%forcing_t0=day;input%forcing_t1=day+1.0_real64
+    input%precipitation_rate_cm_per_day=rain*0.1_real64
+    input%reference_et%t0=day;input%reference_et%t1=day+1.0_real64
+    input%reference_et%reference_et_mm_per_day=etref;input%canopy=canopy
+    call self%committed(1)%snapshot(physical,available)
+    if(.not.available) return
+    select type(physical)
+    type is(fmr_b110_physical_state_t)
+      if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content)) return
+      if(physical%active_nodes<1) return
+      request%pressure_head_top_cm=physical%pressure_head(1)
+      request%water_content_top=physical%water_content(1)
+      request%previous_ponding_depth_cm=physical%ponding_depth
+      request%candidate_ponding_depth_cm=physical%ponding_depth
+    class default
+      return
+    end select
+    request%conductivity_mean_method=self%parameters(1)%swkmean
+    request%ponding_max_cm=0.0_real64
+    request%runoff_resistance_day=1.0_real64;request%runoff_exponent=1.0_real64
+    call materialize_ppa_wu03_common_forcing(forcing_config,input,request,common,diagnostics, &
+         self%weather,1_int64,1_int64,self%weather_revision,day)
+    if(diagnostics%status/=PPA_WU03_OK.or..not.common%valid) return
+    geometry%parameter_set_id=self%parameters(1)%parameter_set_id
+    geometry%active_nodes=self%parameters(1)%active_nodes
+    geometry%z=self%parameters(1)%z;geometry%dz=self%parameters(1)%dz
+    geometry%node_distance=self%parameters(1)%node_distance
+    call initialize_b110_default_mvg_parameters(hydraulics,self%parameters(1)%cofgen)
+    call evaluate_b110_dynamic_top_boundary(geometry,hydraulics,common%top_request,top)
+    call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(1),top,effective(1),s)
+    if(s/=PPA_WU03_OK) return
+    call self%run_standalone_with_forcing(t0,t1,effective,results,status)
+  end subroutine
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -1177,6 +1377,9 @@ contains
     self%ordinary_head_application = .false.
     self%ordinary_cauchy_application = .false.
     self%ordinary_lysimeter_application = .false.
+    self%weather=weather_day_owner_t()
+    self%weather_record=swap_daily_weather_record_t()
+    self%weather_revision=0_int64
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap

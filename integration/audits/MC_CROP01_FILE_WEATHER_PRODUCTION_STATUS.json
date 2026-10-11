@@ -1,0 +1,49 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Authentic daily weather input to existing production application and prior-accepted-soil crop daystart",
+  "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "last_reconciled_upstream": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "next_action": "Run local O0/O2 authentic four-day physical production gate; then exact shared-owner/F-CI preservation and admission",
+  "recovery_point": "work/mc-crop01-file-weather-production-20261011",
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/audits/MC_CROP01_METEO_DAYSTART_OWNER_BOUNDARY_20261009.md",
+    "docs/audits/PPA_WU03_ATMOSPHERIC_FORCING_NORMAL_INPUT_ADAPTER.md"
+  ],
+  "relevant_paths": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/support/augment_bartholomeus_backend_sources.py"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh",
+    "tests/fapp/run_ppa_wu03_preservation.sh"
+  ],
+  "invariants": [
+    2,
+    3,
+    7,
+    9,
+    13,
+    21,
+    22,
+    27,
+    29,
+    30
+  ],
+  "contract": "Immutable daily file record constructs meteorology once at daystart and feeds both Tmin/Tmax/TAV crop preflight and rain/reference-ET hydrology. The existing weather owner and PPA-WU01 FKT committed state are reused. Existing profile and execution entrypoints keep their behaviour. File I/O stays in an outer adapter. Explicit Gregorian ordinal application time, daily uniform rates, standalone mode7 root-free base profile. Candidate is read-only; no crop event or state publication claim. Exact input record rejects changing another field while preserving TAV. Daystart uses actual current accepted owner state before current-day hydrology; retries cannot increment a crop state.",
+  "blockers": [
+    "Physical emergence, harvest, rotation/fallow and authoritative lifecycle state values still need existing crop-owner extensions and integration.",
+    "No production weather+hydrology+crop unified restart yet.",
+    "Normal Meteo(2) detailed TAV oracle not established by this bounded daily/external-arithmetic input route."
+  ],
+  "coverage": "Do not promote MC-CROP01 to closed or change master denominator."
+}
