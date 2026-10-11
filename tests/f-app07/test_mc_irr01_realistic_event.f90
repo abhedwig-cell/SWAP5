@@ -106,7 +106,7 @@ program test_mc_irr01_realistic_event
            irrigation_parameters%root_zone%field_capacity_water_content(numnod), &
            irrigation_parameters%root_zone%stress_water_content(numnod), &
            irrigation_parameters%root_zone%wilting_water_content(numnod))
-      irrigation_parameters%root_zone%node_thickness_cm = dz
+      irrigation_parameters%root_zone%node_thickness_cm = parameters(1)%dz
       irrigation_parameters%root_zone%field_capacity_water_content = theta0 + 0.03_real64
       irrigation_parameters%root_zone%stress_water_content = theta0 + 0.01_real64
       irrigation_parameters%root_zone%wilting_water_content = theta0 - 0.05_real64
@@ -131,7 +131,7 @@ program test_mc_irr01_realistic_event
         irrigation_parameters%policy%dcs1_dvs(1:2) = [0.0_real64,2.0_real64]
         ! Literal DITAB mm: refill deficit + adjustment - rain = 0.000048 cm.
         irrigation_parameters%policy%dcs1_adjustment_mm(1:2) = &
-             10.0_real64*(expected_depth - 0.03_real64*dz(1)*0.5_real64 + 0.02_real64)
+             10.0_real64*(expected_depth - 0.03_real64*parameters(1)%dz(1)*0.5_real64 + 0.02_real64)
         irrigation_parameters%policy%rainfall_threshold_cm = 0.01_real64
       end if
       if (mode == 3) then
@@ -271,9 +271,12 @@ contains
     p%parameter_set_id = 72001_int64
     p%active_nodes = numnod
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
-    p%z = z
-    p%dz = dz
-    p%node_distance = disnod(1:numnod)
+    ! A 100-cm soil profile can store the 1-cm pulse. The historical
+    ! 3-cm unit-test geometry could store only about 0.23 cm and had
+    ! prescribed equal top/bottom fluxes, so full-dose completion was impossible.
+    p%z = [-12.5_real64,-37.5_real64,-62.5_real64,-87.5_real64]
+    p%dz = 25.0_real64
+    p%node_distance = 25.0_real64
     p%cofgen = 0.0_real64
     do k = 1, numnod
       p%cofgen(1,k)=0.032_real64; p%cofgen(2,k)=0.423_real64; p%cofgen(3,k)=4.75_real64
@@ -292,6 +295,8 @@ contains
     heads = head0
     call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
     conductivity0 = conductivity(1)
+    write(*,'(A,3ES24.16)') 'MC_IRR01_STORAGE_PREFLIGHT=',sum(p%dz),sum((p%cofgen(2,:)-water)*p%dz),expected_depth
+    call require(expected_depth < sum((p%cofgen(2,:)-water)*p%dz),'physical dose storage envelope')
     ! Source-bound initial RIGHT derivative for the test's irrigation forcing.
     ! Uniform heads and equal prescribed boundary fluxes cancel matrix flux;
     ! the only remaining rate is qssdi/(C*dz) at compartment 3.
