@@ -330,6 +330,20 @@ Owner run `38122332488` and F-CI run `38122332557` completed successfully on sci
 
 The physical witness is limited to twelve initial, forcing-consistent 4.8e-8 cm impulses. It does not establish realistic-rate forcing transitions, whole-run restart or general rainfall/evaporation composition. Five #1195 capability admissions remain; eleven full capabilities remain ACTIVE_MIGRATION. The F-KT owner must qualify the event forcing-history interface; MC-CROP01 supplies crop/root lifecycle authority and MC-SOL01 supplies accepted sensor concentration authority. The exact remaining gates are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Master owner PR #1072 receives a bounded annotation delta with no disposition/count promotion.
 
+## ROM and HYDRO-MEMORY terminal-carrier reconciliation (2026-10-11)
+
+Reconciled at canonical `9d95eacb6619f7fece1d3bfe7b3e068304836ecd`. Layer-ROM #495 explicitly closes its core feasibility phase; #496 closes APP0 at an application-authority blocker; #576 explicitly closes ROM-ACCEPT01 with no current Layer-ROM acceptance run authorized. These are completed research/authority carriers, not production ROM admission. Selecting L4/L6/R8 still requires independent purpose criteria.
+
+ROM remaining requirements stay with the independent purpose/application authority: GW-R needs a recharge/bias/temporal envelope or governed response mapping; GW-D needs complete original or newly governed validation-population authority and a separate component structural-error allocation where applicable; SCI-P needs depth-resolved absolute/profile/timing fidelity authority. The qualified public LHM archive is not the withheld original population. Formal application endpoints, numerical solver budgets and reduced-model acceptance remain different authorities. No candidate response was generated or viewed in this closeout.
+
+HYDRO-MEMORY #366/#378 are already explicitly classified above as superseded live gates by later canonical ROOT-HYD01/ACC/DYN evidence. Preserve the original negative net-root-extraction diagnostic, but route current bounded root-active research capability to ACC02-F1/F2 and DYN01/DYN02. Stage0 remains unauthorized and the production/coupling owner envelopes are not broadened.
+
+Full unique research history is preserved without wholesale merging: original heads are frozen under `recovery/regie-pr495-20261011-07c89de1`, `recovery/regie-pr496-20261011-76daff05`, `recovery/regie-pr576-20261011-41799780`, `recovery/regie-pr366-20261011-e79d8901` and `recovery/regie-pr378-20261011-979113fb`. Each remote ref was fetched and exact head/tree verified before closure. The existing registry records complete SHAs, trees, terminal authority paths, limits and reopen requirements. Keep these recovery refs fixed; original branches also remain retained.
+
+Keep #528 analytical coupling research and #540/#559/#581 Ribasim qualification carriers owner-controlled. Their original records do not establish the missing final qualification. Expected scientific sign/storage or12h transfer discrepancies must not be bypassed, and product BMI clock qualification does not constitute SWAP production admission.
+
+This round changes only the two existing metadata authorities. Scientific dependency trees remain unchanged; zero capability promotions, new Actions, candidate simulations or external acquisitions are required.
+
 ## Solver/macropore historical-carrier closeout (2026-10-11)
 
 Reconciled at canonical `10b94cbdcd902889c71444d611c68c0460a17cae`. The A8, PERCH and A26 old carriers are superseded by explicit owner canonical closeouts, not new implementations:
