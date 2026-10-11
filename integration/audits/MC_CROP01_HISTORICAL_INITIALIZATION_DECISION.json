@@ -1,0 +1,58 @@
+{
+  "workstream": "MC-CROP01",
+  "status": "CENTRALLY_SELECTED_PROFILE_IMPLEMENTATION_PENDING_NOT_ADMITTED",
+  "canonical_authority": "Central regie with existing crop lifecycle/F-WOF38/F-WOF40 owner",
+  "source": "Verified SWAP/MOD_cropdevelopment.f90 SHA256 aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+  "existing_contract": "integration/audits/MC_CROP_PHYSICAL_LIFECYCLE_CONTRACT_20261008.json",
+  "discovered_conflict": [
+    {
+      "historical": "preparation(2) initializes fl_prep independently from sw_prep",
+      "current": "ready() requires sown implies prepared"
+    },
+    {
+      "historical": "sowing(2) initializes fl_sow independently from sw_sow, even when preparation awaits hydraulics",
+      "current": "Daily preflight/composition suppresses sown while preparation is blocked"
+    },
+    {
+      "historical": "germination(2) initializes fl_germ independently from sw_germ; sw_germ=0 can be true while sowing/preparation await conditions",
+      "current": "ready() requires germinated implies sown"
+    },
+    {
+      "historical": "preparation(3) copies delay_prep into delay_sow even while blocked",
+      "current": "Bounded scheduled profile retains sowing_delay zero while preparation is blocked"
+    }
+  ],
+  "proposed_existing_owner_resolution": [
+    "Represent preparation, sowing and germination source flags independently inside existing crop_lifecycle_continuation_t, with explicit validated task2 initialization",
+    "Require all three prior accepted flags for physical emergence; daily germination evaluation still requires preparation and sowing",
+    "Retain existing transactional publication, immutable accepted-window receipt, rollback and restart owners; introduce no additional state owner",
+    "Preserve admitted default route unless a source-qualified historical lifecycle profile is explicitly selected"
+  ],
+  "required_qualification": [
+    "Compile literal historical task2/task3 branches for every supported selector combination",
+    "Hydraulic and thermal delayed initialization with all source flags and delays compared",
+    "Previous-day emergence and exact WOFOST/root initialization through existing physical owner and F-KT",
+    "Immediate emergence and SWINCO=3 with source-backed biomass/root seeds",
+    "Rejected initialization/event retry, rollback, exactly-once publication and joint restart",
+    "O0/O2 and unchanged existing preservation gates"
+  ],
+  "held_fixed": [
+    "All HeadCalc, dynamic-top, Task2 and thermal/root-owner physics",
+    "Existing mandatory preservation assertions and admission owners",
+    "No master coverage closure from a bounded germination arithmetic result"
+  ],
+  "implemented_semantic_change": false,
+  "next_safe_action": "Central profile choice is made. After FCI93 production repair admission and reconciliation of the latest accepted HeadCalc storage change, implement this full dependent task2/daystart/owner-codec production profile and literal selector-matrix plus physical multi-day/retry/restart O0/O2 qualification. Existing profile guards remain until the complete source-qualified owner change is admitted.",
+  "authorization": "User explicitly delegated central coordination and decisions for both FCI93 and historical crop startup on 2026-10-11 after the scope question.",
+  "selected_profile_contract": {
+    "owner": "Existing crop_lifecycle_continuation_t and existing F-WOF38/F-WOF40/F-KT owners",
+    "profile": "Explicit B111 task2 initialization profile; existing bounded daily-composition profile remains default until independently admitted",
+    "initialization": "Initialize source fl_prep/fl_sow/fl_germ independently once. Reset delay_prep only for SWPREP=1, delay_sow only for SWSOW=1 and tsumgerm only for SWGERM>=1, exactly as literal task2. Initial model counters start at0; crop rotation carry/reset must follow separately qualified source sequencing. No task3 evaluation or hydro event at creation.",
+    "readiness": "Historical profile permits independent pre-emergence source flags but requires all preparation/sowing/germination flags for physical emergence. Existing default profile retains its implication checks. No transaction or mass guard relaxation.",
+    "daystart": "Preserve TimeControl(2) then authentic Meteo(2)/exchange22 then croprotation(2); task2 creation and task3 daily processing are distinct operations. Next day uses actual previous accepted F-KT state.",
+    "publication": "Existing crop physical state and F-KT accepted receipt publish once; reject/retry preserves old flags, counters, WOFOST state and event identity",
+    "restart": "Existing crop owner codec must explicitly version the selected profile and task2-completion identity; legacy layout restores the old profile. No second owner or silent restart reinterpretation."
+  },
+  "qualified": false,
+  "canonically_admitted": false
+}

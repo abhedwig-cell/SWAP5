@@ -12,7 +12,7 @@ test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 7ff36cbadf8acf
 test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = 2ab6ea917525cd6f2560860bd55aec1da16be014 || fail "postimage drift src/legacy/b1_10_port/soilwater.f90"
 test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = 33a0880325be36116dcbb781006b6283da5dac69 || fail "postimage drift src/transaction/mod_transaction_reference.f90"
 test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 7b16c3fcf58179f1491104a1dce3279010b4178a || fail "postimage drift src/solver/mod_soil_water_solver_contract.f90"
-test "$(git rev-parse HEAD:tests/support/augment_bartholomeus_backend_sources.py)" = bd186c18e54b66907e9e1bc50f4bd9ce99f386b0 || fail "postimage drift tests/support/augment_bartholomeus_backend_sources.py"
+test "$(git rev-parse "$BASE:tests/support/augment_bartholomeus_backend_sources.py")" = bd186c18e54b66907e9e1bc50f4bd9ce99f386b0 || fail "immutable compile helper drift"
 test "$(git rev-parse HEAD:integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json)" = 96a409fc2017eee91355a5b4a43f2017c58673dd || fail "compile closure manifest drift"
 python3 - <<'PY_CLOSURE'
 import json,subprocess
@@ -160,7 +160,19 @@ MODULES=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/adapter/mod_b110_production_soil_water_task2.f90
 )
-mapfile -t MODULES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULES[@]}")
+# Materialize the exact admitted compile algorithm. Other owners may extend
+# the current helper for their own modules; the native oracle still uses the
+# immutable algorithm and compiles the exact current 27-dependency closure.
+mapfile -t MODULES < <(python3 - "$BASE" "${MODULES[@]}" <<'PY_HELPER'
+import subprocess, sys
+from pathlib import Path
+helper='tests/support/augment_bartholomeus_backend_sources.py'
+code=subprocess.check_output(['git','show',sys.argv[1]+':'+helper],text=True)
+sys.argv=[helper,'--all',*sys.argv[2:]]
+exec(compile(code,helper,'exec'),{'__file__':str(Path(helper).resolve()),'__name__':'__main__'})
+PY_HELPER
+)
+echo 'FCI93_IMMUTABLE_COMPILE_HELPER_MATERIALIZED=PASS'
 
 run_replay(){
   local opt="$1"
