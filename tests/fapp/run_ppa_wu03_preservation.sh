@@ -37,8 +37,8 @@ echo 'PPA_WU03_PPA_WU01_REGRESSION=PASS'
 bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh
 echo 'PPA_WU03_FAPP07_IRRIGATION_REGRESSION=PASS'
 
-bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
-env FKT21_ALLOW_FCI98_SUCCESSOR=1 bash tests/fkt/run_fkt21_qualification.sh
+FCI93_ALLOW_MC_CROP01_RECONCILED_CANONICAL=1 bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+env FKT21_ALLOW_MC_CROP01_RECONCILED_CANONICAL=1 bash tests/fkt/run_fkt21_qualification.sh
 python3 - <<'PY'
 import json
 from pathlib import Path
