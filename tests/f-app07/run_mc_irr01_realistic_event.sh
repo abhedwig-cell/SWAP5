@@ -3,7 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-mc-irr01-realistic-event-${GITHUB_RUN_ID:-local}-$$"
 rm -rf "$BUILD"; mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+cleanup(){ if [[ ${MC_IRR01_KEEP_BUILD:-0} == 1 ]]; then echo "MC_IRR01_DIAGNOSTIC_BUILD=$BUILD"; else rm -rf "$BUILD"; fi; }
+trap cleanup EXIT
 cd "$ROOT"
 fail(){ echo "MC_IRR01_MANAGEMENT_PHYSICAL_FAIL $*" >&2; exit 1; }
 TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
@@ -11,7 +12,7 @@ TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
 python3 - "$TEST" <<'PY' > "$BUILD/sources"
 import pathlib,re,sys
 test=pathlib.Path(sys.argv[1])
-files=list(pathlib.Path('src').rglob('*.f90'))+[pathlib.Path('tests/fsi/fsi04_real_headcalc_stubs.f90'), pathlib.Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')]
+files=list(pathlib.Path('src').rglob('*.f90'))+[pathlib.Path('tests/f-app07/mc_irr01_realistic_headcalc_stubs.f90'), pathlib.Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')]
 modules={}
 for path in files:
     text=path.read_text(errors='ignore')
@@ -58,14 +59,24 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || { diff -u "$BUILD/o0/out
 cat "$BUILD/o0/output.txt"
 echo "MC_IRR01_MANAGEMENT_PHYSICAL_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo 'MC_IRR01_REALISTIC_EVENT_MASS=PASS'
+# Source-equivalent root-trigger/depth routes at the fixed coarse profile.
+for opt in 0 2; do
+  "$BUILD/o$opt/test" 1e-6 cluster > "$BUILD/o$opt/cluster.txt" 2>&1 || { cat "$BUILD/o$opt/cluster.txt" >&2; fail "root cluster O$opt"; }
+done
+cmp "$BUILD/o0/cluster.txt" "$BUILD/o2/cluster.txt" || fail 'root cluster O0/O2 drift'
+[[ "$(grep -c '^MC_IRR01_PHYSICAL_TCS=' "$BUILD/o0/cluster.txt")" == 12 ]] || fail 'root cluster case count'
+cat "$BUILD/o0/cluster.txt"
+echo "MC_IRR01_REALISTIC_ROOT_CLUSTER_SHA256=$(sha256sum "$BUILD/o0/cluster.txt" | awk '{print $1}')"
+echo 'MC_IRR01_REALISTIC_ROOT_CLUSTER_O0_O2=PASS' 
 python3 - "$BUILD/o0/output.txt" <<'PY'
-import sys,numpy as np
+import sys
 lines=open(sys.argv[1]).read().splitlines()
-heads=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')])
-theta=np.array([[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')])
-assert heads.shape==(3,5) and theta.shape==(3,5)
-eh=np.max(abs(heads[:2,1:]-heads[2,1:]),axis=1); ew=np.max(abs(theta[:2,1:]-theta[2,1:]),axis=1)
-print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh.tolist(),'THETA=',ew.tolist())
+heads=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_HEAD=')]
+theta=[[float(x) for x in s.split('=')[1].split()] for s in lines if s.startswith('MC_IRR01_EVENT_THETA=')]
+assert len(heads)==len(theta)==3 and all(len(row)==5 for row in heads+theta)
+eh=[max(abs(a-b) for a,b in zip(row[1:],heads[2][1:])) for row in heads[:2]]
+ew=[max(abs(a-b) for a,b in zip(row[1:],theta[2][1:])) for row in theta[:2]]
+print('MC_IRR01_EVENT_REFINEMENT_HEAD=',eh,'THETA=',ew)
 assert eh[1] < eh[0] and ew[1] < ew[0], 'refinement does not reduce error'
 assert eh[1] < 2e-3 and ew[1] < 2e-6, 'declared refined profile accuracy target missed'
 print('MC_IRR01_EVENT_REFINEMENT=PASS')

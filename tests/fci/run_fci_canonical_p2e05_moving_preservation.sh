@@ -91,6 +91,35 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 
+# Central proposed successor for the existing constitutive storage-increment
+# interface. Only this exact arithmetic postimage is eligible; no tolerance,
+# history, state or provider changes are authorized by this exception.
+mc_irr01_storage_exact_successor=0
+if git merge-base --is-ancestor 669a75ff996938fd0538c715ec43fe93d06b74de HEAD && \
+   [[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == 7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac ]] && \
+   [[ "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" == bde864f59082d0aef5bf0eb51526fa5e7c1091ed ]] && \
+   [[ "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" == 7b16c3fcf58179f1491104a1dce3279010b4178a ]]; then
+  mc_irr01_storage_exact_successor=1
+fi
+verify_mc_irr01_storage_successor() {
+  (( mc_irr01_storage_exact_successor )) || return 0
+  test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_shared_storage_preservation.sh)" = b7f635583b8d2257d59590a872d276907e7d7c5f || \
+    fail 'MC-IRR01 shared storage qualification runner drift'
+  local path
+  for path in tests/verification/test_bofek00_dynamic_top_correction.f90 \
+              tests/verification/test_bofek00_frozen_wet_trajectory.f90 \
+              tests/fsi/test_fsi25_reference_indicator_production_seam.f90 \
+              tests/fsi/test_fsi39_b110_ksatexm.f90 \
+              tests/rom/compile_f_rom0_fortran_closure.py \
+              tests/rom/materialize_f_rom0_headcalc_stubs.py; do
+    test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "669a75ff996938fd0538c715ec43fe93d06b74de:$path")" || \
+      fail "MC-IRR01 shared storage immutable assertion drift: $path"
+  done
+  bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh || \
+    fail 'MC-IRR01 shared storage BOFEK/F-SI O0/O2 preservation'
+  echo 'FCI_CANONICAL_MC_IRR01_SHARED_STORAGE_ARITHMETIC_SUCCESSOR=PASS'
+}
+
 # Bounded MC-HEAT01 successor: exact owner code and immutable qualification
 # runners only. Unrecognized thermal/backend changes remain fail-closed.
 mc_heat01_exact_successor=0
@@ -228,6 +257,7 @@ if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
     src/legacy/b1_10_port/headcalc.f90 \
     src/solver/mod_b110_dynamic_top_boundary_provider.f90 \
     src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90; do
+    if [[ "$path" == src/legacy/b1_10_port/headcalc.f90 ]] && (( mc_irr01_storage_exact_successor )); then continue; fi
     test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$dependency_authority:$path")" || \
       fail "candidate changed current BOFEK00 target postimage: $path"
   done
@@ -404,6 +434,8 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/legacy/b1_10_port/headcalc.f90 )
+        (( mc_irr01_storage_exact_successor )) || fail "unqualified shared storage arithmetic: $candidate_path" ;;
       src/kernel/mod_kernel_transactions.f90 )
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
@@ -1346,4 +1378,5 @@ echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
 # Irrigation remains owner-qualified even when the backend follows its exact
 # historical branch and bypasses the B19/MICRO recomposition function.
 verify_mc_irr01_owner_successor
+verify_mc_irr01_storage_successor
 echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
