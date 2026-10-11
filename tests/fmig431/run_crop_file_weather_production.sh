@@ -23,6 +23,20 @@ else: raise AssertionError('missing authoritative historical record')
 build.joinpath('altered.999').write_text(''.join(lines))
 build.joinpath('bad.999').write_text("'ANDE-M' 20 1 1999 1 2 3 4 5 /\n")
 print('CROP_FILE_WEATHER_INPUT_SHA256='+hashlib.sha256(data).hexdigest())
+assert hashlib.sha256(data).hexdigest()=='ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72'
+# The admitted B110 bridge requires the linked grid and typed runtime
+# geometry to agree. Declare a consistent physical 30cm qualification grid,
+# as in the existing B19 current-source builder, without changing HeadCalc.
+stub=Path('tests/fsi/fsi04_real_headcalc_stubs.f90').read_text()
+replacements={
+ '[-0.25d0, -0.75d0, -1.50d0, -2.50d0]':'[-2.5d0, -7.5d0, -15.0d0, -25.0d0]',
+ '[0.50d0, 0.50d0, 1.00d0, 1.00d0]':'[5.0d0, 5.0d0, 10.0d0, 10.0d0]',
+ 'disnod(numnod+1) = 1.0d0':'disnod(numnod+1) = [2.5d0, 5.0d0, 7.5d0, 10.0d0, 5.0d0]',
+}
+for old,new in replacements.items():
+    assert stub.count(old)==1
+    stub=stub.replace(old,new)
+build.joinpath('grid_stubs.f90').write_text(stub)
 PY
 mapfile -t SOURCES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all \
   tests/fsi/fsi04_real_headcalc_stubs.f90 src/runtime/mod_fmr_production_application_bootstrap.f90)
@@ -32,7 +46,9 @@ for opt in 0 2; do
   (
     cd "$BUILD/o$opt"
     for source in "${SOURCES[@]}"; do
-      gfortran "${COMMON[@]}" -O"$opt" -J . -I . -c "$ROOT/$source"
+      source_path="$ROOT/$source"
+      if [[ "$source" == tests/fsi/fsi04_real_headcalc_stubs.f90 ]]; then source_path="$BUILD/grid_stubs.f90"; fi
+      gfortran "${COMMON[@]}" -O"$opt" -J . -I . -c "$source_path"
     done
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
