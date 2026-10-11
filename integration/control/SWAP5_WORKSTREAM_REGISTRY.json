@@ -3363,9 +3363,9 @@
     "master_count_delta": 0,
     "remaining": [
       "legacy CLI orchestration",
-      "historical delayed emergence and root/growth production",
-      "harvest/rotation/fallow production",
-      "external disk continuation codec"
+      "historical day-end crop completion/output/reset and simulation-end flush",
+      "harvest/rotation/fallow and new-season initialization",
+      "broader meteorological/root/CO2/oxygen profiles and external disk continuation codec"
     ],
     "pr": 1204,
     "merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
@@ -3405,7 +3405,33 @@
         "full_capability": false,
         "scope": "Historical task2/task3 pre-emergence production profile; delayed physical emergence/root/growth and full crop lifecycle remain open."
       },
-      "master_reconciliation_head": "2b0e0a5e30bcf43f10d51863d035a1a5134fdc27"
+      "master_reconciliation_head": "2b0e0a5e30bcf43f10d51863d035a1a5134fdc27",
+      "rooted_production_successor": {
+        "authority": "integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json",
+        "canonical_admission": {
+          "pr": 1207,
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+          "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+          "merge_commit": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+          "verified_merge_tree": "ff7e271145e4fa2bed4cfc91d9b91a6460f471cb",
+          "verified_source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+          "scientific_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+          "canonical_source_archive_and_execution_dependency_verification": "PASS",
+          "full_capability": false,
+          "scope": "Bounded authentic daily rooted production, delayed physical emergence and four active growth completions; full historical day-end/harvest/rotation/fallow and external disk restart remain open."
+        },
+        "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+        "stages": {
+          "implemented": true,
+          "persisted": true,
+          "tested": true,
+          "qualified": true,
+          "preserved": true,
+          "canonically_admitted": true
+        },
+        "full_capability": false,
+        "master_count_delta": 0
+      }
     }
   },
   "mc_irr01_independent_runtime_closeout_20261011": {

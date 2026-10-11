@@ -2,14 +2,14 @@
   "workstream": "MC-CROP01",
   "unit": "Delayed emergence and same-day rooted weather growth",
   "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
-  "status": "QUALIFIED_PRESERVED_BOUNDED_ROOTED_PRODUCTION_PENDING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_ROOTED_PRODUCTION",
   "stages": {
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
     "preserved": true,
-    "canonically_admitted": false
+    "canonically_admitted": true
   },
   "authority": "User-delegated MC-CROP01 central admission; existing physical lifecycle contract and PR1206 continuation order",
   "contract": [
@@ -30,7 +30,7 @@
     "Literal authenticated astro/emergence arithmetic oracle and existing WOFOST growth owner/reference gates",
     "Affected owner preservation, full F-CI, exact source successor plus highest frost compile-closure preservation"
   ],
-  "next_action": "Verify exact public PR source/reference/execution closure and current canonical/owner overlap; safely admit only this bounded qualified production block. Reconcile master ACTIVE_MIGRATION without count promotion, then implement source-qualified harvest/rotation/fallow through existing owners.",
+  "next_action": "Reconcile master row and stale remaining_queue, then extend the existing day-end transaction/phase contract for real final-window completion, harvest/output/reset and new-season/fallow authority. No fabricated future weather or zero-duration hydrological commit.",
   "files": [
     "src/adapter/mod_swap_daily_weather_file_adapter.f90",
     "src/crop/mod_crop_lifecycle_continuation.f90",
@@ -75,7 +75,9 @@
   "canonical_reconciliation": {
     "head": "8acdf60e1da367f482fe9d2aadb9a849670b69b8",
     "production_source_unchanged": true,
-    "paths": "Eight regie source-disposition/HYD diagnostic documentary and isolated test paths merged without conflict; no shared crop/root/heat/solver implementation change."
+    "paths": "Eight regie source-disposition/HYD diagnostic documentary and isolated test paths merged without conflict; no shared crop/root/heat/solver implementation change.",
+    "latest_head": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "latest_source_postimage_verified": true
   },
   "completed_preservation": {
     "crop_lifecycle_owner": {
@@ -206,5 +208,17 @@
     "complete_frost_configurations": 24,
     "complete_frost_fine_comparisons": 144,
     "full_lifecycle_closed": false
+  },
+  "canonical_admission": {
+    "pr": 1207,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+    "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+    "merge_commit": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "verified_merge_tree": "ff7e271145e4fa2bed4cfc91d9b91a6460f471cb",
+    "verified_source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "scientific_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "canonical_source_archive_and_execution_dependency_verification": "PASS",
+    "full_capability": false,
+    "scope": "Bounded authentic daily rooted production, delayed physical emergence and four active growth completions; full historical day-end/harvest/rotation/fallow and external disk restart remain open."
   }
 }

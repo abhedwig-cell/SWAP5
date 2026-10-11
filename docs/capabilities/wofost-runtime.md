@@ -51,7 +51,7 @@ For a WOFOST-sensitive change, ask:
 
 ## MC-CROP01 authentic daily weather and rooted production continuation
 
-**Implemented, O0/O2 qualified and preserved; pending canonical admission
+**Current / canonically admitted at PR1207; O0/O2 qualified and preserved
 (2026-10-11).** The authoritative stages and exact evidence are in
 `integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json`. This
 successor extends the admitted PR1206 pre-emergence profile; it does not change
