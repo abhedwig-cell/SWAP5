@@ -1,0 +1,74 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Historical task2/task3 independent pre-emergence production profile",
+  "baseline": "da9ef1e5d37cd49f996dc48e24fcd09110cff777",
+  "recovery_branch": "work/mc-crop01-task2-admission-20261011",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "scientific_predecessor": "7372dccf4a5c9d23354257a8e9326f90074814db",
+  "predecessor_scope": "Focused weather/crop O0/O2 and PPA owner/preservation PASS; full central preservation still running. Pre-frost source only; no automatic inheritance of changed compile dependencies.",
+  "relevant_paths": [
+    "src/crop/mod_crop_lifecycle_continuation.f90",
+    "src/crop/mod_crop_lifecycle_daily_composition.f90",
+    "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/MC_CROP01_HISTORICAL_INITIALIZATION_DECISION.json",
+    "integration/audits/PPA_WU05B_NAN_GUARD_STATUS.json"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/run_crop_task2_frost_successor.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/fapp/run_ppa_wu03_preservation.sh"
+  ],
+  "next_action": "Run full current central moving preservation with canonical8216240d as first parent; preserve terminal exact postimage then bounded admission. Full historical lifecycle and master coverage remain ACTIVE.",
+  "blockers": [
+    "Newly admitted frost whole-source archive verifier rejects any further crop source postimage. Do not waive; qualify exact composed highest-route successor and preserve original evidence.",
+    "Delayed physical emergence, grown root/canopy/WOFOST daily production, harvest/rotation/fallow and external joint disk codec remain open."
+  ],
+  "master_coverage": "ACTIVE_MIGRATION; no count or full lifecycle closure.",
+  "frost_successor_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TASK2_COMPLETE_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "1f7cc1e539d36c7d577b3709f05c4c0e58624fbc0676e179a1b7eae6992d3fb6",
+    "complete_configurations": 24,
+    "required_configurations": 24,
+    "partial_only": false
+  },
+  "local_stage": "COMPLETE24 highest configurations and144 comparisons PASS; exact immutable stdout identity and O0/O2. Full combined current central preservation and admission still pending.",
+  "predecessor_qualification": {
+    "head": "7372dccf4a5c9d23354257a8e9326f90074814db",
+    "tree": "e8883d60de3880c0ef0d8476b4822ec3e0d18944",
+    "full_moving_exit_code": 0,
+    "PPA_owner_and_preservation_exit_code": 0,
+    "qualified_bounded_profile": true,
+    "canonically_admitted": false
+  },
+  "current_focused": {
+    "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+    "O0_O2_exit_code": 0,
+    "semantic_records_identical_to_predecessor": 184,
+    "claim_limit": "Focused actual weather/crop/thermal/restart and source task2/task3 profile only; no full current preservation claim"
+  },
+  "evidence_paths": [
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64"
+  ],
+  "evidence_sha256": {
+    "integration/audits/evidence/MC_CROP01_TASK2_PREDECESSOR_AND_CURRENT_FOCUSED_20261011.tar.gz.b64": "57811f8c11dcbc4932d49cd0bd827637e5453e479de7f8fa6e549a85b5f53241"
+  },
+  "partial_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TASK2_PARTIAL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "5c8d2d04660a27a0c51ff7918f8c8bb412add1eb98e09b29a859643a73081a63",
+    "complete_configurations": 13,
+    "required_configurations": 24,
+    "partial_only": true
+  },
+  "last_reconciled_upstream": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+  "test_scope": "Actual current four-day physical weather/crop/thermal/retry/restart O0/O2, literal12 task2/task3 selectors with schema2 restart, complete24 current-source frost highest configurations and144 original comparisons. Full current central preservation pending."
+}

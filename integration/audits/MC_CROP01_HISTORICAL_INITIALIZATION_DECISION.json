@@ -63,5 +63,17 @@
     "source_head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
     "focused_tests": "Literal12 task2/task3 selectors, schema2/old-schema rejection, actual thermal daystart/restart and completed previous-day emergence fail-closed boundary PASS O0/O2. Full preservation and admission pending.",
     "this_admission_block": "Existing bounded default production weather profile only; no source historical profile implementation is imported by this block."
+  },
+  "current_successor": {
+    "baseline": "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
+    "recovery_branch": "work/mc-crop01-task2-current-20261011",
+    "inherited_source": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false,
+    "next_action": "Requalify full task2/task3 production profile against current canonical owners; delayed physical emergence remains guarded and open."
   }
 }

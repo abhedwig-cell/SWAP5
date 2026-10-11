@@ -55,6 +55,59 @@ end subroutine
 """
 build.joinpath('crop_germination_oracle.f90').write_text(header+coefficients+'\n'+body+footer)
 print('CROP_FILE_WEATHER_B111_CROP_SHA256='+hashlib.sha256(crop).hexdigest())
+# Compile the source task2 flag/counter branches unchanged. The sowing-node
+# search is qualified separately by the existing certified geometry owner.
+branches=[]
+for name in ('preparation','sowing','germination'):
+    routine=text.split('   subroutine '+name+' (task)',1)[1].split('   end subroutine '+name,1)[0]
+    branch=routine.split('      case (2)',1)[1].split('         return',1)[0]
+    if name=='sowing':
+        branch=branch.split('         ! determine compartment',1)[0]
+    branches.append(branch)
+build.joinpath('task2_oracle.f90').write_text('''subroutine b111_task2_oracle(sw_prep,sw_sow,sw_germ,fl_prep,fl_sow,fl_germ,delay_prep,delay_sow,tsumgerm)
+use iso_fortran_env, only: real64
+implicit none
+integer,intent(in)::sw_prep,sw_sow,sw_germ
+logical,intent(out)::fl_prep,fl_sow,fl_germ
+integer,intent(out)::delay_prep,delay_sow
+real(real64),intent(out)::tsumgerm
+logical::fl_start_croprotation
+fl_start_croprotation=.true.
+delay_prep=0;delay_sow=0;tsumgerm=0.0_real64
+'''+''.join(branches)+'end subroutine\n')
+for name,header in (
+ ('preparation','''subroutine b111_prep3_oracle(sampled_head,h_prep,delay_prep,max_delay_prep,delay_sow,fl_prep)
+use iso_fortran_env, only: real64
+implicit none
+real(real64),intent(in)::sampled_head,h_prep
+integer,intent(inout)::delay_prep,delay_sow
+integer,intent(in)::max_delay_prep
+logical,intent(out)::fl_prep
+real(real64)::dh_prep,dvs,z_prep
+z_prep=0.0_real64
+'''),
+ ('sowing','''subroutine b111_sow3_oracle(sampled_head,h_sow,soil_temperature,tempsow,delay_sow,max_delay_sow,fl_sow)
+use iso_fortran_env, only: real64
+implicit none
+real(real64),intent(in)::sampled_head,h_sow,soil_temperature,tempsow
+integer,intent(inout)::delay_sow
+integer,intent(in)::max_delay_sow
+logical,intent(out)::fl_sow
+real(real64)::dh_sow,dtempsow,dvs,z_sow,tsoil(1)
+integer::nodsow
+z_sow=0.0_real64;nodsow=1;tsoil(1)=soil_temperature
+''')):
+    routine=text.split('   subroutine '+name+' (task)',1)[1].split('   end subroutine '+name,1)[0]
+    body=routine.split('      case (3)',1)[1].split('         return',1)[0]
+    footer='''contains
+function h_average(depth) result(head)
+real(real64),intent(in)::depth
+real(real64)::head
+head=sampled_head
+end function
+end subroutine
+'''
+    build.joinpath(name+'_oracle.f90').write_text(header+body+footer)
 
 assert hashlib.sha256(wofost).hexdigest()=='3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b'
 legacy=wofost.decode().replace('\r\n','\n')
@@ -141,7 +194,7 @@ for opt in 0 2; do
     done
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
-      "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" "$BUILD/crop_germination_oracle.f90" "$BUILD/initial_owner_oracle.f90" ./*.o -o test
+      "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" "$BUILD/crop_germination_oracle.f90" "$BUILD/initial_owner_oracle.f90" "$BUILD/task2_oracle.f90" "$BUILD/preparation_oracle.f90" "$BUILD/sowing_oracle.f90" ./*.o -o test
     for moisture in neutral dry hydraulic; do
       for mode in continuous restart; do
         output="$moisture-$mode"
