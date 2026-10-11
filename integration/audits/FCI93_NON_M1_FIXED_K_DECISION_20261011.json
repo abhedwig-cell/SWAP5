@@ -1,5 +1,5 @@
 {
-  "status": "SELECTED_IMPLEMENTED_QUALIFIED_LOCAL_PRESERVATION_NOT_YET_ADMITTED",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_REPAIR",
   "baseline": "a787f6340328a06885a145f6d88a52d921a458e7",
   "authorization": "User explicitly delegated central coordination and decisions for FCI93 and historical crop startup on 2026-10-11 after the scope question; existing central admission checks remain required.",
   "owner": "Central HeadCalc/dynamic-top admission with Task2/PPA-WU03/MIGMAC preservation",
@@ -29,5 +29,10 @@
     "result": "FAIL_O0_ATMOSPHERIC_TYPED_ACCEPTANCE",
     "cause": "Global k(1) is stale in the immutable native oracle; the production binding must resolve actual initial constitutive state. Oracle unchanged."
   },
-  "qualification_authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011"
+  "qualification_authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011",
+  "admission": {
+    "pr": 1202,
+    "head": "c3ec083300780cfce027448059ba0cc8b5e651b4",
+    "merge": "d8b2640890203c3444f3d65b8918e31b52cdf74f"
+  }
 }

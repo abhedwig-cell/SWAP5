@@ -1377,12 +1377,12 @@
     ]
   },
   "fci93_non_m1_fixed_k_central_20261011": {
-    "stage": "QUALIFIED_LOCAL_OWNER_PRESERVATION_CANONICAL_ADMISSION_PENDING",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_REPAIR",
     "canonical": "0379282491bdc6b7de5ffb8efd0334967eeae880",
     "authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011",
     "recovery_branch": "work/fci93-headed-binding-20261011",
     "coverage_effect": "ZERO_NEW_FULLCAPS; MC-CROP01 remains open",
-    "next_action": "Safely admit exact bounded repair, then reconcile PR1197 and implement selected historical task2 owner profile."
+    "next_action": "PR1202 admitted at d8b2640890203c3444f3d65b8918e31b52cdf74f; reconcile PR1197 and implement selected historical task2 owner profile."
   },
   "finalization_frost_regie_closeout_20261011": {
     "canonical_base": "0379282491bdc6b7de5ffb8efd0334967eeae880",

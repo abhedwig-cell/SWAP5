@@ -30,7 +30,9 @@
     "qualified_governance_head": "638701eda1d515b4cfb752404e9c35885fea3e47",
     "qualified_runner_blob": "d3f8ede538e7f136abe66994befe0f996d6b53b6",
     "policy": "Preserve exact F-SI35-owned composition and dependency surfaces and replay F-SI35 semantics, while allowing later independently admitted unrelated production modules without classifying them as F-SI35 drift.",
-    "unrelated_post_status_a_delta": ["src/runtime/mod_fmr_soil_water_application_host.f90"],
+    "unrelated_post_status_a_delta": [
+      "src/runtime/mod_fmr_soil_water_application_host.f90"
+    ],
     "fapp01_host_dependency_of_fsi35": false
   },
   "qualification": {
@@ -130,10 +132,10 @@
     "production_reference_workflow_and_canonical_runner_changes": false,
     "new_actions_runs": 0
   },
-  "next_permitted_action": "Bounded non-M1 fixed-K repair is locally qualified/preserved. Verify exact admission candidate and live canonical overlap, safely merge, then preserve this qualified scope. Original negative diagnosis remains historical evidence; no unrelated owner or broader lifecycle admission.",
+  "next_permitted_action": "Preserve bounded repaired seam; implement selected historical task2 crop owner profile on reconciled canonical.",
   "non_m1_fixed_k_repair_20261011": {
-    "status": "QUALIFIED_LOCAL_OWNER_PRESERVATION_READY_FOR_CANONICAL_ADMISSION",
-    "canonical": "0379282491bdc6b7de5ffb8efd0334967eeae880",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_REPAIR",
+    "canonical": "d8b2640890203c3444f3d65b8918e31b52cdf74f",
     "source_head": "98f9d19ae2226dc02f511ca06918f79196fdfa5a",
     "source_tree": "f98b0ec01ce26eb33831f41e685f5d1f69c4d8d0",
     "implemented": true,
@@ -141,7 +143,7 @@
     "tested": true,
     "qualified": true,
     "preserved": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "production_blob": "ed678be6e27621ac076a883c947abba8032ac7e6",
     "scope": "Actual trial-start fixed-conductivity binding for already admitted non-M1 SWKIMPL=0 Task2; native SWBOTB=2 surface/Task2/dispatch preserved. M1 unchanged. No provider formulas, HeadCalc, state/restart or thresholds changed.",
     "full_central": {
@@ -619,7 +621,15 @@
     },
     "archive": "integration/audits/evidence/FCI93_FIXED_K_QUALIFICATION_20261011.tar.gz.b64",
     "coverage_effect": "No new SWAP431 fullcap admission or master-count promotion; central preservation/interface repair only",
-    "next_action": "Safely admit exact bounded repair after overlap/tree verification, reconcile FCI93 and PR1197, then implement selected historical task2 crop owner profile.",
-    "decoded_archive_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349"
+    "next_action": "Preserve bounded repaired seam; implement selected historical task2 crop owner profile on reconciled canonical.",
+    "decoded_archive_sha256": "115dfcb0fe442e1cc46ae31653743289f5c81af7313f97d0aad424c880608349",
+    "admission": {
+      "pr": 1202,
+      "head": "c3ec083300780cfce027448059ba0cc8b5e651b4",
+      "merge": "d8b2640890203c3444f3d65b8918e31b52cdf74f",
+      "verified_production_blob": "ed678be6e27621ac076a883c947abba8032ac7e6",
+      "exact_27_compile_dependencies": "PASS at canonical merge",
+      "concurrent_1203": "Independent admitted salt binding added outside exact compile closure; owner source and new preservation calls retained unchanged."
+    }
   }
 }
