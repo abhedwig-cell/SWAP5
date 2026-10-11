@@ -18,7 +18,7 @@ module mod_fmr_production_application_bootstrap
        certify_fkt_accepted_interval, admit_wofost_accepted_trial, FMR_WOFOST_LINEAGE_OK
   use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_state_t, &
        fmr_wofost_crop_transaction_parameters_t, fmr_wofost_crop_event_forcing_t, &
-       initialize_fmr_wofost_crop_transaction_state, FMR_WOF38_OK
+       initialize_fmr_wofost_crop_transaction_state, prepare_fmr_wofost_crop_event_forcing, FMR_WOF38_OK
   use mod_fmr_crop_weather_physical_event_composition, only: &
        propose_weather_crop_physical_event, CROP_EVENT_COMPOSE_OK
   use mod_fmr_wofost_crop_event_lifecycle, only: reconcile_committed_crop_event_receipt, FMR_WOF39_OK
@@ -26,6 +26,16 @@ module mod_fmr_production_application_bootstrap
        initialize_b111_crop_lifecycle,CROP_PROFILE_BOUNDED,CROP_PROFILE_B111_TASK2,CROP_CONT_OK
   use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
   use mod_wofost_emergence_initialization, only: initialize_wofost_emergence_owner, WOFOST_EMERGENCE_INIT_OK
+  use mod_wofost_rate_table, only: wofost_rate_table_t
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
+  use mod_root_water_uptake_process, only: root_water_uptake_parameters_t, root_water_uptake_flux_result_t, &
+       root_water_uptake_diagnostics_t,root_water_uptake_request_t,evaluate_macro_feddes_drought_uptake,ROOT_UPTAKE_OK
+  use mod_fmr_crop_root_uptake_input_adapter, only: fmr_evaluate_shared_crop_root_uptake, &
+       fmr_crop_root_uptake_adapter_diagnostics_t, FMR_CROP_ROOT_ADAPTER_OK
+  use mod_fmr_root_uptake_process_binding, only: fmr_root_uptake_binding_diagnostics_t
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_crop_et_canopy_view_provider, only: crop_et_canopy_parameters_t, crop_et_canopy_state_view_t, &
+       crop_et_canopy_forcing_t,crop_et_canopy_view_t,crop_et_canopy_diagnostics_t,evaluate_crop_et_canopy_view,CROP_ET_CANOPY_OK
   use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t, &
        compose_crop_lifecycle_daily_candidate, CROP_DAILY_OK
@@ -146,6 +156,14 @@ module mod_fmr_production_application_bootstrap
 
   type, public :: fmr_production_application_config_t
     logical :: file_weather_daystart = .false.
+    logical :: file_weather_rooted = .false.
+    real(real64) :: file_weather_latitude = -999.0_real64
+    real(real64) :: file_weather_emergence_dry_weight = -1.0_real64
+    real(real64) :: file_weather_maximum_root_depth_cm = 0.0_real64
+    real(real64) :: file_weather_stem_area_coefficient=0.0_real64,file_weather_storage_area_coefficient=0.0_real64
+    type(wofost_rate_table_t) :: file_weather_root_depth, file_weather_root_density
+    type(root_water_uptake_parameters_t) :: file_weather_root_parameters
+    type(crop_et_canopy_parameters_t) :: file_weather_canopy_parameters
     ! Gregorian ordinal corresponding to model time zero; explicit, immutable.
     integer :: file_weather_epoch_day = 0
     real(real64) :: initial_time = 0.0_real64
@@ -164,7 +182,7 @@ module mod_fmr_production_application_bootstrap
     type(fmr_production_application_config_t) :: configuration
     type(kernel_persistence_snapshot_t) :: soil,crop
     type(weather_day_owner_t) :: weather
-    type(swap_daily_weather_record_t) :: record
+    type(swap_daily_weather_record_t) :: record,previous_record
     integer(int64) :: weather_revision=0_int64
     type(fmr_wofost_accepted_window_t) :: current_window,previous_window
     integer(int64) :: crop_lineage=0_int64,crop_revision=-1_int64
@@ -199,7 +217,7 @@ module mod_fmr_production_application_bootstrap
     ! The existing weather owner is reused; the record is immutable forcing,
     ! not a second owner of meteorological state or of crop physical state.
     type(weather_day_owner_t) :: weather
-    type(swap_daily_weather_record_t) :: weather_record
+    type(swap_daily_weather_record_t) :: weather_record,previous_weather_record
     integer(int64) :: weather_revision=0_int64
     integer :: weather_epoch_day=0
     logical :: weather_interval_active=.false.,crop_daystart_active=.false.
@@ -239,6 +257,10 @@ contains
     class(transaction_state_t), allocatable :: initial_physical
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
     logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
+    type(root_water_uptake_request_t) :: zero_root_request
+    type(root_water_uptake_flux_result_t) :: zero_root_fluxes
+    type(root_water_uptake_diagnostics_t) :: root_parameter_diagnostics
+    type(process_hydraulic_view_t) :: unused_hydraulic_view
     type(black_evaporation_state_t) :: initial_black_state
     type(boesten_evaporation_state_t) :: initial_boesten_state
     type(fmr_groundwater_temporal_budget_policy_t) :: temporal_budget_policy
@@ -261,7 +283,7 @@ contains
     prescribed_qbot_profile = .true.
     direct_retention_requested = .false.
     do i = 1, n
-      if (.not. tile_config_valid(config%tiles(i), n, i, config%file_weather_daystart)) then
+      if (.not. tile_config_valid(config%tiles(i), n, i, config%file_weather_daystart,config%file_weather_rooted)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
@@ -320,6 +342,26 @@ contains
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
     end if
+    if(config%file_weather_rooted) then
+      if(.not.config%file_weather_daystart.or.n/=1) return
+      if(.not.ieee_is_finite(config%file_weather_latitude).or. &
+           .not.ieee_is_finite(config%file_weather_emergence_dry_weight).or. &
+           .not.ieee_is_finite(config%file_weather_maximum_root_depth_cm)) return
+      if(abs(config%file_weather_latitude)>66.5_real64.or.config%file_weather_emergence_dry_weight<=0.0_real64.or. &
+           config%file_weather_emergence_dry_weight>10000.0_real64.or.config%file_weather_maximum_root_depth_cm<=0.0_real64) return
+      if(.not.config%file_weather_root_depth%ready().or..not.config%file_weather_root_density%ready().or. &
+           .not.config%file_weather_canopy_parameters%ready()) return
+      if(config%file_weather_canopy_parameters%co2_enabled()) return
+      if(config%file_weather_root_parameters%active_nodes/=config%tiles(1)%parameters%active_nodes) return
+      if(.not.file_weather_rooted_tile_valid(config%tiles(1))) return
+      call evaluate_macro_feddes_drought_uptake(config%file_weather_root_parameters,unused_hydraulic_view, &
+           zero_root_request,zero_root_fluxes,root_parameter_diagnostics)
+      if(root_parameter_diagnostics%status/=ROOT_UPTAKE_OK) return
+      if(config%file_weather_root_parameters%empirical_oxygen_enabled) return
+      if(.not.all(ieee_is_finite([config%file_weather_stem_area_coefficient, &
+           config%file_weather_storage_area_coefficient]))) return
+      if(min(config%file_weather_stem_area_coefficient,config%file_weather_storage_area_coefficient)<0.0_real64) return
+    end if
     if(config%file_weather_daystart) then
       if(config%file_weather_epoch_day<1.or.config%file_weather_epoch_day>3652059) then
         status=FMR_APP_BOOT_INVALID_CONFIG
@@ -328,7 +370,7 @@ contains
       self%weather_epoch_day=config%file_weather_epoch_day
       if(n/=1.or..not.standalone_profile.or. &
            (config%tiles(1)%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.and. &
-            .not.file_weather_thermal_tile_valid(config%tiles(1))).or. &
+            .not.file_weather_thermal_tile_valid(config%tiles(1),config%file_weather_rooted)).or. &
            (config%tiles(1)%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE.and. &
             config%tiles(1)%template%numerical_continuation_layout_id/= &
             FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)) then
@@ -678,6 +720,7 @@ contains
       if(.not.available) return
       call open_wofost_accepted_window(day_checkpoint,day+1.0_real64,pending_window,s)
       if(s/=FMR_WOFOST_LINEAGE_OK) return
+      self%previous_weather_record=self%weather_record
       self%previous_weather_window=self%weather_window
       self%weather_window=pending_window
     end if
@@ -685,7 +728,7 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
-  subroutine production_application_run_weather_interval(self,record,t0,t1,forcing_config,canopy,results,status)
+  subroutine production_application_run_weather_interval(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(swap_daily_weather_record_t), intent(in) :: record
     real(real64), intent(in) :: t0,t1
@@ -693,6 +736,18 @@ contains
     type(reference_et_demand_canopy_view_t), intent(in) :: canopy
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     integer, intent(out) :: status
+    type(kernel_committed_state_t),intent(in),optional :: crop_committed
+    type(wofost_crop_owner_state_t) :: crop_owner
+    type(crop_lifecycle_continuation_t) :: crop_lifecycle
+    type(crop_root_uptake_input_t) :: root_input
+    type(root_water_uptake_flux_result_t) :: root_fluxes
+    type(root_water_uptake_diagnostics_t) :: root_diagnostics
+    type(fmr_root_uptake_binding_diagnostics_t) :: root_binding
+    type(fmr_crop_root_uptake_adapter_diagnostics_t) :: root_adapter
+    type(crop_et_canopy_state_view_t) :: canopy_state
+    type(crop_et_canopy_forcing_t) :: canopy_forcing
+    type(crop_et_canopy_view_t) :: crop_canopy
+    type(crop_et_canopy_diagnostics_t) :: canopy_diagnostics
     type(ppa_wu03_common_forcing_input_t) :: input
     type(ppa_wu03_common_forcing_result_t) :: common
     type(ppa_wu03_common_forcing_diagnostics_t) :: diagnostics
@@ -705,20 +760,21 @@ contains
     type(b110_default_mvg_parameters_t) :: hydraulics
     type(fmr_b110_physical_forcing_t) :: effective(1)
     class(transaction_state_t), allocatable :: physical
-    real(real64) :: day,tmin,tmax,rain,etref,time
-    logical :: available
+    real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra
+    logical :: available,rooted
     integer :: s
     status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
     status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
     if(size(self%committed)/=1.or.associated(self%active_context)) return
     if(self%parameters(1)%bottom_mode/=7.or.self%weather_epoch_day==0) return
+    rooted=self%weather_configuration%file_weather_rooted
     ! This first application profile is the existing base, root-free,
     ! snow-free default-MVG pure-flux WU03 profile. Do not accidentally enable
     ! a stateful evaporation or root-uptake route through an outer adapter.
     if((self%templates(1)%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.and. &
-        .not.file_weather_thermal_tile_valid(self%weather_configuration%tiles(1))).or. &
-         self%parameters(1)%root_extraction_active.or.self%parameters(1)%snow_active.or. &
+        .not.file_weather_thermal_tile_valid(self%weather_configuration%tiles(1),rooted)).or. &
+         (self%parameters(1)%root_extraction_active.and..not.rooted).or.self%parameters(1)%snow_active.or. &
          self%parameters(1)%tabulated_hydraulics_active.or.self%parameters(1)%direct_retention_active.or. &
          self%parameters(1)%frost_active.or.self%parameters(1)%hysteresis_active.or. &
          self%parameters(1)%macropore_active) return
@@ -742,6 +798,38 @@ contains
     input%precipitation_rate_cm_per_day=rain*0.1_real64
     input%reference_et%t0=day;input%reference_et%t1=day+1.0_real64
     input%reference_et%reference_et_mm_per_day=etref;input%canopy=canopy
+    if(rooted) then
+      if(.not.present(crop_committed)) return
+      if(crop_committed%current_lineage_id()/=self%accepted_crop_lineage.or. &
+           crop_committed%current_revision()/=self%accepted_crop_revision) return
+      call crop_committed%current_time(crop_time,available)
+      if(.not.available.or.crop_time/=day) return
+      call crop_committed%snapshot(physical,available)
+      if(.not.available) return
+      select type(physical)
+      type is(fmr_wofost_crop_transaction_state_t)
+        call physical%snapshot_owner(crop_owner,available)
+        if(.not.available) return
+        call physical%snapshot_lifecycle(crop_lifecycle,available)
+        if(.not.available.or..not.crop_lifecycle%ready()) return
+        if(crop_lifecycle%harvested.or.crop_lifecycle%initialization_profile/=CROP_PROFILE_B111_TASK2) return
+        if(crop_lifecycle%emerged.neqv.crop_owner%crop_emerged) return
+      class default
+        return
+      end select
+      canopy_state%crop_emerged=crop_owner%crop_emerged
+      canopy_state%development_stage=crop_owner%development_stage
+      call crop_owner%derive_actual_leaf_area_index(self%weather_configuration%file_weather_stem_area_coefficient, &
+           self%weather_configuration%file_weather_storage_area_coefficient,canopy_state%leaf_area_index,s)
+      if(s/=WOFOST_CROP_OWNER_OK) return
+      call evaluate_crop_et_canopy_view(self%weather_configuration%file_weather_canopy_parameters, &
+           canopy_state,canopy_forcing,crop_canopy,canopy_diagnostics)
+      if(canopy_diagnostics%status/=CROP_ET_CANOPY_OK.or..not.canopy_diagnostics%result_produced) return
+      input%canopy%crop_emerged=crop_canopy%crop_emerged
+      input%canopy%vegetation_cover_fraction=crop_canopy%vegetation_cover_fraction
+      input%canopy%crop_factor=crop_canopy%crop_factor
+      input%canopy%co2_transpiration_factor=crop_canopy%co2_transpiration_factor
+    end if
     call self%committed(1)%snapshot(physical,available)
     if(.not.available) return
     select type(physical)
@@ -763,7 +851,7 @@ contains
     if(diagnostics%status/=PPA_WU03_OK.or..not.common%valid) return
     ! This profile has no roots or transpiration. Do not manufacture a zero
     ! root integral if the common forcing carries a positive crop demand.
-    if(common%reference_et_demand%potential_transpiration_cm_per_day/=0.0_real64) return
+    if(.not.rooted.and.common%reference_et_demand%potential_transpiration_cm_per_day/=0.0_real64) return
     geometry%parameter_set_id=self%parameters(1)%parameter_set_id
     geometry%active_nodes=self%parameters(1)%active_nodes
     geometry%z=self%parameters(1)%z;geometry%dz=self%parameters(1)%dz
@@ -772,17 +860,31 @@ contains
     call evaluate_b110_dynamic_top_boundary(geometry,hydraulics,common%top_request,top)
     call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(1),top,effective(1),s)
     if(s/=PPA_WU03_OK) return
+    qrot=0.0_real64;ptra=0.0_real64
+    if(rooted) then
+      call crop_owner%derive_dvs_root_uptake_input(self%weather_configuration%file_weather_root_depth, &
+           self%weather_configuration%file_weather_root_density,self%weather_configuration%file_weather_maximum_root_depth_cm, &
+           self%parameters(1)%z-self%parameters(1)%dz*0.5_real64,root_input,available,s)
+      if(s/=WOFOST_CROP_OWNER_OK) return
+      if(crop_owner%crop_emerged.and..not.available) return
+      root_input%potential_transpiration=common%reference_et_demand%potential_transpiration_cm_per_day
+      call fmr_evaluate_shared_crop_root_uptake(self%committed(1),self%weather_configuration%file_weather_root_parameters, &
+           root_input,root_fluxes,root_diagnostics,root_binding,root_adapter)
+      if(root_adapter%status/=FMR_CROP_ROOT_ADAPTER_OK) return
+      effective(1)%root_extraction_sink=root_fluxes%root_extraction_sink
+      qrot=sum(effective(1)%root_extraction_sink);ptra=root_input%potential_transpiration
+    end if
     if(self%parameters(1)%soil_temperature_active) then
       ! Same immutable source record as rain/ET and crop TAV. The admitted
       ! numerical AIR/no-snow owner implements historical TeTop=tav.
-      if(.not.file_weather_thermal_tile_valid(self%weather_configuration%tiles(1))) return
+      if(.not.file_weather_thermal_tile_valid(self%weather_configuration%tiles(1),rooted)) return
       effective(1)%soil_temperature%air_temperature_c=(tmax+tmin)*0.5_real64
     end if
     call self%committed(1)%capture_checkpoint(interval_checkpoint,available)
     if(.not.available) return
     call begin_wofost_trial_contribution(interval_checkpoint,t1,trial,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) return
-    call accumulate_wofost_trial_process_rate(trial,t0,t1,0.0_real64,0.0_real64,s)
+    call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) return
     call prevalidate_wofost_trial_admission(self%weather_window,trial,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) return
@@ -930,9 +1032,11 @@ contains
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: diagnostics
     class(transaction_state_t), allocatable :: physical
-    real(real64) :: day,tmin,tmax,rain,etref,crop_time
+    real(real64) :: day,tmin,tmax,rain,etref,crop_time,solar(6),radiation
+    integer :: iday
     integer :: s,commit_status
-    logical :: available,did_commit,retired
+    logical :: available,did_commit,retired,active_event,emergence
+    active_event=.false.;emergence=.false.
     result=kernel_result_t();status=FMR_APP_BOOT_NOT_READY
     if(.not.self%ready()) return
     status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
@@ -943,18 +1047,22 @@ contains
       call physical%snapshot_lifecycle(lifecycle,available)
       if(.not.available.or..not.lifecycle%ready()) return
       call physical%snapshot_owner(owner,available)
-      if(.not.available.or.owner%crop_emerged.or.lifecycle%emerged.or.lifecycle%harvested) return
+      if(.not.available.or.lifecycle%harvested) return
+      if(owner%crop_emerged.neqv.lifecycle%emerged) return
+      if(owner%crop_emerged.and..not.self%weather_configuration%file_weather_rooted) return
     class default
       return
     end select
     if(controls%initialization_profile/=lifecycle%initialization_profile) return
     if(lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
       ! Source emergence is checked from the previous accepted flags before
-      ! task3. Until delayed WOFOST/root initialization is qualified, refuse
-      ! this boundary rather than publish another pre-emergence daily event.
+      ! task3. Only the explicit rooted profile may initialize biomass and
+      ! complete active growth; the original pre-emergence profile stays bounded.
       if(lifecycle%prepared.and.lifecycle%sown.and.lifecycle%germinated) then
-        status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
-        return
+        if(.not.self%weather_configuration%file_weather_rooted) then
+          status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED;return
+        end if
+        active_event=.true.;emergence=.not.owner%crop_emerged
       end if
       allocate(historical_current,source=lifecycle)
     end if
@@ -987,6 +1095,38 @@ contains
     crop_forcing%minimum_temperature=tmin
     crop_forcing%average_temperature=(tmax+tmin)*0.5_real64
     crop_forcing%daytime_average_temperature=(tmax+crop_forcing%average_temperature)*0.5_real64
+    status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
+    if(active_event) then
+      if(.not.crop_parameters%matches_canopy(self%weather_configuration%file_weather_stem_area_coefficient, &
+           self%weather_configuration%file_weather_storage_area_coefficient)) return
+      ! Completed growth belongs to its own previous immutable record;
+      ! current morning weather still feeds the independent daily preflight.
+      if(.not.self%previous_weather_record%same_source(record)) return
+      call self%previous_weather_record%values(day,tmin,tmax,rain,etref,available)
+      if(.not.available) return
+      day=day-real(self%weather_epoch_day,real64)
+      if(day/=crop_time) return
+      call self%previous_weather_record%growth_values(self%weather_configuration%file_weather_latitude, &
+           iday,radiation,solar,available)
+      if(.not.available) return
+      crop_forcing%minimum_temperature=tmin
+      crop_forcing%average_temperature=(tmax+tmin)*0.5_real64
+      crop_forcing%daytime_average_temperature=(tmax+crop_forcing%average_temperature)*0.5_real64
+      crop_forcing%global_radiation=radiation
+      crop_forcing%daylength_hours=solar(1);crop_forcing%photoperiodic_daylength_hours=solar(2)
+      crop_forcing%sinld=solar(3);crop_forcing%cosld=solar(4)
+      crop_forcing%diffuse_perpendicular_radiation=solar(5)
+      crop_forcing%daily_sine_solar_elevation_integral=solar(6)
+      day=day+1.0_real64
+      if(emergence) then
+        call prepare_fmr_wofost_crop_event_forcing(self%previous_weather_window,crop_forcing,event,s, &
+             active_expected_revision=lifecycle%revision, &
+             emergence_dry_weight=self%weather_configuration%file_weather_emergence_dry_weight)
+      else
+        call prepare_fmr_wofost_crop_event_forcing(self%previous_weather_window,crop_forcing,event,s, &
+             active_expected_revision=lifecycle%revision)
+      end if
+    else
     ! This profile is pre-emergence only. It neither invents solar forcing
     ! nor claims active WOFOST growth from a root-free source trajectory.
     call propose_weather_crop_physical_event(self%committed(1), &
@@ -1000,6 +1140,7 @@ contains
          effective_controls%optimal_sum,effective_controls%base_temperature,effective_controls%max_effective_temperature, &
          effective_controls%dry_head,effective_controls%wet_head,effective_controls%water_response_a,event,s, &
          historical_current=historical_current)
+    end if
     status=FMR_APP_BOOT_CROP_TRANSACTION_FAILED
     if(s/=CROP_EVENT_COMPOSE_OK.or..not.event%ready()) return
     call crop_committed%capture_checkpoint(checkpoint,available)
@@ -1065,6 +1206,7 @@ contains
     if(.not.available.or.s/=KERNEL_PERSISTENCE_OK) return
     bundle%configuration=self%weather_configuration
     bundle%weather=self%weather;bundle%record=self%weather_record
+    bundle%previous_record=self%previous_weather_record
     bundle%weather_revision=self%weather_revision
     bundle%current_window=self%weather_window;bundle%previous_window=self%previous_weather_window
     bundle%crop_lineage=self%accepted_crop_lineage;bundle%crop_revision=self%accepted_crop_revision
@@ -1101,6 +1243,7 @@ contains
     ! numerical physical continuation, exact source bytes and delivered event.
     self%committed(1)=pending_soil
     self%weather=bundle%weather;self%weather_record=bundle%record
+    self%previous_weather_record=bundle%previous_record
     self%weather_revision=bundle%weather_revision
     self%weather_window=bundle%current_window;self%previous_weather_window=bundle%previous_window
     self%crop_daystart_active=.true.
@@ -1499,14 +1642,19 @@ contains
     end do
   end function int64_values_unique
 
-  logical function file_weather_thermal_tile_valid(tile) result(valid)
+  logical function file_weather_thermal_tile_valid(tile,rooted) result(valid)
     use mod_soil_temperature_contract, only: SOIL_TEMP_SOLUTION_NUMERIC, &
          SOIL_TEMP_TOP_AIR_TEMPERATURE, SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
     type(fmr_production_application_tile_config_t), intent(in) :: tile
+    logical,intent(in),optional :: rooted
+    logical :: allow_roots
+    allow_roots=.false.
+    if(present(rooted)) allow_roots=rooted
     valid=.false.
     if(tile%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE) return
     if(.not.tile%parameters%soil_temperature_active.or.tile%parameters%bottom_mode/=7) return
-    if(tile%parameters%root_extraction_active.or.tile%parameters%frost_active.or.tile%parameters%snow_active) return
+    if((tile%parameters%root_extraction_active.and..not.allow_roots).or. &
+         tile%parameters%frost_active.or.tile%parameters%snow_active) return
     if(allocated(tile%parameters%bartholomeus)) return
     if(.not.allocated(tile%parameters%soil_temperature).or..not.allocated(tile%initial_state%soil_temperature).or. &
        .not.allocated(tile%base_forcing%soil_temperature)) return
@@ -1518,10 +1666,22 @@ contains
     valid=.true.
   end function
 
-  logical function tile_config_valid(tile, ntiles, slot, file_weather) result(valid)
+  logical function file_weather_rooted_tile_valid(tile) result(valid)
+    type(fmr_production_application_tile_config_t),intent(in)::tile
+    valid=.false.
+    if(.not.file_weather_thermal_tile_valid(tile,.true.)) return
+    if(.not.tile%parameters%root_extraction_active.or.tile%parameters%root_compensation%method/=ROOT_COMP_OFF) return
+    if(tile%parameters%root_salinity_active.or.tile%parameters%root_frost%active) return
+    if(allocated(tile%parameters%bartholomeus).or.allocated(tile%parameters%micro_de_willigen)) return
+    if(tile%parameters%macropore_active.or.tile%parameters%tabulated_hydraulics_active.or. &
+         tile%parameters%direct_retention_active.or.tile%parameters%hysteresis_active.or.tile%parameters%elasticity_active) return
+    valid=.true.
+  end function
+
+  logical function tile_config_valid(tile, ntiles, slot, file_weather,rooted_weather) result(valid)
     type(fmr_production_application_tile_config_t), intent(in) :: tile
     integer, intent(in) :: ntiles, slot
-    logical, intent(in) :: file_weather
+    logical, intent(in) :: file_weather,rooted_weather
 
     valid = .false.
     if (tile%tile_id <= 0_int64) return
@@ -1606,7 +1766,7 @@ contains
     else
       if(tile%parameters%soil_temperature_active.and..not.tile%parameters%root_frost%active.and. &
            .not.tile%parameters%frost_bottom%active.and..not.tile%parameters%frost_drainage%active) then
-        if(.not.file_weather.or..not.file_weather_thermal_tile_valid(tile)) return
+        if(.not.file_weather.or..not.file_weather_thermal_tile_valid(tile,rooted_weather)) return
       end if
       if(tile%parameters%root_extraction_active) then
         if (allocated(tile%parameters%micro_de_willigen)) then
@@ -1616,7 +1776,8 @@ contains
         else
           if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
              tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM.and. &
-             .not.tile%parameters%root_frost%active) return
+             .not.tile%parameters%root_frost%active.and. &
+             .not.(rooted_weather.and.file_weather.and.file_weather_rooted_tile_valid(tile))) return
         end if
         if(tile%parameters%bottom_mode/=2.and.tile%parameters%bottom_mode/=7) return
         if(tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active) return
@@ -1870,6 +2031,7 @@ contains
     self%ordinary_lysimeter_application = .false.
     self%weather=weather_day_owner_t()
     self%weather_record=swap_daily_weather_record_t()
+    self%previous_weather_record=swap_daily_weather_record_t()
     self%initial_crop_daystart_committed=.false.
     self%weather_revision=0_int64;self%weather_epoch_day=0;self%weather_interval_active=.false.;self%crop_daystart_active=.false.
     self%accepted_crop_lineage=0_int64;self%accepted_crop_revision=-1_int64

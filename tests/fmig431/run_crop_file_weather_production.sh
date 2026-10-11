@@ -24,6 +24,20 @@ build.joinpath('daily_meteo_oracle.f90').write_bytes(
     b'function b111_daily_tav(tmin,tmax) result(tav)\nuse iso_fortran_env, only: real64\nimplicit none\n'
     b'real(real64),intent(in)::tmin,tmax\nreal(real64)::tmn,tmx,tav\ntmn=tmin\ntmx=tmax\n'+statement+b'\nend function\n')
 print('CROP_FILE_WEATHER_B111_METEO_SHA256='+hashlib.sha256(meteo).hexdigest())
+# Literal authenticated astronomy body and constants: independent compile.
+text=meteo.decode().replace('\r\n','\n')
+body=text.split('      ! declination and solar constant for this day',1)[1].split('      if (present(dayl)) then',1)[0]
+build.joinpath('astro_oracle.f90').write_text("""subroutine b111_astro_oracle(iday,lat,rad,solar)
+use iso_fortran_env,only:real64
+implicit none
+integer,intent(in)::iday
+real(real64),intent(in)::lat,rad
+real(real64),intent(out)::solar(6)
+real(real64),parameter::pi=3.141592653589793238462643383279502884197d0,radial=pi/180.d0,angle=-4.d0
+real(real64)::dec,sc,aob,aob_corr,angot,dsinb,frdif
+real(real64)::atmtr_,dayl_,daylp_,sinld_,cosld_,difpp_,dsinbe_
+"""+body+"solar=[dayl_,daylp_,sinld_,cosld_,difpp_,dsinbe_]\nend subroutine\n")
+
 
 # Independent arithmetic oracle: compile the literal authenticated source
 # case(3), not a translated copy of the new owner implementation. Caller
@@ -194,7 +208,7 @@ for opt in 0 2; do
     done
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
-      "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" "$BUILD/crop_germination_oracle.f90" "$BUILD/initial_owner_oracle.f90" "$BUILD/task2_oracle.f90" "$BUILD/preparation_oracle.f90" "$BUILD/sowing_oracle.f90" ./*.o -o test
+      "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/astro_oracle.f90" "$BUILD/daily_meteo_oracle.f90" "$BUILD/crop_germination_oracle.f90" "$BUILD/initial_owner_oracle.f90" "$BUILD/task2_oracle.f90" "$BUILD/preparation_oracle.f90" "$BUILD/sowing_oracle.f90" ./*.o -o test
     for moisture in neutral dry hydraulic; do
       for mode in continuous restart; do
         output="$moisture-$mode"

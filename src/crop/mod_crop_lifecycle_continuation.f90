@@ -1,6 +1,7 @@
 module mod_crop_lifecycle_continuation
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_crop_previous_day_emergence_gate, only: evaluate_previous_day_crop_emergence,CROP_EMERGENCE_OK
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
   use mod_crop_germination_preflight, only: crop_germination_candidate_t
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_crop_event_identity_t, &
@@ -23,7 +24,7 @@ module mod_crop_lifecycle_continuation
   contains
     procedure :: ready => continuation_ready
   end type
-  public :: propose_crop_lifecycle_continuation, initialize_b111_crop_lifecycle
+  public :: propose_crop_lifecycle_continuation, initialize_b111_crop_lifecycle, propose_crop_active_continuation
 contains
   ! Literal preparation(2), sowing(2), germination(2) for a new model crop.
   ! No daily processing, meteorological accumulation or physical event.
@@ -66,6 +67,42 @@ contains
     if(self%emerged.and..not.self%germinated) return
     ok=.true.
   end function
+
+  pure subroutine propose_crop_active_continuation(current,expected_revision,event_identity,emergence,candidate,status)
+    type(crop_lifecycle_continuation_t),intent(in)::current
+    integer(int64),intent(in)::expected_revision
+    type(fmr_wofost_crop_event_identity_t),intent(in)::event_identity
+    logical,intent(in)::emergence
+    type(crop_lifecycle_continuation_t),intent(out)::candidate
+    integer,intent(out)::status
+    logical :: eligible
+    integer :: gate_status
+    candidate=current;status=CROP_CONT_INVALID
+    if(.not.current%ready().or..not.event_identity%ready()) return
+    if(expected_revision/=current%revision) then
+      status=CROP_CONT_STALE;return
+    end if
+    if(same_wofost_crop_event_identity(event_identity,current%last_event_identity)) then
+      status=CROP_CONT_DUPLICATE;return
+    end if
+    if(current%initialization_profile/=CROP_PROFILE_B111_TASK2.or.current%harvested) return
+    if(.not.(current%prepared.and.current%sown.and.current%germinated)) return
+    if(emergence.eqv.current%emerged) then
+      status=CROP_CONT_ORDER;return
+    end if
+    if(current%revision==huge(current%revision)) return
+    if(emergence) then
+      call evaluate_previous_day_crop_emergence(.true.,current%harvested,current%emerged, &
+           current%prepared,current%sown,current%germinated,current%revision,current%revision, &
+           current%revision+1_int64,eligible,gate_status)
+      if(gate_status/=CROP_EMERGENCE_OK.or..not.eligible) return
+    end if
+    candidate%emerged=.true.
+    candidate%revision=current%revision+1_int64
+    candidate%last_event_identity=event_identity
+    if(.not.candidate%ready()) return
+    status=CROP_CONT_OK
+  end subroutine
 
   ! A candidate value, never a physical publication. F-KT must match the
   ! accepted receipt and publish transactionally after physical acceptance.

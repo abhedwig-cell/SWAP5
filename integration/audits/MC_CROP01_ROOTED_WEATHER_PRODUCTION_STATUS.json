@@ -1,0 +1,210 @@
+{
+  "workstream": "MC-CROP01",
+  "unit": "Delayed emergence and same-day rooted weather growth",
+  "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+  "status": "QUALIFIED_PRESERVED_BOUNDED_ROOTED_PRODUCTION_PENDING_CANONICAL_ADMISSION",
+  "stages": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": false
+  },
+  "authority": "User-delegated MC-CROP01 central admission; existing physical lifecycle contract and PR1206 continuation order",
+  "contract": [
+    "Explicit opt-in single-column daily rooted AIR/no-snow/default-MVG bottom7 profile, ROOT_COMP_OFF. Existing Feddes/DVS/canopy/WOFOST/F-KT owners; no process or solver physics change.",
+    "Previous accepted preparation/sowing/germination alone authorize delayed emergence; TDWI biomass initialized inside existing F-WOF38 candidate with preceding actual accepted hydrological receipt. No growth during that previous pre-emergence window.",
+    "Active growth uses retained preceding immutable weather record and its Gregorian DOY/radiation in source units, completed with its own accepted root uptake; current morning weather never substitutes for previous growth weather.",
+    "Root geometry and canopy are derived from the current committed crop owner, checked against application lineage/revision/time; shared reference ET produces transpiration, existing Feddes adapter produces sink, unchanged dispatcher accepts actual soil transactions.",
+    "Root OFF makes submitted sink equal solver sink throughout a bounded interval; accepted contribution certified only after actual F-KT commit. Any compensated/oxygen/salinity/frost profile remains outside this unit.",
+    "Retry publishes no owner/receipt until F-KT acceptance; joint bundle retains preceding weather record and both accepted windows. Harvest/rotation/fallow/full historical closure remain open."
+  ],
+  "held_fixed": [
+    "HeadCalc, numerical/mass/temporal policies and tolerances",
+    "Root/heat/irrigation scientific owner arithmetic",
+    "Original highest frost runners/assertions/budgets"
+  ],
+  "qualification_required": [
+    "Authentic multi-day delayed emergence -> biomass growth and positive physical root extraction, hard mass, negative/retry/rollback, exactly-once, joint restart, O0/O2",
+    "Literal authenticated astro/emergence arithmetic oracle and existing WOFOST growth owner/reference gates",
+    "Affected owner preservation, full F-CI, exact source successor plus highest frost compile-closure preservation"
+  ],
+  "next_action": "Verify exact public PR source/reference/execution closure and current canonical/owner overlap; safely admit only this bounded qualified production block. Reconcile master ACTIVE_MIGRATION without count promotion, then implement source-qualified harvest/rotation/fallow through existing owners.",
+  "files": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/crop/mod_crop_lifecycle_continuation.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/test_crop_file_weather_production.f90"
+  ],
+  "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+  "focused_qualification": {
+    "test_head": "092a93dcde1021a93a4e61757c63088e22473275",
+    "command": "bash tests/fmig431/run_crop_file_weather_production.sh",
+    "exit_code": 0,
+    "log_sha256": "3f121e427dc7a686d10619969e73f4bfc2619956dce3ad6f3b2dcbaf49627d32",
+    "scope": [
+      "Existing four-day root-free neutral/dry/hydraulic production cases preserved",
+      "Seven-day rooted production through cold delayed sowing -> accepted germination -> next morning candidate-only TDWI emergence -> four growth completions and five days positive root extraction",
+      "O0/O2 and two in-process uninterrupted/pending-restart trajectories; full leaf cohort, crop continuation, soil pressure/water/heat and Richards derivative postimages compared bitwise",
+      "Literal authenticated astronomy/TAV and emergence arithmetic; actual preceding-day uptake in committed receipt; separate owner-composition oracle with next-day weather negative witness"
+    ],
+    "scientific_boundaries": [
+      "Homogeneous four-node/30cm qualification soil and explicitly supplied latitude52/crop parameters; no full Andelst soil/crop trajectory claim",
+      "Restricted annual IDSL1, ROOT_COMP_OFF, reference ET, AIR/no-snow/default-MVG standalone bottom7; detailed meteorology, CO2 correction, oxygen/compensation and alternate root profiles not claimed",
+      "Joint opaque in-process owner continuation; external disk codec and true process-level whole-application restart not claimed"
+    ]
+  },
+  "negative_diagnostics": [
+    {
+      "failed_assertion": "actual positive WOFOST biomass and development",
+      "cause": "Pre-emergence-only fixture carried default leaf_lifespan=0 into active growth. Day4 total fell from12.522320977437758 to10.070246513860187 while development remained positive. Existing source leaf-age owner behaved correctly.",
+      "resolution": "Rooted test explicitly supplies physically meaningful leaf_lifespan40 through existing parameters; strict positive net growth assertion retained. No production growth/leaf-owner arithmetic changed."
+    }
+  ],
+  "preservation_running": [],
+  "recovery_branch": "work/mc-crop01-rooted-weather-20261011",
+  "remote_recovery": {
+    "head": "5328f2b6924841bbb4a19e84ba26c733715f3a3f",
+    "tree": "83b16e18dc14321ef8b706d651fff0e2c7681b92",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "note": "Exact immutable source/test postimage persisted through GitHub Git-data route before final preservation; subsequent receipts and canonical documentary reconciliation remain to publish."
+  },
+  "canonical_reconciliation": {
+    "head": "8acdf60e1da367f482fe9d2aadb9a849670b69b8",
+    "production_source_unchanged": true,
+    "paths": "Eight regie source-disposition/HYD diagnostic documentary and isolated test paths merged without conflict; no shared crop/root/heat/solver implementation change."
+  },
+  "completed_preservation": {
+    "crop_lifecycle_owner": {
+      "exit_code": 0,
+      "terminal_marker": "SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS",
+      "log_sha256": "4ceba50231597f0f2694f2611475105cda14e0a0d470625f86296e9daeda7b25"
+    },
+    "PPA_WU03_owner": {
+      "exit_code": 0,
+      "terminal_marker": "PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS",
+      "log_sha256": "72fd4f8b0f44bd566d2a101faeae94978f49761ecfec4f187e184c88e5f38330"
+    },
+    "shared_crop_root_B19": {
+      "exit_code": 0,
+      "terminal_marker": "CROP_FKT_B110_SHARED_OWNER_SCIENTIFIC_SUCCESSOR=PASS",
+      "log_sha256": "19f75e73670345648a97ff14345707eb4d9d76fcea07371b8fe1c63fb1292f81"
+    },
+    "highest_normal": {
+      "exit_code": 0,
+      "terminal_marker": "PPA_WU05B15_NORMAL_O0_O2_IDENTITY=PASS",
+      "log_sha256": "37348bdc16870794587c5469cd1a987b08ebc29afb39fa13e5c1b23fa00b662a"
+    },
+    "lifecycle_direct": {
+      "exit_code": 0,
+      "terminal_marker": "SW431_CROP_LIFECYCLE_CONTINUATION_O0_O2=PASS",
+      "log_sha256": "59fffb68dd95d31bcd053411cb5dc436e0165204942af765e9a989ebd5fb87bd"
+    },
+    "emergence_direct": {
+      "exit_code": 0,
+      "terminal_marker": "PASS previous-day emergence gate",
+      "log_sha256": "e413aef8b9eb34096bf97d230292a73c10fafa3418343823ae69052ba7b968e4"
+    },
+    "meteo_extractor_unit": {
+      "exit_code": 0,
+      "terminal_marker": "Ran 7 tests",
+      "log_sha256": "096c42bc08c8290cafb54e8f8c5d139cd39adc18987aae75d9123a563bd3d82f",
+      "claim_limit": "Seven extractor integrity/write unit tests, including mocked positive write; does not substitute for authenticated source archive validation in physical Fortran regression."
+    }
+  },
+  "preservation_prerequisite_failure": {
+    "command": "bash tests/fapp/run_ppa_wu03_preservation.sh",
+    "exit_code": 1,
+    "cause": "Exact new source successor intentionally requires complete frost_successor_evidence archive. Archive is not yet available while the original low-air controller is running; earlier PPA/FCI93/FSI35 checks passed.",
+    "action": "Seal all24 original normal/low-air configurations; verify archive/source closure; rerun complete PPA preservation and full moving F-CI. No assertion bypass or science code change."
+  },
+  "focused_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_FOCUSED_OWNER_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "68655ca085e2f78b70c58ba66d9043307b0bcc385ff9fa4f08e39aa8d22777fe",
+    "positive_logs": 4,
+    "preserved_negative_logs": 3,
+    "full_FCI_qualified": false
+  },
+  "next_lifecycle_dependencies": {
+    "authenticated_sources": {
+      "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+      "SWAP/MOD_cropdevelopment.f90_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+      "SWAP/wofost.f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "SWAP/swap.f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a"
+    },
+    "ordering": "Historical wofost(task4) checks abs(t1900-cropend(icrop)-1.d0)<0.1d0; sw_harv>0 annual modes also check dvs>=dvsend. It clears emergence and sets harvest; cropdevelopment(task4) then resets extraction/interception. Calendar select_at alone cannot substitute for this physical transition or reset biomass before end-status retention.",
+    "next_morning": "croprotation(task2) finds active crop; at a new calendar start it clears preparation/sow/germ/emergence/harvest flags and crop reset marker, then executes cropemergence initialization/daily steps through existing owners. reset_crop separately zeros crop/canopy/root state for fallow. Reconcile exact caller timing before implementation.",
+    "existing_owners": [
+      "F-WOF38/F-KT candidate/committed crop",
+      "mod_crop_lifecycle_continuation",
+      "mod_crop_rotation_calendar/transition derived checkpoints",
+      "mod_fmr_crop_rotation_receipt_binding matching physical receipt/window/calendar atomic publication",
+      "existing root/canopy views"
+    ],
+    "required_implementation": "Candidate-only annual maturity/calendar harvest with accepted end-status retention, zero extraction/fallow, next crop task2 initialization/parameters, derived calendar bound to accepted physical receipts and joint calendar/crop/source/event continuation. No second physical owner.",
+    "required_integration_gate": "Two actual crops separated by physical fallow using authentic weather and continuous accepted hydrology; rejected harvest/start candidates, exactly-once receipts, positive then zero then positive actual root extraction, joint restart, O0/O2 and affected owner/highest frost/full F-CI preservation.",
+    "other_full_closure_gates": [
+      "Detailed meteorology/source routes",
+      "Broader historical crop/root/CO2 and management profiles",
+      "SWINCO=3 owner transfer",
+      "Legacy CLI/front-end orchestration",
+      "External joint disk codec/process-level restart",
+      "Master coverage ACTIVE_MIGRATION until complete qualified lifecycle admission"
+    ],
+    "main_loop_reset_order": "Authenticated SWAP/swap.f90 lines491/511/522..535: cropdevelopment3 -> cropdevelopment4 -> integral4 -> normal output -> flDayEnd/reset_crop if harvested. A candidate may therefore retain an immutable accepted end-status publication value before clearing crop biomass/root/canopy for the following day; no need to relax the existing inactive-owner no-biomass invariant. Croprotation2/new-season initialization occurs on the next morning. The exact accepted-event publication/reset composition remains to implement and qualify.",
+    "end_of_simulation_and_phase_gate": "The present integrated trajectory completes active growth when the next real morning record is registered; its seven hydrological days contain four completed growth events and a final accepted uptake window still awaiting next completion. Complete historical day-end harvest/output/reset and simulation-end flush without fabricating a next-day meteorological record. Reconcile the existing F-KT event/time authority for a separately completed growth day versus next morning task2/task3/new-season initialization; never introduce a fake zero-duration interval or publish one physical receipt twice. External front-end orchestration and exact whole-application phase restart remain open."
+  },
+  "predecessor_shared_weather_preservation": {
+    "PR1193": "PPA_WU03_WEATHER_GUARDED_TWO_COMMITTED_INTERVALS=PASS",
+    "PR1194": "PPA_WU03_TWO_WEATHER_DAYS_CONTINUOUS_ACCEPT=PASS",
+    "shared_source": "PPA_WU03_CROP_SHARED_WEATHER_SPAN=PASS",
+    "claim_limit": "Restricted existing two-interval/two-day PPA owner vectors, not a whole historical crop lifecycle; exact new source owner run exit0."
+  },
+  "partial_frost_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_PARTIAL_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "8b3d465fc1383e2b2235de5a02a211c8cdc3f0c4da416763ca077e5db91c3e67",
+    "complete_configurations": 18,
+    "required_configurations": 24,
+    "partial_only": true
+  },
+  "frost_successor_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_COMPLETE_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "74e378fe153f9114da432158f008b5dd94f19d435d74133e192694403829f0bb",
+    "complete_configurations": 24,
+    "required_configurations": 24,
+    "partial_only": false,
+    "dependency_blob_count": 227
+  },
+  "current_full_qualification": {
+    "head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "tree": "4aa1ad1618334b683b67407a08c447c14e116119",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "archive": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
+    "terminal_markers": {
+      "rooted-full-moving.log": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+      "rooted-ppa-preservation-rerun.log": "PPA-WU03 PRESERVATION GATE PASS",
+      "rooted-weather-full-oracle.log": "CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS",
+      "rooted-owner.log": "SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS",
+      "rooted-ppa.log": "PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS",
+      "rooted-cross.log": "CROP_FKT_B110_SHARED_OWNER_SCIENTIFIC_SUCCESSOR=PASS",
+      "rooted-lifecycle-direct.log": "SW431_CROP_LIFECYCLE_CONTINUATION_O0_O2=PASS",
+      "rooted-emergence-direct.log": "PASS previous-day emergence gate",
+      "rooted-meteo-extraction.log": "Ran 7 tests",
+      "rooted-frost-normal.log": "PPA_WU05B15_NORMAL_O0_O2_IDENTITY=PASS",
+      "rooted-frost-low_air.log": "PPA_WU05B15_LOW_AIR_O0_O2_IDENTITY=PASS",
+      "rooted-docs.log": "Documentation source checks passed"
+    },
+    "controlled_terminal_exit_codes": {
+      "rooted-full-moving": 0,
+      "rooted-ppa-preservation-rerun": 0
+    },
+    "distinct_full_moving_PASS_markers": 316,
+    "complete_frost_configurations": 24,
+    "complete_frost_fine_comparisons": 144,
+    "full_lifecycle_closed": false
+  }
+}

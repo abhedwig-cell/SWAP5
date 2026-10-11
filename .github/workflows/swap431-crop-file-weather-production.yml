@@ -10,6 +10,7 @@ on:
       - 'src/runtime/mod_fmr_crop_weather_physical_event_composition.f90'
       - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
       - 'tests/fmig431/run_crop_task2_frost_successor.py'
+      - 'tests/fmig431/run_crop_rooted_weather_frost_successor.py'
       - 'tests/fmig431/*crop_file_weather*'
       - 'tests/fci/run_crop_file_weather_production_successor.sh'
       - '.github/workflows/swap431-crop-file-weather-production.yml'

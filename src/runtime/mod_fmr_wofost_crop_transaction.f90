@@ -25,7 +25,8 @@ module mod_fmr_wofost_crop_transaction
        export_wofost_crop_event_identity_persistence, &
        reconstruct_wofost_crop_event_identity_from_persistence
   use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t, &
-       propose_crop_lifecycle_continuation, CROP_CONT_OK, CROP_PROFILE_BOUNDED, CROP_PROFILE_B111_TASK2
+       propose_crop_lifecycle_continuation, propose_crop_active_continuation, CROP_CONT_OK, CROP_PROFILE_BOUNDED, CROP_PROFILE_B111_TASK2
+  use mod_wofost_emergence_initialization, only: initialize_wofost_emergence_owner, WOFOST_EMERGENCE_INIT_OK
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
   use mod_crop_germination_preflight, only: crop_germination_candidate_t
   implicit none
@@ -110,6 +111,7 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: aeration_critical_factor = 0.0001_real64
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
+    procedure, public :: matches_canopy => fmr_wofost_parameters_matches_canopy
   end type fmr_wofost_crop_transaction_parameters_t
 
   type, extends(canonical_forcing_t), public :: fmr_wofost_crop_event_forcing_t
@@ -118,7 +120,8 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_one_day_forcing_t) :: crop_forcing
     type(wofost_accepted_window_aggregates_t) :: accepted_aggregates
     type(fmr_wofost_crop_event_identity_t) :: event_identity
-    logical :: lifecycle_requested = .false.
+    logical :: lifecycle_requested = .false., active_lifecycle_requested = .false., emergence_requested = .false.
+    real(real64) :: emergence_dry_weight = 0.0_real64
     integer(kind=8) :: lifecycle_expected_revision = -1_8
     type(crop_daily_lifecycle_candidate_t) :: lifecycle_plan
     type(crop_germination_candidate_t) :: lifecycle_germination
@@ -192,6 +195,9 @@ contains
     end if
     if (self%lifecycle_present) then
       if (.not. self%lifecycle%ready()) return
+      if(self%lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
+        if(self%owner%crop_emerged.neqv.self%lifecycle%emerged) return
+      end if
       if(self%lifecycle%initialization_profile==CROP_PROFILE_B111_TASK2) then
         if(self%lifecycle_schema_version/=2) return
       else
@@ -382,7 +388,7 @@ contains
   end subroutine construct_fmr_wofost_crop_transaction_parameters
 
   subroutine prepare_fmr_wofost_crop_event_forcing(window, crop_forcing, forcing, status, &
-       lifecycle_plan, lifecycle_germination, lifecycle_expected_revision)
+       lifecycle_plan, lifecycle_germination, lifecycle_expected_revision, active_expected_revision, emergence_dry_weight)
     type(fmr_wofost_accepted_window_t), intent(in) :: window
     type(wofost_one_day_forcing_t), intent(in) :: crop_forcing
     type(fmr_wofost_crop_event_forcing_t), intent(out) :: forcing
@@ -390,6 +396,8 @@ contains
     type(crop_daily_lifecycle_candidate_t), intent(in), optional :: lifecycle_plan
     type(crop_germination_candidate_t), intent(in), optional :: lifecycle_germination
     integer(kind=8), intent(in), optional :: lifecycle_expected_revision
+    integer(kind=8),intent(in),optional :: active_expected_revision
+    real(real64),intent(in),optional :: emergence_dry_weight
     type(fmr_wofost_crop_event_token_t) :: token
     type(wofost_accepted_window_aggregates_t) :: aggregates
     logical :: available
@@ -438,6 +446,21 @@ contains
       forcing%lifecycle_germination = lifecycle_germination
       forcing%lifecycle_expected_revision = lifecycle_expected_revision
       forcing%lifecycle_requested = .true.
+    end if
+    if(present(active_expected_revision)) then
+      status=FMR_WOF38_LIFECYCLE_REJECTED
+      if(forcing%lifecycle_requested.or.active_expected_revision<0_8) return
+      forcing%active_lifecycle_requested=.true.
+      forcing%lifecycle_expected_revision=active_expected_revision
+      if(present(emergence_dry_weight)) then
+        if(.not.ieee_is_finite(emergence_dry_weight)) return
+        if(emergence_dry_weight<0.0_real64.or.emergence_dry_weight>10000.0_real64) return
+        ! A previous root-free window cannot be reinterpreted as growth.
+        if(aggregates%actual_root_uptake/=0.0_real64.or.aggregates%potential_transpiration/=0.0_real64) return
+        forcing%emergence_requested=.true.;forcing%emergence_dry_weight=emergence_dry_weight
+      end if
+    else if(present(emergence_dry_weight)) then
+      status=FMR_WOF38_LIFECYCLE_REJECTED;return
     end if
     forcing%crop_forcing = crop_forcing
     forcing%accepted_aggregates = aggregates
@@ -563,6 +586,15 @@ contains
     consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
   end function fmr_wofost_crop_transaction_consumed_event
 
+  logical function fmr_wofost_parameters_matches_canopy(self,stem_area,storage_area) result(matches)
+    class(fmr_wofost_crop_transaction_parameters_t),intent(in)::self
+    real(real64),intent(in)::stem_area,storage_area
+    matches=.false.
+    if(.not.self%ready()) return
+    if(.not.all(ieee_is_finite([stem_area,storage_area]))) return
+    matches=self%stem_area_coefficient==stem_area.and.self%storage_area_coefficient==storage_area
+  end function
+
   logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
 
@@ -594,6 +626,10 @@ contains
       if (.not. self%lifecycle_plan%valid) return
       if (self%lifecycle_expected_revision < 0_8) return
     end if
+    if(self%active_lifecycle_requested) then
+      if(self%lifecycle_requested.or.self%lifecycle_expected_revision<0_8) return
+    end if
+    if(self%emergence_requested.and..not.self%active_lifecycle_requested) return
     if (.not. ieee_is_finite(self%accepted_aggregates%actual_root_uptake)) return
     if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
     if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
@@ -729,7 +765,28 @@ contains
              candidate_lifecycle, lifecycle_status)
         if (lifecycle_status /= CROP_CONT_OK) return
       end if
+      if(self%event_forcing%active_lifecycle_requested) then
+        self%last_status=FMR_WOF38_LIFECYCLE_REJECTED
+        if(.not.allocated(typed_state%lifecycle)) return
+        if(typed_state%owner%crop_emerged.neqv.typed_state%lifecycle%emerged) return
+        call propose_crop_active_continuation(typed_state%lifecycle, &
+             self%event_forcing%lifecycle_expected_revision,self%event_forcing%event_identity, &
+             self%event_forcing%emergence_requested,candidate_lifecycle,lifecycle_status)
+        if(lifecycle_status/=CROP_CONT_OK) return
+      end if
       candidate_growth_carrier = fmr_wofost_root_growth_carrier_t()
+      if(self%event_forcing%emergence_requested) then
+        ! Existing initializer constructs only this F-KT trial clone. No
+        ! previous-day growth is applied to newly emerged morning biomass.
+        call initialize_wofost_emergence_owner(self%event_forcing%emergence_dry_weight, &
+             self%rate_parameters,candidate_owner,crop_status)
+        if(crop_status/=WOFOST_EMERGENCE_INIT_OK) return
+        if(self%potential_shadow_enabled) then
+          call initialize_wofost_potential_shadow_from_actual(candidate_owner,potential_result%candidate_shadow,crop_status)
+          if(crop_status/=WOFOST_POTENTIAL_SHADOW_OK) return
+          candidate_growth_carrier%valid=.true.
+        end if
+      else
       if (self%potential_shadow_enabled) then
         call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
              self%event_forcing%crop_forcing, t0, t1, self%stem_area_coefficient, &
@@ -787,13 +844,15 @@ contains
         end if
       end if
 
+      end if
       typed_state%owner = candidate_owner
       if (self%potential_shadow_enabled) then
         typed_state%potential_shadow = potential_result%candidate_shadow
         typed_state%root_growth_carrier = candidate_growth_carrier
       end if
       typed_state%last_consumed_event = self%event_forcing%event_identity
-      if (self%event_forcing%lifecycle_requested) typed_state%lifecycle = candidate_lifecycle
+      if (self%event_forcing%lifecycle_requested.or.self%event_forcing%active_lifecycle_requested) &
+           typed_state%lifecycle = candidate_lifecycle
       typed_state%initialized = .true.
       outcome%solver_ok = .true.
       outcome%mass_accounting_complete = .true.
