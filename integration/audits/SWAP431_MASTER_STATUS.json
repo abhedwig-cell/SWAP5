@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "last_reconciled_upstream": "47cb17230b9da9a1dd83ddcdab5a82d61e6a1933",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
   "tested": {
-    "coverage_integrity": "NOT EXECUTED against exact canonical source postimage",
+    "coverage_integrity": "NOT EXECUTED against complete current canonical; prior exact-source evidence pin remains separate",
     "census_lexical_tests": "4 PASS",
     "literal_dramet3_probe": "O0/O2 identical; replacement counterexample reproduced",
     "documentation_source": "PASS",
@@ -30,7 +30,8 @@
     "qualified_module_locator_split": "PASS: 65 open rows name existing production-module authority, 48 name none; this is not proof of completeness.",
     "shared_owner_grouping": "65 active entries with existing module locators grouped; module overlap is not proof of implementation/admission",
     "shared_owner_exact_source_inspection": "Three current-canonical modules inspected: DIVDRA single-level positive, Hupsel fixed-surface/TCS1, MICRO matric flux table; none alone admits claimed wider 29 affected open IDs.",
-    "owner_dispatch_review": "Exact-head source inspection PASS (bounded): frost B19 guard excludes ordinary signed/root/multilevel; FMR root binding dispatches macro Feddes not MICRO; Hupsel adapter only bounded TCS1/fixed/Rutter."
+    "owner_dispatch_review": "Exact-head source inspection PASS (bounded): frost B19 guard excludes ordinary signed/root/multilevel; FMR root binding dispatches macro Feddes not MICRO; Hupsel adapter only bounded TCS1/fixed/Rutter.",
+    "canonical_177_commit_delta": "Scoped PASS: 177 commits and 73 paths compared, crop merged PR1172..1193 cross-checked; bounded admission only, no complete cap closure established"
   },
   "qualified": false,
   "coverage_closed": false,
@@ -62,7 +63,7 @@
     "active_without_listed_production_source_authority": 48,
     "confirmed_missing_production_entries_claim_scope": "Incomplete admitted routes, not necessarily absent algorithms"
   },
-  "next_action": "Continue source-to-runtime qualification mapping; do not promote entire capabilities on shared module presence; full source hash coverage checker remains outstanding.",
+  "next_action": "Verify unexamined capability-family deltas, perform exact-current-head source-to-production checks and full Python coverage checker before next disposition promotion.",
   "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -77,7 +78,8 @@
     "integration/audits/evidence/SWAP431_B110_CANONICAL_DELTA_20261009.json",
     "integration/audits/evidence/SWAP431_SHARED_OWNER_LOCATOR_GROUPS_20261009.json",
     "integration/audits/evidence/SWAP431_SHARED_OWNER_SOURCE_AUDIT_20261009.json",
-    "integration/audits/evidence/SWAP431_OWNER_DISPATCH_PROOF_20261009.json"
+    "integration/audits/evidence/SWAP431_OWNER_DISPATCH_PROOF_20261009.json",
+    "integration/audits/evidence/SWAP431_CANONICAL_177COMMIT_DELTA_20261011.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -122,7 +124,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "8382b10c286e3fe2bcd1febef06cf4385fc8f5d7",
+  "last_reconciled_head": "a4c0a3a8f6065ad4cdb00499ef445555129b058e",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
