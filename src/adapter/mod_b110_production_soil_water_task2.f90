@@ -179,7 +179,7 @@ contains
     else
       call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
            swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
-           pondmx, rsro, rsroexp)
+           pondmx, rsro, rsroexp, fixed_top_node_conductivity=k(1))
     end if
 
     request = soil_water_solve_request_t()
