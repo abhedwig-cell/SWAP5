@@ -5,6 +5,7 @@ module mod_crop_lifecycle_daily_composition
   private
   integer, parameter, public :: CROP_DAILY_OK=0, CROP_DAILY_INVALID=1
   type, public :: crop_daily_lifecycle_candidate_t
+    integer :: initialization_profile=0
     logical :: valid=.false.
     logical :: prepared=.false.
     logical :: sown=.false.
