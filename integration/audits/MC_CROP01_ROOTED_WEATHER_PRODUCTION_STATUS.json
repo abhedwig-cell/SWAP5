@@ -2,13 +2,13 @@
   "workstream": "MC-CROP01",
   "unit": "Delayed emergence and same-day rooted weather growth",
   "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
-  "status": "OWNER_AND_COMPLETE_HIGHEST_FROST_PASS_FULL_FCI_PENDING",
+  "status": "QUALIFIED_PRESERVED_BOUNDED_ROOTED_PRODUCTION_PENDING_CANONICAL_ADMISSION",
   "stages": {
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
-    "preserved": false,
+    "qualified": true,
+    "preserved": true,
     "canonically_admitted": false
   },
   "authority": "User-delegated MC-CROP01 central admission; existing physical lifecycle contract and PR1206 continuation order",
@@ -30,7 +30,7 @@
     "Literal authenticated astro/emergence arithmetic oracle and existing WOFOST growth owner/reference gates",
     "Affected owner preservation, full F-CI, exact source successor plus highest frost compile-closure preservation"
   ],
-  "next_action": "Finish declared owner/highest frost gates, seal exact source archive, execute full current F-CI, persist all evidence, verify public PR postimage and merge only after admission requirements pass. Then continue harvest/rotation/fallow.",
+  "next_action": "Verify exact public PR source/reference/execution closure and current canonical/owner overlap; safely admit only this bounded qualified production block. Reconcile master ACTIVE_MIGRATION without count promotion, then implement source-qualified harvest/rotation/fallow through existing owners.",
   "files": [
     "src/adapter/mod_swap_daily_weather_file_adapter.f90",
     "src/crop/mod_crop_lifecycle_continuation.f90",
@@ -64,9 +64,7 @@
       "resolution": "Rooted test explicitly supplies physically meaningful leaf_lifespan40 through existing parameters; strict positive net growth assertion retained. No production growth/leaf-owner arithmetic changed."
     }
   ],
-  "preservation_running": [
-    "Complete PPA preservation and full moving F-CI after archive/source verification"
-  ],
+  "preservation_running": [],
   "recovery_branch": "work/mc-crop01-rooted-weather-20261011",
   "remote_recovery": {
     "head": "5328f2b6924841bbb4a19e84ba26c733715f3a3f",
@@ -179,5 +177,34 @@
     "required_configurations": 24,
     "partial_only": false,
     "dependency_blob_count": 227
+  },
+  "current_full_qualification": {
+    "head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "tree": "4aa1ad1618334b683b67407a08c447c14e116119",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "archive": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
+    "terminal_markers": {
+      "rooted-full-moving.log": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+      "rooted-ppa-preservation-rerun.log": "PPA-WU03 PRESERVATION GATE PASS",
+      "rooted-weather-full-oracle.log": "CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS",
+      "rooted-owner.log": "SW431_CROP_LIFECYCLE_FKT_OWNER_PRESERVATION=PASS",
+      "rooted-ppa.log": "PPA-WU03 COMMON FORCING OWNER QUALIFICATION PASS",
+      "rooted-cross.log": "CROP_FKT_B110_SHARED_OWNER_SCIENTIFIC_SUCCESSOR=PASS",
+      "rooted-lifecycle-direct.log": "SW431_CROP_LIFECYCLE_CONTINUATION_O0_O2=PASS",
+      "rooted-emergence-direct.log": "PASS previous-day emergence gate",
+      "rooted-meteo-extraction.log": "Ran 7 tests",
+      "rooted-frost-normal.log": "PPA_WU05B15_NORMAL_O0_O2_IDENTITY=PASS",
+      "rooted-frost-low_air.log": "PPA_WU05B15_LOW_AIR_O0_O2_IDENTITY=PASS",
+      "rooted-docs.log": "Documentation source checks passed"
+    },
+    "controlled_terminal_exit_codes": {
+      "rooted-full-moving": 0,
+      "rooted-ppa-preservation-rerun": 0
+    },
+    "distinct_full_moving_PASS_markers": 316,
+    "complete_frost_configurations": 24,
+    "complete_frost_fine_comparisons": 144,
+    "full_lifecycle_closed": false
   }
 }
