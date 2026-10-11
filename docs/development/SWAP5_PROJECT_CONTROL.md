@@ -530,3 +530,26 @@ Full raw O0/O2 logs, five D6 production dependencies,152 G1 module paths plus se
 These are bounded current-evidence admissions, with zero production-capability promotions. #219 G1 means D2 directional physical replication and does not close #217 G1 complete file-driven P1-Q06 E2E. Programme G2/G3/G4/G5, whole-model equivalence, literature novelty and manuscript readiness remain owner gates. Central #486 and PUB-GC release/governance holds remain. Safe canonical publication and original-carrier closure receipts follow under the same existing registry record.
 
 The bounded evidence successor is canonically admitted at `e2743c8b5e353c93453e1134e9f4d7884cf79dab`, tree `100c12b40ac69723cd40e37328e943c196747403`, safely leased from `31b0db16ce2f9463e316495e92e3b02faf8d4d8d`. Full fetched tree and all qualified compiled/build postimages verified. PRs #218/#219 are CLOSED/UNMERGED, original heads unchanged and branches retained; closure comments `6108818950`/`6108819227`. Those two current replay blockers are removed from the existing active publication routing, retaining their old descriptions in the closeout recovery. Fresh open queue has24 PRs:23 existing owner candidates and integration PR58. All remaining owner blocks stay explicit in the existing authorities; no new status ledger or coverage denominator is introduced.
+
+## Ribasim historical research-carrier resolution (2026-10-11)
+
+Reconciled original #540/#559/#581 with exact current research owner `work/ribasim-dummy-01@045ebe022856ddb72318a98edbd5237011876456` and canonical `5f9e8504c2015bc6017366e161e907b4f38125e2`. Existing registry `rom_hydro_regie_closeout_20261011.ribasim_research_resolution` is the admission/closure recovery authority; no new global ledger. This is archival research-evidence admission with zero production capabilities, no executable source/test/workflow import and no modification of active owner branches.
+
+#540 is the completed 19I observability replay. Actual run35700016161/job106655540518 tested PR-merge `2a886ce951a5b3134f9bcf3440fc8d61e1099f29` against Ribasim pin `f965a3266a4685bf10f3458aaa1855d09fa45a7a`. At BMI call2, applied UserDemand remained32/0 rather than frozen40/7.9952; the unchanged assertion failed. The later owner record explicitly closes 19I as applied-management-clock falsification and forbids repair by tuning. It does not assert no optimization occurred. Separate19K/19L application/accepted-state equivalence evidence follows under its own source authority.
+
+#559 is the completed 20E2 v8 full-trajectory negative fixture. Run35727480520/job106744574373 checked out exact original `19bcdc3df91b13f297fbb1bfff7da0d8095869c7` and logged all four accepted boundaries. MF6 drain flux, Ribasim drainage and cumulative groundwater transfer were zero throughout; the12h+level-reference mismatch is genuine. The owner20E2 result concludes treatment was not realized and forbids tuning frozen references or calling the management-memory hypothesis falsified. Two-cell20E3 has a separate qualified successful intervention; no retrospective qualification of20E2 follows. The old F-CI35727480533 failure also remains negative.
+
+#581 H11 has completed terminal SUCCESS35751934131/job106828017679 despite the pre-execution qualified=false status snapshot. Actual tested checkout is PR-merge `b083975af86d53f304974b53b3836cbc6a2c4761`, not the PR head. All six preregistration/concept/generator/Julia/runner/workflow science-build blobs match original `10ff41ed84b87ed6fe691b6b944ced3c84d15099` exactly. The real pinned Ribasim v2026.1.1 `e7fc8ade52a4bedeec10e508d2065577f33eb76a` gate verifies source/release identity and all four frozen grids:
+
+| Allocation interval | BMI call interval | Observed allocation record hours |
+| --- | --- | --- |
+| 4 h | 6 h | 0,12,24 |
+| 5 h | 6 h | 0,30 |
+| 8 h | 6 h | 0,24 |
+| 6 h | 6 h | 0,6,12,18,24,30 |
+
+This establishes the bounded fixed-dt external-release clock lattice only. It does not qualify adaptive allocation, later Ribasim releases, the actual SWAP production management hook or TOP03 composition. This is a Julia/BMI gate; no Fortran O0/O2 claim is made for that external experiment. No rerun or new download is needed to reconcile completed exact-source evidence.
+
+All four incremental original PR postimages, original/tested stage dependencies, later owner/successor dispositions and all three complete raw job logs are preserved before closure in `integration/audits/evidence/RIBASIM_REGIE_CLOSEOUT_20261011.tar.gz.b64` (82 members; decoded SHA256 `f76e5e8b834925ad74f3b449a98e7da77ac02ae78485e5b7707551f5916577c7`). Every byte/hash and Git postimage was verified. Production/tests/reference/tools/workflows/assets remain exactly the live canonical base, so existing scientific O0/O2/F-CI is inherited without numerical reruns. Original branches remain; no new Actions, dispatches or recovery refs.
+
+Remaining: #528 PB01 isolated sign/orientation/storage findings still need their F-GC production-contract/shared-authority disposition; no automatic sign repair. #953/#956 retain TOP03 transaction/accepted-window/external-storage/restart/numerical qualification. Actual SWAP-Ribasim management/application and scientific composition remain separately owner-controlled. Closing these historical carriers discharges none of those production gates.

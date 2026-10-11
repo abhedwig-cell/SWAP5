@@ -747,6 +747,114 @@
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43"
   },
   "rom_hydro_regie_closeout_20261011": {
+    "ribasim_research_resolution": {
+      "stage": "EVIDENCE_RECONCILED_PENDING_CANONICAL_PRESERVATION_AND_THREE_CLOSURES",
+      "canonical_base": "5f9e8504c2015bc6017366e161e907b4f38125e2",
+      "research_owner_head": "045ebe022856ddb72318a98edbd5237011876456",
+      "owner": "Ribasim/RibaMod research clock/application and physical intervention authorities; central regie for archival closeout only",
+      "archive": {
+        "path": "integration/audits/evidence/RIBASIM_REGIE_CLOSEOUT_20261011.tar.gz.b64",
+        "decoded_sha256": "f76e5e8b834925ad74f3b449a98e7da77ac02ae78485e5b7707551f5916577c7",
+        "members": 82,
+        "original_changed_postimages": 4,
+        "scope": "All four incremental PR postimages; original/tested dependencies, later owner dispositions/successor records, three full terminal job logs and exact blob/log manifest. Branches retained; no recovery-ref push."
+      },
+      "candidates": [
+        {
+          "pr": 540,
+          "head": "68cff57a6c67537d909dea790d37c0f59db04c49",
+          "tested_checkout": "2a886ce951a5b3134f9bcf3440fc8d61e1099f29",
+          "work_unit": "RIBASIM-DUMMY-19I",
+          "run": 35700016161,
+          "job": 106655540518,
+          "terminal": "failure",
+          "raw_log_sha256": "dd4b6a1ec2abf27a18e9c88506170ac627680c9bb89b305139dcba4a303b78b9",
+          "original_changed_paths": [
+            "integration/research/RIBASIM_DUMMY_19I_STATUS.json"
+          ]
+        },
+        {
+          "pr": 559,
+          "head": "19bcdc3df91b13f297fbb1bfff7da0d8095869c7",
+          "tested_checkout": "19bcdc3df91b13f297fbb1bfff7da0d8095869c7",
+          "work_unit": "RIBASIM-DUMMY-20E2",
+          "run": 35727480520,
+          "job": 106744574373,
+          "terminal": "failure",
+          "raw_log_sha256": "4a7806394589894c639e9b0930b424b22a6c3b778a8aa55de1eab3bfb75088fd",
+          "original_changed_paths": [
+            "integration/research/RIBASIM_DUMMY_20E2_STATUS.json",
+            "tests/research/run_ribasim_dummy_20e2.ps1"
+          ]
+        },
+        {
+          "pr": 581,
+          "head": "10ff41ed84b87ed6fe691b6b944ced3c84d15099",
+          "tested_checkout": "b083975af86d53f304974b53b3836cbc6a2c4761",
+          "work_unit": "RIBASIM-DUMMY-20H11",
+          "run": 35751934131,
+          "job": 106828017679,
+          "terminal": "success",
+          "raw_log_sha256": "123ca9fe7b234b15c3858bde453ea8e50407a4d71fb983e71c81664fa42ab810",
+          "original_changed_paths": [
+            "integration/research/RIBASIM_DUMMY_20H11_STATUS.json"
+          ]
+        }
+      ],
+      "h11_qualification": {
+        "tested_checkout": "b083975af86d53f304974b53b3836cbc6a2c4761",
+        "exact_science_build_blobs": {
+          "integration/research/RIBASIM_DUMMY_20H11_PREREGISTRATION.json": "c546475d10c2e60a63034c0b5642d9ce2c0f6d49",
+          "integration/research/RIBASIM_DUMMY_20H11_CONCEPT.md": "cd7c141e4b3022c80e8921d5a165c4ccb43454ac",
+          "tests/research/generate_ribasim_dummy_20h11_clock_lattice.py": "f7bb982dfa837a387d28db1b9e2caa2ade52197a",
+          "tests/research/real_ribasim_20h11_clock_lattice.jl": "181687dfef3825a4711dcd9574cac853ecfdb27e",
+          "tests/research/run_ribasim_dummy_20h11.sh": "01246226b5c676f8878db586726cb2305afa60fb",
+          ".github/workflows/ribasim-dummy-01.yml": "6aa69e8d915534dbcb590f44ec8eda09a832d71a"
+        },
+        "observed_seconds": {
+          "A4": [
+            0.0,
+            43200.0,
+            86400.0
+          ],
+          "A5": [
+            0.0,
+            108000.0
+          ],
+          "A8": [
+            0.0,
+            86400.0
+          ],
+          "A6": [
+            0.0,
+            21600.0,
+            43200.0,
+            64800.0,
+            86400.0,
+            108000.0
+          ]
+        },
+        "external_release": "Deltares/Ribasim@e7fc8ade52a4bedeec10e508d2065577f33eb76a v2026.1.1",
+        "tested": true,
+        "qualified": true,
+        "scope": "Four frozen fixed-dt BMI call-start allocation record grids; terminal real external-release Julia/BMI gate, not Fortran O0/O2 and not SWAP production admission. Original qualified=false was pre-execution; tested PR-merge receipt resolves it."
+      },
+      "dispositions": {
+        "540": "COMPLETED_FALSIFICATION_OBSERVABILITY_REPLAY; applied UserDemand remained32/0 at call2 instead of40/7.9952. Owner says do not repair19I; separate19K/19L solve/apply and physical accepted-state equivalence qualified.",
+        "559": "COMPLETED_NEGATIVE_INTERVENTION_FIXTURE; all four MF6/Ribasim drain transfers zero and12h+reference mismatch real. Owner20E2 result closes treatment absence; two-cell20E3 qualified separately. Do not tune old oracle or falsify memory hypothesis.",
+        "581": "COMPLETED_POSITIVE_BOUNDED_EXTERNAL_RELEASE_CLOCK_QUALIFICATION; six exact science/build blobs match tested PR-merge, all four frozen grids and source/release/final guards PASS."
+      },
+      "preservation": "Archive/control only; src/tests/reference/tools/workflows/assets exact canonical. Existing O0/O2/F-CI inherited; no new numerical run. Active research branch and implementation untouched.",
+      "remaining_owner_gates": [
+        "#528 PB01 sign/orientation/storage and production-contract reconciliation; isolated analytic/live one-cell evidence does not authorize sign repair. Existing shared F-GC authority decides.",
+        "#953/#956 TOP03 production transaction/accepted-window/external-body-storage/restart/numerical gates; dummy clock evidence is not production admission.",
+        "Actual SWAP-Ribasim production management hook/shared application state/restart and scientific owner composition separately unqualified."
+      ],
+      "production_capability_admissions": 0,
+      "new_actions": 0,
+      "new_dispatches": 0,
+      "new_recovery_refs": 0
+    },
     "canonical_base": "9d95eacb6619f7fece1d3bfe7b3e068304836ecd",
     "stage": "FIVE_CARRIERS_CLOSED_COMPLETE_RESEARCH_HEADS_PRESERVED",
     "canonical_evidence_checkpoint": "2fb38420c24ee82c7d0df2582345d99a6ed912fe",
