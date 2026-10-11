@@ -3306,6 +3306,24 @@
       "source_tree": "87fc3103f07b1ee8b39aa4a1780731c4b8e13d9f",
       "dependency_audit": "Canonical src equals both current full-moving and Wu03-qualified src trees. Executed graphs unchanged; restored FCI93 wrapper explicitly qualified at54d64dd2. Four new publication test/build files outside crop graphs. Original219-path earlier compile manifest has historical HeadCalc blob; do not claim its full equality to current source.",
       "fullcap_promotion": false
+    },
+    "historical_task2_task3_successor": {
+      "authority": "integration/audits/MC_CROP01_TASK2_PRODUCTION_STATUS.json",
+      "qualified_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+      "source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": true,
+      "preserved": true,
+      "canonically_admitted": false,
+      "full_capability": false,
+      "master_coverage": "ACTIVE_MIGRATION; no fullcap/count promotion",
+      "scope": "Explicit source task2 independent flags, same-first-day task3, actual thermal delayed sowing/germination, existing owner/schema2 and actual previous accepted F-KT/weather source. Delayed emergence/growth/harvest/rotation/fallow/disk codec remain open.",
+      "evidence": "integration/audits/evidence/MC_CROP01_TASK2_CURRENT_FULL_QUALIFICATION_20261011.tar.gz.b64",
+      "decoded_sha256": "3354b31f74626bd7cdcf3610ca30408a83b1331eb4b94ea9a34d4f9adc65c45f",
+      "owner_gates": "Current PPA-WU03 owner and preservation terminal0, four-day crop/weather physical O0/O2 + literal12 selectors/thermal/restart PASS,24 frost highest configurations/144 comparisons PASS, full current F-CI lineage terminal0 PASS.",
+      "remaining_owner": "Existing MC-CROP01/F-WOF38/F-WOF40/root and central shared application authority; reuse admitted MC-IRR01 bindings."
     }
   },
   "mc_irr01_independent_runtime_closeout_20261011": {
