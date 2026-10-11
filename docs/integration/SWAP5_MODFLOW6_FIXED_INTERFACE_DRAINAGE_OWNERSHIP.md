@@ -27,12 +27,85 @@ that route to exactly one owner:
 - `SURFACE_WATER`.
 
 For that same physical route, all other model-side representations must be absent
-or explicitly disabled. Coupler bookkeeping is not a fourth physical owner.
+or explicitly disabled as independent drainage-flux calculations. Mirrored
+reporting and an explicitly qualified receiving-budget entry are not independent
+calculations. Coupler bookkeeping is not a fourth physical owner.
 
 A route with unresolved ownership fails closed. A topology that represents the
 same physical drainage route in more than one owner is invalid, even if the
 resulting coupled calculation converges or its total water balance happens to
 close.
+
+## Both SWAP and MODFLOW can own drainage
+
+The rule applies per physical path, not to the complete model application.
+Distinct paths may be owned by SWAP and MODFLOW in the same application. For
+example, a proposed configuration may assign local field drains to SWAP and a
+different regional drain network to MODFLOW. These are examples, not declared
+owners of an existing application or currently admitted coupled drainage.
+
+Changing model names or route IDs does not make two representations of the same
+physical drain independent. Identity must include physical asset/segment,
+catchment/support, elevation/resistance law and destination provenance. Spatial
+overlap alone does not establish duplication; neither does a different model
+grid establish independence. Application authority must justify the mapping.
+
+| Role | Required authority | Accounting consequence |
+| --- | --- | --- |
+| Flux evaluator | One authoritative drainage law for one physical path | Publishes the accepted signed transfer once |
+| Donor budget | Declared physical source/control volume | Books the donor leg once |
+| Receiving budget | Declared destination/control volume, if inside the modelled system | Books the opposite receiving leg once |
+| Mirror/report | Reference to the same accepted transfer ID | Reports the amount without a second physical leg |
+| Coupler/interface ledger | Accepted bookkeeping and provenance | Does not calculate drainage or create storage |
+
+A receiver can be implemented in another model without becoming a second
+drainage evaluator. Importing a SWAP-computed drainage amount into a MODFLOW
+budget is permitted only when that budget entry has a justified physical role.
+A second groundwater sink for water already removed from the same physical
+storage is not such a role. An actual return/injection into a distinct receiving
+domain is a different leg and needs explicit destination authority. For serial
+segments, name the physical segments separately and qualify junction storage
+and conservation; do not duplicate a complete path under two model names.
+
+## Proposed per-path declaration and accepted receipt
+
+Before mixed drainage admission, each route needs at least:
+
+- physical path identity plus provenance, source domain and destination;
+- authoritative evaluator and parameter/law authority;
+- all other relevant model representations, marked disabled or mirror-only;
+- explicit units, tile/cell area conversion and signed direction;
+- physical storage-role authority for every budget leg;
+- one accepted transfer identity, coupling window and committed-origin lineage;
+- donor/receiver receipt identities, retry/rollback and restart publication rules.
+
+For a signed accepted amount `D` directed from declared source to destination,
+the physical ledger has source leg `-D` and receiving leg `+D`. For an external
+destination, `+D` is an external export, not a fabricated receiving reservoir.
+Reverse exchange uses the same pinned orientation with negative `D` when the
+owning law admits it. Equal-and-opposite legs and mirrors of those legs are not
+double counting. Two debits of the same physical amount are.
+
+This is a proposed declaration surface for future admission, not a new typed
+production API. The present per-cell `drainage_owner` selector is not enough to
+declare an arbitrary set of mixed physical paths. Do not widen or reinterpret
+it silently; any route carrier needs a separately reviewed runtime/topology
+contract and selective owner/preservation qualification.
+
+## Storage and PB01 boundary
+
+The current fixed-interface contract already admits native MODFLOW STO as
+`HEAD_STATE_CAPACITANCE`, not independently additive physical water storage.
+Do not invent a physical drainage source by treating a STO budget term as a
+second reservoir. Broader independent regional storage requires its own
+application-domain authority. Drainage attribution does not resolve that
+broader storage question.
+
+PB01 discriminates response orientation. The accepted fixed-interface contract
+already maps native inward `q_bot` to outward `q_swap` and uses the physical
+corrector tangent. A drainage export is not automatically part of that lower-face
+exchange, and cannot be booked as both drainage and `q_swap` without explicit
+authority. PB01 does not qualify an active drainage path or its destination.
 
 ## Admission evidence for a future route
 
@@ -40,3 +113,14 @@ A future drainage widening requires route identity and destination to be explici
 plus accepted component budgets showing that the drainage amount appears exactly
 once and that the fixed-interface groundwater transfer remains separately
 equal-and-opposite. Such a widening is outside the present closeout.
+
+Required future witnesses include mixed SWAP/MODFLOW distinct-path execution,
+same-path duplicate rejection even under aliases, both component budgets,
+unit/area conversion, active-route response/tangent coverage, rejected-trial
+nonpublication, accepted-window exactly-once publication, continuous/restarted
+identity and affected owner/F-CI preservation. Actual physical component budgets
+must be qualified; an abstract bookkeeping example is not sufficient.
+
+`tests/fgc/test_drainage_route_authority_contract.py` checks only synthetic
+declaration/receipt logic and that the existing production NONE gate is still
+present. It is not a SWAP/MODFLOW physical execution or production admission test.
