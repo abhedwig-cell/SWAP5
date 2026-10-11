@@ -4,7 +4,7 @@
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cadcc63d3296e12e6a0634ee7095693454b60005",
-  "last_reconciled_upstream": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+  "last_reconciled_upstream": "73796d85ba8de962673390a40d1be54e9c152d53",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "PR1200 stable storage and real-depth source-onset admitted. Continue independent common root salt completion and source-off/real-depth spatial sensor restart qualification. Bind accepted crop/root, solute and allocation lifecycle before fullcap promotion.",
+  "next_action": "Bind already admitted PR1015 matrix salt CML to irrigation selection; qualify root and sensor physical/event restart. Then close remaining whole-run crop/root/weather and persistent external allocation authority.",
   "recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -248,7 +248,7 @@
     "full_functional_coverage_closed": false,
     "retained_admitted_capabilities": 5,
     "retained_active_migration_capabilities": 11,
-    "shared_admission_dependency": "F-KT forcing onset/end with preserved accepted temporal history; MC-CROP01 root/lifecycle and MC-SOL01 accepted sensor state remain owner-controlled",
+    "shared_admission_dependency": "Realistic source onset/end and restart now admitted in PR1200/1201. Remaining authority: accepted salt irrigation binding, evolving crop/root and authentic weather composition, persistent external allocation binding.",
     "new_fullcap_promotions": 0,
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
@@ -299,5 +299,16 @@
     "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
     "local_fci": "PASS",
     "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  },
+  "root_salt_source_off_admission": {
+    "pull_request": 1201,
+    "qualified_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "admission_head": "bdf81672804b3e453dca0630b1ea0cb736848b23",
+    "canonical_merge": "73796d85ba8de962673390a40d1be54e9c152d53",
+    "canonical_paths_verified": 15,
+    "qualified_scientific_surface_inheritance": "PASS src/tests/tools/.github exact subtree identity",
+    "science": "PASS O0/O2 literal 48; realistic root 12; sensor 12; source-off three profiles",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0
   }
 }

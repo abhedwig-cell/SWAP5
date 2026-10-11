@@ -7,7 +7,7 @@
   "qualified": true,
   "owned_surface": "Irrigation tests and evidence only",
   "shared_sources_unchanged": true,
-  "next_action": "Safe canonical admission after live overlap and exact scientific dependency surface verification; no full-capability promotion.",
+  "next_action": "Accepted physical salt concentration binding and whole-run crop/root/weather/allocation integration.",
   "source_off_local_science": {
     "result": "PASS O0/O2 bit-identical three fixed profiles",
     "postimage": "83c9da049c3f743858617484efb1a2c1d84f24e1",
@@ -37,7 +37,7 @@
   },
   "inheritance_after_common_salt_refactor": "Fresh O0/O2 execution on tested persisted head 70eedcd: sensor restart and source-off PASS with unchanged hashes.",
   "phase": "QUALIFIED_OWNER_RUNTIME_COMPLETION",
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "qualification": {
     "tested_persisted_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
     "science": "PASS O0/O2",
@@ -59,5 +59,16 @@
       "irr-root-salt-existing-owner.log": "13e9706b7c833ec9ace0b1ad47622f4472ae0932dfc8205da2a527a1ea56063d",
       "irr-root-salt-literal-common.log": "f1edf4a7c0f09987d7e3f28d57db5348a40cfa7de3b569107011dae20a88d54f"
     }
+  },
+  "canonical_admission": {
+    "pull_request": 1201,
+    "qualified_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "admission_head": "bdf81672804b3e453dca0630b1ea0cb736848b23",
+    "canonical_merge": "73796d85ba8de962673390a40d1be54e9c152d53",
+    "canonical_paths_verified": 15,
+    "qualified_scientific_surface_inheritance": "PASS src/tests/tools/.github exact subtree identity",
+    "science": "PASS O0/O2 literal 48; realistic root 12; sensor 12; source-off three profiles",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0
   }
 }
