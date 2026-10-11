@@ -625,7 +625,12 @@
           "recovery_branch": "integration/regie-nextbatch-20261011",
           "scope": "PR and owner-branch push filters for crop CO2/rootgrow workflows only; conservative src/** and tests/** plus each workflow itself. Jobs, commands, numerical tests and branch selections unchanged.",
           "invariants": "All existing and future source/test dependencies trigger qualification; docs-only changes skip these two workflows. No production/state/physics interface changes.",
-          "stage": "QUALIFIED_BOUNDED_TRIGGER_SUCCESSOR",
+          "stage": "CANONICALLY_ADMITTED_BOUNDED_TRIGGER_SUCCESSOR",
+          "canonical_admission": "74a49c15a0e300b3f6a38ca5310889d9a29d2c63",
+          "canonical_tree_verified": "4fb5651d17b336814e8a8a65b482c6f98629bc75",
+          "closed_historical_pr": 1120,
+          "closure_recovery_comment": 6107258525,
+          "canonical_actions_observed": 0,
           "tested_checkpoint": "fe697c2161fd42307e892300dc3806c0dba1bfbb",
           "validation": {
             "compile_closure_paths": {"co2": 13, "root_profile": 9, "root_runtime": 169},
@@ -648,7 +653,7 @@
           },
           "preservation": "No F-CI runner, production, reference, test or scientific assertion change. Retain baseline capability evidence on the exact unchanged dependency surface; F-CI93 remains separately blocked. Trigger selection is validated locally; no global green CI or measured queue-speed claim.",
           "publication_policy": "Skip duplicate CI only for this locally qualified trigger/control successor: all numerical jobs and dependency trees are unchanged, trigger coverage is conservative and independently validated. No numerical gate waiver.",
-          "next_action": "Verify canonical fast-forward and exact workflow/source/test blobs, then close historical PR1120 with persistent checkpoint. Reopen only on relevant trigger/job/dependency drift."
+          "next_action": "Closed and canonical-verified; original historical branch remains. Reopen only on relevant trigger/job/dependency drift."
         }
       },
       {
@@ -684,7 +689,8 @@
       {
         "pr": 1072,
         "owner": "functional-coverage master",
-        "blocker": "Recompute the moving functional-coverage master from canonical 44a031a83b5b9da5f8a76e4e8859396e57a48cd0 and incorporate bounded MC-IRR01 plus selective F-PE-NLGLOB14Z47 before publishing fresh global counts."
+        "blocker": "Master owner must reconcile current canonical including MC-IRR01 PR1198 bounded runtime annotations. This central CI/duplicate closeout changes no scientific capability disposition or master count; do not promote partial irrigation witnesses to full capabilities.",
+        "current_canonical_reconciled_for_regie": "74a49c15a0e300b3f6a38ca5310889d9a29d2c63"
       },
       {
         "pr": 486,
