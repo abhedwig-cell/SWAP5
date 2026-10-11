@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-IRR01",
   "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
-  "phase": "LOCAL_SOURCE_POLICY_VERIFIED_SHARED_INTERFACE_DECISION_OPEN",
+  "phase": "CANONICALLY_ADMITTED_SOURCE_POLICY_AND_AUTHORITY_RECONCILIATION_SHARED_INTERFACE_OPEN",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -123,6 +123,19 @@
     "remote_tree": "63b0417696d634127a0752d778568af1e1c6d2d2",
     "remote_blobs_verified": 8,
     "pull_request": 1208,
-    "canonical_admitted": false
+    "canonical_admitted": true
+  },
+  "canonical_admission": {
+    "pr": 1208,
+    "merge_commit": "7676adc95f450791e175e12bcd43d379fd44ad86",
+    "verified_tree": "04a83dec8e3b9840faed1eb727592fc233021c25",
+    "verified_source_unchanged": true,
+    "verified_paths": 8,
+    "scope": "Authority reconciliation and bounded literal daily-rain policy oracle only. Shared managed-weather interface remains unaccepted and no fullcap promotion.",
+    "counts": {
+      "admitted": 5,
+      "active": 11
+    },
+    "new_actions": 0
   }
 }
