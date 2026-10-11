@@ -3,6 +3,17 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "FCI93_FAIL $*" >&2; exit 93; }
+# Explicit current-canonical successor for MC-CROP01 preservation callers.
+# Original historical locks below remain active by default and all original
+# immutable-oracle scientific assertions execute on the current source.
+current_canonical_successor=0
+if [[ "${FCI93_ALLOW_MC_CROP01_RECONCILED_CANONICAL:-0}" == 1 ]]; then
+  bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only || fail 'unqualified source successor'
+  for current_path in src/adapter/mod_b110_production_soil_water_task2.f90 src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90 src/solver/mod_b110_dynamic_top_boundary_provider.f90 src/legacy/b1_10_port/soilwater.f90 src/transaction/mod_transaction_reference.f90; do
+    test "$(git rev-parse "HEAD:$current_path")" = "$(git rev-parse "e3b9685470639355e1899b95c25f9a7ddee15fe6:$current_path")" || fail "current canonical owner drift: $current_path"
+  done
+  current_canonical_successor=1
+fi
 
 # Historical F-CI58P/F-SI35 authorities remain immutable evidence.
 POSTIMAGE=3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d
@@ -73,11 +84,13 @@ assert s['external_exact_asset_execution']['result_bal_exact_reference_identity'
 assert s['external_exact_asset_execution']['result_blc_exact_reference_identity'] is True
 print('FCI93_M1C3_QUALIFIED_SUCCESSOR_RECEIPT=PASS')
 PY
+  if (( ! current_canonical_successor )); then
   [[ "$(git rev-parse "HEAD:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'M1-C3 Task2 successor blob drift'
   [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == "$M1C3_TOP_ADAPTER_BLOB" ]] || fail 'M1-C3 dynamic-top adapter blob drift'
   [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == "$M1C3_TOP_PROVIDER_BLOB" ]] || fail 'M1-C3 dynamic-top provider blob drift'
   [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$FCI75:$SOILWATER")" ]] || fail 'M1-C3 changed legacy SoilWater'
   [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$STATUS_A:$SOILWATER")" ]] || fail 'M1-C3 SoilWater differs from Status-A'
+  fi
   echo 'FCI93_CURRENT_M1C3_SEMANTIC_SUCCESSOR_BLOBS=PASS'
 else
   for path in "$TASK2" "$SOILWATER"; do
@@ -86,7 +99,11 @@ else
   done
   echo 'FCI93_CURRENT_FSI35_SUCCESSOR_BLOBS=PASS'
 fi
-[[ "$(git rev-parse "HEAD:$TX")" == "$TX_BLOB" ]] || fail 'transaction-reference dependency drift'
+if (( ! current_canonical_successor )); then
+  [[ "$(git rev-parse "HEAD:$TX")" == "$TX_BLOB" ]] || fail 'transaction-reference dependency drift'
+else
+  echo 'FCI93_MC_CROP01_RECONCILED_CANONICAL_EXACT_OWNERS=PASS'
+fi
 
 # F-CI93 is a semantic preservation gate for F-SI35, not a repository-wide
 # production freeze. Later admitted capabilities may add or change unrelated
@@ -175,6 +192,10 @@ MODULES=(
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/adapter/mod_b110_production_soil_water_task2.f90
 )
+
+if (( current_canonical_successor )); then
+  mapfile -t MODULES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULES[@]}")
+fi
 
 run_replay(){
   local opt="$1"
