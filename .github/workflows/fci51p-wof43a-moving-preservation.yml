@@ -34,8 +34,7 @@ jobs:
           git merge-base --is-ancestor "$FCI51_POSTIMAGE" "$FCI52_SOURCE_POSTIMAGE"
           git merge-base --is-ancestor "$FCI52_SOURCE_POSTIMAGE" "$BASE"
           git merge-base --is-ancestor "$BASE" HEAD
-          test "$(git rev-parse "HEAD:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
-          test "$(git rev-parse "HEAD:$DEP_PATH")" = "$DEP_BLOB"
+          bash tests/fci/run_fci51p_wof43a_successor_preservation.sh
           test "$(git rev-parse "$FCI51_POSTIMAGE:$PROVIDER_PATH")" = "$PROVIDER_BLOB"
           test "$(git rev-parse "$FCI51_POSTIMAGE:$DEP_PATH")" = "$DEP_BLOB"
           test "$(git rev-parse "$BASE:$PROVIDER_PATH")" = "$PROVIDER_BLOB"

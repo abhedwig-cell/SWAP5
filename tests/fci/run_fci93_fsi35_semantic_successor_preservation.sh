@@ -28,6 +28,9 @@ TX=src/transaction/mod_transaction_reference.f90
 TX_BLOB=d5a71a526efaebd82054580c3186f8e3545db331
 M1C3_RESULT=integration/m1/M1_C3_FINAL_WHOLE_HUPSEL_TYPED_ADAPTER_QUALIFICATION.json
 M1C3_TASK2_BLOB=0406d3180262b06a5a393b605cc553a912a26aa0
+RUNON_SUCCESSOR=ea4c6548b7693abbd25d428e85227b43e499a814
+RUNON_QUALIFIED=ece3ab6737401e0bfd4b7090387ab372a1a7eeaa
+RUNON_TASK2_BLOB=2a17e9a203a9fc257550e2a9036f3f918421235e
 M1C3_TOP_ADAPTER_BLOB=8a59211335f44034a93d9ecd0d7a8920ee9baa39
 M1C3_TOP_PROVIDER_BLOB=42fb85a03e6835a839574bf6d4b4c01472a01236
 BUILD="${RUNNER_TEMP:-/tmp}/fci93-${GITHUB_RUN_ID:-local}"
@@ -73,7 +76,16 @@ assert s['external_exact_asset_execution']['result_bal_exact_reference_identity'
 assert s['external_exact_asset_execution']['result_blc_exact_reference_identity'] is True
 print('FCI93_M1C3_QUALIFIED_SUCCESSOR_RECEIPT=PASS')
 PY
-  [[ "$(git rev-parse "HEAD:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'M1-C3 Task2 successor blob drift'
+  if git merge-base --is-ancestor "$RUNON_SUCCESSOR" HEAD; then
+    git merge-base --is-ancestor "$RUNON_QUALIFIED" "$RUNON_SUCCESSOR" || fail 'runon qualification lineage missing'
+    [[ "$(git rev-parse "$RUNON_SUCCESSOR^:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'historical M1-C3 Task2 drift'
+    for ref in "$RUNON_QUALIFIED" "$RUNON_SUCCESSOR" HEAD; do
+      [[ "$(git rev-parse "$ref:$TASK2")" == "$RUNON_TASK2_BLOB" ]] || fail "runon Task2 successor drift: $ref"
+    done
+    echo 'FCI93_ADMITTED_RUNON_TASK2_SUCCESSOR=PASS'
+  else
+    [[ "$(git rev-parse "HEAD:$TASK2")" == "$M1C3_TASK2_BLOB" ]] || fail 'M1-C3 Task2 successor blob drift'
+  fi
   [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == "$M1C3_TOP_ADAPTER_BLOB" ]] || fail 'M1-C3 dynamic-top adapter blob drift'
   [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == "$M1C3_TOP_PROVIDER_BLOB" ]] || fail 'M1-C3 dynamic-top provider blob drift'
   [[ "$(git rev-parse "HEAD:$SOILWATER")" == "$(git rev-parse "$FCI75:$SOILWATER")" ]] || fail 'M1-C3 changed legacy SoilWater'
