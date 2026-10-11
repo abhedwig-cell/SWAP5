@@ -364,7 +364,7 @@
     "qualified": false,
     "canonical_admitted": false,
     "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
-    "next_action": "Persist reconciled current owner postimage; focused wet/dry managed and current task2 owner O0/O2; complete highest24 and full current F-CI.",
+    "next_action": "Persist explicit current historical task2 + bounded managed fixture; qualify192 cases O0/O2, complete already-running highest24 then full current F-CI.",
     "test_paths": [
       "tests/f-app07/run_mc_irr01_managed_weather.sh",
       "tests/f-app07/test_mc_irr01_managed_weather.f90"
@@ -389,6 +389,7 @@
     },
     "reconciliation": "Canonical task2 PR1206 adopted. Four crop source files and current crop fixture/runner held byte-identical to canonical. Bootstrap3-way merge preserves both owners; no source replay. Both preservation scripts retain current crop guards and add only exact managed source/test postimages.",
     "pre_task2_highest_preservation_result": "PASS 24 fresh process configurations; exact approved two-source successor",
-    "highest_preservation_result": "PENDING actual canonical task2 + managed composition"
+    "highest_preservation_result": "PENDING actual canonical task2 + managed composition",
+    "current_task2_compatibility_result": "PASS actual managed wet/dry96 cases O0/O2 on composed source with bounded initialization; explicit historical task2 coupling192 matrix pending"
   }
 }

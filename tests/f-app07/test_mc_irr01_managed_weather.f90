@@ -28,7 +28,8 @@ program test_mc_irr01_managed_weather
   use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_state_t, &
        fmr_wofost_crop_transaction_model_t, fmr_wofost_crop_transaction_parameters_t, &
        initialize_fmr_wofost_crop_transaction_state, construct_fmr_wofost_crop_transaction_parameters, FMR_WOF38_OK
-  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t, &
+       CROP_PROFILE_BOUNDED,CROP_PROFILE_B111_TASK2
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
   use mod_soil_temperature_contract, only: SOIL_TEMP_TOP_AIR_TEMPERATURE, SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX
@@ -466,7 +467,8 @@ contains
     type(fmr_irrigation_allocation_t)::provider,changed
     type(fmr_allocated_irrigation_state_t)::state,after,resumed
     type(fmr_serialized_column_result_t),allocatable::r(:),rr(:),control(:)
-    integer::st,timing,nodes,weather_day
+    integer::st,timing,nodes,weather_day,startup_profile
+    type(crop_lifecycle_continuation_t)::startup_lifecycle
     real(real64)::first_in,total_in,time,weather_ordinal,weather_min,weather_max,weather_rain,weather_et
     integer(int64)::revision
     logical::ok
@@ -474,6 +476,8 @@ contains
     real(real64),allocatable::ld(:),rd(:)
     call make_bundle(bundle)
     c%swprep=0;c%swsow=0;c%germ_mode=0;c%zgerm=-1.0_real64
+    do startup_profile=CROP_PROFILE_BOUNDED,CROP_PROFILE_B111_TASK2
+    c%initialization_profile=startup_profile
     do weather_day=20,21
     call read_swap_daily_weather_file(trim(path),1999,1,weather_day,wr,st)
     call require(st==SWAP_WEATHER_FILE_OK,'managed authentic owner weather')
@@ -510,6 +514,19 @@ contains
         call a%initialize(cfg,st);call require(st==FMR_APP_BOOT_OK,'managed profile startup')
         call a%initialize_weather_crop_daystart(wr,c,empty_owner,4_int64,934_int64,cs,st,100.0_real64,bundle)
         call require(st==FMR_APP_BOOT_OK,'managed existing emerged crop owner')
+        call cs%snapshot(left,ok)
+        call require(ok,'managed actual startup crop snapshot')
+        select type(left)
+        type is(fmr_wofost_crop_transaction_state_t)
+          call left%snapshot_lifecycle(startup_lifecycle,ok)
+        class default
+          ok=.false.
+        end select
+        call require(ok.and.startup_lifecycle%initialization_profile==startup_profile, &
+             'managed source profile owned by accepted crop lifecycle')
+        if(startup_profile==CROP_PROFILE_B111_TASK2) call require(startup_lifecycle%prepared.and. &
+             startup_lifecycle%sown.and.startup_lifecycle%germinated.and.startup_lifecycle%emerged, &
+             'managed historical task2 initial flags retained')
         bad=cfg;bad%irrigation%enabled=.false.
         call baseline%initialize(bad,st);call require(st==FMR_APP_BOOT_OK,'unmanaged comparison profile')
         call baseline%initialize_weather_crop_daystart(wr,c,empty_owner,4_int64,934_int64,control_crop,st,100.0_real64,bundle)
@@ -601,10 +618,11 @@ contains
         call require(abs(after%receipt%event_end-.15_real64)<1.0e-14_real64.and. &
              after%receipt%allocation%fraction==.25_real64,'new event selected fraction and duration')
 
-        print '(A,3I3,A,ES24.16)','MC_IRR01_MANAGED_WEATHER_CASE=',weather_day,timing,nodes,' TOTAL_IN=',total_in
+        print '(A,4I3,A,ES24.16)','MC_IRR01_MANAGED_WEATHER_CASE=',startup_profile,weather_day,timing,nodes,' TOTAL_IN=',total_in
         call a%close(st);call b%close(st);call baseline%close(st)
         cs=kernel_committed_state_t();rs=kernel_committed_state_t();control_crop=kernel_committed_state_t()
       end do
+    end do
     end do
     end do
     bad=cfg;bad%irrigation%depth%depth_criterion=1
