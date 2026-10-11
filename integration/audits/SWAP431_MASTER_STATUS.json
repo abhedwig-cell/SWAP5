@@ -183,5 +183,30 @@
       "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
     ],
     "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
+  },
+  "bounded_mc_crop01_rooted_production_receipt": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+    "canonical_merge": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+    "qualified_source_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "authority_at_canonical": "integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json",
+    "scope": "Authentic daily production weather, delayed physical emergence, WOFOST growth and actual accepted F-KT root uptake using existing application/crop/root owners. Seven days; ROOT_COMP_OFF IDSL1 annual AIR/no-snow/default-MVG bottom7.",
+    "qualification": "Full crop/soil/heat/Richards O0/O2 and pending-restart identity, retry/rollback/exactly-once and mass; current owner/PPA/full F-CI PASS;24 highest frost configurations/144 fine comparisons PASS with227 source-bound dependencies.",
+    "archive_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
+    "full_capability": false,
+    "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
+  },
+  "mc_crop01_remaining_queue_integrity_reconciliation": {
+    "stale_no_application_owner_claim": "SUPERSEDED",
+    "row": "SW431-CROP-SOW",
+    "disposition": "ACTIVE_MIGRATION",
+    "capability_counts_unchanged": true,
+    "full_capability_promotions": 0,
+    "remaining": [
+      "Historical day-end completion/output/reset, final-window flush, harvest/rotation/fallow and new-season initialization remain open.",
+      "SWINCO=3, detailed weather, compensated/oxygen/CO2 profiles and external joint disk codec remain open.",
+      "Bounded four-node qualification with explicit site/crop parameters; no full Andelst soil/crop trajectory claim."
+    ]
   }
 }

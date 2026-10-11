@@ -9051,12 +9051,12 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Actual root-free file-weather task2/task3 pre-emergence production is now admitted at PR1204/1206. Full selector/lifecycle composition with delayed physical emergence/root/growth remains unqualified; established=false is the full-capability claim, not absence of all production owners."
+        "claim": "PR1204/1206/1207 admit authentic-weather preparation/sowing/germination, delayed emergence and rooted annual growth in the actual application. established=false denotes full historical selector/lifecycle scope, not absence of owners."
       },
       "restrictions": [
-        "Delayed physical emergence/root initialization and active growth remain fail-closed/open.",
-        "Harvest/rotation/fallow, SWINCO=3 and external joint disk codec remain open.",
-        "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
+        "Historical day-end completion/output/reset, final-window flush, harvest/rotation/fallow and new-season initialization remain open.",
+        "SWINCO=3, detailed weather, compensated/oxygen/CO2 profiles and external joint disk codec remain open.",
+        "Bounded four-node qualification with explicit site/crop parameters; no full Andelst soil/crop trajectory claim."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -9069,8 +9069,8 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "BOUNDED_PRE_EMERGENCE_PRODUCTION_ADMITTED_FULL_LIFECYCLE_ACTIVE",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_ROOTED_PRODUCTION_ADMITTED_FULL_LIFECYCLE_ACTIVE",
+      "implementation_absence_proven": false,
       "source_input_names": [
         "maxprepdelay",
         "maxsowdelay"
@@ -9078,7 +9078,7 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "INTEGRATED_DELAYED_EMERGENCE_ROOT_GROWTH_AND_FULL_LIFECYCLE_REQUIRED",
+      "resolution_stage": "HISTORICAL_DAY_END_HARVEST_ROTATION_FALLOW_REQUIRED",
       "bounded_production_admissions": [
         {
           "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
@@ -9104,6 +9104,19 @@
             "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
           ],
           "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
+        },
+        {
+          "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+          "canonical_merge": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+          "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+          "qualified_source_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+          "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+          "authority_at_canonical": "integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json",
+          "scope": "Authentic daily production weather, delayed physical emergence, WOFOST growth and actual accepted F-KT root uptake using existing application/crop/root owners. Seven days; ROOT_COMP_OFF IDSL1 annual AIR/no-snow/default-MVG bottom7.",
+          "qualification": "Full crop/soil/heat/Richards O0/O2 and pending-restart identity, retry/rollback/exactly-once and mass; current owner/PPA/full F-CI PASS;24 highest frost configurations/144 fine comparisons PASS with227 source-bound dependencies.",
+          "archive_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
+          "full_capability": false,
+          "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
         }
       ]
     },
@@ -14649,7 +14662,7 @@
       "capability_id": "SW431-CROP-SOW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Current inactive crop disallows continuation state and no application owner stores preparation/sowing delays or thermal/moisture germination progress.",
+      "why_open": "PR1206/1207 admit persisted preparation/sowing/germination, delayed emergence and actual rooted growth. Remaining scope is historical day-end/final flush, harvest/rotation/fallow/new-season authority, broader selector/weather profiles and disk restart.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14657,7 +14670,8 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false,
+      "bounded_production_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1207"
     },
     {
       "capability_id": "SW431-CROP-SOY",
@@ -15564,5 +15578,18 @@
     ],
     "canonical_pr": 1205,
     "dispositions_changed": 0
+  },
+  "latest_mc_crop01_rooted_production_reconciliation": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1207",
+    "canonical_merge": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "admission_head": "75e6218d8557caaddeb57f3bd50b1ab9774e42e6",
+    "qualified_source_head": "1c35043e59153e0d27947899f775a0e74ab8772f",
+    "source_tree": "da7699303f3bcbf36cfe5411de369e4080fcda7c",
+    "authority_at_canonical": "integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json",
+    "scope": "Authentic daily production weather, delayed physical emergence, WOFOST growth and actual accepted F-KT root uptake using existing application/crop/root owners. Seven days; ROOT_COMP_OFF IDSL1 annual AIR/no-snow/default-MVG bottom7.",
+    "qualification": "Full crop/soil/heat/Richards O0/O2 and pending-restart identity, retry/rollback/exactly-once and mass; current owner/PPA/full F-CI PASS;24 highest frost configurations/144 fine comparisons PASS with227 source-bound dependencies.",
+    "archive_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
+    "full_capability": false,
+    "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
   }
 }
