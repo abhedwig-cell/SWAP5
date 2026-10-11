@@ -1,0 +1,32 @@
+{
+  "status": "SELECTED_IMPLEMENTATION_PENDING_QUALIFICATION_NOT_ADMITTED",
+  "baseline": "a787f6340328a06885a145f6d88a52d921a458e7",
+  "authorization": "User explicitly delegated central coordination and decisions for FCI93 and historical crop startup on 2026-10-11 after the scope question; existing central admission checks remain required.",
+  "owner": "Central HeadCalc/dynamic-top admission with Task2/PPA-WU03/MIGMAC preservation",
+  "decision": "Bind the existing constitutive conductivity evaluated at actual trial-start head h(1), held fixed for the admitted non-M1 SWKIMPL=0 route. Do not trust global k(1) metadata.",
+  "basis": "production_route_admitted rejects SWKIMPL other than0. The explicit numerical route holds node conductivity fixed through the solve; the provider already implements the exact headed derivative under this fixed-conductivity contract. M1 already binds this actual value. The non-M1 adapter currently omits the receipt-producing binding.",
+  "changed_interface": "Existing optional fixed_top_node_conductivity argument; actual trial-start conductivity resolved through existing scalar constitutive owner. M1 branch unchanged.",
+  "held_fixed": [
+    "HeadCalc physics and the admitted stable storage invocation",
+    "Constitutive and dynamic-top formulas",
+    "Non-M1 zero-runon profile",
+    "M1 binding and eligibility",
+    "Root, thermal, macropore, transaction, state and restart owners",
+    "Immutable FKT15 native SWBOTB=2 surface/Task2 fixtures and FSI35 dispatch",
+    "Scientific mass and temporal thresholds"
+  ],
+  "required_gates": [
+    "Immutable native Task2/surface/dispatch O0/O2 replay",
+    "Fixed/nonfixed conductivity component and headed finite-difference probes",
+    "BOFEK00 dynamic-top correction",
+    "MIGMAC11 donor and production preservation",
+    "Current full moving F-CI and affected immutable preservation routes"
+  ],
+  "excluded": "No implicit-conductivity admission, zero/fabricated derivative receipt, forced M1, altered historical oracle, crop lifecycle change or master-count promotion.",
+  "crop_startup": "Separate dependent decision. Preserve existing crop guards until a source-qualified selectable task2 initialization profile and owner preservation are complete.",
+  "negative_first_variant": {
+    "source_commit": "90c4d259",
+    "result": "FAIL_O0_ATMOSPHERIC_TYPED_ACCEPTANCE",
+    "cause": "Global k(1) is stale in the immutable native oracle; the production binding must resolve actual initial constitutive state. Oracle unchanged."
+  }
+}

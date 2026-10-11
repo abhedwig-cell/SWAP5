@@ -91,6 +91,11 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 
+if [[ "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" == ed678be6e27621ac076a883c947abba8032ac7e6 ]]; then
+  bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh || fail 'F-CI93 non-M1 fixed-K immutable preservation'
+  echo 'FCI_CANONICAL_FCI93_NON_M1_FIXED_K_PRESERVATION=PASS'
+fi
+
 # Central proposed successor for the existing constitutive storage-increment
 # interface. Only this exact arithmetic postimage is eligible; no tolerance,
 # history, state or provider changes are authorized by this exception.
