@@ -94,12 +94,11 @@
       ],
       "status_freshness_note": "WU04-A, WU04-B and ROOT-HYD02 status/result files retain pre-admission wording in places even though their owner PRs are merged to canonical. Merge authority governs the current disposition; the wording is evidence-freshness debt, not a rollback of admission.",
       "open_prs": [
-        361,
         363
       ],
       "current_blockers": [
         "PPA-WU05-A production macropore implementation remains forbidden pending exact source materialization/census.",
-        "PPA-WU05-B frost authority remains blocked.",
+        "PPA-WU05-B original source-blocker review is superseded: exact bytes verified, bounded frost admitted via1018 and later B19 via1078. Aggregate frost remains incomplete under current PPA_WU05B_STATUS and active1119; source absence is not a current gate.",
         "PPA-WU05-D compensated uptake remains blocked and must bind later root-hydraulic authority before any implementation."
       ],
       "next_gate": "Production owner selects the next source-authorized bounded migration slice; central regie only admits a qualified successor."
@@ -226,7 +225,6 @@
         "Publication tooling must consume canonical capability; it does not confer production authority."
       ],
       "open_prs": [
-        371,
         389,
         181,
         199,
@@ -258,12 +256,6 @@
       "action": "KEEP_OPEN_UNMERGED_UNTIL_STORAGE_PARTITION_AND_DRAINAGE_OWNERSHIP_AUTHORITY_RESOLVED"
     },
     {
-      "pr": 361,
-      "class": "BLOCKED_INTERNAL_AUTHORITY",
-      "owner": "PPA",
-      "action": "KEEP_BLOCKED"
-    },
-    {
       "pr": 363,
       "class": "BLOCKED_INTERNAL_AUTHORITY",
       "owner": "PPA",
@@ -286,12 +278,6 @@
       "class": "SUPERSEDED_AS_LIVE_AUTHORITY",
       "owner": "HYDRO-MEMORY",
       "action": "PRESERVE_HISTORY_OWNER_MAY_CLOSE_AFTER_SUCCESSOR_RECONCILIATION"
-    },
-    {
-      "pr": 371,
-      "class": "RECONCILE_REQUIRED",
-      "owner": "PUBLICATIONS",
-      "action": "REBIND_FINALIZATION_CONTRACT_TO_CURRENT_CANONICAL"
     },
     {
       "pr": 389,
@@ -1392,7 +1378,7 @@
   },
   "finalization_frost_regie_closeout_20261011": {
     "canonical_base": "0379282491bdc6b7de5ffb8efd0334967eeae880",
-    "stage": "QUALIFIED_MECHANICAL_SUCCESSOR_TWO_CLOSURES_PENDING",
+    "stage": "MECHANICAL_FINALIZER_ADMITTED_TWO_ORIGINAL_PR_CARRIERS_CLOSED",
     "archive": {
       "path": "integration/audits/evidence/FINALIZATION_FROST_REGIE_CLOSEOUT_20261011.tar.gz.b64",
       "decoded_sha256": "52d8c4cb19d2a4a257109131ef69e4faece55e15f2521e5fa7b110f1a3c8992c",
@@ -1403,7 +1389,7 @@
     "frost_review_closeout": {
       "pr": 361,
       "head": "3cc654247f78b121540a9964534405099bdbdea5",
-      "disposition": "SUPERSEDED_HISTORICAL_REVIEW_FREEZE_READY_FOR_CLOSURE",
+      "disposition": "CLOSED_SUPERSEDED_HISTORICAL_REVIEW_FREEZE",
       "owner": "PPA-WU05B frost",
       "source_census": {
         "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
@@ -1466,7 +1452,11 @@
           "owner": "PUB-GC release/governance/archive/editorial authority",
           "blocker": "R1 release ID,L1 licence/redistribution and authority/effective date,A3 exact publication commit/PID/archive date,author/declaration metadata and42 placeholders remain unresolved."
         }
-      ]
+      ],
+      "canonical_commit": "cdd9d0cbc00e63b03a3d79f941d57aea529d102b",
+      "canonical_tree": "44d409e98b9640847a5efb92f4df2421d2e82820",
+      "canonical_verified": true,
+      "disposition": "CLOSED_ORIGINAL_CARRIER_SELECTIVE_MECHANICAL_TOOLING_ADMITTED_RELEASE_REMAINS_HELD"
     },
     "historical_runs": {
       "361": [
@@ -1550,8 +1540,20 @@
       "new_actions": 0,
       "new_dispatches": 0,
       "new_recovery_refs": 0,
-      "production_capability_admissions": 0
+      "production_capability_admissions": 0,
+      "pr_states": "BOTH_CLOSED_UNMERGED_ORIGINAL_HEADS_UNCHANGED",
+      "full_canonical_tree": "FETCHED_MATCHES_LOCAL44d409e98b9640847a5efb92f4df2421d2e82820"
     },
-    "next_action": "Publish four qualified mechanical paths plus archive and existing control authorities under exact canonical SHA lease; verify canonical tree, then close361 as historical supersession and371 as bounded tooling successor. Preserve real release holds and active scientific owners."
+    "next_action": "Two original carriers closed; mechanical finalizer admitted. Central486 and PUB-GC governance/archive/editorial owners retain actual release holds; active1119 and all scientific implementation/research remain separate. No production coverage promotion.",
+    "canonical_evidence_and_tooling_checkpoint": "cdd9d0cbc00e63b03a3d79f941d57aea529d102b",
+    "canonical_evidence_and_tooling_tree": "44d409e98b9640847a5efb92f4df2421d2e82820",
+    "closure_comments": {
+      "361": 6108624806,
+      "371": 6108625162
+    },
+    "closed_prs": [
+      361,
+      371
+    ]
   }
 }

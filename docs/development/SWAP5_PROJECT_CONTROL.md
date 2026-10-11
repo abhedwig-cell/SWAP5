@@ -242,7 +242,7 @@ Their owners may close them after confirming that unique evidence is already pre
 
 ### Owner-controlled research/publication PRs
 
-PRs #365, #371, #389, #181, #199, #218 and #219 stay with their specialized owners and must reconcile to current canonical before any merge with shared consequences. The later publication closeout below records the bounded export successor for #359 and historical completed synthesis disposition for #217.
+PRs #365, #389, #181, #199, #218 and #219 stay with their specialized owners and must reconcile to current canonical before any merge with shared consequences. Later closeouts below record the bounded tooling successors for #359/#371 and historical completed synthesis disposition for #217; release authority remains unresolved independently of those carriers.
 
 PR #187 is an immutable blocked PUB-P2E03 experiment and must not be merged as positive evidence.
 
@@ -491,4 +491,6 @@ Fourteen local mechanical qualification cases pass on persisted `3e8350d341da823
 
 Complete original #361 (six files) and #371 (eleven files) postimages, four qualified tooling paths, harness and full14-case outputs are preserved in `integration/audits/evidence/FINALIZATION_FROST_REGIE_CLOSEOUT_20261011.tar.gz.b64`, decoded SHA256 `52d8c4cb19d2a4a257109131ef69e4faece55e15f2521e5fa7b110f1a3c8992c`. Historical owner/finalizer checks passed, but both original final-head F-CI checks failed and remain negative; this closeout makes no old-head preservation claim.
 
-Remaining release blockers belong to central F-GC #486 (physical storage partition and exclusive drainage) and PUB-GC governance/archive/editorial owners (R1, L1, A3, author declarations and42 placeholders). No Hupsel rerun, archive creation or external submission is authorized. Canonical verification and the two original PR closure receipts follow in this same batch; master coverage gets no production-capability promotion.
+Remaining release blockers belong to central F-GC #486 (physical storage partition and exclusive drainage) and PUB-GC governance/archive/editorial owners (R1, L1, A3, author declarations and42 placeholders). No Hupsel rerun, archive creation or external submission is authorized. Master coverage gets no production-capability promotion.
+
+The four-path mechanical successor and complete evidence archive are canonical at `cdd9d0cbc00e63b03a3d79f941d57aea529d102b`, tree `44d409e98b9640847a5efb92f4df2421d2e82820`. Fetched full-tree identity, qualified tooling blobs and unchanged production/tests/reference were verified; canonical pre-authority validation also passes with the scientific hold printed explicitly. PR #361 and #371 are CLOSED/UNMERGED with original heads unchanged and branches retained, comments `6108624806` and `6108625162`. All17 original postimages and all archive members were byte/hash verified before closure. JSON, documentation source, strict MkDocs and whitespace pass. Zero new Actions, dispatches or recovery refs; no old failed F-CI result was relabelled and no scientific threshold was weakened.
