@@ -90,6 +90,17 @@ PRs #1196 (MC-HEAT01) and #1197 (MC-CROP01), together with the active PPA/macrop
 
 No manual workflow dispatches were added. Only path-triggered owner/preservation runs were used, and the necessary PR and canonical F-CI runs were polled to terminal success. Broad unrelated workflow results are not admission evidence; the exact owner and canonical-preservation gates named above are authoritative.
 
+### Final preservation diagnostics
+
+The control postimage `7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40` passed canonical F-CI run `38120232542` (moving-current job `114413534831`) and F-GC fixed-interface run `38120232503`. Two additional historical preservation workflows failed and remain explicit owner/admission-authority debt, not positive admission evidence:
+
+| Workflow / run / job | Exact blocker | Owner and next action |
+|---|---|---|
+| F-CI51P / `38120232502` / `114413253495` | WOF43A provider pin expects `1234bcb8e3b47ebe8e67b0bac6af35e09e9056da`; current provider is `040299d7fac3499f5b72f3b166cb08973530885d`. Rate-table dependency remains the pinned `5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5`. | F-CI central preservation authority with crop/MC-CROP owner: reconcile the admitted crop successor and its qualification before changing a preservation pin. |
+| F-CI58P / F-CI93 / `38120232531` / `114413253835` | Historical authorities, successor lineage and M1-C3 receipt pass, then `M1-C3 Task2 successor blob drift`: expected `0406d3180262b06a5a393b605cc553a912a26aa0`, actual `2a17e9a203a9fc257550e2a9036f3f918421235e`. Downstream reconciliation job is skipped. | F-CI central preservation authority with Task2/PPA-WU03 owner: qualify and bind the admitted runon successor without replaying an older Task2 source. |
+
+All three actual production blobs above are identical at pre-admission base `e3b9685470639355e1899b95c25f9a7ddee15fe6`, #921 merge `44a031a83b5b9da5f8a76e4e8859396e57a48cd0` and control postimage `7ceb5ff0d66fa93c5b0e179c85c66b85ee5e6c40`. These failures therefore predate the selective #921 admission and control refresh. This round records the debt but does not weaken either guard, authorize a successor implicitly, or modify active crop/Task2 implementation.
+
 ## Control model
 
 Specialized workstreams may research, implement and qualify inside their declared ownership. They do not acquire canonical authority merely by producing a branch or PR.
