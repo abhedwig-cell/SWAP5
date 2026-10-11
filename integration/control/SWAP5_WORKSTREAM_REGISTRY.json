@@ -802,6 +802,31 @@
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43"
   },
+  "perf02_e2e_regie_closeout_20261011": {
+    "canonical_base": "669a75ff996938fd0538c715ec43fe93d06b74de",
+    "stage": "THREE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
+    "canonical_evidence_checkpoint": "73fa4fabb562946942c431f948b2082f65ef1ca6",
+    "canonical_evidence_tree": "4cb4217713230e8e95506eeb2cbbd939ae981676",
+    "closure_recovery_comments": {"986": 6107779714, "1003": 6107779932, "1007": 6107780208},
+    "archive": "integration/audits/evidence/PERF02_E2E_REGIE_CLOSEOUT_20261011.tar.gz.b64",
+    "decoded_archive_sha256": "1d69faf79329e8ca2cc389cf1a397c36481360dd478991c8e774ba42d0306ebe",
+    "archive_verification": "26 original changed files from the three exact PR heads; decoded tar member content checked against original SHA256; original Git blobs are reconstructed by git hash-object. Original branches retained.",
+    "closed_candidates": [
+      {"pr": 986, "head": "f8a2de3bed000d3d45db7517b5e0b5f0441a78f8", "disposition": "SUPERSEDED_BY_CANONICALLY_ADMITTED_PR998", "successor": "c618cef80e53c3b1a670a76ebb0470aa837a37e1", "owner": "PPA-WU05-C3A oxygen performance", "proof": "Both production blobs, all eight PERF02 performance test/runner blobs and both frozen preregistration/derivation documents equal canonical exactly. Interim result is retained verbatim plus canonical final admission qualification; active-chain runner differs only in gate object filename. Four old workflow definitions and original result/runner are archived rather than imported.", "qualification_authority": "PR998 run37108700027 job111162196759; original O0/O2 boundary/B1.11/application qualification remains historical admitted evidence, not a newly run benchmark"},
+      {"pr": 1003, "head": "5eb05d0dccffdf5ffe5b1e8320c8382dae44e5eb", "disposition": "COMPLETED_NEGATIVE_RESEARCH_CARRIER", "owner": "PPA-WU05-C3A oxygen performance", "authority": "docs/audits/PPA_WU05C3A_E2E03_CLOSEOUT.md at original head explicitly NEGATIVE CHARACTERIZATION, CLOSED", "next_route": "Read-only gate classification moved to existing longer workload in PR1007; no accepted growing-season frequency claim. Archive preserves closeout and both unique research files."},
+      {"pr": 1007, "head": "0d3b27e09b887cbb9bea1fe789dc1d7241fa7bf7", "disposition": "COMPLETED_RESEARCH_DECISION_B_CARRIER", "owner": "PPA-WU05-C3A oxygen performance", "authority": "docs/audits/PPA_WU05C3A_E2E05_CLOSEOUT.md at original head: RESEARCH_CLOSEOUT_DECISION_B; run37125862510", "next_route": "PR1008 PERF03 stress-route attribution. All five unique files including preregistered holdout, negative fixture findings and final limited-niche interpretation are archived. No automatic research-code admission or broad speed claim."}
+    ],
+    "remaining_reviewed_candidates": [
+      {"pr": 1001, "head": "162dd96e95d138b2750888fbbb79b411d0dee007", "class": "UNIQUE_MEASUREMENT_ONLY_RESEARCH_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Owner adjudicates final measurement disposition; two research files absent from canonical, no duplicate declaration."},
+      {"pr": 1005, "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e", "class": "UNIQUE_SEQUENTIAL_HOST_RESEARCH_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Owner supplies final host qualification/closeout; workflow registration alone does not preserve the two unique code/runner files."},
+      {"pr": 1008, "head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be", "class": "ACTIVE_PERF03_RESEARCH_SUCCESSOR_KEEP_OPEN", "owner": "PPA-WU05-C3A performance", "next_action": "Finish frozen cost attribution before any exact-preserving optimization proposal; four unique files absent from canonical."},
+      {"pr": 1009, "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c", "class": "RESTRICTED_COMPOSITION_CANDIDATE_PENDING_FULL_OWNER_GATES", "owner": "PPA-WU04-C interception/application with MC-CROP01", "next_action": "Reconcile unique adapter with current crop/runtime owner, complete all ten preregistered gates and preservation. Dedicated test uses simulated FMR result fields; it is not full physical FMR execution. Old whole-src delta guard is incompatible with current canonical. INT12-D/E do not supersede this SWINTER1 slice."},
+      {"pr": 700, "head": "5fcd9769c30379f461ce047f410638b0d3311f96", "class": "HISTORICAL_NONADMISSION_SYNCHRONIZATION_KEEP_OPEN_PENDING_OWNER_CENSUS", "owner": "PPA migration/application", "next_action": "Owner reconciles 862-file historical carrier against selective later admissions. Its failed WU04C checkpoint is not admission evidence; no wholesale merge or blanket supersession."}
+    ],
+    "preservation": "Metadata/archive-only delta; src/tests/reference/tools/workflows/assets unchanged against qualified canonical669a75ff9. Inherit exact unchanged thermal/current-irrigation moving F-CI qualification f177b589 and unchanged frozen evidence; no numerical rerun or new Actions justified.",
+    "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; master owner PR1072 need not promote any disposition from these research closures.",
+    "continuation": "Remaining specialized implementations stay owner-controlled. Central admission requires a fresh READY_FOR_REGIE candidate or shared-authority resolution."
+  },
   "mc_heat01_regie_admission_20261011": {
     "pull_request": 1196,
     "status": "FOUR_CAPABILITIES_CANONICALLY_ADMITTED_SNOW_WITHHELD",

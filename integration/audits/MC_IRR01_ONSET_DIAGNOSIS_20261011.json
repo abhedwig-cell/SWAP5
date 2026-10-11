@@ -1,15 +1,47 @@
 {
   "work_unit": "MC-IRR01",
-  "baseline": "669a75ff996938fd0538c715ec43fe93d06b74de",
-  "phase": "PHYSICAL_PREFLIGHT_CORRECTED_PROBE_PENDING",
+  "baseline": "3d326d8fef3529d7a65737d9e4af0c86a41f06f8",
+  "phase": "SHARED_STORAGE_INCREMENT_CANDIDATE",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "scope": "Read-only numerical diagnosis, diagnostic test output only; no shared solver, history, crop/root or salt mutation",
   "question": "Does the 1-cm retained-history event fail before first commit or after accepted progress?",
-  "next_action": "Run 1-cm/48cm-day O0/O2 budget-refinement test on corrected physical envelope; same mass/temporal profiles, preserved accepted history",
+  "next_action": "Persist explicit shared-solver contract and production postimage, then O0/O2 refinement and affected F-CI preservation",
   "finding": "Inherited 3-cm column at -75 cm head has ~0.231265 cm free storage, insufficient for 1 cm with equal prescribed top/bottom fluxes and no ponding/elasticity. Earlier negative evidence does not establish a solver/history defect.",
   "corrected_geometry": "Four 25-cm cells, total 100 cm, ~7.70884 cm free storage",
-  "serialized_context": "Existing production binder requires exact typed/legacy geometry equality. Dedicated test context now carries the same 100-cm geometry; original F-SI04 stub and qualified tiny witnesses untouched."
+  "serialized_context": "Existing production binder requires exact typed/legacy geometry equality. Dedicated test context now carries the same 100-cm geometry; original F-SI04 stub and qualified tiny witnesses untouched.",
+  "finding_feasible": "100-cm column accepts 20 substeps until t=0.37500256788614134, then HeadCalc stagnates with zero head correction and residual above unchanged tolerance. Private diagnostic using existing constitutive storage-increment interface completes 1-cm pulse at 1e-6 budget. This diagnostic is not production qualification.",
+  "shared_contract": {
+    "owned_surface": "MC-IRR01 test/evidence; explicit bounded shared F-SI storage residual candidate returned to central regie",
+    "read_only_authorities": [
+      "B1.11 irrigation source",
+      "default MvG constitutive provider",
+      "F-KT transaction/history ownership",
+      "crop/root/solute/thermal authorities"
+    ],
+    "interfaces_allowed_to_change": "HeadCalc invocation predicate for existing constitutive evaluate_water_content_increment, no API or state layout change",
+    "interfaces_held_fixed": [
+      "all temporal and mass tolerances",
+      "retry and rollback policy",
+      "accepted derivative history",
+      "hydraulic constitutive functions",
+      "physical irrigation allocation"
+    ],
+    "dependency_surface": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/solver/mod_b110_default_mvg_provider.f90"
+    ],
+    "required_qualification": [
+      "feasible 1-cm event O0/O2 at three fixed refinement budgets",
+      "existing MC-IRR01 owner gates",
+      "moving-current F-CI preservation; explicitly investigate affected output drift"
+    ],
+    "cross_workstream_consequences": "Changes residual arithmetic for all explicit constitutive providers. Fallback provider remains theta_new-theta_old. Default MVG stable increment reuses admitted formula. Requires shared preservation and explicit central acceptance; no implied new physics.",
+    "canonical_admission_owner": "central SWAP5 regie",
+    "classification": "PROPOSED_NUMERICAL_ARITHMETIC_REPAIR",
+    "status": "NOT_ADMITTED"
+  }
 }
