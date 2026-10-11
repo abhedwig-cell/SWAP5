@@ -312,23 +312,6 @@ contains
         return
       end if
 
-      if(config%file_weather_daystart.and. &
-           self%templates(i)%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
-        ! Initialization only: preserve the existing backend-created temporal
-        ! carrier and certify its parameters through the existing F-KT entry.
-        ! No accepted revision is ever rewrapped or reset during execution.
-        call self%committed(i)%snapshot(initial_physical,ok)
-        if(ok) then
-          self%committed(i)=kernel_committed_state_t()
-          call self%committed(i)%initialize(config%tiles(i)%tile_id,initial_physical,ok, &
-               config%initial_time,self%parameters(i))
-        end if
-        if(.not.ok) then
-          status=FMR_APP_BOOT_STATE_INIT_FAILED
-          call discard_owner_storage(self)
-          return
-        end if
-      end if
       self%direct_retention_owner_active = .true.
     end if
 
@@ -428,6 +411,24 @@ contains
         status = FMR_APP_BOOT_STATE_INIT_FAILED
         call discard_owner_storage(self)
         return
+      end if
+
+      if(config%file_weather_daystart.and. &
+           self%templates(i)%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) then
+        ! Initialization only: preserve the existing backend-created temporal
+        ! carrier and certify its parameters through the existing F-KT entry.
+        ! No accepted revision is ever rewrapped or reset during execution.
+        call self%committed(i)%snapshot(initial_physical,ok)
+        if(ok) then
+          self%committed(i)=kernel_committed_state_t()
+          call self%committed(i)%initialize(config%tiles(i)%tile_id,initial_physical,ok, &
+               config%initial_time,self%parameters(i))
+        end if
+        if(.not.ok) then
+          status=FMR_APP_BOOT_STATE_INIT_FAILED
+          call discard_owner_storage(self)
+          return
+        end if
       end if
 
       if (groundwater_profile) then
