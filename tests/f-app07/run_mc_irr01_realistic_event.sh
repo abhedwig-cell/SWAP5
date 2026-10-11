@@ -12,7 +12,7 @@ TEST=tests/f-app07/test_mc_irr01_realistic_event.f90
 python3 - "$TEST" <<'PY' > "$BUILD/sources"
 import pathlib,re,sys
 test=pathlib.Path(sys.argv[1])
-files=list(pathlib.Path('src').rglob('*.f90'))+[pathlib.Path('tests/fsi/fsi04_real_headcalc_stubs.f90'), pathlib.Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')]
+files=list(pathlib.Path('src').rglob('*.f90'))+[pathlib.Path('tests/f-app07/mc_irr01_realistic_headcalc_stubs.f90'), pathlib.Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')]
 modules={}
 for path in files:
     text=path.read_text(errors='ignore')

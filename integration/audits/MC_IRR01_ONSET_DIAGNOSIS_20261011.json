@@ -10,5 +10,6 @@
   "question": "Does the 1-cm retained-history event fail before first commit or after accepted progress?",
   "next_action": "Run 1-cm/48cm-day O0/O2 budget-refinement test on corrected physical envelope; same mass/temporal profiles, preserved accepted history",
   "finding": "Inherited 3-cm column at -75 cm head has ~0.231265 cm free storage, insufficient for 1 cm with equal prescribed top/bottom fluxes and no ponding/elasticity. Earlier negative evidence does not establish a solver/history defect.",
-  "corrected_geometry": "Four 25-cm cells, total 100 cm, ~7.70884 cm free storage"
+  "corrected_geometry": "Four 25-cm cells, total 100 cm, ~7.70884 cm free storage",
+  "serialized_context": "Existing production binder requires exact typed/legacy geometry equality. Dedicated test context now carries the same 100-cm geometry; original F-SI04 stub and qualified tiny witnesses untouched."
 }

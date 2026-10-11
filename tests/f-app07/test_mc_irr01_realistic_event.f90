@@ -281,6 +281,9 @@ contains
     p%z = [-12.5_real64,-37.5_real64,-62.5_real64,-87.5_real64]
     p%dz = 25.0_real64
     p%node_distance = 25.0_real64
+    p%node_distance(1)=12.5_real64
+    call require(all(p%z==z) .and. all(p%dz==dz) .and. all(p%node_distance==disnod(1:numnod)), &
+         'serialized geometry identity')
     p%cofgen = 0.0_real64
     do k = 1, numnod
       p%cofgen(1,k)=0.032_real64; p%cofgen(2,k)=0.423_real64; p%cofgen(3,k)=4.75_real64
