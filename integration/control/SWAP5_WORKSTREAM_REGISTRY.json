@@ -2031,7 +2031,701 @@
       207,
       217,
       359
-    ]
+    ],
+    "contract_literature_consolidation": {
+      "stage": "DOCUMENTATION_QUALIFIED_READY_FOR_CANONICAL_ARCHIVAL_ADMISSION",
+      "canonical_base": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
+      "original_heads": {
+        "181": "12ab02b7c9543c32b6a9690b90ca5f9094b3bcfc",
+        "199": "25e04dc60e311c699330d6f81d03da82ca9fa0dc"
+      },
+      "owner": "Central regie for historical consolidation; PUB-GC/PUB-ME owners for science, literature and editorial release",
+      "archive": {
+        "path": "integration/audits/evidence/PUBLICATION_CONTRACT_LITERATURE_CLOSEOUT_20261011.tar.gz.b64",
+        "decoded_sha256": "b4879ff54a0e92dead6aab68805335b4e4268724794ed18a832de13ac1096496",
+        "members": 121,
+        "original_publication_tree_postimages": 118,
+        "incremental_pr_postimages": 90
+      },
+      "selected_paths": [
+        {
+          "pr": 181,
+          "path": "docs/publications/EVIDENCE_INVENTORY.md",
+          "original_blob": "bc332b7a1d2e67529eaa44914ddc247189f6d712",
+          "import_sha256": "284bab880486d367ce1653ec8daeae3e16a39c152dac613ec7a4bc791c369e51",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/EXPERIMENT_MANIFEST.md",
+          "original_blob": "6de3f725bffafed2f212eacbc010d52e17975931",
+          "import_sha256": "6d65a5226a341be4fd97a3512f9c64f0e20dfda85425f6412114a1838a5d1daf",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/EXPERIMENT_REGISTER.md",
+          "original_blob": "3cac3ceda641ecdd83b8c5fc315378312ea4612c",
+          "import_sha256": "7720e601fd5c71b029b94c6e0fe285c715e02ccd21d7bda2d3ee195b36c98061",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PHD_RESEARCH_PROGRAMME.md",
+          "original_blob": "220560d3dbbd76e2d5298c7b8dbf52609e4b6359",
+          "import_sha256": "6e7670813e868f5d0c8ac002a9cc66f0041a08619f9086e26ff3a7622b04335b",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_ACCURACY_AND_REFERENCE_ADJUDICATION.md",
+          "original_blob": "a9b4d0e56b956ef57422d60df819ab5220878807",
+          "import_sha256": "4a5bd0603ae7aff37f84bd38ce8de80a80662cda2d2856ebf4ce2b78eb84b98d",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_E1_ORIGIN_HARNESS_SPEC.md",
+          "original_blob": "554ebf5841b533b38f19dce533b2efb978348971",
+          "import_sha256": "7e96de404733cd99825de0cf07d54cd05f02701fd62d5bebb48b965fe9135a17",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_E2_TERMINAL_FLUX_COMPARATOR_SPEC.md",
+          "original_blob": "7c9f8cdea10a302a84a470e4fc452d44cd6c7967",
+          "import_sha256": "b4d9d3ffd6f84ecaa5451bba0d3f9150e4098e99db7f06d6c4b47bc108ecf426",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_EXPERIMENT_MATRIX.md",
+          "original_blob": "933ab0d0732f85028d1f518a38eb49dbc5f70bc8",
+          "import_sha256": "f420445ac3e196b6c9b48150b161e64b566afa995392ccc3a04df71b49787e2b",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_GC-REF_SPECIFICATION.md",
+          "original_blob": "73ac1fc61d71feaa2826fe3e03c8e69b8e9879f6",
+          "import_sha256": "3a03d76abe08e09abfdbeb55adaeabf4466556940b60b426a8c5e4db0d578fc1",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_GW-A_SPECIFICATION.md",
+          "original_blob": "db32ce312f946876954d23964346e371426b141e",
+          "import_sha256": "046dfaa0f3e4614d931875d3766cf6b2f9109a8837612d039abe784007e3e50f",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_MACRO_512_EXTENSION_SPEC.md",
+          "original_blob": "29ed1643be0d24fab234938e65316d714d052a27",
+          "import_sha256": "911facc245f1c837af39b0412f939099397a2953f044cee71a770e066e4a15d4",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_MACRO_HIGH_COUNT_EXTENSION_SPEC.md",
+          "original_blob": "b23448e53365a7cae2239b7519439169963d476c",
+          "import_sha256": "e14019d03ffa796df4dc228b5f4f17097bbb5582be3e7558fea4a22f9e8c986f",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_MACRO_TIME_COORDINATE_EXTENSION_SPEC.md",
+          "original_blob": "d29e4a672c7e3c6d15fdf40c3a20c0d82b10c24a",
+          "import_sha256": "502be63a0e6c4e13e985ffd1f946a389eaffe5d8d36b49ac9c125d29c28d8d86",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_MACRO_WINDOW_RESPONSE_SPEC.md",
+          "original_blob": "e7b042300c67e06163cbb27a603dc1ab70fa1834",
+          "import_sha256": "4c42f0e22c284443bf5908ec7c686b0678fa00336512242f0d28a78bdf049eed",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_NATIVE_TIME_SPEC.md",
+          "original_blob": "5f563ca26d602a56fdd82419265fa1bfea63399e",
+          "import_sha256": "e9d603ca8d474db0388e79aa3d3ca2089ea98193e8612770da5c94f04c2f48f7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-GC_SCIENTIFIC_CONTRACT.md",
+          "original_blob": "d7e72463f2e4920e928bd5a19e661330fb725af9",
+          "import_sha256": "ef69db4aee070f2cb199adef7134a950f06df218719960ce60a7da8f08879d64",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_EXPERIMENT_MATRIX.md",
+          "original_blob": "b09676c228aa7ce00840778966f3463d623fc885",
+          "import_sha256": "a2c7300a2381c0662f5b33dfa45ab81049b70e0f2873a4473f590737bd3a5605",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_LITERATURE_CLUSTER_TRANSACTIONAL_SIMULATION.md",
+          "original_blob": "d3cc10e8e28a02079888bec22e1e970bbd412b90",
+          "import_sha256": "cc9eb4f5c4a3a169d431850b3df61e6f11422984155e0ab484b33ae10ae5306f",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_PROTOCOL.md",
+          "original_blob": "f0eb778c1c5cd46ad562d112502109edf434144b",
+          "import_sha256": "b7eca20f59b067371187ad12c43976a222ed83a4ace77b8e94c0452d18761933",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_REGISTER.md",
+          "original_blob": "9474785c25da7bef7f120c5b1eb03734a0156dcf",
+          "import_sha256": "0efeaceb0f28b23af98fd20d1bb15fe9f01aecd0081bfbc44fe92f4c9b45f487",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_MIGRATION_SLICES.md",
+          "original_blob": "57a9d1dd233129deb77b316ded9b1c4a3400780c",
+          "import_sha256": "15a2127ba5ac3a8a105608da021131121241f724355c52af15ad9ce9eba88d77",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-ME_SCIENTIFIC_CONTRACT.md",
+          "original_blob": "b2c3fa52bb243884acf4f3309fe034dc6d916292",
+          "import_sha256": "a2d33a65ddc284e6999b1aeead708f67edc8fb2ab2695d66e9908513dacf608c",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-RC_SCIENTIFIC_CONTRACT.md",
+          "original_blob": "90e7257b03e592a672cd226bca2667c3f31718d5",
+          "import_sha256": "927e654c2499cc895811e29fcb0c6aeb683ec4203e1024b36d7c7b643c71e464",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-SG_SCIENTIFIC_CONTRACT.md",
+          "original_blob": "7e28faf9f7b4a4ed8e7c52f54de44bdb211d5abd",
+          "import_sha256": "ff450ec69003f0d4701a914372b66140e4c04c51b56d7da19c8e00d9c65ad8e8",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-SQ_EXPERIMENT_MATRIX.md",
+          "original_blob": "e0d77407710f102e1d964f4fefd29a2bfe5d56d0",
+          "import_sha256": "2adaf1ec6aae1144aa9c70f2cec29ed2be2ed7f73bc87391fe75937669f54035",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUB-SQ_SCIENTIFIC_CONTRACT.md",
+          "original_blob": "f2a4ec5ed1905e536d7291a539c03152e2dc6793",
+          "import_sha256": "8cf6bb5d85048b55906f0912bec55249da63bf7421b30256238b39e703c20b72",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/PUBLICATION_PORTFOLIO.md",
+          "original_blob": "c8b8544646895a12c09be4adf8eb080bf7973cdf",
+          "import_sha256": "27e6c240045447ac69d7c65dc333eef714ff8639486757e545c30ec805e3bcdd",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/README.md",
+          "original_blob": "64abdfb647c92d73ee97ef8b83f7b447f0e2c957",
+          "import_sha256": "6e2bacde6cb2a75aac4464ca0806d0d962f4c32018796a993c88e802bb96694c",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC-E1-SCREEN-0002_TRIGGER.md",
+          "original_blob": "e22f35596a2c46aeae6daa057c1252cda9e53392",
+          "import_sha256": "107a624f29165fc07b1ea550dbcd671bc41f40fc0c30d8976895f419a4c397f7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md",
+          "original_blob": "a9c4012e17ed6dbd7b9db014ba1ecf4130f5a7b7",
+          "import_sha256": "64ab32692522f7de485b653122f2b631fbd8b42deec24272a941d47eb3f613d0",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC-GW-A-0001.yaml",
+          "original_blob": "ba066e2b6b6cfefc77578155ddabbb09e3376430",
+          "import_sha256": "49260a4fe9c85ec0acd6db3b51d514c2f2c8212d831d6c6fe45511d571534f9e",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC_E2_E3_MACRO_WINDOW_ADJUDICATION.md",
+          "original_blob": "ef20a9fbc56dc4ec807e7966feb34ad38ef528ca",
+          "import_sha256": "d767e05a33b6f5619ee20bb12ae82d06a112bac620c4d01a13253edcc95754af",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC_MACRO_TIME_COORDINATE_ADJUDICATION.md",
+          "original_blob": "406e1b886923b91c884b340b27d5b0fc6c3794f6",
+          "import_sha256": "5ec89f3294081c39483c0b568bd5ebfe16501f29f7b99cedaa3b3498ed493578",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0002.md",
+          "original_blob": "9e74a021185befcbcd89b98bb26228777b0d5ea0",
+          "import_sha256": "ef4fe0244b0134c3ce954e93446ba55f7e54600d23e82e1133acd61ab9c211d2",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/decisions/PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0003.md",
+          "original_blob": "fb86dc34d092f04942253ed0a6bc2732ba30159a",
+          "import_sha256": "414c389f9ee255af4dfcc2ad539140751179382dbb21fe05632c4707c78364d4",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E0-0001.yaml",
+          "original_blob": "a433de5a55628b92ed757c3e070bde50fd39f4b4",
+          "import_sha256": "73d88cde7d3ff9db8fe59db67cdf7d73ec6903fdd3c8af7950692d2510489847",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E0-0002.yaml",
+          "original_blob": "eb01094a9208a93cb9a8c030b91ec812fe809766",
+          "import_sha256": "c4d4e875c448109a034976e0d3421c308f6712703d272d08a5609dd364e457c7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-0001.yaml",
+          "original_blob": "8aea9311b8584c55bdb2d4ad402f9ed87c902c2c",
+          "import_sha256": "9b6a5cbbab31294a65fc0b1edd07ff7c8e5e32b1828ae3134032ec29ac24a792",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-PRIMARY-0001.yaml",
+          "original_blob": "abf45b4a83f528eda69024e3d75a38edc4ce713f",
+          "import_sha256": "c0138bceab97eb77fb04b06b9f141d072184d39d13c268208653e5e2b195747e",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001.yaml",
+          "original_blob": "ea5042e51c61fbd6b11be87ded6198b8bdc44e81",
+          "import_sha256": "ce93ddaa2ff17d2e273cfe4b64edd861b4a1eae4b538c19a0d47941572538549",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-PRIMARY-EXECUTION-0001.yaml",
+          "original_blob": "5683a1f92954a8f1bccd07f61eb0d171a175f53b",
+          "import_sha256": "bc04174d960280633c027c7941c85279c40b790a374e626483ceed322bb8fcc3",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-SCREEN-0001.yaml",
+          "original_blob": "06d781bdf946960b8d08bad913e97ae414d8c726",
+          "import_sha256": "63ffae5facc69b2b002ec6f4eca7c14a382a539eaf42459520c1ca10435cc5e0",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-SCREEN-0001_LOCK.yaml",
+          "original_blob": "d4a1422eccc2e5a8b0d0e5c9a63ee8f1c4d44d97",
+          "import_sha256": "db0f9ebee5371f3aeb90a319c5f7637abebb66c3545c9eebdad58226f87be5ef",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-SCREEN-0001_TRIGGER_DEVIATION.yaml",
+          "original_blob": "749b47da4e9e99ed3bae2b92a6756a6593ba9526",
+          "import_sha256": "48289cb8aea9b65c61ca81a1a6ac09af90478aa93db12a57bebffba700babd5d",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E1-SCREEN-0002.yaml",
+          "original_blob": "2aef35c16f1b7c87ebd7ff572adeb24e4e830ee4",
+          "import_sha256": "63373e198aff40f626640ffd6919945487047e9cab11d9f56bf2e7dea59bfed7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-E2-COMPARATOR-QUAL-0001.yaml",
+          "original_blob": "bfee56e8b61e0d3ffe38546681ede5ddb0468f2c",
+          "import_sha256": "4ebf0bc78d48e741ba162499eef2185b01419e9c376c538fe3babccd8e155beb",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-GC-REF-A-QUAL-0001.yaml",
+          "original_blob": "f4e1143d03b6c197ed2f4a95c2da449c88b1f79d",
+          "import_sha256": "4514b0ba76cbd042ef73073dc586ae947a6ee9e7238f4df1fc4cea0a4c51bfd8",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-GC-REF-A-SCREEN-0001.yaml",
+          "original_blob": "d55d7a0dc1dcdbda5c8dbed0b890acb7ae5b69de",
+          "import_sha256": "b9be5c309d9b53d9b5a93405bf80afd8b0baf152939e31849f8c0fbd9754c2df",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-MACRO-WINDOW-QUAL-0001.yaml",
+          "original_blob": "09987670ad420e021fad5cb5e3b486b44c85f326",
+          "import_sha256": "d3b2cef5ed3e4d830eb0a7749b9100a5bfe7297a21c00926a365bb89743d38f7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-MACRO-WINDOW-QUAL-0002.yaml",
+          "original_blob": "f57fd8e46f023dd25b7f677c022375eb5f0243e3",
+          "import_sha256": "d6b10aa37cb95adc4c7ec5baab492084869d6ffbb5f762a952bfb466375eb9d6",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-MACRO-WINDOW-QUAL-0003.yaml",
+          "original_blob": "575211b3dcc1e1e443e36cffb044f4d50589338d",
+          "import_sha256": "cf8b6c18ee05840d4a4dbfcd0befe0bfbcf87dc71dfd7af6b7b86e9f2d25a743",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-MACRO-WINDOW-QUAL-0004.yaml",
+          "original_blob": "5900cebf510c33382d15f67da1d0d538483ef8f4",
+          "import_sha256": "265fa0f13b047ee0e09c854503374e13a7c5ab0884f2c8d79a1f3a9ec31e3327",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-NATIVE-TIME-0001.yaml",
+          "original_blob": "19c98e4ae7f97d029c9ce2d42d0fe4104a54f0bd",
+          "import_sha256": "b9af172a4f7d098f61667dd89dca495e3326ebc6ef44634cdcdc9a0bb3c9215b",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-NATIVE-TIME-0002.yaml",
+          "original_blob": "beeff3f6368daad4126151a09ef3946e386ccbdd",
+          "import_sha256": "b88614d87e2ccdcb1c235198f67242786c8dd6995f7649f172da6608e115dd90",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-NATIVE-TIME-0003.yaml",
+          "original_blob": "49f5552ffff1b8de685d417d1130b1f64fe52769",
+          "import_sha256": "bbd5ac63b4e3be836ac0ae33072b970c37d90c97e8fb39b11d1d20dcdac70a56",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-NATIVE-TIME-0004.yaml",
+          "original_blob": "b8458f0fda4b7598fc05024d22d5b0e756e1b5c7",
+          "import_sha256": "a28f45348e0df6c7947573b8a64d076a84200b8c0f8bccd0840d091bdb949544",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-GC-TRANSIENT-SCREEN-0001.yaml",
+          "original_blob": "7aa93be2f6698ad6e655e70bf1024758e7516da4",
+          "import_sha256": "d9d20de711c92d8fed1ef9796d35b2477c4ba3b22744090cde011b4bcf7f068b",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/manifests/PUB-SQ-E0-0001.yaml",
+          "original_blob": "deddc1b7f6bbac36ccef68b135b525a4c2fbde04",
+          "import_sha256": "6b2c25fd8b8ffacd8177a29237552be3634b78904fd458cba50dffc5f721ba3f",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E0-0001.yaml",
+          "original_blob": "4ff366f1b32c53509f779884e4fe43942e6e7830",
+          "import_sha256": "1b826305847456b04649d270153c5a738c2d376c838bbbf98f2145c67d4f7c8e",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E0-0002.yaml",
+          "original_blob": "82884018c763a067949b595be2cc0e93f3322d96",
+          "import_sha256": "0b331afb5634af75940c50792ab693fd3d8071075184028437b53f84c83fe316",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E1-HARNESS-QUAL-0001.yaml",
+          "original_blob": "f252b3c038aa297f0b790c8f9235ae73b9bb6dac",
+          "import_sha256": "02d5817f1244f13f2e90b7ee34f2e706dc36a86a34962ac3371306b8b7b83628",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E1-PRIMARY-0001.yaml",
+          "original_blob": "614c05274fafbaf5d609d75a074bf493e3a599cd",
+          "import_sha256": "ef0bdfafb190493b0b545686f2b0e0026168336ab122e7398efe08eee4498f7d",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E1-PRIMARY-ENGINE-QUAL-0001.yaml",
+          "original_blob": "ca39647ebdaf15480f7d3dc8e1df0cd7440adaa1",
+          "import_sha256": "c39eaef9b9ab34f4a07570be744f67f398bd7db6e4031a57dc633feddc43c808",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E1-SCREEN-0001.yaml",
+          "original_blob": "a66219d6dca78888f4d202f1e16fcd0d9e951519",
+          "import_sha256": "d45c431d4cc4c5e8971290d6e3ecab324a823abd28b00320d6833b5c926a8537",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E1-SCREEN-0002.yaml",
+          "original_blob": "9f16c0988b4d45f318bcf1decef5d360612369db",
+          "import_sha256": "c1fbd9c94f3fd2562dc50dc6420a342ae7bed539eb2a56ce2de79b245c7eb4bf",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-E2-COMPARATOR-QUAL-0001.yaml",
+          "original_blob": "50808269ccbafba248879e820c7b2262185abb68",
+          "import_sha256": "d6bba96f5edd5286a9e0b8260105dbf6b9f840137476956096af56e9a69ee0a3",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-GC-REF-A-QUAL-0001.yaml",
+          "original_blob": "4b35be71d765d67ac3cb15cfd032449d5382b436",
+          "import_sha256": "4b9cbf6d3b9e0c131038d91274f6c123f17e2a50d31767feb5e22ad231a3dc46",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-GC-REF-A-SCREEN-0001.yaml",
+          "original_blob": "1a3adc3c4682c76d67ce77de580179ec42247132",
+          "import_sha256": "3b59f09e012187ee5cd57df033193e648697836178113b07b72ce16d1e9eabbf",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-GW-A-QUAL-0001.yaml",
+          "original_blob": "2a70063841a8829a8dea4ff2eec6de2db130528d",
+          "import_sha256": "2192283063782273b4d155ffae36f9b650f2f05bb15d3a91752e5f30ed0a9383",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0001.yaml",
+          "original_blob": "d58561c00e9a17538b5d139946c4f4de2677c6c3",
+          "import_sha256": "a48aca864ec55ea6482be67f94e855de860b1e5706e53e6b5116292ccb605074",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0002.yaml",
+          "original_blob": "39461eaf7e28e10b81427ac87126c1227ad618ad",
+          "import_sha256": "bc494e7be325de8f6aa41384cabb94d9983ca6599f70fd66233ebd34ea505852",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0003.yaml",
+          "original_blob": "d081545e0093beca18aebe138c7b82699254fa72",
+          "import_sha256": "e4275e97593ccc4985cdb42293c55ab8a2e3dc862717ce8f89d7c96fe84bfa68",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-MACRO-WINDOW-QUAL-0004.yaml",
+          "original_blob": "e54028d26a1cd45dcb8b0da72442b9eb5a2a7d2f",
+          "import_sha256": "966d7f1d19fbd6da24482626dba25bb0a6d3c8d84e32779e9c72b79a9266fbe5",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-NATIVE-TIME-0001.yaml",
+          "original_blob": "7fee7e0ace99475c4dd4cfe6de688f1d8ecd8a31",
+          "import_sha256": "c97fc324b4bad2e437e7af8135258a7507573fad125178586f2214f44e9f2e70",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-NATIVE-TIME-0002.yaml",
+          "original_blob": "d1aaa21a52428a2fa425e3cde9455e1a1905181c",
+          "import_sha256": "af90633fa4580ffdbf09bf9e0a40c7ee1560eb883afbe4880ab6d886bcffee42",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-NATIVE-TIME-0003.yaml",
+          "original_blob": "9469e0228d511699870bf480c7f7e034022f745e",
+          "import_sha256": "a5b93bdfbdbfd280465c70c96275e958676a8ab01c8b94cddbc0aaf1b5c328ae",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-NATIVE-TIME-0004.yaml",
+          "original_blob": "c8b8cc1c8f26dd5ccc3b2cfee922f2817ecd8d82",
+          "import_sha256": "6b102de3242543ef4c80ec2a10aa3bb94801b7c23a20dd91c76a365c9883fd1d",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-TRANSIENT-SCREEN-0001-ATTEMPT-0001.yaml",
+          "original_blob": "ac413a2828997e279d754c5f40a8b7de1695aa51",
+          "import_sha256": "3b812f63e1a8002f756cc85229dff1f07ef5f6c96bf940db9f013c538284a8c1",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-GC-TRANSIENT-SCREEN-0001.yaml",
+          "original_blob": "365f7fb29f5296626600aecfbdde5ad2c91f59bd",
+          "import_sha256": "7ef99af49032ffcc93e519ea18b1b607e844848c7116255c6b8b16bdc1b0e74a",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 181,
+          "path": "docs/publications/results/PUB-SQ-E0-0001.yaml",
+          "original_blob": "8ac09f528da2cd1121b611d430bf6a653bc99954",
+          "import_sha256": "6104b93760c3f4572e6bdb000bb59fdeeba934765abda2887e982a8d47c38601",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_D1_D6_CROSS_DEFECT_ADJUDICATION.md",
+          "original_blob": "038927a03d8e47320a8d5bad2f29d8ded3269205",
+          "import_sha256": "3fbbfa9341253f21db7e1c3e3cf500fcb1e514945eb8ae2bec8862ef06c7e901",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_D1_D6_PREREGISTERED_EXPERIMENT_MATRIX.md",
+          "original_blob": "61f7133f19cc900971aa454b7bdb16a254468eda",
+          "import_sha256": "468e114c15fdedc414850fb3570e992184396e92fb2522a34aa27cfa28803c05",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_D2_D5_REPLICATION_PREREGISTRATION.md",
+          "original_blob": "c605012926b4f7fbb8d5613b8479ac814bbcbf34",
+          "import_sha256": "89c8330d11fc8d0be43cc55e83cd6a4dc9c41e17464d3f35981d17ae88e22116",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_INTRODUCTION_SOURCE_LEDGER.md",
+          "original_blob": "f3fc705307c3d4e8e7841b5cc3e0811b3b9d0f1a",
+          "import_sha256": "68aecedb1e7c5fad92b973d0fd38eefa7e4c77cbb0f01a4a79dce2fd5e90591c",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_PASS2.md",
+          "original_blob": "b140d8089687342504a94c0bab8021635768a4f3",
+          "import_sha256": "ee9ae1616da597c608309a9aba27f95e387067be731f65574da140c41a1ae856",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_PASS3_STATE_AUTHORITY.md",
+          "original_blob": "71c041b662ec840a43116c9df7ec31255c5bf159",
+          "import_sha256": "677677548b7d4169f8d6b5fc38bfc44372142a3598dbc43bd70b635a88769a38",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_PASS4_TEMPORAL_STATE_TRANSITION.md",
+          "original_blob": "9af2aa0dc946da9299d11a1b143e717d8fb2590e",
+          "import_sha256": "cd30841f14d4ddfc296dbda1cd6a14305fdd84bd9d3c8801c5cd98e82be39d05",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_LITERATURE_REVIEW_PASS5_ROLLBACK_COMMIT.md",
+          "original_blob": "3563443b5e67eb7bd1fb58bbabfa8f7032fcfb3b",
+          "import_sha256": "d31097cd0939fc0fba089ddd8e5a000a1558fd37fe187be9e2c1ee094e1ba52f",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        },
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_RESEARCH_QUESTION_ADJUDICATION.md",
+          "original_blob": "2b42075a7dc7ff1d16e9edec07ace2f042c06ac6",
+          "import_sha256": "dbd1214641a15a8c348dafb2e70da4753057c06367944475a7e39dc21b9423d7",
+          "status": "HISTORICAL_RESEARCH_DOCUMENTATION_ONLY"
+        }
+      ],
+      "preserved_existing_paths": [
+        {
+          "pr": 199,
+          "path": "docs/publications/PUB-ME_D1_EXECUTION_CHECKPOINT.md",
+          "reason": "Existing canonical postimage preserved; original archived.",
+          "original_blob": "ff461dc67734ca28cc98ba3141e25c4e33862408",
+          "canonical_blob": "29e8ecbc4ca203ea4b6f189a99cbe9e96e39b9de"
+        }
+      ],
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": true,
+      "canonical_admission": false,
+      "scope": "Historical/prospective research-documentation admission only; no production/fullcap or global count promotion. Frozen design bytes retained, no new scientific or novelty adjudication.",
+      "remaining_owner_gates": [
+        {
+          "owner": "PUB-ME research programme",
+          "gates": [
+            "G1/P1-Q06 complete file-driven E2E",
+            "G2 production checkpoint/run/restore/rerun",
+            "G3 production warm-start invariance",
+            "G4 qualified hydrologic replication",
+            "G5 dated backward/forward literature closure and final novelty adjudication"
+          ]
+        },
+        {
+          "owner": "Central F-GC #486",
+          "gates": [
+            "CSR-B1-STORAGE-PARTITION",
+            "CSR-B2-DRAINAGE-OWNERSHIP"
+          ]
+        },
+        {
+          "owner": "PUB-GC release/governance/editorial",
+          "gates": [
+            "R1/L1/A3",
+            "author declarations",
+            "42 finalization placeholders"
+          ]
+        },
+        {
+          "owner": "PUB-SQ/PUB-RC/PUB-SG scientific owners",
+          "gates": [
+            "Prospective hypothesis/comparator/reference and publication-primary qualification remain under their existing contracts"
+          ]
+        }
+      ],
+      "next_action": "Local documentation/JSON/archive qualification, safe canonical publication, verify original PR identities, close only historical carriers after evidence persistence.",
+      "preservation": "Production/tests/reference/tools/workflows/assets unchanged relative to current43b912d44; current crop full moving O0/O2 evidence inherited with exact src tree87fc3103 and executed test dependencies unchanged. No duplicate numerical run.",
+      "validation": "PASS all121 archive members/all118 exact original Git postimages;89 selected docs/YAML and frozen design bytes; JSON, whitespace, docs source and strict MkDocs. Six science/execution subtrees exactly unchanged; zero new Actions.",
+      "qualified_documentary_checkpoint": "f4f55df7a876798f9e1bdecf71a6c38aba3d883d",
+      "admission_lease_base": "8973c710a90e2524ecb6c5d85419d89f5410075c"
+    }
   },
   "fci93_non_m1_fixed_k_central_20261011": {
     "stage": "CANONICALLY_ADMITTED_BOUNDED_REPAIR",
@@ -2274,6 +2968,13 @@
       "external disk continuation codec"
     ],
     "pr": 1204,
-    "merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d"
+    "merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
+    "regie_verification": {
+      "archive_sha256": "62dcadbded64837be574a9229a7ceadd48883c524e26060638a38ab26caebac4",
+      "raw_logs_verified": 5,
+      "source_tree": "87fc3103f07b1ee8b39aa4a1780731c4b8e13d9f",
+      "dependency_audit": "Canonical src equals both current full-moving and Wu03-qualified src trees. Executed graphs unchanged; restored FCI93 wrapper explicitly qualified at54d64dd2. Four new publication test/build files outside crop graphs. Original219-path earlier compile manifest has historical HeadCalc blob; do not claim its full equality to current source.",
+      "fullcap_promotion": false
+    }
   }
 }
