@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+  "phase": "CENTRAL_INTERFACE_ACCEPTED_ROOT_FREE_IMPLEMENTATION_IN_PROGRESS_ROOTED_OWNER_GATE_RETAINED",
   "canonical_base": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "owner_dependency": {
     "work_unit": "MC-CROP01",
@@ -32,7 +32,7 @@
     "repeated weekly/event selection and restart",
     "O0/O2 and affected existing application/crop/F-CI preservation"
   ],
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "qualified": false,
   "canonical_admitted": false,
@@ -192,6 +192,39 @@
       "canonical_admitted": false,
       "fullcap_promotions": 0,
       "scope": "Exact source/interface reconciliation and reviewable design only."
+    }
+  },
+  "central_interface_decision": {
+    "canonical_base": "8216240ddcbfcf1c8ea44219cc7149f90fa9408c",
+    "user_authorization": "2026-10-11 17:38:52 Europe/Amsterdam: Go in direct reply to request for central RT/HY coordination mandate for this contract, retaining MC-CROP01 ownership and all qualification gates.",
+    "decision": "Accept ROOT_FREE_SENSOR_APPLICATION interface implementation and qualification route, not production admission or fullcap promotion.",
+    "owned_surface": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90"
+    ],
+    "crop_owner_held_fixed": [
+      "Historical task2 successor9c613488536c2998d3a7d94c71bc827ccda4e4ab not replayed",
+      "No crop/lifecycle/root physics or accepted crop-owner interface changes",
+      "Root extraction/transpiration remains rejected; salt/thermal remains outside this first managed profile"
+    ],
+    "publication_contract": "Managed weather dispatch uses private copies of committed kernels through the existing ordinary dispatcher. Candidate weather window and irrigation receipt are validated before soil/window/event publish together. Partial dispatch cannot change public owners.",
+    "continuation_contract": "Opaque existing joint bundle adds schema1 allocation restart; all validation precedes self initialization/publication. External disk codec not claimed.",
+    "next_gate": "Persist source/fixture then root-free actual file-weather sensor/SSDI O0/O2, existing crop successor with exact source census and affected current F-CI; rooted/salt/week authority remains separate.",
+    "qualified": false,
+    "canonical_admitted": false,
+    "fullcap_promotions": 0,
+    "current_task2_composition": {
+      "canonical_base": "2173a327e6380720718da31c155eb777b41721a3",
+      "crop_admission": 1206,
+      "crop_source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+      "bootstrap_postimage": "fa6efa3a0355bb86fea277554ea6f017798596b1",
+      "held_fixed_crop_paths": [
+        "src/crop/mod_crop_lifecycle_continuation.f90",
+        "src/crop/mod_crop_lifecycle_daily_composition.f90",
+        "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+      ],
+      "scope": "Apply existing preparation-only management/joint publication contract over actual admitted task2 profile. Requalify intersecting dependency closures; no evolved-root ownership or source algorithm change."
     }
   }
 }

@@ -354,5 +354,41 @@
     "new_scientific_qualification": false,
     "new_fullcap_admissions": 0,
     "next_action": "Central RT/HY and MC-CROP01 reconcile overlapping bootstrap successor and decide preparation-only allocation seam, application publication and joint continuation contract. Then implement and qualify ROOT_FREE_SENSOR_APPLICATION before ROOTED_SALINE_WEEKLY_APPLICATION. No rerun of unchanged admitted independent runtime gates."
+  },
+  "managed_weather_checkpoint": {
+    "baseline": "2173a327e6380720718da31c155eb777b41721a3",
+    "branch": "work/mc-irr01-managed-weather-current-20261011",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false,
+    "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
+    "next_action": "Persist reconciled current owner postimage; focused wet/dry managed and current task2 owner O0/O2; complete highest24 and full current F-CI.",
+    "test_paths": [
+      "tests/f-app07/run_mc_irr01_managed_weather.sh",
+      "tests/f-app07/test_mc_irr01_managed_weather.f90"
+    ],
+    "tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
+    "source_tree": "d7b50e3a65c5ae77477ccba467bef8d3da9433ec",
+    "focused_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_FOCUSED_20261011.tar.gz.b64",
+      "sha256": "24381c293e27474562ca1af18ae0201f60a6c8153b546455f1c688b78f3490dc"
+    },
+    "focused_result": "PASS actual managed weather O0/O2 12 profiles; root allocation and negative guard preservation PASS unchanged hashes",
+    "highest_normal_result": "PENDING current task2 composition",
+    "highest_low_air_result": "PENDING current task2 composition",
+    "full_fci_result": "PENDING current task2 composition; previous source gate remains running in separate original worktree",
+    "reconciled_live_canonical": "22d99c734bb119a1b99275ae8595f7d35f0ca678",
+    "canonical_delta": "Only registry/project control historical recovery archive/tool; source/tests/owner postimages unchanged",
+    "pre_rain_extension_tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
+    "rain_extension": "Same actual production matrix now adds authenticated Jan21 1.4mm rain with positive ET; previous Jan20 had zero rain. Source and both highest compile closures unchanged; updated fixture O0/O2 pending.",
+    "pre_task2_highest_preservation_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_HIGHEST_20261011.tar.gz.b64",
+      "sha256": "6cfa2fff89d9912e910723be44380eff437d169cf68a9bffb23542bfb635d0c1"
+    },
+    "reconciliation": "Canonical task2 PR1206 adopted. Four crop source files and current crop fixture/runner held byte-identical to canonical. Bootstrap3-way merge preserves both owners; no source replay. Both preservation scripts retain current crop guards and add only exact managed source/test postimages.",
+    "pre_task2_highest_preservation_result": "PASS 24 fresh process configurations; exact approved two-source successor",
+    "highest_preservation_result": "PENDING actual canonical task2 + managed composition"
   }
 }

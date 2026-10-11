@@ -2,7 +2,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-# Exact source-qualified task2/task3 successor; independent pre-emergence
+# Exact centrally composed task2/task3 + managed irrigation successor; independent pre-emergence
 # flags and schema2 restart use the existing owner. Delayed emergence remains
 # explicitly blocked. Preserve bounded default physical outputs.
 # Initial crop creation and preceding
@@ -11,15 +11,15 @@ cd "$ROOT"
 BASE=0d9f2c5da26e2214c3b19d56acdc734bf62d33f4
 fail(){ echo "CROP_FILE_WEATHER_SOURCE_SUCCESSOR_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
-  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
-    python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == fa6efa3a0355bb86fea277554ea6f017798596b1 ]]; then
+    python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only
   else
-    python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only
+    python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only
   fi
 }
 git merge-base --is-ancestor "$BASE" HEAD || fail 'reconciled canonical baseline absent'
 test "$(git rev-parse HEAD:src/adapter/mod_swap_daily_weather_file_adapter.f90)" = eb1fe3881b53209e01aba7bec0d69a8160bb29c6 || fail 'postimage drift: src/adapter/mod_swap_daily_weather_file_adapter.f90'
-test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = bc04a4239b2b0d8ef21f962af14be6ef28fbe436 || fail 'postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
+test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = fa6efa3a0355bb86fea277554ea6f017798596b1 || fail 'postimage drift: src/runtime/mod_fmr_production_application_bootstrap.f90'
 test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = d320ea43f8dd0958c841c86a00beb22282588656 || fail 'postimage drift: src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
 test "$(git rev-parse HEAD:tests/fmig431/run_crop_file_weather_production.sh)" = cf317b2130e3f685caf92f6d3a46ae933e100335 || fail 'postimage drift: tests/fmig431/run_crop_file_weather_production.sh'
 test "$(git rev-parse HEAD:tests/fmig431/test_crop_file_weather_production.f90)" = 97b810649eb9c8c5207061c17651d2eec7ec2ee8 || fail 'postimage drift: tests/fmig431/test_crop_file_weather_production.f90'
@@ -41,10 +41,10 @@ src/crop/mod_crop_lifecycle_continuation.f90|src/crop/mod_crop_lifecycle_daily_c
       ;;
 
     src/runtime/mod_fmr_irrigation_allocation_binding.f90)
-      # Disjoint MC-IRR01 successor. It is absent from the immutable crop
-      # compile closure; full irrigation preservation owns its execution.
+      # Exact central managed successor now belongs to the crop compile
+      # closure. Both current owner gates and complete highest evidence apply.
       # No wildcard allowance for any further source or owner mutation.
-      test "$(git rev-parse "HEAD:$path")" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail "unqualified irrigation allocation successor: $path"
+      test "$(git rev-parse "HEAD:$path")" = dfe51ab8e50204e8a7adc84219757a7b77df68e2 || fail "unqualified irrigation allocation successor: $path"
       ;;
     *) fail "unqualified additional production mutation: $path" ;;
   esac

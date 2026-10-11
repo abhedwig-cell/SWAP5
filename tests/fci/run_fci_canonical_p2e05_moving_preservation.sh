@@ -91,10 +91,10 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
-  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == bc04a4239b2b0d8ef21f962af14be6ef28fbe436 ]]; then
-    python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == fa6efa3a0355bb86fea277554ea6f017798596b1 ]]; then
+    python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only
   else
-    python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only
+    python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only
   fi
 }
 
@@ -462,7 +462,7 @@ verify_mc_irr01_owner_successor() {
     echo 'FCI_CANONICAL_MC_IRR01_ACCEPTED_SALT_SUCCESSOR=PASS'
   fi
   if git cat-file -e HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90 2>/dev/null; then
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90)" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail 'allocation dependency identity: src/runtime/mod_fmr_irrigation_allocation_binding.f90'
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90)" = dfe51ab8e50204e8a7adc84219757a7b77df68e2 || fail 'allocation dependency identity: src/runtime/mod_fmr_irrigation_allocation_binding.f90'
     test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_root_restart.sh)" = c3d1b0c2da5f3a78132c8a0c38148758f3abd4ca || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_root_restart.sh'
     test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_allocated_root_restart.f90)" = 1108400284dcd685660d0dd6b439eeb7002ffc05 || fail 'allocation dependency identity: tests/f-app07/test_mc_irr01_allocated_root_restart.f90'
     test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh)" = d076298b49c9c0892fe449a5f5b8ba071cb5c81a || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh'
@@ -470,6 +470,11 @@ verify_mc_irr01_owner_successor() {
     bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh || fail 'allocation root/repeated-event/restart'
     bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'
     echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS'
+    test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = fa6efa3a0355bb86fea277554ea6f017798596b1 || fail 'managed-weather bootstrap identity'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_managed_weather.f90)" = c0e0a88b9814322b8f12071df7c8757091db4688 || fail 'managed-weather fixture identity'
+    bash tests/f-app07/run_mc_irr01_managed_weather.sh || fail 'managed weather bootstrap physical/joint restart'
+    echo 'FCI_CANONICAL_MC_IRR01_MANAGED_WEATHER_SUCCESSOR=PASS'
+
   fi
   echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
   irrigation_owner_verified=1
