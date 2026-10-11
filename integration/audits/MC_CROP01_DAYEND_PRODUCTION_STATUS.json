@@ -2,7 +2,7 @@
   "workstream": "MC-CROP01",
   "unit": "Actual current-weather day-end and final growth window",
   "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
-  "status": "FOCUSED_OWNER_PASS_COMPLETE_LOW_AIR_AND_FULL_PRESERVATION_PENDING",
+  "status": "FOCUSED_OWNER_AND_COMPLETE_FROST_PASS_FULL_PRESERVATION_PENDING",
   "stages": {
     "implemented": true,
     "persisted": true,
@@ -20,7 +20,8 @@
     "dayend-owner.log": 0,
     "dayend-ppa.log": 0,
     "dayend-cross.log": 0,
-    "dayend-frost-normal.log": 0
+    "dayend-frost-normal.log": 0,
+    "dayend-frost-low_air.log": 0
   },
   "owned_surface": [
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -82,5 +83,16 @@
     "complete_configurations": 18,
     "required_configurations": 24,
     "fine_comparisons": 108
+  },
+  "frost_successor_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_DAYEND_COMPLETE_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "c15646052c6868b8010cf087613dffce0f78d13a656c359ad43d7e7e1b6b1f3e",
+    "members": 58,
+    "scientific_head": "49865b9b3c3cf24e6269737988ec2c62f3cb9f6a",
+    "source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
+    "complete_configurations": 24,
+    "required_configurations": 24,
+    "partial_only": false,
+    "dependency_blob_count": 227
   }
 }

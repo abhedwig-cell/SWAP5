@@ -136,6 +136,16 @@
         ],
         "pub_gc_submission": "HELD",
         "hupsel_rerun_authorized": false,
+        "current_source_drainage_profile_replay_20261011": {
+          "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+          "record": "integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json",
+          "checkpoint": "609c6683dbe7c8d6d2d06fae34c85ffeff3d6fe8",
+          "recovery_branch": "qualification/regie-drainage-profile-boundary-20261011",
+          "qualification": "Actual F-GC31 active-drainage qbot component replay PASS O0/O2 exact output, 2 accepted substeps/3 retries, original six scientific assertions unchanged; 160 current compile dependencies pinned.",
+          "physical_blocker": "Exact smooth-projection fixture with mode5 head forcing fails kernel101 before any transaction; physical origin/provenance preserved. Establish RT/HY head-driven drainage/phreatic response authority before using this fixture for joint coupling.",
+          "scope_limit": "No live MODFLOW drainage, mixed-path budget, joint restart or production admission. Other head/drainage profiles not evaluated. NONE production gate retained.",
+          "pr486_and_pr528": "OPEN_UNCHANGED"
+        },
         "route_authority_reconciliation_20261011": {
           "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
           "record": "integration/f-gc/F-GC_DRAINAGE_ROUTE_AUTHORITY_20261011.json",
@@ -3457,6 +3467,9 @@
       "active": 11
     },
     "record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-    "required_owner_action": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner."
+    "required_owner_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+    "weather_authority_reconciliation": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
+    "last_reconciled_canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+    "rooted_crop_weather_admission_pr": 1207
   }
 }

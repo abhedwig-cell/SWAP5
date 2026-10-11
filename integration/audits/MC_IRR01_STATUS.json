@@ -4,7 +4,7 @@
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
-  "last_reconciled_upstream": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
+  "last_reconciled_upstream": "989069886d971daed94b1ce7c8176e2d3f73dad1",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -64,10 +64,10 @@
     23,
     29
   ],
-  "next_action": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+  "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
   "recovery_point": "integration/f-ci-canonical@cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
   "blockers": [
-    "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner."
+    "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
   ],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
   "qualification": {
@@ -250,7 +250,7 @@
     "full_functional_coverage_closed": false,
     "retained_admitted_capabilities": 5,
     "retained_active_migration_capabilities": 11,
-    "shared_admission_dependency": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+    "shared_admission_dependency": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
     "new_fullcap_promotions": 0,
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
@@ -343,7 +343,7 @@
     "global_integrity": "Not renewed: pre-existing stale inheritance baseline before and after bounded update remains with master owner",
     "fullcap_promotions": 0
   },
-  "current_claim": "Independent source/runtime/event/accepted-salt/provider allocation closure admitted. Full MC-IRR01 closure blocked on shared rooted/weather application authority; historical narrower/failed statuses above are preserved, not current blockers.",
+  "current_claim": "Independent source/runtime/event/accepted-salt/provider allocation closure admitted. PR1207 now admits bounded rooted authentic crop/weather execution. Full MC-IRR01 remains blocked on shared managed-weather publication/continuation decision and precise evolving-root/material/calendar/salt profile gates; a missing crop/weather owner is no longer the claim.",
   "shared_application_review_20261011": {
     "canonical_base": "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
     "crop_successor_head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
@@ -353,6 +353,14 @@
     "new_production_implementation": false,
     "new_scientific_qualification": false,
     "new_fullcap_admissions": 0,
-    "next_action": "Central RT/HY and MC-CROP01 reconcile overlapping bootstrap successor and decide preparation-only allocation seam, application publication and joint continuation contract. Then implement and qualify ROOT_FREE_SENSOR_APPLICATION before ROOTED_SALINE_WEEKLY_APPLICATION. No rerun of unchanged admitted independent runtime gates."
+    "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+  },
+  "current_weather_authority_reconciliation": {
+    "record": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
+    "canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+    "crop_admission_pr": 1207,
+    "source_policy_oracle": "PASS_O0_O2_288_CASES",
+    "shared_management_interface_accepted": false,
+    "fullcap_promotions": 0
   }
 }
