@@ -227,7 +227,7 @@ A new documentation static-process check verifies that bounded catalog entries m
 
 ### Blocked production-authority PRs
 
-- **#361** PPA-WU05-B frost: keep blocked.
+- **#361** is the historical review/source-blocker carrier. The later frost review closeout below resolves that obsolete source claim against exact Git bytes and canonical successors; active frost qualification remains with its existing owner.
 - **#363** PPA-WU05-D compensated root uptake: refresh later dependencies before any implementation.
 
 ### Superseded as live authority
@@ -470,8 +470,25 @@ The bounded export successor is canonically admitted at `38129aba14e44b70bb436fe
 PRs #187, #207, #217 and #359 are CLOSED/UNMERGED with original heads unchanged and branches retained. Closure comments are `6108514300`, `6108514640`, `6108514976` and `6108515347`. The three completed historical units add zero production capabilities; #359 is closed as superseded by the selective tooling successor. Open #181/#199/#218/#219/#365/#371/#389/#587 have explicit owner/blocker comments recorded in the registry. Master #1072 received comment `6108519849` for the bounded #1201 irrigation annotation and pending four thermal dispositions; no global count or fullcap promotion is inferred. Existing specialized implementation remains untouched.
 
 JSON, whitespace, documentation source and strict MkDocs pass. There are zero new Actions, dispatches or recovery refs in this publication batch. Original historical failed checks remain negative; no scientific guard or publication hold was relaxed. Current scope and exact recovery remain in the two existing control authorities.
+
 ## MC-IRR01 root salt and realistic event admission (2026-10-11)
 
 PR #1201 is admitted at `73796d85ba8de962673390a40d1be54e9c152d53`. Root TCS2/3/4/6 share the historical TASK3 salt modifier with sensor scheduling, preserving DCSLIM-before-salt-before-TASK4 order. Literal 48 cases, realistic root and sensor physical/event restart, source-off and complete local F-CI preservation passed O0/O2 on persisted `70eedcd157d1f0874823f350293a145ca26ae4c2`. Admission preserves all scientific dependency subtrees exactly. All 15 canonical paths verified; immutable full logs are versioned. No numerical thresholds, solute owner or crop/root state changed; no full-capability promotion.
 
 The previous broad MC-SOL01 blocker is corrected: PR #1015 already admits matrix mobile salt. Its same-state CML needs an irrigation-owned read-only adapter and forwarding of the existing salt temporal policy. That successor remains separately unadmitted. Whole-run crop/root/weather and persistent external allocation remain separate authority gates.
+
+## Mechanical finalization and historical frost review closeout (2026-10-11)
+
+Reconciled from canonical `0379282491bdc6b7de5ffb8efd0334967eeae880`. Existing registry field `finalization_frost_regie_closeout_20261011` binds the exact original heads, terminal historical checks, source census, bounded tooling qualification and closure recovery. No new global status authority is created.
+
+The old #361 claim that frost source bytes cannot be materialized is superseded. Git archive `integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64` contains complete `SWAP/frozencond.f90` (7810 bytes, SHA256 `edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf`) and `SWAP/temperature.f90` (32708 bytes, SHA256 `92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338`). Both match the original #361 authority exactly. Current `PPA_WU05B_STATUS.json`, source manifest and canonical closeout establish the later bounded hydraulic admission #1018; B19 has separate runtime admission #1078. The historical review carrier is superseded, without new frost implementation or numerical admission. Aggregate frost remains incomplete; #1119 and later owner-specific composition/research boundaries remain untouched.
+
+The #371 successor imports only four mechanical paths: finalizer, its workflow, unresolved input and contract. Seven other historical package/checker/doc deltas are archived rather than replayed. All24 current publication-critical blobs match the incumbent prearchive inventory. Canonical input remains null/false; no release ID, licence, archive PID, author declaration or scientific result is invented.
+
+The original finalizer lacked the later #486 scientific-release hold and accepted placeholder licence text despite its own contract. The bounded successor rejects placeholder authority values and rejects archive-ready, submission-ready and binding emission while `CSR-B1-STORAGE-PARTITION` and `CSR-B2-DRAINAGE-OWNERSHIP` remain. Only a separately qualified central-authority successor can reconcile that guard. Authority-ready checks governance input alone and cannot authorize scientific release.
+
+Fourteen local mechanical qualification cases pass on persisted `3e8350d341da82340ff4111668b3c1f8752681db`, including default pre-authority success, missing authority, predecessor reuse, placeholder licence, mismatched commit, asset drift, E7 zero-window drift, accidental external zip and refusal to archive/submit/emit even with complete synthetic metadata. Synthetic values are test fixtures, not repository authority. Zero binding manifests were emitted. Production/tests/reference remain exactly the canonical base, so current numerical O0/O2 and F-CI preservation are inherited without rerunning physics.
+
+Complete original #361 (six files) and #371 (eleven files) postimages, four qualified tooling paths, harness and full14-case outputs are preserved in `integration/audits/evidence/FINALIZATION_FROST_REGIE_CLOSEOUT_20261011.tar.gz.b64`, decoded SHA256 `52d8c4cb19d2a4a257109131ef69e4faece55e15f2521e5fa7b110f1a3c8992c`. Historical owner/finalizer checks passed, but both original final-head F-CI checks failed and remain negative; this closeout makes no old-head preservation claim.
+
+Remaining release blockers belong to central F-GC #486 (physical storage partition and exclusive drainage) and PUB-GC governance/archive/editorial owners (R1, L1, A3, author declarations and42 placeholders). No Hupsel rerun, archive creation or external submission is authorized. Canonical verification and the two original PR closure receipts follow in this same batch; master coverage gets no production-capability promotion.

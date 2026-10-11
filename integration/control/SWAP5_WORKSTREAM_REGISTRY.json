@@ -1389,5 +1389,169 @@
       217,
       359
     ]
+  },
+  "finalization_frost_regie_closeout_20261011": {
+    "canonical_base": "0379282491bdc6b7de5ffb8efd0334967eeae880",
+    "stage": "QUALIFIED_MECHANICAL_SUCCESSOR_TWO_CLOSURES_PENDING",
+    "archive": {
+      "path": "integration/audits/evidence/FINALIZATION_FROST_REGIE_CLOSEOUT_20261011.tar.gz.b64",
+      "decoded_sha256": "52d8c4cb19d2a4a257109131ef69e4faece55e15f2521e5fa7b110f1a3c8992c",
+      "members": 24,
+      "original_changed_postimages": 17,
+      "scope": "All6 original PR361 paths and11 PR371 paths, four qualified mechanical successor paths, qualification harness/14-case receipts and manifest. Original branches retained; no recovery-ref push."
+    },
+    "frost_review_closeout": {
+      "pr": 361,
+      "head": "3cc654247f78b121540a9964534405099bdbdea5",
+      "disposition": "SUPERSEDED_HISTORICAL_REVIEW_FREEZE_READY_FOR_CLOSURE",
+      "owner": "PPA-WU05B frost",
+      "source_census": {
+        "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+        "members": [
+          {
+            "path": "SWAP/frozencond.f90",
+            "bytes": 7810,
+            "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"
+          },
+          {
+            "path": "SWAP/temperature.f90",
+            "bytes": 32708,
+            "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"
+          }
+        ],
+        "result": "COMPLETE_BYTES_VERIFIED_MATCH_ORIGINAL361_AUTHORITY; source absence is not a live blocker"
+      },
+      "successors": [
+        "integration/audits/PPA_WU05B_STATUS.json: canonical admission1018/5272ac9192ec1065dbe2432f73d1f1b4394437e0",
+        "reference/swap-4.3.1/b1_11_frost_source/manifest.json",
+        "docs/audits/PPA_WU05B_CANONICAL_CLOSEOUT.md",
+        "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json:1078/811ad186fa8f06386c73baa6abd8e19307cc8dc5"
+      ],
+      "boundary": "No new frost admission. Aggregate migration remains incomplete; active1119 nonfinite-hydraulic guard, multilevel/owner-specific composition and phase-change scope retain their own authority."
+    },
+    "finalizer_admission": {
+      "pr": 371,
+      "original_head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8",
+      "qualified_local_head": "3e8350d341da82340ff4111668b3c1f8752681db",
+      "owner": "PUB-GC mechanical finalization; central F-GC scientific-release authority",
+      "paths": [
+        "tools/publication/finalize_pub_gc_gmd_release.py",
+        ".github/workflows/pub-gc-gmd-finalization.yml",
+        "docs/publication/PUB_GC_GMD_FINALIZATION_INPUT.json",
+        "docs/publication/PUB_GC_GMD_FINALIZATION_CONTRACT.md"
+      ],
+      "scope": "Mechanical pre-authority validator; no archive, release, submission or scientific/capability admission.",
+      "qualification": {
+        "cases": 14,
+        "result": "PASS",
+        "publication_assets": 24,
+        "asset_git_identity": "ALL24_MATCH_CURRENT_INVENTORY",
+        "source_tests_reference": "IDENTICAL_TO_CANONICAL_BASE",
+        "governance_values": "CANONICAL_INPUT_REMAINS_NULL_FALSE",
+        "binding_emissions": 0,
+        "archive_submission_with_complete_metadata": "REJECTED_BY_EXISTING_CSR_HOLDS",
+        "placeholder_licence": "REJECTED; original contract requirement now enforced"
+      },
+      "repairs": [
+        "Reject placeholder authority values per original contract.",
+        "Bind archive/submission/emission to current CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP hold; metadata alone cannot discharge it. Later qualified central-authority successor must reconcile the guard."
+      ],
+      "excluded_original_paths": "Seven other original historical package/doc/checker deltas archived but not replayed. No old24-asset-currentness claim or E7 manuscript scope is imported.",
+      "remaining_real_blockers": [
+        {
+          "owner": "Central F-GC admission authority486",
+          "blocker": "CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP; no Hupsel rerun."
+        },
+        {
+          "owner": "PUB-GC release/governance/archive/editorial authority",
+          "blocker": "R1 release ID,L1 licence/redistribution and authority/effective date,A3 exact publication commit/PID/archive date,author/declaration metadata and42 placeholders remain unresolved."
+        }
+      ]
+    },
+    "historical_runs": {
+      "361": [
+        {
+          "id": 35426440629,
+          "name": "F-GC42 live whole-window service",
+          "status": "completed",
+          "result": "success",
+          "head": "3cc654247f78b121540a9964534405099bdbdea5"
+        },
+        {
+          "id": 35426440589,
+          "name": "PPA-WU05-B frost authority",
+          "status": "completed",
+          "result": "success",
+          "head": "3cc654247f78b121540a9964534405099bdbdea5"
+        },
+        {
+          "id": 35426440600,
+          "name": "Documentation",
+          "status": "completed",
+          "result": "success",
+          "head": "3cc654247f78b121540a9964534405099bdbdea5"
+        },
+        {
+          "id": 35426440621,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "result": "failure",
+          "head": "3cc654247f78b121540a9964534405099bdbdea5"
+        }
+      ],
+      "371": [
+        {
+          "id": 35427540029,
+          "name": "PUB-GC E7 realistic component-domain gate",
+          "status": "completed",
+          "result": "success",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        },
+        {
+          "id": 35427540005,
+          "name": "PUB-GC GMD finalization gate",
+          "status": "completed",
+          "result": "success",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        },
+        {
+          "id": 35427540071,
+          "name": "PUB-GC GMD current pre-submission gate",
+          "status": "completed",
+          "result": "success",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        },
+        {
+          "id": 35427540027,
+          "name": "F-GC42 live whole-window service",
+          "status": "completed",
+          "result": "success",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        },
+        {
+          "id": 35427539999,
+          "name": "Documentation",
+          "status": "completed",
+          "result": "success",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        },
+        {
+          "id": 35427540014,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "result": "failure",
+          "head": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8"
+        }
+      ]
+    },
+    "historical_check_rule": "Original final-head F-CI failed for both candidates and remains negative. Old review/finalizer success is not current production qualification. Selective current mechanical qualification uses unchanged numerical dependency trees and verified existing current owner/F-CI evidence.",
+    "validation": {
+      "docs": "PASS JSON, documentation source, strict MkDocs and whitespace",
+      "new_actions": 0,
+      "new_dispatches": 0,
+      "new_recovery_refs": 0,
+      "production_capability_admissions": 0
+    },
+    "next_action": "Publish four qualified mechanical paths plus archive and existing control authorities under exact canonical SHA lease; verify canonical tree, then close361 as historical supersession and371 as bounded tooling successor. Preserve real release holds and active scientific owners."
   }
 }
