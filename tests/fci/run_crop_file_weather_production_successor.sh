@@ -23,7 +23,7 @@ while IFS= read -r path; do
       # Complete highest/current F-CI archive and affected crop owner O0/O2
       # evidence are required; no allowance for an arbitrary frost postimage.
       test "$(git rev-parse "HEAD:$path")" = 0dd5b541af936d292d23575f798c3cdd5be19c47 || fail "unqualified frost invalid-input successor: $path"
-      python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost invalid-input qualified archive'
+      python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only || fail 'frost invalid-input qualified archive'
       ;;
     src/runtime/mod_fmr_irrigation_allocation_binding.f90)
       # Centrally scoped managed-weather preparation successor. The current

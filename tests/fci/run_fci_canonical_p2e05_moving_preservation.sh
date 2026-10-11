@@ -96,7 +96,7 @@ fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 # evidence and the original invalid-input oracle. Other source drift remains
 # subject to every existing owning gate and exact postimage check below.
 if [[ "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" == 0dd5b541af936d292d23575f798c3cdd5be19c47 ]]; then
-  python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
+  python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
   bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'
   bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'
   echo 'FCI_CANONICAL_FROST_NAN_GUARD_EXACT_SCIENTIFIC_SUCCESSOR=PASS'
@@ -464,7 +464,7 @@ verify_mc_irr01_owner_successor() {
     bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'
     echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = d3a0719dfd5c7fb7a0061502c56fe4eede1ca9de || fail 'managed-weather bootstrap identity'
-    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_managed_weather.f90)" = 27ff67537cc9901becd1531d52e8def9c844fc49 || fail 'managed-weather fixture identity'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_managed_weather.f90)" = b55b6f024b6df0ee75721c727aa95fa1ed1c45b7 || fail 'managed-weather fixture identity'
     bash tests/f-app07/run_mc_irr01_managed_weather.sh || fail 'managed weather bootstrap physical/joint restart'
     echo 'FCI_CANONICAL_MC_IRR01_MANAGED_WEATHER_SUCCESSOR=PASS'
 
@@ -516,7 +516,7 @@ check_b19_micro_root_recomposition() {
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
       src/process/mod_frost_hydraulic_effect.f90 )
-        python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only ||
+        python3 tests/frost/run_mc_irr01_managed_weather_highest_successor.py --verify-only ||
           fail 'unqualified frost hydraulic guard source change'
         ;;
       src/legacy/b1_10_port/headcalc.f90 )

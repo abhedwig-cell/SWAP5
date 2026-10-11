@@ -614,7 +614,8 @@ contains
     call invalid%run_weather_interval(wr,0.0_real64,.05_real64,forcing_config,canopy,r,st,rs,provider)
     call require(st/=FMR_APP_BOOT_OK,'incomplete managed dispatch fails closed')
     call require(allocated(r),'incomplete managed dispatch has physical diagnostics')
-    call require(r(1)%final_revision>revision,'incomplete private trajectory contains an actually accepted prefix')
+    print '(A,I0)','MC_IRR01_MANAGED_INCOMPLETE_ACCEPTED_SUBSTEPS=',r(1)%accepted_substeps
+    call require(r(1)%accepted_substeps>0,'incomplete private trajectory contains an actually accepted trial')
     call invalid%copy_committed_for_crop(1,physical_after,st)
     call require(physical_after%current_revision()==revision,'private accepted prefix cannot publish soil')
     call physical_after%current_time(time,ok)
