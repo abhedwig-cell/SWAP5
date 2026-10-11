@@ -1,0 +1,116 @@
+{
+  "schema": "swap431.mc_heat01.local_qualification.v1",
+  "work_unit": "MC-HEAT01",
+  "date_utc": "2026-10-11",
+  "canonical_base": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+  "qualified_source_tree": "0a687707934cf8b9602d8830a5a154efa74c51d8",
+  "production_checkpoint": "1afde5d7",
+  "decision": "QUALIFIED_FOR_CENTRAL_ADMISSION_WITH_EXPLICIT_SCOPE_HOLD",
+  "qualified_capabilities": [
+    "SW431-TEMP-ANALYTIC",
+    "SW431-TEMP-BC3",
+    "SW431-TEMP-BC4",
+    "SW431-TEMP-BOTTOM2"
+  ],
+  "withheld_capabilities": [
+    {
+      "capability": "SW431-TEMP-SNOW",
+      "component_state": "SOURCE_EXACT_PROCESS_COMPONENT_PASS",
+      "production_state": "NOT_REACHABLE",
+      "reason": "Current production assigns Snow and restricted soil temperature distinct optional-state layouts and rejects their simultaneous activation. Snow is applied once per outer daily interval while the thermal process commits per accepted Richards substep. Binding the source-exact resistance formula therefore requires an owner-admitted shared layout plus an explicit sampling and retry order."
+    }
+  ],
+  "source_authority": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/temperature.f90",
+    "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "numeric_top_selection_lines": [244, 265],
+    "numeric_top_assembly_lines": [289, 306],
+    "numeric_bottom_selection_lines": [267, 273],
+    "numeric_bottom_assembly_lines": [316, 331],
+    "analytic_lines": [605, 669],
+    "snow_interface_lines": [255, 265],
+    "typed_flux_unit_contract": "The production forcing is resolved J cm-2 day-1. The legacy table-reader conversion QTtop = QTtop * 8.64 belongs to parser/I/O migration and is not duplicated in the typed process."
+  },
+  "production_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "2c358fa353226846ce6c6e4e561aa59e5de94620",
+    "src/process/mod_restricted_soil_temperature.f90": "6d881983c8d97c6d82854c59a2dc6c9fd36f7350",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "01d1981cc7aebb1553463b1cee955bb21da05fe6"
+  },
+  "test_blobs": {
+    "tests/fmig431/run_mc_heat01_thermal_boundary.sh": "f6c82d81620b66d587eddae68f1ecced77920546",
+    "tests/fmig431/test_mc_heat01_thermal_boundary.f90": "8f0975bb143ea6ea1636f5dd2d88fd42dd452b9b",
+    "tests/fmig431/run_mc_heat01_runtime.sh": "e552848040cb71ad6eab93ea679c92ece534907d",
+    "tests/fmig431/test_mc_heat01_runtime.f90": "feb5c7d12c4c61c6735da120eba814f7a2f686f5",
+    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90_sha256": "bffb492d9e8608f5e41b71609f5b956c7d98e9fba7d8e2999dde22d99881662f"
+  },
+  "verification": [
+    {
+      "command": "tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+      "result": "PASS",
+      "optimization": [0, 2],
+      "repeat_identity": true,
+      "cross_optimization_identity": true,
+      "source_bound_cases": 6,
+      "output_sha256": "979a4cefda74c96607077c7125385da7edd02d6291bae06494956b80d38789d7",
+      "default_route_output_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583"
+    },
+    {
+      "command": "tests/fmig431/run_mc_heat01_runtime.sh",
+      "result": "PASS",
+      "optimization": [0, 2],
+      "repeat_identity": true,
+      "cross_optimization_identity": true,
+      "output_sha256": "c87100f0b41e15c27f1a42e4f4e64eb1c831efdffb7d1c6604f50a03f65276bc",
+      "contracts": [
+        "four selector routes reach the serialized production backend",
+        "water mass remains owned by Richards",
+        "thermal failure rolls back water and temperature atomically",
+        "retry begins from the same committed state",
+        "split/restart identity",
+        "multi-column isolation"
+      ]
+    },
+    {
+      "command": "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+      "result": "PASS",
+      "optimization": [0, 2],
+      "cross_optimization_identity": true,
+      "stdout_sha256": "fd8fba7cee2b05c86749c1d5eee239edb626677740afc293d4350c205a5aa3c2"
+    },
+    {
+      "command": "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "result": "PASS",
+      "optimization": [0, 2],
+      "cross_optimization_identity": true,
+      "stdout_sha256": "0282ab4d151c1fc27f9efd4b9ce6658d5d48a88bc2f59404b8090216adee4f98"
+    },
+    {
+      "command": "python3 tools/docs/check_docs.py",
+      "result": "PASS",
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "contract_findings": {
+    "mass": "No thermal mode changes the Richards water-mass ledger; runtime qualification retains the existing F-MR39 mass authority checks.",
+    "energy": "All numerical modes close sensible storage against explicit top and bottom energy exchange. The analytical profile is a prescribed state trajectory; its diagnosed external energy is the storage change, not an inferred conductive boundary flux.",
+    "state": "Failure leaves committed temperature and water state unchanged. Restart schema 1 remains a profile-only payload and split/restart identity passes.",
+    "defaults": "The existing prescribed-surface-temperature plus zero-bottom-flux route is byte-identical to the admitted F-VQ58 independent oracle.",
+    "excluded_owners": "No crop/root, irrigation, nutrient/solute, drainage/frost, Snow, Richards or shared hydraulic semantics are claimed or modified."
+  },
+  "admission": {
+    "canonical_admitted": false,
+    "admission_owner": "central F-CI/regie",
+    "mastercoverage_owner": "PR #1072 SWAP431-MASTER-COVERAGE",
+    "requested_mastercoverage_changes": {
+      "SW431-TEMP-ANALYTIC": "QUALIFIED_IMPLEMENTATION_PR",
+      "SW431-TEMP-BC3": "QUALIFIED_IMPLEMENTATION_PR",
+      "SW431-TEMP-BC4": "QUALIFIED_IMPLEMENTATION_PR",
+      "SW431-TEMP-BOTTOM2": "QUALIFIED_IMPLEMENTATION_PR",
+      "SW431-TEMP-SNOW": "PARTIAL_COMPONENT_ONLY_KEEP_OPEN_SHARED_INTERFACE_BLOCKER"
+    }
+  }
+}
