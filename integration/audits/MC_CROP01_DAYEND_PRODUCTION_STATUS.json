@@ -2,14 +2,14 @@
   "workstream": "MC-CROP01",
   "unit": "Actual current-weather day-end and final growth window",
   "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
-  "status": "QUALIFIED_PRESERVED_BOUNDED_DAYEND_PRODUCTION_PENDING_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_DAYEND_PRODUCTION",
   "stages": {
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
     "preserved": true,
-    "canonically_admitted": false
+    "canonically_admitted": true
   },
   "contract": "docs/science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md",
   "recovery_branch": "work/mc-crop01-dayend-20261011",
@@ -54,7 +54,20 @@
     "crop/PPA/cross-owner and full moving F-CI preservation",
     "complete24 highest frost configurations and144 immutable fine comparisons"
   ],
-  "next_action": "Verify exact remote execution/archive postimage, live canonical overlap and PR-head admission conditions; safely admit only the bounded current-day growth completion, reconcile master coverage, then continue harvest/output/reset and calendar/fallow/new-season through existing owners.",
+  "next_action": "Reconcile PR1072 master coverage without count promotion, then implement the declared harvest/output/reset and calendar/fallow/new-season block through existing owners; retain all current profile and restart limitations until its complete scientific qualification.",
+  "canonical_admission": {
+    "pr": 1209,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1209",
+    "admission_head": "5c00e28f04cf49be65e7917aebd2587b530c63d5",
+    "merge_commit": "97f2d96e3cbe1cf34efba703a46e5ada0ea090a6",
+    "verified_merge_tree": "4404f5f7daf30a2d527959445571b73dbdb49259",
+    "verified_source_tree": "b52c70dc50742fdbf5b03f71ec68709b191d0ec7",
+    "scientific_head": "9825deeef3c6c51dc28702e92291dcbdf7f439cf",
+    "canonical_source_archive_and_execution_dependency_verification": "PASS",
+    "scope": "Five current-day active growth completions including final authentic weather day; partial/pending/completed in-process restart, no duplicate morning growth, unchanged admitted soil/uptake vectors. Harvest/output/reset and complete historical lifecycle remain open.",
+    "full_capability": false,
+    "master_count_delta": 0
+  },
   "canonical_admission_owner": "Delegated MC-CROP01 central application authority",
   "qualification_diagnostics": [
     "Early focused archive sealing failed closed on a missing terminal PASS and created no archive. The subsequent strengthened runner terminated with exit0 before successful sealing; no production change or numerical weakening was made for this diagnostic.",

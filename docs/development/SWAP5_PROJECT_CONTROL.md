@@ -784,3 +784,40 @@ Reconciled canonical `989069886d971daed94b1ce7c8176e2d3f73dad1` against the prev
 The irrigation-owned `tests/mc-irr01/run_mc_irr01_literal_daily_rain.py` executes extracted authenticated B1.11 depth statements against the current policy. All288 DCS1/DCS2 cases pass at O0/O2 across rain below/equal/above threshold, zero and positive deficit, signed millimetre adjustment and depth clipping. Literal ordinary daystart ordering is Meteo(task2) before Irrigation(task3), before timestep Meteo(task3); the daily meteo assignment and detailed daily sum both supply whole-day gross rain. At equality the strict rain threshold makes no deduction. A daily0.6cm input gives1.3cm irrigation in the tested DCS1 witness; substituting quarter-window0.15cm incorrectly gives1.9cm. This is source-policy qualification, not a managed bootstrap/weather trajectory, detailed meteorology profile or DLL/MultiSWAP timing claim. Raw output, source hashes, runner and exact dependency postimages are retained in `integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json` and its three-member evidence archive.
 
 Next central RT/HY and MC-CROP01 decision: accept or return the existing preparation/dispatch/publication and joint continuation proposal against admitted PR1207 and any later live crop day-end successor. Then reuse existing irrigation owners through the actual bootstrap dispatcher, first for the root-free sensor cluster. Rooted criteria additionally require evolving-root/material thresholds, historical weekly progression and bottom7 matrix-salt/profile qualification. All16 dispositions remain unchanged:5 admitted,11 active. Production, workflows, existing runners and the independently owned master ledger are unchanged; no new fullcap admission or shared-interface acceptance is asserted.
+
+## MC-CROP01 actual current-weather day-end production admission (2026-10-11)
+
+PR1209 is admitted at merge `97f2d96e3cbe1cf34efba703a46e5ada0ea090a6`, exact
+tree `4404f5f7daf30a2d527959445571b73dbdb49259`, source
+`b52c70dc50742fdbf5b03f71ec68709b191d0ec7`. The existing bootstrap's explicit
+`file_weather_dayend` profile completes current-day growth with its own
+authentic retained weather record and actual accepted soil/root extraction,
+through unchanged positive-interval F-WOF38/F-KT. A next actual morning
+opens weather/hydrology without repeating growth; incomplete completion
+blocks replacement. No future weather, hydrological replay or second owner.
+
+Seven authentic days/448 accepted hydro intervals complete five active crop
+growth days including the final real record. Full crop/soil/heat/Richards
+vectors, root extraction, retry/rollback, exactly-once and partial/pending/
+completed in-process joint restart pass O0/O2. Admitted default morning
+vectors and final hydrology/uptake remain byte-identical. Focused/owner/PPA/
+cross-owner gates, all24 fresh highest frost configurations/144 immutable
+fine comparisons, full moving F-CI and PPA preservation have actual exit0.
+Both full controllers used clean frozen head
+`9825deeef3c6c51dc28702e92291dcbdf7f439cf`; all archive member hashes and
+compiled/execution dependency blobs verify on canonical. Strict MkDocs,
+docs source and whitespace pass. No new Actions were dispatched.
+
+Owning recovery: `integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json`.
+All six stages are complete for this bounded block, not full MC-CROP01.
+Historical growth3 is integrated; harvest4, integral/output-before-reset,
+calendar/fallow/new-season, broader weather/root/CO2 profiles, legacy CLI
+and external disk restart remain open. The existing inactive-owner
+no-biomass invariant and positive interval contract remain mandatory.
+The next coherent block must use existing crop/root/calendar/receipt owners
+and qualify two crop periods with physical fallow, output/end-status before
+reset, positive/zero/positive extraction, rejected transitions and restart
+at every boundary. Exact authenticated source order and remaining interfaces
+are persisted in the owning record. Master coverage stays ACTIVE_MIGRATION;
+count/fullcap promotion is zero. Concurrent drainage/irrigation authorities
+and their production implementations are preserved.

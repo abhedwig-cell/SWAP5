@@ -108,8 +108,8 @@ and a legacy CLI front end remain separate open requirements.
 
 ## MC-CROP01 current-day growth completion successor
 
-**Implemented, persisted, O0/O2 tested, qualified and preserved;
-canonical admission pending (2026-10-11).** The owning receipt is
+**Implemented, persisted, O0/O2 tested, qualified, preserved and canonically
+admitted by PR1209 (2026-10-11).** The owning receipt is
 `integration/audits/MC_CROP01_DAYEND_PRODUCTION_STATUS.json`, under the
 [current-window contract](../science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md).
 The existing bootstrap's `file_weather_dayend` opt-in and
@@ -132,6 +132,9 @@ tree `b52c70dc50742fdbf5b03f71ec68709b191d0ec7`. Complete highest frost
 qualification covers24 fresh configurations and144 fine comparisons,
 byte-identical to the original authority. Raw owner, frost and full-controller
 archives and exact execution postimages are pinned by the owning receipt.
+Canonical merge `97f2d96e3cbe1cf34efba703a46e5ada0ea090a6` has exact tree
+`4404f5f7daf30a2d527959445571b73dbdb49259`; source, execution dependencies
+and all archived members verify against the qualified postimage.
 
 This is growth completion, not the complete historical day-end chain.
 Harvest, output-before-reset, physical rotation/fallow/new-season authority,

@@ -1,8 +1,10 @@
 # MC-CROP01 current-window day-end production contract
 
-Status: implemented, qualified and preserved; admission pending, 2026-10-11. Baseline
+Status: qualified, preserved and admitted by PR1209 at merge
+`97f2d96e3cbe1cf34efba703a46e5ada0ea090a6`, 2026-10-11. Baseline
 canonical `1e689fd2c31bac468df01540b314ea128be4554a`; PR1207 remains the
-admitted morning-delivery profile until successor admission.
+admitted default morning-delivery profile; the explicit day-end successor
+does not alter that default trajectory.
 
 Authenticated B1.11 `SWAP/swap.f90`, SHA256
 `39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a`,
