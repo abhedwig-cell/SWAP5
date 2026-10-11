@@ -1,0 +1,79 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "QUALIFIED_ACCEPTED_STATE_BINDING",
+  "baseline": "d8414c1ba11bee9f061622fd2495f631a57d2383",
+  "reconciliation": "The inherited MC-SOL01 prerequisite description is too broad: PR1015 already admits nodewise dissolved mass and same-state CML. SALTEXCESS needs an irrigation read-only binding and forwarding of admitted matrix salt temporal policy, not a new salt process.",
+  "authority": [
+    "integration/control/PPA_WU05E_REGIE_ADMISSION_20261005.json",
+    "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_solute_mobile_salt_state.f90"
+  ],
+  "allowed_surface": "New irrigation-owned accepted-state adapter and production interval bindings; existing common depth/salt/event policy reused. Forward existing base_salt_temporal_policy to serialized physical dispatcher.",
+  "held_fixed": [
+    "solute mass/state layout and transport",
+    "constitutive/solver/mass/temporal thresholds",
+    "crop/root/drainage state ownership",
+    "existing scalar and salt-disabled route authority"
+  ],
+  "semantics": "Snapshot the same committed physical state used for trigger selection; derive matrix CML=mass/(theta*dz), with validated layout/units/node/revision. Never accept independent caller concentration as same-state authority. In-flight event retains original selected depth/rate/end and never reselects salt. Trial salt and water use the existing common cloned physical state and restart bundle.",
+  "scope": "Actual matrix mobile-salt bottom2 physical sensor12/root24 cases. PR1015 bottom7 transport remains separately admitted; this successor does not claim an independently tested irrigation bottom7 trajectory.",
+  "invariants": [
+    "One water owner, existing separate salt ledger",
+    "Read-only derived concentration",
+    "Atomic event+physical publication",
+    "Retry and restart preserve authoritative mass",
+    "Physical and numerical configuration separated"
+  ],
+  "required_gates": [
+    "Actual solute-enabled production event O0/O2",
+    "Independent water/salt closure, dilution and depth-limit/salt/TASK4 order",
+    "Missing/wrong-layout/stale state rejection without publication",
+    "Half-event physical/event restart with fresh backend",
+    "Existing exact-head owner and F-CI preservation"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "fullcap_promotions": 0,
+  "exact_guard_dependencies": {
+    "src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90": "a9ba5313efc564fd26d3951457aa40f1d92cb214",
+    "tests/f-app07/run_mc_irr01_accepted_salt_restart.sh": "74128e215430d1b97893d63821523d65671a623b",
+    "tests/f-app07/test_mc_irr01_accepted_salt_restart.f90": "7dabc5b191e8def3fcfcd78e74fbfe359ccb80a7",
+    "tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh": "742f9ecaaf90fbf14e09c15a03e7de61d9b04a35",
+    "tests/f-app07/test_mc_irr01_accepted_salt_root_restart.f90": "2e28ef5ac19d18dd5cc474609e28032474326ddd"
+  },
+  "next_action": "Safe bounded canonical admission; complete application bootstrap overlap after crop1197 shared admission. No whole-capability promotion.",
+  "qualification": {
+    "persisted_full_F_CI_head": "3b9223720e4fea58ba4256c10be2faaf686011c8",
+    "full_local_F_CI": "PASS lineage-aware gate",
+    "sensor": "PASS O0/O2 twelve cases; output 2e6728661b5e2441b9dd2948327748b54574fc4492296efc3aae9847815714c2",
+    "root": "PASS O0/O2 twenty-four cases; output 695d97f34e374dd08e8f31725310034425ec19f7eb72e51693c96df19fc36454",
+    "negative_guards": "PASS O0/O2 missing salt, wrong template, geometry/macro layout, stale time/invalid node; output ffbe5fca137cf7b5cc87236a6f2f764bd7eff711c30e94414b522f177cb824ba",
+    "negative_fixture_correction": "First guard fixture compared two equally salt-disabled snapshots as unequal. Allocation-presence comparison corrected; no production change. Failed and corrected logs retained.",
+    "archive": "integration/audits/evidence/MC_IRR01_ACCEPTED_SALT_20261011.tar.gz.b64",
+    "archive_sha256": "2b20f4b2bd2120ded570a6872ba8b58cbe16fdab9a1a064eea0e3771808bc35a",
+    "log_sha256": {
+      "irr-accepted-binding-exact-fci.log": "2512314cf456437f747881416b6999456182d5426d3919ccfc4342c6220825c7",
+      "irr-accepted-salt-restart.log": "268d2c14c6f14f3466b46f60b572ae8669de35a5b3a725a80c0251e24094e668",
+      "irr-accepted-salt-root-restart.log": "557a7fc1485a2023faeca6bee7dd3067a3c281599d167fb553576ca56909e071",
+      "irr-accepted-salt-negative-v2.log": "b3f320077e8412673973a8635ca77f3d5930b50f1af5eefbdbd8106dafca64b8",
+      "irr-accepted-salt-negative.log": "f4c82f2d0ae20d18bbd24935fe2e107ab93b21ab7aed5462537bc5e90d9eb2d7",
+      "irr-accepted-salt-docs.log": "cd9c430d30122cbaa69b69b55247958ac52aa0343aaf0a8872e5d55850515e5f"
+    },
+    "docs": "PASS source checks and strict MkDocs build",
+    "inheritance": "All existing tested source, irrigation tests/runner and F-CI script/workflow blobs identical to 3b922372. Add two separately O0/O2 qualified guard files. Canonical delta only unrelated publication/control records retained; no shared scientific source drift.",
+    "tested_subtrees": {
+      "src": "157501a4435ccc83caf2f4898598b5ae0e34adde",
+      "tests": "287b5e63461138212b3d51958ce8a22c8a25ef4f",
+      "tools": "6192aa5cf46c7e6301f5f1891e9c10fe4b68f230",
+      ".github": "d6fb9a3d1e0d96b4bd546674ce962e5718db7855"
+    },
+    "added_guard_blobs": {
+      "tests/f-app07/test_mc_irr01_accepted_salt_guards.f90": "d4b8f7c342c2750866308eedfbe1ca34f638d562",
+      "tests/f-app07/run_mc_irr01_accepted_salt_guards.sh": "2573a1450e079645e70f4588b9e17764db1513f1"
+    }
+  }
+}
