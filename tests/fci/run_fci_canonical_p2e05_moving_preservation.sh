@@ -310,7 +310,7 @@ verify_mc_irr01_owner_successor() {
     [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
     [src/process/mod_irrigation_process.f90]=c14ce960691c9a8835253b5aa576fc3eef9c11ec
     [src/process/mod_irrigation_root_zone_summary.f90]=81fb9e35d1fe0026bf5719175a3af8f3d080592e
-    [src/process/mod_scheduled_irrigation_management_policy.f90]=09bc5a840bad171ffc7d478ea68dda6047fd4535
+    [src/process/mod_scheduled_irrigation_management_policy.f90]=2f135457852c7256d25c19afc9eba3dd06b52f4b
     [src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90]=88a3f5c3f78624ec2da91252de932c4c36ac7ea0
     [src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90]=e952aa327319bf23a7336d0740670e8f802cd147
     [src/runtime/mod_fmr_irrigation_management_restart.f90]=2fc1090a9871d3373840c88f2ef13093f733c11f
@@ -320,6 +320,7 @@ verify_mc_irr01_owner_successor() {
     [src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90]=f604dfbcd28258af4e6339f15138b158e946ed45
   )
   irrigation_owner_blobs[src/runtime/mod_fmr_management_irrigation_forcing_binding.f90]=649006fb63395fa2980bae8e6853eedc6f122bed
+  irrigation_owner_blobs[src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90]=649143a63dd29df8e1ec5b15ac75e8244d05c87f
   for candidate_path in "${!irrigation_owner_blobs[@]}"; do
     test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
       fail "unqualified MC-IRR01 owner blob: $candidate_path"
@@ -330,6 +331,7 @@ verify_mc_irr01_owner_successor() {
   bash tests/mc-irr01/run_mc_irr01_literal_management.sh || fail 'MC-IRR01 exact B1.11 management oracle'
   bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'
   bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'
+  bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh || fail 'MC-IRR01 sensor depth physical/restart composition'
   echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
   irrigation_owner_verified=1
 }
@@ -438,6 +440,7 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_management_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
