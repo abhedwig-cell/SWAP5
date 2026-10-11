@@ -228,17 +228,15 @@
         389,
         181,
         199,
-        218,
-        219,
         587
       ],
       "current_blockers": [
         "PR #486 holds submission on CSR-B1-STORAGE-PARTITION and CSR-B2-DRAINAGE-OWNERSHIP.",
         "PUB-GC release/archive finalization still depends on explicit release/licence/archive metadata.",
         "PUB-P2E03 first calibration matrix and first D2 attempt are immutable negative evidence preserved before closing their completed historical carriers.",
-        "PUB-ME PR stack is research evidence and requires owner-side consolidation rather than central replay."
+        "Remaining PUB-ME181/199 contract/literature stack requires owner consolidation. Current bounded D6 and directional D2 replay blockers are closed; broader programme gaps remain."
       ],
-      "current_reconciliation": "publication_regie_closeout_20261011; #187/#207/#217 completed historical carriers closed and #359 qualified presentation-tooling successor admitted at38129aba14e44b70bb436feee46c10922cb5ea56",
+      "current_reconciliation": "publication_regie_closeout_20261011.d6_g1_current_requalification: bounded D6/current reverse-D2 admitted; original218/219 closed. finalization_frost_regie_closeout_20261011 retains mechanical371 admission and original closure.",
       "next_gate": "Publication owners resolve the exact remaining gates in publication_regie_closeout_20261011; final release/submission holds remain."
     }
   ],
@@ -296,18 +294,6 @@
       "class": "OWNER_CONTROLLED_RESEARCH_STACK",
       "owner": "PUBLICATIONS",
       "action": "OWNER_CONSOLIDATION_REQUIRED"
-    },
-    {
-      "pr": 218,
-      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
-      "owner": "PUBLICATIONS",
-      "action": "OWNER_CONSOLIDATION_REQUIRED"
-    },
-    {
-      "pr": 219,
-      "class": "OWNER_CONTROLLED_RESEARCH_STACK",
-      "owner": "PUBLICATIONS",
-      "action": "OWNER_CONSOLIDATION_REQUIRED"
     }
   ],
   "central_admission_queue": {
@@ -332,9 +318,7 @@
       187,
       199,
       207,
-      217,
-      218,
-      219
+      217
     ],
     "shared_authority_watch": [],
     "blocked_shared_authority": [
@@ -1141,7 +1125,7 @@
   },
   "publication_regie_closeout_20261011": {
     "d6_g1_current_requalification": {
-      "stage": "QUALIFIED_PENDING_SAFE_CANONICAL_ADMISSION",
+      "stage": "BOUNDED_EVIDENCE_CANONICALLY_ADMITTED_BOTH_ORIGINAL_CARRIERS_CLOSED",
       "canonical_base": "31b0db16ce2f9463e316495e92e3b02faf8d4d8d",
       "owner": "PUB-ME D6/F-CI98 and physical D2 replication/Reference qualification",
       "original_heads": {
@@ -1172,7 +1156,7 @@
         "Current dependency audit and mandatory F-CI preservation inheritance/requalification",
         "Canonical tree and evidence archive verification before original carrier closure"
       ],
-      "remaining": "Both bounded science gates PASS; safe admission, exact canonical verification and two original carrier closures remain. Distinct whole-model/novelty/programme gaps stay owner-controlled.",
+      "remaining": "Distinct #217 G1 P1-Q06 E2E/G2/G3/G4/G5 and publication contract/literature/editorial/release gates remain; no fullcap or global-count promotion.",
       "qualified_executable_head": "240961d6e6debd1e71230ffa5e5602268bc0651a",
       "qualification": {
         "d6": "PASS O0/O2 exact9563ed157258f1993a826a9ef498498cafa45254266818d877db73bb28c88643 EARLIER_DETECTION",
@@ -1205,6 +1189,66 @@
       "original_failed_F_CI": [
         35290039531,
         35290392946
+      ],
+      "canonical_admission": "e2743c8b5e353c93453e1134e9f4d7884cf79dab",
+      "canonical_tree": "100c12b40ac69723cd40e37328e943c196747403",
+      "canonical_verified": "Fetched full tree matches local; all159 compiled dependency entries and three build runner/tool blobs match qualified executable head; production/reference/incumbent science unchanged.",
+      "closed_prs": [
+        218,
+        219
+      ],
+      "closure_comments": {
+        "218": 6108818950,
+        "219": 6108819227
+      },
+      "closure_rule": "Both CLOSED/UNMERGED; original heads unchanged and original branches retained; all11 unique original postimages verified before closure.",
+      "qualification_postimage": "Documentation-only dated annotation and omission of two previously noncanonical broad-trigger workflows after execution; original scientific fixture and all compiled/build dependencies unchanged.",
+      "open_pr_census": {
+        "count": 24,
+        "prs": [
+          1197,
+          1119,
+          1117,
+          1103,
+          1098,
+          1072,
+          1009,
+          1008,
+          987,
+          956,
+          953,
+          740,
+          700,
+          587,
+          581,
+          559,
+          540,
+          528,
+          486,
+          389,
+          365,
+          199,
+          181,
+          58
+        ],
+        "scope": "23 owner candidates plus canonical integration PR58; active implementation untouched."
+      },
+      "validation": "PASS both unchanged-fixture O0/O2 gates, full archive/original blobs, canonical tree/dependencies, JSON/whitespace/docs source/strict MkDocs; zero new Actions/dispatches/recovery refs.",
+      "closed_current_replay_blockers": [
+        {
+          "prs": [
+            218
+          ],
+          "owner": "PUB-ME D6 / F-CI98 preservation",
+          "blocker": "Four of five declared dependency blobs drift at current canonical. Original D6 test/result unchanged but old focused O0/O2 success35290039627 cannot qualify changed transaction/direction/sensitivity/publication semantics. Original F-CI35290039531 failed; owner must reconcile and replay current dependency surface with mandatory preservation."
+        },
+        {
+          "prs": [
+            219
+          ],
+          "owner": "PUB-ME physical replication / Reference execution",
+          "blocker": "Original O0/O2 replication35290392967 success; F-CI35290392946 failure. Real Reference backend/HeadCalc evolved since execution base. Requalify current numerical dependency scope before admission. #219 G1 means D2 directional replication; it does not close #217 G1 P1-Q06 file-driven E2E."
+        }
       ]
     },
     "canonical_base": "a787f6340328a06885a145f6d88a52d921a458e7",
@@ -1341,20 +1385,6 @@
       },
       {
         "prs": [
-          218
-        ],
-        "owner": "PUB-ME D6 / F-CI98 preservation",
-        "blocker": "Four of five declared dependency blobs drift at current canonical. Original D6 test/result unchanged but old focused O0/O2 success35290039627 cannot qualify changed transaction/direction/sensitivity/publication semantics. Original F-CI35290039531 failed; owner must reconcile and replay current dependency surface with mandatory preservation."
-      },
-      {
-        "prs": [
-          219
-        ],
-        "owner": "PUB-ME physical replication / Reference execution",
-        "blocker": "Original O0/O2 replication35290392967 success; F-CI35290392946 failure. Real Reference backend/HeadCalc evolved since execution base. Requalify current numerical dependency scope before admission. #219 G1 means D2 directional replication; it does not close #217 G1 P1-Q06 file-driven E2E."
-      },
-      {
-        "prs": [
           365
         ],
         "owner": "DIF-P0 difficulty research",
@@ -1387,10 +1417,7 @@
     "open_original_heads": {
       "181": "12ab02b7c9543c32b6a9690b90ca5f9094b3bcfc",
       "199": "25e04dc60e311c699330d6f81d03da82ca9fa0dc",
-      "218": "8c96b3360593978b99b31430cef9d1c4c31de061",
-      "219": "fa9cc6c456cd7c4dc65709818841fc716de93c03",
       "365": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
-      "371": "f2530cfd74a67ae29b45b4482b2c49e98d061ea8",
       "389": "92bcecf3302ab495afe8bd2fcfbd38b86135193a",
       "587": "ff93b7829b2f0bf4de4987cd249bdfc94fe05cb3"
     },
@@ -1406,7 +1433,7 @@
       "new_canonical_actions": 0,
       "coverage": "Bounded #1201 irrigation annotation and previous four thermal dispositions handed to active master1072; no global count/capability promotion."
     },
-    "next_action": "Four carriers are closed and presentation-tooling successor admitted. Publication owners resolve the exact remaining seven blocker groups; central shared admission authority retains #486 holds. Preserve active specialized implementation and master1072 ownership.",
+    "next_action": "Six original publication carriers closed, export/finalizer tooling and current D6/reverse-D2 bounded evidence admitted. Existing owners retain contract/literature, independent Richards comparator, scientific release/governance and editorial/theory gaps; do not promote production fullcaps.",
     "canonical_admission_base": "73796d85ba8de962673390a40d1be54e9c152d53",
     "concurrent_admission_reconciled": {
       "pr": 1201,
