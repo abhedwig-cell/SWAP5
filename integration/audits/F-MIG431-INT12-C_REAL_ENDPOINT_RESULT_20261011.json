@@ -1,0 +1,77 @@
+{
+  "workstream": "F-CI diagnostic, PPA-WU04-C / MC-CROP01 ownership retained",
+  "work_unit": "INT12-C real physical receiving-seam witness",
+  "status": "BLOCKED_REAL_ENDPOINT_TEMPORAL_RETRY_EXHAUSTION",
+  "baseline": "a8436806f9d757e8b08adbd90312717bb68828e6",
+  "reconciled_canonical": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
+  "candidate_pr": 1009,
+  "candidate_head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+  "candidate_source_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
+  "checkpoint": "5ee3a5a7dc5ef4a37786ef54e12559e81c4f2379",
+  "checkpoint_tree": "6a2c0f5ab764847aa84837a40a9ee7ca8095d765",
+  "initial_checkpoint": "9380389183ffdd041e64050e9b8a3867bd6687ea",
+  "scope": "Actual admitted PMdirect SWINTER1 daily source, isolated fixed-flux net-rain receiver, no root uptake, four requested unequal endpoint spans ending at0.01day. Only first span is reached; this is not full F-APP04 dynamic-top application.",
+  "test_status": "O0 and O2 compile and execute; positive committed-endpoint gate FAIL at requested day0.002.",
+  "diagnostics_each_optimization": {
+    "completed": false,
+    "committed": false,
+    "kernel_status": 2,
+    "admission_status": "ADMITTED",
+    "attempts": 9,
+    "retries": 8,
+    "temporal_rejections": 9,
+    "mass_rejections": 0,
+    "solver_rejections": 0,
+    "headcalc_calls": 27,
+    "solver_status": 1,
+    "accepted_substeps": 0
+  },
+  "passing_checks": [
+    "All original FMR44R equilibrium, positive-qbot/certificate and unowned-mode physical assertions unchanged and passing at O0/O2",
+    "Actual mode4 preflight result cannot advance interception",
+    "Failed actual mode2 physical result cannot advance interception",
+    "Physical committed time and revision unchanged after both failures",
+    "O0/O2 semantic marker lines exactly identical"
+  ],
+  "failed_or_not_reached": [
+    "real committed endpoint acceptance",
+    "accepted unequal-span source allocation",
+    "midwindow companion progress restore",
+    "net-rain plus interception accounting after physical acceptance",
+    "full application/crop/root and joint physical restart"
+  ],
+  "qualification_status": "Qualified bounded negative diagnostic only; no positive endpoint qualification or candidate admission.",
+  "interpretation": "Admitted physical profile is attempted and HeadCalc executes, but external-full-half temporal rejection exhausts its declared retry budget. This test does not establish a production defect, a cause inside the temporal estimator, or impossibility of other valid configurations. Adapter itself is not proven defective.",
+  "boundaries": {
+    "temporal_tolerance": 1e-06,
+    "mass_tolerance_cm": 1e-12,
+    "max_retries": 8,
+    "solver_thresholds": "unchanged original FMR44R fixture",
+    "raw_stdout_identity": "Not claimed: error backtrace addresses differ; semantic marker lines identical."
+  },
+  "archive": {
+    "path": "integration/audits/evidence/F-MIG431-INT12-C_REAL_ENDPOINT_20261011.tar.gz.b64",
+    "decoded_sha256": "d937a0700c10fab8bbb76f4e12d7396aa957b877f7d8200cf8d3d8d7cbae5712",
+    "members": 14,
+    "member_sha256": {
+      "diagnostic/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+      "diagnostic/o0.txt": "60a8a5a3560fc73136ecbe722c80595f2bac3141231391e9c47b268315f09971",
+      "diagnostic/results.json": "32102aeeab7b3ded144c02328af0b6ae81d75d716163b0de6a010d1bcd37df23",
+      "diagnostic/driver.f90": "abc2c24c2883e1715959e62121325018281af42f3bc949ce3334d0a0349b006f",
+      "diagnostic/o2.txt": "980624912ff35303a889ce44ddd7677d1b5236f474ab9fd4f952ddc6ebcdd275",
+      "diagnostic/compile_sources.json": "ef070754e3ef021bf06c703c23d3bf3e59db79d510ee8eab5fa333cfbc266c87",
+      "initial/driver.f90": "49d53ccc978980bba5f366373c192f92d5271bebbf154cd50ebbe6d4698c29c0",
+      "initial/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+      "initial/compile_sources.json": "ef070754e3ef021bf06c703c23d3bf3e59db79d510ee8eab5fa333cfbc266c87",
+      "initial/o0.txt": "210ca87984a61e1e25a7ac68553b26f8b696246608d7b882fa0d6cfbeb5fe04f",
+      "initial/compile-run.log": "f422c7d312b629f7567745b28fd6c43a0b96aa53ebb1d5fbdf795c071fe7cdf1",
+      "diagnostic/compile-run.log": "6e96fcde2861df6a647bd13ece1e153ba65aabedd7b84893a9d6f96e00f6474f",
+      "preregistered.json": "099792af94d6dc9081f5b8035aa894b16802426f22c3fb4aadfc623a85d66c43"
+    }
+  },
+  "compile_dependency_count": 163,
+  "live_reconciliation": "PR1209 crop day-end changes merged without alteration; no intersection with all163 compiled dependency postimages. Owner implementation/tests/tools/contracts/status/evidence retained byte-exact against be5a1476; PROJECT-CONTROL and registry receive only this diagnostic addition.",
+  "preservation": "No production/reference/workflow/assets/testbank or incumbent test changes by this work unit. New isolated qualification files only. No new Actions or fullcap admission.",
+  "next_safe_step": "F-KT/RT with PPA-WU04-C and MC-CROP01 qualifies a physical temporal-budget/subdivision configuration or diagnoses this failed strict fixture, preserving mass/retry/nonpublication semantics. Then complete actual F-APP03/F-APP04/crop application, joint continuation and all ten frozen admission gates against admitted PR1209; no relaxed guard or simulated result substitution.",
+  "reproduction": "python3 tests/fpm/run_int12c_real_endpoint.py --evidence-dir /tmp/new-unique-int12c-path; expected positive gate failure, both optimization logs retained."
+}
