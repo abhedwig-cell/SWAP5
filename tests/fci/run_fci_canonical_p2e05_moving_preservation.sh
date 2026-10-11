@@ -433,7 +433,7 @@ check_b19_micro_root_recomposition() {
   fi
   if (( nlglob14z47_changed )); then
     test "$(git rev-parse HEAD:src/runtime/mod_moving_interface_manager.f90)" = \
-      "fc3805e1f106b5de1ee3a492920d0c21eba7bd1" ||
+      "fc3805e1f106b5de1ee3a492920d0c21eba7bd1d" ||
       fail 'unqualified F-PE-NLGLOB14Z47 moving-interface manager blob'
     bash tests/fpe/run_fpe_nlglob14z47.sh ||
       fail 'F-PE-NLGLOB14Z47 exact eligibility successor O0/O2 preservation failed'

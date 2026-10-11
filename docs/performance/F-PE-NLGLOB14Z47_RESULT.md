@@ -109,7 +109,7 @@ between the original admission base and this current canonical base:
 
 The qualified production postimage remains:
 
-`fc3805e1f106b5de1ee3a492920d0c21eba7bd1`
+`fc3805e1f106b5de1ee3a492920d0c21eba7bd1d`
 
 The focused owner runner now compiles and executes the eligibility matrix at both
 `-O0` and `-O2` and requires byte-identical output. The moving F-CI preservation
