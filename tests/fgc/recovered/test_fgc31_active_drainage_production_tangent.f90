@@ -155,7 +155,7 @@ contains
     logical :: ok
     integer :: forcing_status
     integer(int64) :: revision, lineage
-    real(real64) :: origin_time
+    real(real64) :: origin_time, after_time
     head_parameters=parameters
     call initialize_forcing(base_forcing,qbot0)
     call materializer%initialize(base_forcing)
@@ -170,17 +170,32 @@ contains
     call require(ok,'head negative checkpoint captured')
     call origin%snapshot(before,ok)
     call require(ok,'head negative before snapshot')
-    revision=origin%current_revision(); lineage=origin%current_lineage_id(); origin_time=origin%current_time()
+    revision=origin%current_revision(); lineage=origin%current_lineage_id()
+    call origin%current_time(origin_time,ok)
+    call require(ok,'head negative origin time bound')
     call initialize_config(config,.false.)
     call backend%initialize(top)
-    call backend%run_trial(column,template,head_parameters,origin,head_forcing,config,0.0_real64,duration, &
-         checkpoint,result,candidate,diagnostics)
+    select type(f=>head_forcing)
+    type is(fmr_b110_physical_forcing_t)
+      call require(size(f%drainage_response_controls)==2,'head forcing retains both drainage controls')
+      call require(bit_identical_vector(f%root_extraction_sink,base_forcing%root_extraction_sink), &
+           'head forcing retains root forcing')
+      call require(bit_identical_vector(f%subsurface_irrigation_source,base_forcing%subsurface_irrigation_source), &
+           'head forcing retains irrigation forcing')
+      call require(bit_identical_scalar(f%bottom_flux,base_forcing%bottom_flux),'head forcing retains predictor flux')
+      call backend%run_trial(column,template,head_parameters,origin,f,config,0.0_real64,duration, &
+           checkpoint,result,candidate,diagnostics)
+    class default
+      call require(.false.,'head forcing physical type')
+    end select
     call require(result%status==KERNEL_STATUS_NOT_ADMITTED .and. .not.result%completed,'smooth drainage mode5 rejected')
     call require(.not.candidate%ready(),'rejected mode5 has no candidate')
     call require(diagnostics%transaction_calls==0 .and. diagnostics%accepted_substeps==0, &
          'mode5 rejection before physical transaction')
+    call origin%current_time(after_time,ok)
+    call require(ok,'head negative after time bound')
     call require(origin%current_revision()==revision .and. origin%current_lineage_id()==lineage .and. &
-         bit_identical_scalar(origin%current_time(),origin_time),'rejected head origin provenance preserved')
+         bit_identical_scalar(after_time,origin_time),'rejected head origin provenance preserved')
     call origin%snapshot(after,ok)
     call require(ok,'head negative after snapshot')
     select type(b=>before)
