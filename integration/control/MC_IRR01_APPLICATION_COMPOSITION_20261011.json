@@ -1,12 +1,12 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "PROPOSED_SHARED_APPLICATION_COMPOSITION",
+  "phase": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
   "canonical_base": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "owner_dependency": {
     "work_unit": "MC-CROP01",
     "pull_request": 1204,
     "observed_head": "e906bcee1adf4d1f6a1717ce12a5c87fdd8e1b6c",
-    "state": "CANONICALLY_ADMITTED_BOUNDED_WEATHER_CROP_APPLICATION_API",
+    "state": "PR1204_BOUNDED_ROOT_FREE_WEATHER_API_ADMITTED_FULL_ROOTED_MANAGEMENT_PROFILE_NOT_ADMITTED",
     "overlap": [
       "src/runtime/mod_fmr_production_application_bootstrap.f90",
       "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
@@ -14,7 +14,7 @@
     ],
     "canonical_merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d"
   },
-  "finding": "The actual serialized physical dispatcher has qualified irrigation interval entry points. The ordinary production bootstrap owns private committed columns and has no public scheduled-management entry. A separate irrigation adapter cannot read these private accepted states or consume the actual crop/weather daystart without an explicit shared application hook.",
+  "finding": "PR1204 run_weather_interval is explicitly root-free, bottom7, pure-flux and internally constructs forcing. It rejects root_extraction_active and positive transpiration. It has no management input. Immediate initial seed/root view is not evolving grown-root uptake authority. Independent irrigation bindings use real committed physical/salt state but cannot establish this shared application profile.",
   "proposed_contract": "Add a bounded bootstrap entry preparing irrigation forcing from each internal committed state and immutable same-window owner weather/crop inputs. Reuse irrigation preparation, accepted CML and availability receipts; execute via existing run_standalone_with_forcing, publish management only for completed committed physical results. Retain existing per-column/multiswap transaction semantics. Joint continuation includes weather/crop daystart and irrigation event/weekly/allocation state.",
   "held_fixed": [
     "one accepted hydraulic/salt/crop state owner",
@@ -23,7 +23,7 @@
     "mass and temporal thresholds",
     "existing ordinary bottom and optional-state profile admission checks"
   ],
-  "required_owner_action": "Compatible crop bootstrap/dispatcher postimages admitted in PR1204. Centrally qualify the explicit irrigation management hook and preserved joint restart against that source. No irrigation production implementation is admitted by this receipt.",
+  "required_owner_action": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
   "required_proofs": [
     "same authenticated rain/TAV/ET/crop weather input",
     "accepted root extent and hydraulic material-consistent FC/stress/wilting values",
@@ -42,5 +42,12 @@
     "run_weather_interval",
     "copy_committed_for_crop"
   ],
-  "owner_reuse_rule": "Rediscover these exact owner interfaces after admission and reuse them. The weather interval currently constructs effective forcing internally and exposes no irrigation-management input."
+  "owner_reuse_rule": "Rediscover these exact owner interfaces after admission and reuse them. The weather interval currently constructs effective forcing internally and exposes no irrigation-management input.",
+  "last_reconciled_head": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+  "independent_irrigation_authority": {
+    "accepted_salt_pr": 1203,
+    "persistent_allocation_pr": 1205,
+    "allocation_merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "allocation_record": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+  }
 }

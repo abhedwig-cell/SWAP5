@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "CANONICALLY_ADMITTED_BOUNDED_FULL_COVERAGE_OPEN",
+  "phase": "BOUNDED_RUNTIME_CLOSED_SHARED_APPLICATION_BLOCKED",
   "baseline": "4fab8a28a5a834844b8f9ffb105ff7185a95018c",
   "source_irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "master_head": "e4c5a9583494c31052178f841d62c0388f93e525",
@@ -9,78 +9,78 @@
       "capability_id": "SW431-IRR-TCS2",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Accepted evolving rooted extent plus material FC/stress threshold. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-TCS3",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Accepted evolving rooted extent plus material FC/wilting threshold. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-TCS4",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Accepted rooted deficit and strict DWATAB comparison in weather/daystart execution. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-TCS6",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition must bind dayfix/daystart to accepted crop lifecycle and retain weekly counter across repeated days/restart; active crop1197 bootstrap overlap.",
+      "next_gate": "Real dayfix/week progression across repeated weather days and joint continuation. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-TCS7",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Accepted pressure sensor through same authentic weather management execution. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-TCS8",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Accepted water-content sensor through same authentic weather management execution. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-DCS1",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Same-window actual rain subtraction and material-consistent rooted field-capacity refill. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
@@ -102,12 +102,12 @@
       "capability_id": "SW431-IRR-SSDI",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Actual1/3node spatial input combined independently with authentic surface rain/ET. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-FREQ",
@@ -121,23 +121,23 @@
       "capability_id": "SW431-IRR-LIMIT",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Depth caps with accepted root/material bounds through actual shared management entry. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Shared application composition with authentic rain/evaporation and evolving accepted crop/root daystart; active crop1197 bootstrap overlap. Irrigation policy, realistic events/restart and accepted matrix salt already admitted.",
+      "next_gate": "Reuse admitted PR1015/1203 accepted matrix CML and common root/sensor modifier in authentic application profile. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     },
     {
       "capability_id": "SW431-IRR-RATE-DAILY",
@@ -159,12 +159,12 @@
       "capability_id": "SW431-IRR-AVAIL",
       "master_disposition": "ACTIVE_MIGRATION",
       "admission": false,
-      "next_gate": "Independent external receipt and fresh-event runtime passes O0/O2, full F-CI still running on persisted 9020831d; safely admit before whole application composition.",
+      "next_gate": "Reuse admitted frozen external provider receipt; integrate joint weather/application continuation and fresh next-event selection. Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
       "current_disposition": "ACTIVE_MIGRATION",
       "implementation_class": "EXISTING_POLICY_WITH_BOUNDED_RUNTIME_OR_SOURCE_CORRECTION",
       "promotion_authorized": false,
       "stable_storage_onset_authority": "PR1200 / ea4759a0; 1-cm root onset qualified; full lifecycle authority pending.",
-      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203: literal source semantics, realistic source onset/off, 1/3-node allocation, atomic physical/event restart and accepted matrix salt concentration admitted."
+      "canonical_runtime_authority": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted."
     }
   ],
   "allowed_changes": [
@@ -196,7 +196,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "next_action": "Finish external allocation admission, then implement/qualify the shared application contract after active crop bootstrap overlap is resolved.",
+  "next_action": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
   "reconciled_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
   "candidate_pr": 1198,
   "functional_coverage_closed": false,

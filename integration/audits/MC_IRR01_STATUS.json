@@ -3,7 +3,7 @@
   "work_unit": "MC-IRR01",
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
-  "last_reconciled_head": "cadcc63d3296e12e6a0634ee7095693454b60005",
+  "last_reconciled_head": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
   "last_reconciled_upstream": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "implemented": true,
   "persisted": true,
@@ -64,9 +64,11 @@
     23,
     29
   ],
-  "next_action": "Complete independent external availability receipt/repeated-event preservation and admission. Then central shared application composition with active crop1197 owner; no missing salt process remains.",
-  "recovery_point": "integration/f-ci-canonical@cadcc63d3296e12e6a0634ee7095693454b60005",
-  "blockers": [],
+  "next_action": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+  "recovery_point": "integration/f-ci-canonical@cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+  "blockers": [
+    "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner."
+  ],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
   "qualification": {
     "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
@@ -248,7 +250,7 @@
     "full_functional_coverage_closed": false,
     "retained_admitted_capabilities": 5,
     "retained_active_migration_capabilities": 11,
-    "shared_admission_dependency": "Realistic source onset/end and restart now admitted in PR1200/1201. Remaining authority: accepted salt irrigation binding, evolving crop/root and authentic weather composition, persistent external allocation binding.",
+    "shared_admission_dependency": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
     "new_fullcap_promotions": 0,
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
@@ -321,5 +323,25 @@
     "F_CI": "PASS full local lineage-aware preservation",
     "fullcap_promotions": 0,
     "evidence": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json"
-  }
+  },
+  "persistent_allocation_admission": {
+    "pull_request": 1205,
+    "admission_head": "075a30421c6ec24e682e01a3d5edb042d4bac61e",
+    "canonical_merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "production_and_test_postimages": "BYTE_VERIFIED",
+    "fullcap_promotions": 0,
+    "qualified": true,
+    "evidence": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+  },
+  "current_fullcap_dispositions": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+  "latest_master_reconciliation": {
+    "owner_pr": 1072,
+    "branch": "work/swap431-master-coverage-20261006",
+    "checkpoint": "8dbed749f062c3fba2547e9e998dc438a18c0cef",
+    "tree": "92989c9c512f325fbba92480e063ccfdaaf1d542",
+    "bounded_integrity": "PASS eleven owned capability rows and queue reasons, obsolete salt-to-sensor dependency and workunit sequencing removed, five admitted IDs moved out of active workunit list with original16 preserved; canonical root/source evidence snapshots byte-identical; all unrelated rows/dispositions/summary counts retained",
+    "global_integrity": "Not renewed: pre-existing stale inheritance baseline before and after bounded update remains with master owner",
+    "fullcap_promotions": 0
+  },
+  "current_claim": "Independent source/runtime/event/accepted-salt/provider allocation closure admitted. Full MC-IRR01 closure blocked on shared rooted/weather application authority; historical narrower/failed statuses above are preserved, not current blockers."
 }

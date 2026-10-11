@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "QUALIFIED_CURRENT_CANONICAL_COMPOSITION",
+  "phase": "CANONICALLY_ADMITTED_BOUNDED_APPLICATION_GATE_OPEN",
   "baseline": "3b9223720e4fea58ba4256c10be2faaf686011c8",
   "capability": "SW431-IRR-AVAIL",
   "source_authority": "B1.11 irrigation.f90 TASK4 lines 633-636: externally supplied f_irr_avail applies postselection; qssdi rate unchanged, positive configured rate scales duration",
@@ -26,7 +26,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "fullcap_promotions": 0,
   "shared_preservation_interface_contract": {
     "canonical_owner": "Central admission with MC-CROP01 exact-source preservation",
@@ -36,7 +36,7 @@
     "before": "Existing crop source guard rejects independent allocation module as unknown additional production mutation.",
     "invariants": "Unknown additional production mutations still fail closed. Crop bootstrap, serialized dispatcher, transaction, weather and lineage owners unchanged."
   },
-  "next_action": "Safely admit bounded qualified allocation cluster; retain eleven full capabilities ACTIVE pending shared application contract.",
+  "next_action": "Shared application/crop/root admission contract; no missing scalar allocation or salt algorithm. Eleven full capabilities remain ACTIVE.",
   "exact_guard_dependencies": {
     "src/runtime/mod_fmr_irrigation_allocation_binding.f90": "ab5ac97c5017da9ba0560e674fb5888e422de5e5",
     "tests/f-app07/run_mc_irr01_allocated_root_restart.sh": "c3d1b0c2da5f3a78132c8a0c38148758f3abd4ca",
@@ -113,5 +113,12 @@
     "failed_fixture_history": "Original sensor clone called root API; original negative receipt incorrectly used scheduled_index1 rather than existing canonical0. Fixed fixtures only; failed and corrected logs preserved.",
     "canonical_owner_reconciliation": "Retained exact admitted PR1204 dispatcher and bootstrap, central PR1202 Task2, all existing thresholds/owner source assertions. New allocation module/fixtures byte-identical to9020831; affected dispatcher exercised by complete current gate. Separate crop census recognition postimage verified on d03e8897: no production or executed main gate/fixture changed from f1cb28a. All219 immutable crop compile/runner blobs match PR1204; exact source guard now PASS. Scope inheritance, not a claim that one invocation ran every script on the final metadata head.",
     "claim_ceiling": "Matrix MOBILE_DISSOLVED bottom2 positive48 SSDI with1/3nodes. Does not establish root-free bottom7 weather hook, evolved crop roots, macro salt, arbitrary surface profile or external disk codec."
+  },
+  "canonical_admission": {
+    "pull_request": 1205,
+    "admission_head": "075a30421c6ec24e682e01a3d5edb042d4bac61e",
+    "canonical_merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "production_and_test_postimages": "BYTE_VERIFIED",
+    "fullcap_promotions": 0
   }
 }
