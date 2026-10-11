@@ -541,6 +541,7 @@ contains
       if(s/=WEATHER_DAY_OK) return
     end if
     if(self%weather_record%ready()) then
+      if(.not.self%weather_record%same_source(record)) return
       if(self%weather_record%same_input(record)) then
         ! Exact repeated daystart reuses the same weather revision.
       else

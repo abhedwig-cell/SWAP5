@@ -10,13 +10,14 @@ module mod_swap_daily_weather_file_adapter
   type, public :: swap_daily_weather_record_t
     private
     logical :: valid=.false.
-    character(:), allocatable :: origin, raw_record, station
+    character(:), allocatable :: origin, raw_record, station, source_bytes
     integer :: calendar_day=0
     real(real64) :: tmin=0.0_real64, tmax=0.0_real64, rain=0.0_real64, etref=0.0_real64
   contains
     procedure :: ready => record_ready
     procedure :: values => record_values
     procedure :: same_input => record_same_input
+    procedure :: same_source => record_same_source
   end type
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
@@ -50,8 +51,15 @@ contains
     type(swap_daily_weather_record_t),intent(in)::other
     same=.false.
     if(.not.self%ready().or..not.other%ready()) return
-    same=self%origin==other%origin.and.self%raw_record==other%raw_record.and. &
+    same=self%same_source(other).and.self%raw_record==other%raw_record.and. &
          self%station==other%station.and.self%calendar_day==other%calendar_day
+  end function
+  logical function record_same_source(self,other) result(same)
+    class(swap_daily_weather_record_t),intent(in)::self
+    type(swap_daily_weather_record_t),intent(in)::other
+    same=.false.
+    if(.not.self%ready().or..not.other%ready()) return
+    same=self%origin==other%origin.and.self%source_bytes==other%source_bytes.and.self%station==other%station
   end function
   ! Restricted checked-in daily format: station DD MM YYYY RAD Tmin Tmax
   ! HUM WIND RAIN ETref wet. Wet is retained/validated as input, but this
@@ -64,21 +72,37 @@ contains
     type(swap_daily_weather_record_t)::candidate
     character(4096)::line
     character(64)::station,first_station
-    integer::unit,ios,d,m,y,ordinal,target,previous,close_status,extra_status
+    integer::unit,ios,d,m,y,ordinal,target,previous,close_status,extra_status,nbytes,first,last,newline
     real(real64)::rad,tmin,tmax,hum,wind,rain,etref,wet,extra
     logical::found
     record=swap_daily_weather_record_t();status=SWAP_WEATHER_FILE_INVALID
     target=swap_weather_calendar_day(year,month,day)
     if(target==0.or.len_trim(path)==0) return
     status=SWAP_WEATHER_FILE_IO
-    open(newunit=unit,file=path,status='old',action='read',iostat=ios)
+    open(newunit=unit,file=path,status='old',action='read',access='stream',form='unformatted',iostat=ios)
     if(ios/=0) return
+    inquire(unit=unit,size=nbytes,iostat=ios)
+    if(ios/=0.or.nbytes<=0.or.nbytes>1048576) then
+      close(unit,iostat=close_status)
+      return
+    end if
+    allocate(character(nbytes)::candidate%source_bytes)
+    read(unit,iostat=ios) candidate%source_bytes
+    close(unit,iostat=close_status)
+    if(ios/=0.or.close_status/=0) return
+    ! The exact source bytes are retained as immutable input authority. This
+    ! bounded reader caps input to 1 MiB; it is not a scalable weather archive.
     previous=0;first_station='';found=.false.
     status=SWAP_WEATHER_FILE_INVALID
+    first=1
     do
-      read(unit,'(a)',iostat=ios) line
-      if(ios==iostat_end) exit
-      if(ios/=0) goto 900
+      if(first>nbytes) exit
+      newline=index(candidate%source_bytes(first:),achar(10))
+      last=nbytes
+      if(newline/=0) last=first+newline-2
+      if(last-first+1>=len(line)) return
+      line=candidate%source_bytes(first:last)
+      first=last+2
       ! Reject truncation, null/repetition/slash list-directed shortcuts and
       ! extra fields rather than accepting partially initialized records.
       if(len_trim(line)>=len(line)) goto 900
@@ -94,6 +118,7 @@ contains
       ordinal=swap_weather_calendar_day(y,m,d)
       if(ordinal==0.or.len_trim(station)==0) goto 900
       if(.not.all(ieee_is_finite([rad,tmin,tmax,hum,wind,rain,etref,wet]))) goto 900
+      if(max(abs(tmin),abs(tmax))>huge(tmin)*0.5_real64) goto 900
       if(tmin>tmax.or.min(rad,hum,wind,rain,etref,wet)<0.0_real64.or.wet>1.0_real64) goto 900
       if(previous/=0) then
         if(ordinal/=previous+1.or.station/=first_station) goto 900
@@ -107,15 +132,10 @@ contains
       candidate%calendar_day=ordinal;candidate%tmin=tmin;candidate%tmax=tmax
       candidate%rain=rain;candidate%etref=etref;candidate%valid=.true.;found=.true.
     end do
-    close(unit,iostat=close_status)
-    if(close_status/=0) then
-      status=SWAP_WEATHER_FILE_IO
-      return
-    end if
     status=SWAP_WEATHER_FILE_MISSING
     if(.not.found) return
     record=candidate;status=SWAP_WEATHER_FILE_OK
     return
-900 close(unit,iostat=close_status)
+900 return
   end subroutine
 end module

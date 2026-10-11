@@ -45,6 +45,8 @@ program test_crop_file_weather_production
   config%numerical%max_committed_substeps=128
   call app%initialize(config,s);call require(s==FMR_APP_BOOT_OK,'production bootstrap')
   controls%germ_mode=2
+  controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
+  controls%ztempsow=-1.0_real64;controls%zgerm=-1.0_real64
   call app%begin_weather_day(empty,controls,candidate,s)
   call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.candidate%valid,'unconstructed file record rejected')
   initial_head=H0_CM;previous_storage=0.0_real64
