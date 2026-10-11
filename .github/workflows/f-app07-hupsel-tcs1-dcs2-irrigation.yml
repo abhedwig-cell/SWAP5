@@ -71,3 +71,5 @@ jobs:
         run: bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh
       - name: MC-IRR01 sensor DCS1 multi-node physical and event restart
         run: bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh
+      - name: MC-IRR01 feasible real-depth source-onset refinement and root cluster
+        run: bash tests/f-app07/run_mc_irr01_realistic_event.sh

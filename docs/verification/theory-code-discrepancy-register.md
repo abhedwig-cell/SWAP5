@@ -92,3 +92,9 @@ Closing an entry must preserve:
 6. which evidence remains valid.
 
 A discrepancy resolution never bypasses the owning production/science workstream or canonical admission process.
+
+## MC-IRR01 feasible source-onset successor (2026-10-11)
+
+The inherited 3-cm, equal-flux fixture can store only about 0.231265 cm; its failed 1-cm event cannot establish a history or solver defect. Unique negative evidence is retained. A matching 100-cm serialized context has 7.70884 cm free storage. This feasible probe exposes cancellation in `theta_new-theta_old` at short steps: HeadCalc stagnates with zero head correction and a residual above the unchanged acceptance bound. The proposed shared successor uses the existing constitutive storage-increment interface for all explicit providers; no constitutive formula, budget, mass gate, retry or history ownership changes.
+
+`TCD-IRR-STORAGE-CANCELLATION`, `IMPLEMENTATION_DEFECT`, has local O0/O2 evidence: full 1-cm source-onset refinement, twelve real-depth root/depth cases, preserved existing irrigation hashes, BOFEK wet/dynamic-top and F-SI25/39 assertions. Central preservation and admission remain pending. Source-off, realistic sensor/multi-node restart and authoritative crop/root, salt and allocation lifecycle remain open. Exact blobs, logs and bounds: `integration/audits/MC_IRR01_ONSET_DIAGNOSIS_20261011.json`. No fullcap promotion is established by this successor.
