@@ -330,6 +330,7 @@ check_b19_micro_root_recomposition() {
   local crop_grid_sow_changed=0
   local crop_hydraulic_provenance_changed=0
   local crop_hydraulic_provenance_changed=0
+  local irrigation_owner_changed=0
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
@@ -392,9 +393,42 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
+      src/process/mod_irrigation_availability_policy.f90 ) irrigation_owner_changed=1 ;;
+      src/process/mod_irrigation_process.f90 ) irrigation_owner_changed=1 ;;
+      src/process/mod_irrigation_root_zone_summary.f90 ) irrigation_owner_changed=1 ;;
+      src/process/mod_scheduled_irrigation_management_policy.f90 ) irrigation_owner_changed=1 ;;
+      src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_irrigation_management_restart.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_scheduled_irrigation_application.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 ) irrigation_owner_changed=1 ;;
+      src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90 ) irrigation_owner_changed=1 ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
+  if (( irrigation_owner_changed )); then
+    declare -A irrigation_owner_blobs=(
+      [src/process/mod_irrigation_availability_policy.f90]=1aafbf42f8bd004f60b93c59c880c2f254feab25
+      [src/process/mod_irrigation_process.f90]=639ccc263d6329568880e9baf35f05a0295850ed
+      [src/process/mod_irrigation_root_zone_summary.f90]=81fb9e35d1fe0026bf5719175a3af8f3d080592e
+      [src/process/mod_scheduled_irrigation_management_policy.f90]=09bc5a840bad171ffc7d478ea68dda6047fd4535
+      [src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90]=88a3f5c3f78624ec2da91252de932c4c36ac7ea0
+      [src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90]=e952aa327319bf23a7336d0740670e8f802cd147
+      [src/runtime/mod_fmr_irrigation_management_restart.f90]=2fc1090a9871d3373840c88f2ef13093f733c11f
+      [src/runtime/mod_fmr_scheduled_irrigation_application.f90]=91a8b3f50d3f041c69ad2f6e8e88482c058a9eca
+      [src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90]=91cafcb89973359509e51ff0cad67e9667e26c57
+      [src/runtime/mod_fmr_scheduled_management_irrigation_application.f90]=c7f84e7100ce88808a8b0797c8bd9867d7017b9d
+      [src/runtime/mod_fmr_scheduled_management_irrigation_routing.f90]=f604dfbcd28258af4e6339f15138b158e946ed45
+    )
+    for candidate_path in "${!irrigation_owner_blobs[@]}"; do
+      test "$(git rev-parse "HEAD:$candidate_path")" = "${irrigation_owner_blobs[$candidate_path]}" ||
+        fail "unqualified MC-IRR01 owner blob: $candidate_path"
+    done
+    bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||
+      fail 'MC-IRR01 exact owner and composed-path O0/O2 preservation failed'
+    echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS'
+  fi
   if (( ppa_weather_guard_changed )); then
     test "$(git rev-parse HEAD:src/adapter/mod_ppa_wu03_common_forcing_adapter.f90)" = "7ddaaddcedc04fad6ba9d38ca4626332014f8d5b" ||
       fail 'unqualified PPA-WU03 shared weather guard source'
