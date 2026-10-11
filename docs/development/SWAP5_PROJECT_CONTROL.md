@@ -821,3 +821,11 @@ at every boundary. Exact authenticated source order and remaining interfaces
 are persisted in the owning record. Master coverage stays ACTIVE_MIGRATION;
 count/fullcap promotion is zero. Concurrent drainage/irrigation authorities
 and their production implementations are preserved.
+
+PR1072 bounded master receipt is persisted at
+`a0ea55bf3c53237be9ee9c9efa1d560d8c234f64`, exact tree
+`068699f7240593466da766cd7785e7cad75698f9`. SW431-CROP-SOW and its queue now
+acknowledge current-day/final-window growth; all other fields/rows/dispositions
+and243 counts are unchanged against the previous master head. The master PR
+remains draft and crop full lifecycle remains ACTIVE_MIGRATION. This is a
+bounded owner-receipt update, not a new full census/source checker result.
