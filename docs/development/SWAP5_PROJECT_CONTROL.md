@@ -477,6 +477,14 @@ PR #1201 is admitted at `73796d85ba8de962673390a40d1be54e9c152d53`. Root TCS2/3/
 
 The previous broad MC-SOL01 blocker is corrected: PR #1015 already admits matrix mobile salt. Its same-state CML needs an irrigation-owned read-only adapter and forwarding of the existing salt temporal policy. That successor remains separately unadmitted. Whole-run crop/root/weather and persistent external allocation remain separate authority gates.
 
+## F-CI93 non-M1 fixed-conductivity repair qualification (2026-10-11)
+
+Under explicit user delegation of the central shared decisions, the existing Task2 adapter now resolves the actual trial-start top-node conductivity from the existing constitutive owner and supplies the existing fixed-K dynamic-top derivative contract for the already admitted SWKIMPL=0 non-M1 route. M1 binding/eligibility/legacy compatibility remain byte-unchanged; no HeadCalc, provider formula, state/restart owner or threshold changes are made. The stale-global-k first variant failed the unchanged atmospheric oracle and is retained as negative evidence.
+
+Local native immutable FKT15 Task2/surface/SWBOTB=2 and FSI35 dispatch O0/O2 pass, including hard mass, retry and worker identity. M1 owner and independent fixed-carrier/default/KSATEXM and headed finite-difference assertions pass. Full moving central preservation exited0 with216 distinct PASS markers. Concurrent PR1201 source changes were retained: all27 FCI93 native compile dependencies are unchanged, while the complete current irrigation owner surface was freshly requalified at O0/O2, including literal48/root12 salt cases and exact admitted physical hashes. The dependency-specific guard avoids freezing unrelated source owners.
+
+Exact authority and raw logs are in `integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011`, `integration/audits/FCI93_NON_M1_FIXED_K_DECISION_20261011.json` and the recorded qualification archive. Fourteen unchanged historical/frozen F-CI checkouts retain terminal green38132433375; actual moving and owner science is local successor evidence. No new Actions or manual dispatches are needed for these already executed gates. This is qualified bounded repair ready for admission, not yet canonical admission or a crop lifecycle/fullcap closure.
+
 ## Mechanical finalization and historical frost review closeout (2026-10-11)
 
 Reconciled from canonical `0379282491bdc6b7de5ffb8efd0334967eeae880`. Existing registry field `finalization_frost_regie_closeout_20261011` binds the exact original heads, terminal historical checks, source census, bounded tooling qualification and closure recovery. No new global status authority is created.

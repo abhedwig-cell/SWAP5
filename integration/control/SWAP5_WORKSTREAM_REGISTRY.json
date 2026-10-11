@@ -711,13 +711,13 @@
         "historical_authorities_successor_lineage_receipt": "PASS",
         "downstream_reconciliation": "SKIPPED",
         "owner": "F-CI central preservation authority with Task2/PPA-WU03 owner",
-        "current_disposition": "CONFIRMED_NON_M1_HEADED_PRODUCTION_BINDING_DEFECT_NOT_ADMITTED",
+        "current_disposition": "QUALIFIED_LOCAL_NON_M1_FIXED_K_REPAIR_ADMISSION_PENDING",
         "diagnostic_recovery": "78bc8fc2c2ae34d6643c6eab3e5f943f54d91c53",
         "current_error": "HeadCalc: dynamic head regime omitted surface-head derivative",
         "current_owner": "central HeadCalc/dynamic-top admission authority with PPA-WU03 and MIGMAC owners",
-        "current_authority": "integration/f-ci/F-CI93_STATUS.json#headed_contract_diagnosis_20261011",
+        "current_authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011",
         "contract_diagnosis_recovery": "85866972d3e2ea2dff835b955f73ae1009d02006",
-        "next_action": "Central admission authority must select and qualify a bounded non-M1 derivative binding repair. Original surface replay fails both O0 and O2; paired provider probes reproduce the missing receipt. No fixture-only fix is justified. Preserve unchanged surface, Task2, dispatch, mass/retry/restart and BOFEK/MIGMAC coverage."
+        "next_action": "Admit exact locally qualified/preserved Task2 fixed-K interface repair after canonical overlap verification; preserve historical negative diagnosis and all other owner boundaries."
       }
     ],
     "fgc_execution_infrastructure_20261011": {
@@ -1389,6 +1389,14 @@
       217,
       359
     ]
+  },
+  "fci93_non_m1_fixed_k_central_20261011": {
+    "stage": "QUALIFIED_LOCAL_OWNER_PRESERVATION_CANONICAL_ADMISSION_PENDING",
+    "canonical": "0379282491bdc6b7de5ffb8efd0334967eeae880",
+    "authority": "integration/f-ci/F-CI93_STATUS.json#non_m1_fixed_k_repair_20261011",
+    "recovery_branch": "work/fci93-headed-binding-20261011",
+    "coverage_effect": "ZERO_NEW_FULLCAPS; MC-CROP01 remains open",
+    "next_action": "Safely admit exact bounded repair, then reconcile PR1197 and implement selected historical task2 owner profile."
   },
   "finalization_frost_regie_closeout_20261011": {
     "canonical_base": "0379282491bdc6b7de5ffb8efd0334967eeae880",
