@@ -2,14 +2,14 @@
   "workstream": "MC-CROP01",
   "work_unit": "Authentic daily weather input to existing production application and prior-accepted-soil crop daystart",
   "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-  "last_reconciled_upstream": "3844a7739cfee2cf6d29e1d99cb01578b24ed82d",
+  "last_reconciled_upstream": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
-  "next_action": "Safely admit exact bounded production block after live overlap/head verification; verify canonical and annotate1197 supersession. Then continue separately persisted source task2/task3 plus delayed physical emergence/root daily production integration.",
+  "canonically_admitted": true,
+  "next_action": "Continue historical task2/task3 startup and delayed physical emergence/root/growth production on separately persisted successor; full MC-CROP01/master coverage remains ACTIVE.",
   "recovery_point": "work/mc-crop01-live-window-20261011",
   "authority_paths": [
     "AGENTS.md",
@@ -811,7 +811,7 @@
   },
   "obsolete_guard_reconciliation": "Restore the exact admitted FCI93 semantic wrapper. Its default selected ed678be non-M1 native replay is unchanged; old crop opt-in compares superseded e3b Task2 and is no longer needed after1202. Immutable historical/default locks are retained unchanged.",
   "current_admission_qualification_20261011": {
-    "status": "QUALIFIED_PRESERVED_ADMISSION_PENDING",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_PRODUCTION",
     "full_moving_head": "5b3c8475cc156bee28845e78eb278b1b664be9c9",
     "full_moving_tree": "9d296c655d2ae77648f091d9745489e01466bbc5",
     "full_moving_source_tree": "87fc3103f07b1ee8b39aa4a1780731c4b8e13d9f",
@@ -1371,6 +1371,16 @@
     "archive": "integration/audits/evidence/MC_CROP01_CURRENT_PRODUCTION_QUALIFICATION_20261011.tar.gz.b64",
     "decoded_sha256": "62dcadbded64837be574a9229a7ceadd48883c524e26060638a38ab26caebac4",
     "inheritance": "All actual scientific source and executed tests remain identical to qualified heads. Final metadata/publication reconciliation does not change these dependencies. Restore exact admitted FCI93 wrapper: its selected native ed678be branch executes identically, explicitly rerun within Wu03 preservation at54d64d. Unrelated new publication tests do not alter numerical graphs.",
-    "limits": "Root-free mode7 uniform daily forcing/air-no-snow numerical thermal/pre-emergence profile, same immutable authentic weather for hydro and crop, immediate all0 owner seed/root view. Historical task2/task3 profile is separate unadmitted successor. No grown-crop root uptake, delayed physical emergence, harvest/rotation/fallow, arbitrary thermal or external disk restart closure."
+    "limits": "Root-free mode7 uniform daily forcing/air-no-snow numerical thermal/pre-emergence profile, same immutable authentic weather for hydro and crop, immediate all0 owner seed/root view. Historical task2/task3 profile is separate unadmitted successor. No grown-crop root uptake, delayed physical emergence, harvest/rotation/fallow, arbitrary thermal or external disk restart closure.",
+    "canonical_admission": {
+      "pr": 1204,
+      "head": "e906bcee1adf4d1f6a1717ce12a5c87fdd8e1b6c",
+      "merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d",
+      "verified_source_blobs": true,
+      "canonical_exact_source_guard": "PASS",
+      "documentation_source_checks": "PASS",
+      "mkdocs_strict": "PASS",
+      "full_capability": false
+    }
   }
 }

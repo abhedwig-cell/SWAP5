@@ -4,14 +4,15 @@
   "canonical_base": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "owner_dependency": {
     "work_unit": "MC-CROP01",
-    "pull_request": 1197,
-    "observed_head": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
-    "state": "OPEN_NOT_CANONICALLY_ADMITTED",
+    "pull_request": 1204,
+    "observed_head": "e906bcee1adf4d1f6a1717ce12a5c87fdd8e1b6c",
+    "state": "CANONICALLY_ADMITTED_BOUNDED_WEATHER_CROP_APPLICATION_API",
     "overlap": [
       "src/runtime/mod_fmr_production_application_bootstrap.f90",
       "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
       "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
-    ]
+    ],
+    "canonical_merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d"
   },
   "finding": "The actual serialized physical dispatcher has qualified irrigation interval entry points. The ordinary production bootstrap owns private committed columns and has no public scheduled-management entry. A separate irrigation adapter cannot read these private accepted states or consume the actual crop/weather daystart without an explicit shared application hook.",
   "proposed_contract": "Add a bounded bootstrap entry preparing irrigation forcing from each internal committed state and immutable same-window owner weather/crop inputs. Reuse irrigation preparation, accepted CML and availability receipts; execute via existing run_standalone_with_forcing, publish management only for completed committed physical results. Retain existing per-column/multiswap transaction semantics. Joint continuation includes weather/crop daystart and irrigation event/weekly/allocation state.",
@@ -22,7 +23,7 @@
     "mass and temporal thresholds",
     "existing ordinary bottom and optional-state profile admission checks"
   ],
-  "required_owner_action": "Resolve and admit compatible crop1197 bootstrap/dispatcher postimages, then centrally admit the explicit management hook and preserved joint restart. Do not replay or overwrite an active owner candidate.",
+  "required_owner_action": "Compatible crop bootstrap/dispatcher postimages admitted in PR1204. Centrally qualify the explicit irrigation management hook and preserved joint restart against that source. No irrigation production implementation is admitted by this receipt.",
   "required_proofs": [
     "same authenticated rain/TAV/ET/crop weather input",
     "accepted root extent and hydraulic material-consistent FC/stress/wilting values",

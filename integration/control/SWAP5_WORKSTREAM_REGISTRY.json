@@ -2259,12 +2259,12 @@
     }
   },
   "mc_crop01_current_production_qualification_20261011": {
-    "status": "QUALIFIED_PRESERVED_ADMISSION_PENDING",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_PRODUCTION",
     "authority": "integration/audits/MC_CROP01_FILE_WEATHER_PRODUCTION_STATUS.json",
     "full_moving_head": "5b3c8475cc156bee28845e78eb278b1b664be9c9",
     "distinct_PASS_markers": 290,
     "PPA_WU03": "owner and preservation O0/O2 PASS",
-    "canonical_admission": false,
+    "canonical_admission": true,
     "full_capability": false,
     "master_count_delta": 0,
     "remaining": [
@@ -2272,6 +2272,8 @@
       "historical delayed emergence and root/growth production",
       "harvest/rotation/fallow production",
       "external disk continuation codec"
-    ]
+    ],
+    "pr": 1204,
+    "merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d"
   }
 }
