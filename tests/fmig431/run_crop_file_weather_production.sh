@@ -6,11 +6,22 @@ BUILD="$(mktemp -d)"
 trap 'rm -rf "$BUILD"' EXIT
 python3 - "$BUILD" <<'PY'
 from pathlib import Path
-import gzip,hashlib,sys
+import gzip,hashlib,sys,base64,io,tarfile
 source=Path('tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-andelst_meteo.999.gz')
 data=gzip.decompress(source.read_bytes())
 build=Path(sys.argv[1]);build.joinpath('weather.999').write_bytes(data)
 build.joinpath('backup.999').write_bytes(data)
+# Verified corrected B1.11 source member, already admitted by MC-IRR01.
+archive=base64.b64decode(Path('integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64').read_bytes())
+with tarfile.open(fileobj=io.BytesIO(archive),mode='r:gz') as donor:
+    meteo=donor.extractfile('SWAP/MOD_meteo.f90').read()
+assert hashlib.sha256(meteo).hexdigest()=='99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f'
+statement=b'         tav = (tmx+tmn)*0.5d0'
+assert meteo.splitlines().count(statement)==1
+build.joinpath('daily_meteo_oracle.f90').write_bytes(
+    b'function b111_daily_tav(tmin,tmax) result(tav)\nuse iso_fortran_env, only: real64\nimplicit none\n'
+    b'real(real64),intent(in)::tmin,tmax\nreal(real64)::tmn,tmx,tav\ntmn=tmin\ntmx=tmax\n'+statement+b'\nend function\n')
+print('CROP_FILE_WEATHER_B111_METEO_SHA256='+hashlib.sha256(meteo).hexdigest())
 # Preserve all authentic input bytes for the positive production run. The
 # negatives deliberately retain TAV while changing the underlying record.
 lines=data.decode().splitlines(keepends=True)
@@ -53,7 +64,7 @@ for opt in 0 2; do
     done
     gfortran "${COMMON[@]}" -O"$opt" -J . -I . \
       "$ROOT/tests/fmig431/test_crop_file_weather_production.f90" \
-      "$ROOT/src/legacy/b1_10_port/headcalc.f90" ./*.o -o test
+      "$ROOT/src/legacy/b1_10_port/headcalc.f90" "$BUILD/daily_meteo_oracle.f90" ./*.o -o test
     ./test "$BUILD/weather.999" "$BUILD/altered.999" "$BUILD/bad.999" "$BUILD/backup.999" > output.txt 2>&1 || \
       { cat output.txt >&2; exit 1; }
     grep -Fx 'CROP_FILE_WEATHER_PRODUCTION=PASS' output.txt

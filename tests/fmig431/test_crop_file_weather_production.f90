@@ -20,6 +20,13 @@ program test_crop_file_weather_production
   use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t
   use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
   implicit none
+  interface
+    function b111_daily_tav(tmin,tmax) result(tav)
+      import real64
+      real(real64),intent(in)::tmin,tmax
+      real(real64)::tav
+    end function
+  end interface
   real(real64),parameter::T0=0.0_real64,T1=T0+1.0_real64,H0_CM=-75.0_real64,HARD_MASS_GATE=1.0e-12_real64
   type(fmr_production_application_config_t)::config,reject_config
   type(fmr_production_application_bootstrap_t)::app,reject_app
@@ -57,18 +64,23 @@ program test_crop_file_weather_production
   config%numerical%model_temporal_indicator_budget_available=.true.
   config%numerical%model_temporal_indicator_budget=1.0e-5_real64
   config%numerical%transaction%max_retries=32
-  config%tiles(1)%parameters%head_abs_tolerance=HARD_MASS_GATE
-  config%tiles(1)%parameters%head_rel_tolerance=HARD_MASS_GATE
+  ! Use admitted BOFEK00 wet-trajectory head convergence policy;
+  ! residual-rate tolerance is 1e-10 as in that gate; independently
+  ! require the full physical transaction mass residual <= 1e-12 cm.
+  config%tiles(1)%parameters%head_abs_tolerance=1.0e-9_real64
+  config%tiles(1)%parameters%head_rel_tolerance=1.0e-9_real64
   config%tiles(1)%parameters%ponding_tolerance=HARD_MASS_GATE
-  config%tiles(1)%parameters%max_iterations=16
+  config%tiles(1)%parameters%max_iterations=20
   config%tiles(1)%parameters%max_backtracking=8
   config%tiles(1)%parameters%min_step_duration=1.0e-10_real64
-  config%tiles(1)%parameters%compartment_balance_tolerance=HARD_MASS_GATE
-  config%tiles(1)%parameters%total_balance_tolerance=HARD_MASS_GATE
+  config%tiles(1)%parameters%compartment_balance_tolerance=1.0e-10_real64
+  config%tiles(1)%parameters%total_balance_tolerance=1.0e-10_real64
   ! Real atmospheric forcing is nonsteady. The accepted production mass
   ! threshold remains unchanged; no forcing is reverse-engineered to steady.
   config%numerical%max_committed_substeps=262144
   call app%initialize(config,s);call require(s==FMR_APP_BOOT_OK,'production bootstrap')
+  call app%run_standalone(T0,T1,results,s)
+  call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(results),'enabled file-weather path rejects unbound hydrology bypass')
   controls%germ_mode=2
   controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
   controls%ztempsow=-1.0_real64;controls%zgerm=-1.0_real64
@@ -98,7 +110,8 @@ program test_crop_file_weather_production
     call app%begin_weather_day(record,controls,candidate,s)
     call require(s==FMR_APP_BOOT_OK.and.candidate%valid,'production meteorology before future hydrology acceptance')
     call require(candidate%hgerm==hgerm,'crop reads actual same-owner accepted soil')
-    call require(candidate%germination%next_temperature_sum>0.0_real64,'file TAV drives germination calculation')
+    call require(candidate%germination%next_temperature_sum==max(0.0_real64,b111_daily_tav(tmin,tmax)), &
+         'historical source-derived daily TAV with cold-day germination stop')
     call app%begin_weather_day(record,controls,repeated,s)
     call require(s==FMR_APP_BOOT_OK.and.repeated%germination%next_temperature_sum== &
          candidate%germination%next_temperature_sum,'retry daystart does not double-add')
@@ -139,9 +152,9 @@ program test_crop_file_weather_production
       call reject_app%close(s)
       call require(s==FMR_APP_BOOT_OK,'rejected owner close')
     end if
-    do i=0,1
-      call app%run_weather_interval(record,day+real(i,real64)*0.5_real64, &
-           day+real(i+1,real64)*0.5_real64,forcing_config,canopy,results,s)
+    do i=0,63
+      call app%run_weather_interval(record,day+real(i,real64)/64.0_real64, &
+           day+real(i+1,real64)/64.0_real64,forcing_config,canopy,results,s)
       if(s/=FMR_APP_BOOT_OK) then
         print *, 'RUN_STATUS',s,d,i
         if(allocated(results)) then
@@ -154,12 +167,13 @@ program test_crop_file_weather_production
       end if
       call require(s==FMR_APP_BOOT_OK,'file-derived hydrological production interval')
       call require(size(results)==1.and.results(1)%completed.and.results(1)%committed,'actual FKT accept')
+      if(abs(results(1)%mass%residual)>HARD_MASS_GATE) print *, 'MASS_FAILURE',d,i,results(1)%mass%residual
       call require(abs(results(1)%mass%residual)<=HARD_MASS_GATE,'unchanged hard water mass gate')
       if(d/=20.or.i/=0) call require(abs(results(1)%mass%storage_start-previous_storage)<=HARD_MASS_GATE, &
            'continuous hydrological accepted storage')
       previous_storage=results(1)%mass%storage_end
       call app%copy_committed_revisions(revisions,s)
-      call require(s==FMR_APP_BOOT_OK.and.revisions(1)>=int((d-20)*2+i+1,int64),'actual accepted revisions')
+      call require(s==FMR_APP_BOOT_OK.and.revisions(1)>=int((d-20)*64+i+1,int64),'actual accepted revisions')
     end do
     call app%run_weather_interval(record,day,day+0.5_real64,forcing_config,canopy,results,s)
     call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(results),'accepted interval duplicate rejected')
@@ -206,7 +220,9 @@ contains
 
     value%initial_time = T0
     value%numerical%transaction%temporal_tolerance = 0.0_real64
-    value%numerical%transaction%mass_tolerance = HARD_MASS_GATE
+    ! Tighten each internal transaction so accumulated interval residual
+    ! remains beneath the independent 1e-12 cm interval acceptance gate.
+    value%numerical%transaction%mass_tolerance = 1.0e-14_real64
     value%numerical%transaction%retry_scale = 0.5_real64
     value%numerical%transaction%max_retries = 2
     value%numerical%max_committed_substeps = 8

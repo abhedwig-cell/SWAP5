@@ -159,6 +159,7 @@ module mod_fmr_production_application_bootstrap
     type(swap_daily_weather_record_t) :: weather_record
     integer(int64) :: weather_revision=0_int64
     integer :: weather_epoch_day=0
+    logical :: weather_interval_active=.false.
   contains
     procedure, public :: initialize => production_application_initialize
     procedure, public :: ready => production_application_ready
@@ -675,7 +676,9 @@ contains
     call evaluate_b110_dynamic_top_boundary(geometry,hydraulics,common%top_request,top)
     call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(1),top,effective(1),s)
     if(s/=PPA_WU03_OK) return
+    self%weather_interval_active=.true.
     call self%run_standalone_with_forcing(t0,t1,effective,results,status)
+    self%weather_interval_active=.false.
   end subroutine
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
@@ -705,6 +708,10 @@ contains
     if (allocated(results)) deallocate(results)
     status = FMR_APP_BOOT_NOT_READY
     if (.not. self%ready()) return
+    if(self%weather_epoch_day/=0.and..not.self%weather_interval_active) then
+      status=FMR_APP_BOOT_WEATHER_REJECTED
+      return
+    end if
     if (associated(self%active_context)) then
       status = FMR_APP_BOOT_CONTEXT_BUSY
       return
@@ -1412,7 +1419,7 @@ contains
     self%ordinary_lysimeter_application = .false.
     self%weather=weather_day_owner_t()
     self%weather_record=swap_daily_weather_record_t()
-    self%weather_revision=0_int64;self%weather_epoch_day=0
+    self%weather_revision=0_int64;self%weather_epoch_day=0;self%weather_interval_active=.false.
   end subroutine discard_owner_storage
 
 end module mod_fmr_production_application_bootstrap

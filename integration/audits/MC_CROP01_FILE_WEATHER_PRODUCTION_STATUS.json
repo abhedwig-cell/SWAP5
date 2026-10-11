@@ -2,14 +2,14 @@
   "workstream": "MC-CROP01",
   "work_unit": "Authentic daily weather input to existing production application and prior-accepted-soil crop daystart",
   "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
-  "last_reconciled_upstream": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "last_reconciled_upstream": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "next_action": "Run local O0/O2 authentic four-day physical production gate; then exact shared-owner/F-CI preservation and admission",
+  "next_action": "Complete exact postimage O0/O2 and central F-CI preservation; resolve FCI93 legacy non-M1 dynamic-head preservation boundary through existing central admission authority before merge.",
   "recovery_point": "work/mc-crop01-file-weather-production-20261011",
   "authority_paths": [
     "AGENTS.md",
@@ -20,7 +20,8 @@
   "relevant_paths": [
     "src/adapter/mod_swap_daily_weather_file_adapter.f90",
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
-    "tests/support/augment_bartholomeus_backend_sources.py"
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
   ],
   "test_paths": [
     "tests/fmig431/run_crop_file_weather_production.sh",
@@ -39,11 +40,45 @@
     29,
     30
   ],
-  "contract": "Immutable daily file record constructs meteorology once at daystart and feeds both Tmin/Tmax/TAV crop preflight and rain/reference-ET hydrology. The existing weather owner and PPA-WU01 FKT committed state are reused. Existing profile and execution entrypoints keep their behaviour. File I/O stays in an outer adapter. Explicit Gregorian ordinal application time, daily uniform rates, standalone mode7 root-free base profile. Candidate is read-only; no crop event or state publication claim. Exact input record rejects changing another field while preserving TAV. Daystart uses actual current accepted owner state before current-day hydrology; retries cannot increment a crop state.",
+  "contract": "Immutable daily file record constructs meteorology once at daystart and feeds both Tmin/Tmax/TAV crop preflight and rain/reference-ET hydrology. The existing weather owner and PPA-WU01 FKT committed state are reused. Existing default profiles keep their behaviour; enabled file-weather mode rejects unbound generic hydrology entrypoints. File I/O stays in an outer adapter. Explicit Gregorian model epoch binding, daily uniform rates, standalone mode7 root-free base profile. Candidate is read-only; no crop event or state publication claim. Exact input record rejects changing another field while preserving TAV. Daystart uses actual current accepted owner state before current-day hydrology; retries cannot increment a crop state.",
   "blockers": [
     "Physical emergence, harvest, rotation/fallow and authoritative lifecycle state values still need existing crop-owner extensions and integration.",
     "No production weather+hydrology+crop unified restart yet.",
-    "Normal Meteo(2) detailed TAV oracle not established by this bounded daily/external-arithmetic input route."
+    "Detailed-period and subdaily meteorology are outside this daily uniform-rate application profile; corrected historical source is now recovered exactly.",
+    "FCI93 current-source historical surface-regime replay fails closed: HeadCalc dynamic head regime omitted surface-head derivative. The caller is the legacy non-M1 Task2 surface fixture; production Task2/backend/HeadCalc blobs are unchanged from canonical. Do not claim this preservation gate passed, omit it, or modify another owner solely for green tests.",
+    "Live WOFOST accepted-window/crop event execution and receipt-path certification are not part of the implemented read-only daystart profile."
   ],
-  "coverage": "Do not promote MC-CROP01 to closed or change master denominator."
+  "coverage": "Do not promote MC-CROP01 to closed or change master denominator.",
+  "commit_contract": "No-receipt serialized physical commit uses existing backend%commit_trial_candidate and its model-bound executor. The original orchestration executor cannot validate certified physical identity because it has no model. Kernel/backend scientific and FKT guards are unchanged. Receipt paths remain separate, unchanged and are not enabled by this root-free profile.",
+  "test_contract": {
+    "authentic_days": "1999-01-20 through 1999-01-23",
+    "continuous_accepted_intervals": 256,
+    "physical_grid": "four compartments, 30 cm, identical explicit and linked geometry",
+    "weather_identity": "whole immutable source bytes plus selected raw record and station; not a caller-set number",
+    "time_binding": "model day 0 = Gregorian 1999-01-20; source calendar retained in immutable input",
+    "head_convergence": "existing BOFEK00 wet policy, 1e-9",
+    "solver_residual_rate_tolerance": 1e-10,
+    "internal_mass_tolerance_cm": 1e-14,
+    "independent_accepted_interval_mass_gate_cm": 1e-12,
+    "richards_history_budget_cm": 1e-05,
+    "no_scientific_trajectory_equivalence_claim": "Andelst weather, homogeneous qualification soil, no Andelst soil or full historical trajectory claim"
+  },
+  "historical_meteorology": {
+    "corrected_MOD_meteo_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "authentic_daily_input_sha256": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+    "archive_path": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "oracle": "unique actual daily Meteo(2) TAV statement extracted without arithmetic rewriting; source SHA verified",
+    "detailed_meteorology": "source recovered, detailed period oracle/application integration not qualified"
+  },
+  "local_evidence": {
+    "four_day_O0_O2": "PASS at d438a73b; final no-bypass successor aa1e3a6a is being rerun",
+    "FKT21_current_canonical_O0_O2": "PASS with fresh retry result vectors after move_alloc staging; scientific expected values unchanged",
+    "PPA_WU01": "PASS in full PPA preservation invocation",
+    "F_APP07": "PASS including 110-interval exact composition and MC-IRR01 sensor/SSDI O0/O2",
+    "FCI93_current_replay": "FAILED legacy non-M1 headed surface fixture; flux Task2 assertions passed before failure",
+    "B19_MICRO_current_scientific_successor": "running",
+    "F_CI_exact_PR_merge_postimage": "running in isolated worktree with canonical as first parent",
+    "Actions": "not dispatched; no duplicate workflows started"
+  },
+  "recovery_local_commit": "aa1e3a6a788db855c64004fee443042dcfa4f81a"
 }

@@ -22,7 +22,7 @@ module mod_swap_daily_weather_file_adapter
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
   ! Gregorian ordinal, day 1 = 0001-01-01. Application time is explicitly
-  ! this ordinal; no inference of the historical TimeControl numeric epoch.
+  ! bound by an explicit model calendar epoch in the application bootstrap.
   pure integer function swap_weather_calendar_day(year,month,day) result(ordinal)
     integer,intent(in)::year,month,day
     integer,parameter::days(12)=[31,28,31,30,31,30,31,31,30,31,30,31]
