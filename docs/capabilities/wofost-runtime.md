@@ -48,3 +48,60 @@ For a WOFOST-sensitive change, ask:
 3. Does new state affect restart, retry or MultiSWAP ownership?
 4. Which scientific smoke/extended checks protect the changed surface?
 5. Is an equivalence claim being made that requires an independent reference experiment rather than only regression evidence?
+
+## MC-CROP01 authentic daily weather and rooted production continuation
+
+**Implemented and focused O0/O2 tested, pending complete preservation/admission
+(2026-10-11).** The authoritative stages and exact evidence are in
+`integration/audits/MC_CROP01_ROOTED_WEATHER_PRODUCTION_STATUS.json`. This
+successor extends the admitted PR1206 pre-emergence profile; it does not change
+the pinned Status-A denominator or close the complete historical lifecycle.
+
+The production entry point is the existing
+`fmr_production_application_bootstrap_t`. Its `initialize_weather_crop_daystart`
+and `run_weather_crop_daystart` methods commit the crop through the existing
+F-WOF38/F-KT executor. Its `run_weather_interval` method uses the actual accepted
+soil state and unchanged production dispatcher. The explicit configuration
+requires both `file_weather_daystart` and `file_weather_rooted`, the Gregorian
+epoch, latitude, emergence dry weight, DVS root-depth/density tables, maximum
+root depth, existing Feddes parameters and canopy parameters. Stem/storage
+area coefficients must match the crop transaction parameters. The rooted
+interval requires the current committed crop with the application-owned
+accepted lineage/revision/time; caller-supplied canopy does not authorize
+the grown-root route.
+
+One opaque record from the authenticated daily file supplies reference ET,
+rain and air temperature to hydrology and temperature/radiation/astronomy to
+the crop. The adapter retains the original radiation in kJ/m2 and Gregorian
+day of year. Growth uses the historical `1000.d0 * radiation` conversion,
+literal astronomy and `(tmax+tmin)*0.5d0` temperature operation order.
+Explicit site parameters are not inferred from a weather filename.
+
+Morning processing reads the next weather record and the previous accepted
+soil state. The previous committed preparation/sowing/germination flags
+authorize delayed emergence before new task3 accumulation. Initial biomass
+is constructed in the crop candidate only. Later morning events complete
+the preceding crop day with its retained immutable weather record and its
+actual accepted root-uptake receipt. The next morning's weather cannot
+substitute for that preceding growth forcing, and acceptance of the new
+day's ending hydrology is not required for morning processing. Derived roots
+and canopy then feed that new day's physical hydrological intervals.
+
+The integrated regression uses seven authentic weather days, cold sowing
+delay, germination, delayed emergence, four crop-growth completions and five
+days of positive physical root uptake. It compares every leaf cohort and
+crop continuation field plus accepted head/water/temperature/Richards
+derivative postimages across O0/O2 and uninterrupted/pending-restart runs.
+It retains the original four-day root-free cases and literal historical
+oracles. Negative parameter/retry/duplicate checks require no committed
+crop mutation; every accepted hydrological interval retains the hard mass
+criterion. A separate existing-owner composition and next-day-weather
+negative witness check the growth day and actual uptake receipt.
+
+This profile is single-column annual IDSL1, reference ET, AIR/no-snow,
+default-MVG bottom7 with ROOT_COMP_OFF. It does not qualify a complete
+Andelst soil/crop trajectory, detailed meteorology, compensation, oxygen,
+CO2 correction, alternative roots, harvest/rotation/fallow or SWINCO=3.
+The joint opaque in-process continuation retains accepted soil/heat,
+meteorological provenance, crop and event windows; an external disk codec
+and a legacy CLI front end remain separate open requirements.

@@ -106,5 +106,12 @@
     "exit_code": 1,
     "cause": "Exact new source successor intentionally requires complete frost_successor_evidence archive. Archive is not yet available while the original low-air controller is running; earlier PPA/FCI93/FSI35 checks passed.",
     "action": "Seal all24 original normal/low-air configurations; verify archive/source closure; rerun complete PPA preservation and full moving F-CI. No assertion bypass or science code change."
+  },
+  "focused_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_FOCUSED_OWNER_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "68655ca085e2f78b70c58ba66d9043307b0bcc385ff9fa4f08e39aa8d22777fe",
+    "positive_logs": 4,
+    "preserved_negative_logs": 3,
+    "full_FCI_qualified": false
   }
 }
