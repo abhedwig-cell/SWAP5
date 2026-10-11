@@ -154,6 +154,10 @@ contains
     call stage_trajectory_step_result(s,tok,o,ok); call assert_true(ok,'retry first stage')
     call discard_trajectory_step(s)
     call build_trajectory_step_request(s,0.2_real64,0.4_real64,r,tok,ok); call assert_true(ok,'retry rebuild same origin')
+    ! Staging transfers the result vectors to the owner. A physical retry
+    ! produces fresh vectors; reusing consumed storage is an invalid fixture.
+    allocate(o%outgoing_pressure_head(2),o%outgoing_water_content(2))
+    o%outgoing_pressure_head=1.0_real64; o%outgoing_water_content=2.0_real64
     call stage_trajectory_step_result(s,tok,o,ok); call accept_trajectory_step(s,ok)
     call assert_true(ok .and. s%accepted_steps==1 .and. abs(s%integrated_bottom_exchange_derivative-0.2_real64)<1e-14_real64,'retry accept once')
   end subroutine test_retry_discard
