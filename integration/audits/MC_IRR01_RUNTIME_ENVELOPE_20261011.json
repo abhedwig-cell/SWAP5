@@ -32,5 +32,11 @@
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "next_action": "Run O0/O2 onset, rollback and refinement. Failure is diagnostic, not evidence of a missing production interface without further analysis."
+  "next_action": "Run O0/O2 onset, rollback and refinement. Failure is diagnostic, not evidence of a missing production interface without further analysis.",
+  "initial_probe": "1 cm, 48 cm/day, accepted zero-forcing history: rejected with 22 temporal rejections under 24 retries. Diagnostic bound available. No mass rejections. Increase numerical effort before inferring a shared-interface defect.",
+  "effort_only_successor": {
+    "max_retries": 40,
+    "min_step_days": 1e-13,
+    "mass_and_temporal_acceptance_unchanged": true
+  }
 }

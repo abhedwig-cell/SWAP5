@@ -280,7 +280,7 @@ contains
       p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%max_iterations=80; p%max_backtracking=20; p%min_step_duration=1.0e-10_real64
+    p%max_iterations=80; p%max_backtracking=20; p%min_step_duration=1.0e-13_real64
     p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
@@ -325,7 +325,7 @@ contains
     cfg%model_temporal_indicator_budget = temporal_budget
     cfg%transaction%mass_tolerance = hard_mass_gate
     cfg%transaction%retry_scale = 0.5_real64
-    cfg%transaction%max_retries = 24
+    cfg%transaction%max_retries = 40
     cfg%max_committed_substeps = 500000
     cfg%progress_tolerance = 0.0_real64
   end subroutine configure_transaction
