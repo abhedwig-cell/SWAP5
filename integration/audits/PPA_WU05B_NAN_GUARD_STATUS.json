@@ -1,0 +1,215 @@
+{
+  "schema": "swap5.frost_invalid_guard.status.v1",
+  "work_unit": "PPA-WU05B-NAN-GUARD",
+  "baseline": "1a159c316a97e3870accce32f657f34bcaa59c8b",
+  "checkpoint_commit": "8dc07bf65fcc6d1cccc281f7b0b27599aa76cdf1",
+  "last_reconciled_upstream": "1a159c316a97e3870accce32f657f34bcaa59c8b",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "regie_current_requalification": {
+    "baseline": "1a159c316a97e3870accce32f657f34bcaa59c8b",
+    "scientific_baseline": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "original_pr": 1119,
+    "original_head": "2f1b90d05746341ff9acfbf3276a8ee6d5a12b01",
+    "source_scope": "Only exact existing0dd5b541 guard replaces2c8adba79. Finite-input formulas/residualK/thresholds/derivatives/layout/interfaces/state/numerical policy unchanged.",
+    "stage": "QUALIFIED_CURRENT_SOURCE_PRESERVED_PENDING_SAFE_CANONICAL_ADMISSION",
+    "qualified": true,
+    "new_physics": false,
+    "fullcap_promotions": 0,
+    "aggregate_frost_migration_complete": false,
+    "scientific_archive": {
+      "path": "integration/audits/evidence/FROST_NAN_GUARD_QUALIFICATION_20261011.tar.gz.b64",
+      "decoded_sha256": "f7b95b481c3d2f389647a52a74ce7f152b2c8dae365a6748d72df92537e5f316",
+      "members": 90,
+      "complete": true,
+      "original_postimages": 5,
+      "highest_complete_configurations": 24,
+      "compile_dependency_entries": 223
+    },
+    "logs": {
+      "focused": {
+        "sha256": "7dd11da3f0c815196fc8a564d5821171f5deb4acd0563a8c08bc634087a5a741",
+        "bytes": 233,
+        "exit_code": 0
+      },
+      "provider": {
+        "sha256": "0f2d76ebc969461bc9f242a7b9aab58f7b81d2247b3405ad7cd879baf13d7257",
+        "bytes": 12784,
+        "exit_code": 0
+      },
+      "runtime": {
+        "sha256": "8ed48be94f71a0053fa2adaa27a588db694d4dcf16a96f747bdb0a5a4e67de83",
+        "bytes": 3465,
+        "exit_code": 0
+      },
+      "independent": {
+        "sha256": "890a2e8f2040de6473e4d187b15bbad01de0caf143d6b6b7604ba7bda7286a43",
+        "bytes": 150,
+        "exit_code": 0
+      },
+      "highest-normal": {
+        "sha256": "65e4f6b0a5aac31d1e8562899f8af9a2da6f3d9ad94153bffea96dbcf4ea01cc",
+        "bytes": 1237,
+        "exit_code": 0
+      },
+      "highest-low-air": {
+        "sha256": "062f75234fc0e68781ced16718e195184cf3903e9c086ed93958d4e6fcb8b1cd",
+        "bytes": 1255,
+        "exit_code": 0
+      },
+      "predecessor-negative": {
+        "sha256": "4bcf55cc4a12e19c50f77b4c8bb4a7b8b75f57c1f942b56cd2b322166b54c434",
+        "bytes": 364,
+        "exit_code": 136
+      },
+      "full-moving": {
+        "sha256": "e2ead10229773070a01cf829711e632a7aaeb92c88f91783ab778d238ca05d3d",
+        "bytes": 725998,
+        "exit_code": 0
+      },
+      "current-full-moving": {
+        "sha256": "213020c006ac21b1e60c39de9cf74880d043a24be0053fe9654f01d2f602c317",
+        "bytes": 730051,
+        "exit_code": 0
+      },
+      "allocation-negative-guards": {
+        "sha256": "05496d81848940e21d2f5718b8fec5540c451cf708f5beea5fdabe028a5df889",
+        "bytes": 597,
+        "exit_code": 0
+      },
+      "crop-weather": {
+        "sha256": "9680f943ed3aeec76bd8a5461fe97bf41e35cb6f2d29a2c9a73c0dee8c17f20d",
+        "bytes": 7786,
+        "exit_code": 0
+      },
+      "crop-thermal": {
+        "sha256": "3c8b6faf4a352ec5bcf387bb36dc6811d151bff12d114de9f75cf9f4dfcf4b47",
+        "bytes": 17340,
+        "exit_code": 0
+      }
+    },
+    "science_postimages": [
+      {
+        "tested_local_head": "47935cb32",
+        "remote_checkpoint": "57edb54c94ad231b02317d82c3388fed4af7696e",
+        "tree": "dd1003513542308bfab0c045bed35af9e912d7b4"
+      },
+      {
+        "tested_local_head": "aac592e3f",
+        "remote_checkpoint": "31507aaf20f5df5800c19d5046546372a222f8d4",
+        "tree": "0b62f31a19a7ca4373e00ecbd377c0f77964bdf3"
+      },
+      {
+        "tested_local_head": "5bb1b2e61",
+        "remote_checkpoint": "e57d220116674e61ff0d570aa0a39328c00edcae",
+        "tree": "65066192b32778a5270cfb626a3fe83e767ca9a3"
+      }
+    ],
+    "source_tree": "afff2091884141595bb11b3b44db9c31755912d5",
+    "highest_source_tree": "686ae19adae32291fc853b9c8e5d85590928d03a",
+    "highest_inheritance": "All222 Git compile dependencies unchanged by concurrent allocation; generated consistent-grid stub separately preserved. Original sealed B15 science/build/flags/oracles/budgets unchanged, only source admission and owned scratch prefix differ.24 complete configurations and144 fine comparisons; whole stdout O0/O2 identity.",
+    "required_qualification_gates": [
+      "Original invalid-input O0/O2",
+      "Provider/effect O0/O2",
+      "Bounded physical/retry/restart O0/O2",
+      "Independent33 quietNaN/+Inf/-Inf array/active-parameter atomic bit-preservation O0/O2",
+      "Complete six highest normal and low-air configurations O0/O2",
+      "Current combined full moving F-CI terminal exit0",
+      "Affected crop/weather/thermal/B19 and allocation-negative O0/O2",
+      "Immutable final archive and scoped crop census verification"
+    ],
+    "preservation_postimage_rule": "Full moving executed on5bb1b2e61, byte-equal remotee57d220. Final F-CI scientific body byte-identical after exactly two stronger immutable-archive preflight substitutions. Verify new archive/crop preflight separately, not a false claim that the final wrapper was invoked in the full run.",
+    "historical_negative": {
+      "tested_checkout": "f8e8f4333de07e408edd33e45982f84c4de8080b",
+      "merge_base": "7e35749e8348f6d4ef0b35b96c8b06cb216ea036",
+      "jobs": [
+        113190071392,
+        113190071460,
+        113190071477,
+        113193166360
+      ],
+      "attribution": "Old highest jobs fail source-tree assertion before execution; bounded and moving fail exact B19+MICRO production-tree admission. All four complete raw decoded logs remain negative.",
+      "canonical_predecessor": "a3859c89eaf97256a6330bb9f6370013c4a9e2f2",
+      "independent_O0_SIGFPE_exit": 136
+    },
+    "concurrent_admissions": {
+      "pr1205": {
+        "head": "075a30421c6ec24e682e01a3d5edb042d4bac61e",
+        "merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+        "archive": "e081429ec598b8a469dc45a7c5f3d59dcc5947da670d0ccfb10d903b7da9a165",
+        "all13_members_hash_verified": true,
+        "all10_nonrouting_postimages_retained": true,
+        "metadata_successors": [
+          "0d9f2c5da",
+          "1a159c316"
+        ],
+        "dependency_rule": "Seven later owner metadata/control files preserved verbatim. No production/test/fixture/reference drift; source remainsf79aebe0 before guard."
+      }
+    },
+    "shared_preservation_contract": {
+      "owner": "Central admission with PPA-WU05B and MC-CROP01 preservation",
+      "allowed": "Recognize only exact0dd5b541 invalid-input guard with complete immutable highest/current F-CI evidence; preserve every existing owner pin and scientific body. Scoped crop source census adds only this guard.",
+      "held_fixed": "Unknown production mutation fails closed. No crop/weather/irrigation application-interface implementation, no finite-input frost physics change.",
+      "required": "Current full F-CI, current affected crop/weather/thermal/B19 O0/O2, immutable highest source/dependency/output verification."
+    },
+    "retained_recovery_ancestry": "8dc07bf65fcc6d1cccc281f7b0b27599aa76cdf1",
+    "post_qualification_next_action": "Safe leased canonical admission, fetched tree/source verification, original PR closure, existing coverage receipt. Zero capability count delta."
+  },
+  "admitted": false,
+  "relevant_paths": [
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost/test_frost_invalid_input_preservation.f90",
+    "tests/frost/test_invalid_parameter_guard.f90",
+    "tests/frost/run_frost_invalid_input_preservation.sh"
+  ],
+  "test_paths": [
+    "tests/frost/run_frost_invalid_input_preservation.sh",
+    "tests/frost/run_ppa_wu05b_frost_effect.sh",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+    "tests/frost/test_invalid_parameter_guard.f90",
+    "tests/frost/run_frost_nan_guard_independent.sh",
+    "tests/frost/run_frost_nan_guard_highest_successor.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/fci/run_crop_file_weather_production_successor.sh",
+    "tests/fmig431/run_crop_file_weather_production.sh",
+    "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh"
+  ],
+  "local_focused_test": {
+    "command": "bash tests/frost/run_frost_invalid_input_preservation.sh",
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+    "result": "PASS current2026-10-11 exact original four blobs; O0/O2 complete output identity. Complete historical status retained in original archive postimage.",
+    "postimage_file_identities": [
+      "0dd5b541af936d292d23575f798c3cdd5be19c47",
+      "79a9a1dbd21f331077a53a423023221abe80435d",
+      "02eeaac0f934d8e06432bc40c6e2ceb24e97ab1e",
+      "a33e28b61147d665736831f23948eaac2939a20a"
+    ]
+  },
+  "next_action": "Verify complete immutable archive and crop source census; safe canonical admission/closure follow.",
+  "recovery_point": "8dc07bf65fcc6d1cccc281f7b0b27599aa76cdf1",
+  "blockers": [],
+  "last_verified_pr_head": "2f1b90d05746341ff9acfbf3276a8ee6d5a12b01",
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/development/SWAP5_PROJECT_CONTROL.md",
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "integration/audits/PPA_WU05B_STATUS.json"
+  ],
+  "evidence_paths": [
+    "integration/audits/evidence/FROST_NAN_GUARD_QUALIFICATION_20261011.tar.gz.b64"
+  ],
+  "dependency_surface": [
+    "Exact guard blob plus223-entry source-dependency-manifest.json in qualification archive",
+    "Sealed B15 science body and both highest fixtures/generated low-air grid",
+    "Current F-CI owner gates and scoped crop source census",
+    "Current physical/retry/restart, crop/weather/thermal/B19, allocation-negative fixtures"
+  ],
+  "historical_blocker_resolution": "Prior local missing provider/source/DNS blockers resolved by complete Git checkout. Old red admission pins remain negative, not relabelled science failures or green checks."
+}

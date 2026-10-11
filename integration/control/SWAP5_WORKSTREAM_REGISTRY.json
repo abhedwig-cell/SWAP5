@@ -2860,6 +2860,26 @@
   },
   "finalization_frost_regie_closeout_20261011": {
     "canonical_base": "0379282491bdc6b7de5ffb8efd0334967eeae880",
+    "nan_guard_admission": {
+      "pr": 1119,
+      "original_head": "2f1b90d05746341ff9acfbf3276a8ee6d5a12b01",
+      "canonical_base": "1a159c316a97e3870accce32f657f34bcaa59c8b",
+      "stage": "QUALIFIED_CURRENT_SOURCE_PRESERVED_PENDING_SAFE_CANONICAL_ADMISSION",
+      "owner": "PPA-WU05B frost; central canonical admission/preservation",
+      "record": "integration/audits/PPA_WU05B_NAN_GUARD_STATUS.json",
+      "archive": "integration/audits/evidence/FROST_NAN_GUARD_QUALIFICATION_20261011.tar.gz.b64",
+      "decoded_sha256": "f7b95b481c3d2f389647a52a74ce7f152b2c8dae365a6748d72df92537e5f316",
+      "archive_members": 90,
+      "highest_complete_configurations": 24,
+      "compile_dependency_entries": 223,
+      "qualified_source_tree": "afff2091884141595bb11b3b44db9c31755912d5",
+      "preservation": "Terminal current combined full moving F-CI5bb1b2e61/e57d220 exit0; original/provider/bounded/independent and both highest O0/O2; affected crop/weather/thermal/B19 and allocation-negative O0/O2; final immutable archive/crop census PASS. No changed scientific body, oracle, threshold or budget.",
+      "history": "All5 original postimages, all4 full old failed job logs and independent canonical O0 SIGFPE136 preserved. Original red checks remain negative. All tested checkpoint trees retained through8dc07bf65 ancestry.",
+      "concurrent_owner": "Retain #1205 allocation implementation/archive/fixtures/workflow and all7 later owner metadata/control files. Source unchanged sincecd530867; all222 highest Git compile dependencies equal. Root-free and rooted application proposals remain unimplemented under central RT/HY and MC-CROP01 owners.",
+      "fullcap_promotions": 0,
+      "aggregate_frost_migration_complete": false,
+      "next_action": "Safe leased canonical admission and original PR closure; fetched source/tree/archive verification and existing coverage receipts."
+    },
     "stage": "MECHANICAL_FINALIZER_ADMITTED_TWO_ORIGINAL_PR_CARRIERS_CLOSED",
     "archive": {
       "path": "integration/audits/evidence/FINALIZATION_FROST_REGIE_CLOSEOUT_20261011.tar.gz.b64",

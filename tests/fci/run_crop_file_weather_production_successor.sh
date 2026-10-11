@@ -18,6 +18,13 @@ test "$(git rev-parse HEAD:src/crop/mod_wofost_emergence_initialization.f90)" = 
 while IFS= read -r path; do
   case "$path" in
     src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90) ;;
+    src/process/mod_frost_hydraulic_effect.f90)
+      # Central bounded invalid-input successor, not crop science drift.
+      # Complete highest/current F-CI archive and affected crop owner O0/O2
+      # evidence are required; no allowance for an arbitrary frost postimage.
+      test "$(git rev-parse "HEAD:$path")" = 0dd5b541af936d292d23575f798c3cdd5be19c47 || fail "unqualified frost invalid-input successor: $path"
+      python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only || fail 'frost invalid-input qualified archive'
+      ;;
     src/runtime/mod_fmr_irrigation_allocation_binding.f90)
       # Disjoint MC-IRR01 successor. It is absent from the immutable crop
       # compile closure; full irrigation preservation owns its execution.
