@@ -112,9 +112,9 @@
         "integration/f-gc/F-GC50_STATUS.json remains the canonical product-integration authority and records external blocker FGC50-B1.",
         "PR #486 contains a noncanonical bounded CSR-01/CSR-02 repair plus completed semantic audit, but broad production admission is blocked by storage-partition and drainage-ownership authority."
       ],
-      "current_blocker": "CSR-B1-STORAGE-PARTITION requires explicit non-overlapping physical storage ownership between SWAP-derived u and MODFLOW STO or an overlap correction. CSR-B2-DRAINAGE-OWNERSHIP requires one owner per physical drainage path before authentic drainage admission.",
+      "current_blocker": "For broader application admission, CSR-B1 requires explicit storage-role/domain authority; the bounded fixed-interface profile already admits HEAD_STATE_CAPACITANCE, not additive physical MODFLOW STO. CSR-B2 requires an authoritative evaluator and donor/destination budget mapping per physical drainage path. Distinct paths may be owned by both SWAP and MODFLOW; duplicated evaluation or withdrawal of the same physical water is invalid. Active coupled drainage remains unadmitted.",
       "resolved_internal_blocker": "PPA-WU01 provides the restricted production-side Fortran/FMR owner required by F-GC49D.",
-      "next_gate": "Do not merge PR #486 yet. Resolve storage partition and drainage ownership authority, then requalify affected F-GC43-F-GC49 / PUB-GC consequences as bounded successors.",
+      "next_gate": "Do not merge PR #486 wholesale. Reconcile its historical unique delta with the admitted fixed-interface contract; declare actual application storage roles and drainage paths, then qualify route-specific runtime/topology, physical budgets, active response/tangents and joint retry/restart with affected owner/F-CI preservation. No Hupsel rerun or implicit production widening.",
       "open_prs": [
         486
       ],
@@ -135,7 +135,20 @@
           "CSR-B2-DRAINAGE-OWNERSHIP"
         ],
         "pub_gc_submission": "HELD",
-        "hupsel_rerun_authorized": false
+        "hupsel_rerun_authorized": false,
+        "route_authority_reconciliation_20261011": {
+          "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
+          "record": "integration/f-gc/F-GC_DRAINAGE_ROUTE_AUTHORITY_20261011.json",
+          "contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+          "checkpoint": "5c100884cacb1b69789c74152d91a882ffdf32dc",
+          "recovery_branch": "qualification/regie-drainage-route-authority-20261011",
+          "bounded_storage_resolution": "Existing canonical b70173f3 admits HEAD_STATE_CAPACITANCE with drainage NONE; independent/mixed physical storage remains outside that profile.",
+          "drainage_decision": "Allow SWAP and MODFLOW as evaluators of distinct explicitly identified physical paths. A receiver or reporting mirror is not a second evaluator. Keep one authoritative physical debit/receiving leg per accepted transfer.",
+          "qualification": "13 synthetic contract checks PASS; no real SWAP/MODFLOW drainage qualification or new production API.",
+          "physical_admission": "PENDING; actual path/domain mapping and selective implementation/physical qualification required",
+          "production_changed": false,
+          "pr486_and_pr528": "OPEN_UNCHANGED"
+        }
       }
     },
     {
