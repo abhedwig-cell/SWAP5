@@ -804,7 +804,10 @@
   },
   "perf02_e2e_regie_closeout_20261011": {
     "canonical_base": "669a75ff996938fd0538c715ec43fe93d06b74de",
-    "stage": "EVIDENCE_PRESERVED_READY_FOR_THREE_CARRIER_CLOSURES",
+    "stage": "THREE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",
+    "canonical_evidence_checkpoint": "73fa4fabb562946942c431f948b2082f65ef1ca6",
+    "canonical_evidence_tree": "4cb4217713230e8e95506eeb2cbbd939ae981676",
+    "closure_recovery_comments": {"986": 6107779714, "1003": 6107779932, "1007": 6107780208},
     "archive": "integration/audits/evidence/PERF02_E2E_REGIE_CLOSEOUT_20261011.tar.gz.b64",
     "decoded_archive_sha256": "1d69faf79329e8ca2cc389cf1a397c36481360dd478991c8e774ba42d0306ebe",
     "archive_verification": "26 original changed files from the three exact PR heads; decoded tar member content checked against original SHA256; original Git blobs are reconstructed by git hash-object. Original branches retained.",

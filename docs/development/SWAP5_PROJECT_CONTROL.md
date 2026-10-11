@@ -340,6 +340,8 @@ All 26 changed files of the exact three original heads are preserved in `integra
 
 Keep #1001 (unique measurement), #1005 (unique sequential host) and #1008 (active attribution) open under the performance owner. #1009 is a unique restricted SWINTER1 composition candidate, not superseded by SWINTER2/detailed-met admissions. Its simulated FMR result test does not establish physical execution; all ten frozen gates and current crop/runtime overlap must be adjudicated by PPA-WU04-C/MC-CROP01. #700 remains a historical 862-file nonadmission synchronization carrier requiring a PPA-owner census before any supersession. No wholesale production replay is safe.
 
+The three carriers #986, #1003 and #1007 are now closed after canonical evidence checkpoint `73fa4fabb562946942c431f948b2082f65ef1ca6` was fetched and its tree verified. Recovery comments are respectively `6107779714`, `6107779932` and `6107780208`.
+
 This round changes metadata and an evidence archive only. Production, scientific tests, references, tools and workflows equal the existing qualified canonical dependency surface; no numerical reruns, Actions or new capability-count promotions are justified. The owner-controlled and shared-authority blockers listed above remain open.
 
 ## MC-HEAT01 canonical admission (2026-10-11)
