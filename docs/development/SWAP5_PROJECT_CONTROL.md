@@ -580,3 +580,12 @@ These are the existing decisive gates for the remaining original owner candidate
 | #587 | PUB-GC scientific/editorial handoff | Consolidate unique fixed-interface theory/manual draft with #486 physical authority; handoff is not production or novelty qualification. |
 
 PUB-GC release/governance/archive/editorial R1/L1/A3/author metadata and42 placeholders remain release gates after mechanical #371 closure. Snow/thermal shared state/event timing, EB-I25/F-KT22 energy-ledger investigation, wider PUB-ME programme G1/G2/G3/G4/G5 and fullcap/application composition retain their existing separate authorities; no dummy research closure or PR count promotes those scientific dispositions.
+
+
+### MC-CROP01 authentic weather production admission candidate (2026-10-11)
+
+The existing application bootstrap now binds one authenticated daily weather-file record to hydrological forcing and crop daystart. Crop preflight consumes the previous accepted F-KT soil/thermal state before the next day's hydrology. Existing crop/WOFOST owners and the serialized runtime own physical commits, exactly-once publication and joint opaque restart; no parallel state owner is introduced.
+
+Current-source qualification completed: twelve O0/O2 four-day continuous/restored trajectories, physical thermal-sowing and hydraulic preparation, literal historical germination and immediate WOFOST initialization, hard mass acceptance, retry/rejection and pending/delivered restart. Full moving F-CI terminated successfully with 290 distinct PASS markers; current PPA-WU03 owner and preservation both terminated successfully. Exact heads, source blobs, raw logs and the initial negative helper-identity diagnostic are preserved in `integration/audits/MC_CROP01_FILE_WEATHER_PRODUCTION_STATUS.json` and its current-production evidence archive. The F-CI93 wrapper is restored to canonical; its actual selected native oracle branch was rerun on the restored wrapper.
+
+This qualifies the bounded root-free application API, not legacy CLI orchestration, delayed-emergence root/growth composition, harvest/rotation/fallow production or disk serialization. The four-node homogeneous soil is a qualification profile, not the Andelst reference soil trajectory. Historical task2 startup is implemented and focused-tested only on its separate recovery branch. MC-CROP01 remains ACTIVE; no master full-capability or global coverage count is promoted.
