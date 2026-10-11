@@ -1,0 +1,49 @@
+{
+  "workstream": "MC-CROP01",
+  "baseline": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
+  "canonical_reconciled": "e3b9685470639355e1899b95c25f9a7ddee15fe6",
+  "scope": "Actual file-weather application commits admit contiguous root-free physical intervals through existing WOFOST accepted-window owner; previous-day accepted window drives a pre-emergence crop transaction before current-day hydrology. Existing crop state supplies lifecycle delays and germination sum. Exact FKT committed receipt alone retires the window.",
+  "owners": [
+    "mod_kernel_transactions",
+    "mod_fmr_wofost_accepted_window_lineage",
+    "mod_fmr_wofost_crop_transaction",
+    "mod_fmr_wofost_crop_event_lifecycle",
+    "mod_crop_lifecycle_continuation",
+    "mod_crop_weather_day_owner"
+  ],
+  "interfaces": [
+    "bootstrap run_weather_crop_daystart orchestrates caller-owned existing crop executor/parameters/committed carrier; no additional crop state owner",
+    "bootstrap privately retains existing accepted-window objects; callers cannot construct or inject a window"
+  ],
+  "invariants": [
+    "Only actually accepted hydrology admits window contribution",
+    "All trial window compatibility checks precede physical commit",
+    "Rejected hydro and crop trials do not advance committed state or event delivery",
+    "Daystart is independent of same-day hydrology end acceptance",
+    "Persistent lifecycle values read from existing committed crop owner; no caller-set continuation proof"
+  ],
+  "limits": [
+    "Pre-emergence root-free profile only; no WOFOST growth/solar/radiation claim",
+    "Initial day has no preceding window; fail closed without manufactured interval; historical initial-day semantics remain open",
+    "No shared headed-surface physics changes",
+    "Joint continuation is opaque and serialization-neutral; an external disk codec is still required.",
+    "Full historical initial-day event, sticky hydraulic/thermal prep/sowing transitions, emerged growth and rotation/fallow are not qualified by the scheduled root-free profile."
+  ],
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "continuation_contract": {
+    "representation": "Opaque serialization-neutral application continuation; existing F-KT persistence snapshots retain the parameter certificate and owner provenance; immutable file source bytes, existing weather owner and accepted/delivered windows travel together.",
+    "configuration": "Private deep copy of the originally validated bounded file-weather configuration, not caller-reconstructed physical coefficients or numeric source IDs.",
+    "restore": "Only a fresh/closed application and an uninitialized crop carrier; all source snapshots validate before startup publication. No overwrite or rollback of a live owner.",
+    "scientific_scope": "Continuous next-day physical execution after disposal and restoration of the real application, crop carrier and bound crop executor. Not a disk codec or external archive format."
+  },
+  "local_source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
+  "local_production_commit": "79b7bb59295301fc6924721b1bbdb50ccac3b3d8",
+  "local_O0_O2": "PASS: continuous and joint-restored four-day execution identical, including full profile pressure/water/surface/ledger/Richards history and crop bits"
+}

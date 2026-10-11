@@ -40,7 +40,7 @@
     29,
     30
   ],
-  "contract": "Immutable daily file record constructs meteorology once at daystart and feeds both Tmin/Tmax/TAV crop preflight and rain/reference-ET hydrology. The existing weather owner and PPA-WU01 FKT committed state are reused. Existing default profiles keep their behaviour; enabled file-weather mode rejects unbound generic hydrology entrypoints. File I/O stays in an outer adapter. Explicit Gregorian model epoch binding, daily uniform rates, standalone mode7 root-free base profile. Candidate is read-only; no crop event or state publication claim. Exact input record rejects changing another field while preserving TAV. Daystart uses actual current accepted owner state before current-day hydrology; retries cannot increment a crop state.",
+  "contract": "Authentic file-weather production handoff plus live accepted-window/crop orchestration: actual accepted hydrology supplies previous-day WOFOST window; existing FKT/WOFOST crop owner commits preparation, scheduled sowing and germination sum at next daystart before same-day hydrology. Pending crop daystart cannot be bypassed. Failed trials retain state/event, accepted events retire exactly once. Private opaque joint continuation retains original immutable configuration/source bytes, weather owner, certified soil/crop FKT snapshots and accepted/delivered windows; restore creates fresh owners, never overwrites live owners. First model day remains warmup with no fabricated accepted event. No second state owner.",
   "blockers": [
     "Physical emergence, harvest, rotation/fallow and authoritative lifecycle state values still need existing crop-owner extensions and integration.",
     "No production weather+hydrology+crop unified restart yet.",
@@ -77,18 +77,43 @@
     "F_APP07": "PASS including 110-interval exact composition and MC-IRR01 sensor/SSDI O0/O2",
     "FCI93_current_replay": "FAILED legacy non-M1 headed surface fixture; flux Task2 assertions passed before failure",
     "B19_MICRO_current_scientific_successor": "PASS: certified FKT/sowing/hydrothermal, lifecycle and rotation, MICRO02/MICRO03 actual physics, B19 O0/O2 current source case1 byte identity",
-    "F_CI_exact_PR_merge_postimage": "running in isolated worktree with canonical as first parent",
-    "Actions": "not dispatched; no duplicate workflows started",
+    "F_CI_exact_PR_merge_postimage": "PASS locally and exact-head Actions for original PR1197 source; successor exact local full gate pending",
+    "Actions": "One PR trigger; existing owner and central runs completed. No new synchronize, manual dispatch or duplicate workflow for the live-window successor.",
     "PPA_WU03_current_owner": "PASS O0/O2 including prior PR1193 and PR1194 interval/two-day regressions",
     "PPA_WU03_independent": "PASS prior to no-bypass addition (default-off route unchanged); do not substitute for exact-head Actions",
     "evidence_path": "integration/audits/MC_CROP01_FILE_WEATHER_LOCAL_EVIDENCE.json"
   },
   "recovery_local_commit": "aa1e3a6a788db855c64004fee443042dcfa4f81a",
   "next_lifecycle_dependencies": [
-    "Bind opaque physical accepted receipts to the actual application hydro executor; certified receipt paths currently use a separate orchestration executor without a model.",
-    "Reuse existing WOFOST transaction lifecycle values at daystart instead of external temperature_sum/delay controls. Define initial accepted-state event semantics without requiring same-day end acceptance.",
-    "Extend existing crop lifecycle owner through emergence and harvest; its current continuation rejects already-emerged or harvested state and does not publish emergence.",
-    "Bind root, rotation and fallow execution through existing owners after full lifecycle state and accepted-event identity are admitted.",
-    "Persist and restore one coherent hydrology, weather-bytes/epoch, WOFOST/lifecycle and event-history bundle through existing restart services; whole in-memory weather equality is not a disk restart format."
-  ]
+    "Define historical first-day lifecycle publication against accepted initial soil through existing FKT/crop event authority; existing accepted-window event requires positive prior interval, so no fabricated window or same-day end dependence.",
+    "Finish hydraulic/thermal preparation/sowing continuation and emergence/growth via existing owners; current qualified profile is scheduled, pre-emergence, root-free.",
+    "Integrate authentic radiation/solar and detailed meteorology with WOFOST growth and root/heat owners, then harvest/rotation/fallow.",
+    "Encode/decode the coherent joint continuation via an admitted external disk adapter; preserve certified physical parameter identity and exact weather bytes/source epoch.",
+    "Resolve unchanged canonical FCI93 non-M1 headed surface preservation with the owning/central admission authority; original numerical assertions remain mandatory."
+  ],
+  "prior_exact_PR_qualification": {
+    "pr": 1197,
+    "head": "21e603dc0bd0d082ff6183dd4dc3f3b0d92878ae",
+    "merge_postimage": "104d7147edc00f34b0547789eaab69a91670f7f7",
+    "source_tree": "fb7e3e3d2b390ae3652c29b2b70c125d9dce41c5",
+    "owner_run": 38116821823,
+    "owner_O0_O2": "PASS",
+    "canonical_F_CI_run": 38116821737,
+    "moving_job": 114404251018,
+    "frozen_jobs": "all 14 PASS",
+    "moving_preservation": "PASS, exact scientific markers and source postimage verified",
+    "PPA_WU03_independent_and_owner": "PASS",
+    "PPA_preservation": "FAILED headed non-M1 fixture: surface-head derivative absent; all compiled physical source unchanged from canonical",
+    "admission": "BLOCKED; no failed gate waived"
+  },
+  "successor_local_source_tree": "83f2f0074846b6e91eeb3a1b2e675f02b454ff1a",
+  "successor_branch": "work/mc-crop01-live-window-20261011",
+  "successor_status": {
+    "implemented": true,
+    "persisted": "local Git committed; connector checkpoint next",
+    "tested": "PASS integrated four-day continuous/restored O0/O2, all four outputs identical",
+    "qualified": false,
+    "preserved": "full exact local central gate running",
+    "canonically_admitted": false
+  }
 }

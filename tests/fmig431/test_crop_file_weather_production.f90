@@ -5,7 +5,7 @@ program test_crop_file_weather_production
        FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t,fmr_b110_physical_state_t
+       fmr_b110_physical_forcing_t,fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t
   use mod_fmr_production_application_bootstrap, only: fmr_production_application_config_t, &
        fmr_production_application_bootstrap_t,fmr_application_crop_daystart_controls_t,FMR_APP_BOOT_OK, &
@@ -19,6 +19,23 @@ program test_crop_file_weather_production
   use mod_fmr_crop_certified_germination_moisture, only: sample_certified_committed_germination_head,CROP_CERT_GERM_OK
   use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_config_t
   use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
+  use mod_kernel_transactions, only: kernel_executor_t,kernel_result_t
+  use mod_kernel_committed_persistence, only: kernel_persistence_snapshot_t, &
+       export_kernel_committed_state,restore_kernel_committed_state,KERNEL_PERSISTENCE_OK, &
+       KERNEL_PERSISTENCE_TARGET_ALREADY_INITIALIZED
+  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_transaction_reference, only: transaction_state_t
+  use mod_fmr_wofost_crop_transaction, only: fmr_wofost_crop_transaction_state_t, &
+       fmr_wofost_crop_transaction_model_t, fmr_wofost_crop_transaction_parameters_t, &
+       initialize_fmr_wofost_crop_transaction_state, construct_fmr_wofost_crop_transaction_parameters, FMR_WOF38_OK
+  use mod_crop_lifecycle_continuation, only: crop_lifecycle_continuation_t
+  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t
+  use mod_wofost_rate_parameters
+  use mod_wofost_rate_table
+  use mod_wofost_one_day_structural_evolution, only: wofost_one_day_update_parameters_t
+  use mod_fmr_production_application_bootstrap, only: FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE, &
+       FMR_APP_BOOT_CROP_EVENT_DELIVERED,FMR_APP_BOOT_CROP_TRANSACTION_FAILED,FMR_APP_BOOT_INVALID_CONFIG,FMR_APP_BOOT_PROFILE_NOT_ADMITTED, &
+       fmr_weather_crop_application_continuation_t
   implicit none
   interface
     function b111_daily_tav(tmin,tmax) result(tav)
@@ -41,9 +58,28 @@ program test_crop_file_weather_production
   character(1024)::path,altered_path,bad_path,backup_path
   real(real64)::k,day,tmin,tmax,rain,etref,hgerm,before_time,previous_storage,initial_head
   integer::s,d,i
+  type(kernel_executor_t)::crop_kernel
+  type(fmr_wofost_crop_transaction_model_t),target::crop_model
+  type(fmr_wofost_crop_transaction_parameters_t)::crop_parameters,bad_crop_parameters
+  type(kernel_committed_state_t)::crop_committed,restored_crop
+  type(kernel_persistence_snapshot_t)::crop_restart
+  type(fmr_weather_crop_application_continuation_t)::application_restart,empty_restart
+  type(fmr_production_application_bootstrap_t)::restored_app
+  type(kernel_committed_state_t)::joint_crop,foreign_crop
+  class(transaction_state_t),allocatable::foreign_physical
+  character(32)::continuation_mode
+  type(canonical_numerical_config_t)::crop_config
+  type(kernel_result_t)::crop_result
+  type(crop_lifecycle_continuation_t)::lifecycle
+  real(real64)::accepted_germination_sum
   logical::available
   call get_command_argument(1,path);call get_command_argument(2,altered_path);call get_command_argument(3,bad_path)
   call get_command_argument(4,backup_path)
+  call get_command_argument(5,continuation_mode)
+  call require(trim(continuation_mode)=='continuous'.or.trim(continuation_mode)=='restart','explicit replay mode')
+  call restored_app%restore_weather_crop_continuation(empty_restart,joint_crop,s)
+  call require(s==FMR_APP_BOOT_INVALID_CONFIG.and..not.restored_app%ready().and..not.joint_crop%ready(), &
+       'empty joint continuation cannot initialize owners')
   call require(swap_weather_calendar_day(1999,1,20)==729774,'explicit Gregorian epoch')
   call require(swap_weather_calendar_day(2000,2,29)>0.and.swap_weather_calendar_day(1900,2,29)==0,'leap calendar')
   call read_swap_daily_weather_file(trim(bad_path),1999,1,20,record,s)
@@ -81,7 +117,10 @@ program test_crop_file_weather_production
   call app%initialize(config,s);call require(s==FMR_APP_BOOT_OK,'production bootstrap')
   call app%run_standalone(T0,T1,results,s)
   call require(s==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(results),'enabled file-weather path rejects unbound hydrology bypass')
-  controls%germ_mode=2
+  call initialize_crop(crop_committed,crop_parameters,crop_config)
+  call crop_kernel%bind_model(crop_model)
+  accepted_germination_sum=0.0_real64
+  controls%germ_mode=2;controls%optimal_sum=10.0_real64
   controls%zprep=-1.0_real64;controls%zsow=-1.0_real64
   controls%ztempsow=-1.0_real64;controls%zgerm=-1.0_real64
   call app%begin_weather_day(empty,controls,candidate,s)
@@ -115,6 +154,41 @@ program test_crop_file_weather_production
     call app%begin_weather_day(record,controls,repeated,s)
     call require(s==FMR_APP_BOOT_OK.and.repeated%germination%next_temperature_sum== &
          candidate%germination%next_temperature_sum,'retry daystart does not double-add')
+    ! The first day has no prior accepted hydro window. No manufactured
+    ! physical event is published. Subsequent daystart executes existing
+    ! crop transaction ownership before today's hydrological acceptance.
+    if(d==20) then
+      call app%run_weather_crop_daystart(record,controls,crop_kernel,crop_parameters, &
+           crop_config,crop_committed,crop_result,s)
+      call require(s==FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE.and.crop_committed%current_revision()==0_int64, &
+           'initial day has no fictitious hydro event')
+    else
+      bad_controls=controls
+      ! These deliberately wrong caller values must be ignored for live
+      ! continuation: the existing committed crop state is authoritative.
+      bad_controls%temperature_sum=999.0_real64
+      bad_controls%prep_delay=99;bad_controls%sow_delay=99
+      call app%run_weather_crop_daystart(record,bad_controls,crop_kernel,bad_crop_parameters, &
+           crop_config,crop_committed,crop_result,s)
+      call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and.crop_committed%current_revision()==int(d-21,int64), &
+           'failed crop trial leaves accepted state and event delivery unchanged')
+      call app%run_weather_interval(record,day,day+1.0_real64/64.0_real64,forcing_config,canopy,results,s)
+      call require(s==FMR_APP_BOOT_CROP_TRANSACTION_FAILED.and..not.allocated(results), &
+           'pending crop daystart cannot be bypassed by current-day hydrology')
+      call app%run_weather_crop_daystart(record,bad_controls,crop_kernel,crop_parameters, &
+           crop_config,crop_committed,crop_result,s)
+      call require(s==FMR_APP_BOOT_OK.and.crop_result%completed,'live physical crop event committed')
+      call read_lifecycle(crop_committed,lifecycle)
+      accepted_germination_sum=accepted_germination_sum+max(0.0_real64,b111_daily_tav(tmin,tmax))
+      call require(lifecycle%revision==int(d-20,int64).and.lifecycle%prepared.and.lifecycle%sown.and. &
+           lifecycle%germination_temperature_sum==accepted_germination_sum.and. &
+           lifecycle%preparation_delay==0.and.lifecycle%sowing_delay==0,'existing crop continuation owns actual values')
+      call require(lifecycle%germinated.eqv.(d>=22),'physical germination threshold reached and retained')
+      call app%run_weather_crop_daystart(record,bad_controls,crop_kernel,crop_parameters, &
+           crop_config,crop_committed,crop_result,s)
+      call require(s==FMR_APP_BOOT_CROP_EVENT_DELIVERED.and.crop_committed%current_revision()==int(d-20,int64), &
+           'accepted crop event published exactly once')
+    end if
     if(d==20) then
       call require(candidate%germination%next_temperature_sum==(7.7_real64+3.2_real64)*0.5_real64, &
            'literal historical temperature sum from actual first source day')
@@ -183,6 +257,54 @@ program test_crop_file_weather_production
       call app%run_weather_interval(old_record,day+1.0_real64,day+1.5_real64,forcing_config,canopy,results,s)
       call require(s==FMR_APP_BOOT_WEATHER_REJECTED,'old meteorology rejected after accepted midnight')
     end if
+    if(d==22) then
+      ! Existing opaque F-KT persistence creates a new crop carrier with all
+      ! committed owner fields and the physical event history. The weather
+      ! and hydro application is deliberately not claimed as disk-restarted.
+      call export_kernel_committed_state(crop_committed,904001_int64,crop_restart,available,s)
+      call require(available.and.s==KERNEL_PERSISTENCE_OK,'actual accepted crop persistence export')
+      call restore_kernel_committed_state(crop_restart,904001_int64,crop_committed,available,s)
+      call require(.not.available.and.s==KERNEL_PERSISTENCE_TARGET_ALREADY_INITIALIZED, &
+           'restart cannot overwrite live authoritative crop state')
+      call restore_kernel_committed_state(crop_restart,904001_int64,restored_crop,available,s)
+      call require(available.and.s==KERNEL_PERSISTENCE_OK,'actual accepted crop continuation restore')
+      call read_lifecycle(restored_crop,lifecycle)
+      call require(lifecycle%germinated.and.lifecycle%revision==2_int64.and. &
+           lifecycle%germination_temperature_sum==accepted_germination_sum,'crop restart retains physical lifecycle')
+      crop_committed=restored_crop
+      call crop_committed%snapshot(foreign_physical,available)
+      call require(available,'foreign paired-source negative crop snapshot')
+      call foreign_crop%initialize(999_int64,foreign_physical,available,day)
+      call require(available,'foreign same-time crop owner constructed by existing FKT')
+      call app%capture_weather_crop_continuation(foreign_crop,empty_restart,s)
+      call require(s==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'foreign crop lineage cannot join accepted hydro history')
+      call app%capture_weather_crop_continuation(crop_committed,application_restart,s)
+      call require(s==FMR_APP_BOOT_OK,'joint actual accepted source/weather/hydro/crop/window capture')
+      call app%restore_weather_crop_continuation(application_restart,joint_crop,s)
+      call require(s==FMR_APP_BOOT_INVALID_CONFIG.and..not.joint_crop%ready().and.app%ready(), &
+           'joint restore never overwrites a live application')
+      call restored_app%restore_weather_crop_continuation(application_restart,joint_crop,s)
+      call require(s==FMR_APP_BOOT_OK.and.restored_app%ready(),'joint fresh application restore')
+      call restored_app%copy_committed_for_crop(1,soil,s)
+      call soil%current_time(before_time,available)
+      call require(s==FMR_APP_BOOT_OK.and.available.and.before_time==day+1.0_real64.and. &
+           soil%current_revision()==192_int64,'restored actual hydrology time/revision')
+      call read_lifecycle(joint_crop,lifecycle)
+      call require(lifecycle%germinated.and.lifecycle%germination_temperature_sum==accepted_germination_sum, &
+           'joint restored crop germination state')
+      call restored_app%close(s)
+      call require(s==FMR_APP_BOOT_OK,'temporary restored owner disposed without overwriting reference')
+      if(trim(continuation_mode)=='restart') then
+        call app%close(s)
+        call require(s==FMR_APP_BOOT_OK,'real production application disposed for continuation')
+        crop_committed=kernel_committed_state_t()
+        crop_kernel=kernel_executor_t()
+        crop_model=fmr_wofost_crop_transaction_model_t()
+        call crop_kernel%bind_model(crop_model)
+        call app%restore_weather_crop_continuation(application_restart,crop_committed,s)
+        call require(s==FMR_APP_BOOT_OK,'real production and crop owners recreated from joint continuation')
+      end if
+    end if
     old_record=record
     write(*,'(a,i2,a,f10.5,a,f12.7)') 'CROP_FILE_WEATHER_DAY=',d,' TAV=',(tmax+tmin)*0.5_real64, &
          ' HEAD=',hgerm
@@ -191,14 +313,157 @@ program test_crop_file_weather_production
   call sample_certified_committed_germination_head(soil,soil%current_lineage_id(), &
        soil%current_revision(),T0+4.0_real64,controls%zgerm,hgerm,s)
   call require(s==CROP_CERT_GERM_OK.and.abs(hgerm-initial_head)>1.0e-6_real64,'physical soil trajectory actually changes')
+  call print_exact_postimage(soil,crop_committed,previous_storage)
   call app%close(s);call require(s==FMR_APP_BOOT_OK,'production owner close')
   print '(a)', 'CROP_FILE_WEATHER_AUTHENTIC_SHARED_RECORD=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRIOR_ACCEPTED_DAYSTART=PASS'
   print '(a)', 'CROP_FILE_WEATHER_FOUR_DAY_PHYSICAL_MASS_CONTINUITY=PASS'
   print '(a)', 'CROP_FILE_WEATHER_RETRY_CONFLICT_DUPLICATE=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PHYSICAL_REJECT_ROLLBACK=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_LIVE_FKT_WINDOW=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_PHYSICAL_CROP_CONTINUATION=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_PHYSICAL_GERMINATION=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_CROP_CONTINUATION_RESTORE=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_JOINT_OPAQUE_CONTINUATION=PASS'
+  print '(a)', 'CROP_FILE_WEATHER_CROP_REJECT_RETRY_EXACTLY_ONCE=PASS'
   print '(a)', 'CROP_FILE_WEATHER_PRODUCTION=PASS'
 contains
+  subroutine print_exact_postimage(soil,crop,storage)
+    type(kernel_committed_state_t),intent(in)::soil,crop
+    real(real64),intent(in)::storage
+    class(transaction_state_t),allocatable::physical
+    real(real64),allocatable::derivative(:)
+    type(crop_lifecycle_continuation_t)::value
+    logical::ok
+    integer::i
+    call soil%snapshot(physical,ok)
+    call require(ok,'exact hydro postimage snapshot')
+    select type(physical)
+    type is(fmr_b110_temporal_indicator_state_t)
+      do i=1,physical%active_nodes
+        write(*,'(a,i0,2(1x,z16.16))') 'CROP_FILE_WEATHER_SOIL_BITS=',i, &
+             transfer(physical%pressure_head(i),0_int64),transfer(physical%water_content(i),0_int64)
+      end do
+      write(*,'(a,3(1x,z16.16))') 'CROP_FILE_WEATHER_SURFACE_LEDGER_BITS=', &
+           transfer(physical%ponding_depth,0_int64),transfer(physical%groundwater_level,0_int64),transfer(storage,0_int64)
+      call physical%temporal_history_snapshot(derivative,ok)
+      call require(ok,'exact Richards physical history postimage')
+      do i=1,size(derivative)
+        write(*,'(a,i0,1x,z16.16)') 'CROP_FILE_WEATHER_HISTORY_BITS=',i,transfer(derivative(i),0_int64)
+      end do
+    class default
+      call require(.false.,'complete actual physical profile postimage type')
+    end select
+    call read_lifecycle(crop,value)
+    write(*,'(a,4(1x,i0),1x,z16.16,5(1x,l1))') 'CROP_FILE_WEATHER_CROP_BITS=', &
+         crop%current_lineage_id(),crop%current_revision(),value%revision,value%crop_identity, &
+         transfer(value%germination_temperature_sum,0_int64), &
+         value%prepared,value%sown,value%germinated,value%emerged,value%harvested
+  end subroutine
+  subroutine initialize_crop(committed,parameters,numerical)
+    type(kernel_committed_state_t),intent(out)::committed
+    type(fmr_wofost_crop_transaction_parameters_t),intent(out)::parameters
+    type(canonical_numerical_config_t),intent(out)::numerical
+    type(wofost_crop_owner_state_t)::owner
+    type(crop_lifecycle_continuation_t)::initial
+    type(fmr_wofost_crop_transaction_state_t)::state
+    type(wofost_rate_parameter_bundle_t)::bundle
+    type(wofost_one_day_update_parameters_t)::update
+    class(transaction_state_t),allocatable::physical
+    integer::s
+    logical::ok
+    initial%valid=.true.;initial%crop_identity=1_int64
+    call initialize_fmr_wofost_crop_transaction_state(owner,state,s,lifecycle_initial=initial)
+    call require(s==FMR_WOF38_OK,'existing crop state initialization')
+    allocate(fmr_wofost_crop_transaction_state_t::physical)
+    select type(physical)
+    type is(fmr_wofost_crop_transaction_state_t)
+      physical=state
+    end select
+    call committed%initialize(931_int64,physical,ok,0.0_real64)
+    call require(ok,'existing crop FKT carrier initialization')
+    call make_bundle(bundle)
+    call construct_fmr_wofost_crop_transaction_parameters(bundle,update,0.0_real64,0.0_real64,parameters,s)
+    call require(s==FMR_WOF38_OK,'existing WOFOST parameters ready')
+    numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    numerical%transaction%temporal_tolerance=0.0_real64
+    numerical%transaction%mass_tolerance=0.0_real64
+    numerical%transaction%max_retries=0
+    numerical%max_committed_substeps=1
+  end subroutine
+  subroutine read_lifecycle(committed,value)
+    type(kernel_committed_state_t),intent(in)::committed
+    type(crop_lifecycle_continuation_t),intent(out)::value
+    class(transaction_state_t),allocatable::physical
+    logical::ok
+    call committed%snapshot(physical,ok)
+    call require(ok,'accepted crop snapshot')
+    select type(physical)
+    type is(fmr_wofost_crop_transaction_state_t)
+      call physical%snapshot_lifecycle(value,ok)
+      call require(ok.and.physical%receipt_ready(),'accepted lifecycle and event receipt')
+    class default
+      call require(.false.,'accepted crop state type')
+    end select
+  end subroutine
+  subroutine make_bundle(bundle)
+    type(wofost_rate_parameter_bundle_t), intent(out) :: bundle
+    type(wofost_rate_scalar_parameters_t) :: scalar
+    type(wofost_rate_parameter_tables_t) :: tables
+    integer :: status
+
+    scalar = wofost_rate_scalar_parameters_t()
+    scalar%development_daylength_mode = 1
+    scalar%daylength_upper_hours = 16.0_real64
+    scalar%daylength_lower_hours = 8.0_real64
+    scalar%vegetative_temperature_sum_required = 1000.0_real64
+    scalar%generative_temperature_sum_required = 800.0_real64
+    scalar%diffuse_extinction_coefficient = 0.6_real64
+    scalar%initial_light_use_efficiency = 0.45_real64
+    scalar%co2_to_dry_matter_fraction = 0.4_real64
+    scalar%attainable_yield_multiplier = 0.9_real64
+    scalar%conversion_efficiency_root = 0.7_real64
+    scalar%conversion_efficiency_stem = 0.65_real64
+    scalar%conversion_efficiency_leaf = 0.72_real64
+    scalar%conversion_efficiency_storage = 0.8_real64
+    scalar%respiration_temperature_q10 = 2.0_real64
+    scalar%maintenance_respiration_root = 0.01_real64
+    scalar%maintenance_respiration_leaf = 0.02_real64
+    scalar%maintenance_respiration_stem = 0.015_real64
+    scalar%maintenance_respiration_storage = 0.005_real64
+    scalar%maximum_leaf_relative_death_rate = 0.03_real64
+    scalar%leaf_age_base_temperature = 0.0_real64
+    scalar%maximum_relative_lai_growth_rate = 0.04_real64
+
+    call constant_table(10.0_real64, tables%temperature_sum_increment)
+    call constant_table(30.0_real64, tables%maximum_assimilation)
+    call constant_table(1.0_real64, tables%daytime_temperature_factor)
+    call constant_table(1.0_real64, tables%minimum_temperature_factor)
+    call constant_table(1.0_real64, tables%maintenance_respiration_factor)
+    call constant_table(0.2_real64, tables%root_partition_fraction)
+    call constant_table(0.4_real64, tables%leaf_partition_fraction)
+    call constant_table(0.4_real64, tables%stem_partition_fraction)
+    call constant_table(0.2_real64, tables%storage_partition_fraction)
+    call constant_table(0.01_real64, tables%relative_root_death_rate)
+    call constant_table(0.01_real64, tables%relative_stem_death_rate)
+    call constant_table(0.02_real64, tables%specific_leaf_area)
+
+    call construct_wofost_rate_parameter_bundle(scalar, tables, bundle, status)
+    call require(status == WOFOST_RATE_PARAMETER_OK, 'rate parameter bundle status')
+    call require(bundle%ready(), 'rate parameter bundle ready')
+  end subroutine make_bundle
+
+  subroutine constant_table(value, table)
+    real(real64), intent(in) :: value
+    type(wofost_rate_table_t), intent(out) :: table
+    real(real64) :: x(1), y(1)
+    integer :: status
+    x = [0.0_real64]
+    y = [value]
+    call construct_wofost_rate_table(x, y, table, status)
+    call require(status == WOFOST_RATE_TABLE_OK, 'constant rate table')
+  end subroutine constant_table
+
   subroutine copy_input_file(source,target)
     character(*),intent(in)::source,target
     character(:),allocatable::bytes
