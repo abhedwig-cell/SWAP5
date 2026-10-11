@@ -466,19 +466,25 @@ contains
     type(fmr_irrigation_allocation_t)::provider,changed
     type(fmr_allocated_irrigation_state_t)::state,after,resumed
     type(fmr_serialized_column_result_t),allocatable::r(:),rr(:),control(:)
-    integer::st,timing,nodes
-    real(real64)::first_in,total_in,time
+    integer::st,timing,nodes,weather_day
+    real(real64)::first_in,total_in,time,weather_ordinal,weather_min,weather_max,weather_rain,weather_et
     integer(int64)::revision
     logical::ok
     class(transaction_state_t),allocatable::left,right
     real(real64),allocatable::ld(:),rd(:)
     call make_bundle(bundle)
     c%swprep=0;c%swsow=0;c%germ_mode=0;c%zgerm=-1.0_real64
-    call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
+    do weather_day=20,21
+    call read_swap_daily_weather_file(trim(path),1999,1,weather_day,wr,st)
     call require(st==SWAP_WEATHER_FILE_OK,'managed authentic owner weather')
+    call wr%values(weather_ordinal,weather_min,weather_max,weather_rain,weather_et,ok)
+    call require(ok.and.weather_et>0.0_real64,'managed authentic evaporation demand')
+    if(weather_day==20) call require(weather_rain==0.0_real64,'authentic rain-free management case')
+    if(weather_day==21) call require(weather_rain==1.4_real64,'authentic concurrent rain management case')
     do timing=7,8
       do nodes=1,3,2
         cfg=config
+        cfg%file_weather_epoch_day=swap_weather_calendar_day(1999,1,weather_day)
         ! The older steady fixture has a separate balancing irrigation source.
         ! Managed weather owns its source; use an explicitly zero initial source.
         cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0.0_real64
@@ -595,10 +601,11 @@ contains
         call require(abs(after%receipt%event_end-.15_real64)<1.0e-14_real64.and. &
              after%receipt%allocation%fraction==.25_real64,'new event selected fraction and duration')
 
-        print '(A,2I3,A,ES24.16)','MC_IRR01_MANAGED_WEATHER_CASE=',timing,nodes,' TOTAL_IN=',total_in
+        print '(A,3I3,A,ES24.16)','MC_IRR01_MANAGED_WEATHER_CASE=',weather_day,timing,nodes,' TOTAL_IN=',total_in
         call a%close(st);call b%close(st);call baseline%close(st)
         cs=kernel_committed_state_t();rs=kernel_committed_state_t();control_crop=kernel_committed_state_t()
       end do
+    end do
     end do
     bad=cfg;bad%irrigation%depth%depth_criterion=1
     call invalid%initialize(bad,st);call require(st==FMR_APP_BOOT_PROFILE_NOT_ADMITTED,'rooted DCS1 held closed')

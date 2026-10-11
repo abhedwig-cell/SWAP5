@@ -360,11 +360,11 @@
     "branch": "work/mc-irr01-managed-weather-20261011",
     "implemented": true,
     "persisted": true,
-    "tested": true,
+    "tested": false,
     "qualified": false,
     "canonical_admitted": false,
     "central_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#central_interface_decision",
-    "next_action": "Complete existing low-air highest O0/O2; persist complete highest archive; run full current moving F-CI; then safe central admission and bounded master reconciliation.",
+    "next_action": "Persist rain-present fixture then focused O0/O2 while existing highest O2 completes; complete archive and full F-CI.",
     "test_paths": [
       "tests/f-app07/run_mc_irr01_managed_weather.sh",
       "tests/f-app07/test_mc_irr01_managed_weather.f90"
@@ -380,6 +380,8 @@
     "highest_low_air_result": "RUNNING existing local session82127; no second run",
     "full_fci_result": "NOT_STARTED waits complete highest archive",
     "reconciled_live_canonical": "22d99c734bb119a1b99275ae8595f7d35f0ca678",
-    "canonical_delta": "Only registry/project control historical recovery archive/tool; source/tests/owner postimages unchanged"
+    "canonical_delta": "Only registry/project control historical recovery archive/tool; source/tests/owner postimages unchanged",
+    "pre_rain_extension_tested_head": "66a3936db91053e9795c71e533559583d07e31f5",
+    "rain_extension": "Same actual production matrix now adds authenticated Jan21 1.4mm rain with positive ET; previous Jan20 had zero rain. Source and both highest compile closures unchanged; updated fixture O0/O2 pending."
   }
 }

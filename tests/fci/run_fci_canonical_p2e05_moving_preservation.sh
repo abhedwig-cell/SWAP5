@@ -464,7 +464,7 @@ verify_mc_irr01_owner_successor() {
     bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'
     echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS'
     test "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" = d3a0719dfd5c7fb7a0061502c56fe4eede1ca9de || fail 'managed-weather bootstrap identity'
-    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_managed_weather.f90)" = b55b6f024b6df0ee75721c727aa95fa1ed1c45b7 || fail 'managed-weather fixture identity'
+    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_managed_weather.f90)" = c0e0a88b9814322b8f12071df7c8757091db4688 || fail 'managed-weather fixture identity'
     bash tests/f-app07/run_mc_irr01_managed_weather.sh || fail 'managed weather bootstrap physical/joint restart'
     echo 'FCI_CANONICAL_MC_IRR01_MANAGED_WEATHER_SUCCESSOR=PASS'
 
