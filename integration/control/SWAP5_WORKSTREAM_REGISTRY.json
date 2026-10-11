@@ -802,6 +802,28 @@
     "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
     "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43"
   },
+  "frozen_research_regie_closeout_20261011": {
+    "canonical_base": "3d326d8fef3529d7a65737d9e4af0c86a41f06f8",
+    "stage": "FOUR_OWNER_CLOSED_OR_FROZEN_CARRIERS_EVIDENCE_PRESERVED_READY_FOR_PR_CLOSURE",
+    "archive": "integration/audits/evidence/FROZEN_RESEARCH_REGIE_CLOSEOUT_20261011.tar.gz.b64",
+    "decoded_archive_sha256": "8df53b50c76c00f9a988138e680e93f989f0a339091616f9c80b2034c567cd89",
+    "archive_verification": "All 90 original changed files from four exact PR heads, including cumulative ELASTIC46-57B research lineage. Decode/extract verifies each original Git blob and SHA256. Original branches retained; no research source or workflow is imported into executable canonical paths.",
+    "closure_candidates": [
+      {"pr": 670, "head": "5dc280bab40abcb3393f05079609f25a6232476a", "owner": "F-PE MultiSWAP performance / trusted-host operator", "disposition": "OWNER_CLOSED_HOST_CAPACITY_BLOCKED", "authority": "docs/performance/F-PE-MULTI05_CLOSEOUT.md at exact original head", "archived_files": 6, "claim_boundary": "Production worker default1/admitted2/4 unchanged; oversubscribed8/12/16/24 results do not qualify real-core scaling.", "reentry": "Owner reopens only with trusted swap5-highcore execution host; preserve frozen harness, exact q/tangent checksums and oversubscription classification. No self-hosted workflow dispatch authorized by this closeout."},
+      {"pr": 897, "head": "cab8817de055794c858ae480b315d7da9eeab8c9", "owner": "F-PE ELASTIC controller research", "disposition": "COMPLETED_QUALIFIED_BOUNDED_RESEARCH_CARRIER", "authority": "docs/performance/F-PE-ELASTIC57B_RESULT.md at exact original head; run36707407177 job109860824691", "archived_files": 68, "claim_boundary": "Research-only nine-step ladder, eight retries, exact C-SAFE/C-BOUNDED equivalence; no production admission or independent temporal budget.", "reentry": "Separate owner work unit must establish independent physical temporal budget and transaction policy; do not reopen completed monotonicity finding without new dependency evidence."},
+      {"pr": 912, "head": "970b3f589bf20fcfd75726344d34b5266e3db1d1", "owner": "F-PE ELASTIC peat-source research", "disposition": "COMPLETED_NEGATIVE_SOURCE_FEASIBILITY_SUPERSEDED_BY_FROZEN_PR915", "authority": "docs/performance/F-PE-ELASTIC72A_PEAT_SOURCE_RESULT.md at exact original head; run36760261048 job110040720986", "archived_files": 4, "claim_boundary": "DIRECT_BHRGT_PEAT_ROUTE_INSUFFICIENT; five high-organic non-peat intervals descriptive only. No post-hoc peat relabeling or automatic peat ELAS assignment.", "reentry": "Use frozen ELASTIC72B source-access/identifiability route only if its explicit reopening criteria are satisfied."},
+      {"pr": 915, "head": "f8b7fd5181029e833d716e31ff6a78a9c5211df1", "owner": "F-PE ELASTIC peat research / prioritization authority", "disposition": "FROZEN_NOT_ACTIVE_NO_CURRENT_ACTION_REQUIRED", "authority": "docs/performance/F-PE-ELASTIC72B_RESEARCH_FREEZE_2026-09-30.md at exact original head", "archived_files": 12, "claim_boundary": "PEAT_ELAS_LINE_FROZEN_LOW_CURRENT_PRIORITY; not an active admission blocker or evidence that peat elasticity is absent.", "reentry": "Only material application sensitivity, low-cost available raw NOBV data, unexplained mass/storage error or new decision-relevant independent evidence. More time or runner capacity alone is insufficient; no acquisition, fitting or Actions while frozen."}
+    ],
+    "retained_owner_controlled_candidates": [
+      {"pr": 953, "head": "76067cced09715e42220301d2410656851ec7013", "owner": "SW-RIB TOP02/TOP03 shared surface admission authority", "class": "QUALIFIED_COMPONENT_NOT_PRODUCTION_ADMISSION_READY", "authority": "TOP02 O0/O2 run36879950150 job110428879694, recovery comment5934059796", "blocker": "TOP03 transaction and exactly-once mass publication remain required; do not merge external-head provider in isolation."},
+      {"pr": 956, "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d", "owner": "SW-RIB TOP03 surface/contact with Richards numerical and restart authorities", "class": "UNIQUE_ACTIVE_RESEARCH_NOT_ADMISSION_READY", "blocker": "Research contact/nearsaturation probes are not production-qualified. Accepted-window carrier, external body/storage ownership, rollback/Restart v1, transient acceptance, calibration and full production preservation remain open. No research discriminator/Jacobian patch admitted."},
+      {"pr": 1001, "head": "162dd96e95d138b2750888fbbb79b411d0dee007", "owner": "PPA-WU05-C3A performance", "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"},
+      {"pr": 1005, "head": "6e0b78a8876c3878cf7daddc477a0daec000ba1e", "owner": "PPA-WU05-C3A performance", "class": "UNIQUE_RESEARCH_KEEP_OPEN_NO_EXPLICIT_FINAL_OWNER_CLOSEOUT"}
+    ],
+    "preservation": "Metadata/evidence-only. src/tests/reference/tools/workflows/assets unchanged from canonical3d326d8fe; inherit existing exact dependency-surface qualification, no new numerical rerun or Actions justified.",
+    "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS; frozen peat line is deliberately inactive, not a missing production requirement.",
+    "next_action": "After verified canonical evidence persistence close four original carriers, record recovery comment IDs, verify final canonical and PR states; leave unique active specialized work untouched."
+  },
   "perf02_e2e_regie_closeout_20261011": {
     "canonical_base": "669a75ff996938fd0538c715ec43fe93d06b74de",
     "stage": "THREE_CARRIERS_CLOSED_EVIDENCE_CANONICALLY_PRESERVED",

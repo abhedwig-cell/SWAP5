@@ -330,6 +330,23 @@ Owner run `38122332488` and F-CI run `38122332557` completed successfully on sci
 
 The physical witness is limited to twelve initial, forcing-consistent 4.8e-8 cm impulses. It does not establish realistic-rate forcing transitions, whole-run restart or general rainfall/evaporation composition. Five #1195 capability admissions remain; eleven full capabilities remain ACTIVE_MIGRATION. The F-KT owner must qualify the event forcing-history interface; MC-CROP01 supplies crop/root lifecycle authority and MC-SOL01 supplies accepted sensor concentration authority. The exact remaining gates are in `integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json`. Master owner PR #1072 receives a bounded annotation delta with no disposition/count promotion.
 
+## Frozen and completed research-carrier closeout (2026-10-11)
+
+Reconciled at canonical `3d326d8fef3529d7a65737d9e4af0c86a41f06f8`. Four original owner records already establish a completed or inactive bounded work unit, without production admission:
+
+| PR | Owner disposition | Remaining requirement / owner |
+|---|---|---|
+| #670 MULTI05 | `CLOSED_HOST_CAPACITY_BLOCKED` | Trusted-host operator supplies a real high-core host before frozen scaling research can reopen. Production default1/admitted2/4 stays unchanged; oversubscription is not real-core evidence. |
+| #897 ELASTIC57B | Completed qualified research-controller question | ELASTIC owner separately establishes a physical temporal budget and production transaction policy. The finite nine-step/eight-retry result is not production acceptance. |
+| #912 ELASTIC72A | Qualified negative source-feasibility result | Direct BHR-GT peat calibration route is closed; five high-organic intervals remain descriptive. Successor #915 is frozen, not active missing production. |
+| #915 ELASTIC72B | `FROZEN_NOT_ACTIVE` | No active action/blocker. Reopen only under the explicit owner sensitivity/data/mass-error/new-evidence criteria, not because more time or runner capacity becomes available. |
+
+The complete 90-file original deltas, including the cumulative ELASTIC46-57B lineage, are preserved in `integration/audits/evidence/FROZEN_RESEARCH_REGIE_CLOSEOUT_20261011.tar.gz.b64`; decoded SHA256 `8df53b50c76c00f9a988138e680e93f989f0a339091616f9c80b2034c567cd89`. Every extracted member matches its original Git blob and SHA256. Original branches remain intact. Archival workflow/source files are evidence only and are not added to executable canonical paths. Exact heads, gates, claim boundaries and reopen conditions remain in the existing workstream registry.
+
+TOP02 #953 remains a qualified component waiting for TOP03 transaction and exactly-once mass publication. TOP03 #956 remains unique owner-controlled contact/surface/numerical research, not production admission: accepted-window, external storage ownership, rollback/Restart v1, transient acceptance, calibration and complete preservation remain open. Research Jacobian/discriminator artifacts cannot be imported as production repairs. #1001 and #1005 remain unique research without explicit final owner closeout.
+
+This is metadata/evidence-only reconciliation with zero capability admissions and zero new Actions. Scientific dependency trees equal the previously qualified canonical postimage; repeating numerical gates would add no new evidence. Inactive peat research is not an active scientific blocker.
+
 ## PERF02 and completed E2E research-carrier reconciliation (2026-10-11)
 
 Reconciled at canonical `669a75ff996938fd0538c715ec43fe93d06b74de`: PR #986 is superseded by admitted #998 / `c618cef80e53c3b1a670a76ebb0470aa837a37e1`. Both production blobs, all eight PERF02 performance tests/runners and the frozen derivation/preregistration equal current canonical. The interim result survives verbatim with final qualification added; the active-chain runner only renames the compiled gate object. Historical workflow definitions are evidence, not missing production semantics.
