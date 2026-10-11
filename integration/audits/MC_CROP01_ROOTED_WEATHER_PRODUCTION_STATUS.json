@@ -2,7 +2,7 @@
   "workstream": "MC-CROP01",
   "unit": "Delayed emergence and same-day rooted weather growth",
   "baseline": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
-  "status": "FOCUSED_O0_O2_PASS_OWNER_AND_FCI_PRESERVATION_RUNNING",
+  "status": "OWNER_AND_COMPLETE_HIGHEST_FROST_PASS_FULL_FCI_PENDING",
   "stages": {
     "implemented": true,
     "persisted": true,
@@ -65,7 +65,7 @@
     }
   ],
   "preservation_running": [
-    "Original highest low-air controller six fresh configurations at each O0/O2; preserve unmodified assertions and budgets"
+    "Complete PPA preservation and full moving F-CI after archive/source verification"
   ],
   "recovery_branch": "work/mc-crop01-rooted-weather-20261011",
   "remote_recovery": {
@@ -156,7 +156,8 @@
       "External joint disk codec/process-level restart",
       "Master coverage ACTIVE_MIGRATION until complete qualified lifecycle admission"
     ],
-    "main_loop_reset_order": "Authenticated SWAP/swap.f90 lines491/511/522..535: cropdevelopment3 -> cropdevelopment4 -> integral4 -> normal output -> flDayEnd/reset_crop if harvested. A candidate may therefore retain an immutable accepted end-status publication value before clearing crop biomass/root/canopy for the following day; no need to relax the existing inactive-owner no-biomass invariant. Croprotation2/new-season initialization occurs on the next morning. The exact accepted-event publication/reset composition remains to implement and qualify."
+    "main_loop_reset_order": "Authenticated SWAP/swap.f90 lines491/511/522..535: cropdevelopment3 -> cropdevelopment4 -> integral4 -> normal output -> flDayEnd/reset_crop if harvested. A candidate may therefore retain an immutable accepted end-status publication value before clearing crop biomass/root/canopy for the following day; no need to relax the existing inactive-owner no-biomass invariant. Croprotation2/new-season initialization occurs on the next morning. The exact accepted-event publication/reset composition remains to implement and qualify.",
+    "end_of_simulation_and_phase_gate": "The present integrated trajectory completes active growth when the next real morning record is registered; its seven hydrological days contain four completed growth events and a final accepted uptake window still awaiting next completion. Complete historical day-end harvest/output/reset and simulation-end flush without fabricating a next-day meteorological record. Reconcile the existing F-KT event/time authority for a separately completed growth day versus next morning task2/task3/new-season initialization; never introduce a fake zero-duration interval or publish one physical receipt twice. External front-end orchestration and exact whole-application phase restart remain open."
   },
   "predecessor_shared_weather_preservation": {
     "PR1193": "PPA_WU03_WEATHER_GUARDED_TWO_COMMITTED_INTERVALS=PASS",
@@ -170,5 +171,13 @@
     "complete_configurations": 18,
     "required_configurations": 24,
     "partial_only": true
+  },
+  "frost_successor_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_ROOTED_WEATHER_COMPLETE_FROST_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_sha256": "74e378fe153f9114da432158f008b5dd94f19d435d74133e192694403829f0bb",
+    "complete_configurations": 24,
+    "required_configurations": 24,
+    "partial_only": false,
+    "dependency_blob_count": 227
   }
 }
