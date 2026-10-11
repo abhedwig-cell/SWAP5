@@ -78,8 +78,57 @@
     "local_log_sha256": "31860d8560bea1a8fd465a2dcc4aa2721c50b7be047a4ad732f5574361b2c86e",
     "o2_qualified": false,
     "owner": "central HeadCalc/dynamic-top admission authority with PPA-WU03 and MIGMAC owners",
-    "next_action": "Resolve headed derivative contract/fixture discrepancy and replay unchanged FKT15 surface, Task2 and FSI35 dispatch gates at O0/O2. Do not substitute pin reconciliation for a semantic pass.",
+    "next_action": "See headed_contract_diagnosis_20261011: the non-M1 production binding defect is reproduced, not a fixture defect. Central admission authority must select and qualify a bounded derivative binding repair before unchanged surface, Task2 and dispatch gates can pass O0/O2.",
     "canonical_runner_or_production_mutated": false
   },
-  "next_permitted_action": "The 20261011 diagnostic reopens the relevant dependency surface. Keep F-CI93 fail-closed; only qualified headed semantic preservation may replace the current moving authority."
+  "headed_contract_diagnosis_20261011": {
+    "status": "CONFIRMED_PRODUCTION_INTERFACE_DEFECT_NOT_ADMITTED",
+    "baseline_canonical": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+    "tested_recovery_commit": "85866972d3e2ea2dff835b955f73ae1009d02006",
+    "tested_recovery_tree": "33adf5c2d7ffe0a9e0da7d291f176f939c3260dc",
+    "recovery_branch": "diagnosis/fci93-headed-contract-20261011",
+    "reproduction_commands": [
+      "bash tests/fci/run_fci93_headed_contract_diagnostic.sh",
+      "bash tests/fci/run_fci93_headed_replay_diagnostic.sh",
+      "FCI93_DIAGNOSTIC_FIRST_OPT=2 bash tests/fci/run_fci93_headed_replay_diagnostic.sh"
+    ],
+    "reproduction_files": [
+      "tests/fci/test_fci93_headed_contract_diagnostic.f90",
+      "tests/fci/run_fci93_headed_contract_diagnostic.sh",
+      "tests/fci/run_fci93_headed_replay_diagnostic.sh"
+    ],
+    "source_blobs": {
+      "task2": "2a17e9a203a9fc257550e2a9036f3f918421235e",
+      "top_adapter": "abe2d699017300e890eeb69a56448bb071660d2d",
+      "top_provider": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae",
+      "headcalc": "4e3f764980da5d1bd34b7e971a826903ab4bab21",
+      "contract": "7b16c3fcf58179f1491104a1dce3279010b4178a"
+    },
+    "guard_introducing_commit": "15079ec584790d8db065a12a9985f871b7c7e1af",
+    "guard_admission_scope": "F-PE-BOFEK00 fixed-top-node-K dynamic top, SWKIMPL=0; correctness PR701, metadata PR702",
+    "producer_consumer_mismatch": "HeadCalc requires a surface-head derivative receipt for every dynamic headed route. The provider supplies the pond/runoff receipt only with fixed_top_node_conductivity >= 0. Task2 passes this binding only for M1; ordinary admitted non-M1 routes omit it. The top adapter faithfully forwards the missing receipt.",
+    "immutable_fixture_commit": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "immutable_fixture_path": "tests/fkt/test_fkt15_production_surface_regimes.f90",
+    "fixture_disposition": "Original SWBOTB=2 native hydraulic fixture remains valid evidence. Forcing M1 would change bottom and constitutive authority. Zeroing the derivative, setting only its availability flag, or weakening assertions is not a repair.",
+    "component_probe": {
+      "o0_o2": "PASS_BYTE_IDENTICAL_DIAGNOSTIC_NOT_PRODUCTION_QUALIFICATION",
+      "ponded_head": "NONFIXED_RECEIPT=F; FIXED_RECEIPT=T; FD=0.0023693727313478519; FIXED_ANALYTIC=0.0023693727397431099",
+      "linear_runoff": "NONFIXED_RECEIPT=F; FIXED_RECEIPT=T; FD=0.0023459686637750110; FIXED_ANALYTIC=0.0023459686381034693",
+      "paired_head_and_flux": "EXACT_EQUAL_WITH_AND_WITHOUT_FIXED_K_BINDING",
+      "finite_difference_agreement_tolerance": 1e-10,
+      "log_sha256": "980ddf5d4ee246b4a658002b74c5fc64f4df92d388d8b700825f5d8d5ec3f8e8"
+    },
+    "unchanged_production_replay": {
+      "o0": "FAIL_EXIT_1_MISSING_SURFACE_HEAD_DERIVATIVE",
+      "o2_first": "FAIL_EXIT_1_SAME_MISSING_SURFACE_HEAD_DERIVATIVE",
+      "o0_log_sha256": "ea94db333fba91bab78c302e8f614a1170b305585b2fc0545e67c30f7b2e52f5",
+      "o2_log_sha256": "9addc3f5c187148957a8bcd13c814422f0e91c3d3e2e758c0d0a3472f6b08ff8",
+      "qualification": "FAIL_CLOSED_NOT_GREEN"
+    },
+    "owner": "central HeadCalc/dynamic-top admission authority with Task2/PPA-WU03 and MIGMAC owners",
+    "next_owner_action": "Decide whether ordinary SWKIMPL=0 binding can validly supply fixed top-node K or requires another derivative contract. Qualify any bounded production-adapter repair against unchanged FKT15 surface, Task2 and FSI35 dispatch O0/O2, mass/retry/restart, and BOFEK/MIGMAC preservation. This diagnosis does not authorize new production physics or change active specialized ownership.",
+    "production_reference_workflow_and_canonical_runner_changes": false,
+    "new_actions_runs": 0
+  },
+  "next_permitted_action": "Keep F-CI93 fail-closed. Central admission authority must qualify the confirmed non-M1 headed derivative binding repair; no fixture-only or pin-only change can close this blocker."
 }
