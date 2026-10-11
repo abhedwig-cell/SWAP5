@@ -1,0 +1,101 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "3d326d8fef3529d7a65737d9e4af0c86a41f06f8",
+  "phase": "LOCAL_SCIENCE_PASS_CENTRAL_EXACT_PRESERVATION_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "scope": "Read-only numerical diagnosis, diagnostic test output only; no shared solver, history, crop/root or salt mutation",
+  "question": "Does the 1-cm retained-history event fail before first commit or after accepted progress?",
+  "next_action": "Exact proposed central shared successor: run moving F-CI and existing automatic owner qualification, reconcile live canonical, admit only bounded qualified scope.",
+  "finding": "Inherited 3-cm column at -75 cm head has ~0.231265 cm free storage, insufficient for 1 cm with equal prescribed top/bottom fluxes and no ponding/elasticity. Earlier negative evidence does not establish a solver/history defect.",
+  "corrected_geometry": "Four 25-cm cells, total 100 cm, ~7.70884 cm free storage",
+  "serialized_context": "Existing production binder requires exact typed/legacy geometry equality. Dedicated test context now carries the same 100-cm geometry; original F-SI04 stub and qualified tiny witnesses untouched.",
+  "finding_feasible": "100-cm column accepts 20 substeps until t=0.37500256788614134, then HeadCalc stagnates with zero head correction and residual above unchanged tolerance. Private diagnostic using existing constitutive storage-increment interface completes 1-cm pulse at 1e-6 budget. This diagnostic is not production qualification.",
+  "shared_contract": {
+    "owned_surface": "MC-IRR01 test/evidence; explicit bounded shared F-SI storage residual candidate returned to central regie",
+    "read_only_authorities": [
+      "B1.11 irrigation source",
+      "default MvG constitutive provider",
+      "F-KT transaction/history ownership",
+      "crop/root/solute/thermal authorities"
+    ],
+    "interfaces_allowed_to_change": "HeadCalc invocation predicate for existing constitutive evaluate_water_content_increment, no API or state layout change",
+    "interfaces_held_fixed": [
+      "all temporal and mass tolerances",
+      "retry and rollback policy",
+      "accepted derivative history",
+      "hydraulic constitutive functions",
+      "physical irrigation allocation"
+    ],
+    "dependency_surface": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/solver/mod_b110_default_mvg_provider.f90"
+    ],
+    "required_qualification": [
+      "feasible 1-cm event O0/O2 at three fixed refinement budgets",
+      "existing MC-IRR01 owner gates",
+      "moving-current F-CI preservation; explicitly investigate affected output drift"
+    ],
+    "cross_workstream_consequences": "Changes residual arithmetic for all explicit constitutive providers. Fallback provider remains theta_new-theta_old. Default MVG stable increment reuses admitted formula. Requires shared preservation and explicit central acceptance; no implied new physics.",
+    "canonical_admission_owner": "central SWAP5 regie",
+    "classification": "PROPOSED_NUMERICAL_ARITHMETIC_REPAIR",
+    "status": "NOT_ADMITTED"
+  },
+  "archive": "integration/audits/evidence/MC_IRR01_STORAGE_DIAGNOSIS_20261011.tar.gz.b64",
+  "archive_sha256": "6944f6051f539fc6c84485360b42658237a170c8bc5d901633eff48b31db9f3d",
+  "log_sha256": {
+    "feasible-baseline-failure.txt": "49db18fd4efdbda05a4af045c3e708e0bb45bcbb80f272a2dcf92cd81b27051f",
+    "private-trial-trace.txt": "98c6904c910b0f617abbd5f933fa9c4c25cfdc1d074e4e73214444e57e4dc547",
+    "private-head-failure-trace.txt": "b41ee19b601cd9304d679ccef34cb649b6e280fe490ac87b0681d5970fadd100",
+    "realistic-refinement-o0o2.txt": "019ed1ce2731d344c6e3f51bfb892fe53416e96e18986723b8ddc95d94d6c3e0",
+    "root-cluster-o0.txt": "b9ccd2dc91f641fc596da990bdccc994d6c5eb9540ba2dc8dd40704a513840a0",
+    "root-cluster-o2.txt": "b9ccd2dc91f641fc596da990bdccc994d6c5eb9540ba2dc8dd40704a513840a0",
+    "management-preservation.txt": "bba50b149a200bfb67605a32c3c6823cabdddcb77ebfc47b1b920fb909e23eeb",
+    "sensor-preservation.txt": "52deb898ec23872d123a9820911644fce50bd4666f0a889095ebd299d3b267ff",
+    "shared-preservation.txt": "7017ca82087a1e7aa855d8ac9717451b05f78bb523baed6467d0d7979444de01",
+    "obsolete-fsi38-assertion.txt": "6abd0a6775d21fbd5ba2330b441454bd379d0daf965d1b6ff4679b06cc6d9270"
+  },
+  "science": {
+    "source_candidate": "LOCAL_COMMITTED_POSTIMAGE; final remote blob verification required",
+    "root_cluster_candidate": "baf3f3936014605ad0a1544f3b7095230f72fd37",
+    "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+    "predecessor_blob": "4e3f764980da5d1bd34b7e971a826903ab4bab21",
+    "refinement": "PASS O0/O2, bit-identical stdout, three budgets 1e-6/1e-7/1e-8 cm",
+    "refinement_output_sha256": "0aab49a8d0a0edff74fd3cd57804ffae9f3afa2e959b22dac0a54f1ee7f6fdcd",
+    "head_error_to_fine_cm": [
+      5.424126518960293e-05,
+      1.284677585999816e-05
+    ],
+    "theta_error_to_fine": [
+      5.2154514040836375e-08,
+      1.235253743736564e-08
+    ],
+    "root_cluster": "12 TCS2/3/4/6 x DCS2/DCS1-rain/DCS1-limit, 1-cm physical events PASS O0/O2 bit-identical",
+    "root_cluster_sha256": "b9ccd2dc91f641fc596da990bdccc994d6c5eb9540ba2dc8dd40704a513840a0",
+    "shared_preservation": "BOFEK dynamic-top correction and 24-step wet trajectory; F-SI25 prescribed-head seam and F-SI39 provider assertions PASS O0/O2 identical",
+    "mass_gate_cm": 1e-12,
+    "history": "Accepted zero-source prelude retained; no derivative reseed at onset",
+    "preservation_hashes_unchanged": [
+      "3c36c3ce70057123f407eb1d2c7beb679b0ae207fec46a3a3d44a1879f49beeb",
+      "00526addf2547d1a64bee855fd78dbd683f66ad2d804fde83dd89abab1ea1af6"
+    ],
+    "limits": [
+      "No completed source-off episode yet",
+      "No realistic sensor multi-node restart witness yet",
+      "Caller-provided root/solute/allocation authority remains outside full lifecycle qualification",
+      "No full capability promotion"
+    ]
+  },
+  "historical_gate_reconciliation": {
+    "BOFEK": "Original admission scripts refuse later live HEAD; immutable executable assertions reused without alteration.",
+    "FSI38": "Historical test assumes bottom mode3 remains unavailable; current production admits more boundary modes. Assertion retained unchanged as obsolete-for-current-envelope negative evidence; not counted as shared qualification."
+  },
+  "remote_checkpoint_repair": {
+    "invalid_intermediate_source_commit": "b3db805ff7af50cad393b6087dbcef2c3e9c65d9",
+    "finding": "Tool-output truncation marker was embedded inside the valid JSON source string. Intermediate branch source blob was 6c3959dccf87a0e821e1f468067d0286dafcfa71 instead of tested 7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac. No PR/Actions/admission used it.",
+    "required": "Chunked transport with exact length validation; fetch and verify full tree equality before integrated qualification. Local committed scientific postimages and log hashes retained; no qualification inherited from malformed remote source."
+  }
+}

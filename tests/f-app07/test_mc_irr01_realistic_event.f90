@@ -58,7 +58,7 @@ program test_mc_irr01_realistic_event
   type(fmr_serialized_column_result_t) :: managed_result
   integer :: criterion, mode, rst_status
   integer(int64) :: pre_revision
-  character(len=64) :: budget_arg
+  character(len=64) :: budget_arg, scope_arg
   real(real64) :: temporal_budget
   class(transaction_state_t), allocatable :: final_snapshot
   real(real64) :: theta0
@@ -75,9 +75,12 @@ program test_mc_irr01_realistic_event
 
   call get_command_argument(1,budget_arg)
   read(budget_arg,*) temporal_budget
-  do criterion = 2, 2
+  call get_command_argument(2,scope_arg)
+  do criterion = 2, 6
+    if (trim(scope_arg) /= "cluster" .and. criterion /= 2) cycle
     if (criterion == 5) cycle
-    do mode = 1, 1
+    do mode = 1, 3
+      if (trim(scope_arg) /= "cluster" .and. mode /= 1) cycle
       call configure_physical_parameters(parameters(1), initial_state, conductivity0)
       call configure_column(columns(1), templates(1))
       call configure_transaction(config)
@@ -91,6 +94,10 @@ program test_mc_irr01_realistic_event
       call reset_legacy_globals()
       call fmr_run_serialized_physical_multiswap(columns,templates,parameters,forcing_control,states_irrigation,config, &
            top_provider,t0-expected_duration,t0,1,result_control,diag_control,aggregate_control,dispatch_control,run_control)
+      if (.not.result_control(1)%completed) write(*,*) 'PRELUDE_DIAGNOSTIC=',dispatch_control, &
+           result_control(1)%admission_status,result_control(1)%kernel_status,result_control(1)%solver_status, &
+           result_control(1)%accepted_substeps,result_control(1)%temporal_rejections,result_control(1)%mass_rejections, &
+           result_control(1)%solver_rejections
       call require(result_control(1)%completed .and. states_irrigation(1)%current_revision()>0_int64, 'accepted pre-event history')
       pre_revision=states_irrigation(1)%current_revision()
       theta0 = initial_state%water_content(1)
@@ -106,7 +113,7 @@ program test_mc_irr01_realistic_event
            irrigation_parameters%root_zone%field_capacity_water_content(numnod), &
            irrigation_parameters%root_zone%stress_water_content(numnod), &
            irrigation_parameters%root_zone%wilting_water_content(numnod))
-      irrigation_parameters%root_zone%node_thickness_cm = dz
+      irrigation_parameters%root_zone%node_thickness_cm = parameters(1)%dz
       irrigation_parameters%root_zone%field_capacity_water_content = theta0 + 0.03_real64
       irrigation_parameters%root_zone%stress_water_content = theta0 + 0.01_real64
       irrigation_parameters%root_zone%wilting_water_content = theta0 - 0.05_real64
@@ -129,9 +136,9 @@ program test_mc_irr01_realistic_event
         irrigation_parameters%policy%depth_criterion = 1
         irrigation_parameters%policy%dcs1_knot_count = 2
         irrigation_parameters%policy%dcs1_dvs(1:2) = [0.0_real64,2.0_real64]
-        ! Literal DITAB mm: refill deficit + adjustment - rain = 0.000048 cm.
+        ! Literal DITAB mm: refill deficit + adjustment - rain = selected depth.
         irrigation_parameters%policy%dcs1_adjustment_mm(1:2) = &
-             10.0_real64*(expected_depth - 0.03_real64*dz(1)*0.5_real64 + 0.02_real64)
+             10.0_real64*(expected_depth - 0.03_real64*parameters(1)%dz(1)*0.5_real64 + 0.02_real64)
         irrigation_parameters%policy%rainfall_threshold_cm = 0.01_real64
       end if
       if (mode == 3) then
@@ -196,6 +203,8 @@ program test_mc_irr01_realistic_event
       if (.not. accepted) write(*,*) 'MANAGEMENT_DIAGNOSTIC',criterion,mode,irrigation_binding_diag%status, &
            irrigation_binding_diag%application_status,managed_result%admission_status,managed_result%kernel_status, &
            managed_result%solver_status,managed_result%temporal_rejections,managed_result%mass_rejections,managed_result%mass%residual
+      if (.not.accepted) write(*,*) 'PROGRESS_DIAGNOSTIC accepted_steps, time, revision, requested_t1=', &
+           managed_result%accepted_substeps,managed_result%final_committed_time,managed_result%final_revision,t1
       if (.not. accepted) then
         call fmr_prepare_management_ssdi_forcing(irrigation_parameters,irrigation_committed,irrigation_request, &
              states_irrigation(1),forcing_control(1),irrigation_candidate,forcing_irrigation(1),irrigation_binding_diag)
@@ -269,9 +278,15 @@ contains
     p%parameter_set_id = 72001_int64
     p%active_nodes = numnod
     allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod))
-    p%z = z
-    p%dz = dz
-    p%node_distance = disnod(1:numnod)
+    ! A 100-cm soil profile can store the 1-cm pulse. The historical
+    ! 3-cm unit-test geometry could store only about 0.23 cm and had
+    ! prescribed equal top/bottom fluxes, so full-dose completion was impossible.
+    p%z = [-12.5_real64,-37.5_real64,-62.5_real64,-87.5_real64]
+    p%dz = 25.0_real64
+    p%node_distance = 25.0_real64
+    p%node_distance(1)=12.5_real64
+    call require(all(p%z==z) .and. all(p%dz==dz) .and. all(p%node_distance==disnod(1:numnod)), &
+         'serialized geometry identity')
     p%cofgen = 0.0_real64
     do k = 1, numnod
       p%cofgen(1,k)=0.032_real64; p%cofgen(2,k)=0.423_real64; p%cofgen(3,k)=4.75_real64
@@ -290,6 +305,8 @@ contains
     heads = head0
     call constitutive%evaluate(heads,water,conductivity,capacity,dkdh)
     conductivity0 = conductivity(1)
+    write(*,'(A,3ES24.16)') 'MC_IRR01_STORAGE_PREFLIGHT=',sum(p%dz),sum((p%cofgen(2,:)-water)*p%dz),expected_depth
+    call require(expected_depth < sum((p%cofgen(2,:)-water)*p%dz),'physical dose storage envelope')
     ! Source-bound initial RIGHT derivative for the test's irrigation forcing.
     ! Uniform heads and equal prescribed boundary fluxes cancel matrix flux;
     ! the only remaining rate is qssdi/(C*dz) at compartment 3.
