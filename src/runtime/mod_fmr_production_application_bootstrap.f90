@@ -81,7 +81,8 @@ module mod_fmr_production_application_bootstrap
        ppa_wu03_common_forcing_input_t, ppa_wu03_common_forcing_result_t, &
        ppa_wu03_common_forcing_diagnostics_t, materialize_ppa_wu03_common_forcing, &
        bind_ppa_wu03_flux_result_to_effective_forcing, PPA_WU03_OK
-  use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t
+  use mod_reference_et_demand_process, only: reference_et_demand_canopy_view_t, &
+       daily_atmospheric_demand_parameters_t, traditional_pm_weather_t, evaluate_daily_atmospheric_demand, REF_ET_DEMAND_OK
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
        b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
@@ -155,6 +156,8 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    logical :: file_weather_daily_demand=.false.
+    type(daily_atmospheric_demand_parameters_t) :: file_weather_demand_parameters
     integer :: file_weather_swrain = 0
     type(swap_raintb_t) :: file_weather_raintb
     logical :: file_weather_daystart = .false.
@@ -366,6 +369,14 @@ contains
       if(.not.all(ieee_is_finite([config%file_weather_stem_area_coefficient, &
            config%file_weather_storage_area_coefficient]))) return
       if(min(config%file_weather_stem_area_coefficient,config%file_weather_storage_area_coefficient)<0.0_real64) return
+    end if
+    if(config%file_weather_daily_demand) then
+      if(.not.config%file_weather_daystart.or.config%file_weather_rooted.or.config%file_weather_swrain/=0) return
+      if(.not.config%file_weather_demand_parameters%ready()) return
+      if(config%file_weather_demand_parameters%mode==0) then
+        if(config%file_weather_demand_parameters%canopy%crop_emerged.or. &
+           config%file_weather_demand_parameters%canopy%vegetation_cover_fraction/=0.0_real64) return
+      end if
     end if
     if(config%file_weather_swrain/=0.and.config%file_weather_swrain/=1) return
     if(config%file_weather_swrain==1) then
@@ -811,6 +822,7 @@ contains
     type(b110_default_mvg_parameters_t) :: hydraulics
     type(fmr_b110_physical_forcing_t) :: effective(1)
     class(transaction_state_t), allocatable :: physical
+    type(traditional_pm_weather_t) :: pm_weather
     real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra
     logical :: available,rooted
     integer :: s
@@ -901,6 +913,23 @@ contains
     call materialize_ppa_wu03_common_forcing(forcing_config,input,request,common,diagnostics, &
          self%weather,1_int64,1_int64,self%weather_revision,day)
     if(diagnostics%status/=PPA_WU03_OK.or..not.common%valid) return
+    if(self%weather_configuration%file_weather_daily_demand) then
+      if(rooted.or.canopy%crop_emerged.or.canopy%vegetation_cover_fraction/=0.0_real64) return
+      if(forcing_config%reference_et_parameters%pond_evaporation_factor/= &
+         self%weather_configuration%file_weather_demand_parameters%pond_factor) return
+      call record%pm_values(pm_weather%day_of_year,pm_weather%radiation_j_m2_d, &
+           pm_weather%vapour_pressure_kpa,pm_weather%wind_speed_m_s,available)
+      if(.not.available) return
+      pm_weather%minimum_air_temperature_c=tmin;pm_weather%maximum_air_temperature_c=tmax
+      pm_weather%gross_rain_cm_d=rain*0.1_real64
+      call evaluate_daily_atmospheric_demand(self%weather_configuration%file_weather_demand_parameters, &
+           pm_weather,etref,input%canopy,common%reference_et_demand,s)
+      if(s/=REF_ET_DEMAND_OK) return
+      common%top_request%potential_bare_soil_evaporation_cm_per_day= &
+           common%reference_et_demand%potential_soil_evaporation_cm_per_day
+      common%top_request%potential_pond_evaporation_cm_per_day= &
+           common%reference_et_demand%potential_pond_evaporation_cm_per_day
+    end if
     ! This profile has no roots or transpiration. Do not manufacture a zero
     ! root integral if the common forcing carries a positive crop demand.
     if(.not.rooted.and.common%reference_et_demand%potential_transpiration_cm_per_day/=0.0_real64) return
@@ -1375,10 +1404,11 @@ contains
     bundle%valid=.true.;status=FMR_APP_BOOT_OK
   end subroutine
 
-  subroutine production_application_restore_weather_crop_continuation(self,bundle,crop_committed,status,expected_raintb)
+  subroutine production_application_restore_weather_crop_continuation(self,bundle,crop_committed,status,expected_raintb,expected_demand)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(fmr_weather_crop_application_continuation_t), intent(in) :: bundle
     type(swap_raintb_t),intent(in),optional :: expected_raintb
+    type(daily_atmospheric_demand_parameters_t),intent(in),optional :: expected_demand
     type(kernel_committed_state_t), intent(inout) :: crop_committed
     integer, intent(out) :: status
     type(kernel_committed_state_t) :: pending_soil,pending_crop
@@ -1389,6 +1419,10 @@ contains
     ! a live committed crop object, and no failure partially publishes crop.
     if(self%ready().or.crop_committed%ready()) return
     if(.not.bundle%valid.or..not.bundle%record%ready()) return
+    if(bundle%configuration%file_weather_daily_demand) then
+      if(.not.present(expected_demand)) return
+      if(.not.bundle%configuration%file_weather_demand_parameters%same_input(expected_demand)) return
+    end if
     if(bundle%configuration%file_weather_swrain==1) then
       if(.not.present(expected_raintb)) return
       if(.not.bundle%configuration%file_weather_raintb%same_input(expected_raintb)) return
