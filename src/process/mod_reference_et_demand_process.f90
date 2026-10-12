@@ -466,13 +466,15 @@ contains
     class(daily_atmospheric_demand_parameters_t),intent(in)::self
     ok=.false.
     if(self%mode/=0.and.self%mode/=1) return
+    if(.not.all(ieee_is_finite(daily_demand_parameter_values(self)))) return
     if(.not.all(ieee_is_finite([self%soil_factor,self%crop_factor,self%pond_factor]))) return
     if(min(self%soil_factor,self%crop_factor,self%pond_factor)<0.0_real64.or. &
        max(self%soil_factor,self%crop_factor,self%pond_factor)>10.0_real64) return
     if(self%mode==0) then
       if(.not.pm_valid_site(self%site).or..not.pm_valid_canopy(self%canopy)) return
       if(self%site%altitude_m < -400.0_real64.or.self%site%altitude_m>3000.0_real64) return
-      if(self%site%wind_measurement_height_m>99.0_real64.or.self%site%humidity_measurement_height_m>99.0_real64) return
+      if(min(self%site%wind_measurement_height_m,self%site%humidity_measurement_height_m)<0.1_real64.or. &
+         max(self%site%wind_measurement_height_m,self%site%humidity_measurement_height_m)>99.0_real64) return
       if(self%site%angstrom_a<0.0_real64.or.self%site%angstrom_a>1.0_real64.or.self%site%angstrom_b>1.0_real64) return
       if(self%site%wind_function_factor>10.0_real64) return
       if(self%canopy%crop_height_cm>1000.0_real64.or.self%canopy%lai>100.0_real64) return
@@ -486,7 +488,7 @@ contains
     ok=.true.
   end function
   pure function daily_demand_parameter_values(p) result(v)
-    type(daily_atmospheric_demand_parameters_t),intent(in)::p
+    class(daily_atmospheric_demand_parameters_t),intent(in)::p
     real(real64)::v(20)
     v=[p%soil_factor,p%crop_factor,p%pond_factor, &
       p%site%latitude_degrees,p%site%altitude_m,p%site%wind_measurement_height_m,p%site%humidity_measurement_height_m, &

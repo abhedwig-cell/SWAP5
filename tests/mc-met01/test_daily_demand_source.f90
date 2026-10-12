@@ -79,6 +79,11 @@ call ETpot();call require(all(abs(on-[peva,ptra_dry,epond])<=1.d-12),'literal re
 witness=witness+1
 other=p;call require(other%same_input(p),'configuration identity')
 other%soil_factor=0.6d0;call require(.not.other%same_input(p),'changed factor identity')
+other=p;other%site%altitude_m=ieee_value(0.d0,ieee_quiet_nan)
+call require(.not.other%ready(),'nonfinite immutable unused configuration')
+p%mode=0;p%site%wind_measurement_height_m=0.09d0
+call require(.not.p%ready(),'source wind measurement lower bound')
+p%site%wind_measurement_height_m=10.d0
 p%mode=99;call require(.not.p%ready(),'unknown selector')
 p%mode=0;p%soil_factor=-1.d0;call require(.not.p%ready(),'negative factor')
 p%soil_factor=ieee_value(0.d0,ieee_quiet_nan);call require(.not.p%ready(),'nan factor')
