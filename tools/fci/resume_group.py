@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import shlex
 import signal
 import stat
 import subprocess
@@ -71,6 +72,11 @@ def identity(group, command):
     runner, tests, marker, compilations = GROUPS[group]
     if command != ['bash', runner]:
         raise ValueError('unqualified command/arguments')
+    for name in ['BASH_ENV', 'ENV', 'LD_PRELOAD', 'LD_LIBRARY_PATH',
+                 'LD_AUDIT', 'LIBRARY_PATH', 'COMPILER_PATH', 'GCC_EXEC_PREFIX',
+                 'CPATH', 'C_INCLUDE_PATH', 'PYTHONPATH', 'PYTHONHOME']:
+        if os.environ.get(name):
+            raise ValueError('unqualified external input setting: ' + name)
     paths = [CONTROL, OUTER, runner,
              'src/process/mod_frost_hydraulic_effect.f90']
     paths += ['tests/frost/' + test for test in tests]
@@ -91,18 +97,22 @@ def identity(group, command):
     if not all(directories):
         raise ValueError('toolchain capsule directories not declared')
     tools = {}
-    for name in ['bash', 'sh', 'gfortran', 'as', 'ld', 'rm', 'mkdir',
-                 'mktemp', 'grep', 'cmp', 'cat']:
-        file = shutil.which(name)
-        if file is None:
-            raise ValueError('missing tool: ' + name)
-        tools[str(Path(file).resolve())] = digest(file)
-        # Runtime library/loader bytes, not only --version strings.
-        result = subprocess.run(['ldd', file], capture_output=True, text=True)
+    def tool(file):
+        path = Path(file).resolve()
+        if str(path) in tools:
+            return
+        tools[str(path)] = digest(path)
+        result = subprocess.run(['ldd', str(path)], capture_output=True, text=True)
         for line in result.stdout.splitlines():
             for token in line.split():
                 if token.startswith('/') and Path(token).is_file():
-                    tools[str(Path(token).resolve())] = digest(token)
+                    tool(token)
+    for name in ['bash', 'sh', 'gfortran', 'as', 'ld', 'rm', 'mkdir',
+                 'mktemp', 'grep', 'cmp', 'cat', 'git', 'ldd']:
+        file = shutil.which(name)
+        if file is None:
+            raise ValueError('missing tool: ' + name)
+        tool(file)
     for directory in directories:
         base = Path(directory)
         if not base.is_absolute() or not base.is_dir():
@@ -117,10 +127,45 @@ def identity(group, command):
         file = subprocess.check_output(['gfortran', query], text=True).strip()
         if str(Path(file).resolve()) not in tools:
             raise ValueError('compiler dependency outside capsule: ' + file)
+        # Capsule hashing also covers specs/includes/startup objects. Traverse
+        # dynamic dependencies of the actual frontend, not a shell wrapper.
+        result = subprocess.run(['ldd', file], capture_output=True, text=True)
+        for line in result.stdout.splitlines():
+            for token in line.split():
+                if token.startswith('/') and Path(token).is_file():
+                    tool(token)
+    compiler = Path(shutil.which('gfortran')).resolve()
+    if compiler.read_bytes()[:4] != b'\x7fELF':
+        lines = compiler.read_text().splitlines()
+        if len(lines) != 2 or lines[0] != '#!/bin/sh':
+            raise ValueError('unqualified compiler wrapper')
+        tokens = shlex.split(lines[1])
+        if (tokens[:1] != ['exec'] or tokens[-1:] != ['$@'] or
+                not Path(tokens[1]).is_absolute() or
+                any(not token.startswith(('-B/', '-L/', '-Wl,-rpath,/'))
+                    for token in tokens[2:-1])):
+            raise ValueError('unqualified compiler wrapper command')
+        compiler = Path(tokens[1]).resolve()
+        if str(compiler) not in tools or compiler.read_bytes()[:4] != b'\x7fELF':
+            raise ValueError('compiler wrapper target outside capsule')
+    result = subprocess.run(['ldd', str(compiler)], capture_output=True, text=True)
+    for line in result.stdout.splitlines():
+        for token in line.split():
+            if token.startswith('/') and Path(token).is_file():
+                tool(token)
+    # Compiler-selected test-executable runtime and linker/startup inputs.
+    for name in ['libgfortran.so', 'libquadmath.so', 'libgcc_s.so', 'libm.so',
+                 'libc.so', 'libc_nonshared.a', 'crt1.o', 'crti.o', 'crtn.o',
+                 'crtbegin.o', 'crtend.o']:
+        file = subprocess.check_output(['gfortran', '-print-file-name=' + name],
+                                       text=True).strip()
+        if not Path(file).is_absolute() or not Path(file).is_file():
+            raise ValueError('unknown runtime/linker input: ' + name)
+        tool(file)
     for module in list(sys.modules.values()):
         file = getattr(module, '__file__', None)
         if file and Path(file).is_file():
-            tools[str(Path(file).resolve())] = digest(file)
+            tool(file)
     env = {k: v for k, v in os.environ.items()
            if k not in CONTROL_ENV | {'_', 'SHLVL'} }
     # Do not publish environment values (possible secrets); bind their digest.
@@ -138,7 +183,8 @@ def trusted_storage():
     key = Path(os.environ.get('FCI_RESUME_KEY', ''))
     if not store.is_absolute() or not key.is_absolute():
         raise ValueError('absolute durable store/key required')
-    if store.is_symlink() or key.is_symlink() or store in key.parents:
+    if (store.is_symlink() or key.is_symlink() or store in key.parents or
+            key.resolve() != key or store.resolve() != store):
         raise ValueError('separate non-symlink trust key required')
     key_stat = key.stat()
     if not stat.S_ISREG(key_stat.st_mode) or key_stat.st_uid != os.getuid():
@@ -163,13 +209,14 @@ def verify(receipt, log, current, key):
             record['input'] != current or record['end_input'] != current or
             record['required_outputs'] != [] or record['shared_state'] is not False):
         raise ValueError('terminal/closure/output mismatch')
-    if log.is_symlink() or digest(log) != record['log_sha256']:
+    data = log.read_bytes()
+    if log.is_symlink() or hashlib.sha256(data).hexdigest() != record['log_sha256']:
         raise ValueError('log integrity mismatch')
-    if log.stat().st_size != record['log_bytes']:
+    if len(data) != record['log_bytes']:
         raise ValueError('log length mismatch')
-    if current['marker'].encode() not in log.read_bytes().splitlines():
+    if current['marker'].encode() not in data.splitlines():
         raise ValueError('terminal scientific marker missing')
-    return record
+    return record, data
 
 
 def execute(command, log=None):
@@ -238,7 +285,7 @@ def main():
                  'verification_seconds': verification_seconds, 'utc': utc()}
         print('FCI_RESUME_DECISION ' + json.dumps(event, sort_keys=True), flush=True)
         if mode == 'RESUME' and inherited:
-            sys.stdout.buffer.write(log.read_bytes())
+            sys.stdout.buffer.write(inherited[1])
             sys.stdout.buffer.flush()
             print('FCI_RESUME_INHERITED ' + group, flush=True)
             return 0
