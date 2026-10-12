@@ -172,9 +172,44 @@ program test_ppa_wu01_production_application_bootstrap
   call require(sum(results%temporal_rejections) > 0, 'Rutter full/half temporal refinement exercised')
   call rutter_app%copy_committed_revisions(revisions, status)
   call require(status == FMR_APP_BOOT_OK .and. all(revisions == 1_int64), 'Rutter source interval committed once')
+
+  ! Regression for the explicit-conductivity dynamic-head route. A one-hour
+  ! rain pulse above the saturated top-face capacity must enter the ponded
+  ! head regime. Before the trial-start conductivity was bound into the
+  ! dynamic-top provider, HeadCalc failed closed because the required analytic
+  ! surface-head derivative was absent.
+  call initialize_interception_window(810002_int64, T1, T1 + 1.0_real64/24.0_real64, &
+       0.25_real64, rutter_window, rutter_window_status)
+  call require(rutter_window_status == INTWIN_OK, 'Rutter storm source window')
+  rutter_process%vegetation_cover_fraction = 0.0_real64
+  rutter_process%canopy_storage_capacity_cm = 0.0_real64
+  rutter_process%interception_evaporation_capacity_cm_per_day = 0.0_real64
+  rutter_process%potential_transpiration_dry_cm_per_day = 0.0_real64
+  rutter_process%potential_transpiration_wet_cm_per_day = 0.0_real64
+  rutter_process%surface_irrigation_cm_per_day = 0.0_real64
+  rutter_process%surface_irrigation_is_intercepted = .false.
+  rutter_process%interval_days = 1.0_real64/24.0_real64
+  do i = 1, NTILE
+    rutter_forcing(i)%rutter%source_window = rutter_window
+    rutter_forcing(i)%rutter%process = rutter_process
+    rutter_forcing(i)%rutter%potential_bare_soil_evaporation_cm_per_day = 0.0_real64
+    rutter_forcing(i)%rutter%potential_pond_evaporation_cm_per_day = 0.0_real64
+    rutter_forcing(i)%rutter%ponding_max_cm = 0.2_real64
+    rutter_forcing(i)%rutter%runoff_resistance_day = 0.1_real64
+    rutter_forcing(i)%rutter%runoff_exponent = 1.0_real64
+  end do
+  call rutter_app%run_standalone_with_forcing(T1, T1 + 1.0_real64/24.0_real64, rutter_forcing, results, status)
+  call require(status == FMR_APP_BOOT_OK, 'Rutter explicit-conductivity ponded-head regression')
+  call require(all(results%completed) .and. all(results%committed), 'Rutter ponded-head candidate committed')
+  call require(all(results%solver_status == 1), 'Rutter ponded-head Richards solver converged')
+  call require(maxval(abs(results%mass%residual)) <= HARD_MASS_GATE, 'Rutter ponded-head hard mass')
+  call rutter_app%copy_committed_revisions(revisions, status)
+  call require(status == FMR_APP_BOOT_OK .and. all(revisions == 2_int64), 'Rutter ponded-head source interval committed once')
+
   call rutter_app%close(status)
   call require(status == FMR_APP_BOOT_OK .and. .not. rutter_app%ready(), 'Rutter production owner clean close')
   print '(a)', 'PPA_WU01_RUTTER_FMR_TRIAL_COMMIT=PASS'
+  print '(a)', 'PPA_WU01_RUTTER_EXPLICIT_PONDED_HEAD_DERIVATIVE=PASS'
 
   ! Groundwater authority: the same production bootstrap type owns an admitted
   ! bottom_mode=5 participant registry and creates F-GC49D from typed inputs.
