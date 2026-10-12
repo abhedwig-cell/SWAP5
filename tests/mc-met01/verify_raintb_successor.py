@@ -6,6 +6,7 @@ BASE='c545077ab2d2839007a4ac202f7896575d0ad9ba'
 PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90': 'cb53d90e9861bddf83b3ededf8993869cf5c8308', 'src/runtime/mod_fmr_production_application_bootstrap.f90': '2ae6e3aafe9f4987b562618443b0ccd48a133a4c'}
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 assert git('merge-base','--is-ancestor',BASE,'HEAD')==''
+assert not git('status','--porcelain','--','src','reference','tests/mc-met01','tests/fmig431','tests/frost','tests/support')
 assert git('diff','--name-only',BASE,'HEAD','--','src').splitlines()==sorted(PINS)
 for p,b in PINS.items():assert git('rev-parse','HEAD:'+p)==b,p
 assert git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference')
