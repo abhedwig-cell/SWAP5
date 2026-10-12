@@ -126,6 +126,12 @@ def identity(group, command, inspect_profile=False):
     if not all(directories):
         raise ValueError('toolchain capsule directories not declared')
     tools = {}
+    def regular(file):
+        info = Path(file).stat()
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError('nonregular tool input: ' + str(file))
+        return {'kind': 'regular', 'sha256': digest(file),
+                'mode': info.st_mode, 'uid': info.st_uid, 'gid': info.st_gid}
     def dynamic(path):
         with Path(path).open('rb') as stream:
             header = stream.read(18)
@@ -145,7 +151,7 @@ def identity(group, command, inspect_profile=False):
         path = Path(file).resolve()
         if str(path) in tools:
             return
-        tools[str(path)] = digest(path)
+        tools[str(path)] = regular(path)
         if path.read_bytes()[:4] != b'\x7fELF' and path.suffix == '.so':
             script = re.sub(r'/\*.*?\*/', '', path.read_text(), flags=re.S)
             for token in re.split(r'[\s();]+', script):
@@ -181,9 +187,12 @@ def identity(group, command, inspect_profile=False):
             if file.is_symlink():
                 if file.is_dir():
                     raise ValueError('unqualified symlink capsule directory: ' + str(file))
-                tools[str(file.absolute())+'#symlink'] = hashlib.sha256(str(file.readlink()).encode()).hexdigest()
+                info = file.lstat()
+                tools[str(file.absolute())+'#symlink'] = {
+                    'kind': 'symlink', 'target_sha256': hashlib.sha256(str(file.readlink()).encode()).hexdigest(),
+                    'mode': info.st_mode, 'uid': info.st_uid, 'gid': info.st_gid}
             if file.is_file():
-                tools[str(file.resolve())] = digest(file)
+                tools[str(file.resolve())] = regular(file)
     # Require the actual compiler front end, archive/link specs and libraries
     # selected by gfortran to be inside the hashed surface.
     for query in ['-print-prog-name=f951', '-print-file-name=libgfortran.a',
@@ -218,12 +227,24 @@ def identity(group, command, inspect_profile=False):
         if not Path(file).is_absolute() or not Path(file).is_file():
             raise ValueError('unknown runtime/linker input: ' + name)
         tool(file)
+        dynamic(file)
     for module in list(sys.modules.values()):
         for attribute in ['__file__', '__cached__']:
             file = getattr(module, attribute, None)
             if file and Path(file).is_file():
                 tool(file)
-    runtime = {'flags': list(sys.flags), 'xoptions': sys._xoptions}
+    runtime = {'flags': list(sys.flags), 'xoptions': sys._xoptions,
+               'principal': [os.getuid(), os.geteuid(), os.getgid(), os.getegid()]}
+    cpu_keys = {'vendor_id', 'cpu family', 'model', 'model name', 'stepping', 'microcode', 'flags'}
+    cpu_profiles = []
+    for block in Path('/proc/cpuinfo').read_text().split('\n\n'):
+        fields = tuple(sorted((key.strip(), value.strip()) for line in block.splitlines()
+                       if ':' in line for key, value in [line.split(':', 1)] if key.strip() in cpu_keys))
+        if fields:
+            cpu_profiles.append(fields)
+    if not cpu_profiles:
+        raise ValueError('unknown CPU execution profile')
+    runtime['cpu_profiles'] = sorted(set(cpu_profiles))
     profile = {path: value for path, value in tools.items()
                if path != str((ROOT / CONTROL).resolve())}
     fingerprint = hashlib.sha256(encode({'tools': profile, 'runtime': runtime})).hexdigest()
@@ -239,6 +260,7 @@ def identity(group, command, inspect_profile=False):
             'command': command, 'inputs': inputs, 'tools': tools,
             'execution_command': ['bash', str(ROOT / runner)],
             'execution_cwd_policy': 'private-empty-temporary-directory-v1',
+            'execution_environment_policy': {'TMPDIR': 'private execution cwd'},
             'implicit_source_module_prefixes': {str(path): [] for path in sorted(prefixes)},
             'environment_sha256': hashlib.sha256(encode(env)).hexdigest(),
             'cwd': str(ROOT), 'platform': list(os.uname()),
@@ -279,6 +301,7 @@ def verify(receipt, log, current, key):
             record['input'] != current or record['end_input'] != current or
             record['required_outputs'] != [] or record['shared_state'] is not False or
             record['execution_command'] != current['execution_command'] or
+            record['execution_environment_overrides'] != {'TMPDIR': record['execution_cwd']} or
             record['private_cwd_removed'] is not True):
         raise ValueError('terminal/closure/output mismatch')
     data = log.read_bytes()
@@ -291,8 +314,8 @@ def verify(receipt, log, current, key):
     return record, data
 
 
-def execute(command, log=None, cwd=ROOT):
-    child = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE,
+def execute(command, log=None, cwd=ROOT, environment=None):
+    child = subprocess.Popen(command, cwd=cwd, env=environment, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT, start_new_session=True)
     def interrupted(signum, frame):
         os.killpg(child.pid, signum)
@@ -374,7 +397,8 @@ def main():
         begin = utc()
         t0 = time.monotonic()
         with tempfile.TemporaryDirectory(prefix='swap5-fci-leaf-') as execution_cwd:
-            code = execute(current['execution_command'], log, cwd=execution_cwd)
+            code = execute(current['execution_command'], log, cwd=execution_cwd,
+                           environment=dict(os.environ, TMPDIR=execution_cwd))
         elapsed = time.monotonic() - t0
         end = utc()
         if code != 0:
@@ -395,6 +419,7 @@ def main():
                   'log_sha256': digest(log), 'log_bytes': log.stat().st_size,
                   'execution_command': current['execution_command'],
                   'execution_cwd': execution_cwd,
+                  'execution_environment_overrides': {'TMPDIR': execution_cwd},
                   'private_cwd_removed': not Path(execution_cwd).exists(),
                   'end_input_verification_seconds': time.monotonic() - final_started,
                   'required_outputs': [], 'shared_state': False}

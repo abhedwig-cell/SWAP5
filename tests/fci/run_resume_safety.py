@@ -79,6 +79,10 @@ finally:
 reset();run('flags',dict(resume,FFLAGS='-O1'))
 reset();run('unqualified-external-input',dict(resume,BASH_ENV='/nonexistent/unqualified-input'))
 reset();run('exported-shell-function',dict(resume,**{'BASH_FUNC_cmp%%':'() { command cmp "$@"; }'}))
+header=(ROOT/'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh').read_text()
+header=header[header.index('fci_group() {'):header.index('\nAUTH=')]
+reset();run('exported-python-launcher',dict(resume,**{'BASH_FUNC_python3%%':'() { printf "%s\\n" "FCI_RESUME_INHERITED frost-invalid"; }'}),
+ ['bash','-c',header+'\nfci_group frost-invalid bash tests/frost/run_frost_invalid_input_preservation.sh'])
 reset();run('fortran-include-search',dict(resume,GFORTRAN_INCLUDE_PATH=str(OUT)))
 reset();module_prefix=ROOT/'tests/frost/mod_frost_hydraulic_effect.mod';module_prefix.write_bytes(b'corrupt generated module\n')
 try:run('unqualified-generated-module',resume,exit_code=None)
