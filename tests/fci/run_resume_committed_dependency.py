@@ -13,6 +13,8 @@ parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--controller-ref', required=True)
 parser.add_argument('--toolchain-dirs', required=True)
 parser.add_argument('--expect', choices=['unsafe-inherit', 'run'], required=True)
+parser.add_argument('--dependency', choices=['committed-source', 'exported-function'],
+                    default='committed-source')
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[2]
 out = args.output.resolve()
@@ -26,8 +28,9 @@ controller = 'tools/fci/resume_group.py'
 runner = root / 'tests/frost/run_frost_invalid_input_preservation.sh'
 fixture = root / 'tests/frost/resume-extra-input.txt'
 fixture.write_text('first\n')
-runner.write_bytes(runner.read_bytes() +
-    b'\ntest "$(cat tests/frost/resume-extra-input.txt)" = first\n')
+if args.dependency == 'committed-source':
+    runner.write_bytes(runner.read_bytes() +
+        b'\ntest "$(cat tests/frost/resume-extra-input.txt)" = first\n')
 subprocess.run(['git', 'add', controller, 'tests/frost'], cwd=root, check=True)
 subprocess.run(['git', '-c', 'user.name=F-CI trial', '-c',
                'user.email=fci-trial@example.invalid', 'commit', '-m',
@@ -39,6 +42,9 @@ key.chmod(0o600)
 env = dict(os.environ, FCI_RESUME_KEY=str(key),
            FCI_RESUME_STORE=str(out / 'receipts'),
            FCI_RESUME_TOOLCHAIN_DIRS=args.toolchain_dirs)
+if args.dependency == 'exported-function':
+    env['BASH_FUNC_cmp%%'] = ('() { test "$(cat ' + str(fixture) +
+                             ')" = first && command cmp "$@"; }')
 command = ['python', controller, 'frost-invalid', 'bash', str(runner.relative_to(root))]
 results = []
 for name, mode in [('first', 'SHADOW'), ('changed-fixture', 'RESUME'), ('oracle-off', 'OFF')]:
@@ -59,6 +65,7 @@ else:
     assert not results[1]['inherited'] and results[1]['exit_code'] == 1
     assert b'FCI_RESUME_RUN' in (out / 'changed-fixture.log').read_bytes()
 report = {'controller_ref': args.controller_ref, 'expectation': args.expect,
+          'dependency': args.dependency,
           'command': command, 'toolchain_dirs': args.toolchain_dirs,
           'results': results, 'reproducer_expectation_met': True}
 (out / 'results.json').write_text(json.dumps(report, indent=2) + '\n')

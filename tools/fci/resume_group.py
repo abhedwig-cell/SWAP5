@@ -6,6 +6,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import shlex
@@ -19,6 +20,9 @@ import time
 ROOT = Path(__file__).resolve().parents[2]
 CONTROL = 'tools/fci/resume_group.py'
 OUTER = 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+# A changed runtime/capsule must not self-qualify a previously unaudited
+# transitive tool closure. Populate only after reviewing the complete manifest.
+AUDITED_TOOL_PROFILE = 'PENDING_REVIEW'
 GROUPS = {
     'frost-invalid': ('tests/frost/run_frost_invalid_input_preservation.sh',
                       ['test_ppa_wu05b_frost_effect.f90',
@@ -84,14 +88,23 @@ def identity(group, command):
     runner, tests, marker, compilations = GROUPS[group]
     if command != ['bash', runner]:
         raise ValueError('unqualified command/arguments')
+    if any(name.startswith('BASH_FUNC_') for name in os.environ):
+        raise ValueError('unqualified exported shell function')
     for name in ['BASH_ENV', 'ENV', 'LD_PRELOAD', 'LD_LIBRARY_PATH',
                  'LD_AUDIT', 'LIBRARY_PATH', 'COMPILER_PATH', 'GCC_EXEC_PREFIX',
-                 'CPATH', 'C_INCLUDE_PATH', 'PYTHONPATH', 'PYTHONHOME']:
+                 'CPATH', 'C_INCLUDE_PATH', 'GFORTRAN_INCLUDE_PATH',
+                 'PYTHONPATH', 'PYTHONHOME']:
         if os.environ.get(name):
             raise ValueError('unqualified external input setting: ' + name)
     paths = [CONTROL, OUTER, runner,
              'src/process/mod_frost_hydraulic_effect.f90']
     paths += ['tests/frost/' + test for test in tests]
+    # GNU module lookup has implicit cwd/source-directory prefixes even with
+    # explicit -I/-J. No pre-existing module state is qualified in those paths.
+    prefixes = {(ROOT / path).parent for path in paths if path.endswith('.f90')}
+    for directory in prefixes:
+        if any(file.suffix.lower() in ['.mod', '.smod'] for file in directory.iterdir()):
+            raise ValueError('unqualified implicit module prefix: ' + str(directory))
     inputs = {}
     for path in sorted(paths):
         file = ROOT / path
@@ -101,7 +114,7 @@ def identity(group, command):
         blob = git('rev-parse', 'HEAD:' + path)
         if path not in [CONTROL, OUTER] and blob != AUDITED_LEAF_BLOBS.get(path):
             raise ValueError('unqualified changed leaf closure: ' + path)
-        if git('hash-object', path) != blob:
+        if git('hash-object', '--no-filters', path) != blob:
             raise ValueError('uncommitted input: ' + path)
         inputs[path] = {'git_blob': blob, 'sha256': digest(file)}
     # No imported modules, fixtures, includes, generated inputs or Git-based
@@ -111,30 +124,62 @@ def identity(group, command):
     if not all(directories):
         raise ValueError('toolchain capsule directories not declared')
     tools = {}
+    def dynamic(path):
+        with Path(path).open('rb') as stream:
+            header = stream.read(18)
+        if header[:4] != b'\x7fELF':
+            return
+        result = subprocess.run(['ldd', str(path)], capture_output=True, text=True)
+        kind = int.from_bytes(header[16:18], 'little' if header[5] == 1 else 'big')
+        if (result.returncode and kind != 1) or 'not found' in result.stdout:
+            raise ValueError('unverifiable ELF dependency graph: ' + str(path))
+        for line in result.stdout.splitlines():
+            for token in line.split():
+                if token.startswith('/'):
+                    if not Path(token).is_file():
+                        raise ValueError('missing dynamic dependency: ' + token)
+                    tool(token)
     def tool(file):
         path = Path(file).resolve()
         if str(path) in tools:
             return
         tools[str(path)] = digest(path)
-        with path.open('rb') as stream:
-            if stream.read(4) != b'\x7fELF':
-                return  # text tools/modules have no ELF dynamic dependency graph
-        result = subprocess.run(['ldd', str(path)], capture_output=True, text=True)
-        for line in result.stdout.splitlines():
-            for token in line.split():
-                if token.startswith('/') and Path(token).is_file():
-                    tool(token)
+        if path.read_bytes()[:4] != b'\x7fELF' and path.suffix == '.so':
+            script = re.sub(r'/\*.*?\*/', '', path.read_text(), flags=re.S)
+            for token in re.split(r'[\s();]+', script):
+                if not token or token in ['GROUP', 'INPUT', 'AS_NEEDED', 'OUTPUT_FORMAT'] or token.startswith('elf'):
+                    continue
+                if token.startswith('-l'):
+                    name = 'lib' + token[2:] + '.a'
+                    dependency = subprocess.check_output(['gfortran', '-print-file-name='+name], text=True).strip()
+                elif token.startswith('/'):
+                    dependency = token
+                else:
+                    dependency = str(path.parent / token)
+                    if not Path(dependency).is_file():
+                        dependency = subprocess.check_output(['gfortran', '-print-file-name='+token], text=True).strip()
+                if not Path(dependency).is_absolute() or not Path(dependency).is_file():
+                    raise ValueError('unqualified linker-script input: ' + token)
+                tool(dependency)
+        dynamic(path)
     for name in ['bash', 'sh', 'gfortran', 'as', 'ld', 'rm', 'mkdir',
                  'mktemp', 'grep', 'cmp', 'cat', 'git', 'ldd']:
         file = shutil.which(name)
         if file is None:
             raise ValueError('missing tool: ' + name)
+        if name not in ['gfortran', 'ldd'] and Path(file).read_bytes()[:4] != b'\x7fELF':
+            raise ValueError('unqualified text tool: ' + name)
         tool(file)
+    tool(sys.executable)
     for directory in directories:
         base = Path(directory)
         if not base.is_absolute() or not base.is_dir():
             raise ValueError('invalid toolchain directory')
         for file in sorted(base.rglob('*')):
+            if file.is_symlink():
+                if file.is_dir():
+                    raise ValueError('unqualified symlink capsule directory: ' + str(file))
+                tools[str(file.absolute())+'#symlink'] = hashlib.sha256(str(file.readlink()).encode()).hexdigest()
             if file.is_file():
                 tools[str(file.resolve())] = digest(file)
     # Require the actual compiler front end, archive/link specs and libraries
@@ -146,11 +191,7 @@ def identity(group, command):
             raise ValueError('compiler dependency outside capsule: ' + file)
         # Capsule hashing also covers specs/includes/startup objects. Traverse
         # dynamic dependencies of the actual frontend, not a shell wrapper.
-        result = subprocess.run(['ldd', file], capture_output=True, text=True)
-        for line in result.stdout.splitlines():
-            for token in line.split():
-                if token.startswith('/') and Path(token).is_file():
-                    tool(token)
+        dynamic(file)
     compiler = Path(shutil.which('gfortran')).resolve()
     if compiler.read_bytes()[:4] != b'\x7fELF':
         lines = compiler.read_text().splitlines()
@@ -165,11 +206,7 @@ def identity(group, command):
         compiler = Path(tokens[1]).resolve()
         if str(compiler) not in tools or compiler.read_bytes()[:4] != b'\x7fELF':
             raise ValueError('compiler wrapper target outside capsule')
-    result = subprocess.run(['ldd', str(compiler)], capture_output=True, text=True)
-    for line in result.stdout.splitlines():
-        for token in line.split():
-            if token.startswith('/') and Path(token).is_file():
-                tool(token)
+    dynamic(compiler)
     # Compiler-selected test-executable runtime and linker/startup inputs.
     for name in ['libgfortran.so', 'libquadmath.so', 'libgcc_s.so', 'libm.so',
                  'libc.so', 'libc_nonshared.a', 'crt1.o', 'crti.o', 'crtn.o',
@@ -183,14 +220,24 @@ def identity(group, command):
         file = getattr(module, '__file__', None)
         if file and Path(file).is_file():
             tool(file)
+    runtime = {'flags': list(sys.flags), 'xoptions': sys._xoptions}
+    profile = {path: value for path, value in tools.items()
+               if path != str((ROOT / CONTROL).resolve())}
+    fingerprint = hashlib.sha256(encode({'tools': profile, 'runtime': runtime})).hexdigest()
+    if fingerprint != AUDITED_TOOL_PROFILE:
+        raise ValueError('unqualified toolchain/runtime profile: ' + fingerprint)
     env = {k: v for k, v in os.environ.items()
            if k not in CONTROL_ENV | {'_', 'SHLVL'} }
     # Do not publish environment values (possible secrets); bind their digest.
-    return {'schema': 'swap5.fci.leaf-input.v1', 'group': group,
+    return {'schema': 'swap5.fci.leaf-input.v2', 'group': group,
             'command': command, 'inputs': inputs, 'tools': tools,
+            'execution_command': ['bash', str(ROOT / runner)],
+            'execution_cwd_policy': 'private-empty-temporary-directory-v1',
+            'implicit_source_module_prefixes': {str(path): [] for path in sorted(prefixes)},
             'environment_sha256': hashlib.sha256(encode(env)).hexdigest(),
             'cwd': str(ROOT), 'platform': list(os.uname()),
             'controller_python': digest(sys.executable),
+            'audited_tool_profile': fingerprint, 'interpreter_runtime': runtime,
             'marker': marker, 'compilations': compilations,
             'required_outputs': [], 'shared_state': False}
 
@@ -224,7 +271,9 @@ def verify(receipt, log, current, key):
     if (record['status'] != 'PASS' or record['exit_code'] != 0 or
             not record['started_utc'] or not record['ended_utc'] or
             record['input'] != current or record['end_input'] != current or
-            record['required_outputs'] != [] or record['shared_state'] is not False):
+            record['required_outputs'] != [] or record['shared_state'] is not False or
+            record['execution_command'] != current['execution_command'] or
+            record['private_cwd_removed'] is not True):
         raise ValueError('terminal/closure/output mismatch')
     data = log.read_bytes()
     if log.is_symlink() or hashlib.sha256(data).hexdigest() != record['log_sha256']:
@@ -236,8 +285,8 @@ def verify(receipt, log, current, key):
     return record, data
 
 
-def execute(command, log=None):
-    child = subprocess.Popen(command, cwd=ROOT, stdout=subprocess.PIPE,
+def execute(command, log=None, cwd=ROOT):
+    child = subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE,
                              stderr=subprocess.STDOUT, start_new_session=True)
     def interrupted(signum, frame):
         os.killpg(child.pid, signum)
@@ -293,7 +342,7 @@ def main():
         reason = 'missing receipt'
         try:
             inherited = verify(receipt, log, current, key)
-        except (OSError, ValueError, KeyError, TypeError) as error:
+        except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
             reason = str(error)
         verification_seconds = time.monotonic() - started
         decision = 'INHERIT' if inherited else 'RUN'
@@ -310,11 +359,13 @@ def main():
         atomic(receipt, encode({'record': {'status': 'RUNNING', 'started_utc': utc()}}))
         begin = utc()
         t0 = time.monotonic()
-        code = execute(command, log)
+        with tempfile.TemporaryDirectory(prefix='swap5-fci-leaf-') as execution_cwd:
+            code = execute(current['execution_command'], log, cwd=execution_cwd)
         elapsed = time.monotonic() - t0
         end = utc()
         if code != 0:
             return code
+        final_started = time.monotonic()
         try:
             final = identity(group, command)
             if final != current or current['marker'].encode() not in log.read_bytes().splitlines():
@@ -328,6 +379,10 @@ def main():
                   'exit_code': 0, 'wall_seconds': elapsed, 'input': current,
                   'end_input': final, 'executed_head': git('rev-parse', 'HEAD'),
                   'log_sha256': digest(log), 'log_bytes': log.stat().st_size,
+                  'execution_command': current['execution_command'],
+                  'execution_cwd': execution_cwd,
+                  'private_cwd_removed': not Path(execution_cwd).exists(),
+                  'end_input_verification_seconds': time.monotonic() - final_started,
                   'required_outputs': [], 'shared_state': False}
         publication = time.monotonic()
         atomic(receipt, encode({'record': record, 'hmac_sha256':
@@ -336,6 +391,7 @@ def main():
             'group': group, 'wall_seconds': elapsed,
             'compilations': current['compilations'],
             'checkpoint_write_seconds': time.monotonic() - publication,
+            'end_input_verification_seconds': record['end_input_verification_seconds'],
             'verification_seconds': verification_seconds}), flush=True)
         if os.environ.get('FCI_RESUME_STOP_AFTER') == group:
             return 75  # controlled interruption, never whole-run PASS

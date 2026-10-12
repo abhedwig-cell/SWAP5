@@ -16,7 +16,7 @@ PRIVATE=OUT/'private-build';PRIVATE.mkdir()
 ENV=dict(os.environ,TMPDIR=str(PRIVATE),FCI_RESUME_MODE='SHADOW',FCI_RESUME_STORE=str(STORE),FCI_RESUME_KEY=str(KEY),FCI_RESUME_TOOLCHAIN_DIRS=args.toolchain_dirs)
 CMD=['python','tools/fci/resume_group.py','frost-invalid','bash','tests/frost/run_frost_invalid_input_preservation.sh']
 results=[]
-def run(name,env=None,cmd=None,inherit=False):
+def run(name,env=None,cmd=None,inherit=False,exit_code=0):
  t=time.monotonic();p=subprocess.run(cmd or CMD,cwd=ROOT,env=env or ENV,capture_output=True)
  b=p.stdout+p.stderr;(OUT/(name+'.log')).write_bytes(b)
  actual=b'FCI_RESUME_INHERITED frost-invalid' in b
@@ -25,7 +25,8 @@ def run(name,env=None,cmd=None,inherit=False):
   assert b'\"decision\": \"RUN\"' in b or b'FCI_RESUME_RUN' in b,(name,b)
  results.append({'case':name,'exit_code':p.returncode,'inherited':actual,'wall_seconds':time.monotonic()-t,'log_sha256':hashlib.sha256(b).hexdigest()})
  if name=='between-groups':assert p.returncode==75
- else:assert p.returncode==0,(name,b)
+ elif exit_code is None:assert p.returncode in [0,1],(name,b)
+ else:assert p.returncode==exit_code,(name,b)
  return b
 run('original-off',dict(ENV,FCI_RESUME_MODE='OFF'))
 run('uninterrupted-shadow')
@@ -44,6 +45,7 @@ reset()
 for name,action in [
  ('missing-terminal',lambda:(STORE/'frost-invalid.json').write_text('{"record":{"status":"RUNNING"}}')),
  ('damaged-receipt',lambda:(STORE/'frost-invalid.json').write_text('{}')),
+ ('nested-corrupt-receipt',lambda:(STORE/'frost-invalid.json').write_text('['*2000+'0'+']'*2000)),
  ('damaged-log',lambda:(STORE/'frost-invalid.log').write_bytes(b'forged PASS\n')),
  ('missing-log',lambda:(STORE/'frost-invalid.log').unlink())]:
  reset();action();run(name,resume)
@@ -76,6 +78,12 @@ finally:
  runner.write_bytes(original);extra.unlink();commit_trial('Restore audited trial inputs')
 reset();run('flags',dict(resume,FFLAGS='-O1'))
 reset();run('unqualified-external-input',dict(resume,BASH_ENV='/nonexistent/unqualified-input'))
+reset();run('exported-shell-function',dict(resume,**{'BASH_FUNC_cmp%%':'() { command cmp "$@"; }'}))
+reset();run('fortran-include-search',dict(resume,GFORTRAN_INCLUDE_PATH=str(OUT)))
+reset();module_prefix=ROOT/'tests/frost/mod_frost_hydraulic_effect.mod';module_prefix.write_bytes(b'corrupt generated module\n')
+try:run('unqualified-generated-module',resume,exit_code=None)
+finally:module_prefix.unlink()
+run('generated-module-deleted',resume,inherit=True)
 reset();run('environment',dict(resume,OMP_NUM_THREADS='2'))
 # Compiler capsule changes: no falsely inherited claim even if actual run still passes.
 reset();capsule=Path(args.toolchain_dirs.split(os.pathsep)[0])/'usr/lib/gcc/x86_64-linux-gnu/13/libgfortran.spec'

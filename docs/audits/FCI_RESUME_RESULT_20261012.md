@@ -39,6 +39,27 @@ authenticated receipts and old/new defect reproductions are archived in
 Earlier full
 logs and measurements below remain evidence for their recorded old candidate.
 
+Further review actually reproduced the same defect through an exported shell
+`cmp` function: its unchanged environment string referenced a changing fixture.
+On `623b82a79f874db56b9f975187f7bc826ae6745f`, RESUME inherited exit 0 while OFF
+returned 1. That candidate's fresh full OFF baseline completed at
+2026-10-12T20:52:42.649483Z, exit 0, wall 2766.421982 s. Its controlled prefix
+completed with expected outer exit 1 in 10.347934 s; both subsequent leaf
+inheritances were genuine for that no-function profile. The following full
+RESUME was deliberately interrupted through the execution session with exit 130
+when the additional defect was confirmed. Its terminal scientific status remains
+UNKNOWN, not PASS. Direct cross-session process-group signalling was unavailable;
+the supported session interrupt succeeded and no scientific child remained.
+
+The new hardening rejects exported functions in the controller and routes the
+caller away from an overridable Python function. It closes linker-script and
+Python shared-library dependencies, rejects text helper wrappers, binds a reviewed
+complete tool/runtime fingerprint, and rejects implicit source-module prefixes.
+Eligible executions use private empty cwd isolation; logs record the actual
+absolute command and removed private cwd. Deeply nested corrupt JSON also falls
+back to RUN. This controller revision is not yet fully qualified: its runtime
+profile is intentionally PENDING_REVIEW, so it cannot publish inherited evidence.
+
 ## What was demonstrated
 
 The original full moving F-CI ended with exit 0 in OFF. After a real nonzero

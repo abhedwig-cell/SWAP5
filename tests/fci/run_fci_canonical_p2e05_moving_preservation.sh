@@ -9,7 +9,13 @@ fci_group() {
   local group="$1"; shift
   case "${FCI_RESUME_MODE:-OFF}" in
     OFF) "$@" ;;
-    SHADOW|RESUME) python3 tools/fci/resume_group.py "$group" "$@" ;;
+    SHADOW|RESUME)
+      if [[ -n "$(declare -Fx)" ]]; then
+        printf '%s\n' 'FCI_RESUME_RUN unqualified exported shell functions' >&2
+        command "$@"
+      else
+        command python3 tools/fci/resume_group.py "$group" "$@"
+      fi ;;
     *) fail 'unknown FCI_RESUME_MODE' ;;
   esac
 }

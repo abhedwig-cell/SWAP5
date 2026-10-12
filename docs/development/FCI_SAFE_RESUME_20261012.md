@@ -52,6 +52,15 @@ all earlier receipts. The continuation review found and closed this distinction
 between identity equality and eligibility. Earlier full experiments tested the
 pre-hardening controller; their exact execution SHA remains unchanged.
 
+Eligible executions additionally use a private empty cwd and the actual absolute
+leaf command, recorded in the authenticated receipt. This avoids implicit GNU
+module lookup in the caller's cwd. Source-directory `.mod`/`.smod` prefixes are
+unqualified; no imported generated module state may silently affect the closure.
+Linker-script references and the Python interpreter's shared library are included.
+Only the reviewed full tool/runtime fingerprint may produce receipts; a new
+compiler/runtime/profile must be reviewed and qualified before updating that
+controller pin. Unknown profiles RUN without receipts even after successful tests.
+
 Each leaf owns its `mktemp` directory and removes it on EXIT. It exports only
 stdout/stderr. No later gate reads its `.mod`, `.o` or executable. Required
 persistent outputs are therefore empty; the complete signed transcript is the
@@ -85,6 +94,12 @@ compiler search and Python search overrides are unqualified and force RUN even
 if their string values have not changed: their external contents are not assumed
 closed. Native GNU compilers and the bounded simple absolute `exec` wrapper form
 are supported; other compiler wrappers are unqualified.
+
+Exported shell functions are unqualified, including overrides of the Python
+launcher itself. The caller uses a native command lookup and routes exported
+functions directly to RUN without the selection controller; direct controller
+usage also rejects them. Text helper wrappers, capsule-directory symlinks and
+unverifiable ELF dependency graphs cannot produce reusable receipts.
 
 The trust boundary is an exclusive qualification checkout, a controlled toolchain
 and a private key retained outside the writable checkpoint store. An adversary
