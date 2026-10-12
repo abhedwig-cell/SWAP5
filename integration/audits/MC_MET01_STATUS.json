@@ -2,8 +2,8 @@
   "work_unit": "MC-MET01",
   "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
   "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
-  "stage": "OWNER_CONTRACT_PERSISTED_BEFORE_IMPLEMENTATION",
-  "implemented": false,
+  "stage": "IMPLEMENTED_PERSISTED_SOURCE_ORACLE_PASS_PRODUCTION_PENDING",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -21,7 +21,7 @@
     "crop/root/irrigation/Snow/solute/MODFLOW",
     "existing uniform weather profile and owner gates"
   ],
-  "next_action": "Implement immutable source-bound table/pulse and guarded root-free segment dispatch, then independent source and actual production O0/O2",
+  "next_action": "Complete actual production, unchanged default crop and24/144 fresh highest frost before full preservation",
   "source_member": "SWAP/MOD_meteo.f90",
   "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
   "metrics": {
@@ -32,5 +32,14 @@
     "broad_qualification_runs": 0,
     "functional_results_admitted": 0,
     "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE"
+  },
+  "source_postimages": {
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90": "cb53d90e9861bddf83b3ededf8993869cf5c8308",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "2ae6e3aafe9f4987b562618443b0ccd48a133a4c"
+  },
+  "source_oracle": {
+    "command": "python tests/mc-met01/run_raintb_source.py",
+    "result": "PASS O0/O2 7686 literal cases each plus negatives",
+    "log": "MC_MET01 focused archive pending"
   }
 }
