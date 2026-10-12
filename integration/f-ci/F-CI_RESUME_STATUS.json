@@ -3,11 +3,11 @@
   "baseline": "a1b4bb432827149872445161fbcb775bba5c4cb1",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Execute focused positive/negative trials then complete identical-candidate OFF and interrupted RESUME moving preservation",
+  "next_action": "Run identical-candidate OFF full F-CI, controlled completed-prefix interruption and RESUME; compare all science stdout and record costs",
   "recovery_point": "work/f-ci-safe-resume-20261012",
   "dependency_surface": [
     "tools/fci/resume_group.py",
@@ -15,5 +15,13 @@
     "src/process/mod_frost_hydraulic_effect.f90",
     "tests/frost"
   ],
-  "blockers": []
+  "blockers": [],
+  "stage": "FOCUSED_SAFETY_PASS_FULL_PRESERVATION_PENDING",
+  "scientific_candidate": "806766ad81978231f7dc27bb28bc9f81c2d3a4dd",
+  "safety_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
+    "decoded_sha256": "8fef4afde97976cdfdb10efabf9b0c554178258b4b2d69e16c8c173ac16716fe",
+    "controls": 25
+  },
+  "owner": "F-CI execution infrastructure; existing VQ scientific preservation and central REGIE admission"
 }
