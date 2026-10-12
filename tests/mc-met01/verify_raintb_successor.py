@@ -16,7 +16,9 @@ for key in ['focused_evidence','default_crop_evidence','fresh_frost_evidence']:
  with tarfile.open(fileobj=io.BytesIO(raw)) as t:
   m=json.load(t.extractfile('MANIFEST.json'));assert m['source_tree']==git('rev-parse','HEAD:src')
   for name,digest in m['member_sha256'].items():assert hashlib.sha256(t.extractfile(name).read()).hexdigest()==digest,name
-  for path,blob in m['dependency_blobs'].items():assert git('rev-parse','HEAD:'+path)==blob,path
+  for path,blob in m['dependency_blobs'].items():
+   assert git('rev-parse','HEAD:'+path)==blob,path
+   assert git('hash-object',path)==blob,('dirty dependency',path)
   if key=='focused_evidence':
    assert b'MC_MET01_LITERAL_RAINTB_O0_O2=PASS' in t.extractfile('source.log').read()
    assert b'MC_MET01_ACTUAL_RAINTB_PRODUCTION_O0_O2=PASS' in t.extractfile('production.log').read()
