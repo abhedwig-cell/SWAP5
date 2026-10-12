@@ -543,6 +543,13 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/process/mod_reference_et_demand_process.f90 )
+        test "$(git rev-parse HEAD:src/process/mod_reference_et_demand_process.f90)" = \
+          "0a8fc91570c6297a54109740de3a26153dc44283" ||
+          fail 'unqualified daily-demand process postimage'
+        python3 tests/mc-met01/verify_daily_demand_successor.py ||
+          fail 'daily-demand process source/owner/highest qualification missing'
+        ;;
       src/process/mod_frost_hydraulic_effect.f90 )
         verify_crop_frost_highest ||
           fail 'unqualified frost hydraulic guard source change'

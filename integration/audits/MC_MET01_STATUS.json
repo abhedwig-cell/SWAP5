@@ -412,6 +412,23 @@
         "clean_at_end": true,
         "wall_seconds": 4091.529708
       }
-    }
+    },
+    "full_fci_attempt1": {
+      "gate": "mc-met01-demand-full-moving",
+      "command": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "head": "497efc0d7ab1ecf36513dcd1c150de162f1fe7ef",
+      "tree": "b6afce1e3b37922c3bc002fb8f063ce64838eafc",
+      "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "started_utc": "2026-10-12T13:21:57.616264+00:00",
+      "terminal_exit_code": 1,
+      "ended_utc": "2026-10-12T13:22:46.839652+00:00",
+      "end_head": "497efc0d7ab1ecf36513dcd1c150de162f1fe7ef",
+      "clean_at_end": true,
+      "wall_seconds": 49.223388
+    },
+    "qualification_guard_repair": "Exact independently qualified daily-demand process postimage added to B19/MICRO source guard; original failure preserved; numerical cases/assertions/tolerances unchanged"
   }
 }
