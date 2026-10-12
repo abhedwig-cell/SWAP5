@@ -31,6 +31,18 @@ GROUPS = {
 }
 CONTROL_ENV = {'FCI_RESUME_MODE', 'FCI_RESUME_STORE', 'FCI_RESUME_KEY',
                'FCI_RESUME_STOP_AFTER'}
+# Eligibility is an audited closure, not merely a fingerprint of arbitrary new
+# committed code. A changed leaf can introduce includes, fixtures or outputs.
+# Qualify that new closure before changing these pins in the controller.
+AUDITED_LEAF_BLOBS = {
+    'src/process/mod_frost_hydraulic_effect.f90': '0dd5b541af936d292d23575f798c3cdd5be19c47',
+    'tests/frost/run_frost_invalid_input_preservation.sh': 'a33e28b61147d665736831f23948eaac2939a20a',
+    'tests/frost/run_frost_nan_guard_independent.sh': 'c14028598fe46b81a1282a361bf10aedd70b4da3',
+    'tests/frost/test_frost_invalid_input_preservation.f90': '79a9a1dbd21f331077a53a423023221abe80435d',
+    'tests/frost/test_frost_nan_guard_independent.f90': 'cb666c75ab610c60924ee4f70216e57f8f07f1c3',
+    'tests/frost/test_invalid_parameter_guard.f90': '02eeaac0f934d8e06432bc40c6e2ceb24e97ab1e',
+    'tests/frost/test_ppa_wu05b_frost_effect.f90': 'b5a253aba2060d8011479eee10f22a3336e964d2',
+}
 
 
 def digest(path):
@@ -87,6 +99,8 @@ def identity(group, command):
             raise ValueError('missing/nonregular input: ' + path)
         # Bind the committed control and all working bytes; dirty input is RUN.
         blob = git('rev-parse', 'HEAD:' + path)
+        if path not in [CONTROL, OUTER] and blob != AUDITED_LEAF_BLOBS.get(path):
+            raise ValueError('unqualified changed leaf closure: ' + path)
         if git('hash-object', path) != blob:
             raise ValueError('uncommitted input: ' + path)
         inputs[path] = {'git_blob': blob, 'sha256': digest(file)}

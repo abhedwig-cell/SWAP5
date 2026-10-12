@@ -58,6 +58,22 @@ for name,path in [
  try:run(name,resume)
  finally:p.write_bytes(old)
 reset();run('arguments',resume,CMD+['unexpected-argument'])
+# A newly committed runner must not gain eligibility simply by getting a new
+# fingerprint: it may introduce a dependency outside the audited leaf closure.
+reset();runner=ROOT/'tests/frost/run_frost_invalid_input_preservation.sh'
+original=runner.read_bytes();extra=ROOT/'tests/frost/resume-extra-input.txt'
+extra.write_text('first generated input\n')
+runner.write_bytes(original+b'\ncat tests/frost/resume-extra-input.txt >/dev/null\n')
+def commit_trial(message):
+ subprocess.run(['git','add','tests/frost'],cwd=ROOT,check=True,capture_output=True)
+ subprocess.run(['git','-c','user.name=F-CI trial','-c','user.email=fci-trial@example.invalid','commit','-m',message],cwd=ROOT,check=True,capture_output=True)
+commit_trial('Negative control: committed new external dependency')
+try:
+ run('committed-new-dependency',resume)
+ extra.write_text('changed generated input\n')
+ run('committed-dependency-changed',resume)
+finally:
+ runner.write_bytes(original);extra.unlink();commit_trial('Restore audited trial inputs')
 reset();run('flags',dict(resume,FFLAGS='-O1'))
 reset();run('unqualified-external-input',dict(resume,BASH_ENV='/nonexistent/unqualified-input'))
 reset();run('environment',dict(resume,OMP_NUM_THREADS='2'))

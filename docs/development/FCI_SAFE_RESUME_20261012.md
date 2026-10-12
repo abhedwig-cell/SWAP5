@@ -43,6 +43,15 @@ committed inputs; commands and arguments must equal the explicit allowlist.
 Compiler, environment and platform identities are part of equality. Environment
 values are hashed rather than publishing potentially secret values.
 
+Eligibility additionally pins the seven audited leaf Git blobs in the controller.
+A newly committed source/driver/runner version is not automatically qualified:
+it might introduce an external include, fixture or output dependency. Such a
+version always RUNs without publishing a reusable receipt. Updating these pins
+requires closure review and requalification; the changed controller invalidates
+all earlier receipts. The continuation review found and closed this distinction
+between identity equality and eligibility. Earlier full experiments tested the
+pre-hardening controller; their exact execution SHA remains unchanged.
+
 Each leaf owns its `mktemp` directory and removes it on EXIT. It exports only
 stdout/stderr. No later gate reads its `.mod`, `.o` or executable. Required
 persistent outputs are therefore empty; the complete signed transcript is the
