@@ -33,7 +33,14 @@
     "repeated_source_investigations": 0,
     "broad_qualification_runs": 0,
     "functional_results_admitted": 0,
-    "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE"
+    "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE",
+    "current_measurement_limits": [
+      "Focused/default gates completed; their start/stop controls were not recorded, so gate duration UNKNOWN",
+      "Whole-result calendar duration can be measured from initial readiness UTC to final admission",
+      "Original serial low-air controller was replaced by bounded2-worker scheduling; completed case1 reused only after exact executable/source/compiler identity",
+      "Controller NameError repaired; aborted and failed logs retained; no numerical assertion or tolerance changed",
+      "No fullcap promotion is assumed from bounded typed file-weather reachability"
+    ]
   },
   "source_postimages": {
     "src/adapter/mod_swap_daily_weather_file_adapter.f90": "cb53d90e9861bddf83b3ededf8993869cf5c8308",
@@ -67,5 +74,9 @@
     25,
     29,
     30
+  ],
+  "source_scope_limits": [
+    "Existing admitted Gregorian weather calendar reused; no independent legacy external dtleap library equivalence claim",
+    "Literal AFGEN and individual pulse formula qualified; broad legacy partly filled table/parser and near-midnight event-array coalescing remain outside current bounded profile"
   ]
 }
