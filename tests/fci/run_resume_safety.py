@@ -107,4 +107,8 @@ t=time.monotonic();p=subprocess.run(c,cwd=ROOT,env=resume,capture_output=True);a
 results.append({'case':'independent-downstream','exit_code':p.returncode,'wall_seconds':time.monotonic()-t})
 (OUT/'results.json').write_text(json.dumps(results,indent=2));print(json.dumps(results,indent=2))
 
-subprocess.run(['git','worktree','remove',str(ROOT)],cwd=SOURCE,check=True)
+cleanup=subprocess.run(['git','status','--short'],cwd=ROOT,check=True,capture_output=True)
+(OUT/'cleanup-inventory.log').write_bytes(cleanup.stdout)
+# This exact disposable checkout was created above, never a user worktree.
+# Preserve any trial residue inventory before removing this bounded target.
+subprocess.run(['git','worktree','remove','--force',str(ROOT)],cwd=SOURCE,check=True)

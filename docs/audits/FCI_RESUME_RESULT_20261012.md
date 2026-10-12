@@ -6,6 +6,32 @@ admitted. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recov
 head for OFF, controlled SHADOW prefix and RESUME:
 `aef26ee85ddb58195f005169985dd52fc0bd9545`.
 
+## Continuation review: eligibility defect and hardening
+
+The continuation review reproduced a real failure outside the original 25-control
+matrix. A committed leaf runner introduced a new external fixture check. The old
+controller published a receipt for that new version; changing the fixture then
+incorrectly inherited exit 0, while an actual OFF execution returned exit 1.
+Matching a newly committed fingerprint did not establish its transitive closure.
+This invalidates any claim that arbitrary future committed leaf revisions were
+already safe, despite the original audited unchanged-leaf full comparison.
+
+The controller now pins the seven explicitly audited source/driver/runner Git
+blobs. Unknown committed leaf versions RUN without reusable receipts. Updating
+eligibility requires a reviewed closure and changed controller, invalidating
+earlier receipts. The exact reproducer on old head
+`9bb84ef31dd001cd9e14480c2c2767b9acf7e410` observed unsafe inheritance; on hardened
+head `8547008cae267ef3892ce938a04e9e9ee33f8de3` it selected RUN and exposed exit 1,
+equal to OFF. These are executed controls, not hypothetical assertions.
+
+The enlarged 27-control matrix completed every scientific assertion on the
+hardened head, but its final disposable-checkout cleanup failed with exit 128
+because an untracked trial fixture remained. That harness exit is not PASS.
+Cleanup now retains an inventory and removes only its own exact disposable
+worktree. A fresh terminal matrix and a same-candidate full trial are required
+before attributing full qualification to the hardened controller. Earlier full
+logs and measurements below remain evidence for their recorded old candidate.
+
 ## What was demonstrated
 
 The original full moving F-CI ended with exit 0 in OFF. After a real nonzero
