@@ -101,7 +101,16 @@
         "PPA-WU05-B original source-blocker review is superseded: exact bytes verified, bounded frost admitted via1018 and later B19 via1078. Existing invalid-input guard1119 is admitted/merged atda9ef1e5 with complete current qualification. Aggregate frost remains incomplete under current PPA_WU05B_STATUS; source absence is not a current gate.",
         "PPA-WU05-D compensated uptake remains blocked and must bind later root-hydraulic authority before any implementation."
       ],
-      "next_gate": "Production owner selects the next source-authorized bounded migration slice; central regie only admits a qualified successor."
+      "next_gate": "Production owner selects the next source-authorized bounded migration slice; central regie only admits a qualified successor.",
+      "mc_met01_raintb_pilot_20261012": {
+        "scope": "User explicitly delegated execution of canonically planned SW431-MET-RAIN1 pilot in current session",
+        "owner": "MC-MET01 through existing PPA/RT central application authority",
+        "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
+        "status": "BOUNDED_CONTRACT_BEFORE_IMPLEMENTATION",
+        "record": "integration/audits/MC_MET01_STATUS.json",
+        "held_fixed": "Crop/root transitions, solver/kernel semantics, numerical gates and all existing owners",
+        "admission_rule": "Independent literal source and actual O0/O2 production/restart, affected default crop/Full Richards/F-CI preservation; exact head and live overlap"
+      }
     },
     {
       "id": "F-GC",

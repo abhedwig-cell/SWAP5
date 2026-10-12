@@ -1,0 +1,36 @@
+{
+  "work_unit": "MC-MET01",
+  "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
+  "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
+  "stage": "OWNER_CONTRACT_PERSISTED_BEFORE_IMPLEMENTATION",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "owner": "Delegated MC-MET01 under existing REGIE/PPA/RT application authority; preserve MC-CROP01 owner",
+  "contract": "docs/science/MC_MET01_RAINTB_PRODUCTION_CONTRACT.md",
+  "recovery_branch": "work/mc-met01-raintb-pilot-20261012",
+  "relevant_paths": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "held_fixed": [
+    "kernel/solver/temporal/mass/state owners",
+    "crop/root/irrigation/Snow/solute/MODFLOW",
+    "existing uniform weather profile and owner gates"
+  ],
+  "next_action": "Implement immutable source-bound table/pulse and guarded root-free segment dispatch, then independent source and actual production O0/O2",
+  "source_member": "SWAP/MOD_meteo.f90",
+  "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+  "metrics": {
+    "start_utc": "2026-10-12T06:55:48.158769+00:00",
+    "active_work_seconds": "UNKNOWN",
+    "user_continuations_after_start": 0,
+    "repeated_source_investigations": 0,
+    "broad_qualification_runs": 0,
+    "functional_results_admitted": 0,
+    "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE"
+  }
+}
