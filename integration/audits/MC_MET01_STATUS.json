@@ -220,7 +220,7 @@
   "daily_demand_successor": {
     "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
     "recovery_branch": "work/mc-met01-daily-demand-20261012",
-    "stage": "BOUNDED_QUALIFIED_PRESERVED_ADMISSION_PENDING",
+    "stage": "BOUNDED_CANONICALLY_ADMITTED_MASTER_RECONCILED",
     "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
     "scope": [
       "SW431-ET-PMTRAD",
@@ -231,8 +231,8 @@
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
-    "next_action": "Reconcile live canonical head and overlapping PRs; verify unchanged exact execution closure; admit bounded PR1216 then reconcile two master rows without fullcap promotion.",
+    "canonically_admitted": true,
+    "next_action": "Bounded PMtraditional/CFBS package complete. Both master IDs remain ACTIVE outside root-free authenticated daily envelope. No additional production implementation or default activation automatically delegated.",
     "held_fixed": [
       "All default arithmetic and profiles",
       "Kernel/state/mass/retry/restart owners and tolerances",
@@ -253,7 +253,10 @@
       "full_fci_attempts": 3,
       "full_ppa_runs": 2,
       "repair_after_failed_integration": "No canonical integration failure; first F-CI source guard rejected the new qualified process and was repaired with an exact postimage plus full proof; second attempt was interrupted without terminal controller result, retained as UNKNOWN and rerun; all logs preserved.",
-      "ppa_replay_reason": "Conservative same-head replay after qualification-control repair; a separate minimal transitive PPA closure was not established. Source physics was unchanged; no independent scientific need or speed benefit is claimed for this duplicate."
+      "ppa_replay_reason": "Conservative same-head replay after qualification-control repair; a separate minimal transitive PPA closure was not established. Source physics was unchanged; no independent scientific need or speed benefit is claimed for this duplicate.",
+      "functional_results_admitted": 1,
+      "calendar_readiness_to_admission_seconds": 12385.0,
+      "closeout_verified_utc": "2026-10-12T15:19:32.706618+00:00"
     },
     "persisted": true,
     "preserved": true,
@@ -578,6 +581,57 @@
       "same_scope_competing_pr": "NONE",
       "adjacent_owner_deltas": "Inspected relevant paths in1214/1117/1103/1098/1009/956/953; all heads unchanged at final reconciliation; no such candidate admitted by this package",
       "held_fixed": "root/crop/HY/irrigation/Snow/solute/MODFLOW and all numerical tolerance/reference owners"
+    },
+    "canonical_merge": "d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9",
+    "admission_head": "c524a5f7ed47adc40931cfcaebdf10f7060dffab",
+    "admitted_at_utc": "2026-10-12T15:15:44Z",
+    "admission_verified_at_utc": "2026-10-12T15:19:32.706618+00:00",
+    "canonical_verification": {
+      "merge_tree": "76a29245ab123c709015bdbde9003a359766dc80",
+      "tree_equals_qualified_final_postimage": true,
+      "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "source_blobs": {
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90": "44b07cd1046632a38b36e9b1ed5608f67ca41fdd",
+        "src/process/mod_reference_et_demand_process.f90": "0a8fc91570c6297a54109740de3a26153dc44283",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90": "8b480b09f47bb4443d755109c9093486853c0809"
+      },
+      "source_reference_and_2440_execution_inputs_unchanged": true,
+      "canonical_immutable_evidence_verifier": "PASS",
+      "docs_source_and_strict_mkdocs": "PASS",
+      "github_actions_runs_for_admission_head": 0,
+      "github_checks_for_admission_head": 0,
+      "github_actions_runs_for_merge": 0,
+      "github_checks_for_merge": 0,
+      "no_empty_status_as_science_pass": true
+    },
+    "master_reconciliation": {
+      "pr": 1072,
+      "branch": "work/swap431-master-coverage-20261006",
+      "parent": "cece0a4e724944a913a5e7c6eb00a7fc28a7370c",
+      "receipt_commit": "eccbf9d2b4631841ee37450206e32831a431bb85",
+      "tree": "4152095fe16f94bf35d37d376a0652a7cd072472",
+      "changed_capabilities": [
+        "SW431-ET-PMTRAD",
+        "SW431-ET-SOILFACTOR"
+      ],
+      "disposition": "ACTIVE_MIGRATION",
+      "all_other_rows_and_queues_unchanged": true,
+      "disposition_totals": {
+        "capabilities": 243,
+        "ADMITTED": 95,
+        "ACTIVE_MIGRATION": 108,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4
+      },
+      "source_presence_aggregates": {
+        "with_authority": 62,
+        "without_authority": 46
+      },
+      "fullcap_delta": 0,
+      "full_source_census_closure_claim": false,
+      "master_kept_draft": true
     }
   }
 }

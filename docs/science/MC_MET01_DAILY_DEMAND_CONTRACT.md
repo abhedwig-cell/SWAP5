@@ -1,7 +1,7 @@
 # MC-MET01 daily traditional PM and CFBS production contract
 
-Status: independently qualified and preserved on the work branch; source,
-physical, incumbent, complete highest, full PPA and F-CI PASS. Canonical admission pending. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
+Status: bounded canonically admitted via PR1216 at `d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9`; source,
+physical, incumbent, complete highest, full PPA and F-CI PASS. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
 User delegated execution of the PR1215 package on 12 October 2026. Existing
 REGIE/PPA/RT own the application seam; independent source/VQ/F-CI gates remain.
 
@@ -93,3 +93,5 @@ One coherent functional production trajectory combines two selected master IDs i
 
 The second full F-CI attempt was interrupted with no terminal controller record; its outcome remains UNKNOWN and its partial log is archived separately. The whole required gate was rerun on the identical execution head, rather than treating partial PASS markers as full qualification. This exposes an execution recovery cost; it does not justify silently omitting remaining gates. Active work, unrecorded interventions and repeated-investigation counts remain UNKNOWN. RAINTB is a different-scope process baseline; these wall times do not establish a causal percentage speedup or equal functional complexity. No regression was observed in the declared completed gates; that is not proof of zero unobserved risk. Full Richards, transaction/mass/retry/restart, certified references and coupled MODFLOW owner contracts remain binding.
 The PPA replay was a conservative same-head scheduling choice after a qualification-control repair: a separate minimal transitive PPA closure was not established. Source physics was unchanged. This duplicate is counted as cost, not presented as independently necessary science or as a speed benefit. A future qualified dependency selector could make this decision more precise; the current proposal does not automatically omit such gates.
+
+Canonical merge-tree equality was verified before and after admission. Master PR1072 receipt `eccbf9d2b4631841ee37450206e32831a431bb85` changes only the two selected capability rows/queues and existing bounded owner/status receipts; both stay ACTIVE, all disposition counts remain unchanged. The admitted opt-in route retains the declared limits and is disabled by default.
