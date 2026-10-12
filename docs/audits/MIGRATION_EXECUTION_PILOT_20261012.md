@@ -145,3 +145,42 @@ snelheid niet bewezen”; geen projectbrede rollout op één negatieve/kleine pr
 Deze analyse implementeert de proef niet. De volgende Work-sessie kan direct
 met de readinessactie beginnen; een actuele ownership- of scienceblokkade stopt
 alleen afhankelijke productie en wordt met exacte next_action vastgelegd.
+
+## Readinesscontrole bij overdracht, 12 oktober 2026
+
+Canonical en PR-overlap zijn opnieuw gecontroleerd op dezelfde baseline
+`cdd0c02c0b3a5b7f35c00c7138bd6898a4eb98fc`; er is geen nieuwe relevante delta.
+De actuele registry bevat REGIE en PPA als bestaande verantwoordelijke rollen,
+maar geen afzonderlijke MC-MET01-entry. MC-MET01 is hier de workunit uit de
+mastercoverage, geen bewijs dat een vrije productie-eigenaar al is toegewezen.
+Gebruik de bestaande REGIE/PPA-routing om deze begrensde proefscope te beleggen;
+maak geen tweede ownershipregister.
+
+De concrete ingang heeft een aanvullende grens. In
+`mod_fmr_production_application_bootstrap.f90` weigert
+`run_standalone_with_forcing` de uitvoering bij actieve file-weather als
+`weather_interval_active` niet door de interne bewaakte route is gezet.
+`run_weather_interval` stelt de dagrate momenteel zelf in op `rain*0.1`.
+De optionele weatherguard in het common-forcing-adapter controleert identity
+en intervaldekking; hij levert zelf geen RAINTB-resolver of productieschedule.
+De aanwezigheid van een algemene resolved-forcing-ingang bewijst dus niet
+dat een externe planner de authentieke file-weather-route al kan bedienen.
+
+Voor de gekozen file-weather-proef is de concrete voorkeursroute een
+owner-geaccepteerde opt-in-resolver/binding **binnen de bewaakte
+weather-intervalroute**, met positieve segmenten tot pulse-einde en daarna
+zero-rain-segmenten. Behoud recordidentity, begin-day ownership, dagafronding,
+accepted-prefix-publicatie en bestaande joint continuation. Zet geen private
+active-flag van buitenaf, schakel geen provenanceguard uit en presenteer een
+losse standalone typed-forcing-test niet als file-weather-integratie.
+Een extern alternatief is alleen geldig als de owning autoriteit vooraf een
+volledige equivalente authenticatie/publicatie/continuationroute vastlegt.
+
+Readinessstatus: **READY_FOR_BOUNDED_OWNER_CONTRACT; NOT_IMPLEMENTATION_READY**.
+De eerstvolgende beslissende actie is bij REGIE/PPA met de bestaande RT/cropowner
+de opt-in-ingang, segment-publicatie en schedule-reconstructie uit record plus
+onveranderde RAINTB te begrenzen. Leg ook vast hoe veranderde tableidentity bij
+restart wordt afgewezen en hoe een voltooide prefix na latere failure blijft
+bestaan. Daarna kan de volgende productieopdracht de hierboven omschreven
+complete proef bouwen en meten. Bronautoriteit is al beschikbaar; dit is een
+concrete gedeelde application-contractgrens, geen ontbrekende-sourceblokker.
