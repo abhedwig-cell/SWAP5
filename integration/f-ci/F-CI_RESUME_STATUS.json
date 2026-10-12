@@ -1,0 +1,19 @@
+{
+  "work_unit": "F-CI-RESUME",
+  "baseline": "a1b4bb432827149872445161fbcb775bba5c4cb1",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
+  "next_action": "Execute focused positive/negative trials then complete identical-candidate OFF and interrupted RESUME moving preservation",
+  "recovery_point": "work/f-ci-safe-resume-20261012",
+  "dependency_surface": [
+    "tools/fci/resume_group.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost"
+  ],
+  "blockers": []
+}
