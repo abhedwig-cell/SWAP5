@@ -43,6 +43,7 @@ module mod_reference_et_demand_process
 
   public :: evaluate_restricted_reference_et_demand
 
+  integer, parameter :: PM_IDENTITY_KIND=selected_int_kind(18)
   real(real64), parameter :: PI = 3.141592653589793238462643383279502884197_real64
   real(real64), parameter :: RADIAL = PI / 180.0_real64
   real(real64), parameter :: SMALL = 1.0e-6_real64
@@ -229,8 +230,8 @@ contains
     real(real64) :: tav, tavk, tmnk, tmxk, palt, lambda, ea, ed, vpd, delta, gamma, rho, cp
     real(real64) :: zm, zh, chplant, ud, dgrass, zomgrass, fmeas, zact, dact, zomact, fact
     real(real64) :: rns, rnc, rnw, rnp, atmtr, relssd, rnl, gs, gc, gw
-    real(real64) :: rac, raw, ras, rss, laieff, gammos, gammoc, gammow, gammop
-    real(real64) :: con_tmp, etaers, etaerc, etaerw, etaerp, etrads, etradc, etradw, etradp
+    real(real64) :: rac, raw, ras, rss, gammos, gammoc, gammow
+    real(real64) :: con_tmp, etaers, etaerc, etaerw, etrads, etradc, etradw
     real(real64) :: ptra_dry, ptra_wet, eintc
 
     site=parameters%site;canopy=parameters%canopy
@@ -503,7 +504,8 @@ contains
     p=self
     ok=self%ready().and.other%ready()
     if(.not.ok) return
-    ok=all(daily_demand_parameter_values(p)==daily_demand_parameter_values(other)).and. &
+    ok=all(transfer(daily_demand_parameter_values(p),[int(0,kind=PM_IDENTITY_KIND)])== &
+      transfer(daily_demand_parameter_values(other),[int(0,kind=PM_IDENTITY_KIND)])).and. &
       (self%soil_factor_enabled.eqv.other%soil_factor_enabled).and. &
       (self%canopy%crop_emerged.eqv.other%canopy%crop_emerged).and. &
       (self%canopy%use_crop_height_for_aerodynamics.eqv.other%canopy%use_crop_height_for_aerodynamics)

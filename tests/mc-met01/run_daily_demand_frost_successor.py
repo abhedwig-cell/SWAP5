@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess,sys
 ROOT=Path(__file__).resolve().parents[2]
 BASE='bd17f0a9a7c19516e66af8f80e2b7128890b3aee'
-PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90': '44b07cd1046632a38b36e9b1ed5608f67ca41fdd', 'src/process/mod_reference_et_demand_process.f90': '592eba299eaacdd6b1493491960d617c876120dd', 'src/runtime/mod_fmr_production_application_bootstrap.f90': '8b480b09f47bb4443d755109c9093486853c0809'}
+PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90': '44b07cd1046632a38b36e9b1ed5608f67ca41fdd', 'src/process/mod_reference_et_demand_process.f90': '0a8fc91570c6297a54109740de3a26153dc44283', 'src/runtime/mod_fmr_production_application_bootstrap.f90': '8b480b09f47bb4443d755109c9093486853c0809'}
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 assert not git('status','--porcelain','--','src')
 assert git('diff','--name-only',BASE,'HEAD','--','src').splitlines()==sorted(PINS)
