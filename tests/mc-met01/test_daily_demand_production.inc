@@ -278,6 +278,9 @@
         call pb%temporal_history_snapshot(db,ok);call require(ok,'probe second retained history')
         call require(size(da)==size(db),'probe history extent')
         call require(all(transfer(da,[0_int64])==transfer(db,[0_int64])),'probe derivative bits retained')
+        da=raintb_soil_values(a);db=raintb_soil_values(b)
+        call require(size(da)==size(db),'probe complete state extent including AIR')
+        call require(all(transfer(da,[0_int64])==transfer(db,[0_int64])),'probe full soil heat and history rollback bits')
       class default
         call require(.false.,'probe second physical type')
       end select

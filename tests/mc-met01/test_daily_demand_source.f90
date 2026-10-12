@@ -2,8 +2,14 @@ program test_daily_demand_source
 use iso_fortran_env,only:real64
 use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
 use mod_reference_et_demand_process
+use mod_swap_daily_weather_file_adapter,only:swap_daily_weather_record_t,read_swap_daily_weather_file,SWAP_WEATHER_FILE_OK
 use b111_daily_demand_oracle
 implicit none
+type(swap_daily_weather_record_t)::record
+character(len=1000)::weather_path
+integer::record_doy
+real(real64)::record_rad,record_vapour,record_wind
+logical::record_available
 type(daily_atmospheric_demand_parameters_t)::p,other
 type(traditional_pm_weather_t)::w
 type(traditional_pm_daily_result_t)::r
@@ -13,6 +19,12 @@ type(reference_et_demand_result_t)::rr
 real(real64)::actual(9),expected(9),off(3),on(3),factor,cover,ref
 integer::a,b,c,e,f,g,h,count,st,witness
 logical::emerged
+call get_command_argument(1,weather_path)
+call read_swap_daily_weather_file(trim(weather_path),2000,1,1,record,st)
+call require(st==SWAP_WEATHER_FILE_OK,'authenticated PM record')
+call record%pm_values(record_doy,record_rad,record_vapour,record_wind,record_available)
+call require(record_available.and.record_doy==1.and.abs(record_rad-100000.d0)<1.d-12.and. &
+ abs(record_vapour-1.25d0)<1.d-12.and.abs(record_wind-3.5d0)<1.d-12,'source file PM column and kJ to J binding')
 p%mode=0
 p%site%latitude_degrees=52.d0;p%site%altitude_m=10.d0
 p%site%wind_measurement_height_m=10.d0;p%site%humidity_measurement_height_m=1.5d0
