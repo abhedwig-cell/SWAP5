@@ -4,7 +4,82 @@ Status: bounded scientific comparison completed; opt-in candidate, not canonical
 admitted. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
 [FCI safe resume](../development/FCI_SAFE_RESUME_20261012.md). Exact actual execution
 head for OFF, controlled SHADOW prefix and RESUME:
-`aef26ee85ddb58195f005169985dd52fc0bd9545`.
+`dd3c823b14ab1e49b1604482de5214ea1f77879a`.
+
+## Final closed-profile qualification
+
+The final 33-control safety matrix ended with exit 0. The fresh complete OFF,
+controlled SHADOW interruption and complete RESUME used the same functional
+candidate above. Both full runs ended with exit 0; the harness also ended with
+exit 0. The interrupted prefix ended with intentional outer exit 1 after both
+eligible groups had recorded authenticated terminal PASS. A running or interrupted
+group was never inherited. The focused trial separately exercises mid-group
+interruption, full identical-input SHADOW and independent downstream compilation.
+
+RESUME inherited exactly `frost-invalid` and `frost-independent`. Every remaining
+original command and argument executed in the same order. Complete scientific
+stdout is identical after the same nine narrowly anchored temporary-path
+normalizations described below. No number, optimization, case, tolerance or
+scientific assertion is normalized. Both normalized streams have SHA256
+`df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21`.
+Original stdout hashes are `cce01c9da3655f21ea28bab74df0b14cd0c5992f7eafaa32be4b0f29706260a9`
+(OFF) and `acd94d781f6392d755a578863a16e365f1cf9428b5ce75a5a159f7a17b986c3c`
+(RESUME). Both HMAC signatures, complete logs and start/end input identities were
+additionally checked from the original receipts with the separately retained key.
+
+| Final-candidate measurement | Actual observation |
+| --- | ---: |
+| OFF baseline calendar duration | 2398.644100 s |
+| RESUME/recovery execution calendar duration | 2405.963222 s |
+| Completed interrupted prefix | 10.024211 s |
+| Observed whole-run improvement | -7.319122 s; RESUME was longer |
+| Original top-level calls | 26 OFF; 24 RESUME, including four pure verifiers each |
+| Scientific top-level groups | 22 executed OFF; 20 executed and two inherited RESUME |
+| Compile/link invocations actually avoided | 8; repeated in inherited leaves: 0 |
+| Executed wall time of omitted leaves | 1.409290 s; execution and log I/O, not pure CPU |
+| RESUME input/evidence verification | 1.599199 s |
+| Initial prefix input verification | 1.837247 s |
+| Post-execution input revalidation | 1.651413 s |
+| Atomic terminal receipt publication | 0.006220 s |
+| Pure compilation CPU saved, other compile totals, separate recovery CPU | UNKNOWN |
+| Warm filesystem/cache and host-load contribution | UNKNOWN; no object cache enabled |
+
+There is one ordered full pair for this functional controller. Earlier pairs used
+different controllers and are not statistical repetitions. Verification alone
+exceeds omitted group execution by 0.189908 s. This proves safe bounded reuse and
+actually avoided work, not a net speedup or a portable performance improvement.
+OFF stays default. Conservative FFLAGS invalidation and the repaired CPU JSON
+representation error are disclosed extra-RUN cases; final negative controls have
+zero false inheritance. Broader groups remain RUN pending their own closure proof.
+
+Final original logs, controls, authenticated manifests, measurement calculations
+and executed commands are in
+`integration/f-ci/evidence/F-CI_RESUME_CLOSED_FULL_20261012.tar.gz.b64`, decoded
+SHA256 `37aa4bc207a7371f16c277271d43042bbc5e2da4bbf979d31a6a2e54bad78563`.
+The private key is deliberately absent. Recompute from the decoded directory:
+
+```bash
+python tests/fci/summarize_resume_trial.py full-closed-final
+python tests/fci/summarize_resume_trial.py full-closed-final --key /private/retained-key
+python tests/fci/compare_resume_trial.py --self-test
+```
+
+Without the private key the summary reports HMAC verification UNKNOWN, while
+checking recorded log/control SHA256 and scientific equivalence. It does not
+issue a scientific PASS or create reusable receipts. The actual RESUME controller
+and the independent keyed summary both verified signatures during this experiment.
+The measurement helper was added at documentary closeout; it does not alter the
+tested controller, outer runner or physics. Use the PR closeout checkout for the
+offline helper and the recorded actual candidate for a new scientific replay.
+Documentation source checks and strict MkDocs build both completed with exit 0;
+the comparator mutation self-test also ended with exit 0. All 32 recorded focused
+case-log hashes were rechecked, and the 33rd independent downstream result has
+exit 0. The first recheck incorrectly assumed that downstream also had a recorded
+log hash and raised KeyError; the corrected check does not invent that identity.
+
+The following review chronology and older measurements remain attributed to
+their exact earlier candidates. They are not qualification of arbitrary future
+source, toolchain or control revisions.
 
 ## Continuation review: eligibility defect and hardening
 
@@ -32,7 +107,7 @@ worktree. A fresh terminal matrix and a same-candidate full trial are required
 before attributing full qualification to the hardened controller. The fresh
 27-control matrix subsequently ended with terminal exit 0 on
 `623b82a79f874db56b9f975187f7bc826ae6745f`; its cleanup inventory was empty.
-The new full same-candidate trial is running. Review/matrix original logs,
+That candidate's full trial was subsequently interrupted as described below. Review/matrix original logs,
 authenticated receipts and old/new defect reproductions are archived in
 `integration/f-ci/evidence/F-CI_RESUME_REVIEW_20261012.tar.gz.b64`, decoded SHA256
 `a833a1d469d012da78dc22683e388e5cb468756999427eaae603c3844524c2e7`.
@@ -57,7 +132,7 @@ Python shared-library dependencies, rejects text helper wrappers, binds a review
 complete tool/runtime fingerprint, and rejects implicit source-module prefixes.
 Eligible executions use private empty cwd isolation; logs record the actual
 absolute command and removed private cwd. Deeply nested corrupt JSON also falls
-back to RUN. This controller revision is not yet fully qualified: its runtime
+back to RUN. During that review the controller was not fully qualified: its runtime
 profile initially remained PENDING_REVIEW, preventing inheritance during review.
 Read-only inspection on `45cac22798902c8c4b4a02fd40d5357d1e125b82` then captured
 identical complete profiles for both leaves: 378 tool/file entries, including 48
@@ -68,7 +143,7 @@ reviewed fingerprint is `16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306
 The Python executable is linked without a separate libpython dependency in this
 actual profile; its own bytes and ELF dependencies are included. Inspection
 produced no scientific PASS, receipt or inheritance. The pin now enables only
-this reviewed profile. Fresh full qualification is still required.
+this reviewed profile. Fresh full qualification subsequently completed above.
 
 The first positive inheritance trial on the pinned profile selected an extra
 RUN: CPU tuples became JSON lists when receipts were decoded. This representation
@@ -80,12 +155,12 @@ real corrupt source-directory generated module (RUN, compiler exit 1). Removing
 that unqualified module restored valid inheritance of an earlier unchanged
 isolated execution. The exported-fixture reproducer on this controller returned
 RUN/exit 1 equal to OFF. The same-candidate complete OFF/interruption/RESUME
-experiment is now running; its full status is UNKNOWN until terminal completion.
+experiment subsequently completed with both full exit codes 0, as recorded above.
 All these original manifests, controls and failed/unknown attempts are preserved
 in `F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64`, decoded SHA256
 `b75bd7a0139dabab55577f28ef31a373a99e78e7e255f7d3aa380560034d155a`.
 
-## What was demonstrated
+## Earlier candidate: what was demonstrated
 
 The original full moving F-CI ended with exit 0 in OFF. After a real nonzero
 controlled interruption, RESUME authenticated and inherited exactly two complete
@@ -118,7 +193,10 @@ retained. This is diagnostic-path normalization, not numerical tolerance change.
 Normalized SHA256 for both complete original scientific streams:
 `df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21`.
 
-## Measured work and costs
+## Earlier candidate: measured work and costs
+
+These measurements apply only to `aef26ee85ddb58195f005169985dd52fc0bd9545`.
+The final closed-profile measurements above supersede them for present use.
 
 | Quantity | Observed result | Scope/limit |
 | --- | ---: | --- |
@@ -202,9 +280,11 @@ RUN instead of reuse. Journaling requires a private durable filesystem supplied
 by the operator; this test demonstrates process interruption, not a cloud-disk
 loss or hostile-OS attestation. The signing key is deliberately not published.
 
-Canonical admission of automatic scientific-gate inheritance still requires the
-separate F-CI/VQ policy decision described in the existing implementation advice.
-This PR supplies a complete bounded experiment and preserves OFF. It makes no
-full-capability, default-enablement or canonical-admission claim. Keep draft
-pending that owning decision; do not merge merely because the two original full
-scientific gates passed or because GitHub has no Actions checks.
+The bounded scientific experiment is complete. Canonical admission remains a
+separate owning decision: `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
+reserves admission for central SWAP5 REGIE and returns specialized qualification
+to that owner. The migration advice additionally calls for F-CI/VQ review of
+automatic gate inheritance. No such recorded PR review/owner disposition exists
+at this closeout. Keep PR1217 draft pending that decision; successful science and
+absence of Actions checks are not owner approval. No production, broader-profile,
+default-enablement or canonical-admission claim is made.

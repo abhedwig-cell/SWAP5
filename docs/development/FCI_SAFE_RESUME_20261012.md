@@ -179,3 +179,12 @@ a broad migration-speed claim. Broader group qualification is separate work.
 
 The completed full experiment, raw-comparison adjudication and measured limits
 are recorded in [F-CI resume result](../audits/FCI_RESUME_RESULT_20261012.md).
+The final closed-profile candidate is `dd3c823b14ab1e49b1604482de5214ea1f77879a`:
+33 focused controls, full OFF and full RESUME completed successfully. Recompute
+the raw evidence measurements with `tests/fci/summarize_resume_trial.py`; optional
+`--key /private/retained-key` verifies receipt authentication without publishing
+the key. Missing key reports authentication UNKNOWN and cannot authorize reuse.
+The two inherited leaves avoided eight compile/link commands and 1.409290 seconds
+of measured group execution, while verification cost 1.599199 seconds. There is
+no demonstrated net speedup. Canonical admission remains with central REGIE after
+the owning F-CI/VQ disposition; OFF remains default.
