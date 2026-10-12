@@ -29,7 +29,14 @@ hardened head, but its final disposable-checkout cleanup failed with exit 128
 because an untracked trial fixture remained. That harness exit is not PASS.
 Cleanup now retains an inventory and removes only its own exact disposable
 worktree. A fresh terminal matrix and a same-candidate full trial are required
-before attributing full qualification to the hardened controller. Earlier full
+before attributing full qualification to the hardened controller. The fresh
+27-control matrix subsequently ended with terminal exit 0 on
+`623b82a79f874db56b9f975187f7bc826ae6745f`; its cleanup inventory was empty.
+The new full same-candidate trial is running. Review/matrix original logs,
+authenticated receipts and old/new defect reproductions are archived in
+`integration/f-ci/evidence/F-CI_RESUME_REVIEW_20261012.tar.gz.b64`, decoded SHA256
+`a833a1d469d012da78dc22683e388e5cb468756999427eaae603c3844524c2e7`.
+Earlier full
 logs and measurements below remain evidence for their recorded old candidate.
 
 ## What was demonstrated
