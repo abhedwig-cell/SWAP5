@@ -96,3 +96,27 @@ Recovery and raw UTC/event/compiler/artifact evidence are versioned in
 The exact profile-generation script and compiler-file fingerprints are included
 for reproduction on this declared environment; a different environment must
 supply and review its own complete closure. No new master capability is claimed.
+
+
+## Proposed I/O successor
+
+Baseline `cccb898ac8b3b7d16515c98e3e67eb1802c4bc5f`; recovery is the existing
+record's `io_successor` field. The previous results remain a historical V1
+measurement. No production/default gate or numerical policy changes.
+
+V2 reduces duplicate I/O rather than reducing dependency validation. Large
+files may be hashed directly through a read-only mapping; every byte is still
+hashed on each request, including toolchain post-compilation verification.
+Artifacts are stored once per content digest, atomically, and validated before
+reuse. Each request holds the verified payload bytes until restoration. Existing
+modules are not recopied when their freshly hashed input bytes already match;
+all promised destination hashes are checked after restoration. Corrupt shared
+blobs rebuild, unknown inputs compile and failed compilation never publishes.
+
+Do not introduce a metadata-only checksum cache or skip compiler checks. A
+read-only mount of a mutable source tree alone would not establish a sealed
+compiler snapshot. The present environment cannot create a private user/mount
+namespace; no weaker immutable-environment assumption is substituted.
+Qualification includes preserved timestamp/source modifications, shared-blob
+corruption, mapping/read hash equivalence and destination verification, followed
+by unchanged equal-gate O0/O2 tests and exact artifact/output comparison.

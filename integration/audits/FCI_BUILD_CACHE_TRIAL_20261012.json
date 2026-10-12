@@ -154,5 +154,17 @@
   "verified_at_utc": "2026-10-12T10:42:02.482132+00:00",
   "default_gate_changes": "NONE",
   "production_and_incumbent_gate_trees_unchanged_from_baseline": true,
-  "full_master_capability_delta": 0
+  "full_master_capability_delta": 0,
+  "io_successor": {
+    "baseline": "cccb898ac8b3b7d16515c98e3e67eb1802c4bc5f",
+    "recovery_branch": "work/fci-build-cache-io-20261012",
+    "stage": "ELEVEN_CONTROLS_PASS_PHYSICAL_COMPARISON_PENDING",
+    "scope": "Reduce duplicate buffer reads/publication/restoration; content-addressed shared artifact bytes; keep all per-request full toolchain/source/prefix checks and all fresh links/physical tests",
+    "held_fixed": "All production sources, incumbent gates, flags, tolerances, references, existing immutable evidence and default F-CI route",
+    "qualified": false,
+    "next_action": "Run unchanged six-route equal physical O0/O2 experiment on exact persisted V2 checkpoint; preserve all current-byte compiler/source/dependency checks and default route",
+    "implemented": true,
+    "persisted": true,
+    "negative_controls": 11
+  }
 }

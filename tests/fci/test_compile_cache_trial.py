@@ -78,7 +78,7 @@ class Invalidation(unittest.TestCase):
         self.reset();fc.write_text(fc.read_text()+'# another changed byte\n');self.assertEqual(self.invoke()['event'],'MISS')
 
     def test_corruption_rebuilds(self):
-        a=self.warm();self.reset();entry=Path(self.env['SWAP5_CACHE_DIR'])/a['key'];(entry/'object').write_bytes(b'corrupt')
+        a=self.warm();self.reset();entry=Path(self.env['SWAP5_CACHE_DIR'])/a['key'];(Path(self.env['SWAP5_CACHE_DIR'])/'_blobs'/a['object_sha256']).write_bytes(b'corrupt')
         b=self.invoke();self.assertEqual(b['event'],'MISS');self.assertEqual(a['object_sha256'],b['object_sha256'])
         self.assertIn('INVALID',[json.loads(x)['event'] for x in self.events.read_text().splitlines()])
         self.reset();(entry/'manifest.json').write_text('{invalid');self.assertEqual(self.invoke()['event'],'MISS')
@@ -90,9 +90,38 @@ class Invalidation(unittest.TestCase):
         self.source.write_text('module demo\nend module\n');self.reset()
         self.assertEqual(self.invoke(flags=FLAGS+['-g'])['event'],'BYPASS')
 
+    def test_large_hash_mapping_and_preserved_timestamp(self):
+        import runpy
+        api=runpy.run_path(str(TOOL))
+        data=self.root/'large';data.write_bytes(b'A'*(2*1024*1024))
+        before=data.stat();a=api['file_hash'](data)
+        self.assertEqual(a,hashlib.sha256(data.read_bytes()).hexdigest())
+        data.write_bytes(b'B'*before.st_size);os.utime(data,ns=(before.st_atime_ns,before.st_mtime_ns))
+        b=api['file_hash'](data);self.assertNotEqual(a,b)
+        self.assertEqual(b,hashlib.sha256(data.read_bytes()).hexdigest())
+        self.warm();self.reset();stamp=self.source.stat()
+        self.source.write_text(self.source.read_text().replace('value=1','value=2'))
+        os.utime(self.source,ns=(stamp.st_atime_ns,stamp.st_mtime_ns));self.assertEqual(self.invoke()['event'],'MISS')
+
+    def test_shared_module_and_no_duplicate_restore(self):
+        dep=self.root/'dep.f90';dep.write_text('module dep\ninteger,parameter::n=1\nend module\n')
+        self.source.write_text('module demo\nuse dep\ninteger,parameter::value=n\nend module\n')
+        self.invoke(dep);self.invoke();self.reset();self.invoke(dep);r=self.invoke()
+        self.assertEqual(r['event'],'HIT');self.assertEqual(r['module_skips'],1);self.assertEqual(r['module_copies'],1)
+        module=hashlib.sha256((self.out/'demo.mod').read_bytes()).hexdigest()
+        (Path(self.env['SWAP5_CACHE_DIR'])/'_blobs'/module).write_bytes(b'corrupt module')
+        self.reset();self.invoke(dep);self.assertEqual(self.invoke()['event'],'MISS')
+        self.assertEqual(hashlib.sha256((self.out/'demo.mod').read_bytes()).hexdigest(),module)
+
+    def test_validation_survives_python_optimization(self):
+        self.env['PYTHONOPTIMIZE']='1'
+        r=self.warm();self.reset();blob=Path(self.env['SWAP5_CACHE_DIR'])/'_blobs'/r['object_sha256']
+        blob.write_bytes(b'corrupt')
+        self.assertEqual(self.invoke()['event'],'MISS')
+
     def test_failure_not_published_and_unknown_profile(self):
         self.source.write_text('invalid fortran\n');self.assertEqual(self.invoke(success=False)['event'],'FAILED')
-        self.assertFalse(any(p.is_dir() for p in Path(self.env['SWAP5_CACHE_DIR']).iterdir()))
+        self.assertFalse(any(p.is_dir() and p.name!='_blobs' for p in Path(self.env['SWAP5_CACHE_DIR']).iterdir()))
         self.source.write_text('module demo\nend module\n');p=self.root/'unknown.json';p.write_text('{}');self.env['SWAP5_CACHE_PROFILE']=str(p)
         self.assertEqual(self.invoke()['event'],'BYPASS')
 

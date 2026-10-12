@@ -3,6 +3,7 @@
 import fcntl
 import hashlib
 import json
+import mmap
 import os
 from pathlib import Path
 import re
@@ -23,7 +24,65 @@ def digest(data):
 
 
 def file_hash(path):
-    return digest(Path(path).read_bytes())
+    # Hash every current byte; never memoize by timestamps or inode identity.
+    with Path(path).open('rb') as f:
+        before = os.fstat(f.fileno())
+        if before.st_size >= 1024 * 1024:
+            with mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as view:
+                value = digest(view)
+        else:
+            value = digest(f.read())
+        after = os.fstat(f.fileno())
+        if (before.st_size, before.st_mtime_ns, before.st_ctime_ns) != (after.st_size, after.st_mtime_ns, after.st_ctime_ns):
+            raise ValueError('file changed while hashing')
+        return value
+
+
+def require(condition):
+    if not condition:
+        raise ValueError('invalid cache manifest or payload')
+
+
+def atomic_bytes(path, data):
+    fd, name = tempfile.mkstemp(dir=path.parent, prefix='publish-')
+    try:
+        with os.fdopen(fd, 'wb') as f:
+            f.write(data)
+        os.replace(name, path)
+    finally:
+        if os.path.exists(name):
+            os.unlink(name)
+
+
+def put_blob(root, path, expected):
+    store = root / '_blobs'
+    store.mkdir(exist_ok=True)
+    dest = store / expected
+    if dest.is_file() and not dest.is_symlink() and file_hash(dest) == expected:
+        return False
+    data = Path(path).read_bytes()
+    require(digest(data) == expected)
+    atomic_bytes(dest, data)
+    return True
+
+
+def payloads(root, manifest, inputs):
+    require(manifest.get('format') == 2 and manifest['inputs'] == inputs)
+    require(set(manifest['members']) == {'object', *manifest['pool']})
+    require(manifest['members']['object'] == manifest['object_sha256'])
+    require({n: manifest['members'][n] for n in manifest['pool']} == manifest['pool'])
+    verified = {}; result = {}
+    for name, value in manifest['members'].items():
+        require(Path(name).name == name and (name == 'object' or name.endswith(('.mod', '.smod'))))
+        require(isinstance(value, str) and re.fullmatch('[0-9a-f]{64}', value))
+        if value not in verified:
+            path = root / '_blobs' / value
+            require(not path.is_symlink())
+            data = path.read_bytes()
+            require(digest(data) == value)
+            verified[value] = data
+        result[name] = verified[value]
+    return result
 
 
 def emit(event):
@@ -123,7 +182,7 @@ def run(args):
                 raise ValueError('compiler helper outside declared closure')
         if str(Path(compiler).resolve()) not in {str(Path(p).resolve()) for p in chain}:
             raise ValueError('compiler outside declared closure')
-        inputs = {'version': 1, 'tool': file_hash(__file__),
+        inputs = {'version': 2, 'tool': file_hash(__file__),
                   'source_path': str(source.resolve()), 'source': file_hash(source),
                   'cwd_prefix': pool(Path.cwd()), 'source_directory_prefix': pool(source.resolve().parent),
                   'prefix': pool(directory), 'flags': flags,
@@ -142,23 +201,28 @@ def run(args):
         if entry.exists():
             try:
                 manifest = json.loads((entry / 'manifest.json').read_text())
-                assert manifest['inputs'] == inputs
-                assert set(manifest['members']) == {'object', *manifest['pool']}
-                for name, sha in manifest['members'].items():
-                    assert Path(name).name == name and not (entry / name).is_symlink()
-                    assert file_hash(entry / name) == sha
-                assert manifest['members']['object'] == manifest['object_sha256']
-                assert {n: manifest['members'][n] for n in manifest['pool']} == manifest['pool']
+                verified = payloads(root, manifest, inputs)
                 cached = manifest
-            except (AssertionError, KeyError, ValueError, OSError):
+            except (KeyError, ValueError, TypeError, OSError):
                 emit({'event': 'INVALID', 'key': key, 'source': str(source)})
                 shutil.rmtree(entry)
         if cached:
-            shutil.copyfile(entry / 'object', output)
-            for name in cached['pool']:
-                shutil.copyfile(entry / name, directory / name)
+            atomic_bytes(output, verified['object'])
+            copied = 0; skipped = 0
+            for name, value in cached['pool'].items():
+                if inputs['prefix'].get(name) == value:
+                    skipped += 1
+                else:
+                    atomic_bytes(directory / name, verified[name]); copied += 1
+            final_pool = pool(directory)
+            require(final_pool[output.name] == cached['object_sha256'])
+            require(all(final_pool.get(n) == h for n, h in cached['pool'].items()))
+            require(all(final_pool.get(n) == h for n, h in inputs['prefix'].items()
+                        if n != output.name and n not in cached['pool']))
             emit({'event': 'HIT', 'key': key, 'source': str(source), 'flags': flags,
-                  'object_sha256': file_hash(output), 'pool_sha256': digest(json.dumps(pool(directory), sort_keys=True).encode()),
+                  'object_sha256': final_pool[output.name],
+                  'pool_sha256': digest(json.dumps(final_pool, sort_keys=True).encode()),
+                  'module_copies': copied, 'module_skips': skipped,
                   'seconds': time.monotonic() - started})
             return 0
         result = subprocess.run([compiler, *args], capture_output=True)
@@ -171,19 +235,24 @@ def run(args):
             return 0
         if file_hash(source) != inputs['source'] or toolchain(profile) != chain:
             raise RuntimeError('inputs changed during compilation; evidence rejected')
-        modules = {n: h for n, h in pool(directory).items() if n.endswith(('.mod', '.smod'))}
-        obj_hash = file_hash(output)
+        final_pool = pool(directory)
+        require(all(final_pool.get(n) == h for n, h in inputs['prefix'].items()
+                    if n != output.name and n.endswith('.o')))
+        modules = {n: h for n, h in final_pool.items() if n.endswith(('.mod', '.smod'))}
+        obj_hash = final_pool[output.name]
+        written = int(put_blob(root, output, obj_hash))
+        for name, value in modules.items():
+            written += int(put_blob(root, directory / name, value))
         with tempfile.TemporaryDirectory(dir=root, prefix='publish-') as staging:
             dest = Path(staging)
-            shutil.copyfile(output, dest / 'object')
-            for name in modules:
-                shutil.copyfile(directory / name, dest / name)
-            manifest = {'inputs': inputs, 'object_sha256': obj_hash,
+            manifest = {'format': 2, 'inputs': inputs, 'object_sha256': obj_hash,
                         'pool': modules, 'members': {'object': obj_hash, **modules}}
             (dest / 'manifest.json').write_text(json.dumps(manifest, sort_keys=True))
             os.rename(dest, entry)
         emit({'event': 'MISS', 'key': key, 'source': str(source), 'flags': flags,
-              'object_sha256': obj_hash, 'pool_sha256': digest(json.dumps(pool(directory), sort_keys=True).encode()),
+              'object_sha256': obj_hash,
+              'pool_sha256': digest(json.dumps(final_pool, sort_keys=True).encode()),
+              'blobs_written': written, 'blobs_reused': len(modules) + 1 - written,
               'seconds': time.monotonic() - started})
         return 0
 
