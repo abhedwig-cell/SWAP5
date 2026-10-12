@@ -82,7 +82,11 @@ program kalmthout_swap5_daily_pilot
 
     do isub=1,NSUB
       t0=hour_t0+real(isub-1,real64)*segment_dt
-      t1=hour_t0+real(isub,real64)*segment_dt
+      if(isub==NSUB) then
+        t1=hour_t1
+      else
+        t1=hour_t0+real(isub,real64)*segment_dt
+      end if
       allocate(forcing(1))
       forcing(1)=config%tiles(1)%base_forcing
       allocate(forcing(1)%rutter)
