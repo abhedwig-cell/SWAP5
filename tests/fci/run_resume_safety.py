@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Real O0/O2 leaf mutation and interruption trial in a disposable checkout."""
-import copy,hashlib,json,os,secrets,signal,subprocess,time
+import copy,hashlib,json,os,secrets,signal,subprocess,time,shutil
 from pathlib import Path
 import argparse,tempfile
 parser=argparse.ArgumentParser()
@@ -80,7 +80,9 @@ else:raise AssertionError('no running checkpoint')
 p.send_signal(signal.SIGTERM);b=p.communicate(timeout=30)[0];(OUT/'mid-run-interrupted.log').write_bytes(b);assert p.returncode!=0
 run('after-mid-run',resume)
 # No surviving private build directory is a required downstream input.
-reset();assert list(PRIVATE.iterdir())==[];PRIVATE.rmdir()
+reset();inventory=[str(p.relative_to(PRIVATE)) for p in PRIVATE.rglob('*')]
+(OUT/'interrupted-private-build-inventory.json').write_text(json.dumps(inventory,indent=2))
+assert PRIVATE.parent==OUT and not PRIVATE.is_symlink();shutil.rmtree(PRIVATE)
 run('isolated-build-deleted',resume,inherit=True)
 # A real subsequent leaf recompiles independently after inherited predecessor.
 c=['python','tools/fci/resume_group.py','frost-independent','bash','tests/frost/run_frost_nan_guard_independent.sh']
