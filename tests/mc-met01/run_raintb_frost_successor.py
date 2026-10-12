@@ -46,4 +46,4 @@ new=""" def run_configuration(configuration):
 """
 assert 'for configuration in range(1,7):' in old
 s=s[:start]+new+s[end:]
-exec(compile(s,str(ROOT/runner),'exec'),{'__file__':str(ROOT/runner),'__name__':'__main__'})
+exec(compile(s,str(ROOT/runner),'exec'),{'__file__':str(ROOT/runner),'__name__':'__main__','resume':resume,'concurrent':concurrent,'hashlib':hashlib,'Path':Path})
