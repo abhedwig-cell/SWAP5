@@ -4,6 +4,12 @@ program test_raintb_source
   use mod_swap_daily_weather_file_adapter
   implicit none
   type(swap_raintb_t)::table,invalid,changed
+  type(swap_daily_weather_record_t)::record
+  character(1024)::files(3)
+  integer,parameter::years(7)=[2000,2000,2000,1900,1900,1999,2000], &
+       months(7)=[2,2,3,2,3,12,1],days(7)=[28,29,1,28,1,31,1], &
+       doy(7)=[59,60,61,59,60,365,1],file_id(7)=[1,1,1,2,2,3,3]
+  real(real64)::segment_end,ordinal
   real(real64)::x(4),y(4),flat(8),d,r,od,orr,rains(7),nan
   integer::i,j,k,s,count,n
   interface
@@ -60,6 +66,24 @@ program test_raintb_source
   call require(swap_weather_calendar_day(2000,3,1)-swap_weather_calendar_day(2000,1,1)==60,'leap ordinal')
   call require(swap_weather_calendar_day(1900,3,1)-swap_weather_calendar_day(1900,1,1)==59,'nonleap century')
   call require(swap_weather_calendar_day(2000,1,1)-swap_weather_calendar_day(1999,12,31)==1,'year boundary')
+  do i=1,3
+    call get_command_argument(i,files(i))
+  end do
+  call construct_swap_raintb([1.d0,366.d0],[0.1d0,3.d0],table,s)
+  flat(:4)=[1.d0,0.1d0,366.d0,3.d0]
+  do i=1,7
+    call read_swap_daily_weather_file(trim(files(file_id(i))),years(i),months(i),days(i),record,s)
+    call require(s==SWAP_WEATHER_FILE_OK,'synthetic calendar record decoded')
+    ordinal=real(swap_weather_calendar_day(years(i),months(i),days(i)),real64)
+    call record%rain_segment(table,int(ordinal),0.d0,1.d0,r,segment_end,s)
+    call require(s==SWAP_WEATHER_FILE_OK,'record-bound leap/day-of-year pulse')
+    call b111_pulse(flat(:4),4,real(doy(i),real64),1.4d0,od,orr)
+    call require(transfer(r,0_int64)==transfer(orr,0_int64),'calendar pulse rate equals literal oracle')
+    call require(transfer(segment_end,0_int64)==transfer(od,0_int64),'calendar pulse endpoint equals literal oracle')
+    call record%rain_segment(table,int(ordinal),segment_end,1.d0,r,d,s)
+    if(segment_end<1.d0) call require(s==SWAP_WEATHER_FILE_OK.and.r==0.d0.and.d==1.d0,'calendar off after pulse')
+  end do
+  print '(a)','MC_MET01_DECODED_SYNTHETIC_LEAP_CENTURY_YEAR_BOUNDARY=PASS'
   print '(a,i0)','MC_MET01_LITERAL_CASES=',count
   print '(a)','MC_MET01_LITERAL_AFGEN_THRESHOLD_PULSE_CALENDAR_NEGATIVES=PASS'
 contains

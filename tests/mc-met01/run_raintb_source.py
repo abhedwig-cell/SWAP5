@@ -30,9 +30,14 @@ if(all_rain(i)>1.0d-8) then
 """+'\n'.join(statements)+"\nend if\nduration=rtim;rate=rainflx(1)\nend subroutine\n"+afgen+'\n'
  with tempfile.TemporaryDirectory(prefix='mc-met01-source-') as d:
   d=Path(d);(d/'oracle.f90').write_text(oracle)
+  dates=[[(2000,2,28),(2000,2,29),(2000,3,1)],[(1900,2,28),(1900,3,1)],[(1999,12,31),(2000,1,1)]]
+  files=[]
+  for i,rows in enumerate(dates):
+   p=d/f'calendar{i}.met';p.write_text(''.join(f"'SYN' {day} {month} {year} 100 1 2 1 1 1.4 0.1 0.1\n" for year,month,day in rows));files.append(str(p))
+
   for opt in [0,2]:
    subprocess.run(['gfortran','-std=f2008','-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow',f'-O{opt}','-J',str(d),'-I',str(d),str(ROOT/'src/adapter/mod_swap_daily_weather_file_adapter.f90'),str(d/'oracle.f90'),str(ROOT/'tests/mc-met01/test_raintb_source.f90'),'-o',str(d/f'test{opt}')],check=True,cwd=d)
-   r=subprocess.run([str(d/f'test{opt}')],check=True,capture_output=True,text=True);(d/f'o{opt}.log').write_text(r.stdout);print(r.stdout,end='')
+   r=subprocess.run([str(d/f'test{opt}'),*files],check=True,capture_output=True,text=True);(d/f'o{opt}.log').write_text(r.stdout);print(r.stdout,end='')
   assert (d/'o0.log').read_bytes()==(d/'o2.log').read_bytes()
  print('MC_MET01_LITERAL_RAINTB_O0_O2=PASS')
 if __name__=='__main__':main()
