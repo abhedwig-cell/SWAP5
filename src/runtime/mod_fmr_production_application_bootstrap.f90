@@ -70,7 +70,7 @@ module mod_fmr_production_application_bootstrap
        GW_TOPOLOGY_OK, GW_STORAGE_STATE_ROLE_HEAD_STATE_CAPACITANCE, GW_DRAINAGE_OWNER_NONE
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_tile_predictor_input_t, &
        groundwater_cell_area_input_t, materialize_groundwater_application_plan, GW_APP_PLAN_OK
-  use mod_swap_daily_weather_file_adapter, only: swap_daily_weather_record_t
+  use mod_swap_daily_weather_file_adapter, only: swap_daily_weather_record_t, swap_raintb_t, SWAP_WEATHER_FILE_OK
   use mod_crop_weather_day_owner, only: weather_day_owner_t, initialize_weather_day_owner, &
        ingest_weather_day, WEATHER_DAY_OK
   use mod_fmr_crop_weather_day_preflight, only: propose_weather_day_crop_preflight, CROP_WEATHER_PREFLIGHT_OK
@@ -155,6 +155,8 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    integer :: file_weather_swrain = 0
+    type(swap_raintb_t) :: file_weather_raintb
     logical :: file_weather_daystart = .false.
     logical :: file_weather_rooted = .false.
     logical :: file_weather_dayend = .false.
@@ -364,6 +366,11 @@ contains
       if(.not.all(ieee_is_finite([config%file_weather_stem_area_coefficient, &
            config%file_weather_storage_area_coefficient]))) return
       if(min(config%file_weather_stem_area_coefficient,config%file_weather_storage_area_coefficient)<0.0_real64) return
+    end if
+    if(config%file_weather_swrain/=0.and.config%file_weather_swrain/=1) return
+    if(config%file_weather_swrain==1) then
+      if(.not.config%file_weather_daystart.or.config%file_weather_rooted) return
+      if(.not.config%file_weather_raintb%ready()) return
     end if
     if(config%file_weather_daystart) then
       if(config%file_weather_epoch_day<1.or.config%file_weather_epoch_day>3652059) then
@@ -740,6 +747,47 @@ contains
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     integer, intent(out) :: status
     type(kernel_committed_state_t),intent(in),optional :: crop_committed
+    type(fmr_serialized_column_result_t),allocatable :: segment_results(:)
+    real(real64)::cursor,endpoint,rate
+    integer::s,attempt
+    if(self%weather_configuration%file_weather_swrain==0) then
+      call production_application_run_weather_segment(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed)
+      return
+    end if
+    status=FMR_APP_BOOT_WEATHER_REJECTED
+    if(.not.self%weather_record%same_input(record)) return
+    cursor=t0
+    ! Within one authentic day there is at most one rain on/off boundary.
+    do attempt=1,2
+      call record%rain_segment(self%weather_configuration%file_weather_raintb,self%weather_epoch_day, &
+           cursor,t1,rate,endpoint,s)
+      if(s/=SWAP_WEATHER_FILE_OK) return
+      call production_application_run_weather_segment(self,record,cursor,endpoint,forcing_config,canopy, &
+           segment_results,status,crop_committed,rate)
+      if(allocated(segment_results)) then
+        if(allocated(results)) then
+          results=[results,segment_results]
+        else
+          results=segment_results
+        end if
+      end if
+      if(status/=FMR_APP_BOOT_OK) return
+      if(endpoint==t1) return
+      cursor=endpoint
+    end do
+    error stop 'MC-MET01 one-day rainfall segmentation exceeded one boundary'
+  end subroutine
+
+  subroutine production_application_run_weather_segment(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed,rain_rate)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(swap_daily_weather_record_t), intent(in) :: record
+    real(real64), intent(in) :: t0,t1
+    type(ppa_wu03_common_forcing_config_t), intent(in) :: forcing_config
+    type(reference_et_demand_canopy_view_t), intent(in) :: canopy
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    integer, intent(out) :: status
+    type(kernel_committed_state_t),intent(in),optional :: crop_committed
+    real(real64),intent(in),optional :: rain_rate
     type(wofost_crop_owner_state_t) :: crop_owner
     type(crop_lifecycle_continuation_t) :: crop_lifecycle
     type(crop_root_uptake_input_t) :: root_input
@@ -799,6 +847,7 @@ contains
     input%interval%t0=t0;input%interval%t1=t1
     input%forcing_t0=day;input%forcing_t1=day+1.0_real64
     input%precipitation_rate_cm_per_day=rain*0.1_real64
+    if(present(rain_rate)) input%precipitation_rate_cm_per_day=rain_rate
     input%reference_et%t0=day;input%reference_et%t1=day+1.0_real64
     input%reference_et%reference_et_mm_per_day=etref;input%canopy=canopy
     if(rooted) then
@@ -1326,9 +1375,10 @@ contains
     bundle%valid=.true.;status=FMR_APP_BOOT_OK
   end subroutine
 
-  subroutine production_application_restore_weather_crop_continuation(self,bundle,crop_committed,status)
+  subroutine production_application_restore_weather_crop_continuation(self,bundle,crop_committed,status,expected_raintb)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(fmr_weather_crop_application_continuation_t), intent(in) :: bundle
+    type(swap_raintb_t),intent(in),optional :: expected_raintb
     type(kernel_committed_state_t), intent(inout) :: crop_committed
     integer, intent(out) :: status
     type(kernel_committed_state_t) :: pending_soil,pending_crop
@@ -1339,6 +1389,10 @@ contains
     ! a live committed crop object, and no failure partially publishes crop.
     if(self%ready().or.crop_committed%ready()) return
     if(.not.bundle%valid.or..not.bundle%record%ready()) return
+    if(bundle%configuration%file_weather_swrain==1) then
+      if(.not.present(expected_raintb)) return
+      if(.not.bundle%configuration%file_weather_raintb%same_input(expected_raintb)) return
+    end if
     if(.not.allocated(bundle%configuration%tiles)) return
     if(size(bundle%configuration%tiles)/=1) return
     call restore_kernel_committed_state(bundle%soil,bundle%configuration%tiles(1)%template%template_id, &
