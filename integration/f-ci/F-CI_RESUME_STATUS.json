@@ -18,7 +18,15 @@
   "blockers": [
     "Canonical policy admission not claimed; separate owning F-CI/VQ decision remains pending"
   ],
-  "stage": "EXPORTED_FUNCTION_DEFECT_REPRODUCED_TRANSITIVE_RUNTIME_HARDENING_PENDING",
+  "stage": "CLOSED_RUNTIME_PROFILE_REVIEWED_FOCUSED_AND_FULL_REQUALIFICATION_PENDING",
+  "reviewed_runtime_profile": {
+    "fingerprint": "16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306f57c4e470",
+    "manifest_sha256": "5af7b0d6021f1cd1bfebe3834793ca1b70525f714aba27172d6d933ec3114594",
+    "tool_entries": 378,
+    "loaded_bytecode_entries": 48,
+    "inspect_candidate": "45cac22798902c8c4b4a02fd40d5357d1e125b82",
+    "scope": "Exact captured GNU13/SDK/runtime/host profile only; different profiles RUN without receipts"
+  },
   "continuation_review": {
     "defect": "New committed leaf code could introduce dependencies absent from the explicit manifest; old controller could publish and inherit an invalid PASS",
     "unsafe_inheritance_reproduced_on": "9bb84ef31dd001cd9e14480c2c2767b9acf7e410",

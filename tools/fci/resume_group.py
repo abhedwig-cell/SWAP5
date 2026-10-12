@@ -22,7 +22,7 @@ CONTROL = 'tools/fci/resume_group.py'
 OUTER = 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
 # A changed runtime/capsule must not self-qualify a previously unaudited
 # transitive tool closure. Populate only after reviewing the complete manifest.
-AUDITED_TOOL_PROFILE = 'PENDING_REVIEW'
+AUDITED_TOOL_PROFILE = '16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306f57c4e470'
 GROUPS = {
     'frost-invalid': ('tests/frost/run_frost_invalid_input_preservation.sh',
                       ['test_ppa_wu05b_frost_effect.f90',

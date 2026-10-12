@@ -58,7 +58,17 @@ complete tool/runtime fingerprint, and rejects implicit source-module prefixes.
 Eligible executions use private empty cwd isolation; logs record the actual
 absolute command and removed private cwd. Deeply nested corrupt JSON also falls
 back to RUN. This controller revision is not yet fully qualified: its runtime
-profile is intentionally PENDING_REVIEW, so it cannot publish inherited evidence.
+profile initially remained PENDING_REVIEW, preventing inheritance during review.
+Read-only inspection on `45cac22798902c8c4b4a02fd40d5357d1e125b82` then captured
+identical complete profiles for both leaves: 378 tool/file entries, including 48
+loaded bytecode files, linked-library/script inputs, file types/modes/ownership,
+interpreter flags/principal and CPU model/ISA/microcode identities. Manifest
+stdout SHA256 is `5af7b0d6021f1cd1bfebe3834793ca1b70525f714aba27172d6d933ec3114594`;
+reviewed fingerprint is `16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306f57c4e470`.
+The Python executable is linked without a separate libpython dependency in this
+actual profile; its own bytes and ELF dependencies are included. Inspection
+produced no scientific PASS, receipt or inheritance. The pin now enables only
+this reviewed profile. Fresh full qualification is still required.
 
 ## What was demonstrated
 
