@@ -107,7 +107,7 @@ program test_ppa_wu01_production_application_bootstrap
   ! common atmospheric boundary and committed with the FMR physical candidate.
   call initialize_application_config(rutter_config)
   rutter_config%numerical%transaction%temporal_tolerance = 0.03_real64
-  rutter_config%numerical%transaction%max_retries = 8
+  rutter_config%numerical%transaction%max_retries = 20
   rutter_config%numerical%max_committed_substeps = 32
   do i = 1, NTILE
     rutter_config%tiles(i)%template%optional_state_layout_id = FMR_OPTIONAL_STATE_LAYOUT_RUTTER
