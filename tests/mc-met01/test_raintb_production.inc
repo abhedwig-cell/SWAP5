@@ -107,12 +107,14 @@
     ! Exercise incumbent genuine incomplete-publication/retry with mode1.
     config%file_weather_swrain=1;config%file_weather_raintb=table
     call test_raintb_failed_prefix(table)
+    call test_raintb_failed_prefix(table,.true.)
     print '(a)','MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS'
   end subroutine
 
-  subroutine test_raintb_failed_prefix(table)
+  subroutine test_raintb_failed_prefix(table,wet_probe)
     use mod_swap_daily_weather_file_adapter,only:swap_raintb_t
     type(swap_raintb_t),intent(in)::table
+    logical,intent(in),optional::wet_probe
     type(fmr_production_application_config_t)::limited
     type(fmr_production_application_bootstrap_t)::trial_app,clean_app
     type(kernel_committed_state_t)::trial_crop,clean_crop,origin,actual,expected
@@ -124,13 +126,25 @@
     type(fmr_serialized_column_result_t),allocatable::rr(:),cr(:)
     integer::st,j,kernel_status
     logical::ok
-    real(real64),parameter::short_end=1.0e-6_real64
+    real(real64)::short_end
+    logical::wet
+    wet=.false.
+    if(present(wet_probe)) wet=wet_probe
+    short_end=1.0e-6_real64
     limited=config
+    if(wet) then
+      short_end=1.0e-8_real64
+      limited%file_weather_epoch_day=swap_weather_calendar_day(1999,1,21)
+    end if
     limited%numerical%max_committed_substeps=1
     c%germ_mode=2;c%optimal_sum=9.5_real64
     c%zprep=-1.0_real64;c%zsow=-1.0_real64
     c%ztempsow=-1.0_real64;c%zgerm=-1.0_real64
-    call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
+    if(wet) then
+      call read_swap_daily_weather_file(trim(path),1999,1,21,wr,st)
+    else
+      call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
+    end if
     call require(st==SWAP_WEATHER_FILE_OK,'probe authentic day record')
     call trial_app%initialize(limited,st)
     call require(st==FMR_APP_BOOT_OK,'probe actual application initialization')
@@ -217,6 +231,7 @@
     call compare_probe_hydrology(actual,expected)
     call trial_app%close(st);call require(st==FMR_APP_BOOT_OK,'probe close trial application')
     call clean_app%close(st);call require(st==FMR_APP_BOOT_OK,'probe close clean application')
+    if(wet) print '(a)','MC_MET01_ACTUAL_WET_PULSE_FAILED_PREFIX_RETRY_RESTART=PASS'
     print '(a,i0)', 'MC_IRR01_WEATHER_INCOMPLETE_KERNEL_STATUS=',kernel_status
     print '(a)', 'MC_IRR01_WEATHER_ONE_INTERNAL_ACCEPTED_PREFIX_OUTER_ROLLBACK=PASS'
     print '(a)', 'MC_IRR01_WEATHER_FAILED_PREFIX_JOINT_RESTART=PASS'
