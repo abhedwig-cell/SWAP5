@@ -4,10 +4,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Actively finish existing full RESUME on unchanged aef26ee85; verify scientific stdout and inherited counts; seal final costs. No full resumed PASS yet.",
+  "next_action": "F-CI/VQ evaluate bounded inheritance policy and private durable-store/toolchain contract before canonical admission. OFF stays default; larger groups and throughput claim are unqualified.",
   "recovery_point": "work/f-ci-safe-resume-20261012",
   "dependency_surface": [
     "tools/fci/resume_group.py",
@@ -15,8 +15,10 @@
     "src/process/mod_frost_hydraulic_effect.f90",
     "tests/frost"
   ],
-  "blockers": [],
-  "stage": "FULL_BASELINE_PASS_CONTROLLED_PREFIX_PASS_RESUME_IN_PROGRESS",
+  "blockers": [
+    "Canonical policy admission not claimed; separate owning F-CI/VQ decision remains pending"
+  ],
+  "stage": "BOUNDED_TWO_LEAF_FULL_SCIENTIFIC_COMPARISON_PASS_POLICY_REVIEW_PENDING",
   "scientific_candidate": "806766ad81978231f7dc27bb28bc9f81c2d3a4dd",
   "safety_evidence": {
     "path": "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
@@ -24,46 +26,282 @@
     "controls": 25
   },
   "owner": "F-CI execution infrastructure; existing VQ scientific preservation and central REGIE admission",
+  "preserved": true,
   "full_execution_candidate": "aef26ee85ddb58195f005169985dd52fc0bd9545",
-  "baseline_control": {
-    "command": [
-      "bash",
-      "-x",
-      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
-    ],
-    "mode": "OFF",
-    "executed_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
-    "started_utc": "2026-10-12T17:11:31.931834+00:00",
-    "terminal_status": "PASS",
-    "environment_sha256": "462636e55466426152f245b85f3d41fa76be4fc86bff71c1e4e235c3e73449c7",
-    "terminal_exit_code": 0,
-    "ended_utc": "2026-10-12T18:01:33.474660+00:00",
-    "wall_seconds": 3001.5427642519935,
-    "end_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
-    "stdout_sha256": "8bf65eefd694ce2646f9b2d6dfb86eb3b7c19f13b0890c9f7f6e181235f42a9d",
-    "stderr_sha256": "18d9e93a99bd8ff376ab716743e26c092bed9526d920b7feb468ae08f1feeea5"
+  "full_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_FULL_20261012.tar.gz.b64",
+    "decoded_sha256": "a0110adc83ec1dffce3b27c0f19fbda96996d8a372fd28f655902db8b60952c7"
   },
-  "controlled_interruption": {
-    "command": [
-      "bash",
-      "-x",
-      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  "measurements": {
+    "actual_execution_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "baseline_calendar_seconds": 3001.5427642519935,
+    "resumed_calendar_seconds": 2786.1241317890017,
+    "controlled_prefix_seconds": 14.244331349000277,
+    "whole_observed_difference_seconds": 215.4186324629918,
+    "whole_observed_difference_is_not_causal_saved_work": true,
+    "scientific_group_wall_actually_avoided_seconds": 1.689432551000209,
+    "scientific_compile_link_invocations_avoided": 8,
+    "scientific_compile_link_invocations_repeated_in_inherited_groups": 0,
+    "checkpoint_receipt_write_seconds": 0.002339842001674697,
+    "evidence_and_input_verification_seconds_on_resume": 3.639392527991731,
+    "initial_input_verification_seconds": 2.0191099389994633,
+    "post_run_input_revalidation_seconds": "UNKNOWN_NOT_SEPARATELY_INSTRUMENTED",
+    "pure_cpu_compilation_seconds_saved": "UNKNOWN",
+    "unqualified_groups_compilation_total": "UNKNOWN_NOT_INSTRUMENTED",
+    "build_object_cache_enabled_by_this_mechanism": false,
+    "filesystem_cache_and_host_load_contribution": "UNKNOWN",
+    "repeat_experiment_count_same_full_candidate": 1,
+    "top_level_original_runner_invocations": {
+      "baseline": 26,
+      "resumed": 24
+    },
+    "observed_top_level_calls": {
+      "baseline": [
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/frost/run_frost_invalid_input_preservation.sh",
+        "bash tests/frost/run_frost_nan_guard_independent.sh",
+        "bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh",
+        "bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+        "bash tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+        "bash tests/fmig431/run_mc_heat01_runtime.sh",
+        "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+        "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+        "bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+        "bash tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_management.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_availability.sh",
+        "bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+        "bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh",
+        "bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh"
+      ],
+      "resumed": [
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh",
+        "bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+        "bash tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+        "bash tests/fmig431/run_mc_heat01_runtime.sh",
+        "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+        "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+        "bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+        "bash tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_management.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_availability.sh",
+        "bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+        "bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh",
+        "bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh"
+      ]
+    },
+    "top_level_pure_verifier_invocations_per_run": 4,
+    "scientific_top_level_invocations": {
+      "baseline": 22,
+      "resumed": 20,
+      "inherited": 2
+    },
+    "all_other_original_top_level_calls_same_sequence": true,
+    "resumed_group_decisions": [
+      {
+        "decision": "INHERIT",
+        "group": "frost-invalid",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T18:01:57.656175+00:00",
+        "verification_seconds": 1.0734213999967324
+      },
+      {
+        "decision": "INHERIT",
+        "group": "frost-independent",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T18:02:00.369336+00:00",
+        "verification_seconds": 2.565971127994999
+      }
     ],
-    "mode": "SHADOW",
-    "executed_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
-    "started_utc": "2026-10-12T18:01:33.495480+00:00",
-    "terminal_status": "FAIL",
-    "environment_sha256": "a882761e16108cff2b6af63ef3e59618b373653c18d501bd54ab88fa2779fd38",
-    "terminal_exit_code": 1,
-    "ended_utc": "2026-10-12T18:01:47.740082+00:00",
-    "wall_seconds": 14.244331349000277,
-    "end_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
-    "stdout_sha256": "4ba64ebc7b27048cec9a73b1f94f20e786d177919fe51f7a85148039d63bcfcc",
-    "stderr_sha256": "7cdf284957dc94d19831e48714d4e2bd8585440a5b9a3ffd620a4f29c868b196"
+    "signed_group_execution_measurements": [
+      {
+        "group": "frost-invalid",
+        "wall_seconds": 1.1643819050004822,
+        "compilations": 6,
+        "checkpoint_write_seconds": 0.0012293489999137819,
+        "verification_seconds": 1.0415217350018793
+      },
+      {
+        "group": "frost-independent",
+        "wall_seconds": 0.5250506459997268,
+        "compilations": 2,
+        "checkpoint_write_seconds": 0.001110493001760915,
+        "verification_seconds": 0.9775882039975841
+      }
+    ],
+    "false_inheritance_in_final_negative_controls": 0,
+    "conservative_extra_run_examples": [
+      "FFLAGS value is not read by these hardcoded leaves; full-environment binding deliberately still selects RUN"
+    ],
+    "unexplained_earlier_closure_rejection": "UNKNOWN; unqualified earlier trial retained, final same-input controls succeeded"
   },
+  "comparison": {
+    "schema": "swap5.fci.resume-comparison.v1",
+    "exact_scientific_output_after_private_path_normalization": true,
+    "controls_valid_same_candidate": true,
+    "inherited_groups": [
+      "frost-invalid",
+      "frost-independent"
+    ],
+    "original_full_stdout_byte_identical": false,
+    "baseline_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "resumed_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "normalized_baseline_paths": [
+      {
+        "line": 116,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-4meSTp",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 692,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 694,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 701,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 703,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 757,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 759,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 765,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 767,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "normalized_resumed_paths": [
+      {
+        "line": 120,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-QcG5UM",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 696,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 698,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 705,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 707,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 761,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 763,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 769,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 771,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "numerical_values_or_tolerances_normalized": false,
+    "qualification_pass": true
+  },
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1217",
+  "result_document": "docs/audits/FCI_RESUME_RESULT_20261012.md",
+  "evidence_paths": [
+    "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
+    "integration/f-ci/evidence/F-CI_RESUME_FULL_20261012.tar.gz.b64"
+  ],
+  "relevant_paths": [
+    "tools/fci/resume_group.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost",
+    "tests/fci/run_resume_safety.py",
+    "tests/fci/run_resume_full_trial.py",
+    "tests/fci/compare_resume_trial.py"
+  ],
   "baseline_evidence": {
     "path": "integration/f-ci/evidence/F-CI_RESUME_BASELINE_20261012.tar.gz.b64",
     "decoded_sha256": "333f8e63b7a9eb1f0f1c9bc3d69396d2db42e12bf0b380635f06dcfd4b79fc42"
   },
-  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1217"
+  "checkpoint_commit": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+  "last_reconciled_head": "a1b4bb432827149872445161fbcb775bba5c4cb1",
+  "qualification_scope": "Two explicit no-output GNU13 frost leaves and preserved full original F-CI, same exclusive checkout/environment; not broader default inheritance policy",
+  "full_controls": {
+    "baseline": "baseline.control.json",
+    "interrupted": "interrupted.control.json",
+    "resumed": "resumed.control.json"
+  },
+  "test_paths": [
+    "tests/fci/run_resume_safety.py",
+    "tests/fci/run_resume_full_trial.py",
+    "tests/fci/compare_resume_trial.py"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/audits/MIGRATION_EXECUTION_IMPLEMENTATION_20261012.md",
+    "docs/development/FCI_SAFE_RESUME_20261012.md"
+  ]
 }

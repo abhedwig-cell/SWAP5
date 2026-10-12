@@ -75,4 +75,9 @@ result['eight_scientific_compiler_invocations_avoided'] = len(result['inherited_
 (OUT/'comparison.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result),flush=True)
 if not left==right or len(result['inherited_groups'])!=2:
-    raise SystemExit('scientific output or inheritance comparison requires adjudication')
+    from compare_resume_trial import compare
+    adjudication = compare(OUT)
+    (OUT/'adjudicated-comparison.json').write_text(json.dumps(adjudication,indent=2)+'\n')
+    if not adjudication['qualification_pass']:
+        raise SystemExit('scientific output or inheritance comparison requires adjudication')
+    print(json.dumps(adjudication),flush=True)

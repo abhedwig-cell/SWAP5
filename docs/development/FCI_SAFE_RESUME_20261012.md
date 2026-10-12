@@ -152,3 +152,6 @@ prefix, RESUME, verified log/results equality, per-group decision/verification/
 checkpoint timings and unknown costs through the versioned result authority.
 One ordered run cannot prove a general speedup; two short leaves cannot support
 a broad migration-speed claim. Broader group qualification is separate work.
+
+The completed full experiment, raw-comparison adjudication and measured limits
+are recorded in [F-CI resume result](../audits/FCI_RESUME_RESULT_20261012.md).
