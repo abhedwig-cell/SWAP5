@@ -2,10 +2,10 @@
   "work_unit": "MC-MET01",
   "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
   "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
-  "stage": "IMPLEMENTED_PERSISTED_SOURCE_ORACLE_PASS_PRODUCTION_PENDING",
+  "stage": "SOURCE_PRODUCTION_DEFAULT_OWNER_PASS_HIGHEST_LOW_AIR_PENDING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
@@ -19,9 +19,11 @@
   "held_fixed": [
     "kernel/solver/temporal/mass/state owners",
     "crop/root/irrigation/Snow/solute/MODFLOW",
-    "existing uniform weather profile and owner gates"
+    "existing uniform weather profile and owner gates",
+    "new scientific functionality independently qualifies against actual Full Richards",
+    "no default profile or numerical gate changes"
   ],
-  "next_action": "Complete actual production, unchanged default crop and24/144 fresh highest frost before full preservation",
+  "next_action": "Complete remaining unchanged highest low-air cases; seal24/144 current-source evidence, then exact-head full FCI/PPA",
   "source_member": "SWAP/MOD_meteo.f90",
   "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
   "metrics": {
@@ -41,5 +43,29 @@
     "command": "python tests/mc-met01/run_raintb_source.py",
     "result": "PASS O0/O2 7686 literal cases each plus negatives",
     "log": "MC_MET01 focused archive pending"
-  }
+  },
+  "compiler_identity": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "focused_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_FOCUSED_O0_O2_20261012.tar.gz.b64",
+    "decoded_sha256": "ea4265e4150b57ddbd9c6692514685602f006852da4369d79779b69851296efd",
+    "dependency_blobs": 231
+  },
+  "default_crop_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_DEFAULT_CROP_O0_O2_20261012.tar.gz.b64",
+    "decoded_sha256": "fae3791bcbd3f68f29d1867e67ff02a8fd5ee9003010fa09ca5908d80e53131f",
+    "dependency_blobs": 231
+  },
+  "invariants_affected": [
+    2,
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    23,
+    25,
+    29,
+    30
+  ]
 }

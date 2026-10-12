@@ -11,7 +11,7 @@ assert git('diff','--name-only',BASE,'HEAD','--','src').splitlines()==sorted(PIN
 for p,b in PINS.items():assert git('rev-parse','HEAD:'+p)==b,p
 assert git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference')
 status=json.loads((ROOT/'integration/audits/MC_MET01_STATUS.json').read_text())
-for key in ['focused_evidence','fresh_frost_evidence']:
+for key in ['focused_evidence','default_crop_evidence','fresh_frost_evidence']:
  r=status[key];raw=base64.b64decode((ROOT/r['path']).read_bytes());assert hashlib.sha256(raw).hexdigest()==r['decoded_sha256']
  with tarfile.open(fileobj=io.BytesIO(raw)) as t:
   m=json.load(t.extractfile('MANIFEST.json'));assert m['source_tree']==git('rev-parse','HEAD:src')
@@ -20,6 +20,8 @@ for key in ['focused_evidence','fresh_frost_evidence']:
   if key=='focused_evidence':
    assert b'MC_MET01_LITERAL_RAINTB_O0_O2=PASS' in t.extractfile('source.log').read()
    assert b'MC_MET01_ACTUAL_RAINTB_PRODUCTION_O0_O2=PASS' in t.extractfile('production.log').read()
+  elif key=='default_crop_evidence':
+   assert b'CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS' in t.extractfile('default-crop.log').read()
   else:
    assert m['complete_configurations']==24 and m['fine_comparisons']==144
    original=base64.b64decode((ROOT/m['original_archive']).read_bytes());assert hashlib.sha256(original).hexdigest()==m['original_archive_sha256']
