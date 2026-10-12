@@ -216,5 +216,33 @@
     "fullcap_delta": 0,
     "full_source_census_closure_claim": false,
     "master_kept_draft": true
+  },
+  "daily_demand_successor": {
+    "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
+    "recovery_branch": "work/mc-met01-daily-demand-20261012",
+    "stage": "OWNER_CONTRACT_PERSISTED_BEFORE_IMPLEMENTATION",
+    "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
+    "scope": [
+      "SW431-ET-PMTRAD",
+      "SW431-ET-SOILFACTOR"
+    ],
+    "contract": "docs/science/MC_MET01_DAILY_DEMAND_CONTRACT.md",
+    "production_authorization": "User: Doe hier, 2026-10-12; execute the PR1215 bounded coherent package",
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "next_action": "Implement immutable opt-in daily demand on authenticated root-free weather, literal source oracle, actual Full Richards retry/restart and incumbent preservation",
+    "held_fixed": [
+      "All default arithmetic and profiles",
+      "Kernel/state/mass/retry/restart owners and tolerances",
+      "Crop/root/interception/Snow/MODFLOW contracts",
+      "Existing immutable evidence"
+    ],
+    "metrics": {
+      "start_utc": "2026-10-12T11:49:19+00:00",
+      "active_work_seconds": "UNKNOWN",
+      "speed_effect": "UNKNOWN"
+    }
   }
 }
