@@ -233,5 +233,33 @@
       "SWINCO=3, detailed weather, compensated/oxygen/CO2 profiles and external joint disk codec remain open.",
       "Bounded four-node qualification with explicit site/crop parameters; no full Andelst soil/crop trajectory claim."
     ]
+  },
+  "bounded_mc_met01_raintb_receipt": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1212",
+    "canonical_merge": "8881729964f33c399e6f3b18200eff9434f5764e",
+    "admission_head": "d280f32dd3887aa95fd42f0d5a80244a0cc0bd77",
+    "qualified_source_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+    "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+    "authority_at_canonical": "integration/audits/MC_MET01_STATUS.json",
+    "canonical_source_paths": [
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "scope": "Authentic daily weather plus typed seasonal AFGEN RAINTB; actual pulse/on/off Full Richards and same-day/next-day continuation; wet/dry failed-prefix/retry/rollback and table-identity-checked opaque joint restart.",
+    "qualification": "Independent7686 cases per O0/O2; authentic production BASE/AIR; unchanged full crop/weather and24/144 highest frost; full F-CI and PPA terminal0 PASS.",
+    "full_capability": false,
+    "limitations": [
+      "Fully populated typed RAINTB; root-free BASE and AIR/no-snow bottom7 profile only.",
+      "Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN."
+    ],
+    "master_source_branch_note": "This master worktree keeps its older science checkout. Resolve bounded production at the exact later canonical commit, not by declaring absent modules from this older tree."
+  },
+  "mc_met01_remaining_queue_reconciliation": {
+    "only_capability": "SW431-MET-RAIN1",
+    "disposition_totals_unchanged": true,
+    "fullcap_delta": 0,
+    "source_presence_aggregates": "62 with /46 without (single new bounded authority); disposition243/95/108 unchanged",
+    "full_source_census_checker_claim": false,
+    "source_and_all_other_rows_unchanged": true
   }
 }

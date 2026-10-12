@@ -39,8 +39,8 @@
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 108,
     "missing_standalone_process_implementations_not_established": 113,
-    "active_with_existing_production_source_authority": 61,
-    "active_without_listed_production_source_authority": 47,
+    "active_with_existing_production_source_authority": 62,
+    "active_without_listed_production_source_authority": 46,
     "active_missing_complete_admitted_route": 108,
     "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
   },
@@ -673,19 +673,25 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Within-day rainfall intensity distribution from RAINTB",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/MC_MET01_STATUS.json at 8881729964f33c399e6f3b18200eff9434f5764e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source resolves daily depth and seasonal intensity into a midnight-start pulse: duration=min(1,depth/intensity), actual rate=depth/duration. Typed interval rates can carry the resolved pulse, but no current RAINTB/day-of-year pulse resolver is present. Daily total alone does not preserve infiltration intensity."
+        "established": true,
+        "route": "file_weather_daystart + file_weather_swrain=1 + typed RAINTB -> guarded run_weather_interval -> existing actual Full Richards owner",
+        "claim": "Authentic daily weather plus typed seasonal AFGEN RAINTB; actual pulse/on/off Full Richards and same-day/next-day continuation; wet/dry failed-prefix/retry/rollback and table-identity-checked opaque joint restart.",
+        "bounded_receipt": "mc_met01_raintb_20261012"
       },
       "restrictions": [
-        "Source resolves daily depth and seasonal intensity into a midnight-start pulse: duration=min(1,depth/intensity), actual rate=depth/duration. Typed interval rates can carry the resolved pulse, but no current RAINTB/day-of-year pulse resolver is present. Daily total alone does not preserve infiltration intensity."
+        "Fully populated typed RAINTB; root-free BASE and AIR/no-snow bottom7 profile only.",
+        "Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -698,9 +704,9 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "workunit_stage": "BOUNDED_PRODUCTION_CANONICALLY_ADMITTED_WIDER_SOURCE_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_SOURCE_CAPABILITY_STILL_OPEN"
     },
     {
       "capability_id": "SW431-MET-RAIN2",
@@ -14368,7 +14374,7 @@
       "capability_id": "SW431-MET-RAIN1",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Source resolves daily depth and seasonal intensity into a midnight-start pulse: duration=min(1,depth/intensity), actual rate=depth/duration. Typed interval rates can carry the resolved pulse, but no current RAINTB/day-of-year pulse resolver is present. Daily total alone does not preserve infiltration intensity.",
+      "why_open": "Bounded actual typed RAINTB production is admitted at 8881729964f33c399e6f3b18200eff9434f5764e. Wider historical source envelopes remain open: Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14376,7 +14382,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-RUNOFF-NONLINEAR",
@@ -15571,6 +15577,26 @@
         "Qualification uses bounded four-node root-free daily/AIR-no-snow source trajectory; no full Andelst soil/crop or detailed-weather equivalence."
       ],
       "master_source_branch_note": "This master branch retains an older scientific source checkout. Resolve this bounded admission at its exact later canonical commit, not by replaying historical source or declaring absent modules from this older worktree."
+    },
+    "mc_met01_raintb_20261012": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1212",
+      "canonical_merge": "8881729964f33c399e6f3b18200eff9434f5764e",
+      "admission_head": "d280f32dd3887aa95fd42f0d5a80244a0cc0bd77",
+      "qualified_source_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+      "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+      "authority_at_canonical": "integration/audits/MC_MET01_STATUS.json",
+      "canonical_source_paths": [
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "scope": "Authentic daily weather plus typed seasonal AFGEN RAINTB; actual pulse/on/off Full Richards and same-day/next-day continuation; wet/dry failed-prefix/retry/rollback and table-identity-checked opaque joint restart.",
+      "qualification": "Independent7686 cases per O0/O2; authentic production BASE/AIR; unchanged full crop/weather and24/144 highest frost; full F-CI and PPA terminal0 PASS.",
+      "full_capability": false,
+      "limitations": [
+        "Fully populated typed RAINTB; root-free BASE and AIR/no-snow bottom7 profile only.",
+        "Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN."
+      ],
+      "master_source_branch_note": "This master worktree keeps its older science checkout. Resolve bounded production at the exact later canonical commit, not by declaring absent modules from this older tree."
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
