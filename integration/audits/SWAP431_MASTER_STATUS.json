@@ -261,5 +261,39 @@
     "source_presence_aggregates": "62 with /46 without (single new bounded authority); disposition243/95/108 unchanged",
     "full_source_census_checker_claim": false,
     "source_and_all_other_rows_unchanged": true
+  },
+  "bounded_mc_met01_daily_demand_receipt": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1216",
+    "canonical_merge": "d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9",
+    "admission_head": "c524a5f7ed47adc40931cfcaebdf10f7060dffab",
+    "qualified_source_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+    "authority_at_canonical": "integration/audits/MC_MET01_STATUS.json daily_demand_successor",
+    "canonical_source_paths": [
+      "src/process/mod_reference_et_demand_process.f90",
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "scope": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
+    "qualification": "960 literal source cases per O0/O2 with two branch discrimination witnesses; 1700 incumbent reference cases per O0/O2; six physical profiles; unchanged default crop/weather and RAINTB; complete24/144 highest reference output; original full F-CI and PPA terminal0 PASS.",
+    "full_capability": false,
+    "limitations": [
+      "Bounded authenticated twelve-column daily weather; root-free BASE/AIR, no-snow/default-MVG bottom7, uniform rain mode0; opt-in immutable configuration.",
+      "Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction."
+    ],
+    "master_source_branch_note": "Resolve bounded production at the exact later canonical commit; this older master science checkout is not implementation absence evidence."
+  },
+  "mc_met01_daily_demand_reconciliation": {
+    "only_capabilities": [
+      "SW431-ET-PMTRAD",
+      "SW431-ET-SOILFACTOR"
+    ],
+    "disposition_totals_unchanged": true,
+    "fullcap_delta": 0,
+    "source_presence_aggregates": {
+      "with_authority": 62,
+      "without_authority": 46
+    },
+    "full_source_census_checker_claim": false,
+    "all_other_rows_and_queues_unchanged": true
   }
 }

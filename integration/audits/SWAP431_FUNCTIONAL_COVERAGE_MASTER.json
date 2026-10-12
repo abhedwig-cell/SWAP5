@@ -451,22 +451,26 @@
       "meaning": "Traditional Penman-Monteith reference demand partition",
       "swap5_implementation_authority": [
         "src/process/mod_pmdirect_swetr0_process.f90",
-        "src/process/mod_reference_et_demand_process.f90"
+        "src/process/mod_reference_et_demand_process.f90",
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
         "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_MET01_STATUS.json daily_demand_successor at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch."
+        "established": true,
+        "route": "file_weather_daystart + file_weather_daily_demand + immutable mode/factors -> guarded run_weather_interval -> existing actual Full Richards owner",
+        "claim": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
+        "bounded_receipt": "mc_met01_daily_demand_20261012"
       },
       "restrictions": [
-        "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch.",
-        "F-APP05 separately closes bounded SWCF2 crop-height input; its admission does not close this distinct ET option."
+        "Bounded authenticated twelve-column daily weather; root-free BASE/AIR, no-snow/default-MVG bottom7, uniform rain mode0; opt-in immutable configuration.",
+        "Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -479,9 +483,9 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "workunit_stage": "BOUNDED_PRODUCTION_CANONICALLY_ADMITTED_WIDER_SOURCE_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_SOURCE_CAPABILITY_STILL_OPEN"
     },
     {
       "capability_id": "SW431-ET-PMDETAIL",
@@ -620,22 +624,26 @@
       "meaning": "Soil-factor conversion of potential soil evaporation",
       "swap5_implementation_authority": [
         "src/process/mod_pmdirect_swetr0_process.f90",
-        "src/process/mod_reference_et_demand_process.f90"
+        "src/process/mod_reference_et_demand_process.f90",
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU03_STATUS.json",
         "integration/f-app/F-APP03_RESTRICTED_PMDIRECT_PROCESS_QUALIFICATION.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_MET01_STATUS.json daily_demand_successor at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option."
+        "established": true,
+        "route": "file_weather_daystart + file_weather_daily_demand + immutable mode/factors -> guarded run_weather_interval -> existing actual Full Richards owner",
+        "claim": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
+        "bounded_receipt": "mc_met01_daily_demand_20261012"
       },
       "restrictions": [
-        "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option.",
-        "F-APP05 separately closes bounded SWCF2 crop-height input; its admission does not close this distinct ET option."
+        "Bounded authenticated twelve-column daily weather; root-free BASE/AIR, no-snow/default-MVG bottom7, uniform rain mode0; opt-in immutable configuration.",
+        "Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-MET01",
@@ -648,9 +656,9 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "workunit_stage": "BOUNDED_PRODUCTION_CANONICALLY_ADMITTED_WIDER_SOURCE_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_SOURCE_CAPABILITY_STILL_OPEN"
     },
     {
       "capability_id": "SW431-MET-RAIN1",
@@ -14192,7 +14200,7 @@
       "capability_id": "SW431-ET-PMTRAD",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Current weather-driven evaluator always uses PMdirect cover-scaled aerodynamic resistances and effective LAI. B1.11 traditional SWDIVIDE0 uses unscaled resistances, zero wet-soil resistance and different cover partition/crop-factor postprocessing; no selector/provider implements that branch.",
+      "why_open": "Bounded daily PMtraditional/CFBS production admitted at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9. Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14200,13 +14208,13 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-ET-SOILFACTOR",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Current reference-ET demand parameters lack CFBS and the evaluator explicitly implements SWCFBS0. B1.11 SWCFBS1 changes only soil evaporation in reference-ET and traditional branches; scaling the common ET forcing would incorrectly also scale transpiration and pond evaporation. PMdirect rsoil resistance is a different physical option.",
+      "why_open": "Bounded daily PMtraditional/CFBS production admitted at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9. Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14214,7 +14222,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-LOW9",
@@ -15597,6 +15605,26 @@
         "Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN."
       ],
       "master_source_branch_note": "This master worktree keeps its older science checkout. Resolve bounded production at the exact later canonical commit, not by declaring absent modules from this older tree."
+    },
+    "mc_met01_daily_demand_20261012": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1216",
+      "canonical_merge": "d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9",
+      "admission_head": "c524a5f7ed47adc40931cfcaebdf10f7060dffab",
+      "qualified_source_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+      "authority_at_canonical": "integration/audits/MC_MET01_STATUS.json daily_demand_successor",
+      "canonical_source_paths": [
+        "src/process/mod_reference_et_demand_process.f90",
+        "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "scope": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
+      "qualification": "960 literal source cases per O0/O2 with two branch discrimination witnesses; 1700 incumbent reference cases per O0/O2; six physical profiles; unchanged default crop/weather and RAINTB; complete24/144 highest reference output; original full F-CI and PPA terminal0 PASS.",
+      "full_capability": false,
+      "limitations": [
+        "Bounded authenticated twelve-column daily weather; root-free BASE/AIR, no-snow/default-MVG bottom7, uniform rain mode0; opt-in immutable configuration.",
+        "Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction."
+      ],
+      "master_source_branch_note": "Resolve bounded production at the exact later canonical commit; this older master science checkout is not implementation absence evidence."
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
