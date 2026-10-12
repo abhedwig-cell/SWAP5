@@ -14,8 +14,8 @@ program kalmthout_swap5_daily_pilot
 
   real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
   real(real64), parameter :: H0_CM=-75.0_real64
-  integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=4
-  character(len=256) :: met_path, out_path, line, ds, max_hours_arg
+  integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=1
+  character(len=256) :: met_path, out_path, line, ds, max_hours_arg, evap_scale_arg
   type(fmr_production_application_config_t) :: config
   type(fmr_production_application_bootstrap_t) :: app
   type(fmr_b110_physical_forcing_t), allocatable :: forcing(:)
@@ -23,7 +23,7 @@ program kalmthout_swap5_daily_pilot
   type(interception_source_window_t) :: window
   type(rutter_interval_input_t) :: rp
   integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub
-  real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day
+  real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day,evap_scale
   real(real64) :: hour_t0,hour_t1,segment_dt,hour_residual,hour_in,hour_out
   real(real64) :: total_precip,total_et0,total_in,total_out
   integer :: hour_accepted,hour_solver_rejections,hour_temporal_rejections
@@ -31,12 +31,18 @@ program kalmthout_swap5_daily_pilot
   call get_command_argument(1,met_path)
   call get_command_argument(2,out_path)
   call get_command_argument(3,max_hours_arg)
+  call get_command_argument(4,evap_scale_arg)
   max_hours=0
+  evap_scale=1.0_real64
   if(len_trim(max_hours_arg)>0) then
     read(max_hours_arg,*,iostat=ios) max_hours
     if(ios/=0 .or. max_hours<0) error stop 'invalid max_hours'
   end if
-  if(len_trim(met_path)==0 .or. len_trim(out_path)==0) error stop 'usage: pilot weather.csv output.csv [max_hours]'
+  if(len_trim(evap_scale_arg)>0) then
+    read(evap_scale_arg,*,iostat=ios) evap_scale
+    if(ios/=0 .or. evap_scale<0.0_real64 .or. evap_scale>1.0_real64) error stop 'invalid evap_scale'
+  end if
+  if(len_trim(met_path)==0 .or. len_trim(out_path)==0) error stop 'usage: pilot weather.csv output.csv [max_hours] [evap_scale]'
 
   call initialize_config(config)
   call app%initialize(config,status)
@@ -92,8 +98,8 @@ program kalmthout_swap5_daily_pilot
       allocate(forcing(1)%rutter)
       forcing(1)%rutter%source_window=window
       forcing(1)%rutter%process=rp
-      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=et0/10.0_real64
-      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=et0/10.0_real64
+      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=evap_scale*et0/10.0_real64
+      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=evap_scale*et0/10.0_real64
       forcing(1)%rutter%ponding_max_cm=1.0_real64
       forcing(1)%rutter%runoff_resistance_day=0.1_real64
       forcing(1)%rutter%runoff_exponent=1.0_real64
@@ -146,6 +152,7 @@ program kalmthout_swap5_daily_pilot
   write(*,'(A,I0)') 'KALMTHOUT_HOURS=',day_index
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_PRECIP_MM=',total_precip
   write(*,'(A,F14.3)') 'KALMTHOUT_TOTAL_ET0_MM=',total_et0
+  write(*,'(A,F10.4)') 'KALMTHOUT_EVAP_SCALE=',evap_scale
   write(*,'(A,ES18.10)') 'KALMTHOUT_MAX_MASS_RESIDUAL_CM=',max_residual
   write(*,'(A,ES18.10)') 'KALMTHOUT_LEDGER_TOTAL_IN_CM=',total_in
   write(*,'(A,ES18.10)') 'KALMTHOUT_LEDGER_TOTAL_OUT_CM=',total_out
@@ -191,7 +198,7 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
+    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
