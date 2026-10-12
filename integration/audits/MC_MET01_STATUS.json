@@ -216,5 +216,368 @@
     "fullcap_delta": 0,
     "full_source_census_closure_claim": false,
     "master_kept_draft": true
+  },
+  "daily_demand_successor": {
+    "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
+    "recovery_branch": "work/mc-met01-daily-demand-20261012",
+    "stage": "BOUNDED_QUALIFIED_PRESERVED_ADMISSION_PENDING",
+    "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
+    "scope": [
+      "SW431-ET-PMTRAD",
+      "SW431-ET-SOILFACTOR"
+    ],
+    "contract": "docs/science/MC_MET01_DAILY_DEMAND_CONTRACT.md",
+    "production_authorization": "User: Doe hier, 2026-10-12; execute the PR1215 bounded coherent package",
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "next_action": "Reconcile live canonical head and overlapping PRs; verify unchanged exact execution closure; admit bounded PR1216 then reconcile two master rows without fullcap promotion.",
+    "held_fixed": [
+      "All default arithmetic and profiles",
+      "Kernel/state/mass/retry/restart owners and tolerances",
+      "Crop/root/interception/Snow/MODFLOW contracts",
+      "Existing immutable evidence"
+    ],
+    "metrics": {
+      "start_utc": "2026-10-12T11:49:19+00:00",
+      "active_work_seconds": "UNKNOWN",
+      "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE",
+      "functional_results_qualified": 1,
+      "full_master_capabilities_promoted": 0,
+      "completed_highest_configurations": 24,
+      "highest_fine_comparisons": 144,
+      "scientific_regressions_observed": 0,
+      "repeated_source_investigations": "UNKNOWN",
+      "required_work_interventions": "UNKNOWN",
+      "full_fci_attempts": 3,
+      "full_ppa_runs": 2,
+      "repair_after_failed_integration": "No canonical integration failure; first F-CI source guard rejected the new qualified process and was repaired with an exact postimage plus full proof; second attempt was interrupted without terminal controller result, retained as UNKNOWN and rerun; all logs preserved.",
+      "ppa_replay_reason": "Conservative same-head replay after qualification-control repair; a separate minimal transitive PPA closure was not established. Source physics was unchanged; no independent scientific need or speed benefit is claimed for this duplicate."
+    },
+    "persisted": true,
+    "preserved": true,
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1216",
+    "source_postimages": {
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90": "44b07cd1046632a38b36e9b1ed5608f67ca41fdd",
+      "src/process/mod_reference_et_demand_process.f90": "0a8fc91570c6297a54109740de3a26153dc44283",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "8b480b09f47bb4443d755109c9093486853c0809"
+    },
+    "focused_evidence": {
+      "path": "integration/audits/evidence/MC_MET01_DAILY_DEMAND_FOCUSED_20261012.tar.gz.b64",
+      "decoded_sha256": "7fa23a30de311592aeac578e4e39eeb2837ce6c18a36406ed7bd140b3fd21131"
+    },
+    "focused_controls": {
+      "focused": {
+        "gate": "mc-met01-demand-v3-focused",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_production.py"
+        ],
+        "head": "722fec4fdd35af0be0253c130016e46618349005",
+        "tree": "7ddc21f07d7dd5ab6fa54e18d65686fc06d5f9a1",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:30:24.001489+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:35:58.389296+00:00",
+        "end_head": "722fec4fdd35af0be0253c130016e46618349005",
+        "clean_at_end": true,
+        "wall_seconds": 334.387807
+      },
+      "default-crop": {
+        "gate": "mc-met01-demand-v2-default-crop",
+        "command": [
+          "bash",
+          "tests/fmig431/run_crop_file_weather_production.sh"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:12:15.820404+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:20:42.677714+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 506.85731
+      },
+      "old-raintb": {
+        "gate": "mc-met01-demand-v2-old-raintb",
+        "command": [
+          "python",
+          "tests/mc-met01/run_raintb_production.py"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:20:43.176582+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:26:17.110438+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 333.933856
+      }
+    },
+    "ppa_control": {
+      "gate": "mc-met01-demand-full-ppa",
+      "command": [
+        "bash",
+        "tests/fapp/run_ppa_wu03_preservation.sh"
+      ],
+      "head": "e11f1cafbbacefc3084b99d2ee7e4609ea5dbb2f",
+      "tree": "067516477dda1f0b5040e17989755f058dbb2ffd",
+      "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "started_utc": "2026-10-12T12:42:29.896920+00:00",
+      "terminal_exit_code": 0,
+      "ended_utc": "2026-10-12T12:53:34.449266+00:00",
+      "end_head": "e11f1cafbbacefc3084b99d2ee7e4609ea5dbb2f",
+      "clean_at_end": true,
+      "wall_seconds": 664.552346
+    },
+    "guard_negative_controls": "PASS dirty owner fixture rejected; exact restored fixture accepted; incomplete highest proof rejected",
+    "owner_evidence": {
+      "path": "integration/audits/evidence/MC_MET01_DAILY_DEMAND_QUALIFICATION_20261012.tar.gz.b64",
+      "decoded_sha256": "cb4266d32a6e76e30b33f30d07e0ef1d834ee311880d0b2594d7cc48b51d2ff2"
+    },
+    "controls": {
+      "focused": {
+        "gate": "mc-met01-demand-v3-focused",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_production.py"
+        ],
+        "head": "722fec4fdd35af0be0253c130016e46618349005",
+        "tree": "7ddc21f07d7dd5ab6fa54e18d65686fc06d5f9a1",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:30:24.001489+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:35:58.389296+00:00",
+        "end_head": "722fec4fdd35af0be0253c130016e46618349005",
+        "clean_at_end": true,
+        "wall_seconds": 334.387807
+      },
+      "default-crop": {
+        "gate": "mc-met01-demand-v2-default-crop",
+        "command": [
+          "bash",
+          "tests/fmig431/run_crop_file_weather_production.sh"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:12:15.820404+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:20:42.677714+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 506.85731
+      },
+      "old-raintb": {
+        "gate": "mc-met01-demand-v2-old-raintb",
+        "command": [
+          "python",
+          "tests/mc-met01/run_raintb_production.py"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:20:43.176582+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:26:17.110438+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 333.933856
+      },
+      "highest-normal": {
+        "gate": "mc-met01-demand-v2-highest-normal",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_frost_successor.py",
+          "--route",
+          "normal"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:07:35.627589+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:12:19.685672+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 284.058083
+      },
+      "highest-low-air": {
+        "gate": "mc-met01-demand-v2-highest-low-air",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_frost_successor.py",
+          "--route",
+          "low_air"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:12:19.860103+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T13:20:31.389811+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 4091.529708
+      }
+    },
+    "full_fci_attempt1": {
+      "gate": "mc-met01-demand-full-moving",
+      "command": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "head": "497efc0d7ab1ecf36513dcd1c150de162f1fe7ef",
+      "tree": "b6afce1e3b37922c3bc002fb8f063ce64838eafc",
+      "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "started_utc": "2026-10-12T13:21:57.616264+00:00",
+      "terminal_exit_code": 1,
+      "ended_utc": "2026-10-12T13:22:46.839652+00:00",
+      "end_head": "497efc0d7ab1ecf36513dcd1c150de162f1fe7ef",
+      "clean_at_end": true,
+      "wall_seconds": 49.223388
+    },
+    "qualification_guard_repair": "Exact independently qualified daily-demand process postimage added to B19/MICRO source guard; original failure preserved; numerical cases/assertions/tolerances unchanged",
+    "full_preservation_evidence": {
+      "path": "integration/audits/evidence/MC_MET01_DAILY_DEMAND_FULL_PRESERVATION_20261012.tar.gz.b64",
+      "decoded_sha256": "644300a5db9358dd2fc46b59b946626aa49d80729bc14b6c23c10579bdd6531c",
+      "controls": {
+        "mc-met01-demand-full-moving": {
+          "gate": "mc-met01-demand-full-moving",
+          "command": [
+            "bash",
+            "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+          ],
+          "head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "tree": "d4618325f6f85917f133bfcde32998bdd0b008c5",
+          "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+          "started_utc": "2026-10-12T14:10:36.558529+00:00",
+          "terminal_exit_code": 0,
+          "ended_utc": "2026-10-12T15:06:03.638559+00:00",
+          "end_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "clean_at_end": true,
+          "wall_seconds": 3327.08003
+        },
+        "mc-met01-demand-full-ppa": {
+          "gate": "mc-met01-demand-full-ppa",
+          "command": [
+            "bash",
+            "tests/fapp/run_ppa_wu03_preservation.sh"
+          ],
+          "head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "tree": "d4618325f6f85917f133bfcde32998bdd0b008c5",
+          "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+          "started_utc": "2026-10-12T13:24:43.511704+00:00",
+          "terminal_exit_code": 0,
+          "ended_utc": "2026-10-12T13:33:56.842058+00:00",
+          "end_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "clean_at_end": true,
+          "wall_seconds": 553.330354
+        }
+      }
+    },
+    "scientific_execution_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+    "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+    "postimage_adjudication": {
+      "executed_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+      "source_reference_tests_and_tooling_unchanged": true,
+      "only_evidence_and_status_descendants": true,
+      "numerical_assertions_tolerances_flags_reference_changes": "NONE",
+      "evidence_inheritance_basis": "All archived execution-input blobs match both committed and working files; subsequent evidence/status/contract receipts have no execution effect. No gate is falsely attributed to an unexecuted documentary SHA."
+    },
+    "overlap_reconciliation": {
+      "canonical_head_verified": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
+      "open_prs_checked": [
+        1216,
+        1214,
+        1117,
+        1103,
+        1098,
+        1072,
+        1009,
+        987,
+        956,
+        953,
+        740,
+        700,
+        528,
+        486,
+        389,
+        365,
+        58
+      ],
+      "peer_heads": [
+        {
+          "pr": 1214,
+          "head": "e9722c8a565129734c249a40a6d58f37250e8733"
+        },
+        {
+          "pr": 1117,
+          "head": "b6b894513fcdcf66e94824742c129616ddd7aed1"
+        },
+        {
+          "pr": 1103,
+          "head": "6309199ed41a150d72d646ad6fa200da40ec3d17"
+        },
+        {
+          "pr": 1098,
+          "head": "d59aaa12c8312c8ecc42b1328537d5da412431a8"
+        },
+        {
+          "pr": 1072,
+          "head": "cece0a4e724944a913a5e7c6eb00a7fc28a7370c"
+        },
+        {
+          "pr": 1009,
+          "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c"
+        },
+        {
+          "pr": 987,
+          "head": "29c788b325bee9339dfde429a3bd90d44910d38d"
+        },
+        {
+          "pr": 956,
+          "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d"
+        },
+        {
+          "pr": 953,
+          "head": "76067cced09715e42220301d2410656851ec7013"
+        },
+        {
+          "pr": 740,
+          "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51"
+        },
+        {
+          "pr": 700,
+          "head": "5fcd9769c30379f461ce047f410638b0d3311f96"
+        },
+        {
+          "pr": 528,
+          "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda"
+        },
+        {
+          "pr": 486,
+          "head": "2f919cb095c0b581664d8c261fb10586670caa45"
+        },
+        {
+          "pr": 389,
+          "head": "92bcecf3302ab495afe8bd2fcfbd38b86135193a"
+        },
+        {
+          "pr": 365,
+          "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90"
+        },
+        {
+          "pr": 58,
+          "head": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee"
+        }
+      ],
+      "same_scope_competing_pr": "NONE",
+      "adjacent_owner_deltas": "Inspected relevant paths in1214/1117/1103/1098/1009/956/953; all heads unchanged at final reconciliation; no such candidate admitted by this package",
+      "held_fixed": "root/crop/HY/irrigation/Snow/solute/MODFLOW and all numerical tolerance/reference owners"
+    }
   }
 }

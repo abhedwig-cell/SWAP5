@@ -27,6 +27,10 @@ protected=(
 )
 
 for path in "${protected[@]}"; do
+  if [[ "$path" == src/process/mod_reference_et_demand_process.f90 && "$(git rev-parse "HEAD:$path")" == 0a8fc91570c6297a54109740de3a26153dc44283 ]]; then
+    python3 tests/mc-met01/verify_daily_demand_successor.py --owner-only || fail 'unqualified additive daily demand source'
+    continue
+  fi
   git diff --quiet "$BASE" -- "$path" || fail "protected authority drift: $path"
 done
 echo 'PPA_WU03_FAPP_M1_PROTECTED_PRODUCTION_BLOBS=PASS'

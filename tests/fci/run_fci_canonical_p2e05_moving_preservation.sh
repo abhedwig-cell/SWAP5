@@ -91,6 +91,10 @@ SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
+    python3 tests/mc-met01/verify_daily_demand_successor.py
+    return
+  fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c ]]; then
     python3 tests/mc-met01/verify_raintb_successor.py
     return
@@ -278,6 +282,10 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
 fi
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c ]]; then
   dependency_authority=c545077ab2d2839007a4ac202f7896575d0ad9ba
+fi
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
+  python3 tests/mc-met01/verify_daily_demand_successor.py || fail 'daily demand complete highest evidence missing'
+  dependency_authority=bd17f0a9a7c19516e66af8f80e2b7128890b3aee
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
@@ -535,6 +543,13 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/process/mod_reference_et_demand_process.f90 )
+        test "$(git rev-parse HEAD:src/process/mod_reference_et_demand_process.f90)" = \
+          "0a8fc91570c6297a54109740de3a26153dc44283" ||
+          fail 'unqualified daily-demand process postimage'
+        python3 tests/mc-met01/verify_daily_demand_successor.py ||
+          fail 'daily-demand process source/owner/highest qualification missing'
+        ;;
       src/process/mod_frost_hydraulic_effect.f90 )
         verify_crop_frost_highest ||
           fail 'unqualified frost hydraulic guard source change'
@@ -679,7 +694,7 @@ check_b19_micro_root_recomposition() {
       if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 851cb80954e1be909f6ec54661c0b12b80f225cd || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 23c2db74b1254e5e97e608764d186a59eeb694d5 ]]; then
         expected_crop_blob=39b4f75c92ea44d6b4e4be326ddf731f54522dfd
       fi
-      if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c ]]; then
+      if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c || "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
         expected_crop_blob=39b4f75c92ea44d6b4e4be326ddf731f54522dfd
       fi
     fi

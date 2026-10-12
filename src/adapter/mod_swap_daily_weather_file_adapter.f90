@@ -21,10 +21,11 @@ module mod_swap_daily_weather_file_adapter
     logical :: valid=.false.
     character(:), allocatable :: origin, raw_record, station, source_bytes
     integer :: calendar_day=0, day_of_year=0
-    real(real64) :: tmin=0.0_real64, tmax=0.0_real64, rain=0.0_real64, etref=0.0_real64, radiation_kj=0.0_real64
+    real(real64) :: tmin=0.0_real64, tmax=0.0_real64, rain=0.0_real64, etref=0.0_real64, radiation_kj=0.0_real64, vapour_pressure_kpa=0.0_real64, wind_speed_m_s=0.0_real64
   contains
     procedure :: ready => record_ready
     procedure :: values => record_values
+    procedure :: pm_values => record_pm_values
     procedure :: rain_segment => record_rain_segment
     procedure :: growth_values => record_growth_values
     procedure :: same_input => record_same_input
@@ -32,6 +33,17 @@ module mod_swap_daily_weather_file_adapter
   end type
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
+  subroutine record_pm_values(self,doy,radiation,vapour_pressure,wind,available)
+    class(swap_daily_weather_record_t),intent(in)::self
+    integer,intent(out)::doy
+    real(real64),intent(out)::radiation,vapour_pressure,wind
+    logical,intent(out)::available
+    doy=0;radiation=0.0_real64;vapour_pressure=0.0_real64;wind=0.0_real64;available=.false.
+    if(.not.self%ready()) return
+    if(self%radiation_kj>huge(radiation)/1000.0_real64) return
+    doy=self%day_of_year;radiation=self%radiation_kj*1000.0_real64
+    vapour_pressure=self%vapour_pressure_kpa;wind=self%wind_speed_m_s;available=.true.
+  end subroutine
   subroutine construct_swap_raintb(knots,intensities,table,status)
     real(real64),intent(in)::knots(:),intensities(:)
     type(swap_raintb_t),intent(out)::table
@@ -331,6 +343,7 @@ contains
       candidate%calendar_day=ordinal;candidate%tmin=tmin;candidate%tmax=tmax
       candidate%day_of_year=ordinal-swap_weather_calendar_day(y,1,1)+1
       candidate%radiation_kj=rad
+      candidate%vapour_pressure_kpa=hum;candidate%wind_speed_m_s=wind
       candidate%rain=rain;candidate%etref=etref;candidate%valid=.true.;found=.true.
     end do
     status=SWAP_WEATHER_FILE_MISSING

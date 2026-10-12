@@ -2,6 +2,15 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
+# Exact independently qualified daily PM/CFBS successor; old evidence unchanged.
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
+  python3 tests/mc-met01/verify_daily_demand_successor.py --owner-only
+  if [[ "${1:-}" == --verify-only ]]; then exit 0; fi
+  echo 'MC_MET01_DAILY_DEMAND_DEFAULT_CROP_EXACT_CLOSURE_INHERITED=PASS'
+  bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
+  echo 'MC_MET01_DAILY_DEMAND_CURRENT_FKT_PRESERVATION=PASS'
+  exit 0
+fi
 # Exact source-qualified task2 and explicit rooted-weather successor.
 # Preserve the original bounded path and admit only the pinned delayed
 # emergence/same-day growth source with sealed complete frost evidence.
