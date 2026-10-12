@@ -244,7 +244,10 @@ def identity(group, command, inspect_profile=False):
             cpu_profiles.append(fields)
     if not cpu_profiles:
         raise ValueError('unknown CPU execution profile')
-    runtime['cpu_profiles'] = sorted(set(cpu_profiles))
+    # Identity must retain its representation after the JSON checkpoint round
+    # trip: tuples would otherwise compare unequal to decoded JSON arrays.
+    runtime['cpu_profiles'] = [[list(pair) for pair in profile]
+                               for profile in sorted(set(cpu_profiles))]
     profile = {path: value for path, value in tools.items()
                if path != str((ROOT / CONTROL).resolve())}
     fingerprint = hashlib.sha256(encode({'tools': profile, 'runtime': runtime})).hexdigest()
