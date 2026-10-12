@@ -217,9 +217,10 @@ def identity(group, command):
             raise ValueError('unknown runtime/linker input: ' + name)
         tool(file)
     for module in list(sys.modules.values()):
-        file = getattr(module, '__file__', None)
-        if file and Path(file).is_file():
-            tool(file)
+        for attribute in ['__file__', '__cached__']:
+            file = getattr(module, attribute, None)
+            if file and Path(file).is_file():
+                tool(file)
     runtime = {'flags': list(sys.flags), 'xoptions': sys._xoptions}
     profile = {path: value for path, value in tools.items()
                if path != str((ROOT / CONTROL).resolve())}
