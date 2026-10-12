@@ -1,7 +1,7 @@
 # MC-MET01 daily traditional PM and CFBS production contract
 
-Status: implemented on the work branch; independent owner/source/physical and
-PPA checks PASS. Complete highest, full F-CI and canonical admission pending. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
+Status: independently qualified and preserved on the work branch; source,
+physical, incumbent, complete highest, full PPA and F-CI PASS. Canonical admission pending. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
 User delegated execution of the PR1215 package on 12 October 2026. Existing
 REGIE/PPA/RT own the application seam; independent source/VQ/F-CI gates remain.
 
@@ -84,3 +84,12 @@ or authorize admission. Full F-CI explicitly requires complete highest proof,
 including all24 configurations/144 comparisons and exact incumbent output.
 Unknown source/fixture mutation or missing stage evidence fails closed. No
 numerical assertion, optimization execution, physical case or tolerance is removed.
+
+## Definitive qualification and process measurement
+
+Actual full F-CI/PPA execution head: `7d4610e789ec1cdeb500bacdfd80b6c9e0146766`. Both gates ended with exit0 on a clean unchanged checkout. F-CI wall time 3327.080030s; PPA 553.330354s. Complete low-air O0/O2 wall time4091.529708s; all24 highest configurations and144 fine comparisons retain byte-identical incumbent output. Evidence, actual UTC controls, dependency blobs and compiler identity are recorded in `integration/audits/MC_MET01_STATUS.json` under `daily_demand_successor`.
+
+One coherent functional production trajectory combines two selected master IDs in one PR/admission cycle. It does not count as two fully migrated master capabilities. Both remain ACTIVE outside the bounded envelope. The first full F-CI attempt exited1 after49.223388s at an unrecognized source-postimage guard; the exact process successor was bound to complete owner/highest proof and the gate rerun. PPA was also replayed on the final execution checkout. Earlier PASS and failed/interrupted attempts remain distinct archived records. No physical formula, numerical case, optimization mode, assertion, reference or tolerance was relaxed for the repair.
+
+The second full F-CI attempt was interrupted with no terminal controller record; its outcome remains UNKNOWN and its partial log is archived separately. The whole required gate was rerun on the identical execution head, rather than treating partial PASS markers as full qualification. This exposes an execution recovery cost; it does not justify silently omitting remaining gates. Active work, unrecorded interventions and repeated-investigation counts remain UNKNOWN. RAINTB is a different-scope process baseline; these wall times do not establish a causal percentage speedup or equal functional complexity. No regression was observed in the declared completed gates; that is not proof of zero unobserved risk. Full Richards, transaction/mass/retry/restart, certified references and coupled MODFLOW owner contracts remain binding.
+The PPA replay was a conservative same-head scheduling choice after a qualification-control repair: a separate minimal transitive PPA closure was not established. Source physics was unchanged. This duplicate is counted as cost, not presented as independently necessary science or as a speed benefit. A future qualified dependency selector could make this decision more precise; the current proposal does not automatically omit such gates.

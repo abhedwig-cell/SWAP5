@@ -220,7 +220,7 @@
   "daily_demand_successor": {
     "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
     "recovery_branch": "work/mc-met01-daily-demand-20261012",
-    "stage": "OWNER_SOURCE_PHYSICAL_AND_HIGHEST_PASS_FULL_PRESERVATION_PENDING",
+    "stage": "BOUNDED_QUALIFIED_PRESERVED_ADMISSION_PENDING",
     "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
     "scope": [
       "SW431-ET-PMTRAD",
@@ -230,9 +230,9 @@
     "production_authorization": "User: Doe hier, 2026-10-12; execute the PR1215 bounded coherent package",
     "implemented": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "canonically_admitted": false,
-    "next_action": "Exact-source successor verifier and original full F-CI/PPA on stable persisted candidate; no tolerance change or fullcap promotion",
+    "next_action": "Reconcile live canonical head and overlapping PRs; verify unchanged exact execution closure; admit bounded PR1216 then reconcile two master rows without fullcap promotion.",
     "held_fixed": [
       "All default arithmetic and profiles",
       "Kernel/state/mass/retry/restart owners and tolerances",
@@ -242,10 +242,21 @@
     "metrics": {
       "start_utc": "2026-10-12T11:49:19+00:00",
       "active_work_seconds": "UNKNOWN",
-      "speed_effect": "UNKNOWN"
+      "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE",
+      "functional_results_qualified": 1,
+      "full_master_capabilities_promoted": 0,
+      "completed_highest_configurations": 24,
+      "highest_fine_comparisons": 144,
+      "scientific_regressions_observed": 0,
+      "repeated_source_investigations": "UNKNOWN",
+      "required_work_interventions": "UNKNOWN",
+      "full_fci_attempts": 3,
+      "full_ppa_runs": 2,
+      "repair_after_failed_integration": "No canonical integration failure; first F-CI source guard rejected the new qualified process and was repaired with an exact postimage plus full proof; second attempt was interrupted without terminal controller result, retained as UNKNOWN and rerun; all logs preserved.",
+      "ppa_replay_reason": "Conservative same-head replay after qualification-control repair; a separate minimal transitive PPA closure was not established. Source physics was unchanged; no independent scientific need or speed benefit is claimed for this duplicate."
     },
     "persisted": true,
-    "preserved": false,
+    "preserved": true,
     "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1216",
     "source_postimages": {
       "src/adapter/mod_swap_daily_weather_file_adapter.f90": "44b07cd1046632a38b36e9b1ed5608f67ca41fdd",
@@ -429,6 +440,144 @@
       "clean_at_end": true,
       "wall_seconds": 49.223388
     },
-    "qualification_guard_repair": "Exact independently qualified daily-demand process postimage added to B19/MICRO source guard; original failure preserved; numerical cases/assertions/tolerances unchanged"
+    "qualification_guard_repair": "Exact independently qualified daily-demand process postimage added to B19/MICRO source guard; original failure preserved; numerical cases/assertions/tolerances unchanged",
+    "full_preservation_evidence": {
+      "path": "integration/audits/evidence/MC_MET01_DAILY_DEMAND_FULL_PRESERVATION_20261012.tar.gz.b64",
+      "decoded_sha256": "644300a5db9358dd2fc46b59b946626aa49d80729bc14b6c23c10579bdd6531c",
+      "controls": {
+        "mc-met01-demand-full-moving": {
+          "gate": "mc-met01-demand-full-moving",
+          "command": [
+            "bash",
+            "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+          ],
+          "head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "tree": "d4618325f6f85917f133bfcde32998bdd0b008c5",
+          "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+          "started_utc": "2026-10-12T14:10:36.558529+00:00",
+          "terminal_exit_code": 0,
+          "ended_utc": "2026-10-12T15:06:03.638559+00:00",
+          "end_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "clean_at_end": true,
+          "wall_seconds": 3327.08003
+        },
+        "mc-met01-demand-full-ppa": {
+          "gate": "mc-met01-demand-full-ppa",
+          "command": [
+            "bash",
+            "tests/fapp/run_ppa_wu03_preservation.sh"
+          ],
+          "head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "tree": "d4618325f6f85917f133bfcde32998bdd0b008c5",
+          "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+          "started_utc": "2026-10-12T13:24:43.511704+00:00",
+          "terminal_exit_code": 0,
+          "ended_utc": "2026-10-12T13:33:56.842058+00:00",
+          "end_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+          "clean_at_end": true,
+          "wall_seconds": 553.330354
+        }
+      }
+    },
+    "scientific_execution_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+    "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+    "postimage_adjudication": {
+      "executed_head": "7d4610e789ec1cdeb500bacdfd80b6c9e0146766",
+      "source_reference_tests_and_tooling_unchanged": true,
+      "only_evidence_and_status_descendants": true,
+      "numerical_assertions_tolerances_flags_reference_changes": "NONE",
+      "evidence_inheritance_basis": "All archived execution-input blobs match both committed and working files; subsequent evidence/status/contract receipts have no execution effect. No gate is falsely attributed to an unexecuted documentary SHA."
+    },
+    "overlap_reconciliation": {
+      "canonical_head_verified": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
+      "open_prs_checked": [
+        1216,
+        1214,
+        1117,
+        1103,
+        1098,
+        1072,
+        1009,
+        987,
+        956,
+        953,
+        740,
+        700,
+        528,
+        486,
+        389,
+        365,
+        58
+      ],
+      "peer_heads": [
+        {
+          "pr": 1214,
+          "head": "e9722c8a565129734c249a40a6d58f37250e8733"
+        },
+        {
+          "pr": 1117,
+          "head": "b6b894513fcdcf66e94824742c129616ddd7aed1"
+        },
+        {
+          "pr": 1103,
+          "head": "6309199ed41a150d72d646ad6fa200da40ec3d17"
+        },
+        {
+          "pr": 1098,
+          "head": "d59aaa12c8312c8ecc42b1328537d5da412431a8"
+        },
+        {
+          "pr": 1072,
+          "head": "cece0a4e724944a913a5e7c6eb00a7fc28a7370c"
+        },
+        {
+          "pr": 1009,
+          "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c"
+        },
+        {
+          "pr": 987,
+          "head": "29c788b325bee9339dfde429a3bd90d44910d38d"
+        },
+        {
+          "pr": 956,
+          "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d"
+        },
+        {
+          "pr": 953,
+          "head": "76067cced09715e42220301d2410656851ec7013"
+        },
+        {
+          "pr": 740,
+          "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51"
+        },
+        {
+          "pr": 700,
+          "head": "5fcd9769c30379f461ce047f410638b0d3311f96"
+        },
+        {
+          "pr": 528,
+          "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda"
+        },
+        {
+          "pr": 486,
+          "head": "2f919cb095c0b581664d8c261fb10586670caa45"
+        },
+        {
+          "pr": 389,
+          "head": "92bcecf3302ab495afe8bd2fcfbd38b86135193a"
+        },
+        {
+          "pr": 365,
+          "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90"
+        },
+        {
+          "pr": 58,
+          "head": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee"
+        }
+      ],
+      "same_scope_competing_pr": "NONE",
+      "adjacent_owner_deltas": "Inspected relevant paths in1214/1117/1103/1098/1009/956/953; all heads unchanged at final reconciliation; no such candidate admitted by this package",
+      "held_fixed": "root/crop/HY/irrigation/Snow/solute/MODFLOW and all numerical tolerance/reference owners"
+    }
   }
 }
