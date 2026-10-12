@@ -62,9 +62,10 @@ reset();run('flags',dict(resume,FFLAGS='-O1'))
 reset();run('unqualified-external-input',dict(resume,BASH_ENV='/nonexistent/unqualified-input'))
 reset();run('environment',dict(resume,OMP_NUM_THREADS='2'))
 # Compiler capsule changes: no falsely inherited claim even if actual run still passes.
-reset();capsule=Path(args.toolchain_dirs.split(os.pathsep)[0])/'trial-input';capsule.write_text('changed compiler capsule')
+reset();capsule=Path(args.toolchain_dirs.split(os.pathsep)[0])/'usr/lib/gcc/x86_64-linux-gnu/13/libgfortran.spec'
+old=capsule.read_bytes();capsule.write_bytes(old+b'\n# compiler capsule mutation control\n')
 try:run('compiler',resume)
-finally:capsule.unlink()
+finally:capsule.write_bytes(old)
 reset();run('missing-toolchain-identity',dict(resume,FCI_RESUME_TOOLCHAIN_DIRS=''))
 # Authenticated input-manifest modification cannot self-legitimize a PASS.
 reset();p=STORE/'frost-invalid.json';m=json.loads(p.read_text());m['record']['input']['compilations']=0;p.write_text(json.dumps(m));run('forged-manifest',resume)
