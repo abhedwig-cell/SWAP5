@@ -179,7 +179,7 @@ program test_ppa_wu01_production_application_bootstrap
   ! dynamic-top provider, HeadCalc failed closed because the required analytic
   ! surface-head derivative was absent.
   call initialize_interception_window(810002_int64, T1, T1 + 1.0_real64/24.0_real64, &
-       0.25_real64, rutter_window, rutter_window_status)
+       0.22_real64, rutter_window, rutter_window_status)
   call require(rutter_window_status == INTWIN_OK, 'Rutter storm source window')
   rutter_process%vegetation_cover_fraction = 0.0_real64
   rutter_process%canopy_storage_capacity_cm = 0.0_real64
@@ -190,6 +190,7 @@ program test_ppa_wu01_production_application_bootstrap
   rutter_process%surface_irrigation_is_intercepted = .false.
   rutter_process%interval_days = 1.0_real64/24.0_real64
   do i = 1, NTILE
+    rutter_forcing(i)%root_extraction_sink = 0.0_real64
     rutter_forcing(i)%rutter%source_window = rutter_window
     rutter_forcing(i)%rutter%process = rutter_process
     rutter_forcing(i)%rutter%potential_bare_soil_evaporation_cm_per_day = 0.0_real64
@@ -199,6 +200,15 @@ program test_ppa_wu01_production_application_bootstrap
     rutter_forcing(i)%rutter%runoff_exponent = 1.0_real64
   end do
   call rutter_app%run_standalone_with_forcing(T1, T1 + 1.0_real64/24.0_real64, rutter_forcing, results, status)
+  if (status /= FMR_APP_BOOT_OK .and. allocated(results)) then
+    do i = 1, size(results)
+      write(*,'(a,1x,i0,1x,a,1x,i0,1x,l1,1x,l1,4(1x,i0),1x,es24.16,1x,a,1x,i0)') &
+           'PPA_WU01_DEBUG_RUTTER_PONDED_HEAD', i, trim(results(i)%admission_status), results(i)%kernel_status, &
+           results(i)%admitted, results(i)%completed, results(i)%accepted_substeps, results(i)%solver_rejections, &
+           results(i)%temporal_rejections, results(i)%mass_rejections, results(i)%mass%residual, &
+           trim(results(i)%solver_route), results(i)%solver_status
+    end do
+  end if
   call require(status == FMR_APP_BOOT_OK, 'Rutter explicit-conductivity ponded-head regression')
   call require(all(results%completed) .and. all(results%committed), 'Rutter ponded-head candidate committed')
   call require(all(results%solver_status == 1), 'Rutter ponded-head Richards solver converged')
