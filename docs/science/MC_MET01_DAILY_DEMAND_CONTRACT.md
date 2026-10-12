@@ -1,7 +1,7 @@
 # MC-MET01 daily traditional PM and CFBS production contract
 
-Status: delegated bounded additive application decision; implementation and
-qualification pending. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
+Status: implemented on the work branch; independent owner/source/physical and
+PPA checks PASS. Complete highest, full F-CI and canonical admission pending. Baseline `bd17f0a9a7c19516e66af8f80e2b7128890b3aee`.
 User delegated execution of the PR1215 package on 12 October 2026. Existing
 REGIE/PPA/RT own the application seam; independent source/VQ/F-CI gates remain.
 
@@ -50,3 +50,37 @@ required Full Richards/F-CI/PPA and affected highest frost gates. Version exact
 postimages, failed attempts and relevant closure. Unknown closure means rerun.
 Fullcap admission is not inferred from root-free production; retain bounded
 receipt and ACTIVE when wider master semantics remain unproved.
+
+
+## Declared finite input envelope
+
+These are bounds of this typed opt-in API, not a relaxation of numerical
+acceptance thresholds or a claim of full legacy parser coverage. Current daily
+weather grammar remains the existing authenticated twelve-column input. No new
+PM-only legacy file grammar is admitted.
+
+| Input | Bound |
+|---|---|
+| Daily PM calendar/weather | DOY1..366; minimum temperature >= -80 C, maximum <=65 C and ordered; radiation0..1e8 J/m2/day; vapour pressure0..20 kPa; wind0..100 m/s; rain0..1000 cm/day |
+| Daily PM site | Latitude abs<=66.5 degrees; altitude -400..3000 m; measurement heights0.1..99 m; Angstrom A0..1 and B>0..1; wind factor>0..10; positive aerodynamic geometry |
+| Daily PM canopy | Height0..1000 cm, LAI0..100, cover/albedo0..1; dry/wet resistance0..1e6 s/m; CO2 factor0..10; sufficient humidity measurement height for emerged actual-height mode |
+| Immutable factors | Soil/crop/pond factors finite0..10; every stored real field finite, including disabled fields |
+| Reference demand | Reference ET0..1000 mm/day; existing reference-view validation retained; active crop/CO2 factors0..10 in the new opt-in evaluator |
+
+The current physical route remains nonemerged/zero-cover/root-free. Pure canopy
+combinations are independent source tests, not physical root/crop admission.
+Traditional PM ignores the stored soil-surface resistance, as its source branch
+sets wet-soil resistance to zero; that field remains finite/nonnegative and part
+of exact configuration identity. Parameter identity compares finite real field
+bits and selector/boolean semantics. Default opt-out arithmetic is byte-retained.
+
+## Qualification scheduling
+
+Owner-only proof binds the exact three source postimages, literal source and
+constant identities, actual hydrology/restart, the old reference oracle and
+incumbent crop/weather/RAINTB results. It permits the original PPA gate to run
+while the independent highest matrix continues. It does not qualify that matrix
+or authorize admission. Full F-CI explicitly requires complete highest proof,
+including all24 configurations/144 comparisons and exact incumbent output.
+Unknown source/fixture mutation or missing stage evidence fails closed. No
+numerical assertion, optimization execution, physical case or tolerance is removed.

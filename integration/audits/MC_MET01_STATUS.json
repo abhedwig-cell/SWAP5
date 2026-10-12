@@ -220,7 +220,7 @@
   "daily_demand_successor": {
     "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
     "recovery_branch": "work/mc-met01-daily-demand-20261012",
-    "stage": "SOURCE_PHYSICAL_INCUMBENT_PASS_HIGHEST_RUNNING_ADMISSION_PENDING",
+    "stage": "SOURCE_PHYSICAL_INCUMBENT_PPA_PASS_HIGHEST_RUNNING_ADMISSION_PENDING",
     "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
     "scope": [
       "SW431-ET-PMTRAD",
@@ -232,7 +232,7 @@
     "tested": true,
     "qualified": false,
     "canonically_admitted": false,
-    "next_action": "Complete immutable low-air highest matrix on original scientific checkout; run original PPA in independent final checkout using owner-only source proof; complete-highest proof remains mandatory before full F-CI/admission",
+    "next_action": "Complete running original-checkout low-air matrix; seal all24/144 unchanged highest outputs; run full F-CI on stable exact candidate; reconcile overlaps and bounded admission. No production repair currently pending.",
     "held_fixed": [
       "All default arithmetic and profiles",
       "Kernel/state/mass/retry/restart owners and tolerances",
@@ -305,6 +305,23 @@
         "clean_at_end": true,
         "wall_seconds": 333.933856
       }
-    }
+    },
+    "ppa_control": {
+      "gate": "mc-met01-demand-full-ppa",
+      "command": [
+        "bash",
+        "tests/fapp/run_ppa_wu03_preservation.sh"
+      ],
+      "head": "e11f1cafbbacefc3084b99d2ee7e4609ea5dbb2f",
+      "tree": "067516477dda1f0b5040e17989755f058dbb2ffd",
+      "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "started_utc": "2026-10-12T12:42:29.896920+00:00",
+      "terminal_exit_code": 0,
+      "ended_utc": "2026-10-12T12:53:34.449266+00:00",
+      "end_head": "e11f1cafbbacefc3084b99d2ee7e4609ea5dbb2f",
+      "clean_at_end": true,
+      "wall_seconds": 664.552346
+    },
+    "guard_negative_controls": "PASS dirty owner fixture rejected; exact restored fixture accepted; incomplete highest proof rejected"
   }
 }
