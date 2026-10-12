@@ -220,7 +220,7 @@
   "daily_demand_successor": {
     "baseline": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
     "recovery_branch": "work/mc-met01-daily-demand-20261012",
-    "stage": "SOURCE_PHYSICAL_INCUMBENT_PPA_PASS_HIGHEST_RUNNING_ADMISSION_PENDING",
+    "stage": "OWNER_SOURCE_PHYSICAL_AND_HIGHEST_PASS_FULL_PRESERVATION_PENDING",
     "owner": "Delegated MC-MET01 through existing REGIE/PPA/RT; independent VQ/F-CI science; crop/root/HY untouched",
     "scope": [
       "SW431-ET-PMTRAD",
@@ -232,7 +232,7 @@
     "tested": true,
     "qualified": false,
     "canonically_admitted": false,
-    "next_action": "Complete running original-checkout low-air matrix; seal all24/144 unchanged highest outputs; run full F-CI on stable exact candidate; reconcile overlaps and bounded admission. No production repair currently pending.",
+    "next_action": "Exact-source successor verifier and original full F-CI/PPA on stable persisted candidate; no tolerance change or fullcap promotion",
     "held_fixed": [
       "All default arithmetic and profiles",
       "Kernel/state/mass/retry/restart owners and tolerances",
@@ -322,6 +322,96 @@
       "clean_at_end": true,
       "wall_seconds": 664.552346
     },
-    "guard_negative_controls": "PASS dirty owner fixture rejected; exact restored fixture accepted; incomplete highest proof rejected"
+    "guard_negative_controls": "PASS dirty owner fixture rejected; exact restored fixture accepted; incomplete highest proof rejected",
+    "owner_evidence": {
+      "path": "integration/audits/evidence/MC_MET01_DAILY_DEMAND_QUALIFICATION_20261012.tar.gz.b64",
+      "decoded_sha256": "cb4266d32a6e76e30b33f30d07e0ef1d834ee311880d0b2594d7cc48b51d2ff2"
+    },
+    "controls": {
+      "focused": {
+        "gate": "mc-met01-demand-v3-focused",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_production.py"
+        ],
+        "head": "722fec4fdd35af0be0253c130016e46618349005",
+        "tree": "7ddc21f07d7dd5ab6fa54e18d65686fc06d5f9a1",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:30:24.001489+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:35:58.389296+00:00",
+        "end_head": "722fec4fdd35af0be0253c130016e46618349005",
+        "clean_at_end": true,
+        "wall_seconds": 334.387807
+      },
+      "default-crop": {
+        "gate": "mc-met01-demand-v2-default-crop",
+        "command": [
+          "bash",
+          "tests/fmig431/run_crop_file_weather_production.sh"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:12:15.820404+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:20:42.677714+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 506.85731
+      },
+      "old-raintb": {
+        "gate": "mc-met01-demand-v2-old-raintb",
+        "command": [
+          "python",
+          "tests/mc-met01/run_raintb_production.py"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:20:43.176582+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:26:17.110438+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 333.933856
+      },
+      "highest-normal": {
+        "gate": "mc-met01-demand-v2-highest-normal",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_frost_successor.py",
+          "--route",
+          "normal"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:07:35.627589+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T12:12:19.685672+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 284.058083
+      },
+      "highest-low-air": {
+        "gate": "mc-met01-demand-v2-highest-low-air",
+        "command": [
+          "python",
+          "tests/mc-met01/run_daily_demand_frost_successor.py",
+          "--route",
+          "low_air"
+        ],
+        "head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "tree": "32301e18900bb8cc59def903e14588c324c9f80d",
+        "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+        "started_utc": "2026-10-12T12:12:19.860103+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T13:20:31.389811+00:00",
+        "end_head": "599e61d9a438a4ec72b83e7b4de278001d1e94b4",
+        "clean_at_end": true,
+        "wall_seconds": 4091.529708
+      }
+    }
   }
 }
