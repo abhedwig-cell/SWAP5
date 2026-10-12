@@ -2,14 +2,14 @@
   "work_unit": "F-CI compilation-cache controlled trial",
   "baseline": "c31fc81059e7e4388198c38eaf75558e58d75059",
   "owner": "Existing F-CI/VQ verification tooling; isolated opt-in experiment",
-  "stage": "INVALIDATION_COMPLETE_EQUAL_PHYSICAL_GATES_PENDING",
+  "stage": "QUALIFIED_ISOLATED_EXPERIMENT_NOT_DEFAULT_ADMISSION_PENDING",
   "recovery_branch": "work/fci-build-cache-trial-20261012",
   "contract": "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md",
   "production_changes": false,
   "incumbent_gate_changes": false,
   "workflow_changes": false,
-  "qualified": false,
-  "next_action": "Execute unchanged allocated root/sensor O0/O2 gates without cache, first fill, warm and cross-driver on exact published checkpoint. No normal qualification gate uses this cache.",
+  "qualified": true,
+  "next_action": "Offer/admit isolated opt-in experiment and evidence only; do not enable default gates. Separately review amortized complete toolchain validation, dependency-specific keys and compiler/platform/environment closure before default adoption.",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -18,5 +18,133 @@
     "count": 8,
     "log": "Final8 scratch log; archive after equal-gate experiment",
     "scope": "Actual compiler; source/module/dependency-body, implicit cwd module, flags/env/compiler, corrupt object/manifest, unsupported include/debug, failed compile and unknown profile"
+  },
+  "preserved": true,
+  "qualified_for_default_fci": false,
+  "experimental_head": "dca60dc457d9e1ed8bb720b9ab7a6b3613d1d7ad",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1213",
+  "evidence": {
+    "path": "integration/audits/evidence/FCI_BUILD_CACHE_TRIAL_20261012.tar.gz.b64",
+    "decoded_sha256": "927ad655a8abc4794959ba34e5724633d5320692edb3487e724eb590b975ec73",
+    "validated_cache_entries": 358
+  },
+  "runs": [
+    {
+      "name": "root-uncached",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+      "disabled": true,
+      "started_utc": "2026-10-12T10:09:52.632423+00:00",
+      "ended_utc": "2026-10-12T10:14:09.143849+00:00",
+      "wall_seconds": 256.51151741500144,
+      "exit": 0,
+      "events": {
+        "BYPASS": 358
+      },
+      "stdout_sha256": "b481f72a463405bfb4d10fd11c1604050d9bcdabfe7ccc2554d929035b75687a",
+      "stderr_sha256": "f08f40ab0b0dc8d87d9b38bbce64334fe20bcb4641fe60e7439d4c854732f7f5",
+      "events_sha256": "5453ceeb2184601f2da09ec9e168cddab11bdb541f6ec7d5f8394c0cfbbb03b4"
+    },
+    {
+      "name": "root-fill",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+      "disabled": false,
+      "started_utc": "2026-10-12T10:14:09.149107+00:00",
+      "ended_utc": "2026-10-12T10:21:05.316437+00:00",
+      "wall_seconds": 416.1673813330017,
+      "exit": 0,
+      "events": {
+        "MISS": 356,
+        "BYPASS": 2
+      },
+      "stdout_sha256": "b481f72a463405bfb4d10fd11c1604050d9bcdabfe7ccc2554d929035b75687a",
+      "stderr_sha256": "c0f996007d66ce528f491d5f70d0a65049040f06287f076fe1c792ce13958532",
+      "events_sha256": "06af23c55ff702b181882a2ec32a979c917be8398a3d54a0d0a90720f0e8052a"
+    },
+    {
+      "name": "root-warm",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+      "disabled": false,
+      "started_utc": "2026-10-12T10:21:05.322483+00:00",
+      "ended_utc": "2026-10-12T10:24:51.844563+00:00",
+      "wall_seconds": 226.52211190399976,
+      "exit": 0,
+      "events": {
+        "HIT": 356,
+        "BYPASS": 2
+      },
+      "stdout_sha256": "b481f72a463405bfb4d10fd11c1604050d9bcdabfe7ccc2554d929035b75687a",
+      "stderr_sha256": "54477dd3b4a11512c45c085dad07298dd27fce729e1361b0313c993fedb3471d",
+      "events_sha256": "3f06e71eba6cc3c0a2b4051507702b3a9cf137076bd7dbf27cc7064b6670cd6d"
+    },
+    {
+      "name": "sensor-uncached",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+      "disabled": true,
+      "started_utc": "2026-10-12T10:24:51.846255+00:00",
+      "ended_utc": "2026-10-12T10:28:23.604175+00:00",
+      "wall_seconds": 211.75801602399952,
+      "exit": 0,
+      "events": {
+        "BYPASS": 358
+      },
+      "stdout_sha256": "a16fb7395e8b196e3f9186382342d114d76ee18b3ce988ed331e6443bb65e01e",
+      "stderr_sha256": "0865a0b96718fe8f809552c9608a57644b0087c540d6455db710011d1b2ff705",
+      "events_sha256": "5c593a4baace28e73af801dad8e68161c49b9cfd87301989fc022e025b3aae5b"
+    },
+    {
+      "name": "sensor-cross",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+      "disabled": false,
+      "started_utc": "2026-10-12T10:28:23.608253+00:00",
+      "ended_utc": "2026-10-12T10:31:20.079943+00:00",
+      "wall_seconds": 176.47180127699903,
+      "exit": 0,
+      "events": {
+        "HIT": 354,
+        "MISS": 2,
+        "BYPASS": 2
+      },
+      "stdout_sha256": "a16fb7395e8b196e3f9186382342d114d76ee18b3ce988ed331e6443bb65e01e",
+      "stderr_sha256": "645344344786095848421feceb40fe2b8123cc1c396cc9efbee4f152be4ece9f",
+      "events_sha256": "f344556ef6afa7388bd7aaeb560c9a92661606b43fd224094e3481cb4037635e"
+    },
+    {
+      "name": "sensor-warm",
+      "gate": "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+      "disabled": false,
+      "started_utc": "2026-10-12T10:31:20.084854+00:00",
+      "ended_utc": "2026-10-12T10:34:08.122269+00:00",
+      "wall_seconds": 168.03746575200057,
+      "exit": 0,
+      "events": {
+        "HIT": 356,
+        "BYPASS": 2
+      },
+      "stdout_sha256": "a16fb7395e8b196e3f9186382342d114d76ee18b3ce988ed331e6443bb65e01e",
+      "stderr_sha256": "eda7190d38fae514df41f45e85c3888226b8c58443b46388273a5e5109749f9e",
+      "events_sha256": "0364907f244cd947d7855c671fd07f95f1c72a51666db9afb9557dfd7f5ab584"
+    }
+  ],
+  "preservation": {
+    "basis": "All pre-existing tracked paths unchanged from c31fc810; prototype is not invoked by incumbent gates; full F-CI/PPA and highest science evidence remain within unchanged dependency closure",
+    "full_preservation_archive": "integration/audits/evidence/MC_MET01_FULL_PRESERVATION_20261012.tar.gz.b64",
+    "new_full_preservation_run": "NOT_REQUIRED_UNCHANGED_INCUMBENT_EXECUTION_SURFACE",
+    "source_reference_gate_tolerance_changes": "NONE"
+  },
+  "results": {
+    "negative_controls": 8,
+    "actual_physical_gate_runs": 6,
+    "optimization_executions": 12,
+    "artifact_and_scientific_output_equality": "PASS",
+    "root_warm_saved_seconds": 29.989405511001678,
+    "root_warm_saved_percent": 11.691251064755434,
+    "sensor_warm_saved_seconds": 43.720550271998945,
+    "sensor_warm_saved_percent": 20.64646764873538,
+    "initial_fill_extra_seconds": 159.65586391800025,
+    "root_hypothetical_equal_warm_runs_to_amortize": 6,
+    "active_work_time": "UNKNOWN",
+    "general_migration_speedup": "UNKNOWN",
+    "observed_scientific_regressions": 0,
+    "normal_gate_cache_enablement": false
   }
 }
