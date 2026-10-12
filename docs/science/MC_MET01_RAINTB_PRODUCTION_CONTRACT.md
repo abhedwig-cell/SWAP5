@@ -53,3 +53,14 @@ claim; parser, rooted rainfall, interception, detailed weather, broad seasonal
 accuracy, external disk codec and full MC-MET01 remain outside it. Master disposition
 can close only the exact claim it requires; otherwise record bounded reachability
 and retain ACTIVE. All raw failures and immutable qualification lineage remain.
+
+## Bounded source claim
+
+The existing admitted Gregorian file-weather calendar is reused. The literal
+oracle proves AFGEN and pulse arithmetic for supplied day-of-year, while decoded
+leap/century/year fixtures prove the current calendar binding. This is not a new
+claim of equivalence for the external legacy dtleap/date library. Fully populated
+typed tables and the tested BASE/AIR profile are qualified separately from
+legacy file grammar, partly filled sentinels and near-midnight event-array gap
+coalescing. Those wider source envelopes remain explicit follow-up work; a
+bounded production admission alone must not promote complete SWRAIN1 coverage.
