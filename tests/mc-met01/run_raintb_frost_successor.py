@@ -31,6 +31,7 @@ old=s[start:end]
 new=""" def run_configuration(configuration):
   stdout=out/f'configuration-{configuration}.txt';stderr=out/f'configuration-{configuration}.err'
   if resume is not None and opt==0 and configuration==1:
+   assert hashlib.sha256((out/'test').read_bytes()).hexdigest()==resume['executable_sha256']
    raw=Path('/tmp/mc-met01-low-air-config1.stdout').read_bytes()
    assert hashlib.sha256(raw).hexdigest()==resume['stdout_sha256']
    stdout.write_bytes(raw);stderr.write_text('Inherited completed configuration1 from same source/compiler; original controller observed exit0.\\n')
