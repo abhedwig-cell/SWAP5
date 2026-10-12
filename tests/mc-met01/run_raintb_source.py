@@ -11,6 +11,8 @@ def main():
  s=functions.decode().replace('\r\n','\n');start=s.index('   real(8) function afgen (');end=s.index('   end function afgen',start)+len('   end function afgen')
  afgen=s[start:end]
  lines=meteo.decode().splitlines()
+ assert '      real(8), parameter   :: vsmall = 1.0d-8' in lines
+ assert '            if (all_rain(i) > vsmall) then' in lines
  statements=[]
  for marker in ['rflx = afgen(raintb, size(raintb), doy)','rtim = dmin1(1.d0, all_rain(i) * 0.1d0 / rflx)','rainflx(rain_rec) = all_rain(i) * 0.1d0 / rtim']:
   match=[l for l in lines if l.strip()==marker];assert len(match)==1;statements+=match

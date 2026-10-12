@@ -96,9 +96,19 @@ contains
         end if
       end do
     end if
+    if(rflx<1.0_real64) then
+      if(rain_mm*0.1d0>huge(rflx)*rflx) then
+        status=SWAP_WEATHER_FILE_INVALID;return
+      end if
+    end if
     duration=dmin1(1.d0,rain_mm*0.1d0/rflx)
     if(.not.ieee_is_finite(duration).or.duration<=0.0_real64) then
       status=SWAP_WEATHER_FILE_INVALID;return
+    end if
+    if(duration<1.0_real64) then
+      if(rain_mm*0.1d0>huge(duration)*duration) then
+        status=SWAP_WEATHER_FILE_INVALID;return
+      end if
     end if
     rate=rain_mm*0.1d0/duration
     if(.not.ieee_is_finite(rate)) status=SWAP_WEATHER_FILE_INVALID
