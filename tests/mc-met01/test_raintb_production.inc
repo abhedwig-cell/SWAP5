@@ -81,7 +81,7 @@
           end if
         end do
         call ta%copy_committed_for_crop(1,actual,st);call require(st==FMR_APP_BOOT_OK,'raintb accepted state')
-        values=complete_thermal_soil_values(actual)
+        values=raintb_soil_values(actual)
         print '(a,2i4,*(1x,z16.16))','MC_MET01_ACTUAL_SOIL=',profile,d,transfer(values,[0_int64])
         call ta%run_weather_interval(wr,wd,wd+1.d0,forcing_config,canopy,rr,st)
         call require(st==FMR_APP_BOOT_WEATHER_REJECTED.and..not.allocated(rr),'raintb duplicate interval')
@@ -247,3 +247,18 @@
       call require(.false.,'probe first physical type')
     end select
   end subroutine
+
+  function raintb_soil_values(committed) result(values)
+    type(kernel_committed_state_t),intent(in)::committed
+    real(real64),allocatable::values(:),history(:)
+    class(transaction_state_t),allocatable::ps
+    logical::ok
+    call committed%snapshot(ps,ok);call require(ok,'raintb actual physical snapshot')
+    select type(ps)
+    type is(fmr_b110_temporal_indicator_state_t)
+      call ps%temporal_history_snapshot(history,ok);call require(ok,'raintb actual history')
+      values=[ps%pressure_head,ps%water_content,ps%ponding_depth,ps%groundwater_level,history]
+    class default
+      call require(.false.,'raintb temporal physical owner')
+    end select
+  end function

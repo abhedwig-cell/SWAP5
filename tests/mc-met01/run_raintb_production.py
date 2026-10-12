@@ -37,7 +37,7 @@ def main():
 done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 cat "$BUILD/o0/output.txt"
-echo 'MC_MET01_WEATHER_PUBLICATION_BOUNDARY_O0_O2=PASS'
+echo 'MC_MET01_ACTUAL_RAINTB_PRODUCTION_O0_O2=PASS'
 '''
     with tempfile.TemporaryDirectory(prefix="mc-met01-raintb-") as directory:
         temporary = Path(directory)
