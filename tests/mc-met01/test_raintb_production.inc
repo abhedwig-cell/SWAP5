@@ -15,7 +15,7 @@
     type(wofost_crop_owner_state_t)::owner
     type(swap_daily_weather_record_t)::wr
     type(fmr_serialized_column_result_t),allocatable::rr(:)
-    real(real64)::wd,tmn,tmx,wrain,wet,rate,ep,duration,pulse_rate,expected_in,start,finish
+    real(real64)::wd,tmn,tmx,wrain,wet,rate,ep,duration,pulse_rate,expected_in,start,finish,dist(numnod)
     real(real64),allocatable::values(:)
     integer::st,q,d,j,profile,total_segments
     logical::ok
@@ -28,6 +28,21 @@
       ! or drainage donor is inserted to obscure actual rainfall accounting.
       tc%tiles(1)%base_forcing%drainage_flux_by_level=0.d0
       tc%tiles(1)%base_forcing%subsurface_irrigation_source=0.d0
+      if(profile==3) then
+        tc%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+        tc%tiles(1)%parameters%soil_temperature_active=.true.
+        allocate(tc%tiles(1)%parameters%soil_temperature,tc%tiles(1)%initial_state%soil_temperature, &
+             tc%tiles(1)%base_forcing%soil_temperature)
+        dist=tc%tiles(1)%parameters%node_distance
+        where(dist<=0.d0) dist=0.5d0*tc%tiles(1)%parameters%dz
+        call initialize_soil_temperature_parameters(tc%tiles(1)%parameters%dz,dist, &
+             [(0.45d0,j=1,numnod)],[(0.35d0,j=1,numnod)],[(0.15d0,j=1,numnod)],[(0.05d0,j=1,numnod)], &
+             tc%tiles(1)%parameters%soil_temperature,st)
+        call require(st==SOIL_TEMP_OK,'raintb existing thermal owner')
+        call initialize_soil_temperature_state([(0.d0,j=1,numnod)],tc%tiles(1)%initial_state%soil_temperature,st)
+        call require(st==SOIL_TEMP_OK,'raintb initial thermal owner')
+        tc%tiles(1)%base_forcing%soil_temperature%top_boundary_mode=SOIL_TEMP_TOP_AIR_TEMPERATURE
+      end if
       call ta%initialize(tc,st);call require(st==FMR_APP_BOOT_OK,'raintb application')
       call initialize_crop(cs,cp,cn);call ck%bind_model(cm)
       c%germ_mode=2;c%optimal_sum=1.d6
@@ -250,14 +265,20 @@
 
   function raintb_soil_values(committed) result(values)
     type(kernel_committed_state_t),intent(in)::committed
-    real(real64),allocatable::values(:),history(:)
+    real(real64),allocatable::values(:),history(:),temperature(:)
     class(transaction_state_t),allocatable::ps
     logical::ok
+    integer::st
     call committed%snapshot(ps,ok);call require(ok,'raintb actual physical snapshot')
     select type(ps)
     type is(fmr_b110_temporal_indicator_state_t)
       call ps%temporal_history_snapshot(history,ok);call require(ok,'raintb actual history')
       values=[ps%pressure_head,ps%water_content,ps%ponding_depth,ps%groundwater_level,history]
+      if(allocated(ps%soil_temperature)) then
+        call copy_soil_temperature_profile(ps%soil_temperature,temperature,st)
+        call require(st==SOIL_TEMP_OK,'raintb actual AIR thermal profile')
+        values=[values,temperature]
+      end if
     class default
       call require(.false.,'raintb temporal physical owner')
     end select
