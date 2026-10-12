@@ -84,12 +84,14 @@ def utc():
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 
-def identity(group, command):
+def identity(group, command, inspect_profile=False):
     runner, tests, marker, compilations = GROUPS[group]
     if command != ['bash', runner]:
         raise ValueError('unqualified command/arguments')
     if any(name.startswith('BASH_FUNC_') for name in os.environ):
         raise ValueError('unqualified exported shell function')
+    if any(name.startswith('LD_') and value for name, value in os.environ.items()):
+        raise ValueError('unqualified dynamic-loader setting')
     for name in ['BASH_ENV', 'ENV', 'LD_PRELOAD', 'LD_LIBRARY_PATH',
                  'LD_AUDIT', 'LIBRARY_PATH', 'COMPILER_PATH', 'GCC_EXEC_PREFIX',
                  'CPATH', 'C_INCLUDE_PATH', 'GFORTRAN_INCLUDE_PATH',
@@ -225,6 +227,9 @@ def identity(group, command):
     profile = {path: value for path, value in tools.items()
                if path != str((ROOT / CONTROL).resolve())}
     fingerprint = hashlib.sha256(encode({'tools': profile, 'runtime': runtime})).hexdigest()
+    if inspect_profile:
+        return {'schema': 'swap5.fci.tool-profile-review.v1',
+                'fingerprint': fingerprint, 'manifest': {'tools': profile, 'runtime': runtime}}
     if fingerprint != AUDITED_TOOL_PROFILE:
         raise ValueError('unqualified toolchain/runtime profile: ' + fingerprint)
     env = {k: v for k, v in os.environ.items()
@@ -316,6 +321,14 @@ def execute(command, log=None, cwd=ROOT):
 
 
 def main():
+    if sys.argv[1:2] == ['--inspect-profile']:
+        group, *command = sys.argv[2:]
+        try:
+            print(json.dumps(identity(group, command, inspect_profile=True), sort_keys=True))
+            return 0  # metadata only: no execution, receipt, inheritance or science PASS
+        except (OSError, ValueError, subprocess.SubprocessError) as error:
+            print(str(error), file=sys.stderr)
+            return 1
     group, *command = sys.argv[1:]
     mode = os.environ.get('FCI_RESUME_MODE', 'OFF')
     if mode == 'OFF':
