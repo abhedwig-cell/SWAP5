@@ -2,13 +2,13 @@
   "work_unit": "MC-MET01",
   "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
   "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
-  "stage": "QUALIFIED_PRESERVED_READY_FOR_CANONICAL_ADMISSION",
+  "stage": "BOUNDED_CANONICALLY_ADMITTED_MASTER_RECONCILED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "owner": "Delegated MC-MET01 under existing REGIE/PPA/RT application authority; preserve MC-CROP01 owner",
   "contract": "docs/science/MC_MET01_RAINTB_PRODUCTION_CONTRACT.md",
   "recovery_branch": "work/mc-met01-raintb-pilot-20261012",
@@ -23,7 +23,7 @@
     "new scientific functionality independently qualifies against actual Full Richards",
     "no default profile or numerical gate changes"
   ],
-  "next_action": "Verify live canonical unchanged and PR exact head/checks; admit only bounded scope and reconcile single master row/queue; no whole-capability promotion",
+  "next_action": "Bounded pilot complete. Full SW431-MET-RAIN1 remains ACTIVE outside tested envelopes. Follow process proposal: reproducible toolchain and separately qualified shared build-cache trial; no further production scope automatically delegated.",
   "source_member": "SWAP/MOD_meteo.f90",
   "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
   "metrics": {
@@ -32,7 +32,7 @@
     "user_continuations_after_start": 0,
     "repeated_source_investigations": 0,
     "broad_qualification_runs": 2,
-    "functional_results_admitted": 0,
+    "functional_results_admitted": 1,
     "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE",
     "current_measurement_limits": [
       "Focused/default gates completed; their start/stop controls were not recorded, so gate duration UNKNOWN",
@@ -47,7 +47,10 @@
     "scientific_regressions_observed": 0,
     "repair_after_failed_integration": "No failed canonical integration; compiler/controller/transport setup repairs retained",
     "functional_results_qualified": 1,
-    "full_master_capabilities_promoted": 0
+    "full_master_capabilities_promoted": 0,
+    "calendar_readiness_to_admission_seconds": 9832.841231,
+    "calendar_readiness_to_verified_receipt_seconds": 10009.619707,
+    "closeout_verified_utc": "2026-10-12T09:42:37.778476+00:00"
   },
   "source_postimages": {
     "src/adapter/mod_swap_daily_weather_file_adapter.f90": "cb53d90e9861bddf83b3ededf8993869cf5c8308",
@@ -169,5 +172,49 @@
     ],
     "same_scope_competing_pr": "NONE",
     "held_fixed": "All pre-existing owner/profile semantics; no draft interception/solute/hydraulic functionality admitted"
+  },
+  "canonical_merge": "8881729964f33c399e6f3b18200eff9434f5764e",
+  "admission_head": "d280f32dd3887aa95fd42f0d5a80244a0cc0bd77",
+  "admitted_at_utc": "2026-10-12T09:39:41+00:00",
+  "admission_verified_at_utc": "2026-10-12T09:42:37.778476+00:00",
+  "canonical_verification": {
+    "merge_tree": "82bb2a12c52485aacd56e6a1cc96b1c3bbf5ef01",
+    "tree_equals_qualified_final_postimage": true,
+    "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+    "source_blobs": {
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90": "cb53d90e9861bddf83b3ededf8993869cf5c8308",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "2ae6e3aafe9f4987b562618443b0ccd48a133a4c"
+    },
+    "source_reference_and_physical_execution_inputs_unchanged": true,
+    "canonical_immutable_evidence_verifier": "PASS",
+    "github_actions_runs_for_admission_head": 0,
+    "github_checks_for_admission_head": 0,
+    "no_empty_status_as_science_pass": true
+  },
+  "master_reconciliation": {
+    "pr": 1072,
+    "branch": "work/swap431-master-coverage-20261006",
+    "parent": "a0ea55bf3c53237be9ee9c9efa1d560d8c234f64",
+    "receipt_commit": "cece0a4e724944a913a5e7c6eb00a7fc28a7370c",
+    "tree": "8deeca19b4421bc9087156bd2cb474eebdf50e72",
+    "changed_capability": "SW431-MET-RAIN1",
+    "disposition": "ACTIVE_MIGRATION",
+    "other_rows_and_queues_unchanged": true,
+    "disposition_totals": {
+      "capabilities": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "source_presence_aggregates": {
+      "with_authority": 62,
+      "without_authority": 46
+    },
+    "fullcap_delta": 0,
+    "full_source_census_closure_claim": false,
+    "master_kept_draft": true
   }
 }

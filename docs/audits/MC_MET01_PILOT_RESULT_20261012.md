@@ -1,6 +1,6 @@
 # MC-MET01 controlled RAINTB pilot result
 
-Status: QUALIFIED / PRESERVED candidate; PR #1212. Canonical receipt is recorded in the owning status after admission.
+Status: CURRENT / CANONICALLY ADMITTED through PR #1212 at `8881729964f33c399e6f3b18200eff9434f5764e`. Bounded master receipt `cece0a4e724944a913a5e7c6eb00a7fc28a7370c`; wider full capability remains ACTIVE.
 Baseline c545077ab2d2839007a4ac202f7896575d0ad9ba. Owning record:
 `integration/audits/MC_MET01_STATUS.json`.
 
@@ -102,3 +102,11 @@ small verified build-cache trial above; only then consider finer application
 preservation boundaries through existing VQ/RT assessment. Preserve all O0/O2,
 Full Richards, mass, transaction/retry/rollback, restart, certified trajectory,
 MODFLOW and source-reference admission rules from the process proposal.
+
+Canonical admission occurred at2026-10-12T09:39:41Z. Recorded readiness to
+admission calendar duration: 9832.841231s (2h43m53s). Verified canonical/master
+receipt at 2026-10-12T09:42:37.778476+00:00. These are calendar intervals, not active
+development or user-wait measurements. The master retains243 capabilities,
+95 ADMITTED and108 ACTIVE; this bounded implementation promotes zero whole
+capabilities. Only the rain row/queue and owning receipt changed; source-presence
+aggregates correctly increase from61 to62 (without authority47 to46).
