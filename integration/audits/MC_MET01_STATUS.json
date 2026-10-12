@@ -1,0 +1,173 @@
+{
+  "work_unit": "MC-MET01",
+  "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
+  "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
+  "stage": "QUALIFIED_PRESERVED_READY_FOR_CANONICAL_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "owner": "Delegated MC-MET01 under existing REGIE/PPA/RT application authority; preserve MC-CROP01 owner",
+  "contract": "docs/science/MC_MET01_RAINTB_PRODUCTION_CONTRACT.md",
+  "recovery_branch": "work/mc-met01-raintb-pilot-20261012",
+  "relevant_paths": [
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "held_fixed": [
+    "kernel/solver/temporal/mass/state owners",
+    "crop/root/irrigation/Snow/solute/MODFLOW",
+    "existing uniform weather profile and owner gates",
+    "new scientific functionality independently qualifies against actual Full Richards",
+    "no default profile or numerical gate changes"
+  ],
+  "next_action": "Verify live canonical unchanged and PR exact head/checks; admit only bounded scope and reconcile single master row/queue; no whole-capability promotion",
+  "source_member": "SWAP/MOD_meteo.f90",
+  "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+  "metrics": {
+    "start_utc": "2026-10-12T06:55:48.158769+00:00",
+    "active_work_seconds": "UNKNOWN",
+    "user_continuations_after_start": 0,
+    "repeated_source_investigations": 0,
+    "broad_qualification_runs": 2,
+    "functional_results_admitted": 0,
+    "speed_effect": "INCONCLUSIVE_SCOPE_DIFFERENT_FROM_BASELINE",
+    "current_measurement_limits": [
+      "Focused/default gates completed; their start/stop controls were not recorded, so gate duration UNKNOWN",
+      "Whole-result calendar duration can be measured from initial readiness UTC to final admission",
+      "Original serial low-air controller was replaced by bounded2-worker scheduling; completed case1 reused only after exact executable/source/compiler identity",
+      "Controller NameError repaired; aborted and failed logs retained; no numerical assertion or tolerance changed",
+      "No fullcap promotion is assumed from bounded typed file-weather reachability"
+    ],
+    "completed_highest_configurations": 24,
+    "highest_fine_comparisons": 144,
+    "repeated_test_runs_exact_same_inputs": "UNKNOWN",
+    "scientific_regressions_observed": 0,
+    "repair_after_failed_integration": "No failed canonical integration; compiler/controller/transport setup repairs retained",
+    "functional_results_qualified": 1,
+    "full_master_capabilities_promoted": 0
+  },
+  "source_postimages": {
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90": "cb53d90e9861bddf83b3ededf8993869cf5c8308",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "2ae6e3aafe9f4987b562618443b0ccd48a133a4c"
+  },
+  "source_oracle": {
+    "command": "python tests/mc-met01/run_raintb_source.py",
+    "result": "PASS O0/O2 7686 literal cases each plus negatives",
+    "log": "integration/audits/evidence/MC_MET01_FOCUSED_O0_O2_20261012.tar.gz.b64"
+  },
+  "compiler_identity": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "focused_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_FOCUSED_O0_O2_20261012.tar.gz.b64",
+    "decoded_sha256": "ea4265e4150b57ddbd9c6692514685602f006852da4369d79779b69851296efd",
+    "dependency_blobs": 231
+  },
+  "default_crop_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_DEFAULT_CROP_O0_O2_20261012.tar.gz.b64",
+    "decoded_sha256": "fae3791bcbd3f68f29d1867e67ff02a8fd5ee9003010fa09ca5908d80e53131f",
+    "dependency_blobs": 231
+  },
+  "invariants_affected": [
+    2,
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    23,
+    25,
+    29,
+    30
+  ],
+  "source_scope_limits": [
+    "Existing admitted Gregorian weather calendar reused; no independent legacy external dtleap library equivalence claim",
+    "Literal AFGEN and individual pulse formula qualified; broad legacy partly filled table/parser and near-midnight event-array coalescing remain outside current bounded profile"
+  ],
+  "fresh_frost_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_COMPLETE_HIGHEST_20261012.tar.gz.b64",
+    "decoded_sha256": "9c0193d861a174f8c4f6bbb360ef7fe4985744958fb7b7306e87feea76e226fa",
+    "configurations": 24,
+    "fine_comparisons": 144,
+    "dependency_blobs": 229,
+    "scope": "Current-source unchanged highest normal/low-air O0/O2 science, exact immutable reference output identity; one completed same-input case retained"
+  },
+  "full_preservation_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_FULL_PRESERVATION_20261012.tar.gz.b64",
+    "decoded_sha256": "efb4f08c70629ab72f3c955e4c86891b248b4fd60843f787b86a8b1c9baf05af",
+    "executed_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+    "controls": {
+      "mc-met01-full-moving": {
+        "gate": "mc-met01-full-moving",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+        "tree": "0d4bc8113f93e390e3b9f7dbe4503c975611a2c8",
+        "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+        "started_utc": "2026-10-12T08:39:59.499592+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T09:29:03.620555+00:00",
+        "end_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+        "clean_at_end": true,
+        "wall_seconds": 2944.120963
+      },
+      "mc-met01-full-ppa": {
+        "gate": "mc-met01-full-ppa",
+        "command": [
+          "bash",
+          "tests/fapp/run_ppa_wu03_preservation.sh"
+        ],
+        "head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+        "tree": "0d4bc8113f93e390e3b9f7dbe4503c975611a2c8",
+        "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+        "started_utc": "2026-10-12T09:29:07.765362+00:00",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T09:34:35.297488+00:00",
+        "end_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+        "clean_at_end": true,
+        "wall_seconds": 327.532126
+      }
+    }
+  },
+  "scientific_execution_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+  "source_tree": "b1ea3a566cf3c394329590a11656b062fdeb91ae",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1212",
+  "postimage_adjudication": {
+    "executed_head": "3d8a057ce9e6743c9f9c3a05c7bab004190824f8",
+    "unchanged_scientific_execution_inputs": "All src/reference and all tests except the stricter evidence verifier are byte-identical to exact executed head",
+    "guard_path": "tests/mc-met01/verify_raintb_successor.py",
+    "executed_guard_blob": "88dc5c20fa9729f4dcb7d33623f0bd8a1ff8727c",
+    "strict_guard_blob": "819e16c3145814df6d9e3f71abd7e34954ce63af",
+    "difference": "Only adds working-file equality for each recorded dependency; negative dirty F-SI fixture rejected; restored fixture accepted",
+    "negative_control_evidence": "guard-negative-control.log in full_preservation_evidence archive",
+    "numerical_assertions_tolerances_flags_reference_changes": "NONE",
+    "evidence_inheritance_basis": "Unchanged physical execution closure; stricter control independently tested. Full gates were not rerun on documentary descendant and are not falsely attributed to its SHA."
+  },
+  "overlap_reconciliation": {
+    "canonical_head_verified": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
+    "open_prs_checked": [
+      1212,
+      1117,
+      1103,
+      1098,
+      1072,
+      1009,
+      987,
+      956,
+      953,
+      740,
+      700,
+      528,
+      486,
+      389,
+      365,
+      58
+    ],
+    "same_scope_competing_pr": "NONE",
+    "held_fixed": "All pre-existing owner/profile semantics; no draft interception/solute/hydraulic functionality admitted"
+  }
+}

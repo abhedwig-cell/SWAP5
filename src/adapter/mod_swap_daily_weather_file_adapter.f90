@@ -5,6 +5,15 @@ module mod_swap_daily_weather_file_adapter
   private
   integer, parameter, public :: SWAP_WEATHER_FILE_OK=0, SWAP_WEATHER_FILE_INVALID=1, &
        SWAP_WEATHER_FILE_IO=2, SWAP_WEATHER_FILE_MISSING=3
+  ! Fully populated typed AFGEN table; immutable after construction/copy.
+  type, public :: swap_raintb_t
+    private
+    real(real64), allocatable :: knots(:), intensities(:)
+  contains
+    procedure :: ready => raintb_ready
+    procedure :: same_input => raintb_same_input
+  end type
+  public :: construct_swap_raintb, resolve_swap_raintb_pulse
   ! Immutable input, not a meteorological or physical state owner. Only the
   ! outer file reader can construct a valid record. No source-number setter.
   type, public :: swap_daily_weather_record_t
@@ -16,12 +25,120 @@ module mod_swap_daily_weather_file_adapter
   contains
     procedure :: ready => record_ready
     procedure :: values => record_values
+    procedure :: rain_segment => record_rain_segment
     procedure :: growth_values => record_growth_values
     procedure :: same_input => record_same_input
     procedure :: same_source => record_same_source
   end type
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
+  subroutine construct_swap_raintb(knots,intensities,table,status)
+    real(real64),intent(in)::knots(:),intensities(:)
+    type(swap_raintb_t),intent(out)::table
+    integer,intent(out)::status
+    integer::i,n
+    real(real64)::dx,dy
+    table=swap_raintb_t();status=SWAP_WEATHER_FILE_INVALID
+    n=size(knots)
+    if(n<1.or.size(intensities)/=n) return
+    if(.not.all(ieee_is_finite(knots)).or..not.all(ieee_is_finite(intensities))) return
+    if(any(knots<1.0_real64).or.any(knots>366.0_real64).or.any(intensities<=0.0_real64)) return
+    do i=2,n
+      dx=knots(i)-knots(i-1)
+      if(dx<=0.0_real64) return
+      dy=abs(intensities(i)-intensities(i-1))
+      if(dx<1.0_real64) then
+        if(dy>huge(dx)*dx) return
+      end if
+    end do
+    table%knots=knots;table%intensities=intensities;status=SWAP_WEATHER_FILE_OK
+  end subroutine
+  logical function raintb_ready(self) result(ok)
+    class(swap_raintb_t),intent(in)::self
+    ok=.false.
+    if(.not.allocated(self%knots).or..not.allocated(self%intensities)) return
+    ok=size(self%knots)>0.and.size(self%knots)==size(self%intensities)
+  end function
+  logical function raintb_same_input(self,other) result(ok)
+    class(swap_raintb_t),intent(in)::self
+    type(swap_raintb_t),intent(in)::other
+    ok=.false.
+    if(.not.self%ready().or..not.other%ready()) return
+    if(size(self%knots)/=size(other%knots)) return
+    ok=all(self%knots==other%knots).and.all(self%intensities==other%intensities)
+  end function
+  subroutine resolve_swap_raintb_pulse(table,day_of_year,rain_mm,duration,rate,status)
+    type(swap_raintb_t),intent(in)::table
+    integer,intent(in)::day_of_year
+    real(real64),intent(in)::rain_mm
+    real(real64),intent(out)::duration,rate
+    integer,intent(out)::status
+    real(real64)::x,rflx,slope
+    integer::i,n
+    duration=0.0_real64;rate=0.0_real64;status=SWAP_WEATHER_FILE_INVALID
+    if(.not.table%ready().or.day_of_year<1.or.day_of_year>366) return
+    if(.not.ieee_is_finite(rain_mm)) return
+    if(rain_mm<0.0_real64) return
+    status=SWAP_WEATHER_FILE_OK
+    ! Literal MOD_meteo event threshold is in millimetres, before conversion.
+    if(rain_mm<=1.0d-8) return
+    x=real(day_of_year,real64);n=size(table%knots)
+    rflx=table%intensities(n)
+    if(table%knots(1)>=x) then
+      rflx=table%intensities(1)
+    else
+      do i=2,n
+        if(table%knots(i)>=x) then
+          ! Retain AFGEN expression order, including its slope operation.
+          slope=(table%intensities(i)-table%intensities(i-1))/(table%knots(i)-table%knots(i-1))
+          rflx=table%intensities(i-1)+(x-table%knots(i-1))*slope
+          exit
+        end if
+      end do
+    end if
+    if(rflx<1.0_real64) then
+      if(rain_mm*0.1d0>huge(rflx)*rflx) then
+        status=SWAP_WEATHER_FILE_INVALID;return
+      end if
+    end if
+    duration=dmin1(1.d0,rain_mm*0.1d0/rflx)
+    if(.not.ieee_is_finite(duration).or.duration<=0.0_real64) then
+      status=SWAP_WEATHER_FILE_INVALID;return
+    end if
+    if(duration<1.0_real64) then
+      if(rain_mm*0.1d0>huge(duration)*duration) then
+        status=SWAP_WEATHER_FILE_INVALID;return
+      end if
+    end if
+    rate=rain_mm*0.1d0/duration
+    if(.not.ieee_is_finite(rate)) status=SWAP_WEATHER_FILE_INVALID
+  end subroutine
+  subroutine record_rain_segment(self,table,epoch,t0,t1,rate,segment_end,status)
+    class(swap_daily_weather_record_t),intent(in)::self
+    type(swap_raintb_t),intent(in)::table
+    integer,intent(in)::epoch
+    real(real64),intent(in)::t0,t1
+    real(real64),intent(out)::rate,segment_end
+    integer,intent(out)::status
+    real(real64)::day,duration,pulse_end
+    rate=0.0_real64;segment_end=t0;status=SWAP_WEATHER_FILE_INVALID
+    if(.not.self%ready().or.epoch<1) return
+    if(.not.all(ieee_is_finite([t0,t1]))) return
+    day=real(self%calendar_day-epoch,real64)
+    if(t0<day.or.t1>day+1.0_real64.or.t1<=t0) return
+    call resolve_swap_raintb_pulse(table,self%day_of_year,self%rain,duration,rate,status)
+    if(status/=SWAP_WEATHER_FILE_OK) return
+    pulse_end=day+duration
+    if(duration>0.0_real64.and.pulse_end<=day) then
+      status=SWAP_WEATHER_FILE_INVALID;return
+    end if
+    segment_end=t1
+    if(t0<pulse_end) then
+      segment_end=min(t1,pulse_end)
+    else
+      rate=0.0_real64
+    end if
+  end subroutine
   ! Gregorian ordinal, day 1 = 0001-01-01. Application time is explicitly
   ! bound by an explicit model calendar epoch in the application bootstrap.
   pure integer function swap_weather_calendar_day(year,month,day) result(ordinal)

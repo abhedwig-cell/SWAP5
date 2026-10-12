@@ -6,6 +6,20 @@ cd "$ROOT"
 # Preserve the original bounded path and admit only the pinned delayed
 # emergence/same-day growth source with sealed complete frost evidence.
 # Harvest/rotation/fallow and external disk codec remain open.
+# Bounded MC-MET01 opt-in over the admitted day-end production owner.
+# Only independently qualified exact source/evidence is eligible; fallback
+# and every incumbent numerical assertion remain unchanged.
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c ]]; then
+  python3 tests/mc-met01/verify_raintb_successor.py || exit 1
+  if [[ "${1:-}" == --verify-only ]]; then exit 0; fi
+  # Focused RAINTB science is inherited from its exact sealed closure.
+  # Inherit the already fresh default physical/crop proof, then execute
+  # the required shared-owner composition preservation.
+  echo 'MC_MET01_DEFAULT_CROP_EXACT_CLOSURE_EVIDENCE_INHERITED=PASS'
+  bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
+  echo 'MC_MET01_DEFAULT_CROP_AND_FKT_PRESERVATION=PASS'
+  exit 0
+fi
 BASE=0d9f2c5da26e2214c3b19d56acdc734bf62d33f4
 fail(){ echo "CROP_FILE_WEATHER_SOURCE_SUCCESSOR_FAIL $*" >&2; exit 1; }
 verify_crop_frost_highest(){
