@@ -2,7 +2,7 @@
   "work_unit": "MC-MET01",
   "unit": "SW431-MET-RAIN1 authentic RAINTB production pilot",
   "baseline": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
-  "stage": "SOURCE_PRODUCTION_DEFAULT_OWNER_PASS_HIGHEST_LOW_AIR_PENDING",
+  "stage": "INDEPENDENT_OWNER_AND_HIGHEST_COMPLETE_FULL_PRESERVATION_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -23,7 +23,7 @@
     "new scientific functionality independently qualifies against actual Full Richards",
     "no default profile or numerical gate changes"
   ],
-  "next_action": "Complete remaining unchanged highest low-air cases; seal24/144 current-source evidence, then exact-head full FCI/PPA",
+  "next_action": "Verify all sealed dependencies; fetch exact published head; execute one full moving FCI and PPA preservation; no duplicate owner reruns",
   "source_member": "SWAP/MOD_meteo.f90",
   "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
   "metrics": {
@@ -78,5 +78,13 @@
   "source_scope_limits": [
     "Existing admitted Gregorian weather calendar reused; no independent legacy external dtleap library equivalence claim",
     "Literal AFGEN and individual pulse formula qualified; broad legacy partly filled table/parser and near-midnight event-array coalescing remain outside current bounded profile"
-  ]
+  ],
+  "fresh_frost_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_COMPLETE_HIGHEST_20261012.tar.gz.b64",
+    "decoded_sha256": "9c0193d861a174f8c4f6bbb360ef7fe4985744958fb7b7306e87feea76e226fa",
+    "configurations": 24,
+    "fine_comparisons": 144,
+    "dependency_blobs": 229,
+    "scope": "Current-source unchanged highest normal/low-air O0/O2 science, exact immutable reference output identity; one completed same-input case retained"
+  }
 }
