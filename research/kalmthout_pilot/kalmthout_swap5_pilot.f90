@@ -14,7 +14,7 @@ program kalmthout_swap5_daily_pilot
 
   real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
   real(real64), parameter :: H0_CM=-75.0_real64
-  integer, parameter :: UNIT_MET=10, UNIT_OUT=20
+  integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=4
   character(len=256) :: met_path, out_path, line, ds, max_hours_arg
   type(fmr_production_application_config_t) :: config
   type(fmr_production_application_bootstrap_t) :: app
@@ -22,9 +22,11 @@ program kalmthout_swap5_daily_pilot
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(interception_source_window_t) :: window
   type(rutter_interval_input_t) :: rp
-  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours
+  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub
   real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day
+  real(real64) :: hour_t0,hour_t1,segment_dt,hour_residual,hour_in,hour_out
   real(real64) :: total_precip,total_et0,total_in,total_out
+  integer :: hour_accepted,hour_solver_rejections,hour_temporal_rejections
 
   call get_command_argument(1,met_path)
   call get_command_argument(2,out_path)
@@ -54,12 +56,13 @@ program kalmthout_swap5_daily_pilot
     call require(ios==0,'read weather row')
     read(line,*,iostat=ios) ds,precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
     call require(ios==0,'parse weather row')
-    day_index=day_index+1; t0=real(day_index-1,real64)*dt_day; t1=real(day_index,real64)*dt_day
-    allocate(forcing(1))
-    forcing(1)=config%tiles(1)%base_forcing
-    allocate(forcing(1)%rutter)
-    call initialize_interception_window(int(1000000+day_index,int64),t0,t1,precip_mm/10.0_real64,window,wstatus)
+    day_index=day_index+1
+    hour_t0=real(day_index-1,real64)*dt_day
+    hour_t1=real(day_index,real64)*dt_day
+    segment_dt=dt_day/real(NSUB,real64)
+    call initialize_interception_window(int(1000000+day_index,int64),hour_t0,hour_t1,precip_mm/10.0_real64,window,wstatus)
     call require(wstatus==INTWIN_OK,'hourly precipitation source window')
+
     rp%gross_rain_cm_per_day=(precip_mm/10.0_real64)/dt_day
     rp%surface_irrigation_cm_per_day=0.0_real64
     rp%surface_irrigation_is_intercepted=.false.
@@ -68,40 +71,65 @@ program kalmthout_swap5_daily_pilot
     rp%interception_evaporation_capacity_cm_per_day=0.0_real64
     rp%potential_transpiration_dry_cm_per_day=0.0_real64
     rp%potential_transpiration_wet_cm_per_day=0.0_real64
-    rp%interval_days=dt_day
-    forcing(1)%rutter%source_window=window
-    forcing(1)%rutter%process=rp
-    forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=et0/10.0_real64
-    forcing(1)%rutter%potential_pond_evaporation_cm_per_day=et0/10.0_real64
-    forcing(1)%rutter%ponding_max_cm=1.0_real64
-    forcing(1)%rutter%runoff_resistance_day=0.1_real64
-    forcing(1)%rutter%runoff_exponent=1.0_real64
+    rp%interval_days=segment_dt
 
-    call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
-    if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
-      failures=failures+1
-      write(*,'(A,1X,A,1X,I0,6(1X,F12.6))') 'KALMTHOUT_HOUR_FAIL',trim(ds),status, &
-           precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
-      if(allocated(results)) then
-        write(*,'(A,1X,I0,1X,A,3(1X,L1),4(1X,I0),3(1X,ES18.10),1X,A,1X,I0)') &
-             'KALMTHOUT_RESULT_DEBUG',size(results),trim(results(1)%admission_status), &
-             results(1)%admitted,results(1)%completed,results(1)%committed,results(1)%accepted_substeps, &
-             results(1)%solver_rejections,results(1)%temporal_rejections,results(1)%mass_rejections, &
-             results(1)%mass%residual,results(1)%mass%total_in,results(1)%mass%total_out, &
-             trim(results(1)%solver_route),results(1)%solver_status
+    hour_residual=0.0_real64
+    hour_in=0.0_real64
+    hour_out=0.0_real64
+    hour_accepted=0
+    hour_solver_rejections=0
+    hour_temporal_rejections=0
+
+    do isub=1,NSUB
+      t0=hour_t0+real(isub-1,real64)*segment_dt
+      t1=hour_t0+real(isub,real64)*segment_dt
+      allocate(forcing(1))
+      forcing(1)=config%tiles(1)%base_forcing
+      allocate(forcing(1)%rutter)
+      forcing(1)%rutter%source_window=window
+      forcing(1)%rutter%process=rp
+      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=et0/10.0_real64
+      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=et0/10.0_real64
+      forcing(1)%rutter%ponding_max_cm=1.0_real64
+      forcing(1)%rutter%runoff_resistance_day=0.1_real64
+      forcing(1)%rutter%runoff_exponent=1.0_real64
+
+      call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
+      if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
+        failures=failures+1
+        write(*,'(A,1X,A,1X,I0,1X,I0,6(1X,F12.6))') 'KALMTHOUT_SUBHOUR_FAIL',trim(ds),isub,status, &
+             precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
+        if(allocated(results)) then
+          write(*,'(A,1X,I0,1X,A,3(1X,L1),4(1X,I0),3(1X,ES18.10),1X,A,1X,I0)') &
+               'KALMTHOUT_RESULT_DEBUG',size(results),trim(results(1)%admission_status), &
+               results(1)%admitted,results(1)%completed,results(1)%committed,results(1)%accepted_substeps, &
+               results(1)%solver_rejections,results(1)%temporal_rejections,results(1)%mass_rejections, &
+               results(1)%mass%residual,results(1)%mass%total_in,results(1)%mass%total_out, &
+               trim(results(1)%solver_route),results(1)%solver_status
+        end if
+        if(allocated(forcing)) deallocate(forcing)
+        if(allocated(results)) deallocate(results)
+        exit
       end if
-      exit
-    end if
-    max_residual=max(max_residual,abs(results(1)%mass%residual))
+      hour_residual=max(hour_residual,abs(results(1)%mass%residual))
+      hour_in=hour_in+results(1)%mass%total_in
+      hour_out=hour_out+results(1)%mass%total_out
+      hour_accepted=hour_accepted+results(1)%accepted_substeps
+      hour_solver_rejections=hour_solver_rejections+results(1)%solver_rejections
+      hour_temporal_rejections=hour_temporal_rejections+results(1)%temporal_rejections
+      deallocate(forcing)
+      if(allocated(results)) deallocate(results)
+    end do
+    if(failures>0) exit
+
+    max_residual=max(max_residual,hour_residual)
     total_precip=total_precip+precip_mm
     total_et0=total_et0+et0*dt_day
-    total_in=total_in+results(1)%mass%total_in
-    total_out=total_out+results(1)%mass%total_out
+    total_in=total_in+hour_in
+    total_out=total_out+hour_out
     write(UNIT_OUT,'(A,",",F12.6,",",F12.6,",",I0,",",I0,",",I0,",",ES18.10,",",ES18.10,",",ES18.10)') &
-         trim(ds),precip_mm,et0,results(1)%accepted_substeps,results(1)%solver_rejections, &
-         results(1)%temporal_rejections,results(1)%mass%residual,results(1)%mass%total_in,results(1)%mass%total_out
-    deallocate(forcing)
-    if(allocated(results)) deallocate(results)
+         trim(ds),precip_mm,et0,hour_accepted,hour_solver_rejections,hour_temporal_rejections, &
+         hour_residual,hour_in,hour_out
     if(max_hours>0 .and. day_index>=max_hours) exit
   end do
   close(UNIT_MET); close(UNIT_OUT)
