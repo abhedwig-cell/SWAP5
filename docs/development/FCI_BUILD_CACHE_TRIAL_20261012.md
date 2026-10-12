@@ -98,7 +98,7 @@ for reproduction on this declared environment; a different environment must
 supply and review its own complete closure. No new master capability is claimed.
 
 
-## Proposed I/O successor
+## Qualified isolated I/O successor (V2)
 
 Baseline `cccb898ac8b3b7d16515c98e3e67eb1802c4bc5f`; recovery is the existing
 record's `io_successor` field. The previous results remain a historical V1
@@ -120,3 +120,51 @@ namespace; no weaker immutable-environment assumption is substituted.
 Qualification includes preserved timestamp/source modifications, shared-blob
 corruption, mapping/read hash equivalence and destination verification, followed
 by unchanged equal-gate O0/O2 tests and exact artifact/output comparison.
+
+
+Exact clean V2 execution head `f2416a90a59199b24adc1ea22ac00915b621d851`; six physical gates and eleven
+invalidation controls PASS. Every build produced 356 byte-identical object/module
+digests and identical scientific stdout to its own new uncached baseline.
+
+| Equal gate / V2 route | Wall seconds | Hits | Compilations | Fresh links |
+|---|---:|---:|---:|---:|
+| root-uncached | 251.8 | 0 | 356 | 2 |
+| root-fill | 406.6 | 0 | 356 | 2 |
+| root-warm | 254.7 | 356 | 0 | 2 |
+| sensor-uncached | 215.0 | 0 | 356 | 2 |
+| sensor-cross | 161.3 | 354 | 2 | 2 |
+| sensor-warm | 161.6 | 356 | 0 | 2 |
+
+Warm root took 2.9s longer (1.1%); warm sensor saved
+53.4s (24.8%). First fill overhead against the new root baseline was
+154.7s. The V1 measurements above are historical, not a simultaneous
+controlled version comparison. One ordered sample per route; variance and a
+general migration speedup remain UNKNOWN.
+
+Across this experiment, 109000 unchanged module restorations were avoided
+and 1140 changed modules were installed; 548 distinct validated
+blobs occupied 18582078 bytes. The bytes/source/flags/environment/compiler
+closure checks were not reduced. Cache-member validation uses explicit checks
+that also execute with Python optimization; restored destination hashes and
+unchanged dependency objects are checked before a hit is accepted.
+
+The private namespace probe could not establish an enforced compiler capsule in
+this environment. V2 therefore retains all per-request compiler checks instead
+of assuming files immutable. It reduces buffering, duplicate storage and
+restoration within those checks. Default F-CI, scientific gates, references and
+numerical tolerances remain unchanged; no physical capability is promoted.
+
+Raw timestamps, current compiler fingerprints, events, artifact identities and
+controls are sealed in `io_successor.evidence` in the existing owning record.
+Further default/shared-cache adoption still requires compiler/platform/profile
+closure, environment and artifact-trust review. Keep fresh linking and every
+physical acceptance/restart/mass test.
+
+**V2 decision: bounded correctness PASS; throughput objective not established.**
+The root warm route was slightly slower than its own uncached route. The sensor
+route improved, but this single ordered sample does not justify replacing V1
+or adopting caching into default F-CI. Retain PR1214 as a complete draft
+experiment with sealed positive and negative results; canonical V1 remains intact.
+Prioritize the original result-sized migration batches and dependency-aware
+evidence reuse. Further cache research requires an explicit bounded compiler
+capsule/platform/trust contract and repeated representative end-to-end timings.
