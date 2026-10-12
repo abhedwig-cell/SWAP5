@@ -70,6 +70,21 @@ actual profile; its own bytes and ELF dependencies are included. Inspection
 produced no scientific PASS, receipt or inheritance. The pin now enables only
 this reviewed profile. Fresh full qualification is still required.
 
+The first positive inheritance trial on the pinned profile selected an extra
+RUN: CPU tuples became JSON lists when receipts were decoded. This representation
+error was fail-closed, not false inheritance. Explicit JSON-compatible CPU arrays
+fixed it without changing the reviewed fingerprint. The complete 33-control
+matrix then ended with exit 0 on `dd3c823b14ab1e49b1604482de5214ea1f77879a`,
+including the exported Python-launcher override, malformed nested JSON and a
+real corrupt source-directory generated module (RUN, compiler exit 1). Removing
+that unqualified module restored valid inheritance of an earlier unchanged
+isolated execution. The exported-fixture reproducer on this controller returned
+RUN/exit 1 equal to OFF. The same-candidate complete OFF/interruption/RESUME
+experiment is now running; its full status is UNKNOWN until terminal completion.
+All these original manifests, controls and failed/unknown attempts are preserved
+in `F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64`, decoded SHA256
+`b75bd7a0139dabab55577f28ef31a373a99e78e7e255f7d3aa380560034d155a`.
+
 ## What was demonstrated
 
 The original full moving F-CI ended with exit 0 in OFF. After a real nonzero

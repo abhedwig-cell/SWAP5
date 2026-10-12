@@ -18,7 +18,17 @@
   "blockers": [
     "Canonical policy admission not claimed; separate owning F-CI/VQ decision remains pending"
   ],
-  "stage": "CLOSED_RUNTIME_PROFILE_REVIEWED_FOCUSED_AND_FULL_REQUALIFICATION_PENDING",
+  "stage": "CLOSED_RUNTIME_PROFILE_33_FOCUSED_CONTROLS_PASS_FULL_TRIAL_RUNNING",
+  "hardened_qualification": {
+    "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+    "focused_controls": 33,
+    "focused_terminal_exit_code": 0,
+    "full_trial": "UNKNOWN_RUNNING",
+    "negative_exported_function_control": "RESUME RUN exit 1 equal to OFF; no inherited or newly reusable PASS",
+    "false_run_repaired": "CPU tuples compared unequal after JSON round-trip; explicit JSON arrays restore identity equality",
+    "evidence": "integration/f-ci/evidence/F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64",
+    "decoded_sha256": "b75bd7a0139dabab55577f28ef31a373a99e78e7e255f7d3aa380560034d155a"
+  },
   "reviewed_runtime_profile": {
     "fingerprint": "16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306f57c4e470",
     "manifest_sha256": "5af7b0d6021f1cd1bfebe3834793ca1b70525f714aba27172d6d933ec3114594",
