@@ -61,10 +61,11 @@ done
 gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_swap5_pilot.f90 -o "$BUILD/pilot.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/pilot.o" -o "$BUILD/kalmthout_pilot"
 
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/probe_48h.csv" 48 | tee "$OUTDIR/probe_48h.log"
+"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/probe_48h.csv" 48 1.0 | tee "$OUTDIR/probe_48h.log"
 grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/probe_48h.log"
 echo "KALMTHOUT_48H_RUTTER_PROBE=PASS"
 
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/full_2024_2026.csv" | tee "$OUTDIR/full_run.log"
-grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_run.log"
-echo "KALMTHOUT_FULL_2024_TO_2026=PASS"
+"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/full_rainfall_2024_2026.csv" 0 0.0 | tee "$OUTDIR/full_rainfall_run.log"
+grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_rainfall_run.log"
+grep -Fq 'KALMTHOUT_EVAP_SCALE=    0.0000' "$OUTDIR/full_rainfall_run.log"
+echo "KALMTHOUT_FULL_RAINFALL_HYDRAULICS_2024_TO_2026=PASS"
