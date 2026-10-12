@@ -102,6 +102,9 @@ def identity(group, command):
         if str(path) in tools:
             return
         tools[str(path)] = digest(path)
+        with path.open('rb') as stream:
+            if stream.read(4) != b'\x7fELF':
+                return  # text tools/modules have no ELF dynamic dependency graph
         result = subprocess.run(['ldd', str(path)], capture_output=True, text=True)
         for line in result.stdout.splitlines():
             for token in line.split():
@@ -301,7 +304,9 @@ def main():
         try:
             final = identity(group, command)
             if final != current or current['marker'].encode() not in log.read_bytes().splitlines():
-                raise ValueError('closure changed or marker missing during execution')
+                changed = [name for name in sorted(set(current['tools']) | set(final['tools']))
+                           if current['tools'].get(name) != final['tools'].get(name)]
+                raise ValueError('closure changed or marker missing during execution; changed tool paths=' + str(changed))
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             print('FCI_RESUME_NO_RECEIPT ' + str(error), file=sys.stderr)
             return 1
