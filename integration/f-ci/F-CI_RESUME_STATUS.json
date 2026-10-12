@@ -7,7 +7,7 @@
   "qualified": false,
   "canonically_admitted": false,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Run identical-candidate OFF full F-CI, controlled completed-prefix interruption and RESUME; compare all science stdout and record costs",
+  "next_action": "Actively finish existing full RESUME on unchanged aef26ee85; verify scientific stdout and inherited counts; seal final costs. No full resumed PASS yet.",
   "recovery_point": "work/f-ci-safe-resume-20261012",
   "dependency_surface": [
     "tools/fci/resume_group.py",
@@ -16,12 +16,54 @@
     "tests/frost"
   ],
   "blockers": [],
-  "stage": "FOCUSED_SAFETY_PASS_FULL_PRESERVATION_PENDING",
+  "stage": "FULL_BASELINE_PASS_CONTROLLED_PREFIX_PASS_RESUME_IN_PROGRESS",
   "scientific_candidate": "806766ad81978231f7dc27bb28bc9f81c2d3a4dd",
   "safety_evidence": {
     "path": "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
     "decoded_sha256": "8fef4afde97976cdfdb10efabf9b0c554178258b4b2d69e16c8c173ac16716fe",
     "controls": 25
   },
-  "owner": "F-CI execution infrastructure; existing VQ scientific preservation and central REGIE admission"
+  "owner": "F-CI execution infrastructure; existing VQ scientific preservation and central REGIE admission",
+  "full_execution_candidate": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+  "baseline_control": {
+    "command": [
+      "bash",
+      "-x",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "mode": "OFF",
+    "executed_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "started_utc": "2026-10-12T17:11:31.931834+00:00",
+    "terminal_status": "PASS",
+    "environment_sha256": "462636e55466426152f245b85f3d41fa76be4fc86bff71c1e4e235c3e73449c7",
+    "terminal_exit_code": 0,
+    "ended_utc": "2026-10-12T18:01:33.474660+00:00",
+    "wall_seconds": 3001.5427642519935,
+    "end_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "stdout_sha256": "8bf65eefd694ce2646f9b2d6dfb86eb3b7c19f13b0890c9f7f6e181235f42a9d",
+    "stderr_sha256": "18d9e93a99bd8ff376ab716743e26c092bed9526d920b7feb468ae08f1feeea5"
+  },
+  "controlled_interruption": {
+    "command": [
+      "bash",
+      "-x",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "mode": "SHADOW",
+    "executed_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "started_utc": "2026-10-12T18:01:33.495480+00:00",
+    "terminal_status": "FAIL",
+    "environment_sha256": "a882761e16108cff2b6af63ef3e59618b373653c18d501bd54ab88fa2779fd38",
+    "terminal_exit_code": 1,
+    "ended_utc": "2026-10-12T18:01:47.740082+00:00",
+    "wall_seconds": 14.244331349000277,
+    "end_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "stdout_sha256": "4ba64ebc7b27048cec9a73b1f94f20e786d177919fe51f7a85148039d63bcfcc",
+    "stderr_sha256": "7cdf284957dc94d19831e48714d4e2bd8585440a5b9a3ffd620a4f29c868b196"
+  },
+  "baseline_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_BASELINE_20261012.tar.gz.b64",
+    "decoded_sha256": "333f8e63b7a9eb1f0f1c9bc3d69396d2db42e12bf0b380635f06dcfd4b79fc42"
+  },
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1217"
 }
