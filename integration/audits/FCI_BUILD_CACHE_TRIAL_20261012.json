@@ -2,14 +2,14 @@
   "work_unit": "F-CI compilation-cache controlled trial",
   "baseline": "c31fc81059e7e4388198c38eaf75558e58d75059",
   "owner": "Existing F-CI/VQ verification tooling; isolated opt-in experiment",
-  "stage": "QUALIFIED_ISOLATED_EXPERIMENT_NOT_DEFAULT_ADMISSION_PENDING",
+  "stage": "ISOLATED_EXPERIMENT_CANONICALLY_ADMITTED_DEFAULT_DISABLED",
   "recovery_branch": "work/fci-build-cache-trial-20261012",
   "contract": "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md",
   "production_changes": false,
   "incumbent_gate_changes": false,
   "workflow_changes": false,
   "qualified": true,
-  "next_action": "Offer/admit isolated opt-in experiment and evidence only; do not enable default gates. Separately review amortized complete toolchain validation, dependency-specific keys and compiler/platform/environment closure before default adoption.",
+  "next_action": "Trial complete. Default F-CI cache remains disabled. Next separately qualified optimization: amortize complete toolchain validation and prove dependency-specific cache invalidation; preserve all fresh physical gates and explicit platform/loader/search/environment closure.",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -146,5 +146,13 @@
     "general_migration_speedup": "UNKNOWN",
     "observed_scientific_regressions": 0,
     "normal_gate_cache_enablement": false
-  }
+  },
+  "canonically_admitted": true,
+  "canonical_merge": "f217a7b48304619f5a1782a8178c0818b884714f",
+  "admission_head": "82b78c2ad28eb2e8e49d59060386bfbe6bb7e2c2",
+  "verified_merge_tree": "7cec076d844470b671e288614751c9a19eb84407",
+  "verified_at_utc": "2026-10-12T10:42:02.482132+00:00",
+  "default_gate_changes": "NONE",
+  "production_and_incumbent_gate_trees_unchanged_from_baseline": true,
+  "full_master_capability_delta": 0
 }
