@@ -7,7 +7,7 @@
   "qualified": true,
   "canonically_admitted": true,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Actively observe existing canonical push runs through terminal status; record outcomes without new dispatch or science changes. Keep OFF default and broader eligibility unqualified.",
+  "next_action": "Work unit complete. Preserve OFF default, exact audited profile/leaf eligibility and immutable evidence. Broader groups or runtime profiles require separate closure review and qualification.",
   "recovery_point": "integration/f-ci-canonical",
   "dependency_surface": [
     "tools/fci/resume_group.py",
@@ -16,7 +16,7 @@
     "tests/frost"
   ],
   "blockers": [],
-  "stage": "BOUNDED_CANONICAL_ADMISSION_VERIFIED_AUTOMATIC_PRESERVATION_RUNNING",
+  "stage": "BOUNDED_CANONICAL_ADMISSION_AND_ALL_AUTOMATIC_PRESERVATION_COMPLETE",
   "hardened_qualification": {
     "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
     "focused_controls": 33,
@@ -764,31 +764,165 @@
   "canonical_automatic_preservation": {
     "head": "f9775af0df771d870ca1bd0018e0beaa795404b9",
     "manual_dispatch": false,
-    "status": "RUNNING",
+    "status": "PASS_ALL_FOUR_WORKFLOWS",
     "runs": [
-      {
-        "id": 38347529837,
-        "name": "F-CI canonical qualification",
-        "status": "in_progress",
-        "conclusion": null
-      },
-      {
-        "id": 38347529889,
-        "name": "F-GC fixed-interface groundwater closeout",
-        "status": "in_progress",
-        "conclusion": null
-      },
       {
         "id": 38347530005,
         "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
         "status": "completed",
-        "conclusion": "success"
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:52Z",
+        "updated_at": "2026-10-13T04:40:11Z",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38347530005"
       },
       {
         "id": 38347529851,
         "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
         "status": "completed",
-        "conclusion": "success"
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:52Z",
+        "updated_at": "2026-10-13T04:40:18Z",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38347529851"
+      },
+      {
+        "id": 38347529889,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:52Z",
+        "updated_at": "2026-10-13T04:45:16Z",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38347529889"
+      },
+      {
+        "id": 38347529837,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:52Z",
+        "updated_at": "2026-10-13T05:02:40Z",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38347529837"
+      }
+    ],
+    "fci_jobs": [
+      {
+        "id": 115132287144,
+        "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:03Z"
+      },
+      {
+        "id": 115132287213,
+        "name": "frozen-fci37-parallel-root-uptake-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:24Z"
+      },
+      {
+        "id": 115132287241,
+        "name": "frozen-fci40-effective-forcing-executor-source-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:06Z"
+      },
+      {
+        "id": 115132287250,
+        "name": "frozen-fci30-restricted-parallel-v1-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:54Z",
+        "completed_at": "2026-10-13T04:40:42Z"
+      },
+      {
+        "id": 115132287254,
+        "name": "frozen-fci24-reference-et-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:09Z"
+      },
+      {
+        "id": 115132287275,
+        "name": "frozen-fci29-ptra-ownership-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:10Z"
+      },
+      {
+        "id": 115132287297,
+        "name": "frozen-fci34-root-attribution-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:54Z",
+        "completed_at": "2026-10-13T04:40:11Z"
+      },
+      {
+        "id": 115132287300,
+        "name": "frozen-fci27-reference-et-runtime-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:07Z"
+      },
+      {
+        "id": 115132287311,
+        "name": "frozen-fci36-divdra-active-runtime-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:54Z",
+        "completed_at": "2026-10-13T04:40:17Z"
+      },
+      {
+        "id": 115132287312,
+        "name": "frozen-fci19-candidate-preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:43Z"
+      },
+      {
+        "id": 115132287318,
+        "name": "frozen-fci19-source-lineage",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:07Z"
+      },
+      {
+        "id": 115132287328,
+        "name": "historical-fci03-through-fci18",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:19Z"
+      },
+      {
+        "id": 115132287535,
+        "name": "frozen-fci28-restart-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:39:55Z",
+        "completed_at": "2026-10-13T04:40:17Z"
+      },
+      {
+        "id": 115132505230,
+        "name": "frozen-fci31-reference-et-root-uptake-authority",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:40:46Z",
+        "completed_at": "2026-10-13T04:41:41Z"
+      },
+      {
+        "id": 115132748719,
+        "name": "current-restricted-canonical-preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T04:41:43Z",
+        "completed_at": "2026-10-13T05:02:39Z"
       }
     ]
   }

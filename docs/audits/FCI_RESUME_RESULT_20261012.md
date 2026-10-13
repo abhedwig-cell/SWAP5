@@ -1,8 +1,8 @@
 # F-CI safe-resume experiment result
 
 Status: bounded scientific comparison completed and opt-in scope canonically
-admitted on 13 October 2026 via PR1217. Automatic post-merge preservation remains
-separately tracked below. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
+admitted on 13 October 2026 via PR1217. All four automatic post-merge workflows
+subsequently completed successfully. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
 [FCI safe resume](../development/FCI_SAFE_RESUME_20261012.md). Exact actual execution
 head for OFF, controlled SHADOW prefix and RESUME:
 `dd3c823b14ab1e49b1604482de5214ea1f77879a`.
@@ -307,3 +307,12 @@ the actual scientific candidate. Four automatic push runs started; at the first
 receipt F-CI51P and F-CI58P had succeeded, while F-CI canonical and groundwater
 closeout remained RUNNING. Their terminal outcomes are recorded in the status;
 in-progress checks are not PASS. No new workflow was dispatched.
+
+Terminal closeout: all four push workflows completed with conclusion `success`.
+F-CI run `38347529837` completed all 15 jobs successfully, including moving-current
+preservation job `115132748719`. Groundwater closeout `38347529889`, F-CI51P
+`38347530005` and F-CI58P `38347529851` also succeeded. Complete job identifiers
+and UTC start/end metadata are retained in the existing status record. These
+are independent canonical post-merge checks, not additional same-environment
+performance samples. Documentary receipt commits change no tested scientific
+input; qualification inheritance is limited to that verified unchanged closure.
