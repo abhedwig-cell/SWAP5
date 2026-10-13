@@ -18,7 +18,7 @@
     30
   ],
   "interfaces_changed": "Opt-in dependency API and three local production-driver routes; optional-config guard and exact prepublication beginning-ledger scalar timing; no physics formula, state layout or tolerance change",
-  "next_action": "Complete fresh SHARED/SEPARATE controls and full moving preservation on canonical-reconciled postimage; original full SEPARATE run PASS is sealed but does not admit changed route",
+  "next_action": "Complete full SHARED moving F-CI resume OFF on canonical-reconciled postimage; fresh SHARED/SEPARATE O0/O2 exact output and inputs are PASS and sealed; then final documentation and admission reconciliation",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -245,7 +245,23 @@
     "local_combined_head": "378dbd6c8",
     "remote_equivalent_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
     "tree": "66f87e89d9f9f667b784a609b51efc27b1781306",
-    "focused_shared_separate": "RUNNING",
+    "focused_shared_separate": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_SHARED_FOCUSED_20261013.tar.xz.b64",
+      "decoded_sha256": "8ca42832c3d96b35423fce7d1b70d331fb10a74adcbc77a5d3a46e78cb8f968c",
+      "status": "FRESH_FOCUSED_SHARED_SEPARATE_PASS_NOT_FULL_ADMISSION",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_equivalent_remote_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
+      "science_sha256": {
+        "root": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+        "sensor": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e"
+      },
+      "byte_equivalent": true,
+      "shared_wall_seconds": 998.910658861998,
+      "separate_wall_seconds": 1069.110812437997,
+      "members": 43,
+      "compiler_requests": "UNKNOWN (uninstrumented qualification)"
+    },
     "full_shared_resume_off": "RUNNING",
     "infra_failure_recovery": {
       "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_INFRA_20261013.tar.xz.b64",
