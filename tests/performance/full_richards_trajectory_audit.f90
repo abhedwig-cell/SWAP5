@@ -84,7 +84,8 @@ program full_richards_trajectory_audit
     state=result%candidate_state;tick=tick+dt_ticks;step=step+1
     write(*,'(A,I0,A,ES24.16,A,I0,A,I0,A,ES24.16)') 'STEP=',step,' DT=',dt, &
       ' NL=',result%diagnostics%nonlinear_iterations,' RETRY=',retries,' MASS=',mass
-    write(*,'(*(ES24.16,1X))')state%pressure_head,state%water_content,state%ponding_depth
+    write(*,'(*(ES24.16,1X))')state%pressure_head,state%water_content,state%ponding_depth, &
+      state%groundwater_level,result%top_flux,result%bottom_flux
   end do
   write(*,'(*(g0))')'RICHARDS_AUDIT_RESULT|HORIZON=',horizon,'|NODES=',numnod,'|STEPS=',step, &
       '|ATTEMPTS=',attempts,'|RETRIES=',retries,'|NL=',nl,'|JAC=',jac,'|LINEAR=',linear, &
