@@ -1,6 +1,6 @@
 # Modulaire testbaarheid en lokale ontwikkelcyclus
 
-**Status: geïmplementeerde en gemeten zelfstandige testroutes; volledige oorspronkelijke preservation PASS; gereconcilieerde SHARED-route in kwalificatie.** Meetbaseline:
+**Status: geïmplementeerde en gemeten zelfstandige testroutes; volledige oorspronkelijke preservation PASS; gereconcilieerde SHARED-route preservation PASS; canonical admission nog niet uitgevoerd.** Meetbaseline:
 `1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520`, canonical
 `integration/f-ci-canonical`. Formules, state-layout, toleranties,
 referenties en wetenschappelijke assertions blijven behouden. Twee begrensde
@@ -29,9 +29,10 @@ geen productiebron maar maakt de reeds gekwalificeerde allocation SHARED-build
 standaard. Het enige runnerconflict behoudt zowel de exacte sealed reparatieguard
 als deze nieuwe route. De gecombineerde lokale commit `378dbd6c8` en remote
 `44b4735373d0befaf43bfa50053c718cca8365c0` hebben dezelfde tree
-`66f87e89d9f9f667b784a609b51efc27b1781306`. Verse SHARED/SEPARATE-controles
-en volledige moving F-CI met resume OFF lopen op deze postimage; de oudere
-SEPARATE-PASS vervangt die nieuwe routekwalificatie niet.
+`66f87e89d9f9f667b784a609b51efc27b1781306`. Verse SHARED/SEPARATE-controles zijn PASS op deze postimage, met byte-identieke
+O0/O2 wetenschappelijke outputs. Volledige moving F-CI op deze postimage is
+PASS, resume OFF, exit 0, 7748.796257 seconden; productiebronnen ongewijzigd.
+De oudere SEPARATE-PASS vervangt die nieuwe routekwalificatie niet.
 
 SWAP5 heeft kleine wetenschappelijk toetsbare functies, maar de uitvoerbare
 kwalificatieroutes mengen vaak componentbewijs met runtime- en preservationbewijs.
@@ -238,7 +239,7 @@ som van losse medianen. Ruwe records bevatten alle drie de samples.
 | Accepted heat gericht koud | 174.675 | 0.400 | 0.012 | 1.045 | 176.411 | 314 |
 | Accepted heat gericht warm | 0 | 0 | 0.008 | 1.060 | 1.081 | 0 |
 
-Boesten gaat van 228 gecompileerde Fortranbestanden per optimalisatie naar twee:
+Boesten gaat van 228 gecompileerde Fortranbestanden per optimalisatie naar twee (productiemodule en ongewijzigde driver):
 452 vermeden compilaties per O0/O2-paar. Alle oorspronkelijke procesassertions
 draaien; de executables zijn byte-identiek tussen routes per optimalisatie en
 alle stdout is identiek, ook over O0/O2 en herhalingen. Warm hergebruikt MvG zes,
@@ -517,3 +518,33 @@ canonical admission. De Richards-controller weigert ook byteverschillen tegen
 de eerdere revisie met exit 1, zelfs wanneer alle afzonderlijke mass-/science-runs
 slagen. Lees `CONTROL.json` om science-failure van strikte vergelijkingsverschillen
 te onderscheiden; verander geen tolerantie om dat verschil te verbergen.
+
+## Kritische audit van de uitvoering
+
+Zie [sessiekosten en gerichte prioriteit](MODULAR_TESTABILITY_SESSION_COST_20261013.md)
+voor de gemeten tijdsplitsing, drie grootste kosten, afzonderlijke native uitvoering
+en de grens tussen echte numerieke belasting en vermijdbare buildoverhead.
+Start voor lokale Boesten-procesfeedback de bestaande controller met `--case boesten`;
+de brede owning/admissioncontroles volgen pas op een stabiele integratiekandidaat.
+
+Terminaal gereconcilieerd bewijs, inclusief sessiekosten, twaalf directe native
+metingen en herstelbundel voor de uitgevoerde commits: `integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64`.
+De capsule bindt het daadwerkelijk geteste scientific postimage; latere documenten
+en evidence veranderen geen productie/test/tool/reference-blobs.
+
+De Git-herstelbundel staat om transportkosten te begrenzen afzonderlijk in
+`integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64`.
+Decoded SHA256: `8fdcc582ff12fef6f40e177c6295bd0fc17dadcf3f8d9a145bb458b8f22f8ac1`.
+De kwalificatiecapsule bindt deze externe bundel in haar manifest. Na herstel van
+de eerder beschreven continuation-prerequisite `95da05c...`, en de publieke
+canonical `9f4f58c...` en checkpoint `85...` uit het bundlerecord:
+
+```bash
+base64 --decode integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64 > /tmp/modular-executed.bundle
+sha256sum /tmp/modular-executed.bundle
+git bundle verify /tmp/modular-executed.bundle
+git fetch /tmp/modular-executed.bundle HEAD
+```
+
+Het geïsoleerde restorebewijs in de capsule herstelde zowel de oorspronkelijke
+als gecombineerde werkelijk uitgevoerde commits en controleerde hun source-tree.

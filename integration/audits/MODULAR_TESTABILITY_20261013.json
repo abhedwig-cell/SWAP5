@@ -5,7 +5,7 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonical_admitted": false,
   "affected_invariants": [
     1,
@@ -18,7 +18,7 @@
     30
   ],
   "interfaces_changed": "Opt-in dependency API and three local production-driver routes; optional-config guard and exact prepublication beginning-ledger scalar timing; no physics formula, state layout or tolerance change",
-  "next_action": "Complete full SHARED moving F-CI resume OFF on canonical-reconciled postimage; fresh SHARED/SEPARATE O0/O2 exact output and inputs are PASS and sealed; then final documentation and admission reconciliation",
+  "next_action": "Publish coherent final evidence/diagnosis, verify live canonical and PR lease, safely admit qualified unchanged scientific surface; no new full run",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -49,14 +49,17 @@
   "pr": 1219,
   "remote_checkpoint": "2afa02aec15a199df497b0792552e096e0ac08a8",
   "checkpoint_commit": "51152a8ee74beef7a45204101bc830247b521285",
-  "last_reconciled_head": "cfc728c42b38026ba548f6250afec00969ccda67",
+  "last_reconciled_head": "9f4f58c1d6ae96073211a8ce7a785265d075d55d",
   "evidence_paths": [
     "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_OWNER_20261013.tar.xz.b64",
-    "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64"
+    "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_DOCS_20261013.json",
+    "integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64"
   ],
   "failed_attempts": [
     {
@@ -70,6 +73,12 @@
     {
       "name": "modular benchmark v3",
       "reason": "extra duplicate external headcalc compile; interrupted, excluded from speed claims"
+    },
+    {
+      "phase": "final evidence publication",
+      "status": "TRANSPORT_REPACKAGED",
+      "reason": "MCP request exceeds 16 MiB limit; no branch mutation or science failure",
+      "resolution": "Executed code bundle stored separately and exactly SHA-bound by terminal capsule; combined restored bytes unchanged"
     }
   ],
   "tested_scope": [
@@ -104,7 +113,7 @@
     "production_tree_unchanged": "98440388d8640d5c62ca03f9a193632b3df41ecd",
     "reference_tree_unchanged": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
     "resolution": "Retain canonical versions of all three overlapping performance files; restore measured diagnostic from bundle when reproducing old results",
-    "own_production_repair_still_unqualified": true,
+    "own_production_repair_still_unqualified": false,
     "terminal_checks": {
       "controls": {
         "exit": 0,
@@ -121,17 +130,18 @@
         "source_authority_refusal": true
       }
     },
-    "unchanged_tested_postimage_sources": 156
+    "unchanged_tested_postimage_sources": 156,
+    "initial_phase_only": "terminal_checks below retain original failed source-authority attempt; superseded by sealed owner/coupling and both full preservation PASS records"
   },
   "backend_qualification": {
-    "status": "FRESH_OWNER_AND_COUPLING_VERIFIED_FULL_PRESERVATION_PENDING",
+    "status": "FRESH_OWNER_COUPLING_AND_FULL_PRESERVATION_PASS",
     "baseline": "cfc728c42b38026ba548f6250afec00969ccda67",
     "preimage": "01d1981cc7aebb1553463b1cee955bb21da05fe6",
     "postimage": "7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18",
     "scope": "Only exact optional allocation guard and beginning-ledger scalar timing; every other production and reference byte retained",
     "highest_cases_inherited": 0,
     "owner_ready": true,
-    "moving_fci_pass": false,
+    "moving_fci_pass": true,
     "requested_by_user": "Doe: qualify bounded backend successor and close PR1219",
     "planned_gates": [
       "highest normal/low_air O0/O2, six configurations each",
@@ -262,13 +272,94 @@
       "members": 43,
       "compiler_requests": "UNKNOWN (uninstrumented qualification)"
     },
-    "full_shared_resume_off": "RUNNING",
+    "full_shared_resume_off": {
+      "status": "PASS",
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "wall_seconds": 7748.796257201,
+      "exit": 0,
+      "terminal_marker": true,
+      "source_unchanged": true
+    },
     "infra_failure_recovery": {
       "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_INFRA_20261013.tar.xz.b64",
       "decoded_sha256": "011e625802a1efcb27a17f8c7eaaab6eb142cc3c7fb181851df1966fc74b04f7",
       "members": 17,
       "status": "FAILED_INFRASTRUCTURE_ATTEMPTS_RECOVERED_NOT_QUALIFIED"
     },
-    "fresh_rerun": "RUNNING: same recorded compiler identities verified; no science or tolerance change"
+    "fresh_rerun": "PASS: recorded compiler identities restored and verified; no science or tolerance change",
+    "sealed_full": {
+      "external_code_bundle": {
+        "path": "integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64",
+        "decoded_sha256": "8fdcc582ff12fef6f40e177c6295bd0fc17dadcf3f8d9a145bb458b8f22f8ac1",
+        "decoded_bytes": 10508663,
+        "reason": "Separate transport-safe Git recovery bundle; exact tested commits restored in isolated repository before qualification closeout"
+      },
+      "status": "PASS",
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+      "decoded_sha256": "79eed7b13e923a73373c0887b0a1bdc7b857dd6e0e5ef5e184bdadf72c3741fc",
+      "decoded_bytes": 3467592,
+      "members": 146,
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_equivalent_remote_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
+      "tested_tree": "66f87e89d9f9f667b784a609b51efc27b1781306",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "full_exit": 0,
+      "full_wall_seconds": 7748.796257201,
+      "focused_science_sha256": {
+        "root": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+        "sensor": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e"
+      },
+      "shared_separate_byte_equal": true,
+      "full_shared_marker": true,
+      "resume_mode": "OFF",
+      "compiler_requests": "UNKNOWN (uninstrumented qualification)"
+    }
+  },
+  "session_cost_audit": {
+    "document": "docs/audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md",
+    "evidence_path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+    "measurement_status": "PASS direct native and current focused Boesten; low-air bounded observation CENSORED_NOT_QUALIFICATION",
+    "whole_session_accounting": "UNKNOWN; retained measured subsets and overlap limits explicit",
+    "new_full_runs_for_cost_audit": 0,
+    "priority": "Boesten minimal production process closure; 3 alternating benchmark rounds, cold pair 282.169 -> 1.384 seconds; 452 avoided compilations"
+  },
+  "status_snapshot": "QUALIFIED_CANDIDATE_PRE_MERGE; canonical admission truth is the subsequently verified merged state and receipt on PR #1219, not this pre-merge boolean",
+  "final_docs": {
+    "status": "PASS",
+    "path": "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_DOCS_20261013.json",
+    "document_sha256": {
+      "docs/audits/MODULAR_TESTABILITY_20261013.md": "166401dea6b52c2d43cf88d7a11f5f181fd3858191d971cf68762ee9c26d0f24",
+      "docs/audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md": "319d227ec4d2423e45f48dd477d7b248b7744a2cfbad5d0a2fb12fcc42826926"
+    },
+    "records": [
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "tools/docs/check_docs.py"
+        ],
+        "exit": 0,
+        "wall_seconds": 0.4969405580050079,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/22bca1a60c7a/docs-final"
+        ],
+        "exit": 0,
+        "wall_seconds": 47.275499326999125,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "6ce31dcec2d771aac4fd99f52c6ebd1c0cdc775bb81c95a4bd2440841d9a92b6"
+      }
+    ]
   }
 }
