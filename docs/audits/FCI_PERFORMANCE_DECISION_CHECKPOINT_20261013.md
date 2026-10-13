@@ -103,3 +103,11 @@ python3 tests/performance/compare_mc_irr01_shared_build.py --output-dir /tmp/swa
 Expected cost: three full executions, two original builds and one combined build. Do not run in parallel with another mutable build on the same checkout. The candidate does **not** replace either original script and does not inherit any PASS. The original numerical tests still run for both O0/O2 levels. Ensure the temporary build area is suitable, then independently inspect the recorded scientific outputs and negative fixture coverage. The result is still **NOT EXECUTED**, savings **UNKNOWN**. Cross-test shared-module extra symbols or order dependence would cause compilation/link/output failure and require separate owner review, not a tolerance change.
 
 This candidate intentionally avoids cross-run cache inheritance and does not modify the existing F-CI preservation runner. Qualification authority and exact target SHA must be checked before any default adoption.
+
+## Shared-build isolation review, 13 October, follow-up
+
+The initial combined runner had a real potential cross-driver contamination: compiling the root test driver into the shared O0/O2 module directory could leave driver-provided `.mod` output visible when compiling the sensor driver. The candidate now copies only the common compiled module interfaces into **separate private root and sensor driver directories**, then compiles, links and executes each driver in isolation. Shared production object files are not recompiled, and each physical test still runs O0/O2.
+
+The A/B comparison now requires a clean Git worktree before launch, records exact execution HEAD and compiler version, and rejects HEAD/worktree drift at completion. This does not certify toolchain-file immutability, all filesystem side effects, or the dependency selection closure. The experiment is still **NOT EXECUTED in a full SWAP5 checkout**, so no PASS or speedup should be claimed.
+
+The declared and recorded historical science reference hashes remain owned by the two unchanged original gates; candidate SHA equality is a necessary, not sufficient, condition for future qualification.
