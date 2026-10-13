@@ -26,6 +26,24 @@ class DependencyControls(unittest.TestCase):
             root=Path(d);(root/'src').mkdir();(root/'src/a.f90').write_text('module a\nuse, intrinsic :: iso_fortran_env\nend module')
             order,_=M.DEP.strict_closure(root,['src/a.f90']);self.assertEqual(len(order),1)
 
+class ProductionClosureControls(unittest.TestCase):
+    def test_component_closure_budgets(self):
+        expected={'hydraulics':2,'richards':17,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':154}
+        for name,target in M.COMPONENTS.items():
+            order,_=M.DEP.strict_closure(M.ROOT,[target],[M.STUB])
+            self.assertEqual(len(order),expected[name],name+' closure changed: reassess contract and build budget')
+    def test_no_duplicate_original_or_focused_sources(self):
+        for case in M.CASES:
+            for broad in [False,True]:
+                sources=M.plan(case,broad)
+                self.assertEqual(len(sources),len(set(sources)))
+    def test_zero_repeat_rejected(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as d:
+            cp=subprocess.run(['python',str(Path(M.__file__)), '--output',d+'/out','--benchmark','--repeat','0'],capture_output=True)
+            self.assertNotEqual(cp.returncode,0)
+            self.assertNotIn(b'MODULAR_PRODUCTION_DRIVERS=PASS',cp.stdout)
+
 class CompilerControls(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name)

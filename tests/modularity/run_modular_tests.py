@@ -43,7 +43,7 @@ def plan(case,broad=False):
     ordered,_=DEP.strict_closure(ROOT,[cfg['driver']], [STUB])
     modules=relative(ordered[:-1])
     if broad and case=='boesten': modules=original_boesten()
-    external=['src/legacy/b1_10_port/headcalc.f90'] if STUB in modules else []
+    external=['src/legacy/b1_10_port/headcalc.f90'] if STUB in modules and 'src/legacy/b1_10_port/headcalc.f90' not in modules else []
     return modules+external+[cfg['driver']]
 
 class Session:
@@ -120,7 +120,9 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',required=True)
     ap.add_argument('--benchmark',action='store_true');ap.add_argument('--repeat',type=int,default=3)
     ap.add_argument('--audit-build',action='store_true');ap.add_argument('--case',choices=list(CASES),action='append')
-    args=ap.parse_args(); out=Path(args.output).resolve(); s=Session(out)
+    args=ap.parse_args()
+    if args.repeat < 1: ap.error("repeat must be positive")
+    out=Path(args.output).resolve(); s=Session(out)
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     audit={}
     for name,path in COMPONENTS.items():

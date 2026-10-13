@@ -302,3 +302,23 @@ This section makes the demonstrated SWAP5 ordinary-chat workflow recoverable for
 10. **Carry work into new chats.** The next chat should start from repository canonical HEAD and the current ownership/status ledger, not re-derive this conversation. If a PR remains in progress, give its exact URL, branch/head, run IDs, error, qualified/pending scope, owner interfaces and the next decisive action. A user should not have to repeat the operational rules or manage recurring DNS, source-finding and run-status incidents.
 
 **Practical continuation loop:** reconcile → choose maximal safe dependency-ordered scope → persist implementation/evidence → run local O0/O2 → observe *existing* integrated runs through completion → diagnose and repair (without weakening guards) → requalify exact head → reconcile ownership/checks → merge if admitted → update coverage and remaining queue → continue.
+
+
+## Local contract feedback before integrated qualification
+
+For new physical functionality, identify an executable production-driver seam,
+explicit inputs and committed/candidate/workspace ownership, the actual ordered
+compile/link closure, and independent oracles where available. Explain unavoidable
+large closures in the existing work-unit evidence. Run local function/module and
+state/interface tests during development; run targeted physical composition when
+the route becomes executable and earlier where shared semantics require it.
+All current owner, Full Richards, restart, mass, coupling and F-CI gates remain
+mandatory at their existing qualification/admission boundaries.
+
+Identical artifacts may be shared inside a controlled qualification execution
+only with verified source/provider/flags/compiler/environment/module identities,
+separate O0/O2 directories and fresh execution of every required scientific driver.
+The opt-in modular feedback experiment does not replace a default gate. Persistent
+cache or evidence inheritance requires its separately qualified full dependency
+and terminal-evidence binding. Unknown closure means RUN, never inherited PASS.
+See [the tested modularity investigation](../audits/MODULAR_TESTABILITY_20261013.md).
