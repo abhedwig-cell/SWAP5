@@ -43,9 +43,21 @@ def build(tree,out,profile=False):
     identity=importlib.util.module_from_spec(spec);spec.loader.exec_module(identity)
     files=sorted((tree/'src').rglob('*.f90'))+[stub]
     headcalc=tree/'src/legacy/b1_10_port/headcalc.f90'
-    sources=identity.discover(files,[DRIVER,headcalc])+[headcalc,DRIVER]
+    # Earlier solver contracts predate the constitutive-work counter. Keep
+    # its measurement UNKNOWN; only this diagnostic assignment is adapted.
+    driver=out/'trajectory_driver.f90'
+    diagnostic=DRIVER.read_text()
+    counter_available='constitutive_evaluations' in (tree/'src/solver/mod_soil_water_solver_contract.f90').read_text()
+    if not counter_available:
+        assignment='constitutive=constitutive+result%diagnostics%constitutive_evaluations'
+        if diagnostic.count(assignment)!=1:raise ValueError('counter adapter preimage mismatch')
+        diagnostic=diagnostic.replace(assignment,'constitutive=-1 ! unavailable in this revision')
+    driver.write_text(diagnostic)
+    sources=identity.discover(files,[driver,headcalc])+[headcalc,driver]
     manifest={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files+[DRIVER]}
     (out/'INPUTS.json').write_text(json.dumps({'source_identity':manifest,'ordered_sources':list(map(str,sources)),
+                                           'generated_driver_sha256':hashlib.sha256(driver.read_bytes()).hexdigest(),
+                                           'constitutive_counter_available':counter_available,
                                            'flags':COMMON+(['-pg'] if profile else [])},indent=2,sort_keys=True))
     objects=[];events=[]
     flags=COMMON+(['-pg'] if profile else [])
