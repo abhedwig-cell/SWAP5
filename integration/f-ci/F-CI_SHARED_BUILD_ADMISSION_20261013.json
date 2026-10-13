@@ -1,0 +1,127 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_TOOLING_ONLY",
+  "pr": 1218,
+  "pr_head": "753656fb610ec3f1fd9cbcf98d94f651738d17ce",
+  "canonical_merge": "8dac664db83dda8338ef0ffe0f92b55541876978",
+  "canonical_prior": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "canonical_tree_verified": "09a56f7b55dee98d35c7e79b49025faa58ebc193",
+  "production_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+  "reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+  "default_fci_blob": "6f44e3163cbfe28ac85539dad5416c156604879e",
+  "owner_science_heads": [
+    "bf239429ed114e3638800bf9c99e16745d8e31fa",
+    "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9"
+  ],
+  "fci_gate_head": "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9",
+  "fci_gate": "PASS; resume OFF; exact unchanged scientific dependency surface inherited",
+  "coverage_denominator_changed": false,
+  "coverage_disposition": "Existing root/sensor O0/O2, Full Richards, hard mass, transactional/restart assertions and moving F-CI preserved. No scientific capability admission or withdrawal. Default F-CI route unchanged; measured saving applies to isolated paired gate.",
+  "post_persistence_checks": {
+    "head": "753656fb610ec3f1fd9cbcf98d94f651738d17ce",
+    "tooling_tests": "16 PASS",
+    "generic_refiner_native_pairs": "2 alternating pairs PASS",
+    "raw_logs": {
+      "persisted-final-tooling.stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "persisted-final-tooling.stderr": {
+        "sha256": "cf4600c03f6b251139fd0adf49a8e32786fcfa463146fec21efc760fdc78752f",
+        "text": "................\n----------------------------------------------------------------------\nRan 16 tests in 2.419s\n\nOK\n"
+      },
+      "persisted-final-cli.stdout": {
+        "sha256": "0c7f09155c538a9a0a9a553903ae90a890366a1d0d5af63e4052c3080ef22c26",
+        "text": "PINNED_CORE_EQUIVALENT=True\n"
+      },
+      "persisted-final-cli.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "persisted-final-cli/00-current.stderr": {
+        "sha256": "a8d9aa3e1f3f9e261da85064296e1f0000b319f4052b29914a705e71f11a11af",
+        "text": "RICHARDS_SOLVER_TIME CPU=  5.5866900000000475E-01 WALL=  5.5237543000000067E-01\n"
+      },
+      "persisted-final-cli/00-recent.stderr": {
+        "sha256": "d5328e982d3b0ac1f18d248751155a63ece820883713b69e184446e80a442484",
+        "text": "RICHARDS_SOLVER_TIME CPU=  4.2911100000000235E-01 WALL=  4.1773396999999995E-01\n"
+      },
+      "persisted-final-cli/01-current.stderr": {
+        "sha256": "b4098165d984ab2767649266d032bbe3055cb6beba995a2163d3363c2ab8e92d",
+        "text": "RICHARDS_SOLVER_TIME CPU=  4.5544199999999713E-01 WALL=  4.4743552700000105E-01\n"
+      },
+      "persisted-final-cli/01-recent.stderr": {
+        "sha256": "a68f8af86e06909cbb002290fefa80a18749a24c5b3cfdb48d276c39a37135c4",
+        "text": "RICHARDS_SOLVER_TIME CPU=  4.9620299999998918E-01 WALL=  4.8836407099999912E-01\n"
+      }
+    },
+    "native_control": {
+      "head": "ffb476607ad4859b3dca6cac991a135f642e8f15",
+      "source_control": "/workspace/scratch/25c3f50dc389/evidence/richards-corrected/CONTROL.json",
+      "core": 8,
+      "before_after_binary_and_runtime_library_sha256": {
+        "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2": "6222a16be7f2d458d6870efe6e715fc0c8d45766fb79cf7dcc3125538d703e28",
+        "/usr/lib/x86_64-linux-gnu/libc.so.6": "511f825ee075610ac9c0f7f91e2c13de2000d0f7b859f6461137e809a0a009d0",
+        "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+        "/usr/lib/x86_64-linux-gnu/libm.so.6": "f06f2ce1f1833df5f41cf13b6447ff07bea993ad9b27297d3428c2f70ab3f0e7",
+        "/workspace/scratch/25c3f50dc389/evidence/richards-corrected/current/trajectory": "5dbe91ad0c4e4330f3960bf2cdf731c260a4cbef63b7dc6178e761d4b94ae500",
+        "/workspace/scratch/25c3f50dc389/evidence/richards-corrected/recent/trajectory": "26b6a012989009ee69f8e04e75fd651c8981c1ed1e84dc04f05d6c8f5b81883f"
+      },
+      "records": [
+        {
+          "repeat": 0,
+          "revision": "recent",
+          "exit": 0,
+          "wall_seconds": 1.2950821589984116,
+          "user_cpu_seconds": 0.9957509999999999,
+          "system_cpu_seconds": 0.15421400000000002,
+          "solver_cpu_seconds": 0.42911100000000235,
+          "solver_wall_seconds": 0.41773396999999995,
+          "stdout_sha256": "cabac57e1068b6c75681fadabc09257ca223599423d2d5c39fc8bd8a9e0a9d61"
+        },
+        {
+          "repeat": 0,
+          "revision": "current",
+          "exit": 0,
+          "wall_seconds": 1.4488062009986606,
+          "user_cpu_seconds": 1.2381960000000003,
+          "system_cpu_seconds": 0.13171099999999997,
+          "solver_cpu_seconds": 0.5586690000000047,
+          "solver_wall_seconds": 0.5523754300000007,
+          "stdout_sha256": "cabac57e1068b6c75681fadabc09257ca223599423d2d5c39fc8bd8a9e0a9d61"
+        },
+        {
+          "repeat": 1,
+          "revision": "current",
+          "exit": 0,
+          "wall_seconds": 1.3761095570007456,
+          "user_cpu_seconds": 1.1316979999999996,
+          "system_cpu_seconds": 0.11091299999999998,
+          "solver_cpu_seconds": 0.4554419999999971,
+          "solver_wall_seconds": 0.44743552700000105,
+          "stdout_sha256": "cabac57e1068b6c75681fadabc09257ca223599423d2d5c39fc8bd8a9e0a9d61"
+        },
+        {
+          "repeat": 1,
+          "revision": "recent",
+          "exit": 0,
+          "wall_seconds": 1.4424503669979458,
+          "user_cpu_seconds": 1.171129,
+          "system_cpu_seconds": 0.165584,
+          "solver_cpu_seconds": 0.4962029999999892,
+          "solver_wall_seconds": 0.4883640709999991,
+          "stdout_sha256": "cabac57e1068b6c75681fadabc09257ca223599423d2d5c39fc8bd8a9e0a9d61"
+        }
+      ],
+      "equivalent": true,
+      "failure": null,
+      "scope": "2 alternating pairs, same 30-day physical fixture and actual existing executables, one fixed CPU; original hashes retained without tolerance adaptation"
+    }
+  },
+  "scientific_limits": {
+    "september_physical": "FAIL",
+    "september_qualified_speed_ratio": "UNKNOWN",
+    "legacy_matched_runtime": "UNKNOWN",
+    "whole_fci_speedup": "UNKNOWN",
+    "current_recent": "No demonstrated bounded regression; exact physical outputs and unchanged selected production sources"
+  }
+}
