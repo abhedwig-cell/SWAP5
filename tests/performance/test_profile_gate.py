@@ -44,5 +44,21 @@ class ProfileGateSmoke(unittest.TestCase):
             self.assertEqual(payload['compiler_invocations'], 0)
 
 
+    def test_compiler_failure_is_recorded(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            invalid = root / 'invalid.f90'
+            invalid.write_text('not valid Fortran\\n')
+            report = root / 'compiler-failure.json'
+            outcome = subprocess.run(
+                [sys.executable, str(TOOL), '--output', str(report), '--',
+                 'gfortran', '-c', str(invalid), '-o', str(root / 'invalid.o')],
+                capture_output=True, text=True)
+            self.assertNotEqual(outcome.returncode, 0)
+            entry = json.loads(report.read_text())
+            self.assertEqual(entry['gate_returncode'], outcome.returncode)
+            self.assertEqual(entry['compiler_invocations'], 1)
+            self.assertNotEqual(entry['compiler_events'][0]['returncode'], 0)
+
 if __name__ == '__main__':
     unittest.main()
