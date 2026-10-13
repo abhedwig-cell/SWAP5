@@ -16,8 +16,8 @@
   "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonically_admitted": false,
   "required_gates": [
     "actual full local F-CI resume OFF with new default",
@@ -36,7 +36,7 @@
     "compiler/environment"
   ],
   "evidence_inheritance": "Prior A/B qualifies unchanged shared build only, not this F-CI route. Full route gate must actually run. No whole-F-CI speed ratio without same-postimage A/B.",
-  "next_action": "Actively await full local F-CI terminal result; then preserve complete raw evidence and reconcile canonical admission",
+  "next_action": "Reconcile live canonical and expected PR head, admit bounded route only when all gates permit",
   "blockers": [],
   "discarded_diagnostic_attempt": {
     "head": "ec46ba8548d288cb4224015d16084c8a3a96fe7f",
@@ -47,9 +47,25 @@
   "focused_science_equal": true,
   "focused_tested": true,
   "negative_controls": "PASS: invalid mode; actual first compile failure each route; selector/runner blob drift",
-  "required_gate_status": "Full local moving F-CI resume OFF RUNNING on persisted scientific head",
+  "required_gate_status": "PASS full local moving F-CI resume OFF on persisted scientific head",
   "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
   "evidence": [
+    "integration/audits/FCI_SHARED_ROUTE_FINAL_20261013.json",
     "integration/audits/FCI_SHARED_ROUTE_FOCUSED_20261013.json"
-  ]
+  ],
+  "preserved": true,
+  "fci_gate_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "fci_result": "PASS",
+  "gate_results": {
+    "focused_shared": "PASS",
+    "focused_separate": "PASS",
+    "exact_science": "PASS",
+    "invalid_mode": "PASS",
+    "compiler_failure_both_modes": "PASS",
+    "source_identity_negatives": "PASS",
+    "non_allocation_preservation": "PASS",
+    "tooling_16": "PASS",
+    "strict_docs": "PASS",
+    "full_fci_resume_off": "PASS"
+  }
 }
