@@ -34,8 +34,12 @@ class BenchmarkTests(unittest.TestCase):
 
     def test_variable_output_fail_closed(self):
         with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            counter = root / 'counter.txt'
+            program = root / 'changing.py'
+            program.write_text('from pathlib import Path\\nimport sys\\np=Path(sys.argv[1])\\nn=int(p.read_text()) if p.exists() else 0\\np.write_text(str(n+1))\\nprint(n+1)\\n')
             result, data = self.run_benchmark(
-                Path(temp), 'variable.json', ['/bin/date', '+%s%N'])
+                root, 'variable.json', [sys.executable, str(program), str(counter)])
             self.assertEqual(result.returncode, 2, result.stderr)
             self.assertFalse(data['stdout_stable'])
 
