@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 import tarfile
+import subprocess
 from backend_allocation_authority import ROOT, BASE, BACKEND, PUBLICATION, blob, verify_source, git
 
 MARKERS = {
@@ -48,6 +49,20 @@ def verify_owner_binding(manifest, control, recipes, source):
     assert {s['name'] for s in control['steps']} == REQUIRED
     assert manifest['source_tree'] == control['source_tree']
     assert git('rev-parse', control['head'] + ':src') == control['source_tree']
+    policy = recipes.get('highest_controller_policy_binding')
+    if policy is not None:
+        path = 'tests/mc-met01/run_daily_demand_frost_successor.py'
+        executed = subprocess.check_output(['git', 'show', control['head'] + ':' + path], cwd=ROOT)
+        current = (ROOT / path).read_bytes()
+        assert hashlib.sha256(executed).hexdigest() == policy['old_sha256']
+        assert hashlib.sha256(current).hexdigest() == policy['new_sha256']
+        old = (b' from backend_allocation_authority import BACKEND,verify_source\n'
+               b' verify_source() # Source eligibility only: all scientific cases still execute.\n'
+               b' assert changed==sorted([*PINS,BACKEND])\n')
+        new = (b' from backend_allocation_authority import verify_source\n'
+               b" source=verify_source() # Source eligibility only: all scientific cases still execute.\n"
+               b" assert changed==sorted([*PINS,*source['changed_paths']])\n")
+        assert executed.count(old) == 1 and executed.replace(old, new) == current
     delta = git('diff', '--name-only', control['head'], 'HEAD', '--', 'src').splitlines()
     assert delta in [[], [PUBLICATION]], 'science source changed inside owner surface'
     assert REQUIRED <= recipes['recipes'].keys()

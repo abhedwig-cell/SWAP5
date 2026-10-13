@@ -457,6 +457,18 @@ herstellen. GitHub-snapshotcommits hebben andere commitmetadata; zij vervangen
 de gemeten lokale SHA's niet. De definitieve gepubliceerde tree wordt afzonderlijk
 tegen de lokale tree gecontroleerd.
 
+De continuation-capsule bewaart daarnaast
+`backend-owner/MODULAR_CONTINUATION_CODE.bundle` en
+`backend-owner/CONTINUATION_CODE_IDENTITY.json`. Deze geverifieerde bundle bevat
+de werkelijke owner-, live-coupling- en gezamenlijke proefcommits, waaronder
+`2815b858a023c8623ee431fbe93487f001a09e60`,
+`04f64d428fbb2f9edb50dfc210a328695cdecd60` en
+`67964e4da4bb27761bc73e72775e04778523f803`. Fetch eerst de drie prerequisites
+uit het identity-record, controleer de SHA256 en voer `git bundle verify` en
+`git fetch <continuation-bundle> HEAD` uit. Dat herstelt de lokale commitobjecten
+zonder de checkout te veranderen. De capsule blijft een recoveryrecord; zij
+vervangt de volledige sealed owner-evidence of de moving F-CI-gate niet.
+
 ```bash
 # Use the qualified GNU Fortran toolchain on PATH. Each output directory is new.
 python tests/modularity/test_modular_controls.py
