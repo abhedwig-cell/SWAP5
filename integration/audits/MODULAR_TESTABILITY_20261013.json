@@ -246,6 +246,13 @@
     "remote_equivalent_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
     "tree": "66f87e89d9f9f667b784a609b51efc27b1781306",
     "focused_shared_separate": "RUNNING",
-    "full_shared_resume_off": "RUNNING"
+    "full_shared_resume_off": "RUNNING",
+    "infra_failure_recovery": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_INFRA_20261013.tar.xz.b64",
+      "decoded_sha256": "011e625802a1efcb27a17f8c7eaaab6eb142cc3c7fb181851df1966fc74b04f7",
+      "members": 17,
+      "status": "FAILED_INFRASTRUCTURE_ATTEMPTS_RECOVERED_NOT_QUALIFIED"
+    },
+    "fresh_rerun": "RUNNING: same recorded compiler identities verified; no science or tolerance change"
   }
 }
