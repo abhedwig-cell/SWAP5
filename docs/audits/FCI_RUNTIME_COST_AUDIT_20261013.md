@@ -37,3 +37,16 @@ An independent small GNU Fortran source was compiled and run eight times on one 
 With a lightweight shell plus GNU-time shim, eight paired local compilations showed unwrapped median 0.04422 s and wrapped median 0.04515 s, about 0.00093 s difference. Small samples and interleaved process noise prevent general overhead guarantees. GNU time measures to centiseconds; the gate-level monotonic clock has finer resolution. The corrected probe retains exit-code reporting, one compiler event per PATH-resolved gfortran invocation and no overwrite of prior evidence.
 
 Neither measurement says anything yet about the physical SWAP5 solver. A full solver benchmark on matching input and machine remains REQUIRED and UNKNOWN. Avoid promoting this PR until its exact committed postimage and tests are run on a checkout, and tool-authority review is completed.
+
+## Standalone executable probe: controls and limits
+
+The distinct `benchmark_executable.py` captures elapsed monotonic wall time and cumulative child CPU deltas for an already-built executable, with repeated output digests. An opt-in `--require-stable-stdout` returns status 2 if repeated stdout differs; original measurements remain recorded even after rejection. Any nonzero executable status stops the repeats and propagates that failure.
+
+A local probe using an already-built tiny Fortran test executable completed three runs with equal stdout hashes and sub-0.002-second wall measurements. A variable-output `date +%s%N` command returned 2 under stable-output checking; `false` returned 1. These are development smoke checks, **not** the exact GitHub-postimage verification or SWAP numerics. The committed test file `tests/performance/test_benchmark_executable.py` covers these paths and immutable output refusal.
+
+The current benchmark deliberately does NOT attest stable files written by a model, identical initial conditions between repeats, mass-balance preservation, simulation-length equivalence, or isolation of numerical solver cost. **Do not promote a physical performance claim from the probe alone.** Before a SWAP comparison, isolate trial directories, pin the input closure and executable/toolchain identities, run the qualified physical output comparisons, and collect numerical step/iteration counters.
+
+The historical SWAP4 donor is already within `integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64`. The repository also contains 4.3.1 reference files. Never request users to upload the legacy sources again. The B1.11 meteo-member verifier is not itself a demonstration of a complete executable SWAP4 benchmark.
+
+## Open decision
+Current classification: test/build/controller cost has confirmed nontrivial components; **SWAP5 solver regression = UNKNOWN**. No scientific performance regression, improvement, or full F-CI time saving can yet be claimed. Hold the PR as draft until the exact-head tests and controlled solver profiles are complete.
