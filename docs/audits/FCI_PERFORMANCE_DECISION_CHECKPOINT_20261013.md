@@ -88,3 +88,18 @@ A safe initial candidate is the pair of `run_crop_accepted_hydraulic_provenance.
 **Reason for prioritization:** a shared in-session compile targets the 340 observed compilation requests without creating cross-run scientific inheritance authority or repeatedly hashing a huge compiler installation. But it must still be tested for same-head O0/O2 output equivalence. Estimated saving remains UNKNOWN.
 
 The audit PR is instrument-only; this architecture hypothesis should be developed as a separate, owner-reviewed execution candidate, not smuggled into PR #1218.
+
+## Executable shared-build candidate and same-host A/B comparison
+
+The audit branch now includes:
+- `tests/performance/run_mc_irr01_shared_build_experiment.sh`, which uses the original root/sensor module discovery algorithm and compiler flags, compiles the union once per O0/O2, compiles and links separate root and sensor programs, runs the real scientific executables and verifies their Full Richards/mass PASS markers plus O0/O2 byte equality.
+- `tests/performance/compare_mc_irr01_shared_build.py`, which executes **both unchanged original qualified scripts** plus the candidate on the same current worktree, preserves raw stdout/stderr/timing for each, compares the actual scientific-output SHA256 for root and sensor independently, and writes `CONTROL.json`. A nonzero original or candidate gate, missing/duplicated SHA marker, or scientific mismatch rejects equivalence.
+
+Run only in a complete SWAP5 checkout on a pinned clean candidate:
+```bash
+bash -n tests/performance/run_mc_irr01_shared_build_experiment.sh
+python3 tests/performance/compare_mc_irr01_shared_build.py --output-dir /tmp/swap5-irr-shared-trial-001
+```
+Expected cost: three full executions, two original builds and one combined build. Do not run in parallel with another mutable build on the same checkout. The candidate does **not** replace either original script and does not inherit any PASS. The original numerical tests still run for both O0/O2 levels. Ensure the temporary build area is suitable, then independently inspect the recorded scientific outputs and negative fixture coverage. The result is still **NOT EXECUTED**, savings **UNKNOWN**. Cross-test shared-module extra symbols or order dependence would cause compilation/link/output failure and require separate owner review, not a tolerance change.
+
+This candidate intentionally avoids cross-run cache inheritance and does not modify the existing F-CI preservation runner. Qualification authority and exact target SHA must be checked before any default adoption.
