@@ -147,6 +147,17 @@
       "FKT22 actual serialized trajectory",
       "original Boesten/macro allocation branches",
       "existing full moving F-CI resume OFF (including coupling)"
-    ]
+    ],
+    "coupling_diagnosis": {
+      "canonical_control": "same actual hard mass failure on cfc728c after dependency expansion; backend not in FGC25 buildclosure",
+      "cause_commit": "3fc6a287852538f1e53b7f7daddd7ea190c69f8e",
+      "cause": "allocation-removal moved initial_total read after ledger commit, making delta zero",
+      "repair": "move scalar initial_total read to immediately after initial valid snapshots, before staging/commit; retains allocation-free implementation",
+      "probe_commit": "2871dd4b1bbd791c46d767e78c1f1118da564aa8",
+      "probe_publication_blob": "ef2c293f9f826317dc0f072345abeb1c9c914c4a",
+      "probe_tests": "six unchanged owner programs O0/O2 PASS; unchanged F-VQ87 O0/O2 exact historical stdout SHA de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
+      "primary_source_mutated_during_owner_queue": false,
+      "disposition": "apply bounded scalar timing repair after owner queue terminal, then exact coupling successor qualification and full moving preservation; no mass tolerance change"
+    }
   }
 }
