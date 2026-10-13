@@ -8,7 +8,18 @@ PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90':'44b07cd1046632a38b3
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 assert git('merge-base','--is-ancestor',BASE,'HEAD')==''
 assert not git('status','--porcelain','--','src','reference','tests/mc-met01','tests/fmig431','tests/frost','tests/support','tests/fvq/test_fvq35_reference_et_demand_oracle.f90')
-assert git('diff','--name-only',BASE,'HEAD','--','src').splitlines()==sorted(PINS)
+changed=git('diff','--name-only',BASE,'HEAD','--','src').splitlines()
+bounded_repair=changed!=sorted(PINS)
+fresh_owner=None
+if bounded_repair:
+ sys.path.insert(0,str(ROOT/'tests/modularity'))
+ from backend_allocation_authority import BASE as REPAIR_BASE, BACKEND, PUBLICATION, verify_source
+ from verify_backend_owner_evidence import verify_owner, verify_dependencies
+ source=verify_source()
+ assert changed==sorted([*PINS,*source['changed_paths']])
+ fresh_owner=verify_owner() # Missing, partial, stale or corrupted proof fails closed.
+else:
+ assert changed==sorted(PINS)
 for p,b in PINS.items():assert git('rev-parse','HEAD:'+p)==b and git('hash-object',p)==b,p
 assert git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference')
 # Existing reference implementation and declarations are byte retained;
@@ -22,9 +33,22 @@ status=json.loads((ROOT/'integration/audits/MC_MET01_STATUS.json').read_text())[
 assert status['tested'] and status['source_postimages']==PINS
 r=status['focused_evidence'] if owner_only else status['owner_evidence'];raw=base64.b64decode((ROOT/r['path']).read_bytes());assert hashlib.sha256(raw).hexdigest()==r['decoded_sha256']
 with tarfile.open(fileobj=io.BytesIO(raw)) as t:
- m=json.load(t.extractfile('MANIFEST.json'));assert m['source_tree']==git('rev-parse','HEAD:src')
+ m=json.load(t.extractfile('MANIFEST.json'))
+ expected_tree=git('rev-parse',(REPAIR_BASE if bounded_repair else 'HEAD')+':src')
+ assert m['source_tree']==expected_tree
  for name,h in m['member_sha256'].items():assert hashlib.sha256(t.extractfile(name).read()).hexdigest()==h,name
- for p,b in m['dependency_blobs'].items():assert git('rev-parse','HEAD:'+p)==b and git('hash-object',p)==b,p
+ if bounded_repair:
+  # These exact changed inputs have fresh evidence rather than inherited PASS.
+  # Publication is absent from all owner closures and has separate coupling gates.
+  replacements={BACKEND,PUBLICATION,'tests/support/augment_bartholomeus_backend_sources.py',
+                'tests/mc-met01/run_daily_demand_frost_successor.py',
+                'tests/mc-met01/verify_daily_demand_successor.py'}
+  retained={p:b for p,b in m['dependency_blobs'].items() if p not in replacements}
+  verify_dependencies(retained)
+  for p in replacements-{PUBLICATION}:
+   assert fresh_owner['dependency_blobs'][p]==git('rev-parse','HEAD:'+p),p
+ else:
+  for p,b in m['dependency_blobs'].items():assert git('rev-parse','HEAD:'+p)==b and git('hash-object',p)==b,p
  for log,marker in [('source.log',b'MC_MET01_LITERAL_DAILY_DEMAND_O0_O2=PASS'),('reference.log',b'MC_MET01_INCUMBENT_LITERAL_REFERENCE_ET_PRESERVATION_O0_O2=PASS'),('focused.log',b'MC_MET01_ACTUAL_DAILY_DEMAND_PRODUCTION_O0_O2=PASS'),('default-crop.log',b'CROP_FILE_WEATHER_PRODUCTION_O0_O2=PASS'),('old-raintb.log',b'MC_MET01_ACTUAL_RAINTB_PRODUCTION_O0_O2=PASS')]:assert marker in t.extractfile(log).read(),log
  if not owner_only:
   assert m['highest_configurations']==24 and m['fine_comparisons']==144

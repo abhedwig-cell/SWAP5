@@ -131,3 +131,16 @@ Use status language that makes authority and time explicit. Useful labels includ
 - **Qualified** - supported by named verification evidence.
 
 Keep claims narrow enough that a future agent can trace each one to code, a contract, a decision, or evidence.
+
+## Independent local testability
+
+New physical functionality must have a small executable driver calling the real
+production interface, with explicit input/state/result contracts and a measured
+compile/link closure. If accepted-state or shared-runtime dependencies prevent a
+small closure, justify the dependency in the existing work-unit/PR, rather than
+substituting a copied formula or mock for production science. Use local direct
+contract and state/interface tests during development, then targeted physical
+composition and all owning scientific/admission/preservation gates. A module
+import graph alone never authorizes skipping a gate or inheriting prior PASS.
+See `docs/audits/MODULAR_TESTABILITY_20261013.md` for the opt-in tested routes and
+proportional four-level strategy; existing admission authority remains binding.

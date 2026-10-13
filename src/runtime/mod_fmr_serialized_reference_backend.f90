@@ -4237,11 +4237,16 @@ contains
                self%boesten_evaporation_forcing%runoff_resistance_day, &
                self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
           boesten_top_provider%matrix_source_area_partition = self%macropore_top_input_forcing%supplied
-          if(self%macropore_config%surface_pond_inflow_enabled)then
-            boesten_top_provider%macropore_pond_donor_active=.true.
-            boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
-            boesten_top_provider%macropore_surface_conductivity= &
-                 self%macropore_config%surface_macropore_conductivity_cm_per_day
+          ! Boesten is valid without macropores. The optional configuration is
+          ! allocated only for active macropores; Fortran does not guarantee
+          ! short-circuit evaluation of a combined ALLOCATED/.AND. condition.
+          if (allocated(self%macropore_config)) then
+            if(self%macropore_config%surface_pond_inflow_enabled)then
+              boesten_top_provider%macropore_pond_donor_active=.true.
+              boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+              boesten_top_provider%macropore_surface_conductivity= &
+                   self%macropore_config%surface_macropore_conductivity_cm_per_day
+            end if
           end if
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
