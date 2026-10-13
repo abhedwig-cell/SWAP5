@@ -50,7 +50,8 @@ def main():
     destination = Path(args.output_dir).resolve()
     destination.mkdir(parents=True, exist_ok=False)
     result = {"started_utc": datetime.now(timezone.utc).isoformat(),
-              "originals": {}, "candidate": None, "equivalent": False,\n              "head": head, "compiler": compiler}
+              "originals": {}, "candidate": None, "equivalent": False,
+              "head": head, "compiler": compiler}
     success = False
     try:
         for case, runner in ORIGINALS.items():
@@ -70,7 +71,8 @@ def main():
         if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != head:
             raise ValueError("HEAD changed during qualification")
         if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():
-            raise ValueError("working tree changed during qualification")\n        baseline_seconds = sum(item["seconds"] for item in result["originals"].values())
+            raise ValueError("working tree changed during qualification")
+        baseline_seconds = sum(item["seconds"] for item in result["originals"].values())
         candidate_seconds = result["candidate"]["seconds"]
         result["runtime_comparison"] = {
             "original_sequential_wall_seconds": baseline_seconds,
