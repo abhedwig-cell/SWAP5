@@ -1,0 +1,41 @@
+{
+  "work_unit": "F-CI-SHARED-IRR01-ROUTE",
+  "baseline": "cfc728c42b38026ba548f6250afec00969ccda67",
+  "branch": "audit/fci-shared-route-20261013",
+  "owned_surface": "F-CI allocation pair test-build routing only",
+  "interfaces_changed": "Default allocation pair SHARED; explicit SEPARATE control and focused identical owner gate",
+  "interfaces_held_fixed": [
+    "src/",
+    "reference/",
+    "all incumbent drivers and runners",
+    "qualified shared runner and selector",
+    "scientific assertions/tolerances",
+    "historical evidence",
+    "resume controller"
+  ],
+  "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "required_gates": [
+    "actual full local F-CI resume OFF with new default",
+    "focused SHARED and SEPARATE actual O0/O2 strict scientific comparison",
+    "invalid mode and actual compiler failure negatives",
+    "tooling/docs gates",
+    "live canonical/overlap and preserved coverage"
+  ],
+  "dependency_surface": [
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/performance/run_mc_irr01_shared_build_experiment.sh",
+    "tools/performance/irrigation_build_identity.py",
+    "tests/f-app07/",
+    "tests/fmr/mod_fmr04_fixed_top_provider.f90",
+    "src/",
+    "compiler/environment"
+  ],
+  "evidence_inheritance": "Prior A/B qualifies unchanged shared build only, not this F-CI route. Full route gate must actually run. No whole-F-CI speed ratio without same-postimage A/B.",
+  "next_action": "Persist candidate then actual local negative/focused/full gates; no merge until terminal PASS",
+  "blockers": []
+}

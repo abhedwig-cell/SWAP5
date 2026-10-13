@@ -4,6 +4,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Shared qualification preserves all original driver executions; no result reuse.
+case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
+  SHARED|SEPARATE) ;;
+  *) printf '%s\n' 'FCI_IRR01_BUILD_MODE must be SHARED or SEPARATE' >&2; exit 2 ;;
+esac
+
 # Opt-in receipt controller. OFF follows the original command directly.
 fci_group() {
   local group="$1"; shift
@@ -444,6 +450,28 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 # All unchanged source paths retain the exact canonical first-parent blob.
 # This bounded exception is NOT proof of scientific preservation for modified paths.
 irrigation_owner_verified=0
+verify_mc_irr01_allocation_successor() {
+  git cat-file -e HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90 2>/dev/null || fail 'missing allocation successor'
+  test "$(git rev-parse HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90)" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail 'allocation dependency identity: src/runtime/mod_fmr_irrigation_allocation_binding.f90'
+  test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_root_restart.sh)" = c3d1b0c2da5f3a78132c8a0c38148758f3abd4ca || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_root_restart.sh'
+  test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_allocated_root_restart.f90)" = 1108400284dcd685660d0dd6b439eeb7002ffc05 || fail 'allocation dependency identity: tests/f-app07/test_mc_irr01_allocated_root_restart.f90'
+  test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh)" = d076298b49c9c0892fe449a5f5b8ba071cb5c81a || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh'
+  test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90)" = 3b2c6e35287a8ecfcc6c87202c4ca0a470e5e4a7 || fail 'allocation dependency identity: tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90'
+  case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
+    SHARED)
+      test "$(git rev-parse HEAD:tests/performance/run_mc_irr01_shared_build_experiment.sh)" = 72340b78020de210310b90d74fc86d958722ad20 || fail 'unqualified allocation shared runner'
+      test "$(git rev-parse HEAD:tools/performance/irrigation_build_identity.py)" = 0ed9c2d762c3aac971265b379e51d7d9915c36b0 || fail 'unqualified allocation source selector'
+      bash tests/performance/run_mc_irr01_shared_build_experiment.sh || fail 'allocation root and sensor/repeated-event/restart shared build'
+      ;;
+    SEPARATE)
+      bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh || fail 'allocation root/repeated-event/restart'
+      bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'
+      ;;
+  esac
+  echo "FCI_CANONICAL_MC_IRR01_ALLOCATION_BUILD_MODE=${FCI_IRR01_BUILD_MODE:-SHARED}"
+  echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS'
+}
+
 verify_mc_irr01_owner_successor() {
   if (( irrigation_owner_verified )); then return; fi
   local candidate_path
@@ -504,18 +532,17 @@ verify_mc_irr01_owner_successor() {
     echo 'FCI_CANONICAL_MC_IRR01_ACCEPTED_SALT_SUCCESSOR=PASS'
   fi
   if git cat-file -e HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90 2>/dev/null; then
-    test "$(git rev-parse HEAD:src/runtime/mod_fmr_irrigation_allocation_binding.f90)" = ab5ac97c5017da9ba0560e674fb5888e422de5e5 || fail 'allocation dependency identity: src/runtime/mod_fmr_irrigation_allocation_binding.f90'
-    test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_root_restart.sh)" = c3d1b0c2da5f3a78132c8a0c38148758f3abd4ca || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_root_restart.sh'
-    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_allocated_root_restart.f90)" = 1108400284dcd685660d0dd6b439eeb7002ffc05 || fail 'allocation dependency identity: tests/f-app07/test_mc_irr01_allocated_root_restart.f90'
-    test "$(git rev-parse HEAD:tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh)" = d076298b49c9c0892fe449a5f5b8ba071cb5c81a || fail 'allocation dependency identity: tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh'
-    test "$(git rev-parse HEAD:tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90)" = 3b2c6e35287a8ecfcc6c87202c4ca0a470e5e4a7 || fail 'allocation dependency identity: tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90'
-    bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh || fail 'allocation root/repeated-event/restart'
-    bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'
-    echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_SUCCESSOR=PASS'
+    verify_mc_irr01_allocation_successor
   fi
   echo 'FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS' 
   irrigation_owner_verified=1
 }
+
+if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
+  verify_mc_irr01_allocation_successor
+  echo 'FCI_CANONICAL_MC_IRR01_ALLOCATION_FOCUSED=PASS'
+  exit 0
+fi
 
 # Explicit focused replay of the unchanged current irrigation owner function
 # after an independently admitted concurrent owner delta. Normal full moving
