@@ -553,6 +553,7 @@ check_b19_micro_root_recomposition() {
   local crop_sow_node_changed=0
   local crop_grid_sow_changed=0
   local crop_hydraulic_provenance_changed=0
+  local crop_hydraulic_provenance_changed=0
   local irrigation_owner_changed=0
   local nlglob14z47_changed=0
   local candidate_path
@@ -636,6 +637,7 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_b111_germination_sum_candidate.f90 ) crop_b111_germ_sum_changed=1 ;;
       src/runtime/mod_fmr_crop_rotation_receipt_binding.f90 ) ;;
       src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90 ) crop_physical_restart_changed=1; crop_unified_restart_changed=1 ;;
+      src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_crop_accepted_hydraulic_provenance.f90 ) crop_hydraulic_provenance_changed=1 ;;
       src/runtime/mod_fmr_micro_constant_lrv_binding.f90 ) ;;
       src/process/mod_irrigation_availability_policy.f90 ) irrigation_owner_changed=1 ;;
@@ -899,6 +901,15 @@ check_b19_micro_root_recomposition() {
       fail 'crop physical/calendar restart pair qualification failed'
     bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
       fail 'crop physical restart B19/MICRO cross-preservation failed'
+  fi
+  if (( crop_hydraulic_provenance_changed )); then
+    # A new read-only accepted F-KT hydraulic view is NOT unconditionally
+    # admitted. Require positive/negative O0/O2 real B110 owner binding and
+    # actual current-head B19/MICRO source/runtime cross-preservation.
+    bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \
+      fail 'crop accepted hydraulic F-KT provenance O0/O2 failed'
+    bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \
+      fail 'crop accepted hydraulic B19/MICRO cross-preservation failed'
   fi
   if (( crop_unified_restart_changed )); then
     # Both calendar revision and F-KT accepted physical/calendar checkpoint
