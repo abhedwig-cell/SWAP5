@@ -317,7 +317,7 @@ weigert `verify_daily_demand_successor.py` de aanvullende productiebronwijziging
 zijn exacte source-successor staat uitsluitend drie dagelijkse-demandbestanden
 toe. Dit is een **admission/source-authorityblokkade vóór brede wetenschap**,
 geen wetenschappelijk PASS en geen numerical regressionbewijs. De bronpinnen
-en admissionrunner zijn niet verruimd. De werkunit is geïmplementeerd, gericht
+en admissionrunner waren in die poging niet verruimd. De werkunit is geïmplementeerd, gericht
 getest en gepersisteerd; volledige kwalificatie en canonical admission blijven
 false. Voor backendadmission is een bevoegde exacte successor met volledige
 vereiste owner-, coupling-, restart- en F-CI-preservation nodig. PR #1219 blijft
@@ -372,6 +372,29 @@ unversioned shared-runtime-links in de lokale compilerinstallatie zijn hersteld;
 de failed omgevingspogingen worden afzonderlijk bewaard. Dit wijzigt geen
 Fortrancompilerfrontend, scienceflags of productiecode en levert geen nieuwe
 performanceclaim op.
+
+In de vervolgfase is dezelfde combinatie van beide reparaties gepersisteerd als
+`67964e4da4bb27761bc73e72775e04778523f803`, productietree
+`d4412e09005f5f76eb795c748350eb502833fdc7`. De oorspronkelijke zes
+F-GC25-programma's en de nieuwe actuele F-VQ87-controller slagen opnieuw op O0/O2;
+de oracle-uitvoer blijft exact historisch. De bronselectie is met de bestaande
+source-augmenter gereconstrueerd: de publicatiemodule ontbreekt in alle elf
+owner-routes en de live MODFLOW-route. De hoogste werkelijk gecompileerde
+bronlijsten worden rechtstreeks door hun oorspronkelijke controller bewaard.
+Andere lijsten zijn exact gebonden reconstructies van de uitvoeringsrecepten,
+geen geïnstrumenteerde compilerverzoektelling. Dat onderscheid blijft zichtbaar.
+
+Negen gerichte bron/evidencecontroles slagen, waaronder corruptie van de echte
+voortgangscapsule en het weigeren van die onvolledige capsule als ownerbewijs.
+De aanvullende dagelijkse-demandroute vereist complete nieuwe owner-evidence;
+moving F-CI vereist bovendien de afzonderlijke nieuwe koppelingsevidence en de
+daadwerkelijk toegepaste ledgerreparatie. Onbekende productiepostimages blijven
+geweigerd. Op de nog vaste primaire bron is die aanvullende F-CI-prerequisite
+daadwerkelijk aangeroepen en geweigerd, vóór de brede wetenschap. Dit is geen
+full-preservation PASS. De volgende fase sluit eerst de lopende ownerqueue af,
+past daarna de reeds afzonderlijk geteste scalar-timingreparatie toe, en bindt
+alle hergebruikte nieuwe resultaten aan onveranderde gecompileerde dependencies.
+Daarna moet de volledige bestaande moving F-CI-route met resume OFF nog slagen.
 
 De Full Richards-revisieproef gebruikt bestaande PR1218-tooling, exact gereconcilieerd
 op `38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9`. De oorspronkelijke driver vroeg een

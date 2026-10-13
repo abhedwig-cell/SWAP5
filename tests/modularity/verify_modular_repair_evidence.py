@@ -2,7 +2,8 @@
 """Fresh bounded owner and coupling prerequisites; never a moving-F-CI PASS."""
 import hashlib
 import json
-from backend_allocation_authority import (ROOT, PUBLICATION_POSTIMAGE, verify_source, git)
+from backend_allocation_authority import (ROOT, PUBLICATION, PUBLICATION_POSTIMAGE, verify_source, git)
+import subprocess
 from verify_backend_owner_evidence import verify_owner, read_archive, verify_dependencies
 
 ORACLE_SHA256 = 'de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8'
@@ -30,6 +31,14 @@ def verify_repairs():
                 assert log.count(marker) == 1, marker
         control = json.load(archive.extractfile('combined-independent/CONTROL.json'))
         assert control['status'] == 'PASS' and control['source_tree'] == source['source_tree']
+        assert control['driver_blob'] == '338416575b1583152acc65cd606c4322a20dd94d'
+        assert control['fixture_owner'] == '1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f'
+        fixture = archive.extractfile('combined-independent/fgc21_fixture.f90').read()
+        assert hashlib.sha256(fixture).hexdigest() == control['fixture_sha256']
+        original = subprocess.check_output(['git', 'show', control['fixture_owner'] +
+            ':tests/fgc/test_fgc21_restricted_predictor_corrector_window.f90'], cwd=ROOT)
+        boundary = b'\nprogram test_fgc21_restricted_predictor_corrector_window\n'
+        assert original.count(boundary) == 1 and fixture == original.split(boundary)[0] + b'\n'
         assert {r['opt'] for r in control['records']} == {0, 2} and len(control['records']) == 2
         verify_dependencies(control['dependency_blobs'])
         for record in control['records']:
@@ -38,6 +47,8 @@ def verify_repairs():
             assert hashlib.sha256(output).hexdigest() == record['stdout_sha256'] == ORACLE_SHA256
         live = json.load(archive.extractfile('CONTROL.json'))
         assert live['status'] == 'PASS' and all(s['exit'] == 0 for s in live['steps'])
+        assert git('rev-parse', live['head'] + ':src') == live['source_tree']
+        assert git('diff', '--name-only', live['head'], 'HEAD', '--', 'src').splitlines() == [PUBLICATION]
         assert {s['name'] for s in live['steps']} == {'live-modflow', 'independent-application'}
         assert b'F-GC49D LIVE PRODUCTION APPLICATION CONTEXT ABI GATE PASS' in archive.extractfile('live-modflow.stdout').read()
         assert b'F-VQ124 F-GC49D INDEPENDENT GATE PASS' in archive.extractfile('independent-application.stdout').read()
