@@ -1,6 +1,6 @@
 # Modulaire testbaarheid en lokale ontwikkelcyclus
 
-**Status: geïmplementeerde en gemeten zelfstandige testroutes; volledige oorspronkelijke preservation PASS; gereconcilieerde SHARED-route preservation PASS; canonical admission nog niet uitgevoerd.** Meetbaseline:
+**Status: geïmplementeerde en gemeten zelfstandige testroutes; volledige oorspronkelijke preservation PASS; gereconcilieerde SHARED-route preservation PASS; canoniek toegelaten via PR #1219 op `0181a829eb5f17267541d6b57d7e65140db7bd5a`.** Meetbaseline:
 `1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520`, canonical
 `integration/f-ci-canonical`. Formules, state-layout, toleranties,
 referenties en wetenschappelijke assertions blijven behouden. Twee begrensde
@@ -548,3 +548,7 @@ git fetch /tmp/modular-executed.bundle HEAD
 
 Het geïsoleerde restorebewijs in de capsule herstelde zowel de oorspronkelijke
 als gecombineerde werkelijk uitgevoerde commits en controleerde hun source-tree.
+
+De uitvoeringsafspraken voor volgende workstreams staan normatief in
+[het protocol](../development/workstream-execution-protocol.md#test-selection-and-cost-discipline-2026-10-13);
+AGENTS.md verwijst bij iedere hervatting naar die selectie- en kostenregels.

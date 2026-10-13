@@ -20,7 +20,7 @@ If repository state and chat context disagree, repository state wins.
 
 ## Autonomous execution across chats
 
-For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; exact-head scientific plus F-CI preservation; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
+For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; scientific and F-CI evidence bound to the applicable dependency surface and admission authority; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
 
 ## Read first
 
@@ -144,3 +144,18 @@ composition and all owning scientific/admission/preservation gates. A module
 import graph alone never authorizes skipping a gate or inheriting prior PASS.
 See `docs/audits/MODULAR_TESTABILITY_20261013.md` for the opt-in tested routes and
 proportional four-level strategy; existing admission authority remains binding.
+
+## Proportional tests and execution costs
+
+Before invoking tests, apply **Test selection and cost discipline (2026-10-13)**
+in `docs/development/workstream-execution-protocol.md`. Start with the smallest
+real production contract driver. Expensive tests (expected or measured over five
+minutes), including the highest low-air stress route, are excluded from routine
+local feedback unless explicitly selected with a changed dependency or owning
+qualification requirement. The executing agent records that selection in the
+existing work-unit/PR; no routine user permission is required. A full F-CI run
+is never justified solely by a documentation checkpoint, branch advance or prior
+PASS without inspecting dependencies. Preserve all mandatory admission gates.
+Measure compile/link/native/validation costs, retain failed and censored results,
+and record unavailable categories as UNKNOWN. Read the live delta and existing
+recovery evidence before repeating work; use meaningful coherent checkpoints.
