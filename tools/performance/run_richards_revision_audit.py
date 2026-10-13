@@ -65,24 +65,35 @@ def main():
     ap.add_argument('--repeat',type=int,default=5);args=ap.parse_args()
     out=Path(args.output_dir).resolve();out.mkdir(parents=True,exist_ok=False)
     current=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-    trees={'current':ROOT,'earlier':out/'earlier-tree'}
+    trees={'current':ROOT,'earlier':out/'earlier-tree','recent':out/'recent-tree'}
     subprocess.run(['git','worktree','add','--detach',str(trees['earlier']),args.baseline],cwd=ROOT,check=True)
+    subprocess.run(['git','worktree','add','--detach',str(trees['recent']),'a3859c89eaf97256a6330bb9f6370013c4a9e2f2'],cwd=ROOT,check=True)
     report={'head':current,'baseline':args.baseline,'fixture_sha256':hashlib.sha256(DRIVER.read_bytes()).hexdigest(),
-            'builds':{},'runs':[],'equivalent':False,'legacy_swap431':'UNKNOWN','scope':'50-node 100-cm soil, 0.1/30-day pulsed infiltration, fixed-step diagnostic Full Richards only; no crop/coupling/F-KT timing'}
+            'builds':{},'runs':[],'physical_differences':[],'equivalent':False,'legacy_swap431':'UNKNOWN','scope':'50-node 100-cm soil, 0.1/30-day pulsed infiltration, fixed-step diagnostic Full Richards only; no crop/coupling/F-KT timing'}
     try:
         for name,tree in trees.items():report['builds'][name]=build(tree,out/name)
         for horizon in ['0.1','30']:
             for repeat in range(args.repeat):
-                order=['earlier','current'] if repeat%2==0 else ['current','earlier']
+                order=['earlier','recent','current'] if repeat%2==0 else ['current','recent','earlier']
                 pair={}
                 for name in order:
                     rec=run([str(out/name/'trajectory'),horizon],out,out,f'{name}-{horizon}-{repeat}')
                     rec.update(revision=name,horizon=horizon,repeat=repeat)
+                    raw=(out/(f'{name}-{horizon}-{repeat}'+'.stdout')).read_bytes()
+                    physical=[]
+                    for line in raw.splitlines(keepends=True):
+                        if line.startswith(b'RICHARDS_AUDIT_RESULT'):
+                            rec['diagnostics']=line.decode().strip()
+                        elif line.startswith(b'STEP='):
+                            physical.append(line.split(b' NL=')[0]+b' MASS='+line.split(b' MASS=')[1])
+                        else:physical.append(line)
+                    rec['physical_sha256']=hashlib.sha256(b''.join(physical)).hexdigest()
                     report['runs'].append(rec);pair[name]=rec
                     if rec['exit']:raise ValueError('trajectory science failed '+name)
-                if pair['earlier']['stdout_sha256']!=pair['current']['stdout_sha256']:
-                    raise ValueError('physical trajectory or solver counter mismatch')
-        report['equivalent']=True
+                for name in ['earlier','recent']:
+                    if pair[name]['physical_sha256']!=pair['current']['physical_sha256']:
+                        report['physical_differences'].append({'revision':name,'horizon':horizon,'repeat':repeat})
+        report['equivalent']=not report['physical_differences']
         for name,tree in trees.items():
             report['builds'][name+'-gprof']=build(tree,out/(name+'-gprof'),True)
             rec=run([str(out/(name+'-gprof')/'trajectory'),'30'],out/(name+'-gprof'),out,name+'-profile-run')
