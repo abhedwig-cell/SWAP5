@@ -4,14 +4,40 @@
   "prior_candidate": "71eb60cfc3b22288cb7d7e5b1538a2d265188de6",
   "owned_surface": "Isolated test build and performance diagnostics only",
   "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
-  "interfaces_held_fixed": ["production physics", "numerical tolerances", "incumbent test drivers and runners", "F-CI default runner", "historical evidence"],
-  "dependency_surface": ["src/**/*.f90", "tests/f-app07/*", "tests/fmr/mod_fmr04_fixed_top_provider.f90", "tools/performance/*", "tests/performance/*", "compiler and environment"],
+  "interfaces_held_fixed": [
+    "production physics",
+    "numerical tolerances",
+    "incumbent test drivers and runners",
+    "F-CI default runner",
+    "historical evidence"
+  ],
+  "dependency_surface": [
+    "src/**/*.f90",
+    "tests/f-app07/*",
+    "tests/fmr/mod_fmr04_fixed_top_provider.f90",
+    "tools/performance/*",
+    "tests/performance/*",
+    "compiler and environment"
+  ],
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
-  "next_action": "Three alternating original/shared A/B rounds on clean persisted head, instrumented and uninstrumented controls; solver diagnostics separately",
+  "next_action": "Complete running short/long Richards revision profiles; preserve raw results; final scoped admission and PR reconciliation",
   "recovery_point": "PR #1218 audit/fci-runtime-cost-20261013; checkpoint commit containing this record",
   "blockers": [],
-  "note": "Initial pre-reconciliation launch is diagnostic only: HEAD advanced while executing. It cannot qualify the final candidate. No speedup claimed yet. Shared experiment not routed into F-CI."
+  "note": "Three alternating instrumented rounds and one uninstrumented round passed full unchanged root/sensor O0/O2 assertions. All four ELF hashes agree in each instrumented round. Full moving F-CI resume OFF passed. Production/source/reference/default F-CI surface unchanged; subsequent deltas are diagnostic-only. Whole-F-CI speedup and legacy matched runtime remain UNKNOWN. Richards profiles running; no solver performance conclusion yet.",
+  "preserved": true,
+  "qualified_shared_build": true,
+  "canonically_admitted": false,
+  "shared_science_heads": [
+    "bf239429ed114e3638800bf9c99e16745d8e31fa",
+    "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9"
+  ],
+  "fci_gate_head": "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9",
+  "profile_head": "ffb476607ad4859b3dca6cac991a135f642e8f15",
+  "evidence": [
+    "integration/audits/FCI_SHARED_BUILD_THREE_ROUNDS_20261013.json",
+    "integration/audits/FCI_SHARED_BUILD_QUALIFICATION_20261013.json"
+  ]
 }
