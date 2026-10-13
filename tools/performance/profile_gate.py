@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Instrument gfortran invocations within one SWAP5 gate, without modifying source.
+"""Opt-in F-CI gate/compiler timing. Does not profile SWAP5 numerical solver time.
 
-Usage: python3 tools/performance/profile_gate.py --output evidence.json -- bash tests/...sh
-The residual wall time is NOT the model runtime.
+Example:
+python3 tools/performance/profile_gate.py --output /tmp/owner-01.json -- bash tests/...sh
 """
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -13,23 +14,15 @@ import subprocess
 import sys
 import tempfile
 import time
-from datetime import datetime, timezone
 
-WRAPPER = """#!/usr/bin/env python3
-import json, os, subprocess, sys, time
-start = time.monotonic_ns()
-try:
-    rc = subprocess.run([os.environ['SWAP_PROFILE_REAL_GFORTRAN'], *sys.argv[1:]]).returncode
-except OSError:
-    rc = 127
-entry = {'kind': 'gfortran', 'duration_ns': time.monotonic_ns() - start,
-         'returncode': rc, 'stage': 'compile' if '-c' in sys.argv[1:] else 'link_or_combined'}
-fd = os.open(os.environ['SWAP_PROFILE_EVENTS'], os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
-try:
-    os.write(fd, (json.dumps(entry, sort_keys=True) + '\\n').encode())
-finally:
-    os.close(fd)
-sys.exit(rc)
+# Do not start Python on every compiler request: startup overhead can exceed a
+# short Fortran compile. GNU time captures one real compiler command per shim.
+SHIM = """#!/bin/sh
+stage=combined
+for arg do
+    if [ "$arg" = "-c" ]; then stage=compile; fi
+done
+exec /usr/bin/time -a -o "$SWAP_PROFILE_EVENTS" -f "${stage}\\t%e\\t%x" "$SWAP_PROFILE_REAL_GFORTRAN" "$@"
 """
 
 def main():
@@ -39,54 +32,66 @@ def main():
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
     if not command:
-        parser.error('provide a command after --')
-    real_compiler = shutil.which('gfortran')
-    if not real_compiler:
-        parser.error('gfortran not in PATH')
-    real_compiler = str(Path(real_compiler).resolve())
-    result_path = Path(args.output).resolve()
-    if result_path.exists():
-        parser.error('output exists; select a new path to preserve previous evidence')
-    with tempfile.TemporaryDirectory(prefix='swap5-perf-') as temp:
-        shim = Path(temp) / 'gfortran'
-        shim.write_text(WRAPPER)
+        parser.error('command after -- is required')
+    compiler = shutil.which('gfortran')
+    if not compiler:
+        parser.error('gfortran is unavailable')
+    if not Path('/usr/bin/time').is_file():
+        parser.error('GNU /usr/bin/time is required')
+    report_path = Path(args.output).resolve()
+    if report_path.exists():
+        parser.error('output already exists; immutable measurement evidence is not overwritten')
+    with tempfile.TemporaryDirectory(prefix='swap5-timing-') as td:
+        shim = Path(td) / 'gfortran'
+        shim.write_text(SHIM)
         shim.chmod(0o755)
-        events = Path(temp) / 'compiler-events.jsonl'
+        raw = Path(td) / 'compiler.tsv'
         env = os.environ.copy()
-        env['SWAP_PROFILE_REAL_GFORTRAN'] = real_compiler
-        env['SWAP_PROFILE_EVENTS'] = str(events)
-        env['PATH'] = temp + os.pathsep + env.get('PATH', '')
-        started_utc = datetime.now(timezone.utc).isoformat()
-        started = time.monotonic_ns()
+        env['PATH'] = td + os.pathsep + env.get('PATH', '')
+        env['SWAP_PROFILE_EVENTS'] = str(raw)
+        env['SWAP_PROFILE_REAL_GFORTRAN'] = str(Path(compiler).resolve())
+        began = datetime.now(timezone.utc).isoformat()
+        before = time.monotonic()
         try:
-            rc = subprocess.run(command, env=env).returncode
+            code = subprocess.run(command, env=env).returncode
         except OSError as exc:
-            rc = 127
-            print(f'Could not launch gate: {exc}', file=sys.stderr)
-        wall_ns = time.monotonic_ns() - started
-        records = [json.loads(x) for x in events.read_text().splitlines()] if events.exists() else []
-    compiler_sum = sum(r['duration_ns'] for r in records)
-    result = {
-        'schema_version': 1, 'started_utc': started_utc,
+            print(f'gate launch failed: {exc}', file=sys.stderr)
+            code = 127
+        seconds = time.monotonic() - before
+        records = []
+        if raw.exists():
+            for line in raw.read_text().splitlines():
+                fields = line.split('\t')
+                if len(fields) != 3:
+                    parser.error(f'incomplete compiler event: {line!r}')
+                stage, elapsed, status = fields
+                records.append({'stage': stage, 'seconds': float(elapsed),
+                                'returncode': int(status)})
+    report = {
+        'schema_version': 2, 'began_utc': began,
         'ended_utc': datetime.now(timezone.utc).isoformat(),
-        'command': command, 'cwd': os.getcwd(), 'compiler_path': real_compiler,
-        'gate_returncode': rc, 'wall_seconds': wall_ns / 1e9,
+        'command': command, 'cwd': os.getcwd(),
+        'compiler': str(Path(compiler).resolve()),
+        'gate_returncode': code, 'gate_wall_seconds': seconds,
         'compiler_invocations': len(records),
-        'compiler_compile_invocations': sum(r['stage'] == 'compile' for r in records),
-        'compiler_link_or_combined_invocations': sum(r['stage'] != 'compile' for r in records),
-        'compiler_invocation_seconds_sum': compiler_sum / 1e9,
+        'compiler_seconds_sum': sum(row['seconds'] for row in records),
         'compiler_events': records,
-        'limits': ['Only PATH-resolved gfortran commands are intercepted.',
-                   'Absolute compiler paths and nested PATH overrides are not covered.',
-                   'Compiler seconds may overlap and must not be subtracted from gate wall time.',
-                   'Residual time is not a measurement of physics/model runtime.',
-                   'The wrapper adds overhead; compare against an unwrapped run.']}
-    result_path.parent.mkdir(parents=True, exist_ok=True)
-    with result_path.open('x') as out:
-        json.dump(result, out, indent=2, sort_keys=True)
-        out.write('\n')
-    print(f"gate_exit={rc} wall_seconds={wall_ns / 1e9:.3f} compiler_invocations={len(records)} compiler_sum_seconds={compiler_sum / 1e9:.3f} evidence={result_path}")
-    return rc
+        'limitations': [
+            'Compiler timings have GNU time centisecond resolution.',
+            'Only calls to PATH-resolved gfortran are intercepted.',
+            'Compiler timings can overlap and are not a disjoint wall-time breakdown.',
+            'Combined compilation/link invocations cannot be separated further.',
+            'This does not measure SWAP5 numerical solver time.',
+            'Measure unwrapped control too; wrapper perturbs execution.',
+        ],
+    }
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    with report_path.open('x') as handle:
+        json.dump(report, handle, indent=2, sort_keys=True)
+        handle.write('\n')
+    print(f"gate_exit={code} wall_s={seconds:.3f} compiler_calls={len(records)} "
+          f"compiler_s_sum={report['compiler_seconds_sum']:.3f} report={report_path}")
+    return code
 
 if __name__ == '__main__':
     sys.exit(main())
