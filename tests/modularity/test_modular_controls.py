@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fail-closed graph and actual compiler/artifact mutation controls."""
-import importlib.util,json,os,tempfile,unittest
+import importlib.util,json,os,tempfile,unittest,shutil,hashlib
 from pathlib import Path
 SPEC=importlib.util.spec_from_file_location('runner',Path(__file__).with_name('run_modular_tests.py'))
 M=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(M)
@@ -52,7 +52,20 @@ class CompilerControls(unittest.TestCase):
         for path in sources:
             target=self.root/path;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((self.saved_root/path).read_bytes())
         self.session=M.Session(self.root/'evidence')
-    def tearDown(self):M.ROOT=self.saved_root;self.tmp.cleanup()
+    def tearDown(self):
+        # Keep native error/compile/science logs after temporary fixtures vanish.
+        evidence=Path(os.environ.get('MODULAR_CONTROL_EVIDENCE_DIR',str(self.saved_root.parent/'negative-native-evidence')))/self._testMethodName
+        evidence.mkdir(parents=True,exist_ok=True)
+        native={'events':self.session.events,'compiler_identity':self.session.identity,
+                'source_sha256':{str(p.relative_to(self.root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in self.root.rglob('*.f90')},
+                'published_artifact_sets':len(self.session.artifacts)}
+        (evidence/'NATIVE_CONTROL.json').write_text(json.dumps(native,indent=2)+'\n')
+        for p in self.session.out.iterdir():
+            if p.is_file():shutil.copyfile(p,evidence/p.name)
+        source=evidence/'fixture-sources'
+        for p in self.root.rglob('*.f90'):
+            target=source/p.relative_to(self.root);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target)
+        M.ROOT=self.saved_root;self.tmp.cleanup()
     def test_actual_artifact_mutation_rejected(self):
         self.session.execute('mvg',0)
         _,artifacts=next(iter(self.session.artifacts.values()))

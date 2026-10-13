@@ -15,6 +15,8 @@ program test_physical_contracts
   type(hooghoudt_equivalent_depth_diagnostics_t) :: diagnostics
   real(real64) :: conductivity,nan_value
   logical :: ok
+  character(len=32) :: mode
+  call get_command_argument(1,mode)
   nan_value=ieee_value(0.0_real64,ieee_quiet_nan)
   call evaluate_b110_default_mvg_conductivity(hydraulic,1,-10.0_real64,conductivity,ok)
   if(ok .or. conductivity/=0.0_real64) error stop 'uninitialized hydraulic provider accepted'
@@ -35,9 +37,16 @@ program test_physical_contracts
   if(committed%spev/=0.04_real64.or.committed%saev/=0.04_real64) error stop 'trial mutated committed pair'
   call evaluate_boesten_evaporation_reduction(p,committed,forcing,0.0_real64,result)
   if(result%status/=BOESTEN_EVAP_INVALID_INPUT) error stop 'zero interval accepted'
-  forcing%wetting_rate=nan_value
+  if(trim(mode)=='boesten-nan') then
+    forcing%wetting_rate=nan_value
+    call evaluate_boesten_evaporation_reduction(p,committed,forcing,0.25_real64,result)
+    if(result%status/=BOESTEN_EVAP_INVALID_INPUT) error stop 'nonfinite forcing accepted'
+    print '(a)', 'MODULAR_BOESTEN_NAN_STATUS_REJECTED=PASS'
+    stop
+  end if
+  forcing%wetting_rate=-1.0_real64
   call evaluate_boesten_evaporation_reduction(p,committed,forcing,0.25_real64,result)
-  if(result%status/=BOESTEN_EVAP_INVALID_INPUT) error stop 'nonfinite forcing accepted'
+  if(result%status/=BOESTEN_EVAP_INVALID_INPUT) error stop 'negative finite forcing accepted'
   if(committed%spev/=0.04_real64.or.committed%saev/=0.04_real64) error stop 'invalid trial mutated committed pair'
   print '(a)', 'MODULAR_BOESTEN_NONMUTATION_INVALID_CONTRACT=PASS'
   call prepare_hooghoudt_equivalent_depth(geometry,prepared,diagnostics)

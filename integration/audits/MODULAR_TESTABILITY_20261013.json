@@ -4,7 +4,7 @@
   "branch": "work/modular-testability-20261013",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonical_admitted": false,
   "affected_invariants": [
@@ -17,8 +17,8 @@
     29,
     30
   ],
-  "interfaces_changed": "Opt-in strict dependency-analysis API in existing test source augmenter; no production interface change",
-  "next_action": "Finish corrected three alternating benchmark rounds, then serial validation including original Boesten/accepted-heat routes and timed Richards audit",
+  "interfaces_changed": "Opt-in strict dependency API and three local production-driver routes; optional-config allocation guard in serialized backend; no physics formula, state layout or tolerance change",
+  "next_action": "Review complete research PR; authorize and qualify exact backend successor before canonical admission. Do not inherit prior backend qualification.",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -44,14 +44,22 @@
     "docs/status-a/TRACEABILITY.md",
     "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md"
   ],
-  "blockers": [],
+  "blockers": [
+    {
+      "scope": "canonical admission/full qualification",
+      "authority": "tests/mc-met01/verify_daily_demand_successor.py invoked by moving F-CI",
+      "observed": "exit1 exact source successor refuses extra backend change; broad science not executed",
+      "recovery": "Retained fail-closed gate and original logs; draft PR1219 holds measured local work and safety repair"
+    }
+  ],
   "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee.",
   "pr": 1219,
-  "remote_checkpoint": "ad0bd88964599ded23825d6b7fcc83dc1770be22",
-  "checkpoint_commit": "20e778cc8",
+  "remote_checkpoint": "ebb600ab77c6b100e9a061dc96572f477648502e",
+  "checkpoint_commit": "51152a8ee74beef7a45204101bc830247b521285",
   "last_reconciled_head": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
   "evidence_paths": [
-    "integration/audits/evidence/MODULAR_TESTABILITY_20261013/"
+    "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64"
   ],
   "failed_attempts": [
     {
@@ -66,5 +74,31 @@
       "name": "modular benchmark v3",
       "reason": "extra duplicate external headcalc compile; interrupted, excluded from speed claims"
     }
+  ],
+  "tested_scope": [
+    "15 graph/build/native negative controls",
+    "ten compile/link API probes (not science)",
+    "54 matched baseline driver records with three alternating rounds",
+    "six recompiled postimage accessor records; O0/O2 outputs and executable identity",
+    "original Boesten full preservation O0/O2",
+    "original MIGMAC11 production compile/donor O0/O2",
+    "physical guards, F-VQ58, actual root/frost and timestep O0/O2",
+    "1206 PCSE assimilation cases per O0/O2; zero errors",
+    "literal MICRO05 historical MvG and A23BL transaction",
+    "30 matched Richards simulations plus gprof; mass PASS, earlier byte equivalence false",
+    "original PPA-WU05A9 active macropore + Boesten actual Richards top-input/reject/replay/restart O0/O2"
+  ],
+  "production_repair": {
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "commit": "51152a8ee74beef7a45204101bc830247b521285",
+    "trigger": "Boesten without allocated inactive macropore config: original gate O0 SIGSEGV",
+    "change": "nested ALLOCATED guard before optional config dereference"
+  },
+  "benchmark_head": "2daabb9d4a014c4b1616c95505abd04d5e95a439",
+  "solver_measured_head": "7c48c21e1d23dd0d57966793865a85a1531bfca0",
+  "scientific_gaps": [
+    "Boesten NaN status differs O0/O2 under preserved traps",
+    "earlier/current Richards strict physical byte comparison fails although all existing mass assertions pass",
+    "matched SWAP4.3.1 execution benchmark UNKNOWN"
   ]
 }

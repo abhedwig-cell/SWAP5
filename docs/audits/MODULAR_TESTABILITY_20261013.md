@@ -2,8 +2,10 @@
 
 **Status: Proposed ontwikkelstandaard; opt-in implementatieproef.** Baseline:
 `1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520`, canonical
-`integration/f-ci-canonical`. Geen productiephysics, state-layout, tolerantie,
-referentie, workflow of bestaande admissiongate wordt gewijzigd.
+`integration/f-ci-canonical`. Formules, state-layout, toleranties,
+referenties, workflows en bestaande admissiongates blijven behouden. Eén
+productiebackend krijgt een allocatiecontrole voor een optionele macroporieconfiguratie,
+na een reproduceerbare crash in de oorspronkelijke geïntegreerde Boesten-test.
 Werkunit/recovery: `integration/audits/MODULAR_TESTABILITY_20261013.json`.
 
 ## Diagnose en afbakening
@@ -67,6 +69,17 @@ ontbrekende variabelen en een scalar `cofgen` versus vereiste array. Dat is
 concreet bewijs dat een `use`-graph geen bruikbare initialisatie- of buildautoriteit
 is. De audit gebruikt vervolgens de geaccepteerde Full Richards-solverseam.
 De mislukte compilerlogs blijven bewaard; een mislukte probe wordt niet PASS.
+
+De drainagebron heeft bestaande onafhankelijke equivalent-depth/branch-authority
+F-VQ38, beschreven in `docs/science/drainage-formulations.md`. De latere
+runtime-oracle F-VQ73 wordt door F-CI61 exact gereconstrueerd uit commit
+`ea40e2d850aa9b4b23b25ba6b4a63ffd39811001`; zijn donorlocators zijn
+`tests/fvq/run_fvq73_independent_runtime.sh` en
+`tests/fvq/test_fvq73_fpm14_drainage_response_independent.f90` op dat commit.
+Deze donorlocators zijn geen huidige working-tree-bestanden. Het oude
+admissionscript met zijn historische canonical-racelock wordt niet als actuele
+gate aangeroepen. De nieuwe lokale drainagecontrole toetst domein en limiet,
+geen volledige independent branch-oracle.
 
 Directe niet-intrinsieke imports: hydrauliek → solvercontract; timestep →
 historische decision service; root → hydraulic view → solvercontract;
@@ -183,12 +196,112 @@ UNKNOWN zonder prospectieve ontwikkelmetingen.
 
 ## Meetresultaten en grenzen
 
-Resultaten worden ingevuld uit daadwerkelijk voltooide runs. Ruwe compilerlogs,
-commandidentiteiten, auditprobes, negatieve controles en niet-geslaagde pogingen
-worden in de bestaande `integration/audits/evidence/` hiërarchie opgenomen.
-De A/B-proef vergelijkt hetzelfde process-driverprogramma op dezelfde bronpostimage
-met dezelfde flags en host, in drie afwisselende rondes. Hij vergelijkt geen
-ongelijke volledige versus lokale scientific suites als equivalente dekking.
+De voltooide A/B-proef bevat 54 records: drie componenten, drie afwisselende
+rondes, O0/O2 en oorspronkelijk koud / gericht koud / gericht warm. Gemeten
+commit: `2daabb9d4a014c4b1616c95505abd04d5e95a439`, met de productiebronnen
+van canonical. GNU Fortran 13.3.0, dezelfde host en dezelfde flags per
+component. De tabel geeft medianen van de **som O0 + O2 per ronde**, geen
+som van losse medianen. Ruwe records bevatten alle drie de samples.
+
+| Component en route | Compilatie (s) | Link (s) | Uitvoeren (s) | Identiteitcontrole (s) | Totaal (s) | Compilerverzoeken |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| MvG oorspronkelijk koud | 3.144 | 0.178 | 0.011 | 0.587 | 4.051 | 8 |
+| MvG gericht koud | 2.906 | 0.141 | 0.012 | 0.724 | 3.862 | 8 |
+| MvG gericht warm | 0 | 0 | 0.013 | 0.698 | 0.706 | 0 |
+| Boesten procesleg oorspronkelijk koud | 280.158 | 0.174 | 0.006 | 1.064 | 282.169 | 458 |
+| Boesten procesleg gericht koud | 0.431 | 0.156 | 0.011 | 0.563 | 1.384 | 6 |
+| Boesten procesleg gericht warm | 0 | 0 | 0.011 | 0.602 | 0.615 | 0 |
+| Accepted heat oorspronkelijk koud | 187.583 | 0.419 | 0.012 | 1.429 | 190.550 | 314 |
+| Accepted heat gericht koud | 174.675 | 0.400 | 0.012 | 1.045 | 176.411 | 314 |
+| Accepted heat gericht warm | 0 | 0 | 0.008 | 1.060 | 1.081 | 0 |
+
+Boesten gaat van 228 gecompileerde Fortranbestanden per optimalisatie naar twee:
+452 vermeden compilaties per O0/O2-paar. Alle oorspronkelijke procesassertions
+draaien; de executables zijn byte-identiek tussen routes per optimalisatie en
+alle stdout is identiek, ook over O0/O2 en herhalingen. Warm hergebruikt MvG zes,
+Boesten vier en accepted heat 312 compilaties per paar. Geen scientific driver
+wordt overgeslagen. MvG en accepted heat hebben **geen kleinere koude closure**;
+hun koude tijdverschillen bewijzen geen architectonische versnelling. Accepted
+heat bewijst wel efficiëntere herhaalde toetsing in dezelfde transactie.
+
+Bij warme uitvoering zijn compiler-/dependencychecks de grootste kostenpost.
+Dit is een bewust transparante eerste proef; optimalisatie van de scan is later
+mogelijk zonder de scientific driver te wijzigen. Een nieuwe Python-aanroep
+is weer koud. De proef kwalificeert geen algemene cross-run-cache.
+
+De host is gedeeld; ander SWAP5-kwalificatiewerk was zichtbaar. OS-pagecache is
+niet geflusht. De afwisselende rondes en raw samples maken variatie zichtbaar,
+maar leveren geen portable snelheidsfactor of gemeten arbeidsurenbesparing.
+De oorspronkelijke 99,35 s irrigatiekwalificatie en 340 compilerverzoeken zijn
+historische evidence, geen huidige solverbenchmark en geen directe comparator
+voor deze andere Boesten-procesleg.
+
+### Positieve en negatieve wetenschap en backendreparatie
+
+Vijftien toolingcontrols slagen, inclusief daadwerkelijke compilerfout,
+scientific-driverfout, bronwijziging tijdens bouwen, artifactcorruptie,
+environmentdrift, graphfouten en de tien closurebudgetten. De bestaande
+source-augmenter CLI behoudt zijn canonical output; de brede Boesten-lijst telt
+227 bronnen vóór de driver, SHA256 van stdout
+`508c878ae08afe3d645eb3392ea615cd912c122ace9b98ace20d9d1333e3f634`.
+
+Aanvullende echte productiecalls toetsen ongeldige en niet-eindige hydraulische
+inputs, Boesten nonmutation en domein, drainagegrenzen, tijdstapcontract,
+root/frost-interactie en de oorspronkelijke F-VQ58 temperatuurdriver. De
+PCSE-gebonden assimilatiecontroller controleert 1206 cases op O0 en O2 met
+maximale absolute en relatieve afwijking nul. MICRO05 literal MvG en A23BL
+transaction draaien ook via hun oorspronkelijke runners. Testdoubles in A23BL
+blijven contractbewijs; zij vervangen geen productiephysics.
+
+Een NaN in Boesten wordt onder de behouden floating-point-traps op O0 met
+SIGFPE geweigerd; O2 retourneert de ongeldige-inputstatus. Beide negatieve
+subprocessen zijn vastgelegd. **Een gelijk error-statuscontract over O0/O2 is
+hier niet bewezen.** De controller accepteert uitsluitend deze specifieke
+uitkomsten, niet een willekeurige crash. De bekende contractkloof blijft open;
+geen flags of tolerantie zijn verzwakt.
+
+De oorspronkelijke volledige Boesten-preservation crashte op O0, zowel met
+standaard als onbeperkte stack. De afzonderlijke procesleg bleef PASS. Een
+debugbuild lokaliseerde de crash bij dereferentie van niet-gealloceerde
+`self%macropore_config` in de serialized backend, terwijl Boesten geldig is
+zonder actieve macroporiën. Dit is een concrete verborgen optionele afhankelijkheid
+die niveau 1 niet kan vinden. De gerichte reparatie gebruikt een geneste
+`allocated`-controle, omdat Fortran geen short-circuit `.and.` garandeert.
+De actieve donorberekening blijft dezelfde; geen fysieke formule is gekopieerd.
+
+Reparatiepostimage: `51152a8ee74beef7a45204101bc830247b521285`. De oorspronkelijke
+volledige Boesten-runner slaagt daarna op O0/O2, inclusief hydraulic mass-owner,
+hard mass, afgewezen trial, gewijzigde-dt retry, exacte restartpair en ongeldige
+option-layout. De oorspronkelijke MIGMAC11 productiecompile/donorcontrole
+slaagt eveneens op O0/O2. Ook de oorspronkelijke PPA-WU05A9-compositie met
+Boesten en actieve macroporiën slaagt op O0/O2, met echte Richards-top-input,
+reject/replay en restart. De accessorvergelijking wordt na deze backendwijziging
+opnieuw gebouwd en uitgevoerd: zes records, identieke stdout en identieke
+executables per optimalisatie tussen routes. Dit ene postimage-paar is
+scientific bevestiging; het wordt niet toegevoegd aan de drie baseline-timingrondes.
+
+### Reconciliatie en toelatingsgrens
+
+PR #1211 en #1213 zijn gemerged. PR #1218 blijft een afzonderlijke draft;
+bij de laatste inhoudelijke reconciliatie is zijn head
+`ffb476607ad4859b3dca6cac991a135f642e8f15`. Inmiddels bevat hij drie afwisselende
+gedeelde-buildmetingen, geen alleen eerste cacheproef. Zijn gerapporteerde
+shared-buildwinsten zijn **zijn** evidence, geen hier opnieuw gemeten resultaten.
+Deze workstream hergebruikt zijn bestaande diagnose-tooling en bouwt geen tweede
+irrigatiekwalificatiesysteem. Overlap van de drie performancebestanden moet vóór
+eventuele gezamenlijke admission worden gereconcilieerd.
+
+De bestaande moving F-CI-runner is met resume OFF op de gerepareerde bron
+uitgevoerd. De eerste poging weigerde ongetrackte Python-bytecode; na opruimen
+weigert `verify_daily_demand_successor.py` de aanvullende productiebronwijziging:
+zijn exacte source-successor staat uitsluitend drie dagelijkse-demandbestanden
+toe. Dit is een **admission/source-authorityblokkade vóór brede wetenschap**,
+geen wetenschappelijk PASS en geen numerical regressionbewijs. De bronpinnen
+en admissionrunner zijn niet verruimd. De werkunit is geïmplementeerd, gericht
+getest en gepersisteerd; volledige kwalificatie en canonical admission blijven
+false. Voor backendadmission is een bevoegde exacte successor met volledige
+vereiste owner-, coupling-, restart- en F-CI-preservation nodig. PR #1219 blijft
+draft met die concrete grens; eerdere backend-PASS wordt niet geërfd.
 
 De Full Richards-revisieproef gebruikt bestaande PR1218-tooling, exact gereconcilieerd
 op `38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9`. De oorspronkelijke driver vroeg een
@@ -196,3 +309,72 @@ counter die niet in de eerdere contractversie bestaat. Alleen deze optionele
 observatie is verwijderd; constitutive-callcount staat UNKNOWN. Physics, instellingen,
 masscontrole en input blijven gelijk voor alle revisies. Het is een 50-node
 100-cm fixed-step diagnostic traject, geen F-KT/crop/couplingkwalificatie.
+
+Vijf afwisselende herhalingen per horizon zijn voltooid, steeds O2. De timer
+meet CPU uitsluitend rond de productie-`solve`; traject-I/O blijft buiten die
+timer. De walltijd bevat I/O en controle en is geen solvertijd.
+
+| Revisie | 0,1 dag wall / solve CPU (s) | 30 dagen wall / solve CPU (s) |
+| --- | ---: | ---: |
+| Eerder `50346642bd565f79134ea17d5462e544b354998c` | 0.007788 / 0.002397 | 2.056777 / 0.919759 |
+| Recent `a3859c89eaf97256a6330bb9f6370013c4a9e2f2` | 0.007359 / 0.001059 | 1.580300 / 0.558928 |
+| Huidig gemeten `7c48c21e1d23dd0d57966793865a85a1531bfca0` | 0.006883 / 0.001695 | 1.487261 / 0.537442 |
+
+Alle dertig trajectories en beide gprof-runs slagen op de bestaande harde
+massgrens 1e-12. Het lange traject heeft 6000 steps, 18001 nonlinear/Jacobian/linear
+evaluaties en geen retries op iedere revisie. Recent/huidig zijn fysiek byte-identiek.
+Eerder/huidig zijn dat niet: maximale headverschillen circa 2.56e-13 (kort) en
+1.39e-12 (lang). De strikte comparator blijft daarom exit 1 met
+`equivalent=false`; er is geen nieuwe equivalencetolerantie ingevoerd.
+Constitutieve callcount blijft UNKNOWN. De gemeten lange productie-solve is
+hier niet trager; korte millisecondemetingen ondersteunen geen algemene
+regressieclaim. Een eerlijke matched SWAP4.3.1-runtimevergelijking blijft UNKNOWN.
+Zijn bestaande immutable bronarchief is byte-gecontroleerd, niet herverzameld.
+
+De latere allocatiecontrole bevindt zich buiten deze minimale solverclosure.
+Evidencebinding controleert expliciet dat alle werkelijk gecompileerde
+productiebronnen, driver en fixture ongewijzigd zijn; de benchmark wordt niet
+als een nieuwe uitvoering op de latere documentaire HEAD voorgesteld.
+
+
+### Reproduceerbare opdrachten
+
+De initial-audit-evidence staat in
+`integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64`
+(decoded SHA256 `87d63a0efbf8c9e964b4b162ddc10462e33042b05468b98676a3d70568f5069e`).
+Alle terminale en oorspronkelijke failed logs staan in
+`integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64`
+(decoded SHA256 `d952785389af2d46a114cca19db652d0177355d031838e9b60293958ddc4bff5`).
+De bijbehorende audit-JSON verifieert 11561 padidentiteiten, 229 unieke raw blobs
+en native terminal-markers. Identieke uitvoerbytes zijn slechts eenmaal opgeslagen;
+`INDEX.json` wijst ieder oorspronkelijk pad naar `blobs/<sha256>`, met lengte.
+Dit bewaart de volledige ruwe trajectuitvoer, geen samenvatting daarvan.
+
+Decodeer base64 en open respectievelijk gzip/xz. Reconstrueer voor ieder indexpad
+de genoemde blob en controleer hash en lengte. Het opgenomen `MODULAR_CODE.bundle`
+bevat de werkelijk gemeten lokale commits en de reparatie, met canonical baseline
+als prerequisite. Na fetch van die baseline kan `git bundle verify` en
+`git fetch <bundle> refs/heads/work/modular-testability-20261013` die geschiedenis
+herstellen. GitHub-snapshotcommits hebben andere commitmetadata; zij vervangen
+de gemeten lokale SHA's niet. De definitieve gepubliceerde tree wordt afzonderlijk
+tegen de lokale tree gecontroleerd.
+
+```bash
+# Use the qualified GNU Fortran toolchain on PATH. Each output directory is new.
+python tests/modularity/test_modular_controls.py
+python tests/modularity/run_modular_tests.py --output /tmp/modular-audit --audit-build
+python tests/modularity/run_modular_tests.py --output /tmp/modular-benchmark --benchmark --repeat 3
+python tests/modularity/summarize_results.py /tmp/modular-benchmark/RESULTS.json /tmp/modular-summary.json
+python tests/modularity/run_contract_guards.py /tmp/modular-guards
+python tests/physics/run_ppa_micro05_literal_mvg.py
+bash tests/transaction/run_a23bl_gate.sh
+WU04B_PRESERVATION_ONLY=1 bash tests/fapp/run_ppa_wu04b_boesten_evaporation.sh
+bash tests/fmig431/run_crop_accepted_soil_temperature.sh
+python tools/performance/run_richards_revision_audit.py --output-dir /tmp/richards-revisions --repeat 5
+```
+
+Voer meetblokken serieel uit. De auditcontroller bevat geen testselectie voor
+canonical admission. De Richards-controller weigert ook byteverschillen tegen
+de eerdere revisie met exit 1, zelfs wanneer alle afzonderlijke mass-/science-runs
+slagen. Lees `CONTROL.json` om science-failure van strikte vergelijkingsverschillen
+te onderscheiden; verander geen tolerantie om dat verschil te verbergen.
