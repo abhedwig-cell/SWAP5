@@ -55,9 +55,14 @@ for opt in 0 2; do
   objects+=("$OUT/headcalc_legacy.o")
   for case in root sensor; do
     if [[ "$case" == root ]]; then source="$ROOT_TEST"; else source="$SENSOR_TEST"; fi
-    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$source" -o "$OUT/$case.o" || fail "$case driver O$opt"
-    gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/$case.o" -o "$OUT/$case" || fail "link $case O$opt"
-    "$OUT/$case" > "$OUT/$case.output" 2>&1 || { cat "$OUT/$case.output" >&2; fail "$case runtime O$opt"; }
+    # Isolate each test driver's module outputs from the common modules.
+    # No root-test .mod may influence sensor-test compilation.
+    DRIVER="$OUT/$case-driver"; mkdir -p "$DRIVER"
+    cp "$OUT"/*.mod "$DRIVER/" 2>/dev/null || true
+    cp "$OUT"/*.smod "$DRIVER/" 2>/dev/null || true
+    gfortran "${COMMON[@]}" -O"$opt" -J "$DRIVER" -I "$DRIVER" -c "$source" -o "$DRIVER/test.o" || fail "$case driver O$opt"
+    gfortran -fopenmp -O"$opt" "${objects[@]}" "$DRIVER/test.o" -o "$DRIVER/test" || fail "link $case O$opt"
+    "$DRIVER/test" > "$OUT/$case.output" 2>&1 || { cat "$OUT/$case.output" >&2; fail "$case runtime O$opt"; }
     grep -Fq 'MC_IRR01_MANAGEMENT_REAL_RICHARDS=PASS' "$OUT/$case.output" || fail "$case Richards"
     grep -Fq 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS' "$OUT/$case.output" || fail "$case mass"
   done
