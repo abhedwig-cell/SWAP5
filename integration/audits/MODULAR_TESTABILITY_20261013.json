@@ -3,17 +3,68 @@
   "baseline": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
   "branch": "work/modular-testability-20261013",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "canonical_admitted": false,
-  "affected_invariants": [1, 3, 7, 13, 22, 25, 29, 30],
+  "affected_invariants": [
+    1,
+    3,
+    7,
+    13,
+    22,
+    25,
+    29,
+    30
+  ],
   "interfaces_changed": "Opt-in strict dependency-analysis API in existing test source augmenter; no production interface change",
-  "next_action": "Run negative controls, ten compile/link probes and three alternating process-leg benchmark rounds",
+  "next_action": "Finish corrected three alternating benchmark rounds, then serial validation including original Boesten/accepted-heat routes and timed Richards audit",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
-  "relevant_paths": ["tests/support/augment_bartholomeus_backend_sources.py", "tests/modularity/", "integration/audits/MODULAR_TESTABILITY_20261013.json"],
-  "dependency_surface": ["src/", "tests/fsi/test_fsi39_b110_ksatexm.f90", "tests/fapp/test_ppa_wu04b_boesten_process.f90", "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh", "tests/fmig431/test_crop_accepted_soil_temperature.f90", "tests/fmig431/run_crop_accepted_soil_temperature.sh", "tests/fsi/fsi04_real_headcalc_stubs.f90", "tests/support/", "tests/modularity/", "compiler toolchain and environment"],
-  "authority_paths": ["AGENTS.md", "docs/architecture/invariants.md", "docs/development/workstream-execution-protocol.md", "docs/status-a/TRACEABILITY.md", "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md"],
+  "relevant_paths": [
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "tests/modularity/",
+    "integration/audits/MODULAR_TESTABILITY_20261013.json"
+  ],
+  "dependency_surface": [
+    "src/",
+    "tests/fsi/test_fsi39_b110_ksatexm.f90",
+    "tests/fapp/test_ppa_wu04b_boesten_process.f90",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh",
+    "tests/fmig431/test_crop_accepted_soil_temperature.f90",
+    "tests/fmig431/run_crop_accepted_soil_temperature.sh",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "tests/support/",
+    "tests/modularity/",
+    "compiler toolchain and environment"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md"
+  ],
   "blockers": [],
-  "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee."
+  "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee.",
+  "pr": 1219,
+  "remote_checkpoint": "ad0bd88964599ded23825d6b7fcc83dc1770be22",
+  "checkpoint_commit": "20e778cc8",
+  "last_reconciled_head": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "evidence_paths": [
+    "integration/audits/evidence/MODULAR_TESTABILITY_20261013/"
+  ],
+  "failed_attempts": [
+    {
+      "name": "task2 initial graph probe",
+      "reason": "selected legacy fixture lacks required array/variables; not accepted Full Richards seam"
+    },
+    {
+      "name": "richards original driver",
+      "reason": "constitutive_evaluations counter absent in earlier contract; physics unchanged by diagnostic repair"
+    },
+    {
+      "name": "modular benchmark v3",
+      "reason": "extra duplicate external headcalc compile; interrupted, excluded from speed claims"
+    }
+  ]
 }

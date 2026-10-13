@@ -41,8 +41,11 @@ uitgevoerd om een benchmark te verbeteren.
 
 De volledige directe providergraph, transitieve bronvolgorde, bronhashes en
 werkelijk uitgevoerde compiler-/linkcommando's staan in de evidence. De aantallen
-hier zijn **modulebronbestanden**, zonder gegenereerde probe en eventuele externe
-`headcalc.f90`. De compile/linkprobes bewijzen API-bouwbaarheid, geen fysische
+hier zijn **providerbronbestanden**, inclusief de expliciet genoemde legacyfixture
+waar nodig, zonder gegenereerde probe en eventuele externe `headcalc.f90`.
+Full Richards bevat 16 productieproviders plus één legacyfixture; de accessor
+153 productieproviders plus diezelfde fixture. Dit is geen fixturevrije
+standalone-applicatie. De compile/linkprobes bewijzen API-bouwbaarheid, geen fysische
 kwalificatie. De drie geselecteerde productiedrivers toetsen werkelijk gedrag.
 
 | Component / productiebron | Publiek contract en noodzakelijke inputs | Closure | Verborgen toestand / initialisatie en testgrens |
@@ -73,6 +76,27 @@ transaction-/verdampings-/drainage-/assimilation-eenheden hebben geen
 niet-intrinsieke imports. Voor Full Richards staat de grotere volledige graph
 in `AUDIT.json`, inclusief legacyproviders. De compiler valideert de modulevolgorde.
 
+
+### Daadwerkelijke O0-bouwprobes
+
+| Component | Providers | Totaal gecompileerde Fortranbestanden | Compilerverzoeken | Build + link + probe (s) |
+| --- | ---: | ---: | ---: | ---: |
+| hydraulics | 2 | 3 | 3 | 1.096 |
+| richards | 17 | 19 | 18 | 8.939 |
+| timestep | 2 | 3 | 3 | 0.465 |
+| transaction | 1 | 2 | 2 | 1.350 |
+| evaporation | 1 | 2 | 2 | 0.927 |
+| root | 3 | 4 | 4 | 1.895 |
+| drainage | 1 | 2 | 2 | 0.309 |
+| crop | 1 | 2 | 2 | 0.213 |
+| temperature | 5 | 6 | 6 | 1.703 |
+| runtime | 154 | 156 | 155 | 38.118 |
+
+De laatste probe-aanroep compileert de kleine driver en eventueel HeadCalc en
+linkt ze tegelijk. Daarom kan het aantal Fortranbestanden hoger zijn dan het
+aantal compilerverzoeken. De benchmarkdrivers gebruiken afzonderlijke compile-
+en linkaanroepen. Beide telwijzen zijn expliciet in de ruwe commando-evidence.
+
 ## Bestaande tooling en implementatie
 
 `tests/support/augment_bartholomeus_backend_sources.py` blijft de bestaande
@@ -81,6 +105,8 @@ implementatie. Een opt-in importeerbare `strict_closure` voegt duplicate-provide
 unresolved-import, cycle en include/preprocessor/submodule-afwijzing toe.
 Onbekende buildinputs worden niet als veilige onafhankelijkheid geaccepteerd.
 Er komt geen tweede qualificationselector en geen nieuw verplicht register.
+De gemeten tien closurebudgetten en duplicate-bronafwijzing worden door lokale
+tests bewaakt. Een budgetwijziging vereist opnieuw meten en verantwoorden.
 
 `tests/modularity/run_modular_tests.py` bedient drie bestaande ongewijzigde
 Fortran-productiedrivers: FSI39 MvG, Boesten-proces en accepted crop-heataccessor.
@@ -95,6 +121,9 @@ Alle bron-, flag-, omgeving-, compiler- en artifactidentiteiten moeten gelijk zi
 Een gewijzigde bron krijgt een nieuwe build. Beschadigde artifacts worden
 fail-closed afgewezen. Dit is geen persistente compilation-cache of bewijsinheritance.
 O0/O2, verschillende flags en verschillende closures worden niet vermengd.
+Stdoutidentiteit is geen aanvullende numerieke oracle. Voor de bestaande drivers
+blijven hun ongewijzigde assertions en referentietoleranties de wetenschappelijke
+autoriteit; executablehashes worden daarnaast per optimalisatieniveau vergeleken.
 
 De bestaande cache-V1 blijft opt-in en ongewijzigd. De gemeten eerste-vullingskosten
 maken eerst verkleinen van lokale closures en hergebruik binnen één transactie

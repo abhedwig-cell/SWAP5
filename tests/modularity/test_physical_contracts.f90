@@ -3,12 +3,16 @@ program test_physical_contracts
   use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_b110_default_mvg_provider
   use mod_restricted_surface_evaporation
+  use mod_drainage_hooghoudt_equivalent_depth
   implicit none
   type(b110_default_mvg_parameters_t) :: hydraulic
   type(boesten_evaporation_parameters_t) :: p
   type(boesten_evaporation_state_t) :: committed
   type(boesten_evaporation_forcing_t) :: forcing
   type(boesten_evaporation_result_t) :: result
+  type(hooghoudt_equivalent_depth_geometry_t) :: geometry
+  type(hooghoudt_equivalent_depth_prepared_t) :: prepared
+  type(hooghoudt_equivalent_depth_diagnostics_t) :: diagnostics
   real(real64) :: conductivity,nan_value
   logical :: ok
   nan_value=ieee_value(0.0_real64,ieee_quiet_nan)
@@ -36,4 +40,19 @@ program test_physical_contracts
   if(result%status/=BOESTEN_EVAP_INVALID_INPUT) error stop 'nonfinite forcing accepted'
   if(committed%spev/=0.04_real64.or.committed%saev/=0.04_real64) error stop 'invalid trial mutated committed pair'
   print '(a)', 'MODULAR_BOESTEN_NONMUTATION_INVALID_CONTRACT=PASS'
+  call prepare_hooghoudt_equivalent_depth(geometry,prepared,diagnostics)
+  if(diagnostics%status/=EQDEPTH_INVALID_PARAMETERS.or.prepared%is_valid) error stop 'invalid drainage geometry accepted'
+  geometry%drain_spacing=100.0_real64;geometry%wetted_perimeter=1.0_real64
+  geometry%drain_bottom_level=0.0_real64;geometry%impermeable_base_level=0.0_real64
+  call prepare_hooghoudt_equivalent_depth(geometry,prepared,diagnostics)
+  if(diagnostics%status/=EQDEPTH_OK.or..not.prepared%is_valid) error stop 'valid shallow geometry rejected'
+  if(prepared%equivalent_depth/=0.0_real64.or.prepared%branch/=EQDEPTH_BRANCH_SHALLOW) error stop 'zero-depth limit violated'
+  geometry%impermeable_base_level=-5.0_real64
+  call prepare_hooghoudt_equivalent_depth(geometry,prepared,diagnostics)
+  if(diagnostics%status/=EQDEPTH_OK.or.prepared%equivalent_depth<=0.0_real64) error stop 'positive depth rejected'
+  if(prepared%equivalent_depth>prepared%depth_below_drain) error stop 'depth bound violated'
+  geometry%drain_spacing=nan_value
+  call prepare_hooghoudt_equivalent_depth(geometry,prepared,diagnostics)
+  if(diagnostics%status/=EQDEPTH_INVALID_PARAMETERS.or.prepared%is_valid) error stop 'nonfinite geometry accepted'
+  print '(a)', 'MODULAR_DRAINAGE_DOMAIN_LIMIT_CONTRACT=PASS'
 end program
