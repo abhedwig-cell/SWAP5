@@ -23,3 +23,14 @@ Next decisive experiment: instrument command boundaries in original runner on a 
 Separately benchmark already-built **actual** Full Richards executables with fixed fixture and physical output checks across current and previous SWAP5; historical SWAP431 source authority is already present in repository. The source archive's presence does not equal a benchmark execution.
 
 Current evidence: model-specific solver CPU and performance regression are UNKNOWN. No speedup claim or gate removal authorized.
+
+## Confirmed duplicate conditional branch in original script
+
+The current original runner's region around lines 872-900 contains **two separate** `if (( crop_hydraulic_provenance_changed )); then` blocks, both executing the same pair:
+
+- `bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh`
+- `bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh`
+
+If the Boolean is true and the first pair passes, the second pair is reached under the same Boolean, absent side effects modifying it. This is a stronger static redundancy finding than merely seeing the same path repeated in independent guards. Scientific equivalence is still **not** demonstrated: tests may read or mutate shared state, and an unexamined external action may change it. Confirm exact invocations and input/output closure and measure both calls on one clean running candidate BEFORE refactoring.
+
+A fail-closed future consolidation could run the pair once, then require the same exact source/fixture/runtime/toolchain assertion at the second gate and record both logical claims. But no gate was removed or skipped in this PR.
