@@ -322,3 +322,106 @@ The opt-in modular feedback experiment does not replace a default gate. Persiste
 cache or evidence inheritance requires its separately qualified full dependency
 and terminal-evidence binding. Unknown closure means RUN, never inherited PASS.
 See [the tested modularity investigation](../audits/MODULAR_TESTABILITY_20261013.md).
+
+## Test selection and cost discipline (2026-10-13)
+
+This is the default execution policy for future SWAP5 workstreams. Evidence:
+[modular testability](../audits/MODULAR_TESTABILITY_20261013.md) and
+[measured session costs](../audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md),
+admitted via PR #1219 at `0181a829eb5f17267541d6b57d7e65140db7bd5a`.
+These rules govern when an agent invokes existing runners. They do not remove
+scientific assertions, change numerical tolerances, or silently alter owner gates.
+Existing shell runners and GitHub workflow filters are not changed by this policy.
+
+### Select before running
+
+In the existing work-unit record or PR, before an expensive execution, state:
+
+- changed contract and conservative dependency surface, including state ownership,
+  callers, external procedures, initialization, fixtures and runtime inputs;
+- immediate local tests and targeted composition tests;
+- required stable-candidate/admission gates and the exact owning clause;
+- reused evidence with complete unchanged input/dependency/toolchain binding;
+- expected duration, known cost breakdown and UNKNOWN values, plus the actual
+  candidate/source identity. Explain each expensive selection, not every command.
+
+Use the existing four-level change matrix in the modularity audit. During editing,
+run level 1 production function/module contracts and relevant level 2 state/interface
+checks. Run level 3 physical composition when the involved processes are ready,
+earlier when shared-state semantics require it. Run level 4 broad preservation at
+the required stable-candidate/admission boundary. A checkpoint, a new docs commit
+or a new branch head alone does not require a new full F-CI run.
+
+### Expensive tests are explicitly selected
+
+A test measured or expected to exceed **five minutes** is operationally expensive.
+This is a selection threshold, not a scientific tolerance, timeout or speed claim.
+Keep such tests outside the routine local feedback sequence. Unknown cost calls
+for the smallest useful existing driver or bounded diagnostic observation first;
+do not automatically launch a full stress matrix to discover its duration.
+
+The executing agent can select an expensive test autonomously when a named changed
+scientific dependency or an owning qualification/admission requirement justifies
+it. Record the reason and expected cost before starting; user confirmation is not
+required for this routine selection. A highest low-air stress test is not implied
+by a generic request to run tests, a docs-only edit, or an unrelated process change.
+Where it is a mandatory owner gate, keep it at that owner's required boundary.
+
+Do not add expensive stress matrices to blanket PR/push feedback jobs. Changing an
+existing mandatory runner or CI trigger requires reconciling its owning authority
+and proving retained required coverage. This policy is not evidence that those
+existing triggers have already been reconfigured. Do not automatically start a
+second full qualification while a relevant run is already active or valid terminal
+evidence has the same proven dependency surface.
+
+An observation stopped at a budget is CENSORED, with completed science/exit UNKNOWN.
+A timed-out qualification is incomplete or failed. Neither counts as PASS. Do not
+shorten forcing, reduce cases, loosen tolerances or omit required O0/O2 controls
+merely to meet the operational cost threshold.
+
+### Build once where identities permit; execute every required driver
+
+Use existing strict dependency selection and shared-build facilities first. A small
+`use ..., only:` list or a short driver does not prove a small build or numeric task.
+Measure the actual compile/link closure and justify large accepted-state closures.
+Prefer reducing unnecessary local closures, then object/module reuse within one
+controlled execution, before expanding persistent caches. Isolate O0/O2, flags,
+compiler/environment and module directories; link each scientific driver separately
+and execute all selected assertions. Reusing compilation does not inherit test PASS.
+
+### Measure without double counting
+
+For new benchmark or expensive controller work, retain command, candidate identity,
+compiler/flags, input/oracle/dependency identities, raw outputs, exit and terminal
+status. Record compile time and request counts, link time, native execution,
+validation, total wall time and cold/warm reuse where the runner supports them.
+Separate physics from driver assertions/output only when actually instrumented.
+Use controller timing for Python/evidence/GitHub operations when useful; mark
+unmeasured categories UNKNOWN. Poll waits overlapping active computations are not
+additional test duration. Do not sum a parent controller with its child events or
+count a retained event prefix twice. Alternating repeated same-candidate comparisons
+support a scoped performance claim; a single sequence under concurrent work does not.
+
+### Reuse evidence and consolidate work
+
+Inheritance needs terminal PASS and proven unchanged source, caller/state contracts,
+driver, oracle, physical input, flags, compiler/runtime, relevant environment and
+build selection. An import graph alone is insufficient. Unknown dependency identity
+means no inheritance. A docs/evidence-only successor with a fully identical scientific
+execution surface needs the applicable docs/evidence checks, not fresh numerics solely
+because its commit SHA differs. Configurations or manifests read by a runner are inputs,
+not automatically descriptive documentation.
+
+Reconcile relevant live canonical delta and existing queued/running/completed results
+before rebuilding or reconstructing repository evidence. Use immutable historical
+archives already present. Keep the actively used toolchain/dependencies recoverable
+within the workstream workspace; another disposable workspace is not durable authority.
+Persist coherent implementation, measurement and closeout batches. Avoid administrative
+commit sequences that produce no new executable feedback or recoverable phase boundary.
+
+Review a costly test's unique failure detection, overlapping cases and realistic
+scope before proposing removal or a shorter replacement. Only an evidence-backed
+owning-authority change can retire a mandatory gate. A smaller test can prove its
+contract; correct full-model integration remains a separate claim. Full Richards,
+mass, transactions, restart, independent oracles and coupling contracts retain their
+accepted scientific authority.

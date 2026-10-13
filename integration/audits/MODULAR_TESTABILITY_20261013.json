@@ -6,7 +6,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "affected_invariants": [
     1,
     3,
@@ -18,7 +18,7 @@
     30
   ],
   "interfaces_changed": "Opt-in dependency API and three local production-driver routes; optional-config guard and exact prepublication beginning-ledger scalar timing; no physics formula, state layout or tolerance change",
-  "next_action": "Publish coherent final evidence/diagnosis, verify live canonical and PR lease, safely admit qualified unchanged scientific surface; no new full run",
+  "next_action": "Apply protocol test-selection and cost discipline in subsequent workstreams; original investigation and admission complete",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -324,7 +324,7 @@
     "new_full_runs_for_cost_audit": 0,
     "priority": "Boesten minimal production process closure; 3 alternating benchmark rounds, cold pair 282.169 -> 1.384 seconds; 452 avoided compilations"
   },
-  "status_snapshot": "QUALIFIED_CANDIDATE_PRE_MERGE; canonical admission truth is the subsequently verified merged state and receipt on PR #1219, not this pre-merge boolean",
+  "status_snapshot": "CANONICALLY_ADMITTED; historical pre-merge snapshot superseded by verified PR #1219 merge receipt",
   "final_docs": {
     "status": "PASS",
     "path": "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_DOCS_20261013.json",
@@ -361,5 +361,30 @@
         "stderr_sha256": "6ce31dcec2d771aac4fd99f52c6ebd1c0cdc775bb81c95a4bd2440841d9a92b6"
       }
     ]
+  },
+  "canonical_admission": {
+    "pr": 1219,
+    "merge_sha": "0181a829eb5f17267541d6b57d7e65140db7bd5a",
+    "tree": "e10aa604d5d03edfc806512507fdf79362a5959c",
+    "complete_scientific_surface_verified": true,
+    "master_capability_denominator_changed": false
+  },
+  "execution_policy": "docs/development/workstream-execution-protocol.md#test-selection-and-cost-discipline-2026-10-13",
+  "execution_policy_validation": {
+    "base": "0181a829eb5f17267541d6b57d7e65140db7bd5a",
+    "scope": "AGENTS/protocol/audit/status documentation only; existing runners and workflows unchanged",
+    "docs_source_check_exit": 0,
+    "strict_mkdocs_exit": 0,
+    "mkdocs_reported_build_seconds": 32.15,
+    "mkdocs_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mkdocs_stderr_sha256": "72f0a86323f5645a11b4099262bf488162e359d07326bb4c9a44a97c35a1fe02",
+    "operational_expensive_threshold_seconds": 300,
+    "no_new_scientific_tests": true,
+    "scientific_dependency_trees": {
+      "src": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "tests": "361f1ccba13677e8e716033787baafabc0bb4e05",
+      "tools": "3089b7df0e2b977993def1b7692f5ab716059581",
+      "reference": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
+    }
   }
 }
