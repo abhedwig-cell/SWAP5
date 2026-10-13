@@ -50,3 +50,9 @@ Cost/benefit implication: merely turning on V1 everywhere risks slowing initial 
 One concrete benefit is independently proven already: `management-physical` native test executables run in fractions of a second when already built, versus a 99.348 s rebuild-plus-execute gate. That contrast identifies build infrastructure as a leading expense, but cannot be interpreted as an achieved reusable-build saving or solver-speed ratio. Separate completed qualification and production performance goals.
 
 Decision: prioritize **provenance-safe amortization of V1 hash validation** as a separate scoped candidate, after measuring the stage cost, over more general new resume/checkpoint machinery. Preserve every scientific gate. Do not integrate audit PR's duplicate-gate change without exact-head qualification.
+
+## Isolated stage-timing candidate
+
+Added `tools/performance/compile_cache_cost_probe.py`, a diagnostic copy of canonical `tools/fci/compile_cache_trial.py`. This leaves the incumbent cache implementation and scientific runner untouched. For successful HIT/MISS events the diagnostic copy records monotonic `toolchain_seconds`, `prelookup_seconds`, `lookup_seconds` under `audit_timing`. Its different script identity deliberately gives it a separate cache namespace; **do not** compare its first fill to the historical cache as if cache identity and warm state were equal. It must be run with its own cache store and the same bounded exact O0/O2 profile. Failed compilation and bypass remain conservative.
+
+This is persisted instrumentation only. No new stage timings or build savings are claimed until that diagnostic variant has completed positive/negative checks and its evidence is archived. The canonical cache remains untouched and default-off.
