@@ -332,7 +332,10 @@ comparisons en exacte bestaande oracle-uitvoer. Ook de low-air-route is volledig
 PASS op O0/O2: twaalf verse configuraties, 72 fine comparisons en exacte
 historische uitvoer. De totale low-air-doorlooptijd is 10678.726 seconden;
 dit is verse ownerkwalificatie, geen vergelijkende compilatiebenchmark.
-De overige ownerpreservation is nog niet afgesloten. Deze uitvoering erft nul hoogste
+Alle elf ownerstappen, inclusief beide hoogste routes, zijn nu terminal
+PASS. De sealed owner- en couplingcapsules zijn gecontroleerd; de dagelijkse
+successorcontrole en negen negatieve evidencecontroles slagen eveneens.
+Volledige moving F-CI en canonical admission blijven open. Deze uitvoering erft nul hoogste
 configuraties. Broneligibility in `tests/modularity/backend_allocation_authority.py`
 is uitsluitend een byte-exacte broncontrole; het ontbreken van volledige nieuwe
 owner-evidence blijft fail-closed in `verify_backend_owner_evidence.py`.
@@ -361,9 +364,11 @@ De reproduceerbare actuele module-oracleroute is
 `python tests/modularity/run_multiswap_independent.py --output /tmp/fvq87-current`.
 Zij vervangt geen historische admissionrunner of volledige gekoppelde physics.
 
-De primaire productiebron blijft tijdens de lopende ownerqueue vast. De
-ledgerreparatie is daar nog niet toegepast; gezamenlijke sourcebinding en moving
-F-CI blijven dus verplicht en nog open. De afzonderlijke echte F-GC49D-route
+De primaire productiebron bleef tijdens alle elf ownerstappen vast. Na de
+terminale PASS is de ledgerreparatie toegepast in
+`34e23143289e3dcfed80f8a1c1862c9a839e2dc7`; de gezamenlijke productietree is
+`d4412e09005f5f76eb795c748350eb502833fdc7`. De sealed bronbinding is PASS;
+moving F-CI blijft verplicht en nog open. De afzonderlijke echte F-GC49D-route
 op backendbronpostimage `b011b2c11af206d5a21b26dfcea6eaf16e6d0efd` is inmiddels
 terminal PASS, evenals de oorspronkelijke onafhankelijke F-VQ124-gate.
 De live route gebruikt daadwerkelijk MODFLOW6 6.8.0 (releaseasset SHA256
@@ -394,8 +399,8 @@ moving F-CI vereist bovendien de afzonderlijke nieuwe koppelingsevidence en de
 daadwerkelijk toegepaste ledgerreparatie. Onbekende productiepostimages blijven
 geweigerd. Op de nog vaste primaire bron is die aanvullende F-CI-prerequisite
 daadwerkelijk aangeroepen en geweigerd, vóór de brede wetenschap. Dit is geen
-full-preservation PASS. De volgende fase sluit eerst de lopende ownerqueue af,
-past daarna de reeds afzonderlijk geteste scalar-timingreparatie toe, en bindt
+full-preservation PASS. De afgeronde ownerfase heeft de volledige queue afgesloten,
+daarna de reeds afzonderlijk geteste scalar-timingreparatie toegepast, en bindt
 alle hergebruikte nieuwe resultaten aan onveranderde gecompileerde dependencies.
 Daarna moet de volledige bestaande moving F-CI-route met resume OFF nog slagen.
 

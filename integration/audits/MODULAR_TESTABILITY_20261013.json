@@ -17,8 +17,8 @@
     29,
     30
   ],
-  "interfaces_changed": "Opt-in strict dependency API and three local production-driver routes; optional-config allocation guard in serialized backend; no physics formula, state layout or tolerance change",
-  "next_action": "Finish remaining fresh production/state owner gates; seal source-bound owner and coupling evidence; run full moving F-CI resume OFF before admission",
+  "interfaces_changed": "Opt-in dependency API and three local production-driver routes; optional-config guard and exact prepublication beginning-ledger scalar timing; no physics formula, state layout or tolerance change",
+  "next_action": "Persist verified joint candidate and execute original full moving F-CI with FCI_RESUME_MODE=OFF; qualified/admitted remain false",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -44,24 +44,19 @@
     "docs/status-a/TRACEABILITY.md",
     "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md"
   ],
-  "blockers": [
-    {
-      "scope": "canonical admission/full qualification",
-      "authority": "tests/mc-met01/verify_daily_demand_successor.py invoked by moving F-CI",
-      "observed": "exit1 exact source successor refuses extra backend change; broad science not executed",
-      "recovery": "Retained fail-closed gate and original logs; draft PR1219 holds measured local work and safety repair"
-    }
-  ],
+  "blockers": [],
   "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee.",
   "pr": 1219,
-  "remote_checkpoint": "fd3c3a69f7b27cb3bd924529ca1a08042465fce9",
+  "remote_checkpoint": "2afa02aec15a199df497b0792552e096e0ac08a8",
   "checkpoint_commit": "51152a8ee74beef7a45204101bc830247b521285",
   "last_reconciled_head": "cfc728c42b38026ba548f6250afec00969ccda67",
   "evidence_paths": [
     "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64",
-    "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64"
+    "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_OWNER_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64"
   ],
   "failed_attempts": [
     {
@@ -129,13 +124,13 @@
     "unchanged_tested_postimage_sources": 156
   },
   "backend_qualification": {
-    "status": "SOURCE_ELIGIBLE_SCIENCE_PENDING",
+    "status": "FRESH_OWNER_AND_COUPLING_VERIFIED_FULL_PRESERVATION_PENDING",
     "baseline": "cfc728c42b38026ba548f6250afec00969ccda67",
     "preimage": "01d1981cc7aebb1553463b1cee955bb21da05fe6",
     "postimage": "7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18",
-    "scope": "Only optional allocation guard; every other production and reference byte retained",
+    "scope": "Only exact optional allocation guard and beginning-ledger scalar timing; every other production and reference byte retained",
     "highest_cases_inherited": 0,
-    "owner_ready": false,
+    "owner_ready": true,
     "moving_fci_pass": false,
     "requested_by_user": "Doe: qualify bounded backend successor and close PR1219",
     "planned_gates": [
@@ -167,7 +162,10 @@
         "wall_seconds": 351.11493136900026,
         "corrector_iterations": 5,
         "max_cell_residual_m_per_s": 1.1304499051568296e-20
-      }
+      },
+      "primary_repair_applied": true,
+      "combined_source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "primary_repair_commit": "34e23143289e3dcfed80f8a1c1862c9a839e2dc7"
     },
     "highest_normal": {
       "exit": 0,
@@ -191,6 +189,40 @@
       "members": 186,
       "decoded_bytes": 9345256,
       "stage": "UNSEALED_PROGRESS_NOT_OWNER_ADMISSION"
+    },
+    "owner_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_OWNER_20261013.tar.xz.b64",
+      "decoded_sha256": "71025456abbfc4e0be95c77be57fed6aa7b24d141c2dd82d0b902d95b1defa3c",
+      "members": 87
+    },
+    "coupling_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64",
+      "decoded_sha256": "3cc121a52024c6ae20a85b24370e31352ecca8c8a1e61a8566e4b065bb4a9528",
+      "members": 74
+    },
+    "sealed_guards": {
+      "owner": {
+        "exit": 0,
+        "stdout_sha256": "97ebd44e1b10314c22568ec8554f5cc4dd3d5e27262bb77b3c9c1a62bc178516",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "joint": {
+        "exit": 0,
+        "stdout_sha256": "83d56ec36d87a5d97649690a371018a293b3f58808b89a2a0417ffdbe2341c2c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "daily": {
+        "exit": 0,
+        "stdout_sha256": "da33768fc31ca58b697d41792579d2dd8617ee076234e7dda3af8b1775916e50",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "negative": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "7c7b895035abea4c3ec8e675da819419c2a228efb919301171d7074abe1fc236",
+        "tests": 9
+      }
     }
-  }
+  },
+  "historical_source_authority_refusal": "Initial moving gate refused extra backend source before science; superseded by exact bounded eligibility and fresh sealed owner/coupling proof, not by an inherited PASS"
 }
