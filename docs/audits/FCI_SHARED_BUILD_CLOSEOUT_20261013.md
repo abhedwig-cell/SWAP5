@@ -1,6 +1,6 @@
 # Shared root/sensor build qualification and Richards audit (13 October 2026)
 
-Status: **qualified isolated shared-build scope; local F-CI preserved; canonical admission pending.** The September revision comparison is **FAIL**, independently of the shared-build qualification. No production physics, numerical tolerance, incumbent driver, historical evidence or default F-CI runner is changed.
+Status: **qualified isolated shared-build scope; local F-CI preserved; canonically admitted via PR #1218 at `8dac664db83dda8338ef0ffe0f92b55541876978`.** The September revision comparison is **FAIL**, independently of the shared-build qualification. No production physics, numerical tolerance, incumbent driver, historical evidence or default F-CI runner is changed.
 
 This is the current disposition for PR #1218. Earlier runtime-cost, decision-checkpoint and duplicate-callsite audit documents describe historical investigation stages. The proposed duplicate crop-guard edit was restored: the default F-CI runner is byte-identical to canonical. This work does not admit controller consolidation, cross-invocation object caching or test-result reuse.
 
@@ -103,3 +103,5 @@ Machine-readable authorities and raw recoverable archives:
 - `integration/audits/RICHARDS_REVISION_PROFILE_20261013.json`: all revision trajectories, profiling logs, same-core comparisons, build inputs and compiled profiling executables. Concatenate numbered base64 part files, decode and extract the xz tar; verify the declared SHA256 first.
 
 Admission scope is isolated test-build tooling and reproducible diagnostics. The default F-CI route, production solver, numerical tolerances and immutable historical evidence remain unchanged. Broad solver-regression, legacy-runtime and whole-F-CI speed claims remain explicitly outside the qualified evidence.
+
+Canonical admission and unchanged coverage receipt: `integration/f-ci/F-CI_SHARED_BUILD_ADMISSION_20261013.json`. The final persisted PR head passed all 16 tooling tests and two further native alternating current/recent pairs; those original logs and process identities are included in the admission receipt.

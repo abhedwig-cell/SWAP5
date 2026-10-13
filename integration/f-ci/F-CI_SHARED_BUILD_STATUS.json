@@ -23,13 +23,13 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "next_action": "Safe admission of qualified isolated test-build tooling and diagnostics only; no solver execution change",
-  "recovery_point": "PR #1218 audit/fci-runtime-cost-20261013; checkpoint commit containing this record",
+  "next_action": "Work unit complete for isolated shared test-build tooling and diagnostics; requalify upon dependency change",
+  "recovery_point": "Canonical integration/f-ci-canonical; admission PR #1218 and versioned admission receipt",
   "blockers": [],
   "note": "Three alternating instrumented A/B rounds and one uninstrumented control passed unchanged root/sensor O0/O2 assertions. Four ELFs agree in every primary round. Full F-CI resume OFF PASS. Current/recent Richards physical trajectories exact; 20 additional alternating same-core pairs show no demonstrated regression. September strict comparison FAIL; equal-output September ratio and legacy matched runtime UNKNOWN. No production/default F-CI change or broader speed claim.",
   "preserved": true,
   "qualified_shared_build": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "shared_science_heads": [
     "bf239429ed114e3638800bf9c99e16745d8e31fa",
     "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9"
@@ -39,9 +39,17 @@
   "evidence": [
     "integration/audits/FCI_SHARED_BUILD_THREE_ROUNDS_20261013.json",
     "integration/audits/FCI_SHARED_BUILD_QUALIFICATION_20261013.json",
-    "integration/audits/RICHARDS_REVISION_PROFILE_20261013.json"
+    "integration/audits/RICHARDS_REVISION_PROFILE_20261013.json",
+    "integration/f-ci/F-CI_SHARED_BUILD_ADMISSION_20261013.json"
   ],
   "richards_current_recent": "EXACT_PHYSICAL_PASS_NO_DEMONSTRATED_REGRESSION",
   "richards_september": "STRICT_PHYSICAL_COMPARISON_FAIL",
-  "legacy_matched_runtime": "UNKNOWN"
+  "legacy_matched_runtime": "UNKNOWN",
+  "canonical_admission_commit": "8dac664db83dda8338ef0ffe0f92b55541876978",
+  "canonical_admission_pr": 1218,
+  "open_scientific_limits": [
+    "September strict physical comparison FAIL; equal-output timing ratio UNKNOWN",
+    "SWAP 4.3.1 matched runtime UNKNOWN",
+    "Whole-F-CI speedup and broad solver regression claim UNKNOWN"
+  ]
 }
