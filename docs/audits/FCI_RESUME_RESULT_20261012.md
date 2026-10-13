@@ -364,3 +364,43 @@ are archived in `integration/f-ci/evidence/F-CI_RESUME_CANDIDATE_PROFILE_2026101
 Decoded SHA256: `899840f2431864c39f9737f41d5d858ef300e0dd7000dc52b55d48862be5d52d`.
 Copied native binaries are excluded; their SHA256 identities/link commands permit
 rebuilding. No new GitHub Actions, production mutations or tolerance changes.
+
+## Larger-group closure boundary, 13 October 2026
+
+At pinned canonical `f0293cffa3b43fb3c4d799029233df9863094cf5`, the
+reconstructed provider selection matches all 170 observed compile sources per
+optimization level. The 400-source discovery census has no duplicate module
+providers; source and repository-root implicit prefixes contain no `.mod` or
+`.smod`. The sole non-comment file/environment-call scan hit is the RossFast
+table provider's explicit OPEN. The fixture selects serialized reference at
+driver lines 233/239. This scan is bounded lexical evidence, not a general
+static proof of every external input.
+
+An actual rejecting libgfortran OPEN interposer detects a positive OPEN control
+(exit 97). Both original native O0/O2 programs under that interposer exit 0 and
+retain the qualified scientific output SHA256. Both also execute successfully
+in distinct empty working/TMPDIR/RUNNER_TEMP directories, leave those directories
+empty, and retain the same SHA256. Library loader logs and extra Python/shell/
+OpenMP identities are captured. These are positive diagnostics; they do not
+establish that the whole shell runner leaves no shared state or that all native
+library/locale/OpenMP filesystem inputs are bound.
+
+The attempted stronger local observation/isolation routes are unavailable:
+`strace` fails at PTRACE_TRACEME with EPERM, unprivileged `unshare` fails with
+EPERM, and Landlock's VERSION probe returns ENOSYS (errno 38). These are a
+concrete limitation of this host's tested proof routes, not evidence that
+SWAP4.3.1 sources are absent or that qualification is impossible elsewhere.
+Complete native filesystem-input attestation/enforcement and full-runner
+downstream independence remain UNKNOWN. The larger extension is blocked on
+that outstanding proof here; no new eligibility or reusable PASS is issued.
+The existing qualified/admitted two-frost-group implementation remains complete.
+
+Archive: `integration/f-ci/evidence/F-CI_RESUME_MANAGEMENT_CLOSURE_20261013.tar.gz.b64`;
+decoded SHA256 `157ca3448cd1028695ac8e7fd2f6635b3eee8125bc9722513797012f29c9b7eb`. It contains
+reproducible diagnostic sources, commands, logs, per-file SHA256, closure census,
+platform failures and exact recovery instructions. Its diagnostic assertions
+completed exit 0; denied tracing commands are explicitly failures. No actual
+work was avoided in these diagnostics, and no larger-group speedup is claimed.
+Recovery uses a host with tracing or an enforced audited read surface, completes
+the output/downstream contract, and then separately qualifies a functional
+resume candidate. No new Actions or production/tolerance changes.

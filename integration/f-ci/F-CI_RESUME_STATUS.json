@@ -950,10 +950,40 @@
     "native_repetitions_per_opt": 3,
     "all_native_output_equal_to_existing_qualification": true,
     "src_discovery_f90_count": 400,
-    "full_input_output_closure_status": "UNDER_REVIEW",
+    "full_input_output_closure_status": "PARTIAL_CLOSURE_EXTENSION_BLOCKED_IN_CURRENT_HOST",
     "net_resume_savings": "UNKNOWN_NOT_IMPLEMENTED_OR_MEASURED_FOR_THIS_GROUP",
     "archive": "integration/f-ci/evidence/F-CI_RESUME_CANDIDATE_PROFILE_20261013.tar.gz.b64",
     "decoded_sha256": "899840f2431864c39f9737f41d5d858ef300e0dd7000dc52b55d48862be5d52d",
-    "next_safe_step": "Audit complete source/provider/include/runtime/prefix and output-state closure before a separate profitable-group resume qualification. Group remains RUN."
+    "next_safe_step": "Complete native filesystem-input and full-runner output/downstream proof on a suitable host; this audit did not prove eligibility. Existing two-frost scope remains admitted.",
+    "closure_audit": {
+      "pinned_head": "f0293cffa3b43fb3c4d799029233df9863094cf5",
+      "archive": "integration/f-ci/evidence/F-CI_RESUME_MANAGEMENT_CLOSURE_20261013.tar.gz.b64",
+      "decoded_sha256": "157ca3448cd1028695ac8e7fd2f6635b3eee8125bc9722513797012f29c9b7eb",
+      "diagnostic_assertions_exit_code": 0,
+      "provider_duplicates": 0,
+      "compiled_source_order_matches_observed": true,
+      "implicit_modules_found": 0,
+      "explicit_fortran_open_control_exit_code": 97,
+      "O0_O2_open_intercepted_exit_codes": [
+        0,
+        0
+      ],
+      "O0_O2_empty_directory_exit_codes": [
+        0,
+        0
+      ],
+      "new_scientific_output_sha256": "3c36c3ce70057123f407eb1d2c7beb679b0ae207fec46a3a3d44a1879f49beeb",
+      "native_complete_filesystem_attestation": "UNKNOWN",
+      "full_runner_downstream_state_independence": "UNKNOWN",
+      "platform_limitations": [
+        "ptrace PTRACE_TRACEME EPERM",
+        "unshare EPERM",
+        "Landlock VERSION ENOSYS"
+      ],
+      "eligible": false,
+      "reusable_receipts_created": 0,
+      "actually_avoided_work_seconds": 0,
+      "recovery": "Archive README: reproduce on tracing-capable host or enforce audited read surface; finish runner/downstream closure before separate functional qualification."
+    }
   }
 }
