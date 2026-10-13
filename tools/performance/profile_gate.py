@@ -62,9 +62,15 @@ def main():
         if raw.exists():
             for line in raw.read_text().splitlines():
                 fields = line.split('\t')
+                # GNU time emits a diagnostic line before its formatted
+                # event on nonzero compiler exit. It is not an event.
+                if line.startswith('Command exited with non-zero status '):
+                    continue
                 if len(fields) != 3:
                     parser.error(f'incomplete compiler event: {line!r}')
                 stage, elapsed, status = fields
+                if stage not in ('compile', 'combined'):
+                    parser.error(f'unknown compiler event: {line!r}')
                 records.append({'stage': stage, 'seconds': float(elapsed),
                                 'returncode': int(status)})
     report = {
