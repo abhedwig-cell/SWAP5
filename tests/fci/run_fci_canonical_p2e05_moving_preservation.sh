@@ -4,6 +4,22 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Opt-in receipt controller. OFF follows the original command directly.
+fci_group() {
+  local group="$1"; shift
+  case "${FCI_RESUME_MODE:-OFF}" in
+    OFF) "$@" ;;
+    SHADOW|RESUME)
+      if [[ -n "$(declare -Fx)" ]]; then
+        printf '%s\n' 'FCI_RESUME_RUN unqualified exported shell functions' >&2
+        command "$@"
+      else
+        command python3 tools/fci/resume_group.py "$group" "$@"
+      fi ;;
+    *) fail 'unknown FCI_RESUME_MODE' ;;
+  esac
+}
+
 AUTH=50346642bd565f79134ea17d5462e544b354998c
 FCI110_ADMISSION=a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a
 DIR01_ADMISSION=b95ce4b9a27144eb400fae25de69dd5d927667a8
@@ -114,8 +130,8 @@ verify_crop_frost_highest(){
 # subject to every existing owning gate and exact postimage check below.
 if [[ "$(git rev-parse HEAD:src/process/mod_frost_hydraulic_effect.f90)" == 0dd5b541af936d292d23575f798c3cdd5be19c47 ]]; then
   verify_crop_frost_highest || fail 'frost NaN guard exact source; complete highest evidence remains separate admission gate'
-  bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'
-  bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'
+  fci_group frost-invalid bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'
+  fci_group frost-independent bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'
   echo 'FCI_CANONICAL_FROST_NAN_GUARD_EXACT_SCIENTIFIC_SUCCESSOR=PASS'
 fi
 

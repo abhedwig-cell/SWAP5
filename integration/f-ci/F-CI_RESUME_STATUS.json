@@ -1,0 +1,748 @@
+{
+  "work_unit": "F-CI-RESUME",
+  "baseline": "a1b4bb432827149872445161fbcb775bba5c4cb1",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
+  "next_action": "Verify live base/head/checks and exact scientific closure, mark PR1217 ready and merge with expected-head guard; then verify canonical tree and persist admission receipt. OFF stays default.",
+  "recovery_point": "work/f-ci-safe-resume-20261012",
+  "dependency_surface": [
+    "tools/fci/resume_group.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost"
+  ],
+  "blockers": [],
+  "stage": "OWNER_DECISION_ACCEPTED_FINAL_RECONCILIATION_AND_ADMISSION",
+  "hardened_qualification": {
+    "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+    "focused_controls": 33,
+    "focused_terminal_exit_code": 0,
+    "full_trial": "PASS_OFF_0_CONTROLLED_PREFIX_1_RESUME_0_HARNESS_0",
+    "negative_exported_function_control": "RESUME RUN exit 1 equal to OFF; no inherited or newly reusable PASS",
+    "false_run_repaired": "CPU tuples compared unequal after JSON round-trip; explicit JSON arrays restore identity equality",
+    "evidence": "integration/f-ci/evidence/F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64",
+    "decoded_sha256": "b75bd7a0139dabab55577f28ef31a373a99e78e7e255f7d3aa380560034d155a",
+    "full_trial_evidence": "integration/f-ci/evidence/F-CI_RESUME_CLOSED_FULL_20261012.tar.gz.b64",
+    "full_trial_decoded_sha256": "37aa4bc207a7371f16c277271d43042bbc5e2da4bbf979d31a6a2e54bad78563"
+  },
+  "reviewed_runtime_profile": {
+    "fingerprint": "16867dd80199fc0b49cd72386d4f557e07e45bbb4989484b3f77306f57c4e470",
+    "manifest_sha256": "5af7b0d6021f1cd1bfebe3834793ca1b70525f714aba27172d6d933ec3114594",
+    "tool_entries": 378,
+    "loaded_bytecode_entries": 48,
+    "inspect_candidate": "45cac22798902c8c4b4a02fd40d5357d1e125b82",
+    "scope": "Exact captured GNU13/SDK/runtime/host profile only; different profiles RUN without receipts"
+  },
+  "continuation_review": {
+    "defect": "New committed leaf code could introduce dependencies absent from the explicit manifest; old controller could publish and inherit an invalid PASS",
+    "unsafe_inheritance_reproduced_on": "9bb84ef31dd001cd9e14480c2c2767b9acf7e410",
+    "repair_controller_head": "8547008cae267ef3892ce938a04e9e9ee33f8de3",
+    "current_test_head": "623b82a79f874db56b9f975187f7bc826ae6745f",
+    "repair": "Only seven audited leaf blobs are eligible; unknown committed leaf revisions always RUN without reusable receipts",
+    "actual_reproducer": "Old RESUME exit 0 with inheritance despite OFF exit 1; hardened RESUME RUN exit 1 equal to OFF",
+    "focused_controls": 27,
+    "focused_terminal_exit_code": 0,
+    "prior_focused_cleanup_failure": "All assertions completed but final cleanup exit 128; not counted terminal PASS",
+    "evidence": "integration/f-ci/evidence/F-CI_RESUME_REVIEW_20261012.tar.gz.b64",
+    "decoded_sha256": "a833a1d469d012da78dc22683e388e5cb468756999427eaae603c3844524c2e7",
+    "current_full_trial_status": "BASELINE_EXIT_0_RESUME_INTERRUPTED_UNKNOWN",
+    "fresh_baseline_calendar_seconds": 2766.421981505002,
+    "fresh_baseline_terminal_exit_code": 0,
+    "controlled_prefix_seconds": 10.347933965000266,
+    "interrupted_session_exit_code": 130,
+    "exported_function_defect_reproduced": "RESUME inherited 0, OFF returned 1 on unchanged original leaf with an exported cmp function and changed external fixture"
+  },
+  "scientific_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+  "safety_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64",
+    "decoded_sha256": "b75bd7a0139dabab55577f28ef31a373a99e78e7e255f7d3aa380560034d155a",
+    "controls": 33,
+    "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+    "terminal_exit_code": 0
+  },
+  "owner": "F-CI execution infrastructure; existing VQ scientific preservation and central REGIE admission",
+  "preserved": true,
+  "full_execution_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+  "full_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_CLOSED_FULL_20261012.tar.gz.b64",
+    "decoded_sha256": "37aa4bc207a7371f16c277271d43042bbc5e2da4bbf979d31a6a2e54bad78563"
+  },
+  "measurements": {
+    "schema": "swap5.fci.resume-measurements.v1",
+    "actual_execution_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+    "baseline_calendar_seconds": 2398.6440995059966,
+    "resumed_calendar_seconds": 2405.9632216440004,
+    "controlled_prefix_seconds": 10.024210853000113,
+    "observed_calendar_baseline_minus_resume_seconds": -7.319122138003877,
+    "calendar_difference_is_not_causal_saved_work": true,
+    "scientific_group_wall_actually_avoided_seconds": 1.4092904970020754,
+    "scientific_compile_link_invocations_avoided": 8,
+    "scientific_compile_link_invocations_repeated_in_inherited_groups": 0,
+    "checkpoint_receipt_write_seconds": 0.0062198680025176145,
+    "initial_input_verification_seconds": 1.837246826995397,
+    "post_run_input_revalidation_seconds": 1.6514125450048596,
+    "evidence_and_input_verification_seconds_on_resume": 1.599198736003018,
+    "recovery_execution_seconds": 2405.9632216440004,
+    "recovery_setup_cpu_seconds": "UNKNOWN_NOT_SEPARATELY_INSTRUMENTED",
+    "pure_cpu_compilation_seconds_saved": "UNKNOWN",
+    "unqualified_groups_compilation_total": "UNKNOWN_NOT_INSTRUMENTED",
+    "filesystem_cache_and_host_load_contribution": "UNKNOWN",
+    "build_object_cache_enabled_by_this_mechanism": false,
+    "repeat_experiment_count_same_functional_candidate": 1,
+    "top_level_original_calls": {
+      "baseline": 26,
+      "resumed": 24
+    },
+    "scientific_top_level_invocations": {
+      "baseline": 22,
+      "resumed": 20
+    },
+    "pure_verifier_calls_per_run": 4,
+    "inherited_groups": [
+      "frost-invalid",
+      "frost-independent"
+    ],
+    "all_other_original_top_level_calls_same_sequence": true,
+    "executed_group_measurements": [
+      {
+        "group": "frost-invalid",
+        "wall_seconds": 1.073727909999434,
+        "compilations": 6,
+        "checkpoint_write_seconds": 0.002708168001845479,
+        "end_input_verification_seconds": 0.9166069120037719,
+        "verification_seconds": 1.008711434995348
+      },
+      {
+        "group": "frost-independent",
+        "wall_seconds": 0.3355625870026415,
+        "compilations": 2,
+        "checkpoint_write_seconds": 0.0035117000006721355,
+        "end_input_verification_seconds": 0.7348056330010877,
+        "verification_seconds": 0.8285353920000489
+      }
+    ],
+    "inherited_group_decisions": [
+      {
+        "decision": "INHERIT",
+        "group": "frost-invalid",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T22:31:56.601786+00:00",
+        "verification_seconds": 0.8171100420004223
+      },
+      {
+        "decision": "INHERIT",
+        "group": "frost-independent",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T22:31:57.492226+00:00",
+        "verification_seconds": 0.7820886940025957
+      }
+    ],
+    "receipt_checks": [
+      {
+        "group": "frost-invalid",
+        "log_sha256": "7dd11da3f0c815196fc8a564d5821171f5deb4acd0563a8c08bc634087a5a741",
+        "hmac_verified": true,
+        "input_sha256": "10eb959ad7b52627f33c5c7390ffa7b4bb5e36bdb44f342bfb0c2942ead6bf6b"
+      },
+      {
+        "group": "frost-independent",
+        "log_sha256": "890a2e8f2040de6473e4d187b15bbad01de0caf143d6b6b7604ba7bda7286a43",
+        "hmac_verified": true,
+        "input_sha256": "10d33ef3ae24f69762b5dd6e136784000f321893306e1b82369a99ab8c96cc82"
+      }
+    ],
+    "comparison": {
+      "schema": "swap5.fci.resume-comparison.v1",
+      "exact_scientific_output_after_private_path_normalization": true,
+      "controls_valid_same_candidate": true,
+      "inherited_groups": [
+        "frost-invalid",
+        "frost-independent"
+      ],
+      "original_full_stdout_byte_identical": false,
+      "baseline_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+      "resumed_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+      "normalized_baseline_paths": [
+        {
+          "line": 116,
+          "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-mxJFuD",
+          "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+        },
+        {
+          "line": 692,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+        },
+        {
+          "line": 694,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+        },
+        {
+          "line": 701,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+        },
+        {
+          "line": 703,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+        },
+        {
+          "line": 757,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+        },
+        {
+          "line": 759,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+        },
+        {
+          "line": 765,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+        },
+        {
+          "line": 767,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+        }
+      ],
+      "normalized_resumed_paths": [
+        {
+          "line": 120,
+          "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-w6c9F7",
+          "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+        },
+        {
+          "line": 696,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/dynamic_top_correction-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+        },
+        {
+          "line": 698,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/dynamic_top_correction-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+        },
+        {
+          "line": 705,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/frozen_wet_trajectory-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+        },
+        {
+          "line": 707,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/frozen_wet_trajectory-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+        },
+        {
+          "line": 761,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi25_reference_indicator_production_seam-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+        },
+        {
+          "line": 763,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi25_reference_indicator_production_seam-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+        },
+        {
+          "line": 769,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi39_b110_ksatexm-o0/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+        },
+        {
+          "line": 771,
+          "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi39_b110_ksatexm-o2/rom0_test",
+          "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+        }
+      ],
+      "numerical_values_or_tolerances_normalized": false,
+      "qualification_pass": true
+    },
+    "controls": {
+      "baseline": {
+        "command": [
+          "bash",
+          "-x",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "mode": "OFF",
+        "executed_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "started_utc": "2026-10-12T21:51:41.924456+00:00",
+        "terminal_status": "PASS",
+        "environment_sha256": "a24679564724a76a439de2a377abd1d90706a4116332b4b70681753aec5cd4ae",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T22:31:40.568739+00:00",
+        "wall_seconds": 2398.6440995059966,
+        "end_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "stdout_sha256": "cce01c9da3655f21ea28bab74df0b14cd0c5992f7eafaa32be4b0f29706260a9",
+        "stderr_sha256": "2e8da16877e6cac37c28becdcdb0558f4a750e80216f100fadcf85b41e55e83a"
+      },
+      "interrupted": {
+        "command": [
+          "bash",
+          "-x",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "mode": "SHADOW",
+        "executed_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "started_utc": "2026-10-12T22:31:40.582879+00:00",
+        "terminal_status": "FAIL",
+        "environment_sha256": "834400b8393faa67322b740e7dc594140b5f847fdfd915be4c202dafa276c8de",
+        "terminal_exit_code": 1,
+        "ended_utc": "2026-10-12T22:31:50.607410+00:00",
+        "wall_seconds": 10.024210853000113,
+        "end_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "stdout_sha256": "b06341d626b31f6231e65bec9d47d5342d425e68f6d24657a0d7d1b0ed313f07",
+        "stderr_sha256": "129f85af124d142acf27b1a7a62f8077e51c2eba4ec2d4169791720fb374dd4c"
+      },
+      "resumed": {
+        "command": [
+          "bash",
+          "-x",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "mode": "RESUME",
+        "executed_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "started_utc": "2026-10-12T22:31:50.610469+00:00",
+        "terminal_status": "PASS",
+        "environment_sha256": "84b4b67fe3fb5e01a3e52f91391e82e877c71d5f63548a786f2586aa43e3f317",
+        "terminal_exit_code": 0,
+        "ended_utc": "2026-10-12T23:11:56.573495+00:00",
+        "wall_seconds": 2405.9632216440004,
+        "end_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "stdout_sha256": "acd94d781f6392d755a578863a16e365f1cf9428b5ce75a5a159f7a17b986c3c",
+        "stderr_sha256": "749c512c698f44ca70af092f554508ef4c7a2e06c2de37904bdab545eb03435a"
+      }
+    }
+  },
+  "comparison": {
+    "schema": "swap5.fci.resume-comparison.v1",
+    "exact_scientific_output_after_private_path_normalization": true,
+    "controls_valid_same_candidate": true,
+    "inherited_groups": [
+      "frost-invalid",
+      "frost-independent"
+    ],
+    "original_full_stdout_byte_identical": false,
+    "baseline_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "resumed_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "normalized_baseline_paths": [
+      {
+        "line": 116,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-mxJFuD",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 692,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 694,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 701,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 703,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 757,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 759,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 765,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 767,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "normalized_resumed_paths": [
+      {
+        "line": 120,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-w6c9F7",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 696,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 698,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 705,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 707,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 761,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 763,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 769,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 771,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-92006/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "numerical_values_or_tolerances_normalized": false,
+    "qualification_pass": true
+  },
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1217",
+  "result_document": "docs/audits/FCI_RESUME_RESULT_20261012.md",
+  "evidence_paths": [
+    "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
+    "integration/f-ci/evidence/F-CI_RESUME_FULL_20261012.tar.gz.b64",
+    "integration/f-ci/evidence/F-CI_RESUME_CLOSED_FULL_20261012.tar.gz.b64",
+    "integration/f-ci/evidence/F-CI_RESUME_HARDENED_REVIEW_20261012.tar.gz.b64",
+    "integration/f-ci/evidence/F-CI_RESUME_REVIEW_20261012.tar.gz.b64"
+  ],
+  "relevant_paths": [
+    "tools/fci/resume_group.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "src/process/mod_frost_hydraulic_effect.f90",
+    "tests/frost",
+    "tests/fci/run_resume_safety.py",
+    "tests/fci/run_resume_full_trial.py",
+    "tests/fci/compare_resume_trial.py",
+    "tests/fci/summarize_resume_trial.py"
+  ],
+  "baseline_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_CLOSED_FULL_20261012.tar.gz.b64",
+    "decoded_sha256": "37aa4bc207a7371f16c277271d43042bbc5e2da4bbf979d31a6a2e54bad78563",
+    "member": "full-closed-final/baseline.control.json",
+    "terminal_exit_code": 0
+  },
+  "checkpoint_commit": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+  "last_reconciled_head": "a1b4bb432827149872445161fbcb775bba5c4cb1",
+  "qualification_scope": "Two explicit no-output GNU13 frost leaves and preserved full original F-CI, same exclusive checkout/environment; not broader default inheritance policy",
+  "full_controls": {
+    "baseline": "baseline.control.json",
+    "interrupted": "interrupted.control.json",
+    "resumed": "resumed.control.json"
+  },
+  "test_paths": [
+    "tests/fci/run_resume_safety.py",
+    "tests/fci/run_resume_full_trial.py",
+    "tests/fci/compare_resume_trial.py",
+    "tests/fci/summarize_resume_trial.py"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/audits/MIGRATION_EXECUTION_IMPLEMENTATION_20261012.md",
+    "docs/development/FCI_SAFE_RESUME_20261012.md",
+    "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+    "docs/development/quality-governance-a-aa.md"
+  ],
+  "historical_measurements": {
+    "actual_execution_head": "aef26ee85ddb58195f005169985dd52fc0bd9545",
+    "baseline_calendar_seconds": 3001.5427642519935,
+    "resumed_calendar_seconds": 2786.1241317890017,
+    "controlled_prefix_seconds": 14.244331349000277,
+    "whole_observed_difference_seconds": 215.4186324629918,
+    "whole_observed_difference_is_not_causal_saved_work": true,
+    "scientific_group_wall_actually_avoided_seconds": 1.689432551000209,
+    "scientific_compile_link_invocations_avoided": 8,
+    "scientific_compile_link_invocations_repeated_in_inherited_groups": 0,
+    "checkpoint_receipt_write_seconds": 0.002339842001674697,
+    "evidence_and_input_verification_seconds_on_resume": 3.639392527991731,
+    "initial_input_verification_seconds": 2.0191099389994633,
+    "post_run_input_revalidation_seconds": "UNKNOWN_NOT_SEPARATELY_INSTRUMENTED",
+    "pure_cpu_compilation_seconds_saved": "UNKNOWN",
+    "unqualified_groups_compilation_total": "UNKNOWN_NOT_INSTRUMENTED",
+    "build_object_cache_enabled_by_this_mechanism": false,
+    "filesystem_cache_and_host_load_contribution": "UNKNOWN",
+    "repeat_experiment_count_same_full_candidate": 1,
+    "top_level_original_runner_invocations": {
+      "baseline": 26,
+      "resumed": 24
+    },
+    "observed_top_level_calls": {
+      "baseline": [
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/frost/run_frost_invalid_input_preservation.sh",
+        "bash tests/frost/run_frost_nan_guard_independent.sh",
+        "bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh",
+        "bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+        "bash tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+        "bash tests/fmig431/run_mc_heat01_runtime.sh",
+        "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+        "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+        "bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+        "bash tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_management.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_availability.sh",
+        "bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+        "bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh",
+        "bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh"
+      ],
+      "resumed": [
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only",
+        "python3 tests/mc-met01/verify_daily_demand_successor.py",
+        "bash tests/fci/run_crop_file_weather_production_successor.sh",
+        "bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+        "bash tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+        "bash tests/fmig431/run_mc_heat01_runtime.sh",
+        "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+        "bash tests/frost/run_ppa_wu05b_frost_runtime.sh",
+        "bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+        "bash tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_management.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_availability.sh",
+        "bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+        "bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh",
+        "bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh",
+        "bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+        "bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh"
+      ]
+    },
+    "top_level_pure_verifier_invocations_per_run": 4,
+    "scientific_top_level_invocations": {
+      "baseline": 22,
+      "resumed": 20,
+      "inherited": 2
+    },
+    "all_other_original_top_level_calls_same_sequence": true,
+    "resumed_group_decisions": [
+      {
+        "decision": "INHERIT",
+        "group": "frost-invalid",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T18:01:57.656175+00:00",
+        "verification_seconds": 1.0734213999967324
+      },
+      {
+        "decision": "INHERIT",
+        "group": "frost-independent",
+        "mode": "RESUME",
+        "reason": "verified authenticated terminal PASS",
+        "utc": "2026-10-12T18:02:00.369336+00:00",
+        "verification_seconds": 2.565971127994999
+      }
+    ],
+    "signed_group_execution_measurements": [
+      {
+        "group": "frost-invalid",
+        "wall_seconds": 1.1643819050004822,
+        "compilations": 6,
+        "checkpoint_write_seconds": 0.0012293489999137819,
+        "verification_seconds": 1.0415217350018793
+      },
+      {
+        "group": "frost-independent",
+        "wall_seconds": 0.5250506459997268,
+        "compilations": 2,
+        "checkpoint_write_seconds": 0.001110493001760915,
+        "verification_seconds": 0.9775882039975841
+      }
+    ],
+    "false_inheritance_in_final_negative_controls": 0,
+    "conservative_extra_run_examples": [
+      "FFLAGS value is not read by these hardcoded leaves; full-environment binding deliberately still selects RUN"
+    ],
+    "unexplained_earlier_closure_rejection": "UNKNOWN; unqualified earlier trial retained, final same-input controls succeeded"
+  },
+  "historical_comparison": {
+    "schema": "swap5.fci.resume-comparison.v1",
+    "exact_scientific_output_after_private_path_normalization": true,
+    "controls_valid_same_candidate": true,
+    "inherited_groups": [
+      "frost-invalid",
+      "frost-independent"
+    ],
+    "original_full_stdout_byte_identical": false,
+    "baseline_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "resumed_normalized_sha256": "df4ee0b0856f55f09db7372d8b80d2296f55252bb8f4d1aa1225e7c873604a21",
+    "normalized_baseline_paths": [
+      {
+        "line": 116,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-4meSTp",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 692,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 694,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 701,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 703,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 757,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 759,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 765,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 767,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-43922/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "normalized_resumed_paths": [
+      {
+        "line": 120,
+        "original": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-QcG5UM",
+        "normalized": "BUILD=/tmp/ppa-wu05b19-low-air-runtime-crop-owner-<PRIVATE_NONCE>"
+      },
+      {
+        "line": 696,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/dynamic_top_correction-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o0/rom0_test"
+      },
+      {
+        "line": 698,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/dynamic_top_correction-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/dynamic_top_correction-o2/rom0_test"
+      },
+      {
+        "line": 705,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/frozen_wet_trajectory-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o0/rom0_test"
+      },
+      {
+        "line": 707,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/frozen_wet_trajectory-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/frozen_wet_trajectory-o2/rom0_test"
+      },
+      {
+        "line": 761,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi25_reference_indicator_production_seam-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o0/rom0_test"
+      },
+      {
+        "line": 763,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi25_reference_indicator_production_seam-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi25_reference_indicator_production_seam-o2/rom0_test"
+      },
+      {
+        "line": 769,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi39_b110_ksatexm-o0/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o0/rom0_test"
+      },
+      {
+        "line": 771,
+        "original": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-91576/fsi39_b110_ksatexm-o2/rom0_test",
+        "normalized": "F_ROM0_BUILD_EXECUTABLE=/tmp/swap5-irr-storage-preservation-local-<PRIVATE_PID>/fsi39_b110_ksatexm-o2/rom0_test"
+      }
+    ],
+    "numerical_values_or_tolerances_normalized": false,
+    "qualification_pass": true
+  },
+  "historical_full_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_FULL_20261012.tar.gz.b64",
+    "decoded_sha256": "a0110adc83ec1dffce3b27c0f19fbda96996d8a372fd28f655902db8b60952c7"
+  },
+  "historical_baseline_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_BASELINE_20261012.tar.gz.b64",
+    "decoded_sha256": "333f8e63b7a9eb1f0f1c9bc3d69396d2db42e12bf0b380635f06dcfd4b79fc42"
+  },
+  "historical_safety_evidence": {
+    "path": "integration/f-ci/evidence/F-CI_RESUME_SAFETY_20261012.tar.gz.b64",
+    "decoded_sha256": "8fef4afde97976cdfdb10efabf9b0c554178258b4b2d69e16c8c173ac16716fe",
+    "controls": 25
+  },
+  "scientifically_qualified": true,
+  "independently_reviewed": false,
+  "qualification_status": "BOUNDED_SCIENCE_AND_REGIE_POLICY_ACCEPTED_ADMISSION_PENDING",
+  "admission_disposition": {
+    "owner": "central SWAP5 REGIE",
+    "scientific_review_scope": "Two audited no-output frost leaves, exact reviewed runtime and same-candidate moving preservation",
+    "policy_review": "ACCEPTED_BY_USER_AS_CENTRAL_REGIE_20261013",
+    "canonical_admission": "NOT_PERFORMED",
+    "pr_draft": true,
+    "protected_workflow_bypass": false,
+    "owner_decision": {
+      "actor": "User, explicitly answering as central SWAP5 REGIE",
+      "confirmed_local": "2026-10-13T06:34:29+02:00",
+      "confirmed_utc": "2026-10-13T04:34:29Z",
+      "answer": "Ik bevestig",
+      "question": "Bevestig je namens centrale REGIE het voorgestelde begrensde F-CI/VQ-besluit en autoriseer je admission van PR1217 na de laatste checkscontrole?",
+      "scope": "Exactly two audited no-output frost leaves, exact reviewed runtime, OFF default, other groups/guards RUN",
+      "independent_github_review": false,
+      "accepts_no_net_speedup": true
+    }
+  }
+}
