@@ -8,7 +8,7 @@ import hashlib
 import io
 import json
 import tarfile
-from backend_allocation_authority import ROOT, BASE, BACKEND, verify_source, git
+from backend_allocation_authority import ROOT, BASE, BACKEND, PUBLICATION, blob, verify_source, git
 
 MARKERS = {
     'source.stdout': b'MC_MET01_LITERAL_DAILY_DEMAND_O0_O2=PASS',
@@ -18,7 +18,53 @@ MARKERS = {
     'old-raintb.stdout': b'MC_MET01_ACTUAL_RAINTB_PRODUCTION_O0_O2=PASS',
     'boesten.stdout': b'PPA-WU04-B BOESTEN PRESERVATION PASS',
     'macro-top.stdout': b'PPA_WU05A9_TOP_INPUT_GATE=PASS',
+    'heat-runtime.stdout': b'MC_HEAT01_RUNTIME_O0_O2_REPEAT_DETERMINISM=PASS',
+    'fkt22.stdout': b'FKT22_FMR_PRODUCTION_RUNTIME_GATE=PASS',
 }
+
+REQUIRED = {'highest-normal', 'highest-low-air', 'source', 'reference', 'focused',
+            'default-crop', 'old-raintb', 'heat-runtime', 'fkt22', 'boesten', 'macro-top'}
+
+
+def head_blobs():
+    return {line.split('\t', 1)[1]: line.split('\t', 1)[0].split()[2]
+            for line in git('ls-tree', '-r', 'HEAD').splitlines()}
+
+
+def verify_dependencies(dependencies, head=None):
+    """One tree read; hash actual bytes without spawning Git twice per file."""
+    assert dependencies, 'empty dependency binding'
+    if head is None:
+        head = head_blobs()
+    for path, expected in dependencies.items():
+        assert head.get(path) == expected and blob((ROOT / path).read_bytes()) == expected, path
+
+
+def verify_owner_binding(manifest, control, recipes, source):
+    assert manifest['baseline'] == BASE and manifest['highest_cases_inherited'] == 0
+    assert manifest['highest_configurations'] == 24 and manifest['fine_comparisons'] == 144
+    assert control['status'] == 'PASS' and all(s['exit'] == 0 for s in control['steps'])
+    assert len(control['steps']) == len(REQUIRED)
+    assert {s['name'] for s in control['steps']} == REQUIRED
+    assert manifest['source_tree'] == control['source_tree']
+    assert git('rev-parse', control['head'] + ':src') == control['source_tree']
+    delta = git('diff', '--name-only', control['head'], 'HEAD', '--', 'src').splitlines()
+    assert delta in [[], [PUBLICATION]], 'science source changed inside owner surface'
+    assert REQUIRED <= recipes['recipes'].keys()
+    head = head_blobs()
+    for name in REQUIRED:
+        recipe = recipes['recipes'][name]
+        assert not recipe['publication_compiled']
+        assert PUBLICATION not in recipe['sources']
+        assert set(recipe['source_blobs']) == set(recipe['sources'])
+        verify_dependencies(recipe['source_blobs'], head)
+    verify_dependencies(manifest['dependency_blobs'], head)
+    # Cover the entire production surface conservatively, except the one module
+    # explicitly proved absent from every owner recipe. Its science is separate.
+    expected_sources = set(git('ls-tree', '-r', '--name-only', 'HEAD', '--', 'src').splitlines())
+    assert expected_sources - {PUBLICATION} <= manifest['dependency_blobs'].keys()
+    if not delta:
+        assert manifest['source_tree'] == source['source_tree']
 
 
 def read_archive(record):
@@ -34,18 +80,11 @@ def verify_owner():
     # A status bool alone is never sufficient. All actual evidence is checked.
     with read_archive(owner) as archive:
         manifest = json.load(archive.extractfile('MANIFEST.json'))
-        assert manifest['source_tree'] == source['source_tree']
-        assert manifest['baseline'] == BASE and manifest['highest_cases_inherited'] == 0
-        for path, expected in manifest['dependency_blobs'].items():
-            assert git('rev-parse', 'HEAD:' + path) == expected, path
-            assert git('hash-object', path) == expected, path
         for name, expected in manifest['member_sha256'].items():
             assert hashlib.sha256(archive.extractfile(name).read()).hexdigest() == expected, name
         control = json.load(archive.extractfile('CONTROL.json'))
-        assert control['status'] == 'PASS' and all(s['exit'] == 0 for s in control['steps'])
-        required = {'highest-normal', 'highest-low-air', 'source', 'reference', 'focused',
-                    'default-crop', 'old-raintb', 'heat-runtime', 'fkt22', 'boesten', 'macro-top'}
-        assert {s['name'] for s in control['steps']} == required
+        recipes = json.load(archive.extractfile('OWNER_DEPENDENCIES.json'))
+        verify_owner_binding(manifest, control, recipes, source)
         for name, marker in MARKERS.items():
             assert marker in archive.extractfile(name).read(), name
         old_status = json.loads((ROOT / 'integration/audits/MC_MET01_STATUS.json').read_text())
