@@ -4,6 +4,8 @@
 Diagnostic only. The fixed-step/halving diagnostic driver does not replace F-KT.
 """
 import argparse
+from datetime import datetime,timezone
+import platform
 import hashlib
 import importlib.util
 import json
@@ -69,18 +71,33 @@ def build(tree,out,profile=False):
         objects.append(str(obj))
     event=run(['gfortran',*flags,*objects,'-o',str(out/'trajectory')],tree,out,'link');events.append(event)
     if event['exit']:raise ValueError('link failed')
-    return {'compile_events':events,'executable_sha256':hashlib.sha256((out/'trajectory').read_bytes()).hexdigest()}
+    return {'constitutive_counter_available':counter_available,'compile_events':events,'executable_sha256':hashlib.sha256((out/'trajectory').read_bytes()).hexdigest()}
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output-dir',required=True)
     ap.add_argument('--baseline',default='50346642bd565f79134ea17d5462e544b354998c')
     ap.add_argument('--repeat',type=int,default=5);args=ap.parse_args()
+    if args.repeat<1:ap.error('repeat must be positive')
+    if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT).strip():raise ValueError('dirty audit checkout')
+    compiler=shutil.which('gfortran')
+    if not compiler:ap.error('gfortran unavailable')
+    compiler_files=[Path(compiler).resolve()]
+    for query in ['f951','as','ld']:
+        value=subprocess.check_output([compiler,'-print-prog-name='+query],text=True).strip()
+        candidate=Path(value) if '/' in value else Path(shutil.which(value) or '/missing')
+        if candidate.is_file():compiler_files.append(candidate.resolve())
+    def chain():return {str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in compiler_files}
+    pinned_chain=chain()
     out=Path(args.output_dir).resolve();out.mkdir(parents=True,exist_ok=False)
     current=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     trees={'current':ROOT,'earlier':out/'earlier-tree','recent':out/'recent-tree'}
     subprocess.run(['git','worktree','add','--detach',str(trees['earlier']),args.baseline],cwd=ROOT,check=True)
     subprocess.run(['git','worktree','add','--detach',str(trees['recent']),'a3859c89eaf97256a6330bb9f6370013c4a9e2f2'],cwd=ROOT,check=True)
-    report={'head':current,'baseline':args.baseline,'fixture_sha256':hashlib.sha256(DRIVER.read_bytes()).hexdigest(),
+    report={'started_utc':datetime.now(timezone.utc).isoformat(),'host':platform.uname()._asdict(),
+            'cpuinfo':Path('/proc/cpuinfo').read_text(),'affinity':sorted(os.sched_getaffinity(0)),
+            'environment_sha256':hashlib.sha256(json.dumps(dict(os.environ),sort_keys=True).encode()).hexdigest(),
+            'compiler':subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],
+            'toolchain':pinned_chain,'repeat':args.repeat,'head':current,'baseline':args.baseline,'fixture_sha256':hashlib.sha256(DRIVER.read_bytes()).hexdigest(),
             'builds':{},'runs':[],'physical_differences':[],'equivalent':False,'legacy_swap431':'UNKNOWN','scope':'50-node 100-cm soil, 0.1/30-day pulsed infiltration, fixed-step diagnostic Full Richards only; no crop/coupling/F-KT timing'}
     try:
         for name,tree in trees.items():report['builds'][name]=build(tree,out/name)
@@ -106,6 +123,7 @@ def main():
                     if pair[name]['physical_sha256']!=pair['current']['physical_sha256']:
                         report['physical_differences'].append({'revision':name,'horizon':horizon,'repeat':repeat})
         report['equivalent']=not report['physical_differences']
+        if chain()!=pinned_chain:raise ValueError('toolchain identity changed')
         for name,tree in trees.items():
             if name=='recent':continue
             report['builds'][name+'-gprof']=build(tree,out/(name+'-gprof'),True)
@@ -119,6 +137,15 @@ def main():
             if gprof['exit']:raise ValueError('gprof extraction failed')
     except (ValueError,OSError,subprocess.SubprocessError) as e:report['failure']=str(e)
     finally:
+        report['ended_utc']=datetime.now(timezone.utc).isoformat()
+        if subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()!=current or subprocess.check_output(['git','status','--porcelain'],cwd=ROOT).strip():
+            report['failure']='audit checkout identity changed'
+        for folder in out.iterdir():
+            manifest=folder/'INPUTS.json' if folder.is_dir() else None
+            if manifest and manifest.is_file():
+                for path,sha in json.loads(manifest.read_text())['source_identity'].items():
+                    if hashlib.sha256(Path(path).read_bytes()).hexdigest()!=sha:report['failure']='source identity changed: '+path
+        if chain()!=pinned_chain:report['failure']='toolchain identity changed'
         (out/'CONTROL.json').write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
     print(json.dumps({k:v for k,v in report.items() if k in ['equivalent','failure','scope']},indent=2),flush=True)
     return 0 if report['equivalent'] and 'failure' not in report else 1
