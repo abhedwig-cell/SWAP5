@@ -60,7 +60,8 @@
   "evidence_paths": [
     "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
     "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64",
-    "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64"
+    "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64"
   ],
   "failed_attempts": [
     {
@@ -157,7 +158,32 @@
       "probe_publication_blob": "ef2c293f9f826317dc0f072345abeb1c9c914c4a",
       "probe_tests": "six unchanged owner programs O0/O2 PASS; unchanged F-VQ87 O0/O2 exact historical stdout SHA de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
       "primary_source_mutated_during_owner_queue": false,
-      "disposition": "apply bounded scalar timing repair after owner queue terminal, then exact coupling successor qualification and full moving preservation; no mass tolerance change"
+      "disposition": "apply bounded scalar timing repair after owner queue terminal, then exact coupling successor qualification and full moving preservation; no mass tolerance change",
+      "live_backend_result": {
+        "head": "04f64d428fbb2f9edb50dfc210a328695cdecd60",
+        "source_tree": "b011b2c11af206d5a21b26dfcea6eaf16e6d0efd",
+        "live_fgc49d": "PASS",
+        "independent_fvq124": "PASS",
+        "wall_seconds": 351.11493136900026,
+        "corrector_iterations": 5,
+        "max_cell_residual_m_per_s": 1.1304499051568296e-20
+      }
+    },
+    "highest_normal": {
+      "exit": 0,
+      "wall_seconds": 496.8589850139979,
+      "configurations": 12,
+      "fine_comparisons": 72,
+      "output_identity": "historical exact"
+    },
+    "highest_low_air": "RUNNING, no terminal PASS claimed",
+    "source_eligibility": "Exact optional guard; optionally exact prepublication scalar beginning-balance move. Not scientific admission.",
+    "progress_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
+      "decoded_sha256": "fc5a51837c8bbddfb46a9fecfd83914d6e0baf71673929b861273e518f20ba26",
+      "members": 118,
+      "decoded_bytes": 59292,
+      "stage": "UNSEALED_PROGRESS_NOT_OWNER_ADMISSION"
     }
   }
 }

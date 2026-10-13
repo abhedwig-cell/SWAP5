@@ -323,6 +323,56 @@ false. Voor backendadmission is een bevoegde exacte successor met volledige
 vereiste owner-, coupling-, restart- en F-CI-preservation nodig. PR #1219 blijft
 draft met die concrete grens; eerdere backend-PASS wordt niet geërfd.
 
+### Voortgezette ownerkwalificatie en ontdekte ledgerregressie
+
+De vervolgkwalificatie gebruikt canonical
+`cfc728c42b38026ba548f6250afec00969ccda67`. De normale hoogste frost/crop-route
+is opnieuw volledig uitgevoerd: twaalf configuraties op O0/O2, 72 fine
+comparisons en exacte bestaande oracle-uitvoer. De low-air-route en de overige
+ownerpreservation zijn nog niet afgesloten. Deze uitvoering erft nul hoogste
+configuraties. Broneligibility in `tests/modularity/backend_allocation_authority.py`
+is uitsluitend een byte-exacte broncontrole; het ontbreken van volledige nieuwe
+owner-evidence blijft fail-closed in `verify_backend_owner_evidence.py`.
+
+De oorspronkelijke F-GC25-gate kon eerst niet bouwen: zijn expliciete bronlijst
+ontbrak de inmiddels noodzakelijke accepted-directional dependencies. De
+bestaande source-augmenter vult die lijst nu aan. De zes drivers, O0/O2,
+warningpolicy en numerieke assertions zijn ongewijzigd. Daarna faalt de echte
+massainvariant, ook in een afzonderlijke controle van ongewijzigde canonical.
+De serialized backend zit niet in deze closure: dit is geen effect van de
+optionele-configuratieguard.
+
+De oorzaak ligt in `3fc6a287852538f1e53b7f7daddd7ea190c69f8e`: na verwijdering
+van een tijdelijke allocatie worden begin- en eindtotaal beide uit de reeds
+gepubliceerde ledgers gelezen. De berekende mutatie is daardoor nul. De
+geïsoleerde proef `2871dd4b1bbd791c46d767e78c1f1118da564aa8` verplaatst alleen
+de scalaire beginmeting naar direct na de geldige beginsnapshots, vóór staging
+en commit. Zij behoudt de allocatievrije uitvoering en alle massatoleranties.
+Publicatieblob `b13e8a43210cb58dd1e6aa11d06967ae7b266d2a` wordt exact
+`ef2c293f9f826317dc0f072345abeb1c9c914c4a`. Alle zes oorspronkelijke programma's
+slagen vervolgens op O0/O2. Ook de ongewijzigde onafhankelijke F-VQ87-oracle
+slaagt, inclusief rejection, duplicate/stale origin, rollback en gewogen massa;
+beide uitvoerhashes zijn exact historisch
+`de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8`.
+De reproduceerbare actuele module-oracleroute is
+`python tests/modularity/run_multiswap_independent.py --output /tmp/fvq87-current`.
+Zij vervangt geen historische admissionrunner of volledige gekoppelde physics.
+
+De primaire productiebron blijft tijdens de lopende ownerqueue vast. De
+ledgerreparatie is daar nog niet toegepast; gezamenlijke sourcebinding en moving
+F-CI blijven dus verplicht en nog open. De afzonderlijke echte F-GC49D-route
+op backendbronpostimage `b011b2c11af206d5a21b26dfcea6eaf16e6d0efd` is inmiddels
+terminal PASS, evenals de oorspronkelijke onafhankelijke F-VQ124-gate.
+De live route gebruikt daadwerkelijk MODFLOW6 6.8.0 (releaseasset SHA256
+`33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e`), mixed
+N1/11-topologie, vijf correctoriteraties en drie echte SWAP-/ledgercommits.
+De maximale celresidual is `1.1304499051568296e-20 m/s` onder de bestaande grens.
+Gepinde xmipy/flopy zijn behouden. Een ontbrekende `bmipy` en ontbrekende
+unversioned shared-runtime-links in de lokale compilerinstallatie zijn hersteld;
+de failed omgevingspogingen worden afzonderlijk bewaard. Dit wijzigt geen
+Fortrancompilerfrontend, scienceflags of productiecode en levert geen nieuwe
+performanceclaim op.
+
 De Full Richards-revisieproef gebruikt bestaande PR1218-tooling, exact gereconcilieerd
 op `38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9`. De oorspronkelijke driver vroeg een
 counter die niet in de eerdere contractversie bestaat. Alleen deze optionele
