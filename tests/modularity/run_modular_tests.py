@@ -17,7 +17,7 @@ CASES={
                   'flags':['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace']}}
 COMPONENTS={
  'hydraulics':'src/solver/mod_b110_default_mvg_provider.f90',
- 'richards':'src/adapter/mod_b110_production_soil_water_task2.f90',
+ 'richards':'src/adapter/mod_reference_richards_legacy_binding.f90',
  'timestep':'src/runtime/mod_timestep_controller_contract.f90',
  'transaction':'src/transaction/mod_transaction_reference.f90',
  'evaporation':'src/process/mod_restricted_surface_evaporation.f90',
