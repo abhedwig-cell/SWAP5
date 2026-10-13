@@ -18,7 +18,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "required_gates": [
     "actual full local F-CI resume OFF with new default",
     "focused SHARED and SEPARATE actual O0/O2 strict scientific comparison",
@@ -36,7 +36,7 @@
     "compiler/environment"
   ],
   "evidence_inheritance": "Prior A/B qualifies unchanged shared build only, not this F-CI route. Full route gate must actually run. No whole-F-CI speed ratio without same-postimage A/B.",
-  "next_action": "Reconcile live canonical and expected PR head, admit bounded route only when all gates permit",
+  "next_action": "Complete for admitted default allocation test-build route; requalify affected dependency changes",
   "blockers": [],
   "discarded_diagnostic_attempt": {
     "head": "ec46ba8548d288cb4224015d16084c8a3a96fe7f",
@@ -51,7 +51,8 @@
   "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
   "evidence": [
     "integration/audits/FCI_SHARED_ROUTE_FINAL_20261013.json",
-    "integration/audits/FCI_SHARED_ROUTE_FOCUSED_20261013.json"
+    "integration/audits/FCI_SHARED_ROUTE_FOCUSED_20261013.json",
+    "integration/f-ci/F-CI_SHARED_BUILD_ROUTE_ADMISSION_20261013.json"
   ],
   "preserved": true,
   "fci_gate_head": "f18bd1837795f239910bd14b332cf779a40bea08",
@@ -67,5 +68,8 @@
     "tooling_16": "PASS",
     "strict_docs": "PASS",
     "full_fci_resume_off": "PASS"
-  }
+  },
+  "canonical_admission_pr": 1221,
+  "canonical_admission_commit": "fa24a8a1aa387d35775fe45530c5dc2c4ff9f49b",
+  "recovery_point": "Canonical integration/f-ci-canonical; PR #1221 and route admission receipt"
 }

@@ -1,6 +1,6 @@
 # Default shared F-CI allocation route closeout (13 October 2026)
 
-Status: **qualified candidate, full local F-CI preserved; canonical admission pending PR #1221.** Scientific postimage: `f18bd1837795f239910bd14b332cf779a40bea08`. Baseline: `cfc728c42b38026ba548f6250afec00969ccda67`.
+Status: **qualified, full local F-CI preserved; canonically admitted via PR #1221 at `fa24a8a1aa387d35775fe45530c5dc2c4ff9f49b`.** Scientific postimage: `f18bd1837795f239910bd14b332cf779a40bea08`. Baseline: `cfc728c42b38026ba548f6250afec00969ccda67`.
 
 ## Result and scope
 
@@ -36,3 +36,5 @@ Versioned receipt: `integration/audits/FCI_SHARED_ROUTE_FINAL_20261013.json`. It
 The concurrent modular-testability/backend candidate is not consumed. Admission requires unchanged live canonical executable/scientific dependency surfaces and expected-head merge. Documentation/evidence-only successors inherit this exact scientific gate while those surfaces remain unchanged. Allocation scientific coverage is preserved, with no new model capability admission.
 
 The prior Full Richards conclusions remain bounded: no demonstrated regression against 11 October for the actually profiled short/long fixtures; September strict physical comparison **FAIL**; equal-output September speed ratio and matched SWAP 4.3.1 runtime **UNKNOWN**. No tolerance or historical evidence is changed.
+
+Canonical post-merge verification: all executable/scientific dependency identities, including the routed F-CI script, match the qualified scientific postimage exactly. See `integration/f-ci/F-CI_SHARED_BUILD_ROUTE_ADMISSION_20261013.json`. The default SHARED route is now current; original PR #1218 reports remain frozen evidence for their earlier isolated-build scope.

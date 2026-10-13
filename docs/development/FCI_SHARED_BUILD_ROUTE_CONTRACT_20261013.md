@@ -1,6 +1,6 @@
 # F-CI allocation shared-build route contract
 
-Status: qualified successor candidate to the admitted isolated-build tooling (PR #1218); canonical admission remains subject to PR #1221 and live overlap reconciliation.
+Status: accepted/canonically admitted successor to the isolated-build tooling (PR #1218), via PR #1221 at `fa24a8a1aa387d35775fe45530c5dc2c4ff9f49b`.
 
 Owner: central F-CI qualification authority under delegated SWAP5 regie. Baseline: `cfc728c42b38026ba548f6250afec00969ccda67`. This changes only test-build routing. Production physics, runtime, numerical policy, source interfaces, all original test drivers/runners, the qualified shared runner/selector and historical evidence remain fixed.
 
