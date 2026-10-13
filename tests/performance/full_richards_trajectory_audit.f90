@@ -24,9 +24,9 @@ program full_richards_trajectory_audit
   real(real64),allocatable,target :: qdra(:,:),qssdi(:),qrot(:)
   real(real64),allocatable :: c(:,:)
   real(real64) :: k0,t,horizon,dt,storage0,storage1,mass,cumin,cumout,inflow,outflow,maxmass
-  real(real64) :: solve_cpu_seconds=0.0_real64,solve_started,solve_ended
   integer :: step,attempts,retries,nl,jac,linear,constitutive,back,i
-  integer(int64) :: tick,end_tick,dt_ticks
+  integer(int64) :: tick,end_tick,dt_ticks,clock0,clock1,clock_rate
+  real(real64) :: cpu0,cpu1,solver_cpu=0.0_real64,solver_wall=0.0_real64
   character(len=64) :: arg
   call get_command_argument(1,arg);read(arg,*)horizon
   call require(horizon>0.0_real64,'positive horizon')
@@ -58,14 +58,16 @@ program full_richards_trajectory_audit
     do
       call bind_b110_default_mvg_provider(cp,hp,dt)
       request%step_duration=dt
-      call cpu_time(solve_started)
+      call cpu_time(cpu0);call system_clock(clock0,clock_rate)
       call solver%solve(request,workspace,result)
-      call cpu_time(solve_ended)
-      solve_cpu_seconds=solve_cpu_seconds+solve_ended-solve_started
+      call system_clock(clock1);call cpu_time(cpu1)
+      solver_cpu=solver_cpu+(cpu1-cpu0)
+      solver_wall=solver_wall+real(clock1-clock0,real64)/real(clock_rate,real64)
       attempts=attempts+1
       nl=nl+result%diagnostics%nonlinear_iterations
       jac=jac+result%diagnostics%jacobian_builds
       linear=linear+result%diagnostics%linear_solves
+      constitutive=constitutive+result%diagnostics%constitutive_evaluations
       back=back+result%diagnostics%backtracking_attempts
       if(result%status==SW_SOLVE_CONVERGED)exit
       retries=retries+1;dt_ticks=dt_ticks/2_int64
@@ -82,13 +84,14 @@ program full_richards_trajectory_audit
     state=result%candidate_state;tick=tick+dt_ticks;step=step+1
     write(*,'(A,I0,A,ES24.16,A,I0,A,I0,A,ES24.16)') 'STEP=',step,' DT=',dt, &
       ' NL=',result%diagnostics%nonlinear_iterations,' RETRY=',retries,' MASS=',mass
-    write(*,'(*(ES24.16,1X))')state%pressure_head,state%water_content,state%ponding_depth
+    write(*,'(*(ES24.16,1X))')state%pressure_head,state%water_content,state%ponding_depth, &
+      state%groundwater_level,result%top_flux,result%bottom_flux
   end do
   write(*,'(*(g0))')'RICHARDS_AUDIT_RESULT|HORIZON=',horizon,'|NODES=',numnod,'|STEPS=',step, &
       '|ATTEMPTS=',attempts,'|RETRIES=',retries,'|NL=',nl,'|JAC=',jac,'|LINEAR=',linear, &
-      '|CONSTITUTIVE=UNKNOWN','|BACK=',back,'|MAX_MASS=',maxmass,'|IN=',cumin,'|OUT=',cumout
+      '|CONSTITUTIVE=',constitutive,'|BACK=',back,'|MAX_MASS=',maxmass,'|IN=',cumin,'|OUT=',cumout
   write(*,'(A)')'RICHARDS_AUDIT_SCIENCE=PASS'
-  write(error_unit,'(A,ES24.16)')'RICHARDS_SOLVE_CPU_SECONDS=',solve_cpu_seconds
+  write(error_unit,'(A,ES24.16,A,ES24.16)')'RICHARDS_SOLVER_TIME CPU=',solver_cpu,' WALL=',solver_wall
 contains
   subroutine configure_problem(initial_head,p,hp,cp,sp,tp,state,qdra,qssdi,qrot,c,k0)
     real(real64), intent(in) :: initial_head

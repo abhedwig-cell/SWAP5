@@ -6,6 +6,9 @@
 referenties, workflows en bestaande admissiongates blijven behouden. Eén
 productiebackend krijgt een allocatiecontrole voor een optionele macroporieconfiguratie,
 na een reproduceerbare crash in de oorspronkelijke geïntegreerde Boesten-test.
+De afsluitende canonical-reconciliatie is
+`8dac664db83dda8338ef0ffe0f92b55541876978` (PR #1218); zijn productie- en
+referentietrees zijn byte-identiek aan de meetbasis.
 Werkunit/recovery: `integration/audits/MODULAR_TESTABILITY_20261013.json`.
 
 ## Diagnose en afbakening
@@ -282,14 +285,31 @@ scientific bevestiging; het wordt niet toegevoegd aan de drie baseline-timingron
 
 ### Reconciliatie en toelatingsgrens
 
-PR #1211 en #1213 zijn gemerged. PR #1218 blijft een afzonderlijke draft;
-bij de laatste inhoudelijke reconciliatie is zijn head
-`ffb476607ad4859b3dca6cac991a135f642e8f15`. Inmiddels bevat hij drie afwisselende
-gedeelde-buildmetingen, geen alleen eerste cacheproef. Zijn gerapporteerde
-shared-buildwinsten zijn **zijn** evidence, geen hier opnieuw gemeten resultaten.
-Deze workstream hergebruikt zijn bestaande diagnose-tooling en bouwt geen tweede
-irrigatiekwalificatiesysteem. Overlap van de drie performancebestanden moet vóór
-eventuele gezamenlijke admission worden gereconcilieerd.
+PR #1211 en #1213 zijn gemerged. Bij de laatste afsluitcontrole is ook PR #1218
+gemerged naar canonical `8dac664db83dda8338ef0ffe0f92b55541876978`, vanuit head
+`753656fb610ec3f1fd9cbcf98d94f651738d17ce`. Zijn afgeronde
+`docs/audits/FCI_SHARED_BUILD_CLOSEOUT_20261013.md` bevat drie gedeelde-buildrondes,
+volledige resume-OFF-preservation en aanvullende same-core Richards-paren.
+Dat is zijn evidence, geen hier opnieuw gemeten resultaat. De canonical-update
+behoudt productie-tree `98440388d8640d5c62ca03f9a193632b3df41ecd` en reference-tree
+`c680d7a93aabfd1321c2bcee872aa0361b73fcb8` exact gelijk aan onze oorspronkelijke
+baseline. Daarom veranderen de hier geteste productiecomponenten niet door die
+update; de eigen allocatiereparatie blijft wel een nog niet admitted bronwijziging.
+
+De drie overlappende performancebestanden worden expliciet op hun nieuwe
+canonical-versie gehouden. Twee add/add-conflicten worden zo opgelost zonder
+een parallel diagnosticsysteem of verlies van zijn extra counters, solver-walltimer
+en toolchaincontrols. Onze uitgevoerde diagnoseversie blijft reproduceerbaar op
+commit `7c48c21e1d23dd0d57966793865a85a1531bfca0` in de evidencebundle. De PR-diff
+bevat na deze reconciliatie geen wijziging aan zijn drie performancebestanden.
+
+Na reconciliatie zijn alle 156 bronnen van de zes accessor-postimage-records
+opnieuw byte-gecontroleerd; zij blijven exact gelijk. Vijftien lokale controls,
+docschecks en strict MkDocs slagen opnieuw. Moving F-CI met resume OFF wordt
+opnieuw uitgevoerd en weigert dezelfde extra backendbron vóór brede science.
+De volledige nieuwe logs en bronbinding staan in de afzonderlijke
+`integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64`,
+met decoded hash en membercontroles in de bestaande evidence-JSON.
 
 De bestaande moving F-CI-runner is met resume OFF op de gerepareerde bron
 uitgevoerd. De eerste poging weigerde ongetrackte Python-bytecode; na opruimen
@@ -333,8 +353,10 @@ Zijn bestaande immutable bronarchief is byte-gecontroleerd, niet herverzameld.
 
 De latere allocatiecontrole bevindt zich buiten deze minimale solverclosure.
 Evidencebinding controleert expliciet dat alle werkelijk gecompileerde
-productiebronnen, driver en fixture ongewijzigd zijn; de benchmark wordt niet
-als een nieuwe uitvoering op de latere documentaire HEAD voorgesteld.
+productiebronnen, driver en fixture tot reparatiepostimage 51152a8 ongewijzigd
+zijn. Na de canonical-reconciliatie wordt de nieuwere, afzonderlijk gekwalificeerde
+diagnosedriver behouden. Onze oude driverresultaten worden niet als uitvoering
+van die nieuwere driver of de latere documentaire HEAD voorgesteld.
 
 
 ### Reproduceerbare opdrachten
@@ -370,6 +392,8 @@ python tests/physics/run_ppa_micro05_literal_mvg.py
 bash tests/transaction/run_a23bl_gate.sh
 WU04B_PRESERVATION_ONLY=1 bash tests/fapp/run_ppa_wu04b_boesten_evaporation.sh
 bash tests/fmig431/run_crop_accepted_soil_temperature.sh
+# Restore measured commit 7c48c21 from the bundle for this exact diagnostic run.
+# Current canonical has its own extended diagnostic driver and separate evidence.
 python tools/performance/run_richards_revision_audit.py --output-dir /tmp/richards-revisions --repeat 5
 ```
 

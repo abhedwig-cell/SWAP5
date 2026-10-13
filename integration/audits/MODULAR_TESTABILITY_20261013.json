@@ -54,12 +54,13 @@
   ],
   "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee.",
   "pr": 1219,
-  "remote_checkpoint": "ebb600ab77c6b100e9a061dc96572f477648502e",
+  "remote_checkpoint": "fd3c3a69f7b27cb3bd924529ca1a08042465fce9",
   "checkpoint_commit": "51152a8ee74beef7a45204101bc830247b521285",
-  "last_reconciled_head": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "last_reconciled_head": "8dac664db83dda8338ef0ffe0f92b55541876978",
   "evidence_paths": [
     "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
-    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64"
+    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64"
   ],
   "failed_attempts": [
     {
@@ -100,5 +101,30 @@
     "Boesten NaN status differs O0/O2 under preserved traps",
     "earlier/current Richards strict physical byte comparison fails although all existing mass assertions pass",
     "matched SWAP4.3.1 execution benchmark UNKNOWN"
-  ]
+  ],
+  "canonical_reconciliation": {
+    "pr1218": "merged 2026-10-13T11:24:53Z",
+    "head": "8dac664db83dda8338ef0ffe0f92b55541876978",
+    "production_tree_unchanged": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+    "reference_tree_unchanged": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "resolution": "Retain canonical versions of all three overlapping performance files; restore measured diagnostic from bundle when reproducing old results",
+    "own_production_repair_still_unqualified": true,
+    "terminal_checks": {
+      "controls": {
+        "exit": 0,
+        "tests": 15
+      },
+      "docs": {
+        "exit": 0
+      },
+      "mkdocs_strict": {
+        "exit": 0
+      },
+      "moving_fci": {
+        "exit": 1,
+        "source_authority_refusal": true
+      }
+    },
+    "unchanged_tested_postimage_sources": 156
+  }
 }
