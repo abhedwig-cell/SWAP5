@@ -72,10 +72,11 @@ def main():
         if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():
             raise ValueError("working tree changed during qualification")\n        result["equivalent"] = True
         success = True
-    except ValueError as error:
-        result["failure"] = str(error)
+    except (ValueError, OSError, subprocess.SubprocessError) as error:
+        result["failure"] = f"{type(error).__name__}: {error}"
     finally:
         result["ended_utc"] = datetime.now(timezone.utc).isoformat()
+        result["tested_head_at_end"] = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
         (destination / "CONTROL.json").write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
     print("SHARED_IRR_COMPARISON=" + ("PASS" if success else "FAIL"), flush=True)
     return 0 if success else 1
