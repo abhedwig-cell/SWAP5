@@ -1,0 +1,47 @@
+{
+  "work_unit": "F-CI-SHARED-IRR01",
+  "baseline": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "prior_candidate": "71eb60cfc3b22288cb7d7e5b1538a2d265188de6",
+  "owned_surface": "Isolated test build and performance diagnostics only",
+  "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
+  "interfaces_held_fixed": [
+    "production physics",
+    "numerical tolerances",
+    "incumbent test drivers and runners",
+    "F-CI default runner",
+    "historical evidence"
+  ],
+  "dependency_surface": [
+    "src/**/*.f90",
+    "tests/f-app07/*",
+    "tests/fmr/mod_fmr04_fixed_top_provider.f90",
+    "tools/performance/*",
+    "tests/performance/*",
+    "compiler and environment"
+  ],
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "next_action": "Safe admission of qualified isolated test-build tooling and diagnostics only; no solver execution change",
+  "recovery_point": "PR #1218 audit/fci-runtime-cost-20261013; checkpoint commit containing this record",
+  "blockers": [],
+  "note": "Three alternating instrumented A/B rounds and one uninstrumented control passed unchanged root/sensor O0/O2 assertions. Four ELFs agree in every primary round. Full F-CI resume OFF PASS. Current/recent Richards physical trajectories exact; 20 additional alternating same-core pairs show no demonstrated regression. September strict comparison FAIL; equal-output September ratio and legacy matched runtime UNKNOWN. No production/default F-CI change or broader speed claim.",
+  "preserved": true,
+  "qualified_shared_build": true,
+  "canonically_admitted": false,
+  "shared_science_heads": [
+    "bf239429ed114e3638800bf9c99e16745d8e31fa",
+    "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9"
+  ],
+  "fci_gate_head": "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9",
+  "profile_head": "ffb476607ad4859b3dca6cac991a135f642e8f15",
+  "evidence": [
+    "integration/audits/FCI_SHARED_BUILD_THREE_ROUNDS_20261013.json",
+    "integration/audits/FCI_SHARED_BUILD_QUALIFICATION_20261013.json",
+    "integration/audits/RICHARDS_REVISION_PROFILE_20261013.json"
+  ],
+  "richards_current_recent": "EXACT_PHYSICAL_PASS_NO_DEMONSTRATED_REGRESSION",
+  "richards_september": "STRICT_PHYSICAL_COMPARISON_FAIL",
+  "legacy_matched_runtime": "UNKNOWN"
+}
