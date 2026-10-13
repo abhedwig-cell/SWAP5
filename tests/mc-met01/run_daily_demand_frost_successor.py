@@ -10,9 +10,9 @@ assert not git('status','--porcelain','--','src')
 changed=git('diff','--name-only',BASE,'HEAD','--','src').splitlines()
 if changed!=sorted(PINS):
  sys.path.insert(0,str(ROOT/'tests/modularity'))
- from backend_allocation_authority import BACKEND,verify_source
- verify_source() # Source eligibility only: all scientific cases still execute.
- assert changed==sorted([*PINS,BACKEND])
+ from backend_allocation_authority import verify_source
+ source=verify_source() # Source eligibility only: all scientific cases still execute.
+ assert changed==sorted([*PINS,*source['changed_paths']])
 for p,b in PINS.items():assert git('rev-parse','HEAD:'+p)==b,p
 assert git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference')
 runner='tests/frost/run_ppa_wu05b15_runtime.py'
