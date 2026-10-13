@@ -42,10 +42,15 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--output-dir", required=True)
     args = ap.parse_args()
+    # Compare one immutable candidate, not two moving working trees.
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():
+        ap.error("working tree must be clean before the expensive comparison")
+    compiler = subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0]
     destination = Path(args.output_dir).resolve()
     destination.mkdir(parents=True, exist_ok=False)
     result = {"started_utc": datetime.now(timezone.utc).isoformat(),
-              "originals": {}, "candidate": None, "equivalent": False}
+              "originals": {}, "candidate": None, "equivalent": False,\n              "head": head, "compiler": compiler}
     success = False
     try:
         for case, runner in ORIGINALS.items():
@@ -62,7 +67,7 @@ def main():
             result["candidate"][case + "_science_sha256"] = actual
             if actual != result["originals"][case]["science_sha256"]:
                 raise ValueError("science output mismatch for " + case)
-        result["equivalent"] = True
+        if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != head:\n            raise ValueError("HEAD changed during qualification")\n        if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():\n            raise ValueError("working tree changed during qualification")\n        result["equivalent"] = True
         success = True
     except ValueError as error:
         result["failure"] = str(error)
