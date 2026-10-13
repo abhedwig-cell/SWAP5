@@ -36,12 +36,20 @@
     "compiler/environment"
   ],
   "evidence_inheritance": "Prior A/B qualifies unchanged shared build only, not this F-CI route. Full route gate must actually run. No whole-F-CI speed ratio without same-postimage A/B.",
-  "next_action": "Persist candidate then actual local negative/focused/full gates; no merge until terminal PASS",
+  "next_action": "Actively await full local F-CI terminal result; then preserve complete raw evidence and reconcile canonical admission",
   "blockers": [],
   "discarded_diagnostic_attempt": {
     "head": "ec46ba8548d288cb4224015d16084c8a3a96fe7f",
     "scope": "Negative controls stopped at unrelated frost startup, not at allocation route; focused execution interrupted before completion",
     "disposition": "NOT_QUALIFICATION; original logs retained separately",
     "repair": "Focused entrypoint moved before unrelated startup execution; default full-gate order unchanged"
-  }
+  },
+  "focused_science_equal": true,
+  "focused_tested": true,
+  "negative_controls": "PASS: invalid mode; actual first compile failure each route; selector/runner blob drift",
+  "required_gate_status": "Full local moving F-CI resume OFF RUNNING on persisted scientific head",
+  "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "evidence": [
+    "integration/audits/FCI_SHARED_ROUTE_FOCUSED_20261013.json"
+  ]
 }
