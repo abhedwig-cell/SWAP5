@@ -5,7 +5,8 @@ import tempfile
 import json
 from unittest.mock import patch
 from pathlib import Path
-from backend_allocation_authority import BASE, BACKEND, ROOT, validate_change, verify_source
+from backend_allocation_authority import (BASE, BACKEND, ROOT, PUBLICATION,
+                                         validate_change, validate_publication_change, verify_source)
 from verify_backend_owner_evidence import verify_owner
 
 
@@ -46,6 +47,17 @@ class SourceControls(unittest.TestCase):
                  patch('verify_backend_owner_evidence.verify_source', return_value=source):
                 with self.assertRaises(KeyError):
                     verify_owner()
+
+    def test_exact_beginning_balance_move(self):
+        old = subprocess.check_output(['git', 'show', BASE + ':' + PUBLICATION], cwd=ROOT)
+        assignment = b'    initial_total = committed_ledger_total(result%ledger_snapshots, order)\n'
+        new = old.replace(assignment, b'').replace(b'    end do\n\n    do k = 1, n\n',
+            b'    end do\n\n' + assignment + b'\n    do k = 1, n\n')
+        validate_publication_change(old, new)
+        for mutant in (old, new + b'\n', new.replace(b'same_multiswap_mass', b'weakened_mass', 1)):
+            with self.subTest(mutant=mutant[-40:]):
+                with self.assertRaises(AssertionError):
+                    validate_publication_change(old, mutant)
 
 
 if __name__ == '__main__':
