@@ -70,7 +70,19 @@ def main():
         if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != head:
             raise ValueError("HEAD changed during qualification")
         if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():
-            raise ValueError("working tree changed during qualification")\n        result["equivalent"] = True
+            raise ValueError("working tree changed during qualification")\n        baseline_seconds = sum(item["seconds"] for item in result["originals"].values())
+        candidate_seconds = result["candidate"]["seconds"]
+        result["runtime_comparison"] = {
+            "original_sequential_wall_seconds": baseline_seconds,
+            "combined_wall_seconds": candidate_seconds,
+            "observed_sequential_difference_seconds": baseline_seconds - candidate_seconds,
+            "limitations": [
+                "One ordered A/B sample; cache warming and host load are uncontrolled.",
+                "Sequential observed wall difference is not a general speedup guarantee.",
+                "Scientific identity requires independent owner review beyond stdout hashes."
+            ]
+        }
+        result["equivalent"] = True
         success = True
     except (ValueError, OSError, subprocess.SubprocessError) as error:
         result["failure"] = f"{type(error).__name__}: {error}"
