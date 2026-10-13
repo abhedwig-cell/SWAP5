@@ -1,0 +1,25 @@
+# F-CI duplicate call-site forensic inventory (2026-10-13)
+
+Status: static evidence only, NOT an executed runtime trace.
+
+Pinned inspected file: `tests/fci/run_fci_canonical_p2e05_moving_preservation.sh` on `integration/f-ci-canonical`, 1554 lines. Regex count of direct `bash tests/...` and `python tests/...` tokens yields 87 call-sites and 67 distinct script paths; these are syntactic counts, NOT executed job counts.
+
+Repeated paths:
+- `tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh`: 11
+- `tests/mc-met01/verify_daily_demand_successor.py`: 3
+- `tests/fci/run_crop_file_weather_production_successor.sh`: 2
+- `tests/fapp/run_ppa_wu03_common_forcing_adapter.sh`: 2
+- `tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh`: 2
+- `tests/fmig431/run_crop_weather_preflight_read_boundary.sh`: 2
+- `tests/fmig431/run_crop_weather_day_owner.sh`: 2
+- `tests/fmig431/run_crop_germination_preflight.sh`: 2
+- `tests/fmig431/run_crop_fkt_b110_scientific_successor.sh`: 2
+- `tests/fmig431/run_crop_accepted_hydraulic_provenance.sh`: 2
+
+None of this proves that any calls run repeatedly on the same candidate, that their relevant dependency closures are identical, or that safe skipping is possible. Conditional branches, generated data and output dependencies may differ. Existing Full Richards / mass / retry / restart evidence stays authoritative.
+
+Next decisive experiment: instrument command boundaries in original runner on a fixed HEAD and record, for each invoked group, conditional context, full command, UTC/monotonic elapsed, input manifest fingerprint, compiler count, executable wall/CPU time where isolated, output hashes, and terminal result. Compare the 11 cross-preservation call sites; only identical fully auditable closures could be candidates for one-run inheritance. Do not edit scientific gates before tracing.
+
+Separately benchmark already-built **actual** Full Richards executables with fixed fixture and physical output checks across current and previous SWAP5; historical SWAP431 source authority is already present in repository. The source archive's presence does not equal a benchmark execution.
+
+Current evidence: model-specific solver CPU and performance regression are UNKNOWN. No speedup claim or gate removal authorized.
