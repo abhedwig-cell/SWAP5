@@ -1,17 +1,37 @@
 # Modulaire testbaarheid en lokale ontwikkelcyclus
 
-**Status: Proposed ontwikkelstandaard; opt-in implementatieproef.** Baseline:
+**Status: geïmplementeerde en gemeten zelfstandige testroutes; volledige oorspronkelijke preservation PASS; gereconcilieerde SHARED-route in kwalificatie.** Meetbaseline:
 `1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520`, canonical
 `integration/f-ci-canonical`. Formules, state-layout, toleranties,
-referenties, workflows en bestaande admissiongates blijven behouden. Eén
-productiebackend krijgt een allocatiecontrole voor een optionele macroporieconfiguratie,
-na een reproduceerbare crash in de oorspronkelijke geïntegreerde Boesten-test.
-De afsluitende canonical-reconciliatie is
+referenties en wetenschappelijke assertions blijven behouden. Twee begrensde
+runtime-reparaties herstellen de optionele macroporieconfiguratiecontrole en
+het tijdstip van de oorspronkelijke ledgerbeginmeting; hieronder staat hun bewijs.
+De eerste canonical-reconciliatie is
 `8dac664db83dda8338ef0ffe0f92b55541876978` (PR #1218); zijn productie- en
 referentietrees zijn byte-identiek aan de meetbasis.
 Werkunit/recovery: `integration/audits/MODULAR_TESTABILITY_20261013.json`.
 
 ## Diagnose en afbakening
+
+De oorspronkelijke volledige moving F-CI draait op
+`587a5b29cb2556dab448fc93b5d644eb907003f8`, source-tree
+`d4412e09005f5f76eb795c748350eb502833fdc7`: exit 0, terminale
+`FCI_CANONICAL_LINEAGE_AWARE_GATE PASS`, resume OFF, 8374.831716 seconden.
+Capsule `integration/audits/evidence/MODULAR_TESTABILITY_MOVING_FCI_20261013.tar.xz.b64`
+heeft decoded SHA256 `b83e65b6c8098bc797f75ce5de8e1e10189b5d08e064bd3a24af8669d901060b`.
+Het manifest bindt alle source/test/tool/reference-blobs en oorspronkelijke logs.
+Compilerverzoeken zijn UNKNOWN in deze ongeïnstrumenteerde kwalificatie; deze
+doorlooptijd bewijst geen algemene versnelling.
+
+Canonical is daarna gereconcilieerd met
+`9f4f58c1d6ae96073211a8ce7a785265d075d55d` (PR #1221). De delta verandert
+geen productiebron maar maakt de reeds gekwalificeerde allocation SHARED-build
+standaard. Het enige runnerconflict behoudt zowel de exacte sealed reparatieguard
+als deze nieuwe route. De gecombineerde lokale commit `378dbd6c8` en remote
+`44b4735373d0befaf43bfa50053c718cca8365c0` hebben dezelfde tree
+`66f87e89d9f9f667b784a609b51efc27b1781306`. Verse SHARED/SEPARATE-controles
+en volledige moving F-CI met resume OFF lopen op deze postimage; de oudere
+SEPARATE-PASS vervangt die nieuwe routekwalificatie niet.
 
 SWAP5 heeft kleine wetenschappelijk toetsbare functies, maar de uitvoerbare
 kwalificatieroutes mengen vaak componentbewijs met runtime- en preservationbewijs.
@@ -317,11 +337,12 @@ weigert `verify_daily_demand_successor.py` de aanvullende productiebronwijziging
 zijn exacte source-successor staat uitsluitend drie dagelijkse-demandbestanden
 toe. Dit is een **admission/source-authorityblokkade vóór brede wetenschap**,
 geen wetenschappelijk PASS en geen numerical regressionbewijs. De bronpinnen
-en admissionrunner waren in die poging niet verruimd. De werkunit is geïmplementeerd, gericht
-getest en gepersisteerd; volledige kwalificatie en canonical admission blijven
-false. Voor backendadmission is een bevoegde exacte successor met volledige
+en admissionrunner waren in die poging niet verruimd. Dit is een historische
+blokkade, later opgelost met de exacte successor en verse bewijsbinding hieronder.
+Voor backendadmission is een bevoegde exacte successor met volledige
 vereiste owner-, coupling-, restart- en F-CI-preservation nodig. PR #1219 blijft
-draft met die concrete grens; eerdere backend-PASS wordt niet geërfd.
+draft zolang de vereiste actuele kwalificatie niet compleet is; eerdere
+backend-PASS wordt niet zonder bewijsbinding geërfd.
 
 ### Voortgezette ownerkwalificatie en ontdekte ledgerregressie
 
@@ -335,7 +356,8 @@ dit is verse ownerkwalificatie, geen vergelijkende compilatiebenchmark.
 Alle elf ownerstappen, inclusief beide hoogste routes, zijn nu terminal
 PASS. De sealed owner- en couplingcapsules zijn gecontroleerd; de dagelijkse
 successorcontrole en negen negatieve evidencecontroles slagen eveneens.
-Volledige moving F-CI en canonical admission blijven open. Deze uitvoering erft nul hoogste
+De oorspronkelijke volledige moving F-CI is inmiddels PASS; de nieuwe canonical
+SHARED-route en canonical admission blijven open. Deze uitvoering erft nul hoogste
 configuraties. Broneligibility in `tests/modularity/backend_allocation_authority.py`
 is uitsluitend een byte-exacte broncontrole; het ontbreken van volledige nieuwe
 owner-evidence blijft fail-closed in `verify_backend_owner_evidence.py`.
