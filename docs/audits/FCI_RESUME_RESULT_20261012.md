@@ -316,3 +316,91 @@ and UTC start/end metadata are retained in the existing status record. These
 are independent canonical post-merge checks, not additional same-environment
 performance samples. Documentary receipt commits change no tested scientific
 input; qualification inheritance is limited to that verified unchanged closure.
+
+## Next candidate: actual build versus execution profile, 13 October 2026
+
+The admitted two-leaf scope is unchanged. A subsequent diagnostic measured the
+original `run_mc_irr01_management_physical_runtime.sh` at canonical
+`180d1dd1643f06fc8d97dff17a1cae63ef718d02`, without editing its sources, flags,
+assertions or tolerances. This is candidate profiling, not additional resume
+qualification or an extension of automatic inheritance.
+
+| Actual observation | Measurement |
+| --- | ---: |
+| Original uninstrumented complete O0/O2 group | 99.347895 s, exit 0 |
+| Instrumented complete original group | 124.438933 s, exit 0 |
+| Observed compiler requests | 340 compilations and two links |
+| Compiler child wall time, instrumented run | 99.524629 s compilation; 0.199724 s linking |
+| Compiler child CPU, instrumented run | 90.777856 s user; 8.475478 s system |
+| Native complete test program, three O0 replays | 0.428947–0.451113 s; all exit 0 |
+| Native complete test program, three O2 replays | 0.211041–0.221428 s; all exit 0 |
+| Native scientific output | All six SHA256 equal to qualified `3c36c3ce70057123f407eb1d2c7beb679b0ae207fec46a3a3d44a1879f49beeb` |
+| Actual inherited groups / avoided work in this profile | Zero; group remains RUN |
+
+Both whole-group stdout streams are byte-identical (SHA256
+`7293a20869ab520a940b16029fceaad8784308893a9033f50d92f35913c678a3`).
+Compilation accounts for about 80% of the instrumented run, even before observer,
+shell/generation and log-I/O costs are considered. The native calculation takes
+less than a second for this bounded fixture. This diagnoses repeated qualification
+build work; it is not a broad whole-model or MultiSWAP performance assertion.
+Do not combine the compiler component from one run with the elapsed total from
+the other. The 25.091038-second run difference includes observation and ordered
+host/cache effects; pure instrumentation overhead and cold/warm contributions
+remain UNKNOWN. There is one ordered build pair, not a general speed estimate.
+
+The actual source-discovery surface contains 400 `.f90` files. The inline module
+provider lookup scans all of them, then adds two explicit test-provider files;
+another source can change provider selection without belonging to the previous
+compile list. New inheritance must bind complete discovery/selection, includes,
+implicit module prefixes, OpenMP/runtime dependencies and the output contract.
+Only matching previously compiled sources is insufficient. Required exported
+state/isolation and full closure are still UNDER_REVIEW; no new reusable receipt
+or eligibility was issued. This is the next substantial qualification candidate,
+not permission to skip its scientific gates today.
+
+Profiler source, exact compiler commands, per-request CPU/wall observations,
+source hashes/discovery order, original outputs, native replay outputs and controls
+are archived in `integration/f-ci/evidence/F-CI_RESUME_CANDIDATE_PROFILE_20261013.tar.gz.b64`.
+Decoded SHA256: `899840f2431864c39f9737f41d5d858ef300e0dd7000dc52b55d48862be5d52d`.
+Copied native binaries are excluded; their SHA256 identities/link commands permit
+rebuilding. No new GitHub Actions, production mutations or tolerance changes.
+
+## Larger-group closure boundary, 13 October 2026
+
+At pinned canonical `f0293cffa3b43fb3c4d799029233df9863094cf5`, the
+reconstructed provider selection matches all 170 observed compile sources per
+optimization level. The 400-source discovery census has no duplicate module
+providers; source and repository-root implicit prefixes contain no `.mod` or
+`.smod`. The sole non-comment file/environment-call scan hit is the RossFast
+table provider's explicit OPEN. The fixture selects serialized reference at
+driver lines 233/239. This scan is bounded lexical evidence, not a general
+static proof of every external input.
+
+An actual rejecting libgfortran OPEN interposer detects a positive OPEN control
+(exit 97). Both original native O0/O2 programs under that interposer exit 0 and
+retain the qualified scientific output SHA256. Both also execute successfully
+in distinct empty working/TMPDIR/RUNNER_TEMP directories, leave those directories
+empty, and retain the same SHA256. Library loader logs and extra Python/shell/
+OpenMP identities are captured. These are positive diagnostics; they do not
+establish that the whole shell runner leaves no shared state or that all native
+library/locale/OpenMP filesystem inputs are bound.
+
+The attempted stronger local observation/isolation routes are unavailable:
+`strace` fails at PTRACE_TRACEME with EPERM, unprivileged `unshare` fails with
+EPERM, and Landlock's VERSION probe returns ENOSYS (errno 38). These are a
+concrete limitation of this host's tested proof routes, not evidence that
+SWAP4.3.1 sources are absent or that qualification is impossible elsewhere.
+Complete native filesystem-input attestation/enforcement and full-runner
+downstream independence remain UNKNOWN. The larger extension is blocked on
+that outstanding proof here; no new eligibility or reusable PASS is issued.
+The existing qualified/admitted two-frost-group implementation remains complete.
+
+Archive: `integration/f-ci/evidence/F-CI_RESUME_MANAGEMENT_CLOSURE_20261013.tar.gz.b64`;
+decoded SHA256 `157ca3448cd1028695ac8e7fd2f6635b3eee8125bc9722513797012f29c9b7eb`. It contains
+reproducible diagnostic sources, commands, logs, per-file SHA256, closure census,
+platform failures and exact recovery instructions. Its diagnostic assertions
+completed exit 0; denied tracing commands are explicitly failures. No actual
+work was avoided in these diagnostics, and no larger-group speedup is claimed.
+Recovery uses a host with tracing or an enforced audited read surface, completes
+the output/downstream contract, and then separately qualifies a functional
+resume candidate. No new Actions or production/tolerance changes.

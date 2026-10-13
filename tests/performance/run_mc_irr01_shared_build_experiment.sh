@@ -8,39 +8,7 @@ trap 'rm -rf "$BUILD"' EXIT
 fail() { echo "SHARED_IRR_FAIL $*" >&2; exit 1; }
 ROOT_TEST=tests/f-app07/test_mc_irr01_allocated_root_restart.f90
 SENSOR_TEST=tests/f-app07/test_mc_irr01_allocated_sensor_restart.f90
-python3 - "$ROOT_TEST" "$SENSOR_TEST" <<'PY' > "$BUILD/sources"
-from pathlib import Path
-import re, sys
-tests = [Path(x) for x in sys.argv[1:]]
-files = list(Path('src').rglob('*.f90')) + [
-    Path('tests/f-app07/mc_irr01_realistic_headcalc_stubs.f90'),
-    Path('tests/fmr/mod_fmr04_fixed_top_provider.f90')]
-modules = {}
-for path in files:
-    text = path.read_text(errors='ignore')
-    found = re.search(r'^\s*module\s+(?!procedure\b)(\w+)', text, re.I | re.M)
-    if found:
-        modules[found.group(1).lower()] = path
-seen, ordered, visiting = set(), [], []
-def visit(name):
-    name = name.lower()
-    if name in seen: return
-    if name in visiting: raise RuntimeError('module dependency cycle: ' + name)
-    path = modules.get(name)
-    if path is None: return
-    visiting.append(name)
-    text = path.read_text(errors='ignore')
-    uses = re.findall(r'^\s*use\s*(?:,\s*non_intrinsic\s*)?(?:::)?\s*(\w+)', text, re.I | re.M)
-    for dep in dict.fromkeys(u.lower() for u in uses): visit(dep)
-    visiting.pop()
-    seen.add(name)
-    ordered.append(path)
-for test in tests:
-    text = test.read_text()
-    for dep in re.findall(r'^\s*use\s*(?:,\s*non_intrinsic\s*)?(?:::)?\s*(\w+)', text, re.I | re.M):
-        visit(dep)
-for source in ordered: print(source)
-PY
+python3 tools/performance/irrigation_build_identity.py "$BUILD/identity.json" > "$BUILD/sources"
 COMMON=(-std=f2008 -ffree-line-length-none -w -fopenmp -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 started=$SECONDS
 for opt in 0 2; do
@@ -67,6 +35,7 @@ for opt in 0 2; do
     grep -Fq 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS' "$OUT/$case.output" || fail "$case mass"
   done
 done
+python3 tools/performance/irrigation_build_identity.py "$BUILD/identity.json" --verify
 for case in root sensor; do
   cmp "$BUILD/o0/$case.output" "$BUILD/o2/$case.output" || fail "$case O0/O2 drift"
   cat "$BUILD/o0/$case.output"
@@ -74,4 +43,14 @@ for case in root sensor; do
 done
 echo "SHARED_IRR_COMPILED_SOURCES_PER_OPT=$(wc -l < "$BUILD/sources")"
 echo "SHARED_IRR_WALL_SECONDS=$SECONDS"
+if [[ -n "${SWAP5_SHARED_EVIDENCE_DIR:-}" ]]; then
+  mkdir "$SWAP5_SHARED_EVIDENCE_DIR"
+  cp "$BUILD/identity.json" "$BUILD/sources" "$SWAP5_SHARED_EVIDENCE_DIR/"
+  for opt in 0 2; do
+    for case in root sensor; do
+      cp "$BUILD/o$opt/$case.output" "$SWAP5_SHARED_EVIDENCE_DIR/$case-o$opt.output"
+      cp "$BUILD/o$opt/$case-driver/test" "$SWAP5_SHARED_EVIDENCE_DIR/$case-o$opt.exe"
+    done
+  done
+fi
 echo "SHARED_IRR_SCIENCE=PASS"

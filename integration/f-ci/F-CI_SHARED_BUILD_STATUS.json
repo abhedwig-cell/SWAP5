@@ -1,0 +1,17 @@
+{
+  "work_unit": "F-CI-SHARED-IRR01",
+  "baseline": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "prior_candidate": "71eb60cfc3b22288cb7d7e5b1538a2d265188de6",
+  "owned_surface": "Isolated test build and performance diagnostics only",
+  "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
+  "interfaces_held_fixed": ["production physics", "numerical tolerances", "incumbent test drivers and runners", "F-CI default runner", "historical evidence"],
+  "dependency_surface": ["src/**/*.f90", "tests/f-app07/*", "tests/fmr/mod_fmr04_fixed_top_provider.f90", "tools/performance/*", "tests/performance/*", "compiler and environment"],
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "next_action": "Three alternating original/shared A/B rounds on clean persisted head, instrumented and uninstrumented controls; solver diagnostics separately",
+  "recovery_point": "PR #1218 audit/fci-runtime-cost-20261013; checkpoint commit containing this record",
+  "blockers": [],
+  "note": "Initial pre-reconciliation launch is diagnostic only: HEAD advanced while executing. It cannot qualify the final candidate. No speedup claimed yet. Shared experiment not routed into F-CI."
+}
