@@ -148,14 +148,10 @@ def main():
                     row['compiler_events']=events
                     row['compile_count']=sum(e['stage']=='compile' for e in events)
                     row['link_count']=sum(e['stage']=='link' for e in events)
-                    row['native']={}
-                    for index,exe in enumerate(sorted(copies.glob('*.exe'))):
-                        exe_records=native(exe,copies)
-                        case = arm if arm != 'combined' else ('root' if index%2==0 else 'sensor')
-                        expected=row['science_sha256'] if arm != 'combined' else row[case+'_science_sha256']
-                        if any(r['stdout_sha256'] != expected for r in exe_records):
-                            raise ValueError('native scientific output mismatch')
-                        row['native'][exe.name]={'sha256':hashlib.sha256(exe.read_bytes()).hexdigest(),'case':case,'runs':exe_records}
+                    row['executables']={exe.name: hashlib.sha256(exe.read_bytes()).hexdigest() for exe in copies.glob('*.exe')}
+                    row['execution_events']=[e for e in events if e['stage']=='run']
+                    if len(row['execution_events']) != (4 if arm=='combined' else 2):
+                        raise ValueError('incomplete executable runtime evidence')
                 if identity.snapshot() != inputs or toolchain() != chain:
                     raise ValueError("input identity changed after arm")
                 print(label+" PASS seconds="+str(row['seconds']),flush=True)

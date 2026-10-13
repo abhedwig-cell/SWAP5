@@ -21,7 +21,9 @@ for opt in 0 2; do
   done < "$BUILD/sources"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/legacy/b1_10_port/headcalc.f90 -o "$OUT/headcalc_legacy.o" || fail "headcalc O$opt"
   objects+=("$OUT/headcalc_legacy.o")
+  find "$OUT" -maxdepth 1 -type f \( -name '*.o' -o -name '*.mod' -o -name '*.smod' \) -print0 | sort -z | xargs -0 sha256sum > "$OUT/common.sha256"
   for case in root sensor; do
+    sha256sum -c "$OUT/common.sha256" > /dev/null || fail "common artifact mutation before $case O$opt"
     if [[ "$case" == root ]]; then source="$ROOT_TEST"; else source="$SENSOR_TEST"; fi
     # Isolate each test driver's module outputs from the common modules.
     # No root-test .mod may influence sensor-test compilation.
@@ -33,6 +35,7 @@ for opt in 0 2; do
     "$DRIVER/test" > "$OUT/$case.output" 2>&1 || { cat "$OUT/$case.output" >&2; fail "$case runtime O$opt"; }
     grep -Fq 'MC_IRR01_MANAGEMENT_REAL_RICHARDS=PASS' "$OUT/$case.output" || fail "$case Richards"
     grep -Fq 'MC_IRR01_MANAGEMENT_AUTHORITATIVE_MASS=PASS' "$OUT/$case.output" || fail "$case mass"
+    sha256sum -c "$OUT/common.sha256" > /dev/null || fail "common artifact mutation after $case O$opt"
   done
 done
 python3 tools/performance/irrigation_build_identity.py "$BUILD/identity.json" --verify
