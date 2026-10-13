@@ -1,6 +1,6 @@
 # F-CI bounded safe resume
 
-Status: implemented opt-in candidate, not canonically admitted. Baseline canonical
+Status: bounded opt-in scope canonically admitted via PR1217 on 13 October 2026. Baseline canonical
 `a1b4bb432827149872445161fbcb775bba5c4cb1`; qualification and recovery authority:
 `integration/f-ci/F-CI_RESUME_STATUS.json`. This changes qualification execution,
 not production physics, assertions, tolerance or immutable evidence. The bounded

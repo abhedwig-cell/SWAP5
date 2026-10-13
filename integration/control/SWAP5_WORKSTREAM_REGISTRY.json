@@ -69,6 +69,27 @@
         "successor": "F-TA04R",
         "authority": "integration/control/F_TA04_CURRENT_TRACEABILITY_RECONCILIATION_20260920.json",
         "disposition": "CANONICALLY_ADMITTED_VIA_PR_492"
+      },
+      "fci_resume_admission_20261013": {
+        "scope": "Two independent frost O0/O2 no-output leaves; exact reviewed runtime; all other gates RUN",
+        "owner": "Central SWAP5 REGIE, explicit user confirmation 2026-10-13T06:34:29+02:00",
+        "status": "BOUNDED_CANONICALLY_ADMITTED_POSTMERGE_AUTOMATIC_CHECKS_RUNNING",
+        "pr": 1217,
+        "scientific_head": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
+        "admission_head": "c8c5c82a0c892fe2f3255de112ac7d6ff9d53c35",
+        "canonical_merge": "f9775af0df771d870ca1bd0018e0beaa795404b9",
+        "canonical_tree": "29bc7851ccba7a1d6553bb65964bf955cb93c1d6",
+        "record": "integration/f-ci/F-CI_RESUME_STATUS.json",
+        "original_runner_default": "OFF",
+        "all_other_groups": "RUN",
+        "net_speedup_claim": false,
+        "held_fixed": "Production physics, references, assertions, tolerances, state/restart/MODFLOW semantics and immutable historical evidence",
+        "automatic_runs": [
+          38347529837,
+          38347529889,
+          38347530005,
+          38347529851
+        ]
       }
     },
     {

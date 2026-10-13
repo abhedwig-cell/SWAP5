@@ -1,8 +1,8 @@
 # F-CI safe-resume experiment result
 
-Status: bounded scientific comparison completed; opt-in candidate, not canonically
-admitted at scientific closeout; the bounded REGIE decision was subsequently
-accepted on 13 October 2026. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
+Status: bounded scientific comparison completed and opt-in scope canonically
+admitted on 13 October 2026 via PR1217. Automatic post-merge preservation remains
+separately tracked below. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
 [FCI safe resume](../development/FCI_SAFE_RESUME_20261012.md). Exact actual execution
 head for OFF, controlled SHADOW prefix and RESUME:
 `dd3c823b14ab1e49b1604482de5214ea1f77879a`.
@@ -296,3 +296,14 @@ requalification. Admission still requires live ref/check reconciliation and
 unchanged relevant tested inputs; its execution and canonical verification are
 recorded in `integration/f-ci/F-CI_RESUME_STATUS.json`. No production,
 broader-profile, default-enablement or generalized performance claim is admitted.
+
+Canonical admission executed through the normal expected-head guarded PR merge,
+without protected-check override: `f9775af0df771d870ca1bd0018e0beaa795404b9`.
+Parents are the pinned canonical base and admitted head
+`c8c5c82a0c892fe2f3255de112ac7d6ff9d53c35`; tree
+`29bc7851ccba7a1d6553bb65964bf955cb93c1d6` is exactly the approved postimage.
+Production, reference, controller and outer-runner inputs are byte-identical to
+the actual scientific candidate. Four automatic push runs started; at the first
+receipt F-CI51P and F-CI58P had succeeded, while F-CI canonical and groundwater
+closeout remained RUNNING. Their terminal outcomes are recorded in the status;
+in-progress checks are not PASS. No new workflow was dispatched.

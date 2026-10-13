@@ -5,10 +5,10 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Verify live base/head/checks and exact scientific closure, mark PR1217 ready and merge with expected-head guard; then verify canonical tree and persist admission receipt. OFF stays default.",
-  "recovery_point": "work/f-ci-safe-resume-20261012",
+  "next_action": "Actively observe existing canonical push runs through terminal status; record outcomes without new dispatch or science changes. Keep OFF default and broader eligibility unqualified.",
+  "recovery_point": "integration/f-ci-canonical",
   "dependency_surface": [
     "tools/fci/resume_group.py",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
@@ -16,7 +16,7 @@
     "tests/frost"
   ],
   "blockers": [],
-  "stage": "OWNER_DECISION_ACCEPTED_FINAL_RECONCILIATION_AND_ADMISSION",
+  "stage": "BOUNDED_CANONICAL_ADMISSION_VERIFIED_AUTOMATIC_PRESERVATION_RUNNING",
   "hardened_qualification": {
     "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
     "focused_controls": 33,
@@ -726,13 +726,13 @@
   },
   "scientifically_qualified": true,
   "independently_reviewed": false,
-  "qualification_status": "BOUNDED_SCIENCE_AND_REGIE_POLICY_ACCEPTED_ADMISSION_PENDING",
+  "qualification_status": "BOUNDED_SCIENCE_POLICY_AND_CANONICAL_ADMISSION_COMPLETE",
   "admission_disposition": {
     "owner": "central SWAP5 REGIE",
     "scientific_review_scope": "Two audited no-output frost leaves, exact reviewed runtime and same-candidate moving preservation",
     "policy_review": "ACCEPTED_BY_USER_AS_CENTRAL_REGIE_20261013",
-    "canonical_admission": "NOT_PERFORMED",
-    "pr_draft": true,
+    "canonical_admission": "MERGED_VERIFIED",
+    "pr_draft": false,
     "protected_workflow_bypass": false,
     "owner_decision": {
       "actor": "User, explicitly answering as central SWAP5 REGIE",
@@ -743,6 +743,53 @@
       "scope": "Exactly two audited no-output frost leaves, exact reviewed runtime, OFF default, other groups/guards RUN",
       "independent_github_review": false,
       "accepts_no_net_speedup": true
+    },
+    "admitted_head": "c8c5c82a0c892fe2f3255de112ac7d6ff9d53c35",
+    "canonical_merge": "f9775af0df771d870ca1bd0018e0beaa795404b9",
+    "canonical_merge_tree": "29bc7851ccba7a1d6553bb65964bf955cb93c1d6",
+    "canonical_parents": [
+      "a1b4bb432827149872445161fbcb775bba5c4cb1",
+      "c8c5c82a0c892fe2f3255de112ac7d6ff9d53c35"
+    ],
+    "exact_tree_equal_to_admitted_head": true,
+    "production_reference_controller_outer_inputs_equal_to_tested_head": true,
+    "premerge_checks": {
+      "protected_branches": [],
+      "rulesets": [],
+      "commit_statuses": [],
+      "pr_workflow_runs": [],
+      "absent_checks_not_reported_as_pass": true
     }
+  },
+  "canonical_automatic_preservation": {
+    "head": "f9775af0df771d870ca1bd0018e0beaa795404b9",
+    "manual_dispatch": false,
+    "status": "RUNNING",
+    "runs": [
+      {
+        "id": 38347529837,
+        "name": "F-CI canonical qualification",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 38347529889,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 38347530005,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38347529851,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
   }
 }
