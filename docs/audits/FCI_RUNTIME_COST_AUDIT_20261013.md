@@ -29,3 +29,11 @@ This probe is intentionally *not* a solver profiler. Its compiler-duration sum i
 
 ## Governance
 This is an opt-in diagnostic PR only; no production physics, tolerance, reference, workflow, or immutable qualification evidence changes. Do not merge on documentation or compiler smoke evidence alone where the governing tooling acceptance requires further proof.
+
+## Measurement-probe overhead regression found and corrected
+
+An independent small GNU Fortran source was compiled and run eight times on one local host. This is **instrumentation validation, not SWAP5 runtime**. An earlier per-compiler Python shim was found to impose about 1.38 seconds per tiny compile in the local five-pair sample: uninstrumented median 0.04558 s, wrapped median 1.42942 s. That design was rejected.
+
+With a lightweight shell plus GNU-time shim, eight paired local compilations showed unwrapped median 0.04422 s and wrapped median 0.04515 s, about 0.00093 s difference. Small samples and interleaved process noise prevent general overhead guarantees. GNU time measures to centiseconds; the gate-level monotonic clock has finer resolution. The corrected probe retains exit-code reporting, one compiler event per PATH-resolved gfortran invocation and no overwrite of prior evidence.
+
+Neither measurement says anything yet about the physical SWAP5 solver. A full solver benchmark on matching input and machine remains REQUIRED and UNKNOWN. Avoid promoting this PR until its exact committed postimage and tests are run on a checkout, and tool-authority review is completed.
