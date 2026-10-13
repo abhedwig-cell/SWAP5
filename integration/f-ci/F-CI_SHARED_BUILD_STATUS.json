@@ -22,11 +22,11 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "next_action": "Complete running short/long Richards revision profiles; preserve raw results; final scoped admission and PR reconciliation",
+  "qualified": true,
+  "next_action": "Safe admission of qualified isolated test-build tooling and diagnostics only; no solver execution change",
   "recovery_point": "PR #1218 audit/fci-runtime-cost-20261013; checkpoint commit containing this record",
   "blockers": [],
-  "note": "Three alternating instrumented rounds and one uninstrumented round passed full unchanged root/sensor O0/O2 assertions. All four ELF hashes agree in each instrumented round. Full moving F-CI resume OFF passed. Production/source/reference/default F-CI surface unchanged; subsequent deltas are diagnostic-only. Whole-F-CI speedup and legacy matched runtime remain UNKNOWN. Richards profiles running; no solver performance conclusion yet.",
+  "note": "Three alternating instrumented A/B rounds and one uninstrumented control passed unchanged root/sensor O0/O2 assertions. Four ELFs agree in every primary round. Full F-CI resume OFF PASS. Current/recent Richards physical trajectories exact; 20 additional alternating same-core pairs show no demonstrated regression. September strict comparison FAIL; equal-output September ratio and legacy matched runtime UNKNOWN. No production/default F-CI change or broader speed claim.",
   "preserved": true,
   "qualified_shared_build": true,
   "canonically_admitted": false,
@@ -38,6 +38,10 @@
   "profile_head": "ffb476607ad4859b3dca6cac991a135f642e8f15",
   "evidence": [
     "integration/audits/FCI_SHARED_BUILD_THREE_ROUNDS_20261013.json",
-    "integration/audits/FCI_SHARED_BUILD_QUALIFICATION_20261013.json"
-  ]
+    "integration/audits/FCI_SHARED_BUILD_QUALIFICATION_20261013.json",
+    "integration/audits/RICHARDS_REVISION_PROFILE_20261013.json"
+  ],
+  "richards_current_recent": "EXACT_PHYSICAL_PASS_NO_DEMONSTRATED_REGRESSION",
+  "richards_september": "STRICT_PHYSICAL_COMPARISON_FAIL",
+  "legacy_matched_runtime": "UNKNOWN"
 }

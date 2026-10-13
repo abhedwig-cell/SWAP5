@@ -111,3 +111,8 @@ The initial combined runner had a real potential cross-driver contamination: com
 The A/B comparison now requires a clean Git worktree before launch, records exact execution HEAD and compiler version, and rejects HEAD/worktree drift at completion. This does not certify toolchain-file immutability, all filesystem side effects, or the dependency selection closure. The experiment is still **NOT EXECUTED in a full SWAP5 checkout**, so no PASS or speedup should be claimed.
 
 The declared and recorded historical science reference hashes remain owned by the two unchanged original gates; candidate SHA equality is a necessary, not sufficient, condition for future qualification.
+
+
+## Current disposition (13 October 2026)
+
+The investigation stages above are historical. See [shared-build closeout](FCI_SHARED_BUILD_CLOSEOUT_20261013.md) for actual A/B, complete local preservation and strict Richards findings. The proposed duplicate-guard controller edit was restored; the default F-CI runner is byte-identical to canonical. No historical numerical evidence is replaced.

@@ -72,3 +72,8 @@ A standalone local GNU Fortran smoke probe reproduced a parser bug: `/usr/bin/ti
 The local shell-shim probe compiled a small existing Fortran file and then attempted to compile a missing input. The raw events showed a terminal success entry and a terminal exit-1 entry. This verifies the GNU-time text behavior, not the post-fix SWAP5 runner as a whole.
 
 An unrelated variable-output benchmark test was also made deterministic using a counter file rather than a wall-clock date value. The exact PR-head tests and the actual SWAP5 full-science benchmark remain pending. No performance or physics admission claim is changed.
+
+
+## Current disposition (13 October 2026)
+
+The investigation stages above are historical. See [shared-build closeout](FCI_SHARED_BUILD_CLOSEOUT_20261013.md) for actual A/B, complete local preservation and strict Richards findings. The proposed duplicate-guard controller edit was restored; the default F-CI runner is byte-identical to canonical. No historical numerical evidence is replaced.
