@@ -1,0 +1,157 @@
+{
+  "status": "FULL_LOCAL_FCI_PASS_FOCUSED_EXACT_PASS",
+  "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "control": {
+    "head": "f18bd1837795f239910bd14b332cf779a40bea08",
+    "started_utc": "2026-10-13T11:58:31.644024+00:00",
+    "production_reference_trees": [
+      "98440388d8640d5c62ca03f9a193632b3df41ecd",
+      "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
+    ],
+    "host": {
+      "system": "Linux",
+      "node": "af35da838e56",
+      "release": "6.18.44",
+      "version": "#1 SMP Sat Sep 26 20:02:31 UTC 2026",
+      "machine": "x86_64",
+      "processor": "x86_64"
+    },
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "environment_sha256": "e78b7d13ab58b950c9530e47c51307a9c415f8f9a192f0b6cb4fb516573c43f2",
+    "compiler_version": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "phases": [
+      {
+        "label": "invalid-mode",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+          "--mc-irr01-allocation-only"
+        ],
+        "build_mode": "INVALID",
+        "resume_mode": "OFF",
+        "exit": 2,
+        "wall_seconds": 0.013065514001937117,
+        "user_cpu_seconds": 0.010782,
+        "system_cpu_seconds": 0.001697000000000004,
+        "logs": {
+          "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": "7b501126615919747553503bf53e1b8429e15126d88e28840eb7e5bd20b7c5c9"
+        }
+      },
+      {
+        "label": "compiler-failure-SHARED",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+          "--mc-irr01-allocation-only"
+        ],
+        "build_mode": "SHARED",
+        "resume_mode": "OFF",
+        "exit": 1,
+        "wall_seconds": 0.6135166690000915,
+        "user_cpu_seconds": 0.41884899999999997,
+        "system_cpu_seconds": 0.19541199999999997,
+        "logs": {
+          "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": "f7d0c51a91d3bb9853e6cfe390f64ddb35fc40876f55436ebf170a9c65fb55e4"
+        }
+      },
+      {
+        "label": "compiler-failure-SEPARATE",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+          "--mc-irr01-allocation-only"
+        ],
+        "build_mode": "SEPARATE",
+        "resume_mode": "OFF",
+        "exit": 1,
+        "wall_seconds": 0.24582607899719733,
+        "user_cpu_seconds": 0.13291700000000006,
+        "system_cpu_seconds": 0.11545099999999997,
+        "logs": {
+          "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr": "b413628d4c0daa318fcc5ba7f0d448ecdbd490c435170f17d56cc4ee74cf6190"
+        }
+      },
+      {
+        "label": "focused-shared",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+          "--mc-irr01-allocation-only"
+        ],
+        "build_mode": "DEFAULT_SHARED",
+        "resume_mode": "OFF",
+        "exit": 0,
+        "wall_seconds": 601.3967151210018,
+        "user_cpu_seconds": 558.360401,
+        "system_cpu_seconds": 37.932248,
+        "logs": {
+          "stdout": "bb6000066f0f7ffc7ba0ae765f2f87704ba7437d8d14c8a034c1177e457879a2",
+          "stderr": "644dfe3224c595b4dd82e7988425f09fe02db76ca35392ba5764207c1b0b051f"
+        }
+      },
+      {
+        "label": "focused-separate",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+          "--mc-irr01-allocation-only"
+        ],
+        "build_mode": "SEPARATE",
+        "resume_mode": "OFF",
+        "exit": 0,
+        "wall_seconds": 1442.9161870310018,
+        "user_cpu_seconds": 1265.739705,
+        "system_cpu_seconds": 139.461362,
+        "logs": {
+          "stdout": "d8706abe1c4dd8ff6a0990540510a3440ccdcec4fe8a680f08f304cee6d02625",
+          "stderr": "b3895ad4d68845aeee2a005330c63fc93ad3cfaf09dd9b10d31b8d680288058f"
+        }
+      },
+      {
+        "label": "full-fci",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "build_mode": "DEFAULT_SHARED",
+        "resume_mode": "OFF",
+        "exit": 0,
+        "wall_seconds": 10328.762760195,
+        "user_cpu_seconds": 8572.158672,
+        "system_cpu_seconds": 1496.440163,
+        "logs": {
+          "stdout": "fc1ac8865b32c78bc2698191d36aa6f0ae0614b3aa51b4a20d4588ca0b8db71f",
+          "stderr": "5dbe50893dbc62a5e2917a061f7d5b2209a1e5c176d4cd259a6829289d2f4a94"
+        }
+      }
+    ],
+    "equivalent": true,
+    "full_fci": "PASS",
+    "focused_science_sha256": {
+      "root": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+      "sensor": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e"
+    },
+    "failure": null,
+    "ended_utc": "2026-10-13T15:24:46.452365+00:00",
+    "total_calendar_seconds": 12374.797986101996
+  },
+  "archive": "integration/audits/evidence/FCI_SHARED_ROUTE_FINAL_20261013.tar.gz.b64",
+  "decoded_sha256": "f56962a87ad44c435ee767b3be86dcd84c89fc5d822b207e51c8f8cc72196b90",
+  "decoded_bytes": 219880,
+  "member_count": 96,
+  "all_members_roundtrip": "PASS",
+  "scientific_limits": "September strict physical comparison FAIL; legacy and whole-F-CI speed ratio UNKNOWN; prior reports remain valid for their frozen scope."
+}
