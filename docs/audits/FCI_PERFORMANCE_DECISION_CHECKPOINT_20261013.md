@@ -38,3 +38,15 @@ The original moving F-CI runner has two identical `crop_hydraulic_provenance_cha
 5. **Acceptance:** no default change, no canonical merge of controller modification and no speedup headline until exact-head gates, counterexamples and comparator measurements pass.
 
 **Current scientific finding:** model runtime for the bounded management fixture is sub-second, while rebuild dominates its minute-scale gate. **Remaining unknown:** whether representative SWAP5 Full Richards simulations have become slower. The validated historical SWAP4 source archive is already in repository; no re-upload is needed.
+
+## Cache-cost reconciliation against already qualified V1 (13 October)
+
+Read canonical `tools/fci/compile_cache_trial.py` and `tests/fci/run_compile_cache_trial.py` and the actual immutable six-run controls in `integration/audits/FCI_BUILD_CACHE_TRIAL_20261012.json`.
+
+The cache is **not** currently a reliable default quick fix: it calculates `toolchain(profile)` for every compiler request, hashing all declared files under all explicit toolchain roots; it also scans and hashes current object/module prefixes for each key. A cold cache additionally publishes/hashes outputs. The cache is designed conservatively and correctly defaults off. The measured first root fill was 416.167 s versus 256.512 s uncached, i.e. 159.656 s **extra**. The root warm group was 226.522 s: 29.989 s saved relative to uncached (11.69%). Sensor warm was 168.037 s versus 211.758 s: 43.721 s saved (20.65%). Sensor cross-gate yielded 354 hits but still took 176.472 s. All these results are one ordered host sequence, not generalized timings.
+
+Cost/benefit implication: merely turning on V1 everywhere risks slowing initial qualification. **Do not enable by default**. First time a single cached compiler request by stages: (1) toolchain file validation/hashing; (2) source/prefix/env key derivation; (3) entry integrity validation and installation or real compiler execution; (4) publication/event I/O. Measure these stages in both fill and warm modes using exact accepted O0/O2 compiler commands, and compare identical output hashes. Only then consider a single per-gate validated immutable toolchain snapshot, with tamper/modified-input negative controls. Do not cache source-provider discovery based only on the 340 compiled paths: the management-physical runner scans 400 candidate Fortran sources.
+
+One concrete benefit is independently proven already: `management-physical` native test executables run in fractions of a second when already built, versus a 99.348 s rebuild-plus-execute gate. That contrast identifies build infrastructure as a leading expense, but cannot be interpreted as an achieved reusable-build saving or solver-speed ratio. Separate completed qualification and production performance goals.
+
+Decision: prioritize **provenance-safe amortization of V1 hash validation** as a separate scoped candidate, after measuring the stage cost, over more general new resume/checkpoint machinery. Preserve every scientific gate. Do not integrate audit PR's duplicate-gate change without exact-head qualification.
