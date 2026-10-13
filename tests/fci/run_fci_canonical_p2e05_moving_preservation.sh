@@ -106,6 +106,14 @@ BALTOL02_BACKEND=a5d472636f50a715cf64016ad9d500b401b0ebb1
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
+# Only the two exact repairs are eligible, with complete fresh owner and
+# coupling proof. This prerequisite does not replace any science below.
+modular_repair_exact_successor=0
+if [[ "$(git rev-parse HEAD:$BACKEND)" == 7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18 ]]; then
+  python3 tests/modularity/verify_modular_repair_evidence.py ||
+    fail 'modular repairs require sealed current-source owner and coupling evidence'
+  modular_repair_exact_successor=1
+fi
 verify_crop_frost_highest(){
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
     python3 tests/mc-met01/verify_daily_demand_successor.py
@@ -174,6 +182,9 @@ verify_mc_irr01_storage_successor() {
 mc_heat01_exact_successor=0
 MC_HEAT01_QUALIFIED=decd2e67b8a182f1448a173b18bbc232749dd5b5
 MC_HEAT01_BACKEND=01d1981cc7aebb1553463b1cee955bb21da05fe6
+if (( modular_repair_exact_successor )); then
+  MC_HEAT01_BACKEND=7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18
+fi
 if git merge-base --is-ancestor "$MC_HEAT01_QUALIFIED" HEAD && \
    [[ "$(git rev-parse HEAD:src/process/mod_soil_temperature_contract.f90)" == 2c358fa353226846ce6c6e4e561aa59e5de94620 ]] && \
    [[ "$(git rev-parse HEAD:src/process/mod_restricted_soil_temperature.f90)" == 6d881983c8d97c6d82854c59a2dc6c9fd36f7350 ]] && \
@@ -582,6 +593,10 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_serialized_reference_backend.f90 )
         (( crop_fkt_b110_exact_successor || mc_heat01_exact_successor )) ||
           fail "unqualified shared serialized backend source change: $candidate_path"
+        ;;
+      src/runtime/mod_groundwater_multiswap_publication.f90 )
+        (( modular_repair_exact_successor )) ||
+          fail "unqualified MultiSWAP beginning-balance repair: $candidate_path"
         ;;
       src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90 )
         (( mc_heat01_exact_successor )) || fail "unqualified MC-HEAT01 source change: $candidate_path" ;;
