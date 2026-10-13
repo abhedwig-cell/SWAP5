@@ -67,7 +67,8 @@ def main():
             result["candidate"][case + "_science_sha256"] = actual
             if actual != result["originals"][case]["science_sha256"]:
                 raise ValueError("science output mismatch for " + case)
-        if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != head:\n            raise ValueError("HEAD changed during qualification")\n        if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():\n            raise ValueError("working tree changed during qualification")\n        result["equivalent"] = True
+        if subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() != head:\n            raise ValueError("HEAD changed during qualification")\n        if subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT).strip():
+            raise ValueError("working tree changed during qualification")\n        result["equivalent"] = True
         success = True
     except ValueError as error:
         result["failure"] = str(error)
