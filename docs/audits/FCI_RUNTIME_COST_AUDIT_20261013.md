@@ -64,3 +64,11 @@ A **separate canonical workstream** now contains an actual measured O0/O2 group 
 Interpretation: this **particular qualified physical runtime fixture** spends minutes rebuilding and fractions of a second executing already-built native programs. Numerical production performance relative to SWAP 4.3.1 remains UNKNOWN. The source discovery scans 400 `.f90` files and includes provider selection; blind object reuse is unsafe until the complete transitive closure is qualified. Existing resume-eligibility remains RUN.
 
 This moves the immediate diagnostic priority from adding generic wrappers to measuring several representative real simulations and reducing unnecessary rebuilds **only under complete science- and compiler-identity tests**. Do not confuse the 25-second difference between the two ordered runs with standalone wrapper overhead or net reusable savings.
+
+## Negative instrumentation control (13 October 2026)
+
+A standalone local GNU Fortran smoke probe reproduced a parser bug: `/usr/bin/time -f ...` outputs an auxiliary `Command exited with non-zero status 1` line before its formatted metric event for a compiler error. The initial event parser treated that message as corrupt evidence. The audit branch now explicitly ignores only this known GNU-time diagnostic and retains the actual `compile\tseconds\texit-code` record. Any other malformed line still fails closed.
+
+The local shell-shim probe compiled a small existing Fortran file and then attempted to compile a missing input. The raw events showed a terminal success entry and a terminal exit-1 entry. This verifies the GNU-time text behavior, not the post-fix SWAP5 runner as a whole.
+
+An unrelated variable-output benchmark test was also made deterministic using a counter file rather than a wall-clock date value. The exact PR-head tests and the actual SWAP5 full-science benchmark remain pending. No performance or physics admission claim is changed.
