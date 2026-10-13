@@ -328,8 +328,11 @@ draft met die concrete grens; eerdere backend-PASS wordt niet geërfd.
 De vervolgkwalificatie gebruikt canonical
 `cfc728c42b38026ba548f6250afec00969ccda67`. De normale hoogste frost/crop-route
 is opnieuw volledig uitgevoerd: twaalf configuraties op O0/O2, 72 fine
-comparisons en exacte bestaande oracle-uitvoer. De low-air-route en de overige
-ownerpreservation zijn nog niet afgesloten. Deze uitvoering erft nul hoogste
+comparisons en exacte bestaande oracle-uitvoer. Ook de low-air-route is volledig
+PASS op O0/O2: twaalf verse configuraties, 72 fine comparisons en exacte
+historische uitvoer. De totale low-air-doorlooptijd is 10678.726 seconden;
+dit is verse ownerkwalificatie, geen vergelijkende compilatiebenchmark.
+De overige ownerpreservation is nog niet afgesloten. Deze uitvoering erft nul hoogste
 configuraties. Broneligibility in `tests/modularity/backend_allocation_authority.py`
 is uitsluitend een byte-exacte broncontrole; het ontbreken van volledige nieuwe
 owner-evidence blijft fail-closed in `verify_backend_owner_evidence.py`.

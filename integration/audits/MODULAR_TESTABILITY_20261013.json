@@ -18,7 +18,7 @@
     30
   ],
   "interfaces_changed": "Opt-in strict dependency API and three local production-driver routes; optional-config allocation guard in serialized backend; no physics formula, state layout or tolerance change",
-  "next_action": "Run fresh O0/O2 highest normal/low-air (24 configurations,144 fine comparisons), daily-demand/default-crop/raintb and thermal/FKT/coupling preservation; then sealed exact successor and full moving F-CI before admission",
+  "next_action": "Finish remaining fresh production/state owner gates; seal source-bound owner and coupling evidence; run full moving F-CI resume OFF before admission",
   "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
   "relevant_paths": [
     "tests/support/augment_bartholomeus_backend_sources.py",
@@ -176,7 +176,14 @@
       "fine_comparisons": 72,
       "output_identity": "historical exact"
     },
-    "highest_low_air": "RUNNING, no terminal PASS claimed",
+    "highest_low_air": {
+      "exit": 0,
+      "wall_seconds": 10678.726278795999,
+      "configurations": 12,
+      "fine_comparisons": 72,
+      "output_identity": "O0/O2 and historical exact",
+      "highest_cases_inherited": 0
+    },
     "source_eligibility": "Exact optional guard; optionally exact prepublication scalar beginning-balance move. Not scientific admission.",
     "progress_evidence": {
       "path": "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
