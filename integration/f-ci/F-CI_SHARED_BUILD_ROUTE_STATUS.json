@@ -1,0 +1,71 @@
+{
+  "work_unit": "F-CI-SHARED-IRR01-ROUTE",
+  "baseline": "cfc728c42b38026ba548f6250afec00969ccda67",
+  "branch": "audit/fci-shared-route-20261013",
+  "owned_surface": "F-CI allocation pair test-build routing only",
+  "interfaces_changed": "Default allocation pair SHARED; explicit SEPARATE control and focused identical owner gate",
+  "interfaces_held_fixed": [
+    "src/",
+    "reference/",
+    "all incumbent drivers and runners",
+    "qualified shared runner and selector",
+    "scientific assertions/tolerances",
+    "historical evidence",
+    "resume controller"
+  ],
+  "canonical_admission_owner": "central SWAP5 regie with F-CI/VQ qualification authority",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "required_gates": [
+    "actual full local F-CI resume OFF with new default",
+    "focused SHARED and SEPARATE actual O0/O2 strict scientific comparison",
+    "invalid mode and actual compiler failure negatives",
+    "tooling/docs gates",
+    "live canonical/overlap and preserved coverage"
+  ],
+  "dependency_surface": [
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/performance/run_mc_irr01_shared_build_experiment.sh",
+    "tools/performance/irrigation_build_identity.py",
+    "tests/f-app07/",
+    "tests/fmr/mod_fmr04_fixed_top_provider.f90",
+    "src/",
+    "compiler/environment"
+  ],
+  "evidence_inheritance": "Prior A/B qualifies unchanged shared build only, not this F-CI route. Full route gate must actually run. No whole-F-CI speed ratio without same-postimage A/B.",
+  "next_action": "Reconcile live canonical and expected PR head, admit bounded route only when all gates permit",
+  "blockers": [],
+  "discarded_diagnostic_attempt": {
+    "head": "ec46ba8548d288cb4224015d16084c8a3a96fe7f",
+    "scope": "Negative controls stopped at unrelated frost startup, not at allocation route; focused execution interrupted before completion",
+    "disposition": "NOT_QUALIFICATION; original logs retained separately",
+    "repair": "Focused entrypoint moved before unrelated startup execution; default full-gate order unchanged"
+  },
+  "focused_science_equal": true,
+  "focused_tested": true,
+  "negative_controls": "PASS: invalid mode; actual first compile failure each route; selector/runner blob drift",
+  "required_gate_status": "PASS full local moving F-CI resume OFF on persisted scientific head",
+  "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "evidence": [
+    "integration/audits/FCI_SHARED_ROUTE_FINAL_20261013.json",
+    "integration/audits/FCI_SHARED_ROUTE_FOCUSED_20261013.json"
+  ],
+  "preserved": true,
+  "fci_gate_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "fci_result": "PASS",
+  "gate_results": {
+    "focused_shared": "PASS",
+    "focused_separate": "PASS",
+    "exact_science": "PASS",
+    "invalid_mode": "PASS",
+    "compiler_failure_both_modes": "PASS",
+    "source_identity_negatives": "PASS",
+    "non_allocation_preservation": "PASS",
+    "tooling_16": "PASS",
+    "strict_docs": "PASS",
+    "full_fci_resume_off": "PASS"
+  }
+}
