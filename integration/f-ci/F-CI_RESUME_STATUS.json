@@ -925,5 +925,35 @@
         "completed_at": "2026-10-13T05:02:39Z"
       }
     ]
+  },
+  "next_candidate_profile": {
+    "actual_candidate": "180d1dd1643f06fc8d97dff17a1cae63ef718d02",
+    "group": "management-physical",
+    "scientific_commands_executed": 2,
+    "inherited_groups": 0,
+    "resume_eligible": false,
+    "admitted_scope_unchanged": true,
+    "uninstrumented_group_wall_seconds": 99.34789463700145,
+    "instrumented_group_wall_seconds": 124.43893287499668,
+    "actual_compile_requests": 340,
+    "actual_link_requests": 2,
+    "instrumented_compile_child_wall_seconds": 99.52462937707605,
+    "instrumented_link_child_wall_seconds": 0.19972357698134147,
+    "native_O0_wall_range_seconds": [
+      0.4289473000098951,
+      0.45111289199849125
+    ],
+    "native_O2_wall_range_seconds": [
+      0.2110413219925249,
+      0.22142754099331796
+    ],
+    "native_repetitions_per_opt": 3,
+    "all_native_output_equal_to_existing_qualification": true,
+    "src_discovery_f90_count": 400,
+    "full_input_output_closure_status": "UNDER_REVIEW",
+    "net_resume_savings": "UNKNOWN_NOT_IMPLEMENTED_OR_MEASURED_FOR_THIS_GROUP",
+    "archive": "integration/f-ci/evidence/F-CI_RESUME_CANDIDATE_PROFILE_20261013.tar.gz.b64",
+    "decoded_sha256": "899840f2431864c39f9737f41d5d858ef300e0dd7000dc52b55d48862be5d52d",
+    "next_safe_step": "Audit complete source/provider/include/runtime/prefix and output-state closure before a separate profitable-group resume qualification. Group remains RUN."
   }
 }
