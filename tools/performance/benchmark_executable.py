@@ -21,6 +21,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True)
     parser.add_argument('--repeat', type=int, default=3)
+    parser.add_argument('--require-stable-stdout', action='store_true')
     parser.add_argument('command', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     command = args.command[1:] if args.command[:1] == ['--'] else args.command
@@ -52,6 +53,7 @@ def main():
         'schema_version': 1, 'cwd': os.getcwd(), 'command': command,
         'executable_sha256': hashlib.sha256(Path(command[0]).read_bytes()).hexdigest(),
         'events': events,
+        'stdout_stable': len({item['stdout_sha256'] for item in events}) == 1,
         'warnings': [
             'Whole-executable timing, not isolated Richards solver timing.',
             'Restart, generated outputs and filesystem side effects may affect repeated trials.',
@@ -63,7 +65,11 @@ def main():
     with target.open('x') as out:
         json.dump(report, out, indent=2, sort_keys=True)
         out.write('\n')
-    print(f"Recorded {len(events)} trials in {target}")
+    stable = len({item['stdout_sha256'] for item in events}) == 1
+    print(f"Recorded {len(events)} trials in {target}; stdout_stable={stable}")
+    if args.require_stable_stdout and not stable:
+        print('PERFORMANCE_AUDIT_FAIL output differs between trials', file=sys.stderr)
+        return 2
     return events[-1]['exit_code']
 
 if __name__ == '__main__':
