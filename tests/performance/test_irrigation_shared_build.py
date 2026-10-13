@@ -36,6 +36,14 @@ class SharedBuildControls(unittest.TestCase):
               'combined':{'root_science_sha256':'a','sensor_science_sha256':'WRONG'}}
         with self.assertRaisesRegex(ValueError,'mismatch'):
             compare.verify_science(arms)
+    def test_changed_executable_fails(self):
+        arms={'root':{'executables':{'0.exe':'r0','1.exe':'r2'}},
+              'sensor':{'executables':{'0.exe':'s0','1.exe':'s2'}},
+              'combined':{'executables':{'0.exe':'r0','1.exe':'s0','2.exe':'r2','3.exe':'s2'}}}
+        compare.verify_executables(arms)
+        arms['combined']['executables']['3.exe']='modified'
+        with self.assertRaisesRegex(ValueError,'executable identity'):
+            compare.verify_executables(arms)
     def test_missing_duplicate_marker(self):
         for text in ['', 'MARK='+'a'*64+'\nMARK='+'a'*64]:
             with self.assertRaisesRegex(ValueError,'missing/duplicate'):

@@ -37,7 +37,13 @@ class BenchmarkTests(unittest.TestCase):
             root = Path(temp)
             counter = root / 'counter.txt'
             program = root / 'changing.py'
-            program.write_text('from pathlib import Path\\nimport sys\\np=Path(sys.argv[1])\\nn=int(p.read_text()) if p.exists() else 0\\np.write_text(str(n+1))\\nprint(n+1)\\n')
+            program.write_text("""from pathlib import Path
+import sys
+p=Path(sys.argv[1])
+n=int(p.read_text()) if p.exists() else 0
+p.write_text(str(n+1))
+print(n+1)
+""")
             result, data = self.run_benchmark(
                 root, 'variable.json', [sys.executable, str(program), str(counter)])
             self.assertEqual(result.returncode, 2, result.stderr)

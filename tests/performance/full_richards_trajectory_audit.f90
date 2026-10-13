@@ -25,9 +25,11 @@ program full_richards_trajectory_audit
   real(real64),allocatable :: c(:,:)
   real(real64) :: k0,t,horizon,dt,storage0,storage1,mass,cumin,cumout,inflow,outflow,maxmass
   integer :: step,attempts,retries,nl,jac,linear,constitutive,back,i
+  integer(int64) :: tick,end_tick,dt_ticks
   character(len=64) :: arg
   call get_command_argument(1,arg);read(arg,*)horizon
   call require(horizon>0.0_real64,'positive horizon')
+  tick=0_int64;end_tick=nint(horizon/1.e-6_real64,int64)
   call configure_problem(-75.0_real64,p,hp,cp,sp,tp,state,qdra,qssdi,qrot,c,k0)
   request%parameters=>p
   request%boundary%top_mode=FSI_TOP_MODE_EXPLICIT_FLUX
@@ -45,8 +47,10 @@ program full_richards_trajectory_audit
   request%evaluation%top_boundary=>tp
   t=0.0_real64;step=0;attempts=0;retries=0;nl=0;jac=0;linear=0;constitutive=0;back=0
   cumin=0.0_real64;cumout=0.0_real64;maxmass=0.0_real64
-  do while(t<horizon)
-    dt=min(total_dt,horizon-t)
+  do while(tick<end_tick)
+    dt_ticks=min(5000_int64,end_tick-tick)
+    t=real(tick,real64)*1.e-6_real64
+    dt=real(dt_ticks,real64)*1.e-6_real64
     request%boundary%top_flux=-(.1_real64+.08_real64*sin(6.283185307179586_real64*t))
     request%base_state=state
     storage0=sum(state%water_content*p%dz)+state%ponding_depth
@@ -61,7 +65,8 @@ program full_richards_trajectory_audit
       constitutive=constitutive+result%diagnostics%constitutive_evaluations
       back=back+result%diagnostics%backtracking_attempts
       if(result%status==SW_SOLVE_CONVERGED)exit
-      retries=retries+1;dt=dt*.5_real64
+      retries=retries+1;dt_ticks=dt_ticks/2_int64
+      dt=real(dt_ticks,real64)*1.e-6_real64
       call require(dt>=request%numerical%min_step_duration,'retry floor')
     end do
     call require(all(ieee_is_finite(result%candidate_state%pressure_head)),'finite pressure heads')
@@ -71,7 +76,7 @@ program full_richards_trajectory_audit
     mass=storage1-storage0-inflow+outflow
     call require(abs(mass)<=hard_mass_gate,'independent hard mass balance')
     maxmass=max(maxmass,abs(mass));cumin=cumin+inflow;cumout=cumout+outflow
-    state=result%candidate_state;t=t+dt;step=step+1
+    state=result%candidate_state;tick=tick+dt_ticks;step=step+1
     write(*,'(A,I0,A,ES24.16,A,I0,A,I0,A,ES24.16)') 'STEP=',step,' DT=',dt, &
       ' NL=',result%diagnostics%nonlinear_iterations,' RETRY=',retries,' MASS=',mass
     write(*,'(*(ES24.16,1X))')state%pressure_head,state%water_content,state%ponding_depth

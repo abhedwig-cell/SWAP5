@@ -47,10 +47,20 @@ def extract(text, marker):
         raise ValueError(f"missing/duplicate {marker}")
     return found[0]
 
+def verify_executables(arms):
+    actual = arms['combined']['executables']
+    expected = {f'{2*opt+case_index}.exe': arms[case]['executables'][f'{opt}.exe']
+                for opt in (0,1) for case_index,case in enumerate(ORIGINALS)}
+    if actual != expected:
+        raise ValueError('compiled executable identity mismatch')
+
+
 def verify_science(arms):
     for case in ORIGINALS:
         if arms['combined'][case+'_science_sha256'] != arms[case]['science_sha256']:
             raise ValueError('science output mismatch for '+case)
+    if 'executables' in arms['combined']:
+        verify_executables(arms)
 
 
 def native(executable, output, count=3):

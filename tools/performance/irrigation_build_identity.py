@@ -54,7 +54,15 @@ def discover(files, drivers):
 
 def snapshot():
     files = sorted(Path('src').rglob('*.f90')) + EXTRAS
+    if any(p.is_symlink() or not p.is_file() for p in files + DRIVERS):
+        raise ValueError('non-regular source input')
     ordered = discover(files, DRIVERS)
+    for p in ordered + DRIVERS:
+        if re.search(r'(?im)^\s*(?:#|include\s*[\'\"])', p.read_text()):
+            raise ValueError('unmodeled textual include/preprocessor: ' + str(p))
+    for folder in {Path.cwd(), *(p.parent for p in ordered + DRIVERS)}:
+        if any(folder.glob('*.mod')) or any(folder.glob('*.smod')):
+            raise ValueError('implicit module pollution: ' + str(folder))
     # Preserve the incumbent selection and order as an independent contract.
     # Each fixture currently has the identical complete production closure.
     closures = [discover(files, [d]) for d in DRIVERS]

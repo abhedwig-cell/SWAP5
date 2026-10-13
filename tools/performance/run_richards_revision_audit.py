@@ -95,12 +95,16 @@ def main():
                         report['physical_differences'].append({'revision':name,'horizon':horizon,'repeat':repeat})
         report['equivalent']=not report['physical_differences']
         for name,tree in trees.items():
+            if name=='recent':continue
             report['builds'][name+'-gprof']=build(tree,out/(name+'-gprof'),True)
             rec=run([str(out/(name+'-gprof')/'trajectory'),'30'],out/(name+'-gprof'),out,name+'-profile-run')
             report[name+'-gprof-run']=rec
             if rec['exit']:raise ValueError('profile trajectory failed')
+            expected=next(r['stdout_sha256'] for r in report['runs'] if r['revision']==name and r['horizon']=='30')
+            if rec['stdout_sha256']!=expected:raise ValueError('gprof physical/work output drift')
             gprof=run(['gprof',str(out/(name+'-gprof')/'trajectory'),str(out/(name+'-gprof')/'gmon.out')],out,out,name+'-gprof')
             report[name+'-gprof']=gprof
+            if gprof['exit']:raise ValueError('gprof extraction failed')
     except (ValueError,OSError,subprocess.SubprocessError) as e:report['failure']=str(e)
     finally:
         (out/'CONTROL.json').write_text(json.dumps(report,sort_keys=True,indent=2)+'\n')
