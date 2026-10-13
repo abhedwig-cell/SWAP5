@@ -50,3 +50,17 @@ The historical SWAP4 donor is already within `integration/audits/evidence/SWAP43
 
 ## Open decision
 Current classification: test/build/controller cost has confirmed nontrivial components; **SWAP5 solver regression = UNKNOWN**. No scientific performance regression, improvement, or full F-CI time saving can yet be claimed. Hold the PR as draft until the exact-head tests and controlled solver profiles are complete.
+
+## New actual canonical runtime split: management-physical (2026-10-13)
+
+A **separate canonical workstream** now contains an actual measured O0/O2 group profile (canonical commit `f0293cffa3b43fb3c4d799029233df9863094cf5`). Do not attribute this evidence to our PR-head or to an unexecuted local test.
+
+- Original `tests/f-app07/run_mc_irr01_management_physical_runtime.sh` on fixed execution head `180d1dd1643f06fc8d97dff17a1cae63ef718d02`: 99.347895 seconds wall, terminal 0.
+- Instrumented same group: 124.438933 seconds wall, terminal 0; 340 compile requests, 2 links; summed observed compiler child walltime 99.524629 seconds. This is **summed child time from the instrumented run**; do not subtract from the other run's walltime.
+- Reusing already-built native test executables: three O0 runs at 0.428947–0.451113 seconds, three O2 runs at 0.211041–0.221428 seconds. Six outputs matched qualified digest `3c36c3ce70057123f407eb1d2c7beb679b0ae207fec46a3a3d44a1879f49beeb`.
+- Complete group stdout before and during instrumentation had identical digest `7293a20869ab520a940b16029fceaad8784308893a9033f50d92f35913c678a3`.
+- Immutable archive: `integration/f-ci/evidence/F-CI_RESUME_CANDIDATE_PROFILE_20261013.tar.gz.b64`; decoded SHA256 `899840f2431864c39f9737f41d5d858ef300e0dd7000dc52b55d48862be5d52d`.
+
+Interpretation: this **particular qualified physical runtime fixture** spends minutes rebuilding and fractions of a second executing already-built native programs. Numerical production performance relative to SWAP 4.3.1 remains UNKNOWN. The source discovery scans 400 `.f90` files and includes provider selection; blind object reuse is unsafe until the complete transitive closure is qualified. Existing resume-eligibility remains RUN.
+
+This moves the immediate diagnostic priority from adding generic wrappers to measuring several representative real simulations and reducing unnecessary rebuilds **only under complete science- and compiler-identity tests**. Do not confuse the 25-second difference between the two ordered runs with standalone wrapper overhead or net reusable savings.
