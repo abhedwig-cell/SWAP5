@@ -3,8 +3,9 @@
 Status: implemented opt-in candidate, not canonically admitted. Baseline canonical
 `a1b4bb432827149872445161fbcb775bba5c4cb1`; qualification and recovery authority:
 `integration/f-ci/F-CI_RESUME_STATUS.json`. This changes qualification execution,
-not production physics, assertions, tolerance or immutable evidence. F-CI/VQ
-admission remains required. OFF remains the default original command execution.
+not production physics, assertions, tolerance or immutable evidence. The bounded
+F-CI/VQ/REGIE disposition was accepted by the user on 13 October 2026; admission
+execution is tracked in the status record. OFF remains the default original command execution.
 
 ## Diagnosis and execution graph
 
@@ -186,5 +187,6 @@ the raw evidence measurements with `tests/fci/summarize_resume_trial.py`; option
 the key. Missing key reports authentication UNKNOWN and cannot authorize reuse.
 The two inherited leaves avoided eight compile/link commands and 1.409290 seconds
 of measured group execution, while verification cost 1.599199 seconds. There is
-no demonstrated net speedup. Canonical admission remains with central REGIE after
-the owning F-CI/VQ disposition; OFF remains default.
+no demonstrated net speedup. The user confirmed the bounded owning F-CI/VQ/REGIE
+decision on 13 October 2026. Canonical admission and exact verification remain
+separate recorded actions; OFF remains default.

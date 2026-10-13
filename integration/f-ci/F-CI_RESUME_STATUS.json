@@ -4,10 +4,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "scope": "Two independent frost O0/O2 leaf groups; all other gates RUN",
-  "next_action": "Central REGIE obtains/records bounded F-CI/VQ policy disposition, reconciles live canonical delta and admits only this opt-in two-leaf exact-profile scope if governance permits. PR1217 remains draft; OFF stays default. No further science is running.",
+  "next_action": "Verify live base/head/checks and exact scientific closure, mark PR1217 ready and merge with expected-head guard; then verify canonical tree and persist admission receipt. OFF stays default.",
   "recovery_point": "work/f-ci-safe-resume-20261012",
   "dependency_surface": [
     "tools/fci/resume_group.py",
@@ -15,10 +15,8 @@
     "src/process/mod_frost_hydraulic_effect.f90",
     "tests/frost"
   ],
-  "blockers": [
-    "Owning F-CI/VQ policy review and central REGIE admission disposition not recorded; no technical scientific test failure remains in the final candidate"
-  ],
-  "stage": "33_CONTROLS_AND_SAME_CANDIDATE_FULL_OFF_RESUME_PASS_RETURN_TO_FCI_VQ_REGIE",
+  "blockers": [],
+  "stage": "OWNER_DECISION_ACCEPTED_FINAL_RECONCILIATION_AND_ADMISSION",
   "hardened_qualification": {
     "actual_candidate": "dd3c823b14ab1e49b1604482de5214ea1f77879a",
     "focused_controls": 33,
@@ -728,13 +726,23 @@
   },
   "scientifically_qualified": true,
   "independently_reviewed": false,
-  "qualification_status": "SCIENTIFIC_PASS_POLICY_ADMISSION_PENDING",
+  "qualification_status": "BOUNDED_SCIENCE_AND_REGIE_POLICY_ACCEPTED_ADMISSION_PENDING",
   "admission_disposition": {
     "owner": "central SWAP5 REGIE",
     "scientific_review_scope": "Two audited no-output frost leaves, exact reviewed runtime and same-candidate moving preservation",
-    "policy_review": "PENDING_RECORDED_FCI_VQ_OWNER_DECISION",
+    "policy_review": "ACCEPTED_BY_USER_AS_CENTRAL_REGIE_20261013",
     "canonical_admission": "NOT_PERFORMED",
     "pr_draft": true,
-    "protected_workflow_bypass": false
+    "protected_workflow_bypass": false,
+    "owner_decision": {
+      "actor": "User, explicitly answering as central SWAP5 REGIE",
+      "confirmed_local": "2026-10-13T06:34:29+02:00",
+      "confirmed_utc": "2026-10-13T04:34:29Z",
+      "answer": "Ik bevestig",
+      "question": "Bevestig je namens centrale REGIE het voorgestelde begrensde F-CI/VQ-besluit en autoriseer je admission van PR1217 na de laatste checkscontrole?",
+      "scope": "Exactly two audited no-output frost leaves, exact reviewed runtime, OFF default, other groups/guards RUN",
+      "independent_github_review": false,
+      "accepts_no_net_speedup": true
+    }
   }
 }

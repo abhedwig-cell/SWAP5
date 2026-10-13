@@ -1,7 +1,8 @@
 # F-CI safe-resume experiment result
 
 Status: bounded scientific comparison completed; opt-in candidate, not canonically
-admitted. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
+admitted at scientific closeout; the bounded REGIE decision was subsequently
+accepted on 13 October 2026. PR: https://github.com/abhedwig-cell/SWAP5/pull/1217. Design and recovery:
 [FCI safe resume](../development/FCI_SAFE_RESUME_20261012.md). Exact actual execution
 head for OFF, controlled SHADOW prefix and RESUME:
 `dd3c823b14ab1e49b1604482de5214ea1f77879a`.
@@ -280,11 +281,18 @@ RUN instead of reuse. Journaling requires a private durable filesystem supplied
 by the operator; this test demonstrates process interruption, not a cloud-disk
 loss or hostile-OS attestation. The signing key is deliberately not published.
 
-The bounded scientific experiment is complete. Canonical admission remains a
-separate owning decision: `integration/control/SWAP5_WORKSTREAM_REGISTRY.json`
-reserves admission for central SWAP5 REGIE and returns specialized qualification
-to that owner. The migration advice additionally calls for F-CI/VQ review of
-automatic gate inheritance. No such recorded PR review/owner disposition exists
-at this closeout. Keep PR1217 draft pending that decision; successful science and
-absence of Actions checks are not owner approval. No production, broader-profile,
-default-enablement or canonical-admission claim is made.
+The bounded scientific experiment is complete. At scientific closeout the
+separate owning decision was pending. On 13 October 2026 at 06:34:29 Europe/Amsterdam,
+the user answered “Ik bevestig” to the explicit question whether, as central REGIE,
+they accepted the proposed bounded F-CI/VQ decision and authorized PR1217 admission
+after final checks. This is the recorded user/REGIE disposition, not an invented
+GitHub review submission or external independent audit.
+
+Accepted scope: exactly the two audited no-output frost groups and reviewed
+runtime profile, opt-in and OFF by default; all other groups and guards RUN.
+The owner accepts the documented storage/key/trust limits and absence of net
+speedup. New source/runtime/group eligibility requires closure review and
+requalification. Admission still requires live ref/check reconciliation and
+unchanged relevant tested inputs; its execution and canonical verification are
+recorded in `integration/f-ci/F-CI_RESUME_STATUS.json`. No production,
+broader-profile, default-enablement or generalized performance claim is admitted.
