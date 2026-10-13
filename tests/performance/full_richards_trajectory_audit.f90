@@ -1,5 +1,5 @@
 program full_richards_trajectory_audit
-  use, intrinsic :: iso_fortran_env, only: int64,real64
+  use, intrinsic :: iso_fortran_env, only: int64,real64,error_unit
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod,z,dz,disnod
   use mod_soil_water_solver_contract
@@ -25,7 +25,8 @@ program full_richards_trajectory_audit
   real(real64),allocatable :: c(:,:)
   real(real64) :: k0,t,horizon,dt,storage0,storage1,mass,cumin,cumout,inflow,outflow,maxmass
   integer :: step,attempts,retries,nl,jac,linear,constitutive,back,i
-  integer(int64) :: tick,end_tick,dt_ticks
+  integer(int64) :: tick,end_tick,dt_ticks,clock0,clock1,clock_rate
+  real(real64) :: cpu0,cpu1,solver_cpu=0.0_real64,solver_wall=0.0_real64
   character(len=64) :: arg
   call get_command_argument(1,arg);read(arg,*)horizon
   call require(horizon>0.0_real64,'positive horizon')
@@ -57,7 +58,11 @@ program full_richards_trajectory_audit
     do
       call bind_b110_default_mvg_provider(cp,hp,dt)
       request%step_duration=dt
+      call cpu_time(cpu0);call system_clock(clock0,clock_rate)
       call solver%solve(request,workspace,result)
+      call system_clock(clock1);call cpu_time(cpu1)
+      solver_cpu=solver_cpu+(cpu1-cpu0)
+      solver_wall=solver_wall+real(clock1-clock0,real64)/real(clock_rate,real64)
       attempts=attempts+1
       nl=nl+result%diagnostics%nonlinear_iterations
       jac=jac+result%diagnostics%jacobian_builds
@@ -85,6 +90,7 @@ program full_richards_trajectory_audit
       '|ATTEMPTS=',attempts,'|RETRIES=',retries,'|NL=',nl,'|JAC=',jac,'|LINEAR=',linear, &
       '|CONSTITUTIVE=',constitutive,'|BACK=',back,'|MAX_MASS=',maxmass,'|IN=',cumin,'|OUT=',cumout
   write(*,'(A)')'RICHARDS_AUDIT_SCIENCE=PASS'
+  write(error_unit,'(A,ES24.16,A,ES24.16)')'RICHARDS_SOLVER_TIME CPU=',solver_cpu,' WALL=',solver_wall
 contains
   subroutine configure_problem(initial_head,p,hp,cp,sp,tp,state,qdra,qssdi,qrot,c,k0)
     real(real64), intent(in) :: initial_head

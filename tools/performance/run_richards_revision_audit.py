@@ -108,6 +108,11 @@ def main():
                 for name in order:
                     rec=run([str(out/name/'trajectory'),horizon],out,out,f'{name}-{horizon}-{repeat}')
                     rec.update(revision=name,horizon=horizon,repeat=repeat)
+                    times=[line for line in (out/(f'{name}-{horizon}-{repeat}'+'.stderr')).read_text().splitlines() if line.startswith('RICHARDS_SOLVER_TIME CPU=')]
+                    if len(times)!=1:raise ValueError('missing/duplicate actual solver timing')
+                    cpu,wall=times[0].split('CPU=')[1].split('WALL=')
+                    rec['solver_cpu_seconds']=float(cpu);rec['solver_wall_seconds']=float(wall)
+                    if not (rec['solver_cpu_seconds']>0 and rec['solver_wall_seconds']>0):raise ValueError('invalid solver timing')
                     raw=(out/(f'{name}-{horizon}-{repeat}'+'.stdout')).read_bytes()
                     physical=[]
                     for line in raw.splitlines(keepends=True):
