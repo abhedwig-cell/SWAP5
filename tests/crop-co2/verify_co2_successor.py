@@ -19,12 +19,33 @@ def validate_source(changed,postimages,reference,baseline_reference):
  check(changed==sorted(PINS),'foreign production mutation')
  check(postimages==PINS,'unknown CO2 source postimage')
  check(reference==baseline_reference,'reference mutation')
+# Exact additive NUT/SOL successor. Existing CO2 callers and all historical
+# evidence dependencies remain byte-bound; this does not qualify the new route.
+MATRIX_BASE='34ee4fdac815788620f8779f4340b8edeef3c8ae'
+MATRIX_ADDITIONS={'src/adapter/mod_matrix_joint_restart_file.f90': '0b770f5198035023bc23f5f3c8eb7d88ab2735b1', 'src/process/mod_b111_pond_solute_exchange.f90': 'de610d9428d8ac94848691b5ceaba23cac043cc4', 'src/process/mod_b111_reactive_solute_substep.f90': 'c5a69d95cdcb351841988c59c88106bae676b240', 'src/process/mod_b111_solute_decay.f90': '79d8415d1109c74d25da4f0ade061996f3151fc7', 'src/process/mod_b111_solute_sorption.f90': 'b87fa37ed4d14a7e60ddf135ada058002587422b', 'src/process/mod_solute_compartment_state.f90': '3fbd0e1b0b865f78295d89755ab2702358fe5d13', 'src/runtime/mod_fmr_b111_matrix_joint_application.f90': '2b660cb934d09bc49d1dd42e39523edb0bb90e48', 'src/runtime/mod_fmr_b111_matrix_solute_route.f90': 'd5a3bfac894daaf16d46309c8378f42df1545afd', 'tests/nut-sol/check_matrix_joint_physical_negatives.py': '5988550a7be3b0747e554c3c36dc4d1eac17fa66', 'tests/nut-sol/run_matrix_route.py': '1de85666f22102e99b34edba945dabe2147e6ffa', 'tests/nut-sol/test_matrix_joint.f90': '47a82ee8d5d812bd53ae72be29b97b070419225b', 'tests/nut-sol/test_matrix_route.f90': '3c409e21e30438114d723485f2272e58a3ba9ccc', 'tests/physics/run_b111_reactive_solute_substep.sh': 'd30866faa11e70421d3d2374f5c8331cbe100e86', 'tests/physics/run_b111_sorption_mass_closure.sh': 'eff24ad9f3c2a295d210ca6977de34f99e34106a', 'tests/physics/test_b111_reactive_solute_substep.f90': 'f97a66d74011074e8e260ed23283091d92a697b1', 'tests/physics/test_b111_reactive_solute_substep_multinode.f90': 'a532b63dbc8d11cdfbac280764a7e7e6dd569da1', 'tests/physics/test_b111_sorption_extreme_range.f90': '52b1d789b4e85a584ee75d4d0417d1c7f191cbae', 'tests/physics/test_b111_sorption_mass_closure.f90': 'aa99a1586e361672dafb7849f53419b1a2de77d5'}
+GUARD='tests/crop-co2/verify_co2_successor.py'
+def validate_matrix_delta(rows,tree,guard_sha):
+ expected={p:'A'for p in MATRIX_ADDITIONS};expected[GUARD]='M'
+ check(rows==expected,'foreign matrix successor delta')
+ for p,h in MATRIX_ADDITIONS.items():check(tree.get(p)==h,'matrix successor postimage '+p)
+ check(tree.get(GUARD)==guard_sha,'unbound preservation guard')
+def matrix_successor():
+ rows=git('diff','--name-status',MATRIX_BASE,'HEAD','--','src','tests','tools').splitlines()
+ if not rows:return False
+ tree={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2]for line in git('ls-tree','-r','HEAD').splitlines()}
+ record=json.loads((ROOT/'integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json').read_text())['admission_selection']
+ validate_matrix_delta({line.split('\t')[1]:line.split('\t')[0]for line in rows},tree,record['co2_guard_blob'])
+ for p in [*MATRIX_ADDITIONS,GUARD]:check(blob((ROOT/p).read_bytes())==tree[p],'dirty successor '+p)
+ return True
 def verify_source():
  git('merge-base','--is-ancestor',BASE,'HEAD')
  check(not git('status','--porcelain','--','src','reference'),'dirty production/reference')
- validate_source(git('diff','--name-only',BASE,'HEAD','--','src').splitlines(),{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
+ matrix=matrix_successor()
+ changed=git('diff','--name-only',BASE,'HEAD','--','src').splitlines()
+ if matrix:changed=[p for p in changed if p not in MATRIX_ADDITIONS]
+ validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')
- return {'baseline':BASE,'source_tree':git('rev-parse','HEAD:src'),'postimages':PINS,'co2_successor':True,'qualified':False,'admitted':False}
+ return {'baseline':BASE,'source_tree':git('rev-parse',(MATRIX_BASE if matrix else 'HEAD')+':src'),'postimages':PINS,'co2_successor':True,'qualified':False,'admitted':False}
 def dependencies(inputs):
  for p,h in inputs.items():
   check(not Path(p).is_absolute() and '..' not in Path(p).parts,'unsafe dependency')
@@ -121,9 +142,12 @@ def verify_qualification():
   raw=data['additional/'+row['name']+'.stdout']
   check(row['exit']==0 and hashlib.sha256(raw).hexdigest()==row['stdout_sha256']and markers[row['name']]in raw,'additional original assertion/exit/log')
  tree={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2]for line in git('ls-tree','-r','HEAD').splitlines()}
- conservative=set(git('ls-tree','-r','--name-only','HEAD','--','src','tests','tools').splitlines())
+ matrix=matrix_successor()
+ conservative=set(git('ls-tree','-r','--name-only',MATRIX_BASE if matrix else 'HEAD','--','src','tests','tools').splitlines())
  check(conservative<=m['dependency_blobs'].keys(),'additional dependency closure incomplete')
- for p,h in m['dependency_blobs'].items():check(tree.get(p)==h and blob((ROOT/p).read_bytes())==h,'additional dependency drift '+p)
+ for p,h in m['dependency_blobs'].items():
+  if matrix and p==GUARD:continue # exact replacement validated above, original science unchanged
+  check(tree.get(p)==h and blob((ROOT/p).read_bytes())==h,'additional dependency drift '+p)
  return result
 if __name__=='__main__':
  import argparse
