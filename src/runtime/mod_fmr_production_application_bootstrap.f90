@@ -365,7 +365,9 @@ contains
       call evaluate_macro_feddes_drought_uptake(config%file_weather_root_parameters,unused_hydraulic_view, &
            zero_root_request,zero_root_fluxes,root_parameter_diagnostics)
       if(root_parameter_diagnostics%status/=ROOT_UPTAKE_OK) return
-      if(config%file_weather_root_parameters%empirical_oxygen_enabled) return
+      ! Empirical wet stress uses the existing committed-head Feddes binding.
+      ! ROOT_COMP_OFF retains one prescribed sink and accepted uptake receipt.
+      ! Parameter validation above also covers the wet thresholds/layer split.
       if(.not.all(ieee_is_finite([config%file_weather_stem_area_coefficient, &
            config%file_weather_storage_area_coefficient]))) return
       if(min(config%file_weather_stem_area_coefficient,config%file_weather_storage_area_coefficient)<0.0_real64) return

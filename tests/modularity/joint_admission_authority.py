@@ -53,6 +53,18 @@ def validate(old, new, reference, baseline_reference):
 
 
 def verify_source():
+    if git('rev-parse', 'HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90') == 'cb845eecd2409d6ee473bd7a0cb8194c0b501ad6':
+        # Exact crop-cycle successor; the original three-file authority remains
+        # binding. Eligibility is separate from fresh owner/preservation proof.
+        import sys
+        sys.path.insert(0, str(ROOT / 'tests/crop-cycle'))
+        from verify_oxygen_successor import verify_source as verify_crop_source
+        crop = verify_crop_source()
+        old = {p: subprocess.check_output(['git', 'show', BASE + ':' + p], cwd=ROOT) for p in PINS}
+        new = {p: (ROOT / p).read_bytes() for p in PINS}
+        validate(old, new, git('rev-parse', 'HEAD:reference'), git('rev-parse', BASE + ':reference'))
+        crop['postimages'].update({p: pair[1] for p, pair in PINS.items()})
+        return crop
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
     if git('status', '--porcelain', '--', 'src', 'reference'):
         raise ValueError('dirty production/reference')
