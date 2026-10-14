@@ -19,7 +19,7 @@
     "codec_negatives": "CRC corruption/truncation, wrong water clock, wrong node count, negative chemical revision; also negative water/nonfinite concentration/negative dissolved/wrong sorbed equilibrium with valid recomputed CRC; all reject without target mutation",
     "FMR_restart_owner_preservation": "Original unchanged FMQ27 negative matrix O0/O2 PASS; controlled shared build with hash-bound inputs"
   },
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "scope": "Atomic internally accepted Full Richards water candidate -> source-bound matrix transport, linear sorption and decay -> joint water/chemical commit -> opaque joint restart and bounded CRC-checked same-platform disk continuation",
   "interfaces_changed": [],
@@ -48,12 +48,12 @@
     "level1": "Existing actual production reactive and sorption drivers + independently extracted exact solute.f90 loop",
     "level2": "Atomic trace consumption, stale-time, overdraw/retry/rollback, restart",
     "level3": "Actual serialized Full Richards accepted traces, water and chemical continuity, multiple windows",
-    "level4": "Admission pending central owner review; no shared production module changed. Owning source and selected existing matrix preservation required. Full F-CI is not selected merely for new additive service.",
+    "level4": "Mandatory stable admission boundary selected under protocol full-cycle rule8 and four-level matrix: complete local moving PASS OFF1825.022s; automatic canonical F-CI15/15 jobs PASS run38631988831. Exact additive guard reconciliation retains all original science.",
     "highest_low_air": "NOT_SELECTED per canonical policy",
-    "frost": "NOT_SELECTED: no changed frost or shared water/state/restart code",
+    "frost": "No separate broad frost qualification or highest low-air selected; compulsory existing bounded heat/frost runtime assertions executed inside full moving gate.",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Central regie reviews bounded joint matrix admission using current-canonical qualification and exact owner/master receipts. No specialized canonical merge or implied full F-CI PASS.",
+  "next_action": "Verify live canonical and exact PR head; safe merge bounded PR1228, verify production blobs, finalize existing registry and master receipts. No whole NUT/SOL or master closure.",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
   "scientific_execution_commit": "94e24dbcd5920597ba1af18805645864da50c790",
   "scientific_execution_tree": "1d769c3bae9243f99e01bcca3a638233be55ddfa",
@@ -69,11 +69,7 @@
   },
   "matrix_compile_source_count": 237,
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-  "blockers": [
-    "Canonical admission remains central SWAP5 regie under the live registry; local owner qualification does not assert full F-CI PASS.",
-    "Default bootstrap/multicolumn enablement, salinity feedback, nonlinear matrix and other NUT/SOL routes remain separate.",
-    "Native file is bounded same-platform; no portable cross-compiler format claim."
-  ],
+  "blockers": [],
   "authority_paths": [
     "AGENTS.md",
     "docs/development/workstream-execution-protocol.md",
@@ -339,13 +335,14 @@
   "evidence_paths": [
     "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_MATRIX_20261014.tar.xz.b64",
     "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_20261014.tar.xz.b64",
-    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_CURRENT_20261014.tar.xz.b64"
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_CURRENT_20261014.tar.xz.b64",
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_ADMISSION_20261014.tar.xz.b64"
   ],
   "coverage_reconciliation": "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
   "restart_scope": "Opaque joint FMR/chemical restart and same-platform native file with CRC32; actual pressure/water/temporal history/mass/clocks/revisions retained; fresh process reexecutes both owners",
   "historical_oracle": "Literal transport/reaction loop, linear inverse and cfluxt interface carry; B1.11 source hash enforced before compilation",
   "scoped_local_qualification": "PASS",
-  "qualification_status": "SCOPED_JOINT_OWNER_QUALIFICATION_PASS_READY_FOR_REGIE; complete canonical admission gates pending",
+  "qualification_status": "SCOPED_JOINT_ROUTE_AND_COMPLETE_CANONICAL_FCI_PASS",
   "source_input_manifest": "Complete238-input current-canonical manifest; all final source bytes unchanged from combined execution. Previous immutable proofs retained separately.",
   "evidence_capsule_sha256": "fcfc27b6b7342c231d7b5579e699c665a4758639d34b15da74c8b133319d1221",
   "scientific_execution_git_bundle": "matrix-joint-current.bundle in current evidence; exact execution recoverable over canonical34ee4fda",
@@ -396,7 +393,7 @@
     "expected_wall_seconds": 1883,
     "cost_breakdown": "compile/link/native UNKNOWN for moving shell; prior measured total 1883.083 seconds",
     "targeted_evidence": "238 unchanged scientific inputs at 94e24dbcd5920597ba1af18805645864da50c790, current capsule, FMQ27 and physical decoder controls",
-    "stage": "SELECTED_BEFORE_EXECUTION",
+    "stage": "LOCAL_AND_AUTOMATIC_COMPLETE_PASS",
     "moving_guard_blob": "7d2a83efa6ea191d6694dd00e8990834ed17a397",
     "retained_attempt": {
       "head": "adcc78ad4cdbd830b1bd0b129833bf013ad9fa34",
@@ -404,6 +401,40 @@
       "wall_seconds": 25.351335433,
       "cause": "Existing B19/MICRO global delta whitelist rejected additive matrix path; not scientific failure",
       "resolution": "Recognize exactly eight pinned additive production paths through exact successor validator; original B19 science and foreign-delta fail closed retained"
-    }
+    },
+    "local_moving_wall_seconds": 1825.0215516799944,
+    "automatic_fci_run": 38631988831,
+    "automatic_fci_jobs": "15/15 PASS"
+  },
+  "preserved": true,
+  "stage": "QUALIFIED_PRESERVED_REGIE_ADMISSION_AUTHORIZED_PENDING_SAFE_MERGE",
+  "remaining_scope_limitations": [
+    "Default bootstrap/multicolumn enablement, salinity feedback, nonlinear matrix and other NUT/SOL routes remain separate.",
+    "Native file is bounded same-platform; no portable cross-compiler format claim."
+  ],
+  "stable_admission_evidence": {
+    "path": "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_ADMISSION_20261014.tar.xz.b64",
+    "decoded_sha256": "4d18e653861883fc7efbe147e9ea518b2cef2e0ff1a1fe293e284c8b9c36aad3",
+    "bytes": 627000,
+    "members": 54,
+    "local_moving": "PASS 1825.0215516799944 seconds",
+    "automatic_fci_run": 38631988831,
+    "automatic_fci_jobs": 15,
+    "all_jobs": "PASS",
+    "actual_execution_head": "cd005ddc1b07a42cff6e5f4db4c912fa92dd0563",
+    "remote_equivalent_head": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2"
+  },
+  "regie_decision": {
+    "owner": "central SWAP5 regie",
+    "execution_authority": "User instruction to work autonomously and Go to the admission continuation",
+    "decision": "ADMIT",
+    "stage": "AUTHORIZED_PENDING_SAFE_MERGE",
+    "scope_only": "Atomic internally accepted Full Richards water candidate -> source-bound matrix transport, linear sorption and decay -> joint water/chemical commit -> opaque joint restart and bounded CRC-checked same-platform disk continuation",
+    "science_input_identity": "238/238 input hashes unchanged",
+    "moving_input_identity": "6211/6211 tracked inputs unchanged; exact remote execution tree a3f2b8812681154f595f98f2ca87c59d1d1c204c",
+    "historical_semantics": "B1.11 transport/interface carry and changing-water inventory verified independently; no replacement of accepted WOFOST81 root/crop/N-fixation semantics",
+    "owner_review": "Additive companion, runner and disk codec use accepted water/state owners; no existing production postimage, caller or global state/restart layout changed from34ee",
+    "remaining_master": "14 dispositions and243-entry counts unchanged; bounded linear receipts only; old aquifer claim corrected in separate existing master authority; global checker pre-existing stale baseline remains open",
+    "unrelated_red_actions": "13 historical/research workflows red;15 raw failed-job logs and5 baseline reproductions plus unchanged B1 bindings retained; no relabeled PASS or gate weakening"
   }
 }

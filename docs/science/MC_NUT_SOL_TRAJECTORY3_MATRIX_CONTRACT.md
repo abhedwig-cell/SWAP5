@@ -1,6 +1,6 @@
 # MC-SOL01 trajectory 3: accepted matrix transport with sorption and decay
 
-Status: joint physical matrix route locally qualified; canonical admission pending.
+Status: joint physical matrix route qualified and preserved; central regie ADMIT authorized, safe merge pending.
 Original baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
 Current reconciled canonical: `34ee4fdac815788620f8779f4340b8edeef3c8ae`.
 Donor: PR #1117, `b6b894513fcdcf66e94824742c129616ddd7aed1`.
@@ -129,8 +129,8 @@ inferred from these scoped tests.
 ## Remaining MC-NUT01 and MC-SOL01 routes
 
 The exact master snapshot and14 relevant dispositions are reconciled in
-`integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json`. No row is promoted by
-this offered candidate. The master has a stale aquifer description in its
+`integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json`. No full capability row is promoted by
+this bounded route. The master has a stale aquifer description in its
 matrix decay row; matrix decay has no aquifer dependency. The donor's claim that
 all implementation gaps are closed is limited to that branch, not today's
 application reachability.
@@ -189,3 +189,31 @@ normal physics, rejected/retried physics, fresh-process replay and corruption
 checks. Per-codec cost is UNKNOWN, not inferred from that total.
 The stable admission decision remains routed to central SWAP5 regie under the
 canonical workstream registry. No new mandatory long stress gate is selected.
+
+
+## Stable admission evidence (2026-10-14)
+
+Central regie selected complete moving preservation at the mandatory stable
+admission boundary. The exact additive matrix source and two existing source
+guards were reconciled without authorizing any existing production mutation.
+The original CO2 evidence controls (23) and six additive delta/postimage negatives
+pass. All238 targeted science and all6211 tracked moving-execution inputs were
+verified unchanged before closeout.
+
+Complete local moving preservation passes in1825.021552 seconds (OFF mode).
+The first25.351-second B19 source-whitelist failure remains retained separately.
+Compile/link/native breakdown within this broad shell is UNKNOWN. Automatic
+canonical F-CI run38631988831 also passes all15 jobs, including14 frozen
+authorities and current moving preservation. The existing short bounded
+heat/frost runtime assertions executed inside that mandatory gate; the retired
+highest low-air qualification was not selected. Raw logs, inputs, controller
+results and historical red-check attribution are in the admission capsule linked
+from the existing work-unit status.
+
+The regie decision admits only this matrix joint route after safe expected-head
+merge and source verification. All14 NUT/SOL dispositions and243-capability counts
+remain unchanged; the separate existing master authority receives a bounded
+receipt and correction of its copied decay/aquifer claim. Its untouched baseline
+checker already fails with stale inheritance baseline, which remains an explicit
+master blocker. Thirteen unrelated historical/research Action workflows retain
+their inspected failures; no whole-repository green-check claim is made.
