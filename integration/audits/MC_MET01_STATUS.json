@@ -633,5 +633,64 @@
       "full_source_census_closure_claim": false,
       "master_kept_draft": true
     }
+  },
+  "legacy_table_modular_pilot_20261014": {
+    "capability": "SW431-MET-RAIN1",
+    "stage": "IMPLEMENTED_MODULE_SMOKE_PASSED_INTEGRATION_PENDING",
+    "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
+    "master_owner_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
+    "branch": "work/modular-migration-pilot-20261014",
+    "implemented": true,
+    "tested": "module O0/O2 smoke only",
+    "qualified": false,
+    "canonically_admitted": false,
+    "scope": "Legacy alternating RAINTB fixed-array active-prefix normalization into the existing immutable typed owner; descending sentinel and ignored trailing slots. No legacy file grammar or new physical state.",
+    "selection": "An explicitly OPEN source envelope in the current master SW431-MET-RAIN1 restrictions. Existing physical mode1 seam and independent literal B1.11 AFGEN oracle; one production provider; no shared solver/restart edits.",
+    "rejected_candidates": {
+      "irrigation": "Central managed-weather/root ownership and joint continuation gates remain shared blockers.",
+      "drainage": "Ordinary signed/DRAMET3 paths share drainage/frost solver dependencies with LOW-AIR-10X.",
+      "crop_fixed": "Requires lifecycle/state ownership; too wide for this isolated small pilot."
+    },
+    "invariants_affected": [
+      2,
+      3,
+      7,
+      9,
+      13,
+      21,
+      23,
+      29
+    ],
+    "production_changed": [
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90"
+    ],
+    "held_fixed": [
+      "Full Richards",
+      "timestep/rejection/acceptance/transaction",
+      "physical state and restartcodec",
+      "mass tolerances",
+      "frost/low-air drivers",
+      "central infrastructure",
+      "master owner ledger",
+      "immutable references/evidence"
+    ],
+    "direct_contract": "Flat even-length real64 x/y input; first descending x ends active prefix. Active knots1..366 strictly increasing and finite positive cm/day values; unused tail ignored. Invalid consumed values/duplicates/odd lengths fail with unready output. No input mutation.",
+    "tests_selected": {
+      "level1": "Existing modular Session case raintb_legacy, one real adapter provider and one driver, cold/warm O0/O2; 15372 literal source pulse cases and invalid/nonmutation/identity checks.",
+      "level2": "Immutable active-prefix normalization and existing table identity; real joint restore checks at level3. No new persistent state.",
+      "level3": "Existing authentic RAINTB production fixture with legacy/typed representations in the same executable; BASE/AIR pulse/off/next-day, failed prefix/retry/rollback, exact table restart identity and original hard mass checks; O0/O2 continuous/restart.",
+      "level4": "PENDING: RAINTB owning contract requires affected highest frost, PPA and full current F-CI. No inheritance of changed adapter authority; existing successor guard intentionally remains fail-closed. No automatic low-air run."
+    },
+    "next_action": "Persist this candidate remotely, execute real integration and retain split cost evidence; offer draft PR with precise owning preservation/admission conditions.",
+    "blockers": [
+      "Final admission needs precise changed-adapter successor authority and mandatory owner preservation, including highest frost dependency reconciliation with LOW-AIR-10X."
+    ],
+    "coverage_receipt": "Master owner PR1072 only; do not edit its ledger on this branch or promote full SWRAIN1.",
+    "low_air_reconciliation": "Open PR inventory at readiness has no published LOW-AIR-10X PR. Its requested protected files/contracts remain byte-identical; changed weather-adapter source still affects existing exact-source preservation authority. Do not infer inheritance from one module import graph.",
+    "expected_costs": {
+      "modular": "under2s measured smoke pair; not a speedup baseline",
+      "integration": "Broad runtime compilation necessary for authentic state identity; expected minutes, native cost UNKNOWN",
+      "owning_preservation": "Historical low-air10678.726s; full preservation history7748.796s, not executed here."
+    }
   }
 }

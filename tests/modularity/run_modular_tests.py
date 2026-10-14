@@ -17,6 +17,9 @@ CASES={
                   'flags':['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace']}}
 # Existing scientific drivers/oracles, exposed through one measured feedback route.
 CASES.update({
+ 'raintb_legacy': {'driver':'tests/modularity/test_raintb_legacy_table.f90',
+                   'marker':'MODULAR_RAINTB_LEGACY_PREFIX_ORACLE_NONMUTATION_NEGATIVES=PASS',
+                   'flags':COMMON},
  'root_oxygen': {'driver':'tests/fmig431/test_swap431_root_oxygen_emp.f90',
                  'marker':'SW431_ROOT_OXYGEN_EMP_COMPONENT=PASS',
                  'flags':['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']},
