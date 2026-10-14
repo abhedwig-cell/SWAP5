@@ -1,0 +1,49 @@
+{
+  "work_unit": "MODULAR_DEVELOPMENT_ADOPTION_20261014",
+  "baseline": "a6bbc4abc077df84eaf42420343c8774c8938468",
+  "last_reconciled_upstream": "a6bbc4abc077df84eaf42420343c8774c8938468",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonical_admitted": false,
+  "scope": "Three direct physical feedback routes, controlled provider sharing, isolated type feasibility; no src/reference/incumbent runner/default admission changes",
+  "interfaces_held_fixed": [
+    "physical formulas",
+    "accepted/candidate state",
+    "trial/retry/rollback",
+    "restart",
+    "Full Richards",
+    "mass/coupling",
+    "F-CI triggers and owner gates"
+  ],
+  "affected_invariants": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    25,
+    29,
+    30
+  ],
+  "relevant_paths": [
+    "tests/modularity",
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/audits/MODULAR_TESTABILITY_20261013.md",
+    "docs/development/quality-governance-a-aa.md"
+  ],
+  "next_action": "Execute persisted O0/O2 feedback, negative controls, isolated feasibility, three alternating benchmark rounds, affected integration and docs checks",
+  "recovery_point": "work/modular-development-adoption-20261014 HEAD",
+  "blockers": [
+    "Production type move requires shared HY/RT/restart owner successor decision; isolated proof not authority"
+  ],
+  "preservation_selection": "Production, reference, incumbent scientific drivers, F-CI/default owner runners unchanged. Opt-in feedback amendment: run all affected drivers plus targeted original integration, retain existing full preservation on unchanged scientific surface; no new full F-CI solely for additive feedback tooling. Exact byte bindings retained at closeout."
+}
