@@ -75,5 +75,18 @@
     "compared_from": "c367ae40869c30ac622df8263ae418b54340d011",
     "production_delta": [],
     "disposition": "Latest owner adds performance test workspace and its own preservation evidence; exact V3 production postimages remain unchanged. Joint closure retains its independently qualified tests and runner; no performance changes imported."
-  }
+  },
+  "moving_execution": {
+    "status": "RUNNING",
+    "executed_merge": "ce8048a3d7",
+    "first_parent": "c591205c5e03f1c96c6488eb53c562265f749556",
+    "candidate": "82001b792f",
+    "source_tree": "d10d2b860576c18fca5b7b60336b36b82c42ed8b",
+    "mode": "SHADOW_ALL_SCIENTIFIC_GROUPS_EXECUTE",
+    "controller": "tests/mc-met01/run_joint_moving_preservation.py",
+    "output_navigation": "joint-v3-fci/RESULTS.json",
+    "owner_prerequisite": "V3 sealed owner verified with ten negative controls before execution"
+  },
+  "persisted": true,
+  "recovery_point": "Complete owner evidence and exact source; active full moving execution requires terminal result before admission."
 }
