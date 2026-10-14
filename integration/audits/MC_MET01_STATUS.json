@@ -681,13 +681,14 @@
       "level3": "Existing authentic RAINTB production fixture with legacy/typed representations in the same executable; BASE/AIR pulse/off/next-day, failed prefix/retry/rollback, exact table restart identity and original hard mass checks; O0/O2 continuous/restart.",
       "level4": "PENDING: RAINTB owning contract requires affected highest frost, PPA and full current F-CI. No inheritance of changed adapter authority; existing successor guard intentionally remains fail-closed. No automatic low-air run."
     },
-    "next_action": "MC-MET01/RT must authorize exact additive adapter successor and reconcile required highest frost with LOW-AIR-10X; then run incumbent weather/crop/thermal/PPA and complete applicable preservation under unchanged science, reconcile latest canonical and admit only if all gates pass. Preserve draft and ACTIVE full SWRAIN1 until then.",
+    "next_action": "Await qualified stable LOW-AIR numerical successor or explicit unchanged numerical owner boundary; reconcile source-authority successor and complete required preservation. This PR remains draft; no protected central runner or competing branch is edited.",
     "blockers": [
-      "Existing MC-MET01 contract requires full affected highest frost and current Full Richards/PPA/F-CI; new adapter exact postimage is not recognized by existing guards. Successor admission authority/gate reconciliation is outside this isolated pilot.",
-      "LOW-AIR-10X published branch/PR not found in exact live searches; do not invent its head or modify its protected owner surface."
+      "Precise adapter postimage successor accepted by owning source authority; current guard rejects unknown mutation.",
+      "Complete affected highest frost including mandatory O0/O2 low-air and current Full Richards/PPA/F-CI; do not infer PASS from active LOW-AIR A/B or substitute bounded direct20-case owner batch.",
+      "Reconcile stable LOW-AIR-10X numerical postimage, retain both modular registrations, requalify affected combined dependencies before admission."
     ],
     "coverage_receipt": "Master owner PR1072 only; do not edit its ledger on this branch or promote full SWRAIN1.",
-    "low_air_reconciliation": "Open PR inventory at readiness has no published LOW-AIR-10X PR. Its requested protected files/contracts remain byte-identical; changed weather-adapter source still affects existing exact-source preservation authority. Do not infer inheritance from one module import graph.",
+    "low_air_reconciliation": "Published work/low-air-10x-20261014 now reconciled at fea92beda1c544aecbd27851d7a563a558aef027. Full highest same-host A/B active, not full qualified/admitted. Production changes restricted to canonical_contracts/canonical_interval_runtime; pilot production adapter disjoint. Shared run_modular_tests.py overlap has a clean three-way syntax-only prototype retaining all three opt-in cases; prototype not applied or qualified.",
     "expected_costs": {
       "modular": "under2s measured smoke pair; not a speedup baseline",
       "integration": "Broad runtime compilation necessary for authentic state identity; expected minutes, native cost UNKNOWN",
@@ -808,7 +809,7 @@
       "PATH=<qualified-gfortran-bin>:$PATH python tests/mc-met01/run_raintb_legacy_pilot.py --integration --output <fresh-output>"
     ],
     "owner_preservation_followup": {
-      "stage": "PREPARED_NOT_TESTED",
+      "stage": "SCOPED_OWNER_COMPOSITION_PASS_FULL_ADMISSION_PENDING",
       "parallel_head": "d13c6177d05e32a71c4cab7457a603ed1547025c",
       "parallel_branch": "work/low-air-10x-20261014",
       "parallel_stage": "BOUNDED_DIAGNOSIS",
@@ -825,7 +826,116 @@
       ],
       "build": "One controlled execution, separate O0/O2, source/toolchain/object/module hashes checked; providers and headcalc/source-oracles compiled once per optimization, three distinct drivers link/run fresh. No persistent cache or central runner change.",
       "cost_selection": "Required incumbent owner composition after additive weather-adapter change. Shared build expected minutes; native cost UNKNOWN; no highest frost/low-air or full F-CI selected.",
-      "next_action": "Persist, execute owner batch and direct unchanged source oracles, retain all actual outcomes. Full admission remains pending explicit owner successor and required highest/F-CI preservation."
-    }
+      "next_action": "Await qualified stable LOW-AIR numerical successor or explicit unchanged numerical owner boundary; reconcile source-authority successor and complete required preservation. This PR remains draft; no protected central runner or competing branch is edited.",
+      "tested": true,
+      "qualified": false,
+      "canonically_admitted": false,
+      "executed_head": "c9bbf7b7811083cd2bc9ee9aae2a9895089cccaa",
+      "remote_tree_equal_checkpoint": "fcb40e4a93a780227153a1c3e897bcf5d3713466",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_MET01_LEGACY_RAINTB_OWNER_PRESERVATION_20261014.tar.xz.b64",
+        "decoded_sha256": "bec1ab99d93346eabe3010d6e485204f523fbb00aa654f8e0c1495028177d7fa",
+        "members": 1025,
+        "compressed_bytes": 281852,
+        "roundtrip": "PASS"
+      },
+      "summary": {
+        "wall_seconds": 172.93939119199968,
+        "compile_seconds": 140.99068813000122,
+        "link_seconds": 0.5735210180000649,
+        "native_seconds": 29.891387634997045,
+        "cases": 20,
+        "compile_units": 464,
+        "links": 6,
+        "provider_compile_requests": 442,
+        "external_oracle_compile_requests": 16,
+        "driver_compile_requests": 6,
+        "counts_original_three_shell_routes": {
+          "scope": "derived from exact original script plans, not measured independent baseline",
+          "compile_units": 1380,
+          "providers": 1326,
+          "externals": 48,
+          "drivers": 6
+        },
+        "compile_units_avoided_from_original_plans": 916,
+        "elapsed_speedup": "UNKNOWN; no original separate route run for timing",
+        "exclusive_physics_python_github_wait_evidence_seconds": "UNKNOWN",
+        "direct_oracles": [
+          {
+            "name": "daily-demand-source",
+            "command": [
+              "python",
+              "-B",
+              "tests/mc-met01/run_daily_demand_source.py"
+            ],
+            "returncode": 0,
+            "wall_seconds": 1.052253529999689,
+            "compile_link_native_splits": "UNKNOWN"
+          },
+          {
+            "name": "reference-et",
+            "command": [
+              "python",
+              "-B",
+              "tests/mc-met01/run_daily_demand_reference_preservation.py"
+            ],
+            "returncode": 0,
+            "wall_seconds": 0.4781675840004027,
+            "compile_link_native_splits": "UNKNOWN"
+          }
+        ],
+        "verification": {
+          "claim": "OWNER_COMPOSITION_ONLY_FULL_ADMISSION_PENDING",
+          "cases": 20,
+          "compile_units": 464,
+          "links": 6,
+          "native_runs": 20,
+          "negative_controls": {
+            "partial": "complete distinct20-case matrix absent",
+            "duplicate": "complete distinct20-case matrix absent",
+            "failed": "failed native case",
+            "o2-drift": "O0/O2 drift",
+            "flags": "incumbent compiler flags changed",
+            "source-manifest": "source manifest drift",
+            "compile-removal": "unexpected compile/link/native coverage"
+          }
+        },
+        "full_owning_preservation": "PENDING, not PASS or NOT_REQUIRED",
+        "verifier_development": {
+          "failed_control_attempt": 1,
+          "reason": "Removing compiler events shifted native-log indices in the negative specimen. Reordered coverage validation before raw-log validation. Positive native evidence was unchanged; all seven negative controls now reject precisely.",
+          "production_or_native_test_failures": 0,
+          "repair_wall_seconds": "UNKNOWN"
+        }
+      },
+      "reconciliation": {
+        "canonical": "c591205c5e03f1c96c6488eb53c562265f749556",
+        "low_air_head": "fea92beda1c544aecbd27851d7a563a558aef027",
+        "production_overlap": [],
+        "tooling_overlap": [
+          "tests/modularity/run_modular_tests.py"
+        ],
+        "three_way_merge_status": "CLEAN_SYNTAX_ONLY_NOT_APPLIED_NOT_SCIENTIFICALLY_QUALIFIED",
+        "case_registrations_retained": [
+          "raintb_legacy",
+          "low_air_policy",
+          "low_air_physical"
+        ],
+        "no_competing_branch_modified": true,
+        "qualification_boundary": "LOW-AIR-10X is FULL_HIGHEST_SAME_HOST_AB_ACTIVE; its O0/full owner/preservation/admission remain pending. Pilot owner batch runs baseline numerical runtime only; no LOW-AIR source or evidence borrowed.",
+        "file_sha256": {
+          "overlap-base-modular.py": "39dc6b61aa863fa9a966317aab5023937133dbaf392da334f20e355fd612bfb2",
+          "overlap-pilot-modular.py": "8771d9838067088e5324cdec17fab96b5318ef56a37fec714dd075415ef5c11e",
+          "overlap-low-modular.py": "10371a90e597ee4765e94767c7f3f0c366bfea9dbe8cb658d91d88ae79ccd290",
+          "overlap-combined-modular.py": "8c8a01632c82c11ae22c140446e6f18ac50e8aa6576fb1e2ee709c2061f24a50"
+        }
+      },
+      "pending_gates": [
+        "Precise adapter postimage successor accepted by owning source authority; current guard rejects unknown mutation.",
+        "Complete affected highest frost including mandatory O0/O2 low-air and current Full Richards/PPA/F-CI; do not infer PASS from active LOW-AIR A/B or substitute bounded direct20-case owner batch.",
+        "Reconcile stable LOW-AIR-10X numerical postimage, retain both modular registrations, requalify affected combined dependencies before admission."
+      ]
+    },
+    "targeted_owner_preserved": true
   }
 }

@@ -153,3 +153,54 @@ Initial donor-comment whitespace failure and clean-tree rejection of generated
 Python bytecode are retained; only those generated/formatting inputs were repaired.
 No native scientific test failed. The unchanged owning verifier rejects the new
 production mutation, confirming that module/integration PASS cannot confer admission.
+
+### Fresh incumbent owner composition (2026-10-14 follow-up)
+
+The additional controller `run_raintb_legacy_owner_preservation.py` executes all
+original authentic crop/weather neutral, dry and hydraulic cases, plus the
+unchanged daily-demand and typed-RAINTB physical drivers. All20 O0/O2 native
+programs pass, with exact optimization and continuous/restart output identity.
+Their source assertions, native cases, flags and physical/reference data are
+retained. Independent daily-demand960 and reference-ET1700 cases also pass O0/O2.
+The bounded verifier `verify_raintb_legacy_owner_batch.py` checks current source,
+actual flags, complete distinct case coverage and actual raw native log hashes.
+Seven partial/duplicate/failed/O2/flags/manifest/compile negatives fail closed.
+Its positive claim is expressly OWNER_COMPOSITION_ONLY_FULL_ADMISSION_PENDING.
+An initial negative specimen with removed compiler events exposed shifted log
+indices; checking coverage before logs repaired that verifier control, without
+changing production, native output or scientific assertions.
+
+One controlled build compiles221 providers, eight external/oracle files and three
+drivers once per optimization, then links each driver separately and executes
+all cases. Total464 compilation units, six links,20 native runs. Measured wall:
+172.939391s; compile140.990688s; pure link0.573521s; native29.891388s. Exact original
+three-shell compile plans would request1380 units;916 duplicate units are avoided.
+This count comparison is derived from existing plans, not a measured independent
+elapsed-time baseline. No timing speedup percentage is claimed. Different direct
+source-oracle flags remain separate, with their1.052254s/0.478168s controller times
+and unknown internal compilation/native split explicitly retained.
+
+The new evidence capsule is separate from the original immutable pilot capsule:
+`MC_MET01_LEGACY_RAINTB_OWNER_PRESERVATION_20261014.tar.xz.b64`. Its1025 selected
+members roundtrip verify; exact SHA256, commands, source/compiler/artifact hashes,
+raw native/compiler/negative logs, donor/fixture identities, measurements and
+verified tested-code bundle are bound in the existing work-unit record.
+
+LOW-AIR-10X is now published and was reconciled at `fea92beda1c544aecbd27851d7a563a558aef027`.
+Its full highest same-host A/B is active; remaining O0/owning/preservation/admission
+are not qualified. Its two numerical runtime edits do not overlap this pilot's
+production adapter. Both branches update `tests/modularity/run_modular_tests.py`;
+a retained clean three-way syntax-only prototype preserves the RAINTB and both
+LOW-AIR registrations. It is not applied and is not scientific qualification.
+No numerical candidate or active A/B result is borrowed into this PR.
+
+The remaining explicit boundaries are the exact adapter successor authority,
+complete affected highest frost and Full Richards/PPA/F-CI preservation, and
+stable combined numerical-owner reconciliation. The completed targeted owner
+batch strengthens the evidence but does not retire any of those mandatory gates.
+Keep PR #1225 draft until they are completed; full SWRAIN1 remains ACTIVE.
+
+```bash
+python tests/mc-met01/run_raintb_legacy_owner_preservation.py --output /tmp/raintb-owner-new
+python tests/mc-met01/verify_raintb_legacy_owner_batch.py /tmp/raintb-owner-new --negative-controls
+```
