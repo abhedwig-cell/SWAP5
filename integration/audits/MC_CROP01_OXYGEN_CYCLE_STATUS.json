@@ -1,26 +1,244 @@
 {
-  "workstream":"MC-CROP01/MC-ROOT01",
-  "work_unit":"Trajectory1 empirical wet stress physical crop-water production cycle",
-  "baseline":"f0dd03704cd6eb19336269438e99c6bf5db08024",
-  "branch":"work/crop-water-cycle-20261014",
-  "implemented":true,"persisted":true,"tested":false,"qualified":false,"preserved":false,"canonically_admitted":false,
-  "checkpoint_commit":"SELF: initial implementation checkpoint",
-  "recovery_point":"This branch and tests/crop-cycle/run_oxygen_cycle.py",
-  "contract":"docs/science/MC_CROP01_OXYGEN_CYCLE_CONTRACT.md",
-  "source_authority":"integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64:SWAP/rootextraction.f90",
-  "reconciled_pr1225":"MERGED: legacy RAINTB and default-OFF numerical successor retained",
-  "master_owner_pr":1072,
-  "master_head":"eccbf9d2b4631841ee37450206e32831a431bb85",
-  "master_counts":{"total":243,"ADMITTED":95,"ACTIVE_MIGRATION":108,"SUPERSEDED":14,"REJECTED":2,"NOT_APPLICABLE":20,"QUALIFICATION_ONLY":4},
-  "master_count_delta":0,
-  "capability_disposition":"SW431-ROOT-OXYGEN-EMP already ADMITTED via1127; missing bounded daily application binding is this work, not a new full capability. SW431-CROP-SOW remains ACTIVE_MIGRATION.",
-  "master_stale_fields":"ROOT-OXYGEN-EMP production_reachability/restrictions still incorrectly say drought-only; owner reconciliation required, counts unchanged.",
-  "invariants":[3,4,7,9,13,21,29,30],
-  "owned_surface":["src/runtime/mod_fmr_production_application_bootstrap.f90","tests/crop-cycle"],
-  "held_fixed":["all process physics","WOFOST81","solver and low-air code","state and restart layout","all incumbent scientific assertions","canonical exact-source guards"],
-  "dependency_surface":["src/runtime/mod_fmr_production_application_bootstrap.f90","src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90","src/runtime/mod_fmr_root_uptake_process_binding.f90","src/process/mod_root_water_uptake_process.f90","tests/fmig431/test_crop_file_weather_production.f90","tests/modularity/run_modular_tests.py"],
-  "test_paths":["tests/crop-cycle/run_oxygen_contract.py","tests/crop-cycle/run_oxygen_cycle.py"],
-  "next_action":"Run persisted current-source physical O0/O2 cycle and incumbent owner preservation, then source-guard adjudication, costs and recovery.",
-  "blockers":["Existing central exact-source admission guards need owning successor adjudication after physical evidence; no hash bypass.","Full harvest/rotation boundary decision remains unadmitted; trajectory2/3 not started."],
-  "low_air":"NOT_SELECTED under canonical LOW_AIR_TEST_SELECTION_DECISION_20261014.md; no stress PASS inheritance"
+  "workstream": "MC-CROP01/MC-ROOT01",
+  "work_unit": "Trajectory1 empirical wet stress physical crop-water production cycle",
+  "baseline": "f0dd03704cd6eb19336269438e99c6bf5db08024",
+  "branch": "work/crop-water-cycle-20261014",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "checkpoint_commit": "SELF: initial implementation checkpoint",
+  "recovery_point": "This branch and tests/crop-cycle/run_oxygen_cycle.py",
+  "contract": "docs/science/MC_CROP01_OXYGEN_CYCLE_CONTRACT.md",
+  "source_authority": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64:SWAP/rootextraction.f90",
+  "reconciled_pr1225": "MERGED: legacy RAINTB and default-OFF numerical successor retained",
+  "master_owner_pr": 1072,
+  "master_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
+  "master_counts": {
+    "total": 243,
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "master_count_delta": 0,
+  "capability_disposition": "SW431-ROOT-OXYGEN-EMP already ADMITTED via1127; missing bounded daily application binding is this work, not a new full capability. SW431-CROP-SOW remains ACTIVE_MIGRATION.",
+  "master_stale_fields": "ROOT-OXYGEN-EMP production_reachability/restrictions still incorrectly say drought-only; owner reconciliation required, counts unchanged.",
+  "invariants": [
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    29,
+    30
+  ],
+  "owned_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/crop-cycle"
+  ],
+  "held_fixed": [
+    "all process physics",
+    "WOFOST81",
+    "solver and low-air code",
+    "state and restart layout",
+    "all incumbent scientific assertions",
+    "canonical exact-source guards"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+    "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "src/process/mod_root_water_uptake_process.f90",
+    "tests/fmig431/test_crop_file_weather_production.f90",
+    "tests/modularity/run_modular_tests.py"
+  ],
+  "test_paths": [
+    "tests/crop-cycle/run_oxygen_contract.py",
+    "tests/crop-cycle/run_oxygen_cycle.py"
+  ],
+  "next_action": "Existing central MC-CROP01/RT/HY/F-KT must adjudicate exact bootstrap successor and determine/complete remaining applicable preservation; then admission. Trajectory2 not started.",
+  "blockers": [
+    "Existing central exact-source admission guards need owning successor adjudication after physical evidence; no hash bypass.",
+    "Full harvest/rotation boundary decision remains unadmitted; trajectory2/3 not started."
+  ],
+  "low_air": "NOT_SELECTED under canonical LOW_AIR_TEST_SELECTION_DECISION_20261014.md; no stress PASS inheritance",
+  "status": "PHYSICAL_BOUNDED_O0_O2_PASS_CENTRAL_ADMISSION_BLOCKED",
+  "scientific_execution_commit": "f54781047452f0099286f52f32ab66fd6ad736c9",
+  "remote_scientific_tree": "c9a7e75c4971e559d3dc4cef1ca864a8518b60ef",
+  "local_scientific_tree": "c9a7e75c4971e559d3dc4cef1ca864a8518b60ef",
+  "bounded_physical_qualified": true,
+  "scoped_incumbent_preservation": true,
+  "full_moving_preservation": "BLOCKED_NOT_EXECUTED_NOT_INHERITED",
+  "no_new_full_admitted_capabilities": true,
+  "full_crop_lifecycle": false,
+  "recovery_for_trajectory2": "docs/science/MC_CROP01_TRAJECTORY2_RECOVERY_20261014.md",
+  "scientific_results": {
+    "contract_cases_per_optimization": 360,
+    "process_providers": 3,
+    "physical_programs": 24,
+    "optimizations": [
+      0,
+      2
+    ],
+    "authentic_days_per_crop_trajectory": 7,
+    "hydrological_intervals_per_crop_trajectory": 448,
+    "growth_completions": 5,
+    "wet_stressed_intervals_per_crop_trajectory": 320,
+    "maximum_measured_mass_residual_cm": 6.085800266508734e-14,
+    "unchanged_mass_budget_cm": 1e-12,
+    "uptake_oracle_absolute_budget_cm": 1e-13,
+    "O0_O2_and_continuous_restart_identity": "PASS",
+    "owning_limits": "ROOT_COMP_OFF, SWRD1 static density, IDSL1 annual, reference ET, AIR/no-snow, homogeneous4node30cm bottom7; in-process opaque joint restart only"
+  },
+  "measured_costs": {
+    "physical_batch_wall_seconds": 255.13471944399862,
+    "physical_costs": [
+      {
+        "compile_seconds": 42.703335410031286,
+        "link_seconds": 0.6543115279964695,
+        "native_seconds": 37.4016013359942,
+        "providers": 221,
+        "provider_compiles": 221,
+        "external_compiles": 9,
+        "driver_compiles": 4,
+        "links": 4
+      },
+      {
+        "compile_seconds": 157.47491483099657,
+        "link_seconds": 0.37489601299967035,
+        "native_seconds": 14.499637639000866,
+        "providers": 221,
+        "provider_compiles": 221,
+        "external_compiles": 9,
+        "driver_compiles": 4,
+        "links": 4
+      }
+    ],
+    "direct_source_contract_costs": [
+      {
+        "compile_seconds": 0.3809034110054199,
+        "link_seconds": 0.03311723599836114,
+        "native_seconds": 0.0015749760023027193,
+        "opt": 0,
+        "providers": 3
+      },
+      {
+        "compile_seconds": 0.7325749060037197,
+        "link_seconds": 0.03763840800093021,
+        "native_seconds": 0.0013386409991653636,
+        "opt": 2,
+        "providers": 3
+      }
+    ],
+    "fast_preservation_costs": [
+      {
+        "case": "assimilation",
+        "optimization": 0,
+        "compile_seconds": 0.04902072199911345,
+        "link_seconds": 0.0290457859991875,
+        "execution_seconds": 0.03279998300058651,
+        "total_seconds": 0.28292243699979736
+      },
+      {
+        "case": "assimilation",
+        "optimization": 0,
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.01590749400202185,
+        "total_seconds": 0.17097173100046348
+      },
+      {
+        "case": "assimilation",
+        "optimization": 2,
+        "compile_seconds": 0.08165114599978551,
+        "link_seconds": 0.02986197199788876,
+        "execution_seconds": 0.02268725199974142,
+        "total_seconds": 0.30175980100102606
+      },
+      {
+        "case": "assimilation",
+        "optimization": 2,
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.022194862001924776,
+        "total_seconds": 0.15509878399825539
+      },
+      {
+        "case": "low_air_physical",
+        "optimization": 0,
+        "compile_seconds": 19.408974198027863,
+        "link_seconds": 0.11878353399879416,
+        "execution_seconds": 0.5600272520023282,
+        "total_seconds": 20.946217767002963
+      },
+      {
+        "case": "low_air_physical",
+        "optimization": 0,
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.5737892139986798,
+        "total_seconds": 0.809505225999601
+      },
+      {
+        "case": "low_air_physical",
+        "optimization": 2,
+        "compile_seconds": 58.447645985990675,
+        "link_seconds": 0.08459149000191246,
+        "execution_seconds": 0.18331202000263147,
+        "total_seconds": 59.558991519999836
+      },
+      {
+        "case": "low_air_physical",
+        "optimization": 2,
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.20763349499975448,
+        "total_seconds": 0.3889844919976895
+      }
+    ],
+    "exclusive_physics_python_evidence_github_wait_seconds": "UNKNOWN",
+    "matched_baseline_speedup": "UNKNOWN; no matched old full-route time"
+  },
+  "source_proof": {
+    "changed_production_paths": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "preimage": "8b480b09f47bb4443d755109c9093486853c0809",
+    "postimage": "cb845eecd2409d6ee473bd7a0cb8194c0b501ad6",
+    "exact_projection": "PASS: reversing only refusal removal and added explanatory comment restores exact baseline bytes; all other production/reference paths unchanged"
+  },
+  "admission_guards": {
+    "baseline_backend_source": "PASS",
+    "candidate_backend_source": "FAIL unknown additional production mutation",
+    "baseline_crop_successor": "PASS",
+    "candidate_crop_successor": "FAIL legacy fallback adapter pin; adapter unchanged",
+    "candidate_joint_preservation": "FAIL unknown additional production mutation before native execution",
+    "modified_guards": false
+  },
+  "validation": {
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "whitespace": "PASS"
+  },
+  "failed_attempts": [
+    "Historical oracle extraction initially used one incorrect indentation anchor; no native execution before repair.",
+    "First physical controller had local driver name collision; no science executed; final generator alias repaired.",
+    "Initial connector checkpoint source was truncated during text transport; repaired using byte-verified base64 blob before PR creation. Final remote tree matches actual scientific tree.",
+    "First MkDocs invocation lacked module; existing pinned dependencies recovered locally and strict build passed."
+  ],
+  "evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_OXYGEN_CYCLE_20261014.tar.xz.b64",
+    "decoded_sha256": "bf45c2aed8d92b0f1427180f94297a260093f5b2d4f61d2dca9f90bfbaf057b0",
+    "compressed_bytes": 667972,
+    "members": 2129,
+    "unique_blobs": 338,
+    "roundtrip": "PASS",
+    "format": "MANIFEST.json members map to blobs/<sha256>; actual compile/native logs, source snapshots, failures, fixtures and tested Git bundle"
+  }
 }
