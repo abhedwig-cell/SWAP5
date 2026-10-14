@@ -74,7 +74,7 @@
     "compressed_bytes": 411164,
     "dependency_blobs": 2608
   },
-  "stage": "DIRECT_PHYSICAL_AND_SHARED_OWNER_PASS_MOVING_PENDING",
+  "stage": "CURRENT_SOURCE_MOVING_RUNNING_NOT_YET_PRESERVED",
   "master_reconciliation": {
     "head": "eccbf9d2b4631841ee37450206e32831a431bb85",
     "capability_id": "SW431-CROP-CO2",
@@ -100,7 +100,11 @@
     "exclusive_python_seconds": "UNKNOWN",
     "speedup_claim": "NONE; no matched old/new workload benchmark",
     "additional_owner_command_seconds": 479.9030733499894,
-    "additional_owner_failed_seconds": 0.007912189998023678
+    "additional_owner_failed_seconds": 0.007912189998023678,
+    "maximum_physical_mass_residual_cm": 6.085800266508734e-14,
+    "additional_controls_final_pass": 9,
+    "physical_controls_final_pass": 14,
+    "direct_compile_link_native_seconds": 1.5168922459924943
   },
   "additional_owner_evidence": {
     "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY2_CO2_OWNERS_V2_20261014.tar.xz.b64",
@@ -118,5 +122,14 @@
     "compressed_bytes": 108236,
     "dependency_blobs": 2610
   },
-  "evidence_guard_reconciliation": "Only compile-path verification now derives the original recorded checkout root, retaining exact ordered provider and fixture paths; full current source, owner drivers, inputs, toolchain and outputs unchanged. 14 negative controls fresh PASS. First relocation preflight rejected before any moving scientific group."
+  "evidence_guard_reconciliation": "Only compile-path verification now derives the original recorded checkout root, retaining exact ordered provider and fixture paths; full current source, owner drivers, inputs, toolchain and outputs unchanged. 14 negative controls fresh PASS. First relocation preflight rejected before any moving scientific group.",
+  "moving_execution": {
+    "head": "f8ba5ff6154a397855b2aa8db44c1a6e246bf113",
+    "first_parent": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "status": "RUNNING_NOT_PASS",
+    "local_recovery": "/workspace/scratch/0ac91c72a582/co2-full-moving-3/PROGRESS.json",
+    "executed_checkout": "/workspace/scratch/0ac91c72a582/co2-moving-checkout2",
+    "note": "Fresh SHADOW, all applicable scientific groups execute. First unstarted preflight rejected original absolute paths; second run failed at 7.690s for absent immutable Git authority, now fetched with bounded related donor refs. No source changes or PASS invented."
+  }
 }
