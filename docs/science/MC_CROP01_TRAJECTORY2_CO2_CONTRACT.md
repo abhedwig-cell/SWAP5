@@ -1,6 +1,7 @@
 # Trajectory 2: annual CO2 in physical daily crop production
 
-Status: implemented candidate; qualification and admission remain separate.
+Status: locally qualified and preserved; this is the immutable premerge checkpoint.
+Final canonical admission authority is the merged work PR receipt.
 Baseline: canonical `82209d0df68d14c5ebe707e9b6303f9b150488ca` (merged PR1227).
 Recovery: `integration/audits/MC_CROP01_TRAJECTORY2_CO2_STATUS.json`.
 
@@ -69,3 +70,72 @@ at the independent adapter contract, not claimed as a physical multi-year run.
 Harvest/reset/fallow/new seasons, SWINCO3, broader root/demand selectors and joint
 external disk restart remain open. No full historical capability/count promotion
 follows solely from this bounded production addition.
+
+## Focused terminal evidence and reproduction
+
+The direct production closure has four providers plus driver and literal oracle.
+O0/O2 compile/link/native total is 1.516892s; each executes 2991 concentrations.
+The physical batch executes 28 programs in 267.704672s: compile 218.918916s,
+link 0.971241s, native plus assertions 45.529225s. Each optimization builds 223
+shared providers, ten external providers/oracles and five separate drivers. This
+large closure is necessary for the actual private accepted-state/Full Richards and
+opaque persistence contracts. No mock replaces those physical owners.
+
+The CO2 programs retain both publication schedules and independent wet/dry sink
+checks. Each seven-day trajectory has 448 accepted hydrological intervals, 320
+wet-stressed intervals and actual positive growth. All complete crop owners match
+the WOFOST81 composition with literal CO2 factors; the OFF-demand discriminator
+changes uptake. Maximum physical mass residual is 6.0858002665087341e-14cm under
+the unchanged 1e-12cm budget. Continuous/restart and O0/O2 outputs are identical.
+This is a bounded active-growth route, not a harvest or multi-year physical run.
+The annual adapter separately tests exact year switches and the leap day.
+
+All ten original additional shared-runtime/coupling gates passed in 479.903073s
+of command time. An absent immutable F-GC21 donor failed before native execution;
+fetching the exact object allowed the existing resume controller to continue
+without repeating earlier successful groups. The 14 source/physical and nine
+additional owner positive/negative evidence controls pass. A relocation-only verifier repair
+preserves the original ordered compilation paths under their recorded checkout
+root; it does not permit foreign providers, stale inputs or changed flags.
+
+```bash
+python -B tests/crop-co2/run_co2_contract.py --output /tmp/co2-direct-new
+python -B tests/crop-co2/run_co2_cycle.py --output /tmp/co2-physical-new
+python -B tests/crop-co2/verify_co2_successor.py --physical-only
+python -B tests/crop-co2/test_co2_successor_controls.py
+python -B tests/crop-co2/test_co2_additional_controls.py
+```
+
+Use new output paths and a qualified GNU Fortran on PATH. The first two commands
+execute science; the verifier checks immutable evidence against current inputs.
+The existing status record identifies the separate full moving execution and its
+terminal state. A prerequisite PASS does not replace that admission boundary.
+
+To activate this route, construct `file_weather_atmospheric_co2` with
+`construct_crop_atmospheric_co2_forcing(years,ppm,forcing,status)` and construct
+`file_weather_co2_parameters` with the existing
+`construct_crop_co2_response_parameters` using three independent knot vectors.
+Set `file_weather_co2_response=.true.` only in the already explicit rooted weather
+profile. The existing canopy parameters keep their separate CO2 selector OFF;
+this application resolves the common transpiration response exactly once per
+forcing evaluation. Original caller configuration changes cannot mutate its
+retained copy or an opaque captured continuation.
+
+## Complete preservation closeout
+
+The complete current-source moving F-CI passed in 1883.082534s at
+`f8ba5ff6154a397855b2aa8db44c1a6e246bf113`, canonical-first on the baseline above.
+All applicable scientific groups executed fresh in SHADOW mode; terminal
+`FCI_CANONICAL_LINEAGE_AWARE_GATE PASS` is preserved with raw stdout/stderr and
+the actual executed Git bundle in the status-linked MOVING capsule. The source
+eligibility subrecord remains explicitly unqualified because it is a prerequisite,
+not the terminal result. No private receipt key is exported. Compilation/native
+costs for this full command are UNKNOWN; only measured wall time is claimed.
+
+The final candidate retains the exact executed src/tests/tools/reference/ref
+closure; later changes only record documentation, status and immutable evidence.
+The 24 default native outputs also match the admitted PR1227 evidence byte for
+byte after fresh execution. Earlier failed preflights and corrected evidence
+controls are retained in the diagnostic capsule. SW431-CROP-CO2 was already
+ADMITTED as a component; this bounded daily-production successor changes no
+master counts. Harvest/rotation and the broader lifecycle remain open.
