@@ -786,7 +786,24 @@
           1117
         ],
         "owner": "NUT/SOL",
-        "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal."
+        "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal.",
+        "bounded_matrix_successor": {
+          "pr": 1228,
+          "status": "QUALIFIED_PRESERVED_REGIE_ADMISSION_AUTHORIZED_PENDING_SAFE_MERGE",
+          "baseline": "34ee4fdac815788620f8779f4340b8edeef3c8ae",
+          "execution_commit": "94e24dbcd5920597ba1af18805645864da50c790",
+          "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+          "scope": "Actual Full Richards candidate plus linear matrix transport/sorption/decay, atomic joint rejection/retry, opaque joint and CRC-checked same-platform fresh-process restart",
+          "not_inferred": [
+            "whole MC-NUT01/MC-SOL01 or master closure",
+            "nonlinear matrix, pond/age/aquifer or Soil-N/crop-N closure",
+            "default bootstrap/multicolumn or portable restart"
+          ],
+          "next_gate": "Safe expected-head merge against unchanged live canonical; verify exact source blobs and append bounded canonical/master receipts.",
+          "regie_decision": "ADMIT bounded scope after complete local and automatic15-job canonical F-CI PASS",
+          "preservation_run": 38631988831,
+          "admission_evidence": "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_ADMISSION_20261014.tar.xz.b64"
+        }
       },
       {
         "pr": 1072,

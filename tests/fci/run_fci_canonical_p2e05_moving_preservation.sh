@@ -737,6 +737,9 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_fmr_irrigation_allocation_binding.f90 ) irrigation_owner_changed=1 ;;
       src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
+      src/adapter/mod_matrix_joint_restart_file.f90|src/process/mod_b111_pond_solute_exchange.f90|src/process/mod_b111_reactive_solute_substep.f90|src/process/mod_b111_solute_decay.f90|src/process/mod_b111_solute_sorption.f90|src/process/mod_solute_compartment_state.f90|src/runtime/mod_fmr_b111_matrix_joint_application.f90|src/runtime/mod_fmr_b111_matrix_solute_route.f90 )
+        python3 tests/crop-co2/verify_co2_successor.py --source-only || fail "unqualified additive matrix successor: $candidate_path"
+        ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
   done < <(git diff --name-only "$dependency_authority" HEAD -- src tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 tests/fmig431/test_crop_weather_day_owner.f90 tests/fmig431/test_crop_weather_preflight_read_boundary.f90 tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh)
