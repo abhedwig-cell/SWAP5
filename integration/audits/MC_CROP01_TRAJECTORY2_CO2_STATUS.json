@@ -74,5 +74,30 @@
     "compressed_bytes": 411164,
     "dependency_blobs": 2608
   },
-  "stage": "DIRECT_AND_PHYSICAL_PASS_SHARED_OWNER_RUNNING"
+  "stage": "DIRECT_AND_PHYSICAL_PASS_SHARED_OWNER_RUNNING",
+  "master_reconciliation": {
+    "head": "eccbf9d2b4631841ee37450206e32831a431bb85",
+    "capability_id": "SW431-CROP-CO2",
+    "current_disposition": "ADMITTED",
+    "existing_component_admission": "75114770c4d4d300f9d8037207d5498fa0e1f44e",
+    "delta": 0,
+    "annotation": "Adds missing annual-forcing and daily physical WOFOST81/ET/accepted-uptake composition, not a new full-capability promotion. Broader parser/lifecycle profiles remain open."
+  },
+  "controls": {
+    "positive_and_negative": 14,
+    "final": "PASS",
+    "failed_initial": "Base64 suffix after padding was ignored by decoder; corrected negative control mutates actual decoded content, final 14 PASS. No gate relaxed."
+  },
+  "metrics": {
+    "physical_wall_seconds": 267.7046720559956,
+    "physical_compile_seconds": 218.91891588996077,
+    "physical_link_seconds": 0.9712412390144891,
+    "physical_native_plus_driver_seconds": 45.52922489900811,
+    "direct_providers": 4,
+    "direct_concentrations_per_optimization": 2991,
+    "physical_programs": 28,
+    "physics_only_seconds": "UNKNOWN",
+    "exclusive_python_seconds": "UNKNOWN",
+    "speedup_claim": "NONE; no matched old/new workload benchmark"
+  }
 }

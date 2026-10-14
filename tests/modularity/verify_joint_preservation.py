@@ -13,6 +13,7 @@ import io
 import json
 import math
 import re
+import subprocess
 import tarfile
 
 from joint_admission_authority import ROOT, verify_source, blob, git
@@ -204,10 +205,17 @@ def main():
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     source = verify_source()
+    if source.get('co2_successor'):
+        result = verify_qualification()
+        if args.negative_controls:
+            subprocess.run(['python3', '-B', str(ROOT / 'tests/crop-co2/test_co2_successor_controls.py')], check=True)
+        if args.output:
+            args.output.write_text(json.dumps(result, indent=2) + '\n')
+        print('CO2_COMPLETE_OWNER_PREREQUISITE_NOT_ADMISSION=PASS')
+        return
     if source.get('oxygen_cycle_successor'):
         result = verify_qualification()
         if args.negative_controls:
-            import subprocess
             subprocess.run(['python3', '-B', str(ROOT / 'tests/crop-cycle/test_oxygen_successor_controls.py')], check=True)
         if args.output:
             args.output.write_text(json.dumps(result, indent=2) + '\n')
