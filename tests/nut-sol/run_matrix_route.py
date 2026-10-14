@@ -90,7 +90,7 @@ for opt in ('O0','O2'):
  oracle=build/'mod_b111_literal_oracle.f90';oracle.write_text(pre+loop+post)
  text=FIXTURE.read_text();start=text.index('  subroutine initialize_application_config');end=text.index('  end subroutine initialize_state_and_forcing')+len('  end subroutine initialize_state_and_forcing')
  fixture=build/'matrix_fixture.inc';fixture.write_text(text[start:end]+'\n')
- sources=[p for p in (ROOT/'src').rglob('*.f90')]+[ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90',oracle]
+ sources=[p for p in (ROOT/'src').rglob('*.f90')]+[ROOT/'tests/modularity/low_air_consistent_grid_stubs.f90',oracle]
  providers={}
  for p in sources:
   for name in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):providers[name.lower()]=p

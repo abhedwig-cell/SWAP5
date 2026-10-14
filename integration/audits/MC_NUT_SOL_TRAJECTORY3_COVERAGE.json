@@ -1,0 +1,169 @@
+{
+  "work_unit": "MC-NUT01/MC-SOL01-TRAJECTORY3",
+  "master_pr": 1072,
+  "master_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
+  "master_blob_sha": "43e665ee11f12a355105f2e8e8ab02b358a309c6",
+  "master_sha256": "1dc21856e3f0117af5dbc641859337fd5f57da1707fc558dfc8c546bf660bb22",
+  "denominator": 243,
+  "dispositions_before": {
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "dispositions_after": {
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "coverage_closed": false,
+  "selected_rows": [
+    {
+      "capability_id": "SW431-SALT-SORPTION",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-SOL01",
+      "remaining_dependency": [],
+      "row_sha256": "14cacc5fad38bd5ea0cf8aca160a5d483e1639d067bec9323ed8ae657c5e6c25",
+      "canonical_admission_changed": false,
+      "candidate_progress": "Linear accepted-carrier matrix route with source transport and decay; in-process companion restart; scoped qualification offered, no global admission."
+    },
+    {
+      "capability_id": "SW431-SALT-DECAY",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-SOL01",
+      "remaining_dependency": [],
+      "row_sha256": "fc93d7d6eb4c8bacba7d6eb7344dae5f14aee95e94cf9fa4047a4835a17a832b",
+      "canonical_admission_changed": false,
+      "candidate_progress": "Linear accepted-carrier matrix route with source transport and decay; in-process companion restart; scoped qualification offered, no global admission."
+    },
+    {
+      "capability_id": "SW431-SALT-AQUIFER",
+      "disposition": "REJECTED",
+      "owner": null,
+      "remaining_dependency": [],
+      "row_sha256": "8fad82c7da5859704f4b0d2691aa2c81ced819bfde9ce311ada6eb85639ea682",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-SOL01",
+      "remaining_dependency": [],
+      "row_sha256": "7b9a4f6256cc5570d5fadbf5bae29b98662125300420f69511c4fec35b254040",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-SOL01",
+      "remaining_dependency": [],
+      "row_sha256": "21ac0164ba6aebf8ea6fe4034e3557fefb501657eac434e8a8820c42333b9a43",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-ORGANIC",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [],
+      "row_sha256": "9cfd95be2a74ac815bf8c9b6fd2572d1112a9493d628c1a223b6daee6c552be8",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-MINERAL",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [],
+      "row_sha256": "c7c7d814f82e425113e9c99e12e27bacbfc19dcece02989b7e50dd7779682591",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-AMEND",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
+      ],
+      "row_sha256": "e687931d5ea2ac7d1a336eeda0da9ee3ec9b5636f78ed55708bcb7fad3a3d6a4",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-ORGANIC"
+      ],
+      "row_sha256": "42b137b6e270223bdfaf8870dbc3745edfe29edbdc07d36414e72c50201c072d",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-CROP",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL"
+      ],
+      "row_sha256": "1557ab94ee2b8bfc6ba1ff5fe18001b095b3782369e03b36a22d7a466644f505",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-NITRIF",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL"
+      ],
+      "row_sha256": "ed257f4d4948e2540b17e81611e5b37d84608d540eaee6a88be54f0aec717da2",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-DENIT",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-ORGANIC"
+      ],
+      "row_sha256": "dfe8415b9340364302b73ed1d3f88ff15001111f493acee4b7783c1bde81daa4",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-TRANSPORT",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [
+        "SW431-NUT-MINERAL"
+      ],
+      "row_sha256": "03f1f267fcb715fe0324019dadc8a8ce9f1ca759e1910f8e721b82c85d2d0a94",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    },
+    {
+      "capability_id": "SW431-NUT-NFIX",
+      "disposition": "ACTIVE_MIGRATION",
+      "owner": "MC-NUT01",
+      "remaining_dependency": [],
+      "row_sha256": "d8cdbc9925bb3567a784d6fa734a6a783efc5ecfaac74f3f93ba303d5ec3423c",
+      "canonical_admission_changed": false,
+      "candidate_progress": "UNCHANGED"
+    }
+  ],
+  "not_promoted": true,
+  "reconciliation": "Master counts and all dispositions unchanged because this candidate is offered for scoped admission. SALT-DECAY has a stale copied aquifer claim in this master snapshot; matrix decay has no aquifer dependency. Central master owner must replace that claim and add this bounded receipt after admission. Nonlinear sorption, surface/pond and joint application feedback remain outside this route. No blanket implementation absence is inferred from canonical admission status."
+}

@@ -100,6 +100,9 @@ contains
     type(mobile_salt_state_t),intent(out)::mobile
     type(solute_compartment_state_t),intent(out)::companion
     integer(int64),intent(out)::revision
+    time=0.0_real64;revision=0_int64
+    mobile=mobile_salt_state_t();companion=solute_compartment_state_t()
+    if(.not.self%ready())return
     time=self%time;water=self%water;mobile=self%mobile;companion=self%companion;revision=self%revision
   end subroutine
 
