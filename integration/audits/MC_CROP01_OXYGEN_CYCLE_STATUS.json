@@ -74,7 +74,7 @@
   "local_scientific_tree": "c9a7e75c4971e559d3dc4cef1ca864a8518b60ef",
   "bounded_physical_qualified": true,
   "scoped_incumbent_preservation": true,
-  "full_moving_preservation": "BLOCKED_NOT_EXECUTED_NOT_INHERITED",
+  "full_moving_preservation": "FAILED_GOVERNANCE_BEFORE_NATIVE: automatic run; local preflight likewise rejects source; no numerical full PASS",
   "no_new_full_admitted_capabilities": true,
   "full_crop_lifecycle": false,
   "recovery_for_trajectory2": "docs/science/MC_CROP01_TRAJECTORY2_RECOVERY_20261014.md",
@@ -230,7 +230,8 @@
     "Historical oracle extraction initially used one incorrect indentation anchor; no native execution before repair.",
     "First physical controller had local driver name collision; no science executed; final generator alias repaired.",
     "Initial connector checkpoint source was truncated during text transport; repaired using byte-verified base64 blob before PR creation. Final remote tree matches actual scientific tree.",
-    "First MkDocs invocation lacked module; existing pinned dependencies recovered locally and strict build passed."
+    "First MkDocs invocation lacked module; existing pinned dependencies recovered locally and strict build passed.",
+    "Documentation final check initially refused the generated site directory after the strict build; generated artifacts removed, final source checker passed on the packaged tree."
   ],
   "evidence": {
     "path": "integration/audits/evidence/MC_CROP01_OXYGEN_CYCLE_20261014.tar.xz.b64",
@@ -240,5 +241,347 @@
     "unique_blobs": 338,
     "roundtrip": "PASS",
     "format": "MANIFEST.json members map to blobs/<sha256>; actual compile/native logs, source snapshots, failures, fixtures and tested Git bundle"
+  },
+  "pr": {
+    "number": 1227,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1227",
+    "draft": true,
+    "merged": false
+  },
+  "canonical_admission_owner": "Existing central MC-CROP01/RT/HY/F-KT exact-source and preservation successor authority",
+  "automatic_actions": {
+    "source_equivalent_head": "6350beb7eee2cd8048033ddfefd9847886d7f052",
+    "trigger": "PR opened;45 workflows automatically triggered by broad incumbent filters",
+    "manual_dispatches": 0,
+    "counts": {
+      "completed_success": 22,
+      "completed_failure": 22,
+      "in_progress": 1
+    },
+    "runs": [
+      {
+        "id": 38574450030,
+        "name": "PPA-WU04-A Black evaporation admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450030"
+      },
+      {
+        "id": 38574451322,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451322"
+      },
+      {
+        "id": 38574449986,
+        "name": "MC-CROP01 file weather production",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449986"
+      },
+      {
+        "id": 38574451402,
+        "name": "PUB-GC E7 realistic component-domain gate",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451402"
+      },
+      {
+        "id": 38574450853,
+        "name": "PPA-WU05B19 source-bound runtime admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450853"
+      },
+      {
+        "id": 38574450929,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450929"
+      },
+      {
+        "id": 38574451122,
+        "name": "PUB-GC E7 current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451122"
+      },
+      {
+        "id": 38574451106,
+        "name": "PUB-P1E02 post-solver rollback",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451106"
+      },
+      {
+        "id": 38574451516,
+        "name": "PUB-P2E04 Reference failure census",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451516"
+      },
+      {
+        "id": 38574450956,
+        "name": "PUB-P2E09 Reference-only threshold freeze",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450956"
+      },
+      {
+        "id": 38574450128,
+        "name": "PPA MICRO06 stacked source and runtime qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450128"
+      },
+      {
+        "id": 38574450971,
+        "name": "F-MIG431-INT13 Rutter physics and production qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450971"
+      },
+      {
+        "id": 38574450576,
+        "name": "F-PERF-CANON01 D AHL50",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450576"
+      },
+      {
+        "id": 38574450901,
+        "name": "PUB-ME D1 transition authority",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450901"
+      },
+      {
+        "id": 38574450627,
+        "name": "PPA-WU03 common forcing adapter",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450627"
+      },
+      {
+        "id": 38574450852,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450852"
+      },
+      {
+        "id": 38574450869,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450869"
+      },
+      {
+        "id": 38574451305,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451305"
+      },
+      {
+        "id": 38574450616,
+        "name": "PPA-WU02 lower-boundary prescribed-qbot admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450616"
+      },
+      {
+        "id": 38574450843,
+        "name": "PUB-P2E04 Reference B/C sweeps",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450843"
+      },
+      {
+        "id": 38574450931,
+        "name": "PUB-P2E08 Reference valid calibration domain",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450931"
+      },
+      {
+        "id": 38574451560,
+        "name": "PUB-P2E07 Reference cancellation floor",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451560"
+      },
+      {
+        "id": 38574451396,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451396"
+      },
+      {
+        "id": 38574451394,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451394"
+      },
+      {
+        "id": 38574450562,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450562"
+      },
+      {
+        "id": 38574450587,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450587"
+      },
+      {
+        "id": 38574450378,
+        "name": "F-PE-ELASTIC09 application bootstrap",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450378"
+      },
+      {
+        "id": 38574450830,
+        "name": "F-PE-TEMPORAL08 production c0.65 admission",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450830"
+      },
+      {
+        "id": 38574451094,
+        "name": "PPA-WU05B bounded frost qualification and admission",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451094"
+      },
+      {
+        "id": 38574451448,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451448"
+      },
+      {
+        "id": 38574451277,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451277"
+      },
+      {
+        "id": 38574450949,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450949"
+      },
+      {
+        "id": 38574451503,
+        "name": "PUB-P2E01 E0 paired pilot",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451503"
+      },
+      {
+        "id": 38574450141,
+        "name": "F-PERF-CANON01 B1 recomposition",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450141"
+      },
+      {
+        "id": 38574450970,
+        "name": "PPA-WU01 production application bootstrap",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450970"
+      },
+      {
+        "id": 38574450343,
+        "name": "F-PE-MULTI04 production groundwater parallel admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450343"
+      },
+      {
+        "id": 38574450786,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450786"
+      },
+      {
+        "id": 38574450339,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574450339"
+      },
+      {
+        "id": 38574451238,
+        "name": "F-PE-SETUP04 scalable bootstrap production admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451238"
+      },
+      {
+        "id": 38574449872,
+        "name": "PUB-P2E06 Reference local-balance scaling",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449872"
+      },
+      {
+        "id": 38574449632,
+        "name": "PUB-ME D3 origin authority",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449632"
+      },
+      {
+        "id": 38574449885,
+        "name": "PUB-P2E10 broad E0 paired matrix",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449885"
+      },
+      {
+        "id": 38574449886,
+        "name": "PPA-WU04-B Boesten evaporation admission",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449886"
+      },
+      {
+        "id": 38574449859,
+        "name": "PUB-P2E02 Reference uncertainty",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449859"
+      },
+      {
+        "id": 38574449951,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574449951"
+      }
+    ],
+    "highest_low_air": "B19 and B15 highest reject source authority before native long science; compiler/numerical stages skipped for B19",
+    "moving_FCI": "Actual automatic invocation FAILED_GOVERNANCE_BEFORE_NATIVE, job115890633893 on merge6ad3c67f1288e6a8a3371623a0293884f00e0108",
+    "moving_FCI_error": "ValueError: unknown additional production mutation; FCI_CANONICAL_P2E05_PRESERVATION_FAIL joint successor complete current owner evidence missing",
+    "pending_run": 38574451094,
+    "pending_scope": "Unselected incumbent broad frost workflow; not PASS and no output inherited",
+    "workflow_filters_changed": false,
+    "future_recovery": "Inspect this exact existing run if still needed. Do not dispatch a duplicate or infer canonical admission from unrelated green jobs.",
+    "process_failure": "Broad automatic fanout should have been inspected before PR creation. No subsequent manual run or pipeline trigger was selected."
   }
 }

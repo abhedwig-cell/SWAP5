@@ -3,6 +3,7 @@
 Trajectory 2 is NOT started. Trajectory 1's bounded empirical wet-stress physical
 production cycle is implemented and locally tested, not canonically admitted.
 
+- Draft PR: https://github.com/abhedwig-cell/SWAP5/pull/1227.
 - Work branch: `work/crop-water-cycle-20261014`.
 - Baseline: `f0dd03704cd6eb19336269438e99c6bf5db08024`.
 - Scientific execution commit: `f547810474` (full SHA in the status record).
