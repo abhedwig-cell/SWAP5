@@ -26,6 +26,8 @@ def main():
     if not math.isfinite(cold['whole_wall']) or cold['whole_wall']<=sum(e['wall'] for e in cold['events'])-.01:raise ValueError('invalid cold enclosing timing')
     result={'scope':'FULL_ORIGINAL_48_LOW_AIR_288_FINE_COMPARISONS',
             'receipts':receipts,'cold_candidate':cold,
+            'baseline_enclosing_total_cpu':'UNKNOWN_ORIGINAL_PARENT_INTERRUPTED',
+            'baseline_parent_cpu_scope':'RECOVERY_SEGMENT_ONLY',
             'matched_native_cpu_speedup':raw['baseline']['native_cpu']/raw['candidate']['native_cpu'],
             'matched_enclosing_wall_speedup':'UNKNOWN_INTERRUPTED_BASELINE' if raw['baseline'].get('interrupted_wall') else raw['baseline']['whole_wall']/raw['candidate']['whole_wall'],
             'cold_candidate_absolute_target_seconds':1067.873,'cold_candidate_within_absolute_target':cold['whole_wall']<=1067.873,

@@ -7,9 +7,9 @@
   "tested": true,
   "qualified": true,
   "admitted": false,
-  "stage": "FULL_48_CANDIDATE_PASS_MATCHED_BASELINE_ACTIVE",
+  "stage": "FULL_48_NATIVE_CPU_AB_PASS_COLD_CANDIDATE_NEXT",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Supervise single comparable full 48-program original baseline through terminal status, validate exact immutable baseline outputs, then execute fresh-provider full candidate and finalize actual measured A/B evidence. No simultaneous numerical jobs.",
+  "next_action": "Run stable complete candidate with freshly compiled O0/O2 providers, then seal full paired evidence and publish final measured limitations. No 10x full-wall claim or admission.",
   "blockers": [
     "Complete comparable baseline and cold candidate timings pending; no hard 10x acceptance or canonical admission."
   ],
@@ -100,13 +100,15 @@
     "cold_provider_build": "EXCLUDED_VERIFIED_WARM_PROVIDERS",
     "tenfold_proved": false
   },
-  "active_run": {
-    "path": "full-low-air-baseline-r0",
-    "session": 51852,
-    "policy": "baseline",
-    "workers": 4,
-    "state": "RECOVERED_ACTIVE_NOT_QUALIFICATION",
-    "completed_at_checkpoint": 20
+  "active_run": null,
+  "full_48_candidate_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_CANDIDATE_20261014_RECEIPT.json",
+  "full_48_baseline": {
+    "complete": true,
+    "programs": 48,
+    "fine_comparisons": 288,
+    "native_cpu": 17628.748666,
+    "continuous_wall": "UNKNOWN_INTERRUPTED",
+    "parent_cpu": "UNKNOWN_ORIGINAL_PARENT_INTERRUPTED"
   },
-  "full_48_candidate_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_CANDIDATE_20261014_RECEIPT.json"
+  "matched_full_48_native_cpu_speedup": 10.833778607429215
 }

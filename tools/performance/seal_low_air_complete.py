@@ -27,6 +27,9 @@ def main():
             if path.exists():
                 files[path.name] = path.read_bytes()
     files['full-low-air-controls.stdout'] = (workspace / 'full-low-air-controls.stdout').read_bytes()
+    if args.name == 'PAIRED':
+        for name in ['full-low-air-baseline-recovery.stdout', 'full-low-air-baseline-recovery.stderr', 'full-low-air-PAIRED.json', 'full48-source-proof.stdout', 'full48-docs-check.stdout', 'full48-docs-check.stderr', 'full48-mkdocs.stdout', 'full48-mkdocs.stderr']:
+            files[name] = (workspace / name).read_bytes()
     bundle = workspace / ('LOW_AIR_10X_FULL48_' + args.name + '_EXECUTED.bundle')
     subprocess.run(['git', 'bundle', 'create', str(bundle), 'HEAD', '^' + BASE], cwd=ROOT, check=True)
     files[bundle.name] = bundle.read_bytes()

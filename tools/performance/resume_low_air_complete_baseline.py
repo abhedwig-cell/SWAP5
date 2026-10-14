@@ -50,7 +50,7 @@ def main():
     if initial.exists():raise ValueError('second interruption requires explicit recovery investigation')
     initial.write_text(json.dumps(report,indent=2)+'\n')
     start=time.monotonic();own=time.process_time();lock=threading.Lock()
-    report['interrupted_wall']=True;report['recovery']={'completed_reused':len(seen),'missing_executed':len(expected-seen),'continuous_whole_wall':'UNKNOWN'}
+    report['parent_cpu_scope']='RECOVERY_SEGMENT_ONLY_ORIGINAL_PARENT_UNKNOWN';report['interrupted_wall']=True;report['recovery']={'completed_reused':len(seen),'missing_executed':len(expected-seen),'continuous_whole_wall':'UNKNOWN'}
     def persist():(out/'RESULTS.json').write_text(json.dumps(report,indent=2)+'\n')
     def run(key):
         o,n,f=key;label=f'o{o}-{n}-family-{f}'
