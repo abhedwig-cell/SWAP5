@@ -15,11 +15,11 @@
     "src/runtime/mod_canonical_interval_runtime.f90": "9d6e931b4cb3562c946aa6c2c0cd1fcb49407490"
   },
   "implemented": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "admitted": false,
-  "stage": "V3_SOURCE_SELECTED_FRESH_JOINT_REQUALIFICATION_REQUIRED",
+  "stage": "COMPLETE_JOINT_OWNER_PASS_MOVING_PRESERVATION_PENDING",
   "selection": {
     "direct": "Existing raintb_legacy, low_air_policy and low_air_physical O0/O2 including extreme-finite-ratio controls. Original modular flags differ from owning profile, so artifacts may not be shared across those profiles.",
     "physical_owner": "Fresh combined incumbent weather/daily demand/typed rain and actual legacy-versus-typed integration on identical owning provider closure.",
@@ -28,7 +28,7 @@
     "cost": "Direct modules seconds; physical closure approximately3min build plus30s native; baseline highest default-OFF historically hours. Guarded policy-ON highest native315.6s O0/129.5s O2. Full moving F-CI cost UNKNOWN current joint postimage. No automatic duplicate highest run; collect once and bind sealed evidence.",
     "guard_strategy": "Only exact three-file delta from canonical. Source eligibility is separate from fresh owning evidence. Missing/partial/source-drift/full-gate failures reject admission. No arbitrary env override, no physical tolerance edits, no immutable record replacement."
   },
-  "next_action": "Fresh V3 joint direct/physical/highest/coupling evidence. Highest V2 did not seal provider/object/toolchain hashes sufficient for safe warm rebinding; therefore RUN rather than unproven reuse. Then full moving preservation.",
+  "next_action": "Run full current moving F-CI on canonical-first synthetic merge; recheck owner/canonical and admit only after all gates.",
   "v2_owner_evidence": {
     "path": "integration/audits/evidence/MC_MET01_LOW_AIR_JOINT_OWNER_20261014.tar.xz.b64",
     "decoded_sha256": "e320d72e87083e771d8876eff5c42054550152bf9cb15519c253e3af313ff5ae",
@@ -37,5 +37,43 @@
     "policy_on_configurations": 12,
     "fine_comparisons": 216
   },
-  "v2_supersession": "Owner V3 fixes actual OFF unused-span SIGFPE. V2 full owner capsule immutable and historical, not qualifying V3. V2 moving preservation interrupted via its owned session, exit130, CENSORED/superseded; no PASS claimed."
+  "v2_supersession": "Owner V3 fixes actual OFF unused-span SIGFPE. V2 full owner capsule immutable and historical, not qualifying V3. V2 moving preservation interrupted via its owned session, exit130, CENSORED/superseded; no PASS claimed.",
+  "owner_evidence": {
+    "path": "integration/audits/evidence/MC_MET01_LOW_AIR_JOINT_OWNER_V3_20261014.tar.xz.b64",
+    "decoded_sha256": "5667000d4213d15f91577c304781b2603f8450559fb001f05aedddcd742181e6",
+    "members": 1885,
+    "highest_configurations": 24,
+    "policy_on_configurations": 12,
+    "fine_comparisons": 216
+  },
+  "v3_terminal_owner_verification": {
+    "claim": "COMPLETE_JOINT_OWNER_PREREQUISITE_NOT_FCI_OR_ADMISSION",
+    "source_tree": "d10d2b860576c18fca5b7b60336b36b82c42ed8b",
+    "capsule_sha256": "5667000d4213d15f91577c304781b2603f8450559fb001f05aedddcd742181e6",
+    "highest_configurations": 36,
+    "fine_comparisons": 216,
+    "weather_programs": 28,
+    "qualified": false,
+    "admitted": false,
+    "negative_controls": {
+      "partial": "incomplete distinct highest cases",
+      "duplicate": "incomplete distinct highest cases",
+      "failed": "failed highest native",
+      "optimization-flag": "highest actual optimization flag changed",
+      "missing-highest": "'highest/low-air-on/RESULTS.json'",
+      "raw-log-corruption": "highest raw output mismatch",
+      "stale-source-binding": "current joint dependency drift: src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "partial-weather": "incumbent/legacy physical coverage incomplete",
+      "historical-reference-drift": "default OFF independently retained historical owner drift",
+      "capsule-corruption": "joint capsule identity"
+    }
+  },
+  "pre_moving_parallel_reconciliation": {
+    "canonical": "c591205c5e03f1c96c6488eb53c562265f749556",
+    "low_air_pr": 1226,
+    "low_air_head": "6bf79555c2de36dde9c8b0197b2c9c7bf1493187",
+    "compared_from": "c367ae40869c30ac622df8263ae418b54340d011",
+    "production_delta": [],
+    "disposition": "Latest owner adds performance test workspace and its own preservation evidence; exact V3 production postimages remain unchanged. Joint closure retains its independently qualified tests and runner; no performance changes imported."
+  }
 }

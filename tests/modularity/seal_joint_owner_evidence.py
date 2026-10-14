@@ -40,13 +40,21 @@ def main():
         for p in builds[0].rglob('*'):
             if p.is_file() and (p.suffix in ['.txt', '.err', '.f90'] or p.name == 'sources'):
                 data['highest/' + prefix + '/' + str(p.relative_to(builds[0]))] = p.read_bytes()
-    for folder in ['joint-guard-negative']:
+    for folder in [prefix_base + 'guard-negative']:
         for p in (workspace / folder).iterdir():
             if p.is_file():
-                data[folder + '/' + p.name] = p.read_bytes()
+                data['joint-guard-negative/' + p.name] = p.read_bytes()
     for name in ['joint-source-proof.json', 'joint-incumbent-guard-tests.log', 'flopy-pinned-install.log', 'xmipy-pinned-install.log']:
         actual = name.replace('joint-', 'joint-v3-', 1) if args.revision == 'v3' and name.startswith('joint-') else name
         data['controls/' + name] = (workspace / actual).read_bytes()
+    if args.revision == 'v3':
+        failed = workspace / 'joint-v3-highest-low-on-failed-permission'
+        if failed.exists():
+            for p in failed.rglob('*'):
+                if p.is_file() and p.suffix in ['.json', '.py', '.f90', '.txt', '.err']:
+                    data['failed-policy-on-permission/' + str(p.relative_to(failed))] = p.read_bytes()
+        for name in ['joint-v3-docs-source.log', 'joint-v3-docs-strict.log', 'bmipy-install.log']:
+            data['controls/' + name] = (workspace / name).read_bytes()
     # Bind the complete conservative production tree and all original tests and
     # references involved in the mandatory owner routes. The newly authored
     # admission guard itself is governance, not a numerical input.

@@ -1,0 +1,124 @@
+{
+  "scope": "V3 exact joint owner execution; pilot feedback and expanded numerical qualification separately measured",
+  "source_tree": "d10d2b860576c18fca5b7b60336b36b82c42ed8b",
+  "compiler": "GNU Fortran 13.3.0; same host; O0/O2 profiles isolated",
+  "rain_direct": {
+    "production_providers": 1,
+    "driver_compiles": 2,
+    "provider_compiles": 2,
+    "links": 2,
+    "cold_O0_O2_seconds": 0.9957744400016963,
+    "warm_O0_O2_seconds": 0.2688210499982233,
+    "native_seconds": 0.008910362997994525,
+    "warm_recompilations": 0,
+    "records": [
+      {
+        "optimization": 0,
+        "build": "cold",
+        "compile_seconds": 0.1992461590016319,
+        "link_seconds": 0.028335323000646895,
+        "execution_seconds": 0.0030169449983077357,
+        "total_seconds": 0.3661264510010369,
+        "reused_compilations": 0
+      },
+      {
+        "optimization": 0,
+        "build": "warm_same_transaction",
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.0029545710003731074,
+        "total_seconds": 0.11805937099961739,
+        "reused_compilations": 2
+      },
+      {
+        "optimization": 2,
+        "build": "cold",
+        "compile_seconds": 0.4500546330000361,
+        "link_seconds": 0.03322702500008745,
+        "execution_seconds": 0.0013080259996058885,
+        "total_seconds": 0.6296479890006594,
+        "reused_compilations": 0
+      },
+      {
+        "optimization": 2,
+        "build": "warm_same_transaction",
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.0016308209997077938,
+        "total_seconds": 0.15076167899860593,
+        "reused_compilations": 2
+      }
+    ]
+  },
+  "owning_batches": {
+    "joint-v3-highest-normal-off": {
+      "wall_seconds": 143.30998933000228,
+      "compile_count": 452,
+      "link_count": 2,
+      "native_count": 12,
+      "compile_seconds": 114.6116216980954,
+      "link_seconds": 0.1853409039977123,
+      "native_wall_sum_seconds": 27.9490495239952,
+      "native_child_cpu_seconds": 27.652027,
+      "note": "Native sums overlap under bounded concurrency; whole wall measured separately."
+    },
+    "joint-v3-highest-low-off": {
+      "wall_seconds": 1517.8504327849987,
+      "compile_count": 452,
+      "link_count": 2,
+      "native_count": 12,
+      "compile_seconds": 110.07789742801288,
+      "link_seconds": 0.18522713499805832,
+      "native_wall_sum_seconds": 4196.669169610002,
+      "native_child_cpu_seconds": 4149.049704,
+      "note": "Native sums overlap under bounded concurrency; whole wall measured separately."
+    },
+    "joint-v3-highest-low-on": {
+      "wall_seconds": 248.7606006640017,
+      "compile_count": 452,
+      "link_count": 2,
+      "native_count": 12,
+      "compile_seconds": 107.70216680596059,
+      "link_seconds": 0.1895240140001988,
+      "native_wall_sum_seconds": 418.9014623480034,
+      "native_child_cpu_seconds": 418.250612,
+      "note": "Native sums overlap under bounded concurrency; whole wall measured separately."
+    }
+  },
+  "baseline": "No timed original same-code/compiler/hardware full-route baseline. No measured speedup percentage claimed. Provider savings below are execution-plan counts, not time ratios.",
+  "weather_physical": {
+    "wall_seconds": 207.67458381799952,
+    "providers_per_optimization": 221,
+    "compilation_units": 466,
+    "links": 8,
+    "native_programs": 28,
+    "compile_seconds": 164.89479197101173,
+    "link_seconds": 0.7978878950016224,
+    "native_seconds": 39.72973935599657,
+    "duplicate_provider_compiles_within_profile": 0,
+    "original_three_driver_plan_units": 1380,
+    "avoided_duplicate_units_against_original_plan": 916,
+    "extra_legacy_driver_compiles": 2
+  },
+  "additional_original_gates": {
+    "count": 10,
+    "wall_seconds": 519.2791215889993,
+    "command_wall_seconds": 518.7819629049973,
+    "failed_command_wall_seconds": 0
+  },
+  "failure_and_repair": {
+    "V2": "Superseded after numerical owner extreme-finite OFF control exposed SIGFPE; previous V2 costs retained separately, not qualifying current source. Moving run censored exit130.",
+    "V3_policy_on_operational_failure": "Executable permission changed 755 to644 after one native; binary bytes unchanged. Failed attempt retained. Fresh whole ON batch required because artifact environment was not proven identical.",
+    "failed_ON_compile_units": 226,
+    "failed_ON_compile_seconds": 27.809452538,
+    "failed_ON_completed_native_seconds": 49.437335473,
+    "repair_recompile_units": 452,
+    "repair_wall_seconds": 248.7606006640017,
+    "scientific_assertion_failures_in_terminal_V3_batches": 0
+  },
+  "moving_preservation": {
+    "status": "RUNNING",
+    "executed_head": "ce8048a3d7",
+    "wall_seconds": "PENDING_TERMINAL_MEASUREMENT"
+  }
+}

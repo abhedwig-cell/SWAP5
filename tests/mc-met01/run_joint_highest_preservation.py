@@ -53,6 +53,9 @@ def main():
     compiler = Path(shutil.which('gfortran')).resolve()
     identity['compiler_inputs'] = {'launcher': str(compiler), 'launcher_sha256': sha(compiler),
                                   'environment_sha256': hashlib.sha256(json.dumps(dict(os.environ), sort_keys=True).encode()).hexdigest()}
+    identity['numerical_environment'] = {key: value for key, value in os.environ.items()
+        if key.startswith(('OMP_', 'GFORTRAN_')) or key in ['PATH', 'LIBRARY_PATH', 'LD_LIBRARY_PATH',
+                                                         'FFLAGS', 'FCFLAGS', 'LDFLAGS', 'LANG', 'LC_ALL', 'TZ']}
     for option in ['-print-prog-name=f951', '-print-file-name=libgfortran.a',
                    '-print-file-name=libgfortran.so.5', '-print-libgcc-file-name']:
         path = Path(subprocess.check_output(['gfortran', option], text=True).strip()).resolve()
@@ -87,6 +90,10 @@ def main():
   stdout=out/f'configuration-{configuration}.txt';stderr=out/f'configuration-{configuration}.err'
   begin=time.monotonic()
   assert all(sha(path)==digest for path,digest in artifacts.items()),'highest artifact drift before native'
+  executable=out/'test'
+  if executable.stat().st_mode & 0o111 != 0o111:
+   executable.chmod(0o755)
+   events.append({'kind':'permission-repair','opt':opt,'configuration':configuration,'unchanged_executable_sha256':sha(executable)})
   with stdout.open('w')as so,stderr.open('w')as se:
    cp=subprocess.Popen([str(out/'test'),str(configuration)],stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'})
    _,status,usage=os.wait4(cp.pid,0);cp.returncode=os.waitstatus_to_exitcode(status)

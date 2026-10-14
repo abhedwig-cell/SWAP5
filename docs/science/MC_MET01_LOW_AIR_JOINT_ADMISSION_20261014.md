@@ -1,8 +1,8 @@
 # Proposed MC-MET01/HY/RT/F-KT joint admission
 
 Status: explicitly delegated joint source reconciliation on 14 October 2026;
-complete owning qualification and current moving preservation are required before
-canonical admission. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
+complete V3 owning qualification passes; current moving preservation is executing
+before canonical admission. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
 Recovery: `integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json`.
 
 The user authorized the joint owner reconciliation, exact source-guard successor,
@@ -113,3 +113,31 @@ performance remain outside this claim. Master owner PR #1072 owns ledger updates
 do not silently promote its full capability on this branch. PR #1226 retains its
 separate unresolved performance objective even if its exact source is admitted
 under this bounded scientific successor.
+
+## Measured V3 development and qualification costs
+
+The direct historical-array test uses one production provider. The O0/O2 cold
+pair costs 0.996 seconds, the warm pair 0.269 seconds, with no warm compilation.
+Native execution across those four invocations costs 0.00891 seconds. The 28-program
+physical owner batch costs 207.675 seconds: 164.895 compilation, 0.798 linking and
+39.730 native execution, plus controller/fixture overhead. Its 221 providers are
+compiled once per optimization. There are 466 compilation units and eight links.
+Compared with the original three-driver build plan, 916 duplicate compilation
+units are avoided; this is a plan-derived count, not a measured speedup percentage.
+
+Expanded joint numerical qualification is measured separately. Complete normal
+OFF, low-air OFF and low-air ON batches cost 143.310, 1517.850 and 248.761 seconds
+respectively. Native sums and child CPU are separately recorded because bounded
+parallel runs overlap. Ten additional original owner gates cost 519.279 seconds.
+V2 supersession and the failed V3 ON executable-permission attempt are retained
+with their actual repair recompilation costs. No numerical assertion failure is
+hidden by those operational labels. The terminal V3 batches pass all original
+assertions. No valid timed original full-route baseline on identical code, compiler
+and hardware exists, so no time speedup percentage is claimed.
+
+The exact cost record is
+`integration/audits/MC_MET01_LOW_AIR_JOINT_COST_20261014.json`.
+The V3 owner capsule has 1885 raw members and decoded SHA256
+`5667000d4213d15f91577c304781b2603f8450559fb001f05aedddcd742181e6`.
+Ten actual missing/partial/corrupt/stale evidence controls reject. This owner
+prerequisite does not claim full moving preservation or canonical admission.
