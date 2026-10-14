@@ -90,6 +90,9 @@ def read_archive(record):
 
 def verify_owner():
     source = verify_source()
+    if source.get('joint_successor') and (ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').exists():
+        from verify_joint_preservation import verify_qualification
+        return verify_qualification()
     status = json.loads((ROOT / 'integration/audits/MODULAR_TESTABILITY_20261013.json').read_text())
     owner = status['backend_qualification']['owner_evidence']
     # A status bool alone is never sufficient. All actual evidence is checked.

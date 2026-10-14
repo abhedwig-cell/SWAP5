@@ -115,6 +115,13 @@ fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
 # Only the two exact repairs are eligible, with complete fresh owner and
 # coupling proof. This prerequisite does not replace any science below.
 modular_repair_exact_successor=0
+joint_exact_successor=0
+if [[ "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" == 732cf70f9aeec59bb7dfb136ba4d6e61b918780b ]]; then
+  # Delegated MC-MET01/HY/RT/F-KT reconciliation. Exact source eligibility
+  # alone cannot enter preservation: complete fresh owner/coupling is required.
+  python3 tests/modularity/verify_joint_preservation.py || fail 'joint successor complete current owner evidence missing'
+  joint_exact_successor=1
+fi
 if [[ "$(git rev-parse HEAD:$BACKEND)" == 7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18 ]]; then
   python3 tests/modularity/verify_modular_repair_evidence.py ||
     fail 'modular repairs require sealed current-source owner and coupling evidence'
@@ -348,6 +355,9 @@ fi
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
   python3 tests/mc-met01/verify_daily_demand_successor.py || fail 'daily demand complete highest evidence missing'
   dependency_authority=bd17f0a9a7c19516e66af8f80e2b7128890b3aee
+  if (( joint_exact_successor )); then
+    dependency_authority=c591205c5e03f1c96c6488eb53c562265f749556
+  fi
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
@@ -363,6 +373,8 @@ for path in "${dependency_surface[@]}"; do
     continue # Exact postimage checked above; all F-KT semantics remain guarded.
   fi
   case "$path" in
+    src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90)
+      if (( joint_exact_successor )); then continue; fi ;;
     src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90)
       if (( mc_heat01_exact_successor )); then continue; fi ;;
   esac
@@ -598,6 +610,9 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90 )
+        (( joint_exact_successor )) || fail "unqualified numerical successor: $candidate_path"
+        ;;
       src/process/mod_reference_et_demand_process.f90 )
         test "$(git rev-parse HEAD:src/process/mod_reference_et_demand_process.f90)" = \
           "0a8fc91570c6297a54109740de3a26153dc44283" ||

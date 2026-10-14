@@ -13,6 +13,9 @@ PROGRAMS = ('multiswap_commit', 'single_tile_equivalence', 'multiswap_qualificat
 
 def verify_repairs():
     source = verify_source()
+    if source.get('joint_successor'):
+        from verify_joint_preservation import verify_qualification
+        return verify_qualification()
     assert source['publication_postimage'] == PUBLICATION_POSTIMAGE, 'ledger repair not applied'
     verify_owner()
     status = json.loads((ROOT / 'integration/audits/MODULAR_TESTABILITY_20261013.json').read_text())

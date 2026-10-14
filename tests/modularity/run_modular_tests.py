@@ -17,6 +17,9 @@ CASES={
                   'flags':['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace']}}
 # Existing scientific drivers/oracles, exposed through one measured feedback route.
 CASES.update({
+ 'raintb_legacy': {'driver':'tests/modularity/test_raintb_legacy_table.f90',
+                   'marker':'MODULAR_RAINTB_LEGACY_PREFIX_ORACLE_NONMUTATION_NEGATIVES=PASS',
+                   'flags':COMMON},
  'root_oxygen': {'driver':'tests/fmig431/test_swap431_root_oxygen_emp.f90',
                  'marker':'SW431_ROOT_OXYGEN_EMP_COMPONENT=PASS',
                  'flags':['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']},
@@ -27,6 +30,8 @@ CASES.update({
               'marker':None,'validator':'drainage','flags':COMMON},
  'assimilation': {'driver':'tests/fwof/pp02/test_wofost81_assimilation_driver.f90',
                   'marker':None,'validator':'assimilation','flags':['-std=f2008']}})
+CASES['low_air_policy']={'driver':'tests/modularity/test_low_air_step_policy.f90','marker':'LOW_AIR_STEP_POLICY_CONTRACT=PASS','flags':COMMON}
+CASES['low_air_physical']={'driver':'tests/modularity/test_low_air_development.f90','marker':'PPA_WU05B15_LOW_AIR_LOW_AIR_DRAIN_RUNTIME=PASS','flags':COMMON}
 DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
 
 COMPONENTS={
@@ -54,10 +59,10 @@ def original_boesten():
 
 def plan(case,broad=False):
     cfg=CASES[case]
-    ordered,_=DEP.strict_closure(ROOT,[cfg['driver']], [STUB])
+    ordered,_=DEP.strict_closure(ROOT,[cfg['driver']], (['tests/modularity/low_air_consistent_grid_stubs.f90','tests/frost/mod_ppa_wu05b15_extended_fixture.f90'] if case=='low_air_physical' else [STUB]+(['tests/modularity/mod_low_air_policy_oracle.f90'] if case=='low_air_policy' else [])))
     modules=relative(ordered[:-1])
     if broad and case=='boesten': modules=original_boesten()
-    external=['src/legacy/b1_10_port/headcalc.f90'] if STUB in modules and 'src/legacy/b1_10_port/headcalc.f90' not in modules else []
+    external=['src/legacy/b1_10_port/headcalc.f90'] if (STUB in modules or 'tests/modularity/low_air_consistent_grid_stubs.f90' in modules) and 'src/legacy/b1_10_port/headcalc.f90' not in modules else []
     return modules+external+[cfg['driver']]
 
 class Session:

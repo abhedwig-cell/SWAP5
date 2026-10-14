@@ -13,7 +13,7 @@ module mod_swap_daily_weather_file_adapter
     procedure :: ready => raintb_ready
     procedure :: same_input => raintb_same_input
   end type
-  public :: construct_swap_raintb, resolve_swap_raintb_pulse
+  public :: construct_swap_raintb, construct_swap_raintb_legacy_table, resolve_swap_raintb_pulse
   ! Immutable input, not a meteorological or physical state owner. Only the
   ! outer file reader can construct a valid record. No source-number setter.
   type, public :: swap_daily_weather_record_t
@@ -33,6 +33,29 @@ module mod_swap_daily_weather_file_adapter
   end type
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
+  ! B1.11 functions.f90 AFGEN: a descending abscissa terminates a partly
+  ! filled alternating x/y array. Trailing slots are not consumed. Normalize
+  ! only that active prefix into the existing immutable physical input owner.
+  ! This is a typed legacy-array adapter, not a .swp parser or new state owner.
+  subroutine construct_swap_raintb_legacy_table(flat,table,status)
+    real(real64),intent(in)::flat(:)
+    type(swap_raintb_t),intent(out)::table
+    integer,intent(out)::status
+    integer::i,last
+    table=swap_raintb_t();status=SWAP_WEATHER_FILE_INVALID
+    if(size(flat)<2.or.mod(size(flat),2)/=0) return
+    if(.not.ieee_is_finite(flat(1))) return
+    last=1
+    do i=3,size(flat)-1,2
+      ! A sentinel is read before its ordinate, exactly as in AFGEN. Never
+      ! test or import unused ordinates/tail values, which can be undefined.
+      if(.not.ieee_is_finite(flat(i))) return
+      if(flat(i)<flat(i-2)) exit
+      if(flat(i)==flat(i-2)) return
+      last=i
+    end do
+    call construct_swap_raintb(flat(1:last:2),flat(2:last+1:2),table,status)
+  end subroutine
   subroutine record_pm_values(self,doy,radiation,vapour_pressure,wind,available)
     class(swap_daily_weather_record_t),intent(in)::self
     integer,intent(out)::doy
