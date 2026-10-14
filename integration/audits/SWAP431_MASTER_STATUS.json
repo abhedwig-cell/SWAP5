@@ -295,5 +295,29 @@
     },
     "full_source_census_checker_claim": false,
     "all_other_rows_and_queues_unchanged": true
+  },
+  "bounded_mc_sol01_matrix_receipt": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
+    "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
+    "qualified_source_head": "94e24dbcd5920597ba1af18805645864da50c790",
+    "preserved_source_head": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2",
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+    "scope": "One ordinary base/temporal matrix column: accepted Full Richards carrier, linear sorption, source-bound advection/dispersion and decay, atomic joint commit/rejection/retry, opaque and same-platform CRC-checked fresh-process joint restart",
+    "qualification": "Independent literal B1.11, real Fortran O0/O2, changing water, signed root/drain/bottom balances, invalid inputs, retry/rollback, exact restart endpoint; local full moving F-CI PASS; automatic terminal result recorded at canonical authority",
+    "full_capability": false,
+    "canonical_source_paths": [
+      "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+      "src/adapter/mod_matrix_joint_restart_file.f90",
+      "src/process/mod_b111_reactive_solute_substep.f90",
+      "src/process/mod_b111_solute_sorption.f90",
+      "src/process/mod_b111_solute_decay.f90"
+    ],
+    "limitations": [
+      "No default bootstrap/multicolumn or salinity feedback admission",
+      "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
+      "No disposition promotion; original rejected aquifer unchanged",
+      "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+    ]
   }
 }

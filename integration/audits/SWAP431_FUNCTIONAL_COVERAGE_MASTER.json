@@ -8541,7 +8541,7 @@
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
+        "claim": "Bounded linear matrix route is admitted by PR1228. The full nonlinear Freundlich source envelope still requires changing-water oracle, units and physical joint continuation qualification."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
@@ -8563,7 +8563,31 @@
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "bounded_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
+        "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
+        "qualified_source_head": "94e24dbcd5920597ba1af18805645864da50c790",
+        "preserved_source_head": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2",
+        "authority_at_canonical": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "scope": "One ordinary base/temporal matrix column: accepted Full Richards carrier, linear sorption, source-bound advection/dispersion and decay, atomic joint commit/rejection/retry, opaque and same-platform CRC-checked fresh-process joint restart",
+        "qualification": "Independent literal B1.11, real Fortran O0/O2, changing water, signed root/drain/bottom balances, invalid inputs, retry/rollback, exact restart endpoint; local full moving F-CI PASS; automatic terminal result recorded at canonical authority",
+        "full_capability": false,
+        "canonical_source_paths": [
+          "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+          "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+          "src/adapter/mod_matrix_joint_restart_file.f90",
+          "src/process/mod_b111_reactive_solute_substep.f90",
+          "src/process/mod_b111_solute_sorption.f90",
+          "src/process/mod_b111_solute_decay.f90"
+        ],
+        "limitations": [
+          "No default bootstrap/multicolumn or salinity feedback admission",
+          "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
+          "No disposition promotion; original rejected aquifer unchanged",
+          "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+        ]
+      }
     },
     {
       "capability_id": "SW431-SALT-DECAY",
@@ -8590,17 +8614,16 @@
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json"
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
       ],
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation."
+        "claim": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
-        "Do not silently replace the out-of-bounds coefficient with an arbitrary soil node; accumulated isqdra versus qdrtot rate units require adjudication."
+        "Matrix decay does not require rejected SWBR aquifer; nonlinear inventory and accepted dynamic thermal composition are outside bounded PR1228."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SOL01",
@@ -8618,7 +8641,31 @@
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "bounded_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
+        "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
+        "qualified_source_head": "94e24dbcd5920597ba1af18805645864da50c790",
+        "preserved_source_head": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2",
+        "authority_at_canonical": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "scope": "One ordinary base/temporal matrix column: accepted Full Richards carrier, linear sorption, source-bound advection/dispersion and decay, atomic joint commit/rejection/retry, opaque and same-platform CRC-checked fresh-process joint restart",
+        "qualification": "Independent literal B1.11, real Fortran O0/O2, changing water, signed root/drain/bottom balances, invalid inputs, retry/rollback, exact restart endpoint; local full moving F-CI PASS; automatic terminal result recorded at canonical authority",
+        "full_capability": false,
+        "canonical_source_paths": [
+          "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+          "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+          "src/adapter/mod_matrix_joint_restart_file.f90",
+          "src/process/mod_b111_reactive_solute_substep.f90",
+          "src/process/mod_b111_solute_sorption.f90",
+          "src/process/mod_b111_solute_decay.f90"
+        ],
+        "limitations": [
+          "No default bootstrap/multicolumn or salinity feedback admission",
+          "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
+          "No disposition promotion; original rejected aquifer unchanged",
+          "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+        ]
+      }
     },
     {
       "capability_id": "SW431-SALT-AQUIFER",
@@ -14592,7 +14639,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation.",
+      "why_open": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14620,7 +14667,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
+      "why_open": "Bounded linear matrix route is admitted by PR1228. The full nonlinear Freundlich source envelope still requires changing-water oracle, units and physical joint continuation qualification.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15625,6 +15672,30 @@
         "Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction."
       ],
       "master_source_branch_note": "Resolve bounded production at the exact later canonical commit; this older master science checkout is not implementation absence evidence."
+    },
+    "mc_sol01_linear_matrix_20261014": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
+      "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
+      "qualified_source_head": "94e24dbcd5920597ba1af18805645864da50c790",
+      "preserved_source_head": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2",
+      "authority_at_canonical": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "scope": "One ordinary base/temporal matrix column: accepted Full Richards carrier, linear sorption, source-bound advection/dispersion and decay, atomic joint commit/rejection/retry, opaque and same-platform CRC-checked fresh-process joint restart",
+      "qualification": "Independent literal B1.11, real Fortran O0/O2, changing water, signed root/drain/bottom balances, invalid inputs, retry/rollback, exact restart endpoint; local full moving F-CI PASS; automatic terminal result recorded at canonical authority",
+      "full_capability": false,
+      "canonical_source_paths": [
+        "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+        "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "src/adapter/mod_matrix_joint_restart_file.f90",
+        "src/process/mod_b111_reactive_solute_substep.f90",
+        "src/process/mod_b111_solute_sorption.f90",
+        "src/process/mod_b111_solute_decay.f90"
+      ],
+      "limitations": [
+        "No default bootstrap/multicolumn or salinity feedback admission",
+        "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
+        "No disposition promotion; original rejected aquifer unchanged",
+        "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+      ]
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -15659,5 +15730,16 @@
     "archive_sha256": "a265d4b648cc59bb0087a129f5895f76f4b8f9942cf6ab5cdb8ea1d27c61b7f0",
     "full_capability": false,
     "master_source_branch_note": "Master retains an older scientific checkout. Exact later canonical admission is authority; no fullcap or count promotion."
+  },
+  "latest_mc_sol01_matrix_admission_reconciliation": {
+    "master_baseline": "eccbf9d2b4631841ee37450206e32831a431bb85",
+    "counts_unchanged": true,
+    "affected_rows": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY"
+    ],
+    "bounded_receipt_only": true,
+    "aquifer": "REJECTED unchanged",
+    "global_checker": "Baseline FAIL stale inheritance baseline; not relabeled PASS"
   }
 }

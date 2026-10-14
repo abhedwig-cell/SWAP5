@@ -2,6 +2,7 @@
 
 Status: IN_PROGRESS. **Coverage is not closed and the 243-entry denominator is not declared exhaustive.**
 
+Bounded MC-SOL01 receipt from PR #1228: linear matrix transport/sorption/decay, joint acceptance and fresh-process restart. Full sorption/decay capabilities remain ACTIVE_MIGRATION, aquifer remains REJECTED, and all243 dispositions/counts stay unchanged. The full master checker has its pre-existing stale inheritance baseline failure; this is not a whole-master admission.
 The machine-readable authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`. Its latest canonical reconciliation pins `10345ab164f6778174c2fe8d0f08233a491fa4d7`.
 
 **2026-10-08 crop/root admission delta:** five formerly ACTIVE_MIGRATION entries are now ADMITTED: `SW431-ROOT-OXYGEN-EMP` (#1127), `SW431-ROOT-DENSITY` (#1125), `SW431-CROP-ROOTGROW-BIOMASS` (#1125), `SW431-CROP-ROOTGROW-WATER` (#1125), and `SW431-ROOT-LRV-CONSTANT` (#1128). Exact scientific and F-CI run IDs are recorded per capability in the JSON. The conservative remaining ACTIVE_MIGRATION count in that historical ledger is 113; this is **not** a statement that 113 distinct production implementations are absent today. Earlier counts in this markdown are superseded by the JSON's summary.
@@ -347,9 +348,9 @@ These are individual capability decisions, not admitted implementation plans. De
 |---|---|---|---|
 | SW431-AGE-TRACER | Water age tracer with ageing and advective/dispersive transport | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
 | SW431-SALT-AQUIFER | Mixed aquifer concentration with storage, sorption, decay and surface-water breakthrough | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
-| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Aquifer concentration/storage owner is absent. Literal B1.11 SWBR block also has a reproduced numnod+1 array access after the compartment loop. MC-SOL01 must establish the corrected physical storage/coefficient and substep mass contract under reference-defect policy before implementation. | None |
+| SW431-SALT-DECAY | Temperature/moisture/depth modified decomposition | Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer. | None |
 | SW431-SALT-POND | Ponded solute storage and rain/irrigation/dissolved runoff exchange | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
-| SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission. | None |
+| SW431-SALT-SORPTION | Freundlich nonlinear sorption/storage | Bounded linear matrix route is admitted by PR1228. The full nonlinear Freundlich source envelope still requires changing-water oracle, units and physical joint continuation qualification. | None |
 
 ### MC-SUR01
 
