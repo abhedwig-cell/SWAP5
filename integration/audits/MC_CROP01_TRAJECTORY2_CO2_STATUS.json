@@ -1,0 +1,69 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Trajectory2 annual CO2 daily production composition",
+  "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+  "branch": "work/crop-co2-production-20261014",
+  "checkpoint_commit": "SELF",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "last_reconciled_upstream": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+  "reconciled_pr1227": {
+    "merged": true,
+    "merge": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "bootstrap_blob": "cb845eecd2409d6ee473bd7a0cb8194c0b501ad6"
+  },
+  "invariants": [
+    2,
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    23,
+    29,
+    30
+  ],
+  "next_action": "Persist direct source oracle and physical CO2 driver; O0/O2 feedback then current-source owner and moving preservation",
+  "recovery_point": "This branch and tests/crop-co2",
+  "blockers": [
+    "Harvest/rotation remains proposed shared RT/HY/F-KT phase decision; no kernel boundary change in this work"
+  ],
+  "scope": "Annual exact-year atmospheric forcing selects three independent accepted AFGEN response tables for rooted ET and both lagged and current-day WOFOST81 production; immutable joint continuation configuration",
+  "held_fixed": [
+    "WOFOST81 and all process arithmetic",
+    "kernel/state/restart layouts",
+    "existing scientific assertions and mass tolerances",
+    "long highest low-air NOT_SELECTED_POLICY",
+    "master counts unchanged; no full lifecycle claim"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/science/MC_CROP01_TRAJECTORY2_RECOVERY_20261014.md",
+    "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
+    "integration/audits/MC_CROP01_CO2_STATUS.json"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/adapter/mod_crop_atmospheric_co2_forcing.f90",
+    "src/crop/mod_crop_co2_response_resolver.f90",
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "tests/crop-co2"
+  ],
+  "test_selection": {
+    "direct": "Real annual-forcing/resolver contracts with literal historical AFGEN O0/O2; expected <10s",
+    "physical": "Actual seven-day rooted weather/Richards/growth with response/uptake oracle, both publication schedules and restart; shared provider builds, expected 250-350s",
+    "owner": "Exact-source successors require fresh impacted owner groups; expected 600s",
+    "preservation": "Complete moving F-CI at stable candidate required by existing central authority; expected 1900s, only once after owner proof",
+    "reuse": "No numeric PASS reused for changed application; PR1227 raw closure reconciled only as baseline",
+    "unknown_costs": [
+      "exclusive Python",
+      "physics-only",
+      "GitHub operations"
+    ]
+  }
+}

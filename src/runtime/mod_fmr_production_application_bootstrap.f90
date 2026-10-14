@@ -36,6 +36,9 @@ module mod_fmr_production_application_bootstrap
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_crop_et_canopy_view_provider, only: crop_et_canopy_parameters_t, crop_et_canopy_state_view_t, &
        crop_et_canopy_forcing_t,crop_et_canopy_view_t,crop_et_canopy_diagnostics_t,evaluate_crop_et_canopy_view,CROP_ET_CANOPY_OK
+  use mod_crop_co2_response_resolver, only: crop_co2_response_parameters_t, crop_co2_response_t, &
+       evaluate_crop_co2_response, CROP_CO2_RESPONSE_OK
+  use mod_crop_atmospheric_co2_forcing, only: crop_atmospheric_co2_forcing_t, CROP_ATMOSPHERIC_CO2_OK
   use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t, &
        compose_crop_lifecycle_daily_candidate, CROP_DAILY_OK
@@ -156,6 +159,11 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_tile_config_t
 
   type, public :: fmr_production_application_config_t
+    ! One annual atmospheric forcing and one response for both assimilation
+    ! and transpiration. No second canopy CO2 table is selected by this profile.
+    logical :: file_weather_co2_response=.false.
+    type(crop_atmospheric_co2_forcing_t) :: file_weather_atmospheric_co2
+    type(crop_co2_response_parameters_t) :: file_weather_co2_parameters
     logical :: file_weather_daily_demand=.false.
     type(daily_atmospheric_demand_parameters_t) :: file_weather_demand_parameters
     integer :: file_weather_swrain = 0
@@ -348,6 +356,10 @@ contains
     if (.not. groundwater_profile .and. config%groundwater_parallel_workers /= 1) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
+    end if
+    if(config%file_weather_co2_response) then
+      if(.not.config%file_weather_rooted) return
+      if(.not.config%file_weather_atmospheric_co2%ready().or..not.config%file_weather_co2_parameters%ready()) return
     end if
     if(config%file_weather_dayend.and..not.config%file_weather_rooted) return
     if(config%file_weather_rooted) then
@@ -825,6 +837,7 @@ contains
     type(fmr_b110_physical_forcing_t) :: effective(1)
     class(transaction_state_t), allocatable :: physical
     type(traditional_pm_weather_t) :: pm_weather
+    type(crop_co2_response_t) :: co2_response
     real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra
     logical :: available,rooted
     integer :: s
@@ -888,8 +901,15 @@ contains
       call crop_owner%derive_actual_leaf_area_index(self%weather_configuration%file_weather_stem_area_coefficient, &
            self%weather_configuration%file_weather_storage_area_coefficient,canopy_state%leaf_area_index,s)
       if(s/=WOFOST_CROP_OWNER_OK) return
-      call evaluate_crop_et_canopy_view(self%weather_configuration%file_weather_canopy_parameters, &
-           canopy_state,canopy_forcing,crop_canopy,canopy_diagnostics)
+      if(self%weather_configuration%file_weather_co2_response.and.crop_owner%crop_emerged) then
+        call resolve_weather_crop_co2(self,record,co2_response,s)
+        if(s/=CROP_CO2_RESPONSE_OK) return
+        call evaluate_crop_et_canopy_view(self%weather_configuration%file_weather_canopy_parameters, &
+             canopy_state,canopy_forcing,crop_canopy,canopy_diagnostics,co2_response%transpiration_factor)
+      else
+        call evaluate_crop_et_canopy_view(self%weather_configuration%file_weather_canopy_parameters, &
+             canopy_state,canopy_forcing,crop_canopy,canopy_diagnostics)
+      end if
       if(canopy_diagnostics%status/=CROP_ET_CANOPY_OK.or..not.canopy_diagnostics%result_produced) return
       input%canopy%crop_emerged=crop_canopy%crop_emerged
       input%canopy%vegetation_cover_fraction=crop_canopy%vegetation_cover_fraction
@@ -1110,6 +1130,7 @@ contains
     type(crop_lifecycle_continuation_t), allocatable :: historical_current
     type(wofost_crop_owner_state_t) :: owner
     type(wofost_one_day_forcing_t) :: crop_forcing
+    type(crop_co2_response_t) :: co2_response
     type(fmr_wofost_crop_event_forcing_t) :: event
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_candidate_state_t) :: candidate
@@ -1224,6 +1245,12 @@ contains
       crop_forcing%sinld=solar(3);crop_forcing%cosld=solar(4)
       crop_forcing%diffuse_perpendicular_radiation=solar(5)
       crop_forcing%daily_sine_solar_elevation_integral=solar(6)
+      if(self%weather_configuration%file_weather_co2_response.and.owner%crop_emerged) then
+        call resolve_weather_crop_co2(self,self%previous_weather_record,co2_response,s)
+        if(s/=CROP_CO2_RESPONSE_OK) return
+        crop_forcing%co2_efficiency_factor=co2_response%efficiency_factor
+        crop_forcing%co2_amax_factor=co2_response%amax_factor
+      end if
       day=day+1.0_real64
       if(emergence) then
         call prepare_fmr_wofost_crop_event_forcing(self%previous_weather_window,crop_forcing,event,s, &
@@ -1264,6 +1291,23 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
+  ! The record selects the physical year's forcing, including lagged growth
+  ! at a year boundary. Recompute from immutable inputs after opaque restart.
+  subroutine resolve_weather_crop_co2(self,record,response,status)
+    class(fmr_production_application_bootstrap_t),intent(in)::self
+    type(swap_daily_weather_record_t),intent(in)::record
+    type(crop_co2_response_t),intent(out)::response
+    integer,intent(out)::status
+    real(real64)::day,tmin,tmax,rain,etref,ppm
+    logical::available
+    response=crop_co2_response_t();status=1
+    call record%values(day,tmin,tmax,rain,etref,available)
+    if(.not.available)return
+    call self%weather_configuration%file_weather_atmospheric_co2%resolve(int(day),ppm,status)
+    if(status/=CROP_ATMOSPHERIC_CO2_OK)return
+    call evaluate_crop_co2_response(self%weather_configuration%file_weather_co2_parameters,ppm,response,status)
+  end subroutine
+
   subroutine production_application_run_weather_crop_dayend(self,crop_kernel,crop_parameters,crop_config, &
        crop_committed,result,status)
     class(fmr_production_application_bootstrap_t),intent(inout)::self
@@ -1277,6 +1321,7 @@ contains
     type(crop_lifecycle_continuation_t)::lifecycle
     type(wofost_crop_owner_state_t)::owner
     type(wofost_one_day_forcing_t)::forcing
+    type(crop_co2_response_t)::co2_response
     type(fmr_wofost_crop_event_forcing_t)::event
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
@@ -1330,6 +1375,12 @@ contains
     forcing%sinld=solar(3);forcing%cosld=solar(4)
     forcing%diffuse_perpendicular_radiation=solar(5)
     forcing%daily_sine_solar_elevation_integral=solar(6)
+    if(self%weather_configuration%file_weather_co2_response) then
+      call resolve_weather_crop_co2(self,self%weather_record,co2_response,s)
+      if(s/=CROP_CO2_RESPONSE_OK) return
+      forcing%co2_efficiency_factor=co2_response%efficiency_factor
+      forcing%co2_amax_factor=co2_response%amax_factor
+    end if
     call prepare_fmr_wofost_crop_event_forcing(self%weather_window,forcing,event,s, &
          active_expected_revision=lifecycle%revision)
     if(s/=CROP_EVENT_COMPOSE_OK.or..not.event%ready()) return
