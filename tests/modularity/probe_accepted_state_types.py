@@ -54,12 +54,14 @@ def main():
     probe.write_text('''program probe
   use, intrinsic :: iso_fortran_env, only: real64,int64
   use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_transaction_reference, only: transaction_state_t
   use probe_accepted_state_types
   use mod_soil_temperature_contract, only: initialize_soil_temperature_state,SOIL_TEMP_OK
   use mod_fmr_crop_accepted_soil_temperature
   implicit none
   type(fmr_b110_physical_state_t)::source
   type(kernel_committed_state_t)::committed
+  class(transaction_state_t),allocatable::carrier
   real(real64)::got
   integer::status
   logical::ok
@@ -68,7 +70,8 @@ def main():
   allocate(source%soil_temperature)
   call initialize_soil_temperature_state([8._real64,12._real64],source%soil_temperature,status)
   if(status/=SOIL_TEMP_OK) error stop 'heat init'
-  call committed%initialize(10_int64,source,ok,7._real64)
+  allocate(carrier,source=source)
+  call committed%initialize(10_int64,carrier,ok,7._real64)
   if(.not.ok) error stop 'committed init'
   call sample_committed_crop_soil_temperature(committed,10_int64,0_int64,7._real64,2,got,status)
   if(status/=CROP_ACCEPTED_TEMP_OK.or.got/=12._real64) error stop 'sample'
