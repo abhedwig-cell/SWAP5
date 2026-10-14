@@ -50,6 +50,9 @@ program test_low_air_development
   real(real64)::drain_proposal(2,4),drain_depth(2),fine_exchange,expected_bottom,raw_expected
   real(real64)::control_head(2)=[-3._real64,-4._real64]
   integer::status,i,signum,dsign,pattern,extended_configuration
+  type(fmr_b110_physical_state_t)::independent_next,rejected_next
+  type(fmr_serialized_column_result_t)::independent_result
+  type(fmr_serialized_physical_observation_t)::independent_observation
   logical::ok
   logical::missing_control=.false.,wrong_control_kind=.false.
   integer::requested_family=0
@@ -123,11 +126,41 @@ program test_low_air_development
       call require(again%committed.and.all(final%pressure_head==replay%pressure_head),'fresh worker replay identity')
       call require(result%mass%total_in==again%mass%total_in.and.result%mass%total_out==again%mass%total_out, &
            'fresh worker accounting identity')
+      block
+      type(fmr_serialized_reference_backend_t),target :: fine_workspace
       direct=initial;dt=1.e-7_real64/128._real64;fine_exchange=0._real64
       do i=1,128
+        if(i==9)then
+          missing_control=.true.
+        call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,again,observation, &
+             frost_case=.true.,initial_physical_state=direct,final_physical_state=rejected_next, &
+             start_time=real(i-1,real64)*dt,drain_case=.true.,workspace=fine_workspace)
+          call require(.not.again%committed.and..not.again%completed,'reused invalid input fails closed')
+          call require(all(rejected_next%pressure_head==direct%pressure_head).and. &
+               all(rejected_next%water_content==direct%water_content),'reused rejected state is atomic')
+          missing_control=.false.
+        end if
+        call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,independent_result,independent_observation, &
+             frost_case=.true.,initial_physical_state=direct,final_physical_state=independent_next, &
+             start_time=real(i-1,real64)*dt,drain_case=.true.)
         call execute_case(2,0._real64,q,-999999._real64,dt,.false.,.true.,again,observation, &
              frost_case=.true.,initial_physical_state=direct,final_physical_state=next, &
-             start_time=real(i-1,real64)*dt,drain_case=.true.)
+             start_time=real(i-1,real64)*dt,drain_case=.true.,workspace=fine_workspace)
+        call require(independent_result%committed.and.again%committed,'fresh and reused fine steps commit')
+        call require(all(next%pressure_head==independent_next%pressure_head).and. &
+             all(next%water_content==independent_next%water_content),'each fine profile bit identity')
+        call require(next%groundwater_level==independent_next%groundwater_level.and. &
+             next%ponding_depth==independent_next%ponding_depth,'fine boundary state bit identity')
+        call copy_soil_temperature_profile(next%soil_temperature,tf,status)
+        call require(status==0,'reused fine temperature available')
+        call copy_soil_temperature_profile(independent_next%soil_temperature,td,status)
+        call require(status==0.and.all(tf==td),'each fine thermal bit identity')
+        call require(again%mass%storage_change==independent_result%mass%storage_change.and. &
+             again%mass%total_in==independent_result%mass%total_in.and. &
+             again%mass%total_out==independent_result%mass%total_out,'fine accounting bit identity')
+        call require(again%solver_headcalc_calls==independent_result%solver_headcalc_calls.and. &
+             again%solver_nonlinear_iterations==independent_result%solver_nonlinear_iterations,'fine solver work identity')
+
         call require(again%committed,'fine direct continuation')
         call require(abs(again%mass%storage_change-(observation%bottom_flux-observation%frost_drainage%total_rate)*dt)<=hard_mass_gate, &
              'independent nodal-total/storage oracle')
@@ -141,6 +174,7 @@ program test_low_air_development
         fine_exchange=fine_exchange+observation%frost_drainage%total_rate*dt
         direct=next
       end do
+      end block
       call copy_soil_temperature_profile(final%soil_temperature,tf,status)
       call require(status==0,'retry temperature')
       call copy_soil_temperature_profile(direct%soil_temperature,td,status)
@@ -214,7 +248,7 @@ contains
   end subroutine
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, &
                           output, observation, frost_case, frost_temperature, final_physical_state, final_diagnostic, &
-                          start_time, initial_physical_state, frost_surface_temperature, drain_case, resumed, captured)
+                          start_time, initial_physical_state, frost_surface_temperature, drain_case, resumed, captured, workspace)
     integer, intent(in) :: bottom_mode
     real(real64), intent(in) :: top_flux, bottom_flux, bottom_head, duration
     logical, intent(in) :: use_certificate, hydrostatic
@@ -231,7 +265,9 @@ contains
     type(fmr_b110_physical_state_t), intent(in), optional :: initial_physical_state
     real(real64), intent(in), optional :: frost_surface_temperature
     class(transaction_state_t), allocatable :: snapshot
-    type(fmr_serialized_reference_backend_t) :: backend
+    type(fmr_serialized_reference_backend_t),target :: fresh_backend
+    type(fmr_serialized_reference_backend_t),target,intent(inout),optional :: workspace
+    type(fmr_serialized_reference_backend_t),pointer :: backend
     type(kernel_executor_t) :: transaction_control
     type(kernel_committed_state_t) :: committed
     type(fmr_logical_column_t) :: column
@@ -246,6 +282,11 @@ contains
     logical :: ok
     real(real64) :: t0
 
+    if(present(workspace))then
+      backend=>workspace
+    else
+      backend=>fresh_backend
+    end if
     call initialize_parameters(parameters, bottom_mode)
     if (present(frost_case)) then
       if (frost_case) call enable_bounded_frost(parameters)

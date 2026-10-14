@@ -8,7 +8,7 @@ import argparse,concurrent.futures,hashlib,json,os,pathlib,resource,subprocess,t
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);a.add_argument('--workers',type=int,choices=[1,2,3,4],default=1);a.add_argument('--candidate-only',action='store_true');args=a.parse_args()
+ a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);a.add_argument('--workers',type=int,choices=[1,2,3,4],default=1);a.add_argument('--candidate-only',action='store_true');a.add_argument('--fine-worker-reuse',action='store_true');args=a.parse_args()
  if args.repeat<1:raise ValueError('positive repeats')
  b=args.build.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
  r=json.loads((b/'RESULTS.json').read_text());flags=r['flags'];assert '-pg' not in flags
@@ -18,6 +18,9 @@ def main():
  driver=ROOT/'tests/frost/test_ppa_wu05b15_low_air_runtime.f90'
  original=driver.read_bytes();policy=original.decode().replace('    config%transaction%retry_scale = 0.5_real64','    config%retain_accepted_step_proposal = .true.\n    config%transaction%retry_scale = 0.5_real64').replace('    cfg%numerical%transaction%retry_scale=.5_real64','    cfg%numerical%retain_accepted_step_proposal=.true.\n    cfg%numerical%transaction%retry_scale=.5_real64').encode()
  assert (b/'low_air_driver.f90').read_bytes()==policy,'candidate recipe mismatch'
+ if args.fine_worker_reuse:
+  from low_air_fine_worker_recipe import reuse_fine_workspace
+  policy=reuse_fine_workspace(policy.decode()).encode()
  result={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'scope':'COMPLETE_HIGHEST_LOW_AIR_SAME_HOST_AB','build_manifest_sha256':sha(b/'RESULTS.json'),'flags':flags,'sources':r['sources'],'runs':[],'compiler':r['compiler'],'host':r['host'],'repeat':args.repeat,'full_o0_o2_qualified':False,'admitted':False}
  objects=[b/f'{i}.o' for i in range(len(r['ordered_sources'])-1)]
  result['objects']={str(p):sha(p) for p in objects}
@@ -27,6 +30,7 @@ def main():
   subprocess.run(['gfortran',*flags,*map(str,objects),str(out/(name+'.o')),'-o',str(out/name)],check=True)
   result[name+'_binary_sha256']=sha(out/name)
  (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
+ result['fine_worker_reuse']=args.fine_worker_reuse
  result['workers']=args.workers;result['batches']=[]
  if args.candidate_only:result['scope']='GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION'
  def execute(round_index,family,name):

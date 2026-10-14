@@ -1,9 +1,9 @@
 {
   "baseline_canonical": "c591205c5e03f1c96c6488eb53c562265f749556",
   "v1_scientific_source": "1d5515057",
-  "current_guarded_source": "519f7ee34",
+  "current_guarded_source": "b107737739718b895b6c6ffe57a0b28f013dc732",
   "canonical_admission": false,
-  "qualified_full_fci": false,
+  "qualified_full_fci": true,
   "tenfold_end_to_end_proved": false,
   "historical_hardware_comparability": "UNKNOWN",
   "exclusive_python_evidence_github_times": "UNKNOWN",
@@ -195,5 +195,322 @@
     "wall_seconds": 0.11422989899983804,
     "scope": "ACTUAL_OWNER_GOVERNANCE_REHEARSAL_NOT_NUMERICAL_PASS"
   },
-  "governance_reason": "Actual moving F-CI verifier rejects unknown production mutation in modular repair owner binding before numerics; no guard weakened."
+  "governance_reason": "Initial unknown-mutation and canonical-context failures retained; exact default projection and independently qualified successor bridge now pass actual complete moving preservation. No canonical admission.",
+  "scientific_scope": "Explicit ON proposal plus original six highest families O0/O2; inherited original B19 authority remains distinct, not 48 fresh current low-air executions.",
+  "moving_preservation": {
+    "synthetic_merge": "9869ed0c39a33499f9dd8676cf15113bef4fbcd4",
+    "canonical_parent": "c591205c5e03f1c96c6488eb53c562265f749556",
+    "candidate_parent": "32417c6186aa565f269f8f65c01587c13e2a5769",
+    "source_tree": "7e3a1c25f74d71b1bf8344ec36bbec86e66bd570",
+    "tree": "569e7f95a65999e6b44e9ff7a362565209e18617",
+    "scope": "ACTUAL_FULL_MOVING_PRESERVATION_NOT_ADMISSION",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "exit": 0,
+    "wall": 1587.7128105489992,
+    "cpu": 1571.379352
+  },
+  "warm_current_highest": {
+    "scope": "COMPLETE_HIGHEST_CURRENT_SOURCE_WARM_PROVIDERS",
+    "whole_wall": 152.16188238199902,
+    "whole_child_cpu": 534.826999,
+    "events": [
+      {
+        "label": "rebind-o0",
+        "wall": 0.13558672100043623,
+        "cpu": 0.135376,
+        "exit": 0
+      },
+      {
+        "label": "rebind-o2",
+        "wall": 0.19127045999994152,
+        "cpu": 0.19155499999999998,
+        "exit": 0
+      },
+      {
+        "label": "qualify-o0",
+        "wall": 130.2080006670003,
+        "cpu": 382.751395,
+        "exit": 0
+      },
+      {
+        "label": "qualify-o2",
+        "wall": 151.83139081800073,
+        "cpu": 151.748673,
+        "exit": 0
+      }
+    ],
+    "cold_end_to_end_ab": "UNKNOWN",
+    "tenfold_proved": false,
+    "admitted": false,
+    "qualifications": {
+      "0": {
+        "scope": "GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION",
+        "rounds": {
+          "0": {
+            "candidate": 380.1280862620006,
+            "native_sum_speedup": "UNKNOWN"
+          }
+        },
+        "trajectories": 6,
+        "fine_comparisons": 36,
+        "max_head_error_cm": 2.934918e-07,
+        "max_temperature_error_c": 5.349545e-07,
+        "physical_sha256": {
+          "(1, 'candidate')": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+          "(2, 'candidate')": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+          "(3, 'candidate')": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+          "(4, 'candidate')": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+          "(5, 'candidate')": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+          "(6, 'candidate')": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd"
+        },
+        "canonical_admission": false,
+        "full_fci_preservation": "UNKNOWN",
+        "physics_exclusive_times": "UNKNOWN",
+        "historical_hardware_comparability": "UNKNOWN"
+      },
+      "2": {
+        "scope": "GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION",
+        "rounds": {
+          "0": {
+            "candidate": 138.94752167900333,
+            "native_sum_speedup": "UNKNOWN"
+          }
+        },
+        "trajectories": 6,
+        "fine_comparisons": 36,
+        "max_head_error_cm": 2.934918e-07,
+        "max_temperature_error_c": 5.349545e-07,
+        "physical_sha256": {
+          "(1, 'candidate')": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+          "(2, 'candidate')": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+          "(3, 'candidate')": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+          "(4, 'candidate')": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+          "(5, 'candidate')": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+          "(6, 'candidate')": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd"
+        },
+        "canonical_admission": false,
+        "full_fci_preservation": "UNKNOWN",
+        "physics_exclusive_times": "UNKNOWN",
+        "historical_hardware_comparability": "UNKNOWN"
+      }
+    }
+  },
+  "warm_workspace_highest": {
+    "scope": "COMPLETE_HIGHEST_CURRENT_SOURCE_WARM_PROVIDERS",
+    "whole_wall": 123.314524014997,
+    "whole_child_cpu": 412.16106,
+    "events": [
+      {
+        "label": "rebind-o0",
+        "wall": 0.1520475780016568,
+        "cpu": 0.151894,
+        "exit": 0
+      },
+      {
+        "label": "rebind-o2",
+        "wall": 0.19831164999777684,
+        "cpu": 0.19847099999999998,
+        "exit": 0
+      },
+      {
+        "label": "qualify-o0",
+        "wall": 99.68963617799818,
+        "cpu": 288.914824,
+        "exit": 0
+      },
+      {
+        "label": "qualify-o2",
+        "wall": 122.9606604340006,
+        "cpu": 122.895871,
+        "exit": 0
+      }
+    ],
+    "fine_worker_reuse": true,
+    "cold_end_to_end_ab": "UNKNOWN",
+    "tenfold_proved": false,
+    "admitted": false,
+    "qualifications": {
+      "0": {
+        "scope": "GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION",
+        "rounds": {
+          "0": {
+            "candidate": 285.3278254309989,
+            "native_sum_speedup": "UNKNOWN"
+          }
+        },
+        "trajectories": 6,
+        "fine_comparisons": 36,
+        "max_head_error_cm": 2.934918e-07,
+        "max_temperature_error_c": 5.349545e-07,
+        "physical_sha256": {
+          "(1, 'candidate')": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+          "(2, 'candidate')": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+          "(3, 'candidate')": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+          "(4, 'candidate')": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+          "(5, 'candidate')": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+          "(6, 'candidate')": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd"
+        },
+        "canonical_admission": false,
+        "full_fci_preservation": "UNKNOWN",
+        "physics_exclusive_times": "UNKNOWN",
+        "historical_hardware_comparability": "UNKNOWN"
+      },
+      "2": {
+        "scope": "GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION",
+        "rounds": {
+          "0": {
+            "candidate": 105.94772756699967,
+            "native_sum_speedup": "UNKNOWN"
+          }
+        },
+        "trajectories": 6,
+        "fine_comparisons": 36,
+        "max_head_error_cm": 2.934918e-07,
+        "max_temperature_error_c": 5.349545e-07,
+        "physical_sha256": {
+          "(1, 'candidate')": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+          "(2, 'candidate')": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+          "(3, 'candidate')": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+          "(4, 'candidate')": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+          "(5, 'candidate')": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+          "(6, 'candidate')": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd"
+        },
+        "canonical_admission": false,
+        "full_fci_preservation": "UNKNOWN",
+        "physics_exclusive_times": "UNKNOWN",
+        "historical_hardware_comparability": "UNKNOWN"
+      }
+    }
+  },
+  "fine_worker_ab_first_complete_family": {
+    "scope": "COMPLETE_ORIGINAL_FAMILY_1_FINE_WORKER_AB_NOT_FULL_ADMISSION",
+    "build_sha256": "12c35806fbcbcc1e81dc61f42dd0cb92f33840b2c23cf017d3adce401ef97702",
+    "runs": [
+      {
+        "round": 0,
+        "name": "fresh",
+        "wall": 23.869152719998965,
+        "cpu": 23.803014000000005,
+        "exit": 0,
+        "stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd"
+      },
+      {
+        "round": 0,
+        "name": "workspace",
+        "wall": 19.748489771001914,
+        "cpu": 19.740033999999998,
+        "exit": 0,
+        "stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd"
+      },
+      {
+        "round": 1,
+        "name": "workspace",
+        "wall": 19.37437027300257,
+        "cpu": 19.35479999999999,
+        "exit": 0,
+        "stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd"
+      },
+      {
+        "round": 1,
+        "name": "fresh",
+        "wall": 20.152894287999516,
+        "cpu": 20.129076000000005,
+        "exit": 0,
+        "stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd"
+      }
+    ],
+    "all_original_assertions_and_stdout_identical": true,
+    "median_scoped_wall_ratio": 1.1252256854044798,
+    "not_full_end_to_end_ab": true
+  },
+  "workspace_science": {
+    "0": {
+      "fresh_complete_original_programs": 6,
+      "original_fine_comparisons": 36,
+      "native_wall_sum": 295.89699731199653,
+      "native_cpu_sum": 295.8234,
+      "batches": [
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 100.7847475210001,
+          "cpu_seconds": 295.8234
+        }
+      ],
+      "per_step_and_failed_reuse": {
+        "scope": "BOUNDED_FIRST_FAMILY_1024_EACH_STEP_REFERENCE_AND_FAILED_REUSE",
+        "exit": 0,
+        "wall": 0.21481831900018733,
+        "cpu": 0.19329400000000005,
+        "build_sha256": "8900b14f7c75cdf034e3e1fecf94ad92251c20612b38b6896576ffbe0cd5c77f",
+        "driver_sha256": "19f310e927225ea040eea7a91b5060f7c1bb1ca495509c788a84a77e18cc5c06",
+        "stdout_sha256": "a2dbd67e9cd1eced221e986c23eacb64c6b2358b0b7c9a2c6fcfe379e92557d3",
+        "full_owning_replaced": false
+      },
+      "scientific_stdout_matches_original_fresh_owner": true
+    },
+    "2": {
+      "fresh_complete_original_programs": 6,
+      "original_fine_comparisons": 36,
+      "native_wall_sum": 113.1144446770013,
+      "native_cpu_sum": 113.087295,
+      "batches": [
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 113.11776239200117,
+          "cpu_seconds": 113.087295
+        }
+      ],
+      "per_step_and_failed_reuse": {
+        "scope": "BOUNDED_FIRST_FAMILY_1024_EACH_STEP_REFERENCE_AND_FAILED_REUSE",
+        "exit": 0,
+        "wall": 0.06457560199851287,
+        "cpu": 0.054157999999999984,
+        "build_sha256": "12c35806fbcbcc1e81dc61f42dd0cb92f33840b2c23cf017d3adce401ef97702",
+        "driver_sha256": "19f310e927225ea040eea7a91b5060f7c1bb1ca495509c788a84a77e18cc5c06",
+        "stdout_sha256": "a2dbd67e9cd1eced221e986c23eacb64c6b2358b0b7c9a2c6fcfe379e92557d3",
+        "full_owning_replaced": false
+      },
+      "scientific_stdout_matches_original_fresh_owner": true
+    }
+  },
+  "physical_feedback_current": [
+    {
+      "case": "low_air_physical",
+      "optimization": 0,
+      "total_seconds": 20.53277032799997,
+      "validation_seconds": 0.2528865069998574,
+      "stdout_sha256": "ae2c8b890674b01d833ce7b45355efa0075d8d45a27f69e19111495bb3d923a8"
+    },
+    {
+      "case": "low_air_physical",
+      "optimization": 0,
+      "total_seconds": 1.6297359090003738,
+      "validation_seconds": 0.2788358270008757,
+      "stdout_sha256": "ae2c8b890674b01d833ce7b45355efa0075d8d45a27f69e19111495bb3d923a8"
+    },
+    {
+      "case": "low_air_physical",
+      "optimization": 2,
+      "total_seconds": 60.9675401479999,
+      "validation_seconds": 0.21211511900037294,
+      "stdout_sha256": "ae2c8b890674b01d833ce7b45355efa0075d8d45a27f69e19111495bb3d923a8"
+    },
+    {
+      "case": "low_air_physical",
+      "optimization": 2,
+      "total_seconds": 0.5825735700000223,
+      "validation_seconds": 0.23453607000192278,
+      "stdout_sha256": "ae2c8b890674b01d833ce7b45355efa0075d8d45a27f69e19111495bb3d923a8"
+    }
+  ],
+  "detailed_phase_profile": "Continuation successor seal: fine-stage-profile-2; preparation/copying each <0.25 CPU s per first family; resolved production runtime ~9.7 CPU s. Bounded nested callbacks impose ~6x observer overhead and do not establish whole-gate exclusive hotspot percentages.",
+  "cold_end_to_end_ab": "UNKNOWN",
+  "full_48_program_same_hardware_end_to_end_ab": "UNKNOWN",
+  "limitation": "No multiplication of separately sampled proposal/workspace gains. 123.315s is the twelve-program warm highest scenario, not the historical 10678.726s full low-air qualification.",
+  "warm_measurement_endpoint": "Enclosing timer stops after build/rebind and twelve native/driver executions, before final parent-level manifest validation and O0/O2 byte comparison. Parent CPU and final validation overhead UNKNOWN."
 }

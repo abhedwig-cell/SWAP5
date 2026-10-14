@@ -5,14 +5,13 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "admitted": false,
-  "stage": "V3_COMPLETE_HIGHEST_AND_EXACT_OWNER_PASS_MOVING_PRESERVATION_SELECTED",
+  "stage": "SCIENTIFIC_SUCCESSOR_AND_FULL_PRESERVATION_PASS_PRIMARY_PERFORMANCE_UNMET",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Run actual full moving F-CI synthetic merge with exact numerical-owner prerequisite. Keep 10x cold end-to-end UNKNOWN; no admission before mandatory preservation.",
+  "next_action": "Review single PR1226 as qualified opt-in numerical/performance successor. Hard 10x complete comparable cold low-air A/B remains unproved; do not admit as LOW-AIR-10X acceptance or alter reference authority.",
   "blockers": [
-    "Hard 10x complete comparable cold end-to-end objective unproved.",
-    "Actual applicable full moving preservation not yet completed."
+    "Hard 10x complete comparable end-to-end objective unproved; cold/full 48-program timing and historical hardware comparability UNKNOWN."
   ],
   "authority_paths": [
     "integration/audits/PPA_WU05B19_STATUS.json",
@@ -28,7 +27,7 @@
     "tests/frost"
   ],
   "reconciliation": "PR1224 admitted. Open1214 cache trial,1103 hydraulics,956 surface and nutrient/master drafts not consumed; scientific source unchanged by latest canonical merge. MICRO06 historical status is bounded, not broad authority.",
-  "expensive_selection": "Completed stable-candidate full original highest gates. No further expensive run justified to bypass actual shared governance blocker.",
+  "expensive_selection": "Stable changed numerical source justified fresh original highest, current F-KT and coupling plus actual full moving F-CI. Later performance/dev-only changes separately tested and byte-bound to unchanged preservation inputs; no duplicate full F-CI for metadata.",
   "invariants": [
     7,
     13,
@@ -41,9 +40,9 @@
     30
   ],
   "performance": "V1 matched native median cost ratio 8.945987x; full cold end-to-end and historical hardware comparability UNKNOWN; hard 10x objective unmet.",
-  "checkpoint_commit": "f2967a58bbe94e835a18adf68da1948e5b18a91e",
+  "checkpoint_commit": "5b4c706d1",
   "remote_persisted": true,
-  "tested_scope": "V3 current independent policy/F-KT O0/O2 cold/warm PASS, 12 fresh highest programs and 72 original fine comparisons PASS, 12 original coupling executions PASS; numerical source projection and six corrupt/partial/foreign seal controls PASS.",
+  "tested_scope": "V3 current independent policy/F-KT O0/O2 cold/warm PASS, 12 fresh highest programs and 72 original fine comparisons PASS, 12 original coupling executions PASS; numerical source projection and six corrupt/partial/foreign seal controls PASS. Final direct-dummy fine workspace: 12 complete original programs and 72 fine comparisons repeated, per-step/failed-reuse O0/O2 and enhanced physical cold/warm controls PASS; fresh enclosing warm execution PASS.",
   "pr": 1226,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1226",
   "completed_o2_round0": {
@@ -61,7 +60,7 @@
   "current_candidate_source": "b107737739718b895b6c6ffe57a0b28f013dc732",
   "v1_scientific_source": "1d55150570831dcaa78172ed5684401dce11b62d",
   "negative_evidence": "Both tiny-indicator V1 and disabled-span V2 SIGFPE negatives retained; current V3 direct controls and complete original highest O0/O2 pass. Original FCI04 failure identical on canonical, not candidate regression.",
-  "preserved": false,
+  "preserved": true,
   "final_evidence": {
     "path": "integration/audits/evidence/LOW_AIR_10X_FINAL_20261014.tar.xz.b64",
     "receipt": "integration/audits/evidence/LOW_AIR_10X_FINAL_20261014_RECEIPT.json"
@@ -69,10 +68,27 @@
   "documentation": "Source checker and strict MkDocs PASS",
   "highest_owner_qualified": true,
   "warm_complete_highest": {
-    "wall_seconds": 152.16188238199902,
-    "child_cpu_seconds": 534.826999,
-    "cold_end_to_end_ab": "UNKNOWN"
+    "whole_wall": 123.314524014997,
+    "whole_child_cpu": 412.16106,
+    "fine_worker_reuse": true,
+    "cold_end_to_end_ab": "UNKNOWN",
+    "tenfold_proved": false
   },
   "governed_successor": "docs/audits/LOW_AIR_10X_SUCCESSOR_CONTRACT_20261014.md",
-  "successor_capsule": "integration/audits/evidence/LOW_AIR_10X_SUCCESSOR_20261014_RECEIPT.json"
+  "successor_capsule": "integration/audits/evidence/LOW_AIR_10X_SUCCESSOR_20261014_RECEIPT.json",
+  "performance_accepted": false,
+  "preservation": {
+    "result": "PASS",
+    "source_tree": "7e3a1c25f74d71b1bf8344ec36bbec86e66bd570",
+    "executed_candidate": "32417c6186aa565f269f8f65c01587c13e2a5769",
+    "synthetic_merge": "9869ed0c39a33499f9dd8676cf15113bef4fbcd4",
+    "wall_seconds": 1587.7128105489992,
+    "cpu_seconds": 1571.379352,
+    "binding_verifier": "tests/performance/verify_low_air_continuation.py"
+  },
+  "continuation_evidence": {
+    "path": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014.tar.xz.b64",
+    "receipt": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014_RECEIPT.json"
+  },
+  "qualification_scope": "Highest twelve current ON programs, 72 unchanged fine comparisons, independent numerical/physical/F-KT/coupling contracts and full moving preservation. Original certified 48-case B19 default authority remains distinct inherited authority; no claim of 48 fresh current qualification executions."
 }

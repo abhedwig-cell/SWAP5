@@ -1,0 +1,17 @@
+{
+  "scope": "Closeout verification/docs controls, not new scientific execution or canonical admission",
+  "commands": [
+    "python tests/performance/test_low_air_continuation.py",
+    "python tools/docs/check_docs.py",
+    "PYTHONPATH=<existing-pinned-doc-deps> python -m mkdocs build --strict"
+  ],
+  "controls": 6,
+  "result": "PASS",
+  "source_tree": "7e3a1c25f74d71b1bf8344ec36bbec86e66bd570",
+  "files": {
+    "LOW_AIR_10X_continuation-verifier-controls.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "LOW_AIR_10X_continuation-verifier-controls.stderr": "2422ee276e6f617b8d32eeb41256a5322be0529135455057135e48a36da9c74e",
+    "LOW_AIR_10X_mkdocs-closeout.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "LOW_AIR_10X_mkdocs-closeout.stderr": "c39c8ef9c5e27a37cbae07f0046f39b0550aaf4efaa5f672cc4f6a735e6406b4"
+  }
+}
