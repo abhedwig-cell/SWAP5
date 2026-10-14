@@ -4,7 +4,7 @@ module mod_canonical_interval_runtime
   use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_policy_t, &
        transaction_interface_sensitivity_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
-       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -39,10 +39,10 @@ contains
     type(transaction_result_t) :: tx
     type(transaction_policy_t) :: transaction_policy
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol, transaction_t1
+    real(real64) :: cursor, next_cursor, tol, transaction_t1, proposed_dt, proposal_factor
     real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux, aggregate_transpiration
     logical :: aggregate_transpiration_available
-    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, proposal_active
     integer :: isub, max_retries_cap
 
     result = canonical_result_t()
@@ -57,6 +57,13 @@ contains
         config%max_committed_substeps <= 0 .or. config%progress_tolerance < 0.0_real64) then
       result%status = CANONICAL_STATUS_INVALID_REQUEST
       return
+    end if
+
+    if (config%retain_accepted_step_proposal) then
+      if (present(target_selector) .or. config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
+        return
+      end if
     end if
 
     ! The externally committed physical state remains untouched until the full
@@ -74,9 +81,12 @@ contains
     aggregate_bottom_exchange = 0.0_real64
     terminal_bottom_flux = 0.0_real64
     cursor = interval%t0
+    proposal_active = .false.
+    proposed_dt = interval%t1 - interval%t0
 
     do isub = 1, config%max_committed_substeps
       transaction_t1 = interval%t1
+      if (proposal_active) transaction_t1 = min(interval%t1, cursor + proposed_dt)
       max_retries_cap = config%transaction%max_retries
       selector_valid = .true.
       if (present(target_selector)) then
@@ -120,6 +130,14 @@ contains
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
         return
+      end if
+
+      if (config%retain_accepted_step_proposal .and. (proposal_active .or. tx%temporal_rejections > 0)) then
+        proposal_factor = 2.0_real64
+        if (tx%temporal_error > 0.0_real64) proposal_factor = &
+             max(0.5_real64, min(2.0_real64, 0.9_real64 * sqrt(transaction_policy%temporal_tolerance / tx%temporal_error)))
+        proposed_dt = tx%accepted_dt * proposal_factor
+        proposal_active = ieee_is_finite(proposed_dt) .and. proposed_dt > 0.0_real64
       end if
 
       cursor = next_cursor

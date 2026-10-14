@@ -8,7 +8,7 @@ import argparse, re, hashlib, importlib.util, json, os, pathlib, platform, resou
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- a=argparse.ArgumentParser(description=__doc__);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--horizon',default='1.e-7_real64');a.add_argument('--profile',action='store_true');a.add_argument('--opt',type=int,choices=[0,2],default=2);a.add_argument('--timeout',type=float,default=60);args=a.parse_args()
+ a=argparse.ArgumentParser(description=__doc__);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--horizon',default='1.e-7_real64');a.add_argument('--profile',action='store_true');a.add_argument('--policy',action='store_true');a.add_argument('--full-driver',action='store_true');a.add_argument('--opt',type=int,choices=[0,2],default=2);a.add_argument('--timeout',type=float,default=60);args=a.parse_args()
  out=args.output.resolve();out.mkdir(exist_ok=False,parents=True)
  report={'scope':'DIAGNOSTIC_NOT_QUALIFICATION','head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'host':platform.uname()._asdict(),'horizon':args.horizon,'events':[],'sources':{},'profile':args.profile}
  def run(cmd,label,cwd=out,timeout=None):
@@ -28,12 +28,17 @@ def main():
  needle='      call execute_case(2,0._real64,q,-999999._real64,1.e-4_real64,.false.,.true.,result,observation,'
  assert text.count(needle)==1;text=text.replace(needle,needle.replace('1.e-4_real64',args.horizon))
  needle="      call require(result%completed.and.result%committed,'signed single-level exchange commits')"
- text=text.replace(needle,"      print *, 'LOW_AIR_DIAG',result%completed,result%committed,result%accepted_substeps,result%temporal_rejections,result%mass%residual\n      stop\n"+needle);driver.write_text(text)
+ text=text.replace(needle,"      print *, 'LOW_AIR_DIAG',result%completed,result%committed,result%accepted_substeps,result%temporal_rejections,result%mass%residual\n      stop\n"+needle);
+ if args.full_driver:text=original.read_text()
+ if args.policy:
+  text=text.replace('    config%transaction%retry_scale = 0.5_real64','    config%retain_accepted_step_proposal = .true.\n    config%transaction%retry_scale = 0.5_real64')
+  text=text.replace('    cfg%numerical%transaction%retry_scale=.5_real64','    cfg%numerical%retain_accepted_step_proposal=.true.\n    cfg%numerical%transaction%retry_scale=.5_real64')
+ driver.write_text(text)
  # Observational transaction records, in a generated provider; production unchanged.
  runtime=out/'mod_canonical_interval_runtime.f90';orig=ROOT/'src/runtime/mod_canonical_interval_runtime.f90';text=orig.read_text()
  needle='      call accumulate_transaction(result, tx)';assert text.count(needle)==1
  text=text.replace(needle,needle+"\n      if(isub<=64.or.mod(isub,1000)==0)print *, 'LOW_AIR_TX',isub,cursor,transaction_t1,tx%accepted_dt,tx%attempts, &\n           tx%solver_rejections,tx%mass_rejections,tx%temporal_rejections,tx%headcalc_calls,tx%nonlinear_iterations,tx%temporal_error")
- runtime.write_text(text)
+ runtime.write_text(orig.read_text() if args.full_driver else text)
  spec=importlib.util.spec_from_file_location('identity',ROOT/'tools/performance/irrigation_build_identity.py');identity=importlib.util.module_from_spec(spec);spec.loader.exec_module(identity)
  files=[p for p in sorted((ROOT/'src').rglob('*.f90')) if p!=orig]+[runtime,stub]+list((ROOT/'tests/frost').glob('mod_*fixture.f90'))
  identity.USE=re.compile(r'^\s*use\s*(?:,\s*non_intrinsic\s*)?(?:::)?\s*(?!ieee_arithmetic\b|ieee_exceptions\b|iso_c_binding\b|omp_lib\b)(\w+)',re.I|re.M)
