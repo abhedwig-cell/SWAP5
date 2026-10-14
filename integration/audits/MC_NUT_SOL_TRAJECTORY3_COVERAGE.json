@@ -30,7 +30,7 @@
       "remaining_dependency": [],
       "row_sha256": "14cacc5fad38bd5ea0cf8aca160a5d483e1639d067bec9323ed8ae657c5e6c25",
       "canonical_admission_changed": false,
-      "candidate_progress": "Linear accepted-carrier matrix route with source transport and decay; in-process companion restart; scoped qualification offered, no global admission."
+      "candidate_progress": "Locally qualified joint Full Richards/linear matrix transport+sorption+decay route with atomic rejection/retry and fresh-process joint disk restart; offered for scoped admission, no disposition promotion."
     },
     {
       "capability_id": "SW431-SALT-DECAY",
@@ -39,7 +39,7 @@
       "remaining_dependency": [],
       "row_sha256": "fc93d7d6eb4c8bacba7d6eb7344dae5f14aee95e94cf9fa4047a4835a17a832b",
       "canonical_admission_changed": false,
-      "candidate_progress": "Linear accepted-carrier matrix route with source transport and decay; in-process companion restart; scoped qualification offered, no global admission."
+      "candidate_progress": "Locally qualified joint Full Richards/linear matrix transport+sorption+decay route with atomic rejection/retry and fresh-process joint disk restart; offered for scoped admission, no disposition promotion."
     },
     {
       "capability_id": "SW431-SALT-AQUIFER",
@@ -165,5 +165,6 @@
     }
   ],
   "not_promoted": true,
-  "reconciliation": "Master counts and all dispositions unchanged because this candidate is offered for scoped admission. SALT-DECAY has a stale copied aquifer claim in this master snapshot; matrix decay has no aquifer dependency. Central master owner must replace that claim and add this bounded receipt after admission. Nonlinear sorption, surface/pond and joint application feedback remain outside this route. No blanket implementation absence is inferred from canonical admission status."
+  "reconciliation": "Master counts and all dispositions unchanged because this candidate is offered for scoped admission. SALT-DECAY has a stale copied aquifer claim in this master snapshot; matrix decay has no aquifer dependency. Central master owner must replace that claim and add this bounded receipt after admission. Nonlinear sorption, surface/pond and joint application feedback remain outside this route. No blanket implementation absence is inferred from canonical admission status.",
+  "joint_successor": "Joint commit and fresh-process restart close the first candidate boundary; all fourteen dispositions and master counts remain unchanged pending central admission."
 }

@@ -786,7 +786,21 @@
           1117
         ],
         "owner": "NUT/SOL",
-        "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal."
+        "blocker": "Consolidated specialized qualification and source/restart gates remain owner-controlled; PR #1117 is not an admission proposal.",
+        "bounded_matrix_successor": {
+          "pr": 1228,
+          "status": "SCOPED_JOINT_OWNER_QUALIFICATION_PASS_READY_FOR_REGIE",
+          "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+          "execution_commit": "bb66e83e3ac3672337f873d5a22ddee90ca75d9a",
+          "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+          "scope": "Actual Full Richards candidate plus linear matrix transport/sorption/decay, atomic joint rejection/retry, opaque joint and CRC-checked same-platform fresh-process restart",
+          "not_inferred": [
+            "canonical admission",
+            "full F-CI PASS",
+            "nonlinear matrix, pond/age/aquifer or Soil-N/crop-N closure"
+          ],
+          "next_gate": "Central regie reconciles live dependencies, reviews the bounded owner contract and selects required affected canonical preservation/admission gates. PR1117 remains a separate broad donor; no wholesale merge."
+        }
       },
       {
         "pr": 1072,

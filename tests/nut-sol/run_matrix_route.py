@@ -82,7 +82,7 @@ end module
 '''
 results={'baseline':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],
  'authority_member':'SWAP/solute.f90','authority_sha256':source_hash,'archive_sha256':sha(BUNDLE),
- 'literal_lines':[[361,432],[442,442],[455,455]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(JOINT.relative_to(ROOT)):sha(JOINT),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).relative_to(ROOT)):sha(pathlib.Path(__file__))}}
+ 'literal_lines':[[361,432],[442,442],[455,455]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(JOINT.relative_to(ROOT)):sha(JOINT),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).resolve().relative_to(ROOT)):sha(pathlib.Path(__file__))}}
 # Check pinned hash from the qualified donor source probe.
 PIN=expected
 results['authority_pin']=PIN

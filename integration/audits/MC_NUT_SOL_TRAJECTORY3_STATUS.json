@@ -13,11 +13,15 @@
     "existing_mobile_preservation": "O0/O2 PASS: mobile salt, root salinity and water-face reconstruction",
     "source_gate": "Exact donor B1.11 source-only probe PASS",
     "docs_source": "PASS",
-    "strict_mkdocs": "PASS via existing oxygen-docs-deps environment"
+    "strict_mkdocs": "PASS via existing oxygen-docs-deps environment",
+    "joint_application": "O0/O2 PASS; chemical rejection leaves water unchanged, hydraulic rejection leaves chemistry unchanged, smaller retry succeeds",
+    "joint_restart": "Opaque joint export/restore and fresh-process disk continuation; complete endpoints identical at each optimization and O0/O2",
+    "codec_negatives": "CRC corruption/truncation, wrong water clock, wrong node count, negative chemical revision; also negative water/nonfinite concentration/negative dissolved/wrong sorbed equilibrium with valid recomputed CRC; all reject without target mutation",
+    "FMR_restart_owner_preservation": "Original unchanged FMQ27 negative matrix O0/O2 PASS; controlled shared build with hash-bound inputs"
   },
   "qualified": false,
   "canonically_admitted": false,
-  "scope": "Accepted matrix water trace -> sequential historical transport, linear sorption and temperature/moisture-dependent decay -> atomically committed chemical masses and consumed carrier time -> explicit companion restart",
+  "scope": "Atomic internally accepted Full Richards water candidate -> source-bound matrix transport, linear sorption and decay -> joint water/chemical commit -> opaque joint restart and bounded CRC-checked same-platform disk continuation",
   "interfaces_changed": [],
   "invariants_affected": [
     3,
@@ -49,27 +53,26 @@
     "frost": "NOT_SELECTED: no changed frost or shared water/state/restart code",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Implement bounded atomic water/chemical runner and joint restart codec; qualify actual rejection/retry and fresh-process continuation in PR1228",
+  "next_action": "Complete current-canonical focused requalification and exact owner receipt, then central regie admission routing.",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
-  "scientific_execution_commit": "c57eb97af9760dda26af1b9655be2fdb6e9269ac",
-  "scientific_execution_tree": "6922bfa8e7b02a0a9e22392026956974417fa6f3",
+  "scientific_execution_commit": "bb66e83e3ac3672337f873d5a22ddee90ca75d9a",
+  "scientific_execution_tree": "00e006518de4fead0d268312de69525201eae8a7",
   "last_reconciled_upstream": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
   "source_authority_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
   "test_cost_seconds": {
-    "compile": 111.23545441192255,
-    "link": 0.1657695949979825,
-    "native": 3.2838524489998235,
+    "compile": 127.71298773192393,
+    "link": 0.44666854599199723,
+    "native": 10.228926413008594,
+    "integration_native": 10.228926413008594,
     "validation": "UNKNOWN",
-    "independent_process_runners": "UNKNOWN total; terminal PASS",
-    "source_only": "UNKNOWN",
-    "integration_native": 3.2838524489998235,
-    "support_runners_total": 5.319852423999691
+    "codec_separate": "UNKNOWN"
   },
-  "matrix_compile_source_count": 230,
+  "matrix_compile_source_count": 235,
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "blockers": [
-    "Default application bootstrap, joint water/chemical restart, external disk codec and salinity feedback remain outside this bounded one-way accepted-water companion.",
-    "Broad master admission of nonlinear sorption is not established by the linear route."
+    "Canonical admission remains central SWAP5 regie under the live registry; local owner qualification does not assert full F-CI PASS.",
+    "Default bootstrap/multicolumn enablement, salinity feedback, nonlinear matrix and other NUT/SOL routes remain separate.",
+    "Native file is bounded same-platform; no portable cross-compiler format claim."
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -83,14 +86,19 @@
     "src/process/mod_b111_solute_sorption.f90",
     "src/process/mod_b111_solute_decay.f90",
     "src/process/mod_solute_compartment_state.f90",
-    "src/process/mod_b111_pond_solute_exchange.f90"
+    "src/process/mod_b111_pond_solute_exchange.f90",
+    "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+    "src/adapter/mod_matrix_joint_restart_file.f90"
   ],
   "test_paths": [
     "tests/nut-sol/run_matrix_route.py",
-    "tests/nut-sol/test_matrix_route.f90"
+    "tests/nut-sol/test_matrix_route.f90",
+    "tests/nut-sol/test_matrix_joint.f90",
+    "tests/nut-sol/check_matrix_joint_physical_negatives.py"
   ],
   "dependency_surface": [
     "tests/nut-sol/test_matrix_route.f90",
+    "tests/nut-sol/test_matrix_joint.f90",
     "tests/physics/test_ppa_wu05d2_mixed_application.f90",
     "tests/nut-sol/run_matrix_route.py",
     "src/runtime/mod_fmr_runtime_core.f90",
@@ -320,28 +328,34 @@
     "src/process/mod_b111_pond_solute_exchange.f90",
     "src/process/mod_b111_reactive_solute_substep.f90",
     "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+    "src/adapter/mod_matrix_joint_restart_file.f90",
     "src/legacy/b1_10_port/headcalc.f90"
   ],
   "evidence_paths": [
-    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_MATRIX_20261014.tar.xz.b64"
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_MATRIX_20261014.tar.xz.b64",
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_20261014.tar.xz.b64"
   ],
   "coverage_reconciliation": "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-  "restart_scope": "Private schema1 chemical companion in-process only; no existing global mobile layout reused",
+  "restart_scope": "Opaque joint FMR/chemical restart and same-platform native file with CRC32; actual pressure/water/temporal history/mass/clocks/revisions retained; fresh process reexecutes both owners",
   "historical_oracle": "Literal transport/reaction loop, linear inverse and cfluxt interface carry; B1.11 source hash enforced before compilation",
   "scoped_local_qualification": "PASS",
-  "qualification_status": "SCOPED_LOCAL_QUALIFICATION_PASS; central admission authority pending",
-  "source_input_manifest": "Complete 231-input SHA256 manifest in evidence capsule; all current inputs byte-identical to stable execution",
+  "qualification_status": "SCOPED_JOINT_OWNER_QUALIFICATION_PASS_READY_FOR_REGIE; complete canonical admission gates pending",
+  "source_input_manifest": "Complete 236-input manifest in joint evidence; current byte hashes verified unchanged. FMQ27 and additional physical decoder negatives have separate exact input/executable receipts.",
   "evidence_capsule_sha256": "fcfc27b6b7342c231d7b5579e699c665a4758639d34b15da74c8b133319d1221",
-  "scientific_execution_git_bundle": "matrix-executed.bundle in evidence capsule; exact executed local commits recoverable over pinned canonical prerequisite",
-  "checkpoint_commit": "5f291a23b0c686df951a8f423e9db7aab9a41c38",
+  "scientific_execution_git_bundle": "matrix-joint-executed.bundle in joint evidence capsule; full executed local lineage is recoverable over pinned canonical prerequisite",
+  "checkpoint_commit": "2e0bcd5c21683efaa4c850c12d0e6bf3345ae119",
   "checkpoint_semantics": "Earlier remote checkpoint; latest recovery is the head of work/nut-sol-trajectory3-20261014. Final candidate verifies every stable science input hash and retains the actual execution Git bundle.",
   "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
-  "remote_qualified_candidate_head": "b339ffb2f4cf152ead2dd7bc83126190d19bb581",
-  "remote_candidate_tree": "b9271d359095decdd4a9a1d67894b1f1efff93b9",
+  "remote_qualified_candidate_head": "2e0bcd5c21683efaa4c850c12d0e6bf3345ae119",
+  "remote_candidate_tree": "00e006518de4fead0d268312de69525201eae8a7",
   "joint_successor": {
-    "implemented": false,
-    "tested": false,
-    "qualified": false,
+    "implemented": true,
+    "persisted": true,
+    "tested": "O0/O2 PASS; fresh-process endpoints byte-identical; all joint and corruption negatives pass",
+    "qualified": "SCOPED_OWNER_QUALIFICATION_PASS",
     "interfaces_held_fixed": [
       "water backend",
       "kernel transactions",
@@ -349,14 +363,21 @@
       "crop/root/WOFOST81"
     ],
     "canonical_admission_owner": "central SWAP5 regie",
-    "expected_compile_seconds": 120,
-    "native_seconds": "seconds; exact cost pending",
-    "required_gates": [
-      "joint rejection/retry",
-      "joint in-process and fresh-process restart",
-      "corruption and provenance negatives",
-      "independent B1.11 source",
-      "targeted existing preservation"
-    ]
+    "cost_seconds": {
+      "compile": 127.71298773192393,
+      "link": 0.44666854599199723,
+      "native": 10.228926413008594
+    }
+  },
+  "joint_evidence_capsule_sha256": "0b8d48dcfef9bb771f9c2ff6c9ba39739568287287dac21c7beb667367571105",
+  "owner_reconciliation": "One bounded readiness receipt added under existing NUT/SOL node in canonical workstream registry; original owners, blockers and central admission authority unchanged",
+  "development_failure": "O2 strict compiler rejected impure candidate readiness inside a combined logical condition; split explicit checks, then rebuilt stable full O0/O2. Development raw results retained and never credited as stable qualification.",
+  "live_reconciliation": {
+    "canonical": "34ee4fdac815788620f8779f4340b8edeef3c8ae",
+    "previous_canonical": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "delta": "PR1229 annual CO2; production bootstrap intersects the measured build closure. NUT/SOL, water, kernel, physical state and restart owner code unchanged.",
+    "overlap": "No NUT/SOL merge conflict; all CO2 canonical changes preserved.",
+    "current_gate": "PENDING targeted fresh O0/O2 combined production and disk restart",
+    "selected_cost": "about130 seconds compile plus10 seconds native; no broad frost/highest-low-air selection"
   }
 }

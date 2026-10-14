@@ -1,6 +1,6 @@
 # MC-SOL01 trajectory 3: accepted matrix transport with sorption and decay
 
-Status: proposed scoped production integration; canonical admission pending.
+Status: joint physical matrix route locally qualified; canonical admission pending.
 Baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
 Donor: PR #1117, `b6b894513fcdcf66e94824742c129616ddd7aed1`.
 Recovery: `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
@@ -14,14 +14,17 @@ scientific drivers. It excludes the donor's historical crop/root changes,
 reactive global layout, shared restart/backend edits and Soil-N/crop-N owners.
 No existing production source file is modified.
 
-The new callable production service is
-`src/runtime/mod_fmr_b111_matrix_solute_route.f90`. It consumes the existing
-serialized Reference backend's accepted physical substep traces after the water
-owner has accepted its trajectory. It is a one-way chemical companion route:
+The new callable application route is
+`src/runtime/mod_fmr_b111_matrix_joint_application.f90`. It uses the established
+backend's successful water candidate and internally accepted substep traces,
+advances the complete chemical candidate through
+`src/runtime/mod_fmr_b111_matrix_solute_route.f90`, and commits both owners only
+after all checks succeed. It is a one-way water-to-chemical physical composition:
 it does not supply root salinity stress or feedback to the preceding water solve.
-The native integration driver actually calls and commits Full Richards, then
-calls this service. This is not default CLI/bootstrap enablement or a claim that
-all NUT/SOL donor functionality is integrated.
+The native integration driver calls the actual joint application and Full
+Richards. Original standalone carrier tests remain a narrower process boundary.
+This is not default CLI/bootstrap enablement or a claim that all NUT/SOL donor
+functionality is integrated.
 
 Historical authority is the existing byte-pinned B1.11 bundle, member
 `SWAP/solute.f90`, SHA256
@@ -81,8 +84,14 @@ Diagnostics of a failed attempt are not accepted external receipts.
 The companion has a distinct private typed schema1 restart payload. Export and
 restore preserve all physical and continuation fields and reject a different
 parameter identity. Opaque in-process restart and subsequent consumption are
-qualified here. A external disk codec and a joint water/companion restart bundle
-are **not** implemented or qualified by this change. The existing water-owner
+qualified here. The joint successor also qualifies an opaque joint FMR/chemical
+bundle and `src/adapter/mod_matrix_joint_restart_file.f90`: a bounded same-platform
+binary file with CRC32, exact immutable chemical configuration vector and schema,
+shape, clock, identity and nonnegative/equilibrium validation. It retains the
+actual Richards derivative history. A fresh process reruns both water and
+chemistry and reaches a byte-identical endpoint. Wrong clocks, negative chemical
+revision and invalid dimensions are rejected even with a recomputed valid CRC;
+truncation and byte corruption are also rejected. The existing water-owner
 restart contract and global mobile-only layouts are unchanged.
 
 Affected invariants:3,4,7,9,13,21,22,23,30. The route consumes accepted fluxes and
@@ -135,7 +144,7 @@ application reachability.
 | Amendments and residues | Pool/addition owners exist; amendment-calendar source-policy conflict remains open. Residue state requires the current accepted crop lifecycle owner. |
 | Soil-N/crop-N and fixation | Donor coupled owner exists; reconcile current crop owner and explicit B1.11 policy. Preserve accepted WOFOST81 semantics. |
 | Aquifer SWBR | Master REJECTED source-defect disposition. Any new route needs an explicit physical aquifer storage/density/coefficient decision and signed multi-substep oracle. |
-| Joint application/restart and feedback | Compose the companion with owning application clocks, joint restart and optional salinity feedback before claiming a fully coupled default application. |
+| Default application and feedback | Joint clocks, atomic commit and bounded joint disk restart are qualified in this candidate. Default bootstrap/multicolumn application and optional salinity feedback remain separate. |
 
 The next limited dependency-ready production block is matrix nonlinear sorption
 qualification or an independent water-age carrier. For MC-NUT01, begin with the
@@ -143,7 +152,7 @@ existing mineral inventory plus aggregate transport transaction, preserving its
 daily clock and whole-N accounting. Do not begin all organic, management, crop,
 aquifer and age integration simultaneously.
 
-## Proposed joint successor (2026-10-14)
+## Qualified joint successor (2026-10-14)
 
 The continuation work adds an application-level joint boundary, using only
 existing backend trial/commit/discard and FMR restart interfaces. Its declared
@@ -166,12 +175,15 @@ other optional stores. Immutable parameter identity and exact parameter vector
 must match the externally reconstructed configuration. Native binary bytes are
 same-platform restart support, not a portable cross-compiler file specification.
 
-Required successor evidence: standalone parameter/state reconstruction negatives;
+Completed successor evidence: standalone parameter/state reconstruction negatives;
 actual joint water/chemical rejection and retry with unchanged owners; joint
 in-process restore followed by independently rerun water/chemical continuation;
 fresh-process disk restore and byte-identical resulting endpoints at O0/O2;
 truncated/corrupt/wrong-identity/wrong-clock payload rejection without target
-mutation; source and existing process preservation. Expected real integrated
-compile cost about120 seconds for O0/O2; native seconds; codec cost UNKNOWN.
+mutation; source and existing process preservation. The stable combined run
+compiles235 sources per optimization once for both actual physical drivers.
+Both optimizations: compile127.713s, link0.447s, native10.229s. Native time includes
+normal physics, rejected/retried physics, fresh-process replay and corruption
+checks. Per-codec cost is UNKNOWN, not inferred from that total.
 The stable admission decision remains routed to central SWAP5 regie under the
 canonical workstream registry. No new mandatory long stress gate is selected.
