@@ -6,7 +6,7 @@
   "checkpoint_commit": "SELF",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
@@ -28,7 +28,7 @@
     29,
     30
   ],
-  "next_action": "Persist direct source oracle and physical CO2 driver; O0/O2 feedback then current-source owner and moving preservation",
+  "next_action": "Complete original additional runtime/coupling owner gates, seal current dependency evidence, execute moving F-CI",
   "recovery_point": "This branch and tests/crop-co2",
   "blockers": [
     "Harvest/rotation remains proposed shared RT/HY/F-KT phase decision; no kernel boundary change in this work"
@@ -65,5 +65,14 @@
       "physics-only",
       "GitHub operations"
     ]
-  }
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY2_CO2_PHYSICAL_V2_20261014.tar.xz.b64",
+    "decoded_sha256": "754af25d44a1264820cf96cb1e7118f8515a94b0aa1e94f08ae74dd3fe6af2d1",
+    "members": 1857,
+    "unique_blobs": 98,
+    "compressed_bytes": 411164,
+    "dependency_blobs": 2608
+  },
+  "stage": "DIRECT_AND_PHYSICAL_PASS_SHARED_OWNER_RUNNING"
 }

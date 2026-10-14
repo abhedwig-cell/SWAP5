@@ -67,11 +67,18 @@ def validate_physical(data,manifest,source):
   compiled=[Path(c[c.index('-c')+1])for c in compiles[:len(providers)]]
   check([str(p.relative_to(ROOT))if p.is_relative_to(ROOT)else p.name for p in compiled]==[p if p!='tests/fsi/fsi04_real_headcalc_stubs.f90'else'grid_stubs.f90'for p in providers],'compiled provider order')
  links=[e for e in r['events']if '-c'not in e['command']and '-o'in e['command']]
- check(len(links)==10 and all(e['returncode']==0 for e in links),'link coverage')
+ check(len(links)==10 and all(e['returncode']==0 and e['command'][1:len(FLAGS)+1]==FLAGS for e in links),'link coverage/flags')
  direct=json.loads(data['direct/RESULTS.json'])
  check(direct['status']=='PASS'and len(direct['results'])==2 and {x['opt']for x in direct['results']}=={0,2},'direct O0/O2 incomplete')
  check(direct['authority']['cropdevelopment_sha256']=='aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210','historical source identity')
+ from run_modular_tests import COMMON
+ direct_order,_=DEP.strict_closure(ROOT,['tests/crop-co2/test_co2_contract.f90'],[])
+ check({str(p.relative_to(ROOT))for p in direct_order}==set(direct['inputs']),'direct input closure incomplete')
  dependencies(direct['inputs'])
+ for e in direct['events']:
+  cmd=e['command']
+  if '-c'in cmd or '-o'in cmd:check(cmd[1:len(COMMON)+1]==COMMON and cmd[len(COMMON)+1]in ['-O0','-O2'],'direct flags drift')
+ check(hashlib.sha256(data['direct/source_oracle.f90']).hexdigest()==direct['authority']['oracle_sha256'],'direct oracle drift')
  rows=[e for e in direct['events']if Path(e['command'][0]).name=='test']
  check(len(rows)==2 and all(e['returncode']==0 and b'CO2_LITERAL_SOURCE_CASES=2991'in native_raw(data,e['stdout_sha256'])and b'CO2_ANNUAL_SOURCE_CONTRACT=PASS'in native_raw(data,e['stdout_sha256'])for e in rows),'direct literal assertions missing')
  check(rows[0]['stdout_sha256']==rows[1]['stdout_sha256'],'direct optimization drift')
@@ -80,7 +87,17 @@ def validate_physical(data,manifest,source):
  for case in ['assimilation','root_oxygen','root_contract','low_air_policy','low_air_physical']:
   rows=[x for x in fast['records']if x['case']==case]
   check(len(rows)==4 and {(x['optimization'],x['build'])for x in rows}=={(o,b)for o in (0,2)for b in ['cold','warm_same_transaction']},'fast O0/O2 cold/warm incomplete')
-  for row in rows:dependencies(row['inputs']);native_raw(data,row['stdout_sha256'])
+  check(len({x['stdout_sha256']for x in rows})==1,'fast optimization/reexecution drift')
+  for row in rows:
+   dependencies(row['inputs']);raw=native_raw(data,row['stdout_sha256'])
+   if case=='assimilation':
+    from contract_oracles import prepare
+    payload,validate,paths=prepare(ROOT,'assimilation')
+    check(hashlib.sha256(payload).hexdigest()==row['stdin_sha256'],'independent assimilation oracle input')
+    validate(raw)
+   else:
+    from run_modular_tests import CASES
+    check(CASES[case]['marker'].encode()in raw,'original fast marker absent')
  return {**source,'physical_programs':28,'highest':'NOT_SELECTED_POLICY'}
 def verify_physical():
  s=json.loads(STATUS.read_text());data,m=read_capsule(s['evidence']);return validate_physical(data,m,verify_source())
