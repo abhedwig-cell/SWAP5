@@ -28,7 +28,7 @@
     29,
     30
   ],
-  "next_action": "Complete original additional runtime/coupling owner gates, seal current dependency evidence, execute moving F-CI",
+  "next_action": "Run full moving F-CI from canonical-first tree-identical scientific candidate",
   "recovery_point": "This branch and tests/crop-co2",
   "blockers": [
     "Harvest/rotation remains proposed shared RT/HY/F-KT phase decision; no kernel boundary change in this work"
@@ -74,7 +74,7 @@
     "compressed_bytes": 411164,
     "dependency_blobs": 2608
   },
-  "stage": "DIRECT_AND_PHYSICAL_PASS_SHARED_OWNER_RUNNING",
+  "stage": "DIRECT_PHYSICAL_AND_SHARED_OWNER_PASS_MOVING_PENDING",
   "master_reconciliation": {
     "head": "eccbf9d2b4631841ee37450206e32831a431bb85",
     "capability_id": "SW431-CROP-CO2",
@@ -98,6 +98,16 @@
     "physical_programs": 28,
     "physics_only_seconds": "UNKNOWN",
     "exclusive_python_seconds": "UNKNOWN",
-    "speedup_claim": "NONE; no matched old/new workload benchmark"
+    "speedup_claim": "NONE; no matched old/new workload benchmark",
+    "additional_owner_command_seconds": 479.9030733499894,
+    "additional_owner_failed_seconds": 0.007912189998023678
+  },
+  "additional_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY2_CO2_OWNERS_20261014.tar.xz.b64",
+    "decoded_sha256": "463525f572e52ed6517a9b196ffb96e19ea9273d4f012044318a8740dfe61f36",
+    "members": 24,
+    "unique_blobs": 19,
+    "compressed_bytes": 108236,
+    "dependency_blobs": 2610
   }
 }
