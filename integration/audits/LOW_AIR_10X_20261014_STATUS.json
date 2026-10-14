@@ -1,0 +1,16 @@
+{
+  "work_unit": "LOW-AIR-10X",
+  "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
+  "last_reconciled_upstream": "c591205c5e03f1c96c6488eb53c562265f749556",
+  "implemented": false, "persisted": true, "tested": false, "qualified": false, "admitted": false,
+  "stage": "BOUNDED_DIAGNOSIS",
+  "recovery_point": "work/low-air-10x-20261014",
+  "next_action": "Bounded instrumented highest low-air first-case production observation. No full gate selected yet.",
+  "blockers": [],
+  "authority_paths": ["integration/audits/PPA_WU05B19_STATUS.json", "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md", "docs/development/workstream-execution-protocol.md"],
+  "dependency_surface": ["src/transaction", "src/runtime", "src/solver", "src/adapter", "src/process", "tests/frost"],
+  "reconciliation": "PR1224 admitted. Open1214 cache trial,1103 hydraulics,956 surface and nutrient/master drafts not consumed; scientific source unchanged by latest canonical merge. MICRO06 historical status is bounded, not broad authority.",
+  "expensive_selection": "At most60s native observation after measured local build. Altered horizon diagnostic cannot qualify original owner. Full qualification deferred until cause and stable candidate exist.",
+  "invariants": [7,13,22,23,25,26,27,29,30],
+  "performance": "UNKNOWN; 10x must be measured on complete comparable A/B gates"
+}
