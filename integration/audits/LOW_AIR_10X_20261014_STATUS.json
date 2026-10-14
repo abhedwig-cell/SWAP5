@@ -7,10 +7,13 @@
   "tested": true,
   "qualified": false,
   "admitted": false,
-  "stage": "FULL_HIGHEST_SAME_HOST_AB_ACTIVE",
+  "stage": "REPEATED_O0_O2_FULL_AB_ACTIVE",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Observe complete six-family O2 A/B through two alternating rounds. Then O0 and remaining owning/shared qualification only when scientifically justified.",
-  "blockers": [],
+  "next_action": "Observe active O0/O2 second-order complete A/B, seal exclusive CPU/whole-gate measurements; do not admit before unchanged owner/preservation requirements are resolved.",
+  "blockers": [
+    "Full 10x objective not yet met; first full O2 native round is9.41x, not an end-to-end10x proof.",
+    "Shared canonical numerical-contract successor and applicable F-CI preservation remain pending."
+  ],
   "authority_paths": [
     "integration/audits/PPA_WU05B19_STATUS.json",
     "docs/audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md",
@@ -40,5 +43,19 @@
   "performance": "UNKNOWN; 10x must be measured on complete comparable A/B gates",
   "checkpoint_commit": "ba7546f5d",
   "remote_persisted": true,
-  "tested_scope": "Small real numerical controller oracle O0/O2; first complete original highest physical family O2 with policy, all fine/replay/restart/application assertions PASS. Not full owner/admission."
+  "tested_scope": "Small real numerical controller oracle O0/O2; first complete original highest physical family O2 with policy, all fine/replay/restart/application assertions PASS. Not full owner/admission.",
+  "pr": 1226,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1226",
+  "completed_o2_round0": {
+    "baseline": 1149.7140190969994,
+    "candidate": 122.29588660800073,
+    "speedup": 9.401084950487483,
+    "complete": true
+  },
+  "interim_evidence": {
+    "path": "integration/audits/evidence/LOW_AIR_10X_INTERIM_20261014.tar.xz.b64",
+    "decoded_sha256": "645443f47afeef8b1f715b884dc481b0079a31979884c6a33c1f3ed1b2eb9fb7",
+    "files": 2165,
+    "bytes": 126704
+  }
 }
