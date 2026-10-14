@@ -1,0 +1,15 @@
+{
+ "work_unit":"MC-SOL01-TRAJECTORY3-MATRIX",
+ "baseline":"82209d0df68d14c5ebe707e9b6303f9b150488ca",
+ "donor":"b6b894513fcdcf66e94824742c129616ddd7aed1",
+ "donor_pr":1117,
+ "donor_owner_run":37778763469,
+ "implemented":false,"persisted":false,"tested":false,"qualified":false,"canonically_admitted":false,
+ "scope":"Accepted matrix water trace -> sequential historical transport, linear sorption and temperature/moisture-dependent decay -> atomically committed chemical masses and consumed carrier time -> explicit companion restart",
+ "interfaces_changed":[],
+ "invariants_affected":[3,4,7,9,13,21,22,23,30],
+ "exclusions":["pond/runoff/rain/irrigation chemical input","aquifer mutation","age tracer","macropores","Soil-N/crop-N","WOFOST81 changes","root salinity feedback","nonlinear application admission"],
+ "test_selection":{"level1":"Existing actual production reactive and sorption drivers + independently extracted exact solute.f90 loop","level2":"Atomic trace consumption, stale-time, overdraw/retry/rollback, restart","level3":"Actual serialized Full Richards accepted traces, water and chemical continuity, multiple windows","level4":"Admission pending central owner review; no shared production module changed. Owning source and selected existing matrix preservation required. Full F-CI is not selected merely for new additive service.","highest_low_air":"NOT_SELECTED per canonical policy","frost":"NOT_SELECTED: no changed frost or shared water/state/restart code","expected_seconds":"UNKNOWN; measured per compile/link/native/validation"},
+ "next_action":"Implement and persist bounded composition, then independent local O0/O2",
+ "recovery_point":"integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json"
+}
