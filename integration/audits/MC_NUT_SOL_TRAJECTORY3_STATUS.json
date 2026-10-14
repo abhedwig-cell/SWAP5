@@ -49,7 +49,7 @@
     "frost": "NOT_SELECTED: no changed frost or shared water/state/restart code",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Central owner review of scoped matrix companion and in-process restart; choose declared preservation/admission gates and add bounded master receipts only after actual admission. No automatic merge.",
+  "next_action": "Implement bounded atomic water/chemical runner and joint restart codec; qualify actual rejection/retry and fresh-process continuation in PR1228",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
   "scientific_execution_commit": "c57eb97af9760dda26af1b9655be2fdb6e9269ac",
   "scientific_execution_tree": "6922bfa8e7b02a0a9e22392026956974417fa6f3",
@@ -337,5 +337,26 @@
   "checkpoint_semantics": "Earlier remote checkpoint; latest recovery is the head of work/nut-sol-trajectory3-20261014. Final candidate verifies every stable science input hash and retains the actual execution Git bundle.",
   "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
   "remote_qualified_candidate_head": "b339ffb2f4cf152ead2dd7bc83126190d19bb581",
-  "remote_candidate_tree": "b9271d359095decdd4a9a1d67894b1f1efff93b9"
+  "remote_candidate_tree": "b9271d359095decdd4a9a1d67894b1f1efff93b9",
+  "joint_successor": {
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "interfaces_held_fixed": [
+      "water backend",
+      "kernel transactions",
+      "global state/restart layout",
+      "crop/root/WOFOST81"
+    ],
+    "canonical_admission_owner": "central SWAP5 regie",
+    "expected_compile_seconds": 120,
+    "native_seconds": "seconds; exact cost pending",
+    "required_gates": [
+      "joint rejection/retry",
+      "joint in-process and fresh-process restart",
+      "corruption and provenance negatives",
+      "independent B1.11 source",
+      "targeted existing preservation"
+    ]
+  }
 }

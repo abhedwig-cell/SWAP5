@@ -142,3 +142,36 @@ qualification or an independent water-age carrier. For MC-NUT01, begin with the
 existing mineral inventory plus aggregate transport transaction, preserving its
 daily clock and whole-N accounting. Do not begin all organic, management, crop,
 aquifer and age integration simultaneously.
+
+## Proposed joint successor (2026-10-14)
+
+The continuation work adds an application-level joint boundary, using only
+existing backend trial/commit/discard and FMR restart interfaces. Its declared
+owned surface is the new matrix companion and additive joint runner/codec.
+Water, kernel, solver, crop/root, mobile-only layout and existing persistence
+interfaces are read-only. No new physical scope or solver policy is introduced.
+
+The joint runner stages a successful water candidate and consumes its internally
+accepted substeps on a chemical copy. It commits the water candidate only after
+the complete chemical sequence succeeds, then publishes the chemical endpoint.
+Hydraulic rejection, chemical failure or water commit failure publishes neither
+chemical mass nor a partial consumed clock. Worker scratch remains disposable.
+
+The bounded disk adapter must preserve the existing FMR committed provenance,
+base/temporal physical state and actual temporal derivative history, plus chemical
+masses, concentration, carrier endpoint/time/revision and parameter identity.
+It validates a complete decoded joint payload before restoring either owner.
+Its schema is restricted to one ordinary base/temporal matrix column with inactive
+other optional stores. Immutable parameter identity and exact parameter vector
+must match the externally reconstructed configuration. Native binary bytes are
+same-platform restart support, not a portable cross-compiler file specification.
+
+Required successor evidence: standalone parameter/state reconstruction negatives;
+actual joint water/chemical rejection and retry with unchanged owners; joint
+in-process restore followed by independently rerun water/chemical continuation;
+fresh-process disk restore and byte-identical resulting endpoints at O0/O2;
+truncated/corrupt/wrong-identity/wrong-clock payload rejection without target
+mutation; source and existing process preservation. Expected real integrated
+compile cost about120 seconds for O0/O2; native seconds; codec cost UNKNOWN.
+The stable admission decision remains routed to central SWAP5 regie under the
+canonical workstream registry. No new mandatory long stress gate is selected.

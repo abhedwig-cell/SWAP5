@@ -25,6 +25,7 @@ module mod_fmr_b111_matrix_solute_route
   contains
     procedure::snapshot=>matrix_snapshot
     procedure::ready=>matrix_ready
+    procedure::configuration=>matrix_configuration
   end type
   type,public::matrix_solute_restart_t
     private
@@ -37,6 +38,7 @@ module mod_fmr_b111_matrix_solute_route
     real(real64)::decay_out=0.0_real64,residual=0.0_real64,max_water_residual=0.0_real64
   end type
   public::initialize_matrix_solute,consume_accepted_matrix_trace,export_matrix_solute_restart,restore_matrix_solute_restart
+  public::matrix_parameter_vector,reconstruct_matrix_solute_trusted
 contains
   subroutine initialize_matrix_solute(p,parameter_id,time,water,concentration,state,status)
     type(b111_reactive_solute_substep_forcing_t),intent(in)::p
@@ -82,6 +84,13 @@ contains
     if(code/=SOLCOMP_OK)return
     trial%parameters=p;trial%water=water;trial%time=time;trial%parameter_id=parameter_id;trial%initialized=.true.
     state=trial;status=MATRIX_OK
+  end subroutine
+
+  subroutine matrix_configuration(self,p,parameter_id)
+    class(matrix_solute_state_t),intent(in)::self
+    type(b111_reactive_solute_substep_forcing_t),intent(out)::p
+    integer(int64),intent(out)::parameter_id
+    p=self%parameters;parameter_id=self%parameter_id
   end subroutine
 
   logical function matrix_ready(self) result(ok)
@@ -202,5 +211,50 @@ contains
     if(payload%schema_version/=1.or.parameter_id/=payload%state%parameter_id)return
     if(.not.payload%state%ready())return
     state=payload%state;status=MATRIX_OK
+  end subroutine
+
+  function matrix_parameter_vector(p) result(v)
+    type(b111_reactive_solute_substep_forcing_t),intent(in)::p
+    real(real64),allocatable::v(:)
+    ! Exact bounded immutable configuration fingerprint. Transient carrier
+    ! arrays/time are deliberately excluded; these come only from water owner.
+    if(.not.allocated(p%dz_cm).or..not.allocated(p%bulk_density).or..not.allocated(p%kf).or. &
+         .not.allocated(p%temperature_c).or..not.allocated(p%gampar).or..not.allocated(p%rtheta).or. &
+         .not.allocated(p%bexp).or..not.allocated(p%decpot).or..not.allocated(p%fdepth).or. &
+         .not.allocated(p%face_left_weight).or..not.allocated(p%face_right_weight).or. &
+         .not.allocated(p%face_distance_cm).or..not.allocated(p%theta_sat_left).or. &
+         .not.allocated(p%dispersivity_cm))return
+    v=[p%dz_cm,p%bulk_density,p%kf,p%temperature_c,p%gampar,p%rtheta,p%bexp,p%decpot,p%fdepth, &
+         p%face_left_weight,p%face_right_weight,p%face_distance_cm,p%theta_sat_left,p%dispersivity_cm, &
+         p%molecular_diffusion_cm2_day,p%cdrain_mg_cm3,p%cseep_mg_cm3,p%tscf,p%cref_mg_cm3,p%frexp, &
+         p%rain_rate_cm_day,p%rain_c_mg_cm3,p%irrigation_rate_cm_day,p%irrigation_c_mg_cm3, &
+         p%macropore_area_fraction,merge(1.0_real64,0.0_real64,p%temperature_active)]
+  end function
+
+  subroutine reconstruct_matrix_solute_trusted(p,parameter_id,revision,time,water,concentration, &
+       dissolved,sorbed,state,status)
+    type(b111_reactive_solute_substep_forcing_t),intent(in)::p
+    integer(int64),intent(in)::parameter_id,revision
+    real(real64),intent(in)::time,water(:),concentration(:),dissolved(:),sorbed(:)
+    type(matrix_solute_state_t),intent(out)::state
+    integer,intent(out)::status
+    type(matrix_solute_state_t)::trial
+    real(real64)::tol,scale
+    state=matrix_solute_state_t();status=MATRIX_INVALID
+    if(revision<0.or.size(dissolved)/=size(water).or.size(sorbed)/=size(water))return
+    if(.not.all(ieee_is_finite(dissolved)).or..not.all(ieee_is_finite(sorbed)))return
+    if(any(dissolved<0.0_real64).or.any(sorbed<0.0_real64))return
+    call initialize_matrix_solute(p,parameter_id,time,water,concentration,trial,status)
+    if(status/=MATRIX_OK)return
+    status=MATRIX_INVALID
+    scale=max(1.0_real64,maxval(abs(dissolved)),maxval(abs(sorbed)))
+    tol=2048.0_real64*epsilon(1.0_real64)*scale
+    if(any(abs(trial%mobile%mass_mg_cm2-dissolved)>tol).or. &
+         any(abs(trial%companion%sorbed_matrix_mass-sorbed)>tol))return
+    ! Keep exact accepted bits after physical validation, rather than
+    ! recomputing and rounding concentration/storage during every restart.
+    trial%mobile%mass_mg_cm2=dissolved;trial%companion%sorbed_matrix_mass=sorbed
+    trial%revision=revision
+    state=trial;status=MATRIX_OK
   end subroutine
 end module

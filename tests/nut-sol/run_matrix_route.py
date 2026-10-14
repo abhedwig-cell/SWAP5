@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Measured bounded driver of real Fortran production. No persistent cache."""
-import base64,hashlib,io,json,os,pathlib,re,shlex,subprocess,tarfile,time
+import base64,hashlib,io,json,os,pathlib,re,shlex,subprocess,tarfile,time,struct,zlib
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 OUT=pathlib.Path(os.environ.get('MATRIX_RESULT_DIR',str(ROOT.parent/'matrix-evidence'))).resolve()
 OUT.mkdir(parents=True,exist_ok=True)
 FC=shlex.split(os.environ.get('FC','gfortran'))
 FIXTURE=ROOT/'tests/physics/test_ppa_wu05d2_mixed_application.f90'
 TEST=ROOT/'tests/nut-sol/test_matrix_route.f90'
+JOINT=ROOT/'tests/nut-sol/test_matrix_joint.f90'
 BUNDLE=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 events=[]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -81,7 +82,7 @@ end module
 '''
 results={'baseline':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],
  'authority_member':'SWAP/solute.f90','authority_sha256':source_hash,'archive_sha256':sha(BUNDLE),
- 'literal_lines':[[361,432],[442,442],[455,455]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).relative_to(ROOT)):sha(pathlib.Path(__file__))}}
+ 'literal_lines':[[361,432],[442,442],[455,455]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(JOINT.relative_to(ROOT)):sha(JOINT),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).relative_to(ROOT)):sha(pathlib.Path(__file__))}}
 # Check pinned hash from the qualified donor source probe.
 PIN=expected
 results['authority_pin']=PIN
@@ -105,22 +106,51 @@ for opt in ('O0','O2'):
    if q is None:raise RuntimeError('unresolved '+name+' in '+str(p))
    if q!=p:visit(q)
   active.remove(p);seen.add(p);ordered.append(p)
- visit(TEST)
- ordered.insert(-1,ROOT/'src/legacy/b1_10_port/headcalc.f90')
+ visit(TEST);visit(JOINT)
+ ordered=[p for p in ordered if p not in (TEST,JOINT)]
+ ordered.append(ROOT/'src/legacy/b1_10_port/headcalc.f90')
  for p in ordered:
   if p.is_relative_to(ROOT):results['input_sha256'][str(p.relative_to(ROOT))]=sha(p)
  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
  objects=[]
  for i,p in enumerate(ordered):
   obj=build/f'{i:03d}.o';objects.append(str(obj))
-  strict=['-Wall','-Wextra','-Werror'] if p.name in ('mod_fmr_b111_matrix_solute_route.f90','mod_b111_reactive_solute_substep.f90') else []
+  strict=['-Wall','-Wextra','-Werror'] if p.name in ('mod_fmr_b111_matrix_solute_route.f90','mod_b111_reactive_solute_substep.f90','mod_fmr_b111_matrix_joint_application.f90','mod_matrix_joint_restart_file.f90') else []
   command(FC+flags+strict+['-c',str(p),'-o',str(obj)],build,'compile')
- exe=build/'matrix_route'
- command(FC+flags+objects+['-o',str(exe)],build,'link')
- stdout=command([str(exe)],build,'native').decode()
- print(stdout,flush=True)
- if 'MATRIX_ACTUAL_RICHARDS_ORACLE_ROLLBACK_RESTART=PASS' not in stdout:raise RuntimeError('missing pass')
- results['runs'][opt]={'stdout':stdout,'source_count':len(ordered),'generated_oracle_sha256':sha(oracle),'generated_fixture_sha256':sha(fixture)}
+ outputs={}
+ for driver in (TEST,JOINT):
+  obj=build/(driver.stem+'.o');exe=build/driver.stem
+  command(FC+flags+['-c',str(driver),'-o',str(obj)],build,'compile')
+  command(FC+flags+objects+[str(obj),'-o',str(exe)],build,'link')
+  if driver==TEST:
+   stdout=command([str(exe)],build,'native').decode()
+   if 'MATRIX_ACTUAL_RICHARDS_ORACLE_ROLLBACK_RESTART=PASS' not in stdout:raise RuntimeError('missing original route pass')
+  else:
+   restart=build/'joint-restart.bin';endpoint=build/'joint-expected.bin';fresh=build/'joint-fresh.bin'
+   stdout=command([str(exe),'write',str(restart),str(endpoint)],build,'native').decode()
+   if 'MATRIX_JOINT_COMMIT_ROLLBACK_OPAQUE_DISK=PASS' not in stdout:raise RuntimeError('missing joint pass')
+   resumed=command([str(exe),'resume',str(restart),str(fresh)],build,'native').decode()
+   if 'MATRIX_JOINT_FRESH_PROCESS=PASS' not in resumed:raise RuntimeError('missing fresh-process pass')
+   if endpoint.read_bytes()!=fresh.read_bytes():raise RuntimeError('fresh-process endpoint bits differ')
+   outputs['fresh_endpoint_sha256']=sha(fresh)
+   outputs['restart_sha256']=sha(restart)
+   raw=restart.read_bytes();mutants={}
+   mutants['truncated']=raw[:-12]
+   damaged=bytearray(raw);damaged[10]^=1;mutants['crc_corrupt']=bytes(damaged)
+   # Native binary schema guards below are intentionally compiler/platform bound.
+   # Recompute CRC so the wrong-clock and node-count tests reach semantic checks.
+   if struct.calcsize('i')!=4 or struct.calcsize('d')!=8:raise RuntimeError('unsupported test ABI')
+   for label,offset,fmt,value in [('water_clock',136,'d',5.0),('node_count',152,'i',100000),('chemical_revision',280,'q',-1)]:
+    damaged=bytearray(raw[:-4]);damaged[offset:offset+struct.calcsize(fmt)]=struct.pack(fmt,value)
+    mutants[label]=bytes(damaged)+struct.pack('I',zlib.crc32(damaged)&0xffffffff)
+   for label,data in mutants.items():
+    path=build/(label+'.bin');path.write_bytes(data)
+    rejected=command([str(exe),'reject',str(path),str(fresh)],build,'native').decode()
+    if 'MATRIX_JOINT_INVALID_FILE=PASS' not in rejected:raise RuntimeError('missing negative '+label)
+   stdout+=resumed+'MATRIX_JOINT_CORRUPTION_NEGATIVES=PASS\n'
+  print(stdout,flush=True)
+  outputs[driver.name]=stdout
+ results['runs'][opt]={'stdout':outputs,'source_count':len(ordered)+2,'generated_oracle_sha256':sha(oracle),'generated_fixture_sha256':sha(fixture)}
 results['o0_o2_stdout_identity']=results['runs']['O0']['stdout']==results['runs']['O2']['stdout']
 if not results['o0_o2_stdout_identity']:raise RuntimeError('O0/O2 mismatch')
 results['cost_seconds']={c:sum(e['seconds'] for e in events if e['category']==c) for c in ('compile','link','native')}
