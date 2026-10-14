@@ -39,19 +39,25 @@ program test_matrix_route
   logical::ok,did_commit
 
   call initialize_application_config(cfg,-75.0_real64,k)
+  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=-0.1_real64
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=1.0e-4_real64
   cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0.0_real64
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
-  cfg%numerical%transaction%temporal_tolerance=1.0_real64
+  cfg%numerical%model_temporal_indicator_budget=1.0e-6_real64
+  cfg%numerical%transaction%temporal_tolerance=0.0_real64
+  cfg%numerical%transaction%max_retries=30
+  cfg%numerical%max_committed_substeps=10000
   column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
   column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call backend%initialize(top)
-  call fmr_new_b110_committed_state(water_state,column%column_id,cfg%tiles(1)%initial_state,T0,ok)
+  call fmr_new_b110_temporal_indicator_committed_state(water_state,column%column_id,cfg%tiles(1)%initial_state,T0,ok, &
+       spread(0.0_real64,1,numnod))
   call require(ok,'water state')
   call parameters(p)
+  call signed_contracts(p)
   allocate(expected_c(numnod),expected_mass(numnod))
   expected_c=[(0.1_real64+0.1_real64*i,i=1,numnod)]
   water=cfg%tiles(1)%initial_state%water_content
@@ -77,6 +83,7 @@ program test_matrix_route
     do j=1,size(obs%accepted_water_flux_substeps)
       associate(s=>obs%accepted_water_flux_substeps(j))
         call mod_reconstruct(s,faces,closure,face_status)
+        if(face_status/=0)print *,'face diagnostics',face_status,closure,s%t1-s%t0
         call require(face_status==0,'actual carrier water balance')
         f=p;f%dt_day=s%t1-s%t0;f%theta=s%water_end;f%theta_previous=s%water_start
         f%q_face_up_cm_day=-faces;f%root_sink_cm_day=s%root_sink;f%qdra_cm_day=s%drainage_sink_by_level
@@ -127,6 +134,87 @@ program test_matrix_route
   call compare_states(initial,retry)
   print '(A)','MATRIX_ACTUAL_RICHARDS_ORACLE_ROLLBACK_RESTART=PASS'
 contains
+  subroutine signed_contracts(base)
+    use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
+    type(b111_reactive_solute_substep_forcing_t),intent(in)::base
+    type(b111_reactive_solute_substep_forcing_t)::f,pbad
+    type(fmr_water_flux_substep_trace_t)::trace(1),broken(1)
+    type(matrix_solute_state_t)::a,saved,failed
+    type(matrix_solute_receipt_t)::r
+    type(mobile_salt_state_t)::m
+    type(solute_compartment_state_t)::s
+    real(real64)::w(numnod),c(numnod),mass(numnod),u(numnod+1),dec,ein,eout,t
+    real(real64),allocatable::afterwater(:)
+    integer(int64)::rev
+    integer::variant,j,status
+    w=0.3_real64;c=[(0.2_real64+0.1_real64*j,j=1,numnod)]
+    pbad=base;pbad%frexp=2.0_real64
+    call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
+    call require(status/=0,'nonlinear application option is outside this route')
+    pbad=base;pbad%gampar(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+    call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
+    call require(status/=0,'invalid immutable reaction parameter rejected')
+    call initialize_matrix_solute(base,9001_int64,0.0_real64,-w,c,failed,status)
+    call require(status/=0,'negative carrier storage rejected')
+    do variant=1,4
+      f=base;f%temperature_active=variant/=4
+      f%temperature_c=spread(20.0_real64+10.0_real64*variant,1,numnod)
+      trace(1)=fmr_water_flux_substep_trace_t()
+      trace(1)%t0=0.0_real64;trace(1)%t1=0.1_real64
+      trace(1)%water_start=w
+      trace(1)%root_sink=spread(0.001_real64,1,numnod)
+      allocate(trace(1)%drainage_sink_by_level(2,numnod))
+      trace(1)%drainage_sink_by_level(1,:)=0.003_real64
+      trace(1)%drainage_sink_by_level(2,:)=-0.001_real64
+      trace(1)%net_node_source=-sum(trace(1)%drainage_sink_by_level,dim=1)-trace(1)%root_sink
+      trace(1)%subsurface_source=spread(0.0_real64,1,numnod)
+      u=0.01_real64;u(1)=0.0_real64
+      if(mod(variant,2)==0)u(numnod+1)=-0.01_real64
+      trace(1)%top_flux=u(1);trace(1)%bottom_flux=u(numnod+1)
+      trace(1)%water_end=w
+      do j=1,numnod
+        trace(1)%water_end(j)=w(j)+0.1_real64*(u(j+1)-u(j)+trace(1)%net_node_source(j))/dz(j)
+      end do
+      call initialize_matrix_solute(f,9001_int64,0.0_real64,w,c,a,status)
+      call require(status==0,'signed fixture initialized')
+      saved=a
+      mass=(w+f%bulk_density*f%kf)*c*dz
+      f%dt_day=0.1_real64;f%theta=trace(1)%water_end;f%theta_previous=w
+      f%q_face_up_cm_day=u;f%root_sink_cm_day=trace(1)%root_sink;f%qdra_cm_day=trace(1)%drainage_sink_by_level
+      call literal_step(f,c,mass,dec,ein,eout)
+      call consume_accepted_matrix_trace(a,trace,r)
+      call require(r%status==0,'signed root drainage bottom route')
+      call a%snapshot(t,afterwater,m,s,rev)
+      call require(maxval(abs(m%concentration_mg_cm3-c))<1.0e-12_real64,'signed literal oracle')
+      call require(maxval(abs(m%mass_mg_cm2+s%sorbed_matrix_mass-mass))<1.0e-12_real64,'signed compartment mass oracle')
+      call require(abs(r%decay_out-dec)<1.0e-12_real64,'literal decay receipt')
+      call require(abs(r%external_out-r%external_in-eout)<1.0e-12_real64,'signed external receipt')
+      if(variant==4)call require(abs(r%decay_out)<=0.0_real64,'heat off disables source decay')
+      broken=trace;broken(1)%net_node_source=0.0_real64
+      failed=saved
+      call consume_accepted_matrix_trace(failed,broken,r)
+      call require(r%status==MATRIX_CARRIER,'inconsistent root drainage source rejected')
+      call compare_states(saved,failed)
+      broken=trace;broken(1)%root_sink(1)=ieee_value(0.0_real64,ieee_quiet_nan)
+      call consume_accepted_matrix_trace(failed,broken,r)
+      call require(r%status==MATRIX_CARRIER,'nonfinite root input rejected')
+      call compare_states(saved,failed)
+      pbad=base;pbad%decpot=100.0_real64
+      call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w, &
+           [(0.2_real64+0.1_real64*j,j=1,numnod)],failed,status)
+      saved=failed
+      call consume_accepted_matrix_trace(failed,trace,r)
+      call require(r%status==MATRIX_PROCESS,'reaction overdraw rejected')
+      call compare_states(saved,failed)
+      ! Repeat from identical committed authority with a shorter valid carrier.
+      trace(1)%t1=0.001_real64
+      trace(1)%water_end=w+(trace(1)%water_end-w)*0.01_real64
+      call consume_accepted_matrix_trace(failed,trace,r)
+      call require(r%status==0,'overdraw retry shorter carrier succeeds')
+      c=[(0.2_real64+0.1_real64*j,j=1,numnod)]
+    end do
+    print '(A)','MATRIX_SIGNED_ROOT_DRAIN_BOTTOM_REACTION_RETRY=PASS'
+  end subroutine
   subroutine parameters(f)
     type(b111_reactive_solute_substep_forcing_t),intent(out)::f
     f%dz_cm=dz;f%theta=cfg%tiles(1)%initial_state%water_content
@@ -164,7 +252,7 @@ contains
     real(real64),intent(out)::cl
     integer,intent(out)::code
     call reconstruct_interval_water_face_flux(dz,s%water_start,s%water_end,s%net_node_source, &
-         -s%top_flux,-s%bottom_flux,s%t1-s%t0,1.0e-10_real64,q,cl,code)
+         -s%top_flux,-s%bottom_flux,s%t1-s%t0,1.0e-10_real64/(s%t1-s%t0),q,cl,code)
   end subroutine
   subroutine require(ok,label)
     logical,intent(in)::ok

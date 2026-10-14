@@ -9,7 +9,7 @@ module mod_fmr_b111_matrix_solute_route
   use mod_solute_compartment_state, only: solute_compartment_state_t,initialize_solute_compartment_state,SOLCOMP_OK
   use mod_b111_solute_sorption, only: b111_sorption_result_t,b111_sorption_storage_from_concentration,B111_SORP_OK
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t, &
-       b111_reactive_solute_substep_receipt_t,advance_b111_reactive_solute_substep,B111_REACTIVE_OK
+       b111_reactive_solute_substep_receipt_t,advance_b111_reactive_solute_substep,B111_REACTIVE_OK,b111_reactive_forcing_valid
   implicit none
   private
   integer,parameter,public::MATRIX_OK=0,MATRIX_INVALID=1,MATRIX_CARRIER=2,MATRIX_PROCESS=3
@@ -46,6 +46,7 @@ contains
     integer,intent(out)::status
     type(b111_sorption_result_t)::s
     type(matrix_solute_state_t)::trial
+    type(b111_reactive_solute_substep_forcing_t)::validation
     real(real64),allocatable::sorbed(:)
     integer::i,n,code
     state=matrix_solute_state_t();status=MATRIX_INVALID
@@ -58,6 +59,16 @@ contains
     ! chemical input, aquifer or age owner. Other candidate processes stay open.
     if(.not.ieee_is_finite(p%frexp).or.abs(p%frexp-1.0_real64)>epsilon(1.0_real64))return
     if(abs(p%rain_rate_cm_day)+abs(p%irrigation_rate_cm_day)+abs(p%macropore_area_fraction)>0.0_real64)return
+    validation=p;validation%dt_day=1.0_real64;validation%theta=water;validation%theta_previous=water
+    validation%q_face_up_cm_day=spread(0.0_real64,1,n+1)
+    validation%root_sink_cm_day=spread(0.0_real64,1,n)
+    if(allocated(validation%qdra_cm_day))deallocate(validation%qdra_cm_day)
+    allocate(validation%qdra_cm_day(0,n))
+    if(.not.b111_reactive_forcing_valid(validation))return
+    if(n>1)then
+      if(any(abs(p%face_left_weight+p%face_right_weight-1.0_real64)> &
+           1024.0_real64*epsilon(1.0_real64)))return
+    end if
     call initialize_mobile_salt_state(p%dz_cm,water,concentration,trial%mobile,code)
     if(code/=SOLUTE_OK)return
     allocate(sorbed(n))
@@ -123,7 +134,12 @@ contains
              .not.allocated(t%drainage_sink_by_level))return
         if(size(t%water_start)/=n.or.size(t%water_end)/=n.or.size(t%root_sink)/=n.or. &
              size(t%net_node_source)/=n.or.size(t%drainage_sink_by_level,2)/=n)return
-        if(.not.all(ieee_is_finite(t%water_start)))return
+        if(.not.all(ieee_is_finite(t%water_start)).or..not.all(ieee_is_finite(t%root_sink)).or. &
+             .not.all(ieee_is_finite(t%drainage_sink_by_level)).or..not.all(ieee_is_finite(t%net_node_source)))return
+        if(any(t%root_sink<0.0_real64))return
+        scale=max(1.0_real64,maxval(abs(t%net_node_source)))
+        if(any(abs(t%net_node_source+sum(t%drainage_sink_by_level,dim=1)+t%root_sink)> &
+             1024.0_real64*epsilon(1.0_real64)*scale))return
         scale=max(1.0_real64,maxval(abs(trial%water)))
         if(any(abs(t%water_start-trial%water)>1024.0_real64*epsilon(1.0_real64)*scale))return
         if(allocated(t%macropore_matrix_exchange))then
@@ -141,8 +157,8 @@ contains
         if(abs(t%top_flux)>0.0_real64)return
         dt=t%t1-t%t0
         call reconstruct_interval_water_face_flux(trial%parameters%dz_cm,t%water_start,t%water_end, &
-             t%net_node_source,-t%top_flux,-t%bottom_flux,dt,tol,faces,closure,code)
-        receipt%max_water_residual=max(receipt%max_water_residual,abs(closure))
+             t%net_node_source,-t%top_flux,-t%bottom_flux,dt,tol/dt,faces,closure,code)
+        receipt%max_water_residual=max(receipt%max_water_residual,abs(closure)*dt)
         if(code/=WATER_FACE_FLUX_OK)return
         f=trial%parameters;f%dt_day=dt;f%theta_previous=t%water_start;f%theta=t%water_end
         f%q_face_up_cm_day=-faces;f%root_sink_cm_day=t%root_sink;f%qdra_cm_day=t%drainage_sink_by_level

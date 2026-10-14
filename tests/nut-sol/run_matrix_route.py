@@ -28,7 +28,7 @@ if source_hash!=expected:raise RuntimeError('B1.11 source hash mismatch')
 lines=raw.decode('latin1').splitlines()
 assert 'cmsy(i) = cmsy(i) + (cfluxb-cfluxt)' in lines[418]
 assert 'cml(i) = cmsy(i) / (theta(i) + bdenskf(i))' in lines[441]
-loop='\n'.join(lines[360:432])+'\n'+lines[441]+'\n          end do\n'
+loop='\n'.join(lines[360:432])+'\n'+lines[441]+'\n'+lines[454]+'\n          end do\n'
 pre='''module b111_literal_oracle
  use iso_fortran_env,only:real64
  use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
@@ -81,7 +81,7 @@ end module
 '''
 results={'baseline':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'compiler':subprocess.check_output(FC+['--version'],text=True).splitlines()[0],
  'authority_member':'SWAP/solute.f90','authority_sha256':source_hash,'archive_sha256':sha(BUNDLE),
- 'literal_lines':[[361,432],[442,442]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).relative_to(ROOT)):sha(pathlib.Path(__file__))}}
+ 'literal_lines':[[361,432],[442,442],[455,455]],'runs':{},'input_sha256':{str(TEST.relative_to(ROOT)):sha(TEST),str(FIXTURE.relative_to(ROOT)):sha(FIXTURE),str(pathlib.Path(__file__).relative_to(ROOT)):sha(pathlib.Path(__file__))}}
 # Check pinned hash from the qualified donor source probe.
 PIN=expected
 results['authority_pin']=PIN

@@ -71,7 +71,7 @@ module mod_b111_reactive_solute_substep
     real(real64)::balance_residual_mg_cm2=0.0_real64
   end type
 
-  public::advance_b111_reactive_solute_substep
+  public::advance_b111_reactive_solute_substep, b111_reactive_forcing_valid
 
 contains
 
@@ -94,7 +94,7 @@ contains
     candidate_mobile=committed_mobile
     candidate_companion=committed_companion
     receipt=b111_reactive_solute_substep_receipt_t()
-    if(.not.valid_forcing(f))return
+    if(.not.b111_reactive_forcing_valid(f))return
     if(.not.mobile_valid(committed_mobile).or..not.committed_companion%valid())return
     n=size(f%theta);nlev=size(f%qdra_cm_day,1)
     if(size(committed_mobile%mass_mg_cm2)/=n.or.size(committed_companion%sorbed_matrix_mass)/=n)return
@@ -238,7 +238,7 @@ contains
        all(s%mass_mg_cm2>=0.0_real64).and.all(s%concentration_mg_cm3>=0.0_real64)
   end function
 
-  logical function valid_forcing(f) result(ok)
+  logical function b111_reactive_forcing_valid(f) result(ok)
     type(b111_reactive_solute_substep_forcing_t),intent(in)::f
     integer::n
     ok=.false.
