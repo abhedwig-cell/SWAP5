@@ -30,7 +30,9 @@
       "remaining_dependency": [],
       "row_sha256": "14cacc5fad38bd5ea0cf8aca160a5d483e1639d067bec9323ed8ae657c5e6c25",
       "canonical_admission_changed": false,
-      "candidate_progress": "Locally qualified joint Full Richards/linear matrix transport+sorption+decay route with atomic rejection/retry and fresh-process joint disk restart; offered for scoped admission, no disposition promotion."
+      "candidate_progress": "Joint linear matrix route canonically admitted, whole source capability remains ACTIVE; initialization nonfinite/overflow guard independently corrected and qualified.",
+      "row_sha256_after": "b8b0019b6c768668e7b866497be5503962dc5702b1afcb3deae534ea52ae02a8",
+      "bounded_route_admitted": true
     },
     {
       "capability_id": "SW431-SALT-DECAY",
@@ -39,7 +41,9 @@
       "remaining_dependency": [],
       "row_sha256": "fc93d7d6eb4c8bacba7d6eb7344dae5f14aee95e94cf9fa4047a4835a17a832b",
       "canonical_admission_changed": false,
-      "candidate_progress": "Locally qualified joint Full Richards/linear matrix transport+sorption+decay route with atomic rejection/retry and fresh-process joint disk restart; offered for scoped admission, no disposition promotion."
+      "candidate_progress": "Joint linear matrix route canonically admitted, whole source capability remains ACTIVE; initialization nonfinite/overflow guard independently corrected and qualified.",
+      "row_sha256_after": "77d9973ca76f7baac46f04ff5933bc1d497d43e8117b3e05c2a9c1c5274de650",
+      "bounded_route_admitted": true
     },
     {
       "capability_id": "SW431-SALT-AQUIFER",
@@ -165,8 +169,11 @@
     }
   ],
   "not_promoted": true,
-  "reconciliation": "Master counts and all dispositions unchanged because this candidate is offered for scoped admission. SALT-DECAY has a stale copied aquifer claim in this master snapshot; matrix decay has no aquifer dependency. Central master owner must replace that claim and add this bounded receipt after admission. Nonlinear sorption, surface/pond and joint application feedback remain outside this route. No blanket implementation absence is inferred from canonical admission status.",
+  "reconciliation": "Existing master1072 now has bounded linear sorption/decay production receipts; erroneous copied decay/aquifer claim corrected. All243 counts and14 NUT/SOL dispositions unchanged; all other241 capability rows identical. Aquifer REJECTED unchanged. Master checker before/after fails its existing stale inheritance baseline; no whole-master admission.",
   "joint_successor": "Joint commit, fresh-process restart and complete stable preservation pass; bounded canonical receipt authorized,14 full capability dispositions unchanged.",
   "regie_admission_decision": "ADMIT limited linear matrix route; no capability disposition promotion",
-  "master_global_checker": "Existing eccbf9d2 master baseline and scoped postimage both FAIL stale inheritance baseline; no whole-master PASS claimed"
+  "master_global_checker": "Existing eccbf9d2 master baseline and scoped postimage both FAIL stale inheritance baseline; no whole-master PASS claimed",
+  "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+  "master_reconciled_blob": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
+  "canonical_bounded_admission": "034b74cf483613ce57c9a02b474e78cc5f7d4680"
 }

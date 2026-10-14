@@ -59,8 +59,13 @@ contains
     if(size(p%dz_cm)/=n.or.size(p%bulk_density)/=n.or.size(p%kf)/=n)return
     ! This production route qualifies linear Freundlich only and has no surface
     ! chemical input, aquifer or age owner. Other candidate processes stay open.
-    if(.not.ieee_is_finite(p%frexp).or.abs(p%frexp-1.0_real64)>epsilon(1.0_real64))return
-    if(abs(p%rain_rate_cm_day)+abs(p%irrigation_rate_cm_day)+abs(p%macropore_area_fraction)>0.0_real64)return
+    ! Fortran logical expressions need not short circuit under O0/FPE traps.
+    if(.not.ieee_is_finite(p%frexp))return
+    if(abs(p%frexp-1.0_real64)>epsilon(1.0_real64))return
+    if(.not.all(ieee_is_finite([p%rain_rate_cm_day,p%irrigation_rate_cm_day,p%macropore_area_fraction])))return
+    ! Individual zero comparisons also avoid overflow in a sum of invalid rates.
+    if(abs(p%rain_rate_cm_day)>0.0_real64.or.abs(p%irrigation_rate_cm_day)>0.0_real64.or. &
+         abs(p%macropore_area_fraction)>0.0_real64)return
     validation=p;validation%dt_day=1.0_real64;validation%theta=water;validation%theta_previous=water
     validation%q_face_up_cm_day=spread(0.0_real64,1,n+1)
     validation%root_sink_cm_day=spread(0.0_real64,1,n)

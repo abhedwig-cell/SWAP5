@@ -1,6 +1,6 @@
 # MC-SOL01 trajectory 3: accepted matrix transport with sorption and decay
 
-Status: joint physical matrix route qualified and preserved; central regie ADMIT authorized, safe merge pending.
+Status: bounded joint physical matrix route canonically admitted via PR #1228; broader NUT/SOL capabilities remain open.
 Original baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
 Current reconciled canonical: `34ee4fdac815788620f8779f4340b8edeef3c8ae`.
 Donor: PR #1117, `b6b894513fcdcf66e94824742c129616ddd7aed1`.
@@ -217,3 +217,29 @@ receipt and correction of its copied decay/aquifer claim. Its untouched baseline
 checker already fails with stale inheritance baseline, which remains an explicit
 master blocker. Thirteen unrelated historical/research Action workflows retain
 their inspected failures; no whole-repository green-check claim is made.
+
+
+The safe PR1228 merge is `034b74cf483613ce57c9a02b474e78cc5f7d4680`; its
+complete tree and production/test/tool bytes were verified. Existing master1072
+now records bounded sorption/decay receipts at
+`8c82b782725f6c3775c7aa68e9f4dddaa0b63626`. Other241 capability rows, all
+dispositions and counts remain unchanged; the copied decay/aquifer claim is
+corrected. The pre-existing global master inheritance blocker remains open.
+
+A supplementary constructor boundary probe exposed an O0-only NaN/FPE defect
+after admission. The finite test and comparison are now separate; invalid
+surface rates are finite-checked individually without an overflowing sum. Five
+production NaN/overflow cases and the complete actual water/chemical/joint
+restart O0/O2 suite pass on the correction. All prior valid outputs, fresh-process
+endpoint hashes,16 common native restart files and the module interface bytes
+are identical. Fresh costs:114.694768s compile,0.387795s link,10.845234s native.
+The O0 reproducer and strict-warning failed build remain retained.
+
+The unchanged shared-owner full-FCI evidence remains bound to the original
+terminal run38631988831. The correction changes no accepted finite parameter
+behavior, interface, layout, water/thermal/crop source, existing driver, fixture
+or build selection. The exact dependency/caller/interface audit and valid-state
+byte comparison qualify that preservation decision; revised source-pin and
+evidence controls execute fresh. No new complete F-CI execution is claimed for
+the guard correction. Raw evidence and its exact executed Git bundle are linked
+from the existing status record.

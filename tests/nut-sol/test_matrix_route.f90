@@ -151,6 +151,26 @@ contains
     pbad=base;pbad%frexp=2.0_real64
     call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
     call require(status/=0,'nonlinear application option is outside this route')
+    do j=1,5
+      pbad=base
+      select case(j)
+      case(1)
+        pbad%frexp=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(2)
+        pbad%rain_rate_cm_day=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(3)
+        pbad%irrigation_rate_cm_day=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(4)
+        pbad%macropore_area_fraction=ieee_value(0.0_real64,ieee_quiet_nan)
+      case(5)
+        pbad%rain_rate_cm_day=huge(0.0_real64)
+        pbad%irrigation_rate_cm_day=huge(0.0_real64)
+      end select
+      call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
+      call require(status==MATRIX_INVALID,'invalid scalar initialization returns status under FPE traps')
+      call require(.not.failed%ready(),'invalid scalar initialization publishes no state')
+    end do
+    print '(A)','MATRIX_INITIALIZATION_NONFINITE_OVERFLOW_O0_O2=PASS'
     pbad=base;pbad%gampar(1)=ieee_value(0.0_real64,ieee_quiet_nan)
     call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
     call require(status/=0,'invalid immutable reaction parameter rejected')
