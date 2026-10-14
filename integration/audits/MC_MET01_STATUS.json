@@ -806,6 +806,26 @@
     "reproduction_commands": [
       "PATH=<qualified-gfortran-bin>:$PATH python tests/mc-met01/run_raintb_legacy_pilot.py --output <fresh-output>",
       "PATH=<qualified-gfortran-bin>:$PATH python tests/mc-met01/run_raintb_legacy_pilot.py --integration --output <fresh-output>"
-    ]
+    ],
+    "owner_preservation_followup": {
+      "stage": "PREPARED_NOT_TESTED",
+      "parallel_head": "d13c6177d05e32a71c4cab7457a603ed1547025c",
+      "parallel_branch": "work/low-air-10x-20261014",
+      "parallel_stage": "BOUNDED_DIAGNOSIS",
+      "parallel_changed_paths": [
+        "integration/audits/LOW_AIR_10X_20261014_STATUS.json",
+        "tools/performance/run_low_air_diagnosis.py"
+      ],
+      "production_overlap": [],
+      "selected_tests": [
+        "original full authentic weather/crop driver all neutral/dry/hydraulic continuous/restart cases",
+        "existing traditional PM/CFBS physical composition driver continuous/restart",
+        "existing typed RAINTB physical composition driver continuous/restart",
+        "unchanged independent daily-demand source and1700-case reference-ET drivers"
+      ],
+      "build": "One controlled execution, separate O0/O2, source/toolchain/object/module hashes checked; providers and headcalc/source-oracles compiled once per optimization, three distinct drivers link/run fresh. No persistent cache or central runner change.",
+      "cost_selection": "Required incumbent owner composition after additive weather-adapter change. Shared build expected minutes; native cost UNKNOWN; no highest frost/low-air or full F-CI selected.",
+      "next_action": "Persist, execute owner batch and direct unchanged source oracles, retain all actual outcomes. Full admission remains pending explicit owner successor and required highest/F-CI preservation."
+    }
   }
 }
