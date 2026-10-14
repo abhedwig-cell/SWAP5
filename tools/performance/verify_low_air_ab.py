@@ -8,6 +8,8 @@ import argparse,hashlib,json,math,pathlib,re
 
 def verify(folder):
  folder=pathlib.Path(folder);r=json.loads((folder/'RESULTS.json').read_text())
+ if r.get('scope') not in ['COMPLETE_HIGHEST_LOW_AIR_SAME_HOST_AB','GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION']:raise ValueError('unknown evidence scope')
+ if type(r.get('repeat')) is not int or r['repeat']<1:raise ValueError('positive repeat required')
  candidate_only=r.get('scope')=='GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION'
  policies=['candidate'] if candidate_only else ['baseline','candidate']
  expected={(round_index,family,policy)for round_index in range(r['repeat'])for family in range(1,7)for policy in policies}

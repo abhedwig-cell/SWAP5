@@ -12,6 +12,12 @@ class Controls(unittest.TestCase):
  def check(self,record):
   (self.out/'RESULTS.json').write_text(json.dumps(record));return v.verify(self.out)
  def test_complete(self):self.assertFalse(self.check(self.record)['canonical_admission'])
+ def test_empty_matrix(self):
+  r=copy.deepcopy(self.record);r['repeat']=0;r['runs']=[]
+  with self.assertRaises(ValueError):self.check(r)
+ def test_unknown_scope(self):
+  r=copy.deepcopy(self.record);r['scope']='UNKNOWN'
+  with self.assertRaises(ValueError):self.check(r)
  def test_missing(self):
   r=copy.deepcopy(self.record);r['runs'].pop()
   with self.assertRaises(ValueError):self.check(r)
