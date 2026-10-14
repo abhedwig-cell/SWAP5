@@ -1,0 +1,22 @@
+{
+  "path": "integration/audits/evidence/LOW_AIR_10X_FULL48_COLD_20261014.tar.xz.b64",
+  "decoded_sha256": "0822bc3ce3ae74785d40e56c8315cf1c36972b2aae12d2d1f14fa3595db84642",
+  "indexed_files": 1549,
+  "compressed_bytes": 3500384,
+  "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
+  "bundle_prerequisite": "c591205c5e03f1c96c6488eb53c562265f749556",
+  "executed_local_head": "53eb66664381b9bbe0524ba362d517e41be2b7aa",
+  "source_tree": "7e3a1c25f74d71b1bf8344ec36bbec86e66bd570",
+  "scopes": [
+    "full-low-air-candidate-r0",
+    "full-low-air-candidate-diagnosis",
+    "full-low-air-lazy-diagnosis",
+    "full-low-air-baseline-r0",
+    "full-low-air-candidate-cold-r1"
+  ],
+  "recipe_sha256": "da08a090fd25f01bd120629b716075d91971e9d47c15cebd719df38a0b88f9da",
+  "recovery_bundle_sha256": "381e58eb87b727cb9ef865075cc112f94f22a31904d2e2011476c9a9f25f264e",
+  "tenfold_proved": false,
+  "canonical_admission": false,
+  "scope": "Complete matched warm native baseline/candidate and complete cold candidate. Parallel build pipeline not yet qualified; full-wall A/B pending."
+}

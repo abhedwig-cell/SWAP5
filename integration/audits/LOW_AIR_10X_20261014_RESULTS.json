@@ -510,7 +510,7 @@
   ],
   "detailed_phase_profile": "Continuation successor seal: fine-stage-profile-2; preparation/copying each <0.25 CPU s per first family; resolved production runtime ~9.7 CPU s. Bounded nested callbacks impose ~6x observer overhead and do not establish whole-gate exclusive hotspot percentages.",
   "cold_end_to_end_ab": "UNKNOWN",
-  "full_48_program_same_hardware_end_to_end_ab": "BASELINE_ACTIVE",
+  "full_48_program_same_hardware_end_to_end_ab": "CONTINUOUS_COLD_BASELINE_ACTIVE",
   "limitation": "No multiplication of separately sampled proposal/workspace gains. 123.315s is the twelve-program warm highest scenario, not the historical 10678.726s full low-air qualification.",
   "warm_measurement_endpoint": "Enclosing timer stops after build/rebind and twelve native/driver executions, before final parent-level manifest validation and O0/O2 byte comparison. Parent CPU and final validation overhead UNKNOWN.",
   "full_48_candidate_warm": {
@@ -536,5 +536,167 @@
     "parent_cpu": 0.6989237850000001,
     "whole_wall": 571.4786546840005,
     "cold_provider_build": "EXCLUDED_VERIFIED_WARM_PROVIDERS"
+  },
+  "complete_matrix_native_and_cold": {
+    "scope": "FULL_ORIGINAL_48_LOW_AIR_288_FINE_COMPARISONS",
+    "receipts": {
+      "baseline": {
+        "original_programs": 48,
+        "original_fine_comparisons": 288,
+        "policy": "baseline",
+        "whole_wall": null,
+        "native_cpu": 17628.748666,
+        "build_link_cpu": 144.303175,
+        "parent_cpu": 0.16545457999999996,
+        "accepted_substeps_reported": 10881960,
+        "reported_physical_intervals": 288,
+        "temporal_rejections_reported": 150869768,
+        "max_head_error_cm": 1.934671e-07,
+        "max_temperature_error_c": 3.645337e-07,
+        "immutable_original_stdout": "DISTINCT_SOURCE_BOUND_HISTORICAL_AUTHORITY",
+        "historical_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+        "historical_matching_programs": 0,
+        "historical_different_or_missing_programs": 48,
+        "provider_compilation": "EXCLUDED_VERIFIED_WARM_PROVIDERS",
+        "tenfold_proved": false,
+        "canonical_admission": false
+      },
+      "candidate": {
+        "original_programs": 48,
+        "original_fine_comparisons": 288,
+        "policy": "candidate",
+        "whole_wall": 571.4786546840005,
+        "native_cpu": 1627.202226,
+        "build_link_cpu": 160.615992,
+        "parent_cpu": 0.6989237850000001,
+        "accepted_substeps_reported": 8570238,
+        "reported_physical_intervals": 288,
+        "temporal_rejections_reported": 4320,
+        "max_head_error_cm": 2.935894e-07,
+        "max_temperature_error_c": 5.53041e-07,
+        "immutable_original_stdout": "DISTINCT_NUMERICAL_POLICY_ALL_ORIGINAL_ASSERTIONS",
+        "historical_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+        "historical_matching_programs": 0,
+        "historical_different_or_missing_programs": 0,
+        "provider_compilation": "EXCLUDED_VERIFIED_WARM_PROVIDERS",
+        "tenfold_proved": false,
+        "canonical_admission": false
+      },
+      "cold_candidate": {
+        "original_programs": 48,
+        "original_fine_comparisons": 288,
+        "policy": "candidate",
+        "whole_wall": 705.752062536998,
+        "native_cpu": 2119.853571,
+        "build_link_cpu": 166.388041,
+        "parent_cpu": 1.03714724,
+        "accepted_substeps_reported": 8570238,
+        "reported_physical_intervals": 288,
+        "temporal_rejections_reported": 4320,
+        "max_head_error_cm": 2.935894e-07,
+        "max_temperature_error_c": 5.53041e-07,
+        "immutable_original_stdout": "DISTINCT_NUMERICAL_POLICY_ALL_ORIGINAL_ASSERTIONS",
+        "historical_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+        "historical_matching_programs": 0,
+        "historical_different_or_missing_programs": 0,
+        "provider_compilation": "FRESH_BUILDS_MEASURED_BY_ENCLOSING_CONTROLLER",
+        "tenfold_proved": false,
+        "canonical_admission": false
+      }
+    },
+    "cold_candidate": {
+      "scope": "COMPLETE_ORIGINAL_48_LOW_AIR_COLD_PROVIDERS",
+      "policy": "candidate",
+      "whole_wall": 818.0603416759986,
+      "whole_cpu": 2399.563302717,
+      "events": [
+        {
+          "label": "providers-o0",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/run_low_air_diagnosis.py",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/build-o0",
+            "--opt",
+            "0",
+            "--full-driver",
+            "--policy",
+            "--build-only"
+          ],
+          "exit": 0,
+          "wall": 28.812262398998428,
+          "cpu": 28.79364
+        },
+        {
+          "label": "providers-o2",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/run_low_air_diagnosis.py",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/build-o2",
+            "--opt",
+            "2",
+            "--full-driver",
+            "--policy",
+            "--build-only"
+          ],
+          "exit": 0,
+          "wall": 82.9984779990009,
+          "cpu": 82.982285
+        },
+        {
+          "label": "full-matrix",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/run_low_air_complete.py",
+            "--build-o0",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/build-o0",
+            "--build-o2",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/build-o2",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/matrix",
+            "--policy",
+            "candidate",
+            "--workers",
+            "4",
+            "--fresh-build"
+          ],
+          "exit": 0,
+          "wall": 705.8366104909983,
+          "cpu": 2287.371207
+        },
+        {
+          "label": "full-verification",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/verify_low_air_complete.py",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-r1/matrix",
+            "--check-binaries"
+          ],
+          "exit": 0,
+          "wall": 0.4112198350012477,
+          "cpu": 0.411304
+        }
+      ],
+      "original_programs": 48,
+      "original_fine_comparisons": 288,
+      "tenfold_proved": false,
+      "canonical_admission": false
+    },
+    "baseline_enclosing_total_cpu": "UNKNOWN_ORIGINAL_PARENT_INTERRUPTED",
+    "baseline_parent_cpu_scope": "RECOVERY_SEGMENT_ONLY",
+    "matched_native_cpu_speedup": 10.833778607429215,
+    "matched_enclosing_wall_speedup": "UNKNOWN_INTERRUPTED_BASELINE",
+    "cold_candidate_absolute_target_seconds": 1067.873,
+    "cold_candidate_within_absolute_target": true,
+    "historical_10678_seconds_hardware_comparability": "UNKNOWN",
+    "candidate_repeat_science": "EXACT_48_PROGRAMS_WARM_COLD_O0_O2",
+    "tenfold_full_wall_proved": false,
+    "canonical_admission": false,
+    "limits": [
+      "Original baseline interrupted after 20 completed children; full wall not reconstructed or inferred from CPU.",
+      "One full native CPU pair and two complete candidate matrices; earlier highest alternating repeats retain order/load sensitivity.",
+      "Cold candidate alone is not cold A/B. No multiplication of scoped speedups."
+    ]
   }
 }

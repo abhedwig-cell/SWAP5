@@ -38,6 +38,7 @@ def main():
     parser.add_argument('--build-o2', type=pathlib.Path, required=True)
     parser.add_argument('--output', type=pathlib.Path, required=True)
     parser.add_argument('--policy', choices=['baseline', 'candidate'], required=True)
+    parser.add_argument('--build-workers', type=int, choices=range(1, 5), default=1)
     parser.add_argument('--workers', type=int, choices=range(1, 5), default=4)
     parser.add_argument('--only-program', choices=MATRIX)
     parser.add_argument('--only-family', type=int)
@@ -51,7 +52,7 @@ def main():
               'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD:src'], cwd=ROOT, text=True).strip(),
               'matrix': MATRIX, 'builds': {}, 'events': [], 'runs': [], 'complete': False,
-              'workers': args.workers, 'tenfold_proved': False, 'canonical_admission': False}
+              'workers': args.workers, 'build_workers': args.build_workers, 'tenfold_proved': False, 'canonical_admission': False}
     if args.only_program or args.only_family:
         report['scope'] = 'BOUNDED_FULL_DRIVER_DIAGNOSIS_NOT_48_QUALIFICATION'
     lock = threading.Lock()
@@ -66,6 +67,17 @@ def main():
         return {'label': label, 'command': command, 'wall': time.monotonic() - started,
                 'cpu': usage.ru_utime + usage.ru_stime, 'exit': process.returncode}
     tasks = []
+    build_tasks = []
+    def build_driver(folder, name, opt, flags, manifest_flags, providers, extras, driver, obj, program):
+        for label, command in [
+            ('compile', ['gfortran', *flags, '-c', str(driver), '-o', str(obj)]),
+            ('link', ['gfortran', *manifest_flags, *map(str, providers + extras), str(obj), '-o', str(program)]),
+        ]:
+            event = execute(command, f'{label}-{name}-o{opt}', folder / f'{name}-{label}.stdout', folder / f'{name}-{label}.stderr')
+            with lock:
+                report['events'].append(event)
+                persist()
+            if event['exit']: raise RuntimeError('compile/link failed')
     for opt, build in [(0, args.build_o0.resolve()), (2, args.build_o2.resolve())]:
         manifest = json.loads((build / 'RESULTS.json').read_text())
         if manifest['compiler'] != subprocess.check_output(['gfortran', '--version'], text=True):
@@ -77,9 +89,11 @@ def main():
             raise ValueError('compiled numerical provider drift')
         providers = [build / f'{i}.o' for i in range(len(manifest['ordered_sources']) - 1)]
         if args.fresh_build:
-            expected_events = {f'compile-{i}' for i in range(len(manifest['ordered_sources']))} | {'link'}
+            provider_only = manifest.get('provider_only', False)
+            expected_events = ({f'compile-{i}' for i in range(len(manifest['ordered_sources']) - 1)} if provider_only else {f'compile-{i}' for i in range(len(manifest['ordered_sources']))} | {'link'})
+            terminal = 'PROVIDERS_ONLY_NOT_QUALIFICATION' if provider_only else 'BUILD_ONLY_NOT_QUALIFICATION'
             events = manifest['events']
-            if manifest.get('terminal_status') != 'BUILD_ONLY_NOT_QUALIFICATION' or manifest.get('profile') or len(events) != len(expected_events) or {event['label'] for event in events} != expected_events or any(event['exit'] != 0 for event in events):
+            if manifest.get('terminal_status') != terminal or manifest.get('profile') or len(events) != len(expected_events) or {event['label'] for event in events} != expected_events or any(event['exit'] != 0 for event in events):
                 raise ValueError('incomplete/instrumented fresh provider build')
             prior = {'objects': {str(path): sha(path) for path in providers}}
         else:
@@ -128,19 +142,20 @@ def main():
             driver.write_text(text)
             obj = folder / (name + '.o')
             program = folder / name
-            for label, command in [
-                ('compile', ['gfortran', *flags, '-c', str(driver), '-o', str(obj)]),
-                ('link', ['gfortran', *manifest['flags'], *map(str, providers + extras), str(obj), '-o', str(program)]),
-            ]:
-                event = execute(command, f'{label}-{name}-o{opt}', folder / f'{name}-{label}.stdout', folder / f'{name}-{label}.stderr')
-                report['events'].append(event)
-                persist()
-                if event['exit']:
-                    raise RuntimeError('compile/link failed')
+            task = (folder, name, opt, flags, manifest['flags'], providers, extras, driver, obj, program)
+            if args.build_workers == 1:
+                build_driver(*task)
+            else:
+                if re.search(r'^\s*module\s+(?!procedure\b)', driver.read_text(), re.I | re.M):
+                    raise ValueError('parallel main compilation must not publish shared modules')
+                build_tasks.append(task)
             for family in (range(1, families + 1) if families else [None]):
                 if args.only_family and family != args.only_family:
                     continue
                 tasks.append((opt, name, family, program, sha(original), sha(driver), families))
+    if build_tasks:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=args.build_workers) as pool:
+            list(pool.map(lambda task: build_driver(*task), build_tasks))
     persist()
     def run(task):
         opt, name, family, program, original_sha, recipe_sha, families = task

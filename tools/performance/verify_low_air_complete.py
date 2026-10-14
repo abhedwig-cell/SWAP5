@@ -27,11 +27,10 @@ def verify_complete(folder, check_binaries=False):
     max_head = max_temperature = 0.
     old = json.loads(gzip.decompress((ROOT / 'docs/audits/evidence/PPA_WU05B15_LOCAL_REPLAY.json.gz').read_bytes()))
     historical_matches = historical_differences = 0
-    if policy == 'baseline':
-        import sys
-        sys.path.insert(0, str(ROOT / 'tests/performance'))
-        from low_air_successor_authority import verify_source
-        verify_source()
+    import sys
+    sys.path.insert(0, str(ROOT / 'tests/performance'))
+    from low_air_successor_authority import verify_source
+    verify_source()
     original_sources = {}
     for name in MATRIX:
         path = f'tests/frost/test_{name}.f90'
