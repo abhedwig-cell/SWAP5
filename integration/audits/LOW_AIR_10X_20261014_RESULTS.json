@@ -510,7 +510,31 @@
   ],
   "detailed_phase_profile": "Continuation successor seal: fine-stage-profile-2; preparation/copying each <0.25 CPU s per first family; resolved production runtime ~9.7 CPU s. Bounded nested callbacks impose ~6x observer overhead and do not establish whole-gate exclusive hotspot percentages.",
   "cold_end_to_end_ab": "UNKNOWN",
-  "full_48_program_same_hardware_end_to_end_ab": "UNKNOWN",
+  "full_48_program_same_hardware_end_to_end_ab": "BASELINE_ACTIVE",
   "limitation": "No multiplication of separately sampled proposal/workspace gains. 123.315s is the twelve-program warm highest scenario, not the historical 10678.726s full low-air qualification.",
-  "warm_measurement_endpoint": "Enclosing timer stops after build/rebind and twelve native/driver executions, before final parent-level manifest validation and O0/O2 byte comparison. Parent CPU and final validation overhead UNKNOWN."
+  "warm_measurement_endpoint": "Enclosing timer stops after build/rebind and twelve native/driver executions, before final parent-level manifest validation and O0/O2 byte comparison. Parent CPU and final validation overhead UNKNOWN.",
+  "full_48_candidate_warm": {
+    "scope": "FULL_ORIGINAL_48_LOW_AIR_WARM_PROVIDERS",
+    "policy": "candidate",
+    "head": "aa278e91273fb5513f9f46a0ccdf934976bd9a61",
+    "source_tree": "7e3a1c25f74d71b1bf8344ec36bbec86e66bd570",
+    "matrix": {
+      "ppa_wu05b8_low_air_runtime": 0,
+      "ppa_wu05b10_low_air_response_runtime": 0,
+      "ppa_wu05b11_low_air_runtime": 0,
+      "ppa_wu05b12_low_air_runtime": 5,
+      "ppa_wu05b13_low_air_runtime": 6,
+      "ppa_wu05b14_low_air_runtime": 4,
+      "ppa_wu05b15_low_air_runtime": 6
+    },
+    "complete": true,
+    "workers": 4,
+    "tenfold_proved": false,
+    "canonical_admission": false,
+    "native_cpu": 1627.202226,
+    "build_link_cpu": 160.615992,
+    "parent_cpu": 0.6989237850000001,
+    "whole_wall": 571.4786546840005,
+    "cold_provider_build": "EXCLUDED_VERIFIED_WARM_PROVIDERS"
+  }
 }

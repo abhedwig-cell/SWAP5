@@ -7,11 +7,11 @@
   "tested": true,
   "qualified": true,
   "admitted": false,
-  "stage": "SCIENTIFIC_SUCCESSOR_AND_FULL_PRESERVATION_PASS_PRIMARY_PERFORMANCE_UNMET",
+  "stage": "FULL_48_CANDIDATE_PASS_MATCHED_BASELINE_ACTIVE",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Review single PR1226 as qualified opt-in numerical/performance successor. Hard 10x complete comparable cold low-air A/B remains unproved; do not admit as LOW-AIR-10X acceptance or alter reference authority.",
+  "next_action": "Supervise single comparable full 48-program original baseline through terminal status, validate exact immutable baseline outputs, then execute fresh-provider full candidate and finalize actual measured A/B evidence. No simultaneous numerical jobs.",
   "blockers": [
-    "Hard 10x complete comparable end-to-end objective unproved; cold/full 48-program timing and historical hardware comparability UNKNOWN."
+    "Complete comparable baseline and cold candidate timings pending; no hard 10x acceptance or canonical admission."
   ],
   "authority_paths": [
     "integration/audits/PPA_WU05B19_STATUS.json",
@@ -39,8 +39,8 @@
     29,
     30
   ],
-  "performance": "V1 matched native median cost ratio 8.945987x; full cold end-to-end and historical hardware comparability UNKNOWN; hard 10x objective unmet.",
-  "checkpoint_commit": "5b4c706d1",
+  "performance": "Full current 48-program warm candidate 571.479s PASS; matched baseline ACTIVE. Historical hardware comparability UNKNOWN; hard 10x claim unproved.",
+  "checkpoint_commit": "eed6facdb",
   "remote_persisted": true,
   "tested_scope": "V3 current independent policy/F-KT O0/O2 cold/warm PASS, 12 fresh highest programs and 72 original fine comparisons PASS, 12 original coupling executions PASS; numerical source projection and six corrupt/partial/foreign seal controls PASS. Final direct-dummy fine workspace: 12 complete original programs and 72 fine comparisons repeated, per-step/failed-reuse O0/O2 and enhanced physical cold/warm controls PASS; fresh enclosing warm execution PASS.",
   "pr": 1226,
@@ -90,5 +90,23 @@
     "path": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014.tar.xz.b64",
     "receipt": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014_RECEIPT.json"
   },
-  "qualification_scope": "Highest twelve current ON programs, 72 unchanged fine comparisons, independent numerical/physical/F-KT/coupling contracts and full moving preservation. Original certified 48-case B19 default authority remains distinct inherited authority; no claim of 48 fresh current qualification executions."
+  "qualification_scope": "Full 48 current candidate programs and 288 unchanged fine comparisons PASS, O0/O2 exact; highest independent numerical/physical/F-KT/coupling contracts and full moving preservation PASS. Matched original 48-program baseline ACTIVE; cold candidate pending.",
+  "full_48_candidate_warm": {
+    "whole_wall": 571.478654684,
+    "native_cpu": 1627.202226,
+    "build_link_cpu": 160.615992,
+    "fine_comparisons": 288,
+    "programs": 48,
+    "cold_provider_build": "EXCLUDED_VERIFIED_WARM_PROVIDERS",
+    "tenfold_proved": false
+  },
+  "active_run": {
+    "path": "full-low-air-baseline-r0",
+    "session": 29191,
+    "policy": "baseline",
+    "workers": 4,
+    "state": "ACTIVE_NOT_QUALIFICATION",
+    "completed_at_checkpoint": 16
+  },
+  "full_48_candidate_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_CANDIDATE_20261014_RECEIPT.json"
 }
