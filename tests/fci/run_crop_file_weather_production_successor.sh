@@ -2,6 +2,16 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
+# Exact empirical-oxygen application successor with bound current-source proof.
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
+  python3 tests/crop-cycle/verify_oxygen_successor.py
+  if [[ "${1:-}" == --verify-only ]]; then exit 0; fi
+  # All incumbent weather and the new physical crop cycle have current sealed
+  # evidence; execute the unchanged F-KT/MICRO owner composition separately.
+  bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
+  echo 'CROP_OXYGEN_EXACT_CURRENT_OWNER_PRESERVATION=PASS'
+  exit 0
+fi
 # Exact independently qualified daily PM/CFBS successor; old evidence unchanged.
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
   python3 tests/mc-met01/verify_daily_demand_successor.py --owner-only

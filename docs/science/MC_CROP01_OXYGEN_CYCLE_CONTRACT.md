@@ -59,3 +59,22 @@ expected hash is rewritten to manufacture PASS. Full applicable preservation and
 canonical admission remain separate from local physical qualification. Long highest
 low-air is NOT_SELECTED under `LOW_AIR_TEST_SELECTION_DECISION_20261014.md`; fast
 independent oxygen and physical/numerical tests retain changed-scope coverage.
+
+## Exact source and preservation successor decision (continued trajectory 1)
+
+The user's continuation authorizes completing this same work unit's admission
+prerequisites. Extend the existing central source/evidence gates for this exact
+bootstrap postimage, not for arbitrary future application changes. The original
+PR1225 validator and immutable capsule remain unchanged for its three-file branch.
+The new branch requires byte-exact reversal of the one empirical-oxygen refusal,
+all other production/reference identity, current scientific input binding, actual
+complete O0/O2 direct/physical/raw evidence and selected shared owner preservation.
+Negative controls must reject foreign source, missing/partial/duplicate/failed
+native records, altered flags, corrupt outputs/capsules and stale dependencies.
+
+Highest low-air remains NOT_SELECTED under the programme policy. Fast original
+physical frost/drainage/restart and independent numerical/oxygen contracts replace
+its *selection for this successor*, without altering an assertion, physical
+reference or tolerance. They do not manufacture a highest PASS. Applicable full
+moving preservation still executes before admission; eligibility is no admission.
+No physics, clock, crop/calendar phase, restart layout or kernel API is changed.

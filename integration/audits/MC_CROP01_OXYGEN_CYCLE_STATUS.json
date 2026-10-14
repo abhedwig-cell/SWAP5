@@ -48,7 +48,7 @@
     "solver and low-air code",
     "state and restart layout",
     "all incumbent scientific assertions",
-    "canonical exact-source guards"
+    "Original three-file joint eligibility and original scientific assertions retained; additive exact source/physical-evidence successor only."
   ],
   "dependency_surface": [
     "src/runtime/mod_fmr_production_application_bootstrap.f90",
@@ -62,7 +62,7 @@
     "tests/crop-cycle/run_oxygen_contract.py",
     "tests/crop-cycle/run_oxygen_cycle.py"
   ],
-  "next_action": "Existing central MC-CROP01/RT/HY/F-KT must adjudicate exact bootstrap successor and determine/complete remaining applicable preservation; then admission. Trajectory2 not started.",
+  "next_action": "Persist source/evidence successor; execute original ten additional shared owner/coupling gates; bind their complete terminal evidence, then full applicable moving preservation under retired-highest policy.",
   "blockers": [
     "Existing central exact-source admission guards need owning successor adjudication after physical evidence; no hash bypass.",
     "Full harvest/rotation boundary decision remains unadmitted; trajectory2/3 not started."
@@ -583,5 +583,15 @@
     "workflow_filters_changed": false,
     "future_recovery": "Inspect this exact existing run if still needed. Do not dispatch a duplicate or infer canonical admission from unrelated green jobs.",
     "process_failure": "Broad automatic fanout should have been inspected before PR creation. No subsequent manual run or pipeline trigger was selected."
+  },
+  "continuation_stage": "EXACT_SOURCE_PHYSICAL_VERIFIER_AND_GOVERNED_OWNER_SUCCESSOR_IMPLEMENTED",
+  "guard_successor": {
+    "source_projection": "PASS",
+    "physical_evidence": "PASS",
+    "negative_controls": 15,
+    "qualified": false,
+    "required_additional_owners": 10,
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "full_moving": "PENDING_AFTER_OWNER_EVIDENCE"
   }
 }
