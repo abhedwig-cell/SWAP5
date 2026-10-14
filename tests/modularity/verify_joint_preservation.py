@@ -182,6 +182,11 @@ def read_evidence(record, raw=None):
 
 def verify_qualification():
     source = verify_source()
+    if source.get('co2_successor'):
+        import sys
+        sys.path.insert(0, str(ROOT / 'tests/crop-co2'))
+        from verify_co2_successor import verify_qualification as verify_co2
+        return verify_co2()
     if source.get('oxygen_cycle_successor'):
         import sys
         sys.path.insert(0, str(ROOT / 'tests/crop-cycle'))

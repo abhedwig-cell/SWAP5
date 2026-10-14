@@ -2,6 +2,14 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
+# Exact annual CO2 application successor: current physical and shared-owner proof.
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
+  python3 tests/crop-co2/verify_co2_successor.py
+  if [[ "${1:-}" == --verify-only ]]; then exit 0; fi
+  bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
+  echo 'CROP_CO2_EXACT_CURRENT_OWNER_PRESERVATION=PASS'
+  exit 0
+fi
 # Exact empirical-oxygen application successor with bound current-source proof.
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
   python3 tests/crop-cycle/verify_oxygen_successor.py

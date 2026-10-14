@@ -53,6 +53,11 @@ def validate(old, new, reference, baseline_reference):
 
 
 def verify_source():
+    if git('rev-parse', 'HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90') == '5a93008ed2fb18d0798ec0c967729815d156ec26':
+        import sys
+        sys.path.insert(0, str(ROOT / 'tests/crop-co2'))
+        from verify_co2_successor import verify_source as verify_co2_source
+        return verify_co2_source()
     if git('rev-parse', 'HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90') == 'cb845eecd2409d6ee473bd7a0cb8194c0b501ad6':
         # Exact crop-cycle successor; the original three-file authority remains
         # binding. Eligibility is separate from fresh owner/preservation proof.

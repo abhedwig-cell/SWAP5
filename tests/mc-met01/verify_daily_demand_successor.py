@@ -8,7 +8,9 @@ if subprocess.check_output(['git','rev-parse','HEAD:src/runtime/mod_canonical_co
  sys.path.insert(0,str(ROOT/'tests/modularity'))
  from verify_joint_preservation import verify_qualification
  result=verify_qualification() # Exact selected owner proof; missing evidence rejects.
- if result.get('oxygen_cycle_successor'):
+ if result.get('co2_successor'):
+  print('MC_MET01_EXACT_CO2_OWNER_PREREQUISITE_HIGHEST_NOT_SELECTED=PASS')
+ elif result.get('oxygen_cycle_successor'):
   print('MC_MET01_EXACT_CROP_OXYGEN_OWNER_PREREQUISITE_HIGHEST_NOT_SELECTED=PASS')
  else:
   print('MC_MET01_EXACT_JOINT_DAILY_DEMAND_OWNER_AND_HIGHEST_PREREQUISITE=PASS')

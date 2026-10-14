@@ -157,6 +157,11 @@ if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
 fi
 
 verify_crop_frost_highest(){
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
+    python3 tests/crop-co2/verify_co2_successor.py
+    echo 'CROP_CO2_HIGHEST_NOT_SELECTED_POLICY_FAST_OWNER_BOUND=PASS'
+    return
+  fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
     # Programme policy selects independent short physical/numerical contracts
     # for this exact crop successor. No long-highest PASS is asserted.
@@ -369,6 +374,10 @@ fi
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
   python3 tests/crop-cycle/verify_oxygen_successor.py || fail 'crop oxygen complete owner evidence missing'
   dependency_authority=f0dd03704cd6eb19336269438e99c6bf5db08024
+fi
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
+  python3 tests/crop-co2/verify_co2_successor.py || fail 'CO2 complete current owner evidence missing'
+  dependency_authority=82209d0df68d14c5ebe707e9b6303f9b150488ca
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
@@ -654,6 +663,9 @@ check_b19_micro_root_recomposition() {
         ;;
       src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90 )
         (( mc_heat01_exact_successor )) || fail "unqualified MC-HEAT01 source change: $candidate_path" ;;
+      src/adapter/mod_crop_atmospheric_co2_forcing.f90 )
+        python3 tests/crop-co2/verify_co2_successor.py || fail 'unqualified annual CO2 forcing successor'
+        ;;
       src/adapter/mod_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       tests/fapp/test_ppa_wu03_common_forcing_adapter.f90 ) ppa_weather_guard_changed=1 ;;
       src/crop/mod_crop_adaptive_root_profile_owner.f90 ) ;;
