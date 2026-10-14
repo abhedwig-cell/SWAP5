@@ -1,8 +1,8 @@
 # Proposed MC-MET01/HY/RT/F-KT joint admission
 
 Status: explicitly delegated joint source reconciliation on 14 October 2026;
-complete V3 owning qualification passes; current moving preservation is executing
-before canonical admission. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
+complete V3 owning qualification and full moving preservation PASS;
+canonical admission is proposed. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
 Recovery: `integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json`.
 
 The user authorized the joint owner reconciliation, exact source-guard successor,
@@ -141,3 +141,20 @@ The V3 owner capsule has 1885 raw members and decoded SHA256
 `5667000d4213d15f91577c304781b2603f8450559fb001f05aedddcd742181e6`.
 Ten actual missing/partial/corrupt/stale evidence controls reject. This owner
 prerequisite does not claim full moving preservation or canonical admission.
+
+## Terminal moving preservation
+
+The full unchanged scientific command sequence completed on canonical-first merge
+`ce8048a3d7f5a11bb2dbc97dbc0789d0fbf65c87`, source tree
+`d10d2b860576c18fca5b7b60336b36b82c42ed8b`, with exit 0 and
+`FCI_CANONICAL_LINEAGE_AWARE_GATE PASS`. Whole wall time was 1846.168 seconds.
+All executed source/test/tool/reference blobs match the final candidate; only the
+new nonexecuted packaging controller and metadata were subsequently added.
+The raw logs, complete input map and verified executed Git bundle are sealed in
+`MC_MET01_LOW_AIR_JOINT_MOVING_V3_20261014.tar.xz.b64`, decoded SHA256
+`39995370fcf10727be00ff378f2987fc6a324105c66b5f831454edb02a2bc807`.
+The private receipt key is excluded. SHADOW executed all science; the pinned coupling
+PYTHONPATH causes unqualified leaf receipt identities to fall back to RUN. No signed
+receipt reuse is claimed. Broad-run compiler/native exclusive counts remain UNKNOWN
+because the original runner was not instrumented. Its measured wall cost is separate
+from exact modular and targeted owner compile/native costs.

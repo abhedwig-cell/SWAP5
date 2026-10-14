@@ -125,18 +125,18 @@ exclusive categories and physics-only runtime are UNKNOWN. These are measurement
 on one host, not a portable speed claim. There is no original baseline for this
 previously missing legacy-array route; no before/after percentage is claimed.
 
-**Admission remains pending.** The existing owning contract above explicitly
-requires incumbent weather/crop/thermal preservation, complete affected highest
-frost and current Full Richards/PPA/F-CI. Changing the adapter invalidates its exact
-postimage evidence pin even though its incumbent code is otherwise retained.
-This pilot neither changes the guards nor inherits their PASS. The appropriate
-MC-MET01/RT admission owner must bind the precise successor and reconcile the
-mandatory highest-frost dependency with LOW-AIR-10X before final preservation and
-admission. No full F-CI or highest low-air run is selected here. Keep this PR draft
-until those conditions are actually met. The master owner PR #1072 receives the
-bounded receipt through this PR/status record; its ledger is not edited and the
-full SW431-MET-RAIN1 capability remains ACTIVE_MIGRATION.
-
+**Canonical admission remains pending.** The original isolated pilot could not
+inherit the changed adapter's exact owning evidence. The subsequently delegated
+joint MC-MET01/HY/RT/F-KT successor now binds the three exact production postimages
+and complete fresh V3 owning evidence: all original weather, independent demand/ET,
+highest normal/OFF and low-air/OFF/ON, heat, F-KT and coupling assertions pass.
+The original pilot and superseded V2 capsules remain immutable historical records.
+Full current moving preservation now passes on a canonical-first merge before
+admission. Current authority and terminal status are in
+`docs/science/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.md` and
+`integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json`.
+The master owner PR #1072 receives the bounded receipt through this PR/status
+record. Its ledger is not edited and full SW431-MET-RAIN1 remains ACTIVE_MIGRATION.
 Reproduce with the qualified GNU Fortran 13.3.0 on PATH and fresh output paths:
 
 ```bash

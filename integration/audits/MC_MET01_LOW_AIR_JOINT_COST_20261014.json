@@ -117,8 +117,19 @@
     "scientific_assertion_failures_in_terminal_V3_batches": 0
   },
   "moving_preservation": {
-    "status": "RUNNING",
+    "status": "PASS",
     "executed_head": "ce8048a3d7",
-    "wall_seconds": "PENDING_TERMINAL_MEASUREMENT"
-  }
+    "wall_seconds": 1846.168014793002,
+    "compile_count": "UNKNOWN: unmodified broad runner was not instrumented; pilot and targeted owner compile counts separately exact.",
+    "exit": 0,
+    "stdout_sha256": "cadbdcd9981f3bc655884e4a72649c1314f831ea4bbf0c44412bf6b655a3e144",
+    "stderr_sha256": "79a48e132b607fb4a5ef92a66ed1c776e3d6f453c2488d1e44888a4ff0e65656",
+    "reused_scientific_groups": 0
+  },
+  "packaging_and_docs_repairs": {
+    "documentation_command_typo": "Attempted extensionless tools/docs/check_docs path was absent. Corrected original python tools/docs/check_docs.py invocation PASS; no science/build repeated. Failed attempt duration not independently measured.",
+    "bundle_preflight": "Literal detached commit revision produces empty Git bundle. Corrected executed-checkout HEAD form and git bundle verify PASS; no science/build repeated.",
+    "current_strict_documentation_build_seconds": 12.84
+  },
+  "provider_reuse_boundary": "Within each weather/modular/highest controlled execution, providers are compiled once per optimization. Separate cold owning route batches retain distinct generated fixture/module prefix/build identities; no cross-batch artifact identity or warm source rebinding is claimed. O0/O2 and PIC/standalone profiles are never mixed."
 }
