@@ -112,37 +112,19 @@ BALTOL02_BACKEND=a5d472636f50a715cf64016ad9d500b401b0ebb1
 SELECTION_FROSS12=cca61af52bde3eed12b756547277cc2776589648
 
 fail() { echo "FCI_CANONICAL_P2E05_PRESERVATION_FAIL $*" >&2; exit 1; }
-# Exact default-OFF numerical successor. This prerequisite checks fresh ON
-# highest science and direct/F-KT/coupling evidence, plus the original canonical
-# owner in its distinct context. It never replaces the moving science below.
-low_air_exact_successor=0
-if [[ "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" == 732cf70f9aeec59bb7dfb136ba4d6e61b918780b ]]; then
-  python3 tests/performance/verify_low_air_successor.py || fail 'low-air numerical successor prerequisite'
-  low_air_exact_successor=1
-  echo 'FCI_CANONICAL_LOW_AIR_EXACT_NUMERICAL_OWNER=PASS'
-fi
-verify_daily_demand_owner() {
-  if (( low_air_exact_successor )); then
-    python3 tests/performance/verify_low_air_successor.py || return 1
-    echo 'FCI_CANONICAL_DAILY_DEMAND_DEFAULT_OWNER_INHERITED_BY_EXACT_OFF_PROJECTION=PASS'
-  else
-    python3 tests/mc-met01/verify_daily_demand_successor.py
-  fi
-}
-
 # Only the two exact repairs are eligible, with complete fresh owner and
 # coupling proof. This prerequisite does not replace any science below.
 modular_repair_exact_successor=0
+joint_exact_successor=0
+if [[ "$(git rev-parse HEAD:src/runtime/mod_canonical_contracts.f90)" == 732cf70f9aeec59bb7dfb136ba4d6e61b918780b ]]; then
+  # Delegated MC-MET01/HY/RT/F-KT reconciliation. Exact source eligibility
+  # alone cannot enter preservation: complete fresh owner/coupling is required.
+  python3 tests/modularity/verify_joint_preservation.py || fail 'joint successor complete current owner evidence missing'
+  joint_exact_successor=1
+fi
 if [[ "$(git rev-parse HEAD:$BACKEND)" == 7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18 ]]; then
-  if (( low_air_exact_successor )); then
-    # Immutable original repair proofs were verified on pristine canonical;
-    # the exact OFF projection and fresh current numerical/coupling checks
-    # above bridge only the two declared runtime files. No false fresh claim.
-    echo 'FCI_CANONICAL_MODULAR_REPAIRS_DISTINCT_DEFAULT_OWNER_AND_FRESH_NUMERICAL_SUCCESSOR=PASS'
-  else
-    python3 tests/modularity/verify_modular_repair_evidence.py ||
-      fail 'modular repairs require sealed current-source owner and coupling evidence'
-  fi
+  python3 tests/modularity/verify_modular_repair_evidence.py ||
+    fail 'modular repairs require sealed current-source owner and coupling evidence'
   modular_repair_exact_successor=1
 fi
 
@@ -176,7 +158,7 @@ fi
 
 verify_crop_frost_highest(){
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
-    verify_daily_demand_owner
+    python3 tests/mc-met01/verify_daily_demand_successor.py
     return
   fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 2ae6e3aafe9f4987b562618443b0ccd48a133a4c ]]; then
@@ -371,16 +353,11 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
   dependency_authority=c545077ab2d2839007a4ac202f7896575d0ad9ba
 fi
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
-  verify_daily_demand_owner || fail 'daily demand complete highest evidence missing'
+  python3 tests/mc-met01/verify_daily_demand_successor.py || fail 'daily demand complete highest evidence missing'
   dependency_authority=bd17f0a9a7c19516e66af8f80e2b7128890b3aee
-fi
-if (( low_air_exact_successor )); then
-  # Every production byte except the two exact numerical files was proved
-  # equal to this admitted canonical parent. Older crop guards remain verified
-  # in that distinct owner context; no material crop change can hide here.
-  dependency_authority=c591205c5e03f1c96c6488eb53c562265f749556
-  test "$(git rev-parse HEAD^1)" = "$dependency_authority" ||
-    fail 'low-air preservation requires the pinned current canonical first parent'
+  if (( joint_exact_successor )); then
+    dependency_authority=c591205c5e03f1c96c6488eb53c562265f749556
+  fi
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
@@ -392,17 +369,12 @@ for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runt
   fi
 done
 for path in "${dependency_surface[@]}"; do
-  if (( low_air_exact_successor )); then
-    case "$path" in
-      src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90)
-        continue # Exact postimages, default projection and fresh science checked above.
-        ;;
-    esac
-  fi
   if (( crop_file_weather_exact_successor )) && [[ "$path" == src/runtime/mod_fmr_serialized_multiswap_runtime.f90 ]]; then
     continue # Exact postimage checked above; all F-KT semantics remain guarded.
   fi
   case "$path" in
+    src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90)
+      if (( joint_exact_successor )); then continue; fi ;;
     src/process/mod_soil_temperature_contract.f90|src/process/mod_restricted_soil_temperature.f90)
       if (( mc_heat01_exact_successor )); then continue; fi ;;
   esac
@@ -638,14 +610,14 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
-      src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90)
-        (( low_air_exact_successor )) || fail "unqualified numerical source change: $candidate_path"
+      src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90 )
+        (( joint_exact_successor )) || fail "unqualified numerical successor: $candidate_path"
         ;;
       src/process/mod_reference_et_demand_process.f90 )
         test "$(git rev-parse HEAD:src/process/mod_reference_et_demand_process.f90)" = \
           "0a8fc91570c6297a54109740de3a26153dc44283" ||
           fail 'unqualified daily-demand process postimage'
-        verify_daily_demand_owner ||
+        python3 tests/mc-met01/verify_daily_demand_successor.py ||
           fail 'daily-demand process source/owner/highest qualification missing'
         ;;
       src/process/mod_frost_hydraulic_effect.f90 )

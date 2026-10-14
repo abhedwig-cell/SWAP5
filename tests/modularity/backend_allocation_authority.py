@@ -64,6 +64,21 @@ def validate_publication_change(old, new):
 def verify_source():
     assert git('merge-base', '--is-ancestor', BASE, 'HEAD') == ''
     assert not git('status', '--porcelain', '--', 'src', 'reference')
+    if git('rev-parse', 'HEAD:src/runtime/mod_canonical_contracts.f90') == '732cf70f9aeec59bb7dfb136ba4d6e61b918780b':
+        # Explicitly delegated joint successor. Only the pinned three-file
+        # delta from the admitted canonical source is eligible. Its science
+        # and coupling proofs are checked separately by the owner guard.
+        from joint_admission_authority import verify_source as verify_joint_source
+        joint = verify_joint_source()
+        validate_change(subprocess.check_output(['git', 'show', BASE + ':' + BACKEND], cwd=ROOT),
+                        (ROOT / BACKEND).read_bytes())
+        validate_publication_change(subprocess.check_output(['git', 'show', BASE + ':' + PUBLICATION], cwd=ROOT),
+                                    (ROOT / PUBLICATION).read_bytes())
+        return {'baseline': BASE, 'source_tree': joint['source_tree'], 'joint_successor': True,
+                'backend_preimage': PREIMAGE, 'backend_postimage': POSTIMAGE,
+                'publication_postimage': PUBLICATION_POSTIMAGE,
+                'changed_paths': sorted([BACKEND, PUBLICATION, *joint['postimages']]),
+                'scope': 'exact joint source eligibility only; fresh complete owner/coupling required'}
     changed = git('diff', '--name-only', BASE, 'HEAD', '--', 'src').splitlines()
     assert changed in [[BACKEND], sorted([BACKEND, PUBLICATION])], 'unknown production mutation'
     assert git('rev-parse', 'HEAD:reference') == git('rev-parse', BASE + ':reference')

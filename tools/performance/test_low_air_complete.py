@@ -6,10 +6,11 @@ from verify_low_air_complete import verify_complete
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-ref', default='HEAD')
     parser.add_argument('qualified_candidate', type=pathlib.Path)
     args = parser.parse_args()
     origin = args.qualified_candidate.resolve()
-    positive = verify_complete(origin, check_binaries=True)
+    positive = verify_complete(origin, check_binaries=True, source_ref=args.source_ref)
     receipt = json.loads((origin / 'RESULTS.json').read_text())
     controls = []
     for name in ['partial_matrix', 'false_tenfold', 'foreign_source', 'changed_period', 'weakened_assertion', 'missing_fine', 'foreign_output']:
@@ -45,7 +46,7 @@ def main():
                 stdout.write_text(stdout.read_text() + 'foreign evidence\n')
             (folder / 'RESULTS.json').write_text(json.dumps(report))
             try:
-                verify_complete(folder)
+                verify_complete(folder, source_ref=args.source_ref)
             except ValueError as error:
                 controls.append({'mutation': name, 'rejected': True, 'reason': str(error)})
             else:

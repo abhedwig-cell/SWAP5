@@ -7,11 +7,11 @@
   "tested": true,
   "qualified": true,
   "admitted": false,
-  "stage": "COLD_CANDIDATE_PASS_COLD_BASELINE_CENSORED_BUILD_OPTIMIZATION_NEXT",
+  "stage": "FULL_COLD_CANDIDATE_603S_PASS_10X_WALL_UNPROVED",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Qualify the measured build-only optimization once on the pinned performance source, reconcile canonical joint admission and new stress-selection policy, publish one complete evidence PR. No automatic repeated long baseline.",
+  "next_action": "Review single PR1226 performance/evidence extension. Numerical production policy already admitted through PR1225. No routine long stress or new baseline selected. Full-wall 10x remains unproved; research requires stable execution and explicit selection.",
   "blockers": [
-    "Complete comparable baseline and cold candidate timings pending; no hard 10x acceptance or canonical admission."
+    "Complete uninterrupted comparable baseline wall is unavailable; hard 10x full-wall claim remains unproved."
   ],
   "authority_paths": [
     "integration/audits/PPA_WU05B19_STATUS.json",
@@ -39,8 +39,8 @@
     29,
     30
   ],
-  "performance": "Current full cold candidate 818.060s incl all builds and validation PASS; absolute duration target met on current hardware. Warm native full pair 10.834x, cold candidate native CPU higher with byte/disassembly-identical providers and exact science. Full matched cold wall baseline pending; historical hardware comparability UNKNOWN.",
-  "checkpoint_commit": "eed6facdb",
+  "performance": "Full cold candidate 602.984516s incl all builds/native/final validation PASS; 48 programs/288 fine comparisons repeat exactly. Absolute target 1067.873s met on measured hardware. Matched warm native CPU sample 10.833779x; complete wall A/B UNKNOWN after interrupted baselines. No 10x total-wall or portable claim.",
+  "checkpoint_commit": "69a95da69",
   "remote_persisted": true,
   "tested_scope": "V3 current independent policy/F-KT O0/O2 cold/warm PASS, 12 fresh highest programs and 72 original fine comparisons PASS, 12 original coupling executions PASS; numerical source projection and six corrupt/partial/foreign seal controls PASS. Final direct-dummy fine workspace: 12 complete original programs and 72 fine comparisons repeated, per-step/failed-reuse O0/O2 and enhanced physical cold/warm controls PASS; fresh enclosing warm execution PASS.",
   "pr": 1226,
@@ -84,13 +84,14 @@
     "synthetic_merge": "9869ed0c39a33499f9dd8676cf15113bef4fbcd4",
     "wall_seconds": 1587.7128105489992,
     "cpu_seconds": 1571.379352,
-    "binding_verifier": "tests/performance/verify_low_air_continuation.py"
+    "binding_verifier": "tests/performance/verify_low_air_continuation.py",
+    "binding_scope": "Historical pre-joint source only; current canonical joint source preservation is separately owned by MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014."
   },
   "continuation_evidence": {
     "path": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014.tar.xz.b64",
     "receipt": "integration/audits/evidence/LOW_AIR_10X_CONTINUATION_20261014_RECEIPT.json"
   },
-  "qualification_scope": "Full 48 current candidate programs and 288 unchanged fine comparisons PASS, O0/O2 exact; highest independent numerical/physical/F-KT/coupling contracts and full moving preservation PASS. Matched original 48-program baseline ACTIVE; cold candidate pending.",
+  "qualification_scope": "Pinned pre-joint source 7e3a1c25: all 48 baseline and three complete candidate matrices, each 288 unchanged fine comparisons, exact O0/O2/repeats; final cold603s. Current joint source d10d2b86: admitted policy via PR1225 and fresh small O0/O2 cold/warm policy/physical feedback PASS; old full stress not inherited current.",
   "full_48_candidate_warm": {
     "whole_wall": 571.478654684,
     "native_cpu": 1627.202226,
@@ -193,9 +194,10 @@
   "build_pipeline": {
     "implemented": true,
     "syntax_checked": true,
-    "tested": false,
-    "qualified": false,
-    "next": "Full candidate fresh-provider qualification after continuous baseline finishes."
+    "tested": true,
+    "qualified": true,
+    "next": "Full candidate fresh-provider qualification after continuous baseline finishes.",
+    "scope": "Pinned 7e3a1c25 source, all 48 original programs and 288 fine comparisons; three complete candidate matrices repeat exactly."
   },
   "full_48_cold_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_COLD_20261014_RECEIPT.json",
   "cold_baseline_status": {
@@ -209,5 +211,84 @@
     "merge": "8c24151ffac35822b62e6219158b6cfb14f04d31",
     "runtime_postimages": "EXACT_MATCH",
     "performance_10x_claim": false
-  }
+  },
+  "full_48_fast_candidate": {
+    "scope": "COMPLETE_ORIGINAL_48_LOW_AIR_COLD_PROVIDERS",
+    "policy": "candidate",
+    "build_mode": "PARALLEL_ISOLATED_PROVIDERS_AND_MAIN_OBJECTS",
+    "provider_phase_wall": 80.57683007000014,
+    "whole_wall": 602.9845157589989,
+    "whole_cpu": 2154.9835185790002,
+    "events": [
+      {
+        "label": "providers-o0",
+        "command": [
+          "python",
+          "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/build_low_air_providers.py",
+          "--output",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o0",
+          "--opt",
+          "0"
+        ],
+        "exit": 0,
+        "wall": 28.310171429999173,
+        "cpu": 28.270963
+      },
+      {
+        "label": "providers-o2",
+        "command": [
+          "python",
+          "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/build_low_air_providers.py",
+          "--output",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o2",
+          "--opt",
+          "2"
+        ],
+        "exit": 0,
+        "wall": 80.57416230099989,
+        "cpu": 80.519779
+      },
+      {
+        "label": "full-matrix",
+        "command": [
+          "python",
+          "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/run_low_air_complete.py",
+          "--build-o0",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o0",
+          "--build-o2",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o2",
+          "--output",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/matrix",
+          "--policy",
+          "candidate",
+          "--workers",
+          "4",
+          "--fresh-build",
+          "--build-workers",
+          "4"
+        ],
+        "exit": 0,
+        "wall": 521.9763217330001,
+        "cpu": 2045.7521179999999
+      },
+      {
+        "label": "full-verification",
+        "command": [
+          "python",
+          "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/verify_low_air_complete.py",
+          "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/matrix",
+          "--check-binaries"
+        ],
+        "exit": 0,
+        "wall": 0.43043363799733925,
+        "cpu": 0.43410699999999997
+      }
+    ],
+    "original_programs": 48,
+    "original_fine_comparisons": 288,
+    "tenfold_proved": false,
+    "canonical_admission": false
+  },
+  "full_48_final_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_PAIRED_20261014_RECEIPT.json",
+  "current_feedback_evidence": "integration/audits/evidence/LOW_AIR_FULL48_CLOSEOUT_20261014.json"
 }

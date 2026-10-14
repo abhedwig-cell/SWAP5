@@ -8,12 +8,14 @@ BASE = 'c591205c5e03f1c96c6488eb53c562265f749556'
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
-def verify_complete(folder, check_binaries=False):
+def verify_complete(folder, check_binaries=False, source_ref="HEAD"):
     folder = pathlib.Path(folder)
     report = json.loads((folder / 'RESULTS.json').read_text())
     if report['scope'] != 'FULL_ORIGINAL_48_LOW_AIR_WARM_PROVIDERS' or report['matrix'] != MATRIX or not report['complete']:
         raise ValueError('incomplete/changed owning scope')
-    source = subprocess.check_output(['git', 'rev-parse', 'HEAD:src'], cwd=ROOT, text=True).strip()
+    from low_air_source_context import verify_context
+    source_context = verify_context(source_ref)
+    source = source_context['source_tree']
     if report['source_tree'] != source:
         raise ValueError('foreign numerical source')
     policy = report['policy']
@@ -27,10 +29,6 @@ def verify_complete(folder, check_binaries=False):
     max_head = max_temperature = 0.
     old = json.loads(gzip.decompress((ROOT / 'docs/audits/evidence/PPA_WU05B15_LOCAL_REPLAY.json.gz').read_bytes()))
     historical_matches = historical_differences = 0
-    import sys
-    sys.path.insert(0, str(ROOT / 'tests/performance'))
-    from low_air_successor_authority import verify_source
-    verify_source()
     original_sources = {}
     for name in MATRIX:
         path = f'tests/frost/test_{name}.f90'
@@ -105,7 +103,7 @@ def verify_complete(folder, check_binaries=False):
             raise ValueError('invalid enclosing timing')
     if report['tenfold_proved'] or report['canonical_admission']:
         raise ValueError('single receipt cannot confer performance/admission')
-    return {'original_programs': 48, 'original_fine_comparisons': 288, 'policy': policy,
+    return {'source_context': source_context, 'original_programs': 48, 'original_fine_comparisons': 288, 'policy': policy,
             'whole_wall': report['whole_wall'], 'native_cpu': report['native_cpu'],
             'build_link_cpu': report['build_link_cpu'], 'parent_cpu': report['parent_cpu'],
             'accepted_substeps_reported': accepted, 'reported_physical_intervals': 288, 'temporal_rejections_reported': rejected,
@@ -119,6 +117,7 @@ def verify_complete(folder, check_binaries=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('folder', type=pathlib.Path)
+    parser.add_argument('--source-ref', default='HEAD', help='Explicit historical binding; never inherited current qualification.')
     parser.add_argument('--check-binaries', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(verify_complete(args.folder, args.check_binaries), indent=2))
+    print(json.dumps(verify_complete(args.folder, args.check_binaries, args.source_ref), indent=2))

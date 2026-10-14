@@ -509,8 +509,8 @@
     }
   ],
   "detailed_phase_profile": "Continuation successor seal: fine-stage-profile-2; preparation/copying each <0.25 CPU s per first family; resolved production runtime ~9.7 CPU s. Bounded nested callbacks impose ~6x observer overhead and do not establish whole-gate exclusive hotspot percentages.",
-  "cold_end_to_end_ab": "UNKNOWN",
-  "full_48_program_same_hardware_end_to_end_ab": "CONTINUOUS_COLD_BASELINE_ACTIVE",
+  "cold_end_to_end_ab": "UNKNOWN_INTERRUPTED_BASELINES",
+  "full_48_program_same_hardware_end_to_end_ab": "UNKNOWN_INTERRUPTED_BASELINES",
   "limitation": "No multiplication of separately sampled proposal/workspace gains. 123.315s is the twelve-program warm highest scenario, not the historical 10678.726s full low-air qualification.",
   "warm_measurement_endpoint": "Enclosing timer stops after build/rebind and twelve native/driver executions, before final parent-level manifest validation and O0/O2 byte comparison. Parent CPU and final validation overhead UNKNOWN.",
   "full_48_candidate_warm": {
@@ -696,7 +696,108 @@
     "limits": [
       "Original baseline interrupted after 20 completed children; full wall not reconstructed or inferred from CPU.",
       "One full native CPU pair and two complete candidate matrices; earlier highest alternating repeats retain order/load sensitivity.",
-      "Cold candidate alone is not cold A/B. No multiplication of scoped speedups."
-    ]
+      "Cold candidate alone is not cold A/B. No multiplication of scoped speedups.",
+      "Sequential/parallel cold wall ratio includes observed native CPU variability; not a pure compiler-only or portable speedup claim."
+    ],
+    "fast_candidate": {
+      "scope": "COMPLETE_ORIGINAL_48_LOW_AIR_COLD_PROVIDERS",
+      "policy": "candidate",
+      "build_mode": "PARALLEL_ISOLATED_PROVIDERS_AND_MAIN_OBJECTS",
+      "provider_phase_wall": 80.57683007000014,
+      "whole_wall": 602.9845157589989,
+      "whole_cpu": 2154.9835185790002,
+      "events": [
+        {
+          "label": "providers-o0",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/build_low_air_providers.py",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o0",
+            "--opt",
+            "0"
+          ],
+          "exit": 0,
+          "wall": 28.310171429999173,
+          "cpu": 28.270963
+        },
+        {
+          "label": "providers-o2",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/build_low_air_providers.py",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o2",
+            "--opt",
+            "2"
+          ],
+          "exit": 0,
+          "wall": 80.57416230099989,
+          "cpu": 80.519779
+        },
+        {
+          "label": "full-matrix",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/run_low_air_complete.py",
+            "--build-o0",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o0",
+            "--build-o2",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/build-o2",
+            "--output",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/matrix",
+            "--policy",
+            "candidate",
+            "--workers",
+            "4",
+            "--fresh-build",
+            "--build-workers",
+            "4"
+          ],
+          "exit": 0,
+          "wall": 521.9763217330001,
+          "cpu": 2045.7521179999999
+        },
+        {
+          "label": "full-verification",
+          "command": [
+            "python",
+            "/workspace/scratch/701b5a0e9ed7/SWAP5/tools/performance/verify_low_air_complete.py",
+            "/workspace/scratch/701b5a0e9ed7/full-low-air-candidate-cold-fast-r3/matrix",
+            "--check-binaries"
+          ],
+          "exit": 0,
+          "wall": 0.43043363799733925,
+          "cpu": 0.43410699999999997
+        }
+      ],
+      "original_programs": 48,
+      "original_fine_comparisons": 288,
+      "tenfold_proved": false,
+      "canonical_admission": false
+    },
+    "fast_candidate_proof": {
+      "original_programs": 48,
+      "original_fine_comparisons": 288,
+      "policy": "candidate",
+      "whole_wall": 521.911854992999,
+      "native_cpu": 1857.965134,
+      "build_link_cpu": 187.031883,
+      "parent_cpu": 0.682914368,
+      "accepted_substeps_reported": 8570238,
+      "reported_physical_intervals": 288,
+      "temporal_rejections_reported": 4320,
+      "max_head_error_cm": 2.935894e-07,
+      "max_temperature_error_c": 5.53041e-07,
+      "immutable_original_stdout": "DISTINCT_NUMERICAL_POLICY_ALL_ORIGINAL_ASSERTIONS",
+      "historical_source_tree": "ab1849e155cfe4aadb838075c3e402985bc4e0f5",
+      "historical_matching_programs": 0,
+      "historical_different_or_missing_programs": 0,
+      "provider_compilation": "FRESH_BUILDS_MEASURED_BY_ENCLOSING_CONTROLLER",
+      "tenfold_proved": false,
+      "canonical_admission": false
+    },
+    "observed_sequential_to_parallel_cold_wall_ratio": 1.3566854874312582,
+    "fast_candidate_absolute_target_met": true
   }
 }

@@ -78,6 +78,7 @@ def main():
                 report['events'].append(event)
                 persist()
             if event['exit']: raise RuntimeError('compile/link failed')
+        program.chmod(program.stat().st_mode | 0o100)
     for opt, build in [(0, args.build_o0.resolve()), (2, args.build_o2.resolve())]:
         manifest = json.loads((build / 'RESULTS.json').read_text())
         if manifest['compiler'] != subprocess.check_output(['gfortran', '--version'], text=True):
@@ -161,6 +162,7 @@ def main():
         opt, name, family, program, original_sha, recipe_sha, families = task
         label = f'o{opt}-{name}-family-{family}'
         stdout, stderr = out / (label + '.stdout'), out / (label + '.stderr')
+        program.chmod(program.stat().st_mode | 0o100)
         print('START ' + label, flush=True)
         record = execute([str(program)] + ([str(family)] if family else []), label, stdout, stderr)
         text = stdout.read_text()

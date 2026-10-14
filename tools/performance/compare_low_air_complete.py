@@ -5,12 +5,14 @@ from verify_low_air_complete import verify_complete
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source-ref', default='HEAD')
     p.add_argument('--baseline',required=True,type=pathlib.Path)
     p.add_argument('--candidate',required=True,type=pathlib.Path)
     p.add_argument('--cold-candidate',required=True,type=pathlib.Path)
+    p.add_argument('--fast-candidate',type=pathlib.Path)
     p.add_argument('--output',required=True,type=pathlib.Path)
     a=p.parse_args()
-    receipts={n:verify_complete(f,check_binaries=True) for n,f in [('baseline',a.baseline),('candidate',a.candidate),('cold_candidate',a.cold_candidate/'matrix')]}
+    receipts={n:verify_complete(f,check_binaries=True,source_ref=a.source_ref) for n,f in [('baseline',a.baseline),('candidate',a.candidate),('cold_candidate',a.cold_candidate/'matrix')]}
     raw={n:json.loads((f/'RESULTS.json').read_text()) for n,f in [('baseline',a.baseline),('candidate',a.candidate),('cold_candidate',a.cold_candidate/'matrix')]}
     if raw['baseline']['policy']!='baseline' or any(raw[n]['policy']!='candidate' for n in ['candidate','cold_candidate']):raise ValueError('foreign A/B policy')
     if len({r['source_tree'] for r in raw.values()})!=1:raise ValueError('different functional production code')
@@ -37,6 +39,21 @@ def main():
             'limits':['Original baseline interrupted after 20 completed children; full wall not reconstructed or inferred from CPU.',
                       'One full native CPU pair and two complete candidate matrices; earlier highest alternating repeats retain order/load sensitivity.',
                       'Cold candidate alone is not cold A/B. No multiplication of scoped speedups.']}
+    if a.fast_candidate:
+        fastproof=verify_complete(a.fast_candidate/'matrix',check_binaries=True,source_ref=a.source_ref)
+        fast=json.loads((a.fast_candidate/'RESULTS.json').read_text())
+        if fast.get('build_mode')!='PARALLEL_ISOLATED_PROVIDERS_AND_MAIN_OBJECTS' or len(fast['events'])!=4 or any(e['exit'] for e in fast['events']):raise ValueError('incomplete isolated build pipeline')
+        if {e['label'] for e in fast['events']}!={'providers-o0','providers-o2','full-matrix','full-verification'}:raise ValueError('foreign pipeline phases')
+        minimum=fast['provider_phase_wall']+sum(e['wall'] for e in fast['events'] if e['label'] in ['full-matrix','full-verification'])
+        if not math.isfinite(fast['whole_wall']) or fast['whole_wall']<minimum-.01:raise ValueError('overlapped wall double counting')
+        for run in raw['candidate']['runs']:
+            stem=f"o{run['optimization']}-{run['program']}-family-{run['family']}.stdout"
+            if (a.candidate/stem).read_bytes()!=(a.fast_candidate/'matrix'/stem).read_bytes():raise ValueError('pipeline science drift '+stem)
+        result['fast_candidate']=fast
+        result['fast_candidate_proof']=fastproof
+        result['observed_sequential_to_parallel_cold_wall_ratio']=cold['whole_wall']/fast['whole_wall']
+        result['fast_candidate_absolute_target_met']=fast['whole_wall']<=1067.873
+        result['limits'].append('Sequential/parallel cold wall ratio includes observed native CPU variability; not a pure compiler-only or portable speedup claim.')
     a.output.write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ['receipts','cold_candidate']},indent=2))
 if __name__=='__main__':main()

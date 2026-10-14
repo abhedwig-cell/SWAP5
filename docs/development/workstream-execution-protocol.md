@@ -365,7 +365,10 @@ scientific dependency or an owning qualification/admission requirement justifies
 it. Record the reason and expected cost before starting; user confirmation is not
 required for this routine selection. A highest low-air stress test is not implied
 by a generic request to run tests, a docs-only edit, or an unrelated process change.
-Where it is a mandatory owner gate, keep it at that owner's required boundary.
+For the long highest low-air route, apply the later
+[14 October selection decision](../audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md):
+it is retired as a standard production admission/preservation gate. An older
+mandatory label or changed dependency alone does not select that stress run.
 
 Do not add expensive stress matrices to blanket PR/push feedback jobs. Changing an
 existing mandatory runner or CI trigger requires reconciling its owning authority
@@ -482,16 +485,26 @@ bytes and O0/O2 science outputs must match. Retain compile, link, native-plus-dr
 identity/oracle validation and total timing separately; physics alone is UNKNOWN
 unless independently instrumented. See [the adoption results](../audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md).
 
-For highest low-air, the scientific owner remains PPA-WU05-B frost/drainage with
-F-KT/HY/RT transaction and temporal control. Its minimum execution boundary is the
-owner-required stable scientific successor/admission, and any dependent preservation
-where the existing authority demands fresh execution. There is no evidence for a
-fixed daily/weekly frequency and no permission here to retire that gate. Unchanged
-independent module work does not select it; a changed backend, frost/thermal,
-drainage, retry/temporal, root-stress or restart dependency requires conservative
-owner reconciliation. Unknown dependency identity means RUN when the owning gate
-is applicable. The recorded high retry count is a separate numerical-policy problem.
-No forcing duration, cases, budgets or tolerances are shortened by this change.
+### Highest low-air selection decision (2026-10-14)
+
+The user/programme lead has retired the long highest low-air qualification as a
+standard migration, production admission and routine preservation gate.
+[The binding decision](../audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md)
+supersedes the previous default owner-required minimum execution boundary.
+
+Require fast independent physical oxygen/uptake/drainage/mass tests and targeted
+numerical acceptance/rejection/rollback/restart/extreme-input contracts. Select a
+long run only for a concrete numerical research question or essential uncovered
+risk: name the unique failure, demonstrate the fast coverage gap, explain why a
+small discriminating test cannot cover it, and record expected costs first.
+Shared dependency changes and unknown fingerprints require reconciliation, not an
+automatic highest stress matrix. No fixed daily/weekly stress frequency is adopted.
+
+Reconcile older owning guards to this selection authority and retained coverage;
+do not fabricate PASS or weaken physical assertions. An omitted stress run is
+NOT_RUN_POLICY/NOT_SELECTED, not highest qualification or 10x proof. Actual
+essential coverage gaps remain admission conditions. Production, immutable
+references, tolerances and automation are unchanged by this documentation decision.
 
 Continue in coherent implementation, feedback, composition, measurement and admission
 batches. Persist before expensive execution and move automatically to the next safe

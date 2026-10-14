@@ -14,13 +14,22 @@ def main():
     if args.name in ['COLD', 'PAIRED']:
         scopes += ['full-low-air-baseline-r0', 'full-low-air-candidate-cold-r1']
     if args.name == 'PAIRED':
-        scopes += ['full-low-air-baseline-cold-r1', 'full-low-air-candidate-cold-fast-r2']
+        scopes += ['full-low-air-baseline-cold-r1', 'full-low-air-candidate-cold-fast-r2', 'full-low-air-candidate-cold-fast-r3']
     files = {}
+    scope_status = {}
+    failed_scopes = {'full-low-air-baseline-cold-r1', 'full-low-air-candidate-cold-fast-r2'}
     for scope in scopes:
         folder = workspace / scope
-        report = json.loads((folder / 'RESULTS.json').read_text())
-        if report.get('complete') is False:
-            raise ValueError('refuse active/partial qualification ' + scope)
+        report_path = folder / 'RESULTS.json'
+        if scope in failed_scopes:
+            report_path = folder / 'matrix/RESULTS.json'
+            report = json.loads(report_path.read_text())
+            scope_status[scope] = {'qualified': False, 'state': 'CENSORED_OR_FAILED_UNQUALIFIED', 'completed_programs': len(report.get('runs', []))}
+        else:
+            report = json.loads(report_path.read_text())
+            if report.get('complete') is False:
+                raise ValueError('refuse active/partial qualification ' + scope)
+            scope_status[scope] = {'state': 'TERMINAL_RECORDED_SCOPE', 'scope': report['scope']}
         for path in sorted(folder.rglob('*')):
             if path.is_file() and path.suffix in {'.json', '.stdout', '.stderr', '.f90', '.py', '.sh', '.log', '.txt'}:
                 files[str(path.relative_to(workspace))] = path.read_bytes()
@@ -30,7 +39,7 @@ def main():
                 files[path.name] = path.read_bytes()
     files['full-low-air-controls.stdout'] = (workspace / 'full-low-air-controls.stdout').read_bytes()
     if args.name in ['COLD', 'PAIRED']:
-        for name in ['full-low-air-baseline-recovery.stdout', 'full-low-air-baseline-recovery.stderr', 'full-low-air-PAIRED.json', 'full48-source-proof.stdout', 'full48-docs-check.stdout', 'full48-docs-check.stderr', 'full48-mkdocs.stdout', 'full48-mkdocs.stderr', 'full48-provider-identity.json']:
+        for name in ['full-low-air-baseline-recovery.stdout', 'full-low-air-baseline-recovery.stderr', 'full-low-air-PAIRED.json', 'full48-source-proof.stdout', 'full48-docs-check.stdout', 'full48-docs-check.stderr', 'full48-mkdocs.stdout', 'full48-mkdocs.stderr', 'full48-provider-identity.json', 'low-air-executable-mode-controls.json', 'low-air-executable-mode-o0.stdout', 'low-air-executable-mode-o0.stderr', 'low-air-executable-mode-o2.stdout', 'low-air-executable-mode-o2.stderr']:
             files[name] = (workspace / name).read_bytes()
     bundle = workspace / ('LOW_AIR_10X_FULL48_' + args.name + '_EXECUTED.bundle')
     bundle_base = BASE
@@ -41,11 +50,11 @@ def main():
     def git(*command):
         return subprocess.check_output(['git', *command], cwd=ROOT, text=True).strip()
     owner = {'baseline': BASE, 'bundle_prerequisite': bundle_base, 'executed_local_head': git('rev-parse', 'HEAD'),
-             'source_tree': git('rev-parse', 'HEAD:src'), 'scopes': scopes,
+             'source_tree': git('rev-parse', 'HEAD:src'), 'scopes': scopes, 'scope_status': scope_status,
              'recipe_sha256': hashlib.sha256((ROOT / 'tools/performance/low_air_fine_worker_recipe.py').read_bytes()).hexdigest(),
              'recovery_bundle_sha256': hashlib.sha256(files[bundle.name]).hexdigest(),
              'tenfold_proved': False, 'canonical_admission': False,
-             'scope': 'Complete original candidate matrix' if args.name == 'CANDIDATE' else 'Complete matched warm native baseline/candidate and complete cold candidate. Parallel build pipeline not yet qualified; full-wall A/B pending.' if args.name == 'COLD' else 'Complete original full cold baseline/candidates plus earlier recovered native A/B; no automatic 10x/admission.'}
+             'scope': 'Complete original candidate matrix' if args.name == 'CANDIDATE' else 'Complete matched warm native baseline/candidate and complete cold candidate. Parallel build pipeline not yet qualified; full-wall A/B pending.' if args.name == 'COLD' else 'Complete original cold candidates and recovered full native CPU baseline; interrupted cold baseline and failed build are unqualified. No full-wall 10x/admission.'}
     files['OWNER.json'] = (json.dumps(owner, indent=2) + '\n').encode()
     files['INDEX.json'] = (json.dumps({name: hashlib.sha256(data).hexdigest() for name, data in sorted(files.items())}, indent=2) + '\n').encode()
     stream = io.BytesIO()
