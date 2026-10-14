@@ -1,9 +1,9 @@
 # Recovery for trajectory 2
 
 Trajectory 2 is NOT started. Trajectory 1's bounded empirical wet-stress physical
-production cycle is implemented and locally tested, not canonically admitted.
+production cycle is qualified and preserved; exact canonical admission is pending.
 
-- Draft PR: https://github.com/abhedwig-cell/SWAP5/pull/1227.
+- PR: https://github.com/abhedwig-cell/SWAP5/pull/1227.
 - Work branch: `work/crop-water-cycle-20261014`.
 - Baseline: `f0dd03704cd6eb19336269438e99c6bf5db08024`.
 - Scientific execution commit: `f547810474` (full SHA in the status record).
@@ -14,19 +14,18 @@ production cycle is implemented and locally tested, not canonically admitted.
 
 ## First incomplete action
 
-Existing central MC-CROP01/RT/HY/F-KT source and preservation authority must
-adjudicate this exact one-clause bootstrap successor. The incumbent
-`backend_allocation_authority.verify_source` and `verify_joint_preservation.py`
-pass source eligibility on canonical but reject the candidate's additional
-bootstrap mutation. No guard is bypassed. The old crop successor fallback also
-fails because it was entered for the unknown bootstrap blob; its adapter error
-is not evidence of a changed adapter. Full moving F-CI is blocked before science.
-Use the fresh bounded evidence, determine all applicable remaining preservation
-under the current test-selection policy, and complete those gates before admission.
-Do not rerun the identical 255-second build or inherit a full PASS blindly.
+Verify the final PR1227 admission receipt and live canonical production blob
+`cb845eecd2409d6ee473bd7a0cb8194c0b501ad6` before beginning new science. The original
+old-head source rejection has been resolved by the exact additive successor;
+all selected original owner prerequisites and complete moving F-CI now pass.
+Full moving executed at `dbbfa73ac0c24d800c34897f3906420e7c934546`, tree
+`e41076762f3c03c23c58a8bf7a5eb5df913538cf`, with terminal raw evidence and actual
+Git bundle in the status-linked immutable capsule. Do not repeat the identical
+255-second physical batch or1879.955-second moving run for metadata-only changes.
+Reconcile the conservative recorded dependency closure before reusing any PASS.
 
-After exact canonical admission, route the already documented shared phase decision
-in `MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md`. A newly initialized crop must
+After admission, route the documented shared phase decision in
+`MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md`. A newly initialized crop must
 be authoritative after authentic morning weather and before that day's soil solve;
 previous-day crop and soil clocks already coincide. The current positive-interval
 kernel cannot implement this as a zero-duration event. This work did not change
@@ -45,7 +44,7 @@ active-growth envelope a complete lifecycle.
 
 ## Exact coverage consequences
 
-SW431-ROOT-OXYGEN-EMP was already ADMITTED via PR1127. This candidate adds its
+SW431-ROOT-OXYGEN-EMP was already ADMITTED via PR1127. This bounded successor adds its
 missing bounded daily application composition, not a new full capability.
 SW431-CROP-SOW remains ACTIVE_MIGRATION, with harvest/rotation/fallow/new-season,
 SWINCO3, broader forcing/root selectors and external joint disk restart still open.

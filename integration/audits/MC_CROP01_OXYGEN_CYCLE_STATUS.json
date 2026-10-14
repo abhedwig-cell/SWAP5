@@ -6,8 +6,8 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
   "checkpoint_commit": "SELF: initial implementation checkpoint",
   "recovery_point": "This branch and tests/crop-cycle/run_oxygen_cycle.py",
@@ -62,19 +62,18 @@
     "tests/crop-cycle/run_oxygen_contract.py",
     "tests/crop-cycle/run_oxygen_cycle.py"
   ],
-  "next_action": "Verify complete source/evidence successor and negative controls, persist; execute full applicable moving F-CI locally on a canonical-first synthetic merge; no highest low-air and no new Actions.",
+  "next_action": "Publish exact qualified dependency closure, verify live canonical/base/head and merge only bounded scope.",
   "blockers": [
-    "Full applicable current-source moving preservation still required before admission.",
     "Harvest/rotation phase decision remains outside trajectory1; trajectories2/3 not started."
   ],
   "low_air": "NOT_SELECTED under canonical LOW_AIR_TEST_SELECTION_DECISION_20261014.md; no stress PASS inheritance",
-  "status": "COMPLETE_SELECTED_SCIENTIFIC_OWNER_PREREQUISITES_PASS_FULL_MOVING_PENDING",
+  "status": "QUALIFIED_PRESERVED_BOUNDED_SUCCESSOR_PENDING_CANONICAL_ADMISSION",
   "scientific_execution_commit": "f54781047452f0099286f52f32ab66fd6ad736c9",
   "remote_scientific_tree": "c9a7e75c4971e559d3dc4cef1ca864a8518b60ef",
   "local_scientific_tree": "c9a7e75c4971e559d3dc4cef1ca864a8518b60ef",
   "bounded_physical_qualified": true,
   "scoped_incumbent_preservation": true,
-  "full_moving_preservation": "NEXT_LOCAL_GOVERNED_FULL_EXECUTION; earlier automatic source rejection retained as historical diagnostics",
+  "full_moving_preservation": "PASS: terminal exit0 and FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
   "no_new_full_admitted_capabilities": true,
   "full_crop_lifecycle": false,
   "recovery_for_trajectory2": "docs/science/MC_CROP01_TRAJECTORY2_RECOVERY_20261014.md",
@@ -256,7 +255,8 @@
         "exit": 0,
         "wall_seconds": 0.03344259599907673
       }
-    ]
+    ],
+    "full_moving_wall_seconds": 1879.955203075995
   },
   "source_proof": {
     "changed_production_paths": [
@@ -272,11 +272,13 @@
     "baseline_crop_successor": "PASS",
     "candidate_crop_successor": "FAIL legacy fallback adapter pin; adapter unchanged",
     "candidate_joint_preservation": "FAIL unknown additional production mutation before native execution",
-    "modified_guards": false
+    "modified_guards": true,
+    "initial_pre_successor_snapshot": true,
+    "current_successor": "PASS exact projection and24 corruption controls; complete original selected-owner and full moving PASS"
   },
   "validation": {
     "docs_source": "PASS",
-    "strict_mkdocs": "PASS",
+    "strict_mkdocs": "PASS final metadata checkpoint: fresh mkdocs-material9.7.7, external site directory",
     "whitespace": "PASS"
   },
   "failed_attempts": [
@@ -286,7 +288,8 @@
     "First MkDocs invocation lacked module; existing pinned dependencies recovered locally and strict build passed.",
     "Documentation final check initially refused the generated site directory after the strict build; generated artifacts removed, final source checker passed on the packaged tree.",
     "Additional-verifier warm/cold cardinality initially assumed2 rather than actual4 records per case; corrected to the executed complete matrix.",
-    "Additional negative-control capsule reader initially bound self and used an absent fixture path; repaired. All9 controls now pass; raw failures retained."
+    "Additional negative-control capsule reader initially bound self and used an absent fixture path; repaired. All9 controls now pass; raw failures retained.",
+    "Final strict MkDocs path had disappeared from scratch; fresh dependency recovery required. Prior strict check remains historical."
   ],
   "evidence": {
     "path": "integration/audits/evidence/MC_CROP01_OXYGEN_CYCLE_20261014.tar.xz.b64",
@@ -310,8 +313,8 @@
     "manual_dispatches": 0,
     "counts": {
       "completed_success": 22,
-      "completed_failure": 22,
-      "in_progress": 1
+      "completed_failure": 23,
+      "in_progress": 0
     },
     "runs": [
       {
@@ -513,8 +516,8 @@
       {
         "id": 38574451094,
         "name": "PPA-WU05B bounded frost qualification and admission",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "failure",
         "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/38574451094"
       },
       {
@@ -633,21 +636,21 @@
     "highest_low_air": "B19 and B15 highest reject source authority before native long science; compiler/numerical stages skipped for B19",
     "moving_FCI": "Actual automatic invocation FAILED_GOVERNANCE_BEFORE_NATIVE, job115890633893 on merge6ad3c67f1288e6a8a3371623a0293884f00e0108",
     "moving_FCI_error": "ValueError: unknown additional production mutation; FCI_CANONICAL_P2E05_PRESERVATION_FAIL joint successor complete current owner evidence missing",
-    "pending_run": 38574451094,
-    "pending_scope": "Unselected incumbent broad frost workflow; not PASS and no output inherited",
+    "pending_run": null,
+    "pending_scope": "NONE; all45 original workflows terminal",
     "workflow_filters_changed": false,
-    "future_recovery": "Inspect this exact existing run if still needed. Do not dispatch a duplicate or infer canonical admission from unrelated green jobs.",
+    "future_recovery": "Original fanout is historical; current local source-bound full moving PASS is distinct. No current-head GitHub green claim.",
     "process_failure": "Broad automatic fanout should have been inspected before PR creation. No subsequent manual run or pipeline trigger was selected."
   },
-  "continuation_stage": "COMPLETE_SELECTED_OWNER_PREREQUISITES_PASS_FULL_MOVING_PENDING",
+  "continuation_stage": "FULL_MOVING_TERMINAL_PASS",
   "guard_successor": {
     "source_projection": "PASS",
     "physical_evidence": "PASS",
     "negative_controls": 24,
-    "qualified": false,
+    "qualified": true,
     "required_additional_owners": 10,
     "highest_low_air": "NOT_SELECTED_POLICY",
-    "full_moving": "NEXT_REQUIRED",
+    "full_moving": "PASS",
     "additional_owners": "10 original gates PASS",
     "supplemental_contracts": "RAINTB legacy and numerical proposal O0/O2 cold/warm PASS",
     "central_prerequisite": "PASS"
@@ -658,5 +661,27 @@
     "members": 556,
     "roundtrip": "PASS",
     "conservative_dependency_blobs": 2450
-  }
+  },
+  "full_moving_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_OXYGEN_FULL_MOVING_20261014.tar.xz.b64",
+    "decoded_sha256": "2273796da0458c8e033d395ed5bfdfe9e7b813aee230735ae33d8ab5ba0be52b",
+    "members": 5,
+    "conservative_dependency_blobs": 2450,
+    "executed_head": "dbbfa73ac0c24d800c34897f3906420e7c934546",
+    "executed_tree": "e41076762f3c03c23c58a8bf7a5eb5df913538cf",
+    "roundtrip": "PASS",
+    "private_key_excluded": true,
+    "mode": "SHADOW_ALL_SCIENTIFIC_GROUPS_EXECUTE",
+    "exit": 0,
+    "wall_seconds": 1879.955203075995
+  },
+  "master_reconciliation_handoff": {
+    "owner_pr": 1072,
+    "owner_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
+    "count_delta": 0,
+    "ROOT-OXYGEN-EMP": "Already ADMITTED; annotate bounded daily application production receipt PR1227 and remove stale drought-only reachability restriction. Component admission unchanged.",
+    "CROP-SOW": "Retain ACTIVE_MIGRATION; seven-day annual growth is bounded, not complete harvest/fallow/new-season lifecycle.",
+    "owner_branch_modified": false
+  },
+  "admission_record_semantics": "This is the immutable pre-merge qualification checkpoint. Canonical admission is established only by PR1227 merged state, merge SHA and canonical tree/source equality, recorded in the PR receipt. No pending boolean is a post-merge rejection."
 }

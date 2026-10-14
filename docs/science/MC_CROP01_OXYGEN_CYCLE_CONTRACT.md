@@ -1,6 +1,6 @@
 # Empirical wet stress in the daily production crop-water cycle
 
-Status: proposed bounded production successor, not canonical admission.
+Status: bounded production successor qualified and preserved; canonical admission pending.
 Baseline: `f0dd03704cd6eb19336269438e99c6bf5db08024`.
 Recovery: `integration/audits/MC_CROP01_OXYGEN_CYCLE_STATUS.json`.
 
@@ -53,12 +53,12 @@ publication contract. Do not reset carrier time/revision, replay an accepted win
 or invent a zero-duration crop event. That independent central RT/HY/F-KT decision
 is retained for trajectory 2 and is not resolved by this bounded route.
 
-Current source guards admit only earlier sealed postimages. Their acceptance must
-be reconciled by the existing central crop/RT/HY/F-KT preservation authority; no
-expected hash is rewritten to manufacture PASS. Full applicable preservation and
-canonical admission remain separate from local physical qualification. Long highest
-low-air is NOT_SELECTED under `LOW_AIR_TEST_SELECTION_DECISION_20261014.md`; fast
-independent oxygen and physical/numerical tests retain changed-scope coverage.
+The original automatic old-head source rejections are retained as historical
+diagnostics. The exact additive source/evidence successor now passes all selected
+owning prerequisites and the complete current-source moving F-CI. No scientific
+assertion, numerical threshold, or original three-file admission branch is weakened.
+Long highest low-air is NOT_SELECTED under the current programme policy; fast
+independent physical and numerical coverage passes without claiming stress PASS.
 
 ## Exact source and preservation successor decision (continued trajectory 1)
 
@@ -78,3 +78,22 @@ its *selection for this successor*, without altering an assertion, physical
 reference or tolerance. They do not manufacture a highest PASS. Applicable full
 moving preservation still executes before admission; eligibility is no admission.
 No physics, clock, crop/calendar phase, restart layout or kernel API is changed.
+
+## Terminal qualification receipt (2026-10-14)
+
+Complete moving F-CI executed locally in SHADOW mode at
+`dbbfa73ac0c24d800c34897f3906420e7c934546`, first parent canonical
+`f0dd03704cd6eb19336269438e99c6bf5db08024`, tree
+`e41076762f3c03c23c58a8bf7a5eb5df913538cf`. Terminal exit0,
+`FCI_CANONICAL_LINEAGE_AWARE_GATE PASS`, 1879.955 seconds. All applicable scientific
+groups executed; no PASS cache was reused. Ten additional original owner gates
+passed in555.779 seconds. The 24 source/evidence corruption controls passed.
+
+The versioned full-moving capsule named in the status record retains byte-checked
+stdout/stderr, terminal results, conservative src/tests/tools blob closure and the
+verified actual executed Git bundle; private receipt key is excluded. Subsequent
+status/documentation/evidence updates do not alter that tested dependency closure.
+Direct contract compile/link/native total1.187 seconds; physical batch255.135
+seconds (compile200.178, link1.029, native51.901). No matched old-route speedup is
+claimed. Master counts stay unchanged; ROOT-OXYGEN-EMP component was already
+admitted and CROP-SOW stays active. The master-owner handoff is in the status.
