@@ -65,7 +65,15 @@ def validate_physical(data,manifest,source):
   check(len(compiles)==len(providers)+10+5,'compile coverage')
   for cmd in compiles:check(cmd[1:len(FLAGS)+2]==[*FLAGS,'-O'+str(opt)],'compiler flags drift')
   compiled=[Path(c[c.index('-c')+1])for c in compiles[:len(providers)]]
-  check([str(p.relative_to(ROOT))if p.is_relative_to(ROOT)else p.name for p in compiled]==[p if p!='tests/fsi/fsi04_real_headcalc_stubs.f90'else'grid_stubs.f90'for p in providers],'compiled provider order')
+  # Commands keep their original checkout root. Permit relocation of the
+  # verifier, not a different compile input/order under that recorded root.
+  first=next(i for i,p in enumerate(providers)if p!='tests/fsi/fsi04_real_headcalc_stubs.f90')
+  suffix=providers[first]
+  check(str(compiled[first]).endswith('/'+suffix),'recorded compile root absent')
+  recorded_root=Path(str(compiled[first])[:-len(suffix)])
+  fixture_root=Path(natives[0]['command'][1]).parent
+  expected=[recorded_root/p if p!='tests/fsi/fsi04_real_headcalc_stubs.f90'else fixture_root/'grid_stubs.f90'for p in providers]
+  check(compiled==expected,'compiled provider order/root')
  links=[e for e in r['events']if '-c'not in e['command']and '-o'in e['command']]
  check(len(links)==10 and all(e['returncode']==0 and e['command'][1:len(FLAGS)+1]==FLAGS for e in links),'link coverage/flags')
  direct=json.loads(data['direct/RESULTS.json'])

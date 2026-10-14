@@ -103,11 +103,20 @@
     "additional_owner_failed_seconds": 0.007912189998023678
   },
   "additional_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY2_CO2_OWNERS_V2_20261014.tar.xz.b64",
+    "decoded_sha256": "1593e7630f45f5e4b49c412a424e90e5a971420aa6c6b7c0d245f38fbf57a215",
+    "members": 24,
+    "unique_blobs": 19,
+    "compressed_bytes": 108216,
+    "dependency_blobs": 2610
+  },
+  "previous_additional_owner_evidence": {
     "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY2_CO2_OWNERS_20261014.tar.xz.b64",
     "decoded_sha256": "463525f572e52ed6517a9b196ffb96e19ea9273d4f012044318a8740dfe61f36",
     "members": 24,
     "unique_blobs": 19,
     "compressed_bytes": 108236,
     "dependency_blobs": 2610
-  }
+  },
+  "evidence_guard_reconciliation": "Only compile-path verification now derives the original recorded checkout root, retaining exact ordered provider and fixture paths; full current source, owner drivers, inputs, toolchain and outputs unchanged. 14 negative controls fresh PASS. First relocation preflight rejected before any moving scientific group."
 }
