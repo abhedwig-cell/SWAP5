@@ -36,6 +36,8 @@ module mod_canonical_contracts
   type, public :: canonical_numerical_config_t
     type(transaction_policy_t) :: transaction
     integer :: max_committed_substeps = 10000
+    ! Opt-in proposal policy; every incumbent full/half acceptance gate still runs.
+    logical :: retain_accepted_step_proposal = .false.
     real(real64) :: progress_tolerance = 0.0_real64
     ! Generic carrier for a model-owned temporal-indicator budget.  The
     ! canonical runtime and F-KT transaction core deliberately do not attach
