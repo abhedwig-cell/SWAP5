@@ -53,21 +53,21 @@
     "frost": "NOT_SELECTED: no changed frost or shared water/state/restart code",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Complete current-canonical focused requalification and exact owner receipt, then central regie admission routing.",
+  "next_action": "Central regie reviews bounded joint matrix admission using current-canonical qualification and exact owner/master receipts. No specialized canonical merge or implied full F-CI PASS.",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
-  "scientific_execution_commit": "bb66e83e3ac3672337f873d5a22ddee90ca75d9a",
-  "scientific_execution_tree": "00e006518de4fead0d268312de69525201eae8a7",
-  "last_reconciled_upstream": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+  "scientific_execution_commit": "94e24dbcd5920597ba1af18805645864da50c790",
+  "scientific_execution_tree": "1d769c3bae9243f99e01bcca3a638233be55ddfa",
+  "last_reconciled_upstream": "34ee4fdac815788620f8779f4340b8edeef3c8ae",
   "source_authority_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
   "test_cost_seconds": {
-    "compile": 127.71298773192393,
-    "link": 0.44666854599199723,
-    "native": 10.228926413008594,
-    "integration_native": 10.228926413008594,
+    "compile": 123.43039979811147,
+    "link": 0.3929782100021839,
+    "native": 9.54242763001821,
+    "integration_native": 9.54242763001821,
     "validation": "UNKNOWN",
     "codec_separate": "UNKNOWN"
   },
-  "matrix_compile_source_count": 235,
+  "matrix_compile_source_count": 237,
   "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
   "blockers": [
     "Canonical admission remains central SWAP5 regie under the live registry; local owner qualification does not assert full F-CI PASS.",
@@ -293,6 +293,9 @@
     "src/runtime/mod_fmr_root_uptake_process_binding.f90",
     "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
     "src/crop/mod_crop_et_canopy_view_provider.f90",
+    "src/crop/mod_crop_co2_response_resolver.f90",
+    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+    "src/adapter/mod_crop_atmospheric_co2_forcing.f90",
     "src/runtime/mod_fmr_accepted_commit_receipt.f90",
     "src/runtime/mod_fmr_owned_commit_receipt.f90",
     "src/runtime/mod_fmr_bottom_external_thermal_binding.f90",
@@ -315,7 +318,6 @@
     "src/runtime/mod_modflow6_api_binding.f90",
     "src/runtime/mod_groundwater_topology_composition.f90",
     "src/runtime/mod_groundwater_application_plan.f90",
-    "src/adapter/mod_swap_daily_weather_file_adapter.f90",
     "src/process/mod_reference_et_demand_process.f90",
     "src/runtime/mod_fmr_reference_et_demand_binding.f90",
     "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90",
@@ -336,21 +338,22 @@
   ],
   "evidence_paths": [
     "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_MATRIX_20261014.tar.xz.b64",
-    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_20261014.tar.xz.b64"
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_20261014.tar.xz.b64",
+    "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_JOINT_CURRENT_20261014.tar.xz.b64"
   ],
   "coverage_reconciliation": "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
   "restart_scope": "Opaque joint FMR/chemical restart and same-platform native file with CRC32; actual pressure/water/temporal history/mass/clocks/revisions retained; fresh process reexecutes both owners",
   "historical_oracle": "Literal transport/reaction loop, linear inverse and cfluxt interface carry; B1.11 source hash enforced before compilation",
   "scoped_local_qualification": "PASS",
   "qualification_status": "SCOPED_JOINT_OWNER_QUALIFICATION_PASS_READY_FOR_REGIE; complete canonical admission gates pending",
-  "source_input_manifest": "Complete 236-input manifest in joint evidence; current byte hashes verified unchanged. FMQ27 and additional physical decoder negatives have separate exact input/executable receipts.",
+  "source_input_manifest": "Complete238-input current-canonical manifest; all final source bytes unchanged from combined execution. Previous immutable proofs retained separately.",
   "evidence_capsule_sha256": "fcfc27b6b7342c231d7b5579e699c665a4758639d34b15da74c8b133319d1221",
-  "scientific_execution_git_bundle": "matrix-joint-executed.bundle in joint evidence capsule; full executed local lineage is recoverable over pinned canonical prerequisite",
-  "checkpoint_commit": "2e0bcd5c21683efaa4c850c12d0e6bf3345ae119",
+  "scientific_execution_git_bundle": "matrix-joint-current.bundle in current evidence; exact execution recoverable over canonical34ee4fda",
+  "checkpoint_commit": "5a7624693a42427e3956f8cf728b55f4a9b4a46a",
   "checkpoint_semantics": "Earlier remote checkpoint; latest recovery is the head of work/nut-sol-trajectory3-20261014. Final candidate verifies every stable science input hash and retains the actual execution Git bundle.",
   "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
-  "remote_qualified_candidate_head": "2e0bcd5c21683efaa4c850c12d0e6bf3345ae119",
-  "remote_candidate_tree": "00e006518de4fead0d268312de69525201eae8a7",
+  "remote_qualified_candidate_head": "5a7624693a42427e3956f8cf728b55f4a9b4a46a",
+  "remote_candidate_tree": "df5f907bbd44715a77b168615912b93a9db9d7fb",
   "joint_successor": {
     "implemented": true,
     "persisted": true,
@@ -364,9 +367,9 @@
     ],
     "canonical_admission_owner": "central SWAP5 regie",
     "cost_seconds": {
-      "compile": 127.71298773192393,
-      "link": 0.44666854599199723,
-      "native": 10.228926413008594
+      "compile": 123.43039979811147,
+      "link": 0.3929782100021839,
+      "native": 9.54242763001821
     }
   },
   "joint_evidence_capsule_sha256": "0b8d48dcfef9bb771f9c2ff6c9ba39739568287287dac21c7beb667367571105",
@@ -377,7 +380,9 @@
     "previous_canonical": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
     "delta": "PR1229 annual CO2; production bootstrap intersects the measured build closure. NUT/SOL, water, kernel, physical state and restart owner code unchanged.",
     "overlap": "No NUT/SOL merge conflict; all CO2 canonical changes preserved.",
-    "current_gate": "PENDING targeted fresh O0/O2 combined production and disk restart",
+    "current_gate": "PASS O0/O2, identical complete output and fresh-process endpoint bytes, repeated decoder and FMR negatives",
     "selected_cost": "about130 seconds compile plus10 seconds native; no broad frost/highest-low-air selection"
-  }
+  },
+  "last_reconciled_head": "777eb950435931d7baada352921508704054422d",
+  "current_evidence_capsule_sha256": "b00e579208cf2e40eeac9cea72670b89463c5c27f00cfa38f98e8cc464b23b5f"
 }

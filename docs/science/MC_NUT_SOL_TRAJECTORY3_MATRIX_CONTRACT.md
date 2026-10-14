@@ -1,7 +1,8 @@
 # MC-SOL01 trajectory 3: accepted matrix transport with sorption and decay
 
 Status: joint physical matrix route locally qualified; canonical admission pending.
-Baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
+Original baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
+Current reconciled canonical: `34ee4fdac815788620f8779f4340b8edeef3c8ae`.
 Donor: PR #1117, `b6b894513fcdcf66e94824742c129616ddd7aed1`.
 Recovery: `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
 
@@ -66,7 +67,8 @@ callers only. The accepted-carrier service always supplies both endpoints.
   The receipt reports interval residual in cm. This avoids mistaking a tiny
   interval's roundoff-amplified rate residual for failed water conservation.
 - Units are cm, day, volumetric water fraction, mg/cm3 dissolved concentration
-  and mg/cm2 column-area chemical mass. Sorbed density is multiplied by `dz`
+  and mg/cm2 column-area chemical mass. In this linear route bulk density is
+  g/cm3 and Kf is cm3/g, so their product is dimensionless. Sorbed density is multiplied by `dz`
   exactly once; decay density rate is multiplied by `dt*dz` exactly once.
 
 Persistent chemical state includes dissolved and sorbed masses, derived matching
@@ -181,8 +183,8 @@ in-process restore followed by independently rerun water/chemical continuation;
 fresh-process disk restore and byte-identical resulting endpoints at O0/O2;
 truncated/corrupt/wrong-identity/wrong-clock payload rejection without target
 mutation; source and existing process preservation. The stable combined run
-compiles235 sources per optimization once for both actual physical drivers.
-Both optimizations: compile127.713s, link0.447s, native10.229s. Native time includes
+compiles237 sources per optimization once for both actual physical drivers.
+Both optimizations: compile123.430s, link0.393s, native9.542s. Native time includes
 normal physics, rejected/retried physics, fresh-process replay and corruption
 checks. Per-codec cost is UNKNOWN, not inferred from that total.
 The stable admission decision remains routed to central SWAP5 regie under the
