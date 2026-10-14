@@ -204,3 +204,34 @@ Keep PR #1225 draft until they are completed; full SWRAIN1 remains ACTIVE.
 python tests/mc-met01/run_raintb_legacy_owner_preservation.py --output /tmp/raintb-owner-new
 python tests/mc-met01/verify_raintb_legacy_owner_batch.py /tmp/raintb-owner-new --negative-controls
 ```
+
+### Proposed exact source-eligibility successor
+
+`verify_raintb_legacy_source_eligibility.py` is an independently runnable proposed
+source predicate. It does not replace the incumbent admission guard. The exact
+baseline adapter `44b07cd1046632a38b36e9b1ed5608f67ca41fdd` may advance only to
+`8ea1c1551c185112ad3f84db598eff8b823e0aeb`. Removing the exact added constructor
+and its single public declaration reproduces every baseline adapter byte.
+All other production files and the complete reference tree must remain unchanged;
+dirty science/reference or any additional production mutation rejects.
+
+The predicate verifies both sealed pilot/owner capsule hashes and every selected
+raw member, current direct/owner source dependencies, four direct cold/warm O0/O2
+results, eight real physical representation/continuation results and all20 native
+owner cases with actual logs/flags. Seven negative checks reject unknown preimage,
+unknown postimage, incumbent arithmetic change, prefix-law change, additional
+runtime/solver mutation, changed references and corrupted evidence. Its claim is
+PROPOSED_EXACT_SOURCE_ELIGIBLE_NOT_ADMITTED. No test or guard is weakened.
+
+The concrete admission proposal is to adopt this precise predicate under the
+existing MC-MET01/RT successor authority only after the required full preservation
+and stable parallel numerical-owner reconciliation. There is no source wildcard,
+no automatic allowance of the active LOW-AIR runtime edits and no new central
+runner/dependency register. The current daily-demand/F-CI source guard remains
+fail-closed on this candidate until its owning successor is actually adopted.
+Neither this source proof nor earlier targeted owner PASS replaces complete
+highest-frost/PPA/Full Richards/F-CI qualification.
+
+```bash
+python tests/mc-met01/verify_raintb_legacy_source_eligibility.py --negative-controls --output /tmp/raintb-source-proof.json
+```

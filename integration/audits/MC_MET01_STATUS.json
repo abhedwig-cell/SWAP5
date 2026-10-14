@@ -636,7 +636,7 @@
   },
   "legacy_table_modular_pilot_20261014": {
     "capability": "SW431-MET-RAIN1",
-    "stage": "PRODUCTION_INTEGRATION_TESTED_DRAFT_ADMISSION_PENDING",
+    "stage": "SOURCE_ELIGIBLE_AND_TARGETED_OWNER_PASS_FULL_ADMISSION_PENDING",
     "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
     "master_owner_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
     "branch": "work/modular-migration-pilot-20261014",
@@ -681,11 +681,10 @@
       "level3": "Existing authentic RAINTB production fixture with legacy/typed representations in the same executable; BASE/AIR pulse/off/next-day, failed prefix/retry/rollback, exact table restart identity and original hard mass checks; O0/O2 continuous/restart.",
       "level4": "PENDING: RAINTB owning contract requires affected highest frost, PPA and full current F-CI. No inheritance of changed adapter authority; existing successor guard intentionally remains fail-closed. No automatic low-air run."
     },
-    "next_action": "Await qualified stable LOW-AIR numerical successor or explicit unchanged numerical owner boundary; reconcile source-authority successor and complete required preservation. This PR remains draft; no protected central runner or competing branch is edited.",
+    "next_action": "MC-MET01/RT must adopt the exact successor predicate at the full owning qualification boundary, then complete mandatory affected highest frost/PPA/F-CI against a stable reconciled numerical owner. Do not rerun unchanged module/owner composition solely for metadata updates.",
     "blockers": [
-      "Precise adapter postimage successor accepted by owning source authority; current guard rejects unknown mutation.",
-      "Complete affected highest frost including mandatory O0/O2 low-air and current Full Richards/PPA/F-CI; do not infer PASS from active LOW-AIR A/B or substitute bounded direct20-case owner batch.",
-      "Reconcile stable LOW-AIR-10X numerical postimage, retain both modular registrations, requalify affected combined dependencies before admission."
+      "Exact-source successor proposal is tested but not adopted by existing admission authority; current central guard stays unchanged.",
+      "Mandatory complete affected highest frost/PPA/Full Richards/F-CI preservation still pending. LOW-AIR-10X at de7d4422 remains active and unqualified; no safe full-preservation evidence inheritance for changed numerical postimages."
     ],
     "coverage_receipt": "Master owner PR1072 only; do not edit its ledger on this branch or promote full SWRAIN1.",
     "low_air_reconciliation": "Published work/low-air-10x-20261014 now reconciled at fea92beda1c544aecbd27851d7a563a558aef027. Full highest same-host A/B active, not full qualified/admitted. Production changes restricted to canonical_contracts/canonical_interval_runtime; pilot production adapter disjoint. Shared run_modular_tests.py overlap has a clean three-way syntax-only prototype retaining all three opt-in cases; prototype not applied or qualified.",
@@ -936,6 +935,45 @@
         "Reconcile stable LOW-AIR-10X numerical postimage, retain both modular registrations, requalify affected combined dependencies before admission."
       ]
     },
-    "targeted_owner_preserved": true
+    "targeted_owner_preserved": true,
+    "source_eligibility_successor": {
+      "stage": "PROPOSED_SOURCE_ELIGIBILITY_PASS_FULL_ADMISSION_PENDING",
+      "checker": "tests/mc-met01/verify_raintb_legacy_source_eligibility.py",
+      "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
+      "preimage": "44b07cd1046632a38b36e9b1ed5608f67ca41fdd",
+      "postimage": "8ea1c1551c185112ad3f84db598eff8b823e0aeb",
+      "claim": "Only exact additive constructor/public API accepted; all incumbent adapter bytes and every other production/reference blob retained. Both immutable capsules and actual direct/physical/owner outputs verified. Source eligibility is not full qualification or canonical admission.",
+      "initial_negative_controls": 7,
+      "existing_guard_modified": false,
+      "remaining_authority": "MC-MET01/RT must adopt precise successor at its owning admission boundary after mandatory preservation; new checker alone cannot authorize the central F-CI gate.",
+      "latest_low_air_head": "de7d4422f89fe3f7d9993c1ff967b15e322a98b6",
+      "latest_low_air_stage": "FULL_HIGHEST_SAME_HOST_AB_ACTIVE, qualified false/admitted false",
+      "next_action": "Persist then execute eligibility/negative proof. Retain draft while owning full preservation and parallel stable numerical boundary remain unresolved.",
+      "tested": true,
+      "qualified": false,
+      "canonically_admitted": false,
+      "executed_head": "dc295e99533ec47266621d138f846a2741c5c2a3",
+      "receipt": "integration/audits/MC_MET01_LEGACY_RAINTB_SOURCE_ELIGIBILITY_20261014.json",
+      "negative_controls": {
+        "wrong-preimage": "unknown adapter preimage",
+        "wrong-postimage": "unknown adapter postimage",
+        "changed-incumbent": "unknown adapter postimage",
+        "changed-prefix-law": "unknown adapter postimage",
+        "additional-solver": "unknown additional production mutation",
+        "changed-reference": "reference mutation",
+        "corrupt-capsule": "evidence capsule identity"
+      },
+      "source_proof": {
+        "preimage": "44b07cd1046632a38b36e9b1ed5608f67ca41fdd",
+        "postimage": "8ea1c1551c185112ad3f84db598eff8b823e0aeb",
+        "incumbent_adapter_bytes": "EXACT_RETAINED",
+        "addition_sha256": "85d6017077bdfc832f1a5f8bf4a27c5ff7c7543fbd6465bd850b2159f0812c0e"
+      },
+      "evidence_capsules_verified": {
+        "pilot_capsule": "c630bc221d319e39064ae23c12748eca40bcb4f1498f1d219e374cb5f8ac2794",
+        "owner_capsule": "bec1ab99d93346eabe3010d6e485204f523fbb00aa654f8e0c1495028177d7fa",
+        "owner_cases": 20
+      }
+    }
   }
 }
