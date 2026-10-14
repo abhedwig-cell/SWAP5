@@ -65,9 +65,9 @@ legacy file grammar, partly filled sentinels and near-midnight event-array gap
 coalescing. Those wider source envelopes remain explicit follow-up work; a
 bounded production admission alone must not promote complete SWRAIN1 coverage.
 
-## Proposed legacy partly filled table successor (2026-10-14)
+## Admitted legacy partly filled table successor (2026-10-14)
 
-This **candidate**, on `work/modular-migration-pilot-20261014` from canonical
+This successor, developed on `work/modular-migration-pilot-20261014` from canonical
 `c591205c5e03f1c96c6488eb53c562265f749556`, adds
 `construct_swap_raintb_legacy_table(flat, table, status)` to the existing weather
 adapter. It closes one previously open input representation within the bounded
@@ -125,7 +125,8 @@ exclusive categories and physics-only runtime are UNKNOWN. These are measurement
 on one host, not a portable speed claim. There is no original baseline for this
 previously missing legacy-array route; no before/after percentage is claimed.
 
-**Canonical admission remains pending.** The original isolated pilot could not
+**Bounded canonical admission is verified** via PR #1225 at
+`8c24151ffac35822b62e6219158b6cfb14f04d31`. The original isolated pilot could not
 inherit the changed adapter's exact owning evidence. The subsequently delegated
 joint MC-MET01/HY/RT/F-KT successor now binds the three exact production postimages
 and complete fresh V3 owning evidence: all original weather, independent demand/ET,

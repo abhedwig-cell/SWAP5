@@ -1,8 +1,9 @@
-# Proposed MC-MET01/HY/RT/F-KT joint admission
+# Admitted MC-MET01/HY/RT/F-KT joint successor
 
 Status: explicitly delegated joint source reconciliation on 14 October 2026;
 complete V3 owning qualification and full moving preservation PASS;
-canonical admission is proposed. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
+bounded canonical admission via PR #1225 is verified at
+`8c24151ffac35822b62e6219158b6cfb14f04d31`. Baseline: `c591205c5e03f1c96c6488eb53c562265f749556`.
 Recovery: `integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json`.
 
 The user authorized the joint owner reconciliation, exact source-guard successor,
@@ -158,3 +159,8 @@ PYTHONPATH causes unqualified leaf receipt identities to fall back to RUN. No si
 receipt reuse is claimed. Broad-run compiler/native exclusive counts remain UNKNOWN
 because the original runner was not instrumented. Its measured wall cost is separate
 from exact modular and targeted owner compile/native costs.
+
+Admission first parent is the reconciled canonical baseline; admitted source tree
+exactly equals the qualified source tree. The subsequent closure records change
+metadata only. Master owner PR #1072 retains the unchanged full-capability
+disposition and counts; this record supplies its bounded canonical receipt.
