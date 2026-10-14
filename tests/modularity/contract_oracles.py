@@ -59,7 +59,7 @@ def prepare(root, name):
                 status, branch, depth = line.split()
                 status, branch, depth = int(status), int(branch), float(depth)
                 ws, wd, wb = want
-                if status != ws or branch != wb or not math.isfinite(depth) or abs(depth-wd) > 2e-11+2e-12*abs(wd):
+                if status != ws or branch != wb or not math.isfinite(depth) or not oracle.close(depth,wd,rtol=5e-12,atol=2e-13):
                     raise RuntimeError(f'drainage oracle mismatch {i}: {line} != {want}')
         paths = [FVQ38]
     else:

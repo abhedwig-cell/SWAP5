@@ -195,7 +195,7 @@ def main():
             _,execute=s.command([str(build/'probe')],build,'audit-run')
             audit[name].update(build_seconds=time.perf_counter()-start,compile_seconds=sum(e['wall_seconds'] for e in events),link_seconds=event['wall_seconds'],compiler_requests=len(closure)+1,link_probe='PASS',external_sources=list(map(str,externals)))
         write(out/'AUDIT.json',audit)
-    records=[];cases=args.case or DEFAULT_CASES
+    records=[];cases=args.case or (['mvg','boesten','accepted_heat'] if args.benchmark else DEFAULT_CASES)
     for round_index in range(args.repeat if args.benchmark else 1):
         for broad in ([True,False] if round_index%2==0 else [False,True]) if args.benchmark else [False]:
             for case in cases:
