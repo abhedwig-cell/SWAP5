@@ -986,6 +986,12 @@
       "performance": "native wall-sum ratios O0:9.334910/8.252688; O2:9.401085/9.469626. Different worker policies per optimization; no common end-to-end10x claim.",
       "existing_runs_followed_to_terminal": true,
       "v2_requalification": "Owner-reported V1 extreme-finite-ratio SIGFPE; guarded V2 source519f7ee34 requires fresh direct/highest O0/O2 and preservation. Completed V1 A/B does not qualify V2."
+    },
+    "parallel_v2_reconciliation": {
+      "record": "integration/audits/MC_MET01_LEGACY_RAINTB_V2_RECONCILIATION_20261014.json",
+      "result": "12 terminal V2 cases pass; actual raw stdout hashes and bytes match both V1 rounds and O0/O2",
+      "scope": "Read-only terminal observation; owner publication/source authority/full combined preservation pending, not pilot qualification",
+      "executed_owner_head": "cc76885bbc46267228c27c4f16c755d8f811fdeb"
     }
   }
 }
