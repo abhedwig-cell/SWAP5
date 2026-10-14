@@ -39,7 +39,7 @@
     29,
     30
   ],
-  "performance": "Full current 48-program warm candidate 571.479s PASS; matched baseline ACTIVE. Historical hardware comparability UNKNOWN; hard 10x claim unproved.",
+  "performance": "Full current 48-program warm candidate 571.479s PASS; original baseline interrupted after 20 programs, remaining 28 active. Baseline continuous wall UNKNOWN; full native CPU and cold candidate pending.",
   "checkpoint_commit": "eed6facdb",
   "remote_persisted": true,
   "tested_scope": "V3 current independent policy/F-KT O0/O2 cold/warm PASS, 12 fresh highest programs and 72 original fine comparisons PASS, 12 original coupling executions PASS; numerical source projection and six corrupt/partial/foreign seal controls PASS. Final direct-dummy fine workspace: 12 complete original programs and 72 fine comparisons repeated, per-step/failed-reuse O0/O2 and enhanced physical cold/warm controls PASS; fresh enclosing warm execution PASS.",
@@ -102,11 +102,11 @@
   },
   "active_run": {
     "path": "full-low-air-baseline-r0",
-    "session": 29191,
+    "session": 51852,
     "policy": "baseline",
     "workers": 4,
-    "state": "ACTIVE_NOT_QUALIFICATION",
-    "completed_at_checkpoint": 16
+    "state": "RECOVERED_ACTIVE_NOT_QUALIFICATION",
+    "completed_at_checkpoint": 20
   },
   "full_48_candidate_evidence": "integration/audits/evidence/LOW_AIR_10X_FULL48_CANDIDATE_20261014_RECEIPT.json"
 }
