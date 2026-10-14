@@ -8,7 +8,7 @@ import argparse,concurrent.futures,hashlib,json,os,pathlib,resource,subprocess,t
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);a.add_argument('--workers',type=int,choices=[1,2,3,4],default=1);args=a.parse_args()
+ a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);a.add_argument('--workers',type=int,choices=[1,2,3,4],default=1);a.add_argument('--candidate-only',action='store_true');args=a.parse_args()
  if args.repeat<1:raise ValueError('positive repeats')
  b=args.build.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
  r=json.loads((b/'RESULTS.json').read_text());flags=r['flags'];assert '-pg' not in flags
@@ -28,6 +28,7 @@ def main():
   result[name+'_binary_sha256']=sha(out/name)
  (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
  result['workers']=args.workers;result['batches']=[]
+ if args.candidate_only:result['scope']='GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION'
  def execute(round_index,family,name):
     prefix=out/f'{round_index}-{family}-{name}';start=time.monotonic()
     print(f'START round={round_index} family={family} policy={name}',flush=True)
@@ -40,7 +41,7 @@ def main():
     print(json.dumps(record),flush=True)
     return record
  for round_index in range(args.repeat):
-  for name in (['baseline','candidate'] if round_index%2==0 else ['candidate','baseline']):
+  for name in (['candidate'] if args.candidate_only else ['baseline','candidate'] if round_index%2==0 else ['candidate','baseline']):
    start=time.monotonic()
    with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
     for record in pool.map(lambda family:execute(round_index,family,name),range(1,7)):
@@ -48,6 +49,7 @@ def main():
      if not record['complete']:raise RuntimeError('full original assertions failed; retain negative evidence')
    result['batches'].append({'round':round_index,'policy':name,'wall_seconds':time.monotonic()-start,'cpu_seconds':sum(x['cpu_seconds'] for x in result['runs'] if x['round']==round_index and x['policy']==name)})
    (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
- result['complete_single_optimization_ab']=True
+ result['complete_single_optimization_ab']=not args.candidate_only
+ result['complete_single_optimization_candidate']=True
  (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
 if __name__=='__main__':main()

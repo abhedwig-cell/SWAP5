@@ -7,8 +7,11 @@ canonical admission and never compares an unmatched historical runtime.
 import argparse,hashlib,json,math,pathlib,re
 
 def verify(folder):
- folder=pathlib.Path(folder);r=json.loads((folder/'RESULTS.json').read_text());expected={(round_index,family,policy)for round_index in range(r['repeat'])for family in range(1,7)for policy in ['baseline','candidate']}
- if not r.get('complete_single_optimization_ab'):raise ValueError('incomplete A/B')
+ folder=pathlib.Path(folder);r=json.loads((folder/'RESULTS.json').read_text())
+ candidate_only=r.get('scope')=='GUARDED_CANDIDATE_ORIGINAL_HIGHEST_QUALIFICATION'
+ policies=['candidate'] if candidate_only else ['baseline','candidate']
+ expected={(round_index,family,policy)for round_index in range(r['repeat'])for family in range(1,7)for policy in policies}
+ if not r.get('complete_single_optimization_candidate' if candidate_only else 'complete_single_optimization_ab'):raise ValueError('incomplete execution')
  seen=set();physical={};summary={};max_head=max_temperature=0.
  for run in r['runs']:
   key=(run['round'],run['family'],run['policy'])
@@ -31,8 +34,8 @@ def verify(folder):
   if previous!=run['stdout_sha256']:raise ValueError('repeat scientific output drift')
  if seen!=expected:raise ValueError('missing trajectory')
  for rnd in range(r['repeat']):
-  summary[rnd]={name:sum(x['wall_seconds']for x in r['runs']if x['round']==rnd and x['policy']==name)for name in ['baseline','candidate']}
-  summary[rnd]['native_sum_speedup']=summary[rnd]['baseline']/summary[rnd]['candidate']
- return {'scope':'BOUNDED_COMPLETE_ORIGINAL_HIGHEST_AB_ONLY','rounds':summary,'trajectories':len(seen),'fine_comparisons':6*len(seen),'max_head_error_cm':max_head,'max_temperature_error_c':max_temperature,'physical_sha256':{str(k):v for k,v in physical.items()},'canonical_admission':False,'full_fci_preservation':'UNKNOWN','physics_exclusive_times':'UNKNOWN','historical_hardware_comparability':'UNKNOWN'}
+  summary[rnd]={name:sum(x['wall_seconds']for x in r['runs']if x['round']==rnd and x['policy']==name)for name in policies}
+  summary[rnd]['native_sum_speedup']='UNKNOWN' if candidate_only else summary[rnd]['baseline']/summary[rnd]['candidate']
+ return {'scope':r['scope'],'rounds':summary,'trajectories':len(seen),'fine_comparisons':6*len(seen),'max_head_error_cm':max_head,'max_temperature_error_c':max_temperature,'physical_sha256':{str(k):v for k,v in physical.items()},'canonical_admission':False,'full_fci_preservation':'UNKNOWN','physics_exclusive_times':'UNKNOWN','historical_hardware_comparability':'UNKNOWN'}
 if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('folder');a=p.parse_args();print(json.dumps(verify(a.folder),indent=2))
