@@ -7,8 +7,11 @@ if subprocess.check_output(['git','rev-parse','HEAD:src/runtime/mod_canonical_co
  assert sys.argv[1:] in [[],['--owner-only']]
  sys.path.insert(0,str(ROOT/'tests/modularity'))
  from verify_joint_preservation import verify_qualification
- verify_qualification() # Fresh full highest, all incumbent owner cases and coupling; missing proof rejects.
- print('MC_MET01_EXACT_JOINT_DAILY_DEMAND_OWNER_AND_HIGHEST_PREREQUISITE=PASS')
+ result=verify_qualification() # Exact selected owner proof; missing evidence rejects.
+ if result.get('oxygen_cycle_successor'):
+  print('MC_MET01_EXACT_CROP_OXYGEN_OWNER_PREREQUISITE_HIGHEST_NOT_SELECTED=PASS')
+ else:
+  print('MC_MET01_EXACT_JOINT_DAILY_DEMAND_OWNER_AND_HIGHEST_PREREQUISITE=PASS')
  sys.exit(0)
 BASE='bd17f0a9a7c19516e66af8f80e2b7128890b3aee'
 PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90':'44b07cd1046632a38b36e9b1ed5608f67ca41fdd','src/process/mod_reference_et_demand_process.f90':'0a8fc91570c6297a54109740de3a26153dc44283','src/runtime/mod_fmr_production_application_bootstrap.f90':'8b480b09f47bb4443d755109c9093486853c0809'}

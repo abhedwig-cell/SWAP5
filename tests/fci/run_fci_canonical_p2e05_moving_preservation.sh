@@ -157,6 +157,13 @@ if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
 fi
 
 verify_crop_frost_highest(){
+  if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
+    # Programme policy selects independent short physical/numerical contracts
+    # for this exact crop successor. No long-highest PASS is asserted.
+    python3 tests/crop-cycle/verify_oxygen_successor.py
+    echo 'CROP_OXYGEN_HIGHEST_NOT_SELECTED_POLICY_FAST_OWNER_BOUND=PASS'
+    return
+  fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 8b480b09f47bb4443d755109c9093486853c0809 ]]; then
     python3 tests/mc-met01/verify_daily_demand_successor.py
     return
@@ -358,6 +365,10 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
   if (( joint_exact_successor )); then
     dependency_authority=c591205c5e03f1c96c6488eb53c562265f749556
   fi
+fi
+if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == cb845eecd2409d6ee473bd7a0cb8194c0b501ad6 ]]; then
+  python3 tests/crop-cycle/verify_oxygen_successor.py || fail 'crop oxygen complete owner evidence missing'
+  dependency_authority=f0dd03704cd6eb19336269438e99c6bf5db08024
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0

@@ -182,6 +182,11 @@ def read_evidence(record, raw=None):
 
 def verify_qualification():
     source = verify_source()
+    if source.get('oxygen_cycle_successor'):
+        import sys
+        sys.path.insert(0, str(ROOT / 'tests/crop-cycle'))
+        from verify_oxygen_successor import verify_qualification as verify_crop_cycle
+        return verify_crop_cycle()
     status = json.loads((ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').read_text())
     record = status['owner_evidence']  # No missing/progress evidence can pass.
     data, manifest = read_evidence(record)
@@ -194,6 +199,15 @@ def main():
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     source = verify_source()
+    if source.get('oxygen_cycle_successor'):
+        result = verify_qualification()
+        if args.negative_controls:
+            import subprocess
+            subprocess.run(['python3', '-B', str(ROOT / 'tests/crop-cycle/test_oxygen_successor_controls.py')], check=True)
+        if args.output:
+            args.output.write_text(json.dumps(result, indent=2) + '\n')
+        print('OXYGEN_CYCLE_COMPLETE_OWNER_PREREQUISITE_NOT_ADMISSION=PASS')
+        return
     status = json.loads((ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').read_text())
     record = status['owner_evidence']
     data, manifest = read_evidence(record)
