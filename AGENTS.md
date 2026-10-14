@@ -159,3 +159,9 @@ PASS without inspecting dependencies. Preserve all mandatory admission gates.
 Measure compile/link/native/validation costs, retain failed and censored results,
 and record unavailable categories as UNKNOWN. Read the live delta and existing
 recovery evidence before repeating work; use meaningful coherent checkpoints.
+
+For direct local feedback, use `python tests/modularity/run_modular_tests.py --list`
+and select the changed production contract. The no-case default is the measured
+small process set; accepted heat and ten-component audits require explicit selection.
+See **Apply the modular route (2026-10-14)** in the existing protocol for commands,
+provider reuse and the unchanged four-level admission boundary.

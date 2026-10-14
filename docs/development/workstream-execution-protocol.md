@@ -425,3 +425,75 @@ owning-authority change can retire a mandatory gate. A smaller test can prove it
 contract; correct full-model integration remains a separate claim. Full Richards,
 mass, transactions, restart, independent oracles and coupling contracts retain their
 accepted scientific authority.
+
+
+### Apply the modular route (2026-10-14)
+
+The normal **local feedback** entrypoint is now:
+
+```bash
+python tests/modularity/run_modular_tests.py --list
+python tests/modularity/run_modular_tests.py --output /tmp/swap5-local-new
+# Select the actual changed contract, rather than a blanket scientific suite:
+python tests/modularity/run_modular_tests.py --case drainage --output /tmp/swap5-drain-new
+python tests/modularity/run_modular_tests.py --case root_oxygen --case root_contract --output /tmp/swap5-root-new
+python tests/modularity/run_modular_tests.py --case assimilation --output /tmp/swap5-assim-new
+```
+
+Use a fresh output path. The default runs Boesten, empirical root oxygen plus
+root ownership/error contracts, Hooghoudt equivalent-depth preparation, and the
+existing WOFOST81 assimilation oracle. Each provider closure has one to three
+production files. Accepted heat remains explicit `--case accepted_heat`, because
+its accepted-state provider closure still has 154 files. `--audit-closures` and
+`--audit-build` are explicit investigation options, never the routine default.
+The default is a convenient starting set, not a scientific impact selector.
+
+Develop a new historical function in its owning production module with explicit
+units, admissible input domain, result/status and committed/candidate ownership.
+Reuse the admitted physics; never implement a second production formula in the
+test. Add a small real Fortran driver and, when available, an independent historical
+oracle to the existing runner. Name its flags, output validation and actual ordered
+closure. One to three providers is demonstrated for these seams, not a universal
+maximum: justify a larger closure from the real contract and measure it. A private
+backend type cannot be replaced with a mock merely to meet a build budget.
+
+During editing, execute the changed level-1 driver and relevant level-2 contracts.
+Mutable state, producer/consumer changes, units, accepted/candidate identity or
+mass ownership require input nonmutation, invalid/rejected paths and A/B/A or
+rollback/restart checks as applicable. Once a candidate is stable, run level-3
+composition using the actual Richards/accepted-state route and affected downstream
+processes. Shared solver/state/runtime changes require that composition earlier.
+Run level-4 owner and full preservation at the existing mandatory admission boundary.
+Use the four-level matrix above and the modularity audit; this entrypoint does not
+infer physical independence from module imports or choose admission gates.
+
+Verified provider artifacts can be shared between selected drivers only inside
+one live Session with identical ordered source/provider prefixes, flags, compiler
+and environment, and unchanged object/module bytes. O0/O2 remain isolated; every
+selected executable is linked and executed independently. Warm re-execution checks
+the full artifact set and executes the science again. It does not inherit PASS.
+`--independent-builds` provides the explicit control policy. There is no persistent
+cache or cross-host evidence inheritance. For result inheritance, the unchanged
+scientific dependency and terminal-evidence requirements above remain binding.
+
+The repeated adoption experiment measures the same new drivers with independent
+versus shared provider builds, not two complete admission suites. Its executable
+bytes and O0/O2 science outputs must match. Retain compile, link, native-plus-driver,
+identity/oracle validation and total timing separately; physics alone is UNKNOWN
+unless independently instrumented. See [the adoption results](../audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md).
+
+For highest low-air, the scientific owner remains PPA-WU05-B frost/drainage with
+F-KT/HY/RT transaction and temporal control. Its minimum execution boundary is the
+owner-required stable scientific successor/admission, and any dependent preservation
+where the existing authority demands fresh execution. There is no evidence for a
+fixed daily/weekly frequency and no permission here to retire that gate. Unchanged
+independent module work does not select it; a changed backend, frost/thermal,
+drainage, retry/temporal, root-stress or restart dependency requires conservative
+owner reconciliation. Unknown dependency identity means RUN when the owning gate
+is applicable. The recorded high retry count is a separate numerical-policy problem.
+No forcing duration, cases, budgets or tolerances are shortened by this change.
+
+Continue in coherent implementation, feedback, composition, measurement and admission
+batches. Persist before expensive execution and move automatically to the next safe
+phase. Do not turn a small driver result or a normal checkpoint into a user approval
+boundary. State an exact shared-contract blocker and continue independent work.
