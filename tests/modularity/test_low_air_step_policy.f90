@@ -57,6 +57,10 @@ program test_low_air_step_policy
  mb%inject_mass_defect=.false.
  call run_canonical_interval(mb,b,forcing,interval,cfg,rb,selector)
  call require(rb%status==CANONICAL_STATUS_INVALID_REQUEST,'external selector fails closed')
+ cfg%transaction%temporal_tolerance=1.e300_real64
+ mb%extreme_indicator=.true.
+ call run_canonical_interval(mb,b,forcing,interval,cfg,rb)
+ call require(rb%completed.and.rb%mass%complete,'finite clamped proposal for extreme indicator ratio')
  print '(A)','LOW_AIR_STEP_POLICY_CONTRACT=PASS'
 contains
  subroutine require(ok,label)

@@ -134,8 +134,12 @@ contains
 
       if (config%retain_accepted_step_proposal .and. (proposal_active .or. tx%temporal_rejections > 0)) then
         proposal_factor = 2.0_real64
-        if (tx%temporal_error > 0.0_real64) proposal_factor = &
-             max(0.5_real64, min(2.0_real64, 0.9_real64 * sqrt(transaction_policy%temporal_tolerance / tx%temporal_error)))
+        ! Clamp before division: finite budget/tiny indicator must not overflow
+        ! while calculating a proposal whose bounded factor is already known.
+        if (tx%temporal_error > 0.0_real64) then
+          if (tx%temporal_error > 0.2025_real64 * transaction_policy%temporal_tolerance) proposal_factor = &
+               max(0.5_real64, min(2.0_real64, 0.9_real64 * sqrt(transaction_policy%temporal_tolerance / tx%temporal_error)))
+        end if
         proposed_dt = tx%accepted_dt * proposal_factor
         proposal_active = ieee_is_finite(proposed_dt) .and. proposed_dt > 0.0_real64
       end if

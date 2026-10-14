@@ -7,9 +7,9 @@
   "tested": true,
   "qualified": false,
   "admitted": false,
-  "stage": "REPEATED_O0_O2_FULL_AB_ACTIVE",
+  "stage": "V1_FULL_AB_ACTIVE_V2_ARITHMETIC_GUARD_REQUALIFICATION_PENDING",
   "recovery_point": "work/low-air-10x-20261014",
-  "next_action": "Observe active O0/O2 second-order complete A/B, seal exclusive CPU/whole-gate measurements; do not admit before unchanged owner/preservation requirements are resolved.",
+  "next_action": "Finish active V1 A/B; build guarded V2 and freshly execute all original highest candidates O0/O2, compare complete scientific output against V1. V1 timings do not claim V2 admission.",
   "blockers": [
     "Full 10x objective not yet met; first full O2 native round is9.41x, not an end-to-end10x proof.",
     "Shared canonical numerical-contract successor and applicable F-CI preservation remain pending."
@@ -57,5 +57,8 @@
     "decoded_sha256": "645443f47afeef8b1f715b884dc481b0079a31979884c6a33c1f3ed1b2eb9fb7",
     "files": 2165,
     "bytes": 126704
-  }
+  },
+  "current_candidate_source": "519f7ee34",
+  "v1_scientific_source": "1d5515057",
+  "negative_evidence": "Extreme finite indicator ratio produced actual SIGFPE in V1 direct contract. Clamp before division fixes it; O0/O2 direct contract including extreme ratio must PASS. Original numeric/physical assertions and budgets unchanged."
 }

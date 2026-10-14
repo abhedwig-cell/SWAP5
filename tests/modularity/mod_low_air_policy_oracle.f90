@@ -17,6 +17,7 @@ module mod_low_air_policy_oracle
 
   type, extends(canonical_physical_model_t), public :: fci04_model_t
     real(real64) :: k = 1.0_real64
+    logical :: extreme_indicator = .false.
     logical :: inject_mass_defect = .false.
     real(real64) :: mass_defect = 0.0_real64
     integer :: prepare_calls = 0
@@ -120,6 +121,10 @@ contains
       error stop 'FCI04 unexpected half state type'
     end select
     value = abs(half_water - full_water)
+    if (self%extreme_indicator) then
+      value = huge(0.0_real64)
+      if (abs(half_water-full_water) < 0.01_real64) value = tiny(0.0_real64) / 1.e10_real64
+    end if
   end function fci04_temporal_error
 
 end module mod_low_air_policy_oracle

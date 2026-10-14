@@ -8,7 +8,7 @@ import argparse, re, hashlib, importlib.util, json, os, pathlib, platform, resou
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- a=argparse.ArgumentParser(description=__doc__);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--horizon',default='1.e-7_real64');a.add_argument('--profile',action='store_true');a.add_argument('--policy',action='store_true');a.add_argument('--full-driver',action='store_true');a.add_argument('--opt',type=int,choices=[0,2],default=2);a.add_argument('--timeout',type=float,default=60);args=a.parse_args()
+ a=argparse.ArgumentParser(description=__doc__);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--horizon',default='1.e-7_real64');a.add_argument('--profile',action='store_true');a.add_argument('--policy',action='store_true');a.add_argument('--full-driver',action='store_true');a.add_argument('--build-only',action='store_true');a.add_argument('--opt',type=int,choices=[0,2],default=2);a.add_argument('--timeout',type=float,default=60);args=a.parse_args()
  out=args.output.resolve();out.mkdir(exist_ok=False,parents=True)
  report={'scope':'DIAGNOSTIC_NOT_QUALIFICATION','head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'host':platform.uname()._asdict(),'horizon':args.horizon,'events':[],'sources':{},'profile':args.profile}
  def run(cmd,label,cwd=out,timeout=None):
@@ -53,6 +53,9 @@ def main():
   objects.append(obj)
  if run(['gfortran',*flags,*objects,'-o',out/'test'],'link')!=0:raise RuntimeError('link failed')
  report['binary_sha256']=sha(out/'test')
+ if args.build_only:
+  report['terminal_status']='BUILD_ONLY_NOT_QUALIFICATION'
+  (out/'RESULTS.json').write_text(json.dumps(report,indent=2)+'\n');print('BUILD_ONLY=PASS');return
  code=run([out/'test','1'],'native',timeout=args.timeout)
  report['terminal_status']='CENSORED_NOT_QUALIFICATION' if code is None else 'DIAGNOSTIC_COMPLETED' if code==0 else 'DIAGNOSTIC_FAILED'
  if args.profile and code==0:run(['gprof',out/'test',out/'gmon.out'],'gprof')
