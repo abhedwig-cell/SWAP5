@@ -28,6 +28,7 @@ CASES.update({
  'assimilation': {'driver':'tests/fwof/pp02/test_wofost81_assimilation_driver.f90',
                   'marker':None,'validator':'assimilation','flags':['-std=f2008']}})
 CASES['low_air_policy']={'driver':'tests/modularity/test_low_air_step_policy.f90','marker':'LOW_AIR_STEP_POLICY_CONTRACT=PASS','flags':COMMON}
+CASES['low_air_physical']={'driver':'tests/modularity/test_low_air_development.f90','marker':'PPA_WU05B15_LOW_AIR_EXTENDED_RUNTIME=PASS','flags':COMMON}
 DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
 
 COMPONENTS={
@@ -55,10 +56,10 @@ def original_boesten():
 
 def plan(case,broad=False):
     cfg=CASES[case]
-    ordered,_=DEP.strict_closure(ROOT,[cfg['driver']], [STUB]+(['tests/modularity/mod_low_air_policy_oracle.f90'] if case=='low_air_policy' else []))
+    ordered,_=DEP.strict_closure(ROOT,[cfg['driver']], (['tests/modularity/low_air_consistent_grid_stubs.f90','tests/frost/mod_ppa_wu05b15_extended_fixture.f90'] if case=='low_air_physical' else [STUB]+(['tests/modularity/mod_low_air_policy_oracle.f90'] if case=='low_air_policy' else [])))
     modules=relative(ordered[:-1])
     if broad and case=='boesten': modules=original_boesten()
-    external=['src/legacy/b1_10_port/headcalc.f90'] if STUB in modules and 'src/legacy/b1_10_port/headcalc.f90' not in modules else []
+    external=['src/legacy/b1_10_port/headcalc.f90'] if (STUB in modules or 'tests/modularity/low_air_consistent_grid_stubs.f90' in modules) and 'src/legacy/b1_10_port/headcalc.f90' not in modules else []
     return modules+external+[cfg['driver']]
 
 class Session:
