@@ -100,32 +100,32 @@ contains
 
       ! ------------------------------------------------------------------
       ! source  : kees rappoldt, 1/86
-      ! purpose : linear interpolation in table with length iltab for a 
+      ! purpose : linear interpolation in table with length iltab for a
       !           given value of the independent variable x.
       ! ------------------------------------------------------------------
-      
+
       implicit none
-      
+
       ! global
       integer, intent(in) :: iltab
       real(8), intent(in) :: table(iltab), x
-      
+
       ! local
       integer :: i
       real(8) :: slope
-      
+
       ! ------------------------------------------------------------------
-      
+
       if (table(1) >= x)  goto 40
       do i = 3,iltab-1,2
         if (table(i) >= x) goto 30
         if (table(i) < table(i-2)) goto 20
       end do
-      
+
       ! table fully filled, argument larger then last x in table
       afgen = table(iltab)
       return
-      
+
       ! table partly filled, argument larger then last x in table
  20   afgen = table(i-1)
       return
@@ -133,7 +133,7 @@ contains
  30   slope = (table(i+1)-table(i-1))/(table(i)-table(i-2))
       afgen = table(i-1) + (x-table(i-2))*slope
       return
- 
+
       ! argument less or equal to first x in table
  40   afgen = table(2)
       return

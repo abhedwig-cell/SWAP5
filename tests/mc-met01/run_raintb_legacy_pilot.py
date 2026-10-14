@@ -30,11 +30,13 @@ def source_guard(driver):
         meteo = donor.extractfile('SWAP/MOD_meteo.f90').read()
     assert hashlib.sha256(functions).hexdigest() == 'b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527'
     assert hashlib.sha256(meteo).hexdigest() == '99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f'
+    # Only source newline and trailing-whitespace normalization is permitted.
+    # All statement text and arithmetic remain source-authenticated.
     text = functions.decode().replace('\r\n', '\n')
     start = text.index('   real(8) function afgen (')
     end = text.index('   end function afgen', start) + len('   end function afgen')
     literal = driver.split('  ! BEGIN LITERAL B1.11 AFGEN\n', 1)[1].split('\n  ! END LITERAL B1.11 AFGEN', 1)[0]
-    assert literal == text[start:end], 'independent AFGEN excerpt altered'
+    assert literal == '\n'.join(line.rstrip() for line in text[start:end].splitlines()), 'independent AFGEN excerpt altered'
     for statement in ('rflx = afgen(raintb, size(raintb), doy)',
                       'rtim = dmin1(1.d0, all_rain(i) * 0.1d0 / rflx)',
                       'rainflx(rain_rec) = all_rain(i) * 0.1d0 / rtim'):

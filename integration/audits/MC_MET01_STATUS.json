@@ -636,12 +636,12 @@
   },
   "legacy_table_modular_pilot_20261014": {
     "capability": "SW431-MET-RAIN1",
-    "stage": "IMPLEMENTED_MODULE_SMOKE_PASSED_INTEGRATION_PENDING",
+    "stage": "PRODUCTION_INTEGRATION_TESTED_DRAFT_ADMISSION_PENDING",
     "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
     "master_owner_head": "eccbf9d2b4631841ee37450206e32831a431bb85",
     "branch": "work/modular-migration-pilot-20261014",
     "implemented": true,
-    "tested": "module O0/O2 smoke only",
+    "tested": true,
     "qualified": false,
     "canonically_admitted": false,
     "scope": "Legacy alternating RAINTB fixed-array active-prefix normalization into the existing immutable typed owner; descending sentinel and ignored trailing slots. No legacy file grammar or new physical state.",
@@ -681,9 +681,10 @@
       "level3": "Existing authentic RAINTB production fixture with legacy/typed representations in the same executable; BASE/AIR pulse/off/next-day, failed prefix/retry/rollback, exact table restart identity and original hard mass checks; O0/O2 continuous/restart.",
       "level4": "PENDING: RAINTB owning contract requires affected highest frost, PPA and full current F-CI. No inheritance of changed adapter authority; existing successor guard intentionally remains fail-closed. No automatic low-air run."
     },
-    "next_action": "Persist this candidate remotely, execute real integration and retain split cost evidence; offer draft PR with precise owning preservation/admission conditions.",
+    "next_action": "MC-MET01/RT must authorize exact additive adapter successor and reconcile required highest frost with LOW-AIR-10X; then run incumbent weather/crop/thermal/PPA and complete applicable preservation under unchanged science, reconcile latest canonical and admit only if all gates pass. Preserve draft and ACTIVE full SWRAIN1 until then.",
     "blockers": [
-      "Final admission needs precise changed-adapter successor authority and mandatory owner preservation, including highest frost dependency reconciliation with LOW-AIR-10X."
+      "Existing MC-MET01 contract requires full affected highest frost and current Full Richards/PPA/F-CI; new adapter exact postimage is not recognized by existing guards. Successor admission authority/gate reconciliation is outside this isolated pilot.",
+      "LOW-AIR-10X published branch/PR not found in exact live searches; do not invent its head or modify its protected owner surface."
     ],
     "coverage_receipt": "Master owner PR1072 only; do not edit its ledger on this branch or promote full SWRAIN1.",
     "low_air_reconciliation": "Open PR inventory at readiness has no published LOW-AIR-10X PR. Its requested protected files/contracts remain byte-identical; changed weather-adapter source still affects existing exact-source preservation authority. Do not infer inheritance from one module import graph.",
@@ -691,6 +692,120 @@
       "modular": "under2s measured smoke pair; not a speedup baseline",
       "integration": "Broad runtime compilation necessary for authentic state identity; expected minutes, native cost UNKNOWN",
       "owning_preservation": "Historical low-air10678.726s; full preservation history7748.796s, not executed here."
-    }
+    },
+    "persisted": true,
+    "preserved": false,
+    "executed_scientific_head": "34e2d0576d437e50c57b8b9554eac50163e1ecae",
+    "executed_formatted_module_head": "927f8e736008a38a45ddf54328d2c0dc275b60b5",
+    "remote_functional_checkpoint": "c7a511e2626ece22c1c290e23ac5e188f84da2ee",
+    "checkpoint_tree": "20986f2899181bf0f934fdd45894de61618c6d1c",
+    "costs": {
+      "cold": {
+        "total_seconds": 0.8499875489997066,
+        "compile_seconds": 0.5537208800014923,
+        "link_seconds": 0.05608023599961598,
+        "execution_seconds": 0.004482287999053369,
+        "validation_seconds": 0.23173580000002403,
+        "compiler_requests": 6,
+        "reused_compilations": 0
+      },
+      "warm_same_transaction": {
+        "total_seconds": 0.2254249970001183,
+        "compile_seconds": 0.0,
+        "link_seconds": 0.0,
+        "execution_seconds": 0.003868857000270509,
+        "validation_seconds": 0.22091523799826973,
+        "compiler_requests": 0,
+        "reused_compilations": 4
+      },
+      "modular_provider_count": 1,
+      "direct_driver_count": 1,
+      "original_legacy_route_baseline": "UNAVAILABLE: historical-array route absent in preimage; broader physical test is different scope",
+      "original_tests_repeated": {
+        "retained_four_module_phases": [
+          "pilot-modular-initial",
+          "pilot-modular-final",
+          "pilot-modular-postformat",
+          "pilot-modular-persisted"
+        ],
+        "reasons": [
+          "initial lightweight smoke",
+          "persisted guarded source verification",
+          "formatting repair plus guard normalization",
+          "final persisted formatting postimage"
+        ],
+        "total_file_compiles": 16,
+        "total_links": 8,
+        "total_cold_or_warm_native_programs": 16,
+        "cross_session_source_and_flags_repeat": "Same adapter provider bytes retained through all four phases; no persistent or cross-session cache permitted. No additional full physics build repeated."
+      },
+      "failed_or_invalid": {
+        "native_failures": 0,
+        "invalid_parameter_cases_per_opt": 11,
+        "oracle_mutation_control": "PASS rejected",
+        "format_check_initial": "FAIL nine donor-comment whitespace lines; repaired with trailing-whitespace normalization only",
+        "owner_guard": "REJECTED unknown production mutation, admission not granted",
+        "first_owner_diagnostic": "REJECTED generated Python bytecode by clean-tree guard; generated files removed and diagnostic repeated",
+        "repair_operation_seconds": 0.00035714699970412767,
+        "exclusive_total_repair_effort": "UNKNOWN"
+      },
+      "integration": {
+        "terminal_exit": 0,
+        "wall_seconds": 124.27809474599962,
+        "categories": {
+          "compile": {
+            "count": 442,
+            "seconds": 93.14276285299911
+          },
+          "link": {
+            "count": 2,
+            "seconds": 12.029148308999538,
+            "meaning": "compound final build plus link, not isolated linker runtime"
+          },
+          "native": {
+            "count": 8,
+            "seconds": 5.4816789380001865
+          }
+        },
+        "baseline": "c591205c5e03f1c96c6488eb53c562265f749556",
+        "head": "34e2d0576d437e50c57b8b9554eac50163e1ecae",
+        "physics_only_seconds": "UNKNOWN",
+        "production_provider_count": 220,
+        "fixture_provider_count": 1,
+        "compile_units_at_link_time": [
+          "real driver",
+          "src/legacy/b1_10_port/headcalc.f90",
+          "seven generated literal source-oracle files"
+        ],
+        "same_provider_compiled_twice_per_optimization": false,
+        "compilation_units_total": 460,
+        "final_build_link_seconds": 12.029148308999538,
+        "pure_link_seconds": "UNKNOWN: final invocation compiles driver/headcalc/seven oracles and links"
+      },
+      "preservation_seconds": "NOT_EXECUTED_PENDING_OWNER_AUTHORITY: not inherited PASS and not NOT_REQUIRED",
+      "exclusive_python_evidence_github_idle_physics_seconds": "UNKNOWN",
+      "documentation": {
+        "source": "PASS",
+        "strict_mkdocs": "PASS",
+        "whitespace_postrepair": "PASS"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_MET01_LEGACY_RAINTB_MODULAR_PILOT_20261014.tar.xz.b64",
+      "decoded_sha256": "c630bc221d319e39064ae23c12748eca40bcb4f1498f1d219e374cb5f8ac2794",
+      "member_count": 144,
+      "compressed_bytes": 150732,
+      "roundtrip": "PASS",
+      "selected_raw_members_roundtrip_verified": true
+    },
+    "integration_result": "PASS: actual Full Richards BASE/AIR authentic Andelst weather; eight native O0/O2 representation/continuation combinations; byte-identical vectors, pulse/off/next-day, failed internally accepted prefix with no outer publication, retry, duplicate and table identity restart negatives, unchanged hard mass checks.",
+    "independent_source_result": "PASS:15372 literal AFGEN/pulse cases per O0/O2 plus eleven invalid arrays, ignored nonfinite tails, input bytes and normalized existing-owner identity; original7686-case O0/O2 calendar/threshold oracle also PASS.",
+    "protected_surface_result": "PASS: src/solver/runtime/kernel/transaction, reference, tools, .github, tests/frost/fci/support equal baseline; existing weather adapter minus only added API equals exact baseline bytes.",
+    "owner_admission_result": "PENDING. Unchanged current daily-demand owner verifier rejects candidate as unknown production mutation at backend_allocation_authority.verify_source. Adapter exact pin44b07cd1 differs from candidate8ea1c155. No guard changed or false PASS inherited.",
+    "recovery_point": "work/modular-migration-pilot-20261014, this field and evidence capsule; tested local Git bundle verified, canonical prerequisitec591205c retained.",
+    "reproduction_commands": [
+      "PATH=<qualified-gfortran-bin>:$PATH python tests/mc-met01/run_raintb_legacy_pilot.py --output <fresh-output>",
+      "PATH=<qualified-gfortran-bin>:$PATH python tests/mc-met01/run_raintb_legacy_pilot.py --integration --output <fresh-output>"
+    ]
   }
 }

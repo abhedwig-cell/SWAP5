@@ -64,3 +64,92 @@ typed tables and the tested BASE/AIR profile are qualified separately from
 legacy file grammar, partly filled sentinels and near-midnight event-array gap
 coalescing. Those wider source envelopes remain explicit follow-up work; a
 bounded production admission alone must not promote complete SWRAIN1 coverage.
+
+## Proposed legacy partly filled table successor (2026-10-14)
+
+This **candidate**, on `work/modular-migration-pilot-20261014` from canonical
+`c591205c5e03f1c96c6488eb53c562265f749556`, adds
+`construct_swap_raintb_legacy_table(flat, table, status)` to the existing weather
+adapter. It closes one previously open input representation within the bounded
+root-free RAINTB route; it does not claim full SWRAIN1 or legacy file parsing.
+Recovery and measurements are in the existing `MC_MET01_STATUS.json`, field
+`legacy_table_modular_pilot_20261014`. Existing admitted claims above are retained.
+
+The even-length real64 array alternates day-of-year and intensity in cm/day.
+As in authenticated B1.11 `functions.f90` AFGEN, the first descending abscissa
+terminates the active prefix. Its ordinate and all following slots are ignored,
+including unconsumed nonfinite data. Consumed abscissae must be finite; active
+knots must be strictly increasing in 1..366 and active intensities finite and
+positive. Duplicate active knots, odd/incomplete arrays and invalid active values
+fail with an unready output. Prefix normalization calls the existing constructor;
+all interpolation, threshold, pulse and weather physics remain its existing code.
+No input mutation, new state, progress clock, restart format or numerical policy.
+Equivalent full and partly filled arrays produce identical existing table identity,
+so the admitted joint continuation comparison can use the existing owner.
+
+The standalone Fortran driver has one production provider, plus itself, and calls
+that real adapter and pulse resolver. A literal independently compiled B1.11
+AFGEN excerpt and the three source rainfall statements supply the oracle.
+Only CRLF and trailing whitespace are normalized in the derived test excerpt;
+the archive bytes and member hashes remain fixed. An altered oracle is rejected
+by the controller. Six table shapes over 366 days and seven rainfall boundaries
+produce 15372 bitwise pulse comparisons per optimization; invalid consumed inputs,
+ignored tails, input nonmutation and active-prefix identity are also checked.
+
+The physical fixture uses authentic unchanged Andelst weather, real Full Richards
+and the existing BASE/AIR application owner. The same executable consumes either
+one populated legacy pair followed by a descending zero sentinel, or its existing
+typed equivalent. O0/O2, continuous versus restored execution, pulse/off, next-day
+progress, failed internal accepted prefix without outer publication, retry and
+unchanged hard mass assertions pass. It produces identical full physical vectors
+for all four representation/continuation combinations per optimization. Existing
+fixture stubs establish geometry; they do not replace production physics.
+The full application closure has 220 production providers plus one existing grid
+fixture, with `headcalc`, generated independent source oracles and the real driver
+compiled at link time. It is large because the application owns actual accepted
+runtime/crop/thermal state, not because the direct table contract needs a solver.
+No central dependency tooling or persistent buildcache is added or modified.
+
+The first persisted functional candidate's modular O0/O2 pair took 0.959600 s
+cold and 0.245393 s warm in the same Session. Cold: four file compilations and
+two links; warm: zero compiler requests and fresh native tests. Build/native/identity
+splits and subsequent formatting-check costs are retained in evidence. Integration
+compiled providers once per optimization and reused them for all four executions:
+442 provider compilations, two links, eight native programs. Wall time 124.278095 s;
+provider compile 93.142763 s, final driver/oracle build plus link 12.029148 s,
+native plus assertions/IO 5.481679 s. The two final compiler invocations each
+also compile the driver, headcalc and seven source-oracle files: 460 Fortran
+compilation units in total. Pure link time within those invocations is UNKNOWN.
+The controller remainder includes extraction, Python/wrapper and comparison work;
+exclusive categories and physics-only runtime are UNKNOWN. These are measurements
+on one host, not a portable speed claim. There is no original baseline for this
+previously missing legacy-array route; no before/after percentage is claimed.
+
+**Admission remains pending.** The existing owning contract above explicitly
+requires incumbent weather/crop/thermal preservation, complete affected highest
+frost and current Full Richards/PPA/F-CI. Changing the adapter invalidates its exact
+postimage evidence pin even though its incumbent code is otherwise retained.
+This pilot neither changes the guards nor inherits their PASS. The appropriate
+MC-MET01/RT admission owner must bind the precise successor and reconcile the
+mandatory highest-frost dependency with LOW-AIR-10X before final preservation and
+admission. No full F-CI or highest low-air run is selected here. Keep this PR draft
+until those conditions are actually met. The master owner PR #1072 receives the
+bounded receipt through this PR/status record; its ledger is not edited and the
+full SW431-MET-RAIN1 capability remains ACTIVE_MIGRATION.
+
+Reproduce with the qualified GNU Fortran 13.3.0 on PATH and fresh output paths:
+
+```bash
+python tests/mc-met01/run_raintb_legacy_pilot.py --output /tmp/swap5-raintb-module-new
+python tests/mc-met01/run_raintb_legacy_pilot.py --integration --output /tmp/swap5-raintb-integration-new
+```
+
+The final persisted formatted module pair measured 0.849988 s cold, 0.225425 s
+warm. Four feedback phases, including original smoke and formatting/persistence
+checks, are retained with their 16 file compiles, eight links and 16 native calls.
+Identical providers were not shared across independent Sessions; warm reuse is
+confined to each controlled Session. Integration was built only once per O0/O2.
+Initial donor-comment whitespace failure and clean-tree rejection of generated
+Python bytecode are retained; only those generated/formatting inputs were repaired.
+No native scientific test failed. The unchanged owning verifier rejects the new
+production mutation, confirming that module/integration PASS cannot confer admission.
