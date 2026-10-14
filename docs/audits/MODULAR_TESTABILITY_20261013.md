@@ -552,3 +552,6 @@ als gecombineerde werkelijk uitgevoerde commits en controleerde hun source-tree.
 De uitvoeringsafspraken voor volgende workstreams staan normatief in
 [het protocol](../development/workstream-execution-protocol.md#test-selection-and-cost-discipline-2026-10-13);
 AGENTS.md verwijst bij iedere hervatting naar die selectie- en kostenregels.
+
+De daadwerkelijk toegepaste kleine productieroutes en gemeten providerdeling staan in
+[de ontwikkeladoptie](MODULAR_DEVELOPMENT_ADOPTION_20261014.md).

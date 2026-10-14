@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Opt-in local feedback and measured process-leg comparison. No gate selection."""
+"""Local production-contract feedback. Owning admission gates remain separate."""
 from __future__ import annotations
 import argparse, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, time
 from pathlib import Path
@@ -15,6 +15,20 @@ CASES={
  'boesten': {'driver':'tests/fapp/test_ppa_wu04b_boesten_process.f90','marker':'PPA-WU04-B BOESTEN PROCESS TEST PASS','flags':COMMON},
  'accepted_heat': {'driver':'tests/fmig431/test_crop_accepted_soil_temperature.f90','marker':'SW431_CROP_ACCEPTED_THERMAL_FKT=PASS',
                   'flags':['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace']}}
+# Existing scientific drivers/oracles, exposed through one measured feedback route.
+CASES.update({
+ 'root_oxygen': {'driver':'tests/fmig431/test_swap431_root_oxygen_emp.f90',
+                 'marker':'SW431_ROOT_OXYGEN_EMP_COMPONENT=PASS',
+                 'flags':['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']},
+ 'root_contract': {'driver':'tests/modularity/test_root_contracts.f90',
+                   'marker':'MODULAR_ROOT_NONMUTATION_INVALID_ABA=PASS',
+                   'flags':['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']},
+ 'drainage': {'driver':'tests/modularity/test_drainage_contract.f90',
+              'marker':None,'validator':'drainage','flags':COMMON},
+ 'assimilation': {'driver':'tests/fwof/pp02/test_wofost81_assimilation_driver.f90',
+                  'marker':None,'validator':'assimilation','flags':['-std=f2008']}})
+DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
+
 COMPONENTS={
  'hydraulics':'src/solver/mod_b110_default_mvg_provider.f90',
  'richards':'src/adapter/mod_reference_richards_legacy_binding.f90',
@@ -53,7 +67,7 @@ class Session:
         self.compiler=shutil.which('gfortran')
         if not self.compiler: raise RuntimeError('gfortran unavailable')
         self.identity=self.toolchain_identity()
-        self.artifacts={}; self.events=[]
+        self.artifacts={}; self.events=[]; self.module_artifacts={}; self.share_modules=True
     def toolchain_identity(self):
         compiler=Path(self.compiler).resolve()
         result={'launcher':str(compiler),'launcher_sha256':sha(compiler),
@@ -65,10 +79,13 @@ class Session:
             if not path.is_file(): raise RuntimeError(f'unresolved compiler input: {option}')
             result[option]={'path':str(path.resolve()),'sha256':sha(path)}
         return result
-    def command(self,args,cwd,label):
-        start=time.perf_counter(); cp=subprocess.run(args,cwd=cwd,capture_output=True)
+    def command(self,args,cwd,label,input_bytes=None):
+        start=time.perf_counter(); cp=subprocess.run(args,cwd=cwd,capture_output=True,input=input_bytes)
         event={'command':list(map(str,args)),'wall_seconds':time.perf_counter()-start,'returncode':cp.returncode}
         index=len(self.events); prefix=self.out/f'{index:05d}-{label}'
+        if input_bytes is not None:
+            prefix.with_suffix('.stdin').write_bytes(input_bytes)
+            event['stdin_sha256']=hashlib.sha256(input_bytes).hexdigest()
         prefix.with_suffix('.stdout').write_bytes(cp.stdout); prefix.with_suffix('.stderr').write_bytes(cp.stderr)
         event['stdout_sha256']=hashlib.sha256(cp.stdout).hexdigest(); self.events.append(event)
         if cp.returncode: write(self.out/'FAILED.json',self.events); raise RuntimeError(f'{label} failed; see {prefix}.stderr')
@@ -77,8 +94,16 @@ class Session:
         begin=time.perf_counter(); validation=time.perf_counter()
         sources=plan(case,broad)
         inputs={p:sha(ROOT/p) for p in sources}
+        payload=None; validate=None
+        if CASES[case].get('validator'):
+            oracle_path=ROOT/'tests/modularity/contract_oracles.py'
+            spec=importlib.util.spec_from_file_location('contract_oracles',oracle_path)
+            oracle=importlib.util.module_from_spec(spec);spec.loader.exec_module(oracle)
+            payload,validate,oracle_inputs=oracle.prepare(ROOT,CASES[case]['validator'])
+            inputs.update({p:sha(ROOT/p) for p in oracle_inputs})
+            inputs['tests/modularity/contract_oracles.py']=sha(oracle_path)
         flags=CASES[case]['flags']+[f'-O{opt}']
-        key=digest({'inputs':inputs,'sources':sources,'flags':flags,'compiler':self.identity,'case':case})
+        key=digest({'inputs':inputs,'sources':sources,'flags':flags,'compiler':self.identity,'case':case,'stdin':hashlib.sha256(payload).hexdigest() if payload is not None else None})
         if self.toolchain_identity()!=self.identity: raise RuntimeError('toolchain/environment changed inside transaction')
         validated=time.perf_counter()-validation
         record={'case':case,'optimization':opt,'route':'original_process_leg' if broad else 'focused',
@@ -96,8 +121,27 @@ class Session:
             objects=[]
             for i,source in enumerate(sources):
                 obj=build/f'{i:03d}.o'
-                _,event=self.command([self.compiler,*flags,'-J',str(build),'-I',str(build),'-c',str(ROOT/source),'-o',str(obj)],build,'compile')
-                objects.append(obj); compile_time+=event['wall_seconds'];record['compiler_requests']+=1
+                # Conservative prefix includes every ordered provider before this source.
+                # No persistent cache; copy verified module bytes into the isolated target build.
+                module_key=digest({'prefix':[(p,inputs[p]) for p in sources[:i+1]],'flags':flags,'compiler':self.identity})
+                if self.share_modules and module_key in self.module_artifacts:
+                    cached_obj,cached_files=self.module_artifacts[module_key]
+                    check_begin=time.perf_counter()
+                    if any(not p.is_file() or sha(p)!=h for p,h in cached_files.items()):
+                        raise RuntimeError('shared module artifact identity changed')
+                    for p in cached_files:
+                        if p.suffix=='.mod':
+                            target=build/p.name
+                            if target.exists() and sha(target)!=sha(p): raise RuntimeError('shared module collision')
+                            if not target.exists(): shutil.copyfile(p,target)
+                    record['validation_seconds']+=time.perf_counter()-check_begin
+                    objects.append(cached_obj);record['reused_compilations']+=1
+                else:
+                    _,event=self.command([self.compiler,*flags,'-J',str(build),'-I',str(build),'-c',str(ROOT/source),'-o',str(obj)],build,'compile')
+                    objects.append(obj); compile_time+=event['wall_seconds'];record['compiler_requests']+=1
+                    if self.share_modules:
+                        files={p:sha(p) for p in build.glob('*.mod')};files[obj]=sha(obj)
+                        self.module_artifacts[module_key]=(obj,files)
             exe=build/'test'
             # Match incumbent process links: large original Boesten closure
             # is compiled but its process executable links only the process.
@@ -107,25 +151,35 @@ class Session:
             _,event=self.command([self.compiler,*flags,*map(str,linked),'-o',str(exe)],build,'link')
             link_time=event['wall_seconds'];record['compiler_requests']+=1
             artifacts={p:sha(p) for p in build.iterdir() if p.suffix in ('.o','.mod') or p==exe}
+            artifacts.update({p:sha(p) for p in objects})
             self.artifacts[key]=(exe,artifacts)
         if any(sha(ROOT/p)!=h for p,h in inputs.items()): raise RuntimeError('source changed during build')
-        output,event=self.command([str(exe)],exe.parent,'science')
-        if CASES[case]['marker'].encode() not in output: raise RuntimeError('missing scientific marker')
+        output,event=self.command([str(exe)],exe.parent,'science',input_bytes=payload) if payload is not None else self.command([str(exe)],exe.parent,'science')
+        check_begin=time.perf_counter()
+        if validate is not None: validate(output)
+        elif CASES[case]['marker'].encode() not in output: raise RuntimeError('missing scientific marker')
+        scientific_validation=time.perf_counter()-check_begin
+        if any(sha(ROOT/p)!=h for p,h in inputs.items()): raise RuntimeError('input changed during science validation')
         record.update(compile_seconds=compile_time,link_seconds=link_time,execution_seconds=event['wall_seconds'],
+                      scientific_validation_seconds=scientific_validation,stdin_sha256=hashlib.sha256(payload).hexdigest() if payload is not None else None,
                       total_seconds=time.perf_counter()-begin,stdout_sha256=hashlib.sha256(output).hexdigest(),
                       executable_sha256=sha(exe),artifact_sha256={str(p.relative_to(self.out)):h for p,h in self.artifacts[key][1].items()})
         return record
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',required=True)
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output')
     ap.add_argument('--benchmark',action='store_true');ap.add_argument('--repeat',type=int,default=3)
-    ap.add_argument('--audit-build',action='store_true');ap.add_argument('--case',choices=list(CASES),action='append')
+    ap.add_argument('--audit-build',action='store_true');ap.add_argument('--audit-closures',action='store_true');ap.add_argument('--list',action='store_true');ap.add_argument('--independent-builds',action='store_true');ap.add_argument('--case',choices=list(CASES),action='append')
     args=ap.parse_args()
     if args.repeat < 1: ap.error("repeat must be positive")
+    if args.list:
+        print(json.dumps({'default_cases':DEFAULT_CASES,'cases':CASES,'claim':'feedback only; not admission selection'},indent=2));return
+    if not args.output: ap.error('--output is required unless --list')
     out=Path(args.output).resolve(); s=Session(out)
+    s.share_modules=not (args.independent_builds or args.benchmark)
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     audit={}
-    for name,path in COMPONENTS.items():
+    for name,path in (COMPONENTS.items() if args.audit_build or args.audit_closures else []):
         closure,direct=DEP.strict_closure(ROOT,[path],[STUB])
         audit[name]={'target':path,'sources':relative(closure),'source_count':len(closure), 'direct':direct,
                      'source_sha256':{p:sha(ROOT/p) for p in relative(closure)},'build_seconds':'UNKNOWN',
@@ -141,7 +195,7 @@ def main():
             _,execute=s.command([str(build/'probe')],build,'audit-run')
             audit[name].update(build_seconds=time.perf_counter()-start,compile_seconds=sum(e['wall_seconds'] for e in events),link_seconds=event['wall_seconds'],compiler_requests=len(closure)+1,link_probe='PASS',external_sources=list(map(str,externals)))
         write(out/'AUDIT.json',audit)
-    records=[];cases=args.case or list(CASES)
+    records=[];cases=args.case or (['mvg','boesten','accepted_heat'] if args.benchmark else DEFAULT_CASES)
     for round_index in range(args.repeat if args.benchmark else 1):
         for broad in ([True,False] if round_index%2==0 else [False,True]) if args.benchmark else [False]:
             for case in cases:
