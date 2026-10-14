@@ -18,7 +18,7 @@ PINS = {
     'src/runtime/mod_canonical_contracts.f90':
         ('764483414f037502660d33711693063985064d72', '732cf70f9aeec59bb7dfb136ba4d6e61b918780b'),
     'src/runtime/mod_canonical_interval_runtime.f90':
-        ('9d6e931b4cb3562c946aa6c2c0cd1fcb49407490', 'cfdb251d7a4b4d7d8bb2de5ffa194d262f2fc851'),
+        ('9d6e931b4cb3562c946aa6c2c0cd1fcb49407490', '770bcd93a2222114c9b1e44a4facac4437b6fe04'),
 }
 
 

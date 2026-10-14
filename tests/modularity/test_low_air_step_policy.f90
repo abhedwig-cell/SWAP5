@@ -61,6 +61,14 @@ program test_low_air_step_policy
  mb%extreme_indicator=.true.
  call run_canonical_interval(mb,b,forcing,interval,cfg,rb)
  call require(rb%completed.and.rb%mass%complete,'finite clamped proposal for extreme indicator ratio')
+ ! Default-OFF must not evaluate unused requested-span arithmetic. The original
+ ! selector rejects this finite extreme interval before any physical advance.
+ select type(b);type is(fci04_state_t);b%water=1._real64;end select
+ cfg%retain_accepted_step_proposal=.false.
+ interval%t0=-.75_real64*huge(1._real64);interval%t1=.75_real64*huge(1._real64)
+ call run_canonical_interval(mb,b,forcing,interval,cfg,rb,invalid_selector)
+ call require(rb%status==CANONICAL_STATUS_INVALID_REQUEST,'disabled proposal preserves invalid-selector preflight')
+ select type(b);type is(fci04_state_t);call require(b%water==1._real64,'disabled extreme interval is atomic');end select
  print '(A)','LOW_AIR_STEP_POLICY_CONTRACT=PASS'
 contains
  subroutine require(ok,label)
@@ -70,6 +78,13 @@ contains
    print *,label
    error stop 1
   end if
+ end subroutine
+ subroutine invalid_selector(cursor,requested_t1,target_t1,max_retries_cap,valid)
+  real(real64),intent(in)::cursor,requested_t1
+  real(real64),intent(out)::target_t1
+  integer,intent(out)::max_retries_cap
+  logical,intent(out)::valid
+  target_t1=cursor;max_retries_cap=0;valid=.false.
  end subroutine
  subroutine selector(cursor,requested_t1,target_t1,max_retries_cap,valid)
   real(real64),intent(in)::cursor,requested_t1

@@ -82,7 +82,7 @@ contains
     terminal_bottom_flux = 0.0_real64
     cursor = interval%t0
     proposal_active = .false.
-    proposed_dt = interval%t1 - interval%t0
+    proposed_dt = 0.0_real64
 
     do isub = 1, config%max_committed_substeps
       transaction_t1 = interval%t1

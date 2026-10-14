@@ -5,7 +5,9 @@ Passing this prerequisite permits moving F-CI to execute its existing science.
 It never establishes that F-CI passed or that the successor was admitted.
 """
 from pathlib import Path
+import argparse
 import base64
+import copy
 import hashlib
 import io
 import json
@@ -84,6 +86,15 @@ def validate(data, manifest, source):
             flags = e['command']
             check(all(x in flags for x in ['-std=f2008', '-fopenmp', '-fcheck=all', '-fbacktrace',
                                           '-ffpe-trap=invalid,zero,overflow']), 'highest numerical flags drift')
+            directory = Path(flags[flags.index('-J') + 1]).name
+            check(directory in ['o0', 'o2'] and '-O' + directory[1:] in flags,
+                  'highest actual optimization flag changed')
+        ordered = data[f'highest/{name}/sources'].decode().splitlines()
+        check(len(ordered) == len(set(ordered)), 'duplicate highest provider')
+        for opt in (0, 2):
+            compiled = [e['command'][e['command'].index('-c') + 1] for e in build
+                        if Path(e['command'][e['command'].index('-J') + 1]).name == f'o{opt}']
+            check(compiled == ordered, 'highest compile coverage/order mismatch')
     additional = json.loads(data['additional/RESULTS.json'])
     check(additional['status'] == 'PASS', 'additional owner evidence incomplete')
     check(len(additional['steps']) == len(MARKERS) and {s['name'] for s in additional['steps']} == set(MARKERS),
@@ -110,6 +121,16 @@ def validate(data, manifest, source):
         if n == 'legacy':
             check(value == hashes[(o, n, 'typed' if m == 'legacy' else 'legacy', mode)], 'physical representation drift')
     events = weather['events']
+    compiles = [e['command'] for e in events if '-c' in e['command']]
+    links = [e['command'] for e in events if '-c' not in e['command'] and '-o' in e['command']]
+    check(len(compiles) == 466 and len(links) == 8, 'weather controlled build coverage')
+    owning_flags = ['-std=f2008', '-ffree-line-length-none', '-w', '-fopenmp', '-fcheck=all',
+                    '-fbacktrace', '-ffpe-trap=invalid,zero,overflow']
+    for command in compiles + links:
+        check(command[1:1+len(owning_flags)] == owning_flags, 'weather actual numerical flags changed')
+    for opt in (0, 2):
+        compiled = [c[c.index('-c')+1] for c in compiles if f'-O{opt}' in c]
+        check(len(compiled) == len(set(compiled)) == 233, 'weather missing/repeated compilation')
     for index, event in enumerate(events):
         check(event['returncode'] == 0, 'failed weather build/fixture/native')
         exe = Path(event['command'][0])
@@ -130,14 +151,25 @@ def validate(data, manifest, source):
               == {(o, b) for o in (0, 2) for b in ['cold', 'warm_same_transaction']},
               'modular original O0/O2 cold/warm coverage')
         check(len({r['stdout_sha256'] for r in rows}) == 1, 'direct science drift')
+        for row in rows:
+            common = ['-std=f2008', '-ffree-line-length-none', '-Wall', '-Wextra', '-fopenmp',
+                      '-fcheck=all', '-fbacktrace', '-ffpe-trap=invalid,zero,overflow']
+            check(row['flags'] == [*common, f"-O{row['optimization']}"], 'direct actual flags changed')
+    prior = manifest['default_off_reference_equivalence']
+    raw = base64.b64decode((ROOT / prior['path']).read_bytes())
+    check(hashlib.sha256(raw).hexdigest() == prior['decoded_sha256'], 'historical owner capsule drift')
+    with tarfile.open(fileobj=io.BytesIO(raw)) as original:
+        for route, name in [('normal', 'normal-off'), ('low-air', 'low-air-off')]:
+            for opt in (0, 2):
+                check(data[f'highest/{name}/o{opt}/output.txt'] ==
+                      original.extractfile(f'highest/{route}/o{opt}/output.txt').read(),
+                      'default OFF independently retained historical owner drift')
     return manifest
 
 
-def verify_qualification():
-    source = verify_source()
-    status = json.loads((ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').read_text())
-    record = status['owner_evidence']  # No missing/progress evidence can pass.
-    raw = base64.b64decode((ROOT / record['path']).read_bytes())
+def read_evidence(record, raw=None):
+    if raw is None:
+        raw = base64.b64decode((ROOT / record['path']).read_bytes())
     check(hashlib.sha256(raw).hexdigest() == record['decoded_sha256'], 'joint capsule identity')
     with tarfile.open(fileobj=io.BytesIO(raw)) as archive:
         manifest = json.load(archive.extractfile('MANIFEST.json')); data = {}
@@ -145,9 +177,73 @@ def verify_qualification():
             check(not Path(name).is_absolute() and '..' not in Path(name).parts, 'unsafe evidence path')
             data[name] = archive.extractfile(name).read()
             check(hashlib.sha256(data[name]).hexdigest() == digest, 'joint raw member corruption')
+    return data, manifest
+
+
+def verify_qualification():
+    source = verify_source()
+    status = json.loads((ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').read_text())
+    record = status['owner_evidence']  # No missing/progress evidence can pass.
+    data, manifest = read_evidence(record)
     return validate(data, manifest, source)
 
 
-if __name__ == '__main__':
-    verify_qualification()
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--negative-controls', action='store_true')
+    parser.add_argument('--output', type=Path)
+    args = parser.parse_args()
+    source = verify_source()
+    status = json.loads((ROOT / 'integration/audits/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.json').read_text())
+    record = status['owner_evidence']
+    data, manifest = read_evidence(record)
+    validate(data, manifest, source)
+    receipt = {'claim': 'COMPLETE_JOINT_OWNER_PREREQUISITE_NOT_FCI_OR_ADMISSION',
+               'source_tree': source['source_tree'], 'capsule_sha256': record['decoded_sha256'],
+               'highest_configurations': 36, 'fine_comparisons': 216, 'weather_programs': 28,
+               'qualified': False, 'admitted': False}
+    if args.negative_controls:
+        results_path = 'highest/low-air-on/RESULTS.json'
+        specimens = {}
+        for name in ['partial', 'duplicate', 'failed', 'optimization-flag']:
+            specimen = dict(data); result = json.loads(specimen[results_path])
+            indices = [i for i, e in enumerate(result['events']) if e['kind'] == 'native']
+            if name == 'partial': result['events'].pop(indices[-1])
+            elif name == 'duplicate': result['events'][indices[-1]] = copy.deepcopy(result['events'][indices[0]])
+            elif name == 'failed': result['events'][indices[0]]['exit'] = 1
+            else:
+                event = next(e for e in result['events'] if e['kind'] == 'compile' and '-O2' in e['command'])
+                event['command'].remove('-O2')
+            specimen[results_path] = json.dumps(result).encode(); specimens[name] = (specimen, manifest)
+        specimen = dict(data); specimen.pop(results_path); specimens['missing-highest'] = (specimen, manifest)
+        specimen = dict(data); specimen['highest/low-air-on/o0/configuration-1.txt'] += b'\n'
+        specimens['raw-log-corruption'] = (specimen, manifest)
+        altered = copy.deepcopy(manifest)
+        altered['dependency_blobs']['src/adapter/mod_swap_daily_weather_file_adapter.f90'] = '0' * 40
+        specimens['stale-source-binding'] = (data, altered)
+        specimen = dict(data); weather = json.loads(specimen['weather/RESULTS.json']); weather['results'].pop()
+        specimen['weather/RESULTS.json'] = json.dumps(weather).encode(); specimens['partial-weather'] = (specimen, manifest)
+        specimen = dict(data); specimen['highest/low-air-off/o0/output.txt'] += b'\n'
+        specimens['historical-reference-drift'] = (specimen, manifest)
+        receipt['negative_controls'] = {}
+        for name, (specimen, metadata) in specimens.items():
+            try:
+                validate(specimen, metadata, source)
+            except (ValueError, KeyError) as error:
+                receipt['negative_controls'][name] = str(error)
+            else:
+                raise ValueError('invalid owner evidence accepted: ' + name)
+        try:
+            read_evidence(record, b'corrupt capsule')
+        except ValueError as error:
+            receipt['negative_controls']['capsule-corruption'] = str(error)
+        else:
+            raise ValueError('corrupt capsule accepted')
+    if args.output:
+        args.output.write_text(json.dumps(receipt, indent=2) + '\n')
     print('JOINT_EXACT_SOURCE_COMPLETE_OWNER_AND_COUPLING_PREREQUISITE=PASS')
+    print(json.dumps(receipt))
+
+
+if __name__ == '__main__':
+    main()

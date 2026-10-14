@@ -31,6 +31,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--resume', action='store_true', help='Continue this live failed controller; verify every completed raw log')
+    ap.add_argument('--coupling-python-path', type=Path, help='Exact workflow-pinned FloPy/xmipy installation for live MODFLOW only')
+    ap.add_argument('--coupling-compiler-bin', type=Path, help='Separate PIC/shared-library compiler profile, never mixed with owning executables')
     args = ap.parse_args()
     source = verify_source()
     out = args.output.resolve()
@@ -45,7 +47,8 @@ def main():
             assert hashlib.sha256((out / (step['name'] + '.stdout')).read_bytes()).hexdigest() == step['stdout_sha256']
         # Preserve the actual failure before the failed step's next execution.
         for suffix in ['stdout', 'stderr']:
-            (out / (failed['name'] + '.failed.' + suffix)).write_bytes((out / (failed['name'] + '.' + suffix)).read_bytes())
+            target = out / (failed['name'] + '.failed-' + str(len(record['failed_attempts'])) + '.' + suffix)
+            target.write_bytes((out / (failed['name'] + '.' + suffix)).read_bytes())
         record['status'] = 'RUNNING'
     else:
         out.mkdir(parents=True, exist_ok=False)
@@ -65,7 +68,37 @@ def main():
                 # mode. All static, physical, lifecycle and O0/O2 gates run;
                 # the historical initial-admission Git delta is not re-claimed.
                 step_env['WU04B_PRESERVATION_ONLY'] = '1'
-            cp = subprocess.run(command, cwd=ROOT, env=step_env, stdout=stdout, stderr=stderr)
+            if name == 'live-modflow' and args.coupling_python_path:
+                dependencies = args.coupling_python_path.resolve()
+                commits = {json.loads(p.read_text())['vcs_info']['commit_id']
+                           for p in dependencies.glob('*.dist-info/direct_url.json')}
+                assert {'1a783da6582f8203190a8d6b1d7a60659022afdb',
+                        '9769f8cd4bc6153c71bcc360f602a931b102d902'} <= commits
+                step_env['PYTHONPATH'] = str(dependencies)
+                record['coupling_python_inputs'] = {
+                    'commits': sorted(commits),
+                    'files': {str(p.relative_to(dependencies)): hashlib.sha256(p.read_bytes()).hexdigest()
+                              for p in dependencies.rglob('*') if p.is_file() and p.suffix != '.pyc'},
+                    'path': str(dependencies),
+                }
+            if name == 'live-modflow' and args.coupling_compiler_bin:
+                directory = args.coupling_compiler_bin.resolve()
+                compiler = directory / 'gfortran'
+                assert compiler.is_file()
+                step_env['PATH'] = str(directory) + os.pathsep + env['PATH']
+                record['shared_library_compiler_profile'] = {
+                    'launcher': str(compiler),
+                    'launcher_sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(),
+                    'version': subprocess.check_output([str(compiler), '--version'], text=True),
+                    'separate_from_owning_executable_profile': True,
+                }
+            if name == 'live-modflow':
+                cp = subprocess.run(['python3', '-B', '-c', 'import flopy; from xmipy import XmiWrapper'],
+                                    cwd=ROOT, env=step_env, stdout=stdout, stderr=stderr)
+                if cp.returncode == 0:
+                    cp = subprocess.run(command, cwd=ROOT, env=step_env, stdout=stdout, stderr=stderr)
+            else:
+                cp = subprocess.run(command, cwd=ROOT, env=step_env, stdout=stdout, stderr=stderr)
         record['steps'].append({'name': name, 'command': command, 'exit': cp.returncode,
                                'wall_seconds': time.monotonic() - begin,
                                'stdout_sha256': hashlib.sha256((out / (name + '.stdout')).read_bytes()).hexdigest()})
@@ -77,6 +110,8 @@ def main():
         verify_source()
         print(name + '=PASS', flush=True)
     record['status'] = 'PASS'; record['wall_seconds'] = time.monotonic() - start
+    record['command_wall_seconds'] = sum(s['wall_seconds'] for s in record['steps'])
+    record['failed_command_wall_seconds'] = sum(s['wall_seconds'] for s in record.get('failed_attempts', []))
     (out / 'RESULTS.json').write_text(json.dumps(record, indent=2) + '\n')
 
 

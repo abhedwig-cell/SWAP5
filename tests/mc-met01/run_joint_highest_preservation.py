@@ -11,6 +11,7 @@ import concurrent.futures
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -49,6 +50,13 @@ def main():
                 'runner_sha256': sha(runner), 'original_driver_sha256': sha(driver),
                 'compiler': subprocess.check_output(['gfortran', '--version'], text=True),
                 'scope': 'FULL_ORIGINAL_HIGHEST_JOINT_SOURCE_NOT_FCI_ADMISSION'}
+    compiler = Path(shutil.which('gfortran')).resolve()
+    identity['compiler_inputs'] = {'launcher': str(compiler), 'launcher_sha256': sha(compiler),
+                                  'environment_sha256': hashlib.sha256(json.dumps(dict(os.environ), sort_keys=True).encode()).hexdigest()}
+    for option in ['-print-prog-name=f951', '-print-file-name=libgfortran.a',
+                   '-print-file-name=libgfortran.so.5', '-print-libgcc-file-name']:
+        path = Path(subprocess.check_output(['gfortran', option], text=True).strip()).resolve()
+        identity['compiler_inputs'][option] = {'path': str(path), 'sha256': sha(path)}
     (output / 'IDENTITY.json').write_text(json.dumps(identity, indent=2) + '\n')
     text = frozen.decode()
     guard = 'assert subprocess.check_output(["git","rev-parse","HEAD:src"],cwd=ROOT,text=True).strip()==source'
@@ -78,6 +86,7 @@ def main():
     replacement = ''' def run_configuration(configuration):
   stdout=out/f'configuration-{configuration}.txt';stderr=out/f'configuration-{configuration}.err'
   begin=time.monotonic()
+  assert all(sha(path)==digest for path,digest in artifacts.items()),'highest artifact drift before native'
   with stdout.open('w')as so,stderr.open('w')as se:
    cp=subprocess.Popen([str(out/'test'),str(configuration)],stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'})
    _,status,usage=os.wait4(cp.pid,0);cp.returncode=os.waitstatus_to_exitcode(status)
@@ -86,6 +95,7 @@ def main():
   events.append(record)
   (output/'PROGRESS.json').write_text(json.dumps({'identity':identity,'events':events},indent=2)+'\\n')
   assert cp.returncode==0
+  assert all(sha(path)==digest for path,digest in artifacts.items()),'highest artifact drift after native'
   assert value.count('_RUNTIME=PASS')==1 and value.count('FINE_COMPARISON')==6
   assert 'PPA_WU05B15_EXTENDED_APPLICATION=PASS' in value and 'PPA_WU05B15_ACTUAL_CONTROL_PREFLIGHT=PASS' in value
   print(f'JOINT_HIGHEST_{args.route.upper()}_O{opt}_CONFIGURATION_{configuration}=PASS',flush=True)
@@ -98,6 +108,9 @@ def main():
     text = text.replace("'\n'.join(output)", "'\n'.join(output_values)")
     text = text.replace("''.join(output)", "''.join(output_values)")
     text = text.replace('subprocess.run(', 'measured_run(')
+    boundary = ' def run_configuration(configuration):'
+    assert text.count(boundary) == 1
+    text = text.replace(boundary, " artifacts={p:sha(p)for p in out.iterdir()if p.is_file()and(p.suffix in ['.o','.mod']or p.name=='test')}\n (out/'ARTIFACTS.json').write_text(json.dumps({str(p):h for p,h in artifacts.items()},indent=2)+'\\n')\n" + boundary)
     def measured_run(command, **kwargs):
         begin = time.monotonic()
         try:
@@ -120,12 +133,14 @@ def main():
     try:
         exec(compile(text, str(runner), 'exec'), namespace)
         verify_source()
+        result_dependencies = {str(p): sha(p) for p in namespace['ordered']}
         natives = [e for e in events if e['kind'] == 'native']
         assert len(natives) == 12 and all(e['exit'] == 0 for e in natives)
         assert len({(e['opt'], e['configuration']) for e in natives}) == 12
         assert (build / 'o0/output.txt').read_bytes() == (build / 'o2/output.txt').read_bytes()
         result = {'status': 'PASS', 'identity': identity, 'wall_seconds': time.monotonic() - begin,
                   'events': events, 'configurations': 12, 'fine_comparisons': 72,
+                  'dependency_sha256': result_dependencies,
                   'qualified': False, 'admitted': False}
     except BaseException as error:
         (output / 'FAILED.json').write_text(json.dumps({'error': repr(error), 'identity': identity, 'events': events}, indent=2) + '\n')
