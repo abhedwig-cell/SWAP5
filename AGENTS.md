@@ -150,12 +150,17 @@ proportional four-level strategy; existing admission authority remains binding.
 Before invoking tests, apply **Test selection and cost discipline (2026-10-13)**
 in `docs/development/workstream-execution-protocol.md`. Start with the smallest
 real production contract driver. Expensive tests (expected or measured over five
-minutes), including the highest low-air stress route, are excluded from routine
-local feedback unless explicitly selected with a changed dependency or owning
-qualification requirement. The executing agent records that selection in the
-existing work-unit/PR; no routine user permission is required. A full F-CI run
-is never justified solely by a documentation checkpoint, branch advance or prior
-PASS without inspecting dependencies. Preserve all mandatory admission gates.
+minutes) are excluded from routine local feedback unless explicitly selected with
+scientific impact and owning justification. Apply the later binding
+`docs/audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md`: the long highest low-air
+qualification is retired as a standard production admission/preservation gate.
+An older mandatory label or shared dependency change alone does not select it.
+Keep fast independent physical and numerical contract coverage; reconcile old
+owner guards without fabricated PASS or weakened assertions. A long stress run
+requires a named research question or essential uncovered risk and justification
+that a short discriminating test cannot cover it. Record its expected cost.
+A full F-CI run is never justified solely by a documentation checkpoint, branch
+advance or prior PASS without inspecting dependencies.
 Measure compile/link/native/validation costs, retain failed and censored results,
 and record unavailable categories as UNKNOWN. Read the live delta and existing
 recovery evidence before repeating work; use meaningful coherent checkpoints.
