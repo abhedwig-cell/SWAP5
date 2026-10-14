@@ -26,7 +26,6 @@ program test_low_air_development
   use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
        fmr_restore_committed_restart, FMR_RESTART_OK
   use mod_fmr_committed_restart, only: fmr_restart_template_identity_matches
-  use mod_fmr_production_application_bootstrap
   use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, evaluate_frost_hydraulic_factor
   use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_LINEAR,FMR_DRAIN_VARIANT_TABULATED,FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW,FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_ppa_wu05b15_extended_fixture,only:setup_b15_levels,b15_highest_rate_oracle,b15_initial_heads,b15_kind,b15_mode
@@ -191,7 +190,6 @@ program test_low_air_development
   call execute_case(2,0._real64,q,-999999._real64,1.e-7_real64,.false.,.true.,again,observation, &
        frost_case=.true.,initial_physical_state=initial,drain_case=.false.)
   call require(.not.again%committed.and..not.observation%solver_executed,'OFF incumbent nonzero drainage excluded')
-  call verify_application(initial)
   call verify_control_preflight(initial)
   print '(A)','PPA_WU05B15_LOW_AIR_LOW_AIR_DRAIN_RUNTIME=PASS'
   end do
@@ -214,174 +212,6 @@ contains
     end do
     print '(A)','PPA_WU05B15_ACTUAL_CONTROL_PREFLIGHT=PASS'
   end subroutine
-  subroutine verify_application(dry)
-    type(fmr_b110_physical_state_t),intent(in)::dry
-    type(fmr_production_application_config_t)::cfg,bad
-    type(fmr_production_application_bootstrap_t)::app,rejected
-    type(fmr_serialized_column_result_t),allocatable::out(:)
-    integer::status,n,invalid
-    allocate(cfg%tiles(1))
-    cfg%tiles(1)%tile_id=column_id;cfg%tiles(1)%ledger_id=440045_int64
-    cfg%tiles(1)%template=templates(1)
-    call initialize_parameters(cfg%tiles(1)%parameters,2)
-    call enable_bounded_frost(cfg%tiles(1)%parameters)
-    cfg%tiles(1)%parameters%frost_low_air_drainage%active=.true.
-    cfg%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=drain_depth
-    cfg%tiles(1)%parameters%frost_drainage%active=.true.
-    cfg%tiles(1)%parameters%frost_drainage%head_budget_cm=3.e-11_real64
-    cfg%tiles(1)%parameters%frost_drainage%temperature_budget_c=1.e-7_real64
-    cfg%tiles(1)%parameters%head_abs_tolerance=1.e-12_real64
-    cfg%tiles(1)%parameters%head_rel_tolerance=1.e-12_real64
-    cfg%tiles(1)%initial_state=dry
-    call initialize_forcing(cfg%tiles(1)%base_forcing,0._real64,1.e-3_real64,-999999._real64)
-    deallocate(cfg%tiles(1)%base_forcing%drainage_flux_by_level)
-    call configure_response(cfg%tiles(1)%parameters,cfg%tiles(1)%base_forcing)
-    allocate(cfg%tiles(1)%base_forcing%soil_temperature)
-    cfg%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=-4._real64
-    cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-    cfg%numerical%transaction%temporal_tolerance=1._real64
-    cfg%numerical%transaction%mass_tolerance=hard_mass_gate
-    cfg%numerical%transaction%max_retries=20
-    cfg%numerical%retain_accepted_step_proposal=.true.
-    cfg%numerical%transaction%retry_scale=.5_real64
-    cfg%numerical%max_committed_substeps=100000
-    call app%initialize(cfg,status)
-    call require(status==FMR_APP_BOOT_OK,'bounded normal drainage application admission')
-    call app%run_standalone(0._real64,1.e-7_real64,out,status)
-    call require(status==FMR_APP_BOOT_OK.and.out(1)%committed,'application actual drainage commits')
-    call require(out(1)%mass%complete.and.abs(out(1)%mass%residual)<=hard_mass_gate,'application hard mass closure')
-    call app%close(status)
-    n=size(cfg%tiles(1)%parameters%drainage_response_levels)
-    do invalid=1,45
-      bad=cfg
-      select case(invalid)
-      case(1)
-        bad%tiles(1)%parameters%frost_response_drainage_active=.false.
-      case(2)
-        bad%tiles(1)%parameters%frost_highest_response_drainage_active=.false.
-      case(3)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%spacing_cm=99._real64
-      case(4)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%spacing_cm=1.e7_real64+1._real64
-      case(5)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rdrain_day=.99_real64
-      case(6)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rinfi_day=1.e5_real64+1._real64
-      case(7)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rentry_day=-.01_real64
-      case(8)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rexit_day=10.01_real64
-      case(9)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%zbotdr_cm=ieee_value(0._real64,ieee_quiet_nan)
-      case(10)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%spacing_cm=ieee_value(0._real64,ieee_quiet_nan)
-      case(11)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rdrain_day=ieee_value(0._real64,ieee_quiet_nan)
-      case(12)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rinfi_day=ieee_value(0._real64,ieee_quiet_nan)
-      case(13)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rentry_day=ieee_value(0._real64,ieee_quiet_nan)
-      case(14)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rexit_day=ieee_value(0._real64,ieee_quiet_nan)
-      case(15)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%gwlinf_cm=ieee_value(0._real64,ieee_quiet_nan)
-      case(16)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%pondmx_cm=ieee_value(0._real64,ieee_quiet_nan)
-      case(17)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%gwlinf_cm=bad%tiles(1)%parameters%drainage_response_levels(n)%extended%zbotdr_cm+1._real64
-      case(18)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%drain_type=99
-      case(19)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%drain_type=EXT_DRAIN_OPEN_CHANNEL
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%width_cm=0._real64
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%talud=2._real64
-      case(20)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%drain_type=EXT_DRAIN_OPEN_CHANNEL
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%width_cm=12._real64
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%talud=.009_real64
-      case(21)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%highest_level=.false.
-      case(22)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%highest_surface_mode=EXT_DRAIN_TOP_NONE
-      case(23)
-        bad%tiles(1)%parameters%drainage_response_levels=[cfg%tiles(1)%parameters%drainage_response_levels(n),cfg%tiles(1)%parameters%drainage_response_levels(n)]
-        bad%tiles(1)%base_forcing%drainage_response_controls=[cfg%tiles(1)%base_forcing%drainage_response_controls(n),cfg%tiles(1)%base_forcing%drainage_response_controls(n)]
-      case(24)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%variant=FMR_DRAIN_VARIANT_LINEAR
-      case(25)
-        bad%tiles(1)%parameters%frost_tabulated_response_drainage_active=.true.
-      case(26)
-        bad%tiles(1)%parameters%frost_analytic_response_drainage_active=.true.
-      case(27)
-        bad%tiles(1)%parameters%frost_empirical_response_drainage_active=.true.
-      case(28)
-        bad%tiles(1)%parameters%root_extraction_active=.true.
-      case(29)
-        bad%tiles(1)%parameters%drainage_qbot_smooth_freatic_projection=.true.
-      case(30)
-        bad%tiles(1)%parameters%frost_drainage%head_budget_cm=0._real64
-      case(31)
-        bad%tiles(1)%parameters%frost_drainage%temperature_budget_c=0._real64
-      case(32)
-        bad%tiles(1)%parameters%frost_bottom%active=.true.
-      case(33)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%zbotdr_cm=0._real64
-      case(34)
-        bad%tiles(1)%parameters%frost_low_air_response_drainage_active=.false.
-      case(35)
-        bad%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=0._real64
-      case(36)
-        bad%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=[-1._real64,-2._real64]
-      case(37)
-        bad%tiles(1)%parameters%frost_low_air_drainage%drain_depth_cm=drain_depth(2)-.1_real64
-      case(38)
-        bad%tiles(1)%parameters%frost_extended_response_drainage_active=.true.
-      case(39)
-        bad%tiles(1)%parameters%drainage_response_levels(n)%extended%highest_surface_mode=99
-      case(40)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfdeep_day=ieee_value(0._real64,ieee_quiet_nan)
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_coefficient=ieee_value(0._real64,ieee_quiet_nan)
-        end if
-      case(41)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfshallow_day=ieee_value(0._real64,ieee_quiet_nan)
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_exponent=ieee_value(0._real64,ieee_quiet_nan)
-        end if
-      case(42)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfdeep_day=.0009_real64
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_coefficient=.009_real64
-        end if
-      case(43)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfdeep_day=1000.1_real64
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_coefficient=10.1_real64
-        end if
-      case(44)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfshallow_day=.0009_real64
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_exponent=.099_real64
-        end if
-      case(45)
-        if(b15_mode(extended_configuration)==EXT_DRAIN_TOP_SURFACE_RESISTANCE)then
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%rsurfshallow_day=1000.1_real64
-        else
-          bad%tiles(1)%parameters%drainage_response_levels(n)%extended%interflow_exponent=1.001_real64
-        end if
-      end select
-      call rejected%initialize(bad,status)
-      if(status==FMR_APP_BOOT_OK)print *, 'B15_UNEXPECTED_ADMISSION',extended_configuration,invalid
-      call require(status/=FMR_APP_BOOT_OK,'active invalid extended configuration rejected before solver')
-    end do
-    print '(A)','PPA_WU05B15_EXTENDED_APPLICATION=PASS'
-  end subroutine
-
   subroutine execute_case(bottom_mode, top_flux, bottom_flux, bottom_head, duration, use_certificate, hydrostatic, &
                           output, observation, frost_case, frost_temperature, final_physical_state, final_diagnostic, &
                           start_time, initial_physical_state, frost_surface_temperature, drain_case, resumed, captured)

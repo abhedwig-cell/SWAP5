@@ -4,11 +4,11 @@
 Reuses one verified live build. Baseline and candidate differ only in the explicit
 proposal selector. Does not alter immutable references or claim canonical admission.
 """
-import argparse,hashlib,json,os,pathlib,resource,subprocess,time
+import argparse,concurrent.futures,hashlib,json,os,pathlib,resource,subprocess,time
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);args=a.parse_args()
+ a=argparse.ArgumentParser(description=__doc__);a.add_argument('--build',type=pathlib.Path,required=True);a.add_argument('--output',type=pathlib.Path,required=True);a.add_argument('--repeat',type=int,default=2);a.add_argument('--workers',type=int,choices=[1,2,3,4],default=1);args=a.parse_args()
  if args.repeat<1:raise ValueError('positive repeats')
  b=args.build.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
  r=json.loads((b/'RESULTS.json').read_text());flags=r['flags'];assert '-pg' not in flags
@@ -27,18 +27,27 @@ def main():
   subprocess.run(['gfortran',*flags,*map(str,objects),str(out/(name+'.o')),'-o',str(out/name)],check=True)
   result[name+'_binary_sha256']=sha(out/name)
  (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
- for round_index in range(args.repeat):
-  for family in range(1,7):
-   for name in (['baseline','candidate'] if round_index%2==0 else ['candidate','baseline']):
-    prefix=out/f'{round_index}-{family}-{name}';before=resource.getrusage(resource.RUSAGE_CHILDREN);start=time.monotonic()
+ result['workers']=args.workers;result['batches']=[]
+ def execute(round_index,family,name):
+    prefix=out/f'{round_index}-{family}-{name}';start=time.monotonic()
     print(f'START round={round_index} family={family} policy={name}',flush=True)
+    # Per-child rusage from wait4 is necessary under concurrent execution.
     with prefix.with_suffix('.stdout').open('w')as so,prefix.with_suffix('.stderr').open('w')as se:
-     cp=subprocess.run([str(out/name),str(family)],stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'},timeout=900)
-    after=resource.getrusage(resource.RUSAGE_CHILDREN);text=prefix.with_suffix('.stdout').read_text()
-    record={'round':round_index,'family':family,'policy':name,'wall_seconds':time.monotonic()-start,'cpu_seconds':after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime,'exit':cp.returncode,'stdout_sha256':sha(prefix.with_suffix('.stdout')),'complete':cp.returncode==0 and text.count('_RUNTIME=PASS')==1 and text.count('FINE_COMPARISON')==6 and 'PPA_WU05B15_EXTENDED_APPLICATION=PASS' in text and 'PPA_WU05B15_ACTUAL_CONTROL_PREFLIGHT=PASS' in text}
-    result['runs'].append(record);(out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
+     cp=subprocess.Popen([str(out/name),str(family)],stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'})
+     _,status,usage=os.wait4(cp.pid,0);cp.returncode=os.waitstatus_to_exitcode(status)
+    text=prefix.with_suffix('.stdout').read_text()
+    record={'round':round_index,'family':family,'policy':name,'wall_seconds':time.monotonic()-start,'cpu_seconds':usage.ru_utime+usage.ru_stime,'exit':cp.returncode,'stdout_sha256':sha(prefix.with_suffix('.stdout')),'complete':cp.returncode==0 and text.count('_RUNTIME=PASS')==1 and text.count('FINE_COMPARISON')==6 and 'PPA_WU05B15_EXTENDED_APPLICATION=PASS' in text and 'PPA_WU05B15_ACTUAL_CONTROL_PREFLIGHT=PASS' in text}
     print(json.dumps(record),flush=True)
-    if not record['complete']:raise RuntimeError('full original assertions failed; retain negative evidence')
+    return record
+ for round_index in range(args.repeat):
+  for name in (['baseline','candidate'] if round_index%2==0 else ['candidate','baseline']):
+   start=time.monotonic()
+   with concurrent.futures.ThreadPoolExecutor(max_workers=args.workers) as pool:
+    for record in pool.map(lambda family:execute(round_index,family,name),range(1,7)):
+     result['runs'].append(record);(out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
+     if not record['complete']:raise RuntimeError('full original assertions failed; retain negative evidence')
+   result['batches'].append({'round':round_index,'policy':name,'wall_seconds':time.monotonic()-start,'cpu_seconds':sum(x['cpu_seconds'] for x in result['runs'] if x['round']==round_index and x['policy']==name)})
+   (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
  result['complete_single_optimization_ab']=True
  (out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
 if __name__=='__main__':main()
