@@ -374,6 +374,14 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
   verify_daily_demand_owner || fail 'daily demand complete highest evidence missing'
   dependency_authority=bd17f0a9a7c19516e66af8f80e2b7128890b3aee
 fi
+if (( low_air_exact_successor )); then
+  # Every production byte except the two exact numerical files was proved
+  # equal to this admitted canonical parent. Older crop guards remain verified
+  # in that distinct owner context; no material crop change can hide here.
+  dependency_authority=c591205c5e03f1c96c6488eb53c562265f749556
+  test "$(git rev-parse HEAD^1)" = "$dependency_authority" ||
+    fail 'low-air preservation requires the pinned current canonical first parent'
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -630,6 +638,9 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90)
+        (( low_air_exact_successor )) || fail "unqualified numerical source change: $candidate_path"
+        ;;
       src/process/mod_reference_et_demand_process.f90 )
         test "$(git rev-parse HEAD:src/process/mod_reference_et_demand_process.f90)" = \
           "0a8fc91570c6297a54109740de3a26153dc44283" ||
