@@ -2,6 +2,11 @@
 
 ## Current trajectory-2 successor
 
+Single work PR: https://github.com/abhedwig-cell/SWAP5/pull/1229.
+Local focused, owner and complete moving preservation gates passed. The merged
+PR body carries the final canonical admission receipt; the status is a premerge
+qualification checkpoint.
+
 PR1227 was reconciled as merged at canonical
 `82209d0df68d14c5ebe707e9b6303f9b150488ca`; its production bootstrap blob matches
 the handoff below. The proposed harvest/rotation phase contract remains open.
