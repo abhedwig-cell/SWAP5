@@ -331,5 +331,17 @@
       "No disposition promotion; original rejected aquifer unchanged",
       "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
     ]
+  },
+  "latest_mc_sol01_age_admission": {
+    "pr": 1233,
+    "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+    "authority_at_canonical": "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+    "bounded_route": "Actual accepted matrix water -> age transport/production -> committed amount -> balance -> atomic opaque/native/fresh-process continuation",
+    "changed_rows": [
+      "SW431-AGE-TRACER"
+    ],
+    "all_other_242_rows_and_dispositions_unchanged": true,
+    "full_master_qualification_claimed": false,
+    "global_checker": "Pre-existing stale inheritance baseline remains FAIL; this receipt does not fix or promote the whole master"
   }
 }

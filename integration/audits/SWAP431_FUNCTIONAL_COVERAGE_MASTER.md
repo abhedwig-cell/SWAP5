@@ -471,3 +471,21 @@ all243 dispositions/counts and rejected aquifer remain unchanged. Source frexp0.
 outside the selected range, dynamic thermal/surface/default application remain
 open. Global master checker still FAILS stale inheritance baseline. Exact authority:
 canonical `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor`.
+
+### Bounded accepted-water age admission,15October2026
+
+PR1233 at `e85bfe130b9ff1a09e88e00ffab94859e26b0d8e` admits the optional
+zero-top matrix age route: actual accepted vertical/root/drain/lower water
+fluxes, historical ageing and transport, hard amount balance, atomic rejection
+and smaller retry, opaque and native fresh-process restart. Real Fortran O0/O2
+matches the immutable literal B1.11 loop. Full local moving passes1436.858922s
+with6250unchanged inputs. Exact admitted reactive1232 coexistence preserves all
+236age/253reactive/16edge inputs,227identical shared hashes; no simultaneous
+chemical/N/age execution or combined full-run claim.
+
+Only SW431-AGE-TRACER and its queue description change; all other242capability
+rows and all243dispositions/counts are unchanged. The prior blanket age-source
+absence claim is replaced by the bounded production receipt. Surface/pond,
+default/multicolumn and output scope remain open. Global master checker still
+FAILS its pre-existing stale inheritance baseline. Exact authority at canonical:
+`integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json`.

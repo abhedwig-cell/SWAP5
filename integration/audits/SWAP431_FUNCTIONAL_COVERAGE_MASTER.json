@@ -8828,18 +8828,23 @@
       },
       "meaning": "Water age tracer with ageing and advective/dispersive transport",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/process/mod_b111_age_tracer_substep.f90",
+        "src/runtime/mod_fmr_b111_age_route.f90",
+        "src/runtime/mod_fmr_b111_age_joint_application.f90",
+        "src/adapter/mod_age_joint_restart_file.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
+        "established": true,
+        "bounded": true,
+        "route": "src/runtime/mod_fmr_b111_age_joint_application.f90",
+        "claim": "PR1233 at e85bfe130b9ff1a09e88e00ffab94859e26b0d8e admits the complete bounded zero-top matrix age route over actual accepted water, age production/balance, atomic retry and fresh-process restart. Surface/pond/default/multicolumn/output envelope remains open."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -8855,12 +8860,26 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_ROUTE_CANONICALLY_ADMITTED_FULL_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "BOUNDED_ROUTE_ADMITTED_FULL_ENVELOPE_OPEN",
+      "bounded_age_successor": {
+        "pr": 1233,
+        "canonically_admitted": true,
+        "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+        "authority": "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+        "scope": "Separate optional age companion, actual accepted vertical/root/drain/lower fluxes, age production, hard balance, rejection/retry and opaque/native fresh-process continuation",
+        "source": "B1.11 SWAP/solute.f90:939..987, unchanged literal sweep; no historical reference correction",
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Surface/pond/rain/irrigation/runoff receipts, default/multicolumn activation and output envelope; no aquifer reopening or combined N/chemical/age claim",
+        "qualified_head": "68a90521f5491a086d8cecce3c435909c51d3876",
+        "qualification": "Actual Fortran O0/O2,150 literal steps, real Richards two signed-flow windows, hard balances,15 carrier negatives per window, rejection/retry, opaque/native/fresh-process restart and10 disk negatives per optimization. Full local moving1436.858922s PASS/6250unchanged inputs; exact reactive1232 coexistence with236/253/16 input bindings;29+13+23 current tests and26 reactive negatives.",
+        "highest": "NOT_SELECTED_POLICY"
+      }
     },
     {
       "capability_id": "SW431-CROP-FIXED",
@@ -14647,7 +14666,7 @@
       "capability_id": "SW431-AGE-TRACER",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
+      "why_open": "Bounded age matrix route canonically admitted via PR1233 at e85bfe13. Accepted surface/pond budget, default/multicolumn activation and output envelope remain open; full capability is not promoted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14655,7 +14674,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-SALT-DECAY",
