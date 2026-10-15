@@ -161,9 +161,10 @@ class SelectionControls(unittest.TestCase):
 
     def test_actual_full_runner_rejects_before_science(self):
         env=dict(os.environ);env.pop('SWAP5_TEST_SELECTION_RECORD',None)
-        cp=subprocess.run(['bash',str(self.saved_root/'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh')], env=env,capture_output=True)
-        self.assertNotEqual(cp.returncode,0); self.assertIn(b'selection record required',cp.stderr)
-        self.assertNotIn(b'PRESERVATION=PASS',cp.stdout)
+        for args in [[], ['--mc-irr01-allocation-only']]:
+            cp=subprocess.run(['bash',str(self.saved_root/'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'),*args], env=env,capture_output=True)
+            self.assertNotEqual(cp.returncode,0); self.assertIn(b'selection record required',cp.stderr)
+            self.assertNotIn(b'PRESERVATION=PASS',cp.stdout)
 
     def test_workflows_preserve_manual_full_and_exclude_auto_highest(self):
         import yaml

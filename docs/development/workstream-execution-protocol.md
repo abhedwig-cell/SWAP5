@@ -602,7 +602,9 @@ establishes complete highest coverage.
 `modular_broad` is required for accepted heat, the full bounded low-air physical
 feedback fixture, closure audits and benchmarks: these are explicit investigations,
 not routine feedback. A necessary full F-CI keeps its complete existing science body.
-The focused irrigation allocation option retains its bounded owning route. Existing
+The focused irrigation allocation option retains its bounded owning route behind
+its own `irrigation_allocation` preflight: the historical shared pair still takes
+499 to 540 seconds and therefore also needs an expensive-test selection. Existing
 resume receipts stay fail-closed on changed runner/tool identity; no new cache or
 receipt eligibility is introduced. The LOW02 moving reconciliation is explicit dispatch with `low02_owner` and
 `full_fci` preflight. F-CI107 no longer triggers on the outer moving wrapper alone:

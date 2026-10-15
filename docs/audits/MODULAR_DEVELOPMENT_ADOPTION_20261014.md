@@ -244,7 +244,7 @@ hours-saving claim.
 | Retained expensive group | Known cost / limit | Concrete selection need |
 | --- | --- | --- |
 | Full moving F-CI | Prior 30.8-minute batch in low-air decision; current cost UNKNOWN | Required stable-candidate admission for affected scientific contracts; complete original body retained |
-| Irrigation allocated root/sensor shared build | Existing PR1218 avoided 354/712 compiles and mean 318.562 s in its own comparison | Preserve both independent drivers, events and restart owners; current default SHARED retained, no new cache |
+| Irrigation allocated root/sensor shared build | Existing PR1218 shared pair 499 to 540 s; avoided 354/712 compiles and mean 318.562 s in its own comparison | Preserve both independent drivers, events and restart owners; current default SHARED retained behind irrigation_allocation selection, no new cache |
 | Highest low-air | Historical 10678.726 s; current cost UNKNOWN | Exceptional unique numerical research question or essential uncovered risk only; never a routine migration/admission gate |
 | Full frost owner / highest normal | Current cost UNKNOWN; old workflow timeout is not a timing measurement | Affected frost/uptake/drainage/state claims whose owner requires full composition; select frost_owner and full_fci |
 | B19 complete and finer matrix | Current cost UNKNOWN; old 90-minute timeout is not measured cost | Explicit exceptional research with highest_low_air and full_fci decisions |
@@ -289,7 +289,12 @@ is made. This candidate enforces the inspected moving/frost/B19/LOW02/RossFast p
 and makes cost selection mandatory in the shared protocol for the other owners.
 
 Evidence: `integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64`. Decoded SHA256
-`aca38c360855f453e239eb81dcbbd331e43d5137e85bc4229982a5d927302723`; 649 indexed files, 107 unique
+`46fbb323dd6ed61aaeb30342c0d803dba44732621bb47b74d6c3fd38dc449fa7`; 721 indexed files, 115 unique
 blobs, every hash and length roundtrip verified. The indexed bundle restores the
 actually executed local code commits from the canonical baseline. Published
 connector commits are separately checked for equal file/blob identities.
+
+The capsule includes the final persisted irrigation-preflight delta and its fresh
+18-control PASS. Both full and focused entrypoints reject missing selections before
+compilation; the full scientific body remains exact. Earlier executed code and
+results are retained with their original identities, not relabelled as later runs.
