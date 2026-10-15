@@ -1,3 +1,24 @@
+# Current qualified candidate: stable full admission selected
+
+Combined source `9747341e2381a24f1b13022eda0524bc3f091ae8` at canonical
+`cd64c5044a29643a068c6151720f76b2e70f570d`: scientific qualification PASS.
+Fresh explicit-input process/day/joint closures4/47/269 at O0/O2 PASS; all
+manual/calendar/file native/opaque/fresh-process identities hold. New measured
+build/native costs426.319s. Original SWRD3 direct20, physical36 plus oxygen8,
+calendar/N/shared owners retain their exact native dependencies and executed
+source identities.17 SWRD3 negatives,245 input/original-calendar/senescence
+negatives and40 combined proof/guard controls PASS. Current capsules are named
+by `reconciled_input_evidence` and `current_controls_evidence` in the status.
+Docs source and strict MkDocs PASS. No disposition or denominator promotion.
+
+Publish/freeze this qualified candidate and execute its selected complete local
+moving OFF (expected2321s), then publish immutable terminal evidence before PR1241
+admission. The earlier lost full result remains unusable historical data.
+Current open overlaps1234/1245/1246 are recorded, not incorporated. There are no
+submitted PR1241 reviews or inline review threads. Highest NOT_SELECTED_POLICY.
+
+The sections below retain earlier selection and interruption history.
+
 # Current execution: combined canonical input qualification
 
 Canonical `cd64c5044a29643a068c6151720f76b2e70f570d` is now reconciled in

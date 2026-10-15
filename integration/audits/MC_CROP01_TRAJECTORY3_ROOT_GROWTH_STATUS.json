@@ -5,14 +5,11 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Run17 SWRD3,245 input/original-owner negatives and40 combined proof/guard dispatch checks, persist terminal raw proof, freeze admission candidate.",
+  "next_action": "Publish and freeze exact candidate; one complete selected local moving OFF on source9747341e. Seal/publish terminal evidence before expected-head admission. Highest NOT_SELECTED_POLICY.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
-  "blockers": [
-    "Immutable terminal full moving evidence was lost before successful remote publication. Reported PASS is not usable for canonical admission.",
-    "Canonical cd64c504 explicit-input reconciliation and affected current composition proof were not durably completed."
-  ],
+  "blockers": [],
   "dependency_surface": [
     "src",
     "tests",
@@ -25,12 +22,12 @@
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
   "reference_delta": false,
-  "qualification_scope": "PRIOR_FROZEN_F422_SCIENCE_QUALIFIED; CURRENT_CD64_ADMISSION_BLOCKED",
+  "qualification_scope": "BOUNDED_SWRD3_AND_CANONICAL_EXPLICIT_INPUT_QUALIFIED; FULL_PRESERVATION_PENDING",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
   "production_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
   "live_canonical_reconciled": "cd64c5044a29643a068c6151720f76b2e70f570d",
-  "live_delta": "PR1239 senescence changes are outside every compiled source, original driver and test dependency in the recorded input manifest; no old science PASS copied.",
+  "live_delta": "Canonical cd64 input producer reconciled byte-exact with current SWRD3. All original native sources/drivers/oracles unchanged; four admission guards rebound by exact before/after and40 combined refusal checks. Fresh real input4/47/269 O0/O2 and all scientific corruption controls PASS.",
   "retained_attempts": [
     {
       "attempt": "root-growth-attempt1",
@@ -56,8 +53,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "UNAVAILABLE_IMMUTABLE_TERMINAL_EVIDENCE",
-  "stage": "CURRENT_INPUT_PHYSICAL_PASS_PENDING_COMBINED_CONTROLS",
+  "full_fci": "SELECTED_CURRENT_SCIENTIFIC_SOURCE",
+  "stage": "CURRENT_COMBINED_SCIENCE_QUALIFIED_PENDING_ONE_STABLE_FULL_ADMISSION",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -519,7 +516,9 @@
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_PROBE_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_REQUALIFIED_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CALENDAR_REQUALIFIED_20261015.tar.xz.b64",
-    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CONTROLS_REQUALIFIED_20261015.tar.xz.b64"
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CONTROLS_REQUALIFIED_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_INPUT_REQUALIFIED_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_CONTROLS_20261015.tar.xz.b64"
   ],
   "master_snapshot": {
     "head": "aae2b8d207b13453be45dd1773d39f8eae855831",
@@ -531,26 +530,6 @@
     "anaerobic_depth_extension_swr_d2_remains_open": true
   },
   "next_dependency_ready_route": "SWRD2 owned actual/potential persistent daily depth extension, using existing rate owner and accepted GRRT/GRRTPOT, transpiration/drought/oxygen carriers. Production binding and actual Richards/restart qualification remain open. Do not start before PR1241 admission.",
-  "full_preservation": {
-    "execution_commit": "2517caf0158c0256ed16bc7a640dc4f33eb640e1",
-    "tree": "ffe69849800e0a187643e26f1a093365925d7d11",
-    "source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
-    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
-    "command": [
-      "bash",
-      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
-    ],
-    "resume_mode": "OFF",
-    "status": "RAW_TERMINAL_EVIDENCE_UNAVAILABLE",
-    "tracked_inputs": 6408,
-    "compile_link_native_split": "UNKNOWN",
-    "highest_low_air": "NOT_SELECTED_POLICY",
-    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
-    "compiler_launcher_sha256": "001b60a16b3855c6ea284218fb422edfb2cf4f9384c156cd69a744e22f2fe947",
-    "local_result": "/workspace/scratch/e7fb6d6ef417/swrd3-reconciled-full/RESULT.json",
-    "local_exec_session": null,
-    "local_result_available": false
-  },
   "interruption_recovery": {
     "recovered_from": "df57b20871fdb1ce234c34158cd46991d3b47ccf",
     "observed_canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
@@ -632,7 +611,9 @@
     "reported_unavailable_full_wall_seconds": 2320.544183427992,
     "reported_full_usable_for_admission": false,
     "other_controls_and_interrupted_input_cost_seconds": "UNKNOWN",
-    "note": "Do not count reported full or missing input evidence as a qualified admission PASS."
+    "note": "Do not count reported full or missing input evidence as a qualified admission PASS.",
+    "new_input_build_native_seconds": 426.3184962839955,
+    "current_focused_recorded_seconds": 1727.8696897196282
   },
   "qualified_native_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
   "input_guard_rebinding": {
@@ -696,5 +677,69 @@
     "process": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f",
     "day": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f",
     "joint": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f"
+  },
+  "current_controls_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_CONTROLS_20261015.tar.xz.b64",
+    "decoded_sha256": "2f34e007d12f433f74c005314f5b6279e9238c38aa5dc8a7950504e73f207b3d",
+    "decoded_bytes": 10924,
+    "members": 13
+  },
+  "current_controls": {
+    "swrd3_negatives": 17,
+    "input_and_original_calendar_senescence_negatives": 245,
+    "combined_dispatch_and_exact_guard_checks": 40,
+    "status": "PASS"
+  },
+  "lost_full_preservation": {
+    "execution_commit": "2517caf0158c0256ed16bc7a640dc4f33eb640e1",
+    "tree": "ffe69849800e0a187643e26f1a093365925d7d11",
+    "source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "RAW_TERMINAL_EVIDENCE_UNAVAILABLE",
+    "tracked_inputs": 6408,
+    "compile_link_native_split": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiler_launcher_sha256": "001b60a16b3855c6ea284218fb422edfb2cf4f9384c156cd69a744e22f2fe947",
+    "local_result": "/workspace/scratch/e7fb6d6ef417/swrd3-reconciled-full/RESULT.json",
+    "local_exec_session": null,
+    "local_result_available": false
+  },
+  "full_preservation": {
+    "status": "SELECTED_NOT_STARTED",
+    "source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8"
+  },
+  "current_open_overlap": {
+    "canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "1234": {
+      "head": "238b6184140ec42cbd77f472436519d98bbf7bd7",
+      "draft": true,
+      "overlap": [
+        "tests/crop-co2/verify_co2_successor.py",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "incorporated": false
+    },
+    "1245": {
+      "head": "88c6fc64ccf1dcdf9fbd7fa4fa4054cc91b173c0",
+      "overlap": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "incorporated": false
+    },
+    "1246": {
+      "head": "af59d7449ce5b59750637e60b94043bd68410126",
+      "draft": true,
+      "direct_file_overlap": [],
+      "shared_dependency": "backend/codec future admission separate",
+      "incorporated": false
+    },
+    "reviews": 0,
+    "review_threads": 0
   }
 }
