@@ -1,0 +1,17 @@
+{
+  "work_unit": "MC-SOL01-ACCEPTED-AGE",
+  "baseline": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+  "stage": "READINESS_RECONCILED",
+  "implemented": false,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "overlap": "PR1232 already owns reactive N including nitrification; no parallel N implementation",
+  "authority_paths": ["docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md", "docs/development/workstream-execution-protocol.md", "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json"],
+  "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+  "master": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+  "master_facet": "SW431-AGE-TRACER ACTIVE_MIGRATION; no disposition promotion",
+  "next_action": "Selective process migration and independent age oracle, then accepted-water owner and joint restart",
+  "blockers": []
+}
