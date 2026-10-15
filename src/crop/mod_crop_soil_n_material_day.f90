@@ -11,6 +11,7 @@ module mod_crop_soil_n_material_day
  use mod_wofost81_crop_owner_state
  use mod_wofost_one_day_structural_evolution,only:wofost_one_day_forcing_t
  use mod_soil_n_day_environment,only:soil_n_day_environment_t
+ use mod_crop_senescence_residue,only:crop_residue_pending_t
  implicit none
  private
  integer,parameter,public::MATERIAL_OK=0,MATERIAL_INVALID=1,MATERIAL_BUILD=2,MATERIAL_TRANSFER=3, &
@@ -43,6 +44,8 @@ contains
   integer(int64)::sid,cid,revision
   real(real64)::clock,water,want(8),splitv(5)
   integer::i,code
+  type(crop_residue_pending_t)::pending
+  logical::has_pending
   candidate=committed;r=material_day_receipt_t()
   if(.not.committed%ready().or..not.ieee_is_finite(t0))return
   if(size(items)>64)return
@@ -79,7 +82,12 @@ contains
   end do
   call reconstruct_reactive_trusted(p,sid,revision,clock,water,pools,reconstructed,code)
   if(code/=MINERAL_OK)return
-  call initialize_crop_soil(reconstructed,crop,cp,cid,candidate,code)
+  call committed%pending_snapshot(pending,has_pending)
+  if(has_pending)then
+   call initialize_crop_soil(reconstructed,crop,cp,cid,candidate,code,pending)
+  else
+   call initialize_crop_soil(reconstructed,crop,cp,cid,candidate,code)
+  end if
   if(code/=CROP_SOIL_OK)then;candidate=committed;return;end if
   r%material_count=size(items);r%status=MATERIAL_OK
  end subroutine
