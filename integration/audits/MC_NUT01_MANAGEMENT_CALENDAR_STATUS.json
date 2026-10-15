@@ -8,7 +8,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "preserved": false,
+  "preserved": true,
   "canonically_admitted": false,
   "reference_status": "B0 original same-date stall witnessed; exact one-line B1-R2 correction PASS native O0/O2 before B2",
   "small_feedback": "Actual three-provider calendar producer PASS O0/O2: exact corrected B1 daily selection, kg/ha conversion, source order,20 invalid paths, no-event and A/B/A",
@@ -16,7 +16,7 @@
   "process_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
   "scope": "Typed daily amendment plan with same-day source-order application into existing senescence, whole-N crop/soil and actual Richards day; existing clocks/restart only",
   "interfaces_affected": "Three additive production modules; no existing provider, private state, solver, WOFOST81 equation/fixation or codec modified",
-  "next_safe_step": "Persist exact qualified candidate, verify no existing Actions execution, run exactly one selected stable full local moving OFF then bind raw proof and safely admit expected head",
+  "next_safe_step": "Verify final fetched postimage, exact live canonical and expected PR head, safely merge then verify canonical tree/source. No repeat full for metadata-only closeout.",
   "test_selection": {
     "reference": "Original B0 defect and corrected B1 before B2; tiny standalone literal grouping and trigger O0/O2",
     "process": "Actual3 production providers, fresh O0/O2 PASS",
@@ -68,9 +68,14 @@
     "link": 0.25149674898420926,
     "native": 0.0047111790045164526
   },
-  "qualification_status": "BOUNDED_CALENDAR_R2_SCIENCE_QUALIFIED_FULL_PENDING",
+  "qualification_status": "BOUNDED_CALENDAR_R2_QUALIFIED_PRESERVED_PREMERGE",
   "recovery": "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_RECOVERY_20261015.md",
-  "negative_controls": {"status": "PASS", "count": 183, "baseline_controls": 138, "current_controls": 45},
+  "negative_controls": {
+    "status": "PASS",
+    "count": 183,
+    "baseline_controls": 138,
+    "current_controls": 45
+  },
   "documentation_source": "PASS",
   "strict_mkdocs": "PASS",
   "added_blobs": {
@@ -92,5 +97,46 @@
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "5a9ef80658b3301a43fe75bc6b3141372c435ce1",
     "tests/nut-senescence/check_senescence_controls.py": "176530786f94660e8c12fc017bc9f99a4787dcdd",
     "tests/nut-senescence/verify_senescence_successor.py": "135b811e6ecc59582402b61247e168133a24cd62"
-  }
+  },
+  "full_preservation": {
+    "execution_commit": "47ad7871cf48937e17e1e20e9a57c13a1df633c1",
+    "tree": "2fa2bf8d33964afcdec3b5dee813d5af9955250f",
+    "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6382,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1676.7066751130042,
+    "changed_inputs": [],
+    "stdout_sha256": "af99fa0f5c84aadabdaed510ebc76f9b31937b7dfccab3f43769a41673ce5cd9",
+    "stderr_sha256": "2b4ffab3de07ccea0643ac1b86a667d4c39e33c2fdfd69671b7fe18a55812f3d",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_MANAGEMENT_CALENDAR_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "2f057ba08f057d902244a5ced2bd19d7e8f1f8042630989fb990bcad8f85fb30",
+      "decoded_bytes": 462128,
+      "members": 15
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "47ad7871cf48937e17e1e20e9a57c13a1df633c1",
+    "original_tree": "2fa2bf8d33964afcdec3b5dee813d5af9955250f",
+    "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+    "changed_scientific_inputs": [],
+    "closeout_only": [
+      "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_RECOVERY_20261015.md",
+      "integration/audits/evidence/MC_NUT01_MANAGEMENT_CALENDAR_ADMISSION_20261015.tar.xz.b64"
+    ],
+    "reason": "Terminal full preservation executed against frozen persisted source, scientific inputs, drivers, oracles and guards. Final changes record result and raw evidence only; no duplicate science/full run for metadata-only closeout."
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1242 expected-head merge and exact canonical tree/source establish bounded admission."
 }

@@ -66,3 +66,5 @@ rotation retains its separate shared phase decision. Existing surface-input PR12
 is not duplicated; pond/source stays open and aquifer stays rejected. Final
 expected-head merge and exact canonical source/tree receipt supply admission
 authority; premerge admission=false is intentionally frozen.
+
+Terminal full local moving preservation: **PASS**, OFF, exit0, 1676.707s; all6382 tracked inputs unchanged. Actual execution `47ad7871cf48937e17e1e20e9a57c13a1df633c1`, tree `2fa2bf8d33964afcdec3b5dee813d5af9955250f`, source `8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28`. Raw logs, complete input inventory, Git bundle and183 controls are bound in the admission capsule identified by status. Fresh physical costs132.780s compile/13.869s driver/.680s link/108.568s native; extra no-event native identity1.113/.251/.005s with audited unchanged same-session provider build. Per-physics and full shell split UNKNOWN. Qualification/preservation true and admission false are deliberately frozen premerge; PR1242 merge and exact canonical receipt establish admission.
