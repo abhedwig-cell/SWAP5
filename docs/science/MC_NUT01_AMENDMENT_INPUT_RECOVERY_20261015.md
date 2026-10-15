@@ -71,3 +71,32 @@ harvest/reset/rotation and simultaneous companions stay open. Surface input
 PR1234 and crop trajectory PR1241 remain separately owned. Pond/source open;
 aquifer rejected. Continue from this work unit instead of replacing or reopening
 those routes.
+
+## Explicit caller example
+
+Illustrative derived management export, not an authentic historical project file:
+
+```text
+MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac
+1 'Mineral blend' 0.0 0.0 0.0 0.21 0.10
+smedate iMat Dosagekgha VolatFraction
+2026-01-01 1 100.0 0.1
+```
+
+The caller invokes `read_soil_n_amendment_tables(path,'2026-01-01',plan,status,error_line)`
+from `mod_soil_n_amendment_input`, requires `N_INPUT_OK`, then passes the plan to
+the existing calendar day or Richards entrypoint. It must align the physical
+clock with the returned1900-based day convention, available through
+`parse_soil_n_date`. The file does not activate a simulation or set its clock.
+No existing kernel/runtime module imports the reader; this translation boundary
+is explicitly invoked by the caller, preserving invariant2.
+
+## Terminal premerge receipt
+
+One full local moving OFF completed PASS in1998.761113s at
+`99af2a27b919bd9afdd3d14bd4ee5f6643a496fb`, tree`943a75381928ebf16f98d5e71bf8c0146cc25425`. All6398
+tracked inputs remained unchanged. Source tree`7d397ea67d8106756c08f375f2098776aea64d3e`.
+Owning controls245 PASS; source/docs/strict build PASS. Full raw evidence, logs,
+execution bundle and final metadata-only dependency binding are in the admission
+capsule indexed by status. No hosted dispatch and no highest low-air run.
+See the [bounded coverage receipt](MC_NUT01_AMENDMENT_INPUT_COVERAGE_RECEIPT_20261015.md).
