@@ -1,3 +1,27 @@
+# Current execution: combined canonical input qualification
+
+Canonical `cd64c5044a29643a068c6151720f76b2e70f570d` is now reconciled in
+existing PR1241. Remote checkpoint `66d4891adf9f8a32c27d59a29cee674242297676`
+preserves the exact combined source/guards before physical qualification.
+Original production sources remain unchanged except the canonical explicit input
+producer, which adds a real file/manual/calendar route to the Richards composition.
+Fresh4/47/269-provider O0/O2 input qualification is selected. Existing SWRD3,
+calendar, N and shared-owner evidence retains its original native source identity;
+every relevant native source/driver/oracle/forcing hash remains mandatory. Exactly
+four admission guards have explicit before/after hashes and nonrecursive union
+qualification; no native dependency exemption is introduced.
+
+After focused qualification and corruption controls PASS, one complete local
+moving OFF is selected at this new combined scientific tree (expected2321s).
+The prior full source did not contain the input producer; its lost terminal
+artifact cannot qualify this tree. This is the necessary current scientific
+admission gate after the newly changed production dependency, not a docs-only
+rerun. Earlier reported full results remain unusable and preserved as history.
+Highest low-air remains NOT_SELECTED_POLICY. Freeze/publish the candidate first;
+publish raw terminal evidence before expected-head merge. No next crop route.
+
+Earlier interruption/recovery records below are historical.
+
 # Current recovery: missing terminal evidence blocks admission
 
 PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241) remains open/draft.

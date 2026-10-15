@@ -29,4 +29,19 @@ for name,route in [('calendar',calendar.verify_source),('senescence',senescence.
  try:route(git_reader=foreign)
  except ValueError:passed.append(name+':foreign-delegated-source')
  else:raise AssertionError(name+' accepted foreign source')
+# Only the four exact old/new admission-control pairs may be rebound.
+status=json.loads((swrd3.ROOT/swrd3.STATUS).read_text())
+for path,pair in status['input_guard_rebinding'].items():
+ swrd3.dependencies({path:pair['before']},guard_rebinding=True)
+ passed.append('exact-guard-rebind:'+path)
+ for label,expected,enabled in [('wrong-before','0'*64,True),('wrong-after',pair['before'],True),('not-enabled',pair['before'],False)]:
+  altered=copy.deepcopy(status)
+  if label=='wrong-after':altered['input_guard_rebinding'][path]['after']='0'*64
+  with patch.object(swrd3.json,'loads',return_value=altered):
+   try:swrd3.dependencies({path:expected},guard_rebinding=enabled)
+   except ValueError:passed.append(label+':'+path)
+   else:raise AssertionError('accepted '+label+':'+path)
+try:swrd3.dependencies({swrd3.BOOT:'0'*64},guard_rebinding=True)
+except ValueError:passed.append('native-source-never-exempt')
+else:raise AssertionError('native source escaped dependency binding')
 print(json.dumps({'status':'PASS','checks':len(passed),'controls':passed},indent=2))

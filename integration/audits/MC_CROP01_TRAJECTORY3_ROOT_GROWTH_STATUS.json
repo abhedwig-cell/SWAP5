@@ -7,7 +7,7 @@
   "tested": true,
   "qualified": false,
   "canonically_admitted": false,
-  "next_action": "Fresh4/47/269-provider explicit input O0/O2, current source and all original scientific corruption controls; preserve capsules remotely before admission.",
+  "next_action": "Run17 SWRD3,245 input/original-owner negatives and40 combined proof/guard dispatch checks, persist terminal raw proof, freeze admission candidate.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [
     "Immutable terminal full moving evidence was lost before successful remote publication. Reported PASS is not usable for canonical admission.",
@@ -57,7 +57,7 @@
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
   "full_fci": "UNAVAILABLE_IMMUTABLE_TERMINAL_EVIDENCE",
-  "stage": "RECONCILING_CD64_EXPLICIT_INPUT",
+  "stage": "CURRENT_INPUT_PHYSICAL_PASS_PENDING_COMBINED_CONTROLS",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -178,7 +178,7 @@
     },
     "tests/root-growth/check_combined_admission_controls.py": {
       "status": "A",
-      "blob": "981305e9beb7ff4712fd8b3767946e40e5eedb34"
+      "blob": "c4fc450d936f7840b55b0d90707355f56aa3a676"
     },
     "tests/root-growth/check_swrd3_controls.py": {
       "status": "A",
@@ -652,5 +652,49 @@
       "before": "a99e335eb8daa918f5969ce15cc62a7f4e042d2f819d723d5d1b292a73d409ab",
       "after": "ee88c89d1aa01374bc1a8082e2856703cf5031c3490fe05033c6e1a90532e957"
     }
+  },
+  "final_current_source_admission_selection": {
+    "selected": true,
+    "canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "scientific_delta_since_previous_full_source": "Canonical adds mod_soil_n_amendment_input, introducing a new explicit file producer in the actual crop/soil/Richards composition; joint provider closure changes268 to269. This combined science tree was not the previous full execution tree.",
+    "focused_first": "Fresh4/47/269-provider O0/O2 and all incumbent/combined rejection assertions before freezing final candidate.",
+    "full_gate": "One complete current-scientific-tree local moving OFF after focused PASS. Previous lost run is retained only as reported/unverifiable, never inherited.",
+    "necessity": "Mandatory stable-candidate production admission on the newly combined scientific source. No valid complete terminal evidence covers that tree; current input composition and nonrecursive dispatch must precede its admission. This replaces the prior blocked selection after the user instructed continuation.",
+    "expected_seconds": 2321,
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "actions": "NOT_SELECTED_LOCAL_AVAILABLE"
+  },
+  "reconciled_input_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_INPUT_REQUALIFIED_20261015.tar.xz.b64",
+    "decoded_sha256": "f386756c4dc216c6882399b3b96ed6f51c9f947f0c9ff181cd02b65df4bcaa03",
+    "decoded_bytes": 109692,
+    "members": 1797
+  },
+  "input_cost_seconds": {
+    "process": {
+      "compile": 1.6686898599996312,
+      "compiler": 0.003307112000129564,
+      "driver_compile": 0.15037997100034772,
+      "link": 0.10670635299993592,
+      "native": 0.4646302910000486
+    },
+    "day": {
+      "compile": 19.988320734000354,
+      "driver_compile": 3.233940927999811,
+      "link": 0.12234013799979948,
+      "native": 0.01583249099985551
+    },
+    "joint": {
+      "compile": 167.9710234959971,
+      "driver_compile": 15.100080387999697,
+      "link": 0.5500852609993672,
+      "native": 216.94315926099944
+    }
+  },
+  "input_execution_heads": {
+    "process": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f",
+    "day": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f",
+    "joint": "28df95d9b3cb0943d21ca2a84c8dc5c55a25251f"
   }
 }
