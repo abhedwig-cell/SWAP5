@@ -63,3 +63,110 @@ flush, output-before-reset, positive/zero/positive actual extraction,
 rejected transitions/rollback/retry/duplicates, mass, O0/O2, owner/full F-CI
 and complete affected highest frost closure. No fullcap/count promotion
 until that physical trajectory and remaining historical profiles pass.
+
+
+## Current readiness after PR1241 and PR1246
+
+Revalidated at canonical `47b652248420ba7c49df7e063c64ff749ce6253f`.
+Both PR1241 (bounded daily SWRD3) and PR1246 (accepted thermal crop/soil N)
+are merged. Their former concurrent-work overlap is no longer a blocker.
+The phase gap above remains present in the current production interfaces;
+neither admission adds physical harvest/fallow/new-season publication.
+
+| Inspected production interface | Exact Git blob |
+| --- | --- |
+| `src/kernel/mod_kernel_transactions.f90` | `da7a00b6aec996cff504d8d30a90e51a8cce2162` |
+| `src/runtime/mod_fmr_production_application_bootstrap.f90` | `e7f39d70b3554de6db5731b699b8068419ac9062` |
+| `src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90` | `a3ae3d607a1b82e5beeffac01d4b84ff4d63a384` |
+| `src/process/mod_crop_senescence_residue.f90` | `fc6dc2f32c0b16c988857552737f9413b99b33d2` |
+
+`kernel_executor_t` exposes positive-interval trial/commit and reference-floor
+trial/commit. `kernel_advance_interval` rejects `t1 <= t0`. Its candidate's
+physical state, origin revision and lineage remain private. `initialize`
+refuses an initialized carrier and starts at revision zero. The trusted
+reconstruction constructor explicitly serves persistence, refuses a live
+target, and is not runtime publication authority. Reconstructing into a fresh
+variable and assigning over the live carrier would bypass that contract.
+
+`production_application_initialize_weather_crop_daystart` requires an absent
+crop carrier, no active crop daystart, and water revision zero. It cannot start
+a second crop after an accepted season. `run_weather_crop_daystart` rejects a
+harvested lifecycle. `reconcile_committed_crop_event_receipt` takes the crop
+carrier as `intent(in)` and retires only an already published delivery token;
+it cannot publish harvest, reset or a new season. Thus neither constructor,
+checkpoint nor derived calendar/window bookkeeping supplies the missing seam.
+
+This is a source/interface finding, not a fresh numerical test or proof of a
+general impossibility. No compiler/model execution is selected for rechecking
+these unchanged interface exclusions. The current source identities above
+allow the next owner to inspect only intersecting live deltas.
+
+### Proposed next shared contract
+
+Resolve the boundary with an explicit biological-event transaction at the
+accepted physical clock, rather than passing a zero-duration interval to the
+hydraulic solver. This remains a proposal for the RT/HY/F-KT and crop/calendar/
+restart owners. It does not add or admit an API. Decide whether the operation
+belongs in the generic executor or a distinct existing crop transaction owner
+before implementing dependent NUT functionality.
+
+The required semantics are concrete:
+
+1. Bind a boundary candidate to the exact current crop lineage, revision,
+   accepted time, crop identity and event phase. Derive weather and crop
+   selection from their real owning records. A caller-provided date or crop
+   number alone never authorizes publication.
+2. Advance the biological revision on publication while preserving physical
+   time. Leave water lineage/revision, head, water/heat/solute inventories,
+   grid certificate and numerical history unchanged. Existing positive-interval
+   transactions and receipts retain their current meaning.
+3. Keep harvest end-status inside the crop owner for the required observation
+   before resetting its active state. Retain exactly the necessary undelivered
+   observation/phase state across restart; do not add a second live crop owner.
+4. Debit harvested live biomass/N once. Separate exported harvest from material
+   retained as pending residue, including storage organs. Existing pending
+   root/leaf/stem material must survive the boundary. The current three-organ
+   daily-senescence payload cannot be relabelled complete harvest storage.
+   Preserve WOFOST81 N/fixation and derive organ return/export rules from their
+   authenticated sources; do not assume all harvested N returns to soil.
+5. Publish crop/reset, exported-N accounting, pending residues and the matching
+   physical event receipt atomically on local copies. Retire derived calendar/
+   window delivery only after that receipt. Invalid, stale, rejected and replayed
+   requests must not change any committed owner or consume material twice.
+6. Preserve the historical next-morning ordering: acquire authentic morning
+   weather, select and initialize the next crop, then run its hydrology. During
+   intervening fallow, zero crop extraction while continuing actual water,
+   heat and soil-N execution. Adjacent crops require the same ordering without
+   inserting a fictitious fallow day or delaying initialization to day end.
+7. Keep one accepted physical clock. Persist enough event phase and origin to
+   distinguish pre-harvest, observed/unreset, reset/fallow and initialized-next-
+   crop states. Check continuous, opaque and fresh-process native continuation,
+   including rejected and exactly repeated transitions.
+
+The authenticated original `swap.f90` remains SHA256
+`39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a`.
+Its lines480-486 incorporate previous residues before current amendments;
+491/494 perform crop growth and soil reactions; 511 performs harvest;
+514/522-535 integrate/output before reset. SoilManagement task6 at day end is
+output/accounting, not an extra residue incorporation. Storage-organ transfer
+must therefore be traced through the actual harvest/reset source, not invented
+from that task6 call or the daily senescence producer.
+
+### First implementation and qualification boundary
+
+After the shared API/phase decision, implement one complete harvest-to-next-crop
+trajectory with the existing production owners. Start with small real event,
+state/nonmutation and whole-N tests, then short actual Richards/crop/soil-N
+composition for adjacent crops and intervening fallow at O0/O2. Include calendar
+and maturity harvest, end-status before reset, final-day pending material,
+rejection/retry/stale/duplicate events and native/opaque restart. Select broader
+preservation from the actual shared dependency delta and owning admission
+clauses, with a recorded cost decision. No blanket full-FCI or long highest
+low-air execution is selected by this source-only readiness update. Reconcile
+older highest-stress labels with the current execution protocol; never invent
+an inherited PASS.
+
+Current implementation, qualification and admission for this proposed boundary
+remain absent. No master capability/count promotion. Pond/source stays open;
+aquifer stays rejected. The distinct persistent daily SWRD2 route and surface-
+input PR1234 retain their existing owners.
