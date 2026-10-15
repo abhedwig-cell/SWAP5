@@ -170,3 +170,10 @@ and select the changed production contract. The no-case default is the measured
 small process set; accepted heat and ten-component audits require explicit selection.
 See **Apply the modular route (2026-10-14)** in the existing protocol for commands,
 provider reuse and the unchanged four-level admission boundary.
+
+Before broad execution, apply **Enforced proportional execution (2026-10-15)**
+in the existing protocol. Full moving F-CI checks `SWAP5_TEST_SELECTION_RECORD`
+before any compilation. Use an existing work-unit JSON; missing/stale selection
+blocks execution. For reviewed local seams use `--changed-since <exact-base>`;
+unmapped/shared dependency changes require owner selection, never inherited PASS.
+Automatic feedback and explicitly selected stable-candidate admission are separate.

@@ -4,6 +4,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Decision in the existing work-unit, before any compile or owner invocation.
+# The focused irrigation route retains its original bounded selection.
+if [[ "${1:-}" != --mc-irr01-allocation-only ]]; then
+  python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+fi
+
 # Shared qualification preserves all original driver executions; no result reuse.
 case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
   SHARED|SEPARATE) ;;
