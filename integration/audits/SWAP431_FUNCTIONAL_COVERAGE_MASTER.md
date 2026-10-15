@@ -489,3 +489,19 @@ absence claim is replaced by the bounded production receipt. Surface/pond,
 default/multicolumn and output scope remain open. Global master checker still
 FAILS its pre-existing stale inheritance baseline. Exact authority at canonical:
 `integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json`.
+
+
+## Bounded SWRD3 daily production admission (2026-10-15)
+
+PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241), canonical merge `2dfacf1c177c9b117dcc74b3f17c91f167debd39`, source `b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0`.
+
+SWRD3 actual/potential biomass geometry is now reachable in both daily real
+Richards/WOFOST81 schedules with accepted oxygen, rollback/retry/exactly-once and
+opaque continuation. The already ADMITTED biomass row gains this bounded route.
+Historical SWRD2 anaerobic depth extension remains ACTIVE_MIGRATION; the new
+carrier is supporting evidence only. All243 dispositions and summary counts stay
+unchanged. Exact current-source scientific and full moving evidence is bound by
+`integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json`.
+This scoped receipt does not establish global source-census qualification.
+Largest dependency-ready next crop route: persistent daily SWRD2 actual/potential
+depth; it was not started by trajectory3.

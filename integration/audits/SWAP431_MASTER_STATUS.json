@@ -34,7 +34,8 @@
     "canonical_177_commit_delta": "Scoped PASS: 177 commits and 73 paths compared, crop merged PR1172..1193 cross-checked; bounded admission only, no complete cap closure established",
     "latest_recount": "Structural 243-row count and open queue=108; formal exact-source checker not executed",
     "bounded_crop_receipt_reconciliation": "PASS: one SW431-CROP-SOW row updated from obsolete no-owner claim; all other rows/dispositions/counts and full false-closure guard unchanged. Exact later canonical source/qualification receipt retained; no full source census checker claim.",
-    "latest_irr_owner_reconciliation": "PASS: 16 owner IDs mapped to 243-entry ledger; 5 admitted, 11 shared-application-blocked, no ungrounded promotions; full Python checker NOT RUN."
+    "latest_irr_owner_reconciliation": "PASS: 16 owner IDs mapped to 243-entry ledger; 5 admitted, 11 shared-application-blocked, no ungrounded promotions; full Python checker NOT RUN.",
+    "bounded_swrd3_reconciliation": "PASS: exact canonical source/evidence, two bounded rows and one supporting queue field only; all243 dispositions and summary unchanged. Not a full master qualification."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -346,5 +347,53 @@
     "all_other_242_rows_and_dispositions_unchanged": true,
     "full_master_qualification_claimed": false,
     "global_checker": "Pre-existing stale inheritance baseline remains FAIL; this receipt does not fix or promote the whole master"
+  },
+  "latest_mc_crop01_swrd3_daily_production_reconciliation": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+    "canonical_merge": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+    "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+    "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+    "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+    "full_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+      "decoded_bytes": 415916,
+      "members": 7
+    },
+    "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "default_projection_reconciliation": {
+      "status": "PASS",
+      "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+      "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+      "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+      "full_execution_at_current_tree": false,
+      "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+      "native_dependency_files": 2752,
+      "guard_pairs": 7,
+      "projected_dependencies": [
+        "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+        "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+        "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+        "decoded_bytes": 6480,
+        "members": 19
+      }
+    },
+    "fresh_current_thermal_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+      "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+      "decoded_bytes": 103528,
+      "members": 1374
+    },
+    "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+    "scope": "Explicit SWRD3 actual/potential biomass depth and actual density in both real daily Richards/WOFOST81 schedules; accepted deepest-root oxygen carrier; retry/rollback/exactly-once/opaque continuation. Canonical N input reconciled and physically qualified.",
+    "remaining": "SWRD2 persistent actual/potential depth, source anaerobic depth-extension suppression, broader selectors, native weather disk codec and harvest/fallow/rotation remain open.",
+    "disposition_changes": 0,
+    "full_master_qualification_claimed": false,
+    "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
   }
 }

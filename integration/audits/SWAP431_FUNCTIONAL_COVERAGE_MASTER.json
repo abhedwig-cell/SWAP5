@@ -11001,7 +11001,8 @@
         "claim": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition."
       },
       "restrictions": [
-        "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition."
+        "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition.",
+        "PR1241 admits an accepted deepest-root oxygen carrier and the existing WOFOST81 biomass-growth gate; this does not close historical SWRD2 depth-extension suppression."
       ],
       "remaining_dependency": [
         "SW431-CROP-ROOTGROW"
@@ -11018,7 +11019,55 @@
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "supporting_swrd3_daily_carrier": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+        "canonical_merge": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+        "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+        "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+        "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+        "full_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+          "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+          "decoded_bytes": 415916,
+          "members": 7
+        },
+        "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+        "default_projection_reconciliation": {
+          "status": "PASS",
+          "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+          "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+          "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+          "full_execution_at_current_tree": false,
+          "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+          "native_dependency_files": 2752,
+          "guard_pairs": 7,
+          "projected_dependencies": [
+            "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+            "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+            "src/runtime/mod_fmr_serialized_reference_backend.f90"
+          ],
+          "highest_low_air": "NOT_SELECTED_POLICY",
+          "evidence": {
+            "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+            "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+            "decoded_bytes": 6480,
+            "members": 19
+          }
+        },
+        "fresh_current_thermal_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+          "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+          "decoded_bytes": 103528,
+          "members": 1374
+        },
+        "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+        "scope": "Explicit SWRD3 actual/potential biomass depth and actual density in both real daily Richards/WOFOST81 schedules; accepted deepest-root oxygen carrier; retry/rollback/exactly-once/opaque continuation. Canonical N input reconciled and physically qualified.",
+        "remaining": "SWRD2 persistent actual/potential depth, source anaerobic depth-extension suppression, broader selectors, native weather disk codec and harvest/fallow/rotation remain open.",
+        "disposition_changes": 0,
+        "full_master_qualification_claimed": false,
+        "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
+      }
     },
     {
       "capability_id": "SW431-DRAIN-DISLAYER",
@@ -13118,22 +13167,33 @@
       },
       "meaning": "Root depth from actual/potential root-biomass table",
       "swap5_implementation_authority": [
-        "src/crop/mod_crop_root_depth_biomass.f90"
+        "src/crop/mod_crop_root_depth_biomass.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_biomass_root_uptake_input.f90",
+        "src/runtime/mod_fmr_biomass_root_depth_binding.f90"
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
-        "PR #1125; SWRD3 composition 37773706292; F-CI 37773706297"
+        "PR #1125; SWRD3 composition 37773706292; F-CI 37773706297",
+        "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
+        "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+        "https://github.com/abhedwig-cell/SWAP5/pull/1241"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver."
+        "established": true,
+        "route": [
+          "src/runtime/mod_fmr_production_application_bootstrap.f90",
+          "src/runtime/mod_fmr_biomass_root_uptake_input.f90",
+          "src/runtime/mod_fmr_biomass_root_depth_binding.f90",
+          "src/crop/mod_crop_root_depth_biomass.f90"
+        ],
+        "claim": "Explicit SWRD3 binds committed actual/potential WRT through RLWTB/WRTMAX and materializes actual static root density in the daily accepted Richards/WOFOST81 production cycle; both schedules and opaque continuation qualified/admitted by PR1241."
       },
       "restrictions": [
-        "Source RLWTB-to-depth derivation with separate actual/potential root biomass and maximum-depth clipping has no bound typed resolver."
+        "Bounded explicit SWRD3 daily application. SWRD2 persistent depth, broader density/root selectors, native weather disk codec and harvest/fallow/rotation remain separate."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -13145,7 +13205,7 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
+      "coverage_gap_type": "CANONICALLY_ADMITTED_BOUNDED_DAILY_ROUTE",
       "workunit_stage": "CANONICALLY_ADMITTED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
@@ -13156,6 +13216,54 @@
       "canonical_admission": {
         "commit": "c0543ab8171fbad695f0b152c9198a1a1d376911",
         "evidence": "PR #1125; SWRD3 composition 37773706292; F-CI 37773706297"
+      },
+      "bounded_daily_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+        "canonical_merge": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+        "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+        "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+        "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+        "full_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+          "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+          "decoded_bytes": 415916,
+          "members": 7
+        },
+        "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+        "default_projection_reconciliation": {
+          "status": "PASS",
+          "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+          "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+          "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+          "full_execution_at_current_tree": false,
+          "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+          "native_dependency_files": 2752,
+          "guard_pairs": 7,
+          "projected_dependencies": [
+            "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+            "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+            "src/runtime/mod_fmr_serialized_reference_backend.f90"
+          ],
+          "highest_low_air": "NOT_SELECTED_POLICY",
+          "evidence": {
+            "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+            "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+            "decoded_bytes": 6480,
+            "members": 19
+          }
+        },
+        "fresh_current_thermal_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+          "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+          "decoded_bytes": 103528,
+          "members": 1374
+        },
+        "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+        "scope": "Explicit SWRD3 actual/potential biomass depth and actual density in both real daily Richards/WOFOST81 schedules; accepted deepest-root oxygen carrier; retry/rollback/exactly-once/opaque continuation. Canonical N input reconciled and physically qualified.",
+        "remaining": "SWRD2 persistent actual/potential depth, source anaerobic depth-extension suppression, broader selectors, native weather disk codec and harvest/fallow/rotation remain open.",
+        "disposition_changes": 0,
+        "full_master_qualification_claimed": false,
+        "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
       }
     },
     {
@@ -15099,7 +15207,8 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": true,
+      "bounded_supporting_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1241"
     },
     {
       "capability_id": "SW431-FROST-SNOW",
@@ -15869,6 +15978,54 @@
         "No disposition promotion; original rejected aquifer unchanged",
         "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
       ]
+    },
+    "MC-CROP01-SWRD3": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+      "canonical_merge": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+      "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+      "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+      "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+      "full_evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+        "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+        "decoded_bytes": 415916,
+        "members": 7
+      },
+      "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+      "default_projection_reconciliation": {
+        "status": "PASS",
+        "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+        "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+        "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+        "full_execution_at_current_tree": false,
+        "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+        "native_dependency_files": 2752,
+        "guard_pairs": 7,
+        "projected_dependencies": [
+          "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+          "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+          "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        ],
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+          "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+          "decoded_bytes": 6480,
+          "members": 19
+        }
+      },
+      "fresh_current_thermal_evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+        "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+        "decoded_bytes": 103528,
+        "members": 1374
+      },
+      "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+      "scope": "Explicit SWRD3 actual/potential biomass depth and actual density in both real daily Richards/WOFOST81 schedules; accepted deepest-root oxygen carrier; retry/rollback/exactly-once/opaque continuation. Canonical N input reconciled and physically qualified.",
+      "remaining": "SWRD2 persistent actual/potential depth, source anaerobic depth-extension suppression, broader selectors, native weather disk codec and harvest/fallow/rotation remain open.",
+      "disposition_changes": 0,
+      "full_master_qualification_claimed": false,
+      "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -15936,5 +16093,53 @@
     "disposition_changes": 0,
     "full_integrity_checker": "NOT_RUN; stale historical inheritance baseline acknowledged",
     "denominator_complete": false
+  },
+  "latest_mc_crop01_swrd3_daily_production_reconciliation": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+    "canonical_merge": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+    "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+    "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+    "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+    "full_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+      "decoded_bytes": 415916,
+      "members": 7
+    },
+    "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "default_projection_reconciliation": {
+      "status": "PASS",
+      "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+      "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+      "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+      "full_execution_at_current_tree": false,
+      "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+      "native_dependency_files": 2752,
+      "guard_pairs": 7,
+      "projected_dependencies": [
+        "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+        "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+        "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+        "decoded_bytes": 6480,
+        "members": 19
+      }
+    },
+    "fresh_current_thermal_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+      "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+      "decoded_bytes": 103528,
+      "members": 1374
+    },
+    "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+    "scope": "Explicit SWRD3 actual/potential biomass depth and actual density in both real daily Richards/WOFOST81 schedules; accepted deepest-root oxygen carrier; retry/rollback/exactly-once/opaque continuation. Canonical N input reconciled and physically qualified.",
+    "remaining": "SWRD2 persistent actual/potential depth, source anaerobic depth-extension suppression, broader selectors, native weather disk codec and harvest/fallow/rotation remain open.",
+    "disposition_changes": 0,
+    "full_master_qualification_claimed": false,
+    "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
   }
 }
