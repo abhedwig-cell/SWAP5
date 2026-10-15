@@ -12,6 +12,7 @@ module mod_crop_soil_n_day
  use mod_wofost_one_day_structural_evolution
  use MOD_wofost81_nitrogen,only:WOFOST81_n_flux
  use mod_soil_n_day_environment,only:soil_n_day_environment_t
+ use mod_crop_senescence_residue,only:crop_residue_pending_t
  implicit none
  private
  integer,parameter,public::CROP_SOIL_OK=0,CROP_SOIL_INVALID=1,CROP_SOIL_PREPARE=2, &
@@ -21,12 +22,14 @@ module mod_crop_soil_n_day
   type(reactive_state_t)::soil
   type(wofost81_crop_owner_state_t)::crop
   type(crop_n_configuration_t)::p
+  type(crop_residue_pending_t),allocatable::pending
   integer(int64)::parameter_id=0
   logical::initialized=.false.
  contains
   procedure::ready=>coupled_ready
   procedure::snapshot=>coupled_snapshot
   procedure::configuration=>coupled_configuration
+  procedure::pending_snapshot=>coupled_pending_snapshot
  end type
  type,public::crop_soil_receipt_t
   integer::status=CROP_SOIL_INVALID
@@ -40,7 +43,17 @@ module mod_crop_soil_n_day
 contains
  logical function coupled_ready(self)result(ok)
   class(crop_soil_state_t),intent(in)::self
+  real(real64)::clock,theta
+  integer(int64)::revision
+  type(soil_n_pool_state_t)::pools
   ok=self%initialized.and.self%soil%ready()
+  if(.not.ok)return
+  if(allocated(self%pending))then
+   ok=self%pending%valid();if(.not.ok)return
+   call self%soil%snapshot(clock,theta,pools,revision)
+   ok=self%pending%clock==clock.and.any(self%pending%dry_matter_kg_ha>0d0).and. &
+    sum(self%pending%nitrogen_kg_ha)<=self%crop%nitrogen%value%nlosses_total+1d-12
+  end if
  end function
  subroutine coupled_snapshot(self,soil,crop)
   class(crop_soil_state_t),intent(in)::self
@@ -48,18 +61,26 @@ contains
   type(wofost81_crop_owner_state_t),intent(out)::crop
   soil=self%soil;crop=self%crop
  end subroutine
+ subroutine coupled_pending_snapshot(self,pending,present_pending)
+  class(crop_soil_state_t),intent(in)::self
+  type(crop_residue_pending_t),intent(out)::pending
+  logical,intent(out)::present_pending
+  present_pending=allocated(self%pending);pending=crop_residue_pending_t()
+  if(present_pending)pending=self%pending
+ end subroutine
  subroutine coupled_configuration(self,p,id)
   class(crop_soil_state_t),intent(in)::self
   type(crop_n_configuration_t),intent(out)::p
   integer(int64),intent(out)::id
   p=self%p;id=self%parameter_id
  end subroutine
- subroutine initialize_crop_soil(soil,crop,p,id,state,status)
+ subroutine initialize_crop_soil(soil,crop,p,id,state,status,pending)
   type(reactive_state_t),intent(in)::soil
   type(wofost81_crop_owner_state_t),intent(in)::crop
   type(crop_n_configuration_t),intent(in)::p
   integer(int64),intent(in)::id
   type(crop_soil_state_t),intent(out)::state
+  type(crop_residue_pending_t),optional,intent(in)::pending
   integer,intent(out)::status
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
@@ -77,6 +98,10 @@ contains
   v=pack_crop_n_owner(crop)
   if(size(v)==0)return
   state%soil=soil;state%crop=crop;state%p=p;state%parameter_id=id;state%initialized=.true.
+  if(present(pending))then
+   allocate(state%pending,source=pending)
+   if(.not.state%ready())then;state=crop_soil_state_t();return;end if
+  end if
   status=CROP_SOIL_OK
  end subroutine
  real(real64)function crop_n_live(crop)result(total)
@@ -105,6 +130,7 @@ contains
   integer::code
   r=crop_soil_receipt_t()
   if(.not.state%ready())return
+  if(allocated(state%pending))return
   if(.not.all(ieee_is_finite([t0,t1,potential_cm,root_water])))return
   if(min(potential_cm,root_water)<0d0.or.max(potential_cm,root_water)>100d0)return
   wv=[weather%minimum_temperature,weather%average_temperature,weather%daytime_average_temperature, &

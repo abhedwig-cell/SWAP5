@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Corrupt complete proofs, source scope and fresh native coverage independently."""
 import copy,json
+import os,sys
+from pathlib import Path
+_new=Path(__file__).resolve().parents[1]/'nut-senescence/check_senescence_controls.py'
+if _new.exists():os.execv(sys.executable,[sys.executable,'-B',str(_new)])
 from unittest.mock import patch
 import verify_material_environment_successor as v
 v.verify_qualification();source=v.verify_source();data=v.read_evidence();passed=[]

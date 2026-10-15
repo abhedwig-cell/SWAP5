@@ -17,9 +17,11 @@ module mod_crop_soil_n_joint_restart_file
   use mod_crop_soil_n_day
   use mod_crop_soil_n_configuration
   use mod_wofost81_crop_owner_state,only:wofost81_crop_owner_state_t
+  use mod_crop_senescence_residue,only:crop_residue_pending_t
+  use mod_crop_soil_n_senescence_day,only:pending_incorporation_valid
   implicit none
   private
-  character(8),parameter::MAGIC='S5NC0001'
+  character(8),parameter::MAGIC='S5NC0001',PENDING_MAGIC='S5NC0002'
   integer,parameter::MAX_BYTES=10485760
   public::write_crop_soil_n_joint_restart_file,read_crop_soil_n_joint_restart_file
 contains
@@ -44,9 +46,15 @@ contains
     real(real64)::time
     integer(int64)::id,revision
     integer::u,io,mode,n
+    type(crop_residue_pending_t)::pending
+    logical::has_pending
+    character(8)::tag
     logical::ok,has_history
     status=JOINT_INVALID
     if(column%state_handle/=1)return
+    if(.not.pending_incorporation_valid(coupled))return
+    call coupled%pending_snapshot(pending,has_pending)
+    tag=MAGIC;if(has_pending)tag=PENDING_MAGIC
     if(.not.crop_soil_n_joint_states_match(water,coupled))return
     call coupled%snapshot(chemical,crop);call coupled%configuration(cp,crop_id)
     cv=crop_n_configuration_vector(cp);ov=pack_crop_n_owner(crop)
@@ -72,7 +80,7 @@ contains
     if(io/=0)return
     writing: block
       associate(r=>b%records(1))
-        write(u,iostat=io)MAGIC,b%schema_version,b%parameter_set_identity, &
+        write(u,iostat=io)tag,b%schema_version,b%parameter_set_identity, &
              r%schema_version,r%kernel_schema_version,r%column_id,r%parameter_ref,r%forcing_handle, &
              r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
              mode,n,has_history
@@ -87,6 +95,8 @@ contains
         write(u,iostat=io)id,revision,time,size(v),v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
         if(io/=0)exit writing
         write(u,iostat=io)crop_id,size(cv),cv,size(ov),ov
+        if(io/=0)exit writing
+        if(has_pending)write(u,iostat=io)pending%clock,pending%dry_matter_kg_ha,pending%nitrogen_kg_ha,pending%application_age
       end associate
     end block writing
     close(u)
@@ -122,6 +132,7 @@ contains
     integer(int32)::checksum
     integer::u,io,mode,n,count
     integer(int8)::extra
+    type(crop_residue_pending_t)::pending
     character(8)::tag
     logical::ok,has_history
     status=JOINT_INVALID
@@ -149,7 +160,7 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        if(tag/=MAGIC.or.n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
+        if((tag/=MAGIC.and.tag/=PENDING_MAGIC).or.n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(mode==0.and.has_history)exit decoding
         physical%active_nodes=n
         allocate(physical%pressure_head(n),physical%water_content(n),s%fom_kg_m3(size(p%mineral%inventory%nfrac_fom)))
@@ -189,7 +200,13 @@ contains
         io=1
         if(.not.all(ieee_is_finite(cv)))exit decoding
         if(any(abs(cv-crop_expected)>0d0).or.count<29.or.count>2048)exit decoding
-        allocate(ov(count));read(u,iostat=io)ov,checksum
+        allocate(ov(count));read(u,iostat=io)ov
+        if(io/=0)exit decoding
+        if(tag==PENDING_MAGIC)then
+          read(u,iostat=io)pending%clock,pending%dry_matter_kg_ha,pending%nitrogen_kg_ha,pending%application_age
+          if(io/=0)exit decoding
+        end if
+        read(u,iostat=io)checksum
         if(io/=0)exit decoding
         call unpack_crop_n_owner(ov,crop_trial,io)
         if(io/=CROP_SOIL_OK)exit decoding
@@ -213,9 +230,14 @@ contains
     end block decoding
     close(u)
     if(io/=0)return
-    call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io)
+    if(tag==PENDING_MAGIC)then
+      call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io,pending)
+    else
+      call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io)
+    end if
     if(io/=CROP_SOIL_OK)return
     if(.not.crop_soil_n_joint_states_match(water_trial(1),coupled_trial))return
+    if(.not.pending_incorporation_valid(coupled_trial))return
     water=water_trial(1);coupled=coupled_trial;status=JOINT_OK
   end subroutine
 

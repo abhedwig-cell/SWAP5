@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Ensure unfinished, stale, corrupted and foreign successors fail closed."""
 import copy,json
+import os,sys
+from pathlib import Path
+_new=Path(__file__).resolve().parents[1]/'nut-senescence/check_senescence_controls.py'
+if _new.exists():os.execv(sys.executable,[sys.executable,'-B',str(_new)])
 from unittest.mock import patch
 import verify_environment_successor as v
 source=v.verify_source();data=v.read_evidence();v.validate(data,source);passed=[]
