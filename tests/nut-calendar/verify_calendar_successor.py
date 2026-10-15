@@ -14,6 +14,9 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def verify_source(git_reader=None):
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
+  return successor.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -133,6 +136,9 @@ def validate(d,source):
    check(len([e for e in probe['events']if e['category']==category and '-'+opt in e['command']])==1,'empty-day fresh driver/link absent')
  return r
 def verify_qualification():
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
+  return successor.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  baseline_command('tests/nut-senescence/verify_senescence_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
