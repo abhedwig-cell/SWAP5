@@ -115,6 +115,8 @@ def verify_source(git_reader=None):
  rows={r.split('\t')[1]:r.split('\t')[0]for r in g('diff','--name-status',CURRENT_BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
  expected=m['postimages'];check(rows=={p:r['status']for p,r in expected.items()},'foreign current surface delta')
  check({p for p in expected if p.startswith('src/')}==PRODUCERS and all(expected[p]['status']=='A'for p in PRODUCERS),'existing production changed')
+ original=json.loads(subprocess.check_output(['git','show',ORIGINAL_FINAL+':'+STATUS],cwd=ROOT,text=True))
+ for p in PRODUCERS:check(g('rev-parse','HEAD:'+p)==original['added_blobs'][p],'corrected final surface provider drift '+p)
  for p,r in expected.items():check(g('rev-parse','HEAD:'+p)==r['blob']==blob((ROOT/p).read_bytes()),'current surface postimage drift '+p)
  check(g('rev-parse','HEAD:src')==m['source_tree'],'surface source tree drift')
  check(g('rev-parse','HEAD:reference')==g('rev-parse',CURRENT_BASE+':reference'),'surface reference changed')
