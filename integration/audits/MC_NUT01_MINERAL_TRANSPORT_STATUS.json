@@ -6,11 +6,11 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
   "contract": "docs/science/MC_NUT01_MINERAL_TRANSPORT_CONTRACT.md",
-  "next_safe_step": "Verify terminal raw evidence and negative controls, then execute selected full local moving preservation once.",
+  "next_safe_step": "Publish final evidence/recovery metadata in PR1231, verify exact source and admission-only delta, mark ready and safely merge if canonical remains compatible. Do not repeat qualification for metadata-only closeout.",
   "test_selection": {
     "direct": "4 production providers + literal unchanged historical routine; compile 1.3705s link 0.0584s native 0.00258s",
     "physical": "Actual daily Full Richards + temporal history; outflow, inflow, hydraulic and chemical rejection; opaque/disk fresh-process restart. Selected because daily source aggregation and atomic coupling are new. Native cost UNKNOWN; compile measured from events. Do not duplicate active run.",
@@ -113,5 +113,103 @@
         "oversized_N"
       ]
     }
+  },
+  "qualification_status": "BOUNDED_DAILY_MINERAL_ROUTE_QUALIFIED_AND_PRESERVED_PREMERGE",
+  "pr": 1231,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1231",
+  "full_preservation": {
+    "execution_commit": "6a1c3b7f157b8dc6f687c268f52e8991234469d0",
+    "tree": "db6fdfa4756da2e9bd314ef9ab0702fd2466d1f0",
+    "source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "returncode": 0,
+    "wall_seconds": 1411.2273773979978,
+    "tracked_inputs": 6228,
+    "changed_inputs": [],
+    "stdout_sha256": "6c5df275d01cb7ee3b2c9698dfbfee4477d2b73e8a863d6f8d02c2d9477a01ca",
+    "stderr_sha256": "d671b7d0e0013964e10c9d9fd6fb32c4f10575a82c82d59a93d3829afcde47f0",
+    "terminal_marker": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_MINERAL_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "651dd4d6141727aad2d05d27249226bd3b7f5efc3eee13249419790cb7c36721",
+      "decoded_bytes": 398276,
+      "members": 9
+    }
+  },
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 17,
+    "controls": [
+      "unfinished_status",
+      "wrong_source",
+      "wrong_oracle",
+      "large_process_closure",
+      "missing_carrier_assertions",
+      "missing_decoder_negative",
+      "stale_input",
+      "o0_o2_drift",
+      "tampered_endpoint",
+      "tampered_oracle",
+      "tampered_grid",
+      "missing_native",
+      "failed_event",
+      "wrong_stdout_digest",
+      "foreign_source",
+      "foreign_test",
+      "foreign_reference"
+    ],
+    "positive": "exact production and terminal raw evidence accepted"
+  },
+  "incumbent_owner_verification": {
+    "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "postimages": {
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "5a93008ed2fb18d0798ec0c967729815d156ec26",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "86f8c7770b15dcd63f3c22295c81f0f7073cd993"
+    },
+    "co2_successor": true,
+    "qualified": false,
+    "admitted": false,
+    "physical_programs": 28,
+    "highest": "NOT_SELECTED_POLICY",
+    "mineral_successor": true,
+    "mineral_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
+    "incumbent_dependency_baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde"
+  },
+  "canonical_admission_authority": "This is an immutable premerge qualification record. Actual admission requires PR1231 merge receipt and canonical source/tree verification in its final PR body.",
+  "final_dependency_rebind": {
+    "execution": "6a1c3b7f157b8dc6f687c268f52e8991234469d0",
+    "physical_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
+    "existing_inputs_verified": 6228,
+    "changed_existing_inputs": [
+      "integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json"
+    ],
+    "status_projection_equal": [
+      "baseline",
+      "source_blobs",
+      "guard_blobs",
+      "evidence"
+    ],
+    "new_paths": [
+      "integration/audits/evidence/MC_NUT01_MINERAL_ADMISSION_20261015.tar.xz.b64",
+      "docs/science/MC_NUT01_MINERAL_TRANSPORT_RECOVERY_20261015.md"
+    ],
+    "reason": "Only admission metadata changes after terminal full gate. Every consumed N status field, every production/test/tool/reference file, all original physical inputs and both guards remain byte-identical. No new full F-CI execution is claimed for metadata closeout."
+  },
+  "final_checks": {
+    "source_and_raw_qualification": "PASS",
+    "evidence_negative_controls": 17,
+    "incumbent_original_owner_verifier": "PASS at exact admitted baseline after complete new additive-delta check",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS 11.94s",
+    "whitespace": "PASS",
+    "hosted_actions": "No runs dispatched; no hosted-green claim",
+    "premerge_existing_tested_input_delta": "Only this status metadata; all consumed status fields unchanged; source tree f3ebea90ec20ff52e97e42c26d59673519089a28"
   }
 }
