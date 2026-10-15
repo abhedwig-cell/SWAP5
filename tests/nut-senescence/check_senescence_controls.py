@@ -3,6 +3,10 @@
 import copy,json
 from unittest.mock import patch
 import verify_senescence_successor as v
+if (v.ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
+ import subprocess,sys
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-calendar/check_calendar_controls.py')],check=True)
+ raise SystemExit(0)
 v.verify_qualification();source=v.verify_source();data=v.read_evidence();passed=[]
 old=v.baseline_command('tests/nut-material-environment/check_material_environment_controls.py')
 assert old['status']=='PASS'and old['negative_count']==65
