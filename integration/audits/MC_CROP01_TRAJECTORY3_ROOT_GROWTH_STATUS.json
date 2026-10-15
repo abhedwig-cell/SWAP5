@@ -1043,5 +1043,19 @@
       "members": 1374
     },
     "master_capability_disposition_changes": 0
+  },
+  "master_coverage_reconciliation": {
+    "commit": "10fc5f804872adffd1c4b85fde3c6c7f1ae972b4",
+    "parent": "ccd503d2d3c5fd4c39e196dfff157b66355507f2",
+    "branch": "work/swap431-master-coverage-20261006",
+    "changed_rows": [
+      "SW431-CROP-ROOTGROW-BIOMASS",
+      "SW431-ROOT-ANAE-GROW"
+    ],
+    "capabilities": 243,
+    "disposition_changes": 0,
+    "summary_unchanged": true,
+    "scoped_fetched_leaf_validation": "PASS",
+    "full_master_qualified": false
   }
 }
