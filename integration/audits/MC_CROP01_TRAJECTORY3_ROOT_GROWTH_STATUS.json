@@ -1,0 +1,380 @@
+{
+  "work_unit": "MC-CROP01 trajectory3 SWRD3 daily physical production",
+  "baseline": "3b661766dc59298a7f541c970c2d3a55602d926c",
+  "checkpoint_commit": "SELF",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "next_action": "Fresh direct O0/O2, calendar process/day/joint/empty and shared owner qualification, all original corruption controls; then one full stable local moving OFF.",
+  "recovery_point": "tests/root-growth/run_root_growth.py",
+  "blockers": [],
+  "dependency_surface": [
+    "src/crop",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_biomass_root_depth_binding.f90",
+    "src/runtime/mod_fmr_root_depth_rate_daily_binding.f90",
+    "src/kernel/mod_kernel_transactions.f90",
+    "tests/root-growth"
+  ],
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "production_delta": true,
+  "reference_delta": false,
+  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_PHYSICAL_AND_SHARED_OWNERS_PASS_PENDING_MOVING",
+  "pr": 1241,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+  "production_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+  "live_canonical_reconciled": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+  "live_delta": "PR1239 senescence changes are outside every compiled source, original driver and test dependency in the recorded input manifest; no old science PASS copied.",
+  "retained_attempts": [
+    {
+      "attempt": "root-growth-attempt1",
+      "outcome": "Compile fails on existing canonical impure observation warning promoted by Werror; existing PP03 treatment applied only to function-elimination and compare-reals diagnostics, all numerical runtime traps unchanged."
+    },
+    {
+      "attempt": "root-growth-final",
+      "outcome": "New receipt assertion attempted private event field; changed to existing public identify_wofost_crop_event API; no production edit."
+    },
+    {
+      "attempt": "swrd3-physical1",
+      "outcome": "Controller source-drift rejection after30 successful native executions: a non-executed qualification guard in an overbroad directory input list changed during the batch. Retain all outputs; no terminal PASS asserted. Repeat in frozen checkout with explicit complete runtime driver/oracle inputs, excluding unrelated guards."
+    },
+    {
+      "attempt": "SWRD3 science validation after physical2 PASS",
+      "outcome": "Strict evidence gate rejected missing observed anaerobic branch. Physical profile at AERATECRIT0.4 was not actually gated. Preserve36 complete physical programmes; add a separate fresh-build valid AERATECRIT1 ON/OFF discriminator, require nonzero actual suppressed events. No tolerance or production parameter change."
+    },
+    {
+      "attempt": "shared owner multiswap",
+      "outcome": "Missing immutable historical Git object1da854e4 before native execution. Recovered actual commit/source history from existing local predecessor repository; resume original controller after byte-verifying successful prefix. No owner script or assertion changed."
+    }
+  ],
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS",
+  "full_lifecycle_closed": false,
+  "full_fci": "NOT_RUN_ON_RECONCILED_POSTIMAGE",
+  "stage": "UNIFIED_SOURCE_PERSISTED_PENDING_FRESH_AFFECTED_OWNERS",
+  "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
+  "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
+  "production_execution": "44ceeb44",
+  "direct_result": "/workspace/scratch/e7fb6d6ef417/swrd3-direct1/result.json",
+  "physical_execution": "/workspace/scratch/e7fb6d6ef417/swrd3-physical2",
+  "swrd3_postimages": {
+    "src/crop/mod_crop_soil_n_calendar_day.f90": {
+      "status": "A",
+      "blob": "528b6c77a6a3ccaa03e3d2064ae9fedfa2dd59fd"
+    },
+    "src/process/mod_soil_n_amendment_calendar.f90": {
+      "status": "A",
+      "blob": "19dcedb0babc89b21c2fbcc65122c1ff709b3cc1"
+    },
+    "src/runtime/mod_fmr_biomass_root_uptake_input.f90": {
+      "status": "A",
+      "blob": "c2344a276f576c15fc9df6221713a3fcabc49253"
+    },
+    "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": {
+      "status": "A",
+      "blob": "15491852eada4aa20679d203f394cb171a9b2003"
+    },
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+      "status": "M",
+      "blob": "e7f39d70b3554de6db5731b699b8068419ac9062"
+    },
+    "tests/crop-co2/test_co2_successor_controls.py": {
+      "status": "M",
+      "blob": "f192135275b00002d34e8c7a77fa5b0d1a4dc535"
+    },
+    "tests/crop-co2/verify_co2_successor.py": {
+      "status": "M",
+      "blob": "90597280b175e45e369f98c9e751fc76ae779160"
+    },
+    "tests/fci/run_crop_file_weather_production_successor.sh": {
+      "status": "M",
+      "blob": "80d47417fe160204b8c48bf6b82302b8a0eeb229"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "blob": "b0a2a6085cee93988abefd4ed2aa8c85f9615f96"
+    },
+    "tests/modularity/joint_admission_authority.py": {
+      "status": "M",
+      "blob": "af6ba12b7fedb9b6107fa3b9b61cea2e5be089db"
+    },
+    "tests/nut-calendar/check_calendar_controls.py": {
+      "status": "A",
+      "blob": "1d86415624a4e0e40b1418456976e53826782da8"
+    },
+    "tests/nut-calendar/run_calendar.py": {
+      "status": "A",
+      "blob": "a9924ed811e0fb719c623a9d959c62c68c19706d"
+    },
+    "tests/nut-calendar/run_empty_day.py": {
+      "status": "A",
+      "blob": "9348ac616d87cd6007d99f563696c3dd36275d0e"
+    },
+    "tests/nut-calendar/run_reference.py": {
+      "status": "A",
+      "blob": "e28a64309a52a4e8b169360ff111f66346a5762e"
+    },
+    "tests/nut-calendar/test_calendar.f90": {
+      "status": "A",
+      "blob": "d25411a829df49a7f314166ce2d1f0670f69a357"
+    },
+    "tests/nut-calendar/test_calendar_day.f90": {
+      "status": "A",
+      "blob": "06dfa6b568ed7c78e45f975249e2997912038329"
+    },
+    "tests/nut-calendar/test_calendar_empty_day.f90": {
+      "status": "A",
+      "blob": "746197bdc0067b4cf356a008ec38bed36a86da01"
+    },
+    "tests/nut-calendar/test_calendar_joint.f90": {
+      "status": "A",
+      "blob": "9858d030b030c000951bc93ff326117b5ec787b3"
+    },
+    "tests/nut-calendar/verify_calendar_successor.py": {
+      "status": "A",
+      "blob": "669be6aa28cd9514c104629ca0a356fe1f1ed33b"
+    },
+    "tests/nut-senescence/check_senescence_controls.py": {
+      "status": "M",
+      "blob": "d9a2f4466402b8f9b7008d888530dfff1aa50233"
+    },
+    "tests/nut-senescence/verify_senescence_successor.py": {
+      "status": "M",
+      "blob": "7020d33537d9e883ddf1fdf6934e8b4da84a745f"
+    },
+    "tests/root-growth/check_swrd3_controls.py": {
+      "status": "A",
+      "blob": "e199143adfb6b62ae68b6add874614f87cc0d312"
+    },
+    "tests/root-growth/run_root_growth.py": {
+      "status": "A",
+      "blob": "3784be317a3b65dc552f29ffd9c1a33e464d4c4a"
+    },
+    "tests/root-growth/run_swrd3_cycle.py": {
+      "status": "A",
+      "blob": "bddbc1ae8d2445e1dd9f027f10f2e822591afbda"
+    },
+    "tests/root-growth/run_swrd3_discriminator.py": {
+      "status": "A",
+      "blob": "74e05ece8677f3aab969e2155f879d7ff771f56d"
+    },
+    "tests/root-growth/swrd3_cycle_driver.py": {
+      "status": "A",
+      "blob": "d69398118b749215c398f14461ef113b7ce150c5"
+    },
+    "tests/root-growth/swrd3_discriminator_driver.py": {
+      "status": "A",
+      "blob": "e852df814870daad7921944a1192060e92883c8e"
+    },
+    "tests/root-growth/test_root_growth_transaction.f90": {
+      "status": "A",
+      "blob": "bf2d8aa0f52f5ed1dddfb7bc75eac8d3f7efacc8"
+    },
+    "tests/root-growth/verify_swrd3_successor.py": {
+      "status": "A",
+      "blob": "c9dbb8b0d150b27e8507cf74149c4e758ed2f7ed"
+    }
+  },
+  "swrd3_science_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_SCIENCE_20261015.tar.xz.b64",
+    "decoded_sha256": "3b3f2623f07481a07ef5e6b009c7c2f84ee0479e4e3d71246771a8a4f077431e",
+    "members": 2652,
+    "decoded_bytes": 610632
+  },
+  "swrd3_physical": {
+    "head": "13b786ba854fe34eb512d8bd85f00c2a493c6fd2",
+    "programs": 36,
+    "providers": 225,
+    "wall_seconds": 393.5134231120028,
+    "costs": [
+      {
+        "compile_seconds": 54.19605789813795,
+        "link_seconds": 0.7894975069939392,
+        "native_seconds": 43.68068658802076,
+        "providers": 225,
+        "provider_compiles": 225,
+        "external_compiles": 10,
+        "driver_compiles": 7,
+        "links": 7
+      },
+      {
+        "compile_seconds": 270.8386228759773,
+        "link_seconds": 0.7027551380015211,
+        "native_seconds": 20.288178684015293,
+        "providers": 225,
+        "provider_compiles": 225,
+        "external_compiles": 10,
+        "driver_compiles": 7,
+        "links": 7
+      }
+    ]
+  },
+  "swrd3_direct": {
+    "head": "49dec3a05ca5359d10c3dc14ab22ba7a12005fd1",
+    "programs": 20,
+    "providers": 39,
+    "wall_seconds": 10.657860922001419,
+    "costs": {
+      "compile": 8.52936762002355,
+      "link": 1.970643534004921,
+      "native": 0.03618521000316832
+    }
+  },
+  "supplemental_selection": {
+    "reason": "Unique uncovered actual accepted oxygen suppression in real Richards/growth. Existing0.4 fixture did not reach it. Valid source threshold1 provides discriminating branch while numerical forcing/hydraulics remain unchanged. Original36 programmes retained.",
+    "expected_seconds": 350,
+    "physics_only": "UNKNOWN",
+    "closure": 225,
+    "reuse": "NONE; fresh isolated O0/O2 builds, every new native executed"
+  },
+  "swrd3_probe_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_PROBE_20261015.tar.xz.b64",
+    "decoded_sha256": "1732c5a2ed06957b0132688202592d83ab51e05bb0d7e35d745ee5ab10c4725a",
+    "decoded_bytes": 906876,
+    "members": 1004
+  },
+  "swrd3_probe_result": {
+    "head": "997094d01f87fe9843b3b5b0b510ea4b89bfb85c",
+    "wall_seconds": 218.25485547899734,
+    "native_programmes": 8,
+    "costs": [
+      {
+        "compile_seconds": 36.9150536540983,
+        "link_seconds": 0.19596630499290768,
+        "native_seconds": 10.48819546001323,
+        "providers": 225,
+        "provider_compiles": 225,
+        "external_compiles": 10,
+        "driver_compiles": 2,
+        "links": 2
+      },
+      {
+        "compile_seconds": 163.45039083094161,
+        "link_seconds": 0.19092438300140202,
+        "native_seconds": 5.861006688006455,
+        "providers": 225,
+        "provider_compiles": 225,
+        "external_compiles": 10,
+        "driver_compiles": 2,
+        "links": 2
+      }
+    ],
+    "actual_suppressed_oracle_checks_per_native": 20,
+    "threshold": "AERATECRIT1 legal source boundary; ordinary0.4 profile retained as originally executed"
+  },
+  "swrd3_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_20261015.tar.xz.b64",
+    "decoded_sha256": "a54779f46aaed19d993345cec005ade1dbcfe0b119fcb411f86e58122c7a8086",
+    "decoded_bytes": 191152,
+    "members": 1704
+  },
+  "swrd3_owner_results": {
+    "additional_commands": 10,
+    "command_wall_seconds": 538.528892390983,
+    "native_nutrient_providers": 265,
+    "nutrient_cost_seconds": {
+      "compile": 129.9014794450777,
+      "driver_compile": 31.063587178039597,
+      "link": 1.8929216809774516,
+      "native": 153.5763307739544
+    },
+    "all_existing_drivers": "fresh original8 process/material/senescence/temperature direct/joint O0/O2; all native decoder controls retained"
+  },
+  "preserved": false,
+  "controls": {
+    "status": "PASS",
+    "negative_count": 17,
+    "controls": [
+      "unfinished",
+      "missing_profile",
+      "duplicate_profile",
+      "failed_native",
+      "invalid_native_time",
+      "forged_output",
+      "failed_event",
+      "unchecked_flags",
+      "forged_incumbent_identity",
+      "missing_native_execution",
+      "stale_bootstrap",
+      "probe_missing_profile",
+      "probe_failed_native",
+      "probe_missing_native",
+      "extra_source",
+      "foreign_blob",
+      "reference"
+    ]
+  },
+  "coverage": {
+    "affected": [
+      "SW431-CROP-ROOTGROW-BIOMASS",
+      "SW431-ROOT-ANAE-GROW"
+    ],
+    "disposition_delta": 0,
+    "full_capability_admission": false,
+    "master_branch_modified": false
+  },
+  "overlap": {
+    "pr1240": [
+      "tests/crop-co2/verify_co2_successor.py",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "action": "Inspect live head and exact peer guards before admission; do not modify peer branch."
+  },
+  "stable_admission_selection": {
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "expected_seconds": 1800,
+    "reason": "AGENTS/protocol four-level stable admission: changed real production bootstrap/root binding, current physical44/direct20 and fresh shared10/N8 qualification now sealed. One full, no Actions duplicate.",
+    "compile_link_native_split": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "previous_component_qualification": {
+    "executed_head": "db66f5c1f9e201452dc86f86fbbd7e75cb240876",
+    "provider_count": 38,
+    "native_executions": 20,
+    "wall_seconds": 10.683572960013407,
+    "cost_seconds": {
+      "compile": 8.575076330031152,
+      "link": 1.9336703409790061,
+      "native": 0.0343170919950353
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_20261015.tar.xz.b64",
+      "decoded_sha256": "c2b0c155ae27b7b2de42442d1beab90f41c96cd748b057bd501e825aa1f47fbe",
+      "decoded_bytes": 95508,
+      "members": 938
+    }
+  },
+  "executed_head": "13b786ba854fe34eb512d8bd85f00c2a493c6fd2",
+  "reconciliation_20261015": {
+    "state": "FOUR_SHARED_GUARDS_UPDATED_NOT_QUALIFIED",
+    "commits": [
+      "277cd6af3be2ab369ba842eafef293d8658046c1",
+      "9e6cb4e71c1627ec38c516277694651d6424c7af",
+      "e6e2b389056f0be66e951e5f312d9cfdacedf279",
+      "9a97856da10f507ae863eed474b98ea9112f469c"
+    ],
+    "scope": "NUT01 management calendar source guard, moving provider selection, senescence negative controls and qualification dispatch now represented alongside SWRD3 guard; removed recursive SWRD3 -> senescence -> SWRD3 early delegation. Canonical source must still be merged in full; no inherited exact-source qualification.",
+    "open_issues": [
+      "SWRD3 verify_source checks exact swrd3_postimages and original baseline diff, now stale for changed guard files and updated canonical inputs.",
+      "Calendar verifier requires real calendar code/status present on branch; this PR still based on pre-calendar canonical.",
+      "Revalidate guard ordering, both negative controls and full local moving F-CI on unified immutable candidate.",
+      "Resolve branch merge conflicts and align fresh evidence manifest before admission."
+    ],
+    "qualified": false,
+    "preserved": false
+  },
+  "reconciliation_canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+  "reconciliation_selection": {
+    "reason": "Calendar compiled closure includes changed production bootstrap. Fresh calendar actual Richards and empty-day are required. All shared owner guards changed: fresh original owner controller and N ABI routes selected. Original SWRD3 physical/probe/native inputs are all byte-identical and retained; no stale PASS promoted.",
+    "expected_seconds": 1100,
+    "physics_only": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  }
+}

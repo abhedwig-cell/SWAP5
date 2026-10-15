@@ -14,6 +14,9 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -25,7 +28,11 @@ def verify_source(git_reader=None):
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'immutable source changed')
  return {'baseline':BASE,'source_tree':g('rev-parse','HEAD:src'),'current_source_tree':g('rev-parse','HEAD:src'),'calendar_successor':True,'senescence_successor':True,'qualified':False,'admitted':False}
 def read_evidence():
- rec=json.loads((ROOT/STATUS).read_text())['evidence'];raw=base64.b64decode((ROOT/rec['path']).read_bytes());check(sha(raw)==rec['sha256'],'capsule drift')
+ rec=json.loads((ROOT/STATUS).read_text())['evidence']
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.capsule(json.loads((ROOT/swrd3.STATUS).read_text())['reconciled_calendar_evidence'])
+ raw=base64.b64decode((ROOT/rec['path']).read_bytes());check(sha(raw)==rec['sha256'],'capsule drift')
  with tarfile.open(fileobj=io.BytesIO(raw))as a:
   ms=a.getmembers();check(all(m.isfile()and not Path(m.name).is_absolute()and '..'not in Path(m.name).parts for m in ms),'unsafe member')
   d={m.name:a.extractfile(m).read()for m in ms};check(len(d)==len(ms),'duplicate member')
@@ -133,6 +140,9 @@ def validate(d,source):
    check(len([e for e in probe['events']if e['category']==category and '-'+opt in e['command']])==1,'empty-day fresh driver/link absent')
  return r
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  baseline_command('tests/nut-senescence/verify_senescence_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
