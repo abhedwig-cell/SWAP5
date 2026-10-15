@@ -108,7 +108,7 @@ program test_material_environment_joint
   type(crop_soil_n_joint_result_t)::old_result
   other_water=water;other_state=state
   call run_crop_soil_n_joint_interval(second,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,other_water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,other_state,weather,0d0,1d0,old_result)
+    cfg%tiles(1)%base_forcing,cfg%numerical,other_state,weather,0d0,1d0,old_result,env)
   call require(old_result%status==JOINT_OK,'original empty profile')
   call write_crop_soil_n_joint_restart_file(trim(path)//'.empty-original',column,cfg%tiles(1)%template, &
     670001_int64,other_water,other_state,status);call require(status==0,'original empty endpoint')

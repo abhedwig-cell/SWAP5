@@ -26,6 +26,8 @@ program test_material_environment_day
  type(crop_soil_receipt_t)::oldr
  type(wofost_one_day_forcing_t)::weather,invalid
  real(real64)::time,theta,nit,denit,carbon,supply,literal(12),saved(13)
+ real(real64)::cold_soil(13)
+ real(real64),allocatable::cold_crop(:)
  real(real64),allocatable::v(:),v0(:),v1(:)
  integer(int64)::revision
  integer::code,i
@@ -64,7 +66,8 @@ program test_material_environment_day
  call require(abs(got%ammonium_n_kg_m2-want%ammonium_n_kg_m2)<=1d-12.and. &
    abs(got%nitrate_n_kg_m2-want%nitrate_n_kg_m2)<=1d-12.and.abs(supply-r%day%internal_supply_kg_m2)<=1d-12,'literal mineral supply')
  call require(time==1d0.and.revision==1,'same sole daily clock and revision')
- v=pack_crop_n_owner(outcrop)
+ v=pack_crop_n_owner(outcrop);cold_crop=v
+ cold_soil=[got%fom_kg_m3,got%biomass_kg_m3,got%humus_kg_m3,got%ammonium_n_kg_m2,got%nitrate_n_kg_m2,theta]
  call advance_crop_soil_material_day(state,0d0,1d0,.34d0,0d0,0d0,0d0,0d0,.1d0,weather,items,split,r,env)
  call require(r%status/=0,'batch replay rejected');call state%snapshot(outsoil,outcrop);v1=pack_crop_n_owner(outcrop)
  call require(all(v1==v),'replay no crop leak')
@@ -134,7 +137,9 @@ program test_material_environment_day
  reference=initial
  call advance_crop_soil_material_day(reference,0d0,1d0,.34d0-.001d0/.3d0,0d0,0d0,0d0,.001d0,.1d0,weather,items,split,r,env)
  call reference%snapshot(outsoil,outcrop);v=pack_crop_n_owner(outcrop)
- call require(all(v==v1),'A B A crop identity')
+ call require(all(v==v1).and.all(v1==cold_crop),'A B A crop identity')
+ call state%snapshot(outsoil,outcrop);call outsoil%snapshot(time,theta,got,revision)
+ call require(all([got%fom_kg_m3,got%biomass_kg_m3,got%humus_kg_m3,got%ammonium_n_kg_m2,got%nitrate_n_kg_m2,theta]==cold_soil),'A B A full soil identity')
  call require(env%t0==0d0.and.env%t1==1d0.and.env%temperature_c==5d0.and.sp%environment%temperature_c==20d0,'forcing and configuration nonmutation')
  print '(A)','MATERIAL_ENVIRONMENT_DAY_LITERAL_5_30_ATOMIC_7_INVALID_ABA_EMPTY=PASS' 
 contains

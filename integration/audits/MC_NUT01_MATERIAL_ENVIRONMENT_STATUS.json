@@ -4,11 +4,34 @@
   "branch": "work/nut-material-environment-20261015",
   "contract": "docs/science/MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_safe_step": "Persist production/contract and concrete drivers; execute smallest O0/O2 real day, then actual composition and required admission gates."
+  "next_safe_step": "Persist repaired explicit-forcing comparator and stronger full-state A/B/A; fresh small and physical O0/O2, complete raw evidence, then one mandatory full preservation.",
+  "pr": 1238,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1238",
+  "changed_blobs": {
+    "src/crop/mod_crop_soil_n_material_day.f90": "bc9584e4d0feb003b30fc5c168392163c2b197c3",
+    "src/runtime/mod_fmr_crop_soil_n_material_application.f90": "7ce36f0b9454ebff2ee22e00154c9ebced156ee1",
+    "tests/nut-material/check_material_controls.py": "74bf14f946de6e20412ed8953bde41504c310555",
+    "tests/nut-material/verify_material_successor.py": "9c690ad8ad765a5618c1bffe5449ecbfdf370105"
+  },
+  "added_blobs": {
+    "tests/nut-material-environment/check_material_environment_controls.py": "41b630ca6339c58eb631461c489318a313e0bc21",
+    "tests/nut-material-environment/run_material_environment.py": "a0f16e503edf1b6da60cab4901175b558444606c",
+    "tests/nut-material-environment/test_material_environment_day.f90": "cc99d2c286915d53267655b0483e2c5275c28824",
+    "tests/nut-material-environment/test_material_environment_joint.f90": "30e8bfc9e3eaded5ed7888d65eafa8a301d0cbdc",
+    "tests/nut-material-environment/verify_material_environment_successor.py": "b69c5baf1c34e983e915ea58707bdbcb4cc7e2d2"
+  },
+  "direct_development_result": "/workspace/scratch/79ca9f168731/material-env-day-first/result.json",
+  "retained_attempts": [
+    {
+      "path": "material-env-joint-first",
+      "status": "FAILED_EMPTY_PROFILE_TEST_COMPARISON",
+      "cause": "New test compared explicit5C empty material route to an unforced20C original route. Native explicit material/oracle/restart assertions passed; endpoint comparison correctly rejected. Supply same explicit forcing to original comparator; production unchanged."
+    }
+  ]
 }

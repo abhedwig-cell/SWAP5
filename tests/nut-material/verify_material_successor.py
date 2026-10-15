@@ -17,6 +17,9 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def sha(b):return hashlib.sha256(b).hexdigest()
 def verify_source(git_reader=None):
+ if (ROOT/'integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material-environment'));import verify_material_environment_successor as successor
+  return successor.verify_source(git_reader=git if git_reader is None else git_reader)
  g=git if git_reader is None else git_reader
  s=json.loads((ROOT/STATUS).read_text());g('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
@@ -139,11 +142,17 @@ def validate_peer():
  check(record.get('preserved') is True and record.get('qualified') is True,'peer not preserved')
  full=capsule(record['full_preservation']['evidence']);validate_prior(full)
 def verify_qualification():
+ if (ROOT/'integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material-environment'));import verify_material_environment_successor as successor
+  return successor.verify_qualification()
  source=verify_source();original=read_evidence();validate(original,source);validate_compat(read_compat(),original,source)
  old=json.loads(git('show',BASE+':integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json'))
  full=capsule(old['full_preservation']['evidence']);validate_prior(full)
  validate_peer();baseline_owner();return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent(mode='qualification'):
+ if (ROOT/'integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material-environment'));import verify_material_environment_successor as successor
+  return successor.incumbent(mode)
  verify_qualification();return {**baseline_owner(mode),'material_successor':True,'material_source_tree':git('rev-parse','HEAD:src')}
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--source-only',action='store_true');p.add_argument('--incumbent',choices=['source','physical','qualification']);a=p.parse_args()

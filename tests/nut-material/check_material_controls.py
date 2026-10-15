@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-import copy,json
+import copy,json,os,sys
+from pathlib import Path
+_new=Path(__file__).resolve().parents[1]/'nut-material-environment/check_material_environment_controls.py'
+if _new.exists():os.execv(sys.executable,[sys.executable,'-B',str(_new)])
 from unittest.mock import patch
 import verify_material_successor as v
 v.verify_qualification();source=v.verify_source();data=v.read_evidence();passed=[]
