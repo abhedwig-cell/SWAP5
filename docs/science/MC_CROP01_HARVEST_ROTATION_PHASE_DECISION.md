@@ -531,3 +531,59 @@ Preserve affected original native material/environment/thermal endpoints using
 same-session provider reuse and fresh assertions. No full F-CI or long low-air
 run is selected merely for a shared owner change. Expected physical/preservation
 cost about ten minutes; exact compilation/link/native costs will be retained.
+
+### Explicit retirement/fallow/successor execution result
+
+The successor production source is local `69abee65` (source tree
+`aeb3fbf37edd7d7f9eb0348b2b6e858427d8a045`). Later changes concern verification,
+documentation and evidence. The small real closure passes at O0/O2: 3700 owner
+assertions, 74 chemical assertions and unchanged actual PP02 daily integration.
+The chemical tests include missing/premature/duplicate observation refusal,
+archive release with a detached consumer copy, exact nine-scalar codec, invalid
+compact state refusal, zero-extraction reactive fallow, unchanged completed N
+ledger and explicit external initial N for a successor.
+
+All ten selected physical drivers and their original assertions execute freshly
+at O0/O2. The added chain uses three actual accepted positive water/chemical
+days: original crop0->1, retired zero-extraction fallow1->2, independently
+initialized rooted successor2->3. Harvest, incorporation, acknowledgement and
+successor initialization do not fabricate a water clock, revision or lineage.
+Continuous/opaque/native-pending continuation and fresh-process continuation
+from retired, fallow and successor states produce identical endpoint bytes.
+Twelve compact marker/clock/identity/N/OM/ledger negatives per optimization
+recompute CRC and reject atomically, alongside the previous six harvest-phase
+controls. This is a short explicit transition proof, not two full growing
+seasons, automatic calendar activation or thermal-harvest qualification.
+
+Measured physical work: 176.35s provider compilation, 59.38s driver compilation,
+2.91s linking, 309.64s native execution (548.28s sum). Small work adds 25.33s.
+The first strict owner compile and one physical provider compile failed; raw
+outputs and original source history remain evidence. The physical failure was
+a scalar IF on the root-sink vector, corrected to a complete zero-vector test.
+Before native execution, 262 successful compiler events were bound to exact
+commands, source pin/current bytes and live artifacts and reused once. No native
+result was inherited. The failed compile remains separate, never counted PASS.
+The original compiler binary hash was not separately recorded; compiler command
+and current identification are retained. Controller/recovery overhead and isolated
+physics-only timing are UNKNOWN where not instrumented.
+
+The current owning source-only admission route has been executed and rejects
+with `ValueError: foreign SWRD3 delta`. It delegates through the admitted thermal
+owner to the source-exact SWRD3 successor. Numerical PASS does not supersede
+that guard. Keep PR1247 draft until its default-path compatibility and affected
+owner controls are explicitly reconciled. Do not introduce a blanket source/hash
+exception, claim a full F-CI PASS or promote mastercap counts. Automatic legacy
+input/calendar/output activation, retained historical dead canopy and complete
+seasonal rotation remain separate programme scope.
+
+A further explicit CRC-valid NaN control exposed a decoder defect at both O0/O2:
+the discriminator/combined finite-and-bound predicate could compare NaN before
+rejecting it and raise SIGFPE. That candidate is not final qualification. Hoist
+the whole-vector finite check ahead of every discriminator/comparison and remove
+the two redundant inner finite checks. Keep FP traps and all assertions enabled.
+Select exact source transformation proof, unchanged module-interface bytes,
+source/command/artifact-bound live provider reuse, fresh small drivers, all actual
+harvest/rotation native assertions, fresh original thermal manual/calendar runs,
+original endpoint byte checks and non-finite fields throughout both owner codecs.
+Do not repeat unaffected material/senescence physics or relabel their old source
+as the repaired postimage. Record both failed NaN controls and repair costs.

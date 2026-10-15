@@ -576,9 +576,10 @@ contains
   integer::n
   crop=wofost81_crop_owner_state_t();status=CROP_SOIL_INVALID
   if(size(v)==0)return
+  if(.not.all(ieee_is_finite(v)))return
   if(v(1)==-81002d0)then
    if(size(v)/=9)return
-   if(.not.all(ieee_is_finite(v)).or.any(abs(v)>1d9))return
+   if(any(abs(v)>1d9))return
    if(v(3)<1d0.or.v(3)>1d6.or.v(3)/=real(int(v(3)),real64))return
    retired%clock=v(2);retired%crop_identity=int(v(3),int64);retired%continuation_totals=v(4:5)
    associate(n=>end_owner%nitrogen%value)
@@ -593,7 +594,7 @@ contains
   end if
   if(v(1)/=-81001d0)then;call unpack_crop_n_owner(v,crop,status);return;end if
   if(size(v)<59)return
-  if(.not.all(ieee_is_finite(v)).or.any(abs(v)>1d9))return
+  if(any(abs(v)>1d9))return
   if(v(3)<1d0.or.v(3)>1d6.or.v(3)/=real(int(v(3)),real64))return
   if(v(4)/=0d0.and.v(4)/=1d0)return
   if(v(30)<29d0.or.v(30)>1562d0)return
