@@ -512,3 +512,25 @@ ledger remain. Retained negative evidence and separately routed inherited CI
 failures are not relabelled as passes. No phase-change, excluded hybrid,
 full-winter or practical performance claim follows. Aggregate frost migration
 and the frozen Status A denominator remain unchanged.
+
+
+## Later bounded daily root growth (2026-10-15)
+
+PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241) admitted SWRD3 daily
+biomass-derived actual/potential geometry. Its separate successor PR
+[1248](https://github.com/abhedwig-cell/SWAP5/pull/1248), merge
+`ad11a936e527d11c306ce1dd5444b4d83e3ac115`, now admits explicit static-density
+SWRD2 with SWDMI2RD0/1. Both authentic-weather schedules keep actual/potential
+depth in the committed crop transaction and feed committed actual geometry to
+real Richards uptake. Accepted water/empirical oxygen, atomic WOFOST81 growth,
+rollback/retry/exactly-once publication and opaque joint continuation are
+qualified. Current scientific source is `fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0`.
+
+[Contract](../science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md) and
+[recovery/evidence](../science/MC_CROP01_TRAJECTORY4_SWRD2_RECOVERY_20261015.md)
+bind30 direct native O0/O2 executions,28 real physical programmes, ten shared
+owner gates and one complete exact-current-source local moving OFF PASS. This
+is a bounded post-Status-A admission, not a change to the frozen Status-A
+denominator or a full crop-selector claim. SWDMI2RD2/daily adaptive density,
+advanced selectors, native weather disk codec and harvest/reset/fallow/rotation
+remain separate. No master capability disposition/count promotion is claimed.

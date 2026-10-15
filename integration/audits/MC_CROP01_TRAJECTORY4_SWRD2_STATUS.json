@@ -8,8 +8,8 @@
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
-  "stage": "SWRD2_01_CURRENT_SOURCE_SCIENCE_OWNERS_FULL_PRESERVATION_PASS_ADMISSION_PENDING",
+  "canonically_admitted": true,
+  "stage": "SWRD2_01_CANONICALLY_ADMITTED_CLOSED",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -40,7 +40,7 @@
     "compile_link_native_split": "UNKNOWN until completed",
     "full_fci_selected": false
   },
-  "last_reconciled_upstream": "b634f2c9d22b1227867c040fb316d55afea21cd7",
+  "last_reconciled_upstream": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
   "production_baseline_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
   "contract": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "relevant_paths": [
@@ -69,7 +69,7 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Seal/read-only validate exact full evidence and source identities; reconcile live canonical/peer/reviews, safely merge PR1248, then verify actual canonical production source and update bounded master receipt.",
+  "next_action": "CLOSED: bounded SWDMI2RD0/1 admitted and master receipt persisted. Next adaptive density/supply2 cluster not started.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
@@ -528,5 +528,96 @@
     "decoded_sha256": "6d3d21081a07e0ecb79600cbcfb4c41fbc02ba1b59ea90cf7950a59e52fb012b",
     "decoded_bytes": 11664,
     "members": 13
+  },
+  "canonical_admission": {
+    "pr": 1248,
+    "merge_commit": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+    "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+    "canonical_parent": "b634f2c9d22b1227867c040fb316d55afea21cd7",
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "merge_tree": "99ce0375e43c246d6e1f65b5295cad3d3437a863",
+    "merge_parents": [
+      "b634f2c9d22b1227867c040fb316d55afea21cd7",
+      "eae214ad7fd31d326c5561a252ac27c8da46a7f4"
+    ],
+    "production_blobs": {
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90": "8801ec21eae3fd23099ac47f2335f0595ff31a05",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "7174f8b177f9635580d8af6f57dfde084773d68f"
+    },
+    "reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+    "full_evidence_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+    "current_scientific_surface_identical_to_completed_full": true,
+    "pr_state": "MERGED_CLOSED",
+    "reviews": 0,
+    "review_threads": 0,
+    "hosted_statuses": [],
+    "hosted_pass_claimed": false,
+    "master_disposition_changes": 0,
+    "master_receipt_commit": "68165805cbdb1aef76fa0b167a9cb670cedd8471"
+  },
+  "next_dependency_ready_crop_cluster": {
+    "route": "Daily adaptive density/SWRDC1 plus accepted per-layer uptake/stress for SWDMI2RD2",
+    "started": false,
+    "reason": "Existing components and now-admitted daily depth owner are foundations; supply2 needs real WROOT_NODE state and accepted drought/supply composition, never a guessed static substitution."
+  },
+  "master_receipt": {
+    "pr": 1072,
+    "commit": "68165805cbdb1aef76fa0b167a9cb670cedd8471",
+    "tree": "e000f84bb69a40f6cfbb999838e9cc4f3d2841ab",
+    "changed_rows": [
+      "SW431-CROP-ROOTGROW",
+      "SW431-ROOT-ANAE-GROW",
+      "SW431-CROP-ROOTGROW-WATER"
+    ],
+    "changed_queues": [
+      "SW431-CROP-ROOTGROW",
+      "SW431-ROOT-ANAE-GROW"
+    ],
+    "disposition_changes": 0,
+    "summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 95,
+        "ACTIVE_MIGRATION": 108,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4
+      },
+      "open_capabilities": 108,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 108,
+      "other_unresolved_source_admission_reviews": 4,
+      "qualification_only_capabilities": 4,
+      "total_unresolved_capabilities": 112,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 58,
+        "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 2,
+      "missing_production_binding_or_implementation_entries": 108,
+      "missing_standalone_process_implementations_not_established": 113,
+      "active_with_existing_production_source_authority": 62,
+      "active_without_listed_production_source_authority": 46,
+      "active_missing_complete_admitted_route": 108,
+      "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
+    },
+    "scoped_validation": "PASS",
+    "full_master_qualification_claimed": false
+  },
+  "postmerge_docs": {
+    "source": "PASS",
+    "strict": "PASS",
+    "mkdocs_seconds": 20.09
+  },
+  "canonical_closeout_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_CANONICAL_CLOSEOUT_20261015.tar.xz.b64",
+    "decoded_sha256": "19057dc33dc2e4b1d0f84b234a6e1ccea8bd2bb9deb3485a658c6bd133ee65be",
+    "decoded_bytes": 12208,
+    "members": 10
   }
 }

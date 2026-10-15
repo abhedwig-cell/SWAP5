@@ -1,7 +1,8 @@
 # Daily persistent SWRD2 successor
 
-Status: bounded current science, shared owners and exact-current-source full
-preservation PASS; canonical admission pending. This is not complete SWRD2/density coverage.
+Status: bounded SWDMI2RD0/1 canonically admitted by PR1248, merge
+`ad11a936e527d11c306ce1dd5444b4d83e3ac115`; exact-source science, owners and
+complete local moving preservation PASS. This is not complete SWRD2/density coverage.
 Baseline `451e35ccd1797aa96fb4354dabc465cceff18635`, production tree
 `b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0`. PR1241 remains closed.
 

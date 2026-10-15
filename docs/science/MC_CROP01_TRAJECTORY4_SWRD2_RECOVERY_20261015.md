@@ -17,8 +17,8 @@ Exact postimages, phase, evidence and next operation are maintained in
 `integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json`.
 Source/contract implementation, current direct/physical testing and all ten
 shared owner gates have terminal PASS. Current six-route proof refusal controls
-also PASS. Complete exact-current-source moving preservation now PASS; live
-canonical admission remains pending. A checkpoint is not qualification or merge.
+also PASS. Exact-current-source moving preservation and bounded canonical
+admission are now complete via PR1248. A checkpoint is not qualification or merge.
 
 ## Implemented bounded scope
 
@@ -175,3 +175,24 @@ full identity validation PASS binds all6470 original frozen inputs and the
 executed bundle; only the three named trajectory4 status/contract/recovery
 postexecution metadata files differ. The real PR merge must also retain the
 new canonical policy documents and the exact fe8a production tree.
+
+## Canonical closeout
+
+PR [1248](https://github.com/abhedwig-cell/SWAP5/pull/1248) merged/closed at
+`ad11a936e527d11c306ce1dd5444b4d83e3ac115`. Actual parents b634f2c9 and
+eae214ad, actual merge tree99ce0375 match the independently predicted merge.
+Production sourcefe8a6c1b and referencec680d7a9 verified from the real fetched
+mergecommit. Exact transaction8801ec21 and application7174f8b1 blobs are the
+qualified postimages. PR head, mergeability, reviews/threads and canonical base
+were read before the expected-head merge. No hosted PASS is asserted.
+
+This closes only the explicit static-density SWDMI2RD0/1 daily route and its
+accepted empirical-oxygen suppression/opaque continuation. It does not close
+SWDMI2RD2, daily adaptive density, broader selectors, native weather disk codec
+or lifecycle/harvest/rotation. Largest dependency-ready next crop cluster is
+daily SWRDC1 density with accepted layer uptake/stress for supply2. Not started.
+The master receipt changes only bounded capability/queue facets, preserving
+complete-selector dispositions and census counts; it does not requalify the
+entire master. Canonical metadata closeout is not another scientific execution.
+
+Master1072 bounded receipt `68165805cbdb1aef76fa0b167a9cb670cedd8471`, tree `e000f84bb69a40f6cfbb999838e9cc4f3d2841ab`, is remotely persisted. Three bounded rows and two queue facets only; all243 dispositions and summary unchanged. Postmerge docs source/strict PASS (20.09s strict). This work unit is closed; next density/supply2 is not started.
