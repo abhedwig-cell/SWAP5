@@ -39,3 +39,83 @@ from the existing matrix qualification, full moving about30minutes. Broad preser
 is selected only if the stable admission source guard must change, under existing
 F-CI owner authority. Highest low-air remains NOT_SELECTED_POLICY. No test PASS or
 canonical admission is claimed at this initial contract checkpoint.
+
+## Executed physical qualification
+
+Primary execution1e54e292ca412fd657f95e0844fb898bbc9a981f and strengthened final driver
+1d5b371a9c5de7d5e0746fa4797c267e920bfdaf are persisted in the
+source-bound capsule recorded in MC_SOL01_ACCEPTED_AGE_STATUS.json. O0/O2 pass
+with byte-identical opaque/disk/fresh-process continuation endpoints. The literal
+loop runs150 independently specified steps, then every actual internally accepted
+Richards substep in two windows with root extraction, signed drains and lower
+outflow followed by inflow. Fifteen malformed/extreme carrier controls include a rejected
+last substep, so no accepted prefix can leak into committed age. A high-diffusion
+numerical overdraw rejects the otherwise successful water trial; smaller interval
+retry succeeds. Ten damaged disk payloads per optimization include valid-CRC
+semantic corruptions. Wrong owner IDs and same-ID changed parameters reject.
+
+The standalone process has two production providers:1.51245s compile,0.07834s link,
+0.00351s native across O0/O2. Actual physical composition has232 providers and
+costs107.90415s compile,0.18807s link,7.58436s native. The larger closure is required
+by real private Richards accepted-state, transaction and temporal restart owners;
+it is not the daily development closure. All failed development and early
+admission attempts are retained separately; only stable terminal execution is
+qualification. No persistent object cache is introduced.
+
+The age amount domain is0..1e12cm day per node, initial age0..1e6days, positive
+water1e-8..1, node thickness1e-4..1e4cm and at most4096nodes. Later accepted ageing
+may exceed the initial age bound; restart restores the bounded amount rather
+than incorrectly reapplying the initial concentration ceiling. Intervals are
+1e-100..1000days per substep; clocks bounded by1e8days, revisions by
+100000000. Explicit stability is enforced by nonnegative candidate amounts,
+never clipping. Same-platform binary layout and CRC are bounded continuation
+proof, not a portable cross-compiler ABI.
+
+The initial9ed5efc7 reconciliation retained all477 matrix/mineral science inputs.
+Canonical then admitted reactive N via PR1232 at26ddf94e. The current coexistence
+binds all236 age inputs, all253 reactive primary inputs and16 reactive edge inputs;
+227 shared hashes are identical and no peer source delta enters the age closure.
+All240 matrix scientific inputs remain exact. The two old mineral implementation
+changes have independent qualified original-profile preservation in the reactive
+owner, rather than falsely inheriting all237 old mineral input hashes.
+
+The strengthened maximum-finite source test caused SIGFPE in the unguarded work-unit
+preimage and controlled rejection without mutation in the final production route.
+This is a repaired candidate validation gap, not a historical source defect. Final
+leaf-only qualification reused968 hash-verified unchanged object/module/executable
+artifacts inside this live execution, with unchanged sources, compiler and environment,
+separate O0/O2, and fresh execution of every required native case. It costs5.65298s
+compile,0.20241s link,7.92848s native plus0.00380s process native. Complete endpoints
+match both the cold-build endpoints and each other. The ordinary runner reproduces
+this final driver from a cold build; no persistent cache is required.
+
+The complete source/test/tool/reference eligibility delta is exact, including callers,
+external procedures, immutable inputs, fixtures, build selection and default selectors.
+The original CO2 assertions run in situ; original reactive/mineral assertions execute
+at immutable admitted26ddf94e after whole-surface identity validation. Current29 age,
+13 nonlinear and23 CO2 tests plus26 reactive negatives pass. Small real age, mineral
+and reactive O0/O2 closures execute fresh on the combined tree. This is separate
+optional companion coexistence, not simultaneous age/chemical/N commit or restart.
+
+The full age moving execution remains frozen at its own persisted candidate while
+this exact peer reconciliation runs independently. The two terminal full executions
+must retain their own input/source identities; no combined hosted or full-run PASS
+may be inferred. Highest low-air remains NOT_SELECTED_POLICY. A34.63s early dispatch
+failure and a later censored partial run are retained, never preservation PASS.
+
+## Remaining production blocks
+
+| Family | Qualified bounded route and remaining work |
+| --- | --- |
+| Pure processes | Age production and literal advective/dispersive sweep now execute through real Fortran. |
+| Reactions | Matrix decay/nonlinear partition are already admitted; N reactions are admitted by PR1232 at26ddf94e. |
+| Transport and balance | Age root/drain/bottom route is locally qualified; complete capability disposition remains ACTIVE_MIGRATION. |
+| Surface and aquifer | Accepted pond/rain/irrigation/runoff age budget needs its own owner receipts; aquifer remains rejected, not reopened here. |
+| Crop and soil | Advective age root export preserves current water ownership; crop N supply/demand and WOFOST81 integration remain separate. |
+| Continuation | This route has atomic opaque/native restart; combined chemical/N/age and default/multicolumn activation remain open. |
+
+The next NUT block is explicit crop N supply/demand over the admitted reactive pools,
+preserving WOFOST81 fixation. Prescribed reaction temperature is not accepted heat
+coupling. The next SOL block is accepted surface/pond exchange, using real surface water
+receipts and a complete soil-plus-pond budget. Wider Freundlich0..10 semantics,
+dynamic thermal coupling and default application follow their own dependencies.

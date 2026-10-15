@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-SOL01-ACCEPTED-AGE",
   "baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
-  "stage": "REACTIVE_PEER_RECONCILED_PENDING_COEXISTENCE_CHECKS",
+  "stage": "PHYSICAL_AND_EXACT_PEER_COEXISTENCE_PASS_FULL_MOVING_RUNNING",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -123,6 +123,36 @@
     "preservation_status": "PASS",
     "preservation_seconds": 1423.3613627060113,
     "preservation_tracked_inputs": 6258,
-    "scope": "Independent reactive/mineral route. Entire current source/test/tool/reference surface equals actual admitted peer plus exact age additions and two bound guard changes. All age scientific sources/inputs unchanged. Fresh combined eligibility/owner/control tests required; no third full run or simultaneous companion claim."
-  }
+    "scope": "Independent reactive/mineral route. Entire current source/test/tool/reference surface equals actual admitted peer plus exact age additions and two bound guard changes. All age scientific sources/inputs unchanged. Fresh combined eligibility/owner/control tests required; no third full run or simultaneous companion claim.",
+    "coexistence": {
+      "status": "PASS_EXACT_CURRENT_COEXISTENCE",
+      "execution": "d12cb2ce",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_AGE_REACTIVE_COEXISTENCE_20261015.tar.xz.b64",
+        "sha256": "893511a180da2f8124c343488ebb9bd59a1f0ffa0318319acaa06638d1ce1d20",
+        "decoded_bytes": 657364,
+        "members": 231
+      },
+      "age_inputs": 236,
+      "reactive_inputs": 253,
+      "reactive_edge_inputs": 16,
+      "identical_shared_inputs": 227,
+      "unique_providers": 424,
+      "age_tests": 29,
+      "nonlinear_tests": 13,
+      "original_co2_tests": 23,
+      "reactive_negative_controls": 26,
+      "fresh_real_fortran_processes": [
+        "age",
+        "mineral",
+        "reactive"
+      ],
+      "whole_source_tree_inputs_unchanged": 6280
+    }
+  },
+  "preserved": false,
+  "checkpoint_commit": "d12cb2ce",
+  "recovery_point": "PR1233 work/sol-age-20261015, scientific capsule and exact reactive-peer coexistence receipt",
+  "last_reconciled_head": "d12cb2ce",
+  "last_reconciled_upstream": "26ddf94e58133acd413c2b2738b873a92f43f1da"
 }
