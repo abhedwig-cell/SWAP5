@@ -1,8 +1,11 @@
 # MC-CROP01 harvest/rotation phase decision boundary
 
-Status: investigated, proposed shared-contract decision; NOT production
-implementation or qualification. Canonical baseline
-`7315be4f532c791fe008f76d0d4fc9855705a87e`; PR1209 growth completion is admitted.
+Status: bounded explicit crop/soil-N harvest candidate implemented and tested;
+NOT canonically admitted and NOT full crop rotation. Canonical remains
+`451e35ccd1797aa96fb4354dabc465cceff18635`; PR1247 holds the candidate. The latest
+shared-owner resolution and execution closeout below supersede historical
+missing-interface and generic-kernel proposal statements. The initial
+investigation used baseline `7315be4f532c791fe008f76d0d4fc9855705a87e`.
 
 ## Authenticated source and retained invariants
 
@@ -426,3 +429,60 @@ The two scalars are continuation state, not duplicate physical inventories.
 Probe actual seven-organ incorporation on a copy before publishing harvest, so
 an unincorporable batch rejects the entire event without losing daily pending.
 A new O0/O2 execution with corrected phase negatives is required.
+
+
+The native adapter also serves the previously admitted accepted-thermal route.
+Select fresh original thermal manual/calendar native assertions and byte checks
+against its immutable admitted capsule after the corrected physical build.
+Reuse only that same live source/flags/compiler-bound provider set; compile
+missing calendar providers and the exact archived original driver separately,
+execute every profile freshly at O0/O2 and compare original native files.
+Expected extra native cost2minutes, extra provider/driver compilation UNKNOWN.
+This is existing heat-route preservation, not qualification of thermal harvest.
+
+
+### Corrected physical/native closeout
+
+Current production source is pinned by local commit `31334d1b`. Later controller,
+documentation and evidence commits have identical production bytes. The actual
+existing crop/soil owner is now the event publisher; the exact admitted kernel
+is restored. No F-KT interface successor or changed water revision is needed.
+
+Small O0/O2 execution: 3700 harvest-owner assertions, 40 chemical assertions and
+the unchanged real daily integration. It includes configured event derivation,
+positive-day prerequisite, retained daily pending, single seven-organ consumption,
+complete continuation codec, forged-phase refusal and late chemical rollback.
+Measured final small execution is recorded in the existing status/capsule.
+
+Corrected actual Richards/native execution is PASS at O0/O2. Continuous, opaque
+and fresh-process consumed endpoints are byte-identical; the complete water
+record is unchanged across incorporation. All original material, prescribed-
+environment and senescence drivers/negative controls execute, and the original
+material/environment native endpoints match immutable authority. Six additional
+native negatives per optimization alter phase in both directions or either
+continuation total while recomputing CRC. All reject atomically. This is the
+existing short four-node 30 cm default-MVG fixed-forcing/rooted NUT profile,
+not all SWAP crop/root forcing routes or a two-season rotation.
+
+A Python-only controller failure occurred after all corrected O0 native/assertion
+checks and before any O2 compile. The corrected controller differs only by
+renaming its temporary bytearray. `COMPLETED_O0_RECOVERY.json` binds all source,
+input, artifacts and raw outputs; O2 executes freshly. Recovered O0 execution
+is counted once. No repeated broad O0 numerical run or invented PASS was used.
+Compiler/link/native timing sums are retained, with controller recovery overhead
+and physics-only cost UNKNOWN where not instrumented.
+
+Fresh original accepted-thermal manual/calendar native assertions also PASS on
+the same live verified provider build at O0/O2, with the exact archived original
+driver, separately compiled missing calendar providers and no inherited native
+PASS. All original thermal restart and endpoint bytes match immutable evidence.
+This preserves the existing thermal route; thermal HARVEST composition is not
+qualified. No full F-CI, highest low-air stress or Actions dispatch was selected.
+
+Remaining admission/programme boundaries: end-status observation acknowledgement
+and compact retirement, actual fallow and successor initialization, complete
+rotation, automatic legacy crop/calendar input activation and retained historical
+dead-canopy profiles. The common native/owner preservation evidence is bounded
+as above; reconcile the owning F-CI admission contracts before any promotion.
+Keep PR1247 draft. No mastercap/count promotion. Pond/source stays open;
+aquifer stays rejected.

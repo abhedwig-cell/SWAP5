@@ -1,39 +1,48 @@
-"""Verify retained real-owner harvest evidence; no event or physical admission."""
+"""Verify retained corrected crop/soil harvest qualification; no canonical admission."""
 from pathlib import Path
 import base64,hashlib,io,json,tarfile
 ROOT=Path(__file__).resolve().parents[2]
-status=json.loads((ROOT/'integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json').read_text())
-e=status['harvest_owner_stage']['execution_evidence']
-raw=base64.b64decode((ROOT/e['path']).read_bytes())
-sha=lambda b:hashlib.sha256(b).hexdigest()
-assert sha(raw)==e['decoded_sha256']
-with tarfile.open(fileobj=io.BytesIO(raw),mode='r:gz')as t:
-    files={m.name:t.extractfile(m).read()for m in t if m.isfile()}
+s=json.loads((ROOT/'integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json').read_text())
+e=s['harvest_joint_stage']['execution_evidence'];sha=lambda b:hashlib.sha256(b).hexdigest()
+raw=base64.b64decode((ROOT/e['path']).read_bytes());assert sha(raw)==e['decoded_sha256']
+with tarfile.open(fileobj=io.BytesIO(raw),mode='r:*')as t:
+ files={m.name:t.extractfile(m).read()for m in t if m.isfile()}
 assert set(files)==set(e['members'])
 for p,digest in e['members'].items():assert sha(files[p])==digest,p
-r=json.loads(files['final/result.json'])
-assert r['status']=='HARVEST_OWNER_AND_INCUMBENT_CONTRACT_PASS_NOT_ADMITTED'
-assert not r['dirty_scientific_surface']
-for p,digest in r['inputs'].items():
-    assert sha((ROOT/p).read_bytes())==digest,p
-    assert sha(files['sources/'+p])==digest,p
-assert all(x['exit']==0 for x in r['events'])
-natives=[x for x in r['events']if x['category']=='native']
-assert len(natives)==4
-out=[files['final/'+x['stdout']]for x in natives]
-assert out[0]==out[2] and out[1]==out[3]
-assert b'WOFOST81_HARVEST_ASSERTIONS=3700' in out[0]
-assert b'WOFOST81_HARVEST_OWNER_LITERAL_ORACLE=PASS' in out[0]
-assert b'F_WOF_PP02_REPOSITORY_INTEGRATION_PASS' in out[1]
-donor=files['donor/wofostnut.f90']
-assert sha(donor)=='071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2'
-s=donor.decode().replace('\r\n','\n')
-a=s.index('            HarLosOrm_rt = wrt');b=s.index('\n        end if',a)
-assert s[a:b] in files['sources/tests/crop-harvest/mod_harvest_oracle.f90'].decode()
-strict=[x for x in r['events']if x['category']=='provider_compile'and any(
-    p in x['command'] for p in [str(ROOT/'src/crop/mod_wofost81_crop_owner_state.f90'),
-    str(ROOT/'src/crop/mod_wofost81_one_day_candidate.f90')])]
-assert len(strict)==4 and all('-Werror'in x['command']for x in strict)
-print(json.dumps(dict(status='RETAINED_HARVEST_OWNER_EXECUTION_VERIFIED',
-    execution_commit=r['execution_commit'],assertions_per_optimization=3700,
-    native_executions=4,canonical_admission=False,physical_event_publication=False),indent=2))
+small=json.loads(files['small/result.json']);physical=json.loads(files['physical/result.json']);heat=json.loads(files['thermal/result.json'])
+assert small['status']=='HARVEST_OWNER_AND_INCUMBENT_CONTRACT_PASS_NOT_ADMITTED'
+assert physical['status']=='PASS'and physical['incumbent_endpoints_identical']
+assert heat['status']=='ORIGINAL_THERMAL_NATIVE_FRESH_EXECUTION_BYTE_PRESERVED'
+for result,key in [(small,'inputs'),(physical,'input_sha256'),(heat,'inputs')]:
+ for p,digest in result[key].items():
+  assert sha((ROOT/p).read_bytes())==digest,p
+  if not p.endswith(('.tar.gz.b64','.tar.xz.b64')):assert sha(files['sources/'+p])==digest,p
+assert not small['dirty_scientific_surface']
+for event in small['events']:assert event['exit']==0
+small_out=[files['small/'+x['stdout']]for x in small['events']if x['category']=='native']
+assert len(small_out)==6
+assert small_out[:3]==small_out[3:]
+assert b'HARVEST_CHEMICAL_ASSERTIONS=40'in small_out[0]
+assert b'WOFOST81_HARVEST_ASSERTIONS=3700'in small_out[1]
+assert b'F_WOF_PP02_REPOSITORY_INTEGRATION_PASS'in small_out[2]
+pe=json.loads(files['physical/events.json']);assert all(x['returncode']==0 for x in pe)
+for event in pe:
+ for stream in ['stdout','stderr']:
+  assert sha(files['physical/'+event[stream+'_file']])==event[stream+'_sha256']
+for opt in ['O0','O2']:
+ h=physical['runs'][opt]['drivers']['test_harvest_joint']
+ assert h['water_record_unchanged']and len(h['decoder_negatives'])==6
+ assert h['endpoint_sha256']==physical['runs']['O0']['drivers']['test_harvest_joint']['endpoint_sha256']
+ assert files['physical/'+opt+'/harvest-expected.bin']==files['physical/'+opt+'/harvest-fresh.bin']==files['physical/'+opt+'/harvest-expected.bin.opaque']
+for event in heat['events']:assert event['exit']==0
+# The earlier external negative is a retained FAIL, never inherited PASS.
+old=json.loads(files['rejected-first/phase-negative.json']);assert not old['detected_by_decoder']and old['exit']!=0
+recovery=json.loads(files['physical/COMPLETED_O0_RECOVERY.json'])
+assert recovery['scope'].startswith('Terminal O0 science reused')
+assert recovery['original_controller_sha256']==sha(files['physical/executed_runner.original.py'])
+assert (ROOT/'src/kernel/mod_kernel_transactions.f90').read_bytes()==files['sources/src/kernel/mod_kernel_transactions.f90']
+assert sha((ROOT/'src/kernel/mod_kernel_transactions.f90').read_bytes())=='3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de'
+print(json.dumps(dict(status='RETAINED_CROP_SOIL_HARVEST_NATIVE_AND_ORIGINAL_THERMAL_VERIFIED',
+ owner_assertions_per_optimization=3700,chemical_assertions_per_optimization=40,
+ forged_phase_and_budget_native_negatives_per_optimization=6,original_base_endpoints_preserved=True,
+ original_thermal_endpoints_preserved=True,kernel_exact_canonical=True,canonical_admission=False),indent=2))
