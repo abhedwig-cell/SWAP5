@@ -82,6 +82,11 @@ def validate_matrix_delta(rows,tree,guard_sha,moving_sha):
  check(tree.get(GUARD)==guard_sha,'unbound preservation guard')
  check(tree.get(MOVING)==moving_sha,'unbound moving preservation guard')
 def matrix_successor():
+ if (ROOT/'src/runtime/mod_fmr_b111_age_route.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
+  from verify_age_successor import incumbent_mineral
+  incumbent_mineral() # exact additive surface + real age proof + unchanged mineral authority
+  return True
  if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-mineral'))
   from verify_mineral_successor import verify_qualification
@@ -97,10 +102,6 @@ def matrix_successor():
  nonlinear_evidence()
  return True
 def verify_source():
- if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
-  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
-  from verify_reactive_successor import incumbent
-  return incumbent('source')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  check(not git('status','--porcelain','--','src','reference'),'dirty production/reference')
  matrix=matrix_successor()
@@ -110,6 +111,11 @@ def verify_source():
   if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
    mineral=json.loads((ROOT/'integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json').read_text())
    additions.update(mineral['source_blobs'])
+  if (ROOT/'src/runtime/mod_fmr_b111_age_route.f90').exists():
+   age=json.loads((ROOT/'integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json').read_text())
+   additions.update(age['added_blobs'])
+   reactive=json.loads((ROOT/'integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json').read_text())
+   additions.update(reactive['added_blobs'])
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')
@@ -197,16 +203,8 @@ def validate_physical(data,manifest,source):
     check(CASES[case]['marker'].encode()in raw,'original fast marker absent')
  return {**source,'physical_programs':28,'highest':'NOT_SELECTED_POLICY'}
 def verify_physical():
- if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
-  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
-  from verify_reactive_successor import incumbent
-  return incumbent('physical')
  s=json.loads(STATUS.read_text());data,m=read_capsule(s['evidence']);return validate_physical(data,m,verify_source())
 def verify_qualification():
- if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
-  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
-  from verify_reactive_successor import incumbent
-  return incumbent('qualification')
  result=verify_physical();s=json.loads(STATUS.read_text());data,m=read_capsule(s['additional_owner_evidence'])
  from importlib.util import spec_from_file_location,module_from_spec
  spec=spec_from_file_location('additional_owner',ROOT/'tests/mc-met01/run_joint_owner_additional.py');mod=module_from_spec(spec);spec.loader.exec_module(mod)

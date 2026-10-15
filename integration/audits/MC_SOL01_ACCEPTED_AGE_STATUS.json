@@ -1,0 +1,184 @@
+{
+  "work_unit": "MC-SOL01-ACCEPTED-AGE",
+  "baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+  "stage": "QUALIFIED_PRESERVED_READY_FOR_CANONICAL_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "overlap": "PR1232 already owns reactive N including nitrification; no parallel N implementation",
+  "authority_paths": [
+    "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json"
+  ],
+  "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+  "master": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+  "master_facet": "SW431-AGE-TRACER ACTIVE_MIGRATION; no disposition promotion",
+  "next_action": "Verify live canonical/head/tree, mark PR1233 ready and admit bounded age scope; then publish exact one-row master and owner receipts. No new physical source change or extra full/highest run.",
+  "blockers": [],
+  "execution_commit": "1e54e292ca412fd657f95e0844fb898bbc9a981f",
+  "added_blobs": {
+    "src/adapter/mod_age_joint_restart_file.f90": "bdddd8997913739acb0f9f670a049311f1cdc57e",
+    "src/process/mod_b111_age_tracer_substep.f90": "6e3dd976b9d87d231572c60ddee6c92c4aeaa2ad",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90": "e85494ef1e0c49ed4b7af477b35ae8c3c426378d",
+    "src/runtime/mod_fmr_b111_age_route.f90": "84f8828236b7c5e4892b393eeafb02c29a10cda5",
+    "tests/nut-sol/run_age.py": "4fc53ca66c605f698738158e11b5055207aacb26",
+    "tests/nut-sol/test_age_process.f90": "181418b647f51ea7714609e1847e06886bfa6c4a",
+    "tests/nut-sol/test_age_joint.f90": "004653f4b4e20ffb43ab6fb48fc3a3887d689e04",
+    "tests/nut-sol/verify_age_successor.py": "1ae80003f8d12ac5b6545feb2a0756779616052d",
+    "tests/nut-sol/check_age_evidence_controls.py": "f3e6f99e6b4166dfd74e944c4912f9b45227bde0"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "4bb99d382bf3b72eb0db9a1494faf14bab7974fb",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "87f19c4794b95aea521a141dc93d4eb9cb766459"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_ACCEPTED_AGE_20261015.tar.xz.b64",
+    "sha256": "412d64c279074b6b21334be7cfb8d841ca14ccb5e5b5c6c66d5799bcd6b14cb5",
+    "decoded_bytes": 256828,
+    "members": 1163
+  },
+  "cost_seconds": {
+    "physical_compile": 107.90415454583126,
+    "physical_link": 0.18807327499962412,
+    "physical_native": 7.584364216992981,
+    "process_compile": 1.512452082009986,
+    "process_link": 0.07834287200239487,
+    "process_native": 0.0035075100022368133
+  },
+  "relevant_paths": [
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/process/mod_b111_age_tracer_substep.f90",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90",
+    "src/runtime/mod_fmr_b111_age_route.f90",
+    "tests/nut-sol/run_age.py",
+    "tests/nut-sol/test_age_process.f90",
+    "tests/nut-sol/test_age_joint.f90",
+    "tests/nut-sol/verify_age_successor.py",
+    "tests/nut-sol/check_age_evidence_controls.py"
+  ],
+  "test_selection": {
+    "level1_2": "Two production providers;150 literal historical steps, units, age balance, invalid and retry controls",
+    "level3": "232 providers;actual Richards signed root/drain/bottom two windows;literal oracle each accepted substep;atomic rejection and smaller retry;opaque/base/temporal/disk/fresh-process;15 extreme/malformed carrier controls each direction;10 decoder negatives per optimization",
+    "level4": "Select once: two shared eligibility guards changed, existing stable admission boundary requires full local F-CI. Expected1400..1900s. Compiler/link/native split UNKNOWN for broad shell. FCI_RESUME_MODE=OFF. Highest low-air NOT_SELECTED_POLICY."
+  },
+  "incumbent_reconciliation": {
+    "baseline": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+    "matrix_input_count": 240,
+    "mineral_input_count": 237,
+    "all_477_hashes_unchanged": true,
+    "scope": "Entire src/tests/tools/reference surface unchanged except exact age additions and two bound eligibility guards; default callers/state/fixtures/selectors unchanged. Original CO2 assertions run in situ; original mineral verification runs at exact immutable canonical with all numerical inputs unchanged. No simultaneous companion application claim."
+  },
+  "early_admission_failure": {
+    "wall_seconds": 34.62982813800045,
+    "exit": 1,
+    "attribution": "Earlier direct mineral guard dispatch still rejected exact age additions; same source-bound incumbent proof now used at both owning dispatch points. No numerical failure."
+  },
+  "final_execution_commit": "1d5b371a9c5de7d5e0746fa4797c267e920bfdaf",
+  "final_driver_cost_seconds": {
+    "final_compile": 5.65298201800033,
+    "final_link": 0.20241272798739374,
+    "final_native": 7.928481677998207,
+    "process_native": 0.003802809995249845
+  },
+  "controlled_reuse": {
+    "scope": "same live qualification; no persistent cache",
+    "verified_artifacts": 968,
+    "all_reused_artifacts_unchanged": true,
+    "final_native_cases": 24,
+    "fresh_process_continuation": true,
+    "o0_o2_identity": true,
+    "preimage_fpe_witness": "real final driver rejects maximum finite root/drain on guarded source; crashes original unguarded candidate owner57b; not a legacy defect"
+  },
+  "censored_admission": {
+    "status": "CENSORED_NOT_PASS",
+    "reason": "Finite source arithmetic/domain review before admission; exact controller stopped through owning unified session Ctrl-C exit130. Partial gate neither PASS nor reusable terminal preservation.",
+    "cost_seconds": "UNKNOWN (partial gate, controller terminated)",
+    "source_inputs_changed_after_stop_request": true
+  },
+  "bounds": {
+    "age_amount_cm_day": [
+      0,
+      1000000000000.0
+    ],
+    "initial_age_day": [
+      0,
+      1000000.0
+    ],
+    "dt_day": [
+      1e-100,
+      1000
+    ],
+    "root_drain_bottom_flux_abs_cm_day_max": 1000000.0,
+    "net_node_source_abs_cm_day_max": 10000000000.0,
+    "maximum_drain_levels": 4096
+  },
+  "initial_baseline": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+  "reactive_peer": {
+    "pr": 1232,
+    "actual_merge": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+    "preservation_execution": "3b60b7e1ee3bfea72fd5fac99a000dda8c2e4020",
+    "preservation_status": "PASS",
+    "preservation_seconds": 1423.3613627060113,
+    "preservation_tracked_inputs": 6258,
+    "scope": "Independent reactive/mineral route. Entire current source/test/tool/reference surface equals actual admitted peer plus exact age additions and two bound guard changes. All age scientific sources/inputs unchanged. Fresh combined eligibility/owner/control tests required; no third full run or simultaneous companion claim.",
+    "coexistence": {
+      "status": "PASS_EXACT_CURRENT_COEXISTENCE",
+      "execution": "d12cb2ce",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_AGE_REACTIVE_COEXISTENCE_20261015.tar.xz.b64",
+        "sha256": "893511a180da2f8124c343488ebb9bd59a1f0ffa0318319acaa06638d1ce1d20",
+        "decoded_bytes": 657364,
+        "members": 231
+      },
+      "age_inputs": 236,
+      "reactive_inputs": 253,
+      "reactive_edge_inputs": 16,
+      "identical_shared_inputs": 227,
+      "unique_providers": 424,
+      "age_tests": 29,
+      "nonlinear_tests": 13,
+      "original_co2_tests": 23,
+      "reactive_negative_controls": 26,
+      "fresh_real_fortran_processes": [
+        "age",
+        "mineral",
+        "reactive"
+      ],
+      "whole_source_tree_inputs_unchanged": 6280
+    }
+  },
+  "preserved": true,
+  "checkpoint_commit": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
+  "recovery_point": "PR1233 work/sol-age-20261015, scientific capsule and exact reactive-peer coexistence receipt",
+  "last_reconciled_head": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
+  "last_reconciled_upstream": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+  "full_preservation": {
+    "name": "moving",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "wall_seconds": 1436.8589218019915,
+    "exit": 0,
+    "stdout_sha256": "e49f2ed79a6819d04d6c18ee07ef8cbaf19bcb54913a3d2c5eabde6dab2dbe84",
+    "stderr_sha256": "15e95c5b5bdaa65b14b19e38f86365efe525b54a936f30d8d50cbd41fd59c6a0",
+    "execution_commit": "f5de4a6a239a2af904a2b5b5b3c8c779465ad5d4",
+    "tree": "f61ec457e1a620c321ce2999ce49d94a0ad21de9",
+    "source_tree": "e99404cb4cb51cdab0ae59635422d6da0839db1f",
+    "resume_mode": "OFF",
+    "tracked_inputs_unchanged": 6250,
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_AGE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "01df808be01451392e24f66cda162b0f40ec5018755622166c2a6204392fe52a",
+      "decoded_bytes": 653536,
+      "members": 48
+    },
+    "highest": "NOT_SELECTED_POLICY",
+    "hosted_new_run_claimed": false
+  },
+  "regie_admission_decision": "ADMIT bounded age companion only after exact live canonical26ddf94e and qualified PR head/tree verification. User autonomous continuation and execution-protocol full-cycle rule8 supply regie authority. Both actual owner full runs pass; exact combined source/caller/state/input/fixture/toolchain/build identity and fresh original controls qualify guard-only coexistence, not a combined full run or simultaneous companions."
+}
