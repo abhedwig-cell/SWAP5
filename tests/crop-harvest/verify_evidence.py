@@ -2,6 +2,10 @@
 from pathlib import Path
 import base64,hashlib,io,json,tarfile,struct
 ROOT=Path(__file__).resolve().parents[2]
+if 'canonical_composition' in json.loads((ROOT/'integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json').read_text()):
+ import sys
+ sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as current
+ print(json.dumps(current.scientific_proof(),indent=2));raise SystemExit(0)
 s=json.loads((ROOT/'integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json').read_text())
 current='execution_evidence'in s.get('retirement_stage',{})
 e=s['retirement_stage']['execution_evidence']if current else s['harvest_joint_stage']['execution_evidence'];sha=lambda b:hashlib.sha256(b).hexdigest()

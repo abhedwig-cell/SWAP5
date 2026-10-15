@@ -9,6 +9,32 @@ def reject(label,call):
  try:call()
  except (ValueError,KeyError,AssertionError):passed.append(label);return
  raise AssertionError('accepted '+label)
+if v.composition() is not None:
+ old=v.immutable_command(v.HARVEST_PROOF,'tests/crop-harvest/check_admission_controls.py');assert old['checks']==50
+ positive=v.verify_qualification();assert positive['qualified']and positive['swrd2_successor']
+ for mode in ['foreign_src','foreign_test','source_blob','source_tree','reference','dirty']:
+  def reader(*a):
+   result=v.git(*a)
+   if mode.startswith('foreign_')and a[:2]==('diff','--name-status'):return result+'\nA\t'+('src/foreign.f90'if mode=='foreign_src'else'tests/foreign.py')
+   if mode=='source_blob'and a==('rev-parse','HEAD:src/crop/mod_crop_soil_n_day.f90'):return'0'*40
+   if mode=='source_tree'and a==('rev-parse','HEAD:src'):return'0'*40
+   if mode=='reference'and a==('rev-parse','HEAD:reference'):return'0'*40
+   if mode=='dirty'and a[:2]==('status','--porcelain'):return'M src/foreign.f90'
+   return result
+  reject(mode,lambda:v.verify_source(reader))
+ for directory,name in [('root-growth','verify_swrd2_successor'),('root-growth','verify_swrd3_successor'),('nut-calendar','verify_calendar_successor'),('nut-senescence','verify_senescence_successor'),('crop-co2','verify_co2_successor'),('nut-input','verify_input_successor'),('nut-thermal','verify_thermal_successor')]:
+  sys.path.insert(0,str(v.ROOT/'tests'/directory));module=__import__(name);route=module.verify_qualification
+  r=route();assert r['qualified']and r['harvest_successor']and r['swrd2_successor'];passed.append(name+':positive')
+  for label,target in [('current_science','scientific_proof'),('original_owners','baseline_qualification'),('current_source','verify_source')]:
+   with patch.object(v,target,side_effect=ValueError(label)):reject(name+':'+label,route)
+ m=v.composition()
+ for key in ['canonical','harvest_proof','swrd2_proof','source_tree']:
+  wrong=copy.deepcopy(m);wrong[key]='0'*40
+  with patch.object(v,'composition',return_value=wrong):reject('composition_pin:'+key,v.verify_source)
+ capsule=v.ROOT/m['evidence']['path'];read=Path.read_bytes
+ with patch.object(Path,'read_bytes',lambda self:bytes([read(self)[0]^1])+read(self)[1:]if self==capsule else read(self)):
+  reject('composed_scientific_capsule_corruption',v.scientific_proof)
+ print(json.dumps(dict(status='PASS',original_controls=old['checks'],composition_controls=len(passed),controls=passed),indent=2));raise SystemExit(0)
 source=v.verify_source();positive=v.verify_qualification();assert positive['qualified']and not positive['admitted']
 actual={p:(v.ROOT/p).read_text()for p in PROJECTORS};old={p:subprocess.check_output(['git','show',v.BASE+':'+p],cwd=v.ROOT,text=True)for p in PROJECTORS}
 for p in actual:

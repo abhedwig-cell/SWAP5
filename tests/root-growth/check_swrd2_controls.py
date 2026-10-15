@@ -1,6 +1,15 @@
 """Positive current proof first; independent mutations must then fail closed."""
 import copy,json,sys
 import verify_swrd2_successor as v
+ROOT=v.ROOT
+if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+ sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+ harvest.verify_qualification()
+ old=harvest.immutable_command(harvest.SWRD2_PROOF,'tests/root-growth/check_swrd2_controls.py')
+ assert old['status']=='PASS'
+ current=json.loads(__import__('subprocess').check_output([sys.executable,'-B',str(ROOT/'tests/crop-harvest/check_admission_controls.py')],cwd=ROOT))
+ assert current['status']=='PASS'
+ print(json.dumps({**old,'original_controls_at':harvest.SWRD2_PROOF,'current_composition_controls':current},indent=2));raise SystemExit(0)
 source=v.verify_source();data=v.read_evidence();v.validate(data,source);passed=[]
 def bad(label,path,mutation):
  d=data.copy();r=json.loads(d[path]);mutation(r);d[path]=json.dumps(r).encode()

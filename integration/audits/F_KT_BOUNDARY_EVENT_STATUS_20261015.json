@@ -8,7 +8,7 @@
   "qualified": true,
   "preserved": true,
   "canonically_admitted": false,
-  "status": "EXPLICIT_HARVEST_RETIRE_FALLOW_SUCCESSOR_QUALIFIED_PRESERVED_READY_FOR_BOUNDED_ADMISSION",
+  "status": "CURRENT_CANONICAL_COMPOSITION_SCIENCE_AND_OWNER_CONTROLS_PASS_READY_FOR_BOUNDED_ADMISSION",
   "contract": "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
   "scope": "Existing configured crop/soil owner: same-clock harvest, retained daily pending, seven-organ incorporation once, detached end-status observation acknowledgement, compact retirement, actual zero-extraction fallow and explicitly N-balanced successor initialization; actual rooted successor day and native/opaque continuation. Exact canonical kernel. Explicit fixed-forcing profile, not automatic complete rotation.",
   "local_baseline_equivalence": {
@@ -27,11 +27,11 @@
     "canonical_kernel_identity": "PASS_EXACT_ORIGINAL_BLOB",
     "docs_source": "PASS",
     "strict_mkdocs": "PASS",
-    "full_FCI": "NOT_RUN_OWNING_ADMISSION_RECONCILIATION_OPEN",
+    "full_FCI": "NOT_SELECTED_EXACT_CURRENT_DEFAULT_BODY_PROJECTION_AND_AFFECTED_FRESH_NATIVE_SCIENCE",
     "actions": "NOT_DISPATCHED"
   },
   "blockers": [],
-  "next_action": "Recheck current PR1247 base/head/reviews/mergeability and exact published source/evidence tree; safely merge only this qualified explicit crop/soil-N profile. Then verify canonical production blobs and record bounded admission, keeping automatic full rotation and mastercap counts open.",
+  "next_action": "Safely expected-head merge PR1247, verify actual canonical production/source, then bounded master/recovery receipt; no full capability count promotion.",
   "authority_paths": [
     "AGENTS.md",
     "docs/development/workstream-execution-protocol.md",
@@ -90,7 +90,7 @@
     "compile_events": 0,
     "source_tree": "e1a6629870e30c92a85cb8d5a659fb158684453c"
   },
-  "last_reconciled_upstream": "451e35ccd1797aa96fb4354dabc465cceff18635",
+  "last_reconciled_upstream": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
   "toolchain": {
     "version": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
     "launcher": "/workspace/scratch/c03818595c90/compiler/bin/gfortran",
@@ -6692,5 +6692,162 @@
     "exit": 1,
     "diagnostic": "ValueError: foreign SWRD3 delta",
     "scope": "Current-source guard refused additive harvest/retirement delta before numerical admission; raw retained in capsule admission-readback. No guard or assertion was weakened."
+  },
+  "canonical_composition": {
+    "canonical": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
+    "harvest_proof": "9113b0eef7832c7170097fc7443becfb31d06902",
+    "swrd2_proof": "56aa2ba52fc4980053d712df85660a2facdfb0f4",
+    "source_tree": "44a714087eabee5b192fefd832f2dba23a1e708f",
+    "postimages": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "1b59c577b274008891e0e83a2060d46c16b3ab56"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "fd6f2dca541c031cff34ae9c4530308368c837f4"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "9490d2469ccec15e861acd2830bdfd7c7f3c78c7"
+      },
+      "src/crop/mod_crop_soil_n_senescence_day.f90": {
+        "status": "M",
+        "blob": "49ba8e6d0c9d98ea5f845362e378d5ee3ceeb0f3"
+      },
+      "src/crop/mod_wofost81_crop_owner_state.f90": {
+        "status": "M",
+        "blob": "4144a91401f55b8dd13c4fb98c57b8a90334a85a"
+      },
+      "src/crop/mod_wofost81_harvest_materials.f90": {
+        "status": "A",
+        "blob": "b052a31490da0f93049c94267595d6dc7f48de93"
+      },
+      "src/crop/mod_wofost81_one_day_candidate.f90": {
+        "status": "M",
+        "blob": "c3c6748b0f84cc28c9fad31bac46ffcd0f7cd052"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+        "status": "M",
+        "blob": "09362b22eac0ce00b640a074a8362cfd18117a26"
+      },
+      "tests/crop-harvest/README.md": {
+        "status": "A",
+        "blob": "902087f712759b106c5e1028ac36d91874d4a208"
+      },
+      "tests/crop-harvest/check_admission_controls.py": {
+        "status": "A",
+        "blob": "464041904b6cb4867aaef75f58060758cb0bdb90"
+      },
+      "tests/crop-harvest/default_projection.py": {
+        "status": "A",
+        "blob": "49970e562baf9d446eb9bb1185ee7b93a774043c"
+      },
+      "tests/crop-harvest/mod_harvest_oracle.f90": {
+        "status": "A",
+        "blob": "f693bc07beb5195640504c749c8f29f5c08a7f31"
+      },
+      "tests/crop-harvest/preserve_thermal.py": {
+        "status": "A",
+        "blob": "0cceb93f5a5a35619e50a9b0f2758d8a9b90209e"
+      },
+      "tests/crop-harvest/repair_finite.py": {
+        "status": "A",
+        "blob": "943467894290b52370c2362747146b9cdb52f5f4"
+      },
+      "tests/crop-harvest/resume_build.py": {
+        "status": "A",
+        "blob": "6d44553ff1d54abe2be65300e192a78397d761b6"
+      },
+      "tests/crop-harvest/run_harvest.py": {
+        "status": "A",
+        "blob": "b3342cb75e53cb5ec4965be1f547f98e41ff5ea2"
+      },
+      "tests/crop-harvest/run_joint.py": {
+        "status": "A",
+        "blob": "d0efd33428795d26275739955b1d0eaee1bd01e7"
+      },
+      "tests/crop-harvest/test_harvest_chemical.f90": {
+        "status": "A",
+        "blob": "3eaa9bf641b872d0a0bef39c4823dadd75d068a9"
+      },
+      "tests/crop-harvest/test_harvest_joint.f90": {
+        "status": "A",
+        "blob": "6816774fee23131565110c9acff816c3906662e3"
+      },
+      "tests/crop-harvest/test_harvest_owner.f90": {
+        "status": "A",
+        "blob": "3186dab099997939918b545636e49b55bde669c6"
+      },
+      "tests/crop-harvest/test_rotation_joint.f90": {
+        "status": "A",
+        "blob": "4765cea3e6a5b844e060f2237d3cecf81cbc49f9"
+      },
+      "tests/crop-harvest/verify_evidence.py": {
+        "status": "A",
+        "blob": "5fe9d0489f3daf09de5e69e3988560a59b2739a5"
+      },
+      "tests/crop-harvest/verify_harvest_successor.py": {
+        "status": "A",
+        "blob": "68809c60954aea0d52266304c90e6280363b0323"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "d0bb979d680ef147a296724e76ae71b5f6c8091b"
+      },
+      "tests/fkt-boundary/README.md": {
+        "status": "A",
+        "blob": "4183309a1bc080071196ae8518c76e50c2d64c48"
+      },
+      "tests/nut-thermal/verify_thermal_successor.py": {
+        "status": "M",
+        "blob": "9a91be0e94c3315ef2b364d46ac462e9c7d288e7"
+      },
+      "tests/root-growth/check_swrd2_admission_controls.py": {
+        "status": "M",
+        "blob": "0076f906e55946181c26ddd994ff16711ed5ff35"
+      },
+      "tests/root-growth/check_swrd2_controls.py": {
+        "status": "M",
+        "blob": "3f567942092ad415f43c591634e6a24b2eed26b3"
+      },
+      "tests/root-growth/verify_swrd2_successor.py": {
+        "status": "M",
+        "blob": "3e8e5dfd5a6a614f3062d1cd8b3ef50aeccef3df"
+      },
+      "tests/root-growth/verify_swrd3_successor.py": {
+        "status": "M",
+        "blob": "bf6cf925d75cb9b636389e928175447c32a6d098"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP_NUT_HARVEST_CANONICAL_COMPOSITION_20261015.tar.xz.b64",
+      "decoded_sha256": "54c3f4ac9739c1227823408d25adde4a95cc3db5fcbc0e8013f8562e7251042d",
+      "decoded_bytes": 659784,
+      "members": 2238
+    },
+    "test_selection": {
+      "reason": "Admitted SWRD2 changed two actual compiled providers of harvest and thermal physical drivers. Refresh affected complete physical assertions and thermal native continuation, retain unchanged small/nonfinite source-bound proof. Full default equation/moving body projection retains admitted canonical physics.",
+      "expected_seconds": "548.28 historical physical + 120 historical thermal; current costs measured in raw events; compile/native split retained",
+      "full_fci": "NOT_SELECTED_EXACT_DEFAULT_PROJECTION",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "physical_cost_seconds": {
+      "compile": 181.51290578601765,
+      "driver_compile": 60.832243207009014,
+      "link": 3.3345160049975675,
+      "native": 308.01794846500707
+    },
+    "all_selected_runs_terminal": true,
+    "qualification": "CURRENT_SCIENCE_AND_39_COMPOSITION_CONTROLS_PLUS_50_ORIGINAL_CONTROLS_PASS",
+    "control_evidence": {
+      "path": "integration/audits/evidence/MC_CROP_NUT_HARVEST_CANONICAL_CONTROLS_20261015.tar.xz.b64",
+      "decoded_sha256": "be188c4bf1dfccf217b33fb971e163b8fa47b121cbd9a4016489417ae0e9fd4a",
+      "decoded_bytes": 11212,
+      "members": 9
+    },
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "failed_attempts": "Initial control preflight refused generated untracked bytecode; retained raw failure. Removed only generated artifacts and reran exact unchanged source; PASS. No scientific failure, assertion relaxation or numerical rerun."
   }
 }

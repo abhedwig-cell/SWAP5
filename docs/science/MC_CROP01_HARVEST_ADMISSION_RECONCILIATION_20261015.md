@@ -79,3 +79,40 @@ only after live base/head, source/evidence identity, reviews and mergeability
 are checked. Full F-CI numerical execution is not relabelled PASS: preservation
 is the executed exact default-branch proof plus original native-byte identity,
 current explicit physical science and retained complete owning assertions.
+
+## Current SWRD2 and proportional-runner composition
+
+The later canonical `f56a82b37bc1c3df7a6cb305990ab31e97818969` includes
+SWRD2 admission and the proportional selection policy. Their production delta
+from the original harvest proof includes the real compiled crop transaction and
+bootstrap providers. The old harvest capsule is therefore retained at immutable
+`9113b0ee`, rather than falsely called exact-current numerical evidence.
+
+The composed source contains only the same eight harvest production postimages
+on this canonical. The seven complete default-path projections equal the actual
+admitted canonical bytes, including SWRD2, and removing just the harvest dispatch
+and source case equals the entire current moving runner. Source, reference,
+postimage and clean-tree checks remain fail-closed. All seven public owning
+routes require combined proof, including direct SWRD2 entrypoints. Original
+harvest and SWRD2 source/corruption assertions remain executable with their own
+valid positive baselines; new composed-source and missing-proof controls protect
+the actual current route. No corrupted historical proof is tested against an
+already stale current input set and called a meaningful negative control.
+
+Qualification refresh selects all ten existing physical drivers at O0/O2,
+unchanged assertions and native continuation, and the original manual/calendar
+thermal native profiles. Verified providers are shared only within this live
+execution with exact sources, flags, compiler and object/module identities;
+all selected native calculations run fresh. The unchanged small/nonfinite proof
+remains source-bound to the original exact harvested owner. The complete admitted
+SWRD2 moving terminal capsule is separately checked, not relabelled as a new
+full numerical execution. Current physical inputs, native/raw events, endpoint
+identities and costs are sealed in the existing work unit's canonical-composition
+capsule. `F_KT_BOUNDARY_EVENT_STATUS_20261015.json` distinguishes the pending
+control phase from completed qualification and actual canonical admission.
+
+No full F-CI, alternate-solver qualification or highest low-air run is selected
+for unchanged default equations. This retains the earlier harvest acceptance
+boundary and the later binding change-impact policy. Automatic seasonal calendar,
+legacy activation/output, complete rotation and thermal-harvest composition
+remain open. No complete master capability disposition is promoted.
