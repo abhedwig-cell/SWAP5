@@ -356,3 +356,52 @@ production providers or driver inputs changed in this harvest step. Shared event
 publication, physical Richards/crop/soil-N integration, native persistence,
 observation/consumption semantics, historical dead-canopy profiles and complete
 rotation remain OPEN. The draft is not qualified for canonical admission.
+
+### Shared-owner resolution for explicit crop/soil-N profile
+
+The actual explicit NUT production composition has an independently owned
+`crop_soil_state_t` beside an accepted F-KT water carrier. Its existing joint
+application already publishes chemistry by atomic assignment after water
+acceptance. There is no reason for a crop-only boundary to replace the F-KT
+water state or advance its revision. Resolve this profile in the existing
+crop/soil owner: bind immutable harvest identity/end date/mode/fractions/ages
+inside the initialized crop configuration, derive the request from the actual
+accepted soil clock (after a positive accepted day), and atomically publish the
+harvested crop and complete pending/whole-N accounting. The joint boundary
+requires the actual existing water/chemical coherence check and read-only water.
+No caller-supplied event date, crop number or extra receipt authorizes harvest.
+This is the explicit configured profile, not automatic SWAP input/calendar wiring.
+
+Withdraw the unused generic kernel boundary experiment from the candidate source
+and restore the exact admitted kernel blob. Its successful synthetic execution
+remains historical evidence only. Do not keep a second unneeded event executor
+or widen F-CI admission to accommodate it. The production semantic delta now
+belongs to the existing crop/N owner and native adapter; existing generic
+intervals, kernel revision semantics and hydraulic solvers remain unchanged.
+
+Stage harvest residue plus existing daily pending as one local seven-organ
+batch, using original residue chemistry and the existing split parameters.
+Publish soil pools, cleared daily pending and an owned consumed phase together
+only after whole-N closure. A repeated consume must reject. Keep the immutable
+harvest observation while its observation lifecycle is not yet completed.
+Historical task ordering remains harvest at accepted day-end, then incorporation
+before next day's reactions; same-clock incorporation is a separately explicit
+next-morning preparation operation, never an extra reaction or physical timestep.
+
+Native continuation uses separate harvest phase tags; original tags and default
+configuration/owner vectors stay byte-identical. Persist the original archived
+crop/N, four-organ material, configured policy and consumed flag, plus existing
+daily pending. Decode locally with complete domain/balance/configuration/clock
+checks before publishing either water or chemical owner. No initialized target
+is overwritten. Rejected or corrupted phases cannot consume material.
+
+Qualification: small actual chemical owner with existing eight-pool fixture,
+source harvest/residue oracles, pending preservation, per-pool/N balances,
+replay/failed-batch rollback and opaque copy. Then reuse the existing real
+Richards/native driver closure with a short accepted day, harvest, pending native
+write/read in a fresh process, one consumption, and duplicate refusal; compare
+continuous/opaque/native endpoints and preserve the original day route. Measure
+and persist source/commands/raw outcomes. Broad admission is selected only after
+these changed owner/native surfaces and actual physical results are reconciled.
+Fallow, successor initialization, output acknowledgement and retained historical
+dead-canopy profiles remain explicit unfinished scope.

@@ -3,7 +3,7 @@ module mod_crop_soil_n_day
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_soil_n_reactive_owner
  use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
- use mod_soil_n_pool_state,only:soil_n_pool_state_t
+ use mod_soil_n_pool_state,only:soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t,apply_soil_n_transfer,SOIL_N_OK
  use mod_crop_soil_n_configuration
  use mod_wofost81_crop_owner_state
  use mod_wofost81_one_day_candidate
@@ -12,7 +12,9 @@ module mod_crop_soil_n_day
  use mod_wofost_one_day_structural_evolution
  use MOD_wofost81_nitrogen,only:WOFOST81_n_flux
  use mod_soil_n_day_environment,only:soil_n_day_environment_t
- use mod_crop_senescence_residue,only:crop_residue_pending_t
+ use mod_crop_senescence_residue,only:crop_residue_pending_t,build_pending_residue_materials
+ use mod_wofost81_harvest_materials
+ use mod_b111_soil_n_addition
  implicit none
  private
  integer,parameter,public::CROP_SOIL_OK=0,CROP_SOIL_INVALID=1,CROP_SOIL_PREPARE=2, &
@@ -31,6 +33,10 @@ module mod_crop_soil_n_day
   procedure::configuration=>coupled_configuration
   procedure::pending_snapshot=>coupled_pending_snapshot
  end type
+ type,public::crop_soil_harvest_receipt_t
+  integer::status=CROP_SOIL_INVALID
+  real(real64)::initial_n=0d0,final_n=0d0,exported_n=0d0,incorporated_n=0d0,residual=0d0
+ end type
  type,public::crop_soil_receipt_t
   integer::status=CROP_SOIL_INVALID
   type(reactive_receipt_t)::soil
@@ -40,6 +46,8 @@ module mod_crop_soil_n_day
   real(real64)::actual_root_cm=0d0,potential_root_cm=0d0
  end type
  public::initialize_crop_soil,advance_crop_soil_day,pack_crop_n_owner,unpack_crop_n_owner,crop_n_live
+ public::harvest_crop_soil_boundary,consume_crop_soil_harvest_pending,crop_soil_whole_n
+ public::pack_crop_n_continuation,unpack_crop_n_continuation,harvest_incorporation_valid
 contains
  logical function coupled_ready(self)result(ok)
   class(crop_soil_state_t),intent(in)::self
@@ -48,6 +56,21 @@ contains
   type(soil_n_pool_state_t)::pools
   ok=self%initialized.and.self%soil%ready()
   if(.not.ok)return
+  ok=self%crop%validate()==0
+  if(.not.ok)return
+  if(self%crop%harvested())then
+   block
+    type(wofost81_harvest_record_t)::h
+    logical::has
+    if(.not.allocated(self%p%harvest))then;ok=.false.;return;end if
+    call self%crop%harvest_snapshot(h,has)
+    call self%soil%snapshot(clock,theta,pools,revision)
+    ok=has.and.h%clock==clock.and.h%crop_identity==int(self%p%harvest%crop_identity,int64).and. &
+      all(h%policy%return_fraction==self%p%harvest%policy%return_fraction).and. &
+      all(h%policy%application_age==self%p%harvest%policy%application_age)
+    if(.not.ok)return
+   end block
+  end if
   if(allocated(self%pending))then
    ok=self%pending%valid();if(.not.ok)return
    call self%soil%snapshot(clock,theta,pools,revision)
@@ -95,13 +118,14 @@ contains
   call soil%configuration(sp,sid)
   if(.not.sp%enabled)return
   if(abs(p%root_depth_cm-sum(sp%mineral%dz_cm))>0d0)return
-  v=pack_crop_n_owner(crop)
+  v=pack_crop_n_continuation(crop)
   if(size(v)==0)return
   state%soil=soil;state%crop=crop;state%p=p;state%parameter_id=id;state%initialized=.true.
   if(present(pending))then
    allocate(state%pending,source=pending)
    if(.not.state%ready())then;state=crop_soil_state_t();return;end if
   end if
+  if(.not.state%ready())then;state=crop_soil_state_t();return;end if
   status=CROP_SOIL_OK
  end subroutine
  real(real64)function crop_n_live(crop)result(total)
@@ -252,4 +276,167 @@ contains
   end if
   status=CROP_SOIL_OK
  end subroutine
+ real(real64)function crop_soil_whole_n(state)result(total)
+  type(crop_soil_state_t),intent(in)::state
+  type(reactive_parameters_t)::p
+  type(soil_n_pool_state_t)::pools
+  type(wofost81_harvest_record_t)::h
+  integer(int64)::id,rev
+  real(real64)::clock,theta
+  logical::has
+  call state%soil%configuration(p,id);call state%soil%snapshot(clock,theta,pools,rev)
+  total=pools%nitrogen_total(p%mineral%inventory)+crop_n_live(state%crop)
+  if(allocated(state%pending))total=total+state%pending%nitrogen_kg_m2()
+  call state%crop%harvest_snapshot(h,has)
+  if(has)then
+   if(.not.h%pending_incorporated)total=total+sum(h%pending_n)*1d-4
+  end if
+ end function
+ subroutine harvest_crop_soil_boundary(state,r)
+  type(crop_soil_state_t),intent(inout)::state
+  type(crop_soil_harvest_receipt_t),intent(out)::r
+  type(crop_soil_state_t)::trial
+  type(wofost81_crop_owner_state_t)::crop
+  type(wofost81_harvest_record_t)::h
+  type(soil_n_pool_state_t)::pools
+  real(real64)::clock,theta
+  integer(int64)::rev
+  integer::code
+  logical::has
+  r=crop_soil_harvest_receipt_t()
+  if(.not.state%ready().or..not.allocated(state%p%harvest))return
+  call state%soil%snapshot(clock,theta,pools,rev)
+  if(rev<=0_int64)return ! requires actual completed daily chemical execution
+  associate(p=>state%p%harvest)
+   call prepare_wofost81_harvest(state%crop,clock,int(p%crop_identity,int64),p%crop_end,p%sw_harv, &
+    p%sw_wofost,state%p%update%development_stage_end,p%policy,crop,code)
+  end associate
+  if(code/=0)return
+  trial=state;trial%crop=crop
+  if(.not.trial%ready())return
+  call crop%harvest_snapshot(h,has);if(.not.has)return
+  r%initial_n=crop_soil_whole_n(state);r%final_n=crop_soil_whole_n(trial)
+  r%exported_n=sum(h%exported_n)*1d-4;r%residual=r%initial_n-r%final_n-r%exported_n
+  if(.not.ieee_is_finite(r%residual))return
+  if(abs(r%residual)>1d-12*max(1d0,r%initial_n,r%final_n,r%exported_n))return
+  state=trial;r%status=0
+ end subroutine
+ subroutine consume_crop_soil_harvest_pending(state,r)
+  type(crop_soil_state_t),intent(inout)::state
+  type(crop_soil_harvest_receipt_t),intent(out)::r
+  type(crop_soil_state_t)::trial
+  type(wofost81_crop_owner_state_t)::consumed
+  type(b111_soil_n_material_t)::materials(7)
+  type(b111_soil_n_split_parameters_t)::split
+  type(soil_n_transfer_t)::transfer
+  type(soil_n_receipt_t)::budget
+  type(soil_n_pool_state_t)::pools,next
+  type(reactive_parameters_t)::p
+  type(reactive_state_t)::soil
+  real(real64)::clock,theta,want(8),expected
+  integer(int64)::id,rev
+  integer::code,i,count
+  r=crop_soil_harvest_receipt_t()
+  if(.not.state%ready().or..not.state%crop%harvested())return
+  call build_wofost81_harvest_materials(state%crop,materials(1:4),code)
+  if(code/=0)return
+  count=4
+  if(allocated(state%pending))then
+   call build_pending_residue_materials(state%pending,materials(5:7),code)
+   if(code/=0)return
+   count=7
+  end if
+  call state%soil%configuration(p,id);call state%soil%snapshot(clock,theta,pools,rev)
+  if(size(p%mineral%inventory%nfrac_fom)/=8)return
+  split%nfrac_fom_max=p%mineral%inventory%nfrac_fom(1);split%nfrac_fom_min=p%mineral%inventory%nfrac_fom(2)
+  split%nfrac_humus=p%mineral%inventory%nfrac_humus
+  split%asfa_min=p%organic_reference%asfa_fom_bio(1)+p%organic_reference%asfa_fom_hum(1)
+  split%asfa_max=p%organic_reference%asfa_fom_bio(3)+p%organic_reference%asfa_fom_hum(3)
+  want=[split%nfrac_fom_max,split%nfrac_fom_min,split%nfrac_fom_max,split%nfrac_fom_min, &
+   split%nfrac_fom_max,split%nfrac_fom_min,split%nfrac_fom_max,split%nfrac_fom_min]
+  if(any(abs(p%mineral%inventory%nfrac_fom-want)>0d0))return
+  want=[split%asfa_min,split%asfa_min,split%asfa_max,split%asfa_max,split%asfa_min,split%asfa_min,split%asfa_max,split%asfa_max]
+  if(any(abs(p%organic_reference%asfa_fom_bio+p%organic_reference%asfa_fom_hum-want)>1d-12))return
+  expected=0d0
+  do i=1,count
+   expected=expected+materials(i)%application_kg_m2*materials(i)%organic_n_fraction
+   call build_b111_residue_transfer(p%mineral%inventory%depth_m,materials(i),split,transfer,code)
+   if(code/=0)return
+   call apply_soil_n_transfer(p%mineral%inventory,pools,transfer,next,budget)
+   if(budget%status/=SOIL_N_OK)return
+   if(abs(budget%external_n_output_kg_m2)>0d0)return
+   pools=next;r%incorporated_n=r%incorporated_n+budget%external_n_input_kg_m2
+  end do
+  if(abs(r%incorporated_n-expected)>1d-12)return
+  call reconstruct_reactive_trusted(p,id,rev,clock,theta,pools,soil,code);if(code/=0)return
+  call stage_wofost81_harvest_consumed(state%crop,consumed,code);if(code/=0)return
+  trial=state;trial%soil=soil;trial%crop=consumed
+  if(allocated(trial%pending))deallocate(trial%pending)
+  if(.not.trial%ready())return
+  r%initial_n=crop_soil_whole_n(state);r%final_n=crop_soil_whole_n(trial)
+  r%residual=r%initial_n-r%final_n
+  if(.not.ieee_is_finite(r%residual))return
+  if(abs(r%residual)>1d-12*max(1d0,r%initial_n,r%final_n))return
+  state=trial;r%status=0
+ end subroutine
+ logical function harvest_incorporation_valid(state)result(ok)
+  type(crop_soil_state_t),intent(in)::state
+  type(crop_soil_state_t)::trial
+  type(crop_soil_harvest_receipt_t)::r
+  type(wofost81_harvest_record_t)::h
+  logical::has
+  ok=state%ready();if(.not.ok)return
+  call state%crop%harvest_snapshot(h,has)
+  if(.not.has)then;ok=.false.;return;end if
+  if(h%pending_incorporated)then
+   ok=.not.allocated(state%pending);return
+  end if
+  trial=state;call consume_crop_soil_harvest_pending(trial,r);ok=r%status==0
+ end function
+ function pack_crop_n_continuation(crop)result(v)
+  type(wofost81_crop_owner_state_t),intent(in)::crop
+  real(real64),allocatable::v(:),base(:)
+  type(wofost81_harvest_record_t)::h
+  type(wofost81_crop_owner_state_t)::end_owner
+  logical::has
+  v=pack_crop_n_owner(crop)
+  if(.not.crop%harvested())return
+  if(crop%validate()/=0)return
+  call crop%harvest_snapshot(h,has);if(.not.has)return
+  end_owner%crop=h%end_crop;end_owner%nitrogen=h%end_nitrogen
+  base=pack_crop_n_owner(end_owner);if(size(base)==0)return
+  v=[-81001d0,h%clock,real(h%crop_identity,real64),merge(1d0,0d0,h%pending_incorporated), &
+   h%policy%return_fraction,h%policy%application_age,h%pending_dm,h%pending_n,h%exported_dm,h%exported_n, &
+   real(size(base),real64),base]
+ end function
+ subroutine unpack_crop_n_continuation(v,crop,status)
+  real(real64),intent(in)::v(:)
+  type(wofost81_crop_owner_state_t),intent(out)::crop
+  integer,intent(out)::status
+  type(wofost81_harvest_record_t)::h
+  type(wofost81_crop_owner_state_t)::end_owner
+  real(real64),allocatable::proof(:)
+  integer::n
+  crop=wofost81_crop_owner_state_t();status=CROP_SOIL_INVALID
+  if(size(v)==0)return
+  if(v(1)/=-81001d0)then;call unpack_crop_n_owner(v,crop,status);return;end if
+  if(size(v)<57)return
+  if(.not.all(ieee_is_finite(v)).or.any(abs(v)>1d9))return
+  if(v(3)<1d0.or.v(3)>1d6.or.v(3)/=real(int(v(3)),real64))return
+  if(v(4)/=0d0.and.v(4)/=1d0)return
+  if(v(28)<29d0.or.v(28)>1562d0)return
+  n=int(v(28));if(v(28)/=real(n,real64).or.size(v)/=28+n)return
+  call unpack_crop_n_owner(v(29:),end_owner,status);if(status/=0)return
+  h%clock=v(2);h%crop_identity=int(v(3),int64);h%pending_incorporated=v(4)==1d0
+  h%policy%return_fraction=v(5:7);h%policy%application_age=v(8:11)
+  h%pending_dm=v(12:15);h%pending_n=v(16:19);h%exported_dm=v(20:23);h%exported_n=v(24:27)
+  h%end_crop=end_owner%crop;h%end_nitrogen=end_owner%nitrogen
+  call restore_wofost81_harvest_trusted(h,crop,status);if(status/=0)return
+  proof=pack_crop_n_continuation(crop)
+  status=CROP_SOIL_INVALID
+  if(size(proof)/=size(v))return
+  if(any(abs(proof-v)>0d0))return
+  status=0
+ end subroutine
+
 end module

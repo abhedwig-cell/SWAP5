@@ -17,6 +17,7 @@ module mod_wofost81_crop_owner_state
     real(real64) :: application_age(4)=0d0 ! root, leaf, stem, storage
   end type
   type, public :: wofost81_harvest_record_t
+    logical :: pending_incorporated=.false.
     integer(int64) :: crop_identity=0_int64
     real(real64) :: clock=0d0
     type(wofost_crop_owner_state_t) :: end_crop
@@ -25,7 +26,7 @@ module mod_wofost81_crop_owner_state
     real(real64) :: pending_dm(4)=0d0,pending_n(4)=0d0
     real(real64) :: exported_dm(4)=0d0,exported_n(4)=0d0
   end type
-  public :: prepare_wofost81_harvest
+  public :: prepare_wofost81_harvest,restore_wofost81_harvest_trusted,stage_wofost81_harvest_consumed
 
   type, extends(transaction_state_t), public :: wofost81_crop_owner_state_t
     type(wofost_crop_owner_state_t) :: crop
@@ -185,5 +186,33 @@ contains
     mass=sum(n)-sum(h%pending_n)-sum(h%exported_n)
     if(abs(mass)>1d-12*max(1d0,sum(n))) return
     candidate=trial;status=WOFOST81_CROP_OWNER_OK
+  end subroutine
+
+  ! Trusted decoder/staging constructor, never cross-owner publication authority.
+  subroutine restore_wofost81_harvest_trusted(h,candidate,status)
+    type(wofost81_harvest_record_t),intent(in)::h
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(wofost81_crop_owner_state_t)::trial
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.harvest_record_valid(h))return
+    trial%nitrogen=h%end_nitrogen
+    associate(n=>trial%nitrogen%value)
+     n%namountlv=0d0;n%namountst=0d0;n%namountrt=0d0;n%namountso=0d0
+     n%nlosses_total=n%nlosses_total+sum(h%exported_n)
+    end associate
+    allocate(trial%harvest,source=h)
+    if(trial%validate()/=0)return
+    candidate=trial;status=0
+  end subroutine
+  subroutine stage_wofost81_harvest_consumed(committed,candidate,status)
+    type(wofost81_crop_owner_state_t),intent(in)::committed
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.committed%harvested())return
+    if(committed%validate()/=0)return
+    if(committed%harvest%pending_incorporated)return
+    candidate=committed;candidate%harvest%pending_incorporated=.true.;status=0
   end subroutine
 end module mod_wofost81_crop_owner_state

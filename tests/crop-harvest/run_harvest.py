@@ -7,9 +7,10 @@ ROOT=Path(__file__).resolve().parents[2]
 SPEC=importlib.util.spec_from_file_location('deps',ROOT/'tests/support/augment_bartholomeus_backend_sources.py')
 DEP=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(DEP)
 FIXTURE='tests/crop-harvest/mod_harvest_oracle.f90'
-DRIVERS={'harvest':('tests/crop-harvest/test_harvest_owner.f90','WOFOST81_HARVEST_OWNER_LITERAL_ORACLE=PASS'),
+DRIVERS={'chemical':('tests/crop-harvest/test_harvest_chemical.f90','HARVEST_CHEMICAL_ATOMIC_PENDING_CONTINUATION=PASS'),
+ 'harvest':('tests/crop-harvest/test_harvest_owner.f90','WOFOST81_HARVEST_OWNER_LITERAL_ORACLE=PASS'),
  'incumbent_day':('tests/fwof/pp02/test_wofost81_one_day_candidate_integration.f90','F_WOF_PP02_REPOSITORY_INTEGRATION_PASS')}
-FLAGS=['-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-fcheck=all',
+FLAGS=['-I'+str(ROOT/'tests/crop-harvest'),'-std=f2008','-ffree-line-length-none','-Wall','-Wextra','-fcheck=all',
        '-fbacktrace','-ffpe-trap=invalid,zero,overflow']
 
 def plan():
@@ -17,7 +18,7 @@ def plan():
     for name,(driver,_) in DRIVERS.items():
         order,_=DEP.strict_closure(ROOT,[driver],[FIXTURE,driver])
         orders[name]=[str(p.relative_to(ROOT)) for p in order]
-    paths=sorted({p for order in orders.values() for p in order}|{str(Path(__file__).relative_to(ROOT))})
+    paths=sorted({'tests/nut-crop/crop_fixture.inc','tests/nut-material/material_fixture.inc'}|{p for order in orders.values() for p in order}|{str(Path(__file__).relative_to(ROOT))})
     return dict(orders=orders,inputs={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths},
                 production_providers={n:sum(p.startswith('src/') for p in ps) for n,ps in orders.items()},
                 flags=FLAGS,optimizations=['O0','O2'],

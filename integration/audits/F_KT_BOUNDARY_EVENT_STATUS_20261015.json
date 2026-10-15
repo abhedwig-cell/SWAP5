@@ -8,7 +8,7 @@
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "status": "GENERIC_AND_REAL_HARVEST_OWNER_CONTRACTS_TESTED_PHYSICAL_PUBLICATION_OPEN",
+  "status": "CROP_SOIL_HARVEST_CONSUMPTION_NATIVE_IMPLEMENTED_UNTESTED",
   "contract": "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
   "scope": "Opt-in FKT generic boundary plus source-bound WOFOST81 four-organ harvest owner staging and existing B111 residue conversion. Neither is yet published by an actual model event.",
   "local_baseline_equivalence": {
@@ -950,5 +950,20 @@
       "fresh_process_native_harvest_restart": "NOT_IMPLEMENTED",
       "F_CI": "NOT_RUN_ADMISSION_STILL_OPEN"
     }
+  },
+  "generic_kernel_experiment_disposition": "WITHDRAWN_FROM_CURRENT_SOURCE_REPLACED_BY_EXISTING_CROP_SOIL_OWNER; retained capsule historical only",
+  "harvest_joint_stage": {
+    "implemented": true,
+    "tested": false,
+    "qualified": false,
+    "source_change": "Existing crop/soil owner same-clock harvest and seven-organ consumption with configuration-bound policy, independent read-only water, separate native harvest tags. Exact canonical kernel restored.",
+    "local_test_command": "python -B tests/crop-harvest/run_harvest.py --output <fresh>",
+    "production_closures": {
+      "chemical": 45,
+      "harvest": 43,
+      "incumbent_day": 24
+    },
+    "next_action": "Execute small chemical/owner tests, then original physical native fixture plus short actual harvest continuation.",
+    "cost_selection": "Small below30s. Actual physical compilation about150s and native about100s; current owner/native changes require targeted composition, no unrelated blanket suite or low-air stress."
   }
 }

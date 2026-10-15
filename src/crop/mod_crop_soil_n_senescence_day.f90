@@ -72,6 +72,12 @@ contains
   integer::code
   logical::has
   ok=state%ready();if(.not.ok)return
+  block
+   type(reactive_state_t)::soil
+   type(wofost81_crop_owner_state_t)::crop
+   call state%snapshot(soil,crop)
+   if(crop%harvested())then;ok=harvest_incorporation_valid(state);return;end if
+  end block
   call state%pending_snapshot(pending,has);if(.not.has)return
   call stage_pending(state,pending,probe,code);ok=code==SENESCENCE_DAY_OK
  end function

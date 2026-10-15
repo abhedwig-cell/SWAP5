@@ -20,6 +20,7 @@ contains
   if(owner%validate()/=WOFOST81_CROP_OWNER_OK)return
   call owner%harvest_snapshot(h,available)
   if(.not.available)return
+  if(h%pending_incorporated)return
   do i=1,4
    materials(i)%application_kg_m2=h%pending_dm(i)*1d-4
    materials(i)%application_age=h%policy%application_age(i)

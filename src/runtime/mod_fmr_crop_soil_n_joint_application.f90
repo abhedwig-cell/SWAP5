@@ -39,9 +39,29 @@ module mod_fmr_crop_soil_n_joint_application
     type(fmr_committed_restart_bundle_t)::water
     type(crop_soil_state_t)::chemical
   end type
-  public::run_crop_soil_n_joint_interval,crop_soil_n_joint_states_match
+  public::run_crop_soil_n_joint_interval,crop_soil_n_joint_states_match,run_crop_soil_n_harvest_boundary
   public::export_crop_soil_n_joint_restart,restore_crop_soil_n_joint_restart
 contains
+  subroutine run_crop_soil_n_harvest_boundary(water,chemical,consume_pending,result)
+    type(kernel_committed_state_t),intent(in)::water
+    type(crop_soil_state_t),intent(inout)::chemical
+    logical,intent(in)::consume_pending
+    type(crop_soil_harvest_receipt_t),intent(out)::result
+    type(crop_soil_state_t)::trial
+    result=crop_soil_harvest_receipt_t()
+    if(.not.crop_soil_n_joint_states_match(water,chemical))return
+    trial=chemical
+    if(consume_pending)then
+      call consume_crop_soil_harvest_pending(trial,result)
+    else
+      call harvest_crop_soil_boundary(trial,result)
+    end if
+    if(result%status/=0)return
+    if(.not.crop_soil_n_joint_states_match(water,trial))then
+      result%status=CROP_SOIL_INVALID;return
+    end if
+    chemical=trial
+  end subroutine
   logical function crop_soil_n_joint_states_match(water,chemical)result(ok)
     type(kernel_committed_state_t),intent(in)::water
     type(crop_soil_state_t),intent(in)::chemical
