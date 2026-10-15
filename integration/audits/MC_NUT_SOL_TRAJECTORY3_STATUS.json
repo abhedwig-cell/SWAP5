@@ -53,7 +53,7 @@
     "frost": "No separate broad frost qualification or highest low-air selected; compulsory existing bounded heat/frost runtime assertions executed inside full moving gate.",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Linear/nonlinear matrix1228/1230, mineral1231, reactive N1232 and bounded age1233 are admitted. Next SOL accepted surface/pond budget; next NUT crop-N supply/demand preserving WOFOST81. Do not repeat completed routes. Global master stale inheritance remains open.",
+  "next_action": "Bounded matrix/nonlinear, mineral, reactive N, age, crop supply1235 and daily prescribed environment1236 are separately qualified; read exact PR1236 admission receipt. Next NUT amendment/residue events on shared owner; accepted heat/default lifecycle open. SOL pond/source remains open and separately owned; aquifer rejected.",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
   "scientific_execution_commit": "c97de8c37e5b7edba0bd12133cb328a03e1460aa",
   "scientific_execution_tree": "54fbdb9ff9d8ce5a604ba24ee2c8b4309fb5e52d",
@@ -496,7 +496,10 @@
     "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1230",
     "persisted_scientific_candidate_head": "9ec6ef0dc54b3a301f2737fc9f917a272673ddd4",
     "persisted_scientific_candidate_tree": "dbae419853fa0fc91a022dd782f0a4a4868b2796",
-    "owner_prs_reconciled": {"1098":"d59aaa12c8312c8ecc42b1328537d5da412431a8","1117":"b6b894513fcdcf66e94824742c129616ddd7aed1"},
+    "owner_prs_reconciled": {
+      "1098": "d59aaa12c8312c8ecc42b1328537d5da412431a8",
+      "1117": "b6b894513fcdcf66e94824742c129616ddd7aed1"
+    },
     "stage": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
     "implemented": true,
     "persisted": true,
@@ -510,20 +513,30 @@
     "admitted_tree": "1bbdf28272b279af8b51a4a19f5ebd2ca72b784d",
     "merge_verification": "Exact remote full tree and production f777ecb6 match qualified combined postimage; mineral1231 is retained as first canonical parent eb03024d",
     "master_receipt": {
-      "pr":1072,
-      "before":"8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
-      "after":"53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
-      "master_blob":"d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
-      "proof":"integration/audits/MC_SOL01_NONLINEAR_MASTER_RECONCILIATION_20261015.json",
-      "only_two_capabilities_and_queue_rows_changed":true,
-      "all_other_241_rows_and_all_counts_dispositions_unchanged":true,
-      "global_checker":"Before/after identical FAIL stale inheritance baseline; not relabeled PASS"
+      "pr": 1072,
+      "before": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+      "after": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+      "master_blob": "d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+      "proof": "integration/audits/MC_SOL01_NONLINEAR_MASTER_RECONCILIATION_20261015.json",
+      "only_two_capabilities_and_queue_rows_changed": true,
+      "all_other_241_rows_and_all_counts_dispositions_unchanged": true,
+      "global_checker": "Before/after identical FAIL stale inheritance baseline; not relabeled PASS"
     },
     "scope": "Extend existing joint matrix route to 0.5<=frexp<=2; unchanged accepted water owner, process formulas, mass ownership and restart schema",
     "contract": "docs/science/MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md",
     "interfaces_changed": [],
-    "read_only_owners": ["Full Richards", "water traces", "WOFOST81/crop/root", "joint application", "native codec", "existing partition/process operators"],
-    "expected_differences": ["Historical1e-3 iteration stopping does not reconstruct phase storage at the explicit SWAP5 roundoff contract; no historical cmsy ledger loss claimed", "Historical near-unity shortcut approximates nonlinear storage; accepted SWAP5 difference retains exact constitutive relation"],
+    "read_only_owners": [
+      "Full Richards",
+      "water traces",
+      "WOFOST81/crop/root",
+      "joint application",
+      "native codec",
+      "existing partition/process operators"
+    ],
+    "expected_differences": [
+      "Historical1e-3 iteration stopping does not reconstruct phase storage at the explicit SWAP5 roundoff contract; no historical cmsy ledger loss claimed",
+      "Historical near-unity shortcut approximates nonlinear storage; accepted SWAP5 difference retains exact constitutive relation"
+    ],
     "test_selection": {
       "daily": "python tests/nut-sol/run_matrix_route.py --process-only; four source files per optimization, expected <5s",
       "targeted": "MATRIX_NONLINEAR=1 python tests/nut-sol/run_matrix_route.py; about 120s compilation plus native about 10s/exponent; UNKNOWN until measured",
@@ -551,12 +564,29 @@
       "master_checker": "FAIL unchanged stale inheritance baseline, retained original owner blocker"
     },
     "cost_seconds": {
-      "primary": {"compile": 128.23407555399172, "link": 0.6003886469989084, "native": 60.64497895103705},
-      "stronger_joint": {"compile": 5.635490515007405, "link": 0.28337950800778344, "native": 45.929738303035265},
-      "daily_process_only": {"compile": 0.5176485410047462, "link": 0.0764273789973231, "native": 0.35146397800417617},
+      "primary": {
+        "compile": 128.23407555399172,
+        "link": 0.6003886469989084,
+        "native": 60.64497895103705
+      },
+      "stronger_joint": {
+        "compile": 5.635490515007405,
+        "link": 0.28337950800778344,
+        "native": 45.929738303035265
+      },
+      "daily_process_only": {
+        "compile": 0.5176485410047462,
+        "link": 0.0764273789973231,
+        "native": 0.35146397800417617
+      },
       "per_codec": "UNKNOWN"
     },
-    "master_owner": {"pr":1072,"head":"8c82b782725f6c3775c7aa68e9f4dddaa0b63626","blob":"c116cf97d0c16cdd1884744e8934d5940e68f15a","all_243_dispositions_unchanged":true},
+    "master_owner": {
+      "pr": 1072,
+      "head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+      "blob": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
+      "all_243_dispositions_unchanged": true
+    },
     "admission_selection": {
       "authority": "Central SWAP5 regie under user autonomous instruction and Go continuation; existing trajectory3 precedent and protocol full-cycle rule8",
       "source_policy": "ACCEPT explicit SWAP5 numerical difference: existing monotone equilibrium inverse for bounded nonlinear application; no immutable B1 archive mutation or new B1 snapshot claim",
@@ -609,5 +639,17 @@
     "scope": "Accepted matrix water age transport/production/balance, atomic rollback and smaller retry, opaque/native fresh-process continuation; zero surface profile",
     "master_receipt_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
     "next_gate": "Accepted surface/pond age and solute budget, then wider source/default envelopes. No full capability closure."
+  },
+  "daily_environment_successor": {
+    "pr": 1236,
+    "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+    "baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+    "recovery": "integration/audits/MC_NUT01_DAILY_ENVIRONMENT_STATUS.json",
+    "contract": "docs/science/MC_NUT01_DAILY_ENVIRONMENT_CONTRACT_20261015.md",
+    "scope": "Explicit time-bound daily prescribed soil temperature through real reactive N and actual Richards/WOFOST81 supply; one transient forcing, unchanged stored configuration and restart schema; atomic rollback and complete continuation.",
+    "admission_authority": "PR1236 final expected-head merge and canonical source/tree receipt",
+    "source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
+    "highest": "NOT_SELECTED_POLICY",
+    "next_gate": "Source-qualified amendment/residue events on existing N owner; accepted heat/profile reduction and default lifecycle stay open. WOFOST81 fixation retained; pond/source open; aquifer rejected; no full capability/count promotion."
   }
 }

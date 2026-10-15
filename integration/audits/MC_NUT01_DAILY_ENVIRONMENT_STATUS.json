@@ -6,10 +6,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
-  "next_action": "Execute one complete local moving preservation OFF on frozen remotely persisted candidate; full RUNNING is not PASS.",
+  "next_action": "Safely admit exact qualified/preserved PR1236 after final metadata/source identity verification; then source-qualified amendments/residues. Pond/source open, aquifer rejected.",
   "relevant_paths": [
     "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
     "src/process/mod_soil_n_day_environment.f90",
@@ -30,10 +30,34 @@
     {
       "status": "FAILED_EVIDENCE_CONTROL_EXPECTATION",
       "cause": "Appended bytes outside literal source block are rejected by archive manifest, not literal block validation; corrected block-corruption control changes an actual byte inside the bound original block. No science/provider changed."
+    },
+    {
+      "status": "FAIL_ENVIRONMENT",
+      "full_result": {
+        "execution_commit": "cca47b53c9d653067f3fe82257568d276087e24e",
+        "tree": "3722639e8bf2fb193b058766127f3617b5796928",
+        "source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
+        "command": [
+          "bash",
+          "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+        ],
+        "resume_mode": "OFF",
+        "status": "FAIL",
+        "tracked_inputs": 6316,
+        "compile_link_native_split": "UNKNOWN",
+        "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "returncode": 1,
+        "wall_seconds": 64.58637580698996,
+        "changed_inputs": [],
+        "stdout_sha256": "d4fb7f81135ec1420dd5deb17141216973b567d69253fdd17b4220daa4ff12a8",
+        "stderr_sha256": "b1d581822fab3578ad4d55bb29b197b65628a6191c0a482e17231cc9d60689cd",
+        "terminal_marker": false
+      },
+      "reason": "Missing independently qualified historical FCI93 commits in fresh single-branch clone. Exact refs fetched; original FCI93 native O0/O2 replay PASS; no source changed; complete same-head full retry, no inherited successful prefix."
     }
   ],
   "scientifically_qualified_bounded_scope": true,
-  "qualification_status": "O0_O2_NATIVE_SCIENCE_PASS_PRESERVATION_PENDING",
+  "qualification_status": "BOUNDED_DAILY_ENVIRONMENT_QUALIFIED_PRESERVED_PREMERGE",
   "execution_commit": "d8dcc22b1e5dc9d4ed26a2cb459240df2cd50b5a",
   "source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
   "evidence": {
@@ -399,5 +423,54 @@
     "daily_environment_successor": true,
     "environment_baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
     "environment_source_tree": "83f559ee097415e436a33fc9a531de93d382b99a"
-  }
+  },
+  "full_preservation": {
+    "execution_commit": "cca47b53c9d653067f3fe82257568d276087e24e",
+    "tree": "3722639e8bf2fb193b058766127f3617b5796928",
+    "source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6316,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1690.1262926569907,
+    "changed_inputs": [],
+    "stdout_sha256": "82e7bb71e9f5446e942d5a09d4118f82d2939aa986f73f28c832a9de6c98ac17",
+    "stderr_sha256": "88290e173eb01ca67e069de0005daaff0a3b434443ba7d9768152b3f2e105256",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_DAILY_ENVIRONMENT_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "b3c965d26de89ab9b3a569b0860d43f6c23dd389d09b19455f42bc9bf504f99a",
+      "decoded_bytes": 377932,
+      "members": 19
+    },
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "pr": 1236,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1236",
+  "canonical_admission_authority": "Frozen premerge receipt. Actual admission requires PR1236 expected-head merge and canonical source/tree verification in final PR body.",
+  "final_dependency_rebind": {
+    "execution": "cca47b53c9d653067f3fe82257568d276087e24e",
+    "physical_source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
+    "unchanged_scientific_execution_inputs": true,
+    "consumed_status_projection": [
+      "baseline",
+      "added_blobs",
+      "changed_blobs",
+      "evidence"
+    ],
+    "reason": "Post-terminal closeout changes only recovery/evidence/coverage/registry metadata; all production, tests, source guard postimages, fixtures and consumed scientific-status fields remain byte-identical. No new full execution is claimed for metadata successor.",
+    "changed_existing_inputs": [
+      "integration/audits/MC_NUT01_DAILY_ENVIRONMENT_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json"
+    ]
+  },
+  "coverage_receipt": "integration/audits/MC_NUT01_DAILY_ENVIRONMENT_COVERAGE_20261015.json"
 }
