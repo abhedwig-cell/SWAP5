@@ -1,0 +1,116 @@
+{
+  "work_unit": "F-KT-BOUNDARY-EVENT-DRAFT",
+  "baseline": "451e35ccd1797aa96fb4354dabc465cceff18635",
+  "branch": "work/fkt-boundary-event-20261015",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "status": "UNQUALIFIED_DRAFT_COMPILER_BLOCKED",
+  "contract": "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
+  "scope": "Separate explicit generic boundary executor; private staging, origin/producer/certificate revalidation, conserved-channel validation, same-time revision commit; synthetic tests and unchanged incumbent FKT22 interval driver prepared.",
+  "local_baseline_equivalence": {
+    "commit": "e9eb3dec",
+    "tree": "22be16b4b2775f38057439c9509f6266f83fae91",
+    "remote_baseline_same_tree": true,
+    "reason": "Exact remote tree materialized locally; local commit identity is distinct and not relabelled as remote."
+  },
+  "source_projection": {
+    "status": "SOURCE_PROJECTION_PASS_ONLY",
+    "baseline": "47b652248420ba7c49df7e063c64ff749ce6253f",
+    "path": "src/kernel/mod_kernel_transactions.f90",
+    "baseline_sha256": "3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de",
+    "postimage_sha256": "6942fa438c9067046ea5e54d807b61dc755c11bf1d79538e5a540fe0416e154c",
+    "compiler_checked": false,
+    "native_checked": false,
+    "canonical_admission": false
+  },
+  "planned_production_providers": {
+    "boundary": 7,
+    "interval": 7
+  },
+  "postimage_sha256": {
+    "src/kernel/mod_kernel_transactions.f90": "6942fa438c9067046ea5e54d807b61dc755c11bf1d79538e5a540fe0416e154c",
+    "tests/fkt-boundary/README.md": "d8e7939facd7342209205b42c194daf0c1b1144a0e2970eeba29c7a82ba59d2c",
+    "tests/fkt-boundary/check_source_projection.py": "d3c5319a8688a9c489116b21f18074e1a57db5d135dbfc5a996e325777e387b3",
+    "tests/fkt-boundary/mod_boundary_fixture.f90": "fa54114df3b5526acd628d3b22671851cd3eb6b83d5514dde38cd462f52c15ce",
+    "tests/fkt-boundary/run_boundary.py": "ddf369bea7c85be88f56096a228d04708c1f040155cee3203eb708d3e080f124",
+    "tests/fkt-boundary/test_boundary.f90": "22a5f50e6d027c43738603db748a80a8ef5f42a326548b1a05cc28b07f2b6c79"
+  },
+  "checks": {
+    "python_syntax": "PASS_AST_ONLY",
+    "dependency_plan": "PASS_SOURCE_ONLY",
+    "Fortran_compile": "NOT_RUN",
+    "link": "NOT_RUN",
+    "native": "NOT_RUN",
+    "crop_soil_n_Richards": "NOT_RUN",
+    "restart": "NOT_RUN",
+    "owner_preservation": "NOT_RUN",
+    "full_fci": "NOT_SELECTED_DRAFT",
+    "actions": "NOT_SELECTED",
+    "source_projection": "PASS_SOURCE_ONLY",
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS"
+  },
+  "blockers": [
+    "gfortran/f951 unavailable after workspace maintenance; apt cache lacks package metadata; apt-get update failed with setgroups/setegid/seteuid environment permission errors. No privileged retry performed.",
+    "Shared event API and conservation-channel/owner validation design requires review before any production owner opts in.",
+    "Synthetic event/unchanged interval execution, actual owner balances, physical continuation, restart and affected owner admission remain unqualified."
+  ],
+  "next_action": "Provision an allowed Fortran compiler; run python -B tests/fkt-boundary/run_boundary.py --output <fresh-dir> at persisted scientific head. Diagnose compilation/native results before changing production callers. Keep draft and do not merge.",
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/architecture/invariants.md",
+    "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md"
+  ],
+  "relevant_paths": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "tests/fkt-boundary/README.md",
+    "tests/fkt-boundary/check_source_projection.py",
+    "tests/fkt-boundary/mod_boundary_fixture.f90",
+    "tests/fkt-boundary/run_boundary.py",
+    "tests/fkt-boundary/test_boundary.f90"
+  ],
+  "dependency_surface": {
+    "src/kernel/mod_kernel_transactions.f90": "6942fa438c9067046ea5e54d807b61dc755c11bf1d79538e5a540fe0416e154c",
+    "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+    "src/runtime/mod_canonical_interval_runtime.f90": "ea3d780325bb03ceed80be7d1fd62d1e88bc710fea2ceac85464c3429ce160c4",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+    "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
+    "tests/fkt-boundary/mod_boundary_fixture.f90": "fa54114df3b5526acd628d3b22671851cd3eb6b83d5514dde38cd462f52c15ce",
+    "tests/fkt-boundary/run_boundary.py": "ddf369bea7c85be88f56096a228d04708c1f040155cee3203eb708d3e080f124",
+    "tests/fkt-boundary/test_boundary.f90": "22a5f50e6d027c43738603db748a80a8ef5f42a326548b1a05cc28b07f2b6c79",
+    "tests/fkt/test_fkt22_kernel_trajectory_transport.f90": "4626e1773c72dbf1c9dbc5ca97371a8caa6818f6595eb44b7fb6ae972e86c439"
+  },
+  "interfaces_changed": [
+    "New kernel_boundary_executor_t/model/request/balance/candidate types in F-KT; no existing caller or kernel_model_t/kernel_executor_t procedure modified"
+  ],
+  "invariants": [
+    3,
+    4,
+    7,
+    9,
+    13,
+    21,
+    23,
+    25,
+    29,
+    30
+  ],
+  "remaining": "Actual harvest/reset/fallow/rotation and WOFOST81/soil-N integration absent; pond/source open; aquifer rejected.",
+  "recovery_point": "The published draft PR head plus this status and original positive-interval source projection. No valid scientific PASS exists for this draft.",
+  "execution_attempt": {
+    "execution_commit": "b1cb6d8305aa2289b9adebdc1fb0114cc04bf35f",
+    "exit": 2,
+    "status": "BLOCKED_COMPILER_UNAVAILABLE",
+    "native_events": 0,
+    "compile_events": 0,
+    "source_tree": "e1a6629870e30c92a85cb8d5a659fb158684453c"
+  },
+  "build_policy": "Compile shared providers once per optimization, link each driver separately, execute all selected assertions. No persistent cache or inherited native PASS."
+}

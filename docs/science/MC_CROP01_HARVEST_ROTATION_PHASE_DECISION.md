@@ -170,3 +170,57 @@ Current implementation, qualification and admission for this proposed boundary
 remain absent. No master capability/count promotion. Pond/source stays open;
 aquifer stays rejected. The distinct persistent daily SWRD2 route and surface-
 input PR1234 retain their existing owners.
+
+## Unqualified boundary-executor draft
+
+Work branch `work/fkt-boundary-event-20261015`, remote baseline
+`451e35ccd1797aa96fb4354dabc465cceff18635`. The selected concept introduces
+a separate opt-in `kernel_boundary_executor_t` in the existing F-KT owner module.
+It does not alter `kernel_model_t`, `kernel_executor_t`, ordinary interval code,
+restart constructors or any existing production caller. Removing the two marked
+addition blocks yields the entire original kernel file byte for byte. That is
+source preservation only, not ABI, compilation or numerical qualification.
+
+The event request binds lineage, revision, exact accepted time, event identity,
+subject and phase. The executor stages against a clone, validates complete
+nonnegative bounded conservation channels and requires a model-specific validator
+against the actual read-only committed origin. At publication it again checks
+origin, producer instance, admission, original parameter/grid identity and the
+event's state/balance relationship. Only then does it replace the private physical
+state and increment revision. Time, lineage and original certificate are retained.
+No interval receipt, numerical substep or reference-floor result is fabricated.
+
+The concrete model must implement admission, staging and validation; no existing
+model gains event capability by inheritance. Its validator must prove event
+identity/phase, complete conserved quantities, physical-field preservation and
+persistent anti-replay semantics. F-KT validates the declared channel arithmetic
+but cannot infer a model's omitted physical stock. Up to four explicitly identified
+quantities are supported; a numerical mass tolerance is supplied separately from
+physical forcing. This draft does not authorize any tolerance for crop/soil N.
+
+Candidates are private temporary objects bound to their originating model
+instance, which must remain alive through commit/discard. Failed commits retain
+the candidate and committed owner for a controlled retry; discarded or consumed
+candidates cannot publish. A sibling candidate from the previous revision becomes
+stale. A fresh request with a previously consumed event ID must also be rejected
+by the model's committed receipt/phase, not merely by F-KT's revision comparison.
+The mandatory validator, not a global event log, owns that last condition.
+
+The synthetic driver uses the real new executor and a deliberately simple
+nonphysical owner to test these generic semantics. Its two-unit stock export is
+not an authenticated harvest equation, WOFOST81 model, soil-N integration or
+Richards simulation. The original FKT22 trajectory driver is selected unchanged
+alongside it, at O0/O2, through seven production providers per driver. Production
+ABI/old interval behavior still require actual compile/link/native execution.
+
+Status and recovery:
+`integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json`.
+The compiler is currently unavailable, so compilation, native tests and all
+scientific qualification remain NOT_RUN. APT recovery failed on environment
+permission errors; no privileged retry or alternative permission bypass is
+authorized by this draft. No Actions run is selected. The existing runner records
+compiler absence as BLOCKED with exit2, never PASS. After provisioning a permitted
+toolchain, run the persisted small event/interval tests before modifying any crop,
+soil-N, native codec or application interface. Then qualify actual owner state,
+restart, stale interval-candidate rejection and shared preservation. This draft
+must not merge or promote any capability on source-only checks.

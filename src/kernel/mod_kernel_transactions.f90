@@ -259,6 +259,98 @@ module mod_kernel_transactions
     procedure, public :: discard_reference_floor_candidate => kernel_discard_reference_floor_candidate
   end type kernel_executor_t
 
+  ! FKT_BOUNDARY_DRAFT_DECLARATIONS_BEGIN
+  ! Separate opt-in event seam. No positive-interval model inherits admission.
+  integer, parameter, public :: KERNEL_BOUNDARY_OK=0, KERNEL_BOUNDARY_INVALID=301
+  integer, parameter, public :: KERNEL_BOUNDARY_NOT_BOUND=302, KERNEL_BOUNDARY_NOT_ADMITTED=303
+  integer, parameter, public :: KERNEL_BOUNDARY_ORIGIN_MISMATCH=304, KERNEL_BOUNDARY_BALANCE_FAILED=305
+  integer, parameter, public :: KERNEL_BOUNDARY_MODEL_REJECTED=306, KERNEL_BOUNDARY_IDENTITY_FAILED=307
+  integer, parameter, public :: KERNEL_BOUNDARY_STALE=308, KERNEL_BOUNDARY_OWNER_MISMATCH=309
+
+  type, public :: kernel_boundary_request_t
+    integer(int64) :: lineage=0_int64, revision=-1_int64, event_id=0_int64, subject_id=0_int64
+    integer :: phase=0
+    real(real64) :: time=0.0_real64
+  contains
+    procedure :: valid => kernel_boundary_request_valid
+  end type
+
+  ! The admitting model owns each quantity's identity, units and complete scope.
+  ! This is not an interval water receipt. Every used channel must be bound to
+  ! before/after physical state by the mandatory model validator.
+  type, public :: kernel_boundary_balance_t
+    logical :: complete=.false.
+    integer :: count=0, quantity_id(4)=0
+    real(real64) :: before(4)=0.0_real64, after(4)=0.0_real64
+    real(real64) :: external_in(4)=0.0_real64, external_out(4)=0.0_real64
+  contains
+    procedure :: valid => kernel_boundary_balance_valid
+  end type
+
+  type, abstract, public :: kernel_boundary_model_t
+  contains
+    procedure(boundary_admitted_iface), deferred :: event_admitted
+    procedure(boundary_stage_iface), deferred :: stage_event
+    procedure(boundary_validate_iface), deferred :: validate_event
+  end type
+
+  type, public :: kernel_boundary_candidate_t
+    private
+    class(transaction_state_t), allocatable :: state
+    class(kernel_boundary_model_t), pointer :: producer => null()
+    type(kernel_boundary_request_t) :: request
+    type(kernel_boundary_balance_t) :: balance
+    real(real64) :: mass_tolerance=0.0_real64
+    logical :: valid=.false.
+  contains
+    procedure :: ready => kernel_boundary_candidate_ready
+  end type
+
+  ! The bound model must outlive its executor and all outstanding candidates.
+  ! Candidates are ephemeral; only the complete committed owner is restartable.
+  type, public :: kernel_boundary_executor_t
+    private
+    class(kernel_boundary_model_t), pointer :: model => null()
+  contains
+    procedure :: bind_model => kernel_boundary_bind
+    procedure :: prepare_event => kernel_boundary_prepare
+    procedure :: commit_event => kernel_boundary_commit
+    procedure, nopass :: discard_event => kernel_boundary_discard
+  end type
+
+  abstract interface
+    logical function boundary_admitted_iface(self,parameters,forcing,request) result(ok)
+      import :: kernel_boundary_model_t,kernel_parameters_t,canonical_forcing_t,kernel_boundary_request_t
+      class(kernel_boundary_model_t), intent(in) :: self
+      class(kernel_parameters_t), intent(in) :: parameters
+      class(canonical_forcing_t), intent(in) :: forcing
+      type(kernel_boundary_request_t), intent(in) :: request
+    end function
+    subroutine boundary_stage_iface(self,parameters,forcing,request,before,after,balance,ok)
+      import :: kernel_boundary_model_t,kernel_parameters_t,canonical_forcing_t,kernel_boundary_request_t
+      import :: transaction_state_t,kernel_boundary_balance_t
+      class(kernel_boundary_model_t), intent(in) :: self
+      class(kernel_parameters_t), intent(in) :: parameters
+      class(canonical_forcing_t), intent(in) :: forcing
+      type(kernel_boundary_request_t), intent(in) :: request
+      class(transaction_state_t), intent(in) :: before
+      class(transaction_state_t), allocatable, intent(out) :: after
+      type(kernel_boundary_balance_t), intent(out) :: balance
+      logical, intent(out) :: ok
+    end subroutine
+    logical function boundary_validate_iface(self,parameters,forcing,request,before,after,balance) result(ok)
+      import :: kernel_boundary_model_t,kernel_parameters_t,canonical_forcing_t,kernel_boundary_request_t
+      import :: transaction_state_t,kernel_boundary_balance_t
+      class(kernel_boundary_model_t), intent(in) :: self
+      class(kernel_parameters_t), intent(in) :: parameters
+      class(canonical_forcing_t), intent(in) :: forcing
+      type(kernel_boundary_request_t), intent(in) :: request
+      class(transaction_state_t), intent(in) :: before,after
+      type(kernel_boundary_balance_t), intent(in) :: balance
+    end function
+  end interface
+  ! FKT_BOUNDARY_DRAFT_DECLARATIONS_END
+
   abstract interface
     subroutine configure_parameters_iface(self, parameters)
       import :: kernel_model_t, kernel_parameters_t
@@ -275,6 +367,161 @@ module mod_kernel_transactions
   end interface
 
 contains
+  ! FKT_BOUNDARY_DRAFT_IMPLEMENTATION_BEGIN
+  pure logical function kernel_boundary_request_valid(self) result(ok)
+    class(kernel_boundary_request_t), intent(in) :: self
+    ok=self%lineage>0_int64.and.self%revision>=0_int64.and.self%event_id>0_int64.and. &
+       self%subject_id>0_int64.and.self%phase>0.and.ieee_is_finite(self%time)
+  end function
+
+  pure logical function kernel_boundary_balance_valid(self,tolerance) result(ok)
+    class(kernel_boundary_balance_t), intent(in) :: self
+    real(real64), intent(in) :: tolerance
+    integer :: i,j,n
+    ok=.false.
+    if(.not.self%complete.or.self%count<1.or.self%count>4) return
+    if(.not.ieee_is_finite(tolerance)) return
+    if(tolerance<0.0_real64.or.tolerance>1.0e100_real64) return
+    if(.not.all(ieee_is_finite(self%before)).or..not.all(ieee_is_finite(self%after)).or. &
+       .not.all(ieee_is_finite(self%external_in)).or..not.all(ieee_is_finite(self%external_out))) return
+    if(any(self%before<0.0_real64).or.any(self%after<0.0_real64).or. &
+       any(self%external_in<0.0_real64).or.any(self%external_out<0.0_real64)) return
+    if(any(self%before>1.0e100_real64).or.any(self%after>1.0e100_real64).or. &
+       any(self%external_in>1.0e100_real64).or.any(self%external_out>1.0e100_real64)) return
+    n=self%count
+    if(any(self%quantity_id(:n)<=0)) return
+    do i=1,n
+      do j=i+1,n
+        if(self%quantity_id(i)==self%quantity_id(j)) return
+      end do
+    end do
+    if(n<4) then
+      if(any(self%quantity_id(n+1:)/=0).or.any(self%before(n+1:)/=0.0_real64).or. &
+         any(self%after(n+1:)/=0.0_real64).or.any(self%external_in(n+1:)/=0.0_real64).or. &
+         any(self%external_out(n+1:)/=0.0_real64)) return
+    end if
+    ! Recompute from complete contributions; never trust a supplied residual.
+    ok=all(abs((self%after(:n)-self%before(:n))- &
+         (self%external_in(:n)-self%external_out(:n)))<=tolerance)
+  end function
+
+  logical function kernel_boundary_candidate_ready(self) result(ok)
+    class(kernel_boundary_candidate_t), intent(in) :: self
+    ok=self%valid.and.allocated(self%state).and.associated(self%producer)
+    if(.not.ok) return
+    ok=self%request%valid().and.self%balance%valid(self%mass_tolerance)
+  end function
+
+  subroutine kernel_boundary_bind(self,model)
+    class(kernel_boundary_executor_t), intent(inout) :: self
+    class(kernel_boundary_model_t), target, intent(in) :: model
+    self%model=>model
+  end subroutine
+
+  logical function kernel_boundary_origin_matches(committed,request) result(ok)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(kernel_boundary_request_t), intent(in) :: request
+    ok=.false.
+    if(.not.committed%ready().or..not.committed%time_bound.or..not.request%valid()) return
+    if(committed%revision==huge(committed%revision)) return
+    ok=request%lineage==committed%lineage_id.and.request%revision==committed%revision.and. &
+       request%time==committed%committed_time_value
+  end function
+
+  logical function kernel_boundary_identity_matches(parameters,committed,state) result(ok)
+    class(kernel_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed
+    class(transaction_state_t), intent(in) :: state
+    type(kernel_parameter_identity_t) :: supplied
+    logical :: available
+    ok=.true.
+    if(.not.committed%parameter_identity%valid) return
+    call parameters%capture_identity(supplied,available)
+    ok=.false.
+    if(.not.available) return
+    if(.not.committed%parameter_identity%matches(supplied)) return
+    ok=parameters%matches_physical_identity(state)
+  end function
+
+  subroutine kernel_boundary_prepare(self,parameters,forcing,committed,request,mass_tolerance,candidate,status)
+    class(kernel_boundary_executor_t), intent(in) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(kernel_boundary_request_t), intent(in) :: request
+    real(real64), intent(in) :: mass_tolerance
+    type(kernel_boundary_candidate_t), intent(out) :: candidate
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: before,after
+    type(kernel_boundary_balance_t) :: balance
+    logical :: ok
+    candidate=kernel_boundary_candidate_t()
+    status=KERNEL_BOUNDARY_NOT_BOUND
+    if(.not.associated(self%model)) return
+    status=KERNEL_BOUNDARY_ORIGIN_MISMATCH
+    if(.not.kernel_boundary_origin_matches(committed,request)) return
+    status=KERNEL_BOUNDARY_INVALID
+    if(.not.ieee_is_finite(mass_tolerance)) return
+    if(mass_tolerance<0.0_real64.or.mass_tolerance>1.0e100_real64) return
+    status=KERNEL_BOUNDARY_NOT_ADMITTED
+    if(.not.self%model%event_admitted(parameters,forcing,request)) return
+    status=KERNEL_BOUNDARY_IDENTITY_FAILED
+    if(.not.kernel_boundary_identity_matches(parameters,committed,committed%physical_state)) return
+    ! A clone, never the live physical state, reaches the staging callback.
+    call committed%snapshot(before,ok)
+    status=KERNEL_BOUNDARY_MODEL_REJECTED
+    if(.not.ok) return
+    call self%model%stage_event(parameters,forcing,request,before,after,balance,ok)
+    if(.not.ok.or..not.allocated(after)) return
+    status=KERNEL_BOUNDARY_BALANCE_FAILED
+    if(.not.balance%valid(mass_tolerance)) return
+    status=KERNEL_BOUNDARY_MODEL_REJECTED
+    ! Validate against the live read-only origin, not a callback's work copy.
+    if(.not.self%model%validate_event(parameters,forcing,request,committed%physical_state,after,balance)) return
+    status=KERNEL_BOUNDARY_IDENTITY_FAILED
+    if(.not.kernel_boundary_identity_matches(parameters,committed,after)) return
+    call move_alloc(after,candidate%state)
+    candidate%request=request;candidate%balance=balance;candidate%mass_tolerance=mass_tolerance
+    candidate%producer=>self%model;candidate%valid=.true.
+    status=KERNEL_BOUNDARY_OK
+  end subroutine
+
+  subroutine kernel_boundary_commit(self,parameters,forcing,committed,candidate,status)
+    class(kernel_boundary_executor_t), intent(in) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    class(canonical_forcing_t), intent(in) :: forcing
+    type(kernel_committed_state_t), intent(inout) :: committed
+    type(kernel_boundary_candidate_t), intent(inout) :: candidate
+    integer, intent(out) :: status
+    status=KERNEL_BOUNDARY_INVALID
+    if(.not.candidate%ready()) return
+    status=KERNEL_BOUNDARY_OWNER_MISMATCH
+    if(.not.associated(self%model)) return
+    if(.not.associated(self%model,candidate%producer)) return
+    status=KERNEL_BOUNDARY_STALE
+    if(.not.kernel_boundary_origin_matches(committed,candidate%request)) return
+    status=KERNEL_BOUNDARY_NOT_ADMITTED
+    if(.not.self%model%event_admitted(parameters,forcing,candidate%request)) return
+    status=KERNEL_BOUNDARY_IDENTITY_FAILED
+    if(.not.kernel_boundary_identity_matches(parameters,committed,committed%physical_state)) return
+    if(.not.kernel_boundary_identity_matches(parameters,committed,candidate%state)) return
+    status=KERNEL_BOUNDARY_MODEL_REJECTED
+    if(.not.self%model%validate_event(parameters,forcing,candidate%request, &
+         committed%physical_state,candidate%state,candidate%balance)) return
+    ! All fallible work precedes publication. No interval mass/receipt is made.
+    call move_alloc(candidate%state,committed%physical_state)
+    committed%revision=committed%revision+1_int64
+    ! lineage, time, original parameter certificate and time binding are intact.
+    candidate=kernel_boundary_candidate_t()
+    status=KERNEL_BOUNDARY_OK
+  end subroutine
+
+  subroutine kernel_boundary_discard(candidate)
+    type(kernel_boundary_candidate_t), intent(inout) :: candidate
+    candidate=kernel_boundary_candidate_t()
+  end subroutine
+  ! FKT_BOUNDARY_DRAFT_IMPLEMENTATION_END
+
   ! Default implementations never issue or approve an identity. The SELECT
   ! TYPE guards deliberately consume abstract inputs under strict -Werror.
   logical function kernel_model_uncertified_identity(self,identity,state) result(ok)
