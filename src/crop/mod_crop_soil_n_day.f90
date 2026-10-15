@@ -11,6 +11,7 @@ module mod_crop_soil_n_day
  use mod_wofost_rate_parameters
  use mod_wofost_one_day_structural_evolution
  use MOD_wofost81_nitrogen,only:WOFOST81_n_flux
+ use mod_soil_n_day_environment,only:soil_n_day_environment_t
  implicit none
  private
  integer,parameter,public::CROP_SOIL_OK=0,CROP_SOIL_INVALID=1,CROP_SOIL_PREPARE=2, &
@@ -84,11 +85,12 @@ contains
    total=(n%namountlv+n%namountst+n%namountrt+n%namountso)*1d-4
   end associate
  end function
- subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r)
+ subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment)
   type(crop_soil_state_t),intent(inout)::state
   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm
   type(wofost_one_day_forcing_t),intent(in)::weather
   type(crop_soil_receipt_t),intent(out)::r
+  type(soil_n_day_environment_t),intent(in),optional::environment
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
   type(wofost_accepted_window_aggregates_t)::a
@@ -132,7 +134,7 @@ contains
   d%lai_crit_nupt=state%p%lai_crit_nupt
   soil_trial=state%soil
   r%status=CROP_SOIL_REACTION
-  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d)
+  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d,environment)
   if(r%soil%status/=MINERAL_OK)return
   supply=r%soil%process%exchange%nsupply_total_kg_m2_day
   r%status=CROP_SOIL_APPLY
