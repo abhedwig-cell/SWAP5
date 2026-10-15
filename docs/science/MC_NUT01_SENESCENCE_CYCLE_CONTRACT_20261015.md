@@ -83,3 +83,12 @@ day. A leaf-ageing trajectory can cross that boundary by reducing LAI. Qualifica
 retains that explicit failing profile as a negative control and uses critical
 LAI1 for the continued two-day trajectory, not a new uptake formula or budget
 exception. Actual harvest/complete-canopy lifecycle remains outside this claim.
+
+Additional affected-state admission coverage: all six original environment/crop/
+reactive/mineral drivers execute again against the changed ABI, including original
+two-FOM crop/environment native restarts. Reuse only the hash-audited production
+objects/modules from this live O0/O2 qualification, with current source/compiler
+identity, isolated builds, fresh fixture/oracle/driver compilation and every native
+assertion. Compare all four physical endpoints to immutable environment evidence.
+Expected driver/oracle compile30s and native100s; only missing standalone-codec providers compile fresh; the shared
+provider prefix is not rebuilt. This closes original2-FOM coverage beyond the new8-pool residue route.
