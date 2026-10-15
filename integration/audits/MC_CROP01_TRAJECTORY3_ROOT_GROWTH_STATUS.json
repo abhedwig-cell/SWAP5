@@ -5,9 +5,9 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": true,
+  "qualified": false,
   "canonically_admitted": false,
-  "next_action": "Restore original full admission capsule identified by decoded SHA256 ac85901e742f57995019d7b4fadf978f78d1f6e18cbfad4654fc9b71d7c2b47b if a durable copy exists; otherwise explicit revised test selection is necessary. Do not merge on conversational PASS. Reconcile cd64 input and qualify affected routes before expected-head PR1241 admission. Do not start SWRD2.",
+  "next_action": "Fresh4/47/269-provider explicit input O0/O2, current source and all original scientific corruption controls; preserve capsules remotely before admission.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [
     "Immutable terminal full moving evidence was lost before successful remote publication. Reported PASS is not usable for canonical admission.",
@@ -28,8 +28,8 @@
   "qualification_scope": "PRIOR_FROZEN_F422_SCIENCE_QUALIFIED; CURRENT_CD64_ADMISSION_BLOCKED",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
-  "production_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
-  "live_canonical_reconciled": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+  "production_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+  "live_canonical_reconciled": "cd64c5044a29643a068c6151720f76b2e70f570d",
   "live_delta": "PR1239 senescence changes are outside every compiled source, original driver and test dependency in the recorded input manifest; no old science PASS copied.",
   "retained_attempts": [
     {
@@ -57,7 +57,7 @@
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
   "full_fci": "UNAVAILABLE_IMMUTABLE_TERMINAL_EVIDENCE",
-  "stage": "BLOCKED_MISSING_IMMUTABLE_FULL_EVIDENCE_AFTER_ENVIRONMENT_RENEWAL",
+  "stage": "RECONCILING_CD64_EXPLICIT_INPUT",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -71,6 +71,10 @@
     "src/process/mod_soil_n_amendment_calendar.f90": {
       "status": "A",
       "blob": "19dcedb0babc89b21c2fbcc65122c1ff709b3cc1"
+    },
+    "src/process/mod_soil_n_amendment_input.f90": {
+      "status": "A",
+      "blob": "5597c4f4818ac81f799447ede950285f954448a2"
     },
     "src/runtime/mod_fmr_biomass_root_uptake_input.f90": {
       "status": "A",
@@ -90,7 +94,7 @@
     },
     "tests/crop-co2/verify_co2_successor.py": {
       "status": "M",
-      "blob": "90597280b175e45e369f98c9e751fc76ae779160"
+      "blob": "389a03bdd5304a50fcc3a5bea9f162695932497f"
     },
     "tests/fci/run_crop_file_weather_production_successor.sh": {
       "status": "M",
@@ -98,7 +102,7 @@
     },
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
       "status": "M",
-      "blob": "b0a2a6085cee93988abefd4ed2aa8c85f9615f96"
+      "blob": "f4563b9dc148b787fdc076a86aa074b133c187dd"
     },
     "tests/modularity/joint_admission_authority.py": {
       "status": "M",
@@ -106,7 +110,7 @@
     },
     "tests/nut-calendar/check_calendar_controls.py": {
       "status": "A",
-      "blob": "1d86415624a4e0e40b1418456976e53826782da8"
+      "blob": "39e050c42331175554f099fb8d7013c50e07c509"
     },
     "tests/nut-calendar/run_calendar.py": {
       "status": "A",
@@ -138,7 +142,31 @@
     },
     "tests/nut-calendar/verify_calendar_successor.py": {
       "status": "A",
-      "blob": "68dbbb2f801846866aee0596c51102831946e7f6"
+      "blob": "3cf4e943c3f806e4281de424bb6ba86f0e3d0c0a"
+    },
+    "tests/nut-input/check_input_controls.py": {
+      "status": "A",
+      "blob": "1f760aef01ff4bad41553ef6539a06c0edf01ca9"
+    },
+    "tests/nut-input/parsed_plan_fixture.inc": {
+      "status": "A",
+      "blob": "988ecefce6e28c7a223aba2b20c787a810664301"
+    },
+    "tests/nut-input/run_composition.py": {
+      "status": "A",
+      "blob": "7b257be243eedc30dc5d57f9639ab4fab628128d"
+    },
+    "tests/nut-input/run_input.py": {
+      "status": "A",
+      "blob": "f368ac91aaaceb4fa12871564825177834c552af"
+    },
+    "tests/nut-input/test_input.f90": {
+      "status": "A",
+      "blob": "eab79fbd3212b89d1b20e2f2b7d761011833403a"
+    },
+    "tests/nut-input/verify_input_successor.py": {
+      "status": "A",
+      "blob": "44bb91df592af70455260108498011e9b5cbbca9"
     },
     "tests/nut-senescence/check_senescence_controls.py": {
       "status": "M",
@@ -147,6 +175,10 @@
     "tests/nut-senescence/verify_senescence_successor.py": {
       "status": "M",
       "blob": "7020d33537d9e883ddf1fdf6934e8b4da84a745f"
+    },
+    "tests/root-growth/check_combined_admission_controls.py": {
+      "status": "A",
+      "blob": "981305e9beb7ff4712fd8b3767946e40e5eedb34"
     },
     "tests/root-growth/check_swrd3_controls.py": {
       "status": "A",
@@ -178,11 +210,7 @@
     },
     "tests/root-growth/verify_swrd3_successor.py": {
       "status": "A",
-      "blob": "c9dbb8b0d150b27e8507cf74149c4e758ed2f7ed"
-    },
-    "tests/root-growth/check_combined_admission_controls.py": {
-      "status": "A",
-      "blob": "d3075c52a304028c6da6e51b42865446c12c169a"
+      "blob": "ffbb0844dfbc10d120056070d2c86e10793a626d"
     }
   },
   "swrd3_science_evidence": {
@@ -386,7 +414,7 @@
     "preserved": false,
     "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b"
   },
-  "reconciliation_canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+  "reconciliation_canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
   "reconciliation_selection": {
     "reason": "Calendar compiled closure includes changed production bootstrap. Fresh calendar actual Richards and empty-day are required. All shared owner guards changed: fresh original owner controller and N ABI routes selected. Original SWRD3 physical/probe/native inputs are all byte-identical and retained; no stale PASS promoted.",
     "expected_seconds": 1100,
@@ -605,5 +633,24 @@
     "reported_full_usable_for_admission": false,
     "other_controls_and_interrupted_input_cost_seconds": "UNKNOWN",
     "note": "Do not count reported full or missing input evidence as a qualified admission PASS."
+  },
+  "qualified_native_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+  "input_guard_rebinding": {
+    "tests/crop-co2/verify_co2_successor.py": {
+      "before": "5152822e4f95cc9d5d3b16c6b742104590f97be18c6a8ec2278305f42e50c98a",
+      "after": "a973e9b04cbd4d6f150192c707cd3c2582cdf224d20c51a1ccc5ca2f477a678c"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "before": "368f29689c0058f189d6236d1b3c64997e2c772612c748495ffe679078743ed0",
+      "after": "9caac02fec95862296520897ecf7e1e68752e5a9dc194aa95ff709641ff4c1ca"
+    },
+    "tests/nut-calendar/check_calendar_controls.py": {
+      "before": "7c03f4e479041be479f84497491e698d1274f8f8da2ebb51e08b709e6cb46c17",
+      "after": "2e71ba51a78241c18e7c0474a26ac4aac95e77ac0bda47402b643757619f8afb"
+    },
+    "tests/nut-calendar/verify_calendar_successor.py": {
+      "before": "a99e335eb8daa918f5969ce15cc62a7f4e042d2f819d723d5d1b292a73d409ab",
+      "after": "ee88c89d1aa01374bc1a8082e2856703cf5031c3490fe05033c6e1a90532e957"
+    }
   }
 }

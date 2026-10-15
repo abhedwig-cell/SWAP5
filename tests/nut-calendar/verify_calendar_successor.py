@@ -17,6 +17,9 @@ def verify_source(git_reader=None):
  if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
   return swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
+  return successor.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -143,6 +146,9 @@ def verify_qualification():
  if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
   return swrd3.verify_qualification()
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
+  return successor.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  baseline_command('tests/nut-senescence/verify_senescence_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

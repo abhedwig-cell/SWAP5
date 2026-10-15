@@ -133,6 +133,8 @@ def verify_source():
    additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json').read_text())['added_blobs'])
   if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
    additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').read_text())['added_blobs'])
+  if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
+   additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').read_text())['added_blobs'])
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')

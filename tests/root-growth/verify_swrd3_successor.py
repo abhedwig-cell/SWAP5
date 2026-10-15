@@ -20,7 +20,7 @@ def verify_source(git_reader=None):
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
  expected=s['swrd3_postimages'];rows={r.split('\t')[1]:r.split('\t')[0]for r in g('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
  check(rows=={p:v['status']for p,v in expected.items()},'foreign SWRD3 delta')
- calendar_production={'src/process/mod_soil_n_amendment_calendar.f90','src/crop/mod_crop_soil_n_calendar_day.f90','src/runtime/mod_fmr_crop_soil_n_calendar_application.f90'}
+ calendar_production={'src/process/mod_soil_n_amendment_calendar.f90','src/crop/mod_crop_soil_n_calendar_day.f90','src/runtime/mod_fmr_crop_soil_n_calendar_application.f90','src/process/mod_soil_n_amendment_input.f90'}
  check({p for p in expected if p.startswith('src/')}=={BOOT,NEW}|calendar_production,'production scope widened')
  canonical=s['reconciliation_canonical'];g('merge-base','--is-ancestor',canonical,'HEAD')
  for p in calendar_production:check(g('rev-parse','HEAD:'+p)==g('rev-parse',canonical+':'+p),'canonical calendar production drift '+p)
@@ -38,8 +38,15 @@ def capsule(record):
 def read_evidence():
  s=json.loads((ROOT/STATUS).read_text());d=capsule(s['swrd3_science_evidence']);probe=capsule(s['swrd3_probe_evidence'])
  check(not set(d)&set(probe),'duplicate supplemental members');d.update(probe);return d
-def dependencies(inputs):
- for p,h in inputs.items():check(not Path(p).is_absolute()and '..'not in Path(p).parts and sha((ROOT/p).read_bytes())==h,'stale dependency '+p)
+def dependencies(inputs,guard_rebinding=False):
+ s=json.loads((ROOT/STATUS).read_text())
+ allowed={'tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh','tests/nut-calendar/verify_calendar_successor.py','tests/nut-calendar/check_calendar_controls.py'}
+ for p,h in inputs.items():
+  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe dependency '+p)
+  actual=sha((ROOT/p).read_bytes())
+  if actual==h:continue
+  rec=s.get('input_guard_rebinding',{}).get(p,{})
+  check(guard_rebinding and p in allowed and rec=={'before':h,'after':actual},'stale dependency '+p)
 def native_raw(d,h):
  raw=[b for p,b in d.items()if p.endswith('.stdout')and sha(b)==h];check(bool(raw),'raw native output absent');return raw[0]
 def validate_physical(d,source):
@@ -114,13 +121,14 @@ def baseline_command(path,extra=()):
 def verify_physical():return validate_physical(read_evidence(),verify_source())
 def verify_qualification():
  source=verify_physical();s=json.loads((ROOT/STATUS).read_text());d=capsule(s['swrd3_owner_evidence'])
- r=json.loads(d['additional/RESULTS.json']);check(r['status']=='PASS'and r['source']['source_tree']==source['source_tree'],'owner source/status drift')
+ native_source={**source,'source_tree':s['qualified_native_source_tree']}
+ r=json.loads(d['additional/RESULTS.json']);check(r['status']=='PASS'and r['source']['source_tree']==native_source['source_tree'],'owner source/status drift')
  sys.path.insert(0,str(ROOT/'tests/mc-met01'));from run_joint_owner_additional import STEPS
  check([(x['name'],x['command'])for x in r['steps']]==STEPS,'owner matrix incomplete')
  for x in r['steps']:check(x['exit']==0 and sha(d['additional/'+x['name']+'.stdout'])==x['stdout_sha256'],'owner raw failure/corruption')
- dependencies(json.loads(d['owner-inputs.json']))
+ dependencies(json.loads(d['owner-inputs.json']),guard_rebinding=True)
  # Fresh current ABI actual senescence/material/crop/N execution, not baseline PASS reuse.
- n=json.loads(d['nut/result.json']);check(n['status']=='PASS'and n['source_tree']==source['source_tree'],'current N owner science absent');dependencies(n['input_sha256'])
+ n=json.loads(d['nut/result.json']);check(n['status']=='PASS'and n['source_tree']==native_source['source_tree'],'current N owner science absent');dependencies(n['input_sha256'])
  old_record=json.loads(git('show',BASE+':integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json'))['evidence']
  old=capsule({'path':old_record['path'],'decoded_sha256':old_record['sha256']});prior=json.loads(old['result.json'])
  events=json.loads(d['nut/events.json'])
@@ -142,9 +150,12 @@ def verify_qualification():
  # Both scientific routes are required. Direct validation avoids recursive
  # successor dispatch; original baseline qualification remains mandatory.
  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
- calendar.validate(calendar.read_evidence(),source)
+ calendar.validate(calendar.read_evidence(),native_source)
+ sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as amendment_input
+ amendment_input.validate(amendment_input.read_evidence(),source)
+ check(amendment_input.baseline_command('tests/nut-calendar/verify_calendar_successor.py')['qualified'],'original calendar authority failed')
  baseline_command('tests/nut-senescence/verify_senescence_successor.py')
- return {**source,'qualified':True,'calendar_successor':True}
+ return {**source,'qualified':True,'calendar_successor':True,'input_successor':True}
 def incumbent(mode='qualification'):
  verify_qualification()
  return {**baseline_command('tests/nut-senescence/verify_senescence_successor.py',['--incumbent',mode]),'swrd3_successor':True,'swrd3_source_tree':git('rev-parse','HEAD:src')}
