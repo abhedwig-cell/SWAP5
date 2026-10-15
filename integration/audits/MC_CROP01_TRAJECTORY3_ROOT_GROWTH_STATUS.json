@@ -7,7 +7,7 @@
   "tested": true,
   "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Publish and freeze exact candidate; one complete selected local moving OFF on source9747341e. Seal/publish terminal evidence before expected-head admission. Highest NOT_SELECTED_POLICY.",
+  "next_action": "Observe existing execution a6404e1f7fcf, local session85939 through terminal status; do not duplicate it. Local tracked checkout is frozen; this remote running receipt changes only metadata and start evidence.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
@@ -53,8 +53,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "SELECTED_CURRENT_SCIENTIFIC_SOURCE",
-  "stage": "CURRENT_COMBINED_SCIENCE_QUALIFIED_PENDING_ONE_STABLE_FULL_ADMISSION",
+  "full_fci": "RUNNING_NOT_PASS",
+  "stage": "CURRENT_SCIENTIFIC_SOURCE_FULL_MOVING_RUNNING",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -711,8 +711,29 @@
     "local_result_available": false
   },
   "full_preservation": {
-    "status": "SELECTED_NOT_STARTED",
-    "source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8"
+    "execution_commit": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+    "tree": "f3bc5c739fcba65e2a09eeff5f5bbdc824fada11",
+    "source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "RUNNING",
+    "tracked_inputs": 6423,
+    "compile_link_native_split": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "selection_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json:final_current_source_admission_selection",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiler_launcher_sha256": "60ca8bff2521e7a3a60bc7cb413925ceade75bbe80efd072649c0920e9d97f2a",
+    "local_exec_session": 85939,
+    "start_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_FULL_START_20261015.tar.xz.b64",
+      "decoded_sha256": "db0a60d0fad640f9969d9813c26b64db480e96a6df930dcb08ff7a009a768a32",
+      "decoded_bytes": 398868,
+      "members": 5
+    }
   },
   "current_open_overlap": {
     "canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
