@@ -1,6 +1,6 @@
 # MC-SOL01 nonlinear matrix successor
 
-Status: proposed production successor; not canonically admitted.
+Status: qualified and preserved bounded successor; safe canonical admission pending.
 Baseline: `ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde` (PR #1228 and its
 initialization correction). Recovery: the `nonlinear_successor` field in
 `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
@@ -90,10 +90,9 @@ uses the normal runner and compiles both final drivers.
 All240 final science inputs are sealed. Original admitted linear stdout,
 endpoint/restart hashes and module interface remain identical; this is bounded
 linear preservation, not full-FCI inheritance. Docs source and strict build pass.
-The unchanged canonical source guard fails `foreign matrix successor delta`,
-as expected for a new unreviewed postimage. Full moving is not launched merely
-to rediscover that known stop condition. Central owner must reconcile source
-policy/postimages and select the stable admission gates. Canonical is unchanged.
+The initial source guard rejected `foreign matrix successor delta`, correctly.
+The subsequent regie review and exact guard/preservation reconciliation are
+recorded below; the original rejection remains in immutable science evidence.
 The unchanged master #1072 still fails its pre-existing stale-inheritance check;
 all243 dispositions remain unchanged. See the existing status/coverage records
 for the decoded evidence hash, exact row receipts and owner handoff.
@@ -135,11 +134,54 @@ not routine daily chemistry feedback. No highest low-air stress or duplicate
 manual Actions dispatch is selected. Admission remains conditional on terminal
 PASS, unchanged final science inputs, live overlap reconciliation and safe merge.
 
+## Terminal preservation and canonical coexistence
+
+Complete local moving preservation, resume OFF, passes exit0 in1829.803149s
+on execution16e28f06, tree24f8af2c. All6218 tracked inputs remain unchanged.
+Capsule `MC_SOL01_NONLINEAR_ADMISSION_20261015.tar.xz.b64`, decoded SHA256
+`9400d206002dff638e04b05d2b7b8342447f928c74f6875db8d8cf0e11f2e7b1`,
+retains full raw logs, controller, input inventory and actual execution bundle.
+Fourteen frozen immutable authorities retain the unchanged workflow, exact
+commit/tree objects and terminal run38631988831; no new hosted15-job run is claimed.
+
+Canonical advanced concurrently to eb03024d, admitting mineral NH4/NO3 transport
+via PR1231. All seven new production modules are distinct from the matrix owner;
+all240 matrix and237 mineral science inputs remain byte-identical, with227 shared
+hashes equal and401 existing module-provider ownerships unchanged. Neither driver
+imports the other added production owner. Water, kernel, root/crop/WOFOST81,
+existing interfaces, physical inputs, fixtures and build selectors stay identical.
+The existing moving script is retained from the newer canonical unchanged.
+
+Only admission guards need composition. They now require the exact union of
+postimages, both independent terminal science capsules and all original CO2
+assertions in situ. All53 original controls and3 extra peer negatives pass;
+both small actual Fortran process closures run fresh. Ordinary owner validator
+CLIs also pass without `-B` after preventing their own bytecode writes. Unit
+control runners retain their declared `-B` isolation. No dirty-source check is
+weakened. Raw failed CLI/control attempts remain retained.
+
+The full nonlinear run above and the admitted mineral full moving1411.227377s
+at6a1c3b7f cover the unchanged numerical/caller/state/compiler/input surfaces.
+The exact scope/provider/fixture audit and fresh combined guard tests qualify
+the new source-dispatch composition; this is not inheritance from imports alone.
+No third complete run is selected for that guard-only composition. This admits
+separate opt-in application routes, not simultaneous nitrogen-plus-solute state
+or a new combined restart. Coexistence capsule decoded SHA256:
+`44e43b53d2fe3ba60e9ef45b5e9960a79b6465a64d33137fa6a3c0b2ec7eb1d2`.
+
+The provisional legacy-defect label is refined to ACCEPTED_SWAP5_DIFFERENCE:
+historical stopping precision differs from the explicit SWAP5 phase-storage
+contract; the witnesses do not establish a global legacy mass-conservation bug.
+No new immutable B1 correction is asserted. Source line630 accepts frexp0..10;
+only0.5..2 is covered here, so the whole sorption capability remains ACTIVE.
+
 ## Remaining scope
 
 Pond/rain/irrigation/SSDI/macro, aquifer mutation, age, Soil-N/crop-N,
 root salinity feedback, default bootstrap/multicolumn and portable restart stay
 excluded. No whole master row is promoted. Existing master #1072 and the
 NUT/SOL owner #1117 retain their wider authority and blockers. Next independent
-SOL block is water-age amount/production on accepted carriers; next NUT block
-is mineral NH4/NO3 inventory plus transport and whole-N restart before reactions.
+SOL block is water-age amount/production on accepted carriers. PR1231 already
+admits bounded mineral NH4/NO3 inventory, transport and joint restart. Next NUT
+block is a bounded reaction such as nitrification with equal NH4 loss/NO3 gain
+and whole-N accounting; organic/crop-N and source-policy decisions remain separate.

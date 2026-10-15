@@ -1,6 +1,7 @@
 """Fail-closed exact CO2 source and terminal evidence. Eligibility is not admission."""
 from pathlib import Path
 import base64,hashlib,io,json,math,subprocess,sys,tarfile
+sys.dont_write_bytecode=True # admission imports must not dirty their own surface
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'tests/crop-cycle'),str(ROOT/'tests/modularity')]
 from verify_oxygen_successor import read_capsule
@@ -81,6 +82,11 @@ def validate_matrix_delta(rows,tree,guard_sha,moving_sha):
  check(tree.get(GUARD)==guard_sha,'unbound preservation guard')
  check(tree.get(MOVING)==moving_sha,'unbound moving preservation guard')
 def matrix_successor():
+ if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-mineral'))
+  from verify_mineral_successor import verify_qualification
+  verify_qualification() # exact union delta, both independent science capsules
+  return True
  rows=git('diff','--name-status',MATRIX_BASE,'HEAD','--','src','tests','tools').splitlines()
  if not rows:return False
  tree={line.split('\t',1)[1]:line.split('\t',1)[0].split()[2]for line in git('ls-tree','-r','HEAD').splitlines()}
@@ -95,7 +101,12 @@ def verify_source():
  check(not git('status','--porcelain','--','src','reference'),'dirty production/reference')
  matrix=matrix_successor()
  changed=git('diff','--name-only',BASE,'HEAD','--','src').splitlines()
- if matrix:changed=[p for p in changed if p not in MATRIX_ADDITIONS]
+ if matrix:
+  additions=set(MATRIX_ADDITIONS)
+  if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
+   mineral=json.loads((ROOT/'integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json').read_text())
+   additions.update(mineral['source_blobs'])
+  changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')
  return {'baseline':BASE,'source_tree':git('rev-parse',(MATRIX_BASE if matrix else 'HEAD')+':src'),'postimages':PINS,'co2_successor':True,'qualified':False,'admitted':False}

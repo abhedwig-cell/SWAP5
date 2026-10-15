@@ -808,15 +808,23 @@
           "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
           "nonlinear_successor": {
             "pr": 1230,
-            "status": "SCOPED_SCIENCE_PASS_ADMISSION_BLOCKED",
+            "status": "QUALIFIED_PRESERVED_READY_FOR_SAFE_ADMISSION",
             "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
             "branch": "work/nut-sol-nonlinear-matrix-20261015",
             "execution_commit": "a85facff905e6299acffd2f3c11bfeea0a03f295",
             "scope": "Bounded nonlinear 0.5<=frexp<=2: independent inverse and literal transport, actual water/chemical balances, atomic joint rollback and fresh-process restart O0/O2",
             "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-            "next_gate": "NUT/SOL owner accepts explicit historical inverse differences; central F-CI reconciles exact source postimages and selects required stable preservation before canonical admission. Existing source guard intentionally not weakened; no full-FCI PASS inherited.",
+            "next_gate": "Source-policy accepted as explicit SWAP5 precision difference; full local moving1829.803s PASS and exact coexistence with admitted mineral1231 qualified. Safe PR1230 merge and bounded master receipt; no repeated full run for metadata.",
             "master_dispositions_changed": false
           }
+        },
+        "bounded_mineral_successor": {
+          "pr":1231,
+          "canonical_merge":"eb03024d99ef9256335eb6e2f3f74bccce8145f0",
+          "status":"CANONICALLY_ADMITTED_BOUNDED_SCOPE",
+          "recovery":"integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
+          "scope":"Daily aggregate NH4/NO3 transport, explicit mineral/whole-N inventory, atomic water rejection/retry and fresh-process joint restart",
+          "next_gate":"Bounded nitrification/reaction with whole-N accounting; no repeated mineral inventory migration or silent WOFOST81 replacement"
         }
       },
       {
