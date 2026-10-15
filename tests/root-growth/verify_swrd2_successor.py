@@ -10,6 +10,9 @@ PRODUCTION={prior.BOOT,'src/runtime/mod_fmr_wofost_crop_transaction.f90'}
 MARKERS={'weather':b'CROP_FILE_WEATHER_PRODUCTION=PASS','swrd3':b'SWRD3_ACTUAL_RICHARDS_GROWTH_OXYGEN_JOINT_RESTART=PASS',
  **{k:b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS'for k in ['swrd2','swrd2_off','swrd2_unscaled']}}
 check=prior.check;git=prior.git;sha=prior.sha
+def _harvest_route(name,*args):
+ sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+ return getattr(harvest,name)(*args)
 def status():return json.loads((ROOT/STATUS).read_text())
 def project_moving(text):
  addition="""      src/runtime/mod_fmr_wofost_crop_transaction.f90 )
@@ -19,6 +22,7 @@ def project_moving(text):
  check(text.count(addition)==1,'unknown SWRD2 moving admission change')
  return text.replace(addition,'')
 def verify_source(git_reader=None):
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():return _harvest_route('verify_source',git_reader)
  g=git if git_reader is None else git_reader;s=status()
  check(s['baseline']==BASE,'foreign SWRD2 baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty science')
@@ -92,8 +96,16 @@ def baseline_command(path,*args):
  r=subprocess.run([sys.executable,'-B',str(root/path),*args],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  check(r.returncode==0,'predecessor authority failed '+path+' '+r.stderr[-1000:])
  return json.loads(r.stdout)
-def verify_physical():return validate(read_evidence(),verify_source())
+def verify_physical():
+ return _harvest_route('verify_physical') if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists() else validate(read_evidence(),verify_source())
 def predecessor_controls(path):
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+  harvest.verify_qualification()
+  original=harvest.immutable_command(harvest.SWRD2_PROOF,path)
+  current=json.loads(subprocess.check_output([sys.executable,'-B',str(ROOT/'tests/crop-harvest/check_admission_controls.py')],cwd=ROOT))
+  check(original['status']=='PASS'and current['status']=='PASS','composed control failure')
+  return {**original,'original_controls_at':harvest.SWRD2_PROOF,'current_composition_controls':current}
  allowed={'tests/nut-input/check_input_controls.py','tests/nut-thermal/check_thermal_successor_controls.py',
    'tests/nut-thermal/check_evidence_controls.py','tests/root-growth/check_combined_admission_controls.py'}
  check(path in allowed,'unknown historical control entry')
@@ -103,6 +115,7 @@ def predecessor_controls(path):
  check(current['status']=='PASS'and current['negative_count']==16,'current controls missing')
  return {**old,'predecessor_controls_at':BASE,'current_depth_controls':current,'current_source_tree':status()['production_source_tree']}
 def verify_qualification():
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():return _harvest_route('verify_qualification')
  result=verify_physical()
  old=baseline_command('tests/root-growth/verify_swrd3_thermal_preservation.py')
  check(old['status']=='PASS'and old['current_source_tree']=='b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0','unverified predecessor')

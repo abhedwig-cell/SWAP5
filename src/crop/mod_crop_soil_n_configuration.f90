@@ -1,6 +1,7 @@
 module mod_crop_soil_n_configuration
  use iso_fortran_env,only:real64
  use ieee_arithmetic,only:ieee_is_finite
+ use mod_wofost81_crop_owner_state,only:wofost81_harvest_policy_t
  use mod_wofost_rate_parameters
  use mod_wofost_rate_table,only:construct_wofost_rate_table
  use mod_wofost81_parameter_contract,only:wofost81_parameter_contract_t
@@ -11,7 +12,13 @@ module mod_crop_soil_n_configuration
  type,public::crop_n_table_t
   real(real64),allocatable::x(:),y(:)
  end type
+ type,public::crop_n_harvest_configuration_t
+  integer::crop_identity=0,sw_harv=0,sw_wofost=1
+  real(real64)::crop_end=0d0
+  type(wofost81_harvest_policy_t)::policy
+ end type
  type,public::crop_n_configuration_t
+  type(crop_n_harvest_configuration_t),allocatable::harvest
   type(wofost_rate_scalar_parameters_t)::scalars
   type(wofost81_parameter_contract_t)::base
   type(crop_n_table_t)::tables(16)
@@ -51,6 +58,23 @@ contains
    end if
    v=[v,real(n,real64),p%tables(i)%x,p%tables(i)%y]
   end do
+  if(allocated(p%harvest))then
+   associate(h=>p%harvest)
+    if(h%crop_identity<1.or.h%crop_identity>1000000.or.h%sw_harv<0.or.h%sw_harv>1.or. &
+      h%sw_wofost<1.or.h%sw_wofost>2)then
+     deallocate(v);allocate(v(0));return
+    end if
+    if(.not.all(ieee_is_finite([h%crop_end,h%policy%return_fraction,h%policy%application_age])))then
+     deallocate(v);allocate(v(0));return
+    end if
+    if(abs(h%crop_end)>1d6.or.any(h%policy%return_fraction<0d0).or.any(h%policy%return_fraction>1d0).or. &
+      any(h%policy%application_age<.67d0).or.any(h%policy%application_age>100d0))then
+     deallocate(v);allocate(v(0));return
+    end if
+    v=[v,911001d0,real(h%crop_identity,real64),h%crop_end,real(h%sw_harv,real64), &
+      real(h%sw_wofost,real64),h%policy%return_fraction,h%policy%application_age]
+   end associate
+  end if
  end function
  subroutine build_crop_n_configuration(p,common,p81,status)
   type(crop_n_configuration_t),intent(in)::p

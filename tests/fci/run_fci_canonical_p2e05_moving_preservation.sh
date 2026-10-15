@@ -4,6 +4,13 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Explicit harvest owner qualification only; never a full moving PASS.
+if [[ "${1:-}" == --crop-harvest-owner-only ]]; then
+  python3 -B tests/crop-harvest/verify_harvest_successor.py
+  echo 'FCI_CROP_HARVEST_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 # Source/evidence-only owner selection. This is never a full moving PASS.
 if [[ "${1:-}" == --nut-thermal-owner-only ]]; then
   python3 -B tests/nut-thermal/verify_thermal_successor.py
@@ -822,6 +829,9 @@ check_b19_micro_root_recomposition() {
         else
           python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
         fi
+        ;;
+      src/crop/mod_wofost81_crop_owner_state.f90|src/crop/mod_wofost81_one_day_candidate.f90|src/crop/mod_wofost81_harvest_materials.f90 )
+        python3 -B tests/crop-harvest/verify_harvest_successor.py || fail "unqualified explicit harvest successor: $candidate_path"
         ;;
       src/crop/mod_crop_soil_n_configuration.f90|src/crop/mod_crop_soil_n_day.f90|src/runtime/mod_fmr_crop_soil_n_joint_application.f90|src/adapter/mod_crop_soil_n_joint_restart_file.f90 )
         python3 tests/nut-crop/verify_crop_supply_successor.py || fail "unqualified crop Soil-N successor: $candidate_path"

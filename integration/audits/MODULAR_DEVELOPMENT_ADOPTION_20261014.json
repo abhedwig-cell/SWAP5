@@ -544,7 +544,7 @@
     "persisted": true,
     "tested": true,
     "qualified_scope": "bounded selection and execution policy; no new science or full-FCI PASS",
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "controls": {
       "adoption_and_selection": 18,
       "incumbent_modular": 15
@@ -562,7 +562,7 @@
       "avoided_compilations_measured": 0,
       "full_fci_or_highest_saving_measured": false
     },
-    "next_action": "Safely merge PR1245 expected head, then verify canonical tree. No science migration or count changes.",
+    "next_action": "CLOSED; apply persisted change-impact selection in subsequent owners. Physical defaults unchanged.",
     "blockers": [],
     "evidence": {
       "path": "integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64",
@@ -588,7 +588,10 @@
       "owner_only": "existing thermal source/evidence-only exit retained before expensive selection; no full numerical PASS",
       "docs_source": "PASS",
       "full_fci": "NOT_SELECTED_POLICY_ONLY",
-      "highest": "NOT_SELECTED_POLICY"
-    }
+      "highest": "NOT_SELECTED_POLICY",
+      "strict_mkdocs": "PASS"
+    },
+    "canonical_merge": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
+    "admission_head": "7c1c6dc76a63666c34c24b8ea6eca607ff23c9d1"
   }
 }

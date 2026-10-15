@@ -15,6 +15,9 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source(git_reader=None):
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+  return harvest.verify_source(git_reader)
  if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
   import verify_swrd2_successor as swrd2
   return swrd2.verify_source(git_reader)
@@ -134,11 +137,17 @@ def baseline_root():
 def baseline_command(path,extra=()):
  p=baseline_root();r=subprocess.run([sys.executable,'-B',str(p/path),*extra],cwd=p,check=True,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'});return json.loads(r.stdout)
 def verify_physical():
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+  return harvest.verify_physical()
  if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
   import verify_swrd2_successor as swrd2
   return swrd2.verify_physical()
  return validate_physical(read_evidence(),verify_source())
 def verify_qualification():
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+  return harvest.verify_qualification()
  if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
   import verify_swrd2_successor as swrd2
   return swrd2.verify_qualification()

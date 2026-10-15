@@ -27,6 +27,9 @@ def compatibility():
  check(project_moving(text)==subprocess.check_output(['git','show',('a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04'if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else BASE)+':'+moving],cwd=ROOT,text=True),'moving scientific body changed')
  return {p:hashlib.sha256(b.encode()).hexdigest()for p,b in baseline.items()}
 def verify_source(git_reader=None):
+ if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
+  return harvest.verify_source(git_reader)
  s=v.source(git_reader);compatibility()
  return dict(baseline=BASE,source_tree=s['source_tree'],current_source_tree=s['source_tree'],thermal_successor=True,
   input_successor=True,calendar_successor=True,senescence_successor=True,qualified=False,admitted=False)
