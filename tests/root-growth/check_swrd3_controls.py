@@ -2,6 +2,15 @@
 """Strict source, scientific coverage and raw evidence corruption controls."""
 import copy,json
 import verify_swrd3_successor as v
+if (v.ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+ import verify_swrd2_successor as current
+ # Original controls run with their original valid positive proof. Testing
+ # corrupt old data against a stale current source would mask every mutation.
+ old=current.baseline_command('tests/root-growth/check_swrd3_controls.py')
+ assert old['status']=='PASS'and old['negative_count']==17
+ import subprocess,sys
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/root-growth/check_swrd2_controls.py')],check=True)
+ raise SystemExit(0)
 v.verify_physical();source=v.verify_source();original=v.read_evidence();passed=[]
 def bad(label,mutation):
  d=original.copy();r=json.loads(d['physical/RESULTS.json']);mutation(r,d);d['physical/RESULTS.json']=json.dumps(r).encode()

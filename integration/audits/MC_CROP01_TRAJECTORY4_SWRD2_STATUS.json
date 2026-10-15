@@ -5,24 +5,137 @@
   "checkpoint_commit": "SELF",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "stage": "PERSISTED_SWRD2_01_DIRECT_PASS_PHYSICAL_SELECTED",
+  "stage": "CURRENT_DIRECT_AND_PHYSICAL_PASS_ADMISSION_RECONCILIATION",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
-  "direct_execution": {"head":"634b23454a5954c18bc876fada52efe49fb23b05","status":"PASS","native_executions":30,"provider_count":39,"wall_seconds":18.31574118900062,"compile_seconds":14.11912796100296,"link_seconds":3.933800850998523,"native_seconds":0.08226700800332765,"scope":"Real crop/depth transaction and persistence; synthetic water carrier, not Richards daily application qualification."},
-  "physical_selection": {"selected":true,"reason":"New persistent crop state and application geometry change shared science; require real accepted Richards depth feedback and both daily schedules before further owner admission.","drivers":["original weather/rooted default","original SWRD3","SWRD2 accepted oxygen","SWRD2 oxygen OFF water-scaled","SWRD2 unscaled"],"optimizations":[0,2],"expected_seconds":450,"compile_link_native_split":"UNKNOWN until completed","full_fci_selected":false},
+  "direct_execution": {
+    "head": "634b23454a5954c18bc876fada52efe49fb23b05",
+    "status": "PASS",
+    "native_executions": 30,
+    "provider_count": 39,
+    "wall_seconds": 18.31574118900062,
+    "compile_seconds": 14.11912796100296,
+    "link_seconds": 3.933800850998523,
+    "native_seconds": 0.08226700800332765,
+    "scope": "Real crop/depth transaction and persistence; synthetic water carrier, not Richards daily application qualification."
+  },
+  "physical_selection": {
+    "selected": true,
+    "reason": "New persistent crop state and application geometry change shared science; require real accepted Richards depth feedback and both daily schedules before further owner admission.",
+    "drivers": [
+      "original weather/rooted default",
+      "original SWRD3",
+      "SWRD2 accepted oxygen",
+      "SWRD2 oxygen OFF water-scaled",
+      "SWRD2 unscaled"
+    ],
+    "optimizations": [
+      0,
+      2
+    ],
+    "expected_seconds": 450,
+    "compile_link_native_split": "UNKNOWN until completed",
+    "full_fci_selected": false
+  },
   "last_reconciled_upstream": "451e35ccd1797aa96fb4354dabc465cceff18635",
   "production_baseline_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
   "contract": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
-  "relevant_paths": ["src/crop/mod_crop_root_depth_rate_owner.f90", "src/runtime/mod_fmr_wofost_crop_transaction.f90", "src/runtime/mod_fmr_production_application_bootstrap.f90"],
-  "authority_paths": ["AGENTS.md", "docs/development/workstream-execution-protocol.md", "docs/status-a/TRACEABILITY.md", "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90"],
-  "test_paths": ["tests/root-growth", "tests/fmig431/test_swap431_root_supply_fail_closed.f90", "tests/modularity/run_modular_tests.py"],
-  "dependency_surface": ["src", "tests", "tools", "reference", "integration/audits/evidence"],
+  "relevant_paths": [
+    "src/crop/mod_crop_root_depth_rate_owner.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/status-a/TRACEABILITY.md",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90"
+  ],
+  "test_paths": [
+    "tests/root-growth",
+    "tests/fmig431/test_swap431_root_supply_fail_closed.f90",
+    "tests/modularity/run_modular_tests.py"
+  ],
+  "dependency_surface": [
+    "src",
+    "tests",
+    "tools",
+    "reference",
+    "integration/audits/evidence"
+  ],
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
   "next_action": "Persist and test bounded persistent SWDMI2RD0/1 with accepted oxygen; independently resolve actual SWDMI2RD2 density-owner source domain before claiming complete requested scope.",
-  "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md"
+  "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+  "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+  "science_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_SCIENCE_20261015.tar.xz.b64",
+    "decoded_sha256": "0fbbe9064884ad676b92cd1947f7c3bcbd3442e599389016c91417f3e3a28271",
+    "decoded_bytes": 109308,
+    "members": 1316
+  },
+  "physical_execution": {
+    "head": "eb92c9dec75374391cf7754b0edfed0c1a9e79e6",
+    "status": "PASS",
+    "programs": 28,
+    "providers_per_opt": 226,
+    "wall_seconds": 440.79724318099943,
+    "compile_seconds": 367.2180359910253,
+    "link_seconds": 1.533414167997762,
+    "native_seconds": 68.06852619500023
+  },
+  "postimages": {
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+      "status": "M",
+      "blob": "7174f8b177f9635580d8af6f57dfde084773d68f"
+    },
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90": {
+      "status": "M",
+      "blob": "8801ec21eae3fd23099ac47f2335f0595ff31a05"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "blob": "16b43f2c6a6cbd8c8179aa2f8fc3881a477a81b1"
+    },
+    "tests/nut-thermal/verify_thermal_successor.py": {
+      "status": "M",
+      "blob": "c15012814fe7c1a43f4af1cc1a009b817416dd21"
+    },
+    "tests/root-growth/check_swrd2_controls.py": {
+      "status": "A",
+      "blob": "ccccf383b7eaa6f3079b29e76a8b6193831cccca"
+    },
+    "tests/root-growth/check_swrd3_controls.py": {
+      "status": "M",
+      "blob": "3e5ee4ad7718e3c6344dd019e529a23217150f1f"
+    },
+    "tests/root-growth/run_root_growth.py": {
+      "status": "M",
+      "blob": "e05391b133b42f30f99caafea31b02f6f87b1abe"
+    },
+    "tests/root-growth/run_swrd2_cycle.py": {
+      "status": "A",
+      "blob": "4c54e36fec20cef1f7bacc50dfa9298bcfd81f35"
+    },
+    "tests/root-growth/swrd2_cycle_driver.py": {
+      "status": "A",
+      "blob": "1bbf889d3b28573d9d5147f8306ef4382da02d11"
+    },
+    "tests/root-growth/test_swrd2_transaction.f90": {
+      "status": "A",
+      "blob": "28e25950ef393307d741da931f25a31cdff234d5"
+    },
+    "tests/root-growth/verify_swrd2_successor.py": {
+      "status": "A",
+      "blob": "5803ec07182821019de4e9ed3891ae8728deea9a"
+    },
+    "tests/root-growth/verify_swrd3_successor.py": {
+      "status": "M",
+      "blob": "89f5c40021703aaf62a8413b62c46cd8fc986656"
+    }
+  }
 }
