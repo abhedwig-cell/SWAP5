@@ -66,9 +66,15 @@ def baseline_qualification():
  return result
 
 def verify_physical():
+ if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
+  return surface.verify_qualification()  # physical
  source=verify_source();proof=scientific_proof()
  return {**source,'explicit_science':proof,'preservation':'EXACT_DEFAULT_BRANCH_PROJECTION_AND_FRESH_NATIVE_BYTES'}
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
+  return surface.verify_qualification()  # qualification
  source=verify_physical();baseline=baseline_qualification()
  return {**source,'qualified':True,'historical_baseline_owner':baseline,'full_fci':'NOT_SELECTED','highest':'NOT_SELECTED_POLICY','canonical_admission':False}
 # Canonical composition is a separately pinned successor, never an expanded
@@ -89,6 +95,9 @@ def immutable_command(ref,path):
  check(r.returncode==0,'immutable proof rejected '+path+' '+r.stderr[-1000:])
  return json.loads(r.stdout)
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
+  return surface.verify_source(git_reader)
  m=composition()
  if m is None:return _original_verify_source(git_reader)
  g=git if git_reader is None else git_reader

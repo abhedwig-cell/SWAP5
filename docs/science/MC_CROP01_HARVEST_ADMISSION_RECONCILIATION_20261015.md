@@ -116,3 +116,13 @@ for unchanged default equations. This retains the earlier harvest acceptance
 boundary and the later binding change-impact policy. Automatic seasonal calendar,
 legacy activation/output, complete rotation and thermal-harvest composition
 remain open. No complete master capability disposition is promoted.
+
+
+Canonical closeout: PR1247 merged at `31ff3158b956183c8af19f85bd3361847f60309b`
+from expected head `15c218d17ac4e19ed3206e2a8eefb37743328e37`. The remotely
+published tree `59e93bf31960ba69426641019ec796c423991281` equals the local
+qualified postimage. Current source, fresh O0/O2 physical/thermal science,50
+original and39 composition controls, original/direct SWRD2 admission controls,
+actual owner-only dispatch and strict docs PASS. Reviews/threads were empty.
+No hosted/full numerical F-CI PASS is asserted. The bounded explicit profile
+is admitted; full seasonal/legacy activation and full master capabilities remain open.

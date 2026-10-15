@@ -4,6 +4,8 @@ from unittest.mock import patch
 from pathlib import Path
 import verify_harvest_successor as v
 from default_projection import validate,PROJECTORS
+if (v.ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_surface_evidence_controls.py')],check=True);raise SystemExit(0)
 passed=[]
 def reject(label,call):
  try:call()

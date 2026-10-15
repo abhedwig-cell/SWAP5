@@ -1,0 +1,186 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-INPUT",
+  "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+  "stage": "CURRENT_CANONICAL_SURFACE_SCIENCE_OWNERS_AND_PROPORTIONAL_PRESERVATION_PASS_READY_FOR_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "scope": "Prescribed supply-limited matrix infiltration, no pond/evaporation/runoff; typed transient rain/irrigation split matched to actual accepted top flux; existing chemical owner and restart reused.",
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "next_action": "Expected-head ready/merge of existing PR1234, actual canonical source verification, bounded master receipt. No pond/fullcap promotion.",
+  "test_selection": {
+    "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
+    "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
+    "admission": "Full moving selected once at stable candidate because two eligibility guards must recognize exact additive sources. Expected1400..1900s. Highest NOT_SELECTED_POLICY; no Actions selected."
+  },
+  "reconciliation": {
+    "canonical": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "open_overlap": "No newer NUT/SOL successor found in current open PR retrieval; donor1117 remains selective only",
+    "age": "PR1233 admitted e85bfe13",
+    "reactive_N": "PR1232 admitted26ddf94e; no duplication",
+    "master": "PR1072 aae2b8d207b13453be45dd1773d39f8eae855831;243 dispositions unchanged; stale inheritance failure remains"
+  },
+  "blockers": [],
+  "added_blobs": {
+    "src/process/mod_b111_surface_supply.f90": "0b3079d02685e2b7d425f8bdf92029fcd247967c",
+    "src/runtime/mod_fmr_b111_surface_solute_route.f90": "d8b70f17cbbc4d9270025f35544d919c33cd7aae",
+    "src/runtime/mod_fmr_b111_surface_joint_application.f90": "314f8f1ba57126c81428938670a2867e35a8f5a2",
+    "tests/nut-sol/run_surface.py": "63c65c3c6e906b20126f634a72a45d22ef906061",
+    "tests/nut-sol/test_surface_process.f90": "0706e673d06ebb7ba14915181865785ebd68b3bc",
+    "tests/nut-sol/test_surface_joint.f90": "62037253706c541039cae44138a255f9a73e372f",
+    "tests/nut-sol/verify_surface_successor.py": "a7a102f79c1acede4217479a07eeb13f74045682",
+    "tests/nut-sol/check_surface_evidence_controls.py": "37df67a2a0d71bed6f304ff99cf26c0425791a68"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "bc6df6bf83119048a68dc9bac5143c8bf5692ee5",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "98dcea60c6b86a17137d7c4c6ca190fc654f9962"
+  },
+  "execution_commit": "2291376815e3d33e21cb655d109f915300ed7d19",
+  "cost_seconds": {
+    "physical_compile": 128.32305141595134,
+    "physical_link": 0.20651543900021352,
+    "physical_native": 18.181484894957975,
+    "process_compile": 0.34114225300436374,
+    "process_link": 0.10799846399459057,
+    "process_native": 0.0034752289939206094
+  },
+  "physical_provider_count": 238,
+  "process_provider_count": 2,
+  "input_count": 242,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_INPUT_20261015.tar.xz.b64",
+    "sha256": "ed6ba2035349ee34f48a86d15356601692529e0afa052175ecf5bb1cd6d0bb8d",
+    "decoded_bytes": 1665616,
+    "members": 1323
+  },
+  "failed_attempts": [
+    {
+      "path": "failed-process",
+      "reason": "Strict -Werror real equality warning; fixed without changing physical formula."
+    },
+    {
+      "path": "failed-physical",
+      "reason": "Overdraw fixture exceeded declared parameter bound and could not retry; fixed to permitted1e6/day."
+    },
+    {
+      "path": "leaf-feedback",
+      "status": "PASS_O0_FEEDBACK_NOT_FINAL_QUALIFICATION"
+    }
+  ],
+  "pr": 1234,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1234",
+  "branch": "work/sol-surface-input-20261015",
+  "scientifically_qualified": true,
+  "preservation_execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+  "remote_equivalent_execution": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+  "recovery_point": "PR1234; frozen surface-admission atdebc95c5; full local moving controller run_surface_admission.py live owning session. Scientific capsule exact SHA in evidence; no admission until terminal preservation and regie checks.",
+  "censored_preservation": {
+    "execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+    "status": "CENSORED_NOT_PASS",
+    "reason": "Pre-admission review found relative surface-rate tolerance can exceed absolute water budget at large finite rate and dt. Exact match and discriminating real Fortran control required. Owning unified session Ctrl-C; no terminal PASS.",
+    "wall_seconds": "UNKNOWN (controller interrupted)",
+    "compile_link_native_seconds": "UNKNOWN"
+  },
+  "superseded_science": {
+    "sha256": "4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338",
+    "git_blob": "5bf357e53da432d637a4ef7301b06d9216755eb9",
+    "remote_commit": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+    "status": "SUPERSEDED_BY_EXACT_TOP_FLUX_VALIDATION",
+    "scope": "Preliminary science and raw failed process/physical attempts retained in this immutable prior Git object. Final source/driver differ; do not reuse preliminary scientific PASS as final."
+  },
+  "last_reconciled_upstream": "31ff3158b956183c8af19f85bd3361847f60309b",
+  "current_canonical_selection": {
+    "canonical": "31ff3158b956183c8af19f85bd3361847f60309b",
+    "reason": "Harvest changes actual compiled provider closure; select one final cold actual surface process/matrix/restart on current source. No old physical provider object is reused. All existing production bytes stay canonical; only three explicit providers added.",
+    "expected_seconds": 200,
+    "current_surface_forcing_oracles_tolerances": "UNCHANGED",
+    "full_fci": "NOT_SELECTED_ADDITIVE_EXISTING_PRODUCTION_EXACT_AND_OWNER_BODY_PROOF",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "canonical_composition": {
+    "canonical": "31ff3158b956183c8af19f85bd3361847f60309b",
+    "original_final": "238b6184140ec42cbd77f472436519d98bbf7bd7",
+    "execution_commit": "62c79a338d2d9e9b00fcc6c0eec4fe04c69d0377",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "postimages": {
+      "src/process/mod_b111_surface_supply.f90": {
+        "status": "A",
+        "blob": "0b3079d02685e2b7d425f8bdf92029fcd247967c"
+      },
+      "src/runtime/mod_fmr_b111_surface_joint_application.f90": {
+        "status": "A",
+        "blob": "314f8f1ba57126c81428938670a2867e35a8f5a2"
+      },
+      "src/runtime/mod_fmr_b111_surface_solute_route.f90": {
+        "status": "A",
+        "blob": "d8b70f17cbbc4d9270025f35544d919c33cd7aae"
+      },
+      "tests/crop-harvest/check_admission_controls.py": {
+        "status": "M",
+        "blob": "3f51cc43d5c496b3182755ebf05f1fb0f7c38537"
+      },
+      "tests/crop-harvest/verify_harvest_successor.py": {
+        "status": "M",
+        "blob": "59f77c84f427c70484aa6b3738d7b4e85e308522"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "ef6f15fa40c6e743c75293d00010fc878fd80a1b"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "A",
+        "blob": "5acad02ab1970f00829a3346521fccd56d0f094b"
+      },
+      "tests/nut-sol/run_surface.py": {
+        "status": "A",
+        "blob": "63c65c3c6e906b20126f634a72a45d22ef906061"
+      },
+      "tests/nut-sol/test_surface_joint.f90": {
+        "status": "A",
+        "blob": "62037253706c541039cae44138a255f9a73e372f"
+      },
+      "tests/nut-sol/test_surface_process.f90": {
+        "status": "A",
+        "blob": "0706e673d06ebb7ba14915181865785ebd68b3bc"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "A",
+        "blob": "dcdaaf9ef217c08f828aa8d0a706a600c4621284"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_CANONICAL_COMPOSITION_20261015.tar.xz.b64",
+      "decoded_sha256": "fc1e8bc4d5c9d9ea70e57ef7df1d2175c04e4615ab128cb3a35a76a3019f08fb",
+      "decoded_bytes": 778932,
+      "members": 1337
+    },
+    "source_and_witness": "Three corrected source providers and final Fortran drivers exactly unchanged from original final238b; preliminary and censored evidence not reused as PASS. Final native endpoints and actual signed-flux stdout equal the earlier current run.",
+    "cost_seconds": {
+      "physical_compile": 148.1935030919849,
+      "physical_link": 0.2595427550004388,
+      "physical_native": 23.78207997899517,
+      "process_compile": 0.41513387899976806,
+      "process_link": 0.08367364599689608,
+      "process_native": 0.004500262002693489
+    },
+    "full_fci": "NOT_SELECTED_ADDITIVE_UNCHANGED_EXISTING_PRODUCTION",
+    "highest": "NOT_SELECTED_POLICY",
+    "qualification": "PASS_CURRENT_FINAL_SCIENCE_24_ORIGINAL_46_CURRENT_CONTROLS",
+    "control_evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_CANONICAL_CONTROLS_20261015.tar.xz.b64",
+      "decoded_sha256": "4f32dd93d62f1b7d715bb7cfc2ba47bd320b53573de49fa527f478c14faad5ca",
+      "decoded_bytes": 10136,
+      "members": 8
+    },
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "new_full_numerical_fci_claimed": false,
+    "all_selected_runs_terminal": true
+  }
+}

@@ -830,6 +830,9 @@ check_b19_micro_root_recomposition() {
           python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
         fi
         ;;
+      src/process/mod_b111_surface_supply.f90|src/runtime/mod_fmr_b111_surface_solute_route.f90|src/runtime/mod_fmr_b111_surface_joint_application.f90 )
+        python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"
+        ;;
       src/crop/mod_wofost81_crop_owner_state.f90|src/crop/mod_wofost81_one_day_candidate.f90|src/crop/mod_wofost81_harvest_materials.f90 )
         python3 -B tests/crop-harvest/verify_harvest_successor.py || fail "unqualified explicit harvest successor: $candidate_path"
         ;;
