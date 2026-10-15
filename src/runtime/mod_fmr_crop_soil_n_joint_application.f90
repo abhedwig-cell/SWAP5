@@ -22,6 +22,7 @@ module mod_fmr_crop_soil_n_joint_application
   use mod_fmr_b111_mineral_route,only:aggregate_mineral_trace,mineral_daily_carrier_t
   use mod_b111_soil_n_mineral_owner,only:mineral_state_t
   use mod_fmr_b111_reactive_n_joint_application,only:reactive_n_joint_states_match
+  use mod_soil_n_day_environment,only:soil_n_day_environment_t
   implicit none
   private
   integer,parameter,public::JOINT_OK=0,JOINT_INVALID=1,JOINT_WATER_REJECTED=2, &
@@ -60,7 +61,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -72,6 +73,7 @@ contains
     type(wofost_one_day_forcing_t),intent(in)::weather
     real(real64),intent(in)::t0,t1
     type(crop_soil_n_joint_result_t),intent(out)::result
+    type(soil_n_day_environment_t),intent(in),optional::environment
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
@@ -120,7 +122,7 @@ contains
       return
     end if
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment)
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then
       call backend%discard_trial_candidate(candidate,result%diagnostics)

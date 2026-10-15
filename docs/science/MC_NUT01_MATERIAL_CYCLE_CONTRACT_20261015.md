@@ -52,7 +52,7 @@ crop/soil day at O0/O2 first; literal full-source oracle. Then actual Richards,
 material and crop N accounting, water/crop/material failure and retry, replay,
 empty-batch endpoint identity, full opaque/fresh-process restart with eight FOM
 pools and invalid payload controls. Measure compiler/link/native costs; direct
-material closure2 sources, crop route about41, joint about261. Reuse only
+material closure2 sources, crop route about41, joint259 (measured). Reuse only
 hash-verified current providers in this live session with matching flags and
 fresh native executions; retain failed attempts. Select one full local moving
 OFF at stable admission under AGENTS four-level boundary because new application
@@ -61,3 +61,5 @@ expected1573s, full shell split UNKNOWN. Highest low-air NOT_SELECTED_POLICY.
 Full NUT-AMEND/NUT-RESIDUE dispositions remain ACTIVE_MIGRATION. Default calendar,
 file parsing, automatic crop residues, wider environmental/surface profiles and
 simultaneous age/matrix companions are not admitted by this unit.
+
+Current canonical optional-environment peer1236 is reconciled separately: three imported providers and receipt ABI changed. Fresh2/42/260-provider O0/O2 routes preserve every original material persistent endpoint/restart byte; actual material input remains the absent-environment profile. Original material full preservation and independently admitted peer full preservation retain their own execution identities. No new combined full run or simultaneous explicitly varying temperature/material API is claimed.

@@ -16,6 +16,10 @@ def verify_source():
   sys.path.insert(0,str(ROOT/'tests/nut-material'))
   import verify_material_successor as materials
   return materials.verify_source()
+ if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-environment'))
+  import verify_environment_successor as environment
+  return environment.verify_source()
  s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
@@ -41,6 +45,10 @@ def verify_qualification():
   sys.path.insert(0,str(ROOT/'tests/nut-material'))
   import verify_material_successor as materials
   return materials.verify_qualification()
+ if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-environment'))
+  import verify_environment_successor as environment
+  return environment.verify_qualification()
  source=verify_source()
  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
  import verify_age_successor as age
@@ -128,6 +136,10 @@ def incumbent(mode='qualification'):
   sys.path.insert(0,str(ROOT/'tests/nut-material'))
   import verify_material_successor as materials
   return materials.incumbent(mode)
+ if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-environment'))
+  import verify_environment_successor as environment
+  return environment.incumbent(mode)
  verify_qualification();base=ROOT.parent/'nut-crop-peer-f8eca95b'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),PEER],cwd=ROOT,check=True,capture_output=True)
  check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==PEER,'baseline changed')

@@ -119,6 +119,9 @@ def verify_source():
   if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
    crop_supply=json.loads((ROOT/'integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json').read_text())
    additions.update(crop_supply['added_blobs'])
+  if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
+   environment=json.loads((ROOT/'integration/audits/MC_NUT01_DAILY_ENVIRONMENT_STATUS.json').read_text())
+   additions.update(environment['added_blobs'])
   if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
    material=json.loads((ROOT/'integration/audits/MC_NUT01_MATERIAL_CYCLE_STATUS.json').read_text())
    additions.update(material['added_blobs'])

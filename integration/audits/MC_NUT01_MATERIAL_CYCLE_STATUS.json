@@ -8,11 +8,11 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_safe_step": "Freeze this persisted candidate and actively complete one full local moving OFF, then final docs, same PR publication and safe canonical admission. No science mutation during the run.",
+  "next_safe_step": "Publish final same-PR tree, validate fetched head/source/raw/controls and strict docs; safely admit and verify exact canonical merge/tree/source. No qualification rerun for metadata-only closeout.",
   "development_process_result": "material-process-first/result.json",
   "development_day_result": "material-day-third/result.json",
   "retained_attempts": [
@@ -33,7 +33,7 @@
     }
   ],
   "scientifically_qualified_bounded_scope": true,
-  "qualification_status": "SCOPED_SCIENCE_OWNER_CONTROLS_PASS_FULL_PRESERVATION_PENDING",
+  "qualification_status": "BOUNDED_EXPLICIT_MATERIAL_CYCLE_QUALIFIED_PRESERVED_PREMERGE",
   "primary_execution": "54868c6983c9039b8252edbea951bd5911b913a8",
   "source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
   "physical_provider_count": 259,
@@ -62,8 +62,8 @@
     "members": 2025
   },
   "added_blobs": {
-    "tests/nut-material/check_material_controls.py": "343a2f1a2a5228a03cd7b860bf42671a02d8f454",
-    "tests/nut-material/verify_material_successor.py": "7d03d538b009ad0fef7f78d705d3552cfe9aa2e1",
+    "tests/nut-material/check_material_controls.py": "1b5a816d77d1b3572669681cff833bfc373420fb",
+    "tests/nut-material/verify_material_successor.py": "dc6184e8973bbcb7f5f8078392dd95be2c6384a0",
     "src/crop/mod_crop_soil_n_material_day.f90": "ec884278f1721fb7eac33b45fe79f945776fb1f3",
     "src/process/mod_b111_soil_n_addition.f90": "f2376518a634f304d6ffe8e6439ab0852d268051",
     "src/runtime/mod_fmr_crop_soil_n_material_application.f90": "5ba2a7fac8ec112ab242f879deaf464056198020",
@@ -74,14 +74,15 @@
     "tests/nut-material/test_material_joint.f90": "3e817538a0241c16ac19872cd4e1c8f10030827d"
   },
   "changed_blobs": {
-    "tests/crop-co2/verify_co2_successor.py": "35ed5a10b1bc9e4afb567e9ac2bd66948d4549c5",
-    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "2f48fc404a4ca0f9143afcd9b1d3236d40c20b00",
-    "tests/nut-crop/verify_crop_supply_successor.py": "00017a06800b7724b33466d6c58a571e05fb56e7"
+    "tests/nut-environment/verify_environment_successor.py": "69b4358a5b1915c4366d41847b7121f7bf805bd0",
+    "tests/nut-crop/verify_crop_supply_successor.py": "3f5dff120b576d46c93ac3c29783d5723a9f5cbc",
+    "tests/crop-co2/verify_co2_successor.py": "51e024c1948a24b78152b5ddf5872996c8e49a5d",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "eddfdad3ff0f01db21fe6273334e03c4ca2505c1"
   },
   "reused_provider_compile_seconds": 29.883072185053607,
   "evidence_controls": {
     "status": "PASS",
-    "negative_count": 29,
+    "negative_count": 36,
     "controls": [
       "unfinished",
       "direct_only",
@@ -111,7 +112,14 @@
       "prior_input_drift",
       "foreign_source",
       "foreign_test",
-      "foreign_reference"
+      "foreign_reference",
+      "compat_unfinished",
+      "compat_stale_source",
+      "compat_imported_input_drift",
+      "compat_fresh_ABI_build_missing",
+      "compat_native_missing",
+      "compat_default_bytes_changed",
+      "historical_input_relabelled"
     ]
   },
   "incumbent_owner_verification": {
@@ -130,12 +138,105 @@
     "crop_supply_baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
     "crop_supply_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
     "crop_supply_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+    "daily_environment_successor": true,
+    "environment_baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+    "environment_source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
     "material_successor": true,
-    "material_source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71"
+    "material_source_tree": "afac3e7194c1d800eda6e31bcb001f720dbcbb93"
   },
   "test_selection": {
     "direct": "Two real production providers for material chemistry;41 for real crop/soil day, O0/O2 independent fresh drivers.",
     "physical": "Actual Richards/accepted owner and full eight-pool original source, joint atomic rollback,19 invalid decoder cases per optimization, opaque/fresh-process continuation and original empty route endpoint identity.259 providers; O0 completed providers reused with source/flags/object/module audit, fresh O2 build and all native assertions.",
     "stable_admission": "Exactly one local full moving OFF selected under AGENTS four-level admission boundary for new material forcing/atomic publication and successor dispatch. Expected1573s, shell compile/link/native split UNKNOWN. Highest low-air NOT_SELECTED_POLICY."
-  }
+  },
+  "candidate_peer_reconciliation": {
+    "peer_pr": 1236,
+    "candidate": "cca47b53c9d653067f3fe82257568d276087e24e",
+    "state": "CANONICAL_PEER_ADMITTED_AND_DEFAULT_PROFILE_REQUALIFIED",
+    "reason": "Peer adds optional environment to three imported providers and changes receipt ABI. Fresh complete O0/O2 material science is selected on the union, without reuse, to prove default absent-argument physical/endpoints preserve original material behavior. Expected130s build plus40s native. Existing full material run remains frozen237f0d49. Do not publish peer or mark qualified until its own admission and fresh strict union guards. No simultaneous explicit temperature plus material input is added.",
+    "science_status": "FRESH_O0_O2_SOURCE_ABI_DEFAULT_PROFILE_PASS_NOT_ADMITTED",
+    "compatibility_source_tree": "afac3e7194c1d800eda6e31bcb001f720dbcbb93",
+    "canonical_peer": "48e6aeb15a66dfd11a85de39dc6f8229842d1fd1"
+  },
+  "coexistence_evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_COEXISTENCE_20261015.tar.xz.b64",
+    "sha256": "248c9ef3d2719d9d413845dc1b1c6ad553d5a989c6cc70fe8b62089de485d4dc",
+    "decoded_bytes": 300676,
+    "members": 1583
+  },
+  "coexistence_cost_seconds": {
+    "compile": 129.8398199131625,
+    "driver_compile": 9.00550047501747,
+    "link": 0.6582533590117237,
+    "native": 37.91148480698757
+  },
+  "compatibility_source_tree": "afac3e7194c1d800eda6e31bcb001f720dbcbb93",
+  "pr": 1237,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1237",
+  "canonical_peer_reconciliation": {
+    "canonical_peer": "48e6aeb15a66dfd11a85de39dc6f8229842d1fd1",
+    "peer_pr": 1236,
+    "original_source": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
+    "compatibility_source": "afac3e7194c1d800eda6e31bcb001f720dbcbb93",
+    "source_interface_changed_and_requalified": true,
+    "explicit_temperature_plus_material_API": false
+  },
+  "full_preservation": {
+    "execution_commit": "237f0d494150411226ddfc7ab6d26d930e7dfc2d",
+    "tree": "2f57a7015346f1b19596ef1347962f8ed62df749",
+    "source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "returncode": 0,
+    "wall_seconds": 1645.7129262439994,
+    "tracked_inputs": 6320,
+    "changed_inputs": [],
+    "stdout_sha256": "9c3ddf371336f334dd847f4d47e4e57f9984b2bc3bbf6ebf1ea86e1ae066473d",
+    "stderr_sha256": "183808dbfb5ec3c3ec11618c1d6dab04d14499f36f736bc4295c817ca2457c2a",
+    "terminal_marker": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_MATERIAL_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "f5b573cba46bdeae0d8447790d92d83908dd719610fcb7d2738eeb349cb493f1",
+      "decoded_bytes": 761812,
+      "members": 19
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "237f0d494150411226ddfc7ab6d26d930e7dfc2d",
+    "canonical_peer": "48e6aeb15a66dfd11a85de39dc6f8229842d1fd1",
+    "original_qualified_source": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
+    "current_source_tree": "afac3e7194c1d800eda6e31bcb001f720dbcbb93",
+    "changed_existing_inputs": [
+      "docs/science/MC_NUT01_MATERIAL_CYCLE_CONTRACT_20261015.md",
+      "integration/audits/MC_NUT01_MATERIAL_CYCLE_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "src/crop/mod_crop_soil_n_day.f90",
+      "src/process/mod_b111_soil_n_reactive_owner.f90",
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+      "tests/crop-co2/verify_co2_successor.py",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "tests/nut-crop/verify_crop_supply_successor.py",
+      "tests/nut-material/check_material_controls.py",
+      "tests/nut-material/verify_material_successor.py"
+    ],
+    "changed_original_scientific_inputs": [
+      "src/process/mod_b111_soil_n_reactive_owner.f90",
+      "src/crop/mod_crop_soil_n_day.f90",
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+    ],
+    "reason": "Three original imported N providers changed under independently admitted optional environment. Fresh complete O0/O2 ABI rebuild, exact current input/source/flags qualification and material literal/Richards/rollback/19 decoder/opaque/fresh native assertions rerun. Every original material persistent endpoint, original and empty-batch restart byte remains identical. Existing water/kernel/solver/reference production is unchanged. Original material and peer full terminal executions retain actual identities; no new combined full execution or simultaneous explicitly varying temperature/material interface claimed.",
+    "additional_closeout_metadata": [
+      "docs/science/MC_NUT01_MATERIAL_CYCLE_RECOVERY_20261015.md",
+      "integration/audits/MC_NUT01_MATERIAL_CYCLE_COVERAGE_20261015.json",
+      "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_COEXISTENCE_20261015.tar.xz.b64"
+    ]
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1237 final expected-head merge and canonical source/tree verification establish actual bounded admission."
 }

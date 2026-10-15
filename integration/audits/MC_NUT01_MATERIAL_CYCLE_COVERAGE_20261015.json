@@ -1,0 +1,43 @@
+{
+  "work_unit": "MC-NUT01-MATERIAL-CYCLE",
+  "master_pr": 1072,
+  "master_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+  "master_blob": "8521082fa78fb32a481b6343036529307566a549",
+  "master_sha256": "196aec8e1e06296480b709fb87a030f5e6dc33e3300a874a5faf52e639eec430",
+  "denominator": 243,
+  "dispositions_before": {
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "disposition_delta": 0,
+  "master_branch_modified": false,
+  "global_master_integrity": "NOT_CLAIMED; exact structural recount and bounded receipt only",
+  "rows": [
+    {
+      "capability_id": "SW431-NUT-AMEND",
+      "prior_row_sha256": "e687931d5ea2ac7d1a336eeda0da9ee3ec9b5636f78ed55708bcb7fad3a3d6a4",
+      "row_hash_encoding": "UTF8 json.dumps(sort_keys=True,separators=(comma,colon))",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "stale_claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
+      "bounded_implementation_absence_proven": false,
+      "correction": "Mineral1231, reactive1232 and crop1235 are already admitted. This unit adds explicit source-qualified amendment/external-residue batches, eight organic pool/humus and mineral inputs, gross/volatilized N, real Richards and unchanged WOFOST81 day, atomic rollback/retry/replay and complete joint restart.",
+      "remaining": "Disputed historical calendar/file construction, automatic crop senescence/harvest residue debit and return, wider environment/surface/default application; external residues are declared inputs, not a live crop debit.",
+      "admission_authority": "PR1237 final expected-head merge and exact canonical source/tree receipt."
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "prior_row_sha256": "42b137b6e270223bdfaf8870dbc3745edfe29edbdc07d36414e72c50201c072d",
+      "row_hash_encoding": "UTF8 json.dumps(sort_keys=True,separators=(comma,colon))",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "stale_claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
+      "bounded_implementation_absence_proven": false,
+      "correction": "Mineral1231, reactive1232 and crop1235 are already admitted. This unit adds explicit source-qualified amendment/external-residue batches, eight organic pool/humus and mineral inputs, gross/volatilized N, real Richards and unchanged WOFOST81 day, atomic rollback/retry/replay and complete joint restart.",
+      "remaining": "Disputed historical calendar/file construction, automatic crop senescence/harvest residue debit and return, wider environment/surface/default application; external residues are declared inputs, not a live crop debit.",
+      "admission_authority": "PR1237 final expected-head merge and exact canonical source/tree receipt."
+    }
+  ]
+}

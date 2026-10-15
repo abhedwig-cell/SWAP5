@@ -45,4 +45,15 @@ for label,row in [('foreign_source','M\tsrc/crop/mod_wofost81_nitrogen.f90'),('f
  def altered(*a):
   r=original(*a);return r+'\n'+row if a[:2]==('diff','--name-status')else r
  with patch.object(v,'git',side_effect=altered):reject(v.verify_source,label)
+compat=v.read_compat();compat_source={**source,'source_tree':v.COMPAT_SOURCE}
+for label,mutate in [('compat_unfinished',lambda r:r.update(status='RUNNING')),('compat_stale_source',lambda r:r.update(source_tree='0'*40)),('compat_imported_input_drift',lambda r:r['input_sha256'].update({'src/process/mod_soil_n_day_environment.f90':'0'*64}))]:
+ mutant=copy.deepcopy(compat);r=json.loads(mutant['result.json']);mutate(r);mutant['result.json']=json.dumps(r).encode()
+ reject(lambda:v.validate_compat(mutant,data,source),label)
+for label,mutate in [('compat_fresh_ABI_build_missing',lambda e:e.__setitem__(slice(None),[x for x in e if not(x['category']=='compile'and '-O0'in x['command'])])),('compat_native_missing',lambda e:e.pop(next(i for i,x in enumerate(e)if x['category']=='native')))]:
+ mutant=copy.deepcopy(compat);e=json.loads(mutant['events.json']);mutate(e);mutant['events.json']=json.dumps(e).encode()
+ reject(lambda:v.validate_compat(mutant,data,source),label)
+mutant=copy.deepcopy(data);mutant['O0/expected.bin']+=b'x'
+reject(lambda:v.validate_compat(compat,mutant,source),'compat_default_bytes_changed')
+mutant=copy.deepcopy(data);r=json.loads(mutant['result.json']);path='src/crop/mod_crop_soil_n_day.f90';r['input_sha256'][path]=v.sha((v.ROOT/path).read_bytes());mutant['result.json']=json.dumps(r).encode()
+reject(lambda:v.validate(mutant,source),'historical_input_relabelled')
 print(json.dumps(dict(status='PASS',negative_count=len(passed),controls=passed),indent=2))
