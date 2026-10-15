@@ -705,6 +705,9 @@ check_b19_micro_root_recomposition() {
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 )
+        python3 -B tests/root-growth/verify_swrd2_successor.py || fail 'unqualified persistent SWRD2 crop transaction'
+        ;;
       src/runtime/mod_fmr_biomass_root_uptake_input.f90|src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
         (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
         ;;

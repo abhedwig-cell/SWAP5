@@ -1,6 +1,11 @@
 """Incomplete, stale or altered scoped science must not become PASS."""
 import copy,json
 import verify_thermal_evidence as v
+if (v.ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+ import sys
+ sys.path.insert(0,str(v.ROOT/'tests/root-growth'));import verify_swrd2_successor as swrd2
+ print(json.dumps(swrd2.predecessor_controls('tests/nut-thermal/check_evidence_controls.py'),indent=2))
+ raise SystemExit(0)
 s=v.source();d=v.read(s);v.validate(d,s);passed=[]
 def reject(data,label):
  try:v.validate(data,s)

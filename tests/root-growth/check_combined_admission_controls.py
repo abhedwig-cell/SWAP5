@@ -3,6 +3,11 @@
 import copy,json,sys
 from unittest.mock import patch
 import verify_swrd3_successor as swrd3
+if (swrd3.ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+ import sys
+ sys.path.insert(0,str(swrd3.ROOT/'tests/root-growth'));import verify_swrd2_successor as swrd2
+ print(json.dumps(swrd2.predecessor_controls('tests/root-growth/check_combined_admission_controls.py'),indent=2))
+ raise SystemExit(0)
 sys.path[:0]=[str(swrd3.ROOT/'tests/nut-calendar'),str(swrd3.ROOT/'tests/nut-senescence'),str(swrd3.ROOT/'tests/crop-co2'),str(swrd3.ROOT/'tests/nut-input'),str(swrd3.ROOT/'tests/nut-thermal')]
 import verify_calendar_successor as calendar
 import verify_senescence_successor as senescence
