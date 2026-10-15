@@ -9,7 +9,7 @@
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "next_action": "Persist exact science and successor guard postimage. Verify raw/corruption controls and original owners, then one full moving OFF.",
+  "next_action": "Execute one complete local moving preservation OFF on frozen remotely persisted candidate; full RUNNING is not PASS.",
   "relevant_paths": [
     "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
     "src/process/mod_soil_n_day_environment.f90",
@@ -26,6 +26,10 @@
       "path": "env-direct-first",
       "status": "FAILED_TEST_EXPECTATION",
       "reason": "Assumed every temperature in input range must accept; original organic guards reject -20C singular dissimilation and 60C negative/singular rate. Existing guards retained and independently compared to fixed-temperature owner; no tolerance/physics change."
+    },
+    {
+      "status": "FAILED_EVIDENCE_CONTROL_EXPECTATION",
+      "cause": "Appended bytes outside literal source block are rejected by archive manifest, not literal block validation; corrected block-corruption control changes an actual byte inside the bound original block. No science/provider changed."
     }
   ],
   "scientifically_qualified_bounded_scope": true,
@@ -334,17 +338,66 @@
   },
   "added_blobs": {
     "src/process/mod_soil_n_day_environment.f90": "96ecfbee9aea39aef9ee1b3d00fbefe954b68f72",
-    "tests/nut-environment/check_environment_controls.py": "641f5bda80769307a9b9d2c8cfabad7e112decb9",
+    "tests/nut-environment/check_environment_controls.py": "896a2425c6b94ec8d69a7597cebbaac2c9b6cfe0",
     "tests/nut-environment/run_environment.py": "5b7478559260671e4410d6c264466e63455886c2",
     "tests/nut-environment/test_environment_day.f90": "7c9a2b72c04ea435915a73b7e14ba5f8b5bac3fd",
     "tests/nut-environment/test_environment_joint.f90": "6f0bfabee2d18d59b3924ebede31c9b8dabcc965",
-    "tests/nut-environment/verify_environment_successor.py": "7b34fa63a522a2dd07862d414cb9c4ad95afe593"
+    "tests/nut-environment/verify_environment_successor.py": "92bb578406df51111262bffbc7932e2ea2b3be1b"
   },
   "changed_blobs": {
     "src/crop/mod_crop_soil_n_day.f90": "2bab6f8f5ca5bab5da6ba4f37239eaa880aa0f71",
     "src/process/mod_b111_soil_n_reactive_owner.f90": "153e4aeb602b8ebd18a7b0f413fb5b1c5d0bee27",
     "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "a8624c1f0434cc1d2814be37bda169a09efe33b2",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "6a3067af248c72dd58b12917956d7b8be7516abc",
-    "tests/nut-crop/verify_crop_supply_successor.py": "23c8c28c72456ccec4140ff171cf367ca52e3291"
+    "tests/nut-crop/verify_crop_supply_successor.py": "23c8c28c72456ccec4140ff171cf367ca52e3291",
+    "tests/crop-co2/verify_co2_successor.py": "49e52bd93b784f4bbef6b2a8c55dbde3b84e01aa"
+  },
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 22,
+    "controls": [
+      "unfinished",
+      "direct_only",
+      "wrong_source",
+      "changed_input",
+      "missing_environment_driver",
+      "missing_literal_temperature",
+      "missing_joint_science",
+      "missing_decoder",
+      "wrong_restart_endpoint",
+      "incumbent_unproven",
+      "optimization_drift",
+      "literal_replaced",
+      "raw_restart",
+      "raw_oracle",
+      "raw_incumbent",
+      "native_missing",
+      "native_failed",
+      "unchecked_compile",
+      "raw_digest",
+      "foreign_source",
+      "foreign_test",
+      "foreign_reference"
+    ]
+  },
+  "incumbent_owner_verification": {
+    "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "postimages": {
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "5a93008ed2fb18d0798ec0c967729815d156ec26",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "86f8c7770b15dcd63f3c22295c81f0f7073cd993"
+    },
+    "co2_successor": true,
+    "qualified": false,
+    "admitted": false,
+    "physical_programs": 28,
+    "highest": "NOT_SELECTED_POLICY",
+    "crop_supply_successor": true,
+    "crop_supply_baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+    "crop_supply_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "crop_supply_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+    "daily_environment_successor": true,
+    "environment_baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+    "environment_source_tree": "83f559ee097415e436a33fc9a531de93d382b99a"
   }
 }

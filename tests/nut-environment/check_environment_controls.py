@@ -25,7 +25,10 @@ for label,mutate in [
  d=copy.deepcopy(data);r=json.loads(d['result.json']);mutate(r);d['result.json']=json.dumps(r).encode()
  rejected(lambda:v.validate(d,source),label)
 for label,p in [('raw_restart','O0/test_environment_joint-fresh.bin'),('raw_oracle','O2/literal_crop_exchange.f90'),('raw_incumbent','O0/test_crop_soil_joint-expected.bin')]:
- d=copy.deepcopy(data);d[p]+=b'x';rejected(lambda:v.validate(d,source),label)
+ d=copy.deepcopy(data)
+ if label=='raw_oracle':d[p]=d[p].replace(b'! Mineralisation',b'! Xineralisation',1)
+ else:d[p]+=b'x'
+ rejected(lambda:v.validate(d,source),label)
 for label,mutate in [('native_missing',lambda e:e.pop(next(i for i,x in enumerate(e)if x['category']=='native'))),('native_failed',lambda e:e[-1].update(returncode=1)),('unchecked_compile',lambda e:e[next(i for i,x in enumerate(e)if x['category']=='compile')]['command'].remove('-fcheck=all')),('raw_digest',lambda e:e[-1].update(stdout_sha256='0'*64))]:
  d=copy.deepcopy(data);e=json.loads(d['events.json']);mutate(e);d['events.json']=json.dumps(e).encode()
  rejected(lambda:v.validate(d,source),label)

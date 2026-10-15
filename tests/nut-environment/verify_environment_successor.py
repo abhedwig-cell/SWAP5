@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[2]
 BASE='dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c'
 STATUS='integration/audits/MC_NUT01_DAILY_ENVIRONMENT_STATUS.json'
 CHANGED={
+ 'tests/crop-co2/verify_co2_successor.py',
  'src/process/mod_b111_soil_n_reactive_owner.f90',
  'src/crop/mod_crop_soil_n_day.f90',
  'src/runtime/mod_fmr_crop_soil_n_joint_application.f90',
