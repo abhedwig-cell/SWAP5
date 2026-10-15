@@ -399,6 +399,10 @@ if [[ -f src/crop/mod_crop_soil_n_day.f90 ]]; then
   python3 tests/nut-crop/verify_crop_supply_successor.py || fail 'unqualified daily crop Soil-N supply successor'
   dependency_authority=f8eca95ba623dc18db0110cd1b84af46857c8b9b
 fi
+if [[ -f src/crop/mod_crop_soil_n_material_day.f90 ]]; then
+  python3 tests/nut-material/verify_material_successor.py || fail 'unqualified explicit soil-N material day successor'
+  dependency_authority=dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -779,6 +783,9 @@ check_b19_micro_root_recomposition() {
         ;;
       src/crop/mod_crop_soil_n_configuration.f90|src/crop/mod_crop_soil_n_day.f90|src/runtime/mod_fmr_crop_soil_n_joint_application.f90|src/adapter/mod_crop_soil_n_joint_restart_file.f90 )
         python3 tests/nut-crop/verify_crop_supply_successor.py || fail "unqualified crop Soil-N successor: $candidate_path"
+        ;;
+      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90 )
+        python3 tests/nut-material/verify_material_successor.py || fail "unqualified material day successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac

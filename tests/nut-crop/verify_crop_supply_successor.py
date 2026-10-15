@@ -12,6 +12,10 @@ def check(ok,label):
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.verify_source()
  s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
@@ -33,6 +37,10 @@ def read_evidence():
  return data
 
 def verify_qualification():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.verify_qualification()
  source=verify_source()
  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
  import verify_age_successor as age
@@ -116,6 +124,10 @@ def verify_qualification():
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 
 def incumbent(mode='qualification'):
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.incumbent(mode)
  verify_qualification();base=ROOT.parent/'nut-crop-peer-f8eca95b'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),PEER],cwd=ROOT,check=True,capture_output=True)
  check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==PEER,'baseline changed')

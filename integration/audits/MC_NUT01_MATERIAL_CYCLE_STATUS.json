@@ -1,0 +1,141 @@
+{
+  "work_unit": "MC-NUT01-MATERIAL-CYCLE",
+  "baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+  "branch": "work/nut-material-cycle-20261015",
+  "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+  "donor_pr": 1117,
+  "contract": "docs/science/MC_NUT01_MATERIAL_CYCLE_CONTRACT_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "next_safe_step": "Freeze this persisted candidate and actively complete one full local moving OFF, then final docs, same PR publication and safe canonical admission. No science mutation during the run.",
+  "development_process_result": "material-process-first/result.json",
+  "development_day_result": "material-day-third/result.json",
+  "retained_attempts": [
+    {
+      "path": "material-day-first",
+      "status": "FAILED_RUNNER_LOOKUP",
+      "cause": "Development replacement incorrectly changed dictionary key; no science executed."
+    },
+    {
+      "path": "material-day-second",
+      "status": "FAILED_REFERENCE_LINK",
+      "cause": "Missing fail-closed swap_error reference fixture, corrected without production mutation."
+    },
+    {
+      "path": "material-physical-first",
+      "status": "FAILED_TEST_RESTORE_PRECONDITION",
+      "cause": "Added empty-route probe left restore target initialized; existing restart API correctly rejects initialized target. Reset test targets; production unchanged. All completed O0 providers retained for checked reuse."
+    }
+  ],
+  "scientifically_qualified_bounded_scope": true,
+  "qualification_status": "SCOPED_SCIENCE_OWNER_CONTROLS_PASS_FULL_PRESERVATION_PENDING",
+  "primary_execution": "54868c6983c9039b8252edbea951bd5911b913a8",
+  "source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
+  "physical_provider_count": 259,
+  "primary_cost_seconds": {
+    "compile": 92.77187361395045,
+    "driver_compile": 8.809605700007523,
+    "link": 0.7614573069877224,
+    "native": 38.33332222496392
+  },
+  "small_process_cost_seconds": {
+    "compile": 0.5832001169910654,
+    "driver_compile": 0.13777012599166483,
+    "link": 0.06300915000610985,
+    "native": 0.0030726300174137577
+  },
+  "small_day_cost_seconds": {
+    "compile": 9.922705275006592,
+    "driver_compile": 1.750666514999466,
+    "link": 0.17659735602501314,
+    "native": 0.00798444400425069
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MATERIAL_CYCLE_20261015.tar.xz.b64",
+    "sha256": "833c8b3ac3f80d960559bf730481f5d4e1622ea280a2bac4a7cc4c10187e7ab7",
+    "decoded_bytes": 116672,
+    "members": 2025
+  },
+  "added_blobs": {
+    "tests/nut-material/check_material_controls.py": "343a2f1a2a5228a03cd7b860bf42671a02d8f454",
+    "tests/nut-material/verify_material_successor.py": "7d03d538b009ad0fef7f78d705d3552cfe9aa2e1",
+    "src/crop/mod_crop_soil_n_material_day.f90": "ec884278f1721fb7eac33b45fe79f945776fb1f3",
+    "src/process/mod_b111_soil_n_addition.f90": "f2376518a634f304d6ffe8e6439ab0852d268051",
+    "src/runtime/mod_fmr_crop_soil_n_material_application.f90": "5ba2a7fac8ec112ab242f879deaf464056198020",
+    "tests/nut-material/material_fixture.inc": "f5fc3c9f1f68b8a2dde6d7fed87d62a1c99f4137",
+    "tests/nut-material/run_material.py": "5e6f0a36bd6e0faf99b859c032aa8cedc8c753df",
+    "tests/nut-material/test_material_addition.f90": "ce0fdb332551c7e51f161e7feaf6ab2bcc35f1b4",
+    "tests/nut-material/test_material_day.f90": "6261a5517113ee6af91bdbcfc437bb6e7c5cb3a3",
+    "tests/nut-material/test_material_joint.f90": "3e817538a0241c16ac19872cd4e1c8f10030827d"
+  },
+  "changed_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "35ed5a10b1bc9e4afb567e9ac2bd66948d4549c5",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "2f48fc404a4ca0f9143afcd9b1d3236d40c20b00",
+    "tests/nut-crop/verify_crop_supply_successor.py": "00017a06800b7724b33466d6c58a571e05fb56e7"
+  },
+  "reused_provider_compile_seconds": 29.883072185053607,
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 29,
+    "controls": [
+      "unfinished",
+      "direct_only",
+      "stale_source",
+      "wrong_authority",
+      "input_drift",
+      "missing_joint",
+      "missing_real_science",
+      "decoder_incomplete",
+      "empty_not_preserved",
+      "optimization_drift",
+      "native_reused",
+      "wrong_reused_execution",
+      "provider_drift",
+      "restart_corrupt",
+      "empty_endpoint_corrupt",
+      "literal_amendment_corrupt",
+      "literal_residue_corrupt",
+      "small_science_missing",
+      "native_missing",
+      "native_failed",
+      "unchecked_compile",
+      "raw_digest_false",
+      "small_native_missing",
+      "small_unchecked_compile",
+      "prior_unfinished",
+      "prior_input_drift",
+      "foreign_source",
+      "foreign_test",
+      "foreign_reference"
+    ]
+  },
+  "incumbent_owner_verification": {
+    "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "postimages": {
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "5a93008ed2fb18d0798ec0c967729815d156ec26",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "86f8c7770b15dcd63f3c22295c81f0f7073cd993"
+    },
+    "co2_successor": true,
+    "qualified": false,
+    "admitted": false,
+    "physical_programs": 28,
+    "highest": "NOT_SELECTED_POLICY",
+    "crop_supply_successor": true,
+    "crop_supply_baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+    "crop_supply_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "crop_supply_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+    "material_successor": true,
+    "material_source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71"
+  },
+  "test_selection": {
+    "direct": "Two real production providers for material chemistry;41 for real crop/soil day, O0/O2 independent fresh drivers.",
+    "physical": "Actual Richards/accepted owner and full eight-pool original source, joint atomic rollback,19 invalid decoder cases per optimization, opaque/fresh-process continuation and original empty route endpoint identity.259 providers; O0 completed providers reused with source/flags/object/module audit, fresh O2 build and all native assertions.",
+    "stable_admission": "Exactly one local full moving OFF selected under AGENTS four-level admission boundary for new material forcing/atomic publication and successor dispatch. Expected1573s, shell compile/link/native split UNKNOWN. Highest low-air NOT_SELECTED_POLICY."
+  }
+}
