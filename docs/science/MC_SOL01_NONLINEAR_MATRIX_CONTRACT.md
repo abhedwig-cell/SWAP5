@@ -98,7 +98,44 @@ The unchanged master #1072 still fails its pre-existing stale-inheritance check;
 all243 dispositions remain unchanged. See the existing status/coverage records
 for the decoded evidence hash, exact row receipts and owner handoff.
 
-## Exclusions and next blocks
+## Regie source-policy review (2026-10-15)
+
+User continuation authorizes the bounded admission review through the existing
+central-regie route (protocol full-cycle rule8 and the trajectory3 precedent).
+This review accepts an explicit SWAP5 numerical difference for the nonlinear
+application: use the existing canonical partition operator, not the legacy
+iterate/near-unity shortcuts. It changes neither the Freundlich law nor B1.11's
+immutable archive. It does not claim an independently admitted new B1 snapshot.
+
+For theta>0, rho*Kf>=0, Cref>0 and exponent>0, total storage is continuous and
+strictly increasing from zero to infinity. Its inverse is therefore unique.
+The existing bracketed production solve and independent quad Newton/closed
+quadratic controls select that same storage relation. Literal transport order,
+changing-water total mass, decay and all external receipts remain intact.
+The executed two discrepancy witnesses establish why reproducing the historical
+concentration shortcut would conflict with explicit dissolved/sorbed state.
+Accept only the tested0.5..2 exponent application envelope; all prior exclusions
+remain. This is a numerical/state-consistency acceptance, not new crop-N physics.
+
+The reviewed production delta from ee2d8449 is exactly the constructor exponent
+domain check plus comments. Existing process/solver/water/crop/state/codec sources,
+callers, parameters and state schema are unchanged; the same real physical drivers
+cover rejection/retry/continuation. All240 final science inputs and exact source
+postimages remain bound to the existing1938-member capsule. An extension to the
+existing preservation validator verifies that capsule, terminal native coverage,
+raw commands/assertions, O0/O2 identity and the final driver/input binding.
+Negative controls reject missing/failed cases, source drift, wrong flags/endpoints,
+missing raw logs, foreign deltas and altered postimages. Original CO2 controls
+and all original scientific preservation assertions remain required.
+
+Stable preservation is now selected: one fresh local complete moving gate, resume
+OFF, expected1825s based on the prior measured run. Compile/link/native breakdown
+of that broad shell is UNKNOWN. This is the mandatory stable admission boundary,
+not routine daily chemistry feedback. No highest low-air stress or duplicate
+manual Actions dispatch is selected. Admission remains conditional on terminal
+PASS, unchanged final science inputs, live overlap reconciliation and safe merge.
+
+## Remaining scope
 
 Pond/rain/irrigation/SSDI/macro, aquifer mutation, age, Soil-N/crop-N,
 root salinity feedback, default bootstrap/multicolumn and portable restart stay
