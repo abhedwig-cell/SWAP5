@@ -29,6 +29,7 @@ program test_matrix_joint
   integer::status,u
   logical::ok
   character(512)::mode,restart_path,endpoint_path
+  character(64)::exponent_argument
   call get_command_argument(1,mode);call get_command_argument(2,restart_path);call get_command_argument(3,endpoint_path)
   call initialize_application_config(cfg,-75.0_real64,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -45,6 +46,9 @@ program test_matrix_joint
   column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
   column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call parameters(p)
+  call get_command_argument(4,exponent_argument)
+  if(len_trim(exponent_argument)>0)read(exponent_argument,*)p%frexp
+  if(abs(p%frexp-1.0_real64)>epsilon(1.0_real64))p%cref_mg_cm3=0.37_real64
   call backend%initialize(top);call second%initialize(top)
   if(trim(mode)=='reject')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
@@ -115,6 +119,15 @@ program test_matrix_joint
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
          empty_water,empty_solute,status)
     call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered parameters rejected')
+    pbad=p;pbad%frexp=0.5_real64
+    if(abs(p%frexp-0.5_real64)<epsilon(1.0_real64))pbad%frexp=2.0_real64
+    call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
+         empty_water,empty_solute,status)
+    call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered exponent rejected')
+    pbad=p;pbad%cref_mg_cm3=2.0_real64*p%cref_mg_cm3
+    call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
+         empty_water,empty_solute,status)
+    call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered Cref rejected')
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670002_int64,9001_int64,p, &
          empty_water,empty_solute,status)
     call require(status/=0,'wrong hydraulic identity rejected')

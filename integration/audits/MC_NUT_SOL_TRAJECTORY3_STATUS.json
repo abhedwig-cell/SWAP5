@@ -487,5 +487,31 @@
     "remote_qualified_candidate_head": "5a7624693a42427e3956f8cf728b55f4a9b4a46a",
     "remote_candidate_tree": "df5f907bbd44715a77b168615912b93a9db9d7fb"
   },
-  "prior_remote_preserved_source": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2"
+  "prior_remote_preserved_source": "0a48cbd8991d3b30dd78f57422e0617d49bcb9d2",
+  "nonlinear_successor": {
+    "work_unit": "MC-SOL01-NONLINEAR-MATRIX",
+    "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
+    "branch": "work/nut-sol-nonlinear-matrix-20261015",
+    "stage": "IMPLEMENTED_PENDING_QUALIFICATION",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false,
+    "scope": "Extend existing joint matrix route to 0.5<=frexp<=2; unchanged accepted water owner, process formulas, mass ownership and restart schema",
+    "contract": "docs/science/MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md",
+    "interfaces_changed": [],
+    "read_only_owners": ["Full Richards", "water traces", "WOFOST81/crop/root", "joint application", "native codec", "existing partition/process operators"],
+    "expected_differences": ["B1.11 fixed-point 1e-3 stopping does not close chemical mass", "B1.11 near-unity shortcut ignores nonlinear storage"],
+    "test_selection": {
+      "daily": "python tests/nut-sol/run_matrix_route.py --process-only; four source files per optimization, expected <5s",
+      "targeted": "MATRIX_NONLINEAR=1 python tests/nut-sol/run_matrix_route.py; about 120s compilation plus native about 10s/exponent; UNKNOWN until measured",
+      "stable_admission": "Central regie must accept classified inverse differences, reconcile exact CO2/moving source guards and select full moving under protocol rule8 before admission; prior 1825s not claimed for this successor",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "next_action": "Small independent production partition oracle, then full nonlinear water/transport/joint/restart O0/O2",
+    "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+    "blockers": ["Canonical admission requires central source-policy and preservation reconciliation; no new authority inferred from prior linear admission"]
+  }
 }
