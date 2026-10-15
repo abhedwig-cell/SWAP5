@@ -4,20 +4,20 @@
   "checkpoint_commit": "SELF",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Fresh direct O0/O2, calendar process/day/joint/empty and shared owner qualification, all original corruption controls; then one full stable local moving OFF.",
+  "next_action": "Run exactly one full local moving OFF on frozen remotely persisted candidate; require terminal PASS and unchanged tracked scientific inputs, then verify live canonical/overlaps and safely merge PR1241.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
-    "src/crop",
-    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
-    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
-    "src/runtime/mod_fmr_biomass_root_depth_binding.f90",
-    "src/runtime/mod_fmr_root_depth_rate_daily_binding.f90",
-    "src/kernel/mod_kernel_transactions.f90",
-    "tests/root-growth"
+    "src",
+    "tests",
+    "tools",
+    "reference",
+    "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+    "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json",
+    "integration/audits/evidence"
   ],
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
@@ -53,8 +53,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "NOT_RUN_ON_RECONCILED_POSTIMAGE",
-  "stage": "UNIFIED_SOURCE_PERSISTED_PENDING_FRESH_AFFECTED_OWNERS",
+  "full_fci": "SELECTED_PENDING_ONE_FULL_LOCAL_OFF",
+  "stage": "UNIFIED_QUALIFIED_STABLE_FULL_MOVING_SELECTED",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -176,6 +176,10 @@
     "tests/root-growth/verify_swrd3_successor.py": {
       "status": "A",
       "blob": "c9dbb8b0d150b27e8507cf74149c4e758ed2f7ed"
+    },
+    "tests/root-growth/check_combined_admission_controls.py": {
+      "status": "A",
+      "blob": "d3075c52a304028c6da6e51b42865446c12c169a"
     }
   },
   "swrd3_science_evidence": {
@@ -266,22 +270,23 @@
     "threshold": "AERATECRIT1 legal source boundary; ordinary0.4 profile retained as originally executed"
   },
   "swrd3_owner_evidence": {
-    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_20261015.tar.xz.b64",
-    "decoded_sha256": "a54779f46aaed19d993345cec005ade1dbcfe0b119fcb411f86e58122c7a8086",
-    "decoded_bytes": 191152,
-    "members": 1704
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_REQUALIFIED_20261015.tar.xz.b64",
+    "decoded_sha256": "a8ad443762b448d83e4b0ded3ebcddbdf35ebd36e52bc8b0b69d05ed1f48deb2",
+    "decoded_bytes": 2200492,
+    "members": 1927
   },
   "swrd3_owner_results": {
     "additional_commands": 10,
-    "command_wall_seconds": 538.528892390983,
+    "command_wall_seconds": 623.5435652219749,
     "native_nutrient_providers": 265,
     "nutrient_cost_seconds": {
-      "compile": 129.9014794450777,
-      "driver_compile": 31.063587178039597,
-      "link": 1.8929216809774516,
-      "native": 153.5763307739544
+      "compile": 145.64623405088787,
+      "driver_compile": 37.53098757304542,
+      "link": 1.9231454489927273,
+      "native": 179.49223641493882
     },
-    "all_existing_drivers": "fresh original8 process/material/senescence/temperature direct/joint O0/O2; all native decoder controls retained"
+    "all_existing_drivers": "fresh original8 process/material/senescence/temperature direct/joint O0/O2; every original native decoder control retained",
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b"
   },
   "preserved": false,
   "controls": {
@@ -317,11 +322,21 @@
     "master_branch_modified": false
   },
   "overlap": {
-    "pr1240": [
-      "tests/crop-co2/verify_co2_successor.py",
-      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    "merged_calendar_prs": [
+      1242,
+      1243
     ],
-    "action": "Inspect live head and exact peer guards before admission; do not modify peer branch."
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+    "shared_guards_reconciled": true,
+    "open_pr1234": {
+      "head": "238b6184140ec42cbd77f472436519d98bbf7bd7",
+      "state": "OPEN_DRAFT_NOT_ADMISSION_AUTHORITY",
+      "paths": [
+        "tests/crop-co2/verify_co2_successor.py",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "disposition": "Inspected exact peer guard delta. No peer source is in canonical or this candidate; future surface admission must reconcile both existing qualified routes. Peer branch untouched."
+    }
   },
   "stable_admission_selection": {
     "command": [
@@ -353,7 +368,7 @@
   },
   "executed_head": "13b786ba854fe34eb512d8bd85f00c2a493c6fd2",
   "reconciliation_20261015": {
-    "state": "FOUR_SHARED_GUARDS_UPDATED_NOT_QUALIFIED",
+    "state": "COMBINED_NONRECURSIVE_QUALIFICATION_PASS",
     "commits": [
       "277cd6af3be2ab369ba842eafef293d8658046c1",
       "9e6cb4e71c1627ec38c516277694651d6424c7af",
@@ -362,13 +377,11 @@
     ],
     "scope": "NUT01 management calendar source guard, moving provider selection, senescence negative controls and qualification dispatch now represented alongside SWRD3 guard; removed recursive SWRD3 -> senescence -> SWRD3 early delegation. Canonical source must still be merged in full; no inherited exact-source qualification.",
     "open_issues": [
-      "SWRD3 verify_source checks exact swrd3_postimages and original baseline diff, now stale for changed guard files and updated canonical inputs.",
-      "Calendar verifier requires real calendar code/status present on branch; this PR still based on pre-calendar canonical.",
-      "Revalidate guard ordering, both negative controls and full local moving F-CI on unified immutable candidate.",
-      "Resolve branch merge conflicts and align fresh evidence manifest before admission."
+      "One complete stable-candidate moving F-CI and canonical admission pending."
     ],
-    "qualified": false,
-    "preserved": false
+    "qualified": true,
+    "preserved": false,
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b"
   },
   "reconciliation_canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
   "reconciliation_selection": {
@@ -383,5 +396,108 @@
     "decoded_sha256": "2bdba5ecad886b604c2fbd372929f4a01f379a3df80eafe710ff193eab1e7346",
     "decoded_bytes": 95792,
     "members": 1570
-  }
+  },
+  "retained_precalendar_owner_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_20261015.tar.xz.b64",
+    "decoded_sha256": "a54779f46aaed19d993345cec005ade1dbcfe0b119fcb411f86e58122c7a8086",
+    "decoded_bytes": 191152,
+    "members": 1704
+  },
+  "reconciled_direct_result": {
+    "status": "PASS",
+    "head": "91a591f552260cc0941197f1f7eaf16b847ddc6b",
+    "provider_count": 39,
+    "fixture_sha256": "4ee3fe71251ba97c9003a56ae42e7aab6182bd87d22dac5e0a07c7329c8e76fc",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "scope": "Real root/crop transaction and accepted-window contracts, synthetic single-water carrier; not Richards/file-weather lifecycle admission",
+    "wall_seconds": 12.39594705500349,
+    "cost_seconds": {
+      "compile": 9.86526709800819,
+      "link": 2.3392541200009873,
+      "native": 0.043808071946841665
+    }
+  },
+  "reconciled_costs": {
+    "calendar": {
+      "compile": 142.76219333385234,
+      "driver_compile": 13.282032219984103,
+      "link": 0.7683203919877997,
+      "native": 120.6770044680161
+    },
+    "calendar-direct": {
+      "compile": 16.560286439940683,
+      "driver_compile": 3.6889654500118922,
+      "link": 0.1890106870123418,
+      "native": 0.010538874994381331
+    },
+    "calendar-process": {
+      "compile": 0.8949292910110671,
+      "driver_compile": 0.2334255129972007,
+      "link": 0.0676452110055834,
+      "native": 0.0031055069994181395
+    },
+    "calendar-empty": {
+      "driver_compile": 1.4408932669903152,
+      "link": 0.4343291119876085,
+      "native": 0.0063979039987316355
+    },
+    "nut": {
+      "compile": 145.64623405088787,
+      "driver_compile": 37.53098757304542,
+      "link": 1.9231454489927273,
+      "native": 179.49223641493882
+    },
+    "additional_wall_seconds": 623.5435652219749,
+    "direct": {
+      "compile": 9.86526709800819,
+      "link": 2.3392541200009873,
+      "native": 0.043808071946841665
+    }
+  },
+  "reconciled_controls_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CONTROLS_REQUALIFIED_20261015.tar.xz.b64",
+    "decoded_sha256": "d264fef81c844ed87e89a8a043217bb51336873b31ad44bf6afd43d9a3b47d2a",
+    "decoded_bytes": 2332,
+    "members": 8
+  },
+  "controls_requalified": {
+    "swrd3_negative": 17,
+    "calendar_including_original_senescence_negative": 183,
+    "combined_dispatch_checks": 14,
+    "original_baseline_co2_tests": 14,
+    "all_terminal": "PASS",
+    "overhead_seconds": "UNKNOWN"
+  },
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
+    "docs/audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md",
+    "docs/status-a/TRACEABILITY.md"
+  ],
+  "test_paths": [
+    "tests/root-growth",
+    "tests/nut-calendar",
+    "tests/nut-senescence",
+    "tests/crop-co2",
+    "tests/mc-met01/run_joint_owner_additional.py",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "evidence_paths": [
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_SCIENCE_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_PROBE_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_OWNERS_REQUALIFIED_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CALENDAR_REQUALIFIED_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CONTROLS_REQUALIFIED_20261015.tar.xz.b64"
+  ],
+  "master_snapshot": {
+    "head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+    "capabilities": 243,
+    "admitted": 95,
+    "active": 108,
+    "dispositions_changed": 0,
+    "root_biomass_already_admitted": true,
+    "anaerobic_depth_extension_swr_d2_remains_open": true
+  },
+  "next_dependency_ready_route": "SWRD2 owned actual/potential persistent daily depth extension, using existing rate owner and accepted GRRT/GRRTPOT, transpiration/drought/oxygen carriers. Production binding and actual Richards/restart qualification remain open. Do not start before PR1241 admission."
 }

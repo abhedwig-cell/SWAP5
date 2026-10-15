@@ -1,3 +1,51 @@
+# Reconciled trajectory-3 qualification checkpoint
+
+Canonical reconciled through `7c774455bf1d5918b76d6147a23cc159ba427e8b`
+(PR1242 management calendar and PR1243 evidence reconciliation). Existing PR1241
+is the only SWRD3 work PR. Production source tree is
+`f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6`.
+
+The combined source authority pins the exact union and the three unchanged
+canonical calendar providers. CO2, senescence, calendar and SWRD3 admission
+entrypoints require both complete proofs without recursive delegation. Original
+calendar, senescence and CO2 assertions remain active. Actual missing-SWRD3 and
+missing-calendar failures are checked through all four entrypoints.
+
+Fresh direct20 O0/O2 programmes PASS. The original36 physical and8 supplemental
+SWRD3 programmes remain valid for their byte-identical native source, drivers,
+oracles, forcing, flags and verified compiler/frontend/runtime artifacts. No
+whole-session environment equality is inferred from opaque session hashes.
+The native source and generated Fortran have no additional environment reads;
+fixture paths are fixed by the unchanged controller. Exact checks and executed
+histories are preserved in the requalified owner capsule.
+
+Fresh calendar process/day/joint closures3/46/268 at O0/O2, manual/scheduled
+Richards counterparts, full native/opaque/fresh-process restart and no-event
+pending-state identity PASS. Fresh original8 N/material/senescence drivers per
+optimization and all ten shared owner/coupling gates PASS.17 SWRD3 negatives,
+183 calendar/original-senescence negatives,14 combined dispatch checks and14
+original CO2 tests PASS. All raw results, failed historical attempts, dependency
+manifests and executed Git bundles remain separate from admission.
+
+Exactly one complete local moving F-CI OFF is selected next, expected1800s.
+Do not infer preservation or canonical admission from this checkpoint. Highest
+low-air remains NOT_SELECTED_POLICY. The status identifies the final full gate
+and expected-head PR1241 merge authority. Source/evidence-only metadata changes
+after that gate do not select a second numerically identical full execution.
+Open surface PR1234 overlaps two guards, remains draft and is not incorporated.
+
+Master snapshot `aae2b8d207b13453be45dd1773d39f8eae855831` has243 capabilities,
+95 ADMITTED and108 ACTIVE_MIGRATION. SWRD3 biomass depth was already ADMITTED;
+this adds daily production reachability. Historical SWRD2 anaerobic extension
+remains open; its capability is not promoted by the existing biomass-growth
+oxygen gate. No disposition/count promotion. Largest dependency-ready successor:
+SWRD2 persistent actual/potential daily depth in real production. Do not start it
+before this PR is admitted. Harvest/fallow/rotation retains its shared phase
+boundary; native weather disk codec and broader root selectors remain open.
+
+The following sections are retained historical checkpoints and are superseded
+by this section and the live status for present-state claims.
+
 # Current SWRD3 daily production successor
 
 PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241), canonical baseline
