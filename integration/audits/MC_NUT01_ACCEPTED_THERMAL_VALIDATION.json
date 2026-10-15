@@ -1,0 +1,63 @@
+{
+  "status": "SCOPED_VALIDATION_PASS_NOT_CANONICALLY_ADMITTED",
+  "execution_commit": "4388083f10b0b6e9e353134218eadbadf530ff47",
+  "source_tree": "fe0747d5ec38d1383666376f5e0162373faefcc0",
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/nut-thermal/verify_thermal_evidence.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.31070290599018335,
+      "stdout": "{\n  \"status\": \"SCOPED_THERMAL_SCIENCE_PASS\",\n  \"qualified_scope\": \"literal reduction and actual thermal Richards/crop/N/pending/opaque/native continuation\",\n  \"source_tree\": \"fe0747d5ec38d1383666376f5e0162373faefcc0\",\n  \"full_fci\": \"NOT_SELECTED\",\n  \"canonical_admission\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tests/nut-thermal/check_evidence_controls.py"
+      ],
+      "returncode": 0,
+      "seconds": 2.85532259401225,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"negative_count\": 30,\n  \"controls\": [\n    \"small_running\",\n    \"small_stale\",\n    \"small_missing_cases\",\n    \"joint_running\",\n    \"joint_stale\",\n    \"joint_missing_O2\",\n    \"joint_missing_BASE\",\n    \"joint_missing_thermal\",\n    \"joint_missing_calendar\",\n    \"joint_missing_native_assertions\",\n    \"joint_missing_fresh\",\n    \"joint_endpoint_identity\",\n    \"policy_running\",\n    \"policy_incomplete\",\n    \"restart_running\",\n    \"restart_incomplete\",\n    \"profile/failed_driver_compile\",\n    \"profile/failed_link\",\n    \"profile/failed_native\",\n    \"joint/failed_driver_compile\",\n    \"joint/failed_link\",\n    \"joint/failed_native\",\n    \"policy/failed_driver_compile\",\n    \"policy/failed_link\",\n    \"policy/failed_native\",\n    \"raw_drift:joint/drivers/test_thermal_joint.f90\",\n    \"raw_drift:joint/O0/thermal-manual-restart.bin\",\n    \"raw_drift:joint/O2/thermal-calendar-fresh.bin\",\n    \"raw_drift:joint/O0/manual-expected.bin\",\n    \"raw_drift:policy/O0-initial.bin\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.20097073700162582,
+      "stdout": "Documentation source checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.011158155000885017,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "docs_strict_build": {
+    "status": "PASS",
+    "seconds": 14.62,
+    "command": [
+      "python",
+      "-m",
+      "mkdocs",
+      "build",
+      "--strict"
+    ]
+  },
+  "admission_guard": "RECONCILIATION_OPEN: existing owner source guard rejects foreign/incomplete input delta"
+}

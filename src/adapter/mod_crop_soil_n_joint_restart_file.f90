@@ -3,16 +3,20 @@ module mod_crop_soil_n_joint_restart_file
   use iso_fortran_env,only:real64,int64,int32,int8,iostat_end
   use ieee_arithmetic,only:ieee_is_finite
   use mod_transaction_reference,only:transaction_state_t
-  use mod_kernel_transactions,only:kernel_committed_state_t
+  use mod_kernel_transactions,only:kernel_committed_state_t,kernel_parameter_identity_t, &
+       kernel_reconstruct_committed_state_trusted
   use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
   use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t, &
-       fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_temporal_indicator_committed_state,fmr_b110_physical_parameters_t
+  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
+       initialize_soil_temperature_state,SOIL_TEMP_OK
+  use mod_fmr_crop_soil_n_thermal_application,only:thermal_crop_soil_states_match,soil_n_thermal_template
   use mod_fmr_committed_restart,only:fmr_committed_restart_bundle_t,fmr_export_committed_restart, &
        fmr_restore_committed_restart,FMR_RESTART_OK
   use mod_b111_soil_n_reactive_owner
   use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
   use mod_soil_n_pool_state,only:soil_n_pool_state_t
-  use mod_fmr_b111_reactive_n_joint_application,only:reactive_n_joint_states_match
+  use mod_fmr_b111_reactive_n_joint_application,only:reactive_n_joint_states_match,reactive_n_thermal_states_match
   use mod_fmr_crop_soil_n_joint_application,only:crop_soil_n_joint_states_match,JOINT_OK,JOINT_INVALID
   use mod_crop_soil_n_day
   use mod_crop_soil_n_configuration
@@ -22,6 +26,7 @@ module mod_crop_soil_n_joint_restart_file
   implicit none
   private
   character(8),parameter::MAGIC='S5NC0001',PENDING_MAGIC='S5NC0002'
+  character(8),parameter::HEAT_MAGIC='S5NC0003',HEAT_PENDING_MAGIC='S5NC0004'
   integer,parameter::MAX_BYTES=10485760
   public::write_crop_soil_n_joint_restart_file,read_crop_soil_n_joint_restart_file
 contains
@@ -50,12 +55,22 @@ contains
     logical::has_pending
     character(8)::tag
     logical::ok,has_history
+    logical::thermal
+    type(kernel_parameter_identity_t)::identity
+    type(soil_temperature_field_view_t)::heat
     status=JOINT_INVALID
     if(column%state_handle/=1)return
     if(.not.pending_incorporation_valid(coupled))return
     call coupled%pending_snapshot(pending,has_pending)
     tag=MAGIC;if(has_pending)tag=PENDING_MAGIC
-    if(.not.crop_soil_n_joint_states_match(water,coupled))return
+    thermal=soil_n_thermal_template(template)
+    if(thermal)then
+      if(.not.thermal_crop_soil_states_match(water,coupled))return
+      call water%certified_parameter_identity(identity,ok);if(.not.ok)return
+      tag=HEAT_MAGIC;if(has_pending)tag=HEAT_PENDING_MAGIC
+    else
+      if(.not.crop_soil_n_joint_states_match(water,coupled))return
+    end if
     call coupled%snapshot(chemical,crop);call coupled%configuration(cp,crop_id)
     cv=crop_n_configuration_vector(cp);ov=pack_crop_n_owner(crop)
     if(size(cv)==0.or.size(ov)==0)return
@@ -92,6 +107,16 @@ contains
         if(io/=0)exit writing
         if(has_history)write(u,iostat=io)derivative
         if(io/=0)exit writing
+        if(thermal)then
+          select type(q=>r%physical_state)
+          class is(fmr_b110_physical_state_t)
+            call build_soil_temperature_field_view(q%soil_temperature,heat,io)
+          end select
+          if(io/=SOIL_TEMP_OK)exit writing
+          write(u,iostat=io)identity%parameter_set_id,identity%active_nodes,identity%heat_enabled,identity%valid, &
+            identity%z,identity%dz,heat%temperature_c
+          if(io/=0)exit writing
+        end if
         write(u,iostat=io)id,revision,time,size(v),v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
         if(io/=0)exit writing
         write(u,iostat=io)crop_id,size(cv),cv,size(ov),ov
@@ -106,7 +131,7 @@ contains
   end subroutine
 
   subroutine read_crop_soil_n_joint_restart_file(path,column,template,water_parameter_id,chemical_parameter_id,crop_parameter_id,p,cp, &
-       water,coupled,status)
+       water,coupled,status,heat_parameters)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -115,6 +140,7 @@ contains
     type(reactive_parameters_t),intent(in)::p
     type(kernel_committed_state_t),intent(inout)::water
     type(crop_soil_state_t),intent(inout)::coupled
+    type(fmr_b110_physical_parameters_t),intent(in),optional::heat_parameters
     type(crop_soil_state_t)::coupled_trial
     type(wofost81_crop_owner_state_t)::crop_trial
     real(real64),allocatable::cv(:),ov(:),crop_expected(:)
@@ -135,6 +161,10 @@ contains
     type(crop_residue_pending_t)::pending
     character(8)::tag
     logical::ok,has_history
+    logical::thermal
+    type(kernel_parameter_identity_t)::identity
+    real(real64),allocatable::temperatures(:)
+    type(kernel_committed_state_t)::certified_water
     status=JOINT_INVALID
     if(column%state_handle/=1)return
     if(water%ready())return
@@ -160,7 +190,11 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        if((tag/=MAGIC.and.tag/=PENDING_MAGIC).or.n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
+        thermal=tag==HEAT_MAGIC.or.tag==HEAT_PENDING_MAGIC
+        if((tag/=MAGIC.and.tag/=PENDING_MAGIC.and..not.thermal).or. &
+          n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
+        if(thermal.neqv.soil_n_thermal_template(template))exit decoding
+        if(thermal.and..not.present(heat_parameters))exit decoding
         if(mode==0.and.has_history)exit decoding
         physical%active_nodes=n
         allocate(physical%pressure_head(n),physical%water_content(n),s%fom_kg_m3(size(p%mineral%inventory%nfrac_fom)))
@@ -171,6 +205,18 @@ contains
           if(io/=0)exit decoding
           io=1
           if(.not.all(ieee_is_finite(derivative)))exit decoding
+        end if
+        if(thermal)then
+          allocate(identity%z(n),identity%dz(n),temperatures(n))
+          read(u,iostat=io)identity%parameter_set_id,identity%active_nodes,identity%heat_enabled,identity%valid, &
+            identity%z,identity%dz,temperatures
+          if(io/=0)exit decoding
+          io=1
+          if(identity%active_nodes/=n.or..not.identity%heat_enabled.or..not.identity%valid)exit decoding
+          if(.not.all(ieee_is_finite(identity%z)).or..not.all(ieee_is_finite(identity%dz)))exit decoding
+          allocate(physical%soil_temperature)
+          call initialize_soil_temperature_state(temperatures,physical%soil_temperature,io)
+          if(io/=SOIL_TEMP_OK)exit decoding
         end if
         if(mode==1)then
           if(has_history)then
@@ -202,7 +248,7 @@ contains
         if(any(abs(cv-crop_expected)>0d0).or.count<29.or.count>2048)exit decoding
         allocate(ov(count));read(u,iostat=io)ov
         if(io/=0)exit decoding
-        if(tag==PENDING_MAGIC)then
+        if(tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC)then
           read(u,iostat=io)pending%clock,pending%dry_matter_kg_ha,pending%nitrogen_kg_ha,pending%application_age
           if(io/=0)exit decoding
         end if
@@ -221,22 +267,38 @@ contains
         if(.not.ok.or.io/=FMR_RESTART_OK)then
           io=1;exit decoding
         end if
+        if(thermal)then
+          call kernel_reconstruct_committed_state_trusted(certified_water,r%lineage_id,r%revision,r%physical_state, &
+            r%committed_time,r%time_bound,ok,io,heat_parameters,identity)
+          if(.not.ok.or.io/=0)then
+            io=1;exit decoding
+          end if
+          water_trial(1)=certified_water
+        end if
         call reconstruct_reactive_trusted(p,id,revision,time,theta,s,chemical_trial,io)
         if(io/=MINERAL_OK)exit decoding
         io=1
-        if(.not.reactive_n_joint_states_match(water_trial(1),chemical_trial))exit decoding
+        if(thermal)then
+          if(.not.reactive_n_thermal_states_match(water_trial(1),chemical_trial))exit decoding
+        else
+          if(.not.reactive_n_joint_states_match(water_trial(1),chemical_trial))exit decoding
+        end if
         io=0
       end associate
     end block decoding
     close(u)
     if(io/=0)return
-    if(tag==PENDING_MAGIC)then
+    if(tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC)then
       call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io,pending)
     else
       call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io)
     end if
     if(io/=CROP_SOIL_OK)return
-    if(.not.crop_soil_n_joint_states_match(water_trial(1),coupled_trial))return
+    if(thermal)then
+      if(.not.thermal_crop_soil_states_match(water_trial(1),coupled_trial))return
+    else
+      if(.not.crop_soil_n_joint_states_match(water_trial(1),coupled_trial))return
+    end if
     if(.not.pending_incorporation_valid(coupled_trial))return
     water=water_trial(1);coupled=coupled_trial;status=JOINT_OK
   end subroutine

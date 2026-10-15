@@ -2215,7 +2215,7 @@ contains
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
-                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps)
+                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps,trace_accepted_soil_n_heat)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -2230,6 +2230,8 @@ contains
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
     logical, intent(in), optional :: trace_accepted_water_flux_substeps
+    logical, intent(in), optional :: trace_accepted_soil_n_heat
+    logical :: soil_n_heat_trace
     logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
     integer :: salt_active_domains
     logical :: rutter_snapshot_available
@@ -2262,9 +2264,20 @@ contains
     if (present(trace_accepted_water_flux_substeps)) &
          self%model%accepted_water_flux_trace_enabled = trace_accepted_water_flux_substeps
     if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
+    soil_n_heat_trace=.false.
+    if(present(trace_accepted_soil_n_heat))soil_n_heat_trace=trace_accepted_soil_n_heat
+    if(soil_n_heat_trace)then
+      if(.not.self%model%accepted_water_flux_trace_enabled.or..not.parameters%soil_temperature_active.or. &
+         parameters%frost_active.or.template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.or. &
+         template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
     if (self%model%accepted_water_flux_trace_enabled) then
       if (parameters%snow_active .or. parameters%drainage_response_active .or. &
-          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) .or. &
+          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
+           .not.soil_n_heat_trace) .or. &
           parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
           .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
