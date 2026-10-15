@@ -791,7 +791,7 @@ check_b19_micro_root_recomposition() {
       src/process/mod_soil_n_day_environment.f90 )
         python3 tests/nut-environment/verify_environment_successor.py || fail "unqualified daily environment: $candidate_path"
         ;;
-      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90|src/process/mod_crop_senescence_residue.f90|src/crop/mod_crop_soil_n_senescence_day.f90|src/runtime/mod_fmr_crop_soil_n_senescence_application.f90 )
+      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90|src/process/mod_crop_senescence_residue.f90|src/crop/mod_crop_soil_n_senescence_day.f90|src/runtime/mod_fmr_crop_soil_n_senescence_application.f90|src/process/mod_soil_n_amendment_calendar.f90|src/crop/mod_crop_soil_n_calendar_day.f90|src/runtime/mod_fmr_crop_soil_n_calendar_application.f90 )
         python3 tests/nut-material/verify_material_successor.py || fail "unqualified material day successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;

@@ -14,6 +14,9 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source(git_reader=None):
+ if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
+  return calendar.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'unknown baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -172,6 +175,9 @@ def validate(d,source):
   check(sha(d['pending_probe/'+opt+'.stdout'])==row['stdout_sha256']and b'INVALID_DISK=PASS'in d['pending_probe/'+opt+'.stdout'],'pending native rejection absent')
  return result
 def verify_qualification():
+ if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
+  return calendar.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  baseline_command('tests/nut-material-environment/verify_material_environment_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
