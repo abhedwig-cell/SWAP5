@@ -1,5 +1,12 @@
 # MC-SOL01 accepted matrix water age
 
+Canonically admitted bounded scope via PR1233 at
+`e85bfe130b9ff1a09e88e00ffab94859e26b0d8e`; actual source tree
+`5a431f11e064cfb08efe40eb5baa1191eaab90ee`. Master receipt
+`aae2b8d207b13453be45dd1773d39f8eae855831` changes only the age row/queue,
+with all243dispositions unchanged. The initial proposal and its executed
+qualification below retain their exact historical phase identities.
+
 Proposed bounded successor to canonical9ed5efc773b28f44b16b8922730b3fd9b8892b60.
 PR1232 independently owns the reactive N day; this unit does not duplicate it.
 Selective donor1117 is b6b894513fcdcf66e94824742c129616ddd7aed1.

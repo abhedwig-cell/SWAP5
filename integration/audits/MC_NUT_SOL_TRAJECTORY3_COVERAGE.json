@@ -70,7 +70,10 @@
       "remaining_dependency": [],
       "row_sha256": "21ac0164ba6aebf8ea6fe4034e3557fefb501657eac434e8a8820c42333b9a43",
       "canonical_admission_changed": false,
-      "candidate_progress": "UNCHANGED"
+      "candidate_progress": "Bounded accepted matrix age transport/production/balance and atomic restart admitted via PR1233 at e85bfe13; complete source capability remains ACTIVE_MIGRATION.",
+      "bounded_route_admitted": true,
+      "row_sha256_after_age_receipt": "cb1f65bb6f81c5d5f6e424a7195eb752558d43573500667751390699ad35ed48",
+      "master_receipt_head": "aae2b8d207b13453be45dd1773d39f8eae855831"
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -206,5 +209,18 @@
     "master_branch_modified": false,
     "admission_authority": "PR1232 final merge/source/tree receipt",
     "remaining": "Crop-N supply/demand, environmental/calendar extension, amendments/residues and broader defaults; WOFOST81 semantics unchanged"
+  },
+  "age_successor_reconciliation_20261015": {
+    "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+    "master_before": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+    "master_after": "aae2b8d207b13453be45dd1773d39f8eae855831",
+    "master_blob_after": "8521082fa78fb32a481b6343036529307566a549",
+    "changed_rows": [
+      "SW431-AGE-TRACER"
+    ],
+    "other_242_rows_identical": true,
+    "all_243_dispositions_and_counts_unchanged": true,
+    "global_checker": "Existing stale inheritance baseline, not a full master PASS",
+    "next_owner_action": "SOL surface/pond accepted budget; N reactive1232 admitted, next crop N preserving WOFOST81"
   }
 }

@@ -53,7 +53,7 @@
     "frost": "No separate broad frost qualification or highest low-air selected; compulsory existing bounded heat/frost runtime assertions executed inside full moving gate.",
     "expected_seconds": "UNKNOWN; measured per compile/link/native/validation"
   },
-  "next_action": "Linear and nonlinear0.5..2 matrix routes are admitted via1228/1230; mineral inventory/transport/restart via1231 is already admitted. Next SOL age or surface/pond; next NUT bounded nitrification with whole-N accounting. Do not repeat completed source work. Global master stale inheritance remains open.",
+  "next_action": "Linear/nonlinear matrix1228/1230, mineral1231, reactive N1232 and bounded age1233 are admitted. Next SOL accepted surface/pond budget; next NUT crop-N supply/demand preserving WOFOST81. Do not repeat completed routes. Global master stale inheritance remains open.",
   "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
   "scientific_execution_commit": "c97de8c37e5b7edba0bd12133cb328a03e1460aa",
   "scientific_execution_tree": "54fbdb9ff9d8ce5a604ba24ee2c8b4309fb5e52d",
@@ -597,8 +597,17 @@
       "preservation_binding": "Nonlinear full moving1829.803s and newly admitted mineral full moving1411.227s cover their unchanged physical/caller/state/fixture/compiler/build surfaces. Combined delta changes only admission dispatch/metadata over the exact union; every science input/provider is verified unchanged. No third full run or simultaneous NUT+SOL physical coupling claim.",
       "reader_domain": "Pinned solute.f90:630 accepts frexp0..10. This application admits only0.5..2; full capability remains ACTIVE."
     },
-    "next_action": "Bounded nonlinear route complete. SOL: age amount/production, then pond/surface sources and wider exponent domain. NUT: mineral route1231 complete; next bounded nitrification with equal NH4 loss/NO3 gain, later organic/crop interfaces. Preserve WOFOST81.",
+    "next_action": "Bounded nonlinear route complete; age1233 and reactive N1232 now admitted separately. Next SOL surface/pond and wider exponent domain; next NUT crop-N supply/demand with WOFOST81 preserved.",
     "recovery_point": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
     "blockers": []
+  },
+  "age_successor": {
+    "pr": 1233,
+    "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
+    "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+    "recovery": "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+    "scope": "Accepted matrix water age transport/production/balance, atomic rollback and smaller retry, opaque/native fresh-process continuation; zero surface profile",
+    "master_receipt_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+    "next_gate": "Accepted surface/pond age and solute budget, then wider source/default envelopes. No full capability closure."
   }
 }

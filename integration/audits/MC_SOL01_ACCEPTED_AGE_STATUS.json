@@ -1,12 +1,12 @@
 {
   "work_unit": "MC-SOL01-ACCEPTED-AGE",
   "baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
-  "stage": "QUALIFIED_PRESERVED_READY_FOR_CANONICAL_ADMISSION",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "overlap": "PR1232 already owns reactive N including nitrification; no parallel N implementation",
   "authority_paths": [
     "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
@@ -16,7 +16,7 @@
   "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
   "master": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
   "master_facet": "SW431-AGE-TRACER ACTIVE_MIGRATION; no disposition promotion",
-  "next_action": "Verify live canonical/head/tree, mark PR1233 ready and admit bounded age scope; then publish exact one-row master and owner receipts. No new physical source change or extra full/highest run.",
+  "next_action": "Bounded age route complete. SOL next accepted pond/rain/irrigation/runoff transport and combined soil-plus-pond budget; wider frexp0..10 and default/thermal/multicolumn remain separate. N reactive1232 admitted; next crop-N supply/demand with WOFOST81 fixation preserved, then environmental forcing/amendment/residue contracts. No combined companions or aquifer reopening.",
   "blockers": [],
   "execution_commit": "1e54e292ca412fd657f95e0844fb898bbc9a981f",
   "added_blobs": {
@@ -152,7 +152,7 @@
   },
   "preserved": true,
   "checkpoint_commit": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
-  "recovery_point": "PR1233 work/sol-age-20261015, scientific capsule and exact reactive-peer coexistence receipt",
+  "recovery_point": "Canonical PR1233/e85bfe13, this status, scientific/admission/coexistence capsules and exact master receipt. No running qualification remains.",
   "last_reconciled_head": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
   "last_reconciled_upstream": "26ddf94e58133acd413c2b2738b873a92f43f1da",
   "full_preservation": {
@@ -180,5 +180,20 @@
     "highest": "NOT_SELECTED_POLICY",
     "hosted_new_run_claimed": false
   },
-  "regie_admission_decision": "ADMIT bounded age companion only after exact live canonical26ddf94e and qualified PR head/tree verification. User autonomous continuation and execution-protocol full-cycle rule8 supply regie authority. Both actual owner full runs pass; exact combined source/caller/state/input/fixture/toolchain/build identity and fresh original controls qualify guard-only coexistence, not a combined full run or simultaneous companions."
+  "regie_admission_decision": "ADMIT bounded age companion only after exact live canonical26ddf94e and qualified PR head/tree verification. User autonomous continuation and execution-protocol full-cycle rule8 supply regie authority. Both actual owner full runs pass; exact combined source/caller/state/input/fixture/toolchain/build identity and fresh original controls qualify guard-only coexistence, not a combined full run or simultaneous companions.",
+  "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+  "qualified_pr_head": "68a90521f5491a086d8cecce3c435909c51d3876",
+  "canonical_merge_tree": "9f89d2812e981510005517bef0c64ba2bd788ffd",
+  "canonical_source_tree": "5a431f11e064cfb08efe40eb5baa1191eaab90ee",
+  "master_receipt": {
+    "pr": 1072,
+    "head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+    "tree": "c67a7d3210d150f15b01310e1dfa6631bc215b7c",
+    "ledger_blob": "8521082fa78fb32a481b6343036529307566a549",
+    "proof": "integration/audits/MC_SOL01_AGE_MASTER_RECONCILIATION_20261015.json",
+    "only_age_row_and_queue_changed": true,
+    "other_242_rows_identical": true,
+    "all_counts_and_dispositions_unchanged": true,
+    "global_checker": "Pre-existing FAIL stale inheritance baseline, raw before/after identical; no full master PASS"
+  }
 }
