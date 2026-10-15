@@ -10,6 +10,7 @@ module mod_fmr_crop_soil_n_material_application
  use mod_crop_soil_n_day,only:crop_soil_state_t
  use mod_b111_soil_n_addition,only:b111_soil_n_split_parameters_t
  use mod_wofost_one_day_structural_evolution,only:wofost_one_day_forcing_t
+ use mod_soil_n_day_environment,only:soil_n_day_environment_t
  implicit none
  private
  type,public::material_joint_result_t
@@ -20,7 +21,7 @@ module mod_fmr_crop_soil_n_material_application
  public::run_crop_soil_n_material_interval
 contains
  subroutine run_crop_soil_n_material_interval(backend,column,template,parameters,water,forcing,config, &
-     chemical,weather,t0,t1,items,split,result)
+     chemical,weather,t0,t1,items,split,result,environment)
   type(fmr_serialized_reference_backend_t),intent(inout)::backend
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -34,6 +35,7 @@ contains
   type(soil_n_material_input_t),intent(in)::items(:)
   type(b111_soil_n_split_parameters_t),intent(in)::split
   type(material_joint_result_t),intent(out)::result
+  type(soil_n_day_environment_t),optional,intent(in)::environment
   type(crop_soil_state_t)::trial
   type(kernel_committed_state_t)::water_trial
   result=material_joint_result_t()
@@ -41,7 +43,7 @@ contains
   if(result%materials%status/=MATERIAL_OK)return
   water_trial=water
   call run_crop_soil_n_joint_interval(backend,column,template,parameters,water_trial,forcing,config, &
-    trial,weather,t0,t1,result%joint)
+    trial,weather,t0,t1,result%joint,environment)
   result%status=result%joint%status
   if(result%status/=JOINT_OK)return
   call check_crop_soil_material_day(trial,result%joint%chemical,result%materials)

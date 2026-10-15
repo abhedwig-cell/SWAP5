@@ -10,6 +10,7 @@ module mod_crop_soil_n_material_day
  use mod_crop_soil_n_configuration
  use mod_wofost81_crop_owner_state
  use mod_wofost_one_day_structural_evolution,only:wofost_one_day_forcing_t
+ use mod_soil_n_day_environment,only:soil_n_day_environment_t
  implicit none
  private
  integer,parameter,public::MATERIAL_OK=0,MATERIAL_INVALID=1,MATERIAL_BUILD=2,MATERIAL_TRANSFER=3, &
@@ -104,18 +105,19 @@ contains
   r%status=MATERIAL_OK
  end subroutine
  subroutine advance_crop_soil_material_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water, &
-     potential_cm,weather,items,split,r)
+     potential_cm,weather,items,split,r,environment)
   type(crop_soil_state_t),intent(inout)::state
   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm
   type(wofost_one_day_forcing_t),intent(in)::weather
   type(soil_n_material_input_t),intent(in)::items(:)
   type(b111_soil_n_split_parameters_t),intent(in)::split
   type(material_day_receipt_t),intent(out)::r
+  type(soil_n_day_environment_t),optional,intent(in)::environment
   type(crop_soil_state_t)::trial
   type(crop_soil_receipt_t)::day
   call stage_crop_soil_materials(state,t0,items,split,trial,r)
   if(r%status/=MATERIAL_OK)return
-  call advance_crop_soil_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,day)
+  call advance_crop_soil_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,day,environment)
   call check_crop_soil_material_day(trial,day,r)
   if(r%status==MATERIAL_OK)state=trial
  end subroutine
