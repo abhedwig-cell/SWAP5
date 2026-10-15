@@ -1,3 +1,20 @@
+# Current terminal admission proof: PASS, canonical merge pending
+
+Complete current-source local moving F-CI OFF at `a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04`: **PASS**, exit0,
+terminal `FCI_CANONICAL_LINEAGE_AWARE_GATE PASS`, 2675.978s. Source `9747341e2381a24f1b13022eda0524bc3f091ae8`,
+full tree `f3bc5c739fcba65e2a09eeff5f5bbdc824fada11`. All6423 tracked inputs remained byte unchanged. Immutable raw
+output, input inventory, controller and executed Git bundle are bound by
+`full_preservation.evidence`, decoded SHA256 `cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b`. Original start inventory is
+also published. The earlier lost full run remains unusable historical data.
+
+Current focused science and controls PASS as recorded below. Full canonical
+admission still requires current-canonical/overlap review, expected-head PR1241
+merge and verification of actual canonical source/blob identities. Highest
+low-air NOT_SELECTED_POLICY; original short owner case1/8192 passed. No Actions.
+No master disposition/count promotion and no next crop implementation.
+
+The following sections are historical checkpoints.
+
 # Current qualified candidate: stable full admission selected
 
 Combined source `9747341e2381a24f1b13022eda0524bc3f091ae8` at canonical

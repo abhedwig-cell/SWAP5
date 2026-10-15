@@ -7,7 +7,7 @@
   "tested": true,
   "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Observe existing execution a6404e1f7fcf, local session85939 through terminal status; do not duplicate it. Local tracked checkout is frozen; this remote running receipt changes only metadata and start evidence.",
+  "next_action": "Verify published immutable full proof, exact source9747341e, live canonical and open overlaps; expected-head merge PR1241 only, then verify actual canonical merge/source and update bounded coverage without disposition promotion.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
@@ -22,7 +22,7 @@
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
   "reference_delta": false,
-  "qualification_scope": "BOUNDED_SWRD3_AND_CANONICAL_EXPLICIT_INPUT_QUALIFIED; FULL_PRESERVATION_PENDING",
+  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_AND_CURRENT_CANONICAL_INPUT_QUALIFIED_PRESERVED_PENDING_MERGE",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
   "production_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
@@ -53,8 +53,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "RUNNING_NOT_PASS",
-  "stage": "CURRENT_SCIENTIFIC_SOURCE_FULL_MOVING_RUNNING",
+  "full_fci": "CURRENT_SOURCE_COMPLETE_LOCAL_OFF_PASS",
+  "stage": "CURRENT_SOURCE_QUALIFIED_PRESERVED_PENDING_EXPECTED_HEAD_CANONICAL_ADMISSION",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -316,7 +316,7 @@
     "all_existing_drivers": "fresh original8 process/material/senescence/temperature direct/joint O0/O2; every original native decoder control retained",
     "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b"
   },
-  "preserved": false,
+  "preserved": true,
   "controls": {
     "status": "PASS",
     "negative_count": 17,
@@ -518,7 +518,9 @@
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CALENDAR_REQUALIFIED_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CONTROLS_REQUALIFIED_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_INPUT_REQUALIFIED_20261015.tar.xz.b64",
-    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_CONTROLS_20261015.tar.xz.b64"
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_CONTROLS_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_FULL_START_20261015.tar.xz.b64"
   ],
   "master_snapshot": {
     "head": "aae2b8d207b13453be45dd1773d39f8eae855831",
@@ -604,7 +606,8 @@
       "calendar_successor": true
     },
     "docs_source_check": "PASS",
-    "strict_mkdocs": "NOT_EXECUTED: renewed environment has no mkdocs module; prior docs build not promoted to current check."
+    "strict_mkdocs": "NOT_EXECUTED: renewed environment has no mkdocs module; prior docs build not promoted to current check.",
+    "resolution": "New combined scientific source9747341e qualified and completed full local moving PASS. Original lost run remains historical/unusable. New exact terminal proof is full_preservation.evidence."
   },
   "actual_costs": {
     "durably_recorded_focused_seconds": 1301.5511934356327,
@@ -613,7 +616,11 @@
     "other_controls_and_interrupted_input_cost_seconds": "UNKNOWN",
     "note": "Do not count reported full or missing input evidence as a qualified admission PASS.",
     "new_input_build_native_seconds": 426.3184962839955,
-    "current_focused_recorded_seconds": 1727.8696897196282
+    "current_focused_recorded_seconds": 1727.8696897196282,
+    "full_final_local_wall_seconds": 2675.9779636349995,
+    "qualified_recorded_seconds_total": 4403.847653354627,
+    "spent_total_including_reported_lost_full_seconds": 6724.391836782619,
+    "full_compile_link_native_split": "UNKNOWN"
   },
   "qualified_native_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
   "input_guard_rebinding": {
@@ -720,20 +727,33 @@
       "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
     ],
     "resume_mode": "OFF",
-    "status": "RUNNING",
+    "status": "PASS",
     "tracked_inputs": 6423,
     "compile_link_native_split": "UNKNOWN",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "selection_authority": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json:final_current_source_admission_selection",
     "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
     "compiler_launcher_sha256": "60ca8bff2521e7a3a60bc7cb413925ceade75bbe80efd072649c0920e9d97f2a",
-    "local_exec_session": 85939,
+    "bundle_prerequisite": "66d4891adf9f8a32c27d59a29cee674242297676",
+    "returncode": 0,
+    "wall_seconds": 2675.9779636349995,
+    "changed_inputs": [],
+    "stdout_sha256": "d4871217b0aa14b07d4de3c56f17140760d2c2a269ca79b47b8adb711ee07fa7",
+    "stderr_sha256": "5aaea5ac582eedbba17892bd0ffefe1213e467fc038c0d4a2420bbdb9b6b4d63",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+      "decoded_bytes": 415916,
+      "members": 7
+    },
     "start_evidence": {
       "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_FULL_START_20261015.tar.xz.b64",
       "decoded_sha256": "db0a60d0fad640f9969d9813c26b64db480e96a6df930dcb08ff7a009a768a32",
       "decoded_bytes": 398868,
       "members": 5
-    }
+    },
+    "short_b19_scope": "Original owner case1/8192 O0/O2; not the retired highest matrix."
   },
   "current_open_overlap": {
     "canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
