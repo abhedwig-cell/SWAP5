@@ -1,6 +1,7 @@
 # MC-SOL01 nonlinear matrix successor
 
-Status: qualified and preserved bounded successor; safe canonical admission pending.
+Status: bounded successor canonically admitted via PR1230 at
+`d6e21f02415b733db138cdf7006524fd7e32bafd`; full capability remains open.
 Baseline: `ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde` (PR #1228 and its
 initialization correction). Recovery: the `nonlinear_successor` field in
 `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
@@ -176,6 +177,13 @@ No new immutable B1 correction is asserted. Source line630 accepts frexp0..10;
 only0.5..2 is covered here, so the whole sorption capability remains ACTIVE.
 
 ## Remaining scope
+
+The expected-head merge preserves the complete qualified tree1bbdf282 and
+production blobf777ecb6, with mineral1231 retained. Master1072 now has bounded
+nonlinear sorption/decay receipts at53eb3d2f. Only those two capability/queue rows
+change; all other241 rows and all243 dispositions/counts remain identical.
+The existing global master stale-inheritance failure is unchanged, with raw
+before/after evidence retained in the canonical master-reconciliation receipt.
 
 Pond/rain/irrigation/SSDI/macro, aquifer mutation, age, Soil-N/crop-N,
 root salinity feedback, default bootstrap/multicolumn and portable restart stay

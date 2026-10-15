@@ -8,7 +8,8 @@
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "canonical_merge": "eb03024d99ef9256335eb6e2f3f74bccce8145f0",
   "contract": "docs/science/MC_NUT01_MINERAL_TRANSPORT_CONTRACT.md",
   "next_safe_step": "PR1231 is merged at eb03024d. Retain its immutable qualification; nonlinear peer guard-only coexistence is reconciled separately below. Next physical NUT block is bounded nitrification/reaction with whole-N accounting, not a repeat of mineral inventory/transport.",
   "nonlinear_peer_rebind_20261015": {
@@ -193,7 +194,7 @@
     "mineral_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
     "incumbent_dependency_baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde"
   },
-  "canonical_admission_authority": "This is an immutable premerge qualification record. Actual admission requires PR1231 merge receipt and canonical source/tree verification in its final PR body.",
+  "canonical_admission_authority": "Scientific records retain exact immutable premerge executions. Actual PR1231 admission is eb03024d, independently verified merged; PR1230 preserves it and records guard-only coexistence without new mineral physics or a new full execution claim.",
   "final_dependency_rebind": {
     "execution": "6a1c3b7f157b8dc6f687c268f52e8991234469d0",
     "physical_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",

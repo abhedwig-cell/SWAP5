@@ -180,15 +180,19 @@
     "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
     "master_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
     "master_blob": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
-    "candidate_scope": "0.5<=frexp<=2 qualified and preserved; full moving1829.803s PASS; exact coexistence with admitted mineral1231; safe admission pending",
+    "candidate_scope": "0.5<=frexp<=2 admitted via PR1230 atd6e21f02; full moving1829.803s PASS; exact mineral1231 coexistence",
+    "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
+    "master_receipt_head":"53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+    "master_receipt_blob":"d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+    "row_sha256_after_nonlinear_receipt":{"SW431-SALT-SORPTION":"33cfc45bddb1adc90988fa14a484d7ca51feda675191a33012aa259a2b5deafa","SW431-SALT-DECAY":"0b9f8d652ea0ca7345e69c188fa0c4a026230ddaf1acfc2807aa993be4dd9397"},
     "relevant_row_sha256": {
       "SW431-SALT-SORPTION": "b8b0019b6c768668e7b866497be5503962dc5702b1afcb3deae534ea52ae02a8",
       "SW431-SALT-DECAY": "77d9973ca76f7baac46f04ff5933bc1d497d43e8117b3e05c2a9c1c5274de650"
     },
-    "master_rows_mutated": [],
+    "master_rows_mutated": ["SW431-SALT-SORPTION","SW431-SALT-DECAY"],
     "all_243_dispositions_and_counts_unchanged": true,
     "all_14_NUT_SOL_dispositions_unchanged": true,
     "qualification_receipt": "MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-    "next_owner_action": "Safe PR1230 admission and bounded sorption/decay master receipts. Full frexp0..10 source envelope and dynamic thermal/surface scope remain open; no disposition promotion. Mineral1231 is already admitted, so do not repeat that production block."
+    "next_owner_action": "Receipt complete. Whole frexp0..10, dynamic thermal/surface and default application remain open; all dispositions unchanged. Mineral1231 is already admitted; next NUT is bounded nitrification, next SOL age/pond."
   }
 }

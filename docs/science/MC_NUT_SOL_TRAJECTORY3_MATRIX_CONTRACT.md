@@ -1,6 +1,9 @@
 # MC-SOL01 trajectory 3: accepted matrix transport with sorption and decay
 
 Status: bounded joint physical matrix route canonically admitted via PR #1228; broader NUT/SOL capabilities remain open.
+The later [nonlinear successor](MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md) is admitted
+via PR1230 atd6e21f02 for0.5..2, coexisting with mineral1231. The original
+linear qualification below remains historical evidence for its named scope.
 Original baseline: `82209d0df68d14c5ebe707e9b6303f9b150488ca`.
 Current reconciled canonical: `34ee4fdac815788620f8779f4340b8edeef3c8ae`.
 Donor: PR #1117, `b6b894513fcdcf66e94824742c129616ddd7aed1`.
@@ -46,6 +49,10 @@ The optional absent `theta_previous` retains the donor's fixed-water process
 callers only. The accepted-carrier service always supplies both endpoints.
 
 ## Bounded physical and state contract
+
+This list records the original PR1228 linear admission. PR1230 subsequently
+extends only the exponent domain; its independent oracle and full preservation
+are recorded in the successor contract. Other ownership/exclusion rules remain.
 
 - Linear Freundlich (`frexp=1`) dissolved plus sorbed matrix storage is enabled.
   The imported partition operator supports nonlinear parameters, but this
@@ -137,10 +144,10 @@ application reachability.
 
 | Remaining block | Existing donor authority / first ready action |
 | --- | --- |
-| Matrix nonlinear sorption | [Bounded nonlinear successor](MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md) now has independent inverse and actual changing-water joint/restart O0/O2 evidence; source-policy acceptance and central preservation/admission remain pending. |
+| Matrix nonlinear sorption | [Bounded nonlinear successor](MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md) admitted via1230 for0.5..2; wider source reader0..10 remains open. |
 | Pond/rain/irrigation/runoff | Existing pond operator; bind accepted surface water and source receipts, reconstruct complete surface mass, then atomic continuation. |
 | Water age | Qualified donor age operator; independent accepted-carrier age amount and age production, separate from chemical mass. |
-| Mineral Soil-N and transport | Existing donor pool and aggregate transport owners; reconcile a bounded accepted daily NH4/NO3 route and whole-N restart before crop coupling. |
+| Mineral Soil-N and transport | Bounded daily NH4/NO3, whole-N accounting and joint restart admitted via1231 at eb03024d; wider daily/crop/source combinations remain open. |
 | Nitrification | Depends on admitted mineral inventory/transport; bind equal NH4 loss and NO3 gain, not independent unbooked rate formulas. |
 | Organic turnover and denitrification | Donor reference-correction decision and Cdissi/rates need central acceptance; then coupled whole-N reaction route. |
 | Amendments and residues | Pool/addition owners exist; amendment-calendar source-policy conflict remains open. Residue state requires the current accepted crop lifecycle owner. |
@@ -148,11 +155,10 @@ application reachability.
 | Aquifer SWBR | Master REJECTED source-defect disposition. Any new route needs an explicit physical aquifer storage/density/coefficient decision and signed multi-substep oracle. |
 | Default application and feedback | Joint clocks, atomic commit and bounded joint disk restart are qualified in this candidate. Default bootstrap/multicolumn application and optional salinity feedback remain separate. |
 
-The next limited dependency-ready production block is matrix nonlinear sorption
-qualification or an independent water-age carrier. For MC-NUT01, begin with the
-existing mineral inventory plus aggregate transport transaction, preserving its
-daily clock and whole-N accounting. Do not begin all organic, management, crop,
-aquifer and age integration simultaneously.
+The next limited SOL block is an independent water-age carrier or accepted pond
+sources. Mineral inventory/transport is already admitted via1231; next MC-NUT01
+block is bounded nitrification with equal NH4 loss/NO3 gain and whole-N accounting.
+Do not begin all organic, management, crop, aquifer and age integration together.
 
 ## Qualified joint successor (2026-10-14)
 

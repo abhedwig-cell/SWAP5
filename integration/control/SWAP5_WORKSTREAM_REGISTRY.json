@@ -808,13 +808,15 @@
           "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
           "nonlinear_successor": {
             "pr": 1230,
-            "status": "QUALIFIED_PRESERVED_READY_FOR_SAFE_ADMISSION",
+            "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
+            "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
+            "master_receipt_head":"53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
             "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
             "branch": "work/nut-sol-nonlinear-matrix-20261015",
             "execution_commit": "a85facff905e6299acffd2f3c11bfeea0a03f295",
             "scope": "Bounded nonlinear 0.5<=frexp<=2: independent inverse and literal transport, actual water/chemical balances, atomic joint rollback and fresh-process restart O0/O2",
             "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-            "next_gate": "Source-policy accepted as explicit SWAP5 precision difference; full local moving1829.803s PASS and exact coexistence with admitted mineral1231 qualified. Safe PR1230 merge and bounded master receipt; no repeated full run for metadata.",
+            "next_gate": "Bounded route complete and master receipts verified. Next SOL age/pond or wider frexp domain; NUT mineral1231 is already admitted, next bounded nitrification with whole-N accounting. No default combined NUT+SOL or whole-capability closure.",
             "master_dispositions_changed": false
           }
         },
