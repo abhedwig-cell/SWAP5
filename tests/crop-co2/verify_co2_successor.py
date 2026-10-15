@@ -114,6 +114,8 @@ def verify_source():
   if (ROOT/'src/runtime/mod_fmr_b111_age_route.f90').exists():
    age=json.loads((ROOT/'integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json').read_text())
    additions.update(age['added_blobs'])
+   reactive=json.loads((ROOT/'integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json').read_text())
+   additions.update(reactive['added_blobs'])
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')

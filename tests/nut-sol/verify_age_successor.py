@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
-BASE='9ed5efc773b28f44b16b8922730b3fd9b8892b60'
+BASE='26ddf94e58133acd413c2b2738b873a92f43f1da'
 STATUS='integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json'
 CAPSULE_SHA='412d64c279074b6b21334be7cfb8d841ca14ccb5e5b5c6c66d5799bcd6b14cb5'
 GUARDS={'tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'}
@@ -120,7 +120,7 @@ def verify_qualification():
  source=verify_source();validate_evidence(read_evidence());return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent_mineral():
  verify_qualification()
- base=ROOT.parent/'age-incumbent-9ed5efc7'
+ base=ROOT.parent/'age-incumbent-26ddf94e'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
  check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'wrong incumbent age baseline')
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=base,text=True).strip(),'dirty age incumbent')
