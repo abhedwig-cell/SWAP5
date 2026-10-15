@@ -9,6 +9,9 @@ module mod_b111_soil_n_reactive_owner
  use mod_b111_soil_n_organic_rate_environment,only:b111_organic_environment_factor
  implicit none
  private
+ type,public::reactive_crop_demand_t
+   real(real64)::demand_kg_m2=0d0,root_depth_cm=0d0,tcsf_n=0d0,dvs=0d0,lai=0d0,lai_crit_nupt=0d0
+ end type
  type,public::reactive_parameters_t
    type(mineral_parameters_t)::mineral
    type(b111_organic_turnover_parameters_t)::organic_reference
@@ -42,6 +45,8 @@ contains
  function reactive_parameter_vector(p)result(v)
    type(reactive_parameters_t),intent(in)::p
    real(real64),allocatable::v(:),b(:)
+   allocate(v(0))
+   if(.not.mineral_parameters_valid(p%mineral))return
    b=mineral_parameter_vector(p%mineral)
    if(.not.allocated(b).or..not.allocated(p%cfrac_fom))return
    if(.not.allocated(p%organic_reference%ratecon_fom).or..not.allocated(p%organic_reference%asfa_fom_bio).or. &
@@ -60,7 +65,7 @@ contains
    ok=.false.
    if(.not.mineral_parameters_valid(p%mineral))return
    v=reactive_parameter_vector(p)
-   if(.not.allocated(v))return
+   if(size(v)==0)return
    if(.not.all(ieee_is_finite(v)))return
    n=size(p%mineral%inventory%nfrac_fom)
    if(n>8)return
@@ -117,10 +122,11 @@ contains
    type(mineral_parameters_t)::base
    p=self%p;call self%inventory%configuration(base,id)
  end subroutine
- subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt)
+ subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop)
    type(reactive_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    type(reactive_receipt_t),intent(out)::receipt
+   type(reactive_crop_demand_t),intent(in),optional::crop
    type(mineral_state_t)::trial
    type(soil_n_pool_state_t)::before,after
    type(soil_n_transfer_t)::x
@@ -133,6 +139,13 @@ contains
    integer::code
    receipt=reactive_receipt_t()
    if(.not.state%ready())return
+   if(present(crop))then
+     if(.not.state%p%enabled)return
+     if(.not.all(ieee_is_finite([crop%demand_kg_m2,crop%root_depth_cm,crop%tcsf_n,crop%dvs,crop%lai,crop%lai_crit_nupt])))return
+     if(min(crop%demand_kg_m2,crop%root_depth_cm,crop%tcsf_n,crop%lai,crop%lai_crit_nupt)<0d0)return
+     if(crop%demand_kg_m2>100d0.or.crop%root_depth_cm>1d4.or.crop%tcsf_n>1d0.or. &
+        abs(crop%dvs)>10d0.or.max(crop%lai,crop%lai_crit_nupt)>100d0)return
+   end if
    trial=state%inventory
    if(.not.state%p%enabled)then
      call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget)
@@ -154,6 +167,11 @@ contains
    f%wflux_inlat=in_lateral;f%wflux_transp=root_water;f%drybd=state%p%mineral%drybd;f%sorpcoef=state%p%mineral%sorption
    f%cnh4_seep=state%p%mineral%c_bottom(1);f%cno3_seep=state%p%mineral%c_bottom(2)
    f%cnh4_lat=state%p%mineral%c_lateral(1);f%cno3_lat=state%p%mineral%c_lateral(2)
+   if(present(crop))then
+     f%crop_calendar_active=.true.;f%crop_n_demand_kg_m2=crop%demand_kg_m2
+     f%root_depth_cm=crop%root_depth_cm;f%tcsf_n=crop%tcsf_n
+     f%dvs=crop%dvs;f%lai=crop%lai;f%lai_crit_nupt=crop%lai_crit_nupt
+   end if
    call evaluate_b111_soil_n_daily_candidate(state%p%mineral%inventory,before,actual,state%p%cfrac_fom, &
       state%p%cfrac_biomass,state%p%cfrac_humus,state%p%environment,f,after,r)
    receipt%process=r;receipt%reactions_executed=.true.
