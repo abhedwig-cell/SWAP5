@@ -29,6 +29,8 @@ class Controls(unittest.TestCase):
  def test_restart_bytes(self):
   d=dict(self.data);d['stable/O0/fresh.bin']=b'forged'
   with self.assertRaises(ValueError):v.validate_evidence(d)
+ def test_preimage_acceptance_witness(self):self.mutation('preimage/RESULT.json',lambda r:r['events'][-1].__setitem__('exit',0))
+ def test_preimage_different_driver(self):self.mutation('preimage/RESULT.json',lambda r:r.__setitem__('final_driver_sha256','0'*64))
  def delta(self,change):
   rows={p:'A' for p in self.s['added_blobs']};rows.update({p:'M' for p in v.GUARDS});tree={**self.s['added_blobs'],**self.s['guard_blobs']}
   change(rows,tree)

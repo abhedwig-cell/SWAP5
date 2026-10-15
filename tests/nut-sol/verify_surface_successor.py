@@ -6,7 +6,7 @@ sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 BASE='f8eca95ba623dc18db0110cd1b84af46857c8b9b'
 STATUS='integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json'
-CAPSULE_SHA='4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338'
+CAPSULE_SHA='ed6ba2035349ee34f48a86d15356601692529e0afa052175ecf5bb1cd6d0bb8d'
 GUARDS={'tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'}
 def check(ok,label):
  if not ok:raise ValueError(label)
@@ -73,6 +73,10 @@ def validate_evidence(data):
   check(e['returncode']==0 and e['seconds']>=0,'failed surface command')
   for stream in ('stdout','stderr'):check('stable/'+e[stream] in data,'surface raw stream absent')
  check(r['runs']['O0']['endpoint_sha256']==r['runs']['O2']['endpoint_sha256'],'surface O0/O2 drift')
+ witness=json.loads(data['preimage/RESULT.json'])
+ check(witness['status']=='EXPECTED_PREIMAGE_ACCEPTS_WATER_MISMATCH','missing surface water mismatch witness')
+ check(witness['final_driver_sha256']==r['input_sha256']['tests/nut-sol/test_surface_process.f90'],'different final flux control')
+ check(witness['events'][-1]['exit']==1 and b'FAIL large finite near-match cannot violate absolute water budget' in data['preimage/2.stdout'],'preimage did not expose mismatched water acceptance')
  return r
 def verify_qualification():
  source=verify_source();validate_evidence(read_evidence());return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

@@ -63,6 +63,14 @@ program test_surface_process
  call require(status/=0,'exfiltration excluded')
  call evaluate_surface_supply(s,0d0,dt,-0.25d0,r,status)
  call require(status/=0,'unmatched accepted flux excluded')
+ ! This finite mismatch passed the old relative-rate tolerance but exceeds
+ ! the hard integrated water budget over the1000-day bounded window.
+ s=surface_supply_t(1_int64,0_int64,0d0,1000d0,5d5,5d5,0.125d0,0.375d0)
+ call evaluate_surface_supply(s,0d0,1000d0,-1d6+1d-7,r,status)
+ call require(status/=0,'large finite near-match cannot violate absolute water budget')
+ s=surface_supply_t(1_int64,0_int64,0d0,dt,0.25d0,0.25d0,0.125d0,0.375d0)
+ call evaluate_surface_supply(s,0d0,dt,-0.5d0+1d-14,r,status)
+ call require(status/=0,'near-match rejected without hidden water source')
  s%rain_rate=0d0;s%irrigation_rate=0d0
  call evaluate_surface_supply(s,0d0,dt,0d0,r,status)
  call require(status==0.and.r%soil_transfer==0d0,'zero supply hiatus')

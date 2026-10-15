@@ -38,7 +38,7 @@ contains
   if(t1-t0<1d-100)return
   rate=s%rain_rate+s%irrigation_rate;scale=max(1d0,rate)
   if(abs(qtop)>1d6)return
-  if(qtop>0d0.or.abs(qtop+rate)>1024d0*epsilon(1d0)*scale)return
+  if(qtop>0d0.or.abs(qtop+rate)>0d0)return
   ! Require the actual source cutoff on the accepted flux as well.
   if(rate>0d0.and.qtop>=-1d-6)return
   if(rate<=0d0.and.abs(qtop)>0d0)return

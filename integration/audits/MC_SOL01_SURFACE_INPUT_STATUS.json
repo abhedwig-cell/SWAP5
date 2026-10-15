@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-SOL01-SURFACE-INPUT",
   "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
-  "stage": "PHYSICAL_QUALIFIED_ADMISSION_PENDING",
+  "stage": "FINAL_SCIENCE_PASS_ADMISSION_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": true,
+  "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
   "scope": "Prescribed supply-limited matrix infiltration, no pond/evaporation/runoff; typed transient rain/irrigation split matched to actual accepted top flux; existing chemical owner and restart reused.",
@@ -13,7 +13,7 @@
     "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Validate exact source/evidence guards and original incumbent controls, then one full moving preservation at stable boundary; PR/master reconciliation.",
+  "next_action": "24 current evidence controls and unchanged original controls; then complete final local moving at stable boundary, PR/master reconciliation.",
   "test_selection": {
     "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
     "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
@@ -28,36 +28,36 @@
   },
   "blockers": [],
   "added_blobs": {
-    "src/process/mod_b111_surface_supply.f90": "8714d8e2c032710e3da52313942ecc7d33510e9d",
+    "src/process/mod_b111_surface_supply.f90": "0b3079d02685e2b7d425f8bdf92029fcd247967c",
     "src/runtime/mod_fmr_b111_surface_solute_route.f90": "d8b70f17cbbc4d9270025f35544d919c33cd7aae",
     "src/runtime/mod_fmr_b111_surface_joint_application.f90": "314f8f1ba57126c81428938670a2867e35a8f5a2",
     "tests/nut-sol/run_surface.py": "63c65c3c6e906b20126f634a72a45d22ef906061",
-    "tests/nut-sol/test_surface_process.f90": "73a24b0f3d8bcacfef5a3fc74c4f6932daf592b0",
+    "tests/nut-sol/test_surface_process.f90": "0706e673d06ebb7ba14915181865785ebd68b3bc",
     "tests/nut-sol/test_surface_joint.f90": "62037253706c541039cae44138a255f9a73e372f",
-    "tests/nut-sol/verify_surface_successor.py": "6402a003285f19b9e024eca9d474ec477928d2fb",
-    "tests/nut-sol/check_surface_evidence_controls.py": "90668d4a9525436e8eb68f091869b7babdb32b17"
+    "tests/nut-sol/verify_surface_successor.py": "a7a102f79c1acede4217479a07eeb13f74045682",
+    "tests/nut-sol/check_surface_evidence_controls.py": "37df67a2a0d71bed6f304ff99cf26c0425791a68"
   },
   "guard_blobs": {
     "tests/crop-co2/verify_co2_successor.py": "bc6df6bf83119048a68dc9bac5143c8bf5692ee5",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "98dcea60c6b86a17137d7c4c6ca190fc654f9962"
   },
-  "execution_commit": "03f4c8c7d3ff524379eeaddc458139b510f59874",
+  "execution_commit": "2291376815e3d33e21cb655d109f915300ed7d19",
   "cost_seconds": {
-    "physical_compile": 118.45895287697203,
-    "physical_link": 0.20319840400770772,
-    "physical_native": 16.442268966988195,
-    "process_compile": 0.23306802299339324,
-    "process_link": 0.06762318599794526,
-    "process_native": 0.0026760909968288615
+    "physical_compile": 128.32305141595134,
+    "physical_link": 0.20651543900021352,
+    "physical_native": 18.181484894957975,
+    "process_compile": 0.34114225300436374,
+    "process_link": 0.10799846399459057,
+    "process_native": 0.0034752289939206094
   },
   "physical_provider_count": 238,
   "process_provider_count": 2,
   "input_count": 242,
   "evidence": {
     "path": "integration/audits/evidence/MC_SOL01_SURFACE_INPUT_20261015.tar.xz.b64",
-    "sha256": "4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338",
-    "decoded_bytes": 829828,
-    "members": 1859
+    "sha256": "ed6ba2035349ee34f48a86d15356601692529e0afa052175ecf5bb1cd6d0bb8d",
+    "decoded_bytes": 1665616,
+    "members": 1323
   },
   "failed_attempts": [
     {
@@ -72,5 +72,26 @@
       "path": "leaf-feedback",
       "status": "PASS_O0_FEEDBACK_NOT_FINAL_QUALIFICATION"
     }
-  ]
+  ],
+  "pr": 1234,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1234",
+  "branch": "work/sol-surface-input-20261015",
+  "scientifically_qualified": true,
+  "preservation_execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+  "remote_equivalent_execution": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+  "recovery_point": "PR1234; frozen surface-admission atdebc95c5; full local moving controller run_surface_admission.py live owning session. Scientific capsule exact SHA in evidence; no admission until terminal preservation and regie checks.",
+  "censored_preservation": {
+    "execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+    "status": "CENSORED_NOT_PASS",
+    "reason": "Pre-admission review found relative surface-rate tolerance can exceed absolute water budget at large finite rate and dt. Exact match and discriminating real Fortran control required. Owning unified session Ctrl-C; no terminal PASS.",
+    "wall_seconds": "UNKNOWN (controller interrupted)",
+    "compile_link_native_seconds": "UNKNOWN"
+  },
+  "superseded_science": {
+    "sha256": "4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338",
+    "git_blob": "5bf357e53da432d637a4ef7301b06d9216755eb9",
+    "remote_commit": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+    "status": "SUPERSEDED_BY_EXACT_TOP_FLUX_VALIDATION",
+    "scope": "Preliminary science and raw failed process/physical attempts retained in this immutable prior Git object. Final source/driver differ; do not reuse preliminary scientific PASS as final."
+  }
 }
