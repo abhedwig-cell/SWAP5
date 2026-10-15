@@ -82,6 +82,11 @@ def validate_matrix_delta(rows,tree,guard_sha,moving_sha):
  check(tree.get(GUARD)==guard_sha,'unbound preservation guard')
  check(tree.get(MOVING)==moving_sha,'unbound moving preservation guard')
 def matrix_successor():
+ if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
+  from verify_surface_successor import incumbent_mineral
+  incumbent_mineral() # exact additive surface proof and unchanged admitted owners
+  return True
  if (ROOT/'src/runtime/mod_fmr_b111_age_route.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-sol'))
   from verify_age_successor import incumbent_mineral
@@ -116,6 +121,9 @@ def verify_source():
    additions.update(age['added_blobs'])
    reactive=json.loads((ROOT/'integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json').read_text())
    additions.update(reactive['added_blobs'])
+  if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():
+   surface=json.loads((ROOT/'integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json').read_text())
+   additions.update(surface['added_blobs'])
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')

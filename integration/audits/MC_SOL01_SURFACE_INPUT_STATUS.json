@@ -1,0 +1,76 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-INPUT",
+  "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+  "stage": "PHYSICAL_QUALIFIED_ADMISSION_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": false,
+  "canonically_admitted": false,
+  "scope": "Prescribed supply-limited matrix infiltration, no pond/evaporation/runoff; typed transient rain/irrigation split matched to actual accepted top flux; existing chemical owner and restart reused.",
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "next_action": "Validate exact source/evidence guards and original incumbent controls, then one full moving preservation at stable boundary; PR/master reconciliation.",
+  "test_selection": {
+    "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
+    "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
+    "admission": "Full moving selected once at stable candidate because two eligibility guards must recognize exact additive sources. Expected1400..1900s. Highest NOT_SELECTED_POLICY; no Actions selected."
+  },
+  "reconciliation": {
+    "canonical": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "open_overlap": "No newer NUT/SOL successor found in current open PR retrieval; donor1117 remains selective only",
+    "age": "PR1233 admitted e85bfe13",
+    "reactive_N": "PR1232 admitted26ddf94e; no duplication",
+    "master": "PR1072 aae2b8d207b13453be45dd1773d39f8eae855831;243 dispositions unchanged; stale inheritance failure remains"
+  },
+  "blockers": [],
+  "added_blobs": {
+    "src/process/mod_b111_surface_supply.f90": "8714d8e2c032710e3da52313942ecc7d33510e9d",
+    "src/runtime/mod_fmr_b111_surface_solute_route.f90": "d8b70f17cbbc4d9270025f35544d919c33cd7aae",
+    "src/runtime/mod_fmr_b111_surface_joint_application.f90": "314f8f1ba57126c81428938670a2867e35a8f5a2",
+    "tests/nut-sol/run_surface.py": "63c65c3c6e906b20126f634a72a45d22ef906061",
+    "tests/nut-sol/test_surface_process.f90": "73a24b0f3d8bcacfef5a3fc74c4f6932daf592b0",
+    "tests/nut-sol/test_surface_joint.f90": "62037253706c541039cae44138a255f9a73e372f",
+    "tests/nut-sol/verify_surface_successor.py": "6402a003285f19b9e024eca9d474ec477928d2fb",
+    "tests/nut-sol/check_surface_evidence_controls.py": "90668d4a9525436e8eb68f091869b7babdb32b17"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "bc6df6bf83119048a68dc9bac5143c8bf5692ee5",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "98dcea60c6b86a17137d7c4c6ca190fc654f9962"
+  },
+  "execution_commit": "03f4c8c7d3ff524379eeaddc458139b510f59874",
+  "cost_seconds": {
+    "physical_compile": 118.45895287697203,
+    "physical_link": 0.20319840400770772,
+    "physical_native": 16.442268966988195,
+    "process_compile": 0.23306802299339324,
+    "process_link": 0.06762318599794526,
+    "process_native": 0.0026760909968288615
+  },
+  "physical_provider_count": 238,
+  "process_provider_count": 2,
+  "input_count": 242,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_INPUT_20261015.tar.xz.b64",
+    "sha256": "4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338",
+    "decoded_bytes": 829828,
+    "members": 1859
+  },
+  "failed_attempts": [
+    {
+      "path": "failed-process",
+      "reason": "Strict -Werror real equality warning; fixed without changing physical formula."
+    },
+    {
+      "path": "failed-physical",
+      "reason": "Overdraw fixture exceeded declared parameter bound and could not retry; fixed to permitted1e6/day."
+    },
+    {
+      "path": "leaf-feedback",
+      "status": "PASS_O0_FEEDBACK_NOT_FINAL_QUALIFICATION"
+    }
+  ]
+}

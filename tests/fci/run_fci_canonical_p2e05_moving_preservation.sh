@@ -381,7 +381,11 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
 fi
 if [[ -f src/process/mod_b111_soil_n_mineral_owner.f90 ]]; then
   if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
-    python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail 'unqualified age/mineral owner coexistence'
+    if [[ -f src/runtime/mod_fmr_b111_surface_solute_route.f90 ]]; then
+      python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail 'unqualified surface and incumbent owners'
+    else
+      python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail 'unqualified age/mineral owner coexistence'
+    fi
   else
     python3 tests/nut-mineral/verify_mineral_successor.py || fail 'unqualified daily mineral owner successor'
   fi
@@ -389,7 +393,11 @@ if [[ -f src/process/mod_b111_soil_n_mineral_owner.f90 ]]; then
 fi
 if [[ -f src/process/mod_b111_soil_n_reactive_owner.f90 ]]; then
   if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
-    python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail 'unqualified age/reactive N owner coexistence'
+    if [[ -f src/runtime/mod_fmr_b111_surface_solute_route.f90 ]]; then
+      python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail 'unqualified surface and incumbent owners'
+    else
+      python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail 'unqualified age/reactive N owner coexistence'
+    fi
   else
     python3 tests/nut-reactive/verify_reactive_successor.py || fail 'unqualified reactive daily N successor'
   fi
@@ -758,20 +766,35 @@ check_b19_micro_root_recomposition() {
         ;;
       src/process/mod_soil_n_pool_state.f90|src/process/mod_b111_soil_n_storage_conversion.f90|src/process/mod_b111_soil_n_transport.f90|src/process/mod_b111_soil_n_mineral_owner.f90|src/runtime/mod_fmr_b111_mineral_route.f90|src/runtime/mod_fmr_b111_mineral_joint_application.f90|src/adapter/mod_mineral_joint_restart_file.f90 )
         if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
-          python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail "unqualified age/mineral coexistence: $candidate_path"
+          if [[ -f src/runtime/mod_fmr_b111_surface_solute_route.f90 ]]; then
+            python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail 'unqualified surface and incumbent owners'
+          else
+            python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail "unqualified age/mineral coexistence: $candidate_path"
+          fi
         else
           python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
         fi
         ;;
       src/process/mod_b111_age_tracer_substep.f90|src/runtime/mod_fmr_b111_age_route.f90|src/runtime/mod_fmr_b111_age_joint_application.f90|src/adapter/mod_age_joint_restart_file.f90 )
-        python3 tests/nut-sol/verify_age_successor.py || fail "unqualified accepted age successor: $candidate_path"
+        if [[ -f src/runtime/mod_fmr_b111_surface_solute_route.f90 ]]; then
+          python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface/age coexistence: $candidate_path"
+        else
+          python3 tests/nut-sol/verify_age_successor.py || fail "unqualified accepted age successor: $candidate_path"
+        fi
         ;;
       src/process/mod_b111_soil_organic_turnover.f90|src/process/mod_b111_soil_n_organic_mineralization_transfer.f90|src/process/mod_b111_soil_n_organic_turnover_transfer.f90|src/process/mod_b111_soil_organic_dissimilation.f90|src/process/mod_b111_soil_n_rate_factors.f90|src/process/mod_b111_soil_n_daily_exchange.f90|src/process/mod_b111_soil_n_daily_candidate.f90|src/process/mod_b111_soil_n_organic_rate_environment.f90|src/process/mod_b111_soil_n_reactive_owner.f90|src/runtime/mod_fmr_b111_reactive_n_route.f90|src/runtime/mod_fmr_b111_reactive_n_joint_application.f90|src/adapter/mod_reactive_n_joint_restart_file.f90 )
         if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
-          python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail "unqualified age/reactive N coexistence: $candidate_path"
+          if [[ -f src/runtime/mod_fmr_b111_surface_solute_route.f90 ]]; then
+            python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail 'unqualified surface and incumbent owners'
+          else
+            python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail "unqualified age/reactive N coexistence: $candidate_path"
+          fi
         else
           python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
         fi
+        ;;
+      src/process/mod_b111_surface_supply.f90|src/runtime/mod_fmr_b111_surface_solute_route.f90|src/runtime/mod_fmr_b111_surface_joint_application.f90 )
+        python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
