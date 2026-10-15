@@ -527,3 +527,12 @@ dispositions and summary counts remain unchanged; no global source census PASS.
 Largest dependency-ready next crop cluster: daily adaptive density/SWRDC1 and
 accepted layer uptake/stress for SWDMI2RD2. Not started. Native weather disk codec
 and harvest/reset/fallow/rotation are separate unadmitted compositions.
+
+
+## Existing migration PR closeout,15 October2026
+
+PR1245,1247 and1234 are canonically admitted at `f56a82b3`, `31ff3158` and `136787ef2927eb44967298bec7029c30e6434422`. The policy changes no production science. Harvest/fallow/successor and zero-pond surface transport are bounded production profiles, not complete historical selector envelopes. PR1226 and1214 are closed as completed research with all branches/evidence retained. No further highest low-air performance run is selected.
+
+Scoped recount:243 unique capabilities,95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE and4 QUALIFICATION_ONLY;112 unresolved. Complete capability dispositions and queue dependencies remain unchanged. Three bounded facets/queue explanations and current source locators are reconciled. The full historical inherited-source integrity checker remains blocked/stale and is not relabelled PASS.
+
+Next independent owned packages are daily adaptive root density/supply2, existing irrigation shared-application event delivery, and persistent solute pond/source mass. Implementations may proceed in parallel with read-only shared inputs; shared ownership changes and admission remain serial. See the existing JSON ledger/status closeout object for exact receipts, open PR classifications and scope limits. No new migration is started by this closeout.

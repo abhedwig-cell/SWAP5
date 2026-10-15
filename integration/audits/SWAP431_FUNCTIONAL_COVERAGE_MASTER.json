@@ -25,7 +25,7 @@
     },
     "open_capabilities": 108,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 108,
+    "confirmed_missing_production_entries": 92,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 112,
@@ -38,11 +38,18 @@
     },
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 108,
-    "missing_standalone_process_implementations_not_established": 113,
-    "active_with_existing_production_source_authority": 62,
-    "active_without_listed_production_source_authority": 46,
+    "missing_standalone_process_implementations_not_established": 108,
+    "active_with_existing_production_source_authority": 63,
+    "active_without_listed_production_source_authority": 45,
     "active_missing_complete_admitted_route": 108,
-    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
+    "confirmed_missing_production_entries_claim_scope": "Structural count of ACTIVE_MIGRATION rows explicitly marked implementation_absence_proven; not a count of absent standalone algorithms. All108 active source envelopes remain incompletely admitted.",
+    "derived_gap_counter_reconciliation": {
+      "previous_summary": 108,
+      "actual_marked_rows": 92,
+      "active_complete_route_gaps": 108,
+      "disposition_changes": 0,
+      "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+    }
   },
   "capabilities": [
     {
@@ -8792,21 +8799,27 @@
       },
       "meaning": "Ponded solute storage and rain/irrigation/dissolved runoff exchange",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/process/mod_b111_surface_supply.f90",
+        "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+        "src/runtime/mod_fmr_b111_surface_joint_application.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+        "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md"
       ],
       "production_reachability": {
         "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission."
+        "bounded_established": true,
+        "route": "src/runtime/mod_fmr_b111_surface_joint_application.f90",
+        "claim": "Explicit typed rain/irrigation supply, exact actual accepted top water flux, literal linear matrix transport and existing chemical restart, strictly zero pond water and mass. Full historical source capability not established. Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected."
       },
       "restrictions": [
-        "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
+        "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SOL01",
@@ -8824,7 +8837,27 @@
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "pr": 1234,
+        "canonical_merge": "136787ef2927eb44967298bec7029c30e6434422",
+        "owner_family": "MC-SOL01",
+        "scope": "Explicit typed rain/irrigation supply, exact actual accepted top water flux, literal linear matrix transport and existing chemical restart, strictly zero pond water and mass.",
+        "remaining": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
+        "sources": [
+          "src/process/mod_b111_surface_supply.f90",
+          "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+          "src/runtime/mod_fmr_b111_surface_joint_application.f90"
+        ],
+        "records": [
+          "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+          "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md"
+        ],
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "full_capability": false,
+        "full_master_qualification_claimed": false
+      },
+      "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist."
     },
     {
       "capability_id": "SW431-AGE-TRACER",
@@ -9463,22 +9496,27 @@
       "meaning": "Multi-crop start/end/harvest accepted lifecycle",
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90",
-        "src/crop/mod_wofost_crop_owner_state.f90"
+        "src/crop/mod_wofost_crop_owner_state.f90",
+        "src/crop/mod_crop_soil_n_day.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
+        "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+        "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md"
       ],
       "production_reachability": {
         "established": false,
-        "route": null,
-        "claim": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
+        "bounded_established": true,
+        "route": "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "claim": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart. Full historical source capability not established. Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open."
       },
       "restrictions": [
-        "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate."
+        "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open."
       ],
       "remaining_dependency": [
         "SW431-CROP-ANNUAL"
@@ -9499,7 +9537,26 @@
         "SW5-CROP-WOF81"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_decision": "MIGRATE",
+      "latest_canonical_bounded_owner": {
+        "pr": 1247,
+        "canonical_merge": "31ff3158b956183c8af19f85bd3361847f60309b",
+        "owner_family": "MC-CROP01",
+        "scope": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart.",
+        "remaining": "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
+        "sources": [
+          "src/crop/mod_crop_soil_n_day.f90",
+          "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+        ],
+        "records": [
+          "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+          "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md"
+        ],
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "full_capability": false,
+        "full_master_qualification_claimed": false
+      },
+      "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist."
     },
     {
       "capability_id": "SW431-CROP-ANNUAL",
@@ -9778,20 +9835,26 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Crop residue transfers to organic soil pools",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_soil_n_day.f90",
+        "src/crop/mod_wofost81_harvest_materials.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
+        "integration/f-wof/F-WOF-PP03_CHECKPOINT.json",
+        "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json"
       ],
       "production_reachability": {
         "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "bounded_established": true,
+        "route": "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "claim": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset. Full historical source capability not established. Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open."
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -9814,17 +9877,24 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
-        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "pr": 1247,
+        "canonical_merge": "31ff3158b956183c8af19f85bd3361847f60309b",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset.",
+        "remaining": "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
+        "sources": [
+          "src/crop/mod_crop_soil_n_day.f90",
+          "src/crop/mod_wofost81_harvest_materials.f90",
+          "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+        ],
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
-      }
+          "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json"
+        ],
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "full_capability": false,
+        "full_master_qualification_claimed": false
+      },
+      "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist."
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -15042,7 +15112,7 @@
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Current production provider/state inventory does not supply this source capability; legacy/reference presence is not admission.",
+      "why_open": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15557,7 +15627,7 @@
       "dependencies": [
         "SW431-CROP-ANNUAL"
       ],
-      "why_open": "MIGRATE accepted seasonal crop-parameter/state transitions with preserved soil state. F-WOF39 retires a consumed daily event; it does not initialize the next seasonal crop or own a crop/fallow schedule. Start with prescribed emergence; automatic sowing is separate.",
+      "why_open": "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -15639,7 +15709,7 @@
       "dependencies": [
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
+      "why_open": "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -16158,6 +16228,61 @@
       "disposition_changes": 0,
       "full_master_qualification_claimed": false,
       "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
+    },
+    "closeout_sw431_crop_rotation_20261015": {
+      "pr": 1247,
+      "canonical_merge": "31ff3158b956183c8af19f85bd3361847f60309b",
+      "owner_family": "MC-CROP01",
+      "scope": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart.",
+      "remaining": "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
+      "sources": [
+        "src/crop/mod_crop_soil_n_day.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+      ],
+      "records": [
+        "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+        "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md"
+      ],
+      "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+      "full_capability": false,
+      "full_master_qualification_claimed": false
+    },
+    "closeout_sw431_nut_residue_20261015": {
+      "pr": 1247,
+      "canonical_merge": "31ff3158b956183c8af19f85bd3361847f60309b",
+      "owner_family": "MC-NUT01",
+      "scope": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset.",
+      "remaining": "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
+      "sources": [
+        "src/crop/mod_crop_soil_n_day.f90",
+        "src/crop/mod_wofost81_harvest_materials.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+      ],
+      "records": [
+        "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json"
+      ],
+      "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+      "full_capability": false,
+      "full_master_qualification_claimed": false
+    },
+    "closeout_sw431_salt_pond_20261015": {
+      "pr": 1234,
+      "canonical_merge": "136787ef2927eb44967298bec7029c30e6434422",
+      "owner_family": "MC-SOL01",
+      "scope": "Explicit typed rain/irrigation supply, exact actual accepted top water flux, literal linear matrix transport and existing chemical restart, strictly zero pond water and mass.",
+      "remaining": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
+      "sources": [
+        "src/process/mod_b111_surface_supply.f90",
+        "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+        "src/runtime/mod_fmr_b111_surface_joint_application.f90"
+      ],
+      "records": [
+        "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+        "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md"
+      ],
+      "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+      "full_capability": false,
+      "full_master_qualification_claimed": false
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -16293,5 +16418,259 @@
     "disposition_changes": 0,
     "full_master_qualification_claimed": false,
     "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
+  },
+  "latest_pr_closeout_reconciliation_20261015": {
+    "canonical_admission_head": "136787ef2927eb44967298bec7029c30e6434422",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "merged": [
+      {
+        "pr": 1245,
+        "merge": "f56a82b37bc1c3df7a6cb305990ab31e97818969"
+      },
+      {
+        "pr": 1247,
+        "merge": "31ff3158b956183c8af19f85bd3361847f60309b"
+      },
+      {
+        "pr": 1234,
+        "merge": "136787ef2927eb44967298bec7029c30e6434422"
+      }
+    ],
+    "closed_without_merge": [
+      {
+        "pr": 1226,
+        "reason": "Completed low-air performance research; numerical core already admitted via1225; full-wall10x unproved; no further long run."
+      },
+      {
+        "pr": 1214,
+        "reason": "Completed cache-I/O study; root throughput objective unmet; defaults retained."
+      }
+    ],
+    "remaining_open": [
+      {
+        "number": 1250,
+        "title": "Introduce fail-closed RossFast change-impact preflight for F-CI",
+        "head": "ab10418c8c8fedf1b25344906430d99c15d46d98",
+        "branch": "work/fci-component-impact-selection-20261015",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "ACTIVE_PREFLIGHT: component impact implementation; current owner/runner reconciliation and qualification pending."
+      },
+      {
+        "number": 1117,
+        "title": "QUAL: consolidated SW431 NUT/SOL binding postimage and exact-source gate",
+        "head": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+        "branch": "work/swap431-nut-sol-binding-20261007",
+        "base": "qualification/swap431-nut-sol-base-20261007",
+        "draft": true,
+        "classification": "RETAIN_DONOR: consolidated historical NUT/SOL candidate; not a wholesale current-canonical admission proposal."
+      },
+      {
+        "number": 1103,
+        "title": "SWAP 4.3.1: reduce B1.11 hydraulic coverage",
+        "head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
+        "branch": "work/swap431-hydraulic-coverage-20261007",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "ACTIVE_HYD_HYST: bounded analytical source work; wider owning qualification/admission unclosed."
+      },
+      {
+        "number": 1098,
+        "title": "SW431 nutrient/solute: state-owner contract and B1.11 fixation policy",
+        "head": "d59aaa12c8312c8ecc42b1328537d5da412431a8",
+        "branch": "work/swap431-nutsol-20261007",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "RETAIN_DONOR: fixation/state/source contract; not proven superseded by1117 (not an ancestor), do not silently equate B1.11 fixation with WOFOST81."
+      },
+      {
+        "number": 1072,
+        "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)",
+        "head": "68165805cbdb1aef76fa0b167a9cb670cedd8471",
+        "branch": "work/swap431-master-coverage-20261006",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "ACTIVE_MASTER:243-entry ledger; stale historical inherited-source full integrity remains open; this receipt is scoped."
+      },
+      {
+        "number": 1009,
+        "title": "F-MIG431-INT12-C: compose SWINTER1 with accepted source-window progress",
+        "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+        "branch": "work/f-mig431-int12-c-vonhhbraden",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "ACTIVE_COMPOSITION: dedicated source-window/interception gate PASS at its snapshot; additional preregistered preservation/admission pending."
+      },
+      {
+        "number": 987,
+        "title": "PPA-WU05-A28: opt-in approximate RFM sorptivity mode",
+        "head": "29c788b325bee9339dfde429a3bd90d44910d38d",
+        "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
+        "base": "work/ppa-wu05-a27-rfm-performance-equivalence",
+        "draft": true,
+        "classification": "NONBLOCKING_RESEARCH: approximate RFM branch-only; long-history/replay/rollback qualification open."
+      },
+      {
+        "number": 956,
+        "title": "SW-RIB-TOP03: transactional top-surface exchange",
+        "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+        "branch": "work/sw-rib-top03-transactional-top-exchange",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "NONBLOCKING_RESEARCH: TOP03 contact layer; accepted carrier, external storage ownership and production rollback/restart unclosed."
+      },
+      {
+        "number": 953,
+        "title": "SW-RIB-TOP02: external surface-water head candidate",
+        "head": "76067cced09715e42220301d2410656851ec7013",
+        "branch": "work/sw-rib-top02-external-head-candidate",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "ACTIVE_DEPENDENT_CANDIDATE: requires separate TOP02 executable and TOP03 publication closure."
+      },
+      {
+        "number": 740,
+        "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study",
+        "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+        "branch": "work/f-pe-elastic01-soil-storage",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "NONBLOCKING_RESEARCH: elasticity/soil-rule selection; no production admission."
+      },
+      {
+        "number": 700,
+        "title": "PPA-RECONCILE01: reconcile local SWAP4.3.1 migration with current canonical",
+        "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+        "branch": "work/ppa-reconcile01-merged",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "RETAIN_RECOVERY: historical PPA reconciliation/WU04C blocker; not current production admission."
+      },
+      {
+        "number": 528,
+        "title": "Research: fixed-interface dummy SWAP coupling qualification",
+        "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+        "branch": "work/f-gc-dummy-swap-shared-storage",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "NONBLOCKING_RESEARCH: fixed-interface dummy coupling oracles; not production."
+      },
+      {
+        "number": 486,
+        "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB",
+        "head": "2f919cb095c0b581664d8c261fb10586670caa45",
+        "branch": "work/f-gc-coupling-semantics-reconciliation",
+        "base": "integration/f-ci-canonical",
+        "draft": false,
+        "classification": "ACTIVE_AUTHORITY_RECONCILIATION: CSR ownership/storage/drainage topology and owner qualification unclosed; do not merge old shared semantics."
+      },
+      {
+        "number": 389,
+        "title": "docs: Stromingen overview article and publication firewall",
+        "head": "92bcecf3302ab495afe8bd2fcfbd38b86135193a",
+        "branch": "docs/pub-stromingen-canonical-r3",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "EDITORIAL: internal Stromingen review; terminology/current claims refresh before submission."
+      },
+      {
+        "number": 365,
+        "title": "DIFFICULTY: preregister Phase-0 falsification experiment",
+        "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
+        "branch": "research/difficulty-phase0-preregistration",
+        "base": "integration/f-ci-canonical",
+        "draft": true,
+        "classification": "NONBLOCKING_RESEARCH: DIFFICULTY preregistration; independent-method prerequisite for H3 remains."
+      },
+      {
+        "number": 58,
+        "title": "F-CI canonical integration: F-CI02-F-CI13",
+        "head": "31ff3158b956183c8af19f85bd3361847f60309b",
+        "branch": "integration/f-ci-canonical",
+        "base": "main",
+        "draft": true,
+        "classification": "UMBRELLA: long-lived canonical integration PR, not a migration candidate to close."
+      }
+    ],
+    "remaining_work_units": {
+      "MC-CROP01": "Full seasonal/legacy calendar/input/output activation, advanced selectors and thermal-harvest composition; bounded explicit cycle admitted.",
+      "MC-ROOT01": "SWRDC1 daily adaptive density and SWDMI2RD2 accepted per-layer supply/stress, advanced oxygen/reproduction and remaining root selector compositions. SWRD3 and bounded static SWRD2 0/1 admitted.",
+      "MC-NUT01": "Full historical selector/parameter/application envelope, automatic management/input activation and thermal-harvest composition; reactive/owned mineral-organic/crop binding and bounded material transfer already admitted.",
+      "MC-SOL01": "Persistent pond/source/dry-deposition mass, wider surface exchanges and nonlinear surface composition; exact zero-pond rain/irrigation route now admitted. Aquifer remains rejected.",
+      "MC-IRR01": "Existing shared-application delivery/selector integration for11 remaining capabilities. Five of16 admitted; component evidence is not complete application admission."
+    },
+    "next_dependency_ready_parallel_packages": [
+      {
+        "work_unit": "MC-CROP01/MC-ROOT01",
+        "package": "Daily SWRDC1 adaptive density and accepted per-layer supply/stress for SWDMI2RD2",
+        "owned_surface": "Crop/root density and daily crop transaction; numerical/reference contracts fixed."
+      },
+      {
+        "work_unit": "MC-IRR01",
+        "package": "Existing shared-application irrigation event delivery for root-zone/sensor choices and availability/depth limits",
+        "owned_surface": "Irrigation scheduler/event owner; consume accepted root/soil views read-only; no crop state ownership."
+      },
+      {
+        "work_unit": "MC-SOL01",
+        "package": "Persistent pond/source mass and dry-deposition continuation on the admitted explicit surface seam",
+        "owned_surface": "Surface/chemical mass owner and codec; no crop lifecycle or irrigation scheduler ownership."
+      }
+    ],
+    "parallel_rule": "Independent owned implementations may run in parallel; shared state/owner semantics and canonical merges remain serial. No new package started.",
+    "changed_capability_facets": [
+      "SW431-CROP-ROTATION",
+      "SW431-NUT-RESIDUE",
+      "SW431-SALT-POND"
+    ],
+    "disposition_changes": 0,
+    "census_recount": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 95,
+        "ACTIVE_MIGRATION": 108,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4
+      },
+      "open_capabilities": 108,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 92,
+      "other_unresolved_source_admission_reviews": 4,
+      "qualification_only_capabilities": 4,
+      "total_unresolved_capabilities": 112,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 58,
+        "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 2,
+      "missing_production_binding_or_implementation_entries": 108,
+      "missing_standalone_process_implementations_not_established": 108,
+      "active_with_existing_production_source_authority": 63,
+      "active_without_listed_production_source_authority": 45,
+      "active_missing_complete_admitted_route": 108,
+      "confirmed_missing_production_entries_claim_scope": "Structural count of ACTIVE_MIGRATION rows explicitly marked implementation_absence_proven; not a count of absent standalone algorithms. All108 active source envelopes remain incompletely admitted.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      }
+    },
+    "scoped_validation": "PASS:243 unique dispositions,108 queue IDs,4 qualification-only, unchanged dependencies and source locators at actual canonical; bounded evidence/receipt only.",
+    "full_master_integrity": "READBACK_BLOCKED: SWAP431_COVERAGE_FAIL: stale inheritance baseline. Existing historical source inheritance is not repaired or waived by this bounded admission receipt.",
+    "full_repository_qualification": "NOT_SELECTED",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "full_master_integrity_readback": {
+      "command": "python -B tools/audits/check_swap431_coverage.py",
+      "exit": 1,
+      "raw": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n",
+      "raw_sha256": "4d17d66507401087cfe0c5226359c2e22f602b3d9aed4a4b1b82df37dff6a993",
+      "science_run": false
+    }
   }
 }
