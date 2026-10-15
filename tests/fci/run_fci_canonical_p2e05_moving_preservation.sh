@@ -387,6 +387,10 @@ if [[ -f src/process/mod_b111_soil_n_reactive_owner.f90 ]]; then
   python3 tests/nut-reactive/verify_reactive_successor.py || fail 'unqualified reactive daily N successor'
   dependency_authority=eb03024d99ef9256335eb6e2f3f74bccce8145f0
 fi
+if [[ -f src/crop/mod_crop_soil_n_day.f90 ]]; then
+  python3 tests/nut-crop/verify_crop_supply_successor.py || fail 'unqualified daily crop Soil-N supply successor'
+  dependency_authority=26ddf94e58133acd413c2b2738b873a92f43f1da
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -753,6 +757,9 @@ check_b19_micro_root_recomposition() {
         ;;
       src/process/mod_b111_soil_organic_turnover.f90|src/process/mod_b111_soil_n_organic_mineralization_transfer.f90|src/process/mod_b111_soil_n_organic_turnover_transfer.f90|src/process/mod_b111_soil_organic_dissimilation.f90|src/process/mod_b111_soil_n_rate_factors.f90|src/process/mod_b111_soil_n_daily_exchange.f90|src/process/mod_b111_soil_n_daily_candidate.f90|src/process/mod_b111_soil_n_organic_rate_environment.f90|src/process/mod_b111_soil_n_reactive_owner.f90|src/runtime/mod_fmr_b111_reactive_n_route.f90|src/runtime/mod_fmr_b111_reactive_n_joint_application.f90|src/adapter/mod_reactive_n_joint_restart_file.f90 )
         python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
+        ;;
+      src/crop/mod_crop_soil_n_configuration.f90|src/crop/mod_crop_soil_n_day.f90|src/runtime/mod_fmr_crop_soil_n_joint_application.f90|src/adapter/mod_crop_soil_n_joint_restart_file.f90 )
+        python3 tests/nut-crop/verify_crop_supply_successor.py || fail "unqualified crop Soil-N successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
