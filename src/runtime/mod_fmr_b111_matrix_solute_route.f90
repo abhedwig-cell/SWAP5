@@ -57,11 +57,11 @@ contains
     if(n<1.or.size(concentration)/=n)return
     if(.not.allocated(p%dz_cm).or..not.allocated(p%bulk_density).or..not.allocated(p%kf))return
     if(size(p%dz_cm)/=n.or.size(p%bulk_density)/=n.or.size(p%kf)/=n)return
-    ! This production route qualifies linear Freundlich only and has no surface
-    ! chemical input, aquifer or age owner. Other candidate processes stay open.
+    ! Bounded nonlinear successor; no surface chemical input, aquifer or age
+    ! owner. The existing partition operator owns the equilibrium inversion.
     ! Fortran logical expressions need not short circuit under O0/FPE traps.
     if(.not.ieee_is_finite(p%frexp))return
-    if(abs(p%frexp-1.0_real64)>epsilon(1.0_real64))return
+    if(p%frexp<0.5_real64.or.p%frexp>2.0_real64)return
     if(.not.all(ieee_is_finite([p%rain_rate_cm_day,p%irrigation_rate_cm_day,p%macropore_area_fraction])))return
     ! Individual zero comparisons also avoid overflow in a sum of invalid rates.
     if(abs(p%rain_rate_cm_day)>0.0_real64.or.abs(p%irrigation_rate_cm_day)>0.0_real64.or. &

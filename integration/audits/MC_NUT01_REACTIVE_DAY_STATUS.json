@@ -6,12 +6,12 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
   "contract": "docs/science/MC_NUT01_REACTIVE_DAY_CONTRACT.md",
   "reference_decision": "docs/science/MC_NUT01_ORGANIC_REFERENCE_DECISION_20261015.md",
-  "next_safe_step": "Complete local moving preservation once on frozen candidate; publish and qualify one PR without broad capability overclaim.",
+  "next_safe_step": "Publish final evidence/recovery metadata in PR1232, verify exact source and admission-only delta, mark ready and safely merge if canonical remains compatible. Do not repeat qualification for metadata-only closeout.",
   "pilot": {
     "execution": "5ff8d978",
     "status": "SCOPED_LOCAL_PASS_BEFORE_TRANSFER_DOMAIN_GUARD",
@@ -56,13 +56,14 @@
     "tests/nut-reactive/test_reactive_edges.f90": "a11b080c5a732e502e8b64dda52fae8bfb58f15c",
     "tests/nut-reactive/test_reactive_joint.f90": "c48f1262dba9ebb5c8c0f14bfe227afdb841bc20",
     "tests/nut-reactive/test_reactive_owner.f90": "063e52a75f879857d99cf27f8f6ded2faf683513",
-    "tests/nut-reactive/verify_reactive_successor.py": "550bcf7a0e9aac831d4f71ae4d34d5de4003008e"
+    "tests/nut-reactive/verify_reactive_successor.py": "0488eec9b454e45d7ee1457ca239f558b41b2ed1"
   },
   "changed_blobs": {
     "src/process/mod_b111_soil_n_mineral_owner.f90": "1268d9e45e58047e2a252bdba3f771a273a87b55",
     "src/runtime/mod_fmr_b111_mineral_route.f90": "d69cb53ab063d6521dcd53e93ba2e2ccc0671fea",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "18d4e2a1efc5e327e553f7d4231a37bb48174fc4",
-    "tests/nut-mineral/verify_mineral_successor.py": "4e44e4df82dbeaaf2d4214f9e4f1d6b82490d037"
+    "tests/nut-mineral/verify_mineral_successor.py": "46af097c96af79460e8b6503af9e9846a97bd368",
+    "tests/crop-co2/verify_co2_successor.py": "40bcfa8d15fbd096e3dce94e51ed84c56cb6ad3b"
   },
   "test_selection": {
     "level1_2": "13-provider O0/O2 exact corrected-source process driver; original 4-provider mineral driver retained. Original B1 defect witness and corrected B1 qualification execute before production, with pinned one-line transform. Small independent successful-immobilisation/internal-nitrification/transfer-bound controls.",
@@ -259,5 +260,92 @@
       "foreign_test",
       "foreign_reference"
     ]
+  },
+  "canonical_peer_reconciliation": {
+    "canonical": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+    "peer_pr": 1230,
+    "science_input_delta": [],
+    "scope": "Exact canonical-relative reactive delta, unchanged matrix postimages and complete nonlinear raw qualification; original canonical CO2/mineral owners execute at exact peer baseline, new reactive physical and original mineral driver independently rerun. All 253 reactive primary inputs remain identical; no simultaneous matrix and N execution claim. Full moving actual execution remains recorded separately, not relabeled a combined run."
+  },
+  "qualification_status": "BOUNDED_REACTIVE_DAILY_ROUTE_QUALIFIED_AND_PRESERVED_PREMERGE",
+  "pr": 1232,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1232",
+  "full_preservation": {
+    "execution_commit": "3b60b7e1ee3bfea72fd5fac99a000dda8c2e4020",
+    "tree": "d0eae7733f7e30dcc65d52e59fe2b31e05ce6283",
+    "source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "returncode": 0,
+    "wall_seconds": 1423.3613627060113,
+    "tracked_inputs": 6258,
+    "changed_inputs": [],
+    "stdout_sha256": "af85f19554866454ff88cbdf404205b33ef75708fc27672420b767d1f9c4f40a",
+    "stderr_sha256": "8f294a304da8eaf9055bde98ec4a7aead6d2d1543de071492bcc6e3e985acc93",
+    "terminal_marker": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_REACTIVE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "defe22fcb89bad7a7c396d968e1c3ad5a8b9448c48a1323efa60bb80aa552130",
+      "decoded_bytes": 1838312,
+      "members": 278
+    }
+  },
+  "incumbent_owner_verification": {
+    "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "postimages": {
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "5a93008ed2fb18d0798ec0c967729815d156ec26",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "86f8c7770b15dcd63f3c22295c81f0f7073cd993"
+    },
+    "co2_successor": true,
+    "qualified": false,
+    "admitted": false,
+    "physical_programs": 28,
+    "highest": "NOT_SELECTED_POLICY",
+    "reactive_successor": true,
+    "reactive_source_tree": "1c7be316f404f6d75881e14393fe00634f6885f7",
+    "reactive_baseline": "eb03024d99ef9256335eb6e2f3f74bccce8145f0"
+  },
+  "canonical_admission_authority": "This is an immutable premerge qualification record. Actual admission requires PR1232 merge receipt and canonical source/tree verification in its final PR body.",
+  "final_dependency_rebind": {
+    "execution": "3b60b7e1ee3bfea72fd5fac99a000dda8c2e4020",
+    "physical_source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+    "existing_inputs_verified": 6258,
+    "changed_existing_inputs": [
+      "docs/science/MC_NUT_SOL_TRAJECTORY3_MATRIX_CONTRACT.md",
+      "docs/verification/theory-code-discrepancy-register.md",
+      "integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
+      "integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+      "tests/crop-co2/verify_co2_successor.py",
+      "tests/nut-mineral/verify_mineral_successor.py",
+      "tests/nut-reactive/verify_reactive_successor.py",
+      "tests/nut-sol/run_matrix_route.py",
+      "tests/nut-sol/test_matrix_joint.f90",
+      "tests/nut-sol/test_matrix_route.f90"
+    ],
+    "status_projection_equal": [
+      "baseline",
+      "evidence"
+    ],
+    "new_paths": [
+      "integration/audits/evidence/MC_NUT01_REACTIVE_ADMISSION_20261015.tar.xz.b64",
+      "docs/science/MC_NUT01_REACTIVE_DAY_RECOVERY_20261015.md"
+    ],
+    "additional_closeout_metadata": [
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json"
+    ],
+    "reason": "Exact independently admitted nonlinear peer delta plus three source-dispatch guard changes and metadata. All253 reactive science inputs byte-identical; full nonlinear capsule validates all240 inputs on this tree. Both original full runs retain exact execution/input/source identities. Fresh source/evidence controls, original incumbent owner CLIs and small actual N/matrix O0/O2 execute on combined candidate. No new combined full execution or simultaneous NUT+SOL physics claimed.",
+    "current_source_tree": "1c7be316f404f6d75881e14393fe00634f6885f7",
+    "canonical_peer": "9ed5efc773b28f44b16b8922730b3fd9b8892b60"
   }
 }

@@ -3,23 +3,25 @@
 from pathlib import Path
 import argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
 ROOT=Path(__file__).resolve().parents[2];BASE='eb03024d99ef9256335eb6e2f3f74bccce8145f0'
+PEER='9ed5efc773b28f44b16b8922730b3fd9b8892b60'
+QUALIFIED_SOURCE='6839bb0ddc6be7a6be81954206ee3f7e6cc5a975'
 STATUS='integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json'
-CHANGED=['src/process/mod_b111_soil_n_mineral_owner.f90','src/runtime/mod_fmr_b111_mineral_route.f90','tests/nut-mineral/verify_mineral_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh']
+CHANGED=['tests/crop-co2/verify_co2_successor.py','src/process/mod_b111_soil_n_mineral_owner.f90','src/runtime/mod_fmr_b111_mineral_route.f90','tests/nut-mineral/verify_mineral_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh']
 def check(ok,label):
  if not ok:raise ValueError(label)
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source():
- s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',BASE,'HEAD')
+ s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
- rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
+ rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',PEER,'HEAD','--','src','tests','tools','reference').splitlines()}
  expected={p:'A'for p in s['added_blobs']};expected.update({p:'M'for p in CHANGED})
  check(rows==expected,'foreign reactive delta');check(set(s['changed_blobs'])==set(CHANGED),'changed seam coverage')
  for p,h in {**s['added_blobs'],**s['changed_blobs']}.items():
   check(git('rev-parse','HEAD:'+p)==h==blob((ROOT/p).read_bytes()),'unknown postimage '+p)
  check(git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference'),'global reference mutation')
- return dict(baseline=BASE,source_tree=git('rev-parse','HEAD:src'),reactive_successor=True,qualified=False,admitted=False)
+ return dict(baseline=BASE,source_tree=QUALIFIED_SOURCE,current_source_tree=git('rev-parse','HEAD:src'),canonical_peer=PEER,reactive_successor=True,qualified=False,admitted=False)
 def read_evidence():
  s=json.loads((ROOT/STATUS).read_text());raw=base64.b64decode((ROOT/s['evidence']['path']).read_bytes())
  check(hashlib.sha256(raw).hexdigest()==s['evidence']['sha256'],'capsule drift')
@@ -32,7 +34,11 @@ def read_evidence():
  return data
 
 def verify_qualification():
- source=verify_source();data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
+ source=verify_source()
+ sys.path.insert(0,str(ROOT/'tests/crop-co2'))
+ from verify_co2_successor import nonlinear_evidence
+ nonlinear_evidence() # exact unchanged independently admitted matrix physics
+ data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
  check(r['status']=='SCOPED_REACTIVE_QUALIFICATION_PASS_NOT_ADMITTED','unfinished qualification')
  check(r['source_tree']==source['source_tree'],'stale source tree')
  repair=r['reference_correction']
@@ -110,11 +116,12 @@ def verify_qualification():
  return {**source,'qualified':True,'direct_providers':13,'highest':'NOT_SELECTED_POLICY'}
 def incumbent(mode='qualification'):
  verify_qualification()
- base=ROOT.parent/'nut-reactive-baseline-eb03024d'
- if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
- check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'baseline head changed')
+ base=ROOT.parent/'nut-reactive-peer-9ed5efc7'
+ if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),PEER],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==PEER,'baseline head changed')
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=base,text=True).strip(),'dirty baseline')
- args=[sys.executable,'-B',str(base/'tests/nut-mineral/verify_mineral_successor.py'),'--incumbent',mode]
+ args=[sys.executable,'-B',str(base/'tests/crop-co2/verify_co2_successor.py')]
+ if mode!='qualification':args.append('--source-only'if mode=='source'else'--physical-only')
  result=subprocess.run(args,cwd=base,capture_output=True,text=True,check=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return {**json.loads(result.stdout),'reactive_successor':True,'reactive_source_tree':git('rev-parse','HEAD:src'),'reactive_baseline':BASE}
 if __name__=='__main__':

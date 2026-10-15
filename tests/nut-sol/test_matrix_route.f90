@@ -37,6 +37,7 @@ program test_matrix_route
   integer(int64)::revision
   integer::status,i,j,face_status
   logical::ok,did_commit
+  character(64)::exponent_argument
 
   call initialize_application_config(cfg,-75.0_real64,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -57,11 +58,15 @@ program test_matrix_route
        spread(0.0_real64,1,numnod))
   call require(ok,'water state')
   call parameters(p)
+  call get_command_argument(1,exponent_argument)
+  if(len_trim(exponent_argument)>0)read(exponent_argument,*)p%frexp
+  if(abs(p%frexp-1.0_real64)>epsilon(1.0_real64))p%cref_mg_cm3=0.37_real64
   call signed_contracts(p)
   allocate(expected_c(numnod),expected_mass(numnod))
   expected_c=[(0.1_real64+0.1_real64*i,i=1,numnod)]
   water=cfg%tiles(1)%initial_state%water_content
-  expected_mass=(water+p%bulk_density*p%kf)*expected_c*dz
+  expected_mass=(water*expected_c+p%bulk_density*p%kf*p%cref_mg_cm3* &
+       (expected_c/p%cref_mg_cm3)**p%frexp)*dz
   call initialize_matrix_solute(p,9001_int64,T0,water,expected_c,solute,status)
   call require(status==MATRIX_OK,'initialize actual chemical state')
   initial=solute;mass0=sum(expected_mass);total_in=0.0_real64;total_out=0.0_real64
@@ -148,9 +153,12 @@ contains
     integer(int64)::rev
     integer::variant,j,status
     w=0.3_real64;c=[(0.2_real64+0.1_real64*j,j=1,numnod)]
-    pbad=base;pbad%frexp=2.0_real64
+    pbad=base;pbad%frexp=2.00001_real64
     call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
-    call require(status/=0,'nonlinear application option is outside this route')
+    call require(status/=0,'exponent above qualified application domain rejected')
+    pbad=base;pbad%frexp=0.49999_real64
+    call initialize_matrix_solute(pbad,9001_int64,0.0_real64,w,c,failed,status)
+    call require(status/=0,'exponent below qualified application domain rejected')
     do j=1,5
       pbad=base
       select case(j)
@@ -198,7 +206,7 @@ contains
       call initialize_matrix_solute(f,9001_int64,0.0_real64,w,c,a,status)
       call require(status==0,'signed fixture initialized')
       saved=a
-      mass=(w+f%bulk_density*f%kf)*c*dz
+      mass=(w*c+f%bulk_density*f%kf*f%cref_mg_cm3*(c/f%cref_mg_cm3)**f%frexp)*dz
       f%dt_day=0.1_real64;f%theta=trace(1)%water_end;f%theta_previous=w
       f%q_face_up_cm_day=u;f%root_sink_cm_day=trace(1)%root_sink;f%qdra_cm_day=trace(1)%drainage_sink_by_level
       call literal_step(f,c,mass,dec,ein,eout)

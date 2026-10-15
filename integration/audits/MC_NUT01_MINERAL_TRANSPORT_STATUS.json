@@ -8,9 +8,21 @@
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "canonical_merge": "eb03024d99ef9256335eb6e2f3f74bccce8145f0",
   "contract": "docs/science/MC_NUT01_MINERAL_TRANSPORT_CONTRACT.md",
-  "next_safe_step": "Publish final evidence/recovery metadata in PR1231, verify exact source and admission-only delta, mark ready and safely merge if canonical remains compatible. Do not repeat qualification for metadata-only closeout.",
+  "next_safe_step": "PR1231 is merged at eb03024d. Retain its immutable qualification; nonlinear peer guard-only coexistence is reconciled separately below. Next physical NUT block is bounded nitrification/reaction with whole-N accounting, not a repeat of mineral inventory/transport.",
+  "nonlinear_peer_rebind_20261015": {
+    "peer_pr":1230,
+    "canonical_mineral_admission":"eb03024d99ef9256335eb6e2f3f74bccce8145f0",
+    "original_qualified_mineral_source_tree":"f3ebea90ec20ff52e97e42c26d59673519089a28",
+    "prior_guard_blobs":{"tests/crop-co2/verify_co2_successor.py":"0211969f2ea73416130389a238ca03e3d85754a1","tests/fci/run_fci_canonical_p2e05_moving_preservation.sh":"30312fdf818e006b3613ae520cf7bfdf55d858aa"},
+    "scope":"Only source-eligibility composition and bytecode sideeffect prevention change. All237 mineral science inputs, production owners, parameters, fixtures and selectors are identical; nonlinear constructor is not a mineral dependency. Original full-moving record below stays bound to its actual execution, not silently relabeled a new run.",
+    "evidence":"integration/audits/evidence/MC_NUT_SOL_NONLINEAR_COEXISTENCE_20261015.tar.xz.b64",
+    "decoded_sha256":"44e43b53d2fe3ba60e9ef45b5e9960a79b6465a64d33137fa6a3c0b2ec7eb1d2",
+    "controls":"17 mineral,13 nonlinear,23 original CO2,3 extra peer negatives PASS; original CO2 owner assertions retained in situ; ordinary owner CLIs clean",
+    "no_simultaneous_joint_NUT_SOL_execution_claim":true
+  },
   "test_selection": {
     "direct": "4 production providers + literal unchanged historical routine; compile 1.3705s link 0.0584s native 0.00258s",
     "physical": "Actual daily Full Richards + temporal history; outflow, inflow, hydraulic and chemical rejection; opaque/disk fresh-process restart. Selected because daily source aggregation and atomic coupling are new. Native cost UNKNOWN; compile measured from events. Do not duplicate active run.",
@@ -46,10 +58,10 @@
     "tests/nut-mineral/run_mineral.py": "fc9db1db5b78735dfd78e9a9caf47b02fdaa49ae",
     "tests/nut-mineral/test_mineral_joint.f90": "ce4848a55cd43ee805d7b2488bd4a18d2f8c158b",
     "tests/nut-mineral/test_mineral_owner.f90": "c411147f78ac101c33b47e83229838b94817d163",
-    "tests/nut-mineral/verify_mineral_successor.py": "19a7099eef35cbd3275dc627139672abd6acf853"
+    "tests/nut-mineral/verify_mineral_successor.py": "e974dd3e82ed2c42d13de576e2f35d512252b178"
   },
   "guard_blobs": {
-    "tests/crop-co2/verify_co2_successor.py": "0211969f2ea73416130389a238ca03e3d85754a1",
+    "tests/crop-co2/verify_co2_successor.py": "6b6e80777eb179fd10ef62d9e39ae6967a57451e",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "30312fdf818e006b3613ae520cf7bfdf55d858aa"
   },
   "evidence": {
@@ -182,7 +194,7 @@
     "mineral_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
     "incumbent_dependency_baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde"
   },
-  "canonical_admission_authority": "This is an immutable premerge qualification record. Actual admission requires PR1231 merge receipt and canonical source/tree verification in its final PR body.",
+  "canonical_admission_authority": "Scientific records retain exact immutable premerge executions. Actual PR1231 admission is eb03024d, independently verified merged; PR1230 preserves it and records guard-only coexistence without new mineral physics or a new full execution claim.",
   "final_dependency_rebind": {
     "execution": "6a1c3b7f157b8dc6f687c268f52e8991234469d0",
     "physical_source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",

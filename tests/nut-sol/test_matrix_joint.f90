@@ -21,14 +21,15 @@ program test_matrix_joint
   type(fixed_flux_top_boundary_provider_t),target::top
   type(fmr_logical_column_t)::column
   type(kernel_committed_state_t)::water,other_water,initial_water,bad_water
-  type(matrix_solute_state_t)::solute,other_solute,initial_solute,bad_solute
+  type(matrix_solute_state_t)::solute,other_solute,initial_solute,bad_solute,rejected_solute
   type(matrix_joint_restart_t)::payload
   type(matrix_joint_result_t)::result,result2
   type(b111_reactive_solute_substep_forcing_t)::p,pbad
-  real(real64)::k
+  real(real64)::k,mass0,net_input
   integer::status,u
   logical::ok
   character(512)::mode,restart_path,endpoint_path
+  character(64)::exponent_argument
   call get_command_argument(1,mode);call get_command_argument(2,restart_path);call get_command_argument(3,endpoint_path)
   call initialize_application_config(cfg,-75.0_real64,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -45,6 +46,9 @@ program test_matrix_joint
   column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
   column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   call parameters(p)
+  call get_command_argument(4,exponent_argument)
+  if(len_trim(exponent_argument)>0)read(exponent_argument,*)p%frexp
+  if(abs(p%frexp-1.0_real64)>epsilon(1.0_real64))p%cref_mg_cm3=0.37_real64
   call backend%initialize(top);call second%initialize(top)
   if(trim(mode)=='reject')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
@@ -73,11 +77,13 @@ program test_matrix_joint
   call initialize_matrix_solute(pbad,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
        [(0.1_real64+0.1_real64*u,u=1,numnod)],bad_solute,status)
   bad_water=water
+  rejected_solute=bad_solute
   call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,T0,T1,result)
   call require(result%status==JOINT_CHEMICAL_REJECTED,'chemical overdraw rejects successful water trial')
   call require(bad_water%current_revision()==water%current_revision(),'no water commit on chemical rejection')
   call compare_water(water,bad_water)
+  call compare_chemical(rejected_solute,bad_solute)
   call require(matrix_joint_states_match(bad_water,bad_solute),'failed joint attempt preserves clocks')
   call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,T0,1.0e-9_real64,result)
@@ -96,6 +102,9 @@ program test_matrix_joint
        cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
   if(result%status/=0)print *,'joint diagnostics',result%status,result%chemical%status,result%water%status
   call require(result%status==JOINT_OK,'normal joint physical route')
+  mass0=result%chemical%mass_before
+  net_input=result%chemical%external_in-result%chemical%external_out
+  call require(abs(result%chemical%residual)<1.0e-11_real64,'first joint chemical balance')
   call require(matrix_joint_states_match(water,solute),'joint accepted carrier clock and state')
   call export_matrix_joint_restart(column,cfg%tiles(1)%template,670001_int64,water,solute,payload,status)
   call require(status==JOINT_OK,'joint opaque restart export')
@@ -115,6 +124,15 @@ program test_matrix_joint
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
          empty_water,empty_solute,status)
     call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered parameters rejected')
+    pbad=p;pbad%frexp=0.5_real64
+    if(abs(p%frexp-0.5_real64)<epsilon(1.0_real64))pbad%frexp=2.0_real64
+    call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
+         empty_water,empty_solute,status)
+    call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered exponent rejected')
+    pbad=p;pbad%cref_mg_cm3=2.0_real64*p%cref_mg_cm3
+    call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,pbad, &
+         empty_water,empty_solute,status)
+    call require(status/=0.and..not.empty_water%ready().and..not.empty_solute%ready(),'same-id altered Cref rejected')
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670002_int64,9001_int64,p, &
          empty_water,empty_solute,status)
     call require(status/=0,'wrong hydraulic identity rejected')
@@ -124,6 +142,10 @@ program test_matrix_joint
   call run_matrix_joint_interval(second,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,other_water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,other_solute,T1,2*T1,result2)
   call require(result%status==0.and.result2%status==0,'both original and restarted water/chemistry execute')
+  net_input=net_input+result%chemical%external_in-result%chemical%external_out
+  call require(abs(result%chemical%mass_after-mass0-net_input)<1.0e-11_real64,'multi-window joint chemical balance')
+  call require(abs(result%chemical%residual)<1.0e-11_real64.and. &
+       abs(result2%chemical%residual)<1.0e-11_real64,'continued and restarted balance')
   call compare_water(water,other_water);call compare_chemical(solute,other_solute)
   call write_endpoint(trim(endpoint_path),water,solute)
   print '(A)','MATRIX_JOINT_COMMIT_ROLLBACK_OPAQUE_DISK=PASS'
