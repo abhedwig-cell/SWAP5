@@ -9,7 +9,7 @@
   "qualified": true,
   "preserved": false,
   "canonically_admitted": false,
-  "stage": "SWRD2_01_QUALIFIED_CURRENT_SOURCE_FULL_MOVING_SELECTED",
+  "stage": "SWRD2_01_QUALIFIED_FULL_EARLY_PROVENANCE_FAILURE_RECOVERED",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -69,7 +69,7 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Publish and freeze exact candidate; persist immutable full-start inventory/bundle before starting exactly one complete local moving OFF. Observe terminal status, seal raw evidence, reconcile live PR/canonical and admit bounded0/1 only if every condition holds.",
+  "next_action": "All112 pinned runner objects restored and hash-verified; freeze recovered candidate and run first complete local moving OFF, retaining failed attempt separately.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
@@ -218,7 +218,8 @@
     "censored_step_and_original_diagnostic_compile_link_seconds": "UNKNOWN",
     "full_fci_seconds": "NOT_RUN",
     "admission_proof_validation_seconds": 11.200855145001697,
-    "current_required_proof_controls_seconds": 21.475034144001256
+    "current_required_proof_controls_seconds": 21.475034144001256,
+    "failed_full_provenance_seconds": 28.480591324998386
   },
   "current_default_identity": {
     "status": "PASS",
@@ -255,6 +256,51 @@
     "resume_mode": "OFF",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "actions": "NOT_SELECTED_LOCAL_AVAILABLE",
-    "execution_count_started": 0
+    "execution_count_started": 1,
+    "execution_count_completed": 0,
+    "retry_justification": "First attempt stopped after28.480591s on missing immutable Git authority15cc, before complete preservation; restore exact objects without source edits and obtain first complete terminal proof. No green complete run is repeated."
+  },
+  "full_attempts": [
+    {
+      "execution_commit": "06b46b31e9896a27878d2c78cb3c62ae3c795ba6",
+      "tree": "86d24190ebe7e9b9c4fd21700cc09758d9af3e2a",
+      "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+      "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
+      "command": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "resume_mode": "OFF",
+      "status": "FAIL",
+      "tracked_inputs": 6464,
+      "compile_link_native_split": "UNKNOWN",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "selection_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json:full_selection",
+      "bundle_prerequisite": "c771b0a66078b6865297420c9b78d50cf2418a87",
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_launcher_sha256": "4d38764536ffe2a0ee651ac90684a4b6efb0b2101504eea79df1524c93ac09b5",
+      "started_utc": "2026-10-15T19:59:58Z",
+      "returncode": 1,
+      "wall_seconds": 28.480591324998386,
+      "changed_inputs": [],
+      "stdout_sha256": "76410cd9d78c8cc351a33567e62fd46abb684590fb742e4afa1735c531c12b11",
+      "stderr_sha256": "b1d581822fab3578ad4d55bb29b197b65628a6191c0a482e17231cc9d60689cd",
+      "terminal_marker": false,
+      "evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_FAILED_PROVENANCE_1_20261015.tar.xz.b64",
+        "decoded_sha256": "20b16cccdac1c818b2a5d5c555cc945121af96e7d85f32e8cf0ad28abb707a92",
+        "decoded_bytes": 309408,
+        "members": 7
+      },
+      "failure_kind": "Missing immutable Git authority15cc; technical early failure, not completed F-CI or scientific PASS."
+    }
+  ],
+  "git_authority_preflight": {
+    "status": "PASS",
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_GIT_AUTHORITIES_20261015.json",
+    "runner_files": 146,
+    "objects": 112,
+    "scope": "Literal checked refs in conservatively reachable moving-runner scripts; no science or missing-member waiver.",
+    "science_execution": false
   }
 }

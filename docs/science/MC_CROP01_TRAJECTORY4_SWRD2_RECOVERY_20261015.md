@@ -103,3 +103,23 @@ rotation remain separate. The source's independently selectable supply branch
 must not acquire guessed static WROOT_NODE values. WOFOST81 N/fixation remains
 unchanged. Full master census/qualification is not claimed; preserve dispositions
 unless the exact owning capability admission actually supports a promotion.
+
+## First moving attempt: early provenance failure recovered
+
+Frozen candidate06b46b31,6464 tracked inputs, sourcefe8a6c1b, OFF. The actual
+child exited1 after28.480591325s at F-CI93: missing immutable historical
+authority15ccbf4b. No terminal moving PASS and no input drift. This is a real
+failed attempt, not a completed full execution or a scientific failure. Its
+raw streams, input inventory, controller and executed Git bundle are retained
+in FULL_FAILED_PROVENANCE_1 (decoded SHA256
+`20b16cccdac1c818b2a5d5c555cc945121af96e7d85f32e8cf0ad28abb707a92`).
+The preceding FULL_START capsule remains separately immutable.
+
+Restored exact historical commit objects15ccbf4b, f4f98637 and fd93e50d and
+three old comparator blobs via Git/GitHub and their Git SHA identities. The
+bounded literal runner closure now finds all112 referenced objects across146
+runner files; the versioned Git authority inventory records their identities.
+No production or qualification-source edits, no waived historical check.
+Another OFF attempt is selected to obtain the first complete moving proof after
+this early technical rejection. Compile/link/native split and recovery overhead
+remain UNKNOWN. Preserve failed and successful costs separately.
