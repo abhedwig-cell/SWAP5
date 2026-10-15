@@ -40,6 +40,10 @@ def matrix_successor():
  for p in [*MATRIX_ADDITIONS,GUARD,MOVING]:check(blob((ROOT/p).read_bytes())==tree[p],'dirty successor '+p)
  return True
 def verify_source():
+ if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-mineral'))
+  from verify_mineral_successor import incumbent
+  return incumbent('source')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  check(not git('status','--porcelain','--','src','reference'),'dirty production/reference')
  matrix=matrix_successor()
@@ -131,8 +135,16 @@ def validate_physical(data,manifest,source):
     check(CASES[case]['marker'].encode()in raw,'original fast marker absent')
  return {**source,'physical_programs':28,'highest':'NOT_SELECTED_POLICY'}
 def verify_physical():
+ if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-mineral'))
+  from verify_mineral_successor import incumbent
+  return incumbent('physical')
  s=json.loads(STATUS.read_text());data,m=read_capsule(s['evidence']);return validate_physical(data,m,verify_source())
 def verify_qualification():
+ if (ROOT/'src/process/mod_b111_soil_n_mineral_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-mineral'))
+  from verify_mineral_successor import incumbent
+  return incumbent('qualification')
  result=verify_physical();s=json.loads(STATUS.read_text());data,m=read_capsule(s['additional_owner_evidence'])
  from importlib.util import spec_from_file_location,module_from_spec
  spec=spec_from_file_location('additional_owner',ROOT/'tests/mc-met01/run_joint_owner_additional.py');mod=module_from_spec(spec);spec.loader.exec_module(mod)

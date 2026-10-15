@@ -379,6 +379,10 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
   python3 tests/crop-co2/verify_co2_successor.py || fail 'CO2 complete current owner evidence missing'
   dependency_authority=82209d0df68d14c5ebe707e9b6303f9b150488ca
 fi
+if [[ -f src/process/mod_b111_soil_n_mineral_owner.f90 ]]; then
+  python3 tests/nut-mineral/verify_mineral_successor.py || fail 'unqualified daily mineral owner successor'
+  dependency_authority=ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -739,6 +743,9 @@ check_b19_micro_root_recomposition() {
       src/runtime/mod_moving_interface_manager.f90 ) nlglob14z47_changed=1 ;;
       src/adapter/mod_matrix_joint_restart_file.f90|src/process/mod_b111_pond_solute_exchange.f90|src/process/mod_b111_reactive_solute_substep.f90|src/process/mod_b111_solute_decay.f90|src/process/mod_b111_solute_sorption.f90|src/process/mod_solute_compartment_state.f90|src/runtime/mod_fmr_b111_matrix_joint_application.f90|src/runtime/mod_fmr_b111_matrix_solute_route.f90 )
         python3 tests/crop-co2/verify_co2_successor.py --source-only || fail "unqualified additive matrix successor: $candidate_path"
+        ;;
+      src/process/mod_soil_n_pool_state.f90|src/process/mod_b111_soil_n_storage_conversion.f90|src/process/mod_b111_soil_n_transport.f90|src/process/mod_b111_soil_n_mineral_owner.f90|src/runtime/mod_fmr_b111_mineral_route.f90|src/runtime/mod_fmr_b111_mineral_joint_application.f90|src/adapter/mod_mineral_joint_restart_file.f90 )
+        python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac
