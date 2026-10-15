@@ -117,7 +117,7 @@ contains
       call chemical%snapshot(soil,crop)
       if(.not.crop%harvest_retired())return
       if(.not.all(ieee_is_finite([forcing%root_extraction_sink,forcing%root_potential_transpiration])))return
-      if(forcing%root_extraction_sink/=0d0.or.forcing%root_potential_transpiration/=0d0)return
+      if(any(abs(forcing%root_extraction_sink)>0d0).or.abs(forcing%root_potential_transpiration)>0d0)return
     end if
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)

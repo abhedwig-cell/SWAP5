@@ -8,7 +8,8 @@ import hashlib,json,os,sys
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ['HARVEST_JOINT_DIR']).resolve()
 RESUME=os.environ.get('HARVEST_RESUME_COMPLETED_O0')=='1'
-OUT.mkdir(parents=True,exist_ok=RESUME)
+RESUME_BUILD=os.environ.get('HARVEST_RESUME_BUILD')=='1'
+OUT.mkdir(parents=True,exist_ok=RESUME or RESUME_BUILD)
 s=(ROOT/'tests/nut-senescence/run_senescence.py').read_text()
 # Generated executable modes can be reset by workspace synchronization. Restore
 # execute bits only for our freshly compiled native test binaries inside OUT.
@@ -127,6 +128,9 @@ if RESUME:
  s=s.replace("for opt in ['O0','O2']:", "for opt in ['O2']:",1)
  injection="result['runs']['O0']=json.loads((OUT/'COMPLETED_O0_RECOVERY.json').read_text())['o0']\n"
  s=s.replace("oracle='''", injection+"oracle='''",1)
+if RESUME_BUILD:
+ from resume_build import recover
+ s=recover(ROOT,OUT,s,os.environ['HARVEST_BUILD_SOURCE_PIN'])
 (OUT/'executed_runner.py').write_text(s)
 (OUT/'GENERATION.json').write_text(json.dumps(dict(executed_runner_sha256=hashlib.sha256(s.encode()).hexdigest(),source_runner_sha256=hashlib.sha256((ROOT/'tests/nut-senescence/run_senescence.py').read_bytes()).hexdigest()),indent=2)+'\n')
 os.environ['SENESCENCE_RESULT_DIR']=str(OUT);sys.argv=[str(ROOT/'tests/nut-senescence/run_senescence.py'),'joint']
