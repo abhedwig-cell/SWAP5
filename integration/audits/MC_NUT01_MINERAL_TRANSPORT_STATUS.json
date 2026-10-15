@@ -1,0 +1,117 @@
+{
+  "work_unit": "MC-NUT01-MINERAL-TRANSPORT",
+  "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
+  "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+  "branch": "work/nut-mineral-transport-20261015",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "contract": "docs/science/MC_NUT01_MINERAL_TRANSPORT_CONTRACT.md",
+  "next_safe_step": "Verify terminal raw evidence and negative controls, then execute selected full local moving preservation once.",
+  "test_selection": {
+    "direct": "4 production providers + literal unchanged historical routine; compile 1.3705s link 0.0584s native 0.00258s",
+    "physical": "Actual daily Full Richards + temporal history; outflow, inflow, hydraulic and chemical rejection; opaque/disk fresh-process restart. Selected because daily source aggregation and atomic coupling are new. Native cost UNKNOWN; compile measured from events. Do not duplicate active run.",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "incumbent_preservation": "No incumbent production/runner edits. Must prove complete existing source/tests/tools/reference identity and unchanged provider resolution before evidence inheritance; no full F-CI claim.",
+    "level4": "Selected once on stable candidate: complete local moving preservation, FCI_RESUME_MODE=OFF. Owning requirement: workstream-execution-protocol local contract feedback and four-level stable admission boundary. Two incumbent admission dispatch guards changed; original science must execute with exact new admission eligibility. Expected total 1800..2200s based on previous1825s run; compile/link/native split UNKNOWN until measured. Long highest low-air remains NOT_SELECTED_POLICY."
+  },
+  "attempts": [
+    {
+      "name": "first physical compile",
+      "result": "FAIL fixture constants missing, repaired; no production failure"
+    },
+    {
+      "name": "3cm daily pilot O0",
+      "result": "CENSORED exit130, no PASS",
+      "reason": "3cm column with strict temporal budget1e-6 and capacity100000 is disproportionate daily fixture. Native CPU observed137.39s at138.22s elapsed before final cancellation. Logs kept in mineral-joint-first. New 30cm fixture, bounded4096 slots, explicit temporal budget1e-4; same hard mass assertions."
+    },
+    {
+      "name": "30cm pilot O2",
+      "result": "FAIL at link",
+      "reason": "Added source-oracle carrier assertions while exploratory O2 compilation was active; its old runner closure omitted newly needed oracle providers. No O2 qualification claimed. Stable persisted execution5e9dd320 uses complete closure; no code edits in its production or driver surface."
+    }
+  ],
+  "source_blobs": {
+    "src/adapter/mod_mineral_joint_restart_file.f90": "08862083e419b472b2d5c8a078c45d3c6e4f4824",
+    "src/process/mod_b111_soil_n_mineral_owner.f90": "0382a9febbb2cbf23219ca014900756dc1057c11",
+    "src/process/mod_b111_soil_n_storage_conversion.f90": "812db9507ba745e98f71038b7866c166ebe2cada",
+    "src/process/mod_b111_soil_n_transport.f90": "2a1a3a1c9e962df24da140be05e0315253b2d61e",
+    "src/process/mod_soil_n_pool_state.f90": "b167179b079eb92c3a40ebca5516acb3328a8198",
+    "src/runtime/mod_fmr_b111_mineral_joint_application.f90": "6a9e588beabdc453d9db676d8836f29aa453ab3e",
+    "src/runtime/mod_fmr_b111_mineral_route.f90": "8f4820a33413f4d68e7bfc0d413c780e9db93a9f",
+    "tests/nut-mineral/check_mineral_evidence_controls.py": "7d09f2ba6dfc31017858ea87e5d290f9970a62ad",
+    "tests/nut-mineral/run_mineral.py": "fc9db1db5b78735dfd78e9a9caf47b02fdaa49ae",
+    "tests/nut-mineral/test_mineral_joint.f90": "ce4848a55cd43ee805d7b2488bd4a18d2f8c158b",
+    "tests/nut-mineral/test_mineral_owner.f90": "c411147f78ac101c33b47e83229838b94817d163",
+    "tests/nut-mineral/verify_mineral_successor.py": "19a7099eef35cbd3275dc627139672abd6acf853"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "0211969f2ea73416130389a238ca03e3d85754a1",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "30312fdf818e006b3613ae520cf7bfdf55d858aa"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MINERAL_TRANSPORT_20261015.tar.xz.b64",
+    "sha256": "a63ce19468ac7e17f00c5dffbacbda4b99411d55877c412439ffd3c8945be4e5",
+    "decoded_bytes": 86564,
+    "members": 2550
+  },
+  "execution_commit": "5e9dd320a53a157bdcb01abf2f04e7862bd538a2",
+  "source_tree": "f3ebea90ec20ff52e97e42c26d59673519089a28",
+  "cost_seconds": {
+    "direct_compile": 1.1905449030018644,
+    "direct_link": 0.0630211420066189,
+    "direct_native": 0.0026515749923419207,
+    "physical_compile": 108.52399096719455,
+    "physical_link": 0.257580046003568,
+    "physical_native": 18.508787124985247
+  },
+  "test_results": {
+    "O0": {
+      "direct_stdout": "MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS\n",
+      "direct_production_provider_count": 4,
+      "physical_stdout": "MINERAL_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nMINERAL_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "fresh_stdout": "MINERAL_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "fresh_endpoint_sha256": "1688a196da4e4b1086911055b676a5b9716c8d6e1b2f7a28c0cbc7f304a18d52",
+      "physical_provider_count": 235,
+      "generated_grid_sha256": "13a771f5723550d30539500710095218acf88ce2b736d8dab51cea0e999d61d5",
+      "generated_fixture_sha256": "59908d9fad64cd4556bac332c1f5cdc9dce0fb4ccb140351314f4a9e181b6951",
+      "corruption_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "chemical_revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ]
+    },
+    "O2": {
+      "direct_stdout": "MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS\n",
+      "direct_production_provider_count": 4,
+      "physical_stdout": "MINERAL_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nMINERAL_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "fresh_stdout": "MINERAL_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "fresh_endpoint_sha256": "1688a196da4e4b1086911055b676a5b9716c8d6e1b2f7a28c0cbc7f304a18d52",
+      "physical_provider_count": 235,
+      "generated_grid_sha256": "13a771f5723550d30539500710095218acf88ce2b736d8dab51cea0e999d61d5",
+      "generated_fixture_sha256": "59908d9fad64cd4556bac332c1f5cdc9dce0fb4ccb140351314f4a9e181b6951",
+      "corruption_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "chemical_revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ]
+    }
+  }
+}
