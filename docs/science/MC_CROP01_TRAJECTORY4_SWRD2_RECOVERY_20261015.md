@@ -123,3 +123,18 @@ No production or qualification-source edits, no waived historical check.
 Another OFF attempt is selected to obtain the first complete moving proof after
 this early technical rejection. Compile/link/native split and recovery overhead
 remain UNKNOWN. Preserve failed and successful costs separately.
+
+Second actual attempt68b52b37 (6467 inputs) stopped after24.959750450s, exit1,
+no drift/no terminal marker: the recovered checkout retained two stale shallow
+boundaries, hiding authentic F-SI35 ancestry. FULL_FAILED_PROVENANCE_2 decoded
+SHA256 `cf4921dd666a206e2a3e2504c0593b23eb475b8c49ddc9984a8443519dccb6cd`
+retains all raw streams/inventory/controller/bundle. No complete F-CI has passed.
+A failed unshallow fetch encountered an old abandoned shallow.lock; no live Git
+process held it. Restored the authentic full parent graph, traversed9260 actual
+commits without boundaries, verified all84 literal runner lineage pairs, then
+cleared the two obsolete shallow entries. The versioned LINEAGE inventory
+records each real pair and successful exit; neither ancestry nor source was
+fabricated. Both early failures cost53.440341775s total, separate from any
+complete future execution. Current sourcefe8a and science/owner inputs remain
+unchanged. Another attempt is justified solely to finish the first complete
+local preservation, following read-only provenance and lineage preflight.

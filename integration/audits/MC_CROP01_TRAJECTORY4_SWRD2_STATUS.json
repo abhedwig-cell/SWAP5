@@ -69,7 +69,7 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "All112 pinned runner objects restored and hash-verified; freeze recovered candidate and run first complete local moving OFF, retaining failed attempt separately.",
+  "next_action": "Freeze exact recovered candidate, retain both real early FAIL attempts, obtain first complete local moving OFF and seal terminal evidence.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
@@ -219,7 +219,7 @@
     "full_fci_seconds": "NOT_RUN",
     "admission_proof_validation_seconds": 11.200855145001697,
     "current_required_proof_controls_seconds": 21.475034144001256,
-    "failed_full_provenance_seconds": 28.480591324998386
+    "failed_full_provenance_seconds": 53.44034177499634
   },
   "current_default_identity": {
     "status": "PASS",
@@ -256,9 +256,9 @@
     "resume_mode": "OFF",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "actions": "NOT_SELECTED_LOCAL_AVAILABLE",
-    "execution_count_started": 1,
+    "execution_count_started": 2,
     "execution_count_completed": 0,
-    "retry_justification": "First attempt stopped after28.480591s on missing immutable Git authority15cc, before complete preservation; restore exact objects without source edits and obtain first complete terminal proof. No green complete run is repeated."
+    "retry_justification": "Both early attempts rejected immutable Git provenance, before a complete preservation run. Exact missing objects and authentic full parent graph now restored; all84 literal lineage checks PASS. Obtain first complete OFF terminal proof without source edits."
   },
   "full_attempts": [
     {
@@ -293,6 +293,39 @@
         "members": 7
       },
       "failure_kind": "Missing immutable Git authority15cc; technical early failure, not completed F-CI or scientific PASS."
+    },
+    {
+      "execution_commit": "68b52b37ce3ae55c1392b20a05b1b698259719c9",
+      "tree": "1d485c7edc6b08ead4aff4f5a51e78cabb09a9fd",
+      "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+      "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
+      "command": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "resume_mode": "OFF",
+      "status": "FAIL",
+      "tracked_inputs": 6467,
+      "compile_link_native_split": "UNKNOWN",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "selection_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json:full_selection",
+      "bundle_prerequisite": "7737e9b0ba037293a8848d23a437c946a4b22afe",
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "compiler_launcher_sha256": "4d38764536ffe2a0ee651ac90684a4b6efb0b2101504eea79df1524c93ac09b5",
+      "started_utc": "2026-10-15T20:15:17Z",
+      "returncode": 1,
+      "wall_seconds": 24.959750449997955,
+      "changed_inputs": [],
+      "stdout_sha256": "34df2c8c11798ed4ca4b392118355e654a4f64e5dd28ef64ecd99d03f8faaf2f",
+      "stderr_sha256": "2193b1694c0e6113ecb66befbf41914d75f2681bf70ba1588227e3764970f4a8",
+      "terminal_marker": false,
+      "evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_FAILED_PROVENANCE_2_20261015.tar.xz.b64",
+        "decoded_sha256": "cf4921dd666a206e2a3e2504c0593b23eb475b8c49ddc9984a8443519dccb6cd",
+        "decoded_bytes": 605364,
+        "members": 7
+      },
+      "failure_kind": "Stale shallow boundaries hid authentic historical ancestry; early technical FAIL, no complete moving PASS."
     }
   ],
   "git_authority_preflight": {
@@ -302,5 +335,12 @@
     "objects": 112,
     "scope": "Literal checked refs in conservatively reachable moving-runner scripts; no science or missing-member waiver.",
     "science_execution": false
+  },
+  "git_lineage_preflight": {
+    "status": "PASS",
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_LINEAGE_20261015.json",
+    "checks": 84,
+    "complete_head_ancestor_commits": 9260,
+    "scope": "Fetched complete authentic parent graph, traversed all9260 commits without shallow boundaries, verified all84 literal runner lineage pairs, then cleared the two obsolete shallow markers; no fabricated commit or source change."
   }
 }
