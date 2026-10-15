@@ -17,8 +17,8 @@ Exact postimages, phase, evidence and next operation are maintained in
 `integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json`.
 Source/contract implementation, current direct/physical testing and all ten
 shared owner gates have terminal PASS. Current six-route proof refusal controls
-also PASS. Complete current moving preservation and live canonical admission
-remain pending. A checkpoint is not qualification or merge.
+also PASS. Complete exact-current-source moving preservation now PASS; live
+canonical admission remains pending. A checkpoint is not qualification or merge.
 
 ## Implemented bounded scope
 
@@ -138,3 +138,40 @@ fabricated. Both early failures cost53.440341775s total, separate from any
 complete future execution. Current sourcefe8a and science/owner inputs remain
 unchanged. Another attempt is justified solely to finish the first complete
 local preservation, following read-only provenance and lineage preflight.
+
+## Complete current-source moving preservation PASS
+
+Frozen execution `b7a54bdd29e1a3d4500309e59afe209e9743dfc5`, tree
+`9289f0de8fed0f204486e298649ad9cca39844dc`, source
+`fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0`, canonical451e35cc,6470 frozen
+inputs. Actual child exit0, exactly the terminal moving PASS marker, no input
+drift, resume OFF. Measured wall2558.723618875s (42m38.724s). Full split remains
+UNKNOWN. The original short B19 owner1/8192 O0/O2 is preserved; highest long
+low-air remains NOT_SELECTED_POLICY. No Actions dispatch or hosted PASS claim.
+
+FULL_ADMISSION decoded SHA256
+`c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864`,
+285332 bytes,7 members, retains raw stdout/stderr, controller, exact input
+inventory, actual result and executed Git bundle. FULL_START_3 was remotely
+persisted before execution, decoded SHA256
+`22018e688987aac5ab4976aaf80954a5d4c3530953704e7be6c1f21b55248686`.
+The two earlier provenance attempts remain actual FAIL,53.440341775s separate.
+Three starts, one completed full execution. Successful focused plus complete
+full measured command wall3750.206299694s; read-only validation, diagnostic and
+failed/censored costs remain separately recorded, not double-counted.
+
+PR1248 is the separate bounded SWRD2 successor; PR1241 remains closed. Source
+qualification functions deliberately establish science only; canonical admission
+and current-source full preservation follow this work-unit record and immutable
+full proof, not an inferred PASS/admission from a historical validator.
+
+Live canonical advanced to `b634f2c9d22b1227867c040fb316d55afea21cd7` via
+PR1249 while full evidence was sealed. Exact delta: AGENTS.md and the execution
+protocol only; src/tests/tools/reference unchanged. The added impact-selection
+policy was read and retained as current authority. No new full/science execution
+is selected for this policy-only delta (NOT_SELECTED_IMPACT, not a new PASS).
+The actual completed execution remains explicitly based at451e35cc. Exact-source
+full identity validation PASS binds all6470 original frozen inputs and the
+executed bundle; only the three named trajectory4 status/contract/recovery
+postexecution metadata files differ. The real PR merge must also retain the
+new canonical policy documents and the exact fe8a production tree.

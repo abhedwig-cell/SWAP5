@@ -7,9 +7,9 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "preserved": false,
+  "preserved": true,
   "canonically_admitted": false,
-  "stage": "SWRD2_01_QUALIFIED_FULL_EARLY_PROVENANCE_FAILURE_RECOVERED",
+  "stage": "SWRD2_01_CURRENT_SOURCE_SCIENCE_OWNERS_FULL_PRESERVATION_PASS_ADMISSION_PENDING",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -40,7 +40,7 @@
     "compile_link_native_split": "UNKNOWN until completed",
     "full_fci_selected": false
   },
-  "last_reconciled_upstream": "451e35ccd1797aa96fb4354dabc465cceff18635",
+  "last_reconciled_upstream": "b634f2c9d22b1227867c040fb316d55afea21cd7",
   "production_baseline_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
   "contract": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "relevant_paths": [
@@ -69,7 +69,7 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Freeze exact recovered candidate, retain both real early FAIL attempts, obtain first complete local moving OFF and seal terminal evidence.",
+  "next_action": "Seal/read-only validate exact full evidence and source identities; reconcile live canonical/peer/reviews, safely merge PR1248, then verify actual canonical production source and update bounded master receipt.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
@@ -216,10 +216,12 @@
     "diagnostic_native_seconds": 3.335234584999853,
     "failed_live_import_seconds": 2.8765892420015007,
     "censored_step_and_original_diagnostic_compile_link_seconds": "UNKNOWN",
-    "full_fci_seconds": "NOT_RUN",
+    "full_fci_seconds": 2558.723618875003,
     "admission_proof_validation_seconds": 11.200855145001697,
     "current_required_proof_controls_seconds": 21.475034144001256,
-    "failed_full_provenance_seconds": 53.44034177499634
+    "failed_full_provenance_seconds": 53.44034177499634,
+    "qualified_focused_plus_complete_full_seconds": 3750.2062996940076,
+    "final_read_only_qualification_seconds": 11.480282631000591
   },
   "current_default_identity": {
     "status": "PASS",
@@ -249,15 +251,20 @@
     "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
     "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
     "reason": "New optional persistent root-depth state and daily real Richards root feedback changed scientific production source. Current O0/O2 contracts/physical composition, all ten affected shared owner gates and all required-proof controls PASS. No complete current-source moving preservation yet covers fe8a; one stable-candidate local OFF execution is required by the trajectory4 contract and workstream admission protocol.",
-    "command": "python -B /workspace/scratch/b49036b278b0/run_swrd2_full_frozen.py --run",
+    "command": [
+      "python",
+      "-B",
+      "/workspace/scratch/b49036b278b0/run_swrd2_full_final.py",
+      "--run"
+    ],
     "prepare_only": "Same controller without --run only freezes inputs/bundle; no model execution.",
     "expected_seconds": 3000,
     "compile_link_native_split": "UNKNOWN",
     "resume_mode": "OFF",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "actions": "NOT_SELECTED_LOCAL_AVAILABLE",
-    "execution_count_started": 2,
-    "execution_count_completed": 0,
+    "execution_count_started": 3,
+    "execution_count_completed": 1,
     "retry_justification": "Both early attempts rejected immutable Git provenance, before a complete preservation run. Exact missing objects and authentic full parent graph now restored; all84 literal lineage checks PASS. Obtain first complete OFF terminal proof without source edits."
   },
   "full_attempts": [
@@ -342,5 +349,184 @@
     "checks": 84,
     "complete_head_ancestor_commits": 9260,
     "scope": "Fetched complete authentic parent graph, traversed all9260 commits without shallow boundaries, verified all84 literal runner lineage pairs, then cleared the two obsolete shallow markers; no fabricated commit or source change."
+  },
+  "full_preservation": {
+    "execution_commit": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+    "tree": "9289f0de8fed0f204486e298649ad9cca39844dc",
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6470,
+    "compile_link_native_split": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "selection_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json:full_selection",
+    "bundle_prerequisite": "16ab325e2c252fd8d79ec2bf8874980d35a0127d",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiler_launcher_sha256": "4d38764536ffe2a0ee651ac90684a4b6efb0b2101504eea79df1524c93ac09b5",
+    "started_utc": "2026-10-15T20:21:21Z",
+    "returncode": 0,
+    "wall_seconds": 2558.723618875003,
+    "changed_inputs": [],
+    "stdout_sha256": "76e25ca8a681dacb9c4f195e619691924426edcd858f3d46a7c1db30caf15cc4",
+    "stderr_sha256": "df3eafc33a714ced031f4262307c5cf794f77d61631e510b6db954b8b1f53421",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+      "decoded_bytes": 285332,
+      "members": 7
+    },
+    "start_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_START_3_20261015.tar.xz.b64",
+      "decoded_sha256": "22018e688987aac5ab4976aaf80954a5d4c3530953704e7be6c1f21b55248686",
+      "decoded_bytes": 269948,
+      "members": 5
+    },
+    "full_execution_at_current_source": true,
+    "short_b19_scope": "Original owner case1/8192 O0/O2; not the retired highest matrix."
+  },
+  "pr": 1248,
+  "canonical_reconciliation": {
+    "status": "PASS",
+    "canonical": "b634f2c9d22b1227867c040fb316d55afea21cd7",
+    "previous": "451e35ccd1797aa96fb4354dabc465cceff18635",
+    "delta": [
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md"
+    ],
+    "scientific_dependency_delta": [],
+    "canonical_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+    "candidate_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "full_rerun": "NOT_SELECTED_IMPACT",
+    "reason": "PR1249 adds only impact-selection policy. Existing complete current-source full and all science remain exact; no implementation/contract/state/coupling change. Current policy read at exact canonical ref; no new scientific execution.",
+    "prospective_merge_at_start3_tree": {
+      "tree": "d2c96b2a04077bea1ffc72d699b50cf01287748e",
+      "conflicts": false,
+      "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0"
+    }
+  },
+  "full_admission_identity": {
+    "status": "PASS",
+    "execution_commit": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+    "executed_tree": "9289f0de8fed0f204486e298649ad9cca39844dc",
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "full_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+      "decoded_bytes": 285332,
+      "members": 7
+    },
+    "frozen_input_count": 6470,
+    "postexecution_metadata_changes": [
+      "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_RECOVERY_20261015.md",
+      "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json"
+    ],
+    "current_scientific_surface_identical": true,
+    "reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "terminal_count": 1,
+    "full_execution_at_current_source": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "native_rerun": false
+  },
+  "live_peer_review": {
+    "1247": {
+      "head": "994183d0b3e1b21923b5f2fd93dcf9c06756909b",
+      "peer_merge_base": "451e35ccd1797aa96fb4354dabc465cceff18635",
+      "paths": [
+        "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
+        "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+        "integration/audits/evidence/F_KT_BOUNDARY_EVENT_EXECUTION_20261015.tar.gz.b64",
+        "integration/audits/evidence/MC_CROP_NUT_HARVEST_JOINT_20261015.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP_NUT_ROTATION_EXPLICIT_20261015.tar.xz.b64",
+        "integration/audits/evidence/WOFOST81_HARVEST_OWNER_EXECUTION_20261015.tar.gz.b64",
+        "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+        "src/crop/mod_crop_soil_n_configuration.f90",
+        "src/crop/mod_crop_soil_n_day.f90",
+        "src/crop/mod_crop_soil_n_senescence_day.f90",
+        "src/crop/mod_wofost81_crop_owner_state.f90",
+        "src/crop/mod_wofost81_harvest_materials.f90",
+        "src/crop/mod_wofost81_one_day_candidate.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "tests/crop-harvest/README.md",
+        "tests/crop-harvest/mod_harvest_oracle.f90",
+        "tests/crop-harvest/preserve_thermal.py",
+        "tests/crop-harvest/repair_finite.py",
+        "tests/crop-harvest/resume_build.py",
+        "tests/crop-harvest/run_harvest.py",
+        "tests/crop-harvest/run_joint.py",
+        "tests/crop-harvest/test_harvest_chemical.f90",
+        "tests/crop-harvest/test_harvest_joint.f90",
+        "tests/crop-harvest/test_harvest_owner.f90",
+        "tests/crop-harvest/test_rotation_joint.f90",
+        "tests/crop-harvest/verify_evidence.py",
+        "tests/fkt-boundary/README.md"
+      ],
+      "direct_overlap": [],
+      "state": "OPEN_DRAFT_NOT_INCLUDED"
+    },
+    "1245": {
+      "head": "88c6fc64ccf1dcdf9fbd7fa4fa4054cc91b173c0",
+      "peer_merge_base": "cd64c5044a29643a068c6151720f76b2e70f570d",
+      "paths": [
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".github/workflows/fci-canonical.yml",
+        ".github/workflows/fci-ppa-low02-moving-preservation-reconcile.yml",
+        ".github/workflows/fci107-rossfast-transform-cache-admission.yml",
+        ".github/workflows/ppa-wu05b-frost-admission.yml",
+        ".github/workflows/ppa-wu05b19-runtime-admission.yml",
+        "AGENTS.md",
+        "docs/audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md",
+        "docs/development/workstream-execution-protocol.md",
+        "integration/audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.json",
+        "integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "tests/modularity/run_adoption_benchmark.py",
+        "tests/modularity/run_modular_tests.py",
+        "tests/modularity/test_adoption_controls.py"
+      ],
+      "direct_overlap": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ]
+    },
+    "1234": {
+      "head": "238b6184140ec42cbd77f472436519d98bbf7bd7",
+      "peer_merge_base": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+      "paths": [
+        "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+        "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+        "integration/audits/evidence/MC_SOL01_SURFACE_INPUT_20261015.tar.xz.b64",
+        "src/process/mod_b111_surface_supply.f90",
+        "src/runtime/mod_fmr_b111_surface_joint_application.f90",
+        "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+        "tests/crop-co2/verify_co2_successor.py",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "tests/nut-sol/check_surface_evidence_controls.py",
+        "tests/nut-sol/run_surface.py",
+        "tests/nut-sol/test_surface_joint.f90",
+        "tests/nut-sol/test_surface_process.f90",
+        "tests/nut-sol/verify_surface_successor.py"
+      ],
+      "direct_overlap": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ]
+    }
+  },
+  "live_peer_review_note": "1234 and1245 share moving runner but remain unadmitted; exact peer changes inspected.1247 has no direct path overlap but shared crop/codec future dependencies; no peer implementation included.",
+  "docs_final": {
+    "source": "PASS",
+    "strict": "PASS",
+    "mkdocs_seconds": 20.16
+  },
+  "final_admission_checks_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_ADMISSION_IDENTITY_20261015.tar.xz.b64",
+    "decoded_sha256": "6d3d21081a07e0ecb79600cbcfb4c41fbc02ba1b59ea90cf7950a59e52fb012b",
+    "decoded_bytes": 11664,
+    "members": 13
   }
 }
