@@ -9,7 +9,7 @@
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "stage": "SWRD2_01_CURRENT_SCIENCE_PASS_SHARED_OWNER_SELECTED",
+  "stage": "OWNER_PREFIX_VERIFIED_RESUMING_AFTER_REFUTED_REVIEW_HYPOTHESIS",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -156,6 +156,10 @@
     "tests/root-growth/verify_swrd3_successor.py": {
       "status": "M",
       "blob": "89f5c40021703aaf62a8413b62c46cd8fc986656"
+    },
+    "tests/root-growth/swrd2_parameter_guard_driver.py": {
+      "status": "A",
+      "blob": "d74da61c25066bde6538401b93a38688a1995b9f"
     }
   },
   "owner_selection": {
@@ -170,5 +174,22 @@
     "status": "PASS",
     "validated_at": "451e35ccd1797aa96fb4354dabc465cceff18635",
     "scope": "Original SWRD3/thermal qualification and exact default-preservation proof at original b8ac tree, not new SWRD2 qualification."
+  },
+  "retained_review_hypothesis": {
+    "finding": "Initially suspected RDI mismatch could enter emergence. Actual real-call-site diagnostic refutes this: emergence sets active_event; independently valid foreign RDI is already rejected before crop/depth publication.",
+    "production_correction": false,
+    "diagnostic_scope": "O0 extra real driver with byte-verified original physical1 provider artifacts, not a new cold O0/O2 qualification.",
+    "initial_probe_controller": "Assertion expected failure but native returned PASS; retained, not mislabelled production failure.",
+    "owner_interruption": {
+      "controller_exit": 130,
+      "active_step": "fkt22",
+      "active_native_exit": "UNKNOWN",
+      "completed_prefix": [
+        "source",
+        "reference",
+        "heat-runtime"
+      ],
+      "resume_policy": "All original tracked scientific inputs and successful prefix stdout verified unchanged. Preserve censored fkt22 streams; rerun that incomplete gate and every following gate with original complete assertions. No invented child exit or PASS."
+    }
   }
 }
