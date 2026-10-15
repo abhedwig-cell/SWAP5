@@ -14,6 +14,14 @@ fi
 nut_thermal_exact_successor=0
 NUT_THERMAL_BACKEND=7e1b034e5cd134050e695c9a097c44a3eaeca344
 
+# Decision in the existing work-unit, before any compile or owner invocation.
+# The focused irrigation route selects its own expensive group, not full F-CI.
+selection_group=full_fci
+if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
+  selection_group=irrigation_allocation
+fi
+python3 tests/modularity/run_modular_tests.py --check-selection "$selection_group"
+
 # Shared qualification preserves all original driver executions; no result reuse.
 case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
   SHARED|SEPARATE) ;;
