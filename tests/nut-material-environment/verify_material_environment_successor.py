@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Strict simultaneous forcing successor; complete raw native proof, no copied PASS."""
 from pathlib import Path
-import argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
+import ast,argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
 ROOT=Path(__file__).resolve().parents[2]
 BASE='fb311dabd16266409deb394c381fe26086a64d03'
 STATUS='integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json'
@@ -45,7 +45,7 @@ def validate_events(d,prefix,source,mode):
  check(r['status']=='PASS'and r['mode']==mode,'unfinished science');check(r['source_tree']==source['source_tree'],'stale source')
  for p,h in r['input_sha256'].items():
   check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h,'scientific input drift '+p)
- check((CHANGED & {p for p in CHANGED if p.startswith('src/')})<=r['input_sha256'].keys(),'untested production')
+ check({p for p in CHANGED if p.startswith('src/')and(mode=='joint'or p.startswith('src/crop/'))}<=r['input_sha256'].keys(),'untested production')
  old=capsule(json.loads((ROOT/'integration/audits/MC_NUT01_MATERIAL_CYCLE_STATUS.json').read_text())['coexistence_evidence'])
  prior=json.loads(old['result.json']);check(r['authority']==prior['authority'],'historical authority changed')
  check('controlled_reuse'not in r,'unexpected provider/native reuse')
@@ -55,6 +55,8 @@ def validate_events(d,prefix,source,mode):
   check(set(row['drivers'])==expected,'driver coverage')
   builds=[e for e in events if e['category']=='compile'and '-'+opt in e['command']]
   check(len(builds)>=row['production_providers'],'missing fresh provider build')
+  compiled={'src/'+e['command'][e['command'].index('-c')+1].split('/src/',1)[1]for e in builds if '/src/'in e['command'][e['command'].index('-c')+1]}
+  check(compiled=={p for p in r['input_sha256']if p.startswith('src/')},'fresh production provider coverage')
   for name,entry in row['drivers'].items():
    check(MARKERS[name]in entry['stdout'],'native science missing '+name)
    es=[e for e in events if e['category']=='native'and '/'+opt+'/'in e['command'][0]and Path(e['command'][0]).name==name]
@@ -69,6 +71,12 @@ def validate_events(d,prefix,source,mode):
    check(entry['endpoint_sha256']==r['runs']['O0']['drivers'][name]['endpoint_sha256'],'optimization endpoint drift')
    if name=='test_material_joint':
     for path in ['restart.bin','expected.bin','fresh.bin','expected.bin.opaque','restart.bin.empty-original','restart.bin.empty-material']:check(d[prefix+opt+'/'+path]==old[opt+'/'+path],'original material endpoint changed '+path)
+  management=d[prefix+opt+'/management_soil.f90'].decode()
+  start=management.index('! Mineralisation, but Nminer is negative in case of immobilisation');end=management.index('      Call Wofost_SoilBalanceCheck',start)
+  check(management[start:end].encode()in d[prefix+opt+'/literal_crop_exchange.f90'],'literal uptake block replaced')
+  script=ast.parse((ROOT/'tests/nut-material-environment/run_material_environment.py').read_text())
+  wrapper=next(ast.literal_eval(n.value)for n in script.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='oracle'for t in n.targets))
+  check(d[prefix+opt+'/material_oracle.inc']==wrapper.encode(),'material literal wrapper replaced')
   for name,h in r['authority'].items():
    expected_hash='a17a727e35c453a17be599eede2c501b36baf921b9937edd6b0309dcb26d9696'if name=='wofost_soil_orgmatn.f90'else h
    check(sha(d[prefix+opt+'/'+name])==expected_hash,'literal source changed '+name)

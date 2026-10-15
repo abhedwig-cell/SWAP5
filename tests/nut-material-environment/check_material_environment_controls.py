@@ -28,12 +28,13 @@ for label,mutation in [
 for label,mutation in [
  ('native_missing',lambda e:e.pop(next(i for i,x in enumerate(e)if x['category']=='native'and 'environment_joint'in x['command'][0]))),
  ('fresh_ABI_build_missing',lambda e:e.__setitem__(slice(None),[x for x in e if not(x['category']=='compile'and '-O0'in x['command'])])),
+ ('changed_provider_compile_missing',lambda e:e.pop(next(i for i,x in enumerate(e)if x['category']=='compile'and 'mod_crop_soil_n_material_day.f90'in x['command'][x['command'].index('-c')+1]))),
  ('native_failed',lambda e:e[-1].update(returncode=1)),
  ('unchecked_build',lambda e:e[0]['command'].remove('-fcheck=all')),
  ('raw_digest_false',lambda e:e[-1].update(stdout_sha256='0'*64))]:
  d=copy.deepcopy(data);e=json.loads(d['events.json']);mutation(e);d['events.json']=json.dumps(e).encode();reject(d,label)
-for label,path in [('restart_corrupt','O0/environment-fresh.bin'),('empty_forced_corrupt','O0/environment-restart.bin.empty-material'),('original_corrupt','O2/expected.bin'),('literal_material_corrupt','O0/wofost_soil_amendments.f90'),('literal_rates_corrupt','O2/wofost_soil_rateconstants.f90'),('direct_corrupt','direct/result.json')]:
- d=copy.deepcopy(data);d[path]+=b'x';reject(d,label)
+for label,path in [('restart_corrupt','O0/environment-fresh.bin'),('empty_forced_corrupt','O0/environment-restart.bin.empty-material'),('original_corrupt','O2/expected.bin'),('literal_material_corrupt','O0/wofost_soil_amendments.f90'),('literal_rates_corrupt','O2/wofost_soil_rateconstants.f90'),('literal_uptake_replaced','O0/literal_crop_exchange.f90'),('literal_wrapper_replaced','O2/material_oracle.inc'),('direct_corrupt','direct/result.json')]:
+ d=copy.deepcopy(data);d[path]=(b'foreign oracle'if label=='literal_uptake_replaced'else d[path]+b'x');reject(d,label)
 original=v.git
 for label,row in [('foreign_source','M\tsrc/crop/mod_wofost81_nitrogen.f90'),('foreign_test','A\ttests/foreign.py'),('foreign_reference','M\treference/foreign')]:
  def changed(*a):

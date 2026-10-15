@@ -5,12 +5,12 @@
   "contract": "docs/science/MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "preserved": false,
   "canonically_admitted": false,
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_safe_step": "Persist repaired explicit-forcing comparator and stronger full-state A/B/A; fresh small and physical O0/O2, complete raw evidence, then one mandatory full preservation.",
+  "next_safe_step": "Validate all raw/current source/controls; persist stable candidate and run exactly one complete local moving OFF. Highest low-air NOT_SELECTED_POLICY.",
   "pr": 1238,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1238",
   "changed_blobs": {
@@ -20,11 +20,11 @@
     "tests/nut-material/verify_material_successor.py": "9c690ad8ad765a5618c1bffe5449ecbfdf370105"
   },
   "added_blobs": {
-    "tests/nut-material-environment/check_material_environment_controls.py": "41b630ca6339c58eb631461c489318a313e0bc21",
+    "tests/nut-material-environment/check_material_environment_controls.py": "ca3633c438d1f05a38f5d024ae276f3a2d32d40c",
     "tests/nut-material-environment/run_material_environment.py": "a0f16e503edf1b6da60cab4901175b558444606c",
     "tests/nut-material-environment/test_material_environment_day.f90": "cc99d2c286915d53267655b0483e2c5275c28824",
     "tests/nut-material-environment/test_material_environment_joint.f90": "30e8bfc9e3eaded5ed7888d65eafa8a301d0cbdc",
-    "tests/nut-material-environment/verify_material_environment_successor.py": "b69c5baf1c34e983e915ea58707bdbcb4cc7e2d2"
+    "tests/nut-material-environment/verify_material_environment_successor.py": "63c1cff03271e948ee527cc3dce6c36c2aa83cf7"
   },
   "direct_development_result": "/workspace/scratch/79ca9f168731/material-env-day-first/result.json",
   "retained_attempts": [
@@ -33,5 +33,46 @@
       "status": "FAILED_EMPTY_PROFILE_TEST_COMPARISON",
       "cause": "New test compared explicit5C empty material route to an unforced20C original route. Native explicit material/oracle/restart assertions passed; endpoint comparison correctly rejected. Supply same explicit forcing to original comparator; production unchanged."
     }
-  ]
+  ],
+  "primary_execution": "eb029af931c59c4b94bccb1bc0f31902d8e26f9d",
+  "source_tree": "232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3",
+  "physical_provider_count": 260,
+  "direct_provider_count": 42,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_20261015.tar.xz.b64",
+    "sha256": "d7c740c822700ed3648d926d4624f94cba3538233f020248792dc060c45498b2",
+    "decoded_bytes": 98612,
+    "members": 2608
+  },
+  "physical_cost_seconds": {
+    "compile": 140.09408871909545,
+    "driver_compile": 23.004783789991052,
+    "link": 1.2316426030156435,
+    "native": 110.29438889105222
+  },
+  "direct_cost_seconds": {
+    "compile": 11.452814500968088,
+    "driver_compile": 4.478067429008661,
+    "link": 0.25318681201315485,
+    "native": 0.013060958008281887
+  },
+  "qualification_status": "BOUNDED_SIMULTANEOUS_FORCING_SCIENCE_PASS_PREMERGE",
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 65,
+    "original_material_controls": 36,
+    "new_simultaneous_controls": 29
+  },
+  "stable_admission_selection": {
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "expected_wall_seconds": 1650,
+    "owning_clause": "AGENTS independent local testability and protocol four-level stable admission boundary; contract MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
+    "reason": "Changed material daily forcing API and actual accepted Richards composition; new source, complete joint physical proof and strict successor dispatch require stable preservation. One local full, no duplicate Actions.",
+    "compile_link_native_split": "UNKNOWN",
+    "highest": "NOT_SELECTED_POLICY"
+  }
 }
