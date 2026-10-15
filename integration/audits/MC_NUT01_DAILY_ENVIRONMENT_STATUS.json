@@ -4,7 +4,7 @@
   "branch": "work/nut-daily-environment-20261015",
   "contract": "docs/science/MC_NUT01_DAILY_ENVIRONMENT_CONTRACT_20261015.md",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "preserved": false,
@@ -20,5 +20,12 @@
     "tests/nut-environment"
   ],
   "blockers": [],
-  "highest_low_air": "NOT_SELECTED_POLICY"
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "retained_attempts": [
+    {
+      "path": "env-direct-first",
+      "status": "FAILED_TEST_EXPECTATION",
+      "reason": "Assumed every temperature in input range must accept; original organic guards reject -20C singular dissimilation and 60C negative/singular rate. Existing guards retained and independently compared to fixed-temperature owner; no tolerance/physics change."
+    }
+  ]
 }
