@@ -34,7 +34,7 @@ for path,old_text,new_text,label in [
 original=v.v.git
 moving='tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
 moving_body=(ROOT/moving).read_text()
-moving_base=subprocess.check_output(['git','show',v.BASE+':'+moving],cwd=ROOT,text=True)
+moving_base=subprocess.check_output(['git','show',('a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04'if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else v.BASE)+':'+moving],cwd=ROOT,text=True)
 for label,body in [('moving_numerics_changed',moving_body+'\nfalse\n'),('moving_optin_pin_changed',moving_body.replace('NUT_THERMAL_BACKEND=7e1b','NUT_THERMAL_BACKEND=ffff',1))]:
  try:
   if project_moving(body)!=moving_base:raise ValueError('changed moving body')

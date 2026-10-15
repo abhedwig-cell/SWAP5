@@ -12,6 +12,12 @@ def check(ok,label):
 def sha(b):return hashlib.sha256(b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  current=swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
+  status=json.loads((ROOT/STATUS).read_text());owner=json.loads((ROOT/swrd3.STATUS).read_text())
+  return {**status,'source_tree':current['source_tree'],'execution_bundle':owner['reconciled_thermal_execution_bundle']}
  g=git if git_reader is None else git_reader
  s=json.loads((ROOT/STATUS).read_text());check(s['baseline']==BASE,'baseline')
  g('merge-base','--is-ancestor',BASE,'HEAD')
@@ -27,6 +33,10 @@ def source(git_reader=None):
   raw=(ROOT/p).read_bytes();check(hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==h,'dirty postimage '+p)
  return s
 def read(s):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.capsule(json.loads((ROOT/swrd3.STATUS).read_text())['reconciled_thermal_evidence'])
  e=s['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
  check(len(raw)==e['decoded_bytes']and sha(raw)==e['sha256'],'capsule identity')
  with tarfile.open(fileobj=io.BytesIO(raw))as a:

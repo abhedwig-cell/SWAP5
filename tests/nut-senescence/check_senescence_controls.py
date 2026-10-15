@@ -3,6 +3,9 @@
 import copy,json
 from unittest.mock import patch
 import verify_senescence_successor as v
+if (v.ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+ import subprocess,sys
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/root-growth/check_swrd3_controls.py')],check=True)
 if (v.ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
  import subprocess,sys
  subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-calendar/check_calendar_controls.py')],check=True)

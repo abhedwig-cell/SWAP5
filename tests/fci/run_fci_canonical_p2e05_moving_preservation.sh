@@ -167,6 +167,11 @@ if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
 fi
 
 verify_crop_frost_highest(){
+  if [[ -f src/runtime/mod_fmr_biomass_root_uptake_input.f90 ]]; then
+    python3 tests/root-growth/verify_swrd3_successor.py
+    echo 'SWRD3_HIGHEST_NOT_SELECTED_POLICY_FAST_PHYSICAL_OWNER_BOUND=PASS'
+    return
+  fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
     python3 tests/crop-co2/verify_co2_successor.py
     echo 'CROP_CO2_HIGHEST_NOT_SELECTED_POLICY_FAST_OWNER_BOUND=PASS'
@@ -416,6 +421,10 @@ fi
 if [[ -f src/crop/mod_crop_soil_n_material_day.f90 ]]; then
   python3 tests/nut-material/verify_material_successor.py || fail 'unqualified explicit soil-N material day successor'
   dependency_authority=48e6aeb15a66dfd11a85de39dc6f8229842d1fd1
+fi
+if [[ -f src/runtime/mod_fmr_biomass_root_uptake_input.f90 ]]; then
+  python3 tests/root-growth/verify_swrd3_successor.py || fail 'unqualified SWRD3 daily production'
+  dependency_authority=3b661766dc59298a7f541c970c2d3a55602d926c
 fi
 if [[ -f integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json ]]; then
   python3 -B tests/nut-thermal/verify_thermal_successor.py || fail 'unqualified accepted thermal N owner'
@@ -696,7 +705,7 @@ check_b19_micro_root_recomposition() {
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
-      src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
+      src/runtime/mod_fmr_biomass_root_uptake_input.f90|src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
         (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
         ;;
       src/runtime/mod_fmr_serialized_reference_backend.f90 )

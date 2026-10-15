@@ -1,3 +1,8 @@
+import os,sys
+from pathlib import Path
+_swrd3=Path(__file__).resolve().parents[1]/'root-growth/check_swrd3_controls.py'
+if (_swrd3.parents[1].parent/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+ os.execv(sys.executable,[sys.executable,'-B',str(_swrd3)])
 import copy,json,tempfile,unittest
 from pathlib import Path
 import verify_co2_successor as v

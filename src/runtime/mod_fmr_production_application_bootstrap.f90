@@ -96,6 +96,7 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_groundwater_application_c_api, only: register_fmr_groundwater_application_context, &
        release_fmr_groundwater_application_context, FMR_GW_APP_C_API_OK, FMR_GW_APP_C_API_INVALID_CONTEXT, &
        FMR_GW_APP_C_API_CONTEXT_BUSY
+  use mod_fmr_biomass_root_uptake_input, only: bind_committed_biomass_root_uptake_input
   implicit none
   private
 
@@ -170,6 +171,8 @@ module mod_fmr_production_application_bootstrap
     type(swap_raintb_t) :: file_weather_raintb
     logical :: file_weather_daystart = .false.
     logical :: file_weather_rooted = .false.
+    integer :: file_weather_root_depth_mode = 1
+    real(real64) :: file_weather_maximum_root_biomass = 0.0_real64
     logical :: file_weather_dayend = .false.
     real(real64) :: file_weather_latitude = -999.0_real64
     real(real64) :: file_weather_emergence_dry_weight = -1.0_real64
@@ -362,6 +365,12 @@ contains
       if(.not.config%file_weather_atmospheric_co2%ready().or..not.config%file_weather_co2_parameters%ready()) return
     end if
     if(config%file_weather_dayend.and..not.config%file_weather_rooted) return
+    if(config%file_weather_root_depth_mode/=1.and.config%file_weather_root_depth_mode/=3) return
+    if(config%file_weather_root_depth_mode==3)then
+      if(.not.config%file_weather_rooted) return
+      if(.not.ieee_is_finite(config%file_weather_maximum_root_biomass)) return
+      if(config%file_weather_maximum_root_biomass<=0.0_real64) return
+    end if
     if(config%file_weather_rooted) then
       if(.not.config%file_weather_daystart.or.n/=1) return
       if(.not.ieee_is_finite(config%file_weather_latitude).or. &
@@ -838,7 +847,7 @@ contains
     class(transaction_state_t), allocatable :: physical
     type(traditional_pm_weather_t) :: pm_weather
     type(crop_co2_response_t) :: co2_response
-    real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra
+    real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra,deepest_oxygen
     logical :: available,rooted
     integer :: s
     status=FMR_APP_BOOT_NOT_READY
@@ -965,11 +974,26 @@ contains
     if(s/=PPA_WU03_OK) return
     qrot=0.0_real64;ptra=0.0_real64
     if(rooted) then
+      if(self%weather_configuration%file_weather_root_depth_mode==3)then
+        call crop_committed%snapshot(physical,available)
+        if(.not.available) return
+        select type(physical)
+        type is(fmr_wofost_crop_transaction_state_t)
+          call bind_committed_biomass_root_uptake_input(physical,self%weather_configuration%file_weather_root_depth, &
+               self%weather_configuration%file_weather_root_density,self%weather_configuration%file_weather_maximum_root_depth_cm, &
+               self%weather_configuration%file_weather_maximum_root_biomass, &
+               self%parameters(1)%z-self%parameters(1)%dz*0.5_real64,root_input,s)
+          if(s/=0) return
+        class default
+          return
+        end select
+      else
       call crop_owner%derive_dvs_root_uptake_input(self%weather_configuration%file_weather_root_depth, &
            self%weather_configuration%file_weather_root_density,self%weather_configuration%file_weather_maximum_root_depth_cm, &
            self%parameters(1)%z-self%parameters(1)%dz*0.5_real64,root_input,available,s)
       if(s/=WOFOST_CROP_OWNER_OK) return
       if(crop_owner%crop_emerged.and..not.available) return
+      end if
       root_input%potential_transpiration=common%reference_et_demand%potential_transpiration_cm_per_day
       call fmr_evaluate_shared_crop_root_uptake(self%committed(1),self%weather_configuration%file_weather_root_parameters, &
            root_input,root_fluxes,root_diagnostics,root_binding,root_adapter)
@@ -987,7 +1011,17 @@ contains
     if(.not.available) return
     call begin_wofost_trial_contribution(interval_checkpoint,t1,trial,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) return
-    call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s)
+    if(rooted.and.self%weather_configuration%file_weather_root_depth_mode==3)then
+      deepest_oxygen=1.0_real64
+      if(root_input%rooted_nodes>0)then
+        if(.not.allocated(root_diagnostics%oxygen_reduction_factor)) return
+        if(size(root_diagnostics%oxygen_reduction_factor)<root_input%rooted_nodes) return
+        deepest_oxygen=root_diagnostics%oxygen_reduction_factor(root_input%rooted_nodes)
+      end if
+      call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s,deepest_root_oxygen_factor=deepest_oxygen)
+    else
+      call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s)
+    end if
     if(s/=FMR_WOFOST_LINEAGE_OK) return
     call prevalidate_wofost_trial_admission(self%weather_window,trial,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) return
@@ -1098,7 +1132,8 @@ contains
       if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
     end if
     lifecycle%emerged=initial_owner%crop_emerged
-    call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle)
+    call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle, &
+         enable_potential_shadow=self%weather_configuration%file_weather_root_depth_mode==3)
     if(s/=FMR_WOF38_OK) return
     allocate(fmr_wofost_crop_transaction_state_t::physical)
     select type(physical)

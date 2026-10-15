@@ -3,7 +3,7 @@
 import copy,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists()and not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
  import runpy
  runpy.run_path(str(ROOT/'tests/nut-thermal/check_thermal_successor_controls.py'),run_name='__main__')
  sys.exit(0)

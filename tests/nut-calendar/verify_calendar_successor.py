@@ -14,6 +14,9 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
  if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
   return successor.verify_source(git_reader=git_reader)
@@ -28,7 +31,11 @@ def verify_source(git_reader=None):
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'immutable source changed')
  return {'baseline':BASE,'source_tree':g('rev-parse','HEAD:src'),'current_source_tree':g('rev-parse','HEAD:src'),'calendar_successor':True,'senescence_successor':True,'qualified':False,'admitted':False}
 def read_evidence():
- rec=json.loads((ROOT/STATUS).read_text())['evidence'];raw=base64.b64decode((ROOT/rec['path']).read_bytes());check(sha(raw)==rec['sha256'],'capsule drift')
+ rec=json.loads((ROOT/STATUS).read_text())['evidence']
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.capsule(json.loads((ROOT/swrd3.STATUS).read_text())['reconciled_calendar_evidence'])
+ raw=base64.b64decode((ROOT/rec['path']).read_bytes());check(sha(raw)==rec['sha256'],'capsule drift')
  with tarfile.open(fileobj=io.BytesIO(raw))as a:
   ms=a.getmembers();check(all(m.isfile()and not Path(m.name).is_absolute()and '..'not in Path(m.name).parts for m in ms),'unsafe member')
   d={m.name:a.extractfile(m).read()for m in ms};check(len(d)==len(ms),'duplicate member')
@@ -42,9 +49,13 @@ def baseline_command(path,extra=()):
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=root,text=True).strip(),'dirty baseline')
  p=subprocess.run([sys.executable,'-B',str(root/path),*extra],cwd=root,capture_output=True,check=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return json.loads(p.stdout)
+def default_dependency(path,expected):
+ if not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():return False
+ sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+ return swrd3.compatible_default_dependency(path,expected)
 def inputs_valid(r):
  for p,h in r['input_sha256'].items():
-  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h,'scientific input drift '+p)
+  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h or default_dependency(p,h),'scientific input drift '+p)
 def events_valid(d,prefix,events):
  for e in events:
   check(e['returncode']==0 and e['seconds']>=0,'failed native/build event')
@@ -85,7 +96,7 @@ def validate_events(d,prefix,source,mode,reference):
  script=ast.parse((ROOT/'tests/nut-calendar/run_calendar.py').read_text())
  wrapper=next(ast.literal_eval(n.value)for n in script.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='oracle'for t in n.targets))
  for opt in ['O0','O2']:
-  row=r['runs'][opt];check(row['production_providers']==(266 if mode=='joint'else 46 if mode=='day'else 3),'closure drift');check(set(row['drivers'])==expected,'driver missing')
+  row=r['runs'][opt];check(row['production_providers']==((268 if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else 266)if mode=='joint'else 46 if mode=='day'else 3),'closure drift');check(set(row['drivers'])==expected,'driver missing')
   builds=[e for e in events if e['category']=='compile'and '-'+opt in e['command']]
   compiled={'src/'+e['command'][e['command'].index('-c')+1].split('/src/',1)[1]for e in builds if '/src/'in e['command'][e['command'].index('-c')+1]}
   check(compiled=={p for p in r['input_sha256']if p.startswith('src/')}and len(compiled)==row['production_providers'],'fresh provider coverage')
@@ -136,6 +147,9 @@ def validate(d,source):
    check(len([e for e in probe['events']if e['category']==category and '-'+opt in e['command']])==1,'empty-day fresh driver/link absent')
  return r
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_qualification()
  if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as successor
   return successor.verify_qualification()

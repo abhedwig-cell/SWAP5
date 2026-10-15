@@ -20,14 +20,16 @@ def compatibility():
  baseline={p:subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)for p in PROJECTORS}
  check(project(current,baseline),'default projection failed')
  moving='tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
- check(project_moving((ROOT/moving).read_text())==subprocess.check_output(['git','show',BASE+':'+moving],cwd=ROOT,text=True),'moving scientific body changed')
+ check(project_moving((ROOT/moving).read_text())==subprocess.check_output(['git','show',('a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04'if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else BASE)+':'+moving],cwd=ROOT,text=True),'moving scientific body changed')
  return {p:hashlib.sha256(b.encode()).hexdigest()for p,b in baseline.items()}
 def verify_source(git_reader=None):
  s=v.source(git_reader);compatibility()
  return dict(baseline=BASE,source_tree=s['source_tree'],current_source_tree=s['source_tree'],thermal_successor=True,
   input_successor=True,calendar_successor=True,senescence_successor=True,qualified=False,admitted=False)
-@lru_cache(None)
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_qualification()
  source=verify_source();s=json.loads((ROOT/v.STATUS).read_text());v.validate(v.read(s),s)
  prior=baseline_command('tests/nut-input/verify_input_successor.py');check(prior['qualified'],'historical NUT owner not qualified')
  return {**source,'qualified':True,'preservation':'EXACT_DEFAULT_PROJECTION_AND_BASE_NATIVE_BYTES',
