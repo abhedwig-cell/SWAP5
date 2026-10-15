@@ -8565,15 +8565,15 @@
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "bounded_nonlinear_admission": {
-        "pr":1230,
-        "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
-        "qualified_head":"45cc6cf959e8322bc1795c41748ab4e70dcacc56",
-        "authority":"integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-        "scope":"Nonlinear0.5..2 accepted matrix water transport/decay, atomic joint rejection/retry, opaque and fresh-process restart",
-        "qualification":"Independent actual Fortran O0/O2 and literal transport; full local moving1829.803s PASS; exact mineral1231 coexistence with all240/237 science inputs unchanged;53 original plus3 peer negatives PASS",
-        "source_policy":"ACCEPTED_SWAP5_DIFFERENCE in phase precision, no legacy cmsy loss or new B1 correction claimed",
-        "full_capability":false,
-        "disposition_changed":false
+        "pr": 1230,
+        "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
+        "qualified_head": "45cc6cf959e8322bc1795c41748ab4e70dcacc56",
+        "authority": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+        "scope": "Nonlinear0.5..2 accepted matrix water transport/decay, atomic joint rejection/retry, opaque and fresh-process restart",
+        "qualification": "Independent actual Fortran O0/O2 and literal transport; full local moving1829.803s PASS; exact mineral1231 coexistence with all240/237 science inputs unchanged;53 original plus3 peer negatives PASS",
+        "source_policy": "ACCEPTED_SWAP5_DIFFERENCE in phase precision, no legacy cmsy loss or new B1 correction claimed",
+        "full_capability": false,
+        "disposition_changed": false
       },
       "bounded_production_admission": {
         "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
@@ -8597,6 +8597,18 @@
           "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
           "No disposition promotion; original rejected aquifer unchanged",
           "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+        ]
+      },
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-SOL01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
         ]
       }
     },
@@ -8654,15 +8666,15 @@
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "bounded_nonlinear_admission": {
-        "pr":1230,
-        "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
-        "qualified_head":"45cc6cf959e8322bc1795c41748ab4e70dcacc56",
-        "authority":"integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-        "scope":"Source-order decay with nonlinear0.5..2 phase storage, explicit external sink, changing-water mass and joint continuation",
-        "qualification":"Actual water/chemical/source-loop O0/O2; full moving1829.803s PASS; exact mineral1231 coexistence",
-        "full_capability":false,
-        "disposition_changed":false,
-        "aquifer_dependency":false
+        "pr": 1230,
+        "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
+        "qualified_head": "45cc6cf959e8322bc1795c41748ab4e70dcacc56",
+        "authority": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+        "scope": "Source-order decay with nonlinear0.5..2 phase storage, explicit external sink, changing-water mass and joint continuation",
+        "qualification": "Actual water/chemical/source-loop O0/O2; full moving1829.803s PASS; exact mineral1231 coexistence",
+        "full_capability": false,
+        "disposition_changed": false,
+        "aquifer_dependency": false
       },
       "bounded_production_admission": {
         "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
@@ -8686,6 +8698,18 @@
           "Nonlinear matrix, dynamic accepted thermal coupling, pond/age/aquifer and Soil-N/crop-N envelopes remain separate",
           "No disposition promotion; original rejected aquifer unchanged",
           "Global master checker already FAIL on eccbf9d2 baseline: stale inheritance baseline; no whole-master qualification claim"
+        ]
+      },
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-SOL01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
         ]
       }
     },
@@ -8879,6 +8903,18 @@
         "qualified_head": "68a90521f5491a086d8cecce3c435909c51d3876",
         "qualification": "Actual Fortran O0/O2,150 literal steps, real Richards two signed-flow windows, hard balances,15 carrier negatives per window, rejection/retry, opaque/native/fresh-process restart and10 disk negatives per optimization. Full local moving1436.858922s PASS/6250unchanged inputs; exact reactive1232 coexistence with236/253/16 input bindings;29+13+23 current tests and26 reactive negatives.",
         "highest": "NOT_SELECTED_POLICY"
+      },
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-SOL01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
       }
     },
     {
@@ -9548,7 +9584,19 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-MINERAL",
@@ -9598,7 +9646,19 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-AMEND",
@@ -9654,7 +9714,19 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -9705,7 +9777,19 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -9755,7 +9839,19 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-TILL-EVENT",
@@ -11519,7 +11615,19 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-DENIT",
@@ -11574,7 +11682,19 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-TRANSPORT",
@@ -11625,7 +11745,19 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "latest_canonical_bounded_owner": {
+        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "records": [
+          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
+          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
+        ]
+      }
     },
     {
       "capability_id": "SW431-NUT-NFIX",
@@ -15782,5 +15914,27 @@
     "bounded_receipt_only": true,
     "aquifer": "REJECTED unchanged",
     "global_checker": "Baseline FAIL stale inheritance baseline; not relabeled PASS"
+  },
+  "latest_canonical_delta_20261015": {
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+    "master_branch_reconciled_from": "aae2b8d207b13453be45dd1773d39f8eae855831",
+    "reviewed_rows": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-AGE-TRACER",
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT"
+    ],
+    "owner_basis": "Current canonical MC-NUT/SOL coverage and admission records; no full-capability promotions authorized",
+    "remaining_explicit": "NUT source input/default/calendar/harvest/rotation, SOL pond/source; aquifer rejected",
+    "disposition_changes": 0,
+    "full_integrity_checker": "NOT_RUN; stale historical inheritance baseline acknowledged",
+    "denominator_complete": false
   }
 }
