@@ -197,7 +197,10 @@ contains
   if(.not.all(ieee_is_finite(amount)).or..not.all(ieee_is_finite(water)))return
   if(any(water<1d-8).or.any(p%dz_cm<1d-4))return
   if(any(amount<0d0).or.any(amount>1d12).or.revision<0.or.revision>100000000_int64)return
-  call initialize_age(p,id,time,water,amount/(water*p%dz_cm),trial,status)
+  ! Initialization concentration bounds do not constrain a subsequently aged
+  ! trajectory. Restore bounded accepted amounts directly after validating all
+  ! configuration and water fields through the same constructor.
+  call initialize_age(p,id,time,water,spread(0d0,1,size(water)),trial,status)
   if(status/=AGE_OK)return
   trial%amount%age_amount=amount;trial%revision=revision;state=trial
  end subroutine

@@ -31,7 +31,7 @@ one age route, not all SW431-AGE-TRACER surface/output semantics.
 Affected invariants3,4,7,9,13,21,22,23,27,29: explicit optional companion state,
 read-only accepted water, atomic commit, generic intervals and hard age balance.
 
-Test selection: first the three-provider real process closure with literal oracle,
+Test selection: first the two-provider real process closure with literal oracle,
 then real Richards composition, complete balance, donor directions, invalid input,
 multi-window, rejected-prefix atomicity, smaller retry and fresh-process restart.
 O0/O2 run separately and retain raw costs. Composition is expected about two minutes

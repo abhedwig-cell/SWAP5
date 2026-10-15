@@ -81,7 +81,7 @@ for opt in ('O0','O2'):
     text=fixture.read_text();start=text.index('  subroutine initialize_application_config');end=text.index('  end subroutine initialize_state_and_forcing')+len('  end subroutine initialize_state_and_forcing')
     (build/'matrix_fixture.inc').write_text(text[start:end]+'\n')
     stub=ROOT/'tests/modularity/low_air_consistent_grid_stubs.f90';bind(stub)
-    sources=list((ROOT/'src').rglob('*.f90'))+[stub];mapping={}
+    sources=list((ROOT/'src').rglob('*.f90'))+[stub,source];mapping={}
     for p in sources:
         for name in re.findall(r'^\s*module\s+(\w+)\s*$',p.read_text(),re.M|re.I):
             assert name.lower() not in mapping, name
@@ -99,7 +99,7 @@ for opt in ('O0','O2'):
     driver=ROOT/'tests/nut-sol/test_age_joint.f90';visit(driver);ordered.remove(driver)
     ordered.append(ROOT/'src/legacy/b1_10_port/headcalc.f90')
     objects=[]
-    for i,p in enumerate(ordered+[source,driver]):
+    for i,p in enumerate(ordered+[driver]):
         obj=build/f'joint{i}.o';objects.append(obj);bind(p)
         run(FC+flags+['-c',p,'-o',obj],build,'physical_compile')
     exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')

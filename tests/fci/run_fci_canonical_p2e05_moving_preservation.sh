@@ -745,7 +745,14 @@ check_b19_micro_root_recomposition() {
         python3 tests/crop-co2/verify_co2_successor.py --source-only || fail "unqualified additive matrix successor: $candidate_path"
         ;;
       src/process/mod_soil_n_pool_state.f90|src/process/mod_b111_soil_n_storage_conversion.f90|src/process/mod_b111_soil_n_transport.f90|src/process/mod_b111_soil_n_mineral_owner.f90|src/runtime/mod_fmr_b111_mineral_route.f90|src/runtime/mod_fmr_b111_mineral_joint_application.f90|src/adapter/mod_mineral_joint_restart_file.f90 )
-        python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
+        if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
+          python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail "unqualified age/mineral coexistence: $candidate_path"
+        else
+          python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
+        fi
+        ;;
+      src/process/mod_b111_age_tracer_substep.f90|src/runtime/mod_fmr_b111_age_route.f90|src/runtime/mod_fmr_b111_age_joint_application.f90|src/adapter/mod_age_joint_restart_file.f90 )
+        python3 tests/nut-sol/verify_age_successor.py || fail "unqualified accepted age successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac

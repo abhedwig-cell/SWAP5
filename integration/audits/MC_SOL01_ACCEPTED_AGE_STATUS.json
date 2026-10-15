@@ -1,17 +1,74 @@
 {
   "work_unit": "MC-SOL01-ACCEPTED-AGE",
   "baseline": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
-  "stage": "READINESS_RECONCILED",
-  "implemented": false,
-  "persisted": false,
-  "tested": false,
+  "stage": "PHYSICAL_O0_O2_PASS_ADMISSION_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "overlap": "PR1232 already owns reactive N including nitrification; no parallel N implementation",
-  "authority_paths": ["docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md", "docs/development/workstream-execution-protocol.md", "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json"],
+  "authority_paths": [
+    "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md",
+    "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json"
+  ],
   "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
   "master": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
   "master_facet": "SW431-AGE-TRACER ACTIVE_MIGRATION; no disposition promotion",
-  "next_action": "Selective process migration and independent age oracle, then accepted-water owner and joint restart",
-  "blockers": []
+  "next_action": "Run exact eligibility negatives and incumbent owner controls, then one full local moving preservation on stable persisted candidate. No highest stress or Actions dispatch.",
+  "blockers": [],
+  "execution_commit": "57b5fd7f61d2266136b7fa60199748db86043267",
+  "added_blobs": {
+    "src/adapter/mod_age_joint_restart_file.f90": "bdddd8997913739acb0f9f670a049311f1cdc57e",
+    "src/process/mod_b111_age_tracer_substep.f90": "6e3dd976b9d87d231572c60ddee6c92c4aeaa2ad",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90": "e85494ef1e0c49ed4b7af477b35ae8c3c426378d",
+    "src/runtime/mod_fmr_b111_age_route.f90": "1ec8477f4c03715ac221e103b7771a8bdca101ca",
+    "tests/nut-sol/run_age.py": "4fc53ca66c605f698738158e11b5055207aacb26",
+    "tests/nut-sol/test_age_process.f90": "181418b647f51ea7714609e1847e06886bfa6c4a",
+    "tests/nut-sol/test_age_joint.f90": "02bd0c71ad60bf06e1fc61614ef7d775125baf67",
+    "tests/nut-sol/verify_age_successor.py": "f8d32970ae83eb113ceacaa3be2cabc6018dedee",
+    "tests/nut-sol/check_age_evidence_controls.py": "823683cca91f61d8b038d0ca0b52769586e799c2"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "4a16ebfc4cb153727623a04e58ae111a316ed835",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "73fb2ebf3790db19f4013bd543a55e3c1c7eb387"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_ACCEPTED_AGE_20261015.tar.xz.b64",
+    "sha256": "728892c197f0c8ce05b7f9a463b33d4088e33aaff4432b307e99c4b3ed1d9fe8",
+    "decoded_bytes": 68336,
+    "members": 1599
+  },
+  "cost_seconds": {
+    "physical_compile": 108.00702237813675,
+    "physical_link": 0.2105495739961043,
+    "physical_native": 8.361581988006947,
+    "process_compile": 1.4873081360128708,
+    "process_link": 0.06691835800302215,
+    "process_native": 0.004304058005800471
+  },
+  "relevant_paths": [
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/process/mod_b111_age_tracer_substep.f90",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90",
+    "src/runtime/mod_fmr_b111_age_route.f90",
+    "tests/nut-sol/run_age.py",
+    "tests/nut-sol/test_age_process.f90",
+    "tests/nut-sol/test_age_joint.f90",
+    "tests/nut-sol/verify_age_successor.py",
+    "tests/nut-sol/check_age_evidence_controls.py"
+  ],
+  "test_selection": {
+    "level1_2": "Two production providers;150 literal historical steps, units, age balance, invalid and retry controls",
+    "level3": "232 providers;actual Richards signed root/drain/bottom two windows;literal oracle each accepted substep;atomic rejection and smaller retry;opaque/base/temporal/disk/fresh-process;10 decoder negatives per optimization",
+    "level4": "Select once: two shared eligibility guards changed, existing stable admission boundary requires full local F-CI. Expected1400..1900s. Compiler/link/native split UNKNOWN for broad shell. FCI_RESUME_MODE=OFF. Highest low-air NOT_SELECTED_POLICY."
+  },
+  "incumbent_reconciliation": {
+    "baseline": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+    "matrix_input_count": 240,
+    "mineral_input_count": 237,
+    "all_477_hashes_unchanged": true,
+    "scope": "Entire src/tests/tools/reference surface unchanged except exact age additions and two bound eligibility guards; default callers/state/fixtures/selectors unchanged. Original CO2 assertions run in situ; original mineral verification runs at exact immutable canonical with all numerical inputs unchanged. No simultaneous companion application claim."
+  }
 }

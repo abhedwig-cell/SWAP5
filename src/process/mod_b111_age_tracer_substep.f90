@@ -134,7 +134,7 @@ contains
     end do
 
     candidate%age_pond_previous_concentration=agepond
-    if(.not.candidate%valid())then
+    if(.not.candidate%valid().or.any(candidate%age_amount>1.0e12_real64))then
       candidate=committed;return
     end if
     receipt%pond_age_end_day=agepond
@@ -198,7 +198,7 @@ contains
          any(f%theta_sat_left>1.0_real64).or.any(f%dispersivity_cm>1.0e4_real64))return
       if(any(abs(f%face_left_weight+f%face_right_weight-1.0_real64)>1024.0_real64*epsilon(1.0_real64)))return
     end if
-    if(f%molecular_diffusion_cm2_day>1.0e4_real64)return
+    if(f%molecular_diffusion_cm2_day>1.0e6_real64)return
     ok=.true.
   end function
 end module

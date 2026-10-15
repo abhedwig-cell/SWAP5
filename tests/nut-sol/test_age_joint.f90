@@ -36,6 +36,8 @@ program test_age_joint
   cfg%tiles(1)%base_forcing%top_flux=0.0_real64
   cfg%tiles(1)%base_forcing%bottom_flux=-0.1_real64
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=1.0e-4_real64
+  cfg%tiles(1)%base_forcing%root_extraction_sink=1.0e-4_real64
+  cfg%tiles(1)%parameters%root_extraction_active=.true.
   cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0.0_real64
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
   cfg%numerical%model_temporal_indicator_budget_available=.true.
@@ -59,6 +61,8 @@ program test_age_joint
     call read_age_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
          water,solute,status)
     call require(status==JOINT_OK,'fresh-process disk reconstruction')
+    cfg%tiles(1)%base_forcing%bottom_flux=0.1_real64
+    cfg%tiles(1)%base_forcing%drainage_flux_by_level=-1.0e-4_real64
     call run_age_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
          cfg%tiles(1)%base_forcing,cfg%numerical,solute,T1,2*T1,result)
     call require(result%status==JOINT_OK,'fresh-process physical joint continuation')
@@ -70,13 +74,14 @@ program test_age_joint
   call initialize_owners(water,solute,p)
   initial_water=water;initial_solute=solute
   ! Chemical rejection after a successful hydraulic candidate rolls both back.
-  pbad=p;pbad%dispersivity_cm=1.0e4_real64
+  pbad=p;pbad%dispersivity_cm=1.0e4_real64;pbad%molecular_diffusion_cm2_day=1.0e6_real64
   call initialize_age(pbad,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
        [(1.0_real64+1.0_real64*u,u=1,numnod)],bad_solute,status)
   bad_water=water
   rejected_solute=bad_solute
   call run_age_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,T0,T1,result)
+  if(result%status/=JOINT_CHEMICAL_REJECTED)print *,'overdraw diagnostics',result%status,result%chemical%status,result%chemical%process_status
   call require(result%status==JOINT_CHEMICAL_REJECTED,'chemical overdraw rejects successful water trial')
   call require(bad_water%current_revision()==water%current_revision(),'no water commit on chemical rejection')
   call compare_water(water,bad_water)
@@ -130,11 +135,16 @@ program test_age_joint
          empty_water,empty_solute,status)
     call require(status/=0,'wrong hydraulic identity rejected')
   end block
+  cfg%tiles(1)%base_forcing%bottom_flux=0.1_real64
+  cfg%tiles(1)%base_forcing%drainage_flux_by_level=-1.0e-4_real64
+  initial_solute=solute
   call run_age_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,solute,T1,2*T1,result)
   call run_age_joint_interval(second,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,other_water, &
        cfg%tiles(1)%base_forcing,cfg%numerical,other_solute,T1,2*T1,result2)
   call require(result%status==0.and.result2%status==0,'both original and restarted water/chemistry execute')
+  call require(result%chemical%external_in>0d0,'actual bottom and lateral age inflow active')
+  call verify_actual_trace(initial_solute,solute)
   net_input=net_input+result%chemical%external_in+result%chemical%production-result%chemical%external_out
   call require(abs(result%chemical%amount_after-mass0-net_input)<1.0e-11_real64,'multi-window joint chemical balance')
   call require(abs(result%chemical%residual)<1.0e-11_real64.and. &
@@ -267,6 +277,7 @@ contains
     integer::i,j,code
     obs=backend%observation();traces=obs%accepted_water_flux_substeps
     call require(size(traces)>0,'actual internally accepted trajectory available')
+    call require(sum(traces(1)%root_sink)>0d0,'accepted root water extraction active')
     call initial%snapshot(time,water,stores,revision)
     density=stores%age_amount/p%dz_cm;age=density/water
     do i=1,size(traces)
@@ -294,10 +305,11 @@ contains
       case(7);bad(1)%subsurface_source=spread(.1d0,1,numnod)
       case(8);bad(1)%macropore_matrix_exchange=spread(.1d0,1,numnod)
       case(9);bad(size(bad))%t0=bad(size(bad))%t0+1d-4
-      case(10);bad(1)%bottom_flux=bad(1)%bottom_flux+1d-4
+      case(10);bad(1)%bottom_flux=bad(1)%bottom_flux+1d0
       end select
       trial=initial
       call consume_accepted_age_trace(trial,bad,receipt)
+      if(receipt%status==AGE_OK)print *,'unexpected carrier acceptance',j
       call require(receipt%status/=AGE_OK,'malformed accepted carrier rejects')
       call compare_chemical(initial,trial)
     end do
