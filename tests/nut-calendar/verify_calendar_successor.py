@@ -89,7 +89,7 @@ def validate_events(d,prefix,source,mode,reference):
  script=ast.parse((ROOT/'tests/nut-calendar/run_calendar.py').read_text())
  wrapper=next(ast.literal_eval(n.value)for n in script.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='oracle'for t in n.targets))
  for opt in ['O0','O2']:
-  row=r['runs'][opt];check(row['production_providers']==(266 if mode=='joint'else 46 if mode=='day'else 3),'closure drift');check(set(row['drivers'])==expected,'driver missing')
+  row=r['runs'][opt];check(row['production_providers']==((268 if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else 266)if mode=='joint'else 46 if mode=='day'else 3),'closure drift');check(set(row['drivers'])==expected,'driver missing')
   builds=[e for e in events if e['category']=='compile'and '-'+opt in e['command']]
   compiled={'src/'+e['command'][e['command'].index('-c')+1].split('/src/',1)[1]for e in builds if '/src/'in e['command'][e['command'].index('-c')+1]}
   check(compiled=={p for p in r['input_sha256']if p.startswith('src/')}and len(compiled)==row['production_providers'],'fresh provider coverage')

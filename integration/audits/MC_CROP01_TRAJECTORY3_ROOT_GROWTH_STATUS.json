@@ -135,7 +135,7 @@
     },
     "tests/nut-calendar/verify_calendar_successor.py": {
       "status": "A",
-      "blob": "669be6aa28cd9514c104629ca0a356fe1f1ed33b"
+      "blob": "68dbbb2f801846866aee0596c51102831946e7f6"
     },
     "tests/nut-senescence/check_senescence_controls.py": {
       "status": "M",
@@ -375,6 +375,13 @@
     "reason": "Calendar compiled closure includes changed production bootstrap. Fresh calendar actual Richards and empty-day are required. All shared owner guards changed: fresh original owner controller and N ABI routes selected. Original SWRD3 physical/probe/native inputs are all byte-identical and retained; no stale PASS promoted.",
     "expected_seconds": 1100,
     "physics_only": "UNKNOWN",
-    "highest_low_air": "NOT_SELECTED_POLICY"
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "actual_calendar_provider_count": 268
+  },
+  "reconciled_calendar_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CALENDAR_REQUALIFIED_20261015.tar.xz.b64",
+    "decoded_sha256": "2bdba5ecad886b604c2fbd372929f4a01f379a3df80eafe710ff193eab1e7346",
+    "decoded_bytes": 95792,
+    "members": 1570
   }
 }
