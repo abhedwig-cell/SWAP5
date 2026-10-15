@@ -137,7 +137,7 @@ application reachability.
 
 | Remaining block | Existing donor authority / first ready action |
 | --- | --- |
-| Matrix nonlinear sorption | Qualified partition operator exists; discriminate the corrected inverse and changing-water source semantics before extending this route. |
+| Matrix nonlinear sorption | [Bounded nonlinear successor](MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md) now has independent inverse and actual changing-water joint/restart O0/O2 evidence; source-policy acceptance and central preservation/admission remain pending. |
 | Pond/rain/irrigation/runoff | Existing pond operator; bind accepted surface water and source receipts, reconstruct complete surface mass, then atomic continuation. |
 | Water age | Qualified donor age operator; independent accepted-carrier age amount and age production, separate from chemical mass. |
 | Mineral Soil-N and transport | Existing donor pool and aggregate transport owners; reconcile a bounded accepted daily NH4/NO3 route and whole-N restart before crop coupling. |

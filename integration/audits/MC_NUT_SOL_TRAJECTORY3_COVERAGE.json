@@ -175,5 +175,20 @@
   "master_global_checker": "Existing eccbf9d2 master baseline and scoped postimage both FAIL stale inheritance baseline; no whole-master PASS claimed",
   "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
   "master_reconciled_blob": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
-  "canonical_bounded_admission": "034b74cf483613ce57c9a02b474e78cc5f7d4680"
+  "canonical_bounded_admission": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
+  "nonlinear_successor_reconciliation_20261015": {
+    "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
+    "master_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+    "master_blob": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
+    "candidate_scope": "0.5<=frexp<=2 on existing actual matrix joint route; scientifically tested, not admitted",
+    "relevant_row_sha256": {
+      "SW431-SALT-SORPTION": "b8b0019b6c768668e7b866497be5503962dc5702b1afcb3deae534ea52ae02a8",
+      "SW431-SALT-DECAY": "77d9973ca76f7baac46f04ff5933bc1d497d43e8117b3e05c2a9c1c5274de650"
+    },
+    "master_rows_mutated": [],
+    "all_243_dispositions_and_counts_unchanged": true,
+    "all_14_NUT_SOL_dispositions_unchanged": true,
+    "qualification_receipt": "MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+    "next_owner_action": "Accept explicit nonlinear inverse differences and reconcile exact source guards/preservation before admission; only then add master admission receipt. No whole sorption/decay capability promotion. Global stale-inheritance blocker remains."
+  }
 }

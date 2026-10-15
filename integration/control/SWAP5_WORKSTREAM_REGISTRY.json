@@ -805,7 +805,17 @@
           "admission_evidence": "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_ADMISSION_20261014.tar.xz.b64",
           "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
           "parameter_guard_evidence": "integration/audits/evidence/MC_NUT_SOL_TRAJECTORY3_INITIALIZATION_20261014.tar.xz.b64",
-          "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626"
+          "master_reconciliation_head": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+          "nonlinear_successor": {
+            "status": "SCOPED_SCIENCE_PASS_ADMISSION_BLOCKED",
+            "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
+            "branch": "work/nut-sol-nonlinear-matrix-20261015",
+            "execution_commit": "a85facff905e6299acffd2f3c11bfeea0a03f295",
+            "scope": "Bounded nonlinear 0.5<=frexp<=2: independent inverse and literal transport, actual water/chemical balances, atomic joint rollback and fresh-process restart O0/O2",
+            "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+            "next_gate": "NUT/SOL owner accepts explicit historical inverse differences; central F-CI reconciles exact source postimages and selects required stable preservation before canonical admission. Existing source guard intentionally not weakened; no full-FCI PASS inherited.",
+            "master_dispositions_changed": false
+          }
         }
       },
       {
