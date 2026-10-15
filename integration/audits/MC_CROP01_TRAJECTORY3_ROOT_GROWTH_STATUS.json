@@ -6,8 +6,8 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
-  "next_action": "Verify latest canonical and expected PR1241 head, immutable full and current physical evidence; merge only this PR, verify actual sourceb8ac1c1c and all12 production identities, then persist admission/coverage without disposition promotion.",
+  "canonically_admitted": true,
+  "next_action": "Trajectory3 closed. Largest dependency-ready next crop route is SWRD2 persistent daily actual/potential depth and its source growth gates. Do not start it within this trajectory3 work unit.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
@@ -22,7 +22,7 @@
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
   "reference_delta": false,
-  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_AND_NEW_THERMAL_OWNER_QUALIFIED_PRESERVED_PENDING_CANONICAL_ADMISSION",
+  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_QUALIFIED_PRESERVED_CANONICALLY_ADMITTED",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
   "production_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
@@ -58,7 +58,7 @@
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
   "full_fci": "TERMINAL_FULL_PASS_WITH_EXACT_DEFAULT_RECONCILIATION_AND_FRESH_THERMAL_SCIENCE",
-  "stage": "FINAL_CURRENT_CANONICAL_SWRD3_QUALIFIED_PRESERVED_PENDING_EXPECTED_HEAD_MERGE",
+  "stage": "CLOSED_SWRD3_DAILY_PRODUCTION_CANONICALLY_ADMITTED",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -693,7 +693,7 @@
     },
     "docs_source_check": "PASS",
     "strict_mkdocs": "NOT_EXECUTED: renewed environment has no mkdocs module; prior docs build not promoted to current check.",
-    "resolution": "New combined scientific source9747341e qualified and completed full local moving PASS. Original lost run remains historical/unusable. New exact terminal proof is full_preservation.evidence."
+    "resolution": "Closed by complete immutable current-source evidence and verified PR1241 canonical merge; old unavailable full result remains excluded."
   },
   "actual_costs": {
     "durably_recorded_focused_seconds": 1301.5511934356327,
@@ -989,5 +989,59 @@
       "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
       "--nut-thermal-owner-only"
     ]
+  },
+  "canonical_admission": {
+    "pr": 1241,
+    "merge_commit": "2dfacf1c177c9b117dcc74b3f17c91f167debd39",
+    "admission_head": "b17cd5a740fdeaf64641d84a21539408e6ca15ca",
+    "source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+    "production_blobs": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": "550a63f25db46c61ac4f3bd7e60b6c298bd6eab5",
+      "src/crop/mod_crop_soil_n_calendar_day.f90": "528b6c77a6a3ccaa03e3d2064ae9fedfa2dd59fd",
+      "src/process/mod_soil_n_amendment_calendar.f90": "19dcedb0babc89b21c2fbcc65122c1ff709b3cc1",
+      "src/process/mod_soil_n_amendment_input.f90": "5597c4f4818ac81f799447ede950285f954448a2",
+      "src/process/mod_soil_n_profile_temperature.f90": "929b8ced7f616ed1e1283d9c2156bf9c68a038c9",
+      "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90": "e1426567ed56346eddae3f5da771ec194cfc209d",
+      "src/runtime/mod_fmr_biomass_root_uptake_input.f90": "c2344a276f576c15fc9df6221713a3fcabc49253",
+      "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": "15491852eada4aa20679d203f394cb171a9b2003",
+      "src/runtime/mod_fmr_crop_soil_n_thermal_application.f90": "7afc4a3c10c67168962a8829d09d5c7be99f7d71",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "e7f39d70b3554de6db5731b699b8068419ac9062",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "7e1b034e5cd134050e695c9a097c44a3eaeca344",
+      "src/runtime/mod_fmr_soil_n_accepted_temperature.f90": "16048604846c6dbf3158ca1e76e9abbde9275325"
+    },
+    "reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+    "full_evidence_sha256": "cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b",
+    "scientific_surface_identical_to_executed_full": false,
+    "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "default_preservation_reconciliation": {
+      "status": "PASS",
+      "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+      "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+      "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+      "full_execution_at_current_tree": false,
+      "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+      "native_dependency_files": 2752,
+      "guard_pairs": 7,
+      "projected_dependencies": [
+        "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+        "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+        "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+        "decoded_bytes": 6480,
+        "members": 19
+      }
+    },
+    "fresh_current_thermal_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+      "decoded_sha256": "5332c91e6b6614535d31d6d03884fca81b28170428e4423bd6e386a5a8c8e4c3",
+      "decoded_bytes": 103528,
+      "members": 1374
+    },
+    "master_capability_disposition_changes": 0
   }
 }

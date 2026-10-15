@@ -1,7 +1,9 @@
 # SWRD3 daily production binding
 
-Proposed bounded successor on canonical
-`3b661766dc59298a7f541c970c2d3a55602d926c`, existing PR1241.
+Current bounded daily successor admitted by PR1241 at canonical merge
+`2dfacf1c177c9b117dcc74b3f17c91f167debd39`. Original scientific baseline
+`3b661766dc59298a7f541c970c2d3a55602d926c`; exact qualification, preservation
+and actual canonical source receipt are in the trajectory3 status/recovery.
 
 The rooted file-weather application accepts explicit root-depth modes1(default)
 and3(B1.11 biomass table). Mode3 derives actual and potential depths from the

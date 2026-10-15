@@ -1,3 +1,37 @@
+# Current: trajectory3 canonically admitted and closed
+
+PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241) merged at
+`2dfacf1c177c9b117dcc74b3f17c91f167debd39`, admission head `b17cd5a740fdeaf64641d84a21539408e6ca15ca`. Actual canonical
+production source `b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0` is the currently qualified combined source; all declared
+production blob identities and reference identity were checked. The complete
+full execution retains its actual source974 identity. Its existing default-path
+preservation is rebound only by exact three-file default projection and identical
+numerical moving body; new thermal behavior has fresh current-source271-provider
+physical proof. This does not claim a full run at the augmented source tree. Exact receipt:
+status `canonical_admission`. Recovery metadata changes no production science.
+
+Closed bounded functionality: explicit SWRD3 actual/potential biomass-root depth,
+actual static density, genuinely accepted deepest-root oxygen, existing WOFOST81
+growth, both daily schedules and opaque whole-owner continuation. Actual uptake,
+water balance, potential shadow, rollback/retry and exactly-once assertions hold.
+Canonical calendar/input sources were retained byte-exact and their affected
+4/47/269-provider O0/O2 routes freshly qualified.
+
+Current full local moving OFF at `a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04`: terminal PASS,
+exit0, 2675.978s, all6423 tracked inputs unchanged. Immutable full evidence decoded
+SHA256 `cc62898badd4fe96a504e9ce89b35185cc096f8db0c009f68f9e16dd3f983b0b`. The old unavailable run is excluded from admission. Focused
+recorded costs2161.239s plus this full execution; unmeasured overhead and full
+compile/link/native split are UNKNOWN. Highest low-air NOT_SELECTED_POLICY;
+original short owner case1/8192 is separate. No Actions dispatch.
+
+No capability disposition/count promotion. SWRD3 biomass capability was already
+ADMITTED; this adds verified daily reachability. Historical SWRD2 anaerobic
+extension remains open. Largest dependency-ready next crop route is persistent
+daily SWRD2 actual/potential depth; **not started**. Broader density/root selectors,
+native weather disk codec and harvest/fallow/rotation also remain open.
+
+The sections below are historical and superseded for present-state claims.
+
 # Final qualified current-canonical candidate
 
 Canonical thermal admission `e6fd1da26b647252a5c4020a0de23ccab7d11265` is
