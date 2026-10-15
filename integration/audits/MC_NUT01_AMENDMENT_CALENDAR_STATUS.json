@@ -1,0 +1,23 @@
+{
+  "work_unit": "MC-NUT01-AMENDMENT-CALENDAR",
+  "baseline": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+  "branch": "work/nut-amendment-calendar-20261015",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "checkpoint_commit": "SELF: isolated calendar authority and source domain before implementation",
+  "contract": "docs/science/MC_NUT01_AMENDMENT_CALENDAR_CONTRACT_20261015.md",
+  "next_action": "Implement immutable daily calendar and additive existing-owner application, then tiny source-bound O0/O2 first",
+  "recovery_point": "integration/audits/MC_NUT01_AMENDMENT_CALENDAR_STATUS.json",
+  "last_reconciled_head": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+  "last_reconciled_upstream": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+  "relevant_paths": ["src/process/mod_b111_amendment_calendar.f90", "src/crop/mod_crop_soil_n_calendar_day.f90", "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90", "tests/nut-calendar"],
+  "authority_paths": ["docs/science/MC_NUT01_AMENDMENT_CALENDAR_CONTRACT_20261015.md", "integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json"],
+  "dependency_surface": "Additive typed forcing and callers; complete production closure, immutable original source, fixtures, compiler, test drivers and owning preservation guards",
+  "overlap": {"senescence": "PR1239 active, owns pending crop/soil and codec changes; no import or edit", "surface": "PR1234 active, separate solute owner", "donor": "PR1117 near-date sorting/grouping not admitted"},
+  "highest": "NOT_SELECTED_POLICY",
+  "blockers": []
+}
