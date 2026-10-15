@@ -61,3 +61,5 @@ Explicit calendar policy, file/default activation, accepted heat/profile couplin
 lifecycle and simultaneous solute companions remain separate. Pond/source stays
 open and aquifer stays rejected. Reconcile live refs and existing owner work
 before opening another candidate.
+
+Terminal full local moving preservation: **PASS**, OFF, exit0, 1780.158s, all6346 tracked inputs unchanged. Actual execution `f676ce2a283faa4b8bf201f22cb1b8d9b4f34be1`, tree `32bb9cf394fb84139ba705da36955a2107d3d084`, source `232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3`. Raw logs, complete input inventory, source Git bundle and65/22 controls are in the admission capsule identified by status. Primary physical cost140.094s compile,23.005s driver,1.232s link and110.294s native. Direct cost11.453/4.478/.253/.013s; per-physics and full shell category split remain UNKNOWN. Qualification/preservation true and admission false are deliberately frozen premerge; the final PR1238 merge receipt is canonical admission authority.
