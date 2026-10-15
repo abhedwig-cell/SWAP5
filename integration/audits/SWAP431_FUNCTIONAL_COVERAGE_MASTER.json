@@ -9306,15 +9306,18 @@
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner."
+        "claim": "Complete source-selector production envelope remains open. The former absence-of-owner assertion is superseded for the explicit static-density SWDMI2RD0/1 daily route by bounded_daily_production_reachability and PR1248; this field continues to describe complete-selector closure."
       },
       "restrictions": [
-        "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner."
+        "Bounded daily SWRD2 with static density and SWDMI2RD0/1 is canonically admitted by PR1248. Complete source-selector combinations and the remaining domains in its receipt are not established."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
@@ -9332,7 +9335,39 @@
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "bounded_swrd2_daily_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+        "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+        "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+        "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+        "full_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+          "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+          "decoded_bytes": 285332,
+          "members": 7
+        },
+        "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false,
+        "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+        "disposition_changes": 0,
+        "full_master_qualification_claimed": false,
+        "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
+      },
+      "bounded_daily_production_reachability": {
+        "established": true,
+        "route": [
+          "src/runtime/mod_fmr_production_application_bootstrap.f90",
+          "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+          "src/crop/mod_crop_root_depth_rate_owner.f90",
+          "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
+        ],
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false
+      },
+      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
     },
     {
       "capability_id": "SW431-CROP-CO2",
@@ -10993,16 +11028,18 @@
       "swap5_implementation_authority": [],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
-        "integration/audits/SWAP431_SOURCE_REVIEW.md"
+        "integration/audits/SWAP431_SOURCE_REVIEW.md",
+        "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition."
+        "claim": "Complete source-selector production envelope remains open. The former absence-of-owner assertion is superseded for the explicit static-density SWDMI2RD0/1 daily route by bounded_daily_production_reachability and PR1248; this field continues to describe complete-selector closure."
       },
       "restrictions": [
-        "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition.",
-        "PR1241 admits an accepted deepest-root oxygen carrier and the existing WOFOST81 biomass-growth gate; this does not close historical SWRD2 depth-extension suppression."
+        "Bounded daily SWRD2 with static density and SWDMI2RD0/1 is canonically admitted by PR1248. Complete source-selector combinations and the remaining domains in its receipt are not established."
       ],
       "remaining_dependency": [
         "SW431-CROP-ROOTGROW"
@@ -11067,7 +11104,39 @@
         "disposition_changes": 0,
         "full_master_qualification_claimed": false,
         "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
-      }
+      },
+      "bounded_swrd2_daily_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+        "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+        "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+        "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+        "full_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+          "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+          "decoded_bytes": 285332,
+          "members": 7
+        },
+        "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false,
+        "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+        "disposition_changes": 0,
+        "full_master_qualification_claimed": false,
+        "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
+      },
+      "bounded_daily_production_reachability": {
+        "established": true,
+        "route": [
+          "src/runtime/mod_fmr_production_application_bootstrap.f90",
+          "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+          "src/crop/mod_crop_root_depth_rate_owner.f90",
+          "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
+        ],
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false
+      },
+      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
     },
     {
       "capability_id": "SW431-DRAIN-DISLAYER",
@@ -13291,15 +13360,23 @@
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "PR #1125; SWRD2 supply 37773706292; F-CI 37773706297"
+        "PR #1125; SWRD2 supply 37773706292; F-CI 37773706297",
+        "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state."
+        "established": true,
+        "route": [
+          "src/runtime/mod_fmr_production_application_bootstrap.f90",
+          "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+          "src/crop/mod_crop_root_depth_rate_owner.f90",
+          "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
+        ],
+        "claim": "Existing admitted water-scaled component now has the bounded daily static-density Richards/WOFOST81 route in PR1248; broader combinations remain unclaimed."
       },
       "restrictions": [
-        "No accepted root-depth owner applies rr*=IQROT/IPTRA with the source extension gates and actual/previous depth. Root uptake itself does not publish root-growth state."
+        "Bounded daily SWRD2 with static density and SWDMI2RD0/1 is canonically admitted by PR1248. Complete source-selector combinations and the remaining domains in its receipt are not established."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -13322,6 +13399,37 @@
       "canonical_admission": {
         "commit": "c0543ab8171fbad695f0b152c9198a1a1d376911",
         "evidence": "PR #1125; SWRD2 supply 37773706292; F-CI 37773706297"
+      },
+      "bounded_swrd2_daily_production_admission": {
+        "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+        "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+        "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+        "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+        "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+        "full_evidence": {
+          "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+          "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+          "decoded_bytes": 285332,
+          "members": 7
+        },
+        "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false,
+        "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+        "disposition_changes": 0,
+        "full_master_qualification_claimed": false,
+        "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
+      },
+      "bounded_daily_production_reachability": {
+        "established": true,
+        "route": [
+          "src/runtime/mod_fmr_production_application_bootstrap.f90",
+          "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+          "src/crop/mod_crop_root_depth_rate_owner.f90",
+          "src/crop/mod_crop_root_anaerobic_extension_gate.f90"
+        ],
+        "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+        "full_selector_coverage": false
       }
     },
     {
@@ -15004,7 +15112,7 @@
       "capability_id": "SW431-CROP-ROOTGROW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "Current crop owner/contracts carry biomass and supplied root-distribution views, not accepted rd/rdpot/rr evolution. Source SWRD2 requires previous depth, maximum daily increment and demand/allocated-root-growth gates. Neither admitted WOFOST81 crop state nor prescribed root-uptake tangent supplies this owner.",
+      "why_open": "Complete source-selector production envelope remains open. The former absence-of-owner assertion is superseded for the explicit static-density SWDMI2RD0/1 daily route by bounded_daily_production_reachability and PR1248; this field continues to describe complete-selector closure.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15012,7 +15120,9 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": true,
+      "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
     },
     {
       "capability_id": "SW431-CROP-SOW",
@@ -15199,7 +15309,7 @@
       "dependencies": [
         "SW431-CROP-ROOTGROW"
       ],
-      "why_open": "Source oxygen-growth suppression gates actual SWRD2 root extension when IALPWET_DAY<AERATECRIT; it does not gate SWRD1/3. No accepted current root-depth owner applies this daily wet-stress condition.",
+      "why_open": "Complete source-selector production envelope remains open. The former absence-of-owner assertion is superseded for the explicit static-density SWDMI2RD0/1 daily route by bounded_daily_production_reachability and PR1248; this field continues to describe complete-selector closure.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -15208,7 +15318,9 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": true,
-      "bounded_supporting_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1241"
+      "bounded_supporting_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
+      "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
     },
     {
       "capability_id": "SW431-FROST-SNOW",
@@ -16026,6 +16138,26 @@
       "disposition_changes": 0,
       "full_master_qualification_claimed": false,
       "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
+    },
+    "MC-CROP01-SWRD2-01": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+      "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+      "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+      "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+      "full_evidence": {
+        "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+        "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+        "decoded_bytes": 285332,
+        "members": 7
+      },
+      "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+      "full_selector_coverage": false,
+      "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+      "disposition_changes": 0,
+      "full_master_qualification_claimed": false,
+      "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -16141,5 +16273,25 @@
     "disposition_changes": 0,
     "full_master_qualification_claimed": false,
     "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
+  },
+  "latest_mc_crop01_swrd2_daily_production_reconciliation": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+    "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+    "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+    "full_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+      "decoded_bytes": 285332,
+      "members": 7
+    },
+    "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+    "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+    "full_selector_coverage": false,
+    "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+    "disposition_changes": 0,
+    "full_master_qualification_claimed": false,
+    "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
   }
 }

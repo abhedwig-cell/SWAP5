@@ -35,7 +35,8 @@
     "latest_recount": "Structural 243-row count and open queue=108; formal exact-source checker not executed",
     "bounded_crop_receipt_reconciliation": "PASS: one SW431-CROP-SOW row updated from obsolete no-owner claim; all other rows/dispositions/counts and full false-closure guard unchanged. Exact later canonical source/qualification receipt retained; no full source census checker claim.",
     "latest_irr_owner_reconciliation": "PASS: 16 owner IDs mapped to 243-entry ledger; 5 admitted, 11 shared-application-blocked, no ungrounded promotions; full Python checker NOT RUN.",
-    "bounded_swrd3_reconciliation": "PASS: exact canonical source/evidence, two bounded rows and one supporting queue field only; all243 dispositions and summary unchanged. Not a full master qualification."
+    "bounded_swrd3_reconciliation": "PASS: exact canonical source/evidence, two bounded rows and one supporting queue field only; all243 dispositions and summary unchanged. Not a full master qualification.",
+    "bounded_swrd2_reconciliation": "PASS: exact merged source/full evidence, three bounded rows and two queue facets; all243 dispositions and summary unchanged. Not global census qualification."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -395,5 +396,25 @@
     "disposition_changes": 0,
     "full_master_qualification_claimed": false,
     "global_checker": "Pre-existing master source-inheritance issues remain outside this bounded receipt."
+  },
+  "latest_mc_crop01_swrd2_daily_production_reconciliation": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
+    "canonical_merge": "ad11a936e527d11c306ce1dd5444b4d83e3ac115",
+    "admission_head": "eae214ad7fd31d326c5561a252ac27c8da46a7f4",
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "full_execution": "b7a54bdd29e1a3d4500309e59afe209e9743dfc5",
+    "full_evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_FULL_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "c4205ab2152c91215ab5bd9b3f16610a326152b1ef5a37da853ef61b17fba864",
+      "decoded_bytes": 285332,
+      "members": 7
+    },
+    "scientific_authority": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+    "scope": "Explicit SWRD2/SWDMI2RD0/1, static density, daily committed actual/potential depth, real accepted Richards water and empirical oxygen, both weather schedules, atomic WOFOST81 publication and opaque joint restart.",
+    "full_selector_coverage": false,
+    "remaining": "SWDMI2RD2 accepted supply/adaptive density, SWRDC1 daily persistence, advanced selector compositions, native weather disk codec, harvest/reset/fallow/rotation remain separate.",
+    "disposition_changes": 0,
+    "full_master_qualification_claimed": false,
+    "global_census": "Existing complete-selector dispositions and source census are not requalified by this bounded receipt."
   }
 }

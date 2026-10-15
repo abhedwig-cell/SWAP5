@@ -505,3 +505,25 @@ unchanged. Exact current-source scientific and full moving evidence is bound by
 This scoped receipt does not establish global source-census qualification.
 Largest dependency-ready next crop route: persistent daily SWRD2 actual/potential
 depth; it was not started by trajectory3.
+
+
+## Bounded SWRD2 daily production admission (2026-10-15)
+
+PR [1248](https://github.com/abhedwig-cell/SWAP5/pull/1248), canonical merge `ad11a936e527d11c306ce1dd5444b4d83e3ac115`, source `fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0`.
+
+Explicit static-density SWDMI2RD0/1 now has persistent actual/potential depth in
+both real Richards/WOFOST81 daily schedules, accepted water/oxygen, atomic crop
+publication, rollback/retry/exactly-once and opaque joint continuation. Current
+O0/O2 science, ten shared owner gates and one complete current-source moving OFF
+execution bind this receipt. Earlier provenance failures remain FAIL.
+
+Three bounded capability facets and two remaining-queue descriptions now replace
+stale absence-of-owner statements. The already ADMITTED water component gains
+its daily production route. Complete-selector ROOTGROW/ANAE dispositions remain
+ACTIVE_MIGRATION: their reachability field denotes the complete envelope, while
+bounded_daily_production_reachability records the admitted static subset. All243
+dispositions and summary counts remain unchanged; no global source census PASS.
+
+Largest dependency-ready next crop cluster: daily adaptive density/SWRDC1 and
+accepted layer uptake/stress for SWDMI2RD2. Not started. Native weather disk codec
+and harvest/reset/fallow/rotation are separate unadmitted compositions.
