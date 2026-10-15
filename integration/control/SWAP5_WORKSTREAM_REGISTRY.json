@@ -816,7 +816,7 @@
             "execution_commit": "a85facff905e6299acffd2f3c11bfeea0a03f295",
             "scope": "Bounded nonlinear 0.5<=frexp<=2: independent inverse and literal transport, actual water/chemical balances, atomic joint rollback and fresh-process restart O0/O2",
             "recovery": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
-            "next_gate": "Bounded route complete and master receipts verified. Next SOL age/pond or wider frexp domain; NUT mineral1231 is already admitted, next bounded nitrification with whole-N accounting. No default combined NUT+SOL or whole-capability closure.",
+            "next_gate": "Bounded route complete and master receipts verified. Age1233 and reactive N1232 are admitted separately. Next SOL surface/pond or wider frexp domain; next NUT crop-N supply/demand preserving WOFOST81. No combined companions or whole-capability closure.",
             "master_dispositions_changed": false
           }
         },
@@ -830,13 +830,36 @@
         },
         "bounded_reactive_successor": {
           "pr": 1232,
-          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE",
           "recovery": "integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json",
           "admission_authority": "PR1232 final merge and canonical source/tree receipt; frozen premerge flags are not an admission claim",
           "scope": "Bounded source-corrected daily organic/mineral N reactions over actual accepted Richards water with atomic joint rollback and same-platform restart",
           "reference": "MC-NUT01-R1; original defect witness and corrected literal whole-N qualification",
           "peer": "PR1230 nonlinear route preserved through exact canonical-relative union proof",
-          "next_gate": "Crop-N supply/demand and environmental forcing as needed, then amendment/residue events. Preserve WOFOST81 fixation; no whole NUT/SOL closure."
+          "next_gate": "Crop-N supply/demand and environmental forcing as needed, then amendment/residue events. Preserve WOFOST81 fixation; no whole NUT/SOL closure.",
+          "canonical_merge": "26ddf94e58133acd413c2b2738b873a92f43f1da"
+        },
+        "bounded_age_successor": {
+          "pr": 1233,
+          "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
+          "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+          "recovery": "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+          "scope": "Accepted matrix water age transport/production/balance, atomic rollback and smaller retry, opaque/native fresh-process continuation; zero surface profile",
+          "master_receipt_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+          "next_gate": "Accepted surface/pond age and solute budget, then wider source/default envelopes. No full capability closure."
+        },
+        "bounded_crop_supply_successor": {
+          "pr": 1235,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "recovery": "integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json",
+          "scope": "Actual Richards plus unchanged WOFOST81 demand and reactive soil supply; exact soil/crop N transfer, atomic water/soil/crop rollback and complete opaque/CRC fresh-process restart",
+          "admission_authority": "PR1235 final expected-head merge and canonical source/tree receipt",
+          "canonical_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+          "source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+          "full_preservation_seconds": 1572.5012039499998,
+          "highest": "NOT_SELECTED_POLICY",
+          "coverage_receipt": "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "next_gate": "Source-qualified amendments/residues or explicit environmental forcing, then wider default/calendar lifecycle; retain WOFOST81 fixation. No whole NUT/SOL closure or full capability promotion."
         }
       },
       {

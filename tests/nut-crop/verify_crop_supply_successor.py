@@ -3,22 +3,24 @@
 from pathlib import Path
 import argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
 ROOT=Path(__file__).resolve().parents[2];BASE='26ddf94e58133acd413c2b2738b873a92f43f1da'
+PEER='f8eca95ba623dc18db0110cd1b84af46857c8b9b'
+QUALIFIED_SOURCE='2b6cd5bf30e1951b45ee1e9952c18aa1aee5285a'
 STATUS='integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json'
-CHANGED=['src/process/mod_b111_soil_n_reactive_owner.f90','tests/nut-reactive/verify_reactive_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh']
+CHANGED=['tests/crop-co2/verify_co2_successor.py','tests/nut-sol/verify_age_successor.py','src/process/mod_b111_soil_n_reactive_owner.f90','tests/nut-reactive/verify_reactive_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh']
 def check(ok,label):
  if not ok:raise ValueError(label)
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source():
- s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',BASE,'HEAD')
+ s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
- rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
+ rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',PEER,'HEAD','--','src','tests','tools','reference').splitlines()}
  expected={p:'A'for p in s['added_blobs']};expected.update({p:'M'for p in CHANGED})
  check(rows==expected,'foreign crop supply delta');check(set(s['changed_blobs'])==set(CHANGED),'changed seam coverage')
  for p,h in {**s['added_blobs'],**s['changed_blobs']}.items():check(git('rev-parse','HEAD:'+p)==h==blob((ROOT/p).read_bytes()),'unknown postimage '+p)
  check(git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference'),'immutable reference mutation')
- return dict(baseline=BASE,source_tree=git('rev-parse','HEAD:src'),crop_supply_successor=True,qualified=False,admitted=False)
+ return dict(baseline=BASE,source_tree=QUALIFIED_SOURCE,current_source_tree=git('rev-parse','HEAD:src'),canonical_peer=PEER,crop_supply_successor=True,qualified=False,admitted=False)
 def read_evidence():
  s=json.loads((ROOT/STATUS).read_text());raw=base64.b64decode((ROOT/s['evidence']['path']).read_bytes())
  check(hashlib.sha256(raw).hexdigest()==s['evidence']['sha256'],'capsule drift')
@@ -31,7 +33,11 @@ def read_evidence():
  return data
 
 def verify_qualification():
- source=verify_source();data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
+ source=verify_source()
+ sys.path.insert(0,str(ROOT/'tests/nut-sol'))
+ import verify_age_successor as age
+ age.validate_evidence(age.read_evidence()) # exact unchanged independent peer physics
+ data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
  check(r['status']=='PHYSICAL_PASS_NOT_ADMITTED'and r['direct_only']is False,'unfinished physical qualification')
  check(r['source_tree']==source['source_tree'],'stale source tree')
  check(r['authority']['management_soil.f90']=='0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b','unbound literal uptake source')
@@ -105,16 +111,19 @@ def verify_qualification():
    module_dir=Path(next(a[2:]for a in e['command']if a.startswith('-J')))
    check('-'+module_dir.name in e['command']and '-fcheck=all'in e['command']and '-ffpe-trap=invalid,zero,overflow'in e['command'],'unchecked current compile')
   for stream in ['stdout','stderr']:check(hashlib.sha256(data[e[stream+'_file']]).hexdigest()==e[stream+'_sha256'],'raw event drift')
+ import verify_science_edges as edges
+ edges.validate(ROOT,data,edges.read(ROOT))
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 
 def incumbent(mode='qualification'):
- verify_qualification();base=ROOT.parent/'nut-crop-baseline-26ddf94e'
- if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
- check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'baseline changed')
+ verify_qualification();base=ROOT.parent/'nut-crop-peer-f8eca95b'
+ if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),PEER],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==PEER,'baseline changed')
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=base,text=True).strip(),'dirty baseline')
- args=[sys.executable,'-B',str(base/'tests/nut-reactive/verify_reactive_successor.py'),'--incumbent',mode]
+ args=[sys.executable,'-B',str(base/'tests/crop-co2/verify_co2_successor.py')]
+ if mode!='qualification':args.append('--source-only'if mode=='source'else'--physical-only')
  p=subprocess.run(args,cwd=base,capture_output=True,text=True,check=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
- return {**json.loads(p.stdout),'crop_supply_successor':True,'crop_supply_baseline':BASE,'crop_supply_source_tree':git('rev-parse','HEAD:src')}
+ return {**json.loads(p.stdout),'crop_supply_successor':True,'crop_supply_baseline':BASE,'crop_supply_peer':PEER,'crop_supply_source_tree':git('rev-parse','HEAD:src')}
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--source-only',action='store_true');p.add_argument('--incumbent',choices=['source','physical','qualification']);a=p.parse_args()
  print(json.dumps(incumbent(a.incumbent)if a.incumbent else verify_source()if a.source_only else verify_qualification(),indent=2))

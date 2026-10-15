@@ -1,6 +1,6 @@
 # Bounded reactive soil to WOFOST81 daily nitrogen supply
 
-Proposed work unit MC-NUT01-CROP-SUPPLY, baseline canonical
+Bounded work unit MC-NUT01-CROP-SUPPLY, baseline canonical
 26ddf94e58133acd413c2b2738b873a92f43f1da (merged PR1232). No restart of prior migration.
 
 The accepted WOFOST81 prepare/apply interface already computes crop N demand,

@@ -6,10 +6,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
-  "next_safe_step": "Freeze candidate and complete exactly one local moving preservation OFF; actively poll to terminal result, then final metadata, docs, one PR and safe canonical admission. No new science changes during run.",
+  "next_safe_step": "Publish final same-PR tree, verify source/raw evidence and controls on fetched head, safely admit and verify canonical. Do not repeat full qualification for metadata-only closeout.",
   "highest_low_air": "NOT_SELECTED_POLICY",
   "added_blobs": {
     "src/adapter/mod_crop_soil_n_joint_restart_file.f90": "f39b6dc78e634c3db00af99b5c5945450b97d945",
@@ -24,14 +24,20 @@
     "tests/nut-crop/test_crop_restart_expectations.f90": "6d2573fd1f6d3fd4da75742e48fbd17da90c6a2c",
     "tests/nut-crop/test_crop_soil_day.f90": "cd06847031b72c4dd73ba396c69850b0167012a4",
     "tests/nut-crop/test_crop_soil_joint.f90": "661c6c762ac9a3a2c1630c0c8d8b02c3c249f11f",
-    "tests/nut-crop/verify_crop_supply_successor.py": "bce942d18d6c93318b3e25acb86ff579973486d5"
+    "tests/nut-crop/verify_crop_supply_successor.py": "23839c27c938f2d5d0f9998799794fd7849b4777",
+    "tests/nut-crop/run_science_edges.py": "a138b6bc2ee8db971a805bfefcd1a7a93ad26913",
+    "tests/nut-crop/check_science_edge_controls.py": "b450ec4e312bbdc79388fca020128898c51f1e64",
+    "tests/nut-crop/verify_science_edges.py": "c1e95cd362f86b45a68f5d5fdfe84bfc92aebc6e",
+    "tests/nut-crop/test_crop_supply_edges.f90": "4549999d3f32d3bc756ba0ec3b5130ee49036c20"
   },
   "changed_blobs": {
     "src/process/mod_b111_soil_n_reactive_owner.f90": "ed460e817026eae21f0f0058a6bb029c35d8605d",
-    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "57498a71fa51d965e4ba69e028169c30bb4ffb72",
-    "tests/nut-reactive/verify_reactive_successor.py": "28c9d71dcd3a2abe79fda012575c8f23fb056944"
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "11ac46d43b7093d830de35ef17c28fe4680bf48e",
+    "tests/nut-reactive/verify_reactive_successor.py": "28c9d71dcd3a2abe79fda012575c8f23fb056944",
+    "tests/nut-sol/verify_age_successor.py": "261211728434e13bdb4b5531414d662d32b88e8c",
+    "tests/crop-co2/verify_co2_successor.py": "64526f1523a139ce46f7e0da15b14e077441f00d"
   },
-  "qualification_status": "SCOPED_O0_O2_SCIENCE_AND_OWNER_PROOFS_PASS_FULL_PRESERVATION_PENDING",
+  "qualification_status": "BOUNDED_CROP_SUPPLY_QUALIFIED_PRESERVED_PREMERGE",
   "primary_execution": "581d3508518e3983d869e091f8cdcb78b04d7a9d",
   "source_tree": "2b6cd5bf30e1951b45ee1e9952c18aa1aee5285a",
   "physical_result": "crop-n-physical-third/result.json",
@@ -153,11 +159,95 @@
     "admitted": false,
     "physical_programs": 28,
     "highest": "NOT_SELECTED_POLICY",
-    "reactive_successor": true,
-    "reactive_source_tree": "1c7be316f404f6d75881e14393fe00634f6885f7",
-    "reactive_baseline": "eb03024d99ef9256335eb6e2f3f74bccce8145f0",
     "crop_supply_successor": true,
     "crop_supply_baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
-    "crop_supply_source_tree": "2b6cd5bf30e1951b45ee1e9952c18aa1aee5285a"
-  }
+    "crop_supply_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "crop_supply_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a"
+  },
+  "canonical_peer_reconciliation": {
+    "canonical": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "peer_pr": 1233,
+    "scope": "All crop and age scientific inputs, native events and accepted owner/caller/state/fixture/compiler surfaces remain identical. Exact canonical-relative crop delta; age original raw qualification validates current postimages. Original incumbent CO2/mineral/reactive assertions execute at exact peer baseline. Shared admission guards only are requalified; no new combined full run or simultaneous companions claimed.",
+    "qualified_crop_source_tree": "2b6cd5bf30e1951b45ee1e9952c18aa1aee5285a",
+    "current_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a"
+  },
+  "extension_evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_CROP_SUPPLY_EDGES_20261015.tar.xz.b64",
+    "sha256": "8732486d82699c96a6e0269a7390001c84675ea7aad9fb764f7e8c5b59594136",
+    "decoded_bytes": 35192,
+    "members": 15
+  },
+  "science_edge_cost_seconds": {
+    "compile": 0.5830776570073795,
+    "link": 0.3079649379942566,
+    "native": 0.004470276995562017
+  },
+  "pr": 1235,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1235",
+  "full_preservation": {
+    "execution_commit": "de7503824ae7cd1d59d2346c6a0c0f4d6361b8e4",
+    "tree": "4fa01b5eb65e78eec24ccae67711d15ccde4fcd2",
+    "source_tree": "2b6cd5bf30e1951b45ee1e9952c18aa1aee5285a",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "returncode": 0,
+    "wall_seconds": 1572.5012039499998,
+    "tracked_inputs": 6285,
+    "changed_inputs": [],
+    "stdout_sha256": "9942d44c81b3516940de2df16ec7af246d8cb405295dc1540f73482b156823f7",
+    "stderr_sha256": "5348384328606728cff3a1a5ecf0d127e572ae68841775e20f96e5fb9acf6ed1",
+    "terminal_marker": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_CROP_SUPPLY_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "801a70bf3e171159ebf3cf4eab347f534ce85fae816d9456fa06454c6afdb859",
+      "decoded_bytes": 649680,
+      "members": 273
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "de7503824ae7cd1d59d2346c6a0c0f4d6361b8e4",
+    "canonical_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "current_source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+    "changed_existing_inputs": [
+      "docs/science/MC_NUT01_CROP_SUPPLY_CONTRACT_20261015.md",
+      "integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "tests/crop-co2/verify_co2_successor.py",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "tests/nut-crop/verify_crop_supply_successor.py"
+    ],
+    "unchanged_existing_production_and_reference": true,
+    "primary_inputs": 270,
+    "primary_inputs_byte_identical": true,
+    "reason": "Independent admitted age additions are outside crop closure. Original crop and age physical inputs and raw terminal proof remain exact. Only shared source/admission guard composition, new leaf science and metadata differ. Exact current union/source/raw checks and fresh small crop/age O0/O2 routes pass. Two original full runs retain actual identities; no new combined full execution or simultaneous companions claimed."
+  },
+  "science_edge_controls": {
+    "status": "PASS",
+    "negative_count": 6,
+    "controls": [
+      "unfinished_edges",
+      "wrong_edge_binding",
+      "missing_juvenile_proof",
+      "edge_provider_drift",
+      "missing_edge_native",
+      "unchecked_edges"
+    ]
+  },
+  "peer_controls": {
+    "status": "PASS",
+    "negative_count": 3,
+    "controls": [
+      "peer_age_process_drift",
+      "peer_age_driver_drift",
+      "peer_age_terminal_proof_missing"
+    ]
+  },
+  "canonical_admission_authority": "Frozen premerge record; actual admission requires PR1235 expected-head merge and canonical source/tree verification in final PR body."
 }
