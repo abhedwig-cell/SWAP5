@@ -1,6 +1,7 @@
 # MC-NUT01 accepted thermal recovery
 
-Status: scoped local scientific qualification; shared-owner reconciliation open.
+Status: scoped science and shared-owner preservation qualified; final admission
+is established by PR #1246's merge receipt.
 Baseline `cd64c5044a29643a068c6151720f76b2e70f570d`, branch
 `work/nut-accepted-thermal-20261015`. Owning record:
 `integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json`.
@@ -37,20 +38,33 @@ the complete final composition is fresh at O0 and O2. Failed small/development
 compile/link/preflight observations remain in the capsule, including the attempted
 same-session recovery; none is promoted to PASS.
 
-Canonical admission is not claimed. The unmodified amendment-input source guard
-rejects `foreign/incomplete input delta`, because this unit introduces a new
-backend observation interface and shared native-codec/matcher postimages. Do not
-weaken or bypass that guard, and do not treat its old full-F-CI evidence as current
-postimage qualification. Review the explicit opt-in, reconcile relevant owner
-guards with retained physical/default-policy assertions and exact dependencies,
-then use the normal expected-head admission boundary. No full F-CI, highest
-low-air stress or Actions execution was selected or dispatched for this unit.
+The earlier draft stopped at the amendment-input guard's
+`foreign/incomplete input delta` rejection. That boundary is now reconciled by
+`MC_NUT01_THERMAL_ADMISSION_RECONCILIATION_20261015.md`: all three shared files
+project to their exact baseline bytes on the reviewed default paths. The full
+moving scientific body also remains byte-identical after removing only the
+declared eligibility additions. NUT dispatch and CO2's original physical and
+additional-owner evidence assertions remain active. The existing CO2 metadata
+still reports `qualified: false` with 28 physical programs; no new CO2 admission
+is inferred from the successful evidence validation.
+
+The final current controls pass 289 cases: all 245 historical controls, the 30
+thermal evidence controls and 14 source/default/moving-body controls. The
+source/evidence-only owner gate passes. The selected final executions are at
+`66c10f635a881a5d5fc8a44280ad045bbec2f69f`, without production or physical-driver
+changes. Costs are recorded separately in the reconciliation capsule. No new
+Fortran compilation or numerical execution, full F-CI, highest low-air or
+Actions execution was selected. This does not relabel old full-F-CI evidence as
+new thermal or current-source full qualification.
 
 Verification entry points:
 
 ```sh
 python -B tests/nut-thermal/verify_thermal_evidence.py
 python -B tests/nut-thermal/check_evidence_controls.py
+python -B tests/nut-thermal/verify_thermal_successor.py
+python -B tests/nut-input/check_input_controls.py
+bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh --nut-thermal-owner-only
 ```
 
 The scoped verifier deliberately reports `canonical_admission: false`.
@@ -63,7 +77,7 @@ publication can preserve their original commit identities as well as the final
 reviewable source tree. Extract `execution/history.bundle` and fetch it in a
 repository containing the baseline if the original execution refs are needed.
 
-Remaining scope: shared-owner admission reconciliation first; then harvest/reset
-and rotation, complete legacy/default activation and broader companion options.
+Remaining scope: harvest/reset and rotation, complete legacy/default activation
+and broader companion options after this bounded admission.
 Pond/source remains open; aquifer remains rejected. Do not modify the separate
 active MC-CROP01 root/oxygen or MC-SOL01 surface-input workstreams.

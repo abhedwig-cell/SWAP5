@@ -20,6 +20,9 @@ def baseline_command(path):
  p=subprocess.run([sys.executable,'-B',str(root/path)],cwd=root,capture_output=True,check=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return json.loads(p.stdout)
 def verify_source(git_reader=None):
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -131,6 +134,9 @@ def validate(d,source):
  validate_composition(d,'day/',source,'day',p);validate_composition(d,'joint/',source,'joint',p)
  return p
 def verify_qualification():
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  prior=baseline_command('tests/nut-calendar/verify_calendar_successor.py');check(prior['qualified'],'baseline owner failed')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

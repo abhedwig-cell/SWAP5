@@ -1,6 +1,7 @@
 # MC-NUT01 accepted thermal continuation
 
-Status: implementation contract; not canonical admission. Baseline:
+Status: qualified owner contract; canonical admission follows PR #1246's final
+merge receipt. Baseline:
 `cd64c5044a29643a068c6151720f76b2e70f570d`.
 
 The new explicit thermal application consumes one complete accepted Full Richards

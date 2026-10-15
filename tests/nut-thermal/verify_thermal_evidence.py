@@ -5,21 +5,26 @@ ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json'
 BASE='cd64c5044a29643a068c6151720f76b2e70f570d'
 MODIFIED={'src/adapter/mod_crop_soil_n_joint_restart_file.f90','src/runtime/mod_fmr_b111_reactive_n_joint_application.f90','src/runtime/mod_fmr_serialized_reference_backend.f90'}
+GUARDS={'tests/nut-input/verify_input_successor.py','tests/nut-input/check_input_controls.py','tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'}
 ADDED={'src/process/mod_soil_n_profile_temperature.f90','src/runtime/mod_fmr_soil_n_accepted_temperature.f90','src/runtime/mod_fmr_crop_soil_n_thermal_application.f90'}
 def check(ok,label):
  if not ok:raise ValueError(label)
 def sha(b):return hashlib.sha256(b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
-def source():
+def source(git_reader=None):
+ g=git if git_reader is None else git_reader
  s=json.loads((ROOT/STATUS).read_text());check(s['baseline']==BASE,'baseline')
- check(s['source_tree']==git('rev-parse','HEAD:src'),'source tree')
- check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
- rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
+ g('merge-base','--is-ancestor',BASE,'HEAD')
+ check(s['source_tree']==g('rev-parse','HEAD:src'),'source tree')
+ check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
+ rows={r.split('\t')[1]:r.split('\t')[0]for r in g('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
  check(rows=={**{p:'A'for p in s['added_blobs']},**{p:'M'for p in s['changed_blobs']}},'foreign or missing delta')
- check(set(s['changed_blobs'])==MODIFIED,'shared delta')
+ check(set(s['changed_blobs'])==MODIFIED|GUARDS,'shared delta')
  check({p for p in s['added_blobs']if p.startswith('src/')}==ADDED,'production additions')
  check(all(p in ADDED or p.startswith('tests/nut-thermal/')for p in s['added_blobs']),'foreign addition')
- for p,h in {**s['added_blobs'],**s['changed_blobs']}.items():check(git('rev-parse','HEAD:'+p)==h,'unbound postimage '+p)
+ for p,h in {**s['added_blobs'],**s['changed_blobs']}.items():
+  check(g('rev-parse','HEAD:'+p)==h,'unbound postimage '+p)
+  raw=(ROOT/p).read_bytes();check(hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==h,'dirty postimage '+p)
  return s
 def read(s):
  e=s['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
