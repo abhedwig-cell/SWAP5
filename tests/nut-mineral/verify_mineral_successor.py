@@ -11,6 +11,10 @@ def check(ok,label):
  if not ok:raise ValueError(label)
 def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
 def verify_source():
+ if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
+  import verify_reactive_successor as reactive
+  return reactive.verify_source()
  s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',BASE,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
@@ -36,6 +40,10 @@ def read_evidence():
  return data
 
 def verify_qualification():
+ if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
+  import verify_reactive_successor as reactive
+  return reactive.verify_qualification()
  source=verify_source();data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
  check(r['status']=='SCOPED_LOCAL_QUALIFICATION_PASS_NOT_ADMITTED','unfinished qualification')
  check(r['source_tree']==source['source_tree'],'stale source tree')
@@ -73,6 +81,10 @@ def verify_qualification():
  return {**source,'qualified':True,'direct_providers':4,'highest':'NOT_SELECTED_POLICY'}
 
 def incumbent(mode='qualification'):
+ if (ROOT/'src/process/mod_b111_soil_n_reactive_owner.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-reactive'))
+  import verify_reactive_successor as reactive
+  return reactive.incumbent(mode)
  # Run the unchanged, original owning verifier at its exact admitted tree.
  # Its evidence is inherited only after the complete additive delta check above.
  verify_qualification()

@@ -7,19 +7,35 @@ module mod_fmr_b111_mineral_route
  use mod_solute_water_face_flux_reconstruction,only:reconstruct_interval_water_face_flux,WATER_FACE_FLUX_OK
  implicit none
  private
- public::consume_mineral_trace
+ type,public::mineral_daily_carrier_t
+   real(real64)::t0=0d0,t1=0d0,water_start=0d0,water_end=0d0
+   real(real64)::outflow=0d0,in_bottom=0d0,in_lateral=0d0,root_water=0d0
+ end type
+ public::consume_mineral_trace,aggregate_mineral_trace
 contains
  subroutine consume_mineral_trace(state,steps,receipt)
    type(mineral_state_t),intent(inout)::state
    type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
    type(mineral_receipt_t),intent(out)::receipt
+   type(mineral_daily_carrier_t)::c
+   integer::status
+   receipt=mineral_receipt_t()
+   call aggregate_mineral_trace(state,steps,c,status)
+   if(status/=MINERAL_OK)return
+   call advance_mineral_day(state,c%t0,c%t1,c%water_end,c%outflow,c%in_bottom,c%in_lateral,c%root_water,receipt)
+ end subroutine
+ subroutine aggregate_mineral_trace(state,steps,carrier,status)
+   type(mineral_state_t),intent(in)::state
+   type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
+   type(mineral_daily_carrier_t),intent(out)::carrier
+   integer,intent(out)::status
    type(mineral_parameters_t)::p
    type(soil_n_pool_state_t)::s
    real(real64),allocatable::water(:),faces(:)
    real(real64)::time,theta,dt,clock,closure,outflow,inbot,inlat,root,scale,water_end
    integer(int64)::id,revision
    integer::k,n,code
-   receipt=mineral_receipt_t()
+   carrier=mineral_daily_carrier_t();status=MINERAL_INVALID
    if(.not.state%ready().or.size(steps)<1)return
    call state%configuration(p,id);call state%snapshot(time,theta,s,revision)
    n=size(p%dz_cm);clock=time;outflow=0d0;inbot=0d0;inlat=0d0;root=0d0
@@ -74,6 +90,7 @@ contains
    end do
    water_end=sum(p%dz_cm*water)/sum(p%dz_cm)
    ! Whole route requires exactly a day; daily integrals become rates numerically.
-   call advance_mineral_day(state,time,clock,water_end,outflow,inbot,inlat,root,receipt)
+   carrier=mineral_daily_carrier_t(time,clock,theta,water_end,outflow,inbot,inlat,root)
+   status=MINERAL_OK
  end subroutine
 end module
