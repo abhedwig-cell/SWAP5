@@ -34,10 +34,27 @@ module mod_fmr_b111_reactive_n_joint_application
   end type
   public::run_reactive_n_joint_interval,reactive_n_joint_states_match
   public::export_reactive_n_joint_restart,restore_reactive_n_joint_restart
+  public::reactive_n_thermal_states_match
 contains
   logical function reactive_n_joint_states_match(water,chemical) result(ok)
     type(kernel_committed_state_t),intent(in)::water
     type(reactive_state_t),intent(in)::chemical
+    ok=states_match(water,chemical,.false.)
+  end function
+
+  logical function reactive_n_thermal_states_match(water,chemical) result(ok)
+    type(kernel_committed_state_t),intent(in)::water
+    type(reactive_state_t),intent(in)::chemical
+    ok=states_match(water,chemical,.true.)
+  end function
+
+  logical function states_match(water,chemical,thermal) result(ok)
+    use mod_kernel_transactions,only:kernel_parameter_identity_t
+    use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view,SOIL_TEMP_OK
+    type(kernel_committed_state_t),intent(in)::water
+    type(reactive_state_t),intent(in)::chemical
+    logical,intent(in)::thermal
+    type(kernel_parameter_identity_t)::identity
     class(transaction_state_t),allocatable::physical
     type(soil_n_pool_state_t)::s
     type(reactive_parameters_t)::parameters
@@ -54,25 +71,47 @@ contains
     call chemical%snapshot(t,theta,s,revision)
     call chemical%configuration(parameters,id)
     if(abs(t-wt)>0.0_real64)return
+    if(thermal)then
+      call water%certified_parameter_identity(identity,available)
+      if(.not.available.or..not.identity%heat_enabled)return
+      if(.not.allocated(identity%dz))return
+      if(size(identity%dz)/=size(parameters%mineral%dz_cm))return
+      if(any(identity%dz/=parameters%mineral%dz_cm))return
+    end if
     call water%snapshot(physical,available)
     if(.not.available)return
     select type(p=>physical)
     type is(fmr_b110_physical_state_t)
-      ok=bounded_physical(p,theta,parameters)
+      call check(p)
     type is(fmr_b110_temporal_indicator_state_t)
-      ok=bounded_physical(p,theta,parameters)
+      call check(p)
     end select
+  contains
+    subroutine check(p)
+      class(fmr_b110_physical_state_t),intent(in)::p
+      type(soil_temperature_field_view_t)::heat
+      integer::code
+      if(thermal)then
+        if(.not.allocated(p%soil_temperature))return
+        call build_soil_temperature_field_view(p%soil_temperature,heat,code)
+        if(code/=SOIL_TEMP_OK.or.heat%active_nodes/=p%active_nodes)return
+        if(.not.all(ieee_is_finite(heat%temperature_c)))return
+      end if
+      ok=bounded_physical(p,theta,parameters,thermal)
+    end subroutine
   end function
 
-  logical function bounded_physical(p,theta,parameters) result(ok)
+  logical function bounded_physical(p,theta,parameters,thermal) result(ok)
     class(fmr_b110_physical_state_t),intent(in)::p
     real(real64),intent(in)::theta
     type(reactive_parameters_t),intent(in)::parameters
+    logical,intent(in)::thermal
     integer::n
     real(real64)::scale
     ok=.false.
     if(allocated(p%salt).or.allocated(p%macropore).or.allocated(p%snow).or. &
-         allocated(p%soil_temperature).or.allocated(p%rutter))return
+         allocated(p%rutter))return
+    if(.not.thermal.and.allocated(p%soil_temperature))return
     if(.not.allocated(p%water_content).or..not.allocated(p%pressure_head))return
     n=size(parameters%mineral%dz_cm)
     if(p%active_nodes/=n.or.size(p%water_content)/=n.or.size(p%pressure_head)/=n)return

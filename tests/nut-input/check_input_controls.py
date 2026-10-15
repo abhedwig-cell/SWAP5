@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """Fail closed on incomplete native, physical, source and provenance evidence."""
-import copy,json
+import copy,json,sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[2]
+if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+ import runpy
+ runpy.run_path(str(ROOT/'tests/nut-thermal/check_thermal_successor_controls.py'),run_name='__main__')
+ sys.exit(0)
 from unittest.mock import patch
 import verify_input_successor as v
 v.verify_qualification();source=v.verify_source();data=v.read_evidence();passed=[]
