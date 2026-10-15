@@ -7,7 +7,7 @@
   "tested": true,
   "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Run exactly one full local moving OFF on frozen remotely persisted candidate; require terminal PASS and unchanged tracked scientific inputs, then verify live canonical/overlaps and safely merge PR1241.",
+  "next_action": "Observe existing local full moving execution2517caf0158c, session33545, to terminal status. Do not duplicate it. Source checkout is intentionally frozen at execution head; remote running receipt changes metadata only.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
@@ -53,8 +53,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "SELECTED_PENDING_ONE_FULL_LOCAL_OFF",
-  "stage": "UNIFIED_QUALIFIED_STABLE_FULL_MOVING_SELECTED",
+  "full_fci": "RUNNING_NOT_PASS",
+  "stage": "FULL_LOCAL_MOVING_RUNNING_FROZEN_SOURCE",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -499,5 +499,24 @@
     "root_biomass_already_admitted": true,
     "anaerobic_depth_extension_swr_d2_remains_open": true
   },
-  "next_dependency_ready_route": "SWRD2 owned actual/potential persistent daily depth extension, using existing rate owner and accepted GRRT/GRRTPOT, transpiration/drought/oxygen carriers. Production binding and actual Richards/restart qualification remain open. Do not start before PR1241 admission."
+  "next_dependency_ready_route": "SWRD2 owned actual/potential persistent daily depth extension, using existing rate owner and accepted GRRT/GRRTPOT, transpiration/drought/oxygen carriers. Production binding and actual Richards/restart qualification remain open. Do not start before PR1241 admission.",
+  "full_preservation": {
+    "execution_commit": "2517caf0158c0256ed16bc7a640dc4f33eb640e1",
+    "tree": "ffe69849800e0a187643e26f1a093365925d7d11",
+    "source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+    "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "RUNNING",
+    "tracked_inputs": 6408,
+    "compile_link_native_split": "UNKNOWN",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "compiler_launcher_sha256": "001b60a16b3855c6ea284218fb422edfb2cf4f9384c156cd69a744e22f2fe947",
+    "local_result": "/workspace/scratch/e7fb6d6ef417/swrd3-reconciled-full/RESULT.json",
+    "local_exec_session": 33545
+  }
 }
