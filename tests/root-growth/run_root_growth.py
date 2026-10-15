@@ -5,7 +5,7 @@ import argparse,hashlib,importlib.util,json,os,re,shutil,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--swrd2',action='store_true');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  donor_path=ROOT/'tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90'
  donor=donor_path.read_text().split('\nprogram test_fwof34_accepted_window_runtime_lineage\n')[0]+'\n'
@@ -31,6 +31,7 @@ def main():
  lineage=out/'test_lineage.f90';lineage.write_text('program test_fwof34_accepted_window_runtime_lineage\n'+donor_path.read_text().split('\nprogram test_fwof34_accepted_window_runtime_lineage\n',1)[1])
  drivers=[ROOT/'tests/root-growth/test_root_growth_transaction.f90',ROOT/'tests/fmig431/test_swap431_root_growth_oxygen_composition.f90',ROOT/'tests/fmig431/test_swap431_root_supply_fail_closed.f90',ROOT/'tests/fmig431/test_swap431_potential_shadow_pre_event_restart.f90',ROOT/'tests/fmig431/test_swap431_potential_shadow_daily.f90']
  modules={}
+ if a.swrd2:drivers.append(ROOT/'tests/root-growth/test_swrd2_transaction.f90')
  for p in sorted((ROOT/'src').rglob('*.f90'))+[fixture]:
   for n in re.findall(r'^\s*module\s+(?!procedure\b)(\w+)',p.read_text(),re.M|re.I):
    if n.lower()in modules:raise ValueError('duplicate module '+n)
@@ -67,10 +68,10 @@ def main():
     obj=b/f'{i}.o';run(['gfortran',*flags,'-c',src,'-o',obj],b,'compile');objects.append(obj)
    for driver in drivers:
     exe=b/driver.stem;run(['gfortran',*flags,driver,*objects,'-o',exe],b,'link')
-    for profile in (range(5)if driver==drivers[0]else [None]):
+    for profile in (range(5)if driver==drivers[0]or driver.name=='test_swrd2_transaction.f90'else [None]):
      output=run([exe]+([str(profile)]if profile is not None else []),b,'native')
      if b'PASS'not in output:raise ValueError('missing native assertions')
-     if profile is not None and profile!=4:
+     if driver==drivers[0] and profile is not None and profile!=4:
       line=next(x for x in output.decode().splitlines()if x.startswith('ROOT_OBSERVATION '))
       observations[(opt,profile)]=[float(x)for x in line.split()[1:]]
      runs.append({'opt':opt,'driver':driver.name,'profile':profile,'stdout_sha256':hashlib.sha256(output).hexdigest()})

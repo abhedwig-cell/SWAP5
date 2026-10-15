@@ -29,6 +29,9 @@ module mod_fmr_wofost_crop_transaction
   use mod_wofost_emergence_initialization, only: initialize_wofost_emergence_owner, WOFOST_EMERGENCE_INIT_OK
   use mod_crop_lifecycle_daily_composition, only: crop_daily_lifecycle_candidate_t
   use mod_crop_germination_preflight, only: crop_germination_candidate_t
+  use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, &
+       crop_root_depth_rate_daily_forcing_t, crop_root_depth_rate_diagnostics_t, initialize_crop_root_depth_rate_state, &
+       evaluate_crop_root_depth_rate_candidate, CROP_ROOT_RATE_OK
   implicit none
   private
 
@@ -46,6 +49,7 @@ module mod_fmr_wofost_crop_transaction
   integer, parameter, public :: FMR_WOF38_MISSING_DAILY_OXYGEN = 11
   integer, parameter, public :: FMR_WOF38_INVALID_DAILY_OXYGEN = 12
   integer, parameter, public :: FMR_WOF38_LIFECYCLE_REJECTED = 13
+  integer, parameter, public :: FMR_WOF38_ROOT_DEPTH_REJECTED = 14
 
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_OK = 0
   integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE = 1
@@ -68,6 +72,7 @@ module mod_fmr_wofost_crop_transaction
     type(fmr_wofost_root_growth_carrier_t), allocatable :: root_growth_carrier
     type(fmr_wofost_crop_event_identity_t) :: last_consumed_event
     type(crop_lifecycle_continuation_t), allocatable :: lifecycle
+    type(crop_root_depth_rate_state_t), allocatable :: root_depth
   contains
     procedure :: clone => fmr_wofost_crop_transaction_clone
     procedure, public :: ready => fmr_wofost_crop_transaction_state_ready
@@ -75,6 +80,7 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: potential_shadow_enabled => fmr_wofost_crop_transaction_potential_shadow_enabled
     procedure, public :: snapshot_potential_shadow => fmr_wofost_crop_transaction_snapshot_potential_shadow
     procedure, public :: snapshot_root_growth => fmr_wofost_crop_transaction_snapshot_root_growth
+    procedure, public :: snapshot_root_depth => fmr_wofost_crop_transaction_snapshot_root_depth
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
     procedure, public :: snapshot_lifecycle => fmr_wofost_crop_transaction_snapshot_lifecycle
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
@@ -89,6 +95,8 @@ module mod_fmr_wofost_crop_transaction
     type(wofost_potential_shadow_state_t) :: potential_shadow
     logical :: root_growth_carrier_present = .false.
     type(fmr_wofost_root_growth_carrier_t) :: root_growth_carrier
+    logical :: root_depth_present = .false.
+    type(crop_root_depth_rate_state_t) :: root_depth
     logical :: receipt_present = .false.
     logical :: lifecycle_present = .false.
     integer :: lifecycle_schema_version = 1
@@ -109,9 +117,11 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: potential_attainable_multiplier = 1.0_real64
     logical :: anaerobic_root_growth_gate_enabled = .false.
     real(real64) :: aeration_critical_factor = 0.0001_real64
+    type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
     procedure, public :: matches_canopy => fmr_wofost_parameters_matches_canopy
+    procedure, public :: matches_root_depth => fmr_wofost_parameters_matches_root_depth
   end type fmr_wofost_crop_transaction_parameters_t
 
   type, extends(canonical_forcing_t), public :: fmr_wofost_crop_event_forcing_t
@@ -139,6 +149,7 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: potential_attainable_multiplier = 1.0_real64
     logical :: anaerobic_root_growth_gate_enabled = .false.
     real(real64) :: aeration_critical_factor = 0.0001_real64
+    type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
@@ -176,6 +187,13 @@ contains
     ready = .false.
     if (.not. self%valid) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if (self%root_depth_present) then
+      if (.not.self%potential_shadow_present) return
+      if (self%root_depth%validate()/=CROP_ROOT_RATE_OK) return
+      if (.not.self%owner%crop_emerged) then
+        if (self%root_depth%actual_root_depth_cm/=0.0_real64.or.self%root_depth%potential_root_depth_cm/=0.0_real64) return
+      end if
+    end if
     if (self%potential_shadow_present) then
       if (self%potential_shadow%validate() /= WOFOST_POTENTIAL_SHADOW_OK) return
       if (.not. self%root_growth_carrier_present) return
@@ -235,6 +253,10 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
     if (.not. state%ready()) return
     view%owner = state%owner
+    if (allocated(state%root_depth)) then
+      view%root_depth_present=.true.
+      view%root_depth=state%root_depth
+    end if
     if (allocated(state%lifecycle)) then
       view%lifecycle = state%lifecycle
       view%lifecycle_present = .true.
@@ -278,6 +300,10 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
     if (.not. view%ready()) return
     state%owner = view%owner
+    if (view%root_depth_present) then
+      allocate(state%root_depth)
+      state%root_depth=view%root_depth
+    end if
     if (view%lifecycle_present) then
       allocate(state%lifecycle)
       state%lifecycle = view%lifecycle
@@ -306,12 +332,14 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_OK
   end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
-  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, lifecycle_initial)
+  subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, lifecycle_initial, &
+       root_depth_parameters)
     type(wofost_crop_owner_state_t), intent(in) :: owner
     type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
     type(crop_lifecycle_continuation_t), intent(in), optional :: lifecycle_initial
+    type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
     logical :: enable_shadow
     integer :: shadow_status
 
@@ -320,6 +348,15 @@ contains
     if (present(enable_potential_shadow)) enable_shadow = enable_potential_shadow
     status = FMR_WOF38_INVALID_OWNER
     if (owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if (present(root_depth_parameters)) then
+      status=FMR_WOF38_INVALID_PARAMETERS
+      if (.not.root_depth_parameters%ready().or..not.enable_shadow) return
+      if (root_depth_parameters%negligible_transpiration<=0.0_real64) return
+      allocate(state%root_depth)
+      call initialize_crop_root_depth_rate_state(root_depth_parameters,state%root_depth,shadow_status)
+      if (shadow_status/=CROP_ROOT_RATE_OK) return
+      if (.not.owner%crop_emerged) state%root_depth=crop_root_depth_rate_state_t()
+    end if
     state%owner = owner
     if (present(lifecycle_initial)) then
       if (.not. lifecycle_initial%ready()) return
@@ -341,7 +378,7 @@ contains
 
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
-       potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor)
+       potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor, root_depth_parameters)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -351,6 +388,7 @@ contains
     real(real64), intent(in), optional :: potential_attainable_multiplier
     logical, intent(in), optional :: enable_anaerobic_root_growth_gate
     real(real64), intent(in), optional :: aeration_critical_factor
+    type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
     logical :: enable_shadow, enable_anaerobic_gate
     real(real64) :: potential_multiplier, aeration_threshold
 
@@ -364,6 +402,11 @@ contains
     aeration_threshold = 0.0001_real64
     if (present(aeration_critical_factor)) aeration_threshold = aeration_critical_factor
     status = FMR_WOF38_INVALID_PARAMETERS
+    if (present(root_depth_parameters)) then
+      if (.not.root_depth_parameters%ready().or..not.enable_shadow) return
+      if (root_depth_parameters%negligible_transpiration<=0.0_real64) return
+      parameters%root_depth_parameters=root_depth_parameters
+    end if
     if (.not. rate_parameters%ready()) return
     if (.not. ieee_is_finite(stem_area_coefficient) .or. stem_area_coefficient < 0.0_real64) return
     if (.not. ieee_is_finite(storage_area_coefficient) .or. storage_area_coefficient < 0.0_real64) return
@@ -485,6 +528,7 @@ contains
         allocate(typed_copy%root_growth_carrier)
         typed_copy%root_growth_carrier = self%root_growth_carrier
       end if
+      if (allocated(self%root_depth)) typed_copy%root_depth=self%root_depth
       typed_copy%last_consumed_event = self%last_consumed_event
       if (allocated(self%lifecycle)) then
         allocate(typed_copy%lifecycle)
@@ -519,6 +563,13 @@ contains
       end if
     else
       if (allocated(self%root_growth_carrier)) return
+    end if
+    if (allocated(self%root_depth)) then
+      if (.not.allocated(self%potential_shadow)) return
+      if (self%root_depth%validate()/=CROP_ROOT_RATE_OK) return
+      if (.not.self%owner%crop_emerged) then
+        if (self%root_depth%actual_root_depth_cm/=0.0_real64.or.self%root_depth%potential_root_depth_cm/=0.0_real64) return
+      end if
     end if
     ready = .true.
   end function fmr_wofost_crop_transaction_state_ready
@@ -568,6 +619,15 @@ contains
     end if
   end subroutine fmr_wofost_crop_transaction_snapshot_root_growth
 
+  subroutine fmr_wofost_crop_transaction_snapshot_root_depth(self, depth, available)
+    class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+    type(crop_root_depth_rate_state_t), intent(out) :: depth
+    logical, intent(out) :: available
+    depth=crop_root_depth_rate_state_t()
+    available=self%ready().and.allocated(self%root_depth)
+    if(available) depth=self%root_depth
+  end subroutine
+
   logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
 
@@ -595,12 +655,38 @@ contains
     matches=self%stem_area_coefficient==stem_area.and.self%storage_area_coefficient==storage_area
   end function
 
+  logical function fmr_wofost_parameters_matches_root_depth(self, mode, parameters) result(matches)
+    class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
+    integer, intent(in) :: mode
+    type(crop_root_depth_rate_parameters_t), intent(in) :: parameters
+    type(crop_root_depth_rate_parameters_t) :: p
+    matches=.false.
+    if(.not.self%ready()) return
+    if(mode/=2) then
+      matches=.not.allocated(self%root_depth_parameters)
+      return
+    end if
+    if(.not.allocated(self%root_depth_parameters)) return
+    p=self%root_depth_parameters
+    matches=all([p%initial_root_depth_cm,p%maximum_root_depth_cm,p%maximum_daily_extension_cm, &
+      p%negligible_transpiration,p%negligible_root_growth,p%negligible_extension,p%aeration_critical_factor]== &
+      [parameters%initial_root_depth_cm,parameters%maximum_root_depth_cm,parameters%maximum_daily_extension_cm, &
+      parameters%negligible_transpiration,parameters%negligible_root_growth,parameters%negligible_extension, &
+      parameters%aeration_critical_factor]).and.p%actual_extension_mode==parameters%actual_extension_mode
+    matches=matches.and.(p%require_root_growth.eqv.parameters%require_root_growth).and. &
+      (p%anaerobic_extension_gate_enabled.eqv.parameters%anaerobic_extension_gate_enabled)
+  end function
+
   logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
 
     ready = .false.
     if (.not. self%initialized) return
     if (.not. self%rate_parameters%ready()) return
+    if (allocated(self%root_depth_parameters)) then
+      if (.not.self%root_depth_parameters%ready().or..not.self%potential_shadow_enabled) return
+      if (self%root_depth_parameters%negligible_transpiration<=0.0_real64) return
+    end if
     if (.not. ieee_is_finite(self%stem_area_coefficient)) return
     if (self%stem_area_coefficient < 0.0_real64) return
     if (.not. ieee_is_finite(self%storage_area_coefficient)) return
@@ -650,6 +736,7 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
 
     self%parameters_ready = .false.
+    if(allocated(self%root_depth_parameters)) deallocate(self%root_depth_parameters)
     self%last_status = FMR_WOF38_INVALID_PARAMETERS
     select type (typed_parameters => parameters)
     type is (fmr_wofost_crop_transaction_parameters_t)
@@ -662,6 +749,7 @@ contains
       self%potential_attainable_multiplier = typed_parameters%potential_attainable_multiplier
       self%anaerobic_root_growth_gate_enabled = typed_parameters%anaerobic_root_growth_gate_enabled
       self%aeration_critical_factor = typed_parameters%aeration_critical_factor
+      if(allocated(typed_parameters%root_depth_parameters)) self%root_depth_parameters=typed_parameters%root_depth_parameters
       self%parameters_ready = .true.
       self%last_status = FMR_WOF38_OK
     class default
@@ -729,6 +817,9 @@ contains
     type(wofost_potential_daily_result_t) :: potential_result
     type(fmr_wofost_root_growth_carrier_t) :: candidate_growth_carrier
     type(crop_lifecycle_continuation_t) :: candidate_lifecycle
+    type(crop_root_depth_rate_state_t) :: candidate_depth
+    type(crop_root_depth_rate_daily_forcing_t) :: depth_forcing
+    type(crop_root_depth_rate_diagnostics_t) :: depth_diagnostics
     integer :: crop_status, oxygen_status, lifecycle_status
     logical :: actual_root_growth_allowed, suppress_actual_root_growth
 
@@ -753,6 +844,10 @@ contains
       end if
       if (self%potential_shadow_enabled .neqv. allocated(typed_state%potential_shadow)) then
         self%last_status = FMR_WOF38_INVALID_TRANSACTION_STATE
+        return
+      end if
+      if (allocated(self%root_depth_parameters).neqv.allocated(typed_state%root_depth)) then
+        self%last_status=FMR_WOF38_ROOT_DEPTH_REJECTED
         return
       end if
 
@@ -845,7 +940,29 @@ contains
       end if
 
       end if
+      if (allocated(self%root_depth_parameters)) then
+        self%last_status=FMR_WOF38_ROOT_DEPTH_REJECTED
+        candidate_depth=typed_state%root_depth
+        if (self%event_forcing%emergence_requested) then
+          call initialize_crop_root_depth_rate_state(self%root_depth_parameters,candidate_depth,crop_status)
+          if(crop_status/=CROP_ROOT_RATE_OK) return
+        else if (typed_state%owner%crop_emerged) then
+          depth_forcing%potential_transpiration=self%event_forcing%accepted_aggregates%potential_transpiration
+          depth_forcing%actual_root_uptake=self%event_forcing%accepted_aggregates%actual_root_uptake
+          depth_forcing%actual_root_growth=candidate_growth_carrier%actual_gross_root_growth
+          depth_forcing%potential_root_growth=candidate_growth_carrier%potential_gross_root_growth
+          depth_forcing%deepest_root_oxygen_factor_available= &
+            self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_available
+          depth_forcing%deepest_root_oxygen_factor_integral= &
+            self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_integral
+          call evaluate_crop_root_depth_rate_candidate(self%root_depth_parameters,typed_state%root_depth, &
+            depth_forcing,candidate_depth,depth_diagnostics,crop_status)
+          if(crop_status/=CROP_ROOT_RATE_OK.or..not.depth_diagnostics%candidate_built) return
+        end if
+      end if
+      ! All optional depth work succeeded before publishing any crop field.
       typed_state%owner = candidate_owner
+      if(allocated(self%root_depth_parameters)) typed_state%root_depth=candidate_depth
       if (self%potential_shadow_enabled) then
         typed_state%potential_shadow = potential_result%candidate_shadow
         typed_state%root_growth_carrier = candidate_growth_carrier
