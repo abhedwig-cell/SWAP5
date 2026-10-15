@@ -25,6 +25,11 @@ def check(ok,label):
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def sha(b):return hashlib.sha256(b).hexdigest()
 def verify_source():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'));import verify_material_successor as materials
+  result=materials.verify_source(git_reader=git)
+  return {**result,'source_tree':materials.ENV_SOURCE}
+
  s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'unknown baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
@@ -110,9 +115,15 @@ def validate(data,source):
  return r
 
 def verify_qualification():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'));import verify_material_successor as materials
+  return materials.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent(mode='qualification'):
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'));import verify_material_successor as materials
+  return materials.incumbent(mode)
  verify_qualification();base=ROOT.parent/'environment-incumbent-dca8cbd8'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
  check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'wrong baseline')

@@ -403,6 +403,10 @@ if [[ -f src/process/mod_soil_n_day_environment.f90 ]]; then
   python3 tests/nut-environment/verify_environment_successor.py || fail 'unqualified daily Soil-N environment successor'
   dependency_authority=dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c
 fi
+if [[ -f src/crop/mod_crop_soil_n_material_day.f90 ]]; then
+  python3 tests/nut-material/verify_material_successor.py || fail 'unqualified explicit soil-N material day successor'
+  dependency_authority=48e6aeb15a66dfd11a85de39dc6f8229842d1fd1
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -786,6 +790,9 @@ check_b19_micro_root_recomposition() {
         ;;
       src/process/mod_soil_n_day_environment.f90 )
         python3 tests/nut-environment/verify_environment_successor.py || fail "unqualified daily environment: $candidate_path"
+        ;;
+      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90 )
+        python3 tests/nut-material/verify_material_successor.py || fail "unqualified material day successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
     esac

@@ -12,6 +12,10 @@ def check(ok,label):
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.verify_source()
  if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-environment'))
   import verify_environment_successor as environment
@@ -37,6 +41,10 @@ def read_evidence():
  return data
 
 def verify_qualification():
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.verify_qualification()
  if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-environment'))
   import verify_environment_successor as environment
@@ -124,6 +132,10 @@ def verify_qualification():
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 
 def incumbent(mode='qualification'):
+ if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-material'))
+  import verify_material_successor as materials
+  return materials.incumbent(mode)
  if (ROOT/'src/process/mod_soil_n_day_environment.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-environment'))
   import verify_environment_successor as environment
