@@ -4,11 +4,33 @@
   "branch": "work/nut-senescence-cycle-20261015",
   "contract": "docs/science/MC_NUT01_SENESCENCE_CYCLE_CONTRACT_20261015.md",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_safe_step": "Persist source/contract/drivers. Run tiny producer then small real day at O0/O2, fix without weakening source order or mass, then actual physical and complete pending restart."
+  "next_safe_step": "Persist bounded small feedback and final tests; execute fresh actual Richards O0/O2 and complete pending restart before qualification or preservation claim.",
+  "pr": 1239,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1239",
+  "development_process": "senescence-process-first/result.json",
+  "development_day": "senescence-day-fourth/result.json",
+  "small_feedback": "O0/O2 process3 and actual crop/soil day44 PASS; actual3-organ ageing/death, one-day lag, whole N, old-route refusal, zero-death identity, rollback/retry and retained juvenile over-supply rejection.",
+  "retained_attempts": [
+    {
+      "path": "senescence-day-first",
+      "status": "FAILED_CONTINUATION_TEST_PROFILE",
+      "cause": "Full ageing used a next-day canopy/N supply profile outside admitted exact soil-to-crop uptake envelope; no committed publication."
+    },
+    {
+      "path": "senescence-day-second",
+      "status": "FAILED_JUVENILE_SUPPLY_TEST_PROFILE",
+      "cause": "Partial ageing lowered LAI below original critical3. Historical juvenile supply exceeded WOFOST81 request; existing CROP_SOIL_TRANSFER gate correctly rejected. Reproduced native values and commands retained in senescence-day-supply-probe.json."
+    },
+    {
+      "path": "senescence-day-third",
+      "status": "FAILED_INVALID_AGE_TEST_EXPECTATION",
+      "cause": "Age100 is source-valid under N-bounded humus split, not necessarily invalid. Correct test uses100.01 outside declared finite age domain. Production unchanged."
+    }
+  ]
 }

@@ -76,3 +76,10 @@ complete local moving OFF, expected1780s, under AGENTS and the protocol four-lev
 rule for changed state/restart and daily application. All scientific assertions
 and baseline source authority remain intact. Highest low-air NOT_SELECTED_POLICY;
 no duplicate Actions or full run. No full capability/master disposition promotion.
+
+Preserve the admitted juvenile-uptake exclusion: if historical soil supply exceeds
+actual WOFOST81 uptake, the existing CROP_SOIL_TRANSFER gate rejects the complete
+day. A leaf-ageing trajectory can cross that boundary by reducing LAI. Qualification
+retains that explicit failing profile as a negative control and uses critical
+LAI1 for the continued two-day trajectory, not a new uptake formula or budget
+exception. Actual harvest/complete-canopy lifecycle remains outside this claim.

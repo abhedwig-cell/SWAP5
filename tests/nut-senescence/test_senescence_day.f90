@@ -35,7 +35,7 @@ program test_senescence_day
  integer::code,i
  logical::has
  call parameters(sp);call materials(items,split);call configure_crop(cp)
- cp%base%nitrogen%nfix_fr=.3d0;cp%update%leaf_lifespan=.5d0
+ cp%base%nitrogen%nfix_fr=.3d0;cp%update%leaf_lifespan=1.5d0;cp%lai_crit_nupt=1d0
  call configure_owner(crop,cp,code)
  crop%nitrogen%value%namountlv=crop%nitrogen%value%namountlv-2d0
  crop%nitrogen%value%initial_total=crop%nitrogen%value%initial_total-2d0
@@ -64,7 +64,7 @@ program test_senescence_day
   invalid=policy;state=before;bad=items
   select case(i)
   case(1);invalid%application_age(3)=.66d0
-  case(2);invalid%application_age(1)=100d0
+  case(2);invalid%application_age(1)=100.01d0
   case(3);bad(2)%kind=999
   case(4);invalid%application_age(2)=ieee_value(0d0,ieee_quiet_nan)
   end select
@@ -74,9 +74,24 @@ program test_senescence_day
  end do
  call before%snapshot(outsoil,outcrop);dvs_before=outcrop%crop%development_stage
  call outcrop%crop%derive_actual_leaf_area_index(cp%stem_area,cp%storage_area,lai_before,code)
+ block
+  type(crop_n_configuration_t)::juvenile_cp
+  type(crop_soil_state_t)::juvenile_state
+  integer(int64)::cid
+  call before%snapshot(outsoil,outcrop);call before%configuration(juvenile_cp,cid)
+  juvenile_cp%lai_crit_nupt=3d0
+  call initialize_crop_soil(outsoil,outcrop,juvenile_cp,9201_int64,juvenile_state,code,pending)
+  call require(code==0,'explicit juvenile over-supply profile')
+  call advance_crop_soil_senescence_day(juvenile_state,1d0,2d0,theta-.001d0/.3d0,0d0,0d0,0d0,.001d0,.1d0,weather,items,split,policy,r,env)
+  call require(r%status/=0.and.r%materials%day%status==CROP_SOIL_TRANSFER.and. &
+   r%materials%day%soil%process%exchange%nsupply_total_kg_m2_day>r%materials%day%internal_supply_kg_m2,'historical juvenile surplus remains hard rejection')
+  call juvenile_state%pending_snapshot(next_pending,has)
+  call juvenile_state%snapshot(outsoil,outcrop)
+  call require(has.and.all(next_pending%nitrogen_kg_ha==pending%nitrogen_kg_ha).and.all(pack_crop_n_owner(outcrop)==v0),'surplus no crop or pending publication')
+ end block
  state=before;policy%application_age=[1.2d0,.92d0,.99d0]
  call advance_crop_soil_senescence_day(state,1d0,2d0,theta-.001d0/.3d0,0d0,0d0,0d0,.001d0,.1d0,weather,items,split,policy,r,env)
- if(r%status/=0)print *,'day2 diagnostic',r%status,r%materials%status
+ if(r%status/=0)print *,'day2 diagnostic',r%status,r%materials%status,r%materials%day%status,r%materials%day%soil%status,r%materials%day%internal_supply_kg_m2,r%materials%day%soil%process%exchange%nsupply_total_kg_m2_day
  call require(r%status==0.and.abs(r%whole_n_residual)<=1d-12.and.r%incorporated_n==pending%nitrogen_kg_m2(),'next day consumes yesterday once')
  staged=oldpools;call build_pending_residue_materials(pending,m,code)
  do i=1,5
@@ -87,7 +102,7 @@ program test_senescence_day
  end do
  oracle_p=sp;oracle_p%environment%temperature_c=30d0
  call literal_crop_day(oracle_p,staged,theta,theta-.001d0/.3d0,0d0,0d0,0d0,.001d0,want,nit,denit,carbon, &
-  r%materials%day%prepared%nitrogen_request%soil_request,dvs_before,lai_before,30d0,1d0,3d0,supply)
+  r%materials%day%prepared%nitrogen_request%soil_request,dvs_before,lai_before,30d0,1d0,1d0,supply)
  call state%snapshot(outsoil,outcrop);call outsoil%snapshot(clock,oldwater,got,rev)
  call require(maxval(abs(got%fom_kg_m3-want%fom_kg_m3))<=1d-12.and. &
  abs(got%biomass_kg_m3-want%biomass_kg_m3)<=1d-12.and.abs(got%humus_kg_m3-want%humus_kg_m3)<=1d-12.and. &
@@ -97,6 +112,27 @@ program test_senescence_day
  call advance_crop_soil_senescence_day(state,1d0,2d0,oldwater,0d0,0d0,0d0,0d0,.1d0,weather,items,split,policy,r,env)
  call require(r%status/=0,'consumed day cannot replay')
  call state%snapshot(outsoil,outcrop);call require(all(v0==pack_crop_n_owner(outcrop)),'replay full crop identity')
+ block
+  type(crop_n_configuration_t)::zero_cp
+  type(crop_soil_state_t)::zero_state,old_state
+  type(wofost81_crop_owner_state_t)::zero_crop
+  type(soil_n_pool_state_t)::zero_pools
+  type(crop_residue_pending_t)::no_pending
+  zero_cp=cp;zero_cp%update%leaf_lifespan=100d0
+  zero_cp%scalars%maximum_leaf_relative_death_rate=0d0
+  zero_cp%tables(10)%y=0d0;zero_cp%tables(11)%y=0d0
+  call configure_owner(zero_crop,zero_cp,code)
+  call initialize_crop_soil(soil,zero_crop,zero_cp,9301_int64,zero_state,code);old_state=zero_state
+  env=soil_n_day_environment_t(0d0,1d0,5d0)
+  call advance_crop_soil_material_day(old_state,0d0,1d0,.34d0-.001d0/.3d0,0d0,0d0,0d0,.001d0,.1d0,weather,items,split,oldr,env)
+  call advance_crop_soil_senescence_day(zero_state,0d0,1d0,.34d0-.001d0/.3d0,0d0,0d0,0d0,.001d0,.1d0,weather,items,split,policy,r,env)
+  call require(oldr%status==0.and.r%status==0,'zero-death physical day')
+  call zero_state%pending_snapshot(no_pending,has);call require(.not.has,'inactive pending has no persistent allocation')
+  call zero_state%snapshot(outsoil,outcrop);v0=pack_crop_n_owner(outcrop);call outsoil%snapshot(clock,oldwater,got,rev)
+  call old_state%snapshot(outsoil,outcrop);call outsoil%snapshot(clock,oldwater,zero_pools,rev)
+  call require(all(v0==pack_crop_n_owner(outcrop)).and.all(got%fom_kg_m3==zero_pools%fom_kg_m3).and. &
+   got%ammonium_n_kg_m2==zero_pools%ammonium_n_kg_m2.and.got%nitrate_n_kg_m2==zero_pools%nitrate_n_kg_m2,'zero-death original identity')
+ end block
  print '(A)','SENESCENCE_REAL_DAY_DELAYED_3_ORGANS_LITERAL_WHOLE_N_ROLLBACK_REPLAY=PASS'
 contains
  subroutine unchanged()

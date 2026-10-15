@@ -136,7 +136,7 @@ for opt in ['O0','O2']:
     changed('pending_negative_N',pos+32,'d',-1.)
     changed('pending_excess_N',pos+32,'d',999999.)
     changed('pending_invalid_age',pos+56,'d',.66)
-    changed('pending_unincorporable_age',pos+56,'d',100.)
+    changed('pending_unincorporable_N',pos+32,'d',struct.unpack_from('<d',rawdisk,pos+8)[0]*.09)
     changed('pending_oversize_DM',pos+8,'d',1e20)
     btag=rawdisk.copy();btag[:8]=b'S5NC0001';struct.pack_into('<I',btag,len(btag)-4,zlib.crc32(btag[:-4]));mutants['pending_silent_legacy_tag']=btag
    for label,data in mutants.items():

@@ -75,7 +75,7 @@ program test_senescence_joint
  column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
  column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
  column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
- call parameters(sp);call materials(items,split);call configure_crop(cp);cp%base%nitrogen%nfix_fr=.3d0;cp%update%leaf_lifespan=.5d0
+ call parameters(sp);call materials(items,split);call configure_crop(cp);cp%base%nitrogen%nfix_fr=.3d0;cp%update%leaf_lifespan=1.5d0;cp%lai_crit_nupt=1d0
  call configure_owner(crop,cp,status);call require(status==0,'WOFOST81 owner initialize')
  crop%nitrogen%value%namountlv=crop%nitrogen%value%namountlv-2d0
  crop%nitrogen%value%initial_total=crop%nitrogen%value%initial_total-2d0
@@ -155,7 +155,7 @@ program test_senescence_joint
    call require(result%status==JOINT_CHEMICAL_REJECTED,'material plus invalid temperature after actual water');call unchanged()
   end do
  end block
- bad_policy=policy;bad_policy%application_age(3)=100d0
+ bad_policy=policy;bad_policy%application_age(3)=100.01d0
  call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
     cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,items,split,bad_policy,result,env)
  call require(result%status/=0,'late invalid pending material after actual water crop');call unchanged()
@@ -216,7 +216,7 @@ contains
   oracle_p=sp;oracle_p%environment%temperature_c=5d0
   call require(result%joint%joint%chemical%soil%environment_forcing_used.and.result%joint%joint%chemical%soil%temperature_used_c==5d0,'actual material first temperature')
   call literal_crop_day(oracle_p,staged,c%water_start,c%water_end,c%outflow,c%in_bottom,c%in_lateral,c%root_water,want, &
-    nit,denit,carbon,result%joint%joint%chemical%prepared%nitrogen_request%soil_request,.5d0,4d0,30d0,1d0,3d0,supply)
+    nit,denit,carbon,result%joint%joint%chemical%prepared%nitrogen_request%soil_request,.5d0,4d0,30d0,1d0,1d0,supply)
   call state%snapshot(after_soil,after_crop);call after_soil%snapshot(time,theta,s,revision)
   call require(abs(supply-result%joint%joint%chemical%internal_supply_kg_m2)<=1d-12,'actual literal soil supply')
   call require(abs(s%ammonium_n_kg_m2-want%ammonium_n_kg_m2)<=1d-12.and. &
@@ -285,7 +285,7 @@ contains
   end do
   oracle_p=sp;oracle_p%environment%temperature_c=30d0
   call literal_crop_day(oracle_p,staged,carrier%water_start,carrier%water_end,carrier%outflow,carrier%in_bottom,carrier%in_lateral,carrier%root_water, &
-   want,nit,denit,carbon,r%joint%joint%chemical%prepared%nitrogen_request%soil_request,prior_crop%crop%development_stage,lai_before,30d0,1d0,3d0,supply)
+   want,nit,denit,carbon,r%joint%joint%chemical%prepared%nitrogen_request%soil_request,prior_crop%crop%development_stage,lai_before,30d0,1d0,1d0,supply)
   call n%snapshot(after_soil,after_crop);call after_soil%snapshot(clock,moisture,got,rev)
   call require(maxval(abs(got%fom_kg_m3-want%fom_kg_m3))<=1d-12.and.abs(got%biomass_kg_m3-want%biomass_kg_m3)<=1d-12.and. &
    abs(got%humus_kg_m3-want%humus_kg_m3)<=1d-12.and.abs(got%ammonium_n_kg_m2-want%ammonium_n_kg_m2)<=1d-12.and. &
