@@ -1,3 +1,40 @@
+# Final qualified current-canonical candidate
+
+Canonical thermal admission `e6fd1da26b647252a5c4020a0de23ccab7d11265` is
+reconciled in the existing PR1241. Current combined source
+`b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0` is qualified and preserved,
+pending expected-head canonical merge. All12 production postimages are pinned;
+SWRD3 implementation c2344a27/e7f39d70 is unchanged.
+
+Complete local moving OFF at `a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04`
+(source9747341e, all6423 inputs unchanged) PASS in2675.978s. Its terminal raw
+capsule is durably published at `afca90a211bb332c5938a25b68c424a158eac196`.
+Current sourceb8ac was **not** that full execution. Existing default-path
+preservation is inherited only after exact canonical-reviewed projection of
+three shared files, byte-identical entire numeric moving body and exact
+old/new pairs for seven changed admission controls. Executable proof and22
+negative controls are bound by `full_preservation_reconciliation`.
+
+New thermal science is freshly executed at the current source: literal1 and
+actual271-provider BASE/thermal O0/O2,20 native programs,14 backend-policy and22
+native corruption cases; all original BASE native bytes match the canonical
+input capsule. Measured current thermal build/link/native cost433.369s.
+17 SWRD3,245 input,289 thermal-owner,51 combined-entry and22 full-rebind
+controls PASS. The289 includes the245 historical negatives; do not double-count
+that denominator. All six entrypoints require every proof, without recursive
+dispatch or wildcard native exceptions. One stale shell guard-after hash was
+rejected after conflict resolution; only its metadata binding was repaired and
+the failed raw output retained. No scientific source or assertion was changed.
+
+The earlier lost full run remains unusable history. Highest low-air remains
+NOT_SELECTED_POLICY; no Actions, second PR, disposition promotion or next crop
+route. Remaining admission step: latest canonical/overlap check, expected-head
+PR1241 merge and actual canonical source verification, then bounded master
+receipt. Largest dependency-ready successor remains daily persistent SWRD2;
+not started.
+
+The following sections are historical checkpoints.
+
 # Current terminal admission proof: PASS, canonical merge pending
 
 Complete current-source local moving F-CI OFF at `a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04`: **PASS**, exit0,

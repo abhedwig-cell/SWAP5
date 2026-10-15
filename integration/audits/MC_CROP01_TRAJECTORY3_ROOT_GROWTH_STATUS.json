@@ -5,9 +5,9 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Validate all retained/new scientific, source, projection and dispatcher controls. Keep full actual source974 and current source separate; publish all immutable evidence before expected-head PR1241 admission.",
+  "next_action": "Verify latest canonical and expected PR1241 head, immutable full and current physical evidence; merge only this PR, verify actual sourceb8ac1c1c and all12 production identities, then persist admission/coverage without disposition promotion.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
   "blockers": [],
   "dependency_surface": [
@@ -22,11 +22,11 @@
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
   "reference_delta": false,
-  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_AND_CURRENT_CANONICAL_INPUT_QUALIFIED_PRESERVED_PENDING_MERGE",
+  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_AND_NEW_THERMAL_OWNER_QUALIFIED_PRESERVED_PENDING_CANONICAL_ADMISSION",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
   "production_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
-  "live_canonical_reconciled": "cd64c5044a29643a068c6151720f76b2e70f570d",
+  "live_canonical_reconciled": "e6fd1da26b647252a5c4020a0de23ccab7d11265",
   "live_delta": "Canonical cd64 input producer reconciled byte-exact with current SWRD3. All original native sources/drivers/oracles unchanged; four admission guards rebound by exact before/after and40 combined refusal checks. Fresh real input4/47/269 O0/O2 and all scientific corruption controls PASS.",
   "retained_attempts": [
     {
@@ -57,8 +57,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "CURRENT_SOURCE_COMPLETE_LOCAL_OFF_PASS",
-  "stage": "CURRENT_THERMAL_PHYSICAL_PASS_PENDING_COMBINED_CONTROLS_AND_DEFAULT_REBIND",
+  "full_fci": "TERMINAL_FULL_PASS_WITH_EXACT_DEFAULT_RECONCILIATION_AND_FRESH_THERMAL_SCIENCE",
+  "stage": "FINAL_CURRENT_CANONICAL_SWRD3_QUALIFIED_PRESERVED_PENDING_EXPECTED_HEAD_MERGE",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -400,7 +400,7 @@
     "all_existing_drivers": "fresh original8 process/material/senescence/temperature direct/joint O0/O2; every original native decoder control retained",
     "canonical": "7c774455bf1d5918b76d6147a23cc159ba427e8b"
   },
-  "preserved": false,
+  "preserved": true,
   "controls": {
     "status": "PASS",
     "negative_count": 17,
@@ -604,7 +604,9 @@
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_INPUT_REQUALIFIED_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_CONTROLS_20261015.tar.xz.b64",
     "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_ADMISSION_20261015.tar.xz.b64",
-    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_FULL_START_20261015.tar.xz.b64"
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_CURRENT_FULL_START_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_REQUALIFIED_20261015.tar.xz.b64",
+    "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64"
   ],
   "master_snapshot": {
     "head": "aae2b8d207b13453be45dd1773d39f8eae855831",
@@ -702,8 +704,8 @@
     "new_input_build_native_seconds": 426.3184962839955,
     "current_focused_recorded_seconds": 2161.239163604632,
     "full_final_local_wall_seconds": 2675.9779636349995,
-    "qualified_recorded_seconds_total": 4403.847653354627,
-    "spent_total_including_reported_lost_full_seconds": 6724.391836782619,
+    "qualified_recorded_seconds_total": 4837.217127239632,
+    "spent_total_including_reported_lost_full_seconds": 7157.761310667624,
     "full_compile_link_native_split": "UNKNOWN",
     "current_thermal_recorded_seconds": 433.3694738850036
   },
@@ -942,5 +944,50 @@
       "before": "b04597e965a6c07e753551c2358d2e76308169562ace23a1bf8700914502c90a",
       "after": "398ae6c2a9f26dcfe193e17d99f2e9df9bd5e58c5859403019ee2631db80e14a"
     }
+  },
+  "full_preservation_reconciliation": {
+    "status": "PASS",
+    "full_execution": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+    "executed_full_source_tree": "9747341e2381a24f1b13022eda0524bc3f091ae8",
+    "current_source_tree": "b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0",
+    "full_execution_at_current_tree": false,
+    "scope": "All executed existing defaults: exact native inputs or three reviewed default projections; full numeric body byte-identical. New thermal opt-in requires separately fresh current-source science.",
+    "native_dependency_files": 2752,
+    "guard_pairs": 7,
+    "projected_dependencies": [
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+      "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+      "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+      "decoded_bytes": 6480,
+      "members": 19
+    }
+  },
+  "current_thermal_controls_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY3_SWRD3_THERMAL_ADMISSION_CONTROLS_20261015.tar.xz.b64",
+    "decoded_sha256": "e18ac9dea761342328d46442b9c75745b35b4e3209f62dcdb3de20f205755c35",
+    "decoded_bytes": 6480,
+    "members": 19
+  },
+  "current_thermal_controls": {
+    "root-controls": 17,
+    "input-controls": 245,
+    "thermal-controls": 289,
+    "combined-controls": 51,
+    "rebind-controls": 22,
+    "status": "PASS"
+  },
+  "owner_only_dispatch": {
+    "status": "PASS",
+    "full_moving_pass": false,
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "--nut-thermal-owner-only"
+    ]
   }
 }
