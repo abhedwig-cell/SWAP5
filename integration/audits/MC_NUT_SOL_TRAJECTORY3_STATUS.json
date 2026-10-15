@@ -667,7 +667,7 @@
   },
   "senescence_cycle_successor": {
     "pr": 1239,
-    "status": "QUALIFIED_FULL_PRESERVATION_PENDING",
+    "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
     "baseline": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
     "recovery": "integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json",
     "contract": "docs/science/MC_NUT01_SENESCENCE_CYCLE_CONTRACT_20261015.md",
@@ -675,6 +675,7 @@
     "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
     "highest": "NOT_SELECTED_POLICY",
     "next_gate": "Harvest/reset/rotation phase decision, calendar/default activation and accepted heat/profile coupling open. Pond/source open; aquifer rejected. No master capability/disposition promotion.",
-    "admission_authority": "PR1239 expected-head merge and exact canonical tree/source receipt; no admission while pending"
+    "admission_authority": "PR1239 expected-head merge and exact canonical tree/source receipt; no admission while pending",
+    "full_preservation_seconds": 1616.2715397360007
   }
 }

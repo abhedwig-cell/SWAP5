@@ -7,10 +7,10 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "preserved": false,
+  "preserved": true,
   "canonically_admitted": false,
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_safe_step": "Validate raw current-source science and all baseline/new controls. Persist stable candidate then run exactly one full local moving OFF; highest low-air NOT_SELECTED_POLICY.",
+  "next_safe_step": "Verify final fetched postimage, exact live canonical and expected PR head, safely merge then verify canonical tree/source. No repeat full for metadata-only closeout.",
   "pr": 1239,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1239",
   "development_process": "senescence-process-first/result.json",
@@ -63,7 +63,7 @@
     "link": 0.12287956198269967,
     "native": 0.006364205997670069
   },
-  "qualification_status": "BOUNDED_DELAYED_SENESCENCE_SCIENCE_PASS_PREMERGE",
+  "qualification_status": "BOUNDED_DELAYED_SENESCENCE_QUALIFIED_PRESERVED_PREMERGE",
   "added_blobs": {
     "src/crop/mod_crop_soil_n_senescence_day.f90": "3899c668bdb72152b71501aa618d42a449946fd6",
     "src/process/mod_crop_senescence_residue.f90": "fc6dc2f32c0b16c988857552737f9413b99b33d2",
@@ -114,5 +114,46 @@
     "current_controls": 51
   },
   "docs_source": "PASS",
-  "mkdocs_strict": "PASS"
+  "mkdocs_strict": "PASS",
+  "full_preservation": {
+    "execution_commit": "6fd1eb4bf820b985e2c5043f98f51e7af1751fc9",
+    "tree": "acfdc2654fd7731d7a4e6c34af5b7929edee4858",
+    "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6363,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1616.2715397360007,
+    "changed_inputs": [],
+    "stdout_sha256": "c11b4d4acfb5c4151bb2ae4205bfbec836dbfff6785385b49dc2bfe9ea542bd4",
+    "stderr_sha256": "18068f6b1c7b2bfcb5d72334b6db03200ef34ddfb19814f5fbfa01f9128b2d2d",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_SENESCENCE_CYCLE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "5438af14d3312d91b795774e62e4bd53e8f9685f87c4ed5922e9c8cd023b95b2",
+      "decoded_bytes": 3364280,
+      "members": 15
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "6fd1eb4bf820b985e2c5043f98f51e7af1751fc9",
+    "original_tree": "acfdc2654fd7731d7a4e6c34af5b7929edee4858",
+    "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+    "changed_scientific_inputs": [],
+    "closeout_only": [
+      "integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/science/MC_NUT01_SENESCENCE_CYCLE_RECOVERY_20261015.md",
+      "integration/audits/evidence/MC_NUT01_SENESCENCE_CYCLE_ADMISSION_20261015.tar.xz.b64"
+    ],
+    "reason": "Terminal full preservation executed against frozen persisted source, scientific inputs, drivers, oracles and guards. Final changes record result and raw evidence only; no duplicate science/full run for metadata-only closeout."
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1239 expected-head merge and exact canonical tree/source establish bounded admission."
 }

@@ -66,3 +66,5 @@ heat/profile coupling and simultaneous solute companions remain separate.
 Pond/source stays open and aquifer stays rejected. Final PR1239 merge and exact
 canonical tree/source receipt supply admission authority; premerge records are
 frozen deliberately with admission false.
+
+Terminal full local moving preservation: **PASS**, OFF, exit0, 1616.272s; all6363 tracked inputs unchanged. Actual execution `6fd1eb4bf820b985e2c5043f98f51e7af1751fc9`, tree `acfdc2654fd7731d7a4e6c34af5b7929edee4858`, source `8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210`. Raw logs, complete input inventory, Git bundle and138 controls are bound in the admission capsule identified by status. Fresh physical costs122.223s compile/29.246s driver/1.837s link/149.008s native; original two-FOM requalification3.403/29.433/1.423/133.882s with audited provider reuse. Per-physics and full shell split UNKNOWN. Qualification/preservation true and admission false are deliberately frozen premerge; PR1239 merge and exact canonical receipt establish admission.
