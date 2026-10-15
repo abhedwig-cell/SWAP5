@@ -1,6 +1,7 @@
 # Daily persistent SWRD2 successor
 
-Status: implementation contract; not qualified or canonically admitted.
+Status: bounded current science and shared owners qualified; full preservation
+and canonical admission pending. This is not complete SWRD2/density coverage.
 Baseline `451e35ccd1797aa96fb4354dabc465cceff18635`, production tree
 `b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0`. PR1241 remains closed.
 

@@ -6,10 +6,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "preserved": false,
   "canonically_admitted": false,
-  "stage": "ALL_OWNER_GATES_PASS_ADMISSION_CONTROLS_PENDING",
+  "stage": "SWRD2_01_QUALIFIED_CURRENT_SOURCE_FULL_MOVING_SELECTED",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -69,7 +69,7 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Finish current six-route required-proof refusal controls and freeze candidate. Select exactly one complete local moving OFF at current fe8a source after all controls PASS; no Actions/highest.",
+  "next_action": "Publish and freeze exact candidate; persist immutable full-start inventory/bundle before starting exactly one complete local moving OFF. Observe terminal status, seal raw evidence, reconcile live PR/canonical and admit bounded0/1 only if every condition holds.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
@@ -216,12 +216,45 @@
     "diagnostic_native_seconds": 3.335234584999853,
     "failed_live_import_seconds": 2.8765892420015007,
     "censored_step_and_original_diagnostic_compile_link_seconds": "UNKNOWN",
-    "full_fci_seconds": "NOT_RUN"
+    "full_fci_seconds": "NOT_RUN",
+    "admission_proof_validation_seconds": 11.200855145001697,
+    "current_required_proof_controls_seconds": 21.475034144001256
   },
   "current_default_identity": {
     "status": "PASS",
     "current_direct_outputs_identical_to_immutable_predecessor": 20,
     "current_weather_swrd3_outputs_identical_to_immutable_predecessor": 16,
     "comparison_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0"
+  },
+  "controls_evidence": {
+    "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_CONTROLS_20261015.tar.xz.b64",
+    "decoded_sha256": "a53dc1a7efdddba7be774652f0fd5a2c1399f760927d5ac5fd2ed2a699d8f23d",
+    "decoded_bytes": 35584,
+    "members": 31
+  },
+  "controls": {
+    "status": "PASS",
+    "current_science_source_negatives": 16,
+    "current_six_route_required_proof_negatives": 12,
+    "original_root_negatives_at_frozen_predecessor": 17,
+    "original_thermal_including_input_negatives_at_frozen_predecessor": 289,
+    "original_combined_entry_controls_at_frozen_predecessor": 51,
+    "note": "289 includes the245 historical input controls; current16 are repeated by bridges, not additional unique controls."
+  },
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS",
+  "full_selection": {
+    "selected": true,
+    "source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+    "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
+    "reason": "New optional persistent root-depth state and daily real Richards root feedback changed scientific production source. Current O0/O2 contracts/physical composition, all ten affected shared owner gates and all required-proof controls PASS. No complete current-source moving preservation yet covers fe8a; one stable-candidate local OFF execution is required by the trajectory4 contract and workstream admission protocol.",
+    "command": "python -B /workspace/scratch/b49036b278b0/run_swrd2_full_frozen.py --run",
+    "prepare_only": "Same controller without --run only freezes inputs/bundle; no model execution.",
+    "expected_seconds": 3000,
+    "compile_link_native_split": "UNKNOWN",
+    "resume_mode": "OFF",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "actions": "NOT_SELECTED_LOCAL_AVAILABLE",
+    "execution_count_started": 0
   }
 }

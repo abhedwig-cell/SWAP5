@@ -15,9 +15,10 @@ No harvest/rotation implementation or adjacent PR is incorporated here.
 Current science tree: `fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0`.
 Exact postimages, phase, evidence and next operation are maintained in
 `integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json`.
-Source/contract implementation and current direct/physical testing are complete;
-shared owner qualification and complete current moving preservation must reach
-terminal PASS before admission. A checkpoint is not qualification or merge.
+Source/contract implementation, current direct/physical testing and all ten
+shared owner gates have terminal PASS. Current six-route proof refusal controls
+also PASS. Complete current moving preservation and live canonical admission
+remain pending. A checkpoint is not qualification or merge.
 
 ## Implemented bounded scope
 
