@@ -16,12 +16,39 @@ needle_run=" args=list(map(str,args));t=time.perf_counter();r=subprocess.run(arg
 assert s.count(needle_run)==1
 s=s.replace(needle_run," args=list(map(str,args))\n if category=='native' and Path(args[0]).is_relative_to(OUT):Path(args[0]).chmod(Path(args[0]).stat().st_mode|0o111)\n t=time.perf_counter();r=subprocess.run(args,cwd=cwd,capture_output=True);i=len(events)")
 needle="if mode=='joint':drivers += [ROOT/'tests/nut-material/test_material_joint.f90',ROOT/'tests/nut-material-environment/test_material_environment_joint.f90',ROOT/'tests/nut-senescence/test_senescence_joint.f90']"
-assert s.count(needle)==1;s=s.replace(needle,needle+"+[ROOT/'tests/crop-harvest/test_harvest_joint.f90']")
-s=s.replace("'test_senescence_joint':'senescence-'", "'test_senescence_joint':'senescence-','test_harvest_joint':'harvest-'")
-s=s.replace("if d.stem!='test_senescence_joint':", "if d.stem not in ['test_senescence_joint','test_harvest_joint']:")
+assert s.count(needle)==1;s=s.replace(needle,needle+"+[ROOT/'tests/crop-harvest/test_harvest_joint.f90',ROOT/'tests/crop-harvest/test_rotation_joint.f90']")
+s=s.replace("'test_senescence_joint':'senescence-'", "'test_senescence_joint':'senescence-','test_harvest_joint':'harvest-','test_rotation_joint':'rotation-'")
+s=s.replace("if d.stem!='test_senescence_joint':", "if d.stem not in ['test_senescence_joint','test_harvest_joint','test_rotation_joint']:")
 needle="   rawdisk=bytearray(first.read_bytes());mutants="
 a=s.index(needle)
-s=s[:a]+'''   if d.stem=='test_harvest_joint':
+s=s[:a]+'''   if d.stem=='test_rotation_joint':
+    # Both compact phases continue in a completely fresh process.
+    for phase in ['retired','fallow']:
+     intermediate=Path(str(end)+'.'+phase);continued=b/('rotation-from-'+phase+'.bin')
+     out=run([exe,'resume-'+phase,intermediate,continued],b,'native')
+     assert 'ROTATION_FRESH_COMPACT_SUCCESSOR=PASS' in out
+     assert continued.read_bytes()==end.read_bytes()
+    roundtrip=b/'rotation-successor-roundtrip.bin'
+    run([exe,'roundtrip-successor',end,roundtrip],b,'native');assert roundtrip.read_bytes()==end.read_bytes()
+    negatives=[]
+    for phase in ['retired','fallow']:
+     origin=Path(str(end)+'.'+phase);phase_bytes=bytearray(origin.read_bytes())
+     nn=struct.unpack_from('<i',phase_bytes,152)[0];hh=struct.unpack_from('<i',phase_bytes,156)[0]
+     chemical=160+16*nn+16+(8*nn if hh else 0)
+     pc=struct.unpack_from('<i',phase_bytes,chemical+24)[0];crop=chemical+28+8*pc+104
+     cc=struct.unpack_from('<i',phase_bytes,crop+8)[0];owner=crop+12+8*cc+4
+     assert struct.unpack_from('<d',phase_bytes,owner)[0]==-81002.
+     tests={'marker':(0,-81001.),'clock':(1,99.),'identity':(2,99.),'N':(3,99999.),'OM':(4,99999.),'ledger':(7,0.)}
+     for label,(index,value) in tests.items():
+      mutant=phase_bytes.copy();struct.pack_into('<d',mutant,owner+8*index,value)
+      struct.pack_into('<I',mutant,len(mutant)-4,zlib.crc32(mutant[:-4]))
+      bad=b/('rotation-'+phase+'-'+label+'.bin');bad.write_bytes(mutant)
+      out=run([exe,'reject',bad],b,'native');assert 'INVALID_DISK=PASS'in out
+      negatives.append(bad.name)
+    row['drivers'][d.stem]['compact_decoder_negatives']=negatives
+    row['drivers'][d.stem]['fresh_compact_and_successor_identity']=True
+    continue
+   if d.stem=='test_harvest_joint':
     assert first.read_bytes()[:8]==b'S5NC0006'
     assert end.read_bytes()[:8]==b'S5NC0005'
     # Entire admitted water record is unchanged by harvest incorporation.
@@ -48,9 +75,10 @@ s=s[:a]+'''   if d.stem=='test_harvest_joint':
     row['drivers'][d.stem]['decoder_negatives']=negatives
     continue
 '''+s[a:]
-s=s.replace("for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint']:","for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint','test_harvest_joint']:")
+s=s.replace("for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint']:","for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint','test_harvest_joint','test_rotation_joint']:")
 s=s.replace("for p in [Path(__file__),ROOT/'tests/nut-crop/crop_fixture.inc'", "for p in [ROOT/'tests/crop-harvest/run_joint.py',ROOT/'tests/nut-senescence/run_senescence.py',ROOT/'tests/nut-crop/crop_fixture.inc'")
 if RESUME:
+ assert False,'old nine-driver recovery is historical; successor must execute freshly'
  # The interrupted controller completed every O0 assertion and failed before
  # any O2 compile; only a Python temporary shadowed its original donor dict.
  # Bind that exact execution instead of rerunning unchanged O0 science.

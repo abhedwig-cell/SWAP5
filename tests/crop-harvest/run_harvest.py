@@ -45,6 +45,9 @@ def main():
     result['compiler']=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0]
     result['execution_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     def run(command,category,work):
+        if category=='native':
+            exe=Path(command[0]);assert exe.is_relative_to(out)
+            exe.chmod(exe.stat().st_mode|0o111)
         start=time.perf_counter();done=subprocess.run(list(map(str,command)),cwd=work,capture_output=True)
         n=len(events)
         for stream in ['stdout','stderr']:(out/f'{n}.{stream}').write_bytes(getattr(done,stream))

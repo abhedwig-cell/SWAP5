@@ -76,11 +76,11 @@ contains
       status=WOFOST81_HARVEST_INVALID
       if(allocated(self%harvest))return
       if(.not.retired_valid(self%retired))return
-      if(self%crop%crop_emerged.or.self%crop%development_stage/=0d0)return
+      if(self%crop%crop_emerged.or.abs(self%crop%development_stage)>0d0)return
       if(allocated(self%crop%biomass).or.allocated(self%crop%evolution_continuation).or. &
          allocated(self%crop%b110_reference_compatibility))return
       associate(n=>self%nitrogen%value)
-        if(any([n%namountlv,n%namountst,n%namountrt,n%namountso]/=0d0))return
+        if(any(abs([n%namountlv,n%namountst,n%namountrt,n%namountso])>0d0))return
         if(any([n%nuptake_total,n%nfix_total,n%nlosses_total,n%initial_total]>1d9))return
       end associate
     end if
@@ -165,7 +165,7 @@ contains
     if(.not.committed%harvest_retired())return
     if(committed%validate()/=0)return
     if(.not.all(ieee_is_finite([t0,t1])))return
-    if(t0/=committed%retired%clock.or.t1-t0/=1d0)return
+    if(abs(t0-committed%retired%clock)>0d0.or.abs(t1-t0-1d0)>0d0)return
     h=committed%retired;h%clock=t1;h%continuation_totals=totals
     call restore_wofost81_retired_trusted(h,committed%nitrogen,candidate,status)
   end subroutine
