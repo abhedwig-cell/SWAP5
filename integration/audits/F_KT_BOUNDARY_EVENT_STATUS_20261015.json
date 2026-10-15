@@ -5,10 +5,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "preserved": false,
+  "qualified": true,
+  "preserved": true,
   "canonically_admitted": false,
-  "status": "EXPLICIT_HARVEST_RETIRE_FALLOW_SUCCESSOR_NATIVE_TESTED_AND_PRESERVED_DRAFT",
+  "status": "EXPLICIT_HARVEST_RETIRE_FALLOW_SUCCESSOR_QUALIFIED_PRESERVED_READY_FOR_BOUNDED_ADMISSION",
   "contract": "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
   "scope": "Existing configured crop/soil owner: same-clock harvest, retained daily pending, seven-organ incorporation once, detached end-status observation acknowledgement, compact retirement, actual zero-extraction fallow and explicitly N-balanced successor initialization; actual rooted successor day and native/opaque continuation. Exact canonical kernel. Explicit fixed-forcing profile, not automatic complete rotation.",
   "local_baseline_equivalence": {
@@ -30,15 +30,14 @@
     "full_FCI": "NOT_RUN_OWNING_ADMISSION_RECONCILIATION_OPEN",
     "actions": "NOT_DISPATCHED"
   },
-  "blockers": [
-    "Observed current-source admission guard rejects foreign SWRD3 delta. Bounded canonical admission requires source-exact owning NUT/PP02/moving guard reconciliation and current-source compatibility/negative-control evidence; current physical PASS alone does not satisfy those strict guards."
-  ],
-  "next_action": "Continue in PR1247: reconcile source-exact NUT/PP02/moving admission guards against the persisted explicit harvest/retirement successor, with executable default-path projection and affected negative controls; preserve current exact source-bound scientific results and original native files. No blanket hash allowlist or automatic full F-CI/long stress rerun. Then assess bounded canonical admission separately from automatic full-rotation migration.",
+  "blockers": [],
+  "next_action": "Recheck current PR1247 base/head/reviews/mergeability and exact published source/evidence tree; safely merge only this qualified explicit crop/soil-N profile. Then verify canonical production blobs and record bounded admission, keeping automatic full rotation and mastercap counts open.",
   "authority_paths": [
     "AGENTS.md",
     "docs/development/workstream-execution-protocol.md",
     "docs/architecture/invariants.md",
-    "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md"
+    "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
+    "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md"
   ],
   "relevant_paths": [
     "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
@@ -80,7 +79,7 @@
     29,
     30
   ],
-  "remaining": "Owning source/compatibility admission reconciliation remains open. Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest combination are future scope. Pond/source stays open; aquifer stays rejected.",
+  "remaining": "Automatic legacy calendar/input/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open programme scope. No mastercap count promotion. Pond/source open; aquifer rejected.",
   "recovery_point": "This stable status path and MC_CROP_NUT_ROTATION_EXPLICIT_20261015 capsule. All selected runs terminal. Run python -B tests/crop-harvest/verify_evidence.py before reusing evidence; no numerics needed for readback. Exact local history in execution/history.bundle (canonical47b65224 prerequisite); remote/local commit identities remain distinct.",
   "build_policy": "Finite repair adds exact source transformation, unchanged module ABI, freshly recompiled changed owner and freshly linked/executed small, actual harvest/rotation and original thermal native paths. Original unaffected physical assertions remain tied to their original source with finite-valid branch proof. Shared providers compiled once per optimization; 262 successful compiler events reused once only after failed provider compile and exact recorded binding; all native assertions execute freshly. Failed terminal compile retained separately, not counted as PASS. No cross-session inherited scientific PASS, no persistent cache, no Actions/full F-CI/highest low-air dispatch.",
   "prior_compiler_blocked_execution_attempt": {
@@ -6076,7 +6075,7 @@
     "native_executions": 4
   },
   "retirement_stage": {
-    "status": "O0_O2_EXPLICIT_PHYSICAL_NATIVE_TESTED_ORIGINAL_BYTES_PRESERVED_NOT_ADMITTED",
+    "status": "QUALIFIED_BOUNDED_EXPLICIT_BASE_PROFILE_OWNING_RECONCILIATION_PASS",
     "baseline_local": "f0b12a40d8da8a89d7c5c247972d288b2fe3c4a0",
     "baseline_remote": "7749c174a6f80a209a50a0d1d7690513159e96c2",
     "contract": "docs/science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md",
@@ -6093,7 +6092,7 @@
     ],
     "implemented": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "preserved_scope": "Original material/environment/harvest and original thermal manual/calendar native bytes; fresh assertions, not graph-only inheritance",
     "source_pin": "a0f7c393f5e2520d12a229e01a26515cc9bdd6b9",
     "source_tree": "c9299e4d33b062a705418a0baeb835a8c835237e",
@@ -6495,7 +6494,7 @@
       "whitespace": "git diff --check PASS",
       "all_selected_runs_terminal": true,
       "actions_dispatched": false,
-      "full_fci": "NOT_SELECTED; current-source owning guard refuses foreign SWRD3 delta",
+      "full_fci": "NOT_SELECTED; original rejection superseded by source-exact owning reconciliation and current50/original289 controls",
       "highest_low_air": "NOT_SELECTED_POLICY"
     }
   },
@@ -6503,7 +6502,187 @@
   "historical_generic_local_scientific_execution_commit": "32dde7adac8569027193a3514efbabbf328bffbd",
   "tested_scope": "O0/O2 pre-finite-repair: all ten physical drivers and original material/environment/senescence assertions, actual harvest/fallow/successor and 18 new decoder negatives. Final repaired source: exact finite-check projection and unchanged ABI, fresh 3700-owner/74-chemical/actual-PP02 drivers, fresh actual harvest/rotation and original thermal natives with predecessor endpoints preserved, plus51 nonfinite controls per optimization. No new full-suite PASS is claimed for the repaired source.",
   "local_scientific_execution_commit": "a0f7c393f5e2520d12a229e01a26515cc9bdd6b9",
-  "admission_readback": {
+  "finite_repair": {
+    "execution_commit": "a0f7c393f5e2520d12a229e01a26515cc9bdd6b9",
+    "source_tree": "c9299e4d33b062a705418a0baeb835a8c835237e",
+    "proof": "Exact finite-check relocation; unchanged module ABI; live unchanged provider bindings; fresh small, harvest/rotation, original thermal native assertions and endpoint byte identity. 51 nonfinite decoder controls per O0/O2. Unaffected pre-repair science is inherited only through exact finite-valid branch proof, not relabelled as a new full suite."
+  },
+  "last_reconciled_head": "c03fafffb1e10ddbae11bc209e0020dda3ff1870",
+  "admission_reconciliation": {
+    "status": "EXACT_SOURCE_DEFAULT_PROJECTION_OWNER_AND_NEGATIVE_CONTROLS_PASS",
+    "scientific_baseline": "47b652248420ba7c49df7e063c64ff749ce6253f",
+    "canonical": "451e35ccd1797aa96fb4354dabc465cceff18635",
+    "production_source_frozen": "c9299e4d33b062a705418a0baeb835a8c835237e",
+    "next_action": "Implement and test explicit default-path projection, exact source/evidence successor, immutable baseline owner validation and source-only moving dispatch; no numerical rerun selected.",
+    "contract": "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md",
+    "postimages": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "1b59c577b274008891e0e83a2060d46c16b3ab56"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "fd6f2dca541c031cff34ae9c4530308368c837f4"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "9490d2469ccec15e861acd2830bdfd7c7f3c78c7"
+      },
+      "src/crop/mod_crop_soil_n_senescence_day.f90": {
+        "status": "M",
+        "blob": "49ba8e6d0c9d98ea5f845362e378d5ee3ceeb0f3"
+      },
+      "src/crop/mod_wofost81_crop_owner_state.f90": {
+        "status": "M",
+        "blob": "4144a91401f55b8dd13c4fb98c57b8a90334a85a"
+      },
+      "src/crop/mod_wofost81_harvest_materials.f90": {
+        "status": "A",
+        "blob": "b052a31490da0f93049c94267595d6dc7f48de93"
+      },
+      "src/crop/mod_wofost81_one_day_candidate.f90": {
+        "status": "M",
+        "blob": "c3c6748b0f84cc28c9fad31bac46ffcd0f7cd052"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+        "status": "M",
+        "blob": "09362b22eac0ce00b640a074a8362cfd18117a26"
+      },
+      "tests/crop-harvest/README.md": {
+        "status": "A",
+        "blob": "902087f712759b106c5e1028ac36d91874d4a208"
+      },
+      "tests/crop-harvest/check_admission_controls.py": {
+        "status": "A",
+        "blob": "24b478f13f4a0338d629d41c9f0698ab61c8c422"
+      },
+      "tests/crop-harvest/default_projection.py": {
+        "status": "A",
+        "blob": "49970e562baf9d446eb9bb1185ee7b93a774043c"
+      },
+      "tests/crop-harvest/mod_harvest_oracle.f90": {
+        "status": "A",
+        "blob": "f693bc07beb5195640504c749c8f29f5c08a7f31"
+      },
+      "tests/crop-harvest/preserve_thermal.py": {
+        "status": "A",
+        "blob": "0cceb93f5a5a35619e50a9b0f2758d8a9b90209e"
+      },
+      "tests/crop-harvest/repair_finite.py": {
+        "status": "A",
+        "blob": "943467894290b52370c2362747146b9cdb52f5f4"
+      },
+      "tests/crop-harvest/resume_build.py": {
+        "status": "A",
+        "blob": "6d44553ff1d54abe2be65300e192a78397d761b6"
+      },
+      "tests/crop-harvest/run_harvest.py": {
+        "status": "A",
+        "blob": "b3342cb75e53cb5ec4965be1f547f98e41ff5ea2"
+      },
+      "tests/crop-harvest/run_joint.py": {
+        "status": "A",
+        "blob": "d0efd33428795d26275739955b1d0eaee1bd01e7"
+      },
+      "tests/crop-harvest/test_harvest_chemical.f90": {
+        "status": "A",
+        "blob": "3eaa9bf641b872d0a0bef39c4823dadd75d068a9"
+      },
+      "tests/crop-harvest/test_harvest_joint.f90": {
+        "status": "A",
+        "blob": "6816774fee23131565110c9acff816c3906662e3"
+      },
+      "tests/crop-harvest/test_harvest_owner.f90": {
+        "status": "A",
+        "blob": "3186dab099997939918b545636e49b55bde669c6"
+      },
+      "tests/crop-harvest/test_rotation_joint.f90": {
+        "status": "A",
+        "blob": "4765cea3e6a5b844e060f2237d3cecf81cbc49f9"
+      },
+      "tests/crop-harvest/verify_evidence.py": {
+        "status": "A",
+        "blob": "47c56942b505d0e37394ab6f7dac69d45e47b765"
+      },
+      "tests/crop-harvest/verify_harvest_successor.py": {
+        "status": "A",
+        "blob": "944d3a9dc2bbe82bf7bf88d9f142dc8512a0a64a"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "e0d074f424a848cd70c3e708dee10a09c86c0a4e"
+      },
+      "tests/fkt-boundary/README.md": {
+        "status": "A",
+        "blob": "4183309a1bc080071196ae8518c76e50c2d64c48"
+      },
+      "tests/nut-thermal/verify_thermal_successor.py": {
+        "status": "M",
+        "blob": "03dd00298c80ef1993a8d6756284f4c8654d9a33"
+      },
+      "tests/root-growth/verify_swrd3_successor.py": {
+        "status": "M",
+        "blob": "979d1072f709bd884f62b070628378cfb675a40d"
+      }
+    },
+    "tested": true,
+    "qualified": true,
+    "full_fci": "NOT_SELECTED_EXACT_DEFAULT_PROJECTION_AND_NATIVE_PRESERVATION",
+    "historical_controls": 289,
+    "current_controls": 50,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP_NUT_HARVEST_ADMISSION_20261015.tar.xz.b64",
+      "decoded_sha256": "89d9660918f0972d341aaeaf69c0dba2c1f2e820b1ab95d05be7428abbc792d3",
+      "manifest_sha256": "fd5a4fc5df1019750805e1687b8df96900aa87b10e9d2bb3fff630eb885346f6",
+      "members": 58,
+      "decoded_bytes": 77980
+    },
+    "commands": {
+      "baseline": [
+        "python",
+        "-B",
+        "tests/root-growth/verify_swrd3_successor.py at immutable47b65224"
+      ],
+      "historical": [
+        "python",
+        "-B",
+        "tests/nut-thermal/check_thermal_successor_controls.py at immutable47b65224"
+      ],
+      "current": [
+        "python",
+        "-B",
+        "tests/crop-harvest/check_admission_controls.py"
+      ],
+      "dispatcher": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "--crop-harvest-owner-only"
+      ]
+    },
+    "final_validation": {
+      "exact_capsule_postimages": "PASS",
+      "source_docs": "PASS",
+      "strict_mkdocs": "PASS",
+      "whitespace": "PASS",
+      "production_source_unchanged": true,
+      "original_controls": 289,
+      "current_controls": 50,
+      "actual_owner_dispatch": "PASS; 10.595 seconds, source/evidence only",
+      "all_selected_runs_terminal": true,
+      "actions_dispatched": false,
+      "full_fci_numerical": "NOT_SELECTED; exact default/moving body proof and affected original native preservation"
+    },
+    "canonical_parent_reconciliation": {
+      "canonical_commit": "451e35ccd1797aa96fb4354dabc465cceff18635",
+      "baseline": "47b652248420ba7c49df7e063c64ff749ce6253f",
+      "delta": "Readiness documentation only; no production/scientific input delta",
+      "canonical_phase_document_blob": "ce1b04df3fe0f532348fb078aed3cfd51f20f67c",
+      "local_materialization": "e9eb3dec08bb6942f5a476d545d561e3747c2bbc",
+      "publication": "Publish exact qualified tree with prior PR head and actual canonical451e35cc as parents; resolve overlapping readiness documentation explicitly, no forced ref update and no changed scientific input."
+    }
+  },
+  "preservation_scope": "Exact admitted default branches and whole moving scientific body; unchanged original native bytes; old complete owner and289 controls; current50 controls and actual owner-only dispatch. Not a new numerical full-FCI PASS.",
+  "historical_pre_reconciliation_admission_readback": {
     "command": [
       "python",
       "-B",
@@ -6513,11 +6692,5 @@
     "exit": 1,
     "diagnostic": "ValueError: foreign SWRD3 delta",
     "scope": "Current-source guard refused additive harvest/retirement delta before numerical admission; raw retained in capsule admission-readback. No guard or assertion was weakened."
-  },
-  "finite_repair": {
-    "execution_commit": "a0f7c393f5e2520d12a229e01a26515cc9bdd6b9",
-    "source_tree": "c9299e4d33b062a705418a0baeb835a8c835237e",
-    "proof": "Exact finite-check relocation; unchanged module ABI; live unchanged provider bindings; fresh small, harvest/rotation, original thermal native assertions and endpoint byte identity. 51 nonfinite decoder controls per O0/O2. Unaffected pre-repair science is inherited only through exact finite-valid branch proof, not relabelled as a new full suite."
-  },
-  "last_reconciled_head": "c03fafffb1e10ddbae11bc209e0020dda3ff1870"
+  }
 }
