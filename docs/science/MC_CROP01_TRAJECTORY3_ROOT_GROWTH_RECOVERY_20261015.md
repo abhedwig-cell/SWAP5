@@ -1,3 +1,38 @@
+# Current recovery: missing terminal evidence blocks admission
+
+PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241) remains open/draft.
+Recovered durable checkpoint: `df57b20871fdb1ce234c34158cd46991d3b47ccf`.
+Observed current canonical: `cd64c5044a29643a068c6151720f76b2e70f570d`.
+
+The prior transient checkout and unpublished results disappeared during environment
+renewal. The full moving OFF run had reported exit0 and terminal PASS at
+`2517caf0158c0256ed16bc7a640dc4f33eb640e1`, source
+`f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6`, 2320.544s. Its immutable
+capsule (reported decoded SHA256
+`ac85901e742f57995019d7b4fadf978f78d1f6e18cbfad4654fc9b71d7c2b47b`)
+was not successfully published and cannot now be verified. This reported result
+is **not admission evidence**. The old execution session is no longer active.
+The attempted uploaded tree `ac110075cf8e4fc4f4d6297ef80a8479aae9d438`
+is absent at GitHub (422 Tree SHA does not exist); the PR head remained df57b208.
+
+All five already versioned scientific, oxygen-probe, owner, calendar and control
+capsules were recovered and every raw member digest checked. They retain their
+original frozen source qualification; they do not establish admission of the
+later canonical explicit input module. The unpersisted input process/day PASS
+and interrupted joint compilation cannot be inherited. Reconcile the input
+producer and guards and qualify the affected4/47/269-provider routes. Restore
+original terminal full evidence and prove the exact dependency rebind before
+merging. A repeated full run is not selected solely for evidence loss under the
+user's explicit one-run constraint. Highest low-air remains NOT_SELECTED_POLICY.
+
+Durable focused costs:1301.551s; previously reported full wall:2320.544s.
+Missing input/other overhead costs are UNKNOWN. No new Actions, second PR,
+canonical merge, master-count promotion or next crop implementation occurred.
+Largest dependency-ready next route remains SWRD2 persistent daily actual/potential
+depth; do not start it until PR1241 is admitted.
+
+The following checkpoints are historical and superseded by this recovery section.
+
 # Reconciled trajectory-3 qualification checkpoint
 
 Canonical reconciled through `7c774455bf1d5918b76d6147a23cc159ba427e8b`

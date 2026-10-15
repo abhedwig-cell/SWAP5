@@ -7,9 +7,12 @@
   "tested": true,
   "qualified": true,
   "canonically_admitted": false,
-  "next_action": "Observe existing local full moving execution2517caf0158c, session33545, to terminal status. Do not duplicate it. Source checkout is intentionally frozen at execution head; remote running receipt changes metadata only.",
+  "next_action": "Restore original full admission capsule identified by decoded SHA256 ac85901e742f57995019d7b4fadf978f78d1f6e18cbfad4654fc9b71d7c2b47b if a durable copy exists; otherwise explicit revised test selection is necessary. Do not merge on conversational PASS. Reconcile cd64 input and qualify affected routes before expected-head PR1241 admission. Do not start SWRD2.",
   "recovery_point": "tests/root-growth/run_root_growth.py",
-  "blockers": [],
+  "blockers": [
+    "Immutable terminal full moving evidence was lost before successful remote publication. Reported PASS is not usable for canonical admission.",
+    "Canonical cd64c504 explicit-input reconciliation and affected current composition proof were not durably completed."
+  ],
   "dependency_surface": [
     "src",
     "tests",
@@ -22,7 +25,7 @@
   "highest_low_air": "NOT_SELECTED_POLICY",
   "production_delta": true,
   "reference_delta": false,
-  "qualification_scope": "BOUNDED_SWRD3_DAILY_PRODUCTION_PHYSICAL_AND_SHARED_OWNERS_PASS_PENDING_MOVING",
+  "qualification_scope": "PRIOR_FROZEN_F422_SCIENCE_QUALIFIED; CURRENT_CD64_ADMISSION_BLOCKED",
   "pr": 1241,
   "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
   "production_source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
@@ -53,8 +56,8 @@
   "docs_source": "PASS",
   "mkdocs_strict": "PASS",
   "full_lifecycle_closed": false,
-  "full_fci": "RUNNING_NOT_PASS",
-  "stage": "FULL_LOCAL_MOVING_RUNNING_FROZEN_SOURCE",
+  "full_fci": "UNAVAILABLE_IMMUTABLE_TERMINAL_EVIDENCE",
+  "stage": "BLOCKED_MISSING_IMMUTABLE_FULL_EVIDENCE_AFTER_ENVIRONMENT_RENEWAL",
   "selected_scope": "SWRD3 committed biomass root geometry and accepted daily empirical oxygen, both daily schedules and opaque joint continuation. SWRD2 persistent-depth application remains open.",
   "contract": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
   "production_execution": "44ceeb44",
@@ -510,13 +513,97 @@
       "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
     ],
     "resume_mode": "OFF",
-    "status": "RUNNING",
+    "status": "RAW_TERMINAL_EVIDENCE_UNAVAILABLE",
     "tracked_inputs": 6408,
     "compile_link_native_split": "UNKNOWN",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
     "compiler_launcher_sha256": "001b60a16b3855c6ea284218fb422edfb2cf4f9384c156cd69a744e22f2fe947",
     "local_result": "/workspace/scratch/e7fb6d6ef417/swrd3-reconciled-full/RESULT.json",
-    "local_exec_session": 33545
+    "local_exec_session": null,
+    "local_result_available": false
+  },
+  "interruption_recovery": {
+    "recovered_from": "df57b20871fdb1ce234c34158cd46991d3b47ccf",
+    "observed_canonical": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "cause": "Previous transient checkout /workspace/scratch/e7fb6d6ef417 and its unpublished evidence disappeared when execution environment was renewed. Both interrupted publication cells and prior native sessions are unavailable.",
+    "durable_capsule_integrity": [
+      {
+        "record": "swrd3_science_evidence",
+        "decoded_sha256": "3b3f2623f07481a07ef5e6b009c7c2f84ee0479e4e3d71246771a8a4f077431e",
+        "raw_members_verified": 2651,
+        "status": "PASS"
+      },
+      {
+        "record": "swrd3_probe_evidence",
+        "decoded_sha256": "1732c5a2ed06957b0132688202592d83ab51e05bb0d7e35d745ee5ab10c4725a",
+        "raw_members_verified": 1003,
+        "status": "PASS"
+      },
+      {
+        "record": "swrd3_owner_evidence",
+        "decoded_sha256": "a8ad443762b448d83e4b0ded3ebcddbdf35ebd36e52bc8b0b69d05ed1f48deb2",
+        "raw_members_verified": 1926,
+        "status": "PASS"
+      },
+      {
+        "record": "reconciled_calendar_evidence",
+        "decoded_sha256": "2bdba5ecad886b604c2fbd372929f4a01f379a3df80eafe710ff193eab1e7346",
+        "raw_members_verified": 1569,
+        "status": "PASS"
+      },
+      {
+        "record": "reconciled_controls_evidence",
+        "decoded_sha256": "d264fef81c844ed87e89a8a043217bb51336873b31ad44bf6afd43d9a3b47d2a",
+        "raw_members_verified": 7,
+        "status": "PASS"
+      }
+    ],
+    "reported_but_unavailable_full_result": {
+      "execution_commit": "2517caf0158c0256ed16bc7a640dc4f33eb640e1",
+      "source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+      "reported_exit": 0,
+      "reported_terminal": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+      "reported_wall_seconds": 2320.544183427992,
+      "reported_decoded_capsule_sha256": "ac85901e742f57995019d7b4fadf978f78d1f6e18cbfad4654fc9b71d7c2b47b",
+      "evidence_available": false,
+      "usable_for_admission": false
+    },
+    "unpublished_reconciliation": {
+      "reported_local_commit": "d0b71401",
+      "remote_tree_attempt": "ac110075cf8e4fc4f4d6297ef80a8479aae9d438",
+      "recovery_attempt": "GitHub create_commit rejected with422 Tree SHA does not exist; remote PR still df57b208.",
+      "reported_process_and_day": "PASS O0/O2, raw proof unavailable; not inherited",
+      "joint": "INTERRUPTED_DURING_O0_PROVIDER_COMPILATION_NO_PASS",
+      "required_remaining": "Reconcile canonical input, exact guard postimages/manifests and fresh4/47/269-provider O0/O2 input evidence; restore full terminal immutable proof and validate dependency rebind. No new crop route."
+    },
+    "additional_full_run": "NOT_SELECTED: user allows repetition only for demonstrated scientific source change; evidence loss alone does not authorize a duplicate full run.",
+    "frozen_qualification_revalidated": {
+      "baseline": "3b661766dc59298a7f541c970c2d3a55602d926c",
+      "source_tree": "f4226fc7920cd7e1dfcb1f9d0324ba6df41eebf6",
+      "postimages": {
+        "src/crop/mod_crop_soil_n_calendar_day.f90": "528b6c77a6a3ccaa03e3d2064ae9fedfa2dd59fd",
+        "src/process/mod_soil_n_amendment_calendar.f90": "19dcedb0babc89b21c2fbcc65122c1ff709b3cc1",
+        "src/runtime/mod_fmr_biomass_root_uptake_input.f90": "c2344a276f576c15fc9df6221713a3fcabc49253",
+        "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": "15491852eada4aa20679d203f394cb171a9b2003",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90": "e7f39d70b3554de6db5731b699b8068419ac9062"
+      },
+      "co2_successor": true,
+      "swrd3_successor": true,
+      "qualified": true,
+      "admitted": false,
+      "physical_programs": 44,
+      "highest": "NOT_SELECTED_POLICY",
+      "calendar_successor": true
+    },
+    "docs_source_check": "PASS",
+    "strict_mkdocs": "NOT_EXECUTED: renewed environment has no mkdocs module; prior docs build not promoted to current check."
+  },
+  "actual_costs": {
+    "durably_recorded_focused_seconds": 1301.5511934356327,
+    "reported_unavailable_full_wall_seconds": 2320.544183427992,
+    "reported_full_usable_for_admission": false,
+    "other_controls_and_interrupted_input_cost_seconds": "UNKNOWN",
+    "note": "Do not count reported full or missing input evidence as a qualified admission PASS."
   }
 }
