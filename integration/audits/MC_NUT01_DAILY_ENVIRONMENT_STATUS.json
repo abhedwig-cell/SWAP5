@@ -1,0 +1,24 @@
+{
+  "work_unit": "MC-NUT01-DAILY-ENVIRONMENT",
+  "baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+  "branch": "work/nut-daily-environment-20261015",
+  "contract": "docs/science/MC_NUT01_DAILY_ENVIRONMENT_CONTRACT_20261015.md",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "next_action": "Small real production drivers and literal O0/O2; then actual Richards composition and original endpoints.",
+  "relevant_paths": [
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+    "src/process/mod_soil_n_day_environment.f90",
+    "src/process/mod_b111_soil_n_reactive_owner.f90",
+    "src/crop/mod_crop_soil_n_day.f90"
+  ],
+  "test_paths": [
+    "tests/nut-environment"
+  ],
+  "blockers": [],
+  "highest_low_air": "NOT_SELECTED_POLICY"
+}
