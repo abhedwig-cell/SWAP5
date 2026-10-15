@@ -177,3 +177,119 @@ uses the existing integration/audits hierarchy, including outputs, stdin fixture
 compiler/source identities, failed attempts, commands and a tested-code recovery bundle.
 
 Evidence capsule: `integration/audits/evidence/MODULAR_DEVELOPMENT_ADOPTION_20261014.tar.xz.b64`. Decoded SHA256 `271859c9aeca96b8e27b4bb93966144cf9ebd4359de4e7bac26188cd2fefd0ff`; 4182 indexed paths, 198 unique blobs, every original byte roundtrip verified. `INDEX.json` maps each path to `blobs/<sha256>` with original length. The tested Git bundle has canonical baseline as its prerequisite; actual tested local SHAs remain distinct from later tree-equivalent publication commits.
+
+
+## Proportional execution enforcement, 15 October 2026
+
+Status: locally tested execution-policy candidate; canonical admission remains the
+PR outcome. Baseline `cd64c5044a29643a068c6151720f76b2e70f570d`. This extends the existing adoption work-unit,
+protocol and runners; no new framework, global selector registry, cache or physics.
+The earlier 14 October results above remain historical measurements of that work.
+
+The controlling selection authority is the [14 October low-air decision](LOW_AIR_TEST_SELECTION_DECISION_20261014.md)
+and the [enforced execution protocol](../development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15).
+Scientific owner clauses retain all affected integration/admission obligations.
+Current-source full moving F-CI science body is byte-identical after stripping the
+new entry preflight. All original commands/checkout refs in the three principal
+workflows are retained. Source, references, physical drivers/oracles, tolerances,
+restart/state and solver contracts are untouched.
+
+### Actual selection and checks
+
+| Change / route | Previously available automatic selection | New selection |
+| --- | --- | --- |
+| Docs-only canonical push | 15 jobs, frozen replays then moving preservation | No numerical workflow by path filter; CLI returns no cases |
+| Reviewed Hooghoudt local edit | No impact selection; blanket workflow possible | `drainage` O0/O2; affected physical composition/owner admission remains required |
+| Shared state/solver or unknown file | Broad workflow without recorded impact, or manual guess | BLOCKED_OWNER_SELECTION; explicit composition, restart/coupling, owner admission and applicable full F-CI obligations |
+| Stable candidate requiring full moving | Broad runner directly | Same complete body after fresh persisted `full_fci` selection |
+| Highest B15 low-air / B19 matrix | Automatic on shared-backend and test paths | Explicit stress selection only; no inherited highest PASS |
+| Frozen historical authority | Replayed on unrelated current changes | Explicit `replay_historical` decision; not current-candidate science |
+| LOW02 broad reconciliation | Automatic from changed outer wrapper | Explicit owner + full-FCI selection before compiler installation |
+| F-CI107 RossFast | Outer wrapper change alone retriggers full RossFast | Owner source/test/workflow triggers retained behind rossfast_owner preflight; wrapper-only preflight change excluded |
+
+A real temporary harmless drainage-source mutation selected and executed only its
+two O0/O2 programs (0.715 s wall). A real descriptive edit executed zero native
+programs; a real solver-contract mutation returned exit 2 before output/build creation.
+These are selection probes, not admission of a physical source change.
+
+Eighteen adoption/selection controls and fifteen incumbent modular controls pass.
+They include actual compiler/science failure, artifact/environment drift, O0/O2
+isolation, fresh execution after shared build, missing dependencies, deletions and
+untracked input, missing/stale/unpersisted selection, changed owner authority,
+nonfinite costs, repeated PASS/failed/long-run diagnosis and exceptional stress
+justification. A positive full-FCI preflight is SELECTED_NOT_QUALIFIED. The actual
+full shell runner refuses a missing record before science. No test manufactures
+full qualification or highest coverage.
+
+All five default contracts execute once per O0/O2 (10 native executions, 32 compiler
+requests, sum of measured case totals 3.982 s). The workflow's short frost route
+executes root ownership/oxygen and numerical-policy tests on O0/O2, plus both
+original independent and invalid/nonfinite frost runners, all PASS. Science bodies
+and flags remain fixed; this is bounded physical/state coverage, not long trajectory
+qualification. Documentation source checks and strict MkDocs pass.
+
+### Measured costs and retained expensive routes
+
+Three alternating old/new runs use the same drainage O0/O2 executable and oracle.
+All executable and stdout SHA256 values match per optimization. Baseline runner
+bytes are retained in the capsule. Median controller wall time is **1.121030 to
+0.865065 s** (22.83% in this bounded comparison). Native executions drop from 4 to 2:
+routine warm duplication is removed, while explicit benchmark warm controls remain.
+Each arm still makes six compiler requests (four compiles, two links). **Newly
+measured avoided compilations: zero.** Timing includes Python/identity/build/driver
+cost; physics-only savings are UNKNOWN. No full-FCI, highest or Actions queue saving
+is newly measured. Selection changes alone are expected avoided work, not a measured
+hours-saving claim.
+
+| Retained expensive group | Known cost / limit | Concrete selection need |
+| --- | --- | --- |
+| Full moving F-CI | Prior 30.8-minute batch in low-air decision; current cost UNKNOWN | Required stable-candidate admission for affected scientific contracts; complete original body retained |
+| Irrigation allocated root/sensor shared build | Existing PR1218 avoided 354/712 compiles and mean 318.562 s in its own comparison | Preserve both independent drivers, events and restart owners; current default SHARED retained, no new cache |
+| Highest low-air | Historical 10678.726 s; current cost UNKNOWN | Exceptional unique numerical research question or essential uncovered risk only; never a routine migration/admission gate |
+| Full frost owner / highest normal | Current cost UNKNOWN; old workflow timeout is not a timing measurement | Affected frost/uptake/drainage/state claims whose owner requires full composition; select frost_owner and full_fci |
+| B19 complete and finer matrix | Current cost UNKNOWN; old 90-minute timeout is not measured cost | Explicit exceptional research with highest_low_air and full_fci decisions |
+| Accepted heat, bounded physical low-air, closure audit or benchmark | Individual current cost UNKNOWN | Explicit modular_broad investigation; normal direct feedback excludes these large closures |
+
+Build review: the existing verified root-provider sharing and irrigation SHARED
+route remain. B15/B19 full historical recipes still compile broad closures and B19
+relinks its driver for qualification; changing their preregistered immutable recipes
+would require separate owner qualification. They are not silently cached or shortened
+here. Duplicate Python identity checks in the moving owner chain remain because they
+bind separate admission branches, not duplicate native qualifications proven safe
+to remove. No claim that every capability workflow is now impact-automated: other
+owner workflows keep their authority and the protocol's mandatory cost justification.
+The outer moving runner enforces its decision for every caller.
+
+### Reconciliation and next Work session
+
+Open #1241 crop/SWRD3 and #1234 solute stay separate; their scientific postimages
+are not consumed. Open #1226 low-air performance and #1214 cache-I/O are not adopted.
+The remaining open master/hydraulic/nutrient/surface branches do not change this
+bounded policy postimage. Live PR heads are retained in the evidence capsule.
+No new full F-CI is scientifically selected just to admit the policy/preflight:
+production, oracles, physical inputs and the body after the preflight are unchanged;
+new execution branches are covered by positive/negative preflight, actual small
+physics and exact-body controls. This is not a fresh full-preservation PASS.
+
+Next Work sessions pin canonical, inspect `--changed-since <base> --selection-only`,
+execute the affected real contract, and reconcile unresolved owner dependencies.
+Before broad work, add a fresh `test_selection` to that owner's existing versioned
+status JSON and set `SWAP5_TEST_SELECTION_RECORD`. The protocol gives the schema,
+repeat diagnosis and complete commands. `--check-selection full_fci` validates
+selection only; actual full PASS still comes from the unchanged scientific runner.
+Any replay inherited from existing receipts must still satisfy its complete terminal
+identity checks. Changing this outer runner conservatively invalidates unaudited
+receipt identity; no receipt pin is widened here.
+
+Workflow inventory finds 532 definitions with push/PR events and 292 jobs declaring
+more than five timeout minutes after these changes. These are configuration counts,
+not 292 measured expensive tests or automatically active runs. Their measured costs
+and individual owner equivalence are UNKNOWN; no bulk disabling or scientific waiver
+is made. This candidate enforces the inspected moving/frost/B19/LOW02/RossFast paths,
+and makes cost selection mandatory in the shared protocol for the other owners.
+
+Evidence: `integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64`. Decoded SHA256
+`aca38c360855f453e239eb81dcbbd331e43d5137e85bc4229982a5d927302723`; 649 indexed files, 107 unique
+blobs, every hash and length roundtrip verified. The indexed bundle restores the
+actually executed local code commits from the canonical baseline. Published
+connector commits are separately checked for equal file/blob identities.

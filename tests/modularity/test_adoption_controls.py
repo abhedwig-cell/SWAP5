@@ -150,6 +150,15 @@ class SelectionControls(unittest.TestCase):
         for k in ['research_question','unique_failure','fast_coverage_gap','why_small_test_insufficient']: self.decision[k]='explicit investigated risk'
         self.save('highest_low_air'); m.require_selection(self.path, 'highest_low_air')
 
+    def test_authority_and_unpersisted_selection_cannot_drift(self):
+        (self.root/'docs/authority.md').write_text('changed owner obligation')
+        with self.assertRaisesRegex(ValueError,'authority changed'):
+            m.require_selection(self.path, 'full_fci')
+        (self.root/'docs/authority.md').write_text('{}\n')
+        self.path.write_text(self.path.read_text()+'\n')
+        with self.assertRaisesRegex(ValueError,'persist selection'):
+            m.require_selection(self.path, 'full_fci')
+
     def test_actual_full_runner_rejects_before_science(self):
         env=dict(os.environ);env.pop('SWAP5_TEST_SELECTION_RECORD',None)
         cp=subprocess.run(['bash',str(self.saved_root/'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh')], env=env,capture_output=True)
@@ -170,5 +179,9 @@ class SelectionControls(unittest.TestCase):
         self.assertIn('run_fci_canonical_p2e05_moving_preservation.sh',full['steps'][-1]['run'])
         b19=yaml.safe_load((workflows/'ppa-wu05b19-runtime-admission.yml').read_text())
         events=b19.get('on',b19.get(True));self.assertEqual(set(events), {'workflow_dispatch'})
+        low=yaml.safe_load((workflows/'fci-ppa-low02-moving-preservation-reconcile.yml').read_text())
+        self.assertEqual(set(low.get('on',low.get(True))), {'workflow_dispatch'})
+        self.assertNotIn("'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'", (workflows/'fci107-rossfast-transform-cache-admission.yml').read_text())
+        self.assertIn('--check-selection rossfast_owner', (workflows/'fci107-rossfast-transform-cache-admission.yml').read_text())
 
 if __name__=='__main__':unittest.main(verbosity=2)

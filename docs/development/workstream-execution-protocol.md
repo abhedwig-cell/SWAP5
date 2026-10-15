@@ -591,7 +591,8 @@ F-CI only through explicit dispatch with the selection record. Historical frozen
 replays have a separate explicit `replay_historical` decision: they run frozen code
 and do not test a changed current candidate. Docs-only pushes do not start numerics.
 The frost workflow retains all full owner bodies through a `frost_owner` selection,
-with highest low-air separately opted in and preflighted. Its automatic route runs
+with highest low-air separately opted in and preflighted. Its full-owner dispatch
+also preflights `full_fci` before any owner compilation. Its automatic route runs
 short root, numerical-policy and independent frost/invalid-input contracts. B19's
 complete highest matrix is explicit research dispatch, with `highest_low_air` and
 `full_fci` decisions. This reconciles obsolete automatic obligations to the 14 October
@@ -603,5 +604,10 @@ feedback fixture, closure audits and benchmarks: these are explicit investigatio
 not routine feedback. A necessary full F-CI keeps its complete existing science body.
 The focused irrigation allocation option retains its bounded owning route. Existing
 resume receipts stay fail-closed on changed runner/tool identity; no new cache or
-receipt eligibility is introduced. Other capability-specific workflows retain their
+receipt eligibility is introduced. The LOW02 moving reconciliation is explicit dispatch with `low02_owner` and
+`full_fci` preflight. F-CI107 no longer triggers on the outer moving wrapper alone:
+its complete RossFast source/test/own-workflow triggers are retained with a
+`rossfast_owner` preflight in the existing F-CI107 status (or explicit dispatch
+record), because the
+wrapper preflight changes none of its scientific recipes. Other capability-specific workflows retain their
 own authority and need the same documented cost selection before deliberate execution.

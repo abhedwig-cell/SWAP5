@@ -51,7 +51,9 @@ jobs:
       - name: Validate existing owner selection before broad work
         env:
           SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
-        run: python3 tests/modularity/run_modular_tests.py --check-selection frost_owner
+        run: |
+          python3 tests/modularity/run_modular_tests.py --check-selection frost_owner
+          python3 tests/modularity/run_modular_tests.py --check-selection full_fci
   modular-feedback:
     if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-24.04

@@ -535,5 +535,41 @@
     }
   ],
   "status_snapshot": "QUALIFIED_CANDIDATE_PRE_MERGE; subsequent canonical admission is established by the merged PR1224 and verified canonical receipt",
-  "canonical_admission_authority": "https://github.com/abhedwig-cell/SWAP5/pull/1224"
+  "canonical_admission_authority": "https://github.com/abhedwig-cell/SWAP5/pull/1224",
+  "proportional_execution_20261015": {
+    "baseline": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "local_tested_commit": "d5bdd4777c0226c8b2ce4d90a635b53e0d159052",
+    "remote_tree_equivalent_checkpoint": "c6b0375d233317495b4c65c88dcfb66bf81cd15b",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_scope": "bounded selection and execution policy; no new science or full-FCI PASS",
+    "canonical_admitted": false,
+    "controls": {
+      "adoption_and_selection": 18,
+      "incumbent_modular": 15
+    },
+    "preservation": "exact original full-FCI body after new preflight; all original principal workflow commands; source/reference/oracle bytes unchanged",
+    "full_fci": "NOT_SELECTED_POLICY_CHANGE_ONLY",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "comparison": {
+      "old_median_seconds": 1.1210302709951065,
+      "new_median_seconds": 0.865064956000424,
+      "rounds": 3,
+      "old_native_executions": 4,
+      "new_native_executions": 2,
+      "compiler_requests_each": 6,
+      "avoided_compilations_measured": 0,
+      "full_fci_or_highest_saving_measured": false
+    },
+    "next_action": "Review one policy PR; subsequent workstreams use existing owner selection record before broad execution",
+    "blockers": [],
+    "evidence": {
+      "path": "integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64",
+      "decoded_sha256": "aca38c360855f453e239eb81dcbbd331e43d5137e85bc4229982a5d927302723",
+      "indexed_members": 649,
+      "unique_blobs": 107,
+      "roundtrip": "PASS"
+    }
+  }
 }
