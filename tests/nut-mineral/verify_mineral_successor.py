@@ -2,10 +2,21 @@
 """Exact additive admission boundary, with original incumbent science retained."""
 from pathlib import Path
 import argparse,base64,hashlib,io,json,os,subprocess,sys,tarfile
+sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 BASE='ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde'
 STATUS='integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json'
 GUARDS=['tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh']
+MINERAL_QUALIFIED='eb03024d99ef9256335eb6e2f3f74bccce8145f0'
+NONLINEAR_PEER={
+ 'src/runtime/mod_fmr_b111_matrix_solute_route.f90':('M','f777ecb68888483bf1ae25ad05f84f1d745c8c87'),
+ 'tests/nut-sol/matrix_nonlinear_oracle.f90':('A','0f8983e0a16da71082917e70cf20502afcb83cd0'),
+ 'tests/nut-sol/run_matrix_route.py':('M','7394d1d204f7c9d22b08344dd8e617badf07dd5c'),
+ 'tests/nut-sol/test_matrix_joint.f90':('M','28eae2c907d2ceb5e3d5556f569d81a12ec3a491'),
+ 'tests/nut-sol/test_matrix_nonlinear_partition.f90':('A','8dae6dcb54369a947b5704a9c46bb836b36be3df'),
+ 'tests/nut-sol/test_matrix_route.f90':('M','3c1244fbc59cef38413a1a54a24a104ac5d1cc06'),
+ 'tests/crop-co2/test_nonlinear_admission_controls.py':('A','c7cb4120e05b7e9fdd9e513d087614a221d33016'),
+}
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def check(ok,label):
  if not ok:raise ValueError(label)
@@ -16,11 +27,17 @@ def verify_source():
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
  rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
  expected={p:'A'for p in s['source_blobs']};expected.update({p:'M'for p in GUARDS})
+ expected.update({p:kind for p,(kind,h)in NONLINEAR_PEER.items()})
  check(rows==expected,'foreign additive delta')
  for p,h in {**s['source_blobs'],**s['guard_blobs']}.items():
   check(git('rev-parse','HEAD:'+p)==h==blob((ROOT/p).read_bytes()),'unknown postimage '+p)
+ for p,(kind,h)in NONLINEAR_PEER.items():
+  check(git('rev-parse','HEAD:'+p)==h==blob((ROOT/p).read_bytes()),'unknown nonlinear peer '+p)
  check(set(s['guard_blobs'])==set(GUARDS),'guard coverage')
  check(git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference'),'reference mutation')
+ sys.path.insert(0,str(ROOT/'tests/crop-co2'))
+ from verify_co2_successor import nonlinear_evidence
+ nonlinear_evidence() # peer eligibility also requires terminal real-physics proof
  return dict(baseline=BASE,source_tree=git('rev-parse','HEAD:src'),mineral_successor=True,qualified=False,admitted=False)
 def read_evidence():
  s=json.loads((ROOT/STATUS).read_text())
@@ -38,7 +55,7 @@ def read_evidence():
 def verify_qualification():
  source=verify_source();data=read_evidence();r=json.loads(data['result.json']);events=json.loads(data['events.json'])
  check(r['status']=='SCOPED_LOCAL_QUALIFICATION_PASS_NOT_ADMITTED','unfinished qualification')
- check(r['source_tree']==source['source_tree'],'stale source tree')
+ check(r['source_tree']==git('rev-parse',MINERAL_QUALIFIED+':src'),'stale qualified mineral source tree')
  check(r['authority_sha256']=='b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722','historical source drift')
  for p,h in r['input_sha256'].items():check(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h,'stale physical input '+p)
  production={p for p in json.loads((ROOT/STATUS).read_text())['source_blobs']if p.startswith('src/')}
