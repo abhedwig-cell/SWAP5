@@ -562,7 +562,7 @@
       "avoided_compilations_measured": 0,
       "full_fci_or_highest_saving_measured": false
     },
-    "next_action": "Review one policy PR; subsequent workstreams use existing owner selection record before broad execution",
+    "next_action": "Safely merge PR1245 expected head, then verify canonical tree. No science migration or count changes.",
     "blockers": [],
     "evidence": {
       "path": "integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64",
@@ -577,6 +577,18 @@
       "tree": "eac36c3506327a32a45adeea8e6a23a703735f49",
       "local_tree_equal": true
     },
-    "final_prefix_test_commit": "e8a51cb039c1786cd375c9ec50df1d76fef3eb82"
+    "final_prefix_test_commit": "e8a51cb039c1786cd375c9ec50df1d76fef3eb82",
+    "closeout_reconciliation": {
+      "canonical": "56aa2ba52fc4980053d712df85660a2facdfb0f4",
+      "local_merge": "86fc3e2b",
+      "adoption_selection_controls": 18,
+      "fresh_controls": "PASS",
+      "source_reference": "EXACT_CANONICAL",
+      "moving_body": "EXACT_CANONICAL_AFTER_REMOVING_SELECTION_PREFLIGHT",
+      "owner_only": "existing thermal source/evidence-only exit retained before expensive selection; no full numerical PASS",
+      "docs_source": "PASS",
+      "full_fci": "NOT_SELECTED_POLICY_ONLY",
+      "highest": "NOT_SELECTED_POLICY"
+    }
   }
 }

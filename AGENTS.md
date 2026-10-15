@@ -177,3 +177,6 @@ before any compilation. Use an existing work-unit JSON; missing/stale selection
 blocks execution. For reviewed local seams use `--changed-since <exact-base>`;
 unmapped/shared dependency changes require owner selection, never inherited PASS.
 Automatic feedback and explicitly selected stable-candidate admission are separate.
+## Change-impact qualification: avoid retesting unchanged components
+
+Follow `Change-impact selection for already qualified components (2026-10-15)` in `docs/development/workstream-execution-protocol.md`. New valid forcing or boundary-condition values in an already qualified input domain are not by themselves a reason to repeat solver or other component qualification. RossFast is one example, not an exception. Select tests for genuinely changed implementation, scientific contract, state/coupling semantics or a concrete uncovered failure mode. Test changed physics and accepted mass/state with focused real production drivers; select additional component tests only when the actual impact warrants them. A changed import or source dependency alone does not require full unrelated preservation. Retain conservative evidence identity and required science checks; `NOT_SELECTED_IMPACT` is not a PASS. Check compound runners for implicit obsolete selections before expensive execution.

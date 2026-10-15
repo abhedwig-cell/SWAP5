@@ -20,6 +20,12 @@ def baseline_command(path):
  p=subprocess.run([sys.executable,'-B',str(root/path)],cwd=root,capture_output=True,check=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return json.loads(p.stdout)
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -31,6 +37,9 @@ def verify_source(git_reader=None):
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'reference changed')
  return dict(baseline=BASE,source_tree=g('rev-parse','HEAD:src'),current_source_tree=g('rev-parse','HEAD:src'),input_successor=True,calendar_successor=True,senescence_successor=True,qualified=False,admitted=False)
 def read_evidence():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.capsule(json.loads((ROOT/swrd3.STATUS).read_text())['reconciled_input_evidence'])
  s=json.loads((ROOT/STATUS).read_text());e=s['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
  check(len(raw)==e['decoded_bytes']and sha(raw)==e['sha256'],'capsule drift')
  with tarfile.open(fileobj=io.BytesIO(raw))as a:
@@ -39,9 +48,13 @@ def read_evidence():
  manifest=json.loads(d.pop('MANIFEST.json'));check(set(manifest)==set(d),'manifest coverage')
  for p,h in manifest.items():check(sha(d[p])==h,'raw drift '+p)
  return d
+def default_dependency(path,expected):
+ if not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():return False
+ sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+ return swrd3.compatible_default_dependency(path,expected)
 def inputs_valid(r):
  for p,h in r['input_sha256'].items():
-  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h,'stale input '+p)
+  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h or default_dependency(p,h),'stale input '+p)
 def events_valid(d,prefix,events):
  for e in events:
   check(e['returncode']==0 and e['seconds']>=0,'failed native/build')
@@ -103,7 +116,7 @@ def validate_composition(d,prefix,source,mode,process):
   body=original['management_soil.f90'];a=body.index(b'! Mineralisation, but Nminer is negative in case of immobilisation');b=body.index(b'      Call Wofost_SoilBalanceCheck',a)
   check(body[a:b]in d[prefix+opt+'/literal_crop_exchange.f90'],'literal uptake changed')
   check(d[prefix+opt+'/material_oracle.inc']==wrapper.encode(),'literal wrapper changed')
-  row=r['runs'][opt];check(row['production_providers']==(267 if mode=='joint'else 47),'actual closure drift');check(set(row['drivers'])==expected,'driver coverage')
+  row=r['runs'][opt];check(row['production_providers']==((269 if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else 267)if mode=='joint'else 47),'actual closure drift');check(set(row['drivers'])==expected,'driver coverage')
   es=[e for e in ev if e['category']=='compile'and '-'+opt in e['command']]
   compiled={'src/'+e['command'][e['command'].index('-c')+1].split('/src/',1)[1]for e in es if '/src/'in e['command'][e['command'].index('-c')+1]}
   check(compiled=={p for p in r['input_sha256']if p.startswith('src/')}and len(compiled)==row['production_providers'],'fresh exact provider closure absent')
@@ -127,10 +140,20 @@ def validate_composition(d,prefix,source,mode,process):
    check(d[prefix+opt+'/file-restart.bin'][:8]==b'S5NC0002','pending full restart profile absent')
  return r
 def validate(d,source):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()and (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  check(source['source_tree']==swrd3.git('rev-parse','HEAD:src'),'foreign current input authority')
+  source={**source,'source_tree':json.loads((ROOT/swrd3.STATUS).read_text())['qualified_input_source_tree']}
  p=validate_process(d,source)
  validate_composition(d,'day/',source,'day',p);validate_composition(d,'joint/',source,'joint',p)
  return p
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_qualification()
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  prior=baseline_command('tests/nut-calendar/verify_calendar_successor.py');check(prior['qualified'],'baseline owner failed')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

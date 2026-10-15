@@ -53,6 +53,10 @@ def validate(old, new, reference, baseline_reference):
 
 
 def verify_source():
+    if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+        import sys
+        sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+        return swrd3.verify_source()
     if git('rev-parse', 'HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90') == '5a93008ed2fb18d0798ec0c967729815d156ec26':
         import sys
         sys.path.insert(0, str(ROOT / 'tests/crop-co2'))

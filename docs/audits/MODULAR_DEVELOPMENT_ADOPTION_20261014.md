@@ -298,3 +298,16 @@ The capsule includes the final persisted irrigation-preflight delta and its fres
 18-control PASS. Both full and focused entrypoints reject missing selections before
 compilation; the full scientific body remains exact. Earlier executed code and
 results are retained with their original identities, not relabelled as later runs.
+
+
+### PR1245 final canonical reconciliation
+
+Reconciled canonical `56aa2ba52fc4980053d712df85660a2facdfb0f4`, including
+admitted SWRD2 and the thermal source/evidence-only dispatch. That bounded
+dispatch exits before the expensive full-FCI selection; all numerical routes
+still require their persisted selection. After removing only that preflight,
+the moving runner equals the current canonical bytes. Production/reference
+trees are unchanged. Fresh 18 adoption/selection controls and actual missing
+selection refusal PASS; docs source checks PASS. No full F-CI or highest run
+is selected for this policy integration. Existing science remains bounded by
+its own immutable source and admission authority.

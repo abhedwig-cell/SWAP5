@@ -4,6 +4,16 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Source/evidence-only owner selection. This is never a full moving PASS.
+if [[ "${1:-}" == --nut-thermal-owner-only ]]; then
+  python3 -B tests/nut-thermal/verify_thermal_successor.py
+  python3 -B tests/crop-co2/verify_co2_successor.py
+  echo 'FCI_NUT_THERMAL_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+nut_thermal_exact_successor=0
+NUT_THERMAL_BACKEND=7e1b034e5cd134050e695c9a097c44a3eaeca344
+
 # Decision in the existing work-unit, before any compile or owner invocation.
 # The focused irrigation route selects its own expensive group, not full F-CI.
 selection_group=full_fci
@@ -165,6 +175,11 @@ if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
 fi
 
 verify_crop_frost_highest(){
+  if [[ -f src/runtime/mod_fmr_biomass_root_uptake_input.f90 ]]; then
+    python3 tests/root-growth/verify_swrd3_successor.py
+    echo 'SWRD3_HIGHEST_NOT_SELECTED_POLICY_FAST_PHYSICAL_OWNER_BOUND=PASS'
+    return
+  fi
   if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
     python3 tests/crop-co2/verify_co2_successor.py
     echo 'CROP_CO2_HIGHEST_NOT_SELECTED_POLICY_FAST_OWNER_BOUND=PASS'
@@ -415,6 +430,14 @@ if [[ -f src/crop/mod_crop_soil_n_material_day.f90 ]]; then
   python3 tests/nut-material/verify_material_successor.py || fail 'unqualified explicit soil-N material day successor'
   dependency_authority=48e6aeb15a66dfd11a85de39dc6f8229842d1fd1
 fi
+if [[ -f src/runtime/mod_fmr_biomass_root_uptake_input.f90 ]]; then
+  python3 tests/root-growth/verify_swrd3_successor.py || fail 'unqualified SWRD3 daily production'
+  dependency_authority=3b661766dc59298a7f541c970c2d3a55602d926c
+fi
+if [[ -f integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json ]]; then
+  python3 -B tests/nut-thermal/verify_thermal_successor.py || fail 'unqualified accepted thermal N owner'
+  nut_thermal_exact_successor=1
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -425,6 +448,10 @@ for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runt
   fi
 done
 for path in "${dependency_surface[@]}"; do
+  if (( nut_thermal_exact_successor )) && [[ "$path" == "$BACKEND" ]]; then
+    test "$(git rev-parse "HEAD:$path")" = "$NUT_THERMAL_BACKEND" || fail 'thermal backend default projection drift'
+    continue
+  fi
   if (( crop_file_weather_exact_successor )) && [[ "$path" == src/runtime/mod_fmr_serialized_multiswap_runtime.f90 ]]; then
     continue # Exact postimage checked above; all F-KT semantics remain guarded.
   fi
@@ -686,11 +713,14 @@ check_b19_micro_root_recomposition() {
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
-      src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 )
+        python3 -B tests/root-growth/verify_swrd2_successor.py || fail 'unqualified persistent SWRD2 crop transaction'
+        ;;
+      src/runtime/mod_fmr_biomass_root_uptake_input.f90|src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
         (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
         ;;
       src/runtime/mod_fmr_serialized_reference_backend.f90 )
-        (( crop_fkt_b110_exact_successor || mc_heat01_exact_successor )) ||
+        (( crop_fkt_b110_exact_successor || mc_heat01_exact_successor || nut_thermal_exact_successor )) ||
           fail "unqualified shared serialized backend source change: $candidate_path"
         ;;
       src/runtime/mod_groundwater_multiswap_publication.f90 )
@@ -799,7 +829,7 @@ check_b19_micro_root_recomposition() {
       src/process/mod_soil_n_day_environment.f90 )
         python3 tests/nut-environment/verify_environment_successor.py || fail "unqualified daily environment: $candidate_path"
         ;;
-      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90|src/process/mod_crop_senescence_residue.f90|src/crop/mod_crop_soil_n_senescence_day.f90|src/runtime/mod_fmr_crop_soil_n_senescence_application.f90|src/process/mod_soil_n_amendment_calendar.f90|src/crop/mod_crop_soil_n_calendar_day.f90|src/runtime/mod_fmr_crop_soil_n_calendar_application.f90|src/process/mod_soil_n_amendment_input.f90 )
+      src/process/mod_b111_soil_n_addition.f90|src/crop/mod_crop_soil_n_material_day.f90|src/runtime/mod_fmr_crop_soil_n_material_application.f90|src/process/mod_crop_senescence_residue.f90|src/crop/mod_crop_soil_n_senescence_day.f90|src/runtime/mod_fmr_crop_soil_n_senescence_application.f90|src/process/mod_soil_n_amendment_calendar.f90|src/crop/mod_crop_soil_n_calendar_day.f90|src/runtime/mod_fmr_crop_soil_n_calendar_application.f90|src/process/mod_soil_n_amendment_input.f90|src/process/mod_soil_n_profile_temperature.f90|src/runtime/mod_fmr_soil_n_accepted_temperature.f90|src/runtime/mod_fmr_crop_soil_n_thermal_application.f90 )
         python3 tests/nut-material/verify_material_successor.py || fail "unqualified material day successor: $candidate_path"
         ;;
       *) fail "B19+MICRO unqualified source change: $candidate_path" ;;
@@ -1077,7 +1107,9 @@ check_b19_micro_root_recomposition() {
     if (( crop_file_weather_exact_successor )) && [[ "$candidate_path" == src/runtime/mod_fmr_production_application_bootstrap.f90 ]]; then
       continue # Independently qualified exact bootstrap, no wildcard drift.
     fi
-    if (( mc_heat01_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+    if (( nut_thermal_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
+      test "$(git rev-parse "HEAD:$candidate_path")" = "$NUT_THERMAL_BACKEND" || fail 'thermal backend exact successor drift'
+    elif (( mc_heat01_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
       test "$(git rev-parse "HEAD:$candidate_path")" = "$MC_HEAT01_BACKEND" || fail 'MC-HEAT01 shared backend exact successor drift'
     elif (( crop_fkt_b110_exact_successor )) && [[ "$candidate_path" == "$BACKEND" ]]; then
       test "$(git rev-parse "HEAD:$candidate_path")" = "b218ac657db52612bc12da671716c97430200f0a" ||
@@ -1121,7 +1153,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
     # surface while preserving B19 behavior; accept only that exact successor.
     if git merge-base --is-ancestor f734c28d7159ce2cd8d326687c887828c214c2f1 HEAD; then
       check_b19_micro_root_recomposition
-      if (( mc_heat01_exact_successor )); then
+      if (( nut_thermal_exact_successor )); then
+        test "$(git rev-parse HEAD:$BACKEND)" = "$NUT_THERMAL_BACKEND" || fail 'thermal exact backend drift'
+      elif (( mc_heat01_exact_successor )); then
         test "$(git rev-parse HEAD:$BACKEND)" = "$MC_HEAT01_BACKEND" || fail 'MC-HEAT01 exact backend drift'
       elif (( crop_fkt_b110_exact_successor )); then
         test "$(git rev-parse HEAD:$BACKEND)" = "b218ac657db52612bc12da671716c97430200f0a" ||
@@ -1577,7 +1611,9 @@ if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
   test "$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)" = \
        "$(git rev-parse "$dependency_authority:src/solver/mod_b110_default_mvg_provider.f90")" || \
     fail 'candidate changed current default-MvG provider target postimage'
-  if (( mc_heat01_exact_successor )); then
+  if (( nut_thermal_exact_successor )); then
+    backend_authority="$NUT_THERMAL_BACKEND"
+  elif (( mc_heat01_exact_successor )); then
     backend_authority="$MC_HEAT01_BACKEND"
   elif (( crop_fkt_b110_exact_successor )); then
     backend_authority="b218ac657db52612bc12da671716c97430200f0a"

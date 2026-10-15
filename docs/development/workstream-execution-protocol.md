@@ -485,6 +485,17 @@ bytes and O0/O2 science outputs must match. Retain compile, link, native-plus-dr
 identity/oracle validation and total timing separately; physics alone is UNKNOWN
 unless independently instrumented. See [the adoption results](../audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md).
 
+
+### Change-impact selection for already qualified components (2026-10-15)
+
+Previously qualified components are not retested merely because upstream physics, forcing or boundary-condition values change. The test selection must identify a changed scientific contract, a changed component implementation, or a specific failure mode not covered by existing qualification. A change of valid input values within the qualified domain is not itself a contract change. This rule applies to all independently qualified components, including RossFast, not only solvers.
+
+For routine crop, root, meteorology, irrigation, drainage and solute migrations, test the changed production physics and its accepted mass/state effects with focused module and physical integration tests. Do not automatically repeat qualification of independent unchanged downstream components. Check genuine interface semantics, input domain, state ownership, accept/reject/rollback, restart and coupling effects before selecting additional tests. A changed shared source file or module import alone is not proof that a component's scientific contract changed.
+
+When a component implementation or relevant contract actually changes, select the smallest test that can discriminate the resulting risk, and run owning preservation when genuinely required by the applicable authority. If an essential new failure mode outside qualified coverage is identified, record the specific gap and test it. Prior PASS may only be inherited with the protocol's full identity and terminal evidence requirements; otherwise record NOT_SELECTED_IMPACT, not PASS. Never relax numerical tolerances, physical oracles or conservation requirements.
+
+Before executing a compound runner, inspect whether it automatically starts unrelated component suites, including F-ROSS preservation, and reconcile outdated automatic selection through the owning runner authority. Documentation changes alone do not alter CI routing. Use the existing PR/workunit for selection rationale, expected cost and evidence; no new register.
+
 ### Highest low-air selection decision (2026-10-14)
 
 The user/programme lead has retired the long highest low-air qualification as a

@@ -14,6 +14,10 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_source(git_reader)
  if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
   return calendar.verify_source(git_reader=git_reader)
@@ -175,6 +179,10 @@ def validate(d,source):
   check(sha(d['pending_probe/'+opt+'.stdout'])==row['stdout_sha256']and b'INVALID_DISK=PASS'in d['pending_probe/'+opt+'.stdout'],'pending native rejection absent')
  return result
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.verify_qualification()
  if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
   return calendar.verify_qualification()
@@ -182,6 +190,13 @@ def verify_qualification():
  baseline_command('tests/nut-material-environment/verify_material_environment_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent(mode='qualification'):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  return swrd3.incumbent(mode)
+ if (ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
+  return calendar.verify_qualification()
  verify_qualification();return {**baseline_command('tests/nut-material-environment/verify_material_environment_successor.py',['--incumbent',mode]),'senescence_successor':True,'senescence_source_tree':git('rev-parse','HEAD:src')}
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--source-only',action='store_true');p.add_argument('--incumbent',choices=['source','physical','qualification']);a=p.parse_args()
