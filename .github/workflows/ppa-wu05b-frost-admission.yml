@@ -22,6 +22,17 @@ on:
       - 'integration/audits/PPA_WU05B*.json'
       - '.github/workflows/ppa-wu05b-frost-admission.yml'
 
+  workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing work-unit JSON with frost_owner and optional highest_low_air decisions
+        required: true
+        type: string
+      highest_low_air:
+        description: Exceptional numerical stress research; never routine admission
+        default: false
+        type: boolean
+
 permissions:
   contents: read
 
@@ -30,7 +41,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  selection-preflight:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate existing owner selection before broad work
+        env:
+          SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+        run: |
+          python3 tests/modularity/run_modular_tests.py --check-selection frost_owner
+          python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+  modular-feedback:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fast physical and numerical contracts; no highest qualification claim
+        run: |
+          python3 tests/modularity/run_modular_tests.py --case root_oxygen --case root_contract --case low_air_policy --output "$RUNNER_TEMP/frost-feedback"
+          bash tests/frost/run_frost_invalid_input_preservation.sh
+          bash tests/frost/run_frost_nan_guard_independent.sh
   bounded-frost-qualification:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -163,6 +201,10 @@ jobs:
           git diff --check
 
   analytic-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
@@ -187,6 +229,10 @@ jobs:
           fi
 
   empirical-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
@@ -217,6 +263,10 @@ jobs:
           fi
 
   extended-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
@@ -245,6 +295,10 @@ jobs:
           fi
 
   highest-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     strategy:
@@ -264,7 +318,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
+      - name: Select highest route explicitly
+        env:
+          SELECT_LOW_AIR: ${{ inputs.highest_low_air }}
+        run: |
+          if [[ '${{ matrix.route }}' == low_air && "$SELECT_LOW_AIR" != true ]]; then
+            echo 'highest low-air NOT_SELECTED_POLICY'
+          else
+            python3 tests/modularity/run_modular_tests.py --check-selection ${{ matrix.route == 'low_air' && 'highest_low_air' || 'frost_owner' }}
+          fi
       - name: Actual highest runtime, held cases, finer references and preservation
+        if: matrix.route != 'low_air' || inputs.highest_low_air
         run: |
           if test -f tests/frost/run_ppa_wu05b15_runtime.py; then
             if test "$(git rev-parse HEAD:src)" = ac822aafd5403547a2c7ffad5c3ba02c9fa36496; then

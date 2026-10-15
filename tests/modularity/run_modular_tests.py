@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local production-contract feedback. Owning admission gates remain separate."""
 from __future__ import annotations
-import argparse, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, time
+import argparse, math, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -171,11 +171,127 @@ class Session:
                       executable_sha256=sha(exe),artifact_sha256={str(p.relative_to(self.out)):h for p,h in self.artifacts[key][1].items()})
         return record
 
+# Selection is deliberately bounded to reviewed local seams, not an import-graph
+# admission inference. Anything else needs the existing scientific owner's record.
+LOCAL_SEAMS = {
+ 'src/process/mod_restricted_surface_evaporation.f90': ['boesten'],
+ 'src/process/mod_root_water_uptake_process.f90': ['root_oxygen', 'root_contract'],
+ 'src/process/mod_drainage_hooghoudt_equivalent_depth.f90': ['drainage'],
+ 'src/crop/mod_wofost81_assimilation.f90': ['assimilation'],
+}
+
+def descriptive(path):
+    return path == 'AGENTS.md' or (path.startswith('docs/') and path.endswith('.md'))
+
+def select_changes(paths):
+    cases = set(); unresolved = []; shared = []
+    for path in sorted(set(paths)):
+        if descriptive(path):
+            continue
+        if path in LOCAL_SEAMS:
+            cases.update(LOCAL_SEAMS[path])
+        else:
+            unresolved.append(path)
+            if path.startswith(('src/runtime/', 'src/solver/', 'src/transaction/', 'src/adapter/')):
+                shared.append(path)
+    if shared:
+        cases.update(DEFAULT_CASES + ['low_air_policy'])
+    return {'changed_paths': sorted(set(paths)), 'cases': sorted(cases),
+            'status': 'BLOCKED_OWNER_SELECTION' if unresolved else 'FEEDBACK_SELECTED',
+            'unresolved_dependencies': unresolved,
+            'required_followup': (['affected state/solver physical composition',
+                'affected owner integration/admission and restart/coupling gates',
+                'full moving F-CI when admission authority requires it'] if shared else
+                ['affected physical composition and owning admission gates'] if paths and cases else []),
+            'highest_low_air': 'NOT_SELECTED_POLICY',
+            'inherited_pass': False,
+            'scope': 'local feedback only; no owner/admission gate is waived'}
+
+def git_text(*args):
+    return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
+
+def changed_since(base):
+    # No triple-dot merge-base omission: deletions and both sides of a rename
+    # matter. Include staged/unstaged and untracked inputs, never just imports.
+    paths = set(git_text('diff', '--name-only', '--no-renames', base, 'HEAD').splitlines())
+    paths.update(git_text('diff', '--name-only', '--no-renames', 'HEAD').splitlines())
+    paths.update(git_text('ls-files', '--others', '--exclude-standard').splitlines())
+    return sorted(p for p in paths if '__pycache__/' not in p)
+
+def require_selection(record_path, group):
+    """Check a decision in an EXISTING work-unit JSON, never grant science PASS.
+
+    This checks presence, freshness and explicit selection. The named owner and
+    its evidence validators still determine adequacy and scientific admission.
+    """
+    if not record_path:
+        raise ValueError('selection record required: set SWAP5_TEST_SELECTION_RECORD')
+    record = Path(record_path)
+    if not record.is_absolute(): record = ROOT / record
+    relative_record = str(record.resolve().relative_to(ROOT))
+    if git_text('ls-files', '--error-unmatch', relative_record) != relative_record:
+        raise ValueError('selection must use a versioned existing work-unit record')
+    data = json.loads(record.read_text())['test_selection']
+    candidate = data['candidate']
+    if not re.fullmatch(r'[0-9a-f]{40}', candidate): raise ValueError('candidate must be an exact commit SHA')
+    if git_text('diff', '--name-only', 'HEAD', '--', relative_record):
+        raise ValueError('persist selection record before execution')
+    git_text('rev-parse', '--verify', candidate + '^{commit}')
+    changed = changed_since(candidate)
+    drift = [p for p in changed if not descriptive(p) and p != relative_record]
+    if drift: raise ValueError('selection candidate dependency drift: ' + ', '.join(drift))
+    decision = data['groups'][group]
+    for key in ('changed_dependency', 'scientific_claim', 'owner', 'authority', 'existing_evidence'):
+        if not isinstance(decision.get(key), str) or not decision[key].strip():
+            raise ValueError('missing selection field: ' + key)
+    authority = ROOT / decision['authority'].split('#')[0]
+    if not authority.is_file(): raise ValueError('missing owning authority')
+    authority_path = str(authority.resolve().relative_to(ROOT))
+    if git_text('diff', candidate, '--', authority_path):
+        raise ValueError('owning authority changed since selection candidate')
+    seconds = decision.get('expected_seconds')
+    if isinstance(seconds, bool) or not isinstance(seconds, (int, float)) or not math.isfinite(seconds) or seconds <= 0:
+        raise ValueError('expected_seconds must be a finite positive estimate')
+    prior = decision.get('prior_execution')
+    if prior not in ('NONE', 'PASS', 'FAILED', 'UNEXPECTED_LONG'):
+        raise ValueError('prior_execution must describe existing execution')
+    if prior != 'NONE' and not decision.get('diagnosis'):
+        raise ValueError('diagnose prior execution before identical qualification')
+    if group == 'highest_low_air':
+        for key in ('research_question', 'unique_failure', 'fast_coverage_gap', 'why_small_test_insufficient'):
+            if not decision.get(key): raise ValueError('missing stress justification: ' + key)
+    return {'status': 'SELECTED_NOT_QUALIFIED', 'group': group,
+            'record': relative_record, 'candidate': candidate, 'decision': decision}
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output')
     ap.add_argument('--benchmark',action='store_true');ap.add_argument('--repeat',type=int,default=3)
     ap.add_argument('--audit-build',action='store_true');ap.add_argument('--audit-closures',action='store_true');ap.add_argument('--list',action='store_true');ap.add_argument('--independent-builds',action='store_true');ap.add_argument('--case',choices=list(CASES),action='append')
+    ap.add_argument('--changed-since', help='Conservative local-feedback selection from an exact Git ref')
+    ap.add_argument('--selection-only', action='store_true')
+    ap.add_argument('--check-selection', metavar='GROUP', help='Preflight an existing work-unit decision; execute no science')
     args=ap.parse_args()
+    if args.check_selection:
+        try:
+            print(json.dumps(require_selection(os.environ.get('SWAP5_TEST_SELECTION_RECORD'), args.check_selection), indent=2))
+        except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as exc:
+            ap.error(str(exc))
+        return
+    selected = None
+    if args.changed_since:
+        if args.case or args.benchmark or args.audit_build or args.audit_closures:
+            ap.error('--changed-since cannot be combined with manual/broad selection')
+        selected = select_changes(changed_since(args.changed_since))
+        print(json.dumps(selected, indent=2), flush=True)
+        if args.selection_only: return
+        if selected['status'].startswith('BLOCKED'): ap.error('reconcile unresolved dependencies in the owning work-unit before execution')
+        if not selected['cases']: return
+        args.case = selected['cases']
+    elif args.selection_only:
+        ap.error('--selection-only requires --changed-since')
+    if args.benchmark or args.audit_build or args.audit_closures or (args.case and set(args.case) & {'accepted_heat', 'low_air_physical'}):
+        try: require_selection(os.environ.get('SWAP5_TEST_SELECTION_RECORD'), 'modular_broad')
+        except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as exc: ap.error(str(exc))
     if args.repeat < 1: ap.error("repeat must be positive")
     if args.list:
         print(json.dumps({'default_cases':DEFAULT_CASES,'cases':CASES,'claim':'feedback only; not admission selection'},indent=2));return
@@ -200,7 +316,7 @@ def main():
             _,execute=s.command([str(build/'probe')],build,'audit-run')
             audit[name].update(build_seconds=time.perf_counter()-start,compile_seconds=sum(e['wall_seconds'] for e in events),link_seconds=event['wall_seconds'],compiler_requests=len(closure)+1,link_probe='PASS',external_sources=list(map(str,externals)))
         write(out/'AUDIT.json',audit)
-    records=[];cases=args.case or (['mvg','boesten','accepted_heat'] if args.benchmark else DEFAULT_CASES)
+    records=[];cases=list(dict.fromkeys(args.case)) if args.case else (['mvg','boesten','accepted_heat'] if args.benchmark else DEFAULT_CASES)
     for round_index in range(args.repeat if args.benchmark else 1):
         for broad in ([True,False] if round_index%2==0 else [False,True]) if args.benchmark else [False]:
             for case in cases:
@@ -208,7 +324,7 @@ def main():
                     r=s.execute(case,opt,broad=broad);r.update(round=round_index,build='cold');records.append(r)
                     write(out/'RESULTS.json',{'head':head,'audit':audit,'records':records,'events':s.events})
                     print(json.dumps({k:r[k] for k in ['case','optimization','route','total_seconds','compiler_requests']}),flush=True)
-                    if not broad:
+                    if args.benchmark and not broad:
                         warm=s.execute(case,opt,reuse=True);warm.update(round=round_index,build='warm_same_transaction');records.append(warm)
                         if warm['stdout_sha256']!=r['stdout_sha256']:raise RuntimeError('warm output drift')
         for case in cases:

@@ -18,6 +18,9 @@ def verify_source(git_reader=None):
  if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
   return harvest.verify_source(git_reader)
+ if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+  import verify_swrd2_successor as swrd2
+  return swrd2.verify_source(git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'wrong SWRD3 baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -137,11 +140,17 @@ def verify_physical():
  if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
   return harvest.verify_physical()
+ if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+  import verify_swrd2_successor as swrd2
+  return swrd2.verify_physical()
  return validate_physical(read_evidence(),verify_source())
 def verify_qualification():
  if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/crop-harvest'));import verify_harvest_successor as harvest
   return harvest.verify_qualification()
+ if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+  import verify_swrd2_successor as swrd2
+  return swrd2.verify_qualification()
  source=verify_physical();s=json.loads((ROOT/STATUS).read_text());d=capsule(s['swrd3_owner_evidence'])
  native_source={**source,'source_tree':s['qualified_native_source_tree']}
  r=json.loads(d['additional/RESULTS.json']);check(r['status']=='PASS'and r['source']['source_tree']==native_source['source_tree'],'owner source/status drift')

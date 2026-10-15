@@ -20,7 +20,11 @@ def compatibility():
  baseline={p:subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)for p in PROJECTORS}
  check(project(current,baseline),'default projection failed')
  moving='tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
- check(project_moving((ROOT/moving).read_text())==subprocess.check_output(['git','show',('a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04'if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else BASE)+':'+moving],cwd=ROOT,text=True),'moving scientific body changed')
+ text=(ROOT/moving).read_text()
+ if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd2_successor as swrd2
+  text=swrd2.project_moving(text)
+ check(project_moving(text)==subprocess.check_output(['git','show',('a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04'if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()else BASE)+':'+moving],cwd=ROOT,text=True),'moving scientific body changed')
  return {p:hashlib.sha256(b.encode()).hexdigest()for p,b in baseline.items()}
 def verify_source(git_reader=None):
  if (ROOT/'src/crop/mod_wofost81_harvest_materials.f90').exists():

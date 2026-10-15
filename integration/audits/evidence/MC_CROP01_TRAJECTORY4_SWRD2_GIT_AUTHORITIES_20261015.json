@@ -1,0 +1,988 @@
+{
+  "status": "PASS",
+  "scope": "Literal checked refs in conservatively reachable moving-runner scripts; no science or missing-member waiver.",
+  "runner_files": {
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "b2a890fa5e65d43468d5e7063b81db94a7233343e40475420ae1eb51e65a7450",
+    "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh": "131d2b4cc45e1b72b8e05d0fa85a82d9b6f4a6fa688645c34341074e6ae38ed3",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh": "de27600139d49b77e903c10e38b67787fa6759984fa289c050a3f0d0e22e6aa6",
+    "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2",
+    "tests/ross/run_ross12_serialized_production_wiring.sh": "a7609a21d365d27355262b8656ca65ebf38706d9588bd5a898474fc88b407b9c",
+    "tests/ross/run_ross12_solver_selection_binding.sh": "c2a7b0df83fa5622b31b154a384dbcb00033e248e02da1f23af275d28bfbd14e",
+    "tests/ross/run_ross12_soil_water_solver_adapter.sh": "02782aa576c955063f3bb421506447c379b18b6fc907b889f92549e70028430f",
+    "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh": "77d568758914d51359865d9941669569a32c8e6ec5e85ff58390cbbc73ceaca7",
+    "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh": "b76879809527482efe6a8493cfaa5499b906d42a5bd6d902df62ca27fc4ff187",
+    "tests/ross/run_ross13_36_material_production_envelope.sh": "bd41ee1c6bff6d8bf2a6545f2f3aefe1b082cd8f81a1ce33c6c2a3aa962a1003",
+    "tests/fci/run_fci107_fross17_cache_successor_preservation.sh": "8d5d7a4e63455e944eca1e7f8bf610230672fcafc14099cbb15795ee666b58ef",
+    "tests/fci/run_fci_fross22_tiered_successor_preservation.sh": "bd47347c857943007cba242a84646ddca48da5ada0001dbeecca26800dddca11",
+    "tests/ross/run_fross22_admission_all_material.sh": "e38b1fdb6503be374de3300dcd99770739e4057997493573a19bdc344d8b882a",
+    "tools/performance/f_ross22_admission_all_material_summary.py": "1aac2bc30b638e5d53377107e55b9d7cd9baeb157bafc5f97c1e2c4a2bebd5d5",
+    "tests/fci/run_crop_file_weather_production_successor.sh": "e4f8eebab461b0970e8aadd58b865d3d69fa0ce61b722bbb0c912cc58f4691e9",
+    "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh": "e9e09e3fce7d14dafb0931840f536dd5a6cb772ca94f7bf01d3b7f2d0ed7bc68",
+    "tests/frost/build_ppa_wu05b19_runtime.py": "1257e9e8bcee030e0964caa711a98047fe529f303c3245d2c504234b1c691e35",
+    "tests/physics/run_ppa_micro03_runtime.py": "a382269f497e72d81a7c65c7b7c7c98fbaf70deade1c3fa44cb1ecff5a7eb40b",
+    "tests/fahl/run_fahl49_application_scale.sh": "581071516b885b8c90c709f3b818cbd5091b076750c4c2f117c90e5a7c3a7b5a",
+    "tests/physics/run_ppa_micro02_de_willigen.py": "d6c2ef8449f0f5ca93969af040ed88628a1294d11d95cef9bc9df6c96c908eb5",
+    "tests/fmig431/run_crop_rotation_transition.sh": "c28262c5bad0e9bc636d93ddf9b929900885b0c0deae1a17b7c1cf1abba93a74",
+    "tests/fmig431/run_crop_rotation_calendar.sh": "a43b0cec5299d9c82b58d00f3e4686dffce5d35b0c195c62ef1eb18e5e404ba9",
+    "tests/fmig431/run_crop_lifecycle_continuation.sh": "7322af253d467122116f778ccac671e0f811065e991e21fab71800503d0a5e34",
+    "tests/fmig431/run_crop_certified_hydrothermal_forcing.sh": "1fca00ada98a60567b857a972d09614e4dbb2be998a22bb767771db7f11ae5b0",
+    "tests/fmig431/run_crop_certified_sowing_source.sh": "8ff87bbbcfa926634549c1eb0b50ddca00682efc654938e645613258f9aa4c63",
+    "tests/fmig431/run_crop_fkt_parameter_identity.sh": "2570486f9fa2f691056a377ea8f7623223e3ce1617d4252a3309227b6c71d77a",
+    "tests/fmig431/run_crop_file_weather_production.sh": "0c917af9dc7b1096f6aa454cf8edb29a69282301e12e5c8cb031b78182ae21c4",
+    "tests/frost/run_frost_nan_guard_highest_successor.py": "041e013eb57f35e1bb02c93a70f087b8944592bb40f9363f0e8bba1822723303",
+    "tests/frost/run_ppa_wu05b15_runtime.py": "24c1f18729eb68cd0cec154de7824cf02c7bca569b4dff3002e991aa3a61aad3",
+    "tests/fmig431/run_crop_task2_frost_successor.py": "dd5fb3b3055125049fce858cbceeb9e769d5244404d908e06636c5ab19dba639",
+    "tests/fmig431/run_crop_rooted_weather_frost_successor.py": "64bd05cd9f8cbe64da4e5ebfd7b1f17264ea40028e8071c7f331a5d5d72fd8f6",
+    "tests/mc-met01/verify_raintb_successor.py": "621f59870aab4b420216c49c792e2415f18163c93c70a34701eb2deaf186ca18",
+    "tests/mc-met01/verify_daily_demand_successor.py": "e72ee802166fce9998f673cd14c5721fcb8ac2965e47e88325b6a0c7915dcd29",
+    "tests/mc-met01/run_daily_demand_frost_successor.py": "bb2e3b288c148a6ee7565dd2c7adfea9b494777f1bf6d25ddcaa59ebf9aa2b70",
+    "tests/crop-cycle/verify_oxygen_successor.py": "af278f6358b687049383e3ef77cdbad68ff7b5a53e6262f897ccb5150e927842",
+    "tests/mc-met01/run_joint_owner_additional.py": "b459e6e73cf5b5892c726f96444c98f3e24b52f4d659275a858b3acb80e851af",
+    "tests/fvq/run_fvq124_fgc49d_independent.sh": "ba77c7260d97f03d191748085e1d39e2e1bf837bb97287697f4efb9dcad50f85",
+    "tests/fvq/test_fvq124_fgc49d_independent.py": "f40180785d5607a39bc2be5f598ef98eeb2df18ba859d01142671245a6b33789",
+    "tests/fgc/run_fgc49d_live_production_application_context.sh": "6637c8fe636c6089b4c9773bc4491890a3a784cbdc9026a67f8cc36bec858e4e",
+    "tests/fgc/test_fgc49d_live_production_application_context.py": "c15601bbbf0d2a6dd30bdbee45089e56f5b48ee938a7c4d56a1b6e5477a801fd",
+    "tests/fgc/run_fgc24_coupled_restart_split_process_gate.sh": "8c716d65def19c73b2cbea0724a325f29a908c81c8f9298d792fc9c27e494884",
+    "tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh": "fed03bb2579349ea9d0208dc117c3890713877327c721036972179a853b3c5f5",
+    "tests/fpm/run_ppa_wu05a9_top_input.sh": "a04914cdba397dcecea39fcf662344aeb05e84ea834a278cf1ea58b26b4468e7",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh": "07979bc481321d9a71b6ab5337ca52f3a83e8882957caf60048ffa3b40876b3c",
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh": "40c7508ea2dd5e8d95ca2813dbac43dc35839f6c919e29c5b54dac762e841d8a",
+    "tests/fmig431/run_mc_heat01_runtime.sh": "bd1615dc2307603f0c7372b3a1b346e3d3fb5f5374372a25de6afb2fe5bff308",
+    "tests/mc-met01/run_daily_demand_reference_preservation.py": "7374f313717873b165c2ff7e79635bb15d49d9a902397ba20283645ebf6f9527",
+    "tests/mc-met01/run_daily_demand_source.py": "f4b5c4ca18427c686745474c2b41f2643b52ce0e51d76437aaac287b92bb40e2",
+    "tests/crop-co2/verify_co2_successor.py": "c831e341bd81c7969e4a66bd72753216324206a9db0ca430eb3737edc67d3b62",
+    "tests/nut-sol/run_matrix_route.py": "16f02b8c59916334dc06eeb23832ee86363d5aa453d344dc82664b95314ae8b6",
+    "tests/crop-co2/test_nonlinear_admission_controls.py": "93a08d28c54b47d74fa02ff11882bbc884500c9550a48c74e93948e60aa5aac2",
+    "tests/physics/run_b111_sorption_mass_closure.sh": "c25a5b8dd4ea4f877805eacac0f4bc49bb0c701d5b202816289c79b9caa89ffd",
+    "tests/physics/run_b111_reactive_solute_substep.sh": "51304b33c99c5d3e2ea07fb9bdfc8b29589547f3d48b629475208615437bfa08",
+    "tests/nut-sol/check_matrix_joint_physical_negatives.py": "13bad9bbc5e5beb96ba897b036c7984667e2a55a0638eeb4c38c33934eb242bb",
+    "tests/root-growth/verify_swrd3_successor.py": "73fe222411e6181a72e92175903ad68a4deaa0d3d5045b9ebc5fd1778c939fe6",
+    "tests/nut-senescence/verify_senescence_successor.py": "acd532b035a559e944a33f698251d58ca3dda9654b8d155fa455c5101c0426a2",
+    "tests/nut-material-environment/verify_material_environment_successor.py": "aa3b6e303ba56a014877454f4e04955cae2457d4c8a983b9b76069e7e7ba9b58",
+    "tests/nut-material/verify_material_successor.py": "fe81569739cf1e59c3a257341390535bf2331d744f4336552c1ca98a85fab8ac",
+    "tests/nut-crop/verify_crop_supply_successor.py": "b79aa71fc794b78a193f3d9dea7fcdd3166f7ba17138226653dd9783e6a98e32",
+    "tests/nut-reactive/verify_reactive_successor.py": "c8407fa0c41efb45f4551e1920d75d2a1c2d0cd8d4442015b96dea1f367ebc90",
+    "tests/nut-mineral/verify_mineral_successor.py": "c79a57017ea85f5a24611b0863e8404b5e67e27e3ee652be209f2324504b49f2",
+    "tests/nut-sol/verify_age_successor.py": "48a6cee9ccadfec81b685417f81e3a3f3ffaead61f076a89fe50bef7d87e02b5",
+    "tests/nut-environment/verify_environment_successor.py": "6a770e3b383d33513a4afdc63d6dedf5734e92e3595cedaad1f4fed62c69c2e0",
+    "tests/nut-material-environment/run_material_environment.py": "d3f7fce12ef0f7583e5effe7dba2ce3258f7da9de2d616e7cfaa4ff6acb81419",
+    "tests/nut-crop/prepare_oracle.py": "3d059dfdf568df994d86aefd5521d88258cfb537f90728e9e7e3d86fb65d44bc",
+    "tests/nut-material/check_material_controls.py": "f7b0dfacc481e04b2413b57ceeeeb4ee217c075d580c7a0f5257f06390550a0d",
+    "tests/nut-senescence/run_senescence.py": "29d9a894a12290f74992622d14b3af44c7cb944f2e75a7fe42e90dd8e5a7f8b5",
+    "tests/nut-environment/check_environment_controls.py": "eddfbe7c37cece7583eb3aa4b9b4e6bcd6291653c7f57b32dcbb12fbb0d95dc4",
+    "tests/nut-material-environment/check_material_environment_controls.py": "d887ebe9b1421ffd2348d0aeb398b4e05ee9f8fe755150fe93f21c0cfa4d14ae",
+    "tests/nut-calendar/verify_calendar_successor.py": "425829efa857caefe65c9b344176f62985c371ecdc2107b6bb118b3e92967167",
+    "tests/nut-calendar/run_calendar.py": "8fe3fcd7fead019ef12966fd3c4cf4d6d0c21189e130737e6cd5931a0e9b0ffb",
+    "tests/nut-senescence/check_senescence_controls.py": "88f7a90823743e9efebfb38ee24c2dc974f02e325512d91ebe906b80272c471b",
+    "tests/nut-calendar/check_calendar_controls.py": "2e71ba51a78241c18e7c0474a26ac4aac95e77ac0bda47402b643757619f8afb",
+    "tests/nut-input/check_input_controls.py": "424af6ef624a34be3fc6f4a8ec5a6f1fb744ba62f16665f323e56d227832bb64",
+    "tests/nut-thermal/check_thermal_successor_controls.py": "52ed9c38ed17673bfb9f50da6b256570a9a94c053bda066d72596aca25531560",
+    "tests/nut-thermal/check_evidence_controls.py": "c96e8537169eead2fe68c5c76955df1aa35d3958b6d5f7eb9dc8b1616509285c",
+    "tests/root-growth/check_swrd3_controls.py": "139046b4455346f47b3c2654c63cfbdcf433309f3ece37c67d77e6fc566c52ba",
+    "tests/root-growth/check_swrd2_controls.py": "7361ab1ef53a2604173c488cc4379a9dd5176c2606a60386cf076002d989235a",
+    "tests/fmig431/run_crop_unified_restart_bundle.sh": "6e8e4b9b4cf820b58e4e90706dcaf2888169612e13f5411414197be714e9bbfa",
+    "tests/fmig431/patch_crop_unified_restart_bundle_fixture.py": "e1eb67eef72400da4ded952eb97a0991e5f6c8979769406de3612abca8452516",
+    "tests/fmig431/patch_crop_physical_calendar_restart_fixture.py": "32904d9344607dfcbff786043edbb426f7c4d7caff799848ee754ba9d8bf5e33",
+    "tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py": "4cf03e90baaa8b1db1ccb50de71f08b23a4e56701724c196bded6bffc8900f1e",
+    "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh": "77f418a592e74a9fc8fc57ae96c79bf590cde9b9952f9a0485b09ad49073c053",
+    "tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh": "4a6d1631097353e25b212f93c3c518b49b70cb272d7c494ba9e3750847f4b4e8",
+    "tests/fmig431/run_crop_rotation_receipt_full_gate.sh": "ead2a5d5ce948bf43d11aef3a12f12ad6e56a59b31602577b6fd7c17e78fe1dc",
+    "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh": "097e8af3c9e87ba2cff60c39d5b6e0ae0308523524d0d7029853843e05d5d0a8",
+    "tests/fmig431/run_crop_previous_day_emergence_gate.sh": "a6a533074c5d66c62bf003e6f1e1e37f9eaefe326355a91c483a6fa76e3e15c9",
+    "tests/fmig431/run_crop_accepted_hydraulic_provenance.sh": "76f63d9c653a14cf799e8dbffb9d281f4de27be61a87f24b5a1fd5c32bfd20a2",
+    "tests/fmig431/run_crop_physical_calendar_restart_coherence.sh": "3546629a54df1e2dc14c3e95a230dcca6dfe810ab907e1e69b8f64303d8595af",
+    "tests/fmig431/run_crop_b111_sowing_node.sh": "9cc0d2761b2f587be93a01138e05d15c92a710204fd6501c90f806a9191aea31",
+    "tests/fmig431/run_crop_b110_grid_sowing_preflight.sh": "3d2b03f07243510c08c09340b26d197d3be6af05f2af0fb7b62479fd94329d48",
+    "tests/fmig431/run_crop_b111_pressure_head_average.sh": "ede84d7b60e2239bc25053a1636d56796dd94ba0c68610ec2be401c8894a15cb",
+    "tests/fmig431/run_crop_accepted_head_depth_binding.sh": "5b25406670d6b5e7c1f58cf114ab8c55fd28a74bd4ba7117452739f770972530",
+    "tests/fmig431/run_crop_accepted_soil_temperature.sh": "99362f4cf2c40721f529b6a2006b5a3151cb01e4cc605061efcdca71b23429fc",
+    "tests/fmig431/run_crop_atomic_accepted_hydroheat.sh": "b667dba1ab2d0fe0e8cf2594b7d86221fde8e88e163a4d63e2a8252665a858bb",
+    "tests/fmig431/run_crop_preparation_sowing_preflight.sh": "344eb2eaefa452871c3b8f4d33eae37a2507c2538aaa5ae0a3d61c099915b2af",
+    "tests/fmig431/run_crop_germination_preflight.sh": "01823e9f0e6290dc92b78e270befd8a54cd1a7236dbb5a276d339d3654d43c8d",
+    "tests/fmig431/run_crop_certified_daily_preflight.sh": "b39fd291e6dadff43dc0a049bb25c5aa852c477229be44366f698ed4d061d28a",
+    "tests/fmig431/run_crop_b111_preflight_source_order.sh": "2bb0ae028b7ae15d2bacad0c07547c63b33b3605cd025487005823e1568eb9ff",
+    "tests/fmig431/run_crop_tav_day_window.sh": "123c76dae982850c0dfe9714229966aa95de53d4184358dfef8af1c9ccdd97c0",
+    "tests/fmig431/run_crop_tav_meteorological_candidate.sh": "1f7c88cc9e606bd9b00d08991fab294ea3dc163f631105e9949e8656e5253f45",
+    "tests/fmig431/run_crop_tav_detailed_period_candidate.sh": "afeaa85a44bf9a0d1c7b6f5383fd983f17364c718afb6a7902d102619320902e",
+    "tests/fmig431/run_crop_b111_meteo_loading_candidate.sh": "ffeae6fc845441897fba9ee8c75e9d1f5a7b4dca0c066e90a3a2602d5fa166ac",
+    "tests/fmig431/run_crop_weather_day_owner.sh": "a65b9df192394237394eb97baf8ded7166702639ed52e5c4e147ea190a3621da",
+    "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh": "e7218b14dda9407dfbd57d5df4cbbd5e8efcfc8e90a6b0cf13a1f1e8ad1ad81a",
+    "tests/fmig431/run_crop_weather_preflight_read_boundary.sh": "eca8a5d01dce146d2fa82670cb0c976bfca97485d6a559371cbf62eba64aece8",
+    "tests/fmig431/run_crop_b111_germination_boundaries.sh": "403ff15fcad6b5e2e3aaebfbe55d0e33771271b76eb1b80ffbea2c6237a01ecb",
+    "tests/fmig431/run_crop_b111_germination_source_oracle.sh": "0967e6683bb5893b46d59b9eef818f5bbfa64f986e0f6a775b8578dffa1c1e6f",
+    "tests/fmig431/run_crop_b111_germination_sum_candidate.sh": "25b3bb34cd3b6e0a46c3e430317cb722346ef307d38ac3ba11770778cf69cdc5",
+    "tests/fapp/run_ppa_wu03_independent.sh": "aa8c3bfe6b8f9515f9455f8d11017187a9d130a762552198da4de333c43cd410",
+    "tests/fpe/run_fpe_nlglob14z47.sh": "53941d8f273e71602fb3623332782dfb911b30705f9cc46b59280411543b56fa",
+    "tests/root-growth/verify_swrd2_successor.py": "10f1088738464b9e1207f2f2b77022db4d2119b4219ad4b24c3ea93fb484cd2e",
+    "tests/root-growth/verify_swrd3_thermal_preservation.py": "5ff992ab964c30b939f4d238cd2dd8b9e36a707f71e45759661430e41baa1dce",
+    "tests/root-growth/check_combined_admission_controls.py": "fb0c4d70773355ee6969702dc3bc18844fb78a970dd7ef8794e12ff1d531d4c6",
+    "tests/nut-input/verify_input_successor.py": "398ae6c2a9f26dcfe193e17d99f2e9df9bd5e58c5859403019ee2631db80e14a",
+    "tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh": "15e3f60fac9e3241f5fb4c35bab9bb066e6d76c8cc90e9cad364a17ae7a9854d",
+    "tests/f-app07/run_mc_irr01_accepted_salt_restart.sh": "492d2e77c02de0203314c47e80bec9d5787f5a2049da8b224e5c4eba9945f0ab",
+    "tests/f-app07/run_mc_irr01_root_salt_realistic.sh": "e055db73daf4b317079994162951c8e763aef2ae536763de72b456e33d39eb59",
+    "tests/mc-irr01/run_mc_irr01_literal_root_salt.sh": "3c9f32034ec65e47850650fb1b0e1c5c15208016ed376b86d3567eec56266c0f",
+    "tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh": "996bbc56cf662ae09fa54792a54e7f5037dbabf4131cc88507a4a6ec3b3bc46d",
+    "tests/f-app07/run_mc_irr01_management_physical_runtime.sh": "aec3c3910879fa8fe4ff97e16604419fa76981e6910db80b90659b64da62513f",
+    "tests/mc-irr01/run_mc_irr01_literal_availability.sh": "6537a1b528a20e9cd75f88b341f90457b31db571df29d63160987166e07b65b2",
+    "tests/mc-irr01/run_mc_irr01_literal_management.sh": "4a5069826caa8925bb8ef49d892e1b1b99016a732569e839287acad69fb1909b",
+    "tests/mc-irr01/run_mc_irr01_management_policy.sh": "3dbbece278187d296fbf9836064919430e3ac4f100e4c3fa9292ce9ef19fa913",
+    "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh": "95ecc393eb584b921fb7b3b249560e7ae78c505d4a68356537087e168a0454a0",
+    "tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh": "8564ae1a2c40bfab866ab013b3c2055cd3feb2c492415db9cf7c929e24df0a7b",
+    "tests/fci/run_crop_fkt_b110_exact_source_successor.sh": "cae7615c11eda4675a1ea973a70f740bed64baa0155d5907844864068c47c952",
+    "tests/nut-thermal/verify_thermal_successor.py": "88a0292a083c11d83bf100fd1ab1181a1f219f54c584ae2a973c62d4510b153a",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "b22896bc2dffbd08c59510057b241869074b48e8c689a9c45e2d664a57af6d72",
+    "tests/fmig431/run_mc_heat01_thermal_boundary.sh": "ab64088dc76354784ad94be8305da692d9a1799387932dc732a5749d442e2ffe",
+    "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh": "b9a78bc99199836cc4e7e69bfe5cf887ab478e162ca0cf8aa0712a0056d43596",
+    "tests/rom/compile_f_rom0_fortran_closure.py": "8df84fe75c57c8fc0f51ca25cc4d25ceb445dea81b89d8086e000eaf078efdfd",
+    "tests/rom/materialize_f_rom0_headcalc_stubs.py": "3a9e5a1139d352703397ac031ff124524cdf18f68020fc43bd5ac9def59138e5",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh": "77d390923bb2ff10c550d5e65cd9ec4867939e8ebcacb87e1ec04875fad41c53",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "e464443fab4f978180f8a7cbedfbcd73cb032bee7655fa076b20d4a133d9eaa5",
+    "tests/frost/run_frost_nan_guard_independent.sh": "54584496c6c5f9487abbf4e5965eb62a50658bb9e4ccc36c3062f7c370df7e2a",
+    "tests/frost/run_frost_invalid_input_preservation.sh": "f632ddeb5521e22b7d6a1bf563516cba40c6f3ec0eb3f106d012c5430c0e17be",
+    "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh": "6501ce22f64bde2d2c264e2159eaaa82ffb153276ea942929cbef7a94a6b4db6",
+    "tests/f-app07/run_mc_irr01_allocated_root_restart.sh": "d6a1eef42f2b99217c4b7d311cdb46a673a473542d187154a9c457ecb73324b7",
+    "tests/performance/run_mc_irr01_shared_build_experiment.sh": "bc7aac800027bf1572d04596cdd81da7f0ccbbe88066f5f99cfbb6a4b2ef7e12",
+    "tools/performance/irrigation_build_identity.py": "904aef553db77f765cca2d4b9d8596dd4c7f14294b9bbc9f3e4cf918c1887054",
+    "tests/modularity/verify_modular_repair_evidence.py": "a401e418e73a9b566ef2d55cce4b40c03b9daa104df8a2a4d1cfb80d9b1881b7",
+    "tests/modularity/verify_joint_preservation.py": "aa5ee60ef1ffdabe6bc64741207a45a8d2b736c7442e3464677917debe241893",
+    "tests/crop-cycle/test_oxygen_successor_controls.py": "1facf41e08fca6311929915f5d436ed36fa88ac199bd05e3c68e91c85762857c",
+    "tests/crop-co2/test_co2_successor_controls.py": "a640b020605ded51e1a3ce07d06ee7a49803a1c472afced0c4ae230741058d7d",
+    "tools/fci/resume_group.py": "ec095a6f71d141f6b522141b696a23731d307442e929867649f9ff3e7c6f160e"
+  },
+  "objects": [
+    {
+      "sha": "034136c193b287bcf9a953a9b89df2a8fb0c97cc",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:BASELINE_KERNEL"
+      ]
+    },
+    {
+      "sha": "040627c77720829c297a0ba06e908efce683133c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:COMPOSITION",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:COMPOSITION"
+      ]
+    },
+    {
+      "sha": "0406d3180262b06a5a393b605cc553a912a26aa0",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:M1C3_TASK2_BLOB"
+      ]
+    },
+    {
+      "sha": "04e5db63356e48256997fad9daea9e77040c29e6",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:FGC44_PRODUCTION",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FGC44_PRODUCTION"
+      ]
+    },
+    {
+      "sha": "08492a7272860629c9ffee34968c9cc29952bd58",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU05B_PROVIDER"
+      ]
+    },
+    {
+      "sha": "0ac76e68a35dda95c753d255927f1dc432f7b42e",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:BALTOL02_ADMISSION"
+      ]
+    },
+    {
+      "sha": "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:BASE"
+      ]
+    },
+    {
+      "sha": "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:CACHE_AUTH"
+      ]
+    },
+    {
+      "sha": "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:FROSS13_PRODUCTION",
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:FROSS13_PRODUCTION",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS13_PRODUCTION"
+      ]
+    },
+    {
+      "sha": "15ccbf4b6bcf6895b824a68c221762bef0bc08b9",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:OWNER",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:OWNER"
+      ]
+    },
+    {
+      "sha": "19a67f7c398fcadbcbc9729509680a1c0c5424f3",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:FCI75_OWNER",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:FCI75_OWNER"
+      ]
+    },
+    {
+      "sha": "19d07cac9285142d14a6e9c53706fb73d016d5ad",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:BACKEND_FROSS12",
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:BACKEND_FROSS12",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:BACKEND_FROSS12"
+      ]
+    },
+    {
+      "sha": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f",
+      "type": "commit",
+      "origins": [
+        "tests/fgc/run_fgc24_coupled_restart_split_process_gate.sh:FGC21_OWNER",
+        "tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh:FGC21_OWNER"
+      ]
+    },
+    {
+      "sha": "20d34024cfe4b981b6c00d5042bdf366f8aae830",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FSI39_PRODUCTION"
+      ]
+    },
+    {
+      "sha": "22c1d4f7c0aec3600dadc0ad346a1e4fc3374783",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_0"
+      ]
+    },
+    {
+      "sha": "23c2db74b1254e5e97e608764d186a59eeb694d5",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_2"
+      ]
+    },
+    {
+      "sha": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+      "type": "commit",
+      "origins": [
+        "tests/nut-sol/verify_age_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "29cff34a37c13143ce069486251bc0b858cadf48",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_RUNTIME_CORE"
+      ]
+    },
+    {
+      "sha": "2ad2a680e62744451d6763de48585f1bd45d3067",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:CACHE_KERNEL",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS17_CACHE_KERNEL",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:CACHE_KERNEL"
+      ]
+    },
+    {
+      "sha": "2b134c36097aed2a44a56bfe8e2194b15aa063aa",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS22_TIERED_SOLVER",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:TIERED_SOLVER"
+      ]
+    },
+    {
+      "sha": "2c8adba7986e7d85749c4c36d26530748fbbab9e",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU05B_EFFECT"
+      ]
+    },
+    {
+      "sha": "2f83ae1fd15e6242f54942b5b8487798d18b6764",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:RESULT_BLOB"
+      ]
+    },
+    {
+      "sha": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_ROOT_HYD01_ADMISSION"
+      ]
+    },
+    {
+      "sha": "39b4f75c92ea44d6b4e4be326ddf731f54522dfd",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_3"
+      ]
+    },
+    {
+      "sha": "3b661766dc59298a7f541c970c2d3a55602d926c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:dependency_authority",
+        "tests/nut-calendar/verify_calendar_successor.py:BASE",
+        "tests/root-growth/verify_swrd3_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:POSTIMAGE",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:POSTIMAGE"
+      ]
+    },
+    {
+      "sha": "405ad30e823ea44deedf73edc67c68e01564c617",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:FROSS17_HEAD"
+      ]
+    },
+    {
+      "sha": "40a1ddc05fb8e2c1822763de645fd07a094568a3",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:SW_P2E05"
+      ]
+    },
+    {
+      "sha": "42fb85a03e6835a839574bf6d4b4c01472a01236",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:M1C3_TOP_PROVIDER_BLOB"
+      ]
+    },
+    {
+      "sha": "438ee46e012e9eb183b8f2532437e2fe56aa18ed",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS22_TIERED_KERNEL",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:TIERED_KERNEL"
+      ]
+    },
+    {
+      "sha": "451e35ccd1797aa96fb4354dabc465cceff18635",
+      "type": "commit",
+      "origins": [
+        "tests/root-growth/verify_swrd2_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "4597c833e7f45beaef04ffcc592ca6a4fcbd0395",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:BACKEND_FGC44",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:BACKEND_FGC44"
+      ]
+    },
+    {
+      "sha": "45cb74e00ae5fe09a220e630d84507cde543070b",
+      "type": "blob",
+      "origins": [
+        "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh:sw_authority"
+      ]
+    },
+    {
+      "sha": "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:FKT15_DONOR",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:FKT15_DONOR"
+      ]
+    },
+    {
+      "sha": "48e6aeb15a66dfd11a85de39dc6f8229842d1fd1",
+      "type": "commit",
+      "origins": [
+        "tests/nut-material/verify_material_successor.py:PEER"
+      ]
+    },
+    {
+      "sha": "49a4685474a2d8df53c77c45e87a6c243316a97c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:FGC31_RECONCILED",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FGC31_RECONCILED"
+      ]
+    },
+    {
+      "sha": "4b545c6fb260e81cd6c8f4d2d65f2beee7281e53",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:REF_ADAPTER_P2E05"
+      ]
+    },
+    {
+      "sha": "4d40b8d4b6a1df06ff97fab55497542778431290",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04B_ADMISSION"
+      ]
+    },
+    {
+      "sha": "4e5491c997ed0752a4db9abd09b5ad3daf394db2",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:BACKEND_FGC31",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:BACKEND_FGC31"
+      ]
+    },
+    {
+      "sha": "50346642bd565f79134ea17d5462e544b354998c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:STATUS_A_AUTH",
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:STATUS_A",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:STATUS_A",
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:STATUS_A_AUTH",
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:STATUS_A_AUTH",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:AUTH"
+      ]
+    },
+    {
+      "sha": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_ADMISSION"
+      ]
+    },
+    {
+      "sha": "533de8c40ac243d26681f5c529b4ce3308a22ad3",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:FROSS22_HEAD"
+      ]
+    },
+    {
+      "sha": "5350f175cccda6f01c9812afb7c231a1cb118cc8",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_5"
+      ]
+    },
+    {
+      "sha": "5442fd7e7a2f392c9b796cd17c76b17977259f22",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:MODEL_BLOB",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS13_MODEL_POSTIMAGE"
+      ]
+    },
+    {
+      "sha": "556ed83dee4d5b159f1de7ae797af7106a0abe2e",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FSI39_BACKEND"
+      ]
+    },
+    {
+      "sha": "585a8719242bf58e4c37c6283298dfad7b20a0ae",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:SOURCE"
+      ]
+    },
+    {
+      "sha": "5898e6616dbb6871a9f52d489038235ba1172cae",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:OWNER_SOURCE",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:OWNER_SOURCE"
+      ]
+    },
+    {
+      "sha": "5d63f91b37443952b4a96292925f645aae0b22d1",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:F_ROM1A_BACKEND"
+      ]
+    },
+    {
+      "sha": "5db312c3845ccb0a00372b3ccf3e6a45f0be9a2b",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:F_ROM1A_PRODUCTION"
+      ]
+    },
+    {
+      "sha": "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:FCI75",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:FCI75"
+      ]
+    },
+    {
+      "sha": "60da54c9957a455723b7f12b833fc80a415533c7",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:FROSS17_RESULT_BLOB"
+      ]
+    },
+    {
+      "sha": "665d90cb82485dec485be68694f77e0fcd03145c",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_RESTART_STATE"
+      ]
+    },
+    {
+      "sha": "669a75ff996938fd0538c715ec43fe93d06b74de",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:literal-path"
+      ]
+    },
+    {
+      "sha": "6b27f366b7c352e6dfd8a3d720acc45d2d307b05",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_1"
+      ]
+    },
+    {
+      "sha": "6c63b8d0e340669d9722bc5e3d947d42d2b467a5",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_LOW02_ADMISSION"
+      ]
+    },
+    {
+      "sha": "6cef5580daa7387e241a88c6a7216c265557c307",
+      "type": "commit",
+      "origins": [
+        "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh:BASE"
+      ]
+    },
+    {
+      "sha": "6d6f66273483c19c1d2318dad518c537186a0ae7",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:ROSS_ADAPTER_FROSS12"
+      ]
+    },
+    {
+      "sha": "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:FROSS12_AUTH",
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:FROSS12_AUTH",
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:FROSS12_AUTH",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS12_AUTH"
+      ]
+    },
+    {
+      "sha": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_crop_fkt_b110_exact_source_successor.sh:BASE"
+      ]
+    },
+    {
+      "sha": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+      "type": "commit",
+      "origins": [
+        "tests/nut-input/verify_input_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:MC_HEAT01_BACKEND"
+      ]
+    },
+    {
+      "sha": "7e1b034e5cd134050e695c9a097c44a3eaeca344",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:NUT_THERMAL_BACKEND"
+      ]
+    },
+    {
+      "sha": "80c7ca618ea228e31ac43ae493f16dd6eccc5991",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_LOW02_BACKEND"
+      ]
+    },
+    {
+      "sha": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+      "type": "commit",
+      "origins": [
+        "tests/crop-co2/verify_co2_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+      "type": "commit",
+      "origins": [
+        "tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh:FWO34"
+      ]
+    },
+    {
+      "sha": "8a59211335f44034a93d9ecd0d7a8920ee9baa39",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:M1C3_TOP_ADAPTER_BLOB"
+      ]
+    },
+    {
+      "sha": "8d238bb46c9d4d77e38802e75458d99f59794d11",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_LOW02_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:expected_crop_blob"
+      ]
+    },
+    {
+      "sha": "90183cbe0f3f0b349e40fa6b0c65b2223ca8a739",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FSI39_PROVIDER"
+      ]
+    },
+    {
+      "sha": "97d8ef1fae91e174ab6daefb42ffa6a85da9380e",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FPERF_B1_TX_BLOB",
+        "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh:tx_authority"
+      ]
+    },
+    {
+      "sha": "9ba02ce1e525ede27f3913f664ff02ac6b5e0f3c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:FROSS22_RESULT_AUTH"
+      ]
+    },
+    {
+      "sha": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+      "type": "commit",
+      "origins": [
+        "tests/nut-reactive/verify_reactive_successor.py:PEER"
+      ]
+    },
+    {
+      "sha": "a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FCI110_ADMISSION",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:FCI110_ADMISSION",
+        "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh:FCI110_ADMISSION"
+      ]
+    },
+    {
+      "sha": "a2b9227e43c6f705942dc4959a579c011b857ae0",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU05B_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:POLICY_BLOB"
+      ]
+    },
+    {
+      "sha": "a6404e1f7fcf28b7faf9b46d210bc3d5b7098e04",
+      "type": "commit",
+      "origins": [
+        "tests/root-growth/verify_swrd3_thermal_preservation.py:FULL"
+      ]
+    },
+    {
+      "sha": "a7b9f5271ac0582420e883a62c6e13672dc190e9",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_SURFACE_EVAP"
+      ]
+    },
+    {
+      "sha": "ac997bf06c56a37080d1c8db69b6d4208f4b75ca",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:PROVIDER_BLOB",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FROSS13_PROVIDER_POSTIMAGE"
+      ]
+    },
+    {
+      "sha": "b1ba0549ef9149c4261b8a595c8782be01726c43",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_BACKEND"
+      ]
+    },
+    {
+      "sha": "b218ac657db52612bc12da671716c97430200f0a",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_fkt_b110_exact_source_successor.sh:BACKEND",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:backend_authority"
+      ]
+    },
+    {
+      "sha": "b4cfeedb9a09339ef095005243168978d1376956",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_file_weather_production_successor.sh:expected_crop_4"
+      ]
+    },
+    {
+      "sha": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+      "type": "commit",
+      "origins": [
+        "tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh:FWO33"
+      ]
+    },
+    {
+      "sha": "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_ROOT_HYD01_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "b95ce4b9a27144eb400fae25de69dd5d927667a8",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:DIR01_ADMISSION"
+      ]
+    },
+    {
+      "sha": "bd17f0a9a7c19516e66af8f80e2b7128890b3aee",
+      "type": "commit",
+      "origins": [
+        "tests/mc-met01/run_daily_demand_frost_successor.py:BASE",
+        "tests/mc-met01/verify_daily_demand_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "c093919f070af2cf1616328cf3bd50df84e0a5f0",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU05B_BACKEND"
+      ]
+    },
+    {
+      "sha": "c545077ab2d2839007a4ac202f7896575d0ad9ba",
+      "type": "commit",
+      "origins": [
+        "tests/mc-met01/verify_raintb_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "cca61af52bde3eed12b756547277cc2776589648",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:SELECTION_FROSS12",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:SELECTION_FROSS12"
+      ]
+    },
+    {
+      "sha": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+      "type": "commit",
+      "origins": [
+        "tests/frost/run_frost_nan_guard_highest_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "d5a71a526efaebd82054580c3186f8e3545db331",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:TX_BLOB",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:TX_BLOB"
+      ]
+    },
+    {
+      "sha": "d8414c1ba11bee9f061622fd2495f631a57d2383",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:BASE"
+      ]
+    },
+    {
+      "sha": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_crop_fkt_b110_exact_source_successor.sh:KERNEL"
+      ]
+    },
+    {
+      "sha": "da9ef1e5d37cd49f996dc48e24fcd09110cff777",
+      "type": "commit",
+      "origins": [
+        "tests/fmig431/run_crop_task2_frost_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "daaa41509a55be43c00cd6b92cf2ddf9590e35db",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:ADMISSION",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:ADMISSION"
+      ]
+    },
+    {
+      "sha": "dbb441f3529be179d64fb57f9c44336d3d20c540",
+      "type": "blob",
+      "origins": [
+        "tests/fci/run_fci107_fross17_cache_successor_preservation.sh:SOLVER_BLOB",
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:ROSS_ADAPTER_P2E05",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:ROSS_ADAPTER_P2E05",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:CACHE_SOLVER"
+      ]
+    },
+    {
+      "sha": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+      "type": "commit",
+      "origins": [
+        "tests/nut-environment/verify_environment_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "dd394f33b8687e457c4d40e9765551b58fe11b6c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:P2E05_BASE"
+      ]
+    },
+    {
+      "sha": "decd2e67b8a182f1448a173b18bbc232749dd5b5",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:MC_HEAT01_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+      "type": "commit",
+      "origins": [
+        "tests/nut-senescence/verify_senescence_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+      "type": "commit",
+      "origins": [
+        "tests/fmig431/run_crop_rooted_weather_frost_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "e6fd1da26b647252a5c4020a0de23ccab7d11265",
+      "type": "commit",
+      "origins": [
+        "tests/root-growth/verify_swrd3_thermal_preservation.py:CANONICAL"
+      ]
+    },
+    {
+      "sha": "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04B_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
+      "type": "commit",
+      "origins": [
+        "tests/nut-mineral/verify_mineral_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "f0dd03704cd6eb19336269438e99c6bf5db08024",
+      "type": "commit",
+      "origins": [
+        "tests/crop-cycle/verify_oxygen_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:PPA_WU04A_QUALIFIED"
+      ]
+    },
+    {
+      "sha": "f4f98637e963e07e2bedf7ef6acbcaab36e07e5a",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:FCI75_VQ92",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:FCI75_VQ92"
+      ]
+    },
+    {
+      "sha": "f670e012ab028cc1e74bb9b7aa1b8655b545619c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:BOFEK00_ADMISSION",
+        "tests/fci/run_fci_fross22_tiered_successor_preservation.sh:BOFEK00_ADMISSION",
+        "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh:BOFEK00_ADMISSION"
+      ]
+    },
+    {
+      "sha": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+      "type": "commit",
+      "origins": [
+        "tests/nut-crop/verify_crop_supply_successor.py:PEER"
+      ]
+    },
+    {
+      "sha": "fb311dabd16266409deb394c381fe26086a64d03",
+      "type": "commit",
+      "origins": [
+        "tests/nut-material-environment/verify_material_environment_successor.py:BASE"
+      ]
+    },
+    {
+      "sha": "fd93e50da5973f3e15c8f1b7fa57d72df6c31b72",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh:FVQ68",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh:FVQ68"
+      ]
+    },
+    {
+      "sha": "ff89a93bf5b49795db5cb04be0c7325c7b060f5c",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh:P2E05_QUALIFIED_HEAD",
+        "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh:P2E05_QUALIFIED_HEAD"
+      ]
+    },
+    {
+      "sha": "ffb08380054ddec9e940fc0e4056758d30a1d7da",
+      "type": "commit",
+      "origins": [
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh:FPERF_B1_ADMISSION",
+        "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh:FPERF_B1_ADMISSION"
+      ]
+    }
+  ],
+  "missing": []
+}

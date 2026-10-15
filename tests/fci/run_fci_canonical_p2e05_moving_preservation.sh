@@ -21,6 +21,14 @@ fi
 nut_thermal_exact_successor=0
 NUT_THERMAL_BACKEND=7e1b034e5cd134050e695c9a097c44a3eaeca344
 
+# Decision in the existing work-unit, before any compile or owner invocation.
+# The focused irrigation route selects its own expensive group, not full F-CI.
+selection_group=full_fci
+if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
+  selection_group=irrigation_allocation
+fi
+python3 tests/modularity/run_modular_tests.py --check-selection "$selection_group"
+
 # Shared qualification preserves all original driver executions; no result reuse.
 case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
   SHARED|SEPARATE) ;;
@@ -711,6 +719,9 @@ check_b19_micro_root_recomposition() {
       src/kernel/mod_kernel_transactions.f90 )
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
+        ;;
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 )
+        python3 -B tests/root-growth/verify_swrd2_successor.py || fail 'unqualified persistent SWRD2 crop transaction'
         ;;
       src/runtime/mod_fmr_biomass_root_uptake_input.f90|src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
         (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
