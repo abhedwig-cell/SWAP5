@@ -26,6 +26,10 @@ program test_harvest_chemical
  type(b111_soil_n_split_parameters_t)::split
  type(wofost_one_day_forcing_t)::weather
  type(wofost81_harvest_record_t)::record
+ type(crop_soil_harvest_observation_t)::observation,empty_observation
+ type(crop_soil_receipt_t)::fallow
+ type(crop_n_configuration_t)::next_cp
+ type(wofost81_crop_owner_state_t)::seed
  real(real64),allocatable::v(:),w(:),bad(:)
  real(real64)::clock,theta,n0,nh,inc
  integer(int64)::rev
@@ -86,6 +90,12 @@ program test_harvest_chemical
  call require(code==0,'phase flag alone still forms an owner but cannot form coupled authority')
  call initialize_crop_soil(gotsoil,decoded,cp,9101_int64,corrupted,code,pending)
  call require(code/=0,'forged consumed flag fails coupled N and OM continuation budget')
+ call observe_crop_soil_harvest(state,observation,code)
+ call require(code==0,'final output receipt before incorporation')
+ call observation%snapshot(record,has)
+ call require(has.and.record%end_crop%crop_emerged,'detached observation retains output crop')
+ call acknowledge_crop_soil_harvest(state,observation,h)
+ call require(h%status/=0,'acknowledgement before incorporation refused')
  harvested=state;nh=crop_soil_whole_n(state)
  call harvest_crop_soil_boundary(state,h);call require(h%status/=0,'harvest duplicate rejected')
  call require(crop_soil_whole_n(state)==nh,'duplicate no material debit')
@@ -125,6 +135,62 @@ program test_harvest_chemical
  call consume_crop_soil_harvest_pending(state,h);call require(h%status/=0,'duplicate consumption refused')
  call state%snapshot(soil,decoded);bad=pack_crop_n_continuation(decoded)
  call require(all(bad==w),'duplicate no consumed phase mutation')
+ call acknowledge_crop_soil_harvest(state,empty_observation,h)
+ call require(h%status/=0,'missing observation refused')
+ call acknowledge_crop_soil_harvest(state,observation,h)
+ call require(h%status==0.and.abs(h%residual)<=1d-12,'observed incorporated event retired atomically')
+ call state%snapshot(soil,decoded);bad=pack_crop_n_continuation(decoded)
+ call require(decoded%harvested().and.decoded%harvest_retired().and.size(bad)==9,'compact persistent retired phase')
+ call require(.not.allocated(decoded%crop%biomass).and..not.allocated(decoded%crop%evolution_continuation), &
+  'final cohorts and evolution released')
+ call decoded%harvest_snapshot(record,has);call require(.not.has,'retired archive no longer retained')
+ call observation%snapshot(record,has);call require(has.and.record%end_crop%crop_emerged,'detached output remains consumer owned')
+ call require(harvest_incorporation_valid(state),'retired native preparation valid')
+ call unpack_crop_n_continuation(bad,decoded,code);call require(code==0,'compact codec')
+ v=pack_crop_n_continuation(decoded);call require(all(v==bad),'compact exact roundtrip')
+ call initialize_crop_soil(soil,decoded,cp,9101_int64,restored,code)
+ call require(code==0,'compact coupled restore')
+ call acknowledge_crop_soil_harvest(state,observation,h);call require(h%status/=0,'duplicate acknowledgement refused')
+ call consume_crop_soil_harvest_pending(state,h);call require(h%status/=0,'retired cannot replay residues')
+ do i=1,6
+  v=bad
+  select case(i)
+  case(1);v(3)=.5d0
+  case(2);v(4)=-1d0
+  case(3);v(8)=0d0
+  case(4);v(1)=-81003d0
+  case(5);v(2)=2d0
+  case(6);v(5)=99999d0
+  end select
+  call unpack_crop_n_continuation(v,decoded,code)
+  if(code==0)call initialize_crop_soil(soil,decoded,cp,9101_int64,corrupted,code)
+  call require(code/=0,'malformed compact state cannot publish coupled authority')
+ end do
+ before=state
+ call advance_crop_soil_fallow_day(state,1d0,2d0,theta,0d0,0d0,0d0,.001d0,0d0,fallow)
+ call require(fallow%status/=0,'fallow with actual extraction refused')
+ call state%snapshot(gotsoil,decoded);v=pack_crop_n_continuation(decoded)
+ call require(all(v==bad),'rejected fallow retains compact authority')
+ call advance_crop_soil_fallow_day(state,1d0,2d0,theta,0d0,0d0,0d0,0d0,0d0,fallow)
+ call require(fallow%status==0.and.fallow%soil%reactions_executed,'real fallow chemistry executes')
+ call require(fallow%internal_supply_kg_m2==0d0.and.fallow%fixation_kg_m2==0d0.and. &
+  abs(fallow%whole_n_residual)<=1d-12,'fallow zero crop supply and closed whole N')
+ call state%snapshot(gotsoil,decoded);v=pack_crop_n_continuation(decoded)
+ call require(v(2)==2d0.and.all(v(6:9)==bad(6:9)),'fallow advances clock preserves completed crop ledger')
+ call gotsoil%snapshot(clock,theta,got,rev)
+ call require(rev==2.and.clock==2d0.and.any(got%fom_kg_m3/=beforep%fom_kg_m3),'actual positive reactive continuation')
+ next_cp=cp;next_cp%harvest%crop_identity=8;next_cp%harvest%crop_end=3d0
+ call configure_owner(seed,next_cp,code);call require(code==0,'independent initialized successor')
+ call initialize_crop_soil_successor(state,seed,cp,9101_int64,h)
+ call require(h%status/=0,'old crop identity refused')
+ call initialize_crop_soil_successor(state,seed,next_cp,9102_int64,h)
+ call require(h%status==0.and.h%seed_n==crop_n_live(seed).and.abs(h%residual)<=1d-12, &
+  'successor seed N explicitly external and balanced')
+ call state%snapshot(soil,decoded);call soil%snapshot(clock,theta,pools,rev)
+ call require(clock==2d0.and.rev==2.and.all(pools%fom_kg_m3==got%fom_kg_m3),'successor retains soil clock pools revision')
+ call require(.not.decoded%harvested().and.decoded%crop%crop_emerged,'successor active')
+ call acknowledge_crop_soil_harvest(state,observation,h);call require(h%status/=0,'prior receipt cannot retire successor')
+ call initialize_crop_soil_successor(state,seed,next_cp,9102_int64,h);call require(h%status/=0,'successor initialization cannot replay')
  print '(A,I0)','HARVEST_CHEMICAL_ASSERTIONS=',checks
  print '(A)','HARVEST_CHEMICAL_ATOMIC_PENDING_CONTINUATION=PASS'
 contains

@@ -28,17 +28,25 @@ module mod_wofost81_crop_owner_state
     real(real64) :: exported_dm(4)=0d0,exported_n(4)=0d0
   end type
   public :: prepare_wofost81_harvest,restore_wofost81_harvest_trusted,stage_wofost81_harvest_consumed
+  type, public :: wofost81_harvest_retired_t
+    real(real64) :: clock=0d0,continuation_totals(2)=[-1d0,-1d0]
+    integer(int64) :: crop_identity=0_int64
+  end type
+  public :: stage_wofost81_harvest_retired,restore_wofost81_retired_trusted,stage_wofost81_fallow_continuation
   public :: stage_wofost81_harvest_continuation_totals
 
   type, extends(transaction_state_t), public :: wofost81_crop_owner_state_t
     type(wofost_crop_owner_state_t) :: crop
     type(wofost81_n_owner_state_t) :: nitrogen
     type(wofost81_harvest_record_t), allocatable, private :: harvest
+    type(wofost81_harvest_retired_t), allocatable, private :: retired
   contains
     procedure :: clone => clone_wofost81_crop_owner_state
     procedure, public :: validate => validate_wofost81_crop_owner_state
     procedure, public :: harvest_snapshot => snapshot_harvest
     procedure, public :: harvested => crop_harvested
+    procedure, public :: retired_snapshot => snapshot_retired
+    procedure, public :: harvest_retired => crop_retired
   end type wofost81_crop_owner_state_t
 
 contains
@@ -52,6 +60,7 @@ contains
       typed_copy%crop = self%crop
       typed_copy%nitrogen = self%nitrogen
       if(allocated(self%harvest)) allocate(typed_copy%harvest,source=self%harvest)
+      if(allocated(self%retired)) allocate(typed_copy%retired,source=self%retired)
     class default
       error stop 'WOFOST81 crop owner state: clone allocation failure'
     end select
@@ -63,6 +72,18 @@ contains
     if (self%crop%validate() /= WOFOST_CROP_OWNER_OK) return
     status = WOFOST81_CROP_OWNER_INVALID_N_STATE
     if (self%nitrogen%validate() /= WOFOST81_N_OWNER_OK) return
+    if(allocated(self%retired)) then
+      status=WOFOST81_HARVEST_INVALID
+      if(allocated(self%harvest))return
+      if(.not.retired_valid(self%retired))return
+      if(self%crop%crop_emerged.or.self%crop%development_stage/=0d0)return
+      if(allocated(self%crop%biomass).or.allocated(self%crop%evolution_continuation).or. &
+         allocated(self%crop%b110_reference_compatibility))return
+      associate(n=>self%nitrogen%value)
+        if(any([n%namountlv,n%namountst,n%namountrt,n%namountso]/=0d0))return
+        if(any([n%nuptake_total,n%nfix_total,n%nlosses_total,n%initial_total]>1d9))return
+      end associate
+    end if
     if(allocated(self%harvest)) then
       status=WOFOST81_HARVEST_INVALID
       if(.not.harvest_record_valid(self%harvest)) return
@@ -79,7 +100,7 @@ contains
 
   logical function crop_harvested(self) result(present_harvest)
     class(wofost81_crop_owner_state_t), intent(in) :: self
-    present_harvest=allocated(self%harvest)
+    present_harvest=allocated(self%harvest).or.allocated(self%retired)
   end function
 
   subroutine snapshot_harvest(self,record,available)
@@ -88,6 +109,65 @@ contains
     logical, intent(out) :: available
     record=wofost81_harvest_record_t();available=allocated(self%harvest)
     if(available) record=self%harvest
+  end subroutine
+
+  logical function crop_retired(self) result(retired)
+    class(wofost81_crop_owner_state_t),intent(in)::self
+    retired=allocated(self%retired)
+  end function
+  subroutine snapshot_retired(self,record,available)
+    class(wofost81_crop_owner_state_t),intent(in)::self
+    type(wofost81_harvest_retired_t),intent(out)::record
+    logical,intent(out)::available
+    record=wofost81_harvest_retired_t();available=allocated(self%retired)
+    if(available)record=self%retired
+  end subroutine
+  logical function retired_valid(h) result(ok)
+    type(wofost81_harvest_retired_t),intent(in)::h
+    ok=.false.
+    if(.not.all(ieee_is_finite([h%clock,h%continuation_totals])))return
+    if(abs(h%clock)>1d9.or.h%crop_identity<1.or.h%crop_identity>1000000)return
+    if(any(h%continuation_totals<0d0).or.any(h%continuation_totals>1d9))return
+    ok=.true.
+  end function
+  subroutine restore_wofost81_retired_trusted(h,nitrogen,candidate,status)
+    type(wofost81_harvest_retired_t),intent(in)::h
+    type(wofost81_n_owner_state_t),intent(in)::nitrogen
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(wofost81_crop_owner_state_t)::trial
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.retired_valid(h))return
+    allocate(trial%retired,source=h);trial%nitrogen=nitrogen
+    if(trial%validate()/=0)return
+    candidate=trial;status=0
+  end subroutine
+  subroutine stage_wofost81_harvest_retired(committed,candidate,status)
+    type(wofost81_crop_owner_state_t),intent(in)::committed
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(wofost81_harvest_retired_t)::h
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.allocated(committed%harvest))return
+    if(committed%validate()/=0)return
+    if(.not.committed%harvest%pending_incorporated)return
+    h%clock=committed%harvest%clock;h%crop_identity=committed%harvest%crop_identity
+    h%continuation_totals=committed%harvest%continuation_totals
+    call restore_wofost81_retired_trusted(h,committed%nitrogen,candidate,status)
+  end subroutine
+  subroutine stage_wofost81_fallow_continuation(committed,t0,t1,totals,candidate,status)
+    type(wofost81_crop_owner_state_t),intent(in)::committed
+    real(real64),intent(in)::t0,t1,totals(2)
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(wofost81_harvest_retired_t)::h
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.committed%harvest_retired())return
+    if(committed%validate()/=0)return
+    if(.not.all(ieee_is_finite([t0,t1])))return
+    if(t0/=committed%retired%clock.or.t1-t0/=1d0)return
+    h=committed%retired;h%clock=t1;h%continuation_totals=totals
+    call restore_wofost81_retired_trusted(h,committed%nitrogen,candidate,status)
   end subroutine
 
   logical function harvest_record_valid(h) result(ok)
@@ -202,7 +282,7 @@ contains
     type(wofost81_crop_owner_state_t),intent(out)::candidate
     integer,intent(out)::status
     candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
-    if(.not.committed%harvested())return
+    if(.not.allocated(committed%harvest))return
     if(committed%validate()/=0)return
     if(any(abs(committed%harvest%continuation_totals+1d0)>0d0))return
     if(.not.all(ieee_is_finite(totals)))return
@@ -231,7 +311,7 @@ contains
     type(wofost81_crop_owner_state_t),intent(out)::candidate
     integer,intent(out)::status
     candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
-    if(.not.committed%harvested())return
+    if(.not.allocated(committed%harvest))return
     if(committed%validate()/=0)return
     if(committed%harvest%pending_incorporated)return
     candidate=committed;candidate%harvest%pending_incorporated=.true.;status=0

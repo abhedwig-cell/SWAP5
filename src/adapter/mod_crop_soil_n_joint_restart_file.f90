@@ -265,7 +265,7 @@ contains
         if(io/=0)exit decoding
         io=1
         if(.not.all(ieee_is_finite(cv)))exit decoding
-        if(any(abs(cv-crop_expected)>0d0).or.count<29.or.count>2048)exit decoding
+        if(any(abs(cv-crop_expected)>0d0).or.count<9.or.count>2048)exit decoding
         allocate(ov(count));read(u,iostat=io)ov
         if(io/=0)exit decoding
         if(pending_tag(tag))then

@@ -81,7 +81,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -94,13 +94,14 @@ contains
     real(real64),intent(in)::t0,t1
     type(crop_soil_n_joint_result_t),intent(out)::result
     type(soil_n_day_environment_t),intent(in),optional::environment
+    logical,intent(in),optional::fallow
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
     type(crop_soil_state_t)::chemical_trial
     type(crop_n_configuration_t)::cp
     integer(int64)::id
-    logical::ok,did_commit
+    logical::ok,did_commit,inactive
     integer::status
     real(real64)::clock
     type(reactive_parameters_t)::np
@@ -110,7 +111,14 @@ contains
     type(mineral_state_t)::base
     type(mineral_daily_carrier_t)::carrier
     result=crop_soil_n_joint_result_t()
+    inactive=.false.;if(present(fallow))inactive=fallow
     if(.not.bounded_template(template))return
+    if(inactive)then
+      call chemical%snapshot(soil,crop)
+      if(.not.crop%harvest_retired())return
+      if(.not.all(ieee_is_finite([forcing%root_extraction_sink,forcing%root_potential_transpiration])))return
+      if(forcing%root_extraction_sink/=0d0.or.forcing%root_potential_transpiration/=0d0)return
+    end if
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)
     if(.not.allocated(np%mineral%dz_cm))return
@@ -141,8 +149,13 @@ contains
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end if
+    if(inactive)then
+      call advance_crop_soil_fallow_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
+        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment)
+    else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
       carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment)
+    end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then
       call backend%discard_trial_candidate(candidate,result%diagnostics)

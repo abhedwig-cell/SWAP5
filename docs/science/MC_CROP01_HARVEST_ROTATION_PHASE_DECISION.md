@@ -486,3 +486,48 @@ dead-canopy profiles. The common native/owner preservation evidence is bounded
 as above; reconcile the owning F-CI admission contracts before any promotion.
 Keep PR1247 draft. No mastercap/count promotion. Pond/source stays open;
 aquifer stays rejected.
+
+### Observation retirement and explicit successor contract (implementation phase)
+
+Continue in the existing crop/soil owner, not the kernel. A detached observation
+receipt captures the archived final crop/N and exact event continuation. The
+consumer explicitly acknowledges that receipt. Acknowledgement is atomic and
+requires completed harvest incorporation, no daily pending, and exact identity,
+clock, policy, archive and inventory binding. Observation may precede
+incorporation; only the incorporated flag is normalized for receipt comparison.
+A receipt is an application acknowledgement, not proof that external I/O ran.
+Absent, stale and duplicate acknowledgements reject without state changes.
+
+After acknowledgement, release the final biomass/cohorts, evolution history,
+policy copy and organ material arrays. Persist only event identity, current
+clock, the two inventory bindings and the existing closed crop N ledger. The
+compact owner remains a harvested/retired phase, not a default active owner.
+Use a distinct owner vector discriminator (-81002), bounded exact length and
+roundtrip validation inside existing harvest native tags. Original active and
+unacknowledged harvest vectors/tags stay byte-identical. Decoder publication
+still requires actual coupled N/OM, configuration and water coherence.
+
+An explicit fallow interval requires this retired phase and zero potential and
+actual root extraction. Execute the existing accepted Richards trial and real
+reactive N day with no crop demand, atomically publish both, and update compact
+clock/N/OM bindings only after the real reactions and balance checks. This is
+not a synthetic timestep or a crop day with uptake disabled after calculation.
+Retain the completed crop ledger unchanged through fallow.
+
+Explicit successor initialization accepts an independently initialized WOFOST81
+owner and configuration at the actual accepted clock. Require a strictly newer
+crop identity, a future/end-of-current-day harvest bound, no accumulated uptake,
+fixation or loss, and a valid initial N balance. Record seed/initial biomass N
+as external input; never silently remove it from soil. Keep all soil pools,
+water clock/revision and numerical history unchanged. Calendar/weather parsing,
+automatic emergence and retained historical dead canopy remain separate scope.
+The explicit transition is allowed directly after retirement or after fallow.
+
+Affected invariants: 3,4,7,9,13,21,27,29. Qualification selects the small real
+owner/chemical closure first, then a short physical harvest -> observation ->
+retirement -> fallow -> successor -> accepted crop-day continuation with opaque
+and fresh-process native equality and malformed compact controls at O0/O2.
+Preserve affected original native material/environment/thermal endpoints using
+same-session provider reuse and fresh assertions. No full F-CI or long low-air
+run is selected merely for a shared owner change. Expected physical/preservation
+cost about ten minutes; exact compilation/link/native costs will be retained.
