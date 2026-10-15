@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - integration/f-ci-canonical
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'tools/**'
+      - 'integration/f-ci/**'
+      - 'reference/**'
+      - '.github/workflows/fci-canonical.yml'
   pull_request:
     paths:
       - 'src/**'
@@ -13,8 +20,63 @@ on:
       - 'reference/swap-4.3.1/**'
       - '.github/workflows/fci-canonical.yml'
 
+  workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing versioned work-unit JSON containing test_selection
+        required: true
+        type: string
+      replay_historical:
+        description: Explicitly selected frozen historical chain (requires replay_historical decision)
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fci-canonical-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  selection-preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inspect impact or validate stable-candidate qualification decision
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+          EVENT: ${{ github.event_name }}
+          REPLAY: ${{ inputs.replay_historical }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT" == workflow_dispatch ]]; then
+            python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+            if [[ "$REPLAY" == true ]]; then
+              python3 tests/modularity/run_modular_tests.py --check-selection replay_historical
+            fi
+          else
+            python3 tests/modularity/run_modular_tests.py --changed-since "$BASE" --selection-only
+            echo 'Impact report only; owner admission is separate, no numerical PASS inherited.'
+          fi
+  modular-feedback:
+    if: github.event_name != 'workflow_dispatch'
+    needs: selection-preflight
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Small production contracts or explicit owner-selection block
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python3 tests/modularity/run_modular_tests.py --changed-since "$BASE" --output "$RUNNER_TEMP/modular-feedback"
   historical-fci03-through-fci18:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +108,8 @@ jobs:
           echo 'FCI_CANONICAL_HISTORICAL_FCI03_THROUGH_FCI18=PASS'
 
   frozen-fci19-candidate-preservation:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +122,8 @@ jobs:
         run: bash tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh
 
   frozen-fci19-source-lineage:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -68,6 +134,8 @@ jobs:
         run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
 
   frozen-fci24-reference-et-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -88,6 +156,8 @@ jobs:
           echo 'FCI24_FROZEN_REFERENCE_ET_AUTHORITY=PASS'
 
   frozen-fci27-reference-et-runtime-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -108,6 +178,8 @@ jobs:
           echo 'FCI27_FROZEN_REFERENCE_ET_RUNTIME_AUTHORITY=PASS'
 
   frozen-fci28-restart-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -125,6 +197,8 @@ jobs:
           echo 'FCI28_FROZEN_RESTRICTED_RESTART_AUTHORITY=PASS'
 
   frozen-fci29-ptra-ownership-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -143,6 +217,8 @@ jobs:
           echo 'FCI29_FROZEN_PTRA_OWNERSHIP_AUTHORITY=PASS'
 
   frozen-fci30-restricted-parallel-v1-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -161,6 +237,7 @@ jobs:
           echo 'FCI30_FROZEN_RESTRICTED_PARALLEL_V1_AUTHORITY=PASS'
 
   frozen-fci31-reference-et-root-uptake-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
     needs:
       - historical-fci03-through-fci18
       - frozen-fci19-candidate-preservation
@@ -189,6 +266,8 @@ jobs:
           echo 'FCI31_FROZEN_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_AUTHORITY=PASS'
 
   frozen-fci34-root-attribution-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -209,6 +288,8 @@ jobs:
           echo 'FCI34_FROZEN_ROOT_ATTRIBUTION_AUTHORITY=PASS'
 
   frozen-fci36-divdra-active-runtime-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -230,6 +311,8 @@ jobs:
           echo 'FCI36_FROZEN_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_AUTHORITY=PASS'
 
   frozen-fci37-parallel-root-uptake-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -254,6 +337,8 @@ jobs:
           echo 'FCI37_FROZEN_FINAL_PARALLEL_ROOT_UPTAKE_AUTHORITY=PASS'
 
   frozen-fci39-surface-evaporation-capacity-source-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -273,6 +358,8 @@ jobs:
           echo 'FCI39_FROZEN_RESTRICTED_SURFACE_EVAPORATION_CAPACITY_SOURCE_AUTHORITY=PASS'
 
   frozen-fci40-effective-forcing-executor-source-authority:
+    if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
+    needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -290,7 +377,11 @@ jobs:
           echo 'FCI40_FROZEN_RESTRICTED_EFFECTIVE_FORCING_EXECUTOR_SOURCE_AUTHORITY=PASS'
 
   current-restricted-canonical-preservation:
+    if: always() && github.event_name == 'workflow_dispatch' && !failure() && !cancelled()
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     needs:
+      - selection-preflight
       - frozen-fci31-reference-et-root-uptake-authority
       - frozen-fci34-root-attribution-authority
       - frozen-fci36-divdra-active-runtime-authority

@@ -38,10 +38,10 @@ def read_evidence():
  manifest=json.loads(data.pop('MANIFEST.json'));check(set(manifest)==set(data),'incomplete surface manifest')
  for p,h in manifest.items():check(sha(data[p])==h,'surface member drift '+p)
  return data
-def validate_evidence(data):
+def validate_evidence(data,execution_commit=None):
  s=json.loads((ROOT/STATUS).read_text());r=json.loads(data['stable/result.json']);events=json.loads(data['stable/events.json'])
  check(r['status']=='PHYSICAL_PASS_NOT_ADMITTED','unfinished surface qualification')
- check(r['baseline']==s['execution_commit'],'wrong surface execution')
+ check(r['baseline']==(execution_commit or s['execution_commit']),'wrong surface execution')
  check(r['authority_sha256']=='2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2','wrong surface authority')
  check(r['literal_lines']==[[346,355],[361,432],[442,442],[455,455]],'different surface literal source')
  for p,h in r['input_sha256'].items():
@@ -89,6 +89,69 @@ def incumbent_mineral():
  p=subprocess.run([sys.executable,'-B','tests/nut-sol/verify_age_successor.py','--incumbent-mineral'],cwd=base,check=True,capture_output=True,text=True,
   env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return json.loads(p.stdout)
+# Exact additive current-canonical successor. The original final science,
+# including its discriminating water-budget witness, remains immutable.
+_original_verify_source=verify_source
+_original_verify_qualification=verify_qualification
+CURRENT_BASE='31ff3158b956183c8af19f85bd3361847f60309b'
+ORIGINAL_FINAL='238b6184140ec42cbd77f472436519d98bbf7bd7'
+PRODUCERS={'src/process/mod_b111_surface_supply.f90','src/runtime/mod_fmr_b111_surface_solute_route.f90','src/runtime/mod_fmr_b111_surface_joint_application.f90'}
+SURFACE_CASE="""      src/process/mod_b111_surface_supply.f90|src/runtime/mod_fmr_b111_surface_solute_route.f90|src/runtime/mod_fmr_b111_surface_joint_application.f90 )
+        python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"
+        ;;
+"""
+MOVING='tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
+HARVEST='tests/crop-harvest/verify_harvest_successor.py'
+DISPATCH={'verify_source': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_source(git_reader)\n", 'verify_physical': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_qualification()  # physical\n", 'verify_qualification': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_qualification()  # qualification\n"}
+CONTROL_DISPATCH="if (v.ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_surface_evidence_controls.py')],check=True);raise SystemExit(0)\n"
+def composition():return json.loads((ROOT/STATUS).read_text()).get('canonical_composition')
+def verify_source(git_reader=None):
+ m=composition()
+ if m is None:return _original_verify_source()
+ g=git if git_reader is None else git_reader
+ check(m['canonical']==CURRENT_BASE and m['original_final']==ORIGINAL_FINAL,'foreign surface composition baseline')
+ g('merge-base','--is-ancestor',CURRENT_BASE,'HEAD')
+ check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty composed surface')
+ rows={r.split('\t')[1]:r.split('\t')[0]for r in g('diff','--name-status',CURRENT_BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
+ expected=m['postimages'];check(rows=={p:r['status']for p,r in expected.items()},'foreign current surface delta')
+ check({p for p in expected if p.startswith('src/')}==PRODUCERS and all(expected[p]['status']=='A'for p in PRODUCERS),'existing production changed')
+ for p,r in expected.items():check(g('rev-parse','HEAD:'+p)==r['blob']==blob((ROOT/p).read_bytes()),'current surface postimage drift '+p)
+ check(g('rev-parse','HEAD:src')==m['source_tree'],'surface source tree drift')
+ check(g('rev-parse','HEAD:reference')==g('rev-parse',CURRENT_BASE+':reference'),'surface reference changed')
+ # Removing only governed guard dispatch leaves the complete incumbent bodies.
+ text=(ROOT/HARVEST).read_text()
+ for addition in DISPATCH.values():check(text.count(addition)==1,'unknown surface owner dispatch');text=text.replace(addition,'')
+ check(text==subprocess.check_output(['git','show',CURRENT_BASE+':'+HARVEST],cwd=ROOT,text=True),'harvest owner body drift')
+ moving=(ROOT/MOVING).read_text();check(moving.count(SURFACE_CASE)==1,'unknown surface moving case')
+ check(moving.replace(SURFACE_CASE,'')==subprocess.check_output(['git','show',CURRENT_BASE+':'+MOVING],cwd=ROOT,text=True),'full moving body changed')
+ controls='tests/crop-harvest/check_admission_controls.py';text=(ROOT/controls).read_text();check(text.count(CONTROL_DISPATCH)==1,'unknown control dispatch')
+ check(text.replace(CONTROL_DISPATCH,'')==subprocess.check_output(['git','show',CURRENT_BASE+':'+controls],cwd=ROOT,text=True),'incumbent controls changed')
+ return dict(baseline=CURRENT_BASE,source_tree=m['source_tree'],current_source_tree=m['source_tree'],surface_successor=True,harvest_successor=True,swrd2_successor=True,swrd3_successor=True,co2_successor=True,calendar_successor=True,input_successor=True,thermal_successor=True,qualified=False,admitted=False)
+def current_evidence():
+ m=composition();e=m['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes());check(sha(raw)==e['decoded_sha256'],'current surface capsule drift')
+ with tarfile.open(fileobj=io.BytesIO(raw))as a:
+  members=a.getmembers();check(all(x.isfile()and not Path(x.name).is_absolute()and '..'not in Path(x.name).parts for x in members),'unsafe current surface capsule')
+  check(len(set(x.name for x in members))==len(members),'duplicate current surface evidence');data={x.name:a.extractfile(x).read()for x in members}
+ manifest=json.loads(data.pop('MANIFEST.json'));check(set(data)==set(manifest),'incomplete current surface manifest')
+ for p,h in manifest.items():check(sha(data[p])==h,'current surface raw corruption '+p)
+ return data
+from functools import lru_cache
+@lru_cache(None)
+def incumbent_qualification():
+ root=ROOT.parent/('surface-canonical-'+CURRENT_BASE[:12])
+ if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),CURRENT_BASE],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==CURRENT_BASE,'surface incumbent moved')
+ check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=root,text=True).strip(),'surface incumbent dirty')
+ r=subprocess.run([sys.executable,'-B','tests/crop-harvest/verify_harvest_successor.py'],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+ check(r.returncode==0,'actual admitted incumbent rejected '+r.stderr[-1000:]);result=json.loads(r.stdout)
+ check(result['qualified']and result['swrd2_successor']and result['harvest_successor'],'incomplete admitted incumbent')
+ return result
+def verify_qualification():
+ if composition()is None:return _original_verify_qualification()
+ source=verify_source();data=current_evidence();r=validate_evidence(data,composition()['execution_commit']);old=incumbent_qualification()
+ # Every existing production byte is unchanged from an actually qualified
+ # canonical owner. This is bounded additive preservation, no full numerical PASS.
+ return {**source,'qualified':True,'incumbent_owner':old,'surface_endpoint':r['runs']['O0']['endpoint_sha256'],'preservation':'EXACT_UNCHANGED_INCUMBENT_PRODUCTION_AND_GUARD_BODY_PLUS_CURRENT_SURFACE_PHYSICS','full_fci':'NOT_SELECTED_ADDITIVE_SOURCE_PROOF','highest':'NOT_SELECTED_POLICY'}
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--source-only',action='store_true');p.add_argument('--incumbent-mineral',action='store_true');a=p.parse_args()
  print(json.dumps(incumbent_mineral() if a.incumbent_mineral else verify_source() if a.source_only else verify_qualification(),indent=2))

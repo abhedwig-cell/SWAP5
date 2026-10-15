@@ -809,8 +809,8 @@
           "nonlinear_successor": {
             "pr": 1230,
             "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE_RECONCILED",
-            "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
-            "master_receipt_head":"53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+            "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
+            "master_receipt_head": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
             "baseline": "ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde",
             "branch": "work/nut-sol-nonlinear-matrix-20261015",
             "execution_commit": "a85facff905e6299acffd2f3c11bfeea0a03f295",
@@ -821,12 +821,12 @@
           }
         },
         "bounded_mineral_successor": {
-          "pr":1231,
-          "canonical_merge":"eb03024d99ef9256335eb6e2f3f74bccce8145f0",
-          "status":"CANONICALLY_ADMITTED_BOUNDED_SCOPE",
-          "recovery":"integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
-          "scope":"Daily aggregate NH4/NO3 transport, explicit mineral/whole-N inventory, atomic water rejection/retry and fresh-process joint restart",
-          "next_gate":"Reactive successor PR1232 qualifies organic turnover, mineralisation/immobilisation, nitrification and denitrification. See its exact admission receipt; next crop-N/environment and amendment/residue contracts retain WOFOST81."
+          "pr": 1231,
+          "canonical_merge": "eb03024d99ef9256335eb6e2f3f74bccce8145f0",
+          "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE",
+          "recovery": "integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
+          "scope": "Daily aggregate NH4/NO3 transport, explicit mineral/whole-N inventory, atomic water rejection/retry and fresh-process joint restart",
+          "next_gate": "Reactive successor PR1232 qualifies organic turnover, mineralisation/immobilisation, nitrification and denitrification. See its exact admission receipt; next crop-N/environment and amendment/residue contracts retain WOFOST81."
         },
         "bounded_reactive_successor": {
           "pr": 1232,
@@ -847,6 +847,112 @@
           "scope": "Accepted matrix water age transport/production/balance, atomic rollback and smaller retry, opaque/native fresh-process continuation; zero surface profile",
           "master_receipt_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
           "next_gate": "Accepted surface/pond age and solute budget, then wider source/default envelopes. No full capability closure."
+        },
+        "bounded_crop_supply_successor": {
+          "pr": 1235,
+          "status": "CANONICALLY_ADMITTED_BOUNDED_SCOPE",
+          "recovery": "integration/audits/MC_NUT01_CROP_SUPPLY_STATUS.json",
+          "scope": "Actual Richards plus unchanged WOFOST81 demand and reactive soil supply; exact soil/crop N transfer, atomic water/soil/crop rollback and complete opaque/CRC fresh-process restart",
+          "admission_authority": "PR1235 final expected-head merge and canonical source/tree receipt",
+          "canonical_peer": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+          "source_tree": "c5662a5f77cca5d77c70921ec2d327c9436dbc3a",
+          "full_preservation_seconds": 1572.5012039499998,
+          "highest": "NOT_SELECTED_POLICY",
+          "coverage_receipt": "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
+          "next_gate": "Source-qualified amendments/residues or explicit environmental forcing, then wider default/calendar lifecycle; retain WOFOST81 fixation. No whole NUT/SOL closure or full capability promotion.",
+          "canonical_merge": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c"
+        },
+        "bounded_daily_environment_successor": {
+          "pr": 1236,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "baseline": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+          "recovery": "integration/audits/MC_NUT01_DAILY_ENVIRONMENT_STATUS.json",
+          "contract": "docs/science/MC_NUT01_DAILY_ENVIRONMENT_CONTRACT_20261015.md",
+          "scope": "Explicit time-bound daily prescribed soil temperature through real reactive N and actual Richards/WOFOST81 supply; one transient forcing, unchanged stored configuration and restart schema; atomic rollback and complete continuation.",
+          "admission_authority": "PR1236 final expected-head merge and canonical source/tree receipt",
+          "source_tree": "83f559ee097415e436a33fc9a531de93d382b99a",
+          "highest": "NOT_SELECTED_POLICY",
+          "next_gate": "Source-qualified amendment/residue events on existing N owner; accepted heat/profile reduction and default lifecycle stay open. WOFOST81 fixation retained; pond/source open; aquifer rejected; no full capability/count promotion."
+        },
+        "bounded_material_cycle_successor": {
+          "pr": 1237,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "recovery": "integration/audits/MC_NUT01_MATERIAL_CYCLE_STATUS.json",
+          "scope": "Explicit source-qualified amendment/external-residue batches into existing eight organic/mineral stores, actual accepted Richards and unchanged WOFOST81 day, atomic rollback/retry/replay and complete joint restart",
+          "admission_authority": "PR1237 final expected-head merge and canonical source/tree receipt",
+          "canonical_peer": "48e6aeb15a66dfd11a85de39dc6f8229842d1fd1",
+          "qualified_source_tree": "5a1ca7561fcb2005a89f1d7506678425dc115e71",
+          "current_source_tree": "afac3e7194c1d800eda6e31bcb001f720dbcbb93",
+          "full_preservation_seconds": 1645.7129262439994,
+          "highest": "NOT_SELECTED_POLICY",
+          "coverage_receipt": "integration/audits/MC_NUT01_MATERIAL_CYCLE_COVERAGE_20261015.json",
+          "next_gate": "Explicit calendar policy/file binding and source-qualified actual crop senescence/harvest residue debit and return, combined forcing and wider defaults. WOFOST81 fixation retained; no whole NUT/SOL or capability-disposition promotion."
+        },
+        "material_environment_successor": {
+          "pr": 1238,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "baseline": "fb311dabd16266409deb394c381fe26086a64d03",
+          "recovery": "integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json",
+          "contract": "docs/science/MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
+          "scope": "Simultaneous explicit ordered material batch and time-bound prescribed soil temperature through existing daily crop/soil and actual Richards material application; unchanged sole inventory, whole N and complete restart.",
+          "admission_authority": "PR1238 final expected-head merge and exact canonical source/tree receipt; no admission claim while pending.",
+          "highest": "NOT_SELECTED_POLICY",
+          "next_gate": "Automatic WOFOST81 senescence/harvest residue debit and return with whole-N internal transfer, explicit calendar policy and broader default/heat profiles. Pond/source remains open; aquifer rejected. No full capability/count promotion.",
+          "source_tree": "232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3",
+          "full_preservation_seconds": 1780.1575120960042
+        },
+        "senescence_cycle_successor": {
+          "pr": 1239,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "baseline": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+          "recovery": "integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json",
+          "contract": "docs/science/MC_NUT01_SENESCENCE_CYCLE_CONTRACT_20261015.md",
+          "scope": "Actual daily root/leaf/stem senescence delayed one day, original material chemistry, sole soil+crop+pending whole-N owner and complete native/opaque restart",
+          "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+          "highest": "NOT_SELECTED_POLICY",
+          "next_gate": "Harvest/reset/rotation phase decision, calendar/default activation and accepted heat/profile coupling open. Pond/source open; aquifer rejected. No master capability/disposition promotion.",
+          "admission_authority": "PR1239 expected-head merge and exact canonical tree/source receipt; no admission while pending",
+          "full_preservation_seconds": 1616.2715397360007
+        },
+        "management_calendar_successor": {
+          "pr": 1242,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "baseline": "3b661766dc59298a7f541c970c2d3a55602d926c",
+          "recovery": "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json",
+          "contract": "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_CONTRACT_20261015.md",
+          "reference_decision": "docs/science/MC_NUT01_CALENDAR_REFERENCE_DECISION_20261015.md",
+          "scope": "Typed daily source-ordered amendment plan through existing senescence/crop/soil/actual Richards; B1-R2 same-date defect correction, whole N and unchanged complete restart",
+          "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+          "highest": "NOT_SELECTED_POLICY",
+          "next_gate": "File/date-string parsing/default activation, accepted heat/profile coupling, harvest/reset/rotation and simultaneous solute companions open. Pond/source open; aquifer rejected",
+          "admission_authority": "PR1242 expected-head merge and exact canonical source/tree receipt",
+          "full_preservation_seconds": 1676.7066751130042
+        },
+        "amendment_input_successor": {
+          "pr": 1244,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "baseline": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+          "recovery": "integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json",
+          "contract": "docs/science/MC_NUT01_AMENDMENT_INPUT_CONTRACT_20261015.md",
+          "scope": "Explicit bounded management-table export reader to the existing immutable calendar; no complete SNM/TTUTIL/default activation",
+          "source_tree": "7d397ea67d8106756c08f375f2098776aea64d3e",
+          "highest": "NOT_SELECTED_POLICY",
+          "next_gate": "Complete legacy-file/TTUTIL compatibility and default activation; accepted heat/profile, harvest/reset/rotation and simultaneous companions open; pond/source open; aquifer rejected",
+          "admission_authority": "PR1244 expected-head merge and exact canonical source/tree receipt",
+          "full_preservation_seconds": 1998.7611129849975
+        },
+        "accepted_thermal_successor": {
+          "pr": 1246,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "recovery": "integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json",
+          "contract": "docs/science/MC_NUT01_ACCEPTED_THERMAL_CONTRACT_20261015.md",
+          "scope": "Source-literal temperature reduction; certified accepted-state access; actual thermal Richards/crop/N/material/pending continuation; opaque and native restart; BASE byte preservation",
+          "source_tree": "fe0747d5ec38d1383666376f5e0162373faefcc0",
+          "owner_controls": 289,
+          "full_fci": "NOT_SELECTED",
+          "highest": "NOT_SELECTED_POLICY",
+          "admission_authority": "PR1246 final expected-head merge and canonical source/tree receipt; frozen premerge flags are not admission authority",
+          "remaining": "Harvest/reset/rotation; complete legacy/default activation; simultaneous companions; pond/source open; aquifer rejected"
         }
       },
       {

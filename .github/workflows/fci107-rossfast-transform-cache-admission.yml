@@ -13,20 +13,28 @@ on:
       - 'tests/ross/run_ross13_ross12_semantic_successor_preservation.sh'
       - 'tests/fci/run_fci107_fross17_cache_successor_preservation.sh'
       - 'tests/fci/run_fci_fross22_tiered_successor_preservation.sh'
-      - 'tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
       - '.github/workflows/fci96-fross12-postimage-preservation.yml'
       - '.github/workflows/fci107-rossfast-transform-cache-admission.yml'
       - 'integration/f-ci/F-CI107_*'
   workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing work-unit JSON selecting rossfast_owner
+        required: true
+        type: string
 
 jobs:
   qualify:
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record || 'integration/f-ci/F-CI107_STATUS.json' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Require fresh owning selection before broad RossFast execution
+        run: python3 tests/modularity/run_modular_tests.py --check-selection rossfast_owner
       - name: Compiler identity
         run: gfortran --version
       - name: Execute F-CI107 cache successor qualification

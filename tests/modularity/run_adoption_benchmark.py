@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Alternating same-candidate independent/shared builds; execute every assertion."""
 import argparse
+import os
 import importlib.util
 import subprocess
 from pathlib import Path
@@ -13,6 +14,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',required=True)
     ap.add_argument('--repeat',type=int,default=3);a=ap.parse_args()
     if a.repeat<3:ap.error('at least three paired rounds required')
+    m.require_selection(os.environ.get('SWAP5_TEST_SELECTION_RECORD'), 'modular_broad')
     s=m.Session(Path(a.output).resolve());records=[]
     report={'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=m.ROOT,text=True).strip(),
             'baseline':'Same new production drivers with the incumbent per-driver independent compile policy',

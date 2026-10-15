@@ -2,6 +2,13 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
+if [[ -f src/runtime/mod_fmr_biomass_root_uptake_input.f90 ]]; then
+  python3 tests/root-growth/verify_swrd3_successor.py
+  if [[ "${1:-}" == --verify-only ]]; then exit 0; fi
+  bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh
+  echo 'SWRD3_EXACT_CURRENT_OWNER_PRESERVATION=PASS'
+  exit 0
+fi
 # Exact annual CO2 application successor: current physical and shared-owner proof.
 if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == 5a93008ed2fb18d0798ec0c967729815d156ec26 ]]; then
   python3 tests/crop-co2/verify_co2_successor.py

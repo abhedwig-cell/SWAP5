@@ -96,6 +96,7 @@ contains
 
     prepared = wofost81_one_day_prepared_candidate_t()
     status = WOFOST81_DAY_INVALID_OWNER
+    if (committed%harvested()) return
     if (committed%validate() /= WOFOST81_CROP_OWNER_OK) return
     prepared%candidate = committed
     prepared%nitrogen_before = committed%nitrogen

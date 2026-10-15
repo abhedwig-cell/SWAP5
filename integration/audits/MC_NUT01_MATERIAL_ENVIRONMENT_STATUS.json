@@ -1,0 +1,119 @@
+{
+  "work_unit": "MC-NUT01-MATERIAL-ENVIRONMENT",
+  "baseline": "fb311dabd16266409deb394c381fe26086a64d03",
+  "branch": "work/nut-material-environment-20261015",
+  "contract": "docs/science/MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "next_safe_step": "Verify final fetched postimage, exact live canonical and expected PR head, safely merge then verify canonical tree/source. No repeat full for metadata-only closeout.",
+  "pr": 1238,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1238",
+  "changed_blobs": {
+    "src/crop/mod_crop_soil_n_material_day.f90": "bc9584e4d0feb003b30fc5c168392163c2b197c3",
+    "src/runtime/mod_fmr_crop_soil_n_material_application.f90": "7ce36f0b9454ebff2ee22e00154c9ebced156ee1",
+    "tests/nut-material/check_material_controls.py": "74bf14f946de6e20412ed8953bde41504c310555",
+    "tests/nut-material/verify_material_successor.py": "9c690ad8ad765a5618c1bffe5449ecbfdf370105"
+  },
+  "added_blobs": {
+    "tests/nut-material-environment/check_material_environment_controls.py": "ca3633c438d1f05a38f5d024ae276f3a2d32d40c",
+    "tests/nut-material-environment/run_material_environment.py": "a0f16e503edf1b6da60cab4901175b558444606c",
+    "tests/nut-material-environment/test_material_environment_day.f90": "cc99d2c286915d53267655b0483e2c5275c28824",
+    "tests/nut-material-environment/test_material_environment_joint.f90": "30e8bfc9e3eaded5ed7888d65eafa8a301d0cbdc",
+    "tests/nut-material-environment/verify_material_environment_successor.py": "63c1cff03271e948ee527cc3dce6c36c2aa83cf7"
+  },
+  "direct_development_result": "/workspace/scratch/79ca9f168731/material-env-day-first/result.json",
+  "retained_attempts": [
+    {
+      "path": "material-env-joint-first",
+      "status": "FAILED_EMPTY_PROFILE_TEST_COMPARISON",
+      "cause": "New test compared explicit5C empty material route to an unforced20C original route. Native explicit material/oracle/restart assertions passed; endpoint comparison correctly rejected. Supply same explicit forcing to original comparator; production unchanged."
+    }
+  ],
+  "primary_execution": "eb029af931c59c4b94bccb1bc0f31902d8e26f9d",
+  "source_tree": "232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3",
+  "physical_provider_count": 260,
+  "direct_provider_count": 42,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_20261015.tar.xz.b64",
+    "sha256": "d7c740c822700ed3648d926d4624f94cba3538233f020248792dc060c45498b2",
+    "decoded_bytes": 98612,
+    "members": 2608
+  },
+  "physical_cost_seconds": {
+    "compile": 140.09408871909545,
+    "driver_compile": 23.004783789991052,
+    "link": 1.2316426030156435,
+    "native": 110.29438889105222
+  },
+  "direct_cost_seconds": {
+    "compile": 11.452814500968088,
+    "driver_compile": 4.478067429008661,
+    "link": 0.25318681201315485,
+    "native": 0.013060958008281887
+  },
+  "qualification_status": "BOUNDED_SIMULTANEOUS_FORCING_QUALIFIED_PRESERVED_PREMERGE",
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 65,
+    "original_material_controls": 36,
+    "new_simultaneous_controls": 29
+  },
+  "stable_admission_selection": {
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "expected_wall_seconds": 1650,
+    "owning_clause": "AGENTS independent local testability and protocol four-level stable admission boundary; contract MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md",
+    "reason": "Changed material daily forcing API and actual accepted Richards composition; new source, complete joint physical proof and strict successor dispatch require stable preservation. One local full, no duplicate Actions.",
+    "compile_link_native_split": "UNKNOWN",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "full_preservation": {
+    "execution_commit": "f676ce2a283faa4b8bf201f22cb1b8d9b4f34be1",
+    "tree": "32bb9cf394fb84139ba705da36955a2107d3d084",
+    "source_tree": "232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6346,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1780.1575120960042,
+    "changed_inputs": [],
+    "stdout_sha256": "5c3e734a781c07816cfe2ed2e756d579dde599b57bfd24a463b14d30f45970d1",
+    "stderr_sha256": "6feffe5fc248fca410019a04935f92035ebfdc9ee0bb7ce080509eef810ab364",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "ec85c3aca19b1f24666d4063f7f8e8492d5edf3ded3991125b8aef76bfd83a89",
+      "decoded_bytes": 413556,
+      "members": 15
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "f676ce2a283faa4b8bf201f22cb1b8d9b4f34be1",
+    "original_tree": "32bb9cf394fb84139ba705da36955a2107d3d084",
+    "source_tree": "232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3",
+    "changed_scientific_inputs": [],
+    "closeout_only": [
+      "integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/science/MC_NUT01_MATERIAL_ENVIRONMENT_RECOVERY_20261015.md",
+      "integration/audits/evidence/MC_NUT01_MATERIAL_ENVIRONMENT_ADMISSION_20261015.tar.xz.b64"
+    ],
+    "reason": "Terminal full preservation executed against frozen persisted source, scientific inputs, drivers, oracles and guards. Final changes record that result and its raw capsule only. No science rerun selected for metadata-only closeout."
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1238 expected-head merge and exact canonical tree/source establish actual bounded admission."
+}

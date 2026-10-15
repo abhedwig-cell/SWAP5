@@ -20,6 +20,10 @@ def validate_delta(rows,tree,s):
  for p,h in {**s['added_blobs'],**s['guard_blobs']}.items():
   check(tree.get(p)==h,'unqualified age postimage '+p)
 def verify_source():
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.verify_source()
  s=json.loads((ROOT/STATUS).read_text());check(s['baseline']==BASE,'wrong age baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty age dependencies')
@@ -117,8 +121,16 @@ def validate_final_driver(data,primary):
  check(witness['driver_sha256']==expected['tests/nut-sol/test_age_joint.f90'],'different extreme preimage driver')
  check(witness['events'][-1]['exit']==-8 and b'SIGFPE' in data['preimage/native.stderr'],'missing real Fortran preimage overflow')
 def verify_qualification():
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.verify_qualification()
  source=verify_source();validate_evidence(read_evidence());return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent_mineral():
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.incumbent()
  verify_qualification()
  base=ROOT.parent/'age-incumbent-26ddf94e'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)

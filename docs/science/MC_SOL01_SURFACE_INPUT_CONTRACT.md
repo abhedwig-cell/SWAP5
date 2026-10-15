@@ -110,3 +110,39 @@ large finite mismatch that exceeds the absolute water budget; the new real Fortr
 control discriminates this. The original stopped moving execution atdebc95c5 is
 CENSORED_NOT_PASS (owning session Ctrl-C exit130), never preservation. The final
 scientific capsule binds the exact postimage, final driver and preimage witness.
+
+## Final current-canonical additive admission
+
+The original final O0/O2 evidence and its real Fortran counterexample to relative
+water-rate matching remain bound to immutable `238b6184`; preliminary results and
+the interrupted moving run remain superseded/CENSORED, never preservation PASS.
+
+Current admission must be evaluated on the later harvest/SWRD2 canonical source.
+Select a fresh cold O0/O2 surface process and actual accepted Richards/matrix
+composition with every original balance, signed flux, retry and native restart
+negative. Reuse the original exact large-finite-rate water-mismatch witness only
+while its complete corrected production and driver bytes remain unchanged.
+Seal actual compiler/input/command/raw identities and all final endpoints.
+
+For this bounded additive route, require an exact comparison proving that no
+existing production/reference byte changes from the qualified canonical. Only
+the three explicit surface providers may be added. Default activation remains
+absent. Removing the explicit surface owner dispatch and surface eligibility
+case must reproduce complete incumbent verifier, control and moving runner
+bodies. Execute the admitted incumbent owner's complete retained proof at its
+immutable positive source and require the fresh current surface proof at all
+public successor entrypoints. Retain original evidence controls on the original
+final source, then discriminate current source, current scientific coverage and
+missing/corrupt proofs independently. An old positive evaluated against already
+stale current source is not a valid negative-control baseline.
+
+Under the binding change-impact execution policy, this exact additive proof plus
+fresh affected process/composition/restart science preserves the unchanged
+production defaults without repeating a full moving numerical run solely to
+teach its source guard three new explicit providers. This supersedes the earlier
+full-moving selection for that guard-only reason. It does not inherit a new full
+F-CI PASS or waive a changed default, shared contract, owner state or equation:
+any such change invalidates this bounded admission path. Highest low-air remains
+NOT_SELECTED_POLICY. Persistent pond/source storage, runoff/evaporation and
+nonlinear surface composition remain open; aquifer remains rejected. No full
+SW431-SALT-POND capability or census promotion follows.

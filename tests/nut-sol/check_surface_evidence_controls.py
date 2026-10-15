@@ -1,6 +1,45 @@
 """Negative controls for exact eligibility and real surface evidence."""
 import copy,json,unittest
 import verify_surface_successor as v
+if v.composition() is not None:
+ import subprocess,sys
+ from pathlib import Path
+ from unittest.mock import patch
+ root=v.ROOT.parent/'surface-original'
+ if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),v.ORIGINAL_FINAL],cwd=v.ROOT,check=True,capture_output=True)
+ assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==v.ORIGINAL_FINAL
+ old=subprocess.run([sys.executable,'-B','tests/nut-sol/check_surface_evidence_controls.py'],cwd=root,capture_output=True,text=True)
+ assert old.returncode==0 and 'Ran 24 tests'in old.stderr,old.stderr
+ source=v.verify_qualification();assert source['qualified']and source['surface_successor']
+ passed=[]
+ def reject(label,fn):
+  try:fn()
+  except (ValueError,KeyError,AssertionError,IndexError):passed.append(label);return
+  raise AssertionError('accepted '+label)
+ for mode in ['foreign_src','foreign_test','source_blob','source_tree','reference','dirty']:
+  def reader(*a):
+   value=v.git(*a)
+   if mode.startswith('foreign_')and a[:2]==('diff','--name-status'):return value+'\nA\t'+('src/foreign.f90'if mode=='foreign_src'else'tests/foreign.py')
+   if mode=='source_blob'and a==('rev-parse','HEAD:src/process/mod_b111_surface_supply.f90'):return'0'*40
+   if mode=='source_tree'and a==('rev-parse','HEAD:src'):return'0'*40
+   if mode=='reference'and a==('rev-parse','HEAD:reference'):return'0'*40
+   if mode=='dirty'and a[:2]==('status','--porcelain'):return'M src/foreign.f90'
+   return value
+  reject(mode,lambda:v.verify_source(reader))
+ data=v.current_evidence();execution=v.composition()['execution_commit']
+ for label,mutation in [('unfinished',lambda r:r.update(status='RUNNING')),('wrong_source',lambda r:r.update(baseline='0'*40)),('wrong_authority',lambda r:r.update(authority_sha256='0'*64)),('stale_input',lambda r:r['input_sha256'].update({'src/process/mod_b111_surface_supply.f90':'0'*64})),('lost_negative',lambda r:r['runs']['O0']['restart_negatives'].pop()),('forged_endpoint',lambda r:r['runs']['O2'].update(endpoint_sha256='0'*64))]:
+  altered=data.copy();r=json.loads(altered['stable/result.json']);mutation(r);altered['stable/result.json']=json.dumps(r).encode();reject(label,lambda:v.validate_evidence(altered,execution))
+ altered=data.copy();e=json.loads(altered['stable/events.json']);e[0]['returncode']=1;altered['stable/events.json']=json.dumps(e).encode();reject('failed_actual_command',lambda:v.validate_evidence(altered,execution))
+ for directory,name in [('root-growth','verify_swrd2_successor'),('root-growth','verify_swrd3_successor'),('nut-calendar','verify_calendar_successor'),('nut-senescence','verify_senescence_successor'),('crop-co2','verify_co2_successor'),('nut-input','verify_input_successor'),('nut-thermal','verify_thermal_successor'),('crop-harvest','verify_harvest_successor')]:
+  sys.path.insert(0,str(v.ROOT/'tests'/directory));module=__import__(name);route=module.verify_qualification
+  result=route();assert result['qualified']and result['surface_successor']and result['harvest_successor'];passed.append(name+':positive')
+  for label,target in [('new_science','current_evidence'),('admitted_owner','incumbent_qualification'),('current_source','verify_source')]:
+   with patch.object(v,target,side_effect=ValueError(label)):reject(name+':'+label,route)
+ capsule=v.ROOT/v.composition()['evidence']['path'];read=Path.read_bytes
+ with patch.object(Path,'read_bytes',lambda self:bytes([read(self)[0]^1])+read(self)[1:]if self==capsule else read(self)):
+  reject('current_capsule_corruption',v.current_evidence)
+ print(json.dumps(dict(status='PASS',original_controls=24,current_controls=len(passed),controls=passed),indent=2));raise SystemExit(0)
+
 class Controls(unittest.TestCase):
  @classmethod
  def setUpClass(cls):

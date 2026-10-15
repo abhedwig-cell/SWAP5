@@ -331,7 +331,7 @@ This is the default execution policy for future SWAP5 workstreams. Evidence:
 admitted via PR #1219 at `0181a829eb5f17267541d6b57d7e65140db7bd5a`.
 These rules govern when an agent invokes existing runners. They do not remove
 scientific assertions, change numerical tolerances, or silently alter owner gates.
-Existing shell runners and GitHub workflow filters are not changed by this policy.
+The 15 October enforcement below applies these rules to the existing entrypoints.
 
 ### Select before running
 
@@ -485,6 +485,17 @@ bytes and O0/O2 science outputs must match. Retain compile, link, native-plus-dr
 identity/oracle validation and total timing separately; physics alone is UNKNOWN
 unless independently instrumented. See [the adoption results](../audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md).
 
+
+### Change-impact selection for already qualified components (2026-10-15)
+
+Previously qualified components are not retested merely because upstream physics, forcing or boundary-condition values change. The test selection must identify a changed scientific contract, a changed component implementation, or a specific failure mode not covered by existing qualification. A change of valid input values within the qualified domain is not itself a contract change. This rule applies to all independently qualified components, including RossFast, not only solvers.
+
+For routine crop, root, meteorology, irrigation, drainage and solute migrations, test the changed production physics and its accepted mass/state effects with focused module and physical integration tests. Do not automatically repeat qualification of independent unchanged downstream components. Check genuine interface semantics, input domain, state ownership, accept/reject/rollback, restart and coupling effects before selecting additional tests. A changed shared source file or module import alone is not proof that a component's scientific contract changed.
+
+When a component implementation or relevant contract actually changes, select the smallest test that can discriminate the resulting risk, and run owning preservation when genuinely required by the applicable authority. If an essential new failure mode outside qualified coverage is identified, record the specific gap and test it. Prior PASS may only be inherited with the protocol's full identity and terminal evidence requirements; otherwise record NOT_SELECTED_IMPACT, not PASS. Never relax numerical tolerances, physical oracles or conservation requirements.
+
+Before executing a compound runner, inspect whether it automatically starts unrelated component suites, including F-ROSS preservation, and reconcile outdated automatic selection through the owning runner authority. Documentation changes alone do not alter CI routing. Use the existing PR/workunit for selection rationale, expected cost and evidence; no new register.
+
 ### Highest low-air selection decision (2026-10-14)
 
 The user/programme lead has retired the long highest low-air qualification as a
@@ -504,9 +515,112 @@ Reconcile older owning guards to this selection authority and retained coverage;
 do not fabricate PASS or weaken physical assertions. An omitted stress run is
 NOT_RUN_POLICY/NOT_SELECTED, not highest qualification or 10x proof. Actual
 essential coverage gaps remain admission conditions. Production, immutable
-references, tolerances and automation are unchanged by this documentation decision.
+references and tolerances are unchanged. Automation enforcement follows below.
 
 Continue in coherent implementation, feedback, composition, measurement and admission
 batches. Persist before expensive execution and move automatically to the next safe
 phase. Do not turn a small driver result or a normal checkpoint into a user approval
 boundary. State an exact shared-contract blocker and continue independent work.
+
+
+### Enforced proportional execution (2026-10-15)
+
+These rules are mandatory for every Work session. The four scientific levels and
+all existing owner/admission clauses remain authoritative. This adds selection
+preflight to existing runners, not a test framework or second evidence registry.
+
+1. Develop with the smallest scientifically relevant real production driver and
+   affected state/interface contracts. Use shared verified builds where safe;
+   every required scientific program still executes. Routine feedback executes
+   each selected O0/O2 driver once; deliberate warm repetitions belong to benchmarks.
+2. Before any expected or measured execution over 300 seconds, record changed
+   dependency, scientific claim, owner and authority clause, expected seconds and
+   potentially valid existing evidence. UNKNOWN evidence never means inherited PASS.
+3. A commit, checkpoint, documentary successor or branch advance alone never
+   selects full moving F-CI. Run full moving F-CI when the stable candidate's
+   scientific admission authority requires it. Imports alone cannot exclude a gate.
+4. Highest low-air is NOT_SELECTED_POLICY by the binding 14 October decision.
+   An exceptional stress selection requires its unique research question/failure,
+   fast coverage gap and why a small discriminating test is insufficient.
+5. Inherit only terminal PASS with full relevant source, caller/state, input,
+   oracle/test, toolchain/flags and environment identity. The selection preflight
+   grants no inheritance and no scientific PASS; existing evidence validators remain.
+6. Diagnose an unexpected long execution before restarting an identical one.
+   Preserve failed/censored observations. No tolerances, physical assertions,
+   historical references or scientific claims may be relaxed to meet a time budget.
+7. Before every broad qualification record selection in the existing PR/work-unit.
+   Unmapped dependencies conservatively block automatic selection; reconcile owners
+   and retain affected physical integration, mass, restart, coupling and admission.
+
+Commands for the next Work session:
+
+```bash
+python tests/modularity/run_modular_tests.py --changed-since <pinned-base> --selection-only
+python tests/modularity/run_modular_tests.py --case drainage --output /tmp/fresh-drainage
+# On reviewed local seams, select and execute directly. Unknown changes block.
+python tests/modularity/run_modular_tests.py --changed-since <pinned-base> --output /tmp/fresh-feedback
+# For an owner-required stable candidate, first update ITS EXISTING status JSON:
+export SWAP5_TEST_SELECTION_RECORD=integration/<owner>/<existing-status>.json
+python tests/modularity/run_modular_tests.py --check-selection full_fci
+bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+```
+
+The existing JSON accepts this additive field; other owner metadata is retained:
+
+```json
+{
+  "test_selection": {
+    "candidate": "<persisted-commit-before-test>",
+    "groups": {
+      "full_fci": {
+        "changed_dependency": "<specific affected contract or stable admission dependency>",
+        "scientific_claim": "<claim requiring this complete qualification>",
+        "owner": "<existing admission owner>",
+        "authority": "<existing repository authority path>#<owning-clause>",
+        "expected_seconds": 1850,
+        "existing_evidence": "<relevant exact evidence or UNKNOWN and why RUN>",
+        "prior_execution": "NONE"
+      }
+    }
+  }
+}
+```
+
+`prior_execution` is NONE, PASS, FAILED or UNEXPECTED_LONG. For a repeat include
+`diagnosis`, explaining why existing PASS cannot be reused or what was learned
+from the failed/long run. `candidate` binds the decision to persisted inputs;
+only descriptive docs/AGENTS and that same status record may subsequently change.
+Other changes require a fresh selection. This intentionally errs toward blocking;
+it does not infer safe inheritance from a shortened dependency list. A record can
+be committed after its candidate without making the commit SHA self-referential.
+Selection estimates must be finite and positive. A reason is checked for presence
+and freshness, not automatically certified as scientifically sufficient.
+
+The existing canonical workflow now runs small feedback on automatic source/test
+changes, blocks unmapped changes for owner reconciliation, and runs complete moving
+F-CI only through explicit dispatch with the selection record. Historical frozen
+replays have a separate explicit `replay_historical` decision: they run frozen code
+and do not test a changed current candidate. Docs-only pushes do not start numerics.
+The frost workflow retains all full owner bodies through a `frost_owner` selection,
+with highest low-air separately opted in and preflighted. Its full-owner dispatch
+also preflights `full_fci` before any owner compilation. Its automatic route runs
+short root, numerical-policy and independent frost/invalid-input contracts. B19's
+complete highest matrix is explicit research dispatch, with `highest_low_air` and
+`full_fci` decisions. This reconciles obsolete automatic obligations to the 14 October
+owner decision, without deleting historical assertions or pretending a short run
+establishes complete highest coverage.
+
+`modular_broad` is required for accepted heat, the full bounded low-air physical
+feedback fixture, closure audits and benchmarks: these are explicit investigations,
+not routine feedback. A necessary full F-CI keeps its complete existing science body.
+The focused irrigation allocation option retains its bounded owning route behind
+its own `irrigation_allocation` preflight: the historical shared pair still takes
+499 to 540 seconds and therefore also needs an expensive-test selection. Existing
+resume receipts stay fail-closed on changed runner/tool identity; no new cache or
+receipt eligibility is introduced. The LOW02 moving reconciliation is explicit dispatch with `low02_owner` and
+`full_fci` preflight. F-CI107 no longer triggers on the outer moving wrapper alone:
+its complete RossFast source/test/own-workflow triggers are retained with a
+`rossfast_owner` preflight in the existing F-CI107 status (or explicit dispatch
+record), because the
+wrapper preflight changes none of its scientific recipes. Other capability-specific workflows retain their
+own authority and need the same documented cost selection before deliberate execution.

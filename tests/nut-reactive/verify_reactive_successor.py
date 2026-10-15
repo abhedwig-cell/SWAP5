@@ -12,6 +12,10 @@ def check(ok,label):
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source():
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.verify_source()
  s=json.loads((ROOT/STATUS).read_text());git('merge-base','--is-ancestor',PEER,'HEAD')
  check(s['baseline']==BASE,'unknown baseline')
  check(not git('status','--porcelain','--','src','tests','tools','reference'),'dirty dependency surface')
@@ -34,6 +38,10 @@ def read_evidence():
  return data
 
 def verify_qualification():
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.verify_qualification()
  source=verify_source()
  sys.path.insert(0,str(ROOT/'tests/crop-co2'))
  from verify_co2_successor import nonlinear_evidence
@@ -115,6 +123,10 @@ def verify_qualification():
   for stream in ['stdout','stderr']:check(hashlib.sha256(data[e[stream+'_file']]).hexdigest()==e[stream+'_sha256'],'raw event mismatch')
  return {**source,'qualified':True,'direct_providers':13,'highest':'NOT_SELECTED_POLICY'}
 def incumbent(mode='qualification'):
+ if (ROOT/'src/crop/mod_crop_soil_n_day.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+  import verify_crop_supply_successor as crop_supply
+  return crop_supply.incumbent(mode)
  verify_qualification()
  base=ROOT.parent/'nut-reactive-peer-9ed5efc7'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),PEER],cwd=ROOT,check=True,capture_output=True)
