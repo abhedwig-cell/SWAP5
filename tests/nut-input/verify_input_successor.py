@@ -23,6 +23,9 @@ def verify_source(git_reader=None):
  if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
   return swrd3.verify_source(git_reader=git_reader if git_reader is not None else git)
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_source(git_reader=git_reader)
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -45,9 +48,13 @@ def read_evidence():
  manifest=json.loads(d.pop('MANIFEST.json'));check(set(manifest)==set(d),'manifest coverage')
  for p,h in manifest.items():check(sha(d[p])==h,'raw drift '+p)
  return d
+def default_dependency(path,expected):
+ if not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():return False
+ sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+ return swrd3.compatible_default_dependency(path,expected)
 def inputs_valid(r):
  for p,h in r['input_sha256'].items():
-  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h,'stale input '+p)
+  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h or default_dependency(p,h),'stale input '+p)
 def events_valid(d,prefix,events):
  for e in events:
   check(e['returncode']==0 and e['seconds']>=0,'failed native/build')
@@ -133,6 +140,10 @@ def validate_composition(d,prefix,source,mode,process):
    check(d[prefix+opt+'/file-restart.bin'][:8]==b'S5NC0002','pending full restart profile absent')
  return r
 def validate(d,source):
+ if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists()and (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+  check(source['source_tree']==swrd3.git('rev-parse','HEAD:src'),'foreign current input authority')
+  source={**source,'source_tree':json.loads((ROOT/swrd3.STATUS).read_text())['qualified_input_source_tree']}
  p=validate_process(d,source)
  validate_composition(d,'day/',source,'day',p);validate_composition(d,'joint/',source,'joint',p)
  return p
@@ -140,6 +151,9 @@ def verify_qualification():
  if (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
   sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
   return swrd3.verify_qualification()
+ if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as successor
+  return successor.verify_qualification()
  source=verify_source();validate(read_evidence(),source)
  prior=baseline_command('tests/nut-calendar/verify_calendar_successor.py');check(prior['qualified'],'baseline owner failed')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

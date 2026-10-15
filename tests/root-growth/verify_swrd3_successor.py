@@ -20,7 +20,7 @@ def verify_source(git_reader=None):
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
  expected=s['swrd3_postimages'];rows={r.split('\t')[1]:r.split('\t')[0]for r in g('diff','--name-status',BASE,'HEAD','--','src','tests','tools','reference').splitlines()}
  check(rows=={p:v['status']for p,v in expected.items()},'foreign SWRD3 delta')
- calendar_production={'src/process/mod_soil_n_amendment_calendar.f90','src/crop/mod_crop_soil_n_calendar_day.f90','src/runtime/mod_fmr_crop_soil_n_calendar_application.f90','src/process/mod_soil_n_amendment_input.f90'}
+ calendar_production={'src/process/mod_soil_n_amendment_calendar.f90','src/crop/mod_crop_soil_n_calendar_day.f90','src/runtime/mod_fmr_crop_soil_n_calendar_application.f90','src/process/mod_soil_n_amendment_input.f90','src/adapter/mod_crop_soil_n_joint_restart_file.f90','src/runtime/mod_fmr_b111_reactive_n_joint_application.f90','src/runtime/mod_fmr_serialized_reference_backend.f90','src/process/mod_soil_n_profile_temperature.f90','src/runtime/mod_fmr_soil_n_accepted_temperature.f90','src/runtime/mod_fmr_crop_soil_n_thermal_application.f90'}
  check({p for p in expected if p.startswith('src/')}=={BOOT,NEW}|calendar_production,'production scope widened')
  canonical=s['reconciliation_canonical'];g('merge-base','--is-ancestor',canonical,'HEAD')
  for p in calendar_production:check(g('rev-parse','HEAD:'+p)==g('rev-parse',canonical+':'+p),'canonical calendar production drift '+p)
@@ -38,6 +38,17 @@ def capsule(record):
 def read_evidence():
  s=json.loads((ROOT/STATUS).read_text());d=capsule(s['swrd3_science_evidence']);probe=capsule(s['swrd3_probe_evidence'])
  check(not set(d)&set(probe),'duplicate supplemental members');d.update(probe);return d
+def compatible_default_dependency(path,expected):
+ # Exact, canonical-reviewed absent/false projection; never dispatch qualification
+ # here, because this helper is used inside the combined proof validator.
+ if not (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():return False
+ sys.path.insert(0,str(ROOT/'tests/nut-thermal'))
+ from thermal_default_projection import PROJECTORS
+ if path not in PROJECTORS:return False
+ old=subprocess.check_output(['git','show','cd64c5044a29643a068c6151720f76b2e70f570d:'+path],cwd=ROOT)
+ check(sha(old)==expected,'foreign default dependency '+path)
+ check(PROJECTORS[path]((ROOT/path).read_text()).encode()==old,'default projection drift '+path)
+ return True
 def dependencies(inputs,guard_rebinding=False):
  s=json.loads((ROOT/STATUS).read_text())
  allowed={'tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh','tests/nut-calendar/verify_calendar_successor.py','tests/nut-calendar/check_calendar_controls.py'}
@@ -45,6 +56,7 @@ def dependencies(inputs,guard_rebinding=False):
   check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe dependency '+p)
   actual=sha((ROOT/p).read_bytes())
   if actual==h:continue
+  if compatible_default_dependency(p,h):continue
   rec=s.get('input_guard_rebinding',{}).get(p,{})
   check(guard_rebinding and p in allowed and rec=={'before':h,'after':actual},'stale dependency '+p)
 def native_raw(d,h):
@@ -153,9 +165,12 @@ def verify_qualification():
  calendar.validate(calendar.read_evidence(),native_source)
  sys.path.insert(0,str(ROOT/'tests/nut-input'));import verify_input_successor as amendment_input
  amendment_input.validate(amendment_input.read_evidence(),source)
+ sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as thermal
+ thermal.compatibility()
+ thermal_status=thermal.v.source();thermal.v.validate(thermal.v.read(thermal_status),thermal_status)
  check(amendment_input.baseline_command('tests/nut-calendar/verify_calendar_successor.py')['qualified'],'original calendar authority failed')
  baseline_command('tests/nut-senescence/verify_senescence_successor.py')
- return {**source,'qualified':True,'calendar_successor':True,'input_successor':True}
+ return {**source,'qualified':True,'calendar_successor':True,'input_successor':True,'thermal_successor':True}
 def incumbent(mode='qualification'):
  verify_qualification()
  return {**baseline_command('tests/nut-senescence/verify_senescence_successor.py',['--incumbent',mode]),'swrd3_successor':True,'swrd3_source_tree':git('rev-parse','HEAD:src')}

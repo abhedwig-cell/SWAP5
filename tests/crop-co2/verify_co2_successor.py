@@ -135,6 +135,11 @@ def verify_source():
    additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json').read_text())['added_blobs'])
   if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').exists():
    additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_AMENDMENT_INPUT_STATUS.json').read_text())['added_blobs'])
+  if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+   sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as thermal
+   thermal.verify_qualification()
+   additions.update(json.loads((ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').read_text())['added_blobs'])
+   additions.update(thermal.PROJECTORS)
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')
@@ -142,6 +147,9 @@ def verify_source():
 def dependencies(inputs):
  for p,h in inputs.items():
   check(not Path(p).is_absolute() and '..' not in Path(p).parts,'unsafe dependency')
+  if hashlib.sha256((ROOT/p).read_bytes()).hexdigest()!=h and (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+   sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as thermal
+   if thermal.compatible_dependency(p,h):continue
   check(hashlib.sha256((ROOT/p).read_bytes()).hexdigest()==h,'stale dependency '+p)
 def native_raw(data,digest):
  raws=[b for p,b in data.items()if p.endswith('.stdout')and hashlib.sha256(b).hexdigest()==digest]
@@ -248,6 +256,12 @@ def verify_qualification():
  check(conservative<=m['dependency_blobs'].keys(),'additional dependency closure incomplete')
  for p,h in m['dependency_blobs'].items():
   if matrix and p in [GUARD,MOVING]:continue # exact replacement validated above, original science unchanged
+  if blob((ROOT/p).read_bytes())!=h and (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists():
+   sys.path.insert(0,str(ROOT/'tests/nut-thermal'));import verify_thermal_successor as thermal
+   if p in thermal.PROJECTORS:
+    thermal.verify_qualification()
+    raw=subprocess.check_output(['git','show',thermal.BASE+':'+p],cwd=ROOT)
+    check(blob(raw)==h,'foreign historical CO2 dependency '+p);continue
   check(tree.get(p)==h and blob((ROOT/p).read_bytes())==h,'additional dependency drift '+p)
  return result
 if __name__=='__main__':

@@ -49,9 +49,13 @@ def baseline_command(path,extra=()):
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=root,text=True).strip(),'dirty baseline')
  p=subprocess.run([sys.executable,'-B',str(root/path),*extra],cwd=root,capture_output=True,check=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  return json.loads(p.stdout)
+def default_dependency(path,expected):
+ if not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():return False
+ sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd3_successor as swrd3
+ return swrd3.compatible_default_dependency(path,expected)
 def inputs_valid(r):
  for p,h in r['input_sha256'].items():
-  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h,'scientific input drift '+p)
+  check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe input');check(sha((ROOT/p).read_bytes())==h or default_dependency(p,h),'scientific input drift '+p)
 def events_valid(d,prefix,events):
  for e in events:
   check(e['returncode']==0 and e['seconds']>=0,'failed native/build event')
