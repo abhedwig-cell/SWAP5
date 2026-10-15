@@ -2,22 +2,85 @@
   "work_unit": "MC-NUT01-AMENDMENT-CALENDAR",
   "baseline": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
   "branch": "work/nut-amendment-calendar-20261015",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "checkpoint_commit": "SELF: isolated calendar authority and source domain before implementation",
+  "checkpoint_commit": "SELF: science drivers and exact additive successor guards persisted",
   "contract": "docs/science/MC_NUT01_AMENDMENT_CALENDAR_CONTRACT_20261015.md",
-  "next_action": "Implement immutable daily calendar and additive existing-owner application, then tiny source-bound O0/O2 first",
+  "next_action": "Seal actual O0/O2 science, validate owner and controls, select stable preservation after live overlap reconciliation",
   "recovery_point": "integration/audits/MC_NUT01_AMENDMENT_CALENDAR_STATUS.json",
   "last_reconciled_head": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
   "last_reconciled_upstream": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
-  "relevant_paths": ["src/process/mod_b111_amendment_calendar.f90", "src/crop/mod_crop_soil_n_calendar_day.f90", "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90", "tests/nut-calendar"],
-  "authority_paths": ["docs/science/MC_NUT01_AMENDMENT_CALENDAR_CONTRACT_20261015.md", "integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json"],
+  "relevant_paths": [
+    "src/process/mod_b111_amendment_calendar.f90",
+    "src/crop/mod_crop_soil_n_calendar_day.f90",
+    "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90",
+    "tests/nut-calendar"
+  ],
+  "authority_paths": [
+    "docs/science/MC_NUT01_AMENDMENT_CALENDAR_CONTRACT_20261015.md",
+    "integration/audits/MC_NUT01_MATERIAL_ENVIRONMENT_STATUS.json"
+  ],
   "dependency_surface": "Additive typed forcing and callers; complete production closure, immutable original source, fixtures, compiler, test drivers and owning preservation guards",
-  "overlap": {"senescence": "PR1239 active, owns pending crop/soil and codec changes; no import or edit", "surface": "PR1234 active, separate solute owner", "donor": "PR1117 near-date sorting/grouping not admitted"},
+  "overlap": {
+    "senescence": "PR1239 active, owns pending crop/soil and codec changes; no import or edit",
+    "surface": "PR1234 active, separate solute owner",
+    "donor": "PR1117 near-date sorting/grouping not admitted"
+  },
   "highest": "NOT_SELECTED_POLICY",
-  "blockers": []
+  "blockers": [],
+  "pr": 1240,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1240",
+  "added_blobs": {
+    "src/crop/mod_crop_soil_n_calendar_day.f90": "bfdb78d3d961c0bc8ff398d85b1209d885b1e177",
+    "src/process/mod_b111_amendment_calendar.f90": "26e0b2fdb89e36ab686de6b6a1ad9093548dcf47",
+    "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": "37cdedeb153f8d34aa1f39d5a6401fb6ba4b4b7c",
+    "tests/nut-calendar/run_calendar.py": "1c9d45ad75f0f8f551a8578c14742bc9b6af12f6",
+    "tests/nut-calendar/run_calendar_contract.py": "816e129d94e63da7e66c9e47b1239eba80962f0a",
+    "tests/nut-calendar/test_calendar_contract.f90": "3ee09b842e8aa90fd19875930f6e412141ddedbe",
+    "tests/nut-calendar/test_calendar_day.f90": "a289c3b7ed1ba0e3815458ad24e6ccba48606273",
+    "tests/nut-calendar/test_calendar_joint.f90": "4635a895376beff4b85c075157c75ea75504323d",
+    "tests/nut-calendar/check_calendar_controls.py": "9d2f8449111fd5afbd9dc316304a2964376c1e6e",
+    "tests/nut-calendar/verify_calendar_successor.py": "3188f0a659b6671ab33da36f9faef3984717854e"
+  },
+  "changed_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "a173edacc2d617c06fc7b3cfe52f587825f872fd",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "d0adf3a4e8f122c922e4c30e8f5df51800fb0de8",
+    "tests/nut-material-environment/verify_material_environment_successor.py": "5281c93f3e0ad2bcfa407769be0ad3065159f4f8"
+  },
+  "source_tree": "30f7953c4e1d69ff71f379043877de713a501ef7",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_AMENDMENT_CALENDAR_20261015.tar.xz.b64",
+    "sha256": "cb6ab0657003cd5b891acdfd7f8d8b150f5242d0b44d9956668a8f4bb798a86e",
+    "decoded_bytes": 92496,
+    "members": 1567
+  },
+  "evidence_paths": [
+    "integration/audits/evidence/MC_NUT01_AMENDMENT_CALENDAR_20261015.tar.xz.b64"
+  ],
+  "science_execution_commit": "85de0f2a16b322d5c04c6ea4158114601e43d64a",
+  "cost_seconds": {
+    "joint": {
+      "compile": 127.80508797407674,
+      "driver_compile": 11.766625511998427,
+      "link": 0.42417188099352643,
+      "native": 66.4128209620394
+    },
+    "day": {
+      "compile": 10.872064023991697,
+      "driver_compile": 1.8258870580175426,
+      "link": 0.07561400599661283,
+      "native": 0.004705215003923513
+    },
+    "contract": {
+      "compile": 0.8205834639811656,
+      "driver_compile": 0.17954704799922183,
+      "link": 0.07035202100814786,
+      "native": 0.0036488230107352138,
+      "reference_reject": 0.005604231002507731
+    }
+  }
 }

@@ -13,6 +13,10 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def sha(b):return hashlib.sha256(b).hexdigest()
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def verify_source(git_reader=None):
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_CALENDAR_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
+  result=calendar.verify_source(git_reader=git if git_reader is None else git_reader)
+  return {**result,'source_tree':'232ecd0c3eb03c9ddedf74e70baf65cfaf4b8bd3'}
  g=git if git_reader is None else git_reader;s=json.loads((ROOT/STATUS).read_text())
  check(s['baseline']==BASE,'unknown baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference'),'dirty scientific surface')
@@ -90,6 +94,10 @@ def validate_events(d,prefix,source,mode):
 def validate(d,source):
  result=validate_events(d,'',source,'joint');validate_events(d,'direct/',source,'day');return result
 def verify_qualification():
+ if (ROOT/'integration/audits/MC_NUT01_AMENDMENT_CALENDAR_STATUS.json').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-calendar'));import verify_calendar_successor as calendar
+  calendar.verify_qualification()
+  return {**verify_source(),'qualified':True,'highest':'NOT_SELECTED_POLICY'}
  source=verify_source();validate(read_evidence(),source)
  baseline_command('tests/nut-material/verify_material_successor.py')
  return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}

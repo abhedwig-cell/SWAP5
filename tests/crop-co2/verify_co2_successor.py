@@ -125,6 +125,9 @@ def verify_source():
   if (ROOT/'src/crop/mod_crop_soil_n_material_day.f90').exists():
    material=json.loads((ROOT/'integration/audits/MC_NUT01_MATERIAL_CYCLE_STATUS.json').read_text())
    additions.update(material['added_blobs'])
+  if (ROOT/'src/process/mod_b111_amendment_calendar.f90').exists():
+   calendar=json.loads((ROOT/'integration/audits/MC_NUT01_AMENDMENT_CALENDAR_STATUS.json').read_text())
+   additions.update(calendar['added_blobs'])
   changed=[p for p in changed if p not in additions]
  validate_source(changed,{p:blob((ROOT/p).read_bytes())for p in PINS},git('rev-parse','HEAD:reference'),git('rev-parse',BASE+':reference'))
  for p,h in PINS.items():check(git('rev-parse','HEAD:'+p)==h,'unpersisted CO2 source')
