@@ -9,7 +9,7 @@
   "qualified": false,
   "preserved": false,
   "canonically_admitted": false,
-  "stage": "CURRENT_DIRECT_AND_PHYSICAL_PASS_ADMISSION_RECONCILIATION",
+  "stage": "SWRD2_01_CURRENT_SCIENCE_PASS_SHARED_OWNER_SELECTED",
   "implemented_scope": "Opt-in SWDMI2RD0/1 persistent depth, actual accepted water/oxygen, opaque owner persistence. SWDMI2RD2 daily composition remains absent.",
   "direct_execution": {
     "head": "634b23454a5954c18bc876fada52efe49fb23b05",
@@ -69,14 +69,14 @@
   "blockers": [],
   "open_source_question": "SWDMI2RD=2 independently selectable but WROOT_NODE production initialization/update requires SWRDC=1 or other advanced stress selectors; no guessed static substitute.",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Persist and test bounded persistent SWDMI2RD0/1 with accepted oxygen; independently resolve actual SWDMI2RD2 density-owner source domain before claiming complete requested scope.",
+  "next_action": "Run ten shared owner gates, strict current/predecessor refusal controls, then select one complete local current-source moving OFF gate. SWDMI2RD2 remains outside this bounded executable slice.",
   "recovery_point": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
   "production_source_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
   "science_evidence": {
     "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_SCIENCE_20261015.tar.xz.b64",
-    "decoded_sha256": "0fbbe9064884ad676b92cd1947f7c3bcbd3442e599389016c91417f3e3a28271",
-    "decoded_bytes": 109308,
-    "members": 1316
+    "decoded_sha256": "9058db4010e20c515d2802090be8b1a3483aab493b7de3a108a11f8ddcf38b01",
+    "decoded_bytes": 251844,
+    "members": 1318
   },
   "physical_execution": {
     "head": "eb92c9dec75374391cf7754b0edfed0c1a9e79e6",
@@ -101,9 +101,29 @@
       "status": "M",
       "blob": "16b43f2c6a6cbd8c8179aa2f8fc3881a477a81b1"
     },
+    "tests/nut-input/check_input_controls.py": {
+      "status": "M",
+      "blob": "53f807c07efa98b4e76ffb252af50c8e3b9e9c3f"
+    },
+    "tests/nut-thermal/check_evidence_controls.py": {
+      "status": "M",
+      "blob": "31c77bac9d3374ea0e093a1b1fed0d81141e873e"
+    },
+    "tests/nut-thermal/check_thermal_successor_controls.py": {
+      "status": "M",
+      "blob": "fc83983adced4745b3979680e41cd2963cf7d818"
+    },
     "tests/nut-thermal/verify_thermal_successor.py": {
       "status": "M",
       "blob": "c15012814fe7c1a43f4af1cc1a009b817416dd21"
+    },
+    "tests/root-growth/check_combined_admission_controls.py": {
+      "status": "M",
+      "blob": "0b7646fb62305a821eb2ae382c1a54800a692584"
+    },
+    "tests/root-growth/check_swrd2_admission_controls.py": {
+      "status": "A",
+      "blob": "190a83d787ed011d0e25eb8073542a86af5ca45e"
     },
     "tests/root-growth/check_swrd2_controls.py": {
       "status": "A",
@@ -131,11 +151,24 @@
     },
     "tests/root-growth/verify_swrd2_successor.py": {
       "status": "A",
-      "blob": "5803ec07182821019de4e9ed3891ae8728deea9a"
+      "blob": "6a78ee0a3171674797e90e0fd3d563ce61ab4b5c"
     },
     "tests/root-growth/verify_swrd3_successor.py": {
       "status": "M",
       "blob": "89f5c40021703aaf62a8413b62c46cd8fc986656"
     }
+  },
+  "owner_selection": {
+    "selected": true,
+    "reason": "Changed shared F-WOF38 transaction and production bootstrap: retain all ten established runtime/coupling owner gates before stable-candidate admission.",
+    "expected_seconds": 600,
+    "command": "python -B /workspace/scratch/b49036b278b0/run_swrd2_owners.py",
+    "highest": "NOT_SELECTED_POLICY",
+    "native_result_reuse": false
+  },
+  "predecessor_validation": {
+    "status": "PASS",
+    "validated_at": "451e35ccd1797aa96fb4354dabc465cceff18635",
+    "scope": "Original SWRD3/thermal qualification and exact default-preservation proof at original b8ac tree, not new SWRD2 qualification."
   }
 }

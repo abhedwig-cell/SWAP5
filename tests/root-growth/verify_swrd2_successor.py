@@ -39,6 +39,8 @@ def native(data,digest):
  raw=[b for p,b in data.items()if p.endswith('.stdout')and sha(b)==digest]
  check(bool(raw),'raw output missing');return raw[0]
 def validate(data,source):
+ provenance=json.loads(data['execution-provenance.json'])
+ check(provenance['source_tree']==source['source_tree']and sha(data['executed.bundle'])==provenance['bundle_sha256'],'execution source/bundle drift')
  d=json.loads(data['direct/result.json']);de=json.loads(data['direct/events.json'])
  check(d['status']=='PASS'and len(d['runs'])==30,'incomplete direct contracts');dependencies(d['inputs'])
  check(PRODUCTION- {prior.BOOT}<=d['inputs'].keys(),'depth owner not compiled')
@@ -91,14 +93,30 @@ def baseline_command(path,*args):
  check(r.returncode==0,'predecessor authority failed '+path+' '+r.stderr[-1000:])
  return json.loads(r.stdout)
 def verify_physical():return validate(read_evidence(),verify_source())
+def predecessor_controls(path):
+ allowed={'tests/nut-input/check_input_controls.py','tests/nut-thermal/check_thermal_successor_controls.py',
+   'tests/nut-thermal/check_evidence_controls.py','tests/root-growth/check_combined_admission_controls.py'}
+ check(path in allowed,'unknown historical control entry')
+ verify_physical()
+ old=baseline_command(path);check(old['status']=='PASS','historical controls failed')
+ current=json.loads(subprocess.check_output([sys.executable,'-B',str(ROOT/'tests/root-growth/check_swrd2_controls.py')],cwd=ROOT))
+ check(current['status']=='PASS'and current['negative_count']==16,'current controls missing')
+ return {**old,'predecessor_controls_at':BASE,'current_depth_controls':current,'current_source_tree':status()['production_source_tree']}
 def verify_qualification():
  result=verify_physical()
  old=baseline_command('tests/root-growth/verify_swrd3_thermal_preservation.py')
  check(old['status']=='PASS'and old['current_source_tree']=='b8ac1c1c12096bc40478a58c5c8ac36ba687e3e0','unverified predecessor')
+ s=status();owner=prior.capsule(s['owner_evidence']);o=json.loads(owner['RESULTS.json'])
+ check(o['status']=='PASS'and o['source']['source_tree']==result['source_tree'],'current shared owner proof absent')
+ dependencies(json.loads(owner['INPUTS.json']))
+ sys.path.insert(0,str(ROOT/'tests/mc-met01'));from run_joint_owner_additional import STEPS
+ check([(x['name'],x['command'])for x in o['steps']]==STEPS,'shared owner matrix incomplete')
+ for row in o['steps']:
+  check(row['exit']==0 and sha(owner[row['name']+'.stdout'])==row['stdout_sha256'],'shared owner failed/raw drift')
  # Old default proof stays bound to b8ac. New depth semantics are established
  # only by fresh current-source contracts/real Richards, never an old PASS.
  return {**result,'qualified':True,'predecessor_preserved_at_tree':old['current_source_tree'],
-   'preserved':False,'full_fci':'PENDING_CURRENT_SOURCE_EXECUTION','swdmi2rd2':'OPEN_NOT_ADMITTED'}
+   'preserved':False,'shared_owner_gates':10,'full_fci':'PENDING_CURRENT_SOURCE_EXECUTION','swdmi2rd2':'OPEN_NOT_ADMITTED'}
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--source-only',action='store_true');p.add_argument('--physical-only',action='store_true');a=p.parse_args()
  print(json.dumps(verify_source()if a.source_only else verify_physical()if a.physical_only else verify_qualification(),indent=2))
