@@ -405,3 +405,24 @@ and persist source/commands/raw outcomes. Broad admission is selected only after
 these changed owner/native surfaces and actual physical results are reconciled.
 Fallow, successor initialization, output acknowledgement and retained historical
 dead-canopy profiles remain explicit unfinished scope.
+
+
+Native phase review found a real fail-open path: flipping consumed1 to0 and
+recomputing the CRC allowed a previously incorporated harvest to masquerade as
+pending. The independent compiled O0 decoder negative failed. That candidate is
+FAILED, even though its ordinary O0 trajectories passed. The broad controller
+also ended with a PermissionError launching its last O2 fresh-process executable;
+that run has no terminal scientific PASS and is retained as incomplete.
+
+Bind two compact continuation totals inside the existing optional harvest
+record at atomic crop/soil publication: complete whole N and organic matter,
+both kg/m2 after harvest export. At this same-clock boundary and incorporation,
+there are no reactions or extra external fluxes. Both totals must match the
+actual soil/live/pending phase on readiness/restart. This detects forged phase,
+missing/doubled pending and N-free organic-matter reintroduction; CRC alone does
+not establish phase semantics. Standalone crop-owner candidates retain an
+explicit unbound sentinel and cannot become coupled authority until bound.
+The two scalars are continuation state, not duplicate physical inventories.
+Probe actual seven-organ incorporation on a copy before publishing harvest, so
+an unincorporable batch rejects the entire event without losing daily pending.
+A new O0/O2 execution with corrected phase negatives is required.

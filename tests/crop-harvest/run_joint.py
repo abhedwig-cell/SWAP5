@@ -8,6 +8,11 @@ import hashlib,json,os,sys
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ['HARVEST_JOINT_DIR']).resolve();OUT.mkdir(parents=True,exist_ok=False)
 s=(ROOT/'tests/nut-senescence/run_senescence.py').read_text()
+# Generated executable modes can be reset by workspace synchronization. Restore
+# execute bits only for our freshly compiled native test binaries inside OUT.
+needle_run=" args=list(map(str,args));t=time.perf_counter();r=subprocess.run(args,cwd=cwd,capture_output=True);i=len(events)"
+assert s.count(needle_run)==1
+s=s.replace(needle_run," args=list(map(str,args))\n if category=='native' and Path(args[0]).is_relative_to(OUT):Path(args[0]).chmod(Path(args[0]).stat().st_mode|0o111)\n t=time.perf_counter();r=subprocess.run(args,cwd=cwd,capture_output=True);i=len(events)")
 needle="if mode=='joint':drivers += [ROOT/'tests/nut-material/test_material_joint.f90',ROOT/'tests/nut-material-environment/test_material_environment_joint.f90',ROOT/'tests/nut-senescence/test_senescence_joint.f90']"
 assert s.count(needle)==1;s=s.replace(needle,needle+"+[ROOT/'tests/crop-harvest/test_harvest_joint.f90']")
 s=s.replace("'test_senescence_joint':'senescence-'", "'test_senescence_joint':'senescence-','test_harvest_joint':'harvest-'")
@@ -23,6 +28,22 @@ s=s[:a]+'''   if d.stem=='test_harvest_joint':
     water_end=160+16*nodes+16+(8*nodes if history else 0)
     assert disk[8:water_end]==end.read_bytes()[8:water_end]
     row['drivers'][d.stem]['water_record_unchanged']=True
+    # Corrupt phase/budgets with a valid whole-file CRC: decoder must reject.
+    negatives=[]
+    for origin,phase in [(first,1.),(end,0.)]:
+     raw=bytearray(origin.read_bytes());nn=struct.unpack_from('<i',raw,152)[0];hh=struct.unpack_from('<i',raw,156)[0]
+     chemical=160+16*nn+16+(8*nn if hh else 0)
+     pc=struct.unpack_from('<i',raw,chemical+24)[0];crop=chemical+28+8*pc+104
+     cc=struct.unpack_from('<i',raw,crop+8)[0];owner=crop+12+8*cc+4
+     assert struct.unpack_from('<d',raw,owner)[0]==-81001.
+     tests={'forged_phase':(owner+24,phase),'forged_whole_N':(owner+27*8,99999.),'forged_organic_mass':(owner+28*8,99999.)}
+     for label,(offset,value) in tests.items():
+      mutant=raw.copy();struct.pack_into('<d',mutant,offset,value)
+      struct.pack_into('<I',mutant,len(mutant)-4,zlib.crc32(mutant[:-4]))
+      bad=b/(origin.stem+'-'+label+'.bin');bad.write_bytes(mutant)
+      out=run([exe,'reject',bad],b,'native');assert 'INVALID_DISK=PASS'in out
+      negatives.append(bad.name)
+    row['drivers'][d.stem]['decoder_negatives']=negatives
     continue
 '''+s[a:]
 s=s.replace("for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint']:","for name in ['test_material_joint','test_material_environment_joint','test_senescence_joint','test_harvest_joint']:")

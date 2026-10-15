@@ -69,6 +69,10 @@ contains
       all(h%policy%return_fraction==self%p%harvest%policy%return_fraction).and. &
       all(h%policy%application_age==self%p%harvest%policy%application_age)
     if(.not.ok)return
+    if(any(h%continuation_totals<0d0))then;ok=.false.;return;end if
+    ok=abs(crop_soil_whole_n(self)-h%continuation_totals(1))<=1d-12*max(1d0,h%continuation_totals(1)).and. &
+       abs(crop_soil_organic_mass(self)-h%continuation_totals(2))<=1d-12*max(1d0,h%continuation_totals(2))
+    if(.not.ok)return
    end block
   end if
   if(allocated(self%pending))then
@@ -276,8 +280,25 @@ contains
   end if
   status=CROP_SOIL_OK
  end subroutine
+
+ real(real64)function crop_soil_organic_mass(state)result(total)
+  class(crop_soil_state_t),intent(in)::state
+  type(reactive_parameters_t)::p
+  type(soil_n_pool_state_t)::pools
+  type(wofost81_harvest_record_t)::h
+  integer(int64)::id,rev
+  real(real64)::clock,theta
+  logical::has
+  call state%soil%configuration(p,id);call state%soil%snapshot(clock,theta,pools,rev)
+  total=(sum(pools%fom_kg_m3)+pools%biomass_kg_m3+pools%humus_kg_m3)*p%mineral%inventory%depth_m
+  if(allocated(state%pending))total=total+sum(state%pending%dry_matter_kg_ha)*1d-4
+  call state%crop%harvest_snapshot(h,has)
+  if(has)then
+   if(.not.h%pending_incorporated)total=total+sum(h%pending_dm)*1d-4
+  end if
+ end function
  real(real64)function crop_soil_whole_n(state)result(total)
-  type(crop_soil_state_t),intent(in)::state
+  class(crop_soil_state_t),intent(in)::state
   type(reactive_parameters_t)::p
   type(soil_n_pool_state_t)::pools
   type(wofost81_harvest_record_t)::h
@@ -313,12 +334,15 @@ contains
   end associate
   if(code/=0)return
   trial=state;trial%crop=crop
-  if(.not.trial%ready())return
+  call stage_wofost81_harvest_continuation_totals(crop, &
+   [crop_soil_whole_n(trial),crop_soil_organic_mass(trial)],trial%crop,code)
+  if(code/=0.or..not.trial%ready())return
   call crop%harvest_snapshot(h,has);if(.not.has)return
   r%initial_n=crop_soil_whole_n(state);r%final_n=crop_soil_whole_n(trial)
   r%exported_n=sum(h%exported_n)*1d-4;r%residual=r%initial_n-r%final_n-r%exported_n
   if(.not.ieee_is_finite(r%residual))return
   if(abs(r%residual)>1d-12*max(1d0,r%initial_n,r%final_n,r%exported_n))return
+  if(.not.harvest_incorporation_valid(trial))return
   state=trial;r%status=0
  end subroutine
  subroutine consume_crop_soil_harvest_pending(state,r)
@@ -406,7 +430,7 @@ contains
   end_owner%crop=h%end_crop;end_owner%nitrogen=h%end_nitrogen
   base=pack_crop_n_owner(end_owner);if(size(base)==0)return
   v=[-81001d0,h%clock,real(h%crop_identity,real64),merge(1d0,0d0,h%pending_incorporated), &
-   h%policy%return_fraction,h%policy%application_age,h%pending_dm,h%pending_n,h%exported_dm,h%exported_n, &
+   h%policy%return_fraction,h%policy%application_age,h%pending_dm,h%pending_n,h%exported_dm,h%exported_n,h%continuation_totals, &
    real(size(base),real64),base]
  end function
  subroutine unpack_crop_n_continuation(v,crop,status)
@@ -420,16 +444,17 @@ contains
   crop=wofost81_crop_owner_state_t();status=CROP_SOIL_INVALID
   if(size(v)==0)return
   if(v(1)/=-81001d0)then;call unpack_crop_n_owner(v,crop,status);return;end if
-  if(size(v)<57)return
+  if(size(v)<59)return
   if(.not.all(ieee_is_finite(v)).or.any(abs(v)>1d9))return
   if(v(3)<1d0.or.v(3)>1d6.or.v(3)/=real(int(v(3)),real64))return
   if(v(4)/=0d0.and.v(4)/=1d0)return
-  if(v(28)<29d0.or.v(28)>1562d0)return
-  n=int(v(28));if(v(28)/=real(n,real64).or.size(v)/=28+n)return
-  call unpack_crop_n_owner(v(29:),end_owner,status);if(status/=0)return
+  if(v(30)<29d0.or.v(30)>1562d0)return
+  n=int(v(30));if(v(30)/=real(n,real64).or.size(v)/=30+n)return
+  call unpack_crop_n_owner(v(31:),end_owner,status);if(status/=0)return
   h%clock=v(2);h%crop_identity=int(v(3),int64);h%pending_incorporated=v(4)==1d0
   h%policy%return_fraction=v(5:7);h%policy%application_age=v(8:11)
   h%pending_dm=v(12:15);h%pending_n=v(16:19);h%exported_dm=v(20:23);h%exported_n=v(24:27)
+  h%continuation_totals=v(28:29)
   h%end_crop=end_owner%crop;h%end_nitrogen=end_owner%nitrogen
   call restore_wofost81_harvest_trusted(h,crop,status);if(status/=0)return
   proof=pack_crop_n_continuation(crop)

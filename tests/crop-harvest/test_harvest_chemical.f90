@@ -14,10 +14,10 @@ program test_harvest_chemical
  implicit none
  type(reactive_parameters_t)::sp
  type(reactive_state_t)::soil,gotsoil
- type(crop_n_configuration_t)::cp
+ type(crop_n_configuration_t)::cp,bad_cp
  type(soil_n_pool_state_t)::pools,got,beforep
  type(wofost81_crop_owner_state_t)::crop,decoded
- type(crop_soil_state_t)::state,before,harvested,restored
+ type(crop_soil_state_t)::state,before,harvested,restored,corrupted
  type(crop_soil_harvest_receipt_t)::h
  type(senescence_day_receipt_t)::day
  type(crop_senescence_policy_t)::policy
@@ -54,6 +54,17 @@ program test_harvest_chemical
  call require(day%status==0,'actual accepted crop soil day')
  call state%pending_snapshot(pending,has);call require(has,'daily death already pending')
  before=state;n0=crop_soil_whole_n(state)
+ call state%snapshot(soil,crop)
+ bad_cp=cp;bad_cp%harvest%policy%application_age(4)=.67d0
+ call initialize_crop_soil(soil,crop,bad_cp,9102_int64,corrupted,code,pending)
+ call require(code==0,'independent profile with structurally valid but unincorporable harvest age')
+ call harvest_crop_soil_boundary(corrupted,h)
+ call require(h%status/=0,'late residue chemistry refusal rejects entire harvest')
+ call corrupted%snapshot(gotsoil,decoded)
+ call require(.not.decoded%harvested().and.decoded%crop%crop_emerged,'late refusal retains active crop')
+ call corrupted%pending_snapshot(actual,has)
+ call require(has.and.all(actual%nitrogen_kg_ha==pending%nitrogen_kg_ha),'late refusal preserves prior pending death')
+
  call state%snapshot(soil,crop);call soil%snapshot(clock,theta,beforep,rev)
  call harvest_crop_soil_boundary(state,h)
  call require(h%status==0.and.abs(h%residual)<=1d-12,'atomic chemical harvest balance')
@@ -70,6 +81,11 @@ program test_harvest_chemical
  w=pack_crop_n_continuation(decoded);call require(all(v==w),'unconsumed bitwise owner continuation')
  call initialize_crop_soil(gotsoil,decoded,cp,9101_int64,restored,code,pending)
  call require(code==0.and.harvest_incorporation_valid(restored),'restart reconstructs complete chemical phase')
+ bad=v;bad(4)=1d0
+ call unpack_crop_n_continuation(bad,decoded,code)
+ call require(code==0,'phase flag alone still forms an owner but cannot form coupled authority')
+ call initialize_crop_soil(gotsoil,decoded,cp,9101_int64,corrupted,code,pending)
+ call require(code/=0,'forged consumed flag fails coupled N and OM continuation budget')
  harvested=state;nh=crop_soil_whole_n(state)
  call harvest_crop_soil_boundary(state,h);call require(h%status/=0,'harvest duplicate rejected')
  call require(crop_soil_whole_n(state)==nh,'duplicate no material debit')
@@ -78,7 +94,7 @@ program test_harvest_chemical
   select case(i)
   case(1);bad(4)=2d0
   case(2);bad(16)=-1d0
-  case(3);bad(28)=99999d0
+  case(3);bad(30)=99999d0
   case(4);bad(12)=0d0
   case(5);bad(24)=999d0
   case(6);bad(3)=.5d0
@@ -98,6 +114,11 @@ program test_harvest_chemical
   'soil receives complete daily and harvest N exactly once')
  w=pack_crop_n_continuation(crop);call unpack_crop_n_continuation(w,decoded,code)
  call require(code==0,'consumed harvest owner codec')
+ bad=w;bad(4)=0d0
+ call unpack_crop_n_continuation(bad,decoded,code)
+ call require(code==0,'reverse forged phase retains standalone syntax')
+ call initialize_crop_soil(soil,decoded,cp,9101_int64,corrupted,code)
+ call require(code/=0,'consumed flag cannot reintroduce fictitious pending mass')
  call consume_crop_soil_harvest_pending(restored,h);call require(h%status==0,'restored pending consumption')
  call restored%snapshot(gotsoil,decoded);bad=pack_crop_n_continuation(decoded)
  call require(all(bad==w),'continuous restored consumed owner identity')

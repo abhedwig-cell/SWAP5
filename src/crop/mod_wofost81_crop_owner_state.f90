@@ -17,6 +17,7 @@ module mod_wofost81_crop_owner_state
     real(real64) :: application_age(4)=0d0 ! root, leaf, stem, storage
   end type
   type, public :: wofost81_harvest_record_t
+    real(real64)::continuation_totals(2)=[-1d0,-1d0] ! complete coupled N and organic matter, kg/m2
     logical :: pending_incorporated=.false.
     integer(int64) :: crop_identity=0_int64
     real(real64) :: clock=0d0
@@ -27,6 +28,7 @@ module mod_wofost81_crop_owner_state
     real(real64) :: exported_dm(4)=0d0,exported_n(4)=0d0
   end type
   public :: prepare_wofost81_harvest,restore_wofost81_harvest_trusted,stage_wofost81_harvest_consumed
+  public :: stage_wofost81_harvest_continuation_totals
 
   type, extends(transaction_state_t), public :: wofost81_crop_owner_state_t
     type(wofost_crop_owner_state_t) :: crop
@@ -92,6 +94,12 @@ contains
     type(wofost81_harvest_record_t), intent(in) :: h
     real(real64) :: dm(4),fractions(4),n_after(4),n_before(4)
     ok=.false.
+    if(.not.all(ieee_is_finite(h%continuation_totals)))return
+    if(any(h%continuation_totals<0d0))then
+      if(any(abs(h%continuation_totals+1d0)>0d0))return
+    else
+      if(any(h%continuation_totals>1d9))return
+    end if
     if(h%crop_identity<=0_int64) return
     if(.not.all(ieee_is_finite([h%clock,h%policy%return_fraction,h%policy%application_age, &
         h%pending_dm,h%pending_n,h%exported_dm,h%exported_n]))) return
@@ -188,6 +196,19 @@ contains
     candidate=trial;status=WOFOST81_CROP_OWNER_OK
   end subroutine
 
+  subroutine stage_wofost81_harvest_continuation_totals(committed,totals,candidate,status)
+    type(wofost81_crop_owner_state_t),intent(in)::committed
+    real(real64),intent(in)::totals(2)
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.committed%harvested())return
+    if(committed%validate()/=0)return
+    if(any(abs(committed%harvest%continuation_totals+1d0)>0d0))return
+    if(.not.all(ieee_is_finite(totals)))return
+    if(any(totals<0d0).or.any(totals>1d9))return
+    candidate=committed;candidate%harvest%continuation_totals=totals;status=0
+  end subroutine
   ! Trusted decoder/staging constructor, never cross-owner publication authority.
   subroutine restore_wofost81_harvest_trusted(h,candidate,status)
     type(wofost81_harvest_record_t),intent(in)::h
