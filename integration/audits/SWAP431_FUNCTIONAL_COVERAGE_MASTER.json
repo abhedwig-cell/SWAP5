@@ -8541,7 +8541,7 @@
       "production_reachability": {
         "established": false,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Bounded linear matrix route is admitted by PR1228. The full nonlinear Freundlich source envelope still requires changing-water oracle, units and physical joint continuation qualification."
+        "claim": "PR1228 admits the linear route; PR1230 at d6e21f02 admits nonlinear0.5..2 with independent inverse, actual changing-water transport, balance and joint restart. Full reader domain0..10, dynamic thermal/surface and default application scope remain open."
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
@@ -8564,6 +8564,17 @@
         "SW431-SALT-TRANSPORT"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "bounded_nonlinear_admission": {
+        "pr":1230,
+        "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
+        "qualified_head":"45cc6cf959e8322bc1795c41748ab4e70dcacc56",
+        "authority":"integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+        "scope":"Nonlinear0.5..2 accepted matrix water transport/decay, atomic joint rejection/retry, opaque and fresh-process restart",
+        "qualification":"Independent actual Fortran O0/O2 and literal transport; full local moving1829.803s PASS; exact mineral1231 coexistence with all240/237 science inputs unchanged;53 original plus3 peer negatives PASS",
+        "source_policy":"ACCEPTED_SWAP5_DIFFERENCE in phase precision, no legacy cmsy loss or new B1 correction claimed",
+        "full_capability":false,
+        "disposition_changed":false
+      },
       "bounded_production_admission": {
         "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
         "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
@@ -8642,6 +8653,17 @@
         "SW431-SALT-TRANSPORT"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "bounded_nonlinear_admission": {
+        "pr":1230,
+        "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
+        "qualified_head":"45cc6cf959e8322bc1795c41748ab4e70dcacc56",
+        "authority":"integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor",
+        "scope":"Source-order decay with nonlinear0.5..2 phase storage, explicit external sink, changing-water mass and joint continuation",
+        "qualification":"Actual water/chemical/source-loop O0/O2; full moving1829.803s PASS; exact mineral1231 coexistence",
+        "full_capability":false,
+        "disposition_changed":false,
+        "aquifer_dependency":false
+      },
       "bounded_production_admission": {
         "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
         "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
@@ -14639,7 +14661,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer.",
+      "why_open": "PR1228/1230 admit linear and nonlinear0.5..2 matrix decay/transport/restart. Wider exponents, dynamic accepted thermal, surface/default application remain open. No dependency on rejected SWBR aquifer.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -14667,7 +14689,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Bounded linear matrix route is admitted by PR1228. The full nonlinear Freundlich source envelope still requires changing-water oracle, units and physical joint continuation qualification.",
+      "why_open": "PR1230 admits nonlinear0.5..2 with changing-water oracle, units, atomic mass and joint continuation. Reader domain0..10 outside this range and default/multicolumn/wider combinations remain open; no whole capability closure.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,

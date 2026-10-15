@@ -455,3 +455,19 @@ This master branch retains its older scientific checkout. Only this bounded
 crop row and corresponding queue/receipt are reconciled; every other row,
 disposition, denominator and census count is unchanged. No fullcap promotion
 or full source-census checker claim.
+
+## MC-SOL01 bounded nonlinear matrix receipt (2026-10-15)
+
+PR1230 is admitted at `d6e21f02415b733db138cdf7006524fd7e32bafd`, preserving
+the mineral1231 admission. The actual Richards-to-matrix route now supports
+Freundlich0.5..2 with independent source/inverse O0/O2, accepted water/chemical
+balances, rejection/retry/rollback and joint fresh-process restart. Complete
+local moving passes1829.803s with all6218 inputs unchanged. Exact coexistence
+retains all240 matrix/237 mineral inputs,227 shared hashes and401 provider owners;
+53 original plus3 peer negatives pass. No simultaneous NUT+SOL state/restart claim.
+
+Only sorption/decay rows and their queue descriptions change. All other241 rows,
+all243 dispositions/counts and rejected aquifer remain unchanged. Source frexp0..10
+outside the selected range, dynamic thermal/surface/default application remain
+open. Global master checker still FAILS stale inheritance baseline. Exact authority:
+canonical `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json#nonlinear_successor`.

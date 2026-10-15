@@ -296,6 +296,18 @@
     "full_source_census_checker_claim": false,
     "all_other_rows_and_queues_unchanged": true
   },
+  "bounded_mc_sol01_nonlinear_receipt": {
+    "pr":1230,
+    "canonical_merge":"d6e21f02415b733db138cdf7006524fd7e32bafd",
+    "qualified_head":"45cc6cf959e8322bc1795c41748ab4e70dcacc56",
+    "scope":"Nonlinear0.5..2 accepted matrix transport/decay, atomic water/chemical state and fresh-process restart; exact mineral1231 coexistence",
+    "local_moving_seconds":1829.8031488230044,
+    "changed_capability_and_queue_ids":["SW431-SALT-SORPTION","SW431-SALT-DECAY"],
+    "all_other_241_capabilities_identical":true,
+    "all_dispositions_and_counts_unchanged":true,
+    "whole_capability_promotion":false,
+    "global_checker":"Before/after FAIL stale inheritance baseline; unchanged global owner blocker"
+  },
   "bounded_mc_sol01_matrix_receipt": {
     "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1228",
     "canonical_merge": "034b74cf483613ce57c9a02b474e78cc5f7d4680",
