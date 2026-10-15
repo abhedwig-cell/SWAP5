@@ -1,0 +1,29 @@
+{
+  "work_unit": "MC-NUT01-MANAGEMENT-CALENDAR",
+  "baseline": "3b661766dc59298a7f541c970c2d3a55602d926c",
+  "branch": "work/nut-management-calendar-20261015",
+  "contract": "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_CONTRACT_20261015.md",
+  "reference_decision": "docs/science/MC_NUT01_CALENDAR_REFERENCE_DECISION_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "reference_status": "B0 original same-date stall witnessed; exact one-line B1-R2 correction PASS native O0/O2 before B2",
+  "small_feedback": "Actual three-provider calendar producer PASS O0/O2: exact corrected B1 daily selection, kg/ha conversion, source order,20 invalid paths, no-event and A/B/A",
+  "reference_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
+  "process_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
+  "scope": "Typed daily amendment plan with same-day source-order application into existing senescence, whole-N crop/soil and actual Richards day; existing clocks/restart only",
+  "interfaces_affected": "Three additive production modules; no existing provider, private state, solver, WOFOST81 equation/fixation or codec modified",
+  "next_safe_step": "Complete real crop/soil day feedback, persist remote candidate, execute fresh actual Richards calendar/manual exact-state and complete restart comparison; strict raw/source controls, then exactly one stable full OFF and expected-head admission",
+  "test_selection": {
+    "reference": "Original B0 defect and corrected B1 before B2; tiny standalone literal grouping and trigger O0/O2",
+    "process": "Actual3 production providers, fresh O0/O2 PASS",
+    "day": "Actual crop/soil plus new calendar adapter, expected46 providers, fresh O0/O2 selected",
+    "physical": "Actual Richards plus3 additive providers, about266 total. Fresh isolated builds and all drivers/native assertions; manual/scheduled byte-identical complete native/opaque/fresh-process endpoints, expected220..300s; no unrelated original provider requalification because bytes/ABI unchanged",
+    "full": "One stable local moving OFF selected under AGENTS/protocol four-level physical forcing/publication boundary, expected1616s; compile/link/native full split UNKNOWN",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "remaining": "File/date-string parsing and default activation, accepted heat/profile coupling, harvest/reset/rotation and simultaneous solute companions open. Existing surface-input PR1234 remains owned separately. Pond/source open; aquifer rejected. No fullcap/master-count promotion"
+}
