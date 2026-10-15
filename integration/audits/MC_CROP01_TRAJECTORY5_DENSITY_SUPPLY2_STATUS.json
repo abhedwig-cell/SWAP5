@@ -1,0 +1,54 @@
+{
+  "work_unit": "MC-CROP01 trajectory5 daily adaptive density and SWDMI2RD2",
+  "baseline": "56aa2ba52fc4980053d712df85660a2facdfb0f4",
+  "branch": "work/crop-density-supply2-20261015",
+  "checkpoint_commit": "SELF",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "preserved": false,
+  "canonically_admitted": false,
+  "stage": "CONTRACT_PREREGISTERED",
+  "production_baseline_tree": "fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0",
+  "last_reconciled_upstream": "56aa2ba52fc4980053d712df85660a2facdfb0f4",
+  "contract": "docs/science/MC_CROP01_TRAJECTORY5_DENSITY_SUPPLY2_CONTRACT_20261015.md",
+  "recovery_point": "docs/science/MC_CROP01_TRAJECTORY5_DENSITY_SUPPLY2_RECOVERY_20261015.md",
+  "relevant_paths": [
+    "src/crop/mod_crop_adaptive_root_profile_owner.f90",
+    "src/runtime/mod_fmr_root_depth_supply_composition.f90",
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90"
+  ],
+  "dependency_surface": [
+    "src",
+    "tests/root-growth",
+    "tests/fmig431",
+    "tests/fwof",
+    "tests/fci",
+    "reference"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/status-a/TRACEABILITY.md",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90"
+  ],
+  "immediate_selection": {
+    "selected": true,
+    "scope": "New root-layer data and real adaptive/supply composition, O0/O2, literal oracle/nonmutation/invalid inputs",
+    "expected_seconds": 30,
+    "compile_link_native_split": "UNKNOWN until measured"
+  },
+  "full_selection": {
+    "selected": false,
+    "reason": "Pending stable actual impact and live compound-runner reconciliation; no automatic unchanged component replay."
+  },
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "actions": "NOT_SELECTED_LOCAL_AVAILABLE",
+  "blockers": [],
+  "next_action": "Implement small layer-integral and adaptive/supply production seams, persist and run direct O0/O2 before application state integration."
+}
