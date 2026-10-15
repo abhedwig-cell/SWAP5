@@ -1,0 +1,86 @@
+{
+  "work_unit": "MC-NUT01-AMENDMENT-INPUT",
+  "baseline": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+  "branch": "work/nut-amendment-input-20261015",
+  "contract": "docs/science/MC_NUT01_AMENDMENT_INPUT_CONTRACT_20261015.md",
+  "scope": "Explicit bounded management-table export reader to the existing immutable calendar; no complete SNM/TTUTIL/default activation",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": false,
+  "canonically_admitted": false,
+  "next_safe_step": "Persist and fetch this exact stable candidate; one full local moving OFF with all tracked input hashes frozen; actively observe terminal result and complete canonical admission",
+  "test_selection": {
+    "process": "Fresh four-provider O0/O2, expected2s; measured compile/link/native required",
+    "composition": "Fresh actual47-provider day and267-provider Richards builds and all existing physical assertions plus file/typed/manual byte identity; expected300s",
+    "full": "Select one stable local moving OFF, expected1677s, after owning evidence/controls",
+    "highest": "NOT_SELECTED_POLICY",
+    "actions": "NOT_SELECTED_NO_DUPLICATE_DISPATCH"
+  },
+  "remaining": "Complete legacy file/TTUTIL syntax and default activation; heat/profile; harvest/reset/rotation; simultaneous companions; pond/source open; aquifer rejected",
+  "qualification_status": "LOCAL_O0_O2_RAW_SOURCE_OWNERS_NEGATIVES_PASS_FULL_PENDING",
+  "source_tree": "7d397ea67d8106756c08f375f2098776aea64d3e",
+  "process_execution": "c8312e7bccc750535a22a070ba5d13c44a39c2e9",
+  "day_execution": "b2c780efeef39c21e0ba8c9f449f53907519aa5b",
+  "joint_execution": "b2c780efeef39c21e0ba8c9f449f53907519aa5b",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_AMENDMENT_INPUT_20261015.tar.xz.b64",
+    "sha256": "ddb4e2ab58f7ed96cc61d4f20fcf0dddaf468b0f7e36719f12bbd095abfd0a33",
+    "decoded_bytes": 121476,
+    "members": 2160
+  },
+  "process_cost_seconds": {
+    "compile": 1.2234483009960968,
+    "compiler": 0.002003190995310433,
+    "driver_compile": 0.13767775701126084,
+    "link": 0.07265622301201802,
+    "native": 0.27004831898375414
+  },
+  "day_cost_seconds": {
+    "compile": 14.736591992987087,
+    "driver_compile": 3.6898253849940374,
+    "link": 0.08916415199928451,
+    "native": 0.014721664003445767
+  },
+  "joint_cost_seconds": {
+    "compile": 145.6490029667766,
+    "driver_compile": 14.38599907400203,
+    "link": 0.5402192700130399,
+    "native": 175.10065694899822
+  },
+  "process_coverage": {
+    "providers": 4,
+    "fixtures": 53,
+    "invalid": 45,
+    "dates": 3075
+  },
+  "physical_profiles": [
+    "manual",
+    "calendar",
+    "file"
+  ],
+  "added_blobs": {
+    "src/process/mod_soil_n_amendment_input.f90": "5597c4f4818ac81f799447ede950285f954448a2",
+    "tests/nut-input/check_input_controls.py": "1f760aef01ff4bad41553ef6539a06c0edf01ca9",
+    "tests/nut-input/parsed_plan_fixture.inc": "988ecefce6e28c7a223aba2b20c787a810664301",
+    "tests/nut-input/run_composition.py": "7b257be243eedc30dc5d57f9639ab4fab628128d",
+    "tests/nut-input/run_input.py": "f368ac91aaaceb4fa12871564825177834c552af",
+    "tests/nut-input/test_input.f90": "eab79fbd3212b89d1b20e2f2b7d761011833403a",
+    "tests/nut-input/verify_input_successor.py": "e47dd8181a82f6c4e0165de297df5e69f0b5ba8c"
+  },
+  "changed_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "dc24e2e8b3170591759190fd7dea08228a5bb4a9",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "e51800dca630f6ad2d67bb385baf5041e9ef8c5a",
+    "tests/nut-calendar/check_calendar_controls.py": "39e050c42331175554f099fb8d7013c50e07c509",
+    "tests/nut-calendar/verify_calendar_successor.py": "8ab66e339fda3c3fce95e29e6cdacc4bc98f9697"
+  },
+  "recovery": "docs/science/MC_NUT01_AMENDMENT_INPUT_RECOVERY_20261015.md",
+  "negative_count": 245,
+  "owner_routes": {
+    "CO2": "CLI exit0,28 physical programs; inherited result retains qualified=false and is not a new CO2 admission",
+    "accepted_age": "CLI exit0, qualified input successor",
+    "crop_supply": "CLI exit0, qualified input successor",
+    "daily_environment": "CLI exit0, qualified input successor"
+  }
+}
