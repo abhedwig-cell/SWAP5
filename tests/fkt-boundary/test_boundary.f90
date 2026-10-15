@@ -5,15 +5,23 @@ program test_boundary
  use mod_kernel_transactions
  use mod_boundary_fixture
  implicit none
- type(kernel_committed_state_t)::state,copy,unbound
+ type(kernel_committed_state_t)::state,copy,unbound,uncertified,restored,reconstructed,exhausted
  type(kernel_boundary_executor_t)::executor,other,empty
- type(kernel_boundary_candidate_t)::candidate,sibling,invalid
+ type(kernel_boundary_candidate_t)::candidate,sibling
  type(kernel_boundary_request_t)::request,bad
  type(kernel_boundary_balance_t)::balance
  type(event_model_t),target::model,second
  type(event_parameters_t)::parameters,wrong
  type(event_forcing_t)::forcing,changed
  type(kernel_parameter_identity_t)::identity
+ type(kernel_executor_t)::interval_executor
+ type(interval_model_t),target::interval_model
+ type(kernel_candidate_state_t)::interval_candidate
+ type(kernel_checkpoint_t)::checkpoint
+ type(kernel_result_t)::interval_result
+ type(kernel_diagnostics_t)::diagnostics
+ type(canonical_numerical_config_t)::config
+ logical::did_commit
  class(transaction_state_t),allocatable::initial,snapshot
  real(real64)::time
  integer::status,i,checks
@@ -29,6 +37,9 @@ program test_boundary
  call unbound%initialize(9_int64,initial,ok,parameters=parameters)
  call executor%prepare_event(parameters,forcing,unbound,request,0d0,candidate,status)
  call require(status==KERNEL_BOUNDARY_ORIGIN_MISMATCH,'unbound physical clock')
+ call uncertified%initialize(9_int64,initial,ok,4d0)
+ call executor%prepare_event(parameters,forcing,uncertified,request,0d0,candidate,status)
+ call require(status==KERNEL_BOUNDARY_IDENTITY_FAILED,'missing original certificate')
  do i=1,8
   bad=request
   select case(i)
@@ -69,10 +80,22 @@ program test_boundary
  call executor%prepare_event(parameters,forcing,state,request,0d0,candidate,status)
  call require(status==0.and.candidate%ready(),'valid proposal');call unchanged(state,0_int64,10d0)
  sibling=candidate
+ call interval_executor%bind_model(interval_model)
+ config%transaction%mass_tolerance=0d0;config%transaction%temporal_tolerance=0d0
+ config%transaction%max_retries=1;config%max_committed_substeps=4
+ call state%capture_checkpoint(checkpoint,ok)
+ call require(ok,'pre-event checkpoint')
+ call interval_executor%advance_interval(parameters,state,forcing,config,4d0,5d0, &
+  interval_result,interval_candidate,diagnostics)
+ call require(interval_result%completed.and.interval_candidate%ready(),'pre-event interval candidate')
  call other%commit_event(parameters,forcing,state,candidate,status)
  call require(status==KERNEL_BOUNDARY_OWNER_MISMATCH.and.candidate%ready(),'foreign executor')
  call executor%commit_event(wrong,forcing,state,candidate,status)
  call require(status==KERNEL_BOUNDARY_IDENTITY_FAILED.and.candidate%ready(),'changed certificate')
+ model%admitted=.false.
+ call executor%commit_event(parameters,forcing,state,candidate,status)
+ call require(status==KERNEL_BOUNDARY_NOT_ADMITTED.and.candidate%ready(),'admission revoked before commit')
+ model%admitted=.true.
  changed%export_n=3d0
  call executor%commit_event(parameters,changed,state,candidate,status)
  call require(status/=0.and.candidate%ready(),'changed forcing')
@@ -86,6 +109,12 @@ program test_boundary
  call require(status==0,'retry')
  call executor%commit_event(parameters,forcing,state,candidate,status)
  call require(status==0.and..not.candidate%ready(),'single atomic publication')
+ call unchanged(state,1_int64,8d0)
+ call interval_executor%commit_candidate(state,interval_candidate,diagnostics,did_commit,status)
+ call require(.not.did_commit.and.status==KERNEL_COMMIT_STATUS_STALE_REVISION,'event invalidates interval candidate')
+ call interval_executor%advance_interval(parameters,state,forcing,config,4d0,5d0, &
+  interval_result,interval_candidate,diagnostics,checkpoint=checkpoint)
+ call require(interval_result%status==KERNEL_STATUS_CHECKPOINT_MISMATCH,'event invalidates interval checkpoint')
  call unchanged(state,1_int64,8d0)
  call state%certified_parameter_identity(identity,ok)
  call require(ok.and.identity%parameter_set_id==17_int64,'original grid identity retained')
@@ -104,6 +133,42 @@ program test_boundary
  call require(status==0,'next distinct event')
  call executor%commit_event(parameters,forcing,state,candidate,status)
  call require(status==0,'next publication');call unchanged(state,2_int64,6d0)
+ request%revision=2_int64;request%event_id=101_int64
+ call executor%prepare_event(parameters,forcing,state,request,0d0,candidate,status)
+ call require(status==KERNEL_BOUNDARY_MODEL_REJECTED,'older event replay after a newer event')
+ ! Opaque in-process clone continuation retains anti-replay and provenance.
+ call state%snapshot(snapshot,ok)
+ call require(ok,'capture owner for trusted reconstruction')
+ call state%certified_parameter_identity(identity,ok)
+ call require(ok,'capture original restart certificate')
+ call kernel_reconstruct_committed_state_trusted(reconstructed,9_int64,2_int64,snapshot, &
+  4d0,.true.,ok,status,parameters,identity)
+ call require(ok.and.status==KERNEL_TRUSTED_RECONSTRUCTION_OK,'trusted synthetic owner reconstruction')
+ call executor%prepare_event(parameters,forcing,reconstructed,request,0d0,candidate,status)
+ call require(status==KERNEL_BOUNDARY_MODEL_REJECTED,'reconstruction retains anti-replay watermark')
+ call unchanged(reconstructed,2_int64,6d0)
+ call kernel_reconstruct_committed_state_trusted(exhausted,9_int64,huge(0_int64),snapshot, &
+  4d0,.true.,ok,status,parameters,identity)
+ call require(ok,'maximal revision reconstructed')
+ bad=request;bad%revision=huge(0_int64);bad%event_id=103_int64
+ call executor%prepare_event(parameters,forcing,exhausted,bad,0d0,candidate,status)
+ call require(status==KERNEL_BOUNDARY_ORIGIN_MISMATCH,'revision overflow refused before staging')
+ restored=state
+ call executor%prepare_event(parameters,forcing,restored,request,0d0,candidate,status)
+ call require(status==KERNEL_BOUNDARY_MODEL_REJECTED,'opaque continuation rejects old event')
+ request%event_id=103_int64
+ call executor%prepare_event(parameters,forcing,state,request,0d0,candidate,status)
+ call require(status==0,'event staged before interval')
+ call interval_executor%advance_interval(parameters,state,forcing,config,4d0,5d0, &
+  interval_result,interval_candidate,diagnostics)
+ call require(interval_result%completed.and.interval_candidate%ready(),'post-event positive interval')
+ call interval_executor%commit_candidate(state,interval_candidate,diagnostics,did_commit,status)
+ call require(did_commit,'post-event positive interval commit')
+ call executor%commit_event(parameters,forcing,state,candidate,status)
+ call require(status==KERNEL_BOUNDARY_STALE,'interval invalidates event candidate')
+ call state%current_time(time,ok)
+ call require(ok.and.time==5d0.and.state%current_revision()==3_int64,'positive clock resumes')
+ call unchanged(restored,2_int64,6d0)
  balance%complete=.true.;balance%count=2;balance%quantity_id=[1,1,0,0]
  call require(.not.balance%valid(0d0),'duplicate quantity identities')
  balance%count=1;balance%quantity_id=[1,0,0,0];balance%before(4)=1d0
@@ -112,6 +177,22 @@ program test_boundary
  call require(.not.balance%valid(0d0),'nonfinite balance')
  balance%before=0d0;balance%external_out(1)=-1d0
  call require(.not.balance%valid(0d0),'negative export')
+ balance=kernel_boundary_balance_t()
+ balance%complete=.true.;balance%count=4;balance%quantity_id=[1,2,3,4]
+ balance%before=[10d0,20d0,30d0,40d0];balance%after=[9d0,18d0,27d0,36d0]
+ balance%external_out=[1d0,2d0,3d0,4d0]
+ call require(balance%valid(0d0),'all four independent channels close')
+ do i=1,4
+  balance%after(i)=balance%after(i)+1d0
+  call require(.not.balance%valid(0d0),'each channel independently enforced')
+  balance%after(i)=balance%after(i)-1d0
+ end do
+ balance%count=5
+ call require(.not.balance%valid(0d0),'channel capacity exceeded')
+ balance%count=4;balance%after(1)=ieee_value(0d0,ieee_positive_inf)
+ call require(.not.balance%valid(0d0),'infinite balance refused before arithmetic')
+ balance%after(1)=1d101
+ call require(.not.balance%valid(0d0),'overflow-risk balance refused')
  print '(A,I0)','KERNEL_BOUNDARY_SYNTHETIC_ASSERTIONS=',checks
  print '(A)','KERNEL_BOUNDARY_TRANSACTION_CONTRACT=PASS'
 contains

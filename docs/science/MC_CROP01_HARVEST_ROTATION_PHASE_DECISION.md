@@ -215,8 +215,9 @@ ABI/old interval behavior still require actual compile/link/native execution.
 
 Status and recovery:
 `integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json`.
-The compiler is currently unavailable, so compilation, native tests and all
-scientific qualification remain NOT_RUN. APT recovery failed on environment
+At draft publication the compiler was unavailable, so compilation, native tests
+and scientific qualification were NOT_RUN. The continuation below supersedes
+that environment status. APT recovery failed on environment
 permission errors; no privileged retry or alternative permission bypass is
 authorized by this draft. No Actions run is selected. The existing runner records
 compiler absence as BLOCKED with exit2, never PASS. After provisioning a permitted
@@ -224,3 +225,43 @@ toolchain, run the persisted small event/interval tests before modifying any cro
 soil-N, native codec or application interface. Then qualify actual owner state,
 restart, stale interval-candidate rejection and shared preservation. This draft
 must not merge or promote any capability on source-only checks.
+
+
+### Executed generic continuation, 15 October 2026
+
+Canonical remains `451e35ccd1797aa96fb4354dabc465cceff18635`; draft PR1247
+is not admitted. An existing user-space GNU Fortran 13.3 toolchain was located,
+copied into this workstream workspace and smoke-tested by compiling and running
+the selected drivers. No privileged package operation or Actions dispatch was
+needed. The former missing-compiler blocker is resolved for this execution.
+
+Review tightened the event seam to reject an absent original parameter
+certificate. The synthetic model now uses monotonically increasing event IDs
+with its committed high-water mark: replaying event 101 after event 102 fails,
+including opaque copy and trusted reconstruction. This fixture policy is not a
+new generic or production event-history contract.
+
+At local persisted scientific head `32dde7ad`, 169 synthetic assertions pass
+per optimization with GNU Fortran 13.3 at O0/O2 and bounds/FP traps. Original
+FKT22 assertions also pass unchanged. Outputs are byte-identical between O0
+and O2. The seven-provider closure per driver is unchanged. The final measured
+compile/link/native sequence takes about 7.39 seconds; native execution totals
+about 0.0095 seconds and includes driver assertions. This is one execution, not
+a portable performance benchmark. Raw commands, compiler identity, input hashes,
+source files, intermediate executions and results are retained in the status
+record's evidence capsule.
+
+New contracts tested: missing certificate, revoked admission at commit, stale
+interval candidate/checkpoint after event publication, stale event candidate
+after positive-interval publication, resumed physical clock, all four independent
+conservation channels, nonfinite/overflow-risk balances and revision exhaustion.
+Trusted reconstruction uses a synthetic owner snapshot plus its original
+certificate. It is not a fresh-process native crop/soil-N codec qualification.
+
+The source projection still reproduces the entire previous kernel outside the
+two opt-in additions byte for byte. No production model has opted in. The current
+F-CI guard still admits the old exact kernel blob (`da7a00b6`); it has not been
+changed or reported PASS for this new shared API. Before promotion, reconcile
+that owning admission boundary, the shared-contract decision and the complete
+physical harvest/reset/fallow/new-season owner trajectory described above.
+No mastercap promotion or physical preservation claim follows from these tests.

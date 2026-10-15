@@ -434,10 +434,10 @@ contains
     class(transaction_state_t), intent(in) :: state
     type(kernel_parameter_identity_t) :: supplied
     logical :: available
-    ok=.true.
+    ! Events have no legacy uncertified mode: missing authority fails closed.
+    ok=.false.
     if(.not.committed%parameter_identity%valid) return
     call parameters%capture_identity(supplied,available)
-    ok=.false.
     if(.not.available) return
     if(.not.committed%parameter_identity%matches(supplied)) return
     ok=parameters%matches_physical_identity(state)

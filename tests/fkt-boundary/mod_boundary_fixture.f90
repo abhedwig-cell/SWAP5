@@ -1,8 +1,8 @@
 ! Synthetic owner for generic transaction tests; no crop/harvest science claim.
 module mod_boundary_fixture
  use iso_fortran_env,only:real64,int64
- use mod_transaction_reference,only:transaction_state_t
- use mod_canonical_contracts,only:canonical_forcing_t
+ use mod_transaction_reference,only:transaction_state_t,trial_outcome_t,TX_MASS_MISSING_NONE,TX_MASS_MISSING_UNSPECIFIED
+ use mod_canonical_contracts,only:canonical_forcing_t,canonical_interval_t,canonical_numerical_config_t
  use mod_kernel_transactions
  implicit none
  type,extends(transaction_state_t)::event_state_t
@@ -28,7 +28,86 @@ module mod_boundary_fixture
   procedure::stage_event=>stage_event
   procedure::validate_event=>validate_event
  end type
+ type,extends(kernel_model_t)::interval_model_t
+ contains
+  procedure::configure_parameters=>interval_configure
+  procedure::execution_admitted=>interval_admitted
+  procedure::prepare_interval=>interval_prepare
+  procedure::advance=>interval_advance
+  procedure::storage=>interval_storage
+  procedure::storage_accounting_status=>interval_storage_status
+  procedure::temporal_error=>interval_error
+  procedure::matches_committed_parameter_identity=>interval_identity
+ end type
 contains
+ subroutine interval_configure(self,parameters)
+  class(interval_model_t),intent(inout)::self
+  class(kernel_parameters_t),intent(in)::parameters
+ end subroutine
+ logical function interval_admitted(self,parameters,numerical_config)result(ok)
+  class(interval_model_t),intent(in)::self
+  class(kernel_parameters_t),intent(in)::parameters
+  type(canonical_numerical_config_t),intent(in)::numerical_config
+  ok=numerical_config%max_committed_substeps>0
+ end function
+ subroutine interval_prepare(self,forcing,interval,config)
+  class(interval_model_t),intent(inout)::self
+  class(canonical_forcing_t),intent(in)::forcing
+  type(canonical_interval_t),intent(in)::interval
+  type(canonical_numerical_config_t),intent(in)::config
+ end subroutine
+ subroutine interval_advance(self,state,t0,t1,outcome)
+  class(interval_model_t),intent(inout)::self
+  class(transaction_state_t),intent(inout)::state
+  real(real64),intent(in)::t0,t1
+  type(trial_outcome_t),intent(out)::outcome
+  ! Synthetic closed, quiescent owner: tests executor interoperability only.
+  outcome=trial_outcome_t()
+  select type(state)
+  type is(event_state_t)
+   outcome%solver_ok=t1>t0
+   outcome%mass_in=0d0;outcome%mass_out=0d0
+   outcome%mass_accounting_complete=.true.
+   outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE
+  end select
+ end subroutine
+ function interval_storage(self,state)result(value)
+  class(interval_model_t),intent(in)::self
+  class(transaction_state_t),intent(in)::state
+  real(real64)::value
+  value=huge(0d0)
+  select type(state)
+  type is(event_state_t)
+   value=state%water
+  end select
+ end function
+ subroutine interval_storage_status(self,state,complete,missing_mask)
+  class(interval_model_t),intent(in)::self
+  class(transaction_state_t),intent(in)::state
+  logical,intent(out)::complete
+  integer(int64),intent(out)::missing_mask
+  complete=.false.;missing_mask=TX_MASS_MISSING_UNSPECIFIED
+  select type(state)
+  type is(event_state_t)
+   complete=.true.;missing_mask=TX_MASS_MISSING_NONE
+  end select
+ end subroutine
+ function interval_error(self,full_state,half_state)result(value)
+  class(interval_model_t),intent(in)::self
+  class(transaction_state_t),intent(in)::full_state,half_state
+  real(real64)::value
+  value=0d0
+ end function
+ logical function interval_identity(self,identity,state)result(ok)
+  class(interval_model_t),intent(in)::self
+  type(kernel_parameter_identity_t),intent(in)::identity
+  class(transaction_state_t),intent(in)::state
+  type(event_parameters_t)::parameters
+  type(kernel_parameter_identity_t)::expected
+  logical::available
+  call parameters%capture_identity(expected,available)
+  ok=identity%matches(expected).and.parameters%matches_physical_identity(state)
+ end function
  subroutine clone_event(self,copy)
   class(event_state_t),intent(in)::self
   class(transaction_state_t),allocatable,intent(out)::copy
@@ -82,7 +161,7 @@ contains
   type is(event_state_t)
    select type(forcing)
    type is(event_forcing_t)
-    if(before%last_event==request%event_id.or.before%nitrogen<forcing%export_n)return
+    if(before%last_event>=request%event_id.or.before%nitrogen<forcing%export_n)return
     allocate(after,source=before)
     select type(after)
     type is(event_state_t)
@@ -117,7 +196,7 @@ contains
    type is(event_state_t)
     select type(forcing)
     type is(event_forcing_t)
-     ok=before%last_event/=request%event_id.and.after%last_event==request%event_id.and. &
+     ok=before%last_event<request%event_id.and.after%last_event==request%event_id.and. &
         after%nitrogen==before%nitrogen-forcing%export_n.and.after%water==before%water.and. &
         all(after%history==before%history).and.balance%count==1.and.balance%quantity_id(1)==1.and. &
         balance%before(1)==before%nitrogen.and.balance%after(1)==after%nitrogen.and. &

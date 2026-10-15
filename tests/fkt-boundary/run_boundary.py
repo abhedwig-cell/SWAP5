@@ -34,6 +34,7 @@ def main():
         print(json.dumps(dict(status='DEPENDENCY_PLAN_ONLY',**result),indent=2));return 0
     if a.output is None:p.error('--output is required for execution')
     out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+    total_start=time.perf_counter()
     events=[];result.update(status='RUNNING',events=events)
     def save(): (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save();compiler=shutil.which('gfortran')
@@ -53,6 +54,7 @@ def main():
         if done.returncode:raise RuntimeError('selected event failed; see raw output')
         return done.stdout
     try:
+        outputs={}
         providers=list(dict.fromkeys(path for order in result['orders'].values() for path in order[:-1]))
         for opt in result['optimizations']:
             work=out/opt;work.mkdir(parents=True);objects=[]
@@ -68,11 +70,17 @@ def main():
                 run([compiler,'-'+opt,*objects,obj,'-o',exe],'link',work)
                 raw=run([exe],'native',work)
                 if DRIVERS[name][1].encode() not in raw:raise RuntimeError('native assertion marker absent')
+                outputs[(opt,name)]=raw
+        for name in DRIVERS:
+            if outputs[('O0',name)]!=outputs[('O2',name)]:
+                raise RuntimeError('O0/O2 native output differs: '+name)
+        result['optimization_output_identity']='BYTE_IDENTICAL_FOR_EACH_DRIVER'
     except Exception:
         result['status']='FAILED';save();raise
     result['status']='SYNTHETIC_EVENT_AND_INCUMBENT_INTERVAL_PASS_NOT_ADMITTED'
     result['cost_seconds']={c:sum(e['seconds'] for e in events if e['category']==c)
                             for c in {e['category'] for e in events}}
+    result['total_wall_seconds']=time.perf_counter()-total_start
     save();print(json.dumps(result,indent=2));return 0
 
 if __name__=='__main__':raise SystemExit(main())
