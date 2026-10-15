@@ -1,19 +1,19 @@
 {
   "work_unit": "MC-SOL01-SURFACE-INPUT",
   "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
-  "stage": "CURRENT_CANONICAL_SURFACE_SCIENCE_OWNERS_AND_PROPORTIONAL_PRESERVATION_PASS_READY_FOR_ADMISSION",
+  "stage": "BOUNDED_ZERO_POND_SURFACE_INPUT_CANONICALLY_ADMITTED_CLOSED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
   "preserved": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Prescribed supply-limited matrix infiltration, no pond/evaporation/runoff; typed transient rain/irrigation split matched to actual accepted top flux; existing chemical owner and restart reused.",
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Expected-head ready/merge of existing PR1234, actual canonical source verification, bounded master receipt. No pond/fullcap promotion.",
+  "next_action": "CLOSED: admitted explicit zero-pond rain/irrigation matrix route; persistent pond/source/dry-deposition and nonlinear surface remain future owned scope, aquifer rejected.",
   "test_selection": {
     "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
     "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
@@ -182,5 +182,46 @@
     "docs": "SOURCE_AND_STRICT_PASS",
     "new_full_numerical_fci_claimed": false,
     "all_selected_runs_terminal": true
+  },
+  "canonical_admission": {
+    "pr": 1234,
+    "merge_commit": "136787ef2927eb44967298bec7029c30e6434422",
+    "admission_head": "85d9a81f592de678845947e8ec2044a6e189aa17",
+    "tree": "b9fb374ed22b5cbd9ddb653cdc6d108ddfc69fd2",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "reviews": 0,
+    "review_threads": 0,
+    "existing_production_bytes_unchanged_from_harvest_canonical": true,
+    "fresh_source_science": "O0/O2 literal150, real accepted signed flux/mass/retry and native/opaque/fresh continuation; endpoint/stdout identity",
+    "original_controls": 24,
+    "current_controls": 46,
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "full_fci": "NOT_SELECTED_EXACT_ADDITIVE_DEFAULT_BODY_PROOF",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "hosted_pass_claimed": false,
+    "master_disposition_changes": 0,
+    "master_receipt_commit": "fb21ba5626e2b557b85616abbc19857105a6ecd3",
+    "master_summary": {
+      "capabilities": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 112,
+      "full_master_integrity": "READBACK_BLOCKED_STALE_INHERITANCE"
+    }
+  },
+  "canonical_closeout_validation": {
+    "scope": "Metadata/documentation only; all production/reference/test/guard inputs unchanged from admitted136787ef. No native rerun selected.",
+    "source_only_identity": "PASS",
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "raw_sha256": {
+      "canonical-closeout-source.log": "e6ac7b83572b032559623a5152400cdf683ff8244e85749818462776b69603fb",
+      "canonical-closeout-docs-source.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "canonical-closeout-docs-strict.log": "701f4932cb1dd445dcf496265195bc7e6706fa69f897d337daa4113a50cf15b1"
+    }
   }
 }

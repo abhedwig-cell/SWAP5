@@ -146,3 +146,15 @@ any such change invalidates this bounded admission path. Highest low-air remains
 NOT_SELECTED_POLICY. Persistent pond/source storage, runoff/evaporation and
 nonlinear surface composition remain open; aquifer remains rejected. No full
 SW431-SALT-POND capability or census promotion follows.
+
+
+Canonical closeout: existing PR1234 merged at
+`136787ef2927eb44967298bec7029c30e6434422`, expected qualified head
+`85d9a81f592de678845947e8ec2044a6e189aa17`. Actual fetched merge tree
+`b9fb374ed22b5cbd9ddb653cdc6d108ddfc69fd2` and production source
+`0d4b4c9f171f605b5841bf0e078f01c5183c87bf` equal the local qualified
+postimage. Current O0/O2 process/physical science,24 original and46 current
+controls, actual owning dispatch and docs source/strict PASS. Reviews and
+threads were empty. The bounded explicit zero-pond profile is admitted; the
+interrupted prior full moving remains CENSORED and no new full numerical
+F-CI, hosted PASS or full historical pond-capability promotion is asserted.

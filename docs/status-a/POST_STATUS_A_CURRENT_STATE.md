@@ -534,3 +534,49 @@ is a bounded post-Status-A admission, not a change to the frozen Status-A
 denominator or a full crop-selector claim. SWDMI2RD2/daily adaptive density,
 advanced selectors, native weather disk codec and harvest/reset/fallow/rotation
 remain separate. No master capability disposition/count promotion is claimed.
+
+
+## Bounded migration closeout: policy, harvest and surface transport
+
+The existing candidates are now canonically admitted:
+
+| PR | Bounded admitted change | Canonical merge |
+| --- | --- | --- |
+| [1245](https://github.com/abhedwig-cell/SWAP5/pull/1245) | Enforced proportional test selection, retaining owning science and source-only dispatch | `f56a82b37bc1c3df7a6cb305990ab31e97818969` |
+| [1247](https://github.com/abhedwig-cell/SWAP5/pull/1247) | Explicit crop/soil-N harvest, compact retirement, actual fallow and successor continuation | `31ff3158b956183c8af19f85bd3361847f60309b` |
+| [1234](https://github.com/abhedwig-cell/SWAP5/pull/1234) | Exact accepted-water rain/irrigation solute supply, linear matrix transport and restart at zero pond | `136787ef2927eb44967298bec7029c30e6434422` |
+
+Actual fetched production source `0d4b4c9f171f605b5841bf0e078f01c5183c87bf`
+equals the qualified surface postimage. Harvest refresh executes all ten original
+physical drivers and original manual/calendar thermal natives at O0/O2;50
+original and39 composition controls and actual owning dispatch PASS. The final
+surface refresh executes the original literal process, real signed carrier/mass,
+retry and native/opaque/fresh restart assertions at O0/O2;24 original and46
+current controls and actual owner dispatch PASS. Policy reconciliation has18
+current adoption/selection controls. Source, command, raw output, endpoint and
+toolchain identities remain in the existing work-unit records/capsules.
+
+Existing default equations and source/control/moving bodies are retained by
+exact executable projections. The admitted SWRD2 full terminal capsule is
+verified at its immutable source. No new full numerical F-CI, highest low-air
+or hosted PASS is asserted for this bounded closeout. The interrupted preliminary
+surface moving run remains CENSORED, not preservation PASS.
+
+This does not complete automatic legacy calendar/input/output activation, full
+seasonal rotation, thermal-harvest composition, persistent pond/source mass or
+nonlinear surface composition. Aquifer remains rejected. Frozen Status-A and
+complete historical master capability dispositions are unchanged.
+
+[The existing master receipt](https://github.com/abhedwig-cell/SWAP5/blob/fb21ba5626e2b557b85616abbc19857105a6ecd3/integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json)
+recounts243 unique capabilities:95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,
+2 REJECTED,20 NOT_APPLICABLE and4 QUALIFICATION_ONLY;112 unresolved. It records
+three bounded facets and updates their queue explanations, without whole-cap
+promotion. A stale derived gap counter is corrected to92 explicitly marked rows;
+that is not an absent-algorithm count. The full master integrity readback still
+refuses `stale inheritance baseline`; it is not relabelled a global PASS.
+
+Completed research PR1226 (low-air performance) and1214 (cache I/O) are closed
+without merging the experiments or deleting branches/evidence. Other active
+shared semantics, source donors and nonblocking research are retained with
+concrete review/qualification boundaries in that same existing master record.
+No new migration package is started by the closeout.
