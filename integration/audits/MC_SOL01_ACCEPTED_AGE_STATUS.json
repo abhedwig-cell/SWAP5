@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-SOL01-ACCEPTED-AGE",
   "baseline": "26ddf94e58133acd413c2b2738b873a92f43f1da",
-  "stage": "PHYSICAL_AND_EXACT_PEER_COEXISTENCE_PASS_FULL_MOVING_RUNNING",
+  "stage": "QUALIFIED_PRESERVED_READY_FOR_CANONICAL_ADMISSION",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "overlap": "PR1232 already owns reactive N including nitrification; no parallel N implementation",
   "authority_paths": [
@@ -16,7 +16,7 @@
   "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
   "master": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
   "master_facet": "SW431-AGE-TRACER ACTIVE_MIGRATION; no disposition promotion",
-  "next_action": "Continue frozen age full moving; independently validate exact current reactive peer coexistence, then bind both actual terminal moving runs before safe admission.",
+  "next_action": "Verify live canonical/head/tree, mark PR1233 ready and admit bounded age scope; then publish exact one-row master and owner receipts. No new physical source change or extra full/highest run.",
   "blockers": [],
   "execution_commit": "1e54e292ca412fd657f95e0844fb898bbc9a981f",
   "added_blobs": {
@@ -150,9 +150,35 @@
       "whole_source_tree_inputs_unchanged": 6280
     }
   },
-  "preserved": false,
-  "checkpoint_commit": "d12cb2ce",
+  "preserved": true,
+  "checkpoint_commit": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
   "recovery_point": "PR1233 work/sol-age-20261015, scientific capsule and exact reactive-peer coexistence receipt",
-  "last_reconciled_head": "d12cb2ce",
-  "last_reconciled_upstream": "26ddf94e58133acd413c2b2738b873a92f43f1da"
+  "last_reconciled_head": "d12cb2ce9f06a7e96ab75ad94af5e052d31ee327",
+  "last_reconciled_upstream": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+  "full_preservation": {
+    "name": "moving",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "wall_seconds": 1436.8589218019915,
+    "exit": 0,
+    "stdout_sha256": "e49f2ed79a6819d04d6c18ee07ef8cbaf19bcb54913a3d2c5eabde6dab2dbe84",
+    "stderr_sha256": "15e95c5b5bdaa65b14b19e38f86365efe525b54a936f30d8d50cbd41fd59c6a0",
+    "execution_commit": "f5de4a6a239a2af904a2b5b5b3c8c779465ad5d4",
+    "tree": "f61ec457e1a620c321ce2999ce49d94a0ad21de9",
+    "source_tree": "e99404cb4cb51cdab0ae59635422d6da0839db1f",
+    "resume_mode": "OFF",
+    "tracked_inputs_unchanged": 6250,
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_AGE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "01df808be01451392e24f66cda162b0f40ec5018755622166c2a6204392fe52a",
+      "decoded_bytes": 653536,
+      "members": 48
+    },
+    "highest": "NOT_SELECTED_POLICY",
+    "hosted_new_run_claimed": false
+  },
+  "regie_admission_decision": "ADMIT bounded age companion only after exact live canonical26ddf94e and qualified PR head/tree verification. User autonomous continuation and execution-protocol full-cycle rule8 supply regie authority. Both actual owner full runs pass; exact combined source/caller/state/input/fixture/toolchain/build identity and fresh original controls qualify guard-only coexistence, not a combined full run or simultaneous companions."
 }

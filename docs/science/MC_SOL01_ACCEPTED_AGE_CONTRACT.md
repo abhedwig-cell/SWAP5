@@ -40,6 +40,14 @@ is selected only if the stable admission source guard must change, under existin
 F-CI owner authority. Highest low-air remains NOT_SELECTED_POLICY. No test PASS or
 canonical admission is claimed at this initial contract checkpoint.
 
+Later stable admission boundary: complete local moving **PASS**, execution
+f5de4a6a239a2af904a2b5b5b3c8c779465ad5d4,1436.858922s, all6250tracked inputs
+unchanged, FCI_RESUME_MODE=OFF. Exact reactive-peer coexistence retains both
+actual full moving executions, including reactive1423.361363s/6258inputs;
+no combined full execution or new hosted qualification is claimed. The final
+admission receipt is MC_SOL01_ACCEPTED_AGE_STATUS.json. All full-capability
+dispositions remain unchanged.
+
 ## Executed physical qualification
 
 Primary execution1e54e292ca412fd657f95e0844fb898bbc9a981f and strengthened final driver
@@ -67,8 +75,9 @@ water1e-8..1, node thickness1e-4..1e4cm and at most4096nodes. Later accepted age
 may exceed the initial age bound; restart restores the bounded amount rather
 than incorrectly reapplying the initial concentration ceiling. Intervals are
 1e-100..1000days per substep; clocks bounded by1e8days, revisions by
-100000000. Explicit stability is enforced by nonnegative candidate amounts,
-never clipping. Same-platform binary layout and CRC are bounded continuation
+100000000. Physical nonnegativity is enforced by rejecting overdraw, never
+clipping. This does not assert unconditional stability of the historical explicit
+sweep. Same-platform binary layout and CRC are bounded continuation
 proof, not a portable cross-compiler ABI.
 
 The initial9ed5efc7 reconciliation retained all477 matrix/mineral science inputs.
