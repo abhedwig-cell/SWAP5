@@ -380,7 +380,11 @@ if [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap
   dependency_authority=82209d0df68d14c5ebe707e9b6303f9b150488ca
 fi
 if [[ -f src/process/mod_b111_soil_n_mineral_owner.f90 ]]; then
-  python3 tests/nut-mineral/verify_mineral_successor.py || fail 'unqualified daily mineral owner successor'
+  if [[ -f src/runtime/mod_fmr_b111_age_route.f90 ]]; then
+    python3 tests/nut-sol/verify_age_successor.py --incumbent-mineral || fail 'unqualified age/mineral owner coexistence'
+  else
+    python3 tests/nut-mineral/verify_mineral_successor.py || fail 'unqualified daily mineral owner successor'
+  fi
   dependency_authority=ee2d84498bec23c55449f5d7fd8ebd9ecb7bfdde
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
