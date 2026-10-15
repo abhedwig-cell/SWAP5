@@ -265,3 +265,94 @@ changed or reported PASS for this new shared API. Before promotion, reconcile
 that owning admission boundary, the shared-contract decision and the complete
 physical harvest/reset/fallow/new-season owner trajectory described above.
 No mastercap promotion or physical preservation claim follows from these tests.
+
+### Source-bound WOFOST81 owner harvest candidate
+
+Next bounded implementation is in the existing WOFOST81 crop owner, not a new
+physical carrier. The current crop/soil-N joint application owns chemistry as
+`crop_soil_state_t` and water as an independent F-KT carrier. It must not publish
+a biological event by replacing or revising that water carrier. The generic
+boundary tests above do not resolve the eventual cross-owner publication route.
+
+Authenticated `SWAP/wofostnut.f90` (SHA256
+`071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2`) reads three independent [0,1] harvest-loss
+fractions for leaf/stem/storage (lines94-97). Lines278-311 return all living roots,
+the configured fraction of living leaf/stem/storage, plus configured fractions
+of retained dead leaf/stem. Residual living N stays for harvest export; biomass
+reset follows output in swap.f90. `management_soil.f90` lines583-624 includes a
+fourth storage-organ material, with its own application age.
+
+Current WOFOST81 stores living cohorts/organs and a single cumulative N-loss
+ledger; it has no retained dead leaf/stem inventory. Its explicitly admitted
+daily-senescence profile already transfers all daily death to pending material.
+The new owner candidate therefore covers only that explicit profile, with no
+retained dead canopy. Never invent dead stocks from the cumulative N-loss ledger
+or return previously pending death again. Full historical default dead-canopy
+retention remains OPEN. WOFOST81 growth, fixation and nitrogen equations stay
+unchanged.
+
+The existing crop owner gains an optional private harvest observation/pending
+record. Staging reads the valid emerged owner and literal calendar/maturity
+selector, archives the pre-reset crop structure and post-residue-transfer N for
+end-status observation, retains four-organ pending DM/N/ages and separates
+exported DM/N. The candidate active crop is reset and its live N zeroed; the
+existing N-loss ledger accounts for both residue and export, preserving the
+original initial/uptake/fixation totals. Archived and active N each validate
+against their own transfer boundary. The record is not a second live crop owner.
+It exists only on harvested candidates; cloning must retain it. Current daily
+and native serialization entrypoints must reject it rather than silently omit
+it. No callable staging function supplies weather/calendar provenance or
+publication authority from caller IDs/dates alone.
+
+Tests select the actual owner and independent mechanically extracted original
+harvest block with dead leaf/stem and death increments fixed explicitly to zero.
+Cover distinct fractions, all-root return, storage return, zero/full return,
+calendar and maturity boundaries, output-before-reset, unchanged input,
+cloning, duplicate refusal, invalid/tiny/overflow-risk material, and per-organ
+DM/N plus original WOFOST81 ledger closure at O0/O2. Compile closure is measured
+before execution. Expected small-driver cost below30seconds; no broad F-CI or
+long stress selected for this unadmitted staging-only step.
+
+Physical water/crop/soil-N publication, incorporation of four-organ pending
+material, observation acknowledgement, complete native continuation, fallow and
+successor initialization remain admission conditions. This bounded candidate
+must not enter canonical or be labelled complete harvest/rotation before those
+conditions pass. Pond/source remains open; aquifer remains rejected.
+
+
+### Harvest owner execution result
+
+At local scientific head `e31c4b84`, the existing WOFOST81 owner stages the
+four-organ harvest with private end-status/pending material and a reset active
+crop. Its ordinary clone retains that private record. The unchanged active-only
+packer refuses harvested owners; the ordinary one-day preparation now explicitly
+refuses this unqualified phase. No current physical application opts in.
+
+A separate stateless four-organ material converter uses the same original
+management mapping and actual existing B1.11 residue chemistry. It does not
+consume the private pending record or supply exactly-once incorporation.
+The residue-transfer N inputs plus harvest export equal the original live N.
+The existing daily-death pending batch is not accessed or debited by harvest.
+
+3700 assertions pass per O0/O2, together with the unchanged actual repository
+one-day integration driver. Changed PP02 providers compile with their existing
+-Werror contract. Native outputs are byte-identical O0/O2. Actual closures are
+43 production providers for harvest/serializer/residue and 24 for daily
+integration, shared within each optimization. Total measured final run is
+14.59 seconds; detailed compiler/link/native costs and all attempts are retained
+in the existing status record. No physics-only cost or portable speed claim.
+
+Two exploratory historical tests required canonical-shaped substitutes and do
+not run with actual production providers: the wrapper expects test_marker;
+the older ONE_DAY_CANDIDATE_QUALIFICATION explicitly excludes actual repository
+integration and its fixture leaves production common parameters unconfigured.
+Their compile/native failures are retained, not relabelled PASS. The unchanged
+actual repository integration test is the incumbent preservation selection.
+The initial trailing-import compile defect was repaired and its failure retained.
+
+The source-bound harvest staging and conversion claims are now tested. Generic
+boundary evidence remains independently verifiable because none of its seven
+production providers or driver inputs changed in this harvest step. Shared event
+publication, physical Richards/crop/soil-N integration, native persistence,
+observation/consumption semantics, historical dead-canopy profiles and complete
+rotation remain OPEN. The draft is not qualified for canonical admission.
