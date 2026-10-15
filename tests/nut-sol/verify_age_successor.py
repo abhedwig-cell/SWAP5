@@ -6,7 +6,7 @@ sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 BASE='9ed5efc773b28f44b16b8922730b3fd9b8892b60'
 STATUS='integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json'
-CAPSULE_SHA='728892c197f0c8ce05b7f9a463b33d4088e33aaff4432b307e99c4b3ed1d9fe8'
+CAPSULE_SHA='412d64c279074b6b21334be7cfb8d841ca14ccb5e5b5c6c66d5799bcd6b14cb5'
 GUARDS={'tests/crop-co2/verify_co2_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'}
 def check(ok,label):
  if not ok:raise ValueError(label)
@@ -50,7 +50,9 @@ def validate_evidence(data):
  check(r['baseline']==json.loads((ROOT/STATUS).read_text())['execution_commit'],'unbound age execution')
  for p,h in r['input_sha256'].items():
   check(not Path(p).is_absolute() and '..' not in Path(p).parts,'unsafe age input')
-  check(sha((ROOT/p).read_bytes())==h,'stale age physical input '+p)
+  if p=='tests/nut-sol/test_age_joint.f90':
+   check(h=='db93d3fd3f4bac09c532fedcca02a2f5fd8d4ec9d65fae9e062611b71bc10138','unknown primary age driver')
+  else:check(sha((ROOT/p).read_bytes())==h,'stale age physical input '+p)
  production={p for p in json.loads((ROOT/STATUS).read_text())['added_blobs'] if p.startswith('src/')}
  check(production<=r['input_sha256'].keys(),'untested age production')
  for opt in ('O0','O2'):
@@ -58,7 +60,7 @@ def validate_evidence(data):
   check(row['process_provider_count']==2,'age process closure changed')
   check('AGE_LITERAL_150_STEPS_PRODUCTION_UNITS_BALANCE_INVALID_RETRY=PASS' in row['process_stdout'],'age process science absent')
   check('AGE_JOINT_ATOMIC_RETRY_RESTART_BALANCE=PASS' in row['physical_stdout'],'age joint science absent')
-  check(row['physical_stdout'].count('AGE_ACTUAL_LITERAL_TEN_CARRIER_NEGATIVES_REPLAY=PASS')==2,'both actual signed trajectories not tested')
+  check(row['physical_stdout'].count('AGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS')==2,'both actual signed trajectories not tested')
   check(sha(data['stable/'+opt+'/literal_age.f90'])==row['oracle_sha256'],'literal age oracle drift')
   check(sha(data['stable/'+opt+'/expected.bin'])==row['endpoint_sha256']==row['fresh_sha256']==sha(data['stable/'+opt+'/fresh.bin']),'age restart continuation drift')
   compiles=[e for e in events if e['category']=='physical_compile' and '-'+opt in e['command']]
@@ -78,7 +80,42 @@ def validate_evidence(data):
   for stream in ('stdout','stderr'):
    check('stable/'+e[stream] in data,'missing raw age stream')
  check(r['runs']['O0']['endpoint_sha256']==r['runs']['O2']['endpoint_sha256'],'age O0/O2 drift')
+ validate_final_driver(data,r)
  return r
+def validate_final_driver(data,primary):
+ r=json.loads(data['final/result.json']);events=json.loads(data['final/events.json']);s=json.loads((ROOT/STATUS).read_text())
+ check(r['status']=='FINAL_DRIVER_PHYSICAL_PASS' and r['execution_commit']==s['final_execution_commit'],'unfinished final age execution')
+ check(r['primary_result_sha256']==sha(data['stable/result.json']),'unbound age primary execution')
+ expected=dict(primary['input_sha256']);expected['tests/nut-sol/test_age_joint.f90']=sha((ROOT/'tests/nut-sol/test_age_joint.f90').read_bytes())
+ check(r['inputs']==expected,'incomplete final age input binding')
+ for p,h in r['inputs'].items():check(sha((ROOT/p).read_bytes())==h,'stale final age source '+p)
+ check(r['all_reused_artifacts_unchanged'] is True and r['all_inputs_unchanged'] is True,'uncontrolled age artifact reuse')
+ check(len(r['verified_reused_artifacts'])>900,'incomplete age provider/module artifact binding')
+ check(r['compiler']==primary['compiler'],'different final age compiler')
+ check(len(events)==30,'incomplete final age command matrix')
+ for e in events:
+  check(e['returncode']==0 and e['seconds']>=0,'failed final age command')
+  for stream in ('stdout','stderr'):check('final/'+e[stream] in data,'missing final age raw event')
+ for opt in ('O0','O2'):
+  row=r['runs'][opt]
+  compiles=[e for e in events if e['category']=='final_compile' and '-'+opt in e['command']]
+  check(len(compiles)==1,'age final leaf compile count')
+  cmd=compiles[0]['command']
+  check(cmd[cmd.index('-c')+1].endswith('/tests/nut-sol/test_age_joint.f90') and '-fcheck=all' in cmd and '-ffpe-trap=invalid,zero,overflow' in cmd,'wrong final age leaf/flags')
+  check(len([e for e in events if e['category']=='final_link' and '-'+opt in e['command']])==1,'age final link absent')
+  natives=[e for e in events if e['category']=='final_native' and '/'+opt+'/' in e['command'][0]]
+  check(len(natives)==12 and len(row['decoder_negatives'])==10,'incomplete final age native coverage')
+  check(data['final/'+natives[0]['stdout']].decode()==row['physical_stdout'],'final age raw physical assertions drift')
+  check(row['physical_stdout'].count('AGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS')==2,'final age extreme carrier controls absent')
+  check(b'AGE_FRESH_PROCESS=PASS' in data['final/'+natives[1]['stdout']],'final age fresh process absent')
+  for e in natives[2:]:check(b'AGE_INVALID_DISK=PASS' in data['final/'+e['stdout']],'final age disk negative absent')
+  check(sha(data['final/'+opt+'/expected.bin'])==sha(data['final/'+opt+'/fresh.bin'])==row['endpoint_sha256']==primary['runs'][opt]['endpoint_sha256'],'final age endpoint drift')
+  check(row['process_stdout']==primary['runs'][opt]['process_stdout'],'final age process regression')
+ check(r['runs']['O0']==r['runs']['O2'],'final age optimization drift')
+ witness=json.loads(data['preimage/result.json'])
+ check(witness['status']=='EXPECTED_PREIMAGE_FPE_WITNESS','missing pre-validation regression witness')
+ check(witness['driver_sha256']==expected['tests/nut-sol/test_age_joint.f90'],'different extreme preimage driver')
+ check(witness['events'][-1]['exit']==-8 and b'SIGFPE' in data['preimage/native.stderr'],'missing real Fortran preimage overflow')
 def verify_qualification():
  source=verify_source();validate_evidence(read_evidence());return {**source,'qualified':True,'highest':'NOT_SELECTED_POLICY'}
 def incumbent_mineral():

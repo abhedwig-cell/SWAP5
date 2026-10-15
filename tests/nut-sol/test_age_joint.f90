@@ -293,7 +293,7 @@ contains
     end do
     call accepted%snapshot(time,water,finalstores,revision)
     call require(maxval(abs(finalstores%age_amount-density*p%dz_cm))<1d-11,'actual accepted trace independent literal endpoint')
-    do j=1,10
+    do j=1,15
       bad=traces
       select case(j)
       case(1);bad(1)%t0=bad(1)%t0+1d-4
@@ -306,6 +306,13 @@ contains
       case(8);bad(1)%macropore_matrix_exchange=spread(.1d0,1,numnod)
       case(9);bad(size(bad))%t0=bad(size(bad))%t0+1d-4
       case(10);bad(1)%bottom_flux=bad(1)%bottom_flux+1d0
+      case(11);bad(1)%t1=bad(1)%t0+1d-310
+      case(12)
+        bad(1)%root_sink=huge(0d0)
+        bad(1)%drainage_sink_by_level=huge(0d0)
+      case(13);bad(1)%drainage_sink_by_level=1d300
+      case(14);bad(1)%net_node_source=1d300
+      case(15);bad(1)%bottom_flux=1d300
       end select
       trial=initial
       call consume_accepted_age_trace(trial,bad,receipt)
@@ -320,7 +327,7 @@ contains
     call consume_accepted_age_trace(trial,traces,receipt)
     call require(receipt%status/=AGE_OK,'consumed clock rejects replay')
     call compare_chemical(trial,accepted)
-    print '(A)','AGE_ACTUAL_LITERAL_TEN_CARRIER_NEGATIVES_REPLAY=PASS'
+    print '(A)','AGE_ACTUAL_LITERAL_FIFTEEN_CARRIER_NEGATIVES_REPLAY=PASS'
   end subroutine
   subroutine require(ok,label)
     logical,intent(in)::ok

@@ -126,7 +126,14 @@ contains
        .not.all(ieee_is_finite(t%root_sink)).or..not.all(ieee_is_finite(t%net_node_source)).or. &
        .not.all(ieee_is_finite(t%drainage_sink_by_level)))return
     if(any(t%water_start<1d-8).or.any(t%water_start>1d0).or.any(t%water_end<1d-8).or. &
-       any(t%water_end>1d0).or.any(t%root_sink<0d0))return
+       any(t%water_end>1d0).or.any(t%root_sink<0d0).or.any(t%root_sink>1d6))return
+    ! Bound finite inputs before summing source terms or dividing by dt.
+    ! This is a carrier domain check, not a relaxed balance or retry policy.
+    if(size(t%drainage_sink_by_level,1)>4096)return
+    if(any(abs(t%drainage_sink_by_level)>1d6).or.any(abs(t%net_node_source)>1d10))return
+    if(abs(t%bottom_flux)>1d6)return
+    dt=t%t1-t%t0
+    if(dt<1d-100.or.dt>1d3)return
     scale=max(1d0,maxval(abs(t%net_node_source)))
     if(any(abs(t%net_node_source+sum(t%drainage_sink_by_level,dim=1)+t%root_sink)> &
        1024d0*epsilon(1d0)*scale))return
@@ -143,7 +150,6 @@ contains
      if(any(abs(t%subsurface_source)>0d0))return
     end if
     if(abs(t%top_flux)>0d0)return
-    dt=t%t1-t%t0
     call reconstruct_interval_water_face_flux(trial%p%dz_cm,t%water_start,t%water_end, &
        t%net_node_source,-t%top_flux,-t%bottom_flux,dt,1d-10/dt,faces,closure,code)
     receipt%max_water_residual=max(receipt%max_water_residual,abs(closure)*dt)

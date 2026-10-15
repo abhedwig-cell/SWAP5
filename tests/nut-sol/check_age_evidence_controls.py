@@ -29,6 +29,13 @@ class Controls(unittest.TestCase):
  def test_restart_bytes(self):
   d=dict(self.data);d['stable/O0/fresh.bin']=b'forged'
   with self.assertRaises(ValueError):v.validate_evidence(d)
+ def test_final_unfinished(self):self.mutation('final/result.json',lambda r:r.__setitem__('status','FAILED'))
+ def test_final_missing_input(self):self.mutation('final/result.json',lambda r:r['inputs'].pop('tests/nut-sol/test_age_joint.f90'))
+ def test_final_artifact_drift(self):self.mutation('final/result.json',lambda r:r.__setitem__('all_reused_artifacts_unchanged',False))
+ def test_final_failed_native(self):self.mutation('final/events.json',lambda r:r[-1].__setitem__('returncode',1))
+ def test_final_missing_native(self):self.mutation('final/events.json',lambda r:r.pop())
+ def test_final_missing_decoder(self):self.mutation('final/result.json',lambda r:r['runs']['O0']['decoder_negatives'].pop())
+ def test_forged_preimage(self):self.mutation('preimage/result.json',lambda r:r['events'][-1].__setitem__('exit',0))
  def delta(self,change):
   rows={p:'A' for p in self.s['added_blobs']};rows.update({p:'M' for p in v.GUARDS});tree={**self.s['added_blobs'],**self.s['guard_blobs']}
   change(rows,tree)
