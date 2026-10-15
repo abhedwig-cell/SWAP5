@@ -35,7 +35,7 @@ module mod_b111_soil_n_mineral_owner
    integer::schema=1
    type(mineral_state_t)::state
  end type
- public::initialize_mineral,advance_mineral_day,mineral_parameter_vector,mineral_parameters_valid
+ public::initialize_mineral,advance_mineral_day,apply_mineral_day_transfer,mineral_parameter_vector,mineral_parameters_valid
  public::export_mineral_restart,restore_mineral_restart,reconstruct_mineral_trusted
 contains
  logical function mineral_parameters_valid(p) result(ok)
@@ -152,6 +152,44 @@ contains
    receipt%residual=budget%balance_residual_kg_m2
    if(budget%status/=SOIL_N_OK.or..not.bounded_pools(trial))return
    if(state%revision==huge(state%revision))return
+   state%pools=trial;state%water=water_end;state%time=t1;state%revision=state%revision+1
+   receipt%status=MINERAL_OK
+ end subroutine
+ ! Budget-checked publication seam: all N stores still have this single owner.
+ subroutine apply_mineral_day_transfer(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,receipt)
+   type(mineral_state_t),intent(inout)::state
+   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
+   type(soil_n_transfer_t),intent(in)::x
+   type(mineral_receipt_t),intent(out)::receipt
+   type(soil_n_pool_state_t)::trial
+   type(soil_n_receipt_t)::budget
+   real(real64)::closure
+   receipt=mineral_receipt_t()
+   if(.not.state%ready())return
+   if(.not.all(ieee_is_finite([t0,t1,water_end,outflow,in_bottom,in_lateral,root_water])))return
+   if(abs(t0-state%time)>0d0.or.abs(t1-t0-1d0)>0d0.or.abs(t1)>1d8)return
+   if(water_end<1d-4.or.water_end>1d0)return
+   if(min(outflow,in_bottom,in_lateral,root_water)<0d0.or.max(outflow,in_bottom,in_lateral,root_water)>100d0)return
+   if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0))return
+   closure=(water_end-state%water)*state%p%inventory%depth_m-(in_bottom+in_lateral-outflow-root_water)
+   if(abs(closure)>1d-12)return
+   ! This public seam accepts only bounded transfers, before any donor arithmetic.
+   if(.not.allocated(x%fom_delta_kg_m3))return
+   if(size(x%fom_delta_kg_m3)/=size(state%pools%fom_kg_m3))return
+   if(.not.all(ieee_is_finite(x%fom_delta_kg_m3)))return
+   if(.not.all(ieee_is_finite([x%biomass_delta_kg_m3,x%humus_delta_kg_m3,x%ammonium_n_delta_kg_m2, &
+      x%nitrate_n_delta_kg_m2,x%external_n_input_kg_m2,x%external_n_output_kg_m2])))return
+   if(any(abs(x%fom_delta_kg_m3)>1000d0).or.max(abs(x%biomass_delta_kg_m3),abs(x%humus_delta_kg_m3))>1000d0)return
+   if(max(abs(x%ammonium_n_delta_kg_m2),abs(x%nitrate_n_delta_kg_m2))>100d0)return
+   if(min(x%external_n_input_kg_m2,x%external_n_output_kg_m2)<0d0)return
+   if(max(x%external_n_input_kg_m2,x%external_n_output_kg_m2)>1d9)return
+   call apply_soil_n_transfer(state%p%inventory,state%pools,x,trial,budget)
+   receipt%status=MINERAL_BALANCE
+   receipt%mass_before=budget%nitrogen_before_kg_m2;receipt%mass_after=budget%nitrogen_after_kg_m2
+   receipt%external_in=budget%external_n_input_kg_m2;receipt%external_out=budget%external_n_output_kg_m2
+   receipt%residual=budget%balance_residual_kg_m2
+   if(budget%status/=SOIL_N_OK.or..not.bounded_pools(trial))return
+   if(state%revision>=100000000_int64)return
    state%pools=trial;state%water=water_end;state%time=t1;state%revision=state%revision+1
    receipt%status=MINERAL_OK
  end subroutine

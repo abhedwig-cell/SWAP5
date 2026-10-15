@@ -826,7 +826,17 @@
           "status":"CANONICALLY_ADMITTED_BOUNDED_SCOPE",
           "recovery":"integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
           "scope":"Daily aggregate NH4/NO3 transport, explicit mineral/whole-N inventory, atomic water rejection/retry and fresh-process joint restart",
-          "next_gate":"Bounded nitrification/reaction with whole-N accounting; no repeated mineral inventory migration or silent WOFOST81 replacement"
+          "next_gate":"Reactive successor PR1232 qualifies organic turnover, mineralisation/immobilisation, nitrification and denitrification. See its exact admission receipt; next crop-N/environment and amendment/residue contracts retain WOFOST81."
+        },
+        "bounded_reactive_successor": {
+          "pr": 1232,
+          "status": "QUALIFIED_PRESERVED_PREMERGE_RECEIPT",
+          "recovery": "integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json",
+          "admission_authority": "PR1232 final merge and canonical source/tree receipt; frozen premerge flags are not an admission claim",
+          "scope": "Bounded source-corrected daily organic/mineral N reactions over actual accepted Richards water with atomic joint rollback and same-platform restart",
+          "reference": "MC-NUT01-R1; original defect witness and corrected literal whole-N qualification",
+          "peer": "PR1230 nonlinear route preserved through exact canonical-relative union proof",
+          "next_gate": "Crop-N supply/demand and environmental forcing as needed, then amendment/residue events. Preserve WOFOST81 fixation; no whole NUT/SOL closure."
         }
       },
       {
