@@ -51,3 +51,13 @@ admission remain open. Test status is recorded in the existing versioned recover
 No mastercap promotion or complete rotation claim follows from these tests.
 Verify retained exact-current source and terminal evidence without new numerics:
 `python -B tests/crop-harvest/verify_evidence.py`.
+
+The final finite decoder repair checks the complete vector before discriminator
+comparisons, with FP traps retained. `repair_finite.py` requires an exact source
+transformation and unchanged module-interface bytes, reuses source/command/
+artifact-bound providers, and executes small, actual harvest/rotation and original
+thermal native paths freshly. It checks original endpoint bytes and adds 51
+CRC-valid NaN/+Inf/-Inf controls per optimization across both owner codecs.
+Unchanged earlier physical assertions remain tied to their own source; this
+bounded repair does not invent a new full-suite PASS. Current source-only owning
+admission rejects `foreign SWRD3 delta`; reconcile it explicitly before promotion.

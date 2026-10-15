@@ -18,8 +18,12 @@ assert physical['status']=='PASS'and physical['incumbent_endpoints_identical']
 assert heat['status']=='ORIGINAL_THERMAL_NATIVE_FRESH_EXECUTION_BYTE_PRESERVED'
 for result,key in [(small,'inputs'),(physical,'input_sha256'),(heat,'inputs')]:
  for p,digest in result[key].items():
-  assert sha((ROOT/p).read_bytes())==digest,p
-  if not p.endswith(('.tar.gz.b64','.tar.xz.b64')):assert sha(files['sources/'+p])==digest,p
+  if current and p=='src/crop/mod_crop_soil_n_day.f90':
+   assert sha(files['finite-repair/before.f90'])==digest,p
+  else:assert sha((ROOT/p).read_bytes())==digest,p
+  if not p.endswith(('.tar.gz.b64','.tar.xz.b64')):
+   source=files['finite-repair/before.f90']if current and p=='src/crop/mod_crop_soil_n_day.f90'else files['sources/'+p]
+   assert sha(source)==digest,p
 assert not small['dirty_scientific_surface']
 for event in small['events']:assert event['exit']==0
 small_out=[files['small/'+x['stdout']]for x in small['events']if x['category']=='native']
@@ -46,6 +50,29 @@ if current:
  assert failed[-1]['returncode']!=0 and all(x['category']=='compile'for x in failed)
  assert recovery['reused_compile_events']==len(failed)-1
  for p,digest in e['source_sha256'].items():assert sha((ROOT/p).read_bytes())==digest,p
+ repair=json.loads(files['finite-repair/result.json'])
+ assert repair['status']=='FINITE_GUARD_CURRENT_SOURCE_NATIVE_REPAIRED_AND_BYTE_PRESERVED'
+ before=files['finite-repair/before.f90'].decode();after=files['finite-repair/after.f90'].decode()
+ expected=before.replace('  if(size(v)==0)return\n  if(v(1)==-81002d0)then','  if(size(v)==0)return\n  if(.not.all(ieee_is_finite(v)))return\n  if(v(1)==-81002d0)then')
+ expected=expected.replace('.not.all(ieee_is_finite(v)).or.any(abs(v)>1d9)','any(abs(v)>1d9)')
+ assert expected==after==(ROOT/repair['source_path']).read_text()
+ for event in repair['events']:assert event['exit']==0
+ failed_nonfinite=json.loads(files['failed-nonfinite/result.json'])
+ assert len(failed_nonfinite)==2 and all(x['exit']!=0 for x in failed_nonfinite)
+ for opt in ['O0','O2']:
+  rr=repair['runs'][opt]
+  assert rr['nonfinite_decoder_negatives']==51 and rr['small_fresh_byte_identity']
+  assert rr['original_thermal_native_bytes']=='IDENTICAL_FRESH_EXECUTION'
+  work='finite-repair/rotation-joint-first-'+opt+'/'
+  module=files[work+'mod_crop_soil_n_day.mod']
+  original_module=next(digest for path,digest in repair['bindings'].items()if path.endswith('/rotation-joint-first/'+opt+'/mod_crop_soil_n_day.mod'))
+  assert sha(module)==original_module,'module ABI drift'
+  for prefix in ['harvest-','rotation-']:
+   for suffix in ['restart.bin','expected.bin','fresh.bin','expected.bin.opaque']:
+    assert files[work+prefix+suffix]==files['physical/'+opt+'/'+prefix+suffix]
+  for profile in ['manual','calendar']:
+   for suffix in ['restart.bin','expected.bin','fresh.bin','expected.bin.opaque']:
+    assert files[work+profile+'-'+suffix]==files['thermal/'+opt+'/'+profile+'-'+suffix]
  predecessor=s['harvest_joint_stage']['execution_evidence']
  predecessor_raw=base64.b64decode((ROOT/predecessor['path']).read_bytes())
  assert sha(predecessor_raw)==predecessor['decoded_sha256']
@@ -79,4 +106,5 @@ print(json.dumps(dict(status='RETAINED_CROP_SOIL_HARVEST_NATIVE_AND_ORIGINAL_THE
  owner_assertions_per_optimization=3700,chemical_assertions_per_optimization=74 if current else 40,
  forged_phase_and_budget_native_negatives_per_optimization=6,original_base_endpoints_preserved=True,
  original_thermal_endpoints_preserved=True,retirement_fallow_successor_native_identity=current,
- compact_decoder_negatives_per_optimization=12 if current else 0,kernel_exact_canonical=True,canonical_admission=False),indent=2))
+ compact_decoder_negatives_per_optimization=12 if current else 0,
+ nonfinite_decoder_negatives_per_optimization=51 if current else 0,kernel_exact_canonical=True,canonical_admission=False),indent=2))

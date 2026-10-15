@@ -587,3 +587,7 @@ harvest/rotation native assertions, fresh original thermal manual/calendar runs,
 original endpoint byte checks and non-finite fields throughout both owner codecs.
 Do not repeat unaffected material/senescence physics or relabel their old source
 as the repaired postimage. Record both failed NaN controls and repair costs.
+
+Final finite repair PASS at O0/O2, source commit `a0f7c393f5e2520d12a229e01a26515cc9bdd6b9`. Both owner codecs reject 51 CRC-valid quiet-NaN/+Inf/-Inf field controls per optimization without SIGFPE. All actual harvest/rotation native assertions, original thermal manual/calendar profiles and small real drivers execute freshly after relinking the recompiled owner; their endpoint/output bytes equal the pre-repair evidence. The emitted module interface equals the original bytes. Exact transformation proof bounds inheritance of the unaffected earlier material/environment/senescence physics; this is not a new full-suite execution.
+
+Repair costs: changed_provider_compile 13.59s, link 2.04s, native 220.35s. Original thermal preservation also completed before repair: native 118.81s, driver_compile 14.87s, extra_provider_compile 2.44s, link 0.30s. Both executions and the failed NaN controls are retained separately; costs are not merged into a fictitious single run. No tolerances, assertions, FP traps or admission guards were weakened. The owning source-only guard still rejects the repaired source; canonical admission remains open.
