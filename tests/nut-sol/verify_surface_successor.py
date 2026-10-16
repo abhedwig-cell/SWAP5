@@ -100,6 +100,7 @@ SURFACE_CASE="""      src/process/mod_b111_surface_supply.f90|src/runtime/mod_fm
         python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"
         ;;
 """
+IMPACT_PREFLIGHT='# Explicit preflight; produces a conservative selection report, never F-CI PASS.\n# Example: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh --plan-rossfast-impact integration/f-ci-canonical\nif [[ "${1:-}" == --plan-rossfast-impact ]]; then\n  if [[ -z "${2:-}" || -n "${3:-}" ]]; then\n    echo \'Usage: --plan-rossfast-impact BASE_REF\' >&2\n    exit 2\n  fi\n  python3 -B tests/fci/select_component_impact.py --base "$2"\n  exit $?\nfi\n\n'
 MOVING='tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'
 HARVEST='tests/crop-harvest/verify_harvest_successor.py'
 DISPATCH={'verify_source': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_source(git_reader)\n", 'verify_physical': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_qualification()  # physical\n", 'verify_qualification': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface\n  return surface.verify_qualification()  # qualification\n"}
@@ -124,7 +125,10 @@ def verify_source(git_reader=None):
  text=(ROOT/HARVEST).read_text()
  for addition in DISPATCH.values():check(text.count(addition)==1,'unknown surface owner dispatch');text=text.replace(addition,'')
  check(text==subprocess.check_output(['git','show',CURRENT_BASE+':'+HARVEST],cwd=ROOT,text=True),'harvest owner body drift')
- moving=(ROOT/MOVING).read_text();check(moving.count(SURFACE_CASE)==1,'unknown surface moving case')
+ moving=(ROOT/MOVING).read_text()
+ if 'tests/fci/select_component_impact.py' in expected:
+  check(moving.count(IMPACT_PREFLIGHT)==1,'unknown impact preflight');moving=moving.replace(IMPACT_PREFLIGHT,'')
+ check(moving.count(SURFACE_CASE)==1,'unknown surface moving case')
  check(moving.replace(SURFACE_CASE,'')==subprocess.check_output(['git','show',CURRENT_BASE+':'+MOVING],cwd=ROOT,text=True),'full moving body changed')
  controls='tests/crop-harvest/check_admission_controls.py';text=(ROOT/controls).read_text();check(text.count(CONTROL_DISPATCH)==1,'unknown control dispatch')
  check(text.replace(CONTROL_DISPATCH,'')==subprocess.check_output(['git','show',CURRENT_BASE+':'+controls],cwd=ROOT,text=True),'incumbent controls changed')

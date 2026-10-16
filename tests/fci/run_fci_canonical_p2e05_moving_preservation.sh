@@ -4,6 +4,17 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
+# Explicit preflight; produces a conservative selection report, never F-CI PASS.
+# Example: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh --plan-rossfast-impact integration/f-ci-canonical
+if [[ "${1:-}" == --plan-rossfast-impact ]]; then
+  if [[ -z "${2:-}" || -n "${3:-}" ]]; then
+    echo 'Usage: --plan-rossfast-impact BASE_REF' >&2
+    exit 2
+  fi
+  python3 -B tests/fci/select_component_impact.py --base "$2"
+  exit $?
+fi
+
 # Explicit harvest owner qualification only; never a full moving PASS.
 if [[ "${1:-}" == --crop-harvest-owner-only ]]; then
   python3 -B tests/crop-harvest/verify_harvest_successor.py
