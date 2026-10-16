@@ -817,7 +817,7 @@
     "existing_candidate": "aa5b6a729dd762b8f9e853c57295faefdff779a5",
     "existing_branch": "work/swap431-drain-frost-closeout-20261007",
     "pr_search": "No PR returned for exact existing closeout head; reuse existing branch, create no second branch/route.",
-    "state": "CONDITIONS_FROZEN_BEFORE_IMPLEMENTATION",
+    "state": "SMALL_REAL_PRODUCTION_O0_O2_PASS_RUNTIME_PENDING",
     "ledger_rows": [
       "SW431-DRAIN-INF-SPLIT"
     ],
@@ -857,6 +857,38 @@
         "rossfast": "NOT_SELECTED_IMPACT",
         "highest_low_air": "NOT_SELECTED_POLICY; no frost-ON envelope extension"
       }
-    }
+    },
+    "reference_blocker": {
+      "source": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90",
+      "case": {
+        "grid": "8 uniform1cm;K2;anisotropy1",
+        "q_cm_per_day": -0.003,
+        "gwl_cm": -0.15,
+        "channel_cm": -0.15,
+        "spacing_cm": 40,
+        "infiltration_factor": 0
+      },
+      "actual_reference_nodal_sum_cm_per_day": -0.004423469387755102,
+      "independent_conservative_sum_cm_per_day": -0.003,
+      "failure": "/tmp/inf-process-20261016-a/00010-science.stdout",
+      "cause": "Paragraph11 overwrites the Lev2Comp above-bottom thickness with below-GWL thickness when infiltration bottom and GWL share a node. Subsequent same-node KDtot/KDsat geometry subtracts the compartment thickness again; the nodal/scalar transfer no longer closes.",
+      "no_scope_reduction": true,
+      "disposition": "RESOLVED_BY_EXISTING_ADMITTED_FROST_DIVDRA_03; first O0 test used superseded02 oracle; no new reference source needed."
+    },
+    "reference_correction_preregistration": {
+      "component": "FROST-DIVDRA-03",
+      "baseline_component_sha256": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+      "minimal_change": "Remove exactly the one Paragraph11 if(icpbotdislay(idr)==icpwlev) dzcpbotdislay(idr)=dzcpwlevsat overwrite; retain Lev2Comp above-bottom thickness and existing KD algebra. All other bytes and global B1.12 pins stay fixed.",
+      "qualification_frozen": [
+        "Unedited complete baseline and corrected native DIVDRA at O0/O2, exact same inputs; signed/mixed1..3levels, heterogeneous grids/anisotropy, spacing order, factor0/0.5/1, same/different/zero-unsaturated geometry.",
+        "Independent per-level mass and analytic unsaturated/saturated conductivity integrals. Changed native nodes must be predicted exactly by active infiltration whose bottom and GWL share a node; every other native node stays byte-exact.",
+        "Original4536 B17 reference cases remain byte-exact; original B18 actual driver/assertions preserve old frost/domain semantics under absent new ordinary opt-in.",
+        "Hash-guarded isolated applicator rejects wrong baseline and occupied/different targets; original reference and global snapshot unchanged.",
+        "Persist qualified corrected reference before using it as the production required oracle; retain the original mismatch and all failures."
+      ],
+      "state": "CANCELLED_DUPLICATE_ALREADY_ADMITTED_CORRECTION",
+      "reason": "Existing03 artifact already has exact same29ff7008 corrected bytes and is canonically admitted via existing B20 review. Restored original applicator/manifest exactly. Preserve existing source qualification; do not duplicate correction/reference promotion."
+    },
+    "reference_authority": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json"
   }
 }

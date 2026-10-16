@@ -17,6 +17,8 @@ module mod_fmr_divdra_serialized_runtime
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_commit_receipt_record_t, fmr_serialized_batch_diagnostics_t, &
        fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_INVALID_REQUEST
+  use mod_fmr_divdra_separate_infiltration_binding, only: fmr_divdra_separate_infiltration_binding_diagnostics_t, &
+       fmr_bind_separate_infiltration, FMR_DIVDRA_INF_SPLIT_OK
   implicit none
   private
 
@@ -54,6 +56,7 @@ contains
 
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: inf_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     integer :: i, j, forcing_index, parameter_index, view_index, slot
 
@@ -80,6 +83,31 @@ contains
       slot = slot + 1
       forcing_index = int(columns(i)%forcing_handle)
       view_index = int(divdra_requests(i)%hydraulic_view_ref)
+      if(allocated(divdra_requests(i)%separate_infiltration_controls))then
+        if(divdra_records(slot)%multilevel)then
+          allocate(level_parameters(size(divdra_requests(i)%distribution_parameter_refs)))
+          do j=1,size(level_parameters)
+            level_parameters(j)=distribution_parameter_registry(int(divdra_requests(i)%distribution_parameter_refs(j)))
+          end do
+          call fmr_bind_separate_infiltration(level_parameters,hydraulic_view_registry(view_index), &
+               divdra_requests(i)%scalar_transfers,divdra_requests(i)%separate_infiltration_controls, &
+               forcing_registry(forcing_index)%drainage_flux_by_level,inf_diag)
+          deallocate(level_parameters)
+        else
+          parameter_index=int(divdra_requests(i)%distribution_parameter_ref)
+          call fmr_bind_separate_infiltration(distribution_parameter_registry(parameter_index:parameter_index), &
+               hydraulic_view_registry(view_index),[divdra_requests(i)%scalar_transfer], &
+               divdra_requests(i)%separate_infiltration_controls,forcing_registry(forcing_index)%drainage_flux_by_level,inf_diag)
+        end if
+        divdra_records(slot)%separate_infiltration_binding=inf_diag
+        if(inf_diag%status/=FMR_DIVDRA_INF_SPLIT_OK)then
+          composition_status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          divdra_records(slot)%composition_status=composition_status
+          call cleanup_materialized_divdra(columns,divdra_requests,forcing_registry)
+          return
+        end if
+        cycle
+      end if
       if(divdra_records(slot)%multilevel)then
         allocate(level_parameters(size(divdra_requests(i)%distribution_parameter_refs)))
         do j=1,size(level_parameters)
