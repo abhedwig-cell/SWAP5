@@ -100,7 +100,7 @@
     23,
     29
   ],
-  "next_action": "Update exactly the existing AVAIL master row/queue/recovery at latest live master head; retain all other242 capability records and parallel drainage/crop/reference authorities.",
+  "next_action": "TCS6 and AVAIL are fully closed. Continue only the nine existing remaining MC-IRR01 capabilities under their own closure conditions.",
   "recovery_point": "integration/f-ci-canonical@a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -371,22 +371,23 @@
   "latest_master_reconciliation": {
     "owner_pr": 1072,
     "branch": "work/swap431-master-coverage-20261006",
-    "checkpoint": "6f29e16e0f3b2c2ec8e0648d9b32ff14c647220f",
-    "canonical_admission": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-    "canonical_recovery": "76cb15e1adfa53a12c452887012ed1b025d11fad",
-    "integrity": "PASS historical source and pinned canonical locators;20 inheritance controls PASS; require-closed EXPECTED_FAIL denominator incomplete",
-    "owned_rows_reconciled": 11,
-    "bounded_new_routes": 5,
-    "fullcap_promotions": 0,
+    "checkpoint": "07f48bc604c03167358645875117ba6489572de0",
+    "canonical_admission": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+    "canonical_recovery": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
+    "integrity": "PASS historical source/census and pinned canonical locators;20 original inheritance controls PASS; source/strict docs PASS. Global require-closed NOT_RUN, coverage remains open.",
+    "owned_rows_reconciled": 1,
+    "bounded_new_routes": 0,
+    "fullcap_promotions": 1,
     "counts": {
       "total": 243,
-      "ADMITTED": 94,
-      "ACTIVE_MIGRATION": 109,
-      "QUALIFICATION_ONLY": 4,
-      "unresolved": 113,
-      "structural_absence_flags": 87
+      "ADMITTED": 100,
+      "ACTIVE_MIGRATION": 104,
+      "QUALIFICATION_ONLY": 3,
+      "unresolved": 107
     },
-    "claim": "Bounded actual application admission; no full source envelope or whole-master scientific claim."
+    "workstream_fullcaps": 7,
+    "workstream_remaining": 9,
+    "claim": "Exactly existing AVAIL full-capability admission, no new denominator and no other capability promotion. All242 other rows and parallel drainage/crop/reference authorities preserved."
   },
   "current_claim": "Seven existing MC-IRR01 capabilities admitted, including full TCS6 and external availability with exact continuous/opaque/fresh native continuation. The remaining nine capabilities retain their individual source/selector/salt/profile gates; no automatic promotion of those rows.",
   "shared_application_review_20261011": {
@@ -5019,7 +5020,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Update exactly the existing AVAIL master row/queue/recovery at latest live master head; retain all other242 capability records and parallel drainage/crop/reference authorities.",
+    "next_action": "None for SW431-IRR-AVAIL. Full existing capability canonically admitted and existing master row/queue/recovery reconciled. Other9 MC-IRR01 capabilities retain their existing gates.",
     "blockers": [],
     "direct_contract": {
       "status": "PASS",
@@ -5342,8 +5343,8 @@
       },
       {
         "condition": 6,
-        "status": "CANONICAL_PASS_MASTER_ACCOUNTING_PENDING",
-        "evidence": "PR1267 safely merged; actual full tree equals qualified tree; postmerge current owner proof PASS. Existing master row/queue/recovery accounting follows as the final step."
+        "status": "PASS",
+        "evidence": "PR1267 safely merged with actual full tree exactly equal to qualified tree; postmerge current owner proof PASS. Existing AVAIL master row/queue/recovery promoted at07f48bc604c03167358645875117ba6489572de0; all other242 rows preserved, source/census/pinned authority integrity,20 original inheritance controls and source/strict docs PASS."
       }
     ],
     "qualified_scientific_head": "df5ee116f8e7fa4b4b0f6002efeb87a2ca6d3224",
@@ -5571,10 +5572,39 @@
           "SW431-DRAIN-INF-SPLIT"
         ],
         "availability_successor": true
-      }
+      },
+      "master_receipt": "07f48bc604c03167358645875117ba6489572de0"
     },
     "workstream_fullcaps": 7,
-    "workstream_remaining": 9
+    "workstream_remaining": 9,
+    "master_closeout": {
+      "branch": "work/swap431-master-coverage-20261006",
+      "pull_request": 1072,
+      "commit": "07f48bc604c03167358645875117ba6489572de0",
+      "capability": "SW431-IRR-AVAIL",
+      "disposition": "ADMITTED",
+      "one_row_promotion": true,
+      "other_242_rows_unchanged": true,
+      "denominator": 243,
+      "admitted": 100,
+      "active_migration": 104,
+      "qualification_only": 3,
+      "unresolved": 107,
+      "global_coverage_closed": false,
+      "source_census_pinned_authority_integrity": "PASS",
+      "unchanged_inheritance_controls": 20,
+      "inheritance_controls_status": "PASS",
+      "docs_source": "PASS",
+      "docs_strict": "PASS",
+      "full_coverage_closed": false,
+      "scope": "Exactly one existing AVAIL row promotion; other242 capability records and parallel source-blocked DISLAYER record unchanged. No numerical or global closure rerun.",
+      "raw_evidence": {
+        "path": "integration/audits/evidence/MC_IRR01_AVAIL_MASTER_CHECKS_20261016.json.gz.b64",
+        "decoded_sha256": "30d1aaa53d5519cc2a27eacfb3bd096d46524bf148ab31d18cdf2593458fa3a8",
+        "decoded_bytes": 8776
+      },
+      "remaining_AVAIL_conditions": []
+    }
   },
   "prior_avail_current_summary_20261016": {
     "current_claim": "Five previously admitted full capabilities retained. PR1252 canonically admits the bounded authentic managed weather TCS7/8,DCS2,1/3-node SSDI,caps/frozen-allocation application with actual positive adaptive rooted crop, accepted-only publication, rollback/retry and opaque joint restart. Eleven complete historical source envelopes remain open; see the actual canonical admission receipt and explicit limitations.",
