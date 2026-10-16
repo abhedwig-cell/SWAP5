@@ -25,29 +25,7 @@
       tc%initial_time=start
       tc%tiles(1)%base_forcing%drainage_flux_by_level=0._real64
       tc%tiles(1)%base_forcing%subsurface_irrigation_source=0._real64
-      tc%file_weather_irrigation=.true.
-      tc%file_weather_irrigation_sensor%scheduled_irrigation_enabled=.true.
-      tc%file_weather_irrigation_sensor%active_nodes=numnod
-      tc%file_weather_irrigation_sensor%sensor_node=2
-      tc%file_weather_irrigation_sensor%single_ssdi_node=2
-      if(nodes==3)then
-        tc%file_weather_irrigation_sensor%ssdi_first_node=1
-        tc%file_weather_irrigation_sensor%ssdi_last_node=3
-      end if
-      tc%file_weather_irrigation_sensor%timing_criterion=criterion
-      tc%file_weather_irrigation_sensor%irr_rate_cm_per_day=1.6_real64
-      tc%file_weather_irrigation_sensor%tcs7_knot_count=2
-      tc%file_weather_irrigation_sensor%tcs7_dvs(1:2)=[0._real64,2._real64]
-      tc%file_weather_irrigation_sensor%tcs7_pressure_head(1:2)=-1._real64
-      tc%file_weather_irrigation_sensor%tcs8_knot_count=2
-      tc%file_weather_irrigation_sensor%tcs8_dvs(1:2)=[0._real64,2._real64]
-      tc%file_weather_irrigation_sensor%tcs8_water_content(1:2)=1._real64
-      tc%file_weather_irrigation_depth%depth_criterion=2
-      tc%file_weather_irrigation_depth%dcs2_knot_count=2
-      tc%file_weather_irrigation_depth%dcs2_dvs(1:2)=[0._real64,2._real64]
-      tc%file_weather_irrigation_depth%dcs2_depth_cm(1:2)=0.8_real64
-      tc%file_weather_irrigation_depth%depth_limit_enabled=.true.
-      tc%file_weather_irrigation_depth%maximum_depth_cm=0.4_real64
+      call configure_managed_sensor(tc,criterion,nodes)
       allocation=fmr_irrigation_allocation_t(source_id=41_int64,revision=2_int64, &
         valid_t0=start,valid_t1=start+0.03_real64,fraction=0.5_real64)
       call read_swap_daily_weather_file(trim(path),1999,1,day0,wr,st)
@@ -139,6 +117,7 @@
     end do
     end do
     end do
+    call managed_failure_probe()
     print '(a)','MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'
   end subroutine
 
@@ -172,3 +151,123 @@
       call require(.false.,'managed actual temporal Richards state')
     end select
   end function
+
+  subroutine configure_managed_sensor(tc,criterion,nodes)
+    type(fmr_production_application_config_t),intent(inout)::tc
+    integer,intent(in)::criterion,nodes
+      tc%file_weather_irrigation=.true.
+      tc%file_weather_irrigation_sensor%scheduled_irrigation_enabled=.true.
+      tc%file_weather_irrigation_sensor%active_nodes=numnod
+      tc%file_weather_irrigation_sensor%sensor_node=2
+      tc%file_weather_irrigation_sensor%single_ssdi_node=2
+      if(nodes==3)then
+        tc%file_weather_irrigation_sensor%ssdi_first_node=1
+        tc%file_weather_irrigation_sensor%ssdi_last_node=3
+      end if
+      tc%file_weather_irrigation_sensor%timing_criterion=criterion
+      tc%file_weather_irrigation_sensor%irr_rate_cm_per_day=1.6_real64
+      tc%file_weather_irrigation_sensor%tcs7_knot_count=2
+      tc%file_weather_irrigation_sensor%tcs7_dvs(1:2)=[0._real64,2._real64]
+      tc%file_weather_irrigation_sensor%tcs7_pressure_head(1:2)=-1._real64
+      tc%file_weather_irrigation_sensor%tcs8_knot_count=2
+      tc%file_weather_irrigation_sensor%tcs8_dvs(1:2)=[0._real64,2._real64]
+      tc%file_weather_irrigation_sensor%tcs8_water_content(1:2)=1._real64
+      tc%file_weather_irrigation_depth%depth_criterion=2
+      tc%file_weather_irrigation_depth%dcs2_knot_count=2
+      tc%file_weather_irrigation_depth%dcs2_dvs(1:2)=[0._real64,2._real64]
+      tc%file_weather_irrigation_depth%dcs2_depth_cm(1:2)=0.8_real64
+      tc%file_weather_irrigation_depth%depth_limit_enabled=.true.
+      tc%file_weather_irrigation_depth%maximum_depth_cm=0.4_real64
+  end subroutine
+
+  subroutine managed_failure_probe()
+    type(fmr_production_application_bootstrap_t)::ta,clean
+    type(fmr_production_application_config_t)::tc
+    type(kernel_committed_state_t)::cs,ccs,ss,origin
+    type(fmr_weather_crop_application_continuation_t)::saved
+    type(fmr_application_crop_daystart_controls_t)::c
+    type(wofost_crop_owner_state_t)::owner
+    type(wofost_rate_parameter_bundle_t)::bundle
+    type(swap_daily_weather_record_t)::wr
+    type(fmr_irrigation_allocation_t)::allocation
+    type(fmr_allocated_irrigation_state_t)::ir
+    type(fmr_serialized_column_result_t),allocatable::rr(:),cr(:)
+    real(real64),allocatable::before(:),after(:),expected(:)
+    real(real64)::amount,initial_amount
+    real(real64),parameter::short_end=1.e-6_real64
+    integer::st,j,selection,initial_selection
+    tc=config;tc%numerical%max_committed_substeps=1
+    tc%tiles(1)%base_forcing%subsurface_irrigation_source=0._real64
+    tc%tiles(1)%base_forcing%drainage_flux_by_level=0._real64
+    call configure_managed_sensor(tc,7,1)
+    allocation=fmr_irrigation_allocation_t(source_id=41_int64,revision=2_int64, &
+      valid_t0=0._real64,valid_t1=1._real64,fraction=0.5_real64)
+    call read_swap_daily_weather_file(trim(path),1999,1,20,wr,st)
+    call require(st==SWAP_WEATHER_FILE_OK,'managed rejection authentic weather')
+    call make_bundle(bundle)
+    c%swprep=0;c%swsow=0;c%germ_mode=0
+    c%zprep=-1._real64;c%zsow=-1._real64;c%zgerm=-1._real64;c%ztempsow=-1._real64
+    call ta%initialize(tc,st);call require(st==FMR_APP_BOOT_OK,'managed limited application')
+    call ta%initialize_weather_crop_daystart(wr,c,owner,2_int64,932_int64,cs,st,100._real64,bundle)
+    call require(st==FMR_APP_BOOT_OK,'managed failure actual crop initialization')
+    call ta%copy_committed_for_crop(1,origin,st);before=managed_soil_values(origin)
+    call ta%capture_weather_crop_continuation(cs,saved,st)
+    call require(st==FMR_APP_BOOT_OK,'managed failure common origin continuation')
+    call clean%restore_weather_crop_continuation(saved,ccs,st)
+    call require(st==FMR_APP_BOOT_OK,'managed failure clean comparison origin')
+    do j=1,2
+      call ta%run_weather_interval(wr,0._real64,0.5_real64,forcing_config,canopy,rr,st,cs,allocation)
+      call require(st/=FMR_APP_BOOT_OK.and.allocated(rr),'managed real incomplete dispatcher candidate')
+      call require(size(rr)==1,'managed failed first event segment')
+      call require(rr(1)%accepted_substeps==1.and..not.rr(1)%completed.and..not.rr(1)%committed, &
+        'managed internally accepted prefix discarded before event publication')
+      call ta%copy_committed_for_crop(1,ss,st);after=managed_soil_values(ss)
+      call require(all(transfer(before,[0_int64],size(before))==transfer(after,[0_int64],size(after))), &
+        'managed incomplete candidate preserves exact committed soil/history')
+      call ta%snapshot_weather_irrigation(ir,selection,amount,st)
+      call require(selection==-1.and.amount==0._real64.and..not.ir%receipt%present.and..not.ir%management%event%active_event, &
+        'managed incomplete candidate consumes neither selection, allocation nor event')
+      call ta%capture_weather_crop_continuation(cs,saved,st)
+      call require(st==FMR_APP_BOOT_OK,'managed repeated incomplete candidate joint continuation')
+    end do
+    if(trim(continuation_mode)=='restart')then
+      call ta%close(st);cs=kernel_committed_state_t()
+      call ta%restore_weather_crop_continuation(saved,cs,st)
+      call require(st==FMR_APP_BOOT_OK,'managed restart after actual rejected internally progressed candidate')
+    end if
+    call ta%run_weather_interval(wr,0._real64,short_end,forcing_config,canopy,rr,st,cs,allocation)
+    call require(st==FMR_APP_BOOT_OK.and.rr(1)%committed,'managed smaller retry commits')
+    call clean%run_weather_interval(wr,0._real64,short_end,forcing_config,canopy,cr,st,ccs,allocation)
+    call require(st==FMR_APP_BOOT_OK.and.cr(1)%committed,'managed clean small comparison')
+    call ta%copy_committed_for_crop(1,ss,st);before=managed_soil_values(ss)
+    call clean%copy_committed_for_crop(1,ss,st);expected=managed_soil_values(ss)
+    call require(all(transfer(before,[0_int64],size(before))==transfer(expected,[0_int64],size(expected))), &
+      'managed smaller retry equals clean origin bitwise')
+    call ta%snapshot_weather_irrigation(ir,initial_selection,initial_amount,st)
+    call require(initial_amount>0._real64.and.ir%management%event%active_event,'managed successful prefix owns event')
+    call ta%run_weather_interval(wr,short_end,0.5_real64,forcing_config,canopy,rr,st,cs,allocation)
+    call require(st/=FMR_APP_BOOT_OK.and.allocated(rr),'managed failed tail retains completed prefix')
+    call ta%copy_committed_for_crop(1,ss,st);after=managed_soil_values(ss)
+    call require(all(transfer(before,[0_int64],size(before))==transfer(after,[0_int64],size(after))), &
+      'managed prior completed physical prefix never reset to daystart')
+    call ta%snapshot_weather_irrigation(ir,selection,amount,st)
+    call require(amount==initial_amount.and.selection==initial_selection.and.ir%management%event%active_event, &
+      'managed failed tail retains common event and cumulative delivery prefix')
+    call ta%capture_weather_crop_continuation(cs,saved,st)
+    call require(st==FMR_APP_BOOT_OK,'managed accepted-prefix joint restart after failed tail')
+    if(trim(continuation_mode)=='restart')then
+      call ta%close(st);cs=kernel_committed_state_t()
+      call ta%restore_weather_crop_continuation(saved,cs,st)
+      call require(st==FMR_APP_BOOT_OK,'managed restore exact accepted prefix after failed tail')
+    end if
+    call ta%run_weather_interval(wr,short_end,2._real64*short_end,forcing_config,canopy,rr,st,cs,allocation)
+    call require(st==FMR_APP_BOOT_OK.and.rr(1)%committed,'managed second small retry commits')
+    call clean%run_weather_interval(wr,short_end,2._real64*short_end,forcing_config,canopy,cr,st,ccs,allocation)
+    call require(st==FMR_APP_BOOT_OK.and.cr(1)%committed,'managed clean second comparison')
+    call ta%copy_committed_for_crop(1,ss,st);after=managed_soil_values(ss)
+    call clean%copy_committed_for_crop(1,ss,st);expected=managed_soil_values(ss)
+    call require(all(transfer(after,[0_int64],size(after))==transfer(expected,[0_int64],size(expected))), &
+      'managed common-prefix retry equals clean two-segment state bitwise')
+    call ta%close(st);call clean%close(st)
+    print '(a)','MC_IRR01_MANAGED_INCOMPLETE_PREFIX_ROLLBACK_RETRY_RESTART=PASS'
+  end subroutine

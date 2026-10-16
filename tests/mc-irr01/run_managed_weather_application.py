@@ -12,4 +12,8 @@ replace("path=ROOT/'tests/mc-met01'/include", "path=ROOT/'tests/mc-irr01'/includ
 replace("        source=base;first=source.index", "        source=base.replace('  implicit none\\n','  use mod_fmr_irrigation_allocation_binding\\n  use, intrinsic :: ieee_arithmetic\\n  implicit none\\n',1);first=source.index")
 replace("'raintb':b'MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS'", "'raintb':b'MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS','managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'")
 replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", "    inputs['tests/mc-irr01/run_managed_weather_application.py']=sha(ROOT/'tests/mc-irr01/run_managed_weather_application.py')\n    inputs.update({p:sha(ROOT/p) for p in PINS})")
+replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", "    drivers['allocation_guards']=ROOT/'tests/f-app07/test_mc_irr01_allocation_guards.f90'\n    inputs['tests/f-app07/test_mc_irr01_allocation_guards.f90']=sha(ROOT/'tests/f-app07/test_mc_irr01_allocation_guards.f90')\n    inputs.update({p:sha(ROOT/p) for p in PINS})")
+replace("'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'", "'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS','allocation_guards':b'MC_IRR01_ALLOCATION_GUARDS=PASS'")
+replace("for mode in ['continuous','restart']:", "for mode in (['continuous']if name=='allocation_guards'else ['continuous','restart']):")
+replace("if pair[0]!=pair[1]:", "if len(pair)>1 and pair[0]!=pair[1]:")
 exec(compile(s,str(path),'exec'),{'__file__':str(path),'__name__':'__main__'})

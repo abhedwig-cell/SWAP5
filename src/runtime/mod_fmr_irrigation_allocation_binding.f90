@@ -30,6 +30,28 @@ module mod_fmr_irrigation_allocation_binding
     real(real64) :: valid_t0=0.0_real64, valid_t1=0.0_real64, fraction=1.0_real64
   contains
 
+    procedure :: valid => allocation_valid
+  end type
+  type, public :: fmr_irrigation_allocation_receipt_t
+    logical :: present=.false., active_event=.false.
+    type(fmr_irrigation_allocation_t) :: allocation
+    real(real64) :: selection_time=0.0_real64
+    integer :: event_index=0, event_origin=0
+    real(real64) :: event_start=0.0_real64, event_end=0.0_real64, event_rate=0.0_real64
+  end type
+  type, public :: fmr_allocated_irrigation_state_t
+    type(fmr_irrigation_management_state_t) :: management
+    type(fmr_irrigation_allocation_receipt_t) :: receipt
+  end type
+  type, public :: fmr_allocated_irrigation_restart_t
+    integer :: schema=0
+    type(fmr_irrigation_management_restart_record_t) :: management
+    type(fmr_irrigation_allocation_receipt_t) :: receipt
+  end type
+  public :: fmr_run_allocated_root_irrigation, fmr_run_allocated_sensor_irrigation
+  public :: fmr_export_allocated_irrigation_restart, fmr_restore_allocated_irrigation_restart
+  public :: fmr_prepare_allocated_sensor_irrigation
+contains
   ! Preparation only: use the same selection, frozen receipt and physical
   ! forcing owners as the admitted standalone route. The caller owns dispatch.
   subroutine fmr_prepare_allocated_sensor_irrigation(sensor,root,depth,rainfall,physical,base,state,request,allocation, &
@@ -85,28 +107,6 @@ module mod_fmr_irrigation_allocation_binding
     candidate%receipt%event_end=candidate%management%event%active_event_end
     candidate%receipt%event_rate=candidate%management%event%active_event_rate_cm_per_day
   end subroutine
-    procedure :: valid => allocation_valid
-  end type
-  type, public :: fmr_irrigation_allocation_receipt_t
-    logical :: present=.false., active_event=.false.
-    type(fmr_irrigation_allocation_t) :: allocation
-    real(real64) :: selection_time=0.0_real64
-    integer :: event_index=0, event_origin=0
-    real(real64) :: event_start=0.0_real64, event_end=0.0_real64, event_rate=0.0_real64
-  end type
-  type, public :: fmr_allocated_irrigation_state_t
-    type(fmr_irrigation_management_state_t) :: management
-    type(fmr_irrigation_allocation_receipt_t) :: receipt
-  end type
-  type, public :: fmr_allocated_irrigation_restart_t
-    integer :: schema=0
-    type(fmr_irrigation_management_restart_record_t) :: management
-    type(fmr_irrigation_allocation_receipt_t) :: receipt
-  end type
-  public :: fmr_run_allocated_root_irrigation, fmr_run_allocated_sensor_irrigation
-  public :: fmr_export_allocated_irrigation_restart, fmr_restore_allocated_irrigation_restart
-  public :: fmr_prepare_allocated_sensor_irrigation
-contains
   pure logical function allocation_valid(self, time)
     class(fmr_irrigation_allocation_t), intent(in) :: self
     real(real64), intent(in) :: time
