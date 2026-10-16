@@ -56,3 +56,24 @@ failed incumbent-closure attempt and exact execution bundle remain preserved in
 not admission or qualification of the recomposed current1256 source. A later
 eligibility attempt rejected dirty Python cache files before scientific review;
 no failed control invocation is called PASS.
+
+## Bounded current-source qualification
+
+Current1256 composition passes O0/O2:38 wet/dry/native/decoder executions,
+21 last-carrier/source negatives per window, independent literal surface/matrix
+oracles and four unchanged original surface executions. Existing V1 native and
+continued endpoint bytes are required to match the admitted immutable capsule.
+The240-case leaf evidence retains exact source/driver/oracle/compiler/flag identity;
+the current physical closure also recompiles and executes that leaf at O0/O2.
+Whole water and soil-plus-surface mass, chemical rejection after a successful
+water trial, smaller retry, exact clock replay rejection and fresh-process V2
+continuation are qualified within the declared two physical fixtures.
+
+Source-bound raw science, original failures and the exact execution bundle are in
+`MC_SOL01_POND_SOURCE_20261016.tar.xz.b64`.23 evidence/source rejection controls,
+the explicit FCI pond-owner entrypoint and source/strict documentation checks pass.
+Removing only the declared inserted source/guard islands reconstructs every
+modified incumbent body exactly. The immutable1256 owner proof is also executed
+at its exact source. This is affected-contract preservation, not a new full FCI,
+hosted qualification or general variable-pond hydrology claim. Canonical admission
+is recorded separately in the existing status; no capability/count promotion.

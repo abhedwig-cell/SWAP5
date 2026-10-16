@@ -50,7 +50,7 @@ def verify_source(git_reader=None):
         check(g('rev-parse', 'HEAD:'+p) == v['blob'] == blob((ROOT/p).read_bytes()), 'pond postimage drift '+p)
     check(g('rev-parse', 'HEAD:src') == r['source_tree'], 'pond source tree drift')
     check(g('rev-parse', 'HEAD:reference') == g('rev-parse', BASE+':reference'), 'pond reference drift')
-    flags={n:True for n in ('material_root_irrigation_successor','b111_request_successor','managed_irrigation_successor',
+    flags={n:True for n in ('persistent_surface_restart_successor','material_root_irrigation_successor','b111_request_successor','managed_irrigation_successor',
         'nfix_component_preserved','hyd_successor','daily_density_successor','int12c_successor','co2_successor',
         'swrd3_successor','swrd2_successor','harvest_successor','surface_successor','calendar_successor','input_successor','thermal_successor')}
     return dict(baseline=BASE, source_tree=r['source_tree'], current_source_tree=r['source_tree'],
@@ -137,12 +137,21 @@ def validate_science(data):
         check(r['runs']['O0'][key] == r['runs']['O2'][key], 'pond O0/O2 drift')
     check('PERSISTENT_POND_LITERAL_240_DRY_REWET_BALANCE_REPLAY_RESTORE_NEGATIVES=PASS' in leaf['stdout'], 'pond leaf assertions absent')
     # Review exact shared observation/codec patches; old source bodies remain pinned.
-    patches = json.loads(data['review/shared_patches.json'])
-    shared = {p for p in PRODUCTION if p in record()['postimages'] and record()['postimages'][p]['status']=='M'}
+    patches = json.loads(data['review/modified_patches.json'])
+    shared = {p for p,v in record()['postimages'].items() if v['status']=='M'}
     check(set(patches) == shared, 'shared pond review incomplete')
     for p,patch in patches.items():
         actual = subprocess.check_output(['git','diff',BASE,'HEAD','--',p],cwd=ROOT)
         check(actual.decode()==patch, 'unreviewed shared pond change '+p)
+    projections=json.loads(data['review/default_projections.json'])
+    check(set(projections)==shared,'default body review incomplete')
+    for p,patches in projections.items():
+        lines=(ROOT/p).read_text().splitlines(True)
+        for q in reversed(patches):
+            a,b=q['range']
+            check(lines[a:b]==q['inserted'],'changed default source island')
+            lines[a:b]=[]
+        check(''.join(lines).encode()==subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT),'incumbent assertions/body changed '+p)
     return {'leaf_literal_cases':240, 'physical_native_programs':38, 'original_surface_programs':4,
             'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS', 'general_variable_pond_level':False}
 

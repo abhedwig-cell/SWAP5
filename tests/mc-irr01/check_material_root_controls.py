@@ -4,6 +4,9 @@ import copy,importlib,json,sys
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import verify_material_root_successor as v
+if (v.ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+ import subprocess,sys
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_pond_controls.py')],check=True);raise SystemExit(0)
 if (v.ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
  import subprocess
  subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_surface_evidence_controls.py')],check=True)

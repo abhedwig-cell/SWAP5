@@ -77,9 +77,9 @@ e=json.loads(d['final/events.json'])[0]
 d.pop('final/'+e['stderr'])
 rejects('MISSING_RAW',lambda:v.validate_science(d))
 d=copy.deepcopy(data)
-review=json.loads(d['review/shared_patches.json'])
+review=json.loads(d['review/modified_patches.json'])
 review.pop(next(iter(review)))
-d['review/shared_patches.json']=json.dumps(review).encode()
+d['review/modified_patches.json']=json.dumps(review).encode()
 rejects('MISSING_SHARED_REVIEW',lambda:v.validate_science(d))
 for folder,name in [('tests/mc-irr01','verify_material_root_successor'),('tests/nut-crop','verify_b111_request_successor'),
                     ('tests/fpm','verify_int12c_successor'),('tests/crop-harvest','verify_harvest_successor')]:
