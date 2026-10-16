@@ -1,12 +1,13 @@
 program test_swap431_hyd_serialized_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_NUMERICAL_CONTINUATION_NONE
+       FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_NUMERICAL_CONTINUATION_NONE, &
+       FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
@@ -16,8 +17,19 @@ program test_swap431_hyd_serialized_runtime
        B111_HYD_BIMODAL_MVG_WCK
   use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t, &
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
-       fmr_new_b110_committed_state
+       fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state, &
+       fmr_b110_temporal_indicator_state_t, fmr_serialized_physical_observation_t
   implicit none
+  character(len=64)::mode
+
+  call get_command_argument(1,mode)
+  if(trim(mode)=='--certificate-envelope')then
+    call certificate_envelope(B111_HYD_EXPONENTIAL,'MODEL2')
+    call certificate_envelope(B111_HYD_BIMODAL_MVG,'MODEL3')
+    call certificate_envelope(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
+    print '(a)','SWAP431_HYD_CERTIFICATE_ENVELOPE_NEGATIVE=PASS'
+    stop
+  end if
 
   call exercise_model(B111_HYD_EXPONENTIAL,'MODEL2')
   call exercise_model(B111_HYD_BIMODAL_MVG,'MODEL3')
@@ -27,6 +39,96 @@ program test_swap431_hyd_serialized_runtime
   print '(a)','SWAP431_HYD_SERIALIZED_RUNTIME=PASS'
 
 contains
+
+  subroutine certificate_envelope(kind,label)
+    integer,intent(in)::kind
+    character(len=*),intent(in)::label
+    type(fmr_b110_physical_parameters_t),target::p
+    type(fmr_b110_physical_state_t)::initial,predecessor
+    type(b111_analytical_hydraulic_parameters_t),target::hp
+    type(b111_analytical_hydraulic_provider_t)::provider
+    type(fmr_serialized_reference_backend_t)::backend
+    type(fixed_flux_top_boundary_provider_t),target::top
+    type(fmr_b110_physical_forcing_t)::forcing
+    type(fmr_logical_column_t)::column
+    type(fmr_template_t)::template
+    type(canonical_numerical_config_t)::numerical
+    type(kernel_committed_state_t)::committed,history_state
+    type(kernel_checkpoint_t)::checkpoint
+    type(kernel_candidate_state_t)::candidate
+    type(kernel_result_t)::result
+    type(kernel_diagnostics_t)::diag
+    type(fmr_serialized_physical_observation_t)::obs
+    class(transaction_state_t),allocatable::snapshot
+    real(real64),allocatable::theta(:),k(:),cap(:),dk(:),derivative(:),history(:)
+    real(real64),parameter::dt=1.0e-5_real64
+    logical::ok,available,did_commit
+    integer::status
+
+    call base_parameters(p)
+    allocate(p%hydraulic_model_kind(numnod),theta(numnod),k(numnod),cap(numnod),dk(numnod))
+    p%hydraulic_model_kind=kind
+    call initialize_b111_analytical_hydraulic_parameters(hp,p%hydraulic_model_kind,p%cofgen)
+    call bind_b111_analytical_hydraulic_provider(provider,hp)
+    call provider%evaluate(spread(-100.0_real64,1,numnod),theta,k,cap,dk)
+    call base_state(initial,theta)
+    call setup_execution(p,initial,forcing,column,template,numerical,committed,checkpoint,top,backend,ok)
+    if(.not.ok)call stop_labeled(label//' predecessor setup')
+    ! Uniform h and K: every gravity face has q=-K, including free drainage
+    ! (headcalc mode7). Match the top face, then execute and commit the real
+    ! predecessor. The subsequent rain-cessation trial remains dynamic.
+    forcing%top_flux=-k(1)
+    call backend%run_trial(column,template,p,committed,forcing,numerical,0.0_real64,dt,checkpoint,result,candidate,diag)
+    if(.not.result%completed.or..not.candidate%ready())call stop_labeled(label//' actual predecessor')
+    if(.not.result%mass%complete.or.abs(result%mass%residual)>1e-8_real64)call stop_labeled(label//' predecessor balance')
+    call backend%commit_trial_candidate(committed,candidate,diag,did_commit,status)
+    if(.not.did_commit)call stop_labeled(label//' predecessor commit')
+    call committed%snapshot(snapshot,available)
+    if(.not.available)call stop_labeled(label//' predecessor snapshot')
+    select type(s=>snapshot)
+    type is(fmr_b110_physical_state_t)
+      predecessor=s
+    class default
+      call stop_labeled(label//' predecessor type')
+    end select
+    derivative=(predecessor%pressure_head-initial%pressure_head)/dt
+    if(maxval(abs(predecessor%pressure_head-initial%pressure_head))>1e-10_real64) &
+      call stop_labeled(label//' predecessor stationary balance')
+    ! Seed only the measured derivative of the accepted real predecessor.
+    call fmr_new_b110_temporal_indicator_committed_state(history_state,column%column_id,predecessor,dt,ok,derivative)
+    if(.not.ok)call stop_labeled(label//' measured history')
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+    numerical%transaction%temporal_tolerance=0.0_real64
+    numerical%model_temporal_indicator_budget_available=.true.
+    numerical%model_temporal_indicator_budget=1e-6_real64
+    forcing%top_flux=0.0_real64
+    call history_state%capture_checkpoint(checkpoint,ok)
+    if(.not.ok)call stop_labeled(label//' history checkpoint')
+    call backend%run_trial(column,template,p,history_state,forcing,numerical,dt,2*dt,checkpoint,result,candidate,diag)
+    obs=backend%observation()
+    write(*,'(*(g0))') 'SWAP431_HYD_CERTIFICATE_',label,'|COMPLETED=',result%completed, &
+      '|SOLVER=',diag%solver_rejections,'|MASS=',diag%mass_rejections,'|TEMPORAL=',diag%temporal_rejections, &
+      '|HISTORY=',obs%temporal_previous_derivative_available,'|BUDGET=',obs%temporal_head_budget_valid, &
+      '|ROUTE=',trim(obs%temporal_indicator_route)
+    if(result%completed.or.candidate%ready())call stop_labeled(label//' deferred provider unexpectedly accepted')
+    if(.not.obs%temporal_previous_derivative_available.or..not.obs%temporal_head_budget_valid) &
+      call stop_labeled(label//' certificate prerequisites unavailable')
+    if(trim(obs%temporal_indicator_route)/='constitutive-policy-deferred') &
+      call stop_labeled(label//' different certificate blocker')
+    call history_state%snapshot(snapshot,available)
+    if(.not.available)call stop_labeled(label//' rejected committed snapshot')
+    select type(s=>snapshot)
+    type is(fmr_b110_temporal_indicator_state_t)
+      if(any(s%pressure_head/=predecessor%pressure_head).or.any(s%water_content/=predecessor%water_content)) &
+        call stop_labeled(label//' rejected trial mutated physical state')
+      call s%temporal_history_snapshot(history,available)
+      if(.not.available)call stop_labeled(label//' rejected trial lost history')
+      if(any(history/=derivative))call stop_labeled(label//' rejected trial mutated history')
+    class default
+      call stop_labeled(label//' rejected trial changed carrier')
+    end select
+  end subroutine certificate_envelope
 
   subroutine stop_labeled(message)
     character(len=*),intent(in)::message
