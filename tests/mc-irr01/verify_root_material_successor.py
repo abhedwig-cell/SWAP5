@@ -57,6 +57,8 @@ def validate_science(data):
  rows=r['results'];identity=lambda x:(x['opt'],x['driver'],x['moisture'],x['mode'])
  keys={identity(x)for x in rows}
  old=capsule_at_base();prior=json.loads(old['physical/RESULTS.json'])
+ old_inputs=json.loads(old['physical/INPUTS.json'])
+ check(inputs['providers']==old_inputs['providers']and inputs['flags']==old_inputs['flags'],'material compile closure or policy widened')
  expected={identity(x)for x in prior['results']}|{(o,n,'neutral','continuous')for o in (0,2)for n in ('material_rooted7','material_rooted8')}
  check(keys==expected and len(keys)==len(rows),'incomplete or duplicate material native matrix')
  hashes={identity(x):x['stdout_sha256']for x in rows}
@@ -107,7 +109,7 @@ def incumbent():
  p=subprocess.run([sys.executable,'-B','tests/nut-crop/verify_b111_request_successor.py'],cwd=base,capture_output=True,text=True)
  check(p.returncode==0,'original material incumbent proof failed '+p.stderr[-1000:]);r=json.loads(p.stdout);check(r['qualified'],'material incumbent not qualified');return r
 def verify_qualification():
- s=verify_source();check(record()['phase']in ['SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED'],'material science unfinished')
+ s=verify_source();check(record()['phase']in ['SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_BOUNDED'],'material science unfinished')
  validate_science(evidence());old=incumbent()
  return {**s,'qualified':True,'incumbent':old,'scope':record()['scope'],'preservation':'EXACT_ORIGINAL_BODIES_AND_UNCHANGED_NATIVE_OUTPUTS_PLUS_ACTUAL_MATERIAL_ROOT_DCS1_MASS_RESTART','full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest':'NOT_SELECTED_POLICY'}
 if __name__=='__main__':print(json.dumps(verify_source()if '--source-only'in sys.argv else verify_qualification(),indent=2))

@@ -4,7 +4,7 @@
   "root_material_dcs1_20261016": {
     "baseline": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
     "branch": "work/irr-dcs1-root-material-20261016",
-    "phase": "IMPLEMENTED_LEAF_TESTED_PHYSICAL_QUALIFICATION_PENDING",
+    "phase": "SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING",
     "implemented": true,
     "persisted": true,
     "qualified": false,
@@ -33,10 +33,93 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "rossfast": "NOT_SELECTED_IMPACT"
     },
-    "next_action": "Persist checkpoint remotely; execute one cold controlled O0/O2 managed/weather science build. Preserve failed/censored results and exact prior evidence. Reconcile existing source guards and require affected negative controls before canonical admission.",
+    "next_action": "Verify exact source/current native evidence, immutable incumbent and affected negative controls, then existing moving owner-only preservation. Admission remains separate; no broad numerical or hosted run.",
     "blockers": [],
     "full_capability": false,
-    "master_disposition_changes": 0
+    "master_disposition_changes": 0,
+    "tested": true,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_ROOT_MATERIAL_DCS1_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "01579412ceb34dd34b80a2b5ba5d4c1ce481f8ca185f2af1c4ba1e404f8efce7",
+      "decoded_bytes": 128620,
+      "members": 1953
+    },
+    "postimages": {
+      "src/process/mod_irrigation_root_zone_summary.f90": {
+        "status": "M",
+        "blob": "8383a8f9fbd250fa31b5141bf294dcc368a91eb3"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "32309bd92264c9e1775092fe4d1cff4b770d3175"
+      },
+      "tests/mc-irr01/check_managed_weather_controls.py": {
+        "status": "M",
+        "blob": "d0303b9036499294eaeaaa8e3dbce484bfee9424"
+      },
+      "tests/mc-irr01/check_root_material_controls.py": {
+        "status": "A",
+        "blob": "4faf94659a88ce633615d881ea1b0847e40debdd"
+      },
+      "tests/mc-irr01/root_material_cycle_driver.py": {
+        "status": "A",
+        "blob": "e417abaddcafc908233fc8347772b88e8875b534"
+      },
+      "tests/mc-irr01/run_managed_weather_application.py": {
+        "status": "M",
+        "blob": "d7d5ff8981d68c89efe9c27436f743cbea0378ec"
+      },
+      "tests/mc-irr01/test_root_material.f90": {
+        "status": "A",
+        "blob": "55314667c7b50288448f6d691a748e3cc0701961"
+      },
+      "tests/mc-irr01/verify_root_material_successor.py": {
+        "status": "A",
+        "blob": "e42ee5a793ed94cb9d9cf94d8696d8f54959cfbc"
+      },
+      "tests/modularity/run_modular_tests.py": {
+        "status": "M",
+        "blob": "b1a80ad167fbc5d50bba89d625aa88fea426a42b"
+      },
+      "tests/nut-crop/check_b111_request_controls.py": {
+        "status": "M",
+        "blob": "7c9124bb47b5a4a3fe3f9e7c6d55b0273f9a9480"
+      },
+      "tests/nut-crop/verify_b111_request_successor.py": {
+        "status": "M",
+        "blob": "a28c71691e18486b09bc672b27299092cf270b4b"
+      }
+    },
+    "production_source_tree": "ce0b4527610e7fa9455dde197952b10fc3226ce6",
+    "execution_head": "ca2cb640e59e3ffc8b6ec7b00896e167f6a1d4a8",
+    "physical_qualification": {
+      "status": "PASS",
+      "programs": 26,
+      "wall_seconds": 606.2069072669983,
+      "costs": [
+        {
+          "compile_seconds": 91.05265581108688,
+          "link_seconds": 1.7367060340038734,
+          "native_seconds": 55.69705076600076,
+          "providers": 245,
+          "provider_compiles": 245,
+          "external_compiles": 10,
+          "driver_compiles": 7,
+          "links": 7
+        },
+        {
+          "compile_seconds": 430.55766350492195,
+          "link_seconds": 1.2664889189909445,
+          "native_seconds": 18.949381400976563,
+          "providers": 245,
+          "provider_compiles": 245,
+          "external_compiles": 10,
+          "driver_compiles": 7,
+          "links": 7
+        }
+      ]
+    },
+    "physical_scope": "Positive capped TCS7 single-node gifts and wet/rain zero-gift TCS8 three-node profiles; current/lagged daily crop/adaptive roots, accepted mass and opaque joint restart. Component leaf separately discriminates heterogeneous material and partial-cell depth. No full source-envelope promotion."
   },
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
