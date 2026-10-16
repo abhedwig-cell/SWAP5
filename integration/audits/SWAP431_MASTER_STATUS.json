@@ -2017,5 +2017,29 @@
       "capability_dispositions_changed": 0,
       "full_scientific_master_qualification_claimed": false
     }
+  },
+  "latest_ppa_reconcile01_receipt_publication_disposition_20261016": {
+    "pr": 700,
+    "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "canonical_receipt": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+    "authority": "integration/audits/PPA_RECONCILE01_VONHH_SOURCE_DISPOSITION_20261016.json#receipt_publication_disposition_20261016",
+    "status": "TWO_HISTORICAL_PUBLICATION_MODULES_DISPOSITIONED_CARRIER_OPEN_DRAFT",
+    "generic_receipt": "BYTE_IDENTICAL_HISTORICAL_AND_CURRENT",
+    "decision": "Do not import the two old progress/publication modules unchanged as current INT12-C. Caller-supplied amount, receipt revision lineage and old restart contract are distinct from current endpoint apportionment and atomic companion/physical publication. Existing admitted INT12-C controls current bounded execution.",
+    "archive_validation": "PASS all862 original postimages SHA256 and Git blob identities; original863-member archive preserved.",
+    "cumulative_named_source_dispositions": 8,
+    "other_original_source_paths_pending_disjoint_owner_decision": 152,
+    "limitations": "152 is donor bookkeeping, not a count of missing physics. No new runtime admission, numerical qualification, original capability disposition or full source-envelope claim.",
+    "validation": {
+      "source_contract_review": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS18.84s",
+      "scientific_trees": "UNCHANGED",
+      "new_actions": 0,
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "inheritance_negative_controls": "20PASS",
+      "all243_capability_rows": "UNCHANGED"
+    },
+    "next_action": "Keep700 open/draft and branch intact; reuse admitted owners, continue disjoint ownership decisions. All other nine open PRs retain their own gates. No new migration route started."
   }
 }
