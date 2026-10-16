@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Exact bounded HYD proof and default-OFF projection, not whole-model F-CI."""
-import base64,hashlib,io,json,subprocess,sys,tarfile
+import base64,hashlib,io,json,os,subprocess,sys,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-BASE='2194651f55881e5aa7ea7ffd3f9e2eebfae952f9'
+BASE='b7faa67907e75d4447ceb126e40f9de47dbab165'
+PROJECTION_BASE='2194651f55881e5aa7ea7ffd3f9e2eebfae952f9'
 STATUS='integration/audits/SWAP431_HYD_HYST_STATUS.json'
 SURFACE=['src','tests','tools','reference','.github']
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
@@ -14,13 +15,13 @@ def record():return json.loads((ROOT/STATUS).read_text())['full_profile_followup
 def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
 def projected_bytes(path):
  recipe=json.loads((ROOT/'tests/fpm/hyd_default_projection.json').read_text())
- check(recipe['base']==BASE,'unknown HYD projection base')
+ check(recipe['base']==PROJECTION_BASE,'unknown HYD projection base')
  raw=(ROOT/path).read_text().splitlines(keepends=True)
  for edit in reversed(recipe['files'][path]):
   i,j=edit['start'],edit['end'];check(''.join(raw[i:j])==edit['postimage'],'unknown HYD projection hunk')
   raw[i:j]=edit['preimage'].splitlines(keepends=True)
  b=''.join(raw).encode()
- check(b==subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT),'HYD default preimage drift '+path)
+ check(b==subprocess.check_output(['git','show',PROJECTION_BASE+':'+path],cwd=ROOT),'HYD default preimage drift '+path)
  return b
 def verify_source(git_reader=None):
  g=git if git_reader is None else git_reader;r=record();g('merge-base','--is-ancestor',BASE,'HEAD')
@@ -32,9 +33,11 @@ def verify_source(git_reader=None):
  for p,x in expected.items():check(g('rev-parse','HEAD:'+p)==x['blob']==blob((ROOT/p).read_bytes()),'HYD postimage drift '+p)
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'HYD reference drift')
  for p in source:projected_bytes(p)
- # The independent existing INT12-C bootstrap/adapter projection still owns its contract.
- run=subprocess.run([sys.executable,'-B','tests/fpm/check_int12c_current_composition.py'],cwd=ROOT,capture_output=True,text=True)
- check(run.returncode==0,'HYD incumbent application projection failed '+run.stderr[-800:])
+ # Every admitted root owner input remains exactly at the new canonical base.
+ # Its original source/evidence guards run unchanged at that immutable checkout.
+ for p in g('diff','--name-only',PROJECTION_BASE,BASE,'--',*SURFACE).splitlines():
+  if p not in {'tests/fpm/verify_int12c_successor.py','tests/fpm/test_int12c_successor_controls.py'}:
+   check((ROOT/p).read_bytes()==subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT),'admitted root input drift '+p)
  return {'baseline':BASE,'source_tree':g('rev-parse','HEAD:src'),'hyd_successor':True,'int12c_successor':True,
          'co2_successor':True,'swrd3_successor':True,'swrd2_successor':True,'harvest_successor':True,
          'surface_successor':True,'qualified':False,'admitted':False}
@@ -47,6 +50,16 @@ def evidence():
  check(set(d)==set(a['member_sha256']),'HYD incomplete archive')
  for n,h in a['member_sha256'].items():check(sha(d[n])==h,'HYD member corruption '+n)
  return d
+def incumbent_root(controls=False):
+ base=ROOT.parent/'hyd-root-incumbent-b7faa679'
+ if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'root incumbent moved')
+ check(not subprocess.check_output(['git','status','--porcelain'],cwd=base,text=True).strip(),'root incumbent dirty')
+ path='tests/root-growth/check_daily_density_controls.py' if controls else 'tests/root-growth/verify_daily_density_successor.py'
+ p=subprocess.run([sys.executable,'-B',path],cwd=base,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+ check(p.returncode==0,'admitted root proof failed '+p.stderr[-1800:])
+ if controls:return p.stdout
+ result=json.loads(p.stdout);check(result['qualified'],'admitted root owner not qualified');return result
 def verify_qualification():
  s=verify_source();d=evidence();r=record();runtime=json.loads(d['runtime/result.json']);literal=json.loads(d['literal/result.json'])
  expected={'analytical','runtime','direct_retention','fsi38','fsi25','incumbent_runtime','incumbent_macropore'}
@@ -69,6 +82,29 @@ def verify_qualification():
  check(literal['source_sha256']['@WC']=='d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126','HYD literal WC identity')
  check(b'INT12C_OUTPUT_SHA256=98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717' in d['component/int12c.log'],'HYD incumbent component numeric drift')
  for p,h in json.loads(d['component/inputs.json']).items():check(sha((ROOT/p).read_bytes())==h,'HYD stale component input '+p)
- return {**s,'qualified':True,'preservation':'EXACT_DEFAULT_OFF_PROJECTION_AND_FRESH_DECLARED_OWNER_O0_O2',
+ receiving=json.loads(d['root_receiving/RESULTS.json'])
+ check(receiving['status']=='PASS','joint root receiving failed')
+ rows=receiving['results'];check(len(rows)==8,'joint root receiving incomplete')
+ check({(x['opt'],x['driver'],x['mode']) for x in rows}=={(o,n,m) for o in (0,2) for n in ('density','density_supply') for m in ('continuous','restart')},'joint root matrix changed')
+ for p,h in receiving['source_inputs'].items():check(sha((ROOT/p).read_bytes())==h,'stale joint root source '+p)
+ root_record=json.loads((ROOT/'integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json').read_text())['daily_density_supply_20261016']
+ raw=base64.b64decode((ROOT/root_record['science_archive']['path']).read_bytes())
+ check(sha(raw)==root_record['science_archive']['decoded_sha256'],'root science archive drift')
+ with tarfile.open(fileobj=io.BytesIO(raw)) as t:prior=json.loads(t.extractfile('physical/RESULTS.json').read())['results']
+ for row in rows:
+  check(row['returncode']==0,'joint root native failure')
+  old=[x for x in prior if all(x[k]==row[k] for k in ('opt','driver','moisture','mode'))]
+  check(len(old)==1 and old[0]['stdout_sha256']==row['stdout_sha256'],'admitted density native drift')
+ events=receiving['events']
+ native=[(i,x) for i,x in enumerate(events) if any('/test-density' in a for a in x['command']) and '-o' not in x['command']]
+ check(len(native)==8,'missing joint root command evidence')
+ for i,event in native:
+  matches=[b for p,b in d.items() if p.startswith('root_receiving/'+str(i).zfill(5)+'-') and p.endswith('.stdout')]
+  check(len(matches)==1 and sha(matches[0])==event['stdout_sha256'],'joint root raw native drift')
+  check(b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS' in matches[0],'joint root native marker absent')
+ for name in ('density','density_supply'):
+  check(len({x['stdout_sha256'] for x in rows if x['driver']==name})==1,'joint root restart/optimization drift')
+ old=incumbent_root()
+ return {**s,'incumbent_root_owner':old,'qualified':True,'preservation':'EXACT_DEFAULT_OFF_PROJECTION_AND_FRESH_DECLARED_OWNER_O0_O2',
          'full_fci':'NOT_CLAIMED_OWNER_PREREQUISITE_ONLY','highest':'NOT_SELECTED_IMPACT'}
 if __name__=='__main__':print(json.dumps(verify_source() if '--source-only' in sys.argv else verify_qualification(),indent=2))

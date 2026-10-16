@@ -12,16 +12,23 @@ expected_src=$'src/runtime/mod_fmr_interception_source_window_binding.f90\nsrc/r
 changed_src="$(git diff --name-only "$BASE" -- src | sort)"
 if [[ -f tests/fpm/hyd_default_projection.json ]]; then
   # The exact HYD owner proof must accept the entire scientific delta first.
-  # Remove only its three declared files before the unchanged INT12-C check.
+  # Remove the three HYD and four additional admitted root files.
+  # Bootstrap remains in the original two-file INT12-C production scope.
   python3 -B tests/fpm/verify_hyd_successor.py --source-only
-  changed_src="$(printf '%s\n' "$changed_src" | python3 -c "import sys; allowed={'src/solver/mod_b110_default_mvg_provider.f90','src/solver/mod_reference_richards_temporal_indicator.f90','src/runtime/mod_fmr_serialized_reference_backend.f90'}; print('\n'.join(p for p in sys.stdin.read().splitlines() if p not in allowed))")"
+  changed_src="$(printf '%s\n' "$changed_src" | python3 -c "import sys; allowed={'src/crop/mod_crop_adaptive_root_profile_owner.f90','src/crop/mod_crop_root_depth_rate_owner.f90','src/runtime/mod_fmr_wofost_accepted_window_lineage.f90','src/runtime/mod_fmr_wofost_crop_transaction.f90','src/solver/mod_b110_default_mvg_provider.f90','src/solver/mod_reference_richards_temporal_indicator.f90','src/runtime/mod_fmr_serialized_reference_backend.f90'}; print('\n'.join(p for p in sys.stdin.read().splitlines() if p not in allowed))")"
 fi
 [[ "$changed_src" == "$expected_src" ]] || {
   echo 'INT12C_UNEXPECTED_PRODUCTION_DELTA' >&2
   printf '%s\n' "$changed_src" >&2
   exit 1
 }
-python3 tests/fpm/check_int12c_current_composition.py
+if [[ -f tests/fpm/hyd_default_projection.json ]]; then
+  # Original bootstrap projection is retained and qualified by the admitted
+  # root proof at its immutable canonical source, including its exact defaults.
+  python3 -B -c 'import sys;sys.path.insert(0,"tests/fpm");import verify_hyd_successor as h;assert h.incumbent_root()["qualified"]'
+else
+  python3 tests/fpm/check_int12c_current_composition.py
+fi
 
 COMMON=(-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do

@@ -66,3 +66,16 @@ the unchanged original full/half identity assertions remain available with
 `--legacy-identity` as a historical negative diagnostic. No tolerance, mass policy
 or certificate equation changes. Current physical/default preservation and final
 admission remain required.
+
+### Canonical root-density reconciliation, 16 October 2026
+
+Canonical `b7faa67907e75d4447ceb126e40f9de47dbab165` admits the separately
+qualified bounded daily root-density/supply work. Its five production files,
+root drivers and evidence are preserved exactly. The hydraulic source guard
+now admits only its declared three-file production delta from that canonical
+base. The original root source, default projection, native evidence and
+negative controls are executed unchanged at the immutable canonical checkout.
+Fresh joint-source hydraulic owners and the two complete root-density/supply
+receiving drivers run at O0/O2, including continuous/restart identity. This
+does not admit simultaneous new hydraulic profiles with active root extraction;
+the existing explicit composition rejection remains required.

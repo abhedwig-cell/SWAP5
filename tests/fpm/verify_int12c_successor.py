@@ -20,6 +20,9 @@ def verify_source(git_reader=None):
  if (ROOT/'tests/fpm/hyd_default_projection.json').exists():
   import verify_hyd_successor as hyd
   return hyd.verify_source(git_reader)
+ if (ROOT/'tests/root-growth/verify_daily_density_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_daily_density_successor as density
+  return density.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['base']==BASE,'unknown INT12-C base');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference','.github'),'dirty INT12-C scientific surface')
@@ -50,6 +53,12 @@ def evidence():
  for p,h in a['members'].items():check(sha(data[p])==h,'INT12-C member corruption '+p)
  return data
 def verify_qualification():
+ if (ROOT/'tests/fpm/hyd_default_projection.json').exists():
+  import verify_hyd_successor as hyd
+  return hyd.verify_qualification()
+ if (ROOT/'tests/root-growth/verify_daily_density_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_daily_density_successor as density
+  return density.verify_qualification()
  source=verify_source();d=evidence();r=record()
  rows=json.loads(d['final/results.json'])
  drivers={'endpoint','test_ppa_wu01_production_application_bootstrap','test_ppa_wu03_common_forcing_adapter',

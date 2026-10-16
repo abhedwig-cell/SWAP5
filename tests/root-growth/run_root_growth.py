@@ -5,7 +5,7 @@ import argparse,hashlib,importlib.util,json,os,re,shutil,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--swrd2',action='store_true');a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--swrd2',action='store_true');ap.add_argument('--density',action='store_true');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  donor_path=ROOT/'tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90'
  donor=donor_path.read_text().split('\nprogram test_fwof34_accepted_window_runtime_lineage\n')[0]+'\n'
@@ -32,6 +32,9 @@ def main():
  drivers=[ROOT/'tests/root-growth/test_root_growth_transaction.f90',ROOT/'tests/fmig431/test_swap431_root_growth_oxygen_composition.f90',ROOT/'tests/fmig431/test_swap431_root_supply_fail_closed.f90',ROOT/'tests/fmig431/test_swap431_potential_shadow_pre_event_restart.f90',ROOT/'tests/fmig431/test_swap431_potential_shadow_daily.f90']
  modules={}
  if a.swrd2:drivers.append(ROOT/'tests/root-growth/test_swrd2_transaction.f90')
+ if a.density:
+  from density_transaction_driver import prepare
+  drivers.append(prepare(ROOT,out/'test_daily_density_transaction.f90'))
  for p in sorted((ROOT/'src').rglob('*.f90'))+[fixture]:
   for n in re.findall(r'^\s*module\s+(?!procedure\b)(\w+)',p.read_text(),re.M|re.I):
    if n.lower()in modules:raise ValueError('duplicate module '+n)
@@ -50,6 +53,7 @@ def main():
  for d in drivers:visit(d)
  sources=[p for p in ordered if p not in drivers]
  inputs={str(p.relative_to(ROOT)):sha(p)for p in sources+drivers+[donor_path,Path(__file__).resolve()]if p.is_relative_to(ROOT)}
+ if a.density:inputs['tests/root-growth/density_transaction_driver.py']=sha(ROOT/'tests/root-growth/density_transaction_driver.py')
  events=[];runs=[];observations={};start=time.perf_counter()
  result={'status':'RUNNING','head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'inputs':inputs,'provider_count':len(sources),'fixture_sha256':sha(fixture),'compiler':subprocess.check_output(['gfortran','--version'],text=True).splitlines()[0],'scope':'Real root/crop transaction and accepted-window contracts, synthetic single-water carrier; not Richards/file-weather lifecycle admission'}
  def save():
@@ -68,7 +72,7 @@ def main():
     obj=b/f'{i}.o';run(['gfortran',*flags,'-c',src,'-o',obj],b,'compile');objects.append(obj)
    for driver in drivers:
     exe=b/driver.stem;run(['gfortran',*flags,driver,*objects,'-o',exe],b,'link')
-    for profile in (range(5)if driver==drivers[0]or driver.name=='test_swrd2_transaction.f90'else [None]):
+    for profile in (range(5)if driver==drivers[0]or driver.name in {'test_swrd2_transaction.f90','test_daily_density_transaction.f90'}else [None]):
      output=run([exe]+([str(profile)]if profile is not None else []),b,'native')
      if b'PASS'not in output:raise ValueError('missing native assertions')
      if driver==drivers[0] and profile is not None and profile!=4:

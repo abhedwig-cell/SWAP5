@@ -40,6 +40,8 @@ jobs:
           HYD_CERTIFICATE_BUILD: ${{ runner.temp }}/hyd-build
           HYD_CERTIFICATE_EVIDENCE: ${{ runner.temp }}/hyd-evidence
         run: python3 -B tests/fpm/run_swap431_hyd_certificate.py
+      - name: Admitted daily density and supply on the joint production tree
+        run: python3 -B tests/fpm/run_hyd_root_receiving.py --output "${{ runner.temp }}/hyd-root-receiving"
       - name: Exact source, immutable evidence and incumbent composition controls
         run: |
           python3 -B tests/fpm/verify_int12c_successor.py

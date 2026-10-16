@@ -24,3 +24,7 @@ for opt in ['O0','O2']:
 with patch.object(v,'evidence',return_value=d):rejects('MISSING_MODEL6_NATIVE',v.verify_qualification)
 d=v.evidence();d['literal/O2.stdout']+=b'output drift'
 with patch.object(v,'evidence',return_value=d):rejects('LITERAL_OPTIMIZATION_DRIFT',v.verify_qualification)
+d=v.evidence()
+name=next(p for p in d if p.startswith('root_receiving/') and 'native-density-neutral-continuous.stdout' in p)
+d[name]=b'absent joint density proof'
+with patch.object(v,'evidence',return_value=d):rejects('JOINT_ROOT_NATIVE_MISSING',v.verify_qualification)
