@@ -628,3 +628,29 @@ and complete automatic legacy activation remain open. This admits a real
 production route without closing the full ROOT-DENSITY or ROOTGROW-SUPPLY
 source envelopes. It does not change the frozen Status-A denominator or claim
 a full moving F-CI, highest low-air or independent RossFast rerun.
+
+## Managed irrigation in authentic weather application (2026-10-16)
+
+PR [1252](https://github.com/abhedwig-cell/SWAP5/pull/1252), merge
+`cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff`, admits the explicit one-column
+default-MvG ordinary bottom7 managed weather profile: TCS7/8, DCS2,
+one/three-node SSDI, depth caps and frozen external allocation. It uses the
+existing authentic daily rain/ET, accepted crop lineage and actual adaptive
+root uptake. Irrigation state and delivery publish only after an accepted
+physical segment. Event expiry, rejected-trial nonmutation, smaller retry,
+retained common accepted prefix and opaque joint soil/crop/event restart are
+qualified. The existing daily interval schedule bounds the accuracy claim.
+
+The actual merged source tree `3c6e7a2f98a364dd27eee16cbaf0f0a232221588`
+matches the qualified postimage. Twenty-two physical and sixteen existing
+application-owner O0/O2 programs, twenty-nine admission controls, immutable
+ROOT/HYD/NFIX controls and the existing INT12C owner reconciliation pass.
+The existing [MC-IRR01 recovery record](https://github.com/abhedwig-cell/SWAP5/blob/cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff/integration/audits/MC_IRR01_STATUS.json)
+binds the raw science and admission capsules; its premerge qualification
+snapshot remains distinct from the later actual admission receipt.
+
+Material-derived DCS1/TCS2/3/4, TCS6 weekly progression, bottom7 salt and
+SALTEXCESS, hydraulic-selector/POWER weather hybrids, arbitrary long-request
+accuracy and native weather disk continuation remain open. No full master
+capability disposition is promoted, no frozen Status-A denominator changes,
+and no full moving F-CI, highest low-air or independent RossFast rerun is claimed.
