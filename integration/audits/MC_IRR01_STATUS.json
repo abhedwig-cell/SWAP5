@@ -372,9 +372,9 @@
     "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7"
   },
   "managed_application_20261016": {
-    "baseline": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
     "branch": "work/irr-shared-application-20261016",
-    "phase": "STABLE_PHYSICAL_CANDIDATE_FINAL_O0_O2_PENDING",
+    "phase": "CANONICAL_DEPENDENCY_RECONCILED_CURRENT_SCIENCE_PENDING",
     "implemented": true,
     "persisted": true,
     "tested": false,
@@ -399,6 +399,33 @@
       "First complete weather tail0.875day accumulated1608accepted steps and2.5352775434583918e-12cm residual; strict1e-12 native gate FAIL retained. Final full authentic days use existing64-interval weather schedule, preserving duration, forcing, mass threshold and event-boundary discriminator. No arbitrary long-window accuracy claim.",
       "Development rooted generator compared different sensor/spatial configurations between current/lagged schedules; now each family compares exactly identical configuration across both schedules, original bitwise assertion retained.",
       "Single-substep managed retry requires a smaller duration than the unforced incumbent witness; actual halving retries retain all committed owners until successful bounded retry. No solver/physical/mass threshold change."
-    ]
+    ],
+    "canonical_reconciliation": {
+      "previous": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+      "current": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+      "peer_pr": 1103,
+      "peer_merge": "f0efbf939",
+      "changed_dependencies": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/solver/mod_b110_default_mvg_provider.f90",
+        "src/solver/mod_reference_richards_temporal_indicator.f90"
+      ],
+      "precanonical_physical": {
+        "status": "PASS",
+        "programmes": 22,
+        "wall_seconds": 417.67245577299764,
+        "execution_head": "560ca89c0e40d14c63cd1c44cd7e5e2c1bd72762",
+        "qualified_as_current_integration": false
+      },
+      "precanonical_owners": {
+        "status": "PASS",
+        "programmes": 16,
+        "wall_seconds": 266.0384802780027,
+        "qualified_as_current_integration": false
+      },
+      "selection": "Run actual joined current managed/default weather science and16 real application/process owners on the new3-provider postimages. Changed constitutive/temporal state providers require actual current integration. New independently admitted HYD model/POWER flags are explicitly rejected by this managed default-MvG envelope. No full moving/highest/RossFast repeat.",
+      "expected_physical_seconds": 650,
+      "expected_owner_seconds": 280
+    }
   }
 }

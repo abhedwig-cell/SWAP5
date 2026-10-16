@@ -30,6 +30,11 @@
         valid_t0=start,valid_t1=start+0.03_real64,fraction=0.5_real64)
       call read_swap_daily_weather_file(trim(path),1999,1,day0,wr,st)
       call require(st==SWAP_WEATHER_FILE_OK,'managed authentic full-day record')
+      bad=tc;bad%tiles(1)%parameters%conductivity_power_tail_active=.true.
+      call other%initialize(bad,st);call require(st/=FMR_APP_BOOT_OK,'unqualified managed POWER composition refused')
+      bad=tc;allocate(bad%tiles(1)%parameters%hydraulic_model_kind(numnod))
+      bad%tiles(1)%parameters%hydraulic_model_kind=2
+      call other%initialize(bad,st);call require(st/=FMR_APP_BOOT_OK,'unqualified managed analytical composition refused')
       call wr%values(wd,tmn,tmx,wrain,wet,ok);call require(ok,'managed source weather values')
       bad=tc;bad%file_weather_irrigation_depth%depth_criterion=1
       call other%initialize(bad,st);call require(st/=FMR_APP_BOOT_OK,'unqualified DCS1 profile refused')

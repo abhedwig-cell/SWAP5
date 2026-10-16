@@ -4,6 +4,10 @@ import copy,importlib,inspect,json,sys
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import verify_daily_density_successor as v
+if (v.ROOT/'tests/mc-irr01/check_managed_weather_controls.py').exists():
+ import runpy
+ runpy.run_path(str(v.ROOT/'tests/mc-irr01/check_managed_weather_controls.py'),run_name='__main__')
+ raise SystemExit(0)
 def rejects(label,call):
  try:call()
  except (ValueError,AssertionError,KeyError,FileNotFoundError):

@@ -236,13 +236,13 @@
     "state": "ACCEPTED_FOR_IMPLEMENTATION_NOT_YET_QUALIFIED",
     "baseline": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
     "authorization": "Programme lead authorized MC-IRR01 continuation and implementation in this canonical workstream; central RT/HY and crop/runtime integration are handled together here. No separate approval boundary.",
-    "scope": "Explicit one-column managed authentic file-weather profile. First admission cluster TCS7/8, DCS2, depth limit, SSDI single/multiple nodes and frozen typed external allocation. Root-free and then existing rooted profiles only where actual tests qualify. No bottom7 salt or other timing/depth selectors implicitly admitted.",
+    "scope": "Explicit one-column managed authentic file-weather profile. First admission cluster TCS7/8, DCS2, depth limit, SSDI single/multiple nodes and frozen typed external allocation. Root-free and then existing rooted profiles only where actual tests qualify. No bottom7 salt or other timing/depth selectors implicitly admitted. PR1103 later changes3 actual providers; current joined qualification selected explicitly, new hydraulic selectors remain excluded by managed profile.",
     "ownership": "Existing bootstrap weather/crop/soil dispatcher; private allocated-irrigation candidate published only with a completed segment; existing allocation preparation reused. No second physics or state commit owner.",
     "time": "One selection opportunity per authenticated weather day, derived from accepted crop lineage/revision/emergence/DVS. Split before event expiry and rain boundaries; return common committed prefix on later failure. No selection/provider consumption on failed segment.",
     "restart": "Extend existing opaque weather/crop continuation with schema-tagged existing allocated-irrigation restart, selection day, exact time and cumulative delivered amount. Validate before publishing owners; native disk codec remains separate.",
     "selection": {
       "direct": "Allocation preparation and split propagation production contracts O0/O2; existing policies/oracles retained.",
-      "physical": "Final real248-provider closure expected650s: original12 weather executions;4 new managed sensor executions covering all TCS7/8 x1/3nodes xdry/rain day cases;4 managed adaptive-rooted executions, each internally current/lagged and continuous/restored;2 original allocation guards. Existing16 real application/process owners PASS266.038s. All source/oracle/physical/mass assertions retained.",
+      "physical": "Final real245-provider closure expected650s: original12 weather executions;4 new managed sensor executions covering all TCS7/8 x1/3nodes xdry/rain day cases;4 managed adaptive-rooted executions, each internally current/lagged and continuous/restored;2 original allocation guards. Existing16 real application/process owners PASS266.038s. All source/oracle/physical/mass assertions retained.",
       "owners": "Actual unchanged application owners and unchanged original weather outputs; exact source proof chain retains immutable predecessor authority plus new science and negative controls.",
       "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS: optional new managed profile; preserve complete incumbent body and real default outputs, actual changed water/state mass/restart/coupling proofs required. Reconcile exact owner guards without claiming full numerical PASS.",
       "highest_low_air": "NOT_SELECTED_POLICY",
@@ -258,6 +258,7 @@
       "physical/numerical policy separation",
       "source-bound qualification only"
     ],
-    "qualified_schedule_bound": "Full authentic daily trajectories under existing64-interval weather schedule plus actual event endpoint splits. Broad single-tail aggregate failed stricter1e-12 test and is retained; no arbitrary long-window mass accuracy claim. Native disk codec and bottom7 salt remain excluded."
+    "qualified_schedule_bound": "Full authentic daily trajectories under existing64-interval weather schedule plus actual event endpoint splits. Broad single-tail aggregate failed stricter1e-12 test and is retained; no arbitrary long-window mass accuracy claim. Native disk codec and bottom7 salt remain excluded.",
+    "current_canonical_reconciled": "be8a49cd59815b537b46e0dac2b3d0161366c796"
   }
 }

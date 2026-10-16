@@ -432,6 +432,10 @@ contains
     end if
     if(config%file_weather_irrigation)then
       if(.not.config%file_weather_daystart.or.n/=1) return
+      ! New hydraulic selectors are independently admitted, not implicitly
+      ! composed with this default-MvG managed weather profile.
+      if(allocated(config%tiles(1)%parameters%hydraulic_model_kind).or. &
+         config%tiles(1)%parameters%conductivity_power_tail_active)return
       if(config%explicit_pmdirect_interception.or.config%base_salt_temporal_policy%enabled) return
       if(config%tiles(1)%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)return
       if(config%file_weather_irrigation_sensor%salinity_excess_enabled)return
