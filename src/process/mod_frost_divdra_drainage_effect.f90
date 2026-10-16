@@ -21,6 +21,11 @@ module mod_frost_divdra_drainage_effect
     real(real64) :: initial_partition_correction=0._real64, final_partition_correction=0._real64
     real(real64), allocatable :: final_nodal_sink(:)
   end type
+  ! Ordinary caller reuses this exact admitted integral; frost calls retain the default geometry guard.
+  interface partition_signed_divdra
+    module procedure partition
+  end interface
+  public :: partition_signed_divdra
   public :: compose_single_level_signed_frost_divdra, valid_frost_divdra_parameters
 contains
   pure logical function valid_frost_divdra_parameters(p) result(ok)
@@ -90,12 +95,13 @@ contains
     end do
   end function
 
-  pure subroutine partition(p,k,groundwater,scalar,nodal,correction,status)
+  pure subroutine partition(p,k,groundwater,scalar,nodal,correction,status,ordinary_surface_geometry)
     type(frost_divdra_parameters_t), intent(in) :: p
     real(real64), intent(in) :: k(:),groundwater,scalar
     real(real64), allocatable, intent(out) :: nodal(:)
     real(real64), intent(out) :: correction
     integer, intent(out) :: status
+    logical, intent(in), optional :: ordinary_surface_geometry
     real(real64), allocatable :: kh(:),inverse_k(:),raw(:)
     real(real64) :: water,profile,thickness,kd_h,kd_v,fac,span,finish,total,uns,sat
     real(real64) :: surface,top,bottom,a,b,c,d,amount,raw_sum
@@ -133,10 +139,18 @@ contains
     if(p%separate_infiltration.and.scalar< -SMALL)then
       surface=-p%surface_water_level_cm;surface_node=level_node(p,surface)
       if(surface_node==0.or.surface_node>=water_node)then
-        status=FROST_DIVDRA_GEOMETRY;return
+        if(.not.present(ordinary_surface_geometry))then
+          status=FROST_DIVDRA_GEOMETRY;return
+        end if
+        if(.not.ordinary_surface_geometry.or.surface_node==0.or.surface>water)then
+          status=FROST_DIVDRA_GEOMETRY;return
+        end if
       end if
       uns=transmissivity(p,kh,surface,water);sat=transmissivity(p,kh,water,finish);total=uns+sat
-      if(uns<=0._real64.or.sat<=0._real64.or.total<=0._real64)return
+      if(uns<=0._real64.or.sat<=0._real64.or.total<=0._real64)then
+        if(.not.present(ordinary_surface_geometry))return
+        if(.not.ordinary_surface_geometry.or.uns/=0._real64.or.sat<=0._real64.or.total<=0._real64)return
+      end if
       top=0._real64
       do i=1,n
         bottom=-p%distribution%zbotcp(i);amount=0._real64

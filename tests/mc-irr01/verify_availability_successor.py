@@ -2,7 +2,7 @@
 from pathlib import Path
 import base64,hashlib,io,json,re,subprocess,sys,tarfile,tempfile
 ROOT=Path(__file__).resolve().parents[2]
-BASE='341ba3783f4364d4ff08b00a97514a93adb7eb22'
+BASE='4a3e1d6bdb66a235d8fd529e30d6def6457da2d1'
 SURFACE=['src','tests','tools','reference','.github']
 PRODUCTION={'src/runtime/mod_fmr_production_application_bootstrap.f90','src/adapter/mod_crop_soil_n_joint_restart_file.f90'}
 def check(ok,label):
@@ -13,7 +13,7 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['availability_completion_20261016']
 def tcs6_record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['tcs6_completion_20261016']
 def verify_source(git_reader=None):
- g=git if git_reader is None else git_reader;r=record();check(r['baseline']==BASE,'AVAIL baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
+ g=git if git_reader is None else git_reader;r=record();check(r['admission_baseline']==BASE,'AVAIL baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines();check(not[x for x in dirty if not re.fullmatch(r'\?\? .*/__pycache__/[^/]+\.pyc',x)],'dirty AVAIL science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
  check(rows=={p:v['status']for p,v in r['postimages'].items()},'foreign AVAIL science');check({p for p in rows if p.startswith('src/')}==PRODUCTION,'AVAIL production scope')
@@ -62,7 +62,7 @@ def validate_science(data):
   for n,c,ns,day in [('sensor7',7,1,20),('sensor8',8,3,21)]:
    f=sensor(ROOT,Path(tmp)/(n+'.f90'),c,ns,day);check(f.read_bytes()==data['physical/'+f.name],'unexecuted AVAIL sensor generator')
   f=prepare_native(ROOT,Path(tmp)/'weekly_dcs1.f90',1,True);check(f.read_bytes()==data['physical/weekly_dcs1.f90'],'unexecuted TCS6 preservation')
- check(len(p['costs'])==2 and all(c['provider_compiles']==2 and c['reused_providers']==293 for c in p['costs']),'AVAIL provider execution drift')
+ check(len(p['costs'])==2 and all(c['provider_compiles']==3 and c['reused_providers']==292 for c in p['costs']),'AVAIL provider execution drift')
  # Exact source, flags, compiler and artifact hashes of the admitted donor are
  # checked by the executed runner and cross-bound to the immutable TCS6 capsule.
  import verify_tcs6_successor as old
@@ -72,8 +72,12 @@ def validate_science(data):
  for opt in(0,2):artifacts.update(json.loads(prior[f'physical/COST_O{opt}.json'])['shared_provider_hashes'])
  check(p['reuse']['compiled_artifacts']==artifacts,'incomplete AVAIL artifact identity')
  check(p['reuse']['drainage_projection']==tcs6_record()['inherited_input_projections']['src/process/mod_drainage_spatial_distribution.f90'],'AVAIL unrelated drainage drift')
+ check(p['reuse']['frost_reconciliation']==r['inherited_frost_reconciliation'],'AVAIL frost reconciliation drift')
+ for prefix in ['physical/o0/test-','physical/o2/test-']:
+  for path,raw in data.items():
+   if path.startswith(prefix)and path.endswith(('.full','.checkpoint','.final')):check(prior['physical/fixture/weather.999']in raw,'unauthenticated AVAIL weather source')
  for path,h in donor['inputs'].items():
-  if path not in PRODUCTION and path!='src/process/mod_drainage_spatial_distribution.f90':check(p['source_inputs'][path]==h,'AVAIL foreign donor input')
+  if path not in PRODUCTION and path not in['src/process/mod_drainage_spatial_distribution.f90','src/process/mod_frost_divdra_drainage_effect.f90']:check(p['source_inputs'][path]==h,'AVAIL foreign donor input')
  total=0
  for opt in(0,2):
   for n in['root2','root3','root4zero','root7','root8','weekly_dcs1']:
@@ -91,6 +95,7 @@ def validate_science(data):
  check(sha(data['direct/literal.f90'])==direct['generated']['literal.f90'],'AVAIL literal changed');raw_events(data,'direct',direct['events'])
  oldproof=json.loads(data['review/incumbent.json']);check(oldproof==r['incumbent_result']and sha(data['review/incumbent.json'])==r['incumbent_proof_sha256']and oldproof['qualified']and oldproof['full_capability']and oldproof['current_source_tree']==git('rev-parse',BASE+':src'),'unqualified AVAIL predecessor')
  check(b'TCS6_ADMISSION_NEGATIVES=30|PASS'in data['review/original-tcs6-controls.stdout'],'missing original TCS6 controls')
+ check(b'INF_SPLIT_EVIDENCE_CORRUPTION_CONTROLS=8'in data['review/original-inf-controls.stdout'],'missing original INF controls')
  projections=json.loads(data['review/projections.json']);check(set(projections)=={p for p,v in r['postimages'].items()if v['status']=='M'},'AVAIL body review incomplete')
  for path,patches in projections.items():
   lines=(ROOT/path).read_text().splitlines(True)

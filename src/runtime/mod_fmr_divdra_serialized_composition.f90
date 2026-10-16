@@ -7,6 +7,9 @@ module mod_fmr_divdra_serialized_composition
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
        fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_signed_divdra, &
        fmr_bind_multilevel_signed_divdra, FMR_DIVDRA_BIND_OK
+  use mod_drainage_b19_separate_infiltration_adapter, only: drainage_b19_separate_infiltration_parameters_t
+  use mod_fmr_divdra_separate_infiltration_binding, only: fmr_divdra_separate_infiltration_binding_diagnostics_t, &
+       fmr_bind_separate_infiltration, FMR_DIVDRA_INF_SPLIT_OK
   implicit none
   private
 
@@ -27,6 +30,7 @@ module mod_fmr_divdra_serialized_composition
     real(real64) :: scalar_transfer = 0.0_real64
     integer(int64), allocatable :: distribution_parameter_refs(:)
     real(real64), allocatable :: scalar_transfers(:)
+    type(drainage_b19_separate_infiltration_parameters_t), allocatable :: separate_infiltration_controls(:)
   end type fmr_divdra_serialized_column_request_t
 
   type, public :: fmr_divdra_serialized_binding_record_t
@@ -35,6 +39,7 @@ module mod_fmr_divdra_serialized_composition
     integer(int64) :: forcing_handle = 0_int64
     integer :: composition_status = FMR_DIVDRA_COMPOSE_OK
     type(fmr_divdra_binding_diagnostics_t) :: binding
+    type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: separate_infiltration_binding
     logical :: multilevel = .false.
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multilevel_binding
   end type fmr_divdra_serialized_binding_record_t
@@ -57,6 +62,7 @@ contains
     real(real64), allocatable :: probe(:,:)
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
     type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: inf_diag
     type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
     integer :: i, j, active_count, slot, forcing_index, parameter_index, view_index
     logical :: multilevel
@@ -164,6 +170,25 @@ contains
         probe = forcing_registry(forcing_index)%drainage_flux_by_level
       end if
 
+      if(allocated(requests(i)%separate_infiltration_controls))then
+        if(multilevel)then
+          call fmr_bind_separate_infiltration(level_parameters,hydraulic_views(view_index),requests(i)%scalar_transfers, &
+               requests(i)%separate_infiltration_controls,probe,inf_diag)
+          deallocate(level_parameters)
+        else
+          call fmr_bind_separate_infiltration(distribution_parameters(parameter_index:parameter_index), &
+               hydraulic_views(view_index),[requests(i)%scalar_transfer],requests(i)%separate_infiltration_controls,probe,inf_diag)
+        end if
+        records(slot)%multilevel=multilevel
+        records(slot)%separate_infiltration_binding=inf_diag
+        if(inf_diag%status/=FMR_DIVDRA_INF_SPLIT_OK)then
+          status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          records(slot)%composition_status=status
+          return
+        end if
+        records(slot)%composition_status=FMR_DIVDRA_COMPOSE_OK
+        cycle
+      end if
       records(slot)%multilevel=multilevel
       if(multilevel)then
         call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_views(view_index), &

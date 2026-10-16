@@ -12,6 +12,9 @@ def main():
  p=argparse.ArgumentParser();p.add_argument('--prior',required=True);p.add_argument('--output',required=True);p.add_argument('--feedback',action='store_true');a=p.parse_args();prior=Path(a.prior).resolve();out=Path(a.output).resolve();session=m.Session(out);start=time.perf_counter()
  old=json.loads((prior/'RESULTS.json').read_text());inp=json.loads((prior/'INPUTS.json').read_text());assert old['status']=='PASS'
  changed={'src/runtime/mod_fmr_production_application_bootstrap.f90','src/adapter/mod_crop_soil_n_joint_restart_file.f90'}
+ frost='src/process/mod_frost_divdra_drainage_effect.f90';frost_receipt=json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['availability_completion_20261016']['inherited_frost_reconciliation']
+ assert m.sha(ROOT/frost)==frost_receipt['current_sha256']
+ changed.add(frost)
  # The admitted TCS6 execution predates two unused drainage insertions. Verify
  # their exact current projection with its owning current source proof later.
  drain='src/process/mod_drainage_spatial_distribution.f90'
@@ -51,7 +54,8 @@ def main():
    if q not in changed:continue
    obj=build/f'provider-{index:03d}.o';session.command([session.compiler,*flags,'-c',str(ROOT/q),'-o',str(obj)],build,'affected-provider');objects=[obj if x.name==obj.name else x for x in objects];count+=1
   # Only executable guards changed. .mod ABI must remain byte-identical.
-  for module in build.glob('*.mod'):assert m.sha(module)==m.sha(shared/module.name),module.name
+  for module in build.glob('*.mod'):
+   if module.name!='mod_frost_divdra_drainage_effect.mod':assert m.sha(module)==m.sha(shared/module.name),module.name
   for name,driver in drivers.items():
    assert all(m.sha(ROOT/q)==h for q,h in inputs.items())
    obj=build/(name+'.o');exe=build/('test-'+name);session.command([session.compiler,*flags,'-c',str(driver),'-o',str(obj)],build,'driver');session.command([session.compiler,*flags,str(obj),*map(str,objects),'-o',str(exe)],build,'link');exe_sha=m.sha(exe)
@@ -80,5 +84,5 @@ def main():
   for p in (out/'o0').glob('*.final'):
    assert p.read_bytes()==(out/'o2'/p.name).read_bytes()
   for p in (out/'o0').glob('*.full'):assert p.read_bytes()==(out/'o2'/p.name).read_bytes()
- m.write(out/'RESULTS.json',dict(status='PASS_FEEDBACK'if a.feedback else'PASS',head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),wall_seconds=time.perf_counter()-start,source_inputs=inputs,generated_inputs=generated,rows=rows,events=session.events,reuse=dict(prior_execution=old['head'],compiler=identity,compiled_artifacts=reuse,donor_input_sha256=m.sha(prior/'INPUTS.json'),drainage_projection=projection),costs=costs));print('AVAIL_ACTUAL_NATIVE_APPLICATION=PASS',flush=True)
+ m.write(out/'RESULTS.json',dict(status='PASS_FEEDBACK'if a.feedback else'PASS',head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),wall_seconds=time.perf_counter()-start,source_inputs=inputs,generated_inputs=generated,rows=rows,events=session.events,reuse=dict(prior_execution=old['head'],compiler=identity,compiled_artifacts=reuse,donor_input_sha256=m.sha(prior/'INPUTS.json'),drainage_projection=projection,frost_reconciliation=frost_receipt),costs=costs));print('AVAIL_ACTUAL_NATIVE_APPLICATION=PASS',flush=True)
 if __name__=='__main__':main()
