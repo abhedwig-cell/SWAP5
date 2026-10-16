@@ -4252,5 +4252,63 @@
       "master_disposition_changes": 0,
       "qualification_selection": "Recorded affected-contract O0/O2 science and original owner preservation; full moving FCI/highest low-air/RossFast not selected. Empty GitHub status collection is not a hosted PASS."
     }
+  },
+  "tcs6_completion_20261016": {
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "branch": "work/mc-irr01-tcs6-20261016",
+    "phase": "CONDITIONS_FIXED_BEFORE_IMPLEMENTATION",
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "full_capability": false,
+    "closure_target": "SW431-IRR-TCS6, existing MC-IRR01 capability; no new bounded capability or denominator.",
+    "candidate_reconciliation": "No live TCS6 branch or PR found. PR1254 admitted material/root authority; PR1255 closed duplicate remains retained. Existing MC-IRR01 owner and recovery record reused.",
+    "source_authority": {
+      "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+      "member": "SWAP/irrigation.f90",
+      "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "clauses": [
+        "TASK1 dayfix=366 at initialization/crop rotation",
+        "TASK3 only scheduled crop-growth selection, dayfix=dayfix+1, >=7 resets0 before strict10*cdef>IRGTHRESHOLD",
+        "TCSFIX1 and TCS6 explicitly conflict; do not combine two counters",
+        "DCS/TASK4 and active-event continuation reuse existing source semantics"
+      ]
+    },
+    "closure_conditions": [
+      "Enable existing TCS6 through actual shared weather/bootstrap/root-allocation preparation, using one existing weekly_day_counter, accepted actual roots and material FC/stress/wilting; no solver/forcing or second owner.",
+      "O0/O2 small real production drivers and literal byte-pinned B1.11 weekly branch: initial366, every0..6 boundary, strict equality/below/above threshold, failed opportunities reset0, invalid inputs and nonmutation, crop inactive/closed-window/fixed-event precedence.",
+      "Consecutive authenticated weather days spanning at least two eligible weekly opportunities; actual rooted water/crop advance, current and lagged event ordering, once per day with internal segments, exactly-once event delivery, water balance.",
+      "Rejected preparation and failed/noncompleted physical attempts preserve committed counter/day/event/provider/soil/crop; valid retry and replay return exact accepted results.",
+      "Continuous and existing opaque joint continuation are exact across active event, daily and weekly boundaries; weather/crop/soil/event/weekly/allocation state remains one atomic accepted record.",
+      "Native fresh-process joint restart using the existing restart owners/codec, with no replay from initial state or second custom codec; exact continuous/opaque/native continuation and invalid/incomplete input rejection.",
+      "Affected application owner preservation, evidence and negative controls, docs validation; reconcile latest canonical and parallel drainage/crop work before admission; update existing MC-IRR01 and master ledger only after all preceding conditions PASS."
+    ],
+    "known_gaps_before_implementation": [
+      "Bootstrap currently rejects6 and root-allocation preparation accepts2..4 only.",
+      "Existing weather/crop continuation is serialization-neutral and explicitly has no disk codec. Existing crop/Soil-N native codec encodes a different crop owner, not the weather/wofost transaction/adaptive-root/window owner. This is a genuine joint-native dependency, not evidence of PASS and not permission to add a second codec."
+    ],
+    "held_fixed": [
+      "weather Gregorian owner/epoch",
+      "weekly_day_counter existing owner",
+      "irrigation accepted-only publication",
+      "existing opaque continuation and irrigation restart schema",
+      "physical equations/tolerances/reference",
+      "canonical independent drainage/crop routes"
+    ],
+    "dependency_surface": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+      "src/process/mod_scheduled_irrigation_management_policy.f90",
+      "src/runtime/mod_fmr_irrigation_management_restart.f90",
+      "weather/crop joint continuation/native owner contract",
+      "actual root/material and accepted physics callers"
+    ],
+    "next_action": "Persist candidate implementation and real source-bound drivers; execute local O0/O2, then targeted physical application. Native joint gate remains mandatory before fullcap promotion or merge.",
+    "test_selection": {
+      "small_contract": "real source-bound TCS6 policy/application, expected <30s",
+      "physical_application": "actual Richards weather/crop/root weekly progression and opaque continuation; expected400-700s including compile, selected by changed root selection contract; no full FCI, RossFast, highest low-air or Actions."
+    }
   }
 }
