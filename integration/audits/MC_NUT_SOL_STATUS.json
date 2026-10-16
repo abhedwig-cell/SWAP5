@@ -317,5 +317,32 @@
     "full_fci": "NOT_SELECTED_IMPACT_COMPONENT_ONLY",
     "highest": "NOT_SELECTED_POLICY",
     "solver": "NOT_SELECTED_IMPACT"
+  },
+  "b111_request_binding_20261016": {
+    "baseline": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+    "branch": "work/nut-b111-request-binding-20261016",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "contract": "docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md",
+    "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
+    "invariants_affected": [
+      "one accepted N input receipt",
+      "whole constituent balance",
+      "rejection nonmutation",
+      "restart identity"
+    ],
+    "next_action": "Fresh cold O0/O2 existing default and selected real crop/Soil-N/Richards/restart tests via tests/nut-crop/run_b111_request_binding.py; then affected owner/admission controls.",
+    "blockers": [],
+    "test_selection": {
+      "affected": "Explicit optional request calculation, joint N accepted-state and tagged configuration identity",
+      "expected_compile_link_native_seconds": 250,
+      "full_fci": "NOT_SELECTED_IMPACT_UNCHANGED_DEFAULT_STATEMENTS_AND_TARGETED_SHARED_STATE_SCIENCE_REQUIRED",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT"
+    },
+    "compiler_recovery": "System gfortran absent; package attempts failed on apt cache permissions/unavailable package. Recovered existing local13.3.0 toolchain at /workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran; no fabricated prior numerical PASS."
   }
 }

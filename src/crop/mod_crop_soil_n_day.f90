@@ -5,6 +5,7 @@ module mod_crop_soil_n_day
  use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
  use mod_soil_n_pool_state,only:soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t,apply_soil_n_transfer,SOIL_N_OK
  use mod_crop_soil_n_configuration
+ use mod_crop_b111_n_request_binding,only:bind_b111_vegetative_request
  use mod_wofost81_crop_owner_state
  use mod_wofost81_one_day_candidate
  use mod_wofost81_daily_parameter_contract
@@ -201,6 +202,10 @@ contains
   call prepare_wofost81_one_day_candidate(state%crop,weather,t0,t1,common,p81,state%p%update,a, &
     state%p%stem_area,state%p%storage_area,.true.,r%prepared,code)
   if(code/=WOFOST81_DAY_OK.or..not.r%prepared%ready.or..not.r%prepared%active)return
+  if(allocated(state%p%b111_request))then
+   call bind_b111_vegetative_request(state%p%b111_request,p81,state%crop%crop%development_stage,r%prepared,code)
+   if(code/=0)return
+  end if
   d%demand_kg_m2=1d-4*r%prepared%nitrogen_request%soil_request
   d%root_depth_cm=state%p%root_depth_cm;d%tcsf_n=state%p%tcsf_n
   d%dvs=state%crop%crop%development_stage

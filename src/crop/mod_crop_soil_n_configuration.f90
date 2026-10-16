@@ -17,8 +17,12 @@ module mod_crop_soil_n_configuration
   real(real64)::crop_end=0d0
   type(wofost81_harvest_policy_t)::policy
  end type
+ type,public::crop_n_b111_request_t
+  real(real64)::dvsnlt=0d0,nfixf=0d0
+ end type
  type,public::crop_n_configuration_t
   type(crop_n_harvest_configuration_t),allocatable::harvest
+  type(crop_n_b111_request_t),allocatable::b111_request
   type(wofost_rate_scalar_parameters_t)::scalars
   type(wofost81_parameter_contract_t)::base
   type(crop_n_table_t)::tables(16)
@@ -58,6 +62,17 @@ contains
    end if
    v=[v,real(n,real64),p%tables(i)%x,p%tables(i)%y]
   end do
+  if(allocated(p%b111_request))then
+   associate(b=>p%b111_request)
+    if(.not.all(ieee_is_finite([b%dvsnlt,b%nfixf])))then
+     deallocate(v);allocate(v(0));return
+    end if
+    if(b%dvsnlt<0d0.or.b%dvsnlt>2d0.or.b%nfixf<0d0.or.b%nfixf>1d0)then
+     deallocate(v);allocate(v(0));return
+    end if
+    v=[v,911002d0,b%dvsnlt,b%nfixf]
+   end associate
+  end if
   if(allocated(p%harvest))then
    associate(h=>p%harvest)
     if(h%crop_identity<1.or.h%crop_identity>1000000.or.h%sw_harv<0.or.h%sw_harv>1.or. &
