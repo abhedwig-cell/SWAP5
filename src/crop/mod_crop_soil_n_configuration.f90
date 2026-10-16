@@ -1,6 +1,7 @@
 module mod_crop_soil_n_configuration
  use iso_fortran_env,only:real64
  use ieee_arithmetic,only:ieee_is_finite
+ use mod_b111_reproductive_n_process,only:b111_reproductive_policy_t,valid_b111_reproductive_policy
  use mod_wofost81_crop_owner_state,only:wofost81_harvest_policy_t
  use mod_wofost_rate_parameters
  use mod_wofost_rate_table,only:construct_wofost_rate_table
@@ -22,6 +23,7 @@ module mod_crop_soil_n_configuration
  end type
  type,public::crop_n_configuration_t
   type(crop_n_harvest_configuration_t),allocatable::harvest
+  type(b111_reproductive_policy_t),allocatable::b111_reproductive
   type(crop_n_b111_request_t),allocatable::b111_request
   type(wofost_rate_scalar_parameters_t)::scalars
   type(wofost81_parameter_contract_t)::base
@@ -71,6 +73,14 @@ contains
      deallocate(v);allocate(v(0));return
     end if
     v=[v,911002d0,b%dvsnlt,b%nfixf]
+   end associate
+  end if
+  if(allocated(p%b111_reproductive))then
+   if(allocated(p%b111_request).or..not.valid_b111_reproductive_policy(p%b111_reproductive))then
+    deallocate(v);allocate(v(0));return
+   end if
+   associate(b=>p%b111_reproductive)
+    v=[v,911003d0,b%dvsnlt,b%dvsnt,b%nfixf,b%fntrt]
    end associate
   end if
   if(allocated(p%harvest))then

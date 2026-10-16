@@ -5,6 +5,8 @@ module mod_crop_soil_n_day
  use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
  use mod_soil_n_pool_state,only:soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t,apply_soil_n_transfer,SOIL_N_OK
  use mod_crop_soil_n_configuration
+ use mod_b111_reproductive_n_process,only:b111_reproductive_prepared_t
+ use mod_crop_b111_reproductive_binding,only:bind_b111_reproductive_request,apply_b111_reproductive_supply
  use mod_crop_b111_n_request_binding,only:bind_b111_vegetative_request
  use mod_wofost81_crop_owner_state
  use mod_wofost81_one_day_candidate
@@ -169,6 +171,7 @@ contains
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
   type(wofost_accepted_window_aggregates_t)::a
+  type(b111_reproductive_prepared_t)::reproductive_context
   type(wofost81_crop_owner_state_t)::crop_trial
   type(reactive_state_t)::soil_trial
   type(reactive_crop_demand_t)::d
@@ -206,6 +209,11 @@ contains
    call bind_b111_vegetative_request(state%p%b111_request,p81,state%crop%crop%development_stage,r%prepared,code)
    if(code/=0)return
   end if
+  if(allocated(state%p%b111_reproductive))then
+   call bind_b111_reproductive_request(state%p%b111_reproductive,p81,state%crop%crop%development_stage, &
+     r%prepared,reproductive_context,code)
+   if(code/=0)return
+  end if
   d%demand_kg_m2=1d-4*r%prepared%nitrogen_request%soil_request
   d%root_depth_cm=state%p%root_depth_cm;d%tcsf_n=state%p%tcsf_n
   d%dvs=state%crop%crop%development_stage
@@ -218,7 +226,11 @@ contains
   if(r%soil%status/=MINERAL_OK)return
   supply=r%soil%process%exchange%nsupply_total_kg_m2_day
   r%status=CROP_SOIL_APPLY
+  if(allocated(state%p%b111_reproductive))then
+   call apply_b111_reproductive_supply(r%prepared,reproductive_context,supply*1d4,crop_trial,r%crop,code)
+  else
   call apply_wofost81_one_day_n_supply(r%prepared,p81,supply*1d4,crop_trial,r%crop,code)
+  end if
   if(code/=WOFOST81_DAY_OK)return
   v=pack_crop_n_owner(crop_trial)
   if(size(v)==0)return
