@@ -4,6 +4,24 @@ Status: IN_PROGRESS. **Coverage is not closed and the 243-entry denominator is n
 
 ## Current reconciliation, 16 October 2026
 
+Latest bounded SOL receipt: PR1256 is merged at
+`0de60dd5bd2fe0787f33a3038aba868579aa94a8`; canonical recovery
+`efe79f5fd58f564f54dde5ca5e575bb138c4bbb1`. Explicit persistent dry-surface
+mass and opt-in native V2 restart are qualified by44 real O0/O2 programs,
+26 fail-closed admission controls, whole matrix-plus-surface mass, rollback,
+opaque/native/fresh-process continuation and exact retained admitted V1 bytes.
+No full pond-water/source/runoff route or master capability is promoted.
+The source-bound1227-member capsule and current owner record retain the proof.
+
+The next SOL dependency is actual water-owner per-substep pond begin/end,
+gross rain/irrigation and evaporation/runoff receipts. Retained-pond infiltration
+and explicit dry-deposition forcing need physical composition over those receipts;
+they cannot be inferred from net matrix top flux. Aquifer remains excluded.
+Independent existing packages can prepare ordinary frost-OFF signed DIVDRA and
+real TCS6 week/dayfix progression. Shared runtime/restart admission remains serial.
+Preserve the already admitted1254 material/current-root irrigation and1253 bounded
+vegetative N request; do not rebuild those owners.
+
 Current structural counts: **94 ADMITTED, 109 ACTIVE_MIGRATION, 14 SUPERSEDED,
 2 REJECTED, 20 NOT_APPLICABLE and 4 QUALIFICATION_ONLY; 113 unresolved.**
 The source review below and earlier dated receipts are historical snapshots.

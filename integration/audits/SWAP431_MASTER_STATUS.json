@@ -2,7 +2,18 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+  "last_reconciled_upstream": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+  "persistent_surface_restart_master_checks_20261016": {
+    "historical_source_and_pinned_locator_integrity": "PASS",
+    "inheritance_negative_controls": "20 PASS",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS exit0;14.07s",
+    "full_closure": "EXPECTED REFUSAL: denominator incomplete; exit1",
+    "initial_attempt": "Integrity and2 positive inheritance cases initially failed because newly connector-created canonical receipt efe79f5f was not fetched locally. Fetched exact canonical commit; complete integrity and all20 controls then passed. No gate weakened.",
+    "source_qualification": "Actual1256 merge tree equals qualified tree; affected O0/O2 raw science and26 controls belong to canonical owner, not master metadata checkout.",
+    "numerical_or_actions_run_for_master": false,
+    "complete_master_qualification": false
+  },
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -40,7 +51,8 @@
     "latest_integrity_reconciliation": "Historical queue/count diagnostic retained as predecessor evidence. Superseded by repaired integrity PASS; current census 94 ADMITTED, 109 ACTIVE_MIGRATION, 4 QUALIFICATION_ONLY, 113 unresolved and 92 explicit absence flags.",
     "current_local_git_connectivity": "PASS: exact canonical and master branch fetched locally on 2026-10-16; prior DNS failure is historical.",
     "latest_integrity_reconciliation_docs": "PASS documentation source check and strict MkDocs (15.96s); reused existing pinned docs dependencies after base runtime reported missing mkdocs. Full integrity FAIL remains recorded separately.",
-    "b111_request_master_receipt": "PASS current historical-source/pinned-locator integrity after preserving concurrent macropore receipt;20 inheritance controls and source/strict docs passed unchanged bounded metadata. Not current numerical qualification or semantic closure."
+    "b111_request_master_receipt": "PASS current historical-source/pinned-locator integrity after preserving concurrent macropore receipt;20 inheritance controls and source/strict docs passed unchanged bounded metadata. Not current numerical qualification or semantic closure.",
+    "latest_structural_recount": "243 unique;94 ADMITTED;109 ACTIVE_MIGRATION;14 SUPERSEDED;2 REJECTED;20 NOT_APPLICABLE;4 QUALIFICATION_ONLY;113 unresolved;86 structural absence/binding flags.1256 adds a bounded restart facet only."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -84,8 +96,8 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "PR1254 bounded DCS1/material/evolving-root and TCS2/3/4 application is admitted.243 dispositions remain94 ADMITTED,109 ACTIVE and4 QUALIFICATION_ONLY,113 unresolved; master1072 remains draft. Next existing independent package: SOL persistent surface/pond/source mass; ordinary frost-OFF signed DIVDRA remains separate. Shared runtime/restart integration stays serial. Retain all wider irrigation and crop-N gates.",
-  "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
+  "next_action": "PR1256 persistent dry-surface mass/restart is admitted without master promotion. Next existing independent packages: actual SOL surface-water receipts and pond/source mass composition; ordinary frost-OFF signed DIVDRA; real IRR TCS6 week/dayfix progression. Shared runtime/restart admission stays serial. Preserve1254 material/root irrigation and1253 bounded vegetative N binding; full reproductive/translocation/death N stays open.",
+  "recovery_point": "integration/audits/SWAP431_MASTER_STATUS.json#latest_persistent_surface_restart_reconciliation_20261016",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
     "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
@@ -2498,5 +2510,41 @@
     "validation": "PASS historical source/pinned-locator integrity,20 inheritance controls, documentation source and strict MkDocs16.19s. All243 capability rows and dispositions unchanged; numerical requalification NOT_SELECTED_METADATA_ONLY.",
     "new_numerical_or_actions_runs": 0,
     "full_master_qualification": false
+  },
+  "latest_persistent_surface_restart_reconciliation_20261016": {
+    "pr": 1256,
+    "canonical_merge": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
+    "canonical_receipt": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+    "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_surface_restart_20261016",
+    "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_MASS_RESTART_20261016.tar.xz.b64",
+      "decoded_sha256": "6eac1ef7e04c7b59a3fedec2075af152d3c825b91e00ff6676157808f1e15d3e",
+      "decoded_bytes": 48164,
+      "members": 1227
+    },
+    "scope": "Explicit existing compartment surface-mass reconstruction and opt-in V2 native restart; preserve V1/default activation. No new pond hydrology or deposition equation.",
+    "full_capability": false,
+    "full_master_qualification": false,
+    "capability_disposition_changes": 0,
+    "native_programs": 44,
+    "negative_admission_controls": 26,
+    "V1_restart_and_endpoint_bytes": "IDENTICAL_TO_ADMITTED_IMMUTABLE_SURFACE_CAPSULE",
+    "remaining": "Actual accepted per-substep pond begin/end, gross rain/irrigation, evaporation/runoff water-owner receipts; infiltration from retained pond, explicit deposition forcing and complete water/soil-plus-surface budget/native continuation. Aquifer remains excluded.",
+    "affected_capabilities": [
+      "SW431-SALT-POND"
+    ],
+    "production_runtime_admission": true,
+    "canonical_admission": {
+      "pr": 1256,
+      "merge_commit": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
+      "qualified_head": "73314c8f97c62ce0e4ed53d4be131edc74ffcbe4",
+      "merge_tree": "241f990f3d090e4d81a657b477bf5b857b075f5e",
+      "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+      "merge_tree_equals_qualified_tree": true,
+      "full_pond_source_admission": false,
+      "master_capability_promotion": false
+    },
+    "qualification_selection": "Affected real water/mass/rollback/restart O0/O2 and exact unchanged incumbent source/evidence; full FCI/highest low-air/RossFast NOT_SELECTED, no new Actions."
   }
 }
