@@ -118,5 +118,139 @@
   "canonical_admission_pr": 1084,
   "canonical_admission_merge": "8cd14e459913f77f412e12125ccda597a841e22d",
   "admission_pr": 1084,
-  "canonical_admission_commit": "8cd14e459913f77f412e12125ccda597a841e22d"
+  "canonical_admission_commit": "8cd14e459913f77f412e12125ccda597a841e22d",
+  "historical_donor_review_20261016": {
+    "phase": "BOUNDED_SOURCE_DIAGNOSTIC_AND_OWNER_DISPOSITION_COMPLETE",
+    "donor_pr": 700,
+    "donor_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "canonical_base": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+    "scope": "All58 historical macropore source postimages: graph/owner routing and bounded exact-archived SHRINKPAR versus current admitted parameter-preparation diagnostic. No source migration or new production envelope.",
+    "test_selection": {
+      "native": "Compile only exact archived SHRINKPAR and current dynamic-shrinkage module with isolated driver O0/O2, plus unchanged current MIGMAC04 parameter-fit driver. Compare64 clay-option1,64 regular option2,8 equality and8 near-equality cases.",
+      "reason": "Discriminate whether old preparer is interchangeable with admitted analytic preparation; original0.001 stopping rule and explicit old rejection bands must remain visible.",
+      "expected_seconds": 10,
+      "broad_preservation": "NOT_SELECTED_IMPACT: production and original tests unchanged, no new runtime admission.",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "actions": 0
+    },
+    "invariants": "Accepted physical/candidate/continuation/restart ownership unchanged; no mass or solver threshold changes.",
+    "original_status_fields": "Preserved. Existing closed/qualified flags refer to original MIGMAC11 admission, not this donor diagnostic.",
+    "source_review": {
+      "paths": 58,
+      "explicit_no_import_dispositions": 12,
+      "formula_equivalence_not_adjudicated": 46,
+      "current_production_imports_of_donor_module_names": 0,
+      "details": "source-review.json inside capsule",
+      "basis": "Eleven old adapter/solver modules form a distinct public state/checkpoint/candidate/restart and scratch graph. Current continuation, provider, candidate composition and committed restart remain the sole admitted owners. Do not inject the historical graph or infer restart equivalence. SHRINKPAR separately has demonstrated numerical/domain distinctions."
+    },
+    "compiled_diagnostic": {
+      "total_vectors": 144,
+      "option1_bit_identical": 64,
+      "option2_same_regular_domain_different_parameter_values": 64,
+      "A_equals_v_old_reject_current_accept": 8,
+      "near_equality_ratio_below1_01_old_reject_current_accept": 8,
+      "max_beta_parameter_difference": 5.63993626689907e-07,
+      "max_gamma_parameter_difference": 4.088250709077812e-07,
+      "current_analytic_root_residual_max": 0.0,
+      "optimization": "O0/O2 complete raw stdout byte-identical",
+      "diagnostic_stdout_sha256": "3e8a1258aadf8c4b1d6f4d8699e18f5f29a7495acb4eb65e6a4af67df1e68e06",
+      "original_current_fit_driver": "Unchanged current MIGMAC04 independent fit oracle PASS O0/O2",
+      "incumbent_stdout_sha256": "f7d55fa54f86d502ff464dbaf1f494f61a5ca6eb6bcd168de5b99f1648485e28",
+      "scope": "Clay option1 and option2 source diagnostic only. No peat-fit equivalence, other46 formulas, runtime/restart or whole-model qualification. Historical0.001 stopping/rejection semantics not modified.",
+      "timings": {
+        "0": {
+          "diagnostic_compile_link_seconds": 0.32108121800411027,
+          "diagnostic_native_seconds": 0.0030301140068331733,
+          "incumbent_compile_link_seconds": 0.2841218629910145,
+          "incumbent_native_seconds": 0.0023464049882022664
+        },
+        "2": {
+          "diagnostic_compile_link_seconds": 0.8941705549950711,
+          "diagnostic_native_seconds": 0.0029013070015935227,
+          "incumbent_compile_link_seconds": 0.9252383269922575,
+          "incumbent_native_seconds": 0.0022227060107979923
+        }
+      },
+      "separate_compile_and_link_seconds": "UNKNOWN",
+      "compiler": "GNU Fortran Ubuntu13.3.0-6ubuntu2~24.04.1"
+    },
+    "owner_admission_verification": {
+      "MIGMAC04": {
+        "pr": 1021,
+        "merge": "ce6a85f11d4eb8d7234802745353e4c951581d96",
+        "merged": true,
+        "canonical_ancestor": true
+      },
+      "MIGMAC11": {
+        "pr": 1084,
+        "merge": "8cd14e459913f77f412e12125ccda597a841e22d",
+        "merged": true,
+        "canonical_ancestor": true
+      },
+      "note": "Historical owner evidence remains bound to its original source. This diagnostic makes no broad current-canonical preservation claim."
+    },
+    "capsule": {
+      "path": "integration/audits/evidence/PPA_RECONCILE01_MACRO_DONOR_DISPOSITION_20261016.tar.xz.b64",
+      "decoded_sha256": "744124a5f27b3e197a498982da284bbfbb1eebe1f446b6128bce04e92cf6f53a",
+      "decoded_bytes": 17780,
+      "members": 23,
+      "member_sha256": {
+        "README.txt": "9326b081ccc939d8a21813ecc975f0be6c1f791a3cb9537de8f3e2bd203253ca",
+        "current.f90": "38ccb9ce02325c1532644fe18409a40e7d0354deb9a9a1bb5ff960bc84d022c6",
+        "driver.f90": "7f035b0d31031a8429ff23c2838f8e633bddfeb0323b8895f45d4521a8da4986",
+        "extracted-replay.log": "15b3e122c6e6b9edec5218d4f6fdc4666c2539e93f52b401e12237a3f443ce8b",
+        "historical.f90": "28a096b51096a2ad4064f8204d491e99831b4cc1477b2f3700202b485b8f8447",
+        "incumbent_driver.f90": "0e15f8b3c01e1d2863d74baac490a76f70371756b2129367cc5adb5cc89a5b30",
+        "initial-O0.txt": "3e8a1258aadf8c4b1d6f4d8699e18f5f29a7495acb4eb65e6a4af67df1e68e06",
+        "initial-compiler-failure.log": "7460c9ebb20e3a8b8e242684c6568a7196fec9de3144ca26a908819a0d00d0db",
+        "initial-link-repair.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "manifest.json": "e4b53a32edd3ef38b4facba0135a2687dc1e45d5ed1919dd56c9a184d06463c8",
+        "o0/diagnostic-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "o0/diagnostic.txt": "3e8a1258aadf8c4b1d6f4d8699e18f5f29a7495acb4eb65e6a4af67df1e68e06",
+        "o0/incumbent-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "o0/incumbent.txt": "f7d55fa54f86d502ff464dbaf1f494f61a5ca6eb6bcd168de5b99f1648485e28",
+        "o2/diagnostic-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "o2/diagnostic.txt": "3e8a1258aadf8c4b1d6f4d8699e18f5f29a7495acb4eb65e6a4af67df1e68e06",
+        "o2/incumbent-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "o2/incumbent.txt": "f7d55fa54f86d502ff464dbaf1f494f61a5ca6eb6bcd168de5b99f1648485e28",
+        "replay.log": "15b3e122c6e6b9edec5218d4f6fdc4666c2539e93f52b401e12237a3f443ce8b",
+        "replay.py": "f249f04c6caf6a359560c61826925b49c3d25989f321a52980fd9431363d08f5",
+        "source-review.json": "116b451d7b52ab379e9cddd796795d5755ed488f124ab46fc072aaa27ccd278a",
+        "tamper-before-compile.log": "1b4869fa33e2e29c4661285c369d71c4ddc8e685c20f37727896cd15802bfc50",
+        "timings.json": "d2914cf6ebd1d8e2b00ef3f7fbda766a2b378081aa91596d7d115f2fa9dea3f2"
+      },
+      "extracted_O0_O2_replay": "PASS exact output hashes",
+      "tampered_historical_source_before_compile": "REJECTED_PASS"
+    },
+    "carrier_status": {
+      "pr": 700,
+      "state": "OPEN_DRAFT",
+      "source_branch_preserved": true,
+      "cumulative_original_source_paths_with_bounded_no_import_dispositions": 20,
+      "other_original_source_paths_without_semantic_adjudication": 140,
+      "accounting": "Previous8 disjoint Gash/VonHH/receipt paths plus12 macropore paths. The46 retained formula references are included in140. These are donor bookkeeping counts, not missing-functionality counts.",
+      "no_new_runtime_admission": true,
+      "capability_count_or_disposition_change": false,
+      "next_action": "Preserve the existing admitted owners. Keep remaining original formulas and source families for explicit disjoint owner review; no whole-carrier merge. No further dependency-ready migration PR was identified among current ten open PRs."
+    },
+    "validation": {
+      "all58_original_source_sha256_and_git_blob": "PASS",
+      "all23_capsule_member_sha256": "PASS",
+      "standalone_extracted_replay": "PASS",
+      "historical_source_tamper_before_compile": "REJECTED_PASS",
+      "original_MIGMAC11_owner_fields_preserved": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs_at_diagnostic_base": "PASS16.85seconds",
+      "whitespace": "PASS",
+      "strict_mkdocs_after_concurrent_reconciliation": "PASS_exit0"
+    },
+    "concurrent_reconciliation": {
+      "canonical": "b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+      "new_admission": "Bounded B111 request binding PR1253; no macropore source or diagnostic input changed.",
+      "reviewed_input_blobs_and_original_fit_driver": "EXACT_UNCHANGED",
+      "numeric_rerun": "NOT_SELECTED_UNCHANGED_DIAGNOSTIC_INPUTS",
+      "limits": "Evidence remains on pinned diagnostic source; no broad current-canonical preservation claim."
+    }
+  }
 }

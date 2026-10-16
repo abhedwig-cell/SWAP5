@@ -1,0 +1,29 @@
+name: SWAP431 crop rootgrow DVS qualification
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/swap431-crop-rootgrow-dvs.yml'
+  push:
+    branches: [work/swap431-crop-root-cluster-20261007]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/swap431-crop-rootgrow-dvs.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: DVS depth O0 O2
+        run: bash tests/fmig431/run_crop_root_depth_dvs.sh
+      - name: Static root profile O0 O2
+        run: python3 tests/fmig431/run_crop_rootgrow_dvs_profile.py
+      - name: Production ET root uptake O0 O2
+        run: python3 tests/fmig431/run_crop_rootgrow_dvs_runtime.py

@@ -19,11 +19,22 @@ module mod_wofost_rate_table
     procedure, public :: ready => wofost_rate_table_ready
     procedure, public :: knot_count => wofost_rate_table_knot_count
     procedure, public :: evaluate => wofost_rate_table_evaluate
+    procedure, public :: snapshot_values => wofost_rate_table_snapshot_values
   end type wofost_rate_table_t
 
   public :: construct_wofost_rate_table
 
 contains
+  subroutine wofost_rate_table_snapshot_values(self,x,y,available)
+    class(wofost_rate_table_t),intent(in)::self
+    real(real64),allocatable,intent(out)::x(:),y(:)
+    logical,intent(out)::available
+    available=self%ready()
+    if(.not.available)then
+      allocate(x(0),y(0));return
+    end if
+    x=self%x;y=self%y
+  end subroutine
 
   subroutine construct_wofost_rate_table(x_values, y_values, table, status)
     real(real64), intent(in) :: x_values(:)

@@ -1,0 +1,62 @@
+{
+  "work_unit": "MC-NUT01-CALENDAR-RECONCILIATION",
+  "baseline": "f7c37b2e74ed7155e4e1783b12141945ca24d5d4",
+  "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+  "branch": "work/nut-calendar-reconciliation-20261015",
+  "scope": "Completed historical overlap preservation and bounded original-source input audit; no production modification",
+  "recovery": "docs/science/MC_NUT01_CALENDAR_RECONCILIATION_20261015.md",
+  "input_audit": "docs/science/MC_NUT01_INPUT_SOURCE_AUDIT_20261015.md",
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "qualification_scope": "Source-call inventory, original post-input material position O0/O2, raw historical evidence preservation and unchanged canonical dependencies",
+  "file_parser_implemented": false,
+  "file_parser_qualified": false,
+  "default_activation": false,
+  "superseded": {
+    "pr": 1240,
+    "head": "33f4db078ea7bcc4eee83e9326b0b7cc451890c0",
+    "disposition": "SUPERSEDED_BY_PR1242_DO_NOT_MERGE",
+    "unique_evidence": "Preserved in executions.bundle with original drivers and complete old primary capsule",
+    "full_preservation": "NOT_RECORDED_NOT_PASS",
+    "canonical_admission": false
+  },
+  "current_admission": {
+    "pr": 1242,
+    "merge": "f7c37b2e74ed7155e4e1783b12141945ca24d5d4",
+    "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_CALENDAR_RECONCILIATION_20261015.tar.xz.b64",
+    "sha256": "44b3b5efa9204b7ac3d825f87a4de923cf2c942a8bc1075099fc99aa8e24b67b",
+    "decoded_bytes": 155212,
+    "members": 60
+  },
+  "costs": {
+    "compile": 0.2372711909993086,
+    "historical_read_only_guard": 1.4354209640005138,
+    "link": 0.059465730024385266,
+    "native": 0.007255425996845588,
+    "validation": 0.011287399975117296
+  },
+  "docs_cost_seconds": 14.946397567007807,
+  "verification": {
+    "original_native": "PASS O0/O2",
+    "old_read_only_guard": "PASS focused scope only",
+    "current_owner": "PASS",
+    "baseline_admission_binding": "PASS 6382 original execution inputs,183 controls bound",
+    "docs_source": "PASS",
+    "docs_strict": "PASS"
+  },
+  "preservation": {
+    "mode": "INHERITED_UNCHANGED_SCIENTIFIC_DEPENDENCIES",
+    "full_execution": "47ad7871cf48937e17e1e20e9a57c13a1df633c1",
+    "full_new": "NOT_SELECTED_METADATA_ONLY",
+    "actions": "NOT_SELECTED_METADATA_ONLY",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "changed_scientific_paths": [],
+  "remaining": "File/date parsing and activation; accepted heat/profile coupling; harvest/reset/rotation; simultaneous companions; pond/source open; aquifer rejected",
+  "next_safe_step": "Implement a separately contracted bounded input adapter with authentic syntax fixtures and explicit failure semantics; no generic TTUTIL/file compatibility claim from this audit"
+}

@@ -512,3 +512,149 @@ ledger remain. Retained negative evidence and separately routed inherited CI
 failures are not relabelled as passes. No phase-change, excluded hybrid,
 full-winter or practical performance claim follows. Aggregate frost migration
 and the frozen Status A denominator remain unchanged.
+
+
+## Later bounded daily root growth (2026-10-15)
+
+PR [1241](https://github.com/abhedwig-cell/SWAP5/pull/1241) admitted SWRD3 daily
+biomass-derived actual/potential geometry. Its separate successor PR
+[1248](https://github.com/abhedwig-cell/SWAP5/pull/1248), merge
+`ad11a936e527d11c306ce1dd5444b4d83e3ac115`, now admits explicit static-density
+SWRD2 with SWDMI2RD0/1. Both authentic-weather schedules keep actual/potential
+depth in the committed crop transaction and feed committed actual geometry to
+real Richards uptake. Accepted water/empirical oxygen, atomic WOFOST81 growth,
+rollback/retry/exactly-once publication and opaque joint continuation are
+qualified. Current scientific source is `fe8a6c1b569e641dccb6b0cc163d3318e7e6d9c0`.
+
+[Contract](../science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md) and
+[recovery/evidence](../science/MC_CROP01_TRAJECTORY4_SWRD2_RECOVERY_20261015.md)
+bind30 direct native O0/O2 executions,28 real physical programmes, ten shared
+owner gates and one complete exact-current-source local moving OFF PASS. This
+is a bounded post-Status-A admission, not a change to the frozen Status-A
+denominator or a full crop-selector claim. SWDMI2RD2/daily adaptive density,
+advanced selectors, native weather disk codec and harvest/reset/fallow/rotation
+remain separate. No master capability disposition/count promotion is claimed.
+
+
+## Bounded migration closeout: policy, harvest and surface transport
+
+The existing candidates are now canonically admitted:
+
+| PR | Bounded admitted change | Canonical merge |
+| --- | --- | --- |
+| [1245](https://github.com/abhedwig-cell/SWAP5/pull/1245) | Enforced proportional test selection, retaining owning science and source-only dispatch | `f56a82b37bc1c3df7a6cb305990ab31e97818969` |
+| [1247](https://github.com/abhedwig-cell/SWAP5/pull/1247) | Explicit crop/soil-N harvest, compact retirement, actual fallow and successor continuation | `31ff3158b956183c8af19f85bd3361847f60309b` |
+| [1234](https://github.com/abhedwig-cell/SWAP5/pull/1234) | Exact accepted-water rain/irrigation solute supply, linear matrix transport and restart at zero pond | `136787ef2927eb44967298bec7029c30e6434422` |
+
+Actual fetched production source `0d4b4c9f171f605b5841bf0e078f01c5183c87bf`
+equals the qualified surface postimage. Harvest refresh executes all ten original
+physical drivers and original manual/calendar thermal natives at O0/O2;50
+original and39 composition controls and actual owning dispatch PASS. The final
+surface refresh executes the original literal process, real signed carrier/mass,
+retry and native/opaque/fresh restart assertions at O0/O2;24 original and46
+current controls and actual owner dispatch PASS. Policy reconciliation has18
+current adoption/selection controls. Source, command, raw output, endpoint and
+toolchain identities remain in the existing work-unit records/capsules.
+
+Existing default equations and source/control/moving bodies are retained by
+exact executable projections. The admitted SWRD2 full terminal capsule is
+verified at its immutable source. No new full numerical F-CI, highest low-air
+or hosted PASS is asserted for this bounded closeout. The interrupted preliminary
+surface moving run remains CENSORED, not preservation PASS.
+
+This does not complete automatic legacy calendar/input/output activation, full
+seasonal rotation, thermal-harvest composition, persistent pond/source mass or
+nonlinear surface composition. Aquifer remains rejected. Frozen Status-A and
+complete historical master capability dispositions are unchanged.
+
+[The historical closeout receipt](https://github.com/abhedwig-cell/SWAP5/blob/fb21ba5626e2b557b85616abbc19857105a6ecd3/integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json)
+recounts243 unique capabilities:95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,
+2 REJECTED,20 NOT_APPLICABLE and4 QUALIFICATION_ONLY;112 unresolved. It records
+three bounded facets and updates their queue explanations, without whole-cap
+promotion. A stale derived gap counter is corrected to92 explicitly marked rows;
+that is not an absent-algorithm count. At that checkpoint the full master
+integrity readback refused `stale inheritance baseline`. The later correction
+below supersedes that checkpoint's counts and integrity state.
+
+Completed research PR1226 (low-air performance) and1214 (cache I/O) are closed
+without merging the experiments or deleting branches/evidence. Other active
+shared semantics, source donors and nonblocking research are retained with
+concrete review/qualification boundaries in that same existing master record.
+No new migration package is started by the closeout.
+
+## Master evidence integrity and density classification correction, 16 October 2026
+
+[The reconciled master recovery](https://github.com/abhedwig-cell/SWAP5/blob/a40ef6b0ace5ce800ece2b12550f99c1750638b6/integration/audits/SWAP431_MASTER_STATUS.json)
+repairs the existing integrity checker while preserving immutable historical
+evidence and the concurrent diagnostic. Historical source baseline `78acf56f`
+is distinct from later canonical file/field locators. Exactly seven default-OFF
+profile-projection additions preserve the complete old backend body; any other
+postimage is rejected. Twenty inheritance/locator controls, four census controls,
+full integrity and documentation checks PASS. Closure still refuses the incomplete
+denominator. This is not current-canonical numerical or complete semantic qualification.
+
+The corrected census has **243 capabilities: 94 ADMITTED, 109 ACTIVE_MIGRATION,
+14 SUPERSEDED, 2 REJECTED, 20 NOT_APPLICABLE and 4 QUALIFICATION_ONLY;
+113 unresolved**. `SW431-ROOT-DENSITY` was overpromoted from the PR1125 merge.
+Its real adaptive component exists, but neither its initializer nor its updater
+has a production caller at canonical `02ee1677`. The passing supply fixture
+assigns a static node array and never executes density initialization/growth/death.
+The admitted SWRD2 contract also leaves this daily composition open. The ledger
+restores that open production capability and its supply dependency, without
+reverting code or the actually qualified root contracts. No algorithm is removed
+or declared absent. Empirical oxygen and constant LRV retain their verified
+original-head admissions within their bounded scopes.
+
+PR1072 remains draft because the semantic denominator and remaining production
+envelopes are incomplete, not because the historical inheritance check is still
+broken. Production source, reference, numerical policy, mass, rollback, restart
+and runtime interfaces are unchanged by this audit correction.
+
+
+## Daily adaptive root density and supply (2026-10-16)
+
+PR #1251, merge `b7faa67907e75d4447ceb126e40f9de47dbab165`, admits explicit SWRD2 daily adaptive
+root density with accepted uncompensated nodal potential/reduction receipts
+and optional SWDMI2RD2 supply. Actual task2 emergence initializes the owned
+profile; growth/death/finalization, current/lagged Richards uptake, atomic
+rollback/retry and opaque joint restart are qualified by100 local O0/O2
+programme executions and26 current falsification controls. Source-bound proof
+passes on the actual merge; original58 root and16 application outputs match
+their immutable authorities. The [bounded contract](../science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md)
+and existing root-growth/oxygen recovery record bind both evidence capsules.
+
+Harvest/rotation composition, native weather disk codec, advanced selectors
+and complete automatic legacy activation remain open. This admits a real
+production route without closing the full ROOT-DENSITY or ROOTGROW-SUPPLY
+source envelopes. It does not change the frozen Status-A denominator or claim
+a full moving F-CI, highest low-air or independent RossFast rerun.
+
+## Managed irrigation in authentic weather application (2026-10-16)
+
+PR [1252](https://github.com/abhedwig-cell/SWAP5/pull/1252), merge
+`cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff`, admits the explicit one-column
+default-MvG ordinary bottom7 managed weather profile: TCS7/8, DCS2,
+one/three-node SSDI, depth caps and frozen external allocation. It uses the
+existing authentic daily rain/ET, accepted crop lineage and actual adaptive
+root uptake. Irrigation state and delivery publish only after an accepted
+physical segment. Event expiry, rejected-trial nonmutation, smaller retry,
+retained common accepted prefix and opaque joint soil/crop/event restart are
+qualified. The existing daily interval schedule bounds the accuracy claim.
+
+The actual merged source tree `3c6e7a2f98a364dd27eee16cbaf0f0a232221588`
+matches the qualified postimage. Twenty-two physical and sixteen existing
+application-owner O0/O2 programs, twenty-nine admission controls, immutable
+ROOT/HYD/NFIX controls and the existing INT12C owner reconciliation pass.
+The existing [MC-IRR01 recovery record](https://github.com/abhedwig-cell/SWAP5/blob/cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff/integration/audits/MC_IRR01_STATUS.json)
+binds the raw science and admission capsules; its premerge qualification
+snapshot remains distinct from the later actual admission receipt.
+
+Material-derived DCS1/TCS2/3/4, TCS6 weekly progression, bottom7 salt and
+SALTEXCESS, hydraulic-selector/POWER weather hybrids, arbitrary long-request
+accuracy and native weather disk continuation remain open. No full master
+capability disposition is promoted, no frozen Status-A denominator changes,
+and no full moving F-CI, highest low-air or independent RossFast rerun is claimed.
+
+## MC-IRR01 weekly irrigation continuation (2026-10-16)
+
+The existing SW431-IRR-TCS6 closure is traced by the [weekly irrigation and joint continuation contract](../science/MC_IRR01_TCS6_CONTINUATION_20261016.md) and `integration/audits/MC_IRR01_STATUS.json`, field `tcs6_completion_20261016`. The recovery record distinguishes executed science, qualification and canonical admission. This successor uses accepted actual roots and material moisture limits, the existing weekly event owner and the existing native restart adapter. It does not change the frozen Status-A denominator or promote other irrigation profiles.

@@ -1,0 +1,63 @@
+{
+  "status": "PASS_SCOPED_AGE_RECEIPT_NOT_FULL_MASTER",
+  "canonical_merge": "e85bfe130b9ff1a09e88e00ffab94859e26b0d8e",
+  "master_before": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+  "master_blob_before": "d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+  "master_blob_after": "8521082fa78fb32a481b6343036529307566a549",
+  "changed_rows": [
+    "SW431-AGE-TRACER"
+  ],
+  "changed_queue_rows": [
+    "SW431-AGE-TRACER"
+  ],
+  "all_other_242_rows_identical": true,
+  "all_243_dispositions_and_counts_unchanged": {
+    "capabilities": 243,
+    "dispositions": {
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "open_capabilities": 108,
+    "open_workunits": 18,
+    "confirmed_missing_production_entries": 108,
+    "other_unresolved_source_admission_reviews": 4,
+    "qualification_only_capabilities": 4,
+    "total_unresolved_capabilities": 112,
+    "active_gap_type_breakdown": {
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 58,
+      "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+      "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+    },
+    "qualified_process_missing_runtime_binding": 2,
+    "missing_production_binding_or_implementation_entries": 108,
+    "missing_standalone_process_implementations_not_established": 113,
+    "active_with_existing_production_source_authority": 62,
+    "active_without_listed_production_source_authority": 46,
+    "active_missing_complete_admitted_route": 108,
+    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
+  },
+  "row_before": "21ac0164ba6aebf8ea6fe4034e3557fefb501657eac434e8a8820c42333b9a43",
+  "row_after": "cb1f65bb6f81c5d5f6e424a7195eb752558d43573500667751390699ad35ed48",
+  "checker_before": {
+    "exit": 1,
+    "seconds": 0.05608259400469251,
+    "stderr_sha256": "4d17d66507401087cfe0c5226359c2e22f602b3d9aed4a4b1b82df37dff6a993"
+  },
+  "checker_after": {
+    "exit": 1,
+    "seconds": 0.06270196600235067,
+    "stderr_sha256": "4d17d66507401087cfe0c5226359c2e22f602b3d9aed4a4b1b82df37dff6a993"
+  },
+  "global_checker_pass_claimed": false,
+  "reactive_peer": "Actual admitted1232/26ddf94e acknowledged via its existing owner/scientific coverage receipt; no N master rows changed here",
+  "master_after": "aae2b8d207b13453be45dd1773d39f8eae855831",
+  "master_tree_after": "c67a7d3210d150f15b01310e1dfa6631bc215b7c",
+  "checker_before_raw_stderr": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n",
+  "checker_after_raw_stderr": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n"
+}

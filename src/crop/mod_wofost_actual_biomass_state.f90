@@ -16,6 +16,11 @@ module mod_wofost_actual_biomass_state
     real(real64) :: root_biomass = 0.0_real64
     real(real64) :: stem_biomass = 0.0_real64
     real(real64) :: storage_biomass = 0.0_real64
+    ! B1.11 DWRT/DWST/DWLV: cumulative gross mortality, kg DM/ha.
+    ! These diagnostics are not extra physical soil/crop material storage.
+    real(real64) :: cumulative_dead_root_biomass = 0.0_real64
+    real(real64) :: cumulative_dead_stem_biomass = 0.0_real64
+    real(real64) :: cumulative_dead_leaf_biomass = 0.0_real64
     real(real64) :: exponential_leaf_area_index = 0.0_real64
     real(real64), allocatable :: leaf_biomass(:)
     real(real64), allocatable :: specific_leaf_area(:)
@@ -41,6 +46,9 @@ contains
       typed_copy%root_biomass = self%root_biomass
       typed_copy%stem_biomass = self%stem_biomass
       typed_copy%storage_biomass = self%storage_biomass
+      typed_copy%cumulative_dead_root_biomass = self%cumulative_dead_root_biomass
+      typed_copy%cumulative_dead_stem_biomass = self%cumulative_dead_stem_biomass
+      typed_copy%cumulative_dead_leaf_biomass = self%cumulative_dead_leaf_biomass
       typed_copy%exponential_leaf_area_index = self%exponential_leaf_area_index
       if (allocated(self%leaf_biomass)) typed_copy%leaf_biomass = self%leaf_biomass
       if (allocated(self%specific_leaf_area)) typed_copy%specific_leaf_area = self%specific_leaf_area
@@ -65,6 +73,17 @@ contains
       return
     end if
     if (.not. valid_nonnegative(self%storage_biomass)) then
+      status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
+      return
+    end if
+
+    if (.not. all(ieee_is_finite([self%cumulative_dead_root_biomass, &
+         self%cumulative_dead_stem_biomass, self%cumulative_dead_leaf_biomass]))) then
+      status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
+      return
+    end if
+    if (any([self%cumulative_dead_root_biomass, self%cumulative_dead_stem_biomass, &
+         self%cumulative_dead_leaf_biomass] < 0.0_real64)) then
       status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
       return
     end if

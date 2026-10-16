@@ -17,7 +17,8 @@ module mod_b110_production_soil_water_task2
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
        reference_richards_legacy_workspace_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
-       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, &
+       evaluate_b110_default_mvg_conductivity
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -127,7 +128,8 @@ contains
     type(fmr_legacy_bottom_boundary_binding_t) :: legacy_bottom
     real(real64) :: potential_bare_evaporation, direction_t0, direction_t1, typed_bottom_flux
     logical :: sensitivity_route_admitted, trajectory_requested, trajectory_step_built, trajectory_stage_ok
-    logical :: m1_profile, root_provider_active
+    logical :: m1_profile, root_provider_active, initial_top_conductivity_valid
+    real(real64) :: initial_top_conductivity
     integer :: n, stat_index, typed_bottom_mode, bottom_status
 
     handled = .false.
@@ -177,9 +179,14 @@ contains
            swkmean, pondm1, dt, nraidt, nird, melt, runon, potential_bare_evaporation, epond, &
            pondmx, rsro, rsroexp, fixed_top_node_conductivity=k(1))
     else
+      ! SWKIMPL=0 holds the trial-start constitutive conductivity fixed. Resolve
+      ! it from the actual initial head, rather than stale legacy k metadata.
+      call evaluate_b110_default_mvg_conductivity(hydraulic_parameters, 1, h(1), &
+           initial_top_conductivity, initial_top_conductivity_valid)
+      if (.not. initial_top_conductivity_valid) return
       call bind_b110_dynamic_top_boundary_solver_provider(dynamic_top, parameters, hydraulic_parameters, &
            swkmean, pondm1, dt, nraidt, nird, melt, 0.0_real64, potential_bare_evaporation, epond, &
-           pondmx, rsro, rsroexp)
+           pondmx, rsro, rsroexp, fixed_top_node_conductivity=initial_top_conductivity)
     end if
 
     request = soil_water_solve_request_t()

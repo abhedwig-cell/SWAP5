@@ -4,6 +4,25 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "M1_C3_INDEPENDENT_FAIL $*" >&2; exit 1; }
 
+if [[ "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" == ed678be6e27621ac076a883c947abba8032ac7e6 ]]; then
+  bash tests/fci/run_fci93_non_m1_fixed_k_qualification.sh --verify-only
+  python3 - <<'PY'
+from pathlib import Path
+import subprocess,re
+old=subprocess.check_output(['git','show','a787f6340328a06885a145f6d88a52d921a458e7:src/adapter/mod_b110_production_soil_water_task2.f90'],text=True)
+new=Path('src/adapter/mod_b110_production_soil_water_task2.f90').read_text()
+marker='    if (m1_profile) then\n      call bind_b110_dynamic_top_boundary_solver_provider'
+assert old.split(marker,1)[1].split('    else',1)[0]==new.split(marker,1)[1].split('    else',1)[0]
+for name in ['production_route_admitted','m1_b111_legacy_application_profile_active','run_b110_legacy_compatibility_task2']:
+    pattern=r'(?ims)^  (?:logical function|subroutine) '+name+r'\b.*?^  end (?:function|subroutine) '+name
+    assert re.search(pattern,old).group()==re.search(pattern,new).group(),name
+print('FCI93_M1_BINDING_ELIGIBILITY_COMPATIBILITY_BYTE_UNCHANGED=PASS')
+PY
+  bash tests/fci/run_fci93_fixed_k_component_preservation.sh
+  echo 'M1_C3_FCI93_FIXED_K_INDEPENDENT_SUCCESSOR_PRESERVATION=PASS'
+  exit 0
+fi
+
 python3 - <<'PY'
 from pathlib import Path
 import re

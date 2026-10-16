@@ -1,0 +1,18 @@
+{
+  "workstream": "MC-CROP01",
+  "baseline": "3a411ba74ac2de027cbf5e4a13b7f615657f7a70",
+  "work_unit": "Existing physical WOFOST crop event forcing constructor prevalidation",
+  "source": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+  "source_blob": "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509",
+  "change": "Reject inconsistent lifecycle delay/order/emergence/evaluation/temperature sum before creating a transaction forcing. No secondary commit authority. Preserve F-KT WOFOST physical trial acceptance.",
+  "tests": "NOT RUN: targeted genuine accepted-window crop-transaction test and O0/O2 required",
+  "claims": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false
+  },
+  "blocking": "Cannot infer physical producer authenticated TAV from PPA-WU03 interval forcing. Need targeted accepted-window fixture to prove guard and existing valid behavior before merge.",
+  "next": "Locate existing valid WOFOST accepted-window fixture through GitHub tree/repo and extend with negative lifecycle plan cases, compile true source O0/O2 locally, then exact-head F-CI. Do not merge unqualified."
+}

@@ -1,0 +1,16 @@
+name: SW431 crop B1.11 sowing temperature node qualification
+on:
+  pull_request:
+    paths:
+      - 'src/crop/mod_crop_b111_sowing_node.f90'
+      - 'tests/fmig431/test_crop_b111_sowing_node.f90'
+      - 'tests/fmig431/run_crop_b111_sowing_node.sh'
+      - '.github/workflows/swap431-crop-b111-sowing-node.yml'
+  workflow_dispatch:
+jobs:
+  sowing-node-o0-o2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_crop_b111_sowing_node.sh
