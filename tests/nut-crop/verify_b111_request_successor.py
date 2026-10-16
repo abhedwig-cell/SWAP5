@@ -24,6 +24,9 @@ def evidence():
  for p,h in manifest.items():check(sha(data[p])==h,'request raw member drift '+p)
  return data
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_root_material_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_root_material_successor as material
+  return material.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'unknown request baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--',*SURFACE),'dirty request source')
@@ -110,6 +113,9 @@ def incumbent():
  check(p.returncode==0,'original incumbent proof failed '+p.stderr[-1000:]);r=json.loads(p.stdout);check(r['qualified'],'original incumbent unqualified');return r
 
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_root_material_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_root_material_successor as material
+  return material.verify_qualification()
  s=verify_source();check(record()['phase']in ['SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED'],'request admission science unfinished')
  r=validate_science(evidence());old=incumbent()
  return {**s,'qualified':True,'incumbent':old,'scope':record()['scope'],'preservation':'EXACT_DEFAULT_BODIES_AND_ACTUAL_UNCHANGED_ENDPOINTS_PLUS_NEW_REQUEST_MASS_RESTART','full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest':'NOT_SELECTED_POLICY'}
