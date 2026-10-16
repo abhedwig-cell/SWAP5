@@ -107,3 +107,54 @@ remain prerequisites for partial-return runtime admission.
 
 No production, test, solver, codec or reference postimage is changed here.
 No capability/count promotion follows. Aquifer remains excluded.
+
+
+## Actual ordinary source-chain confirmation and correction candidate
+
+The later `leaf_return_reference_20261016` owner record supersedes the initial
+unadjudicated counterexample for the tested ordinary annual source chain.
+Original task3/4 cases execute19 original growth/phenology/leaf/management/interface
+helpers, the full original nutrient scientific routines, actual calendar harvest
+and original SoilManagement5/residue chemistry. Prescribed environment and
+assimilation supply are input fixtures; no scientific routine is replaced.
+A fixture initializer/readout accesses private N parameters and10 state/ledger
+values without changing scientific bodies. I/O adapters only open/report output;
+a pressure-head helper traps if the unselected grass branch is entered.
+
+Three growing days and next-day residue consumption confirm the original DM
+overreturn. From300kg/ha initial live root/leaf/stem DM, zero incoming assimilation
+produces27.1kg leaf death and327.1kg soil OM receipt. The candidate gives300kg.
+With positive assimilation, actual source growth totals30kg and leaf death28.26kg;
+original soil OM is358.26kg and corrected-candidate OM330kg. Both source variants
+return exactly3kg N; the actual soil routine closes organic N and OM receipts.
+DWLV is already a removable physical stock in source grazing/mowing, so retaining
+previously soil-returned leaf DM there is an ordinary source implementation defect.
+This establishes a controlled real-source lifecycle, not a complete weather/
+hydraulic/crop-season simulation or grass-removal qualification.
+
+The minimal candidate exposes the already existing fraction to the growth module
+and changes its actual, N-active dead-leaf increment to `(1-f)*death`. It introduces
+no cumulative correction ledger or new state. Potential crop and N-OFF retain the
+original update. Original N scientific bodies and residue chemistry are unchanged.
+The patch, complete corrected files, preimages, extraction, driver and raw evidence
+are retained in the source capsule. Binary patch application preserves CRLF and
+matches both exact candidate hashes. Of63 B1.11 source members, only wofost.f90 and
+wofostnut.f90 change, adding214bytes. The candidate member-manifest hash is
+`1b7ea89d87ceedd812011c55351721e2232ced67883a5a9d3e35d7e6b73d596d`;
+this is B1.11 plus a candidate, not a published/admitted B1 snapshot.
+
+O0/O2 execute96 native programs in total: N off/on, fractions0/.25/1,
+leaf harvest fractions.5/1 and incoming assimilation0/20 across source/candidate.
+All daily10-value N readouts remain bit-identical. Potential dead-leaf stock is
+positive and bit-identical, giving a discriminating potential control. N-OFF and
+fraction0 complete outputs are bit-identical. The soil DM correction equals
+f*h*computed leaf death; full-return harvest DM closes against initial plus
+actual source growth. Failed fixture/compiler/link attempts are retained separately.
+The final compile/link/native cost is about2.92s.
+
+Formal admission of a corrected B1 snapshot remains separate. Before global
+reference activation, qualify affected allowed removal/state paths and the
+ordered source lineage. Then implement retained aboveground leaf/stem DM/N in
+the existing SWAP5 state, with harvest transfer, whole N/OM, atomic rejection and
+complete native/opaque continuation. The current B1 manifest, all published
+snapshots and SWAP5 production remain unchanged at this candidate checkpoint.
