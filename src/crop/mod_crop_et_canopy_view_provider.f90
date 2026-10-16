@@ -24,6 +24,7 @@ module mod_crop_et_canopy_view_provider
   contains
     procedure, public :: ready => crop_et_canopy_parameters_ready
     procedure, public :: co2_enabled => crop_et_canopy_parameters_co2_enabled
+    procedure, public :: configuration_values => crop_et_configuration_values
   end type crop_et_canopy_parameters_t
 
   type, public :: crop_et_canopy_state_view_t
@@ -58,6 +59,20 @@ module mod_crop_et_canopy_view_provider
   public :: evaluate_crop_et_canopy_view
 
 contains
+  subroutine crop_et_configuration_values(self,values,available)
+    class(crop_et_canopy_parameters_t),intent(in)::self
+    real(real64),allocatable,intent(out)::values(:)
+    logical,intent(out)::available
+    real(real64),allocatable::x(:),y(:),cx(:),cy(:)
+    logical::ok
+    available=self%ready()
+    if(.not.available)then;allocate(values(0));return;end if
+    call self%crop_factor_by_development_stage%snapshot_values(x,y,ok)
+    if(.not.ok)then;available=.false.;allocate(values(0));return;end if
+    call self%transpiration_factor_by_co2%snapshot_values(cx,cy,ok)
+    values=[self%direct_extinction_coefficient,self%diffuse_extinction_coefficient, &
+      merge(1._real64,0._real64,self%co2_correction_enabled),real(size(x),real64),x,y,real(size(cx),real64),cx,cy]
+  end subroutine
 
   subroutine construct_crop_et_canopy_parameters(kdir, kdif, cftb_dvs, cftb_factor, &
                                                   co2_enabled, parameters, status, &

@@ -4256,8 +4256,8 @@
   "tcs6_completion_20261016": {
     "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
     "branch": "work/mc-irr01-tcs6-20261016",
-    "phase": "CONDITIONS_FIXED_BEFORE_IMPLEMENTATION",
-    "implemented": false,
+    "phase": "NATIVE_EXTENSION_IMPLEMENTED_NOT_YET_COMPILED",
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false,
@@ -4305,10 +4305,29 @@
       "weather/crop joint continuation/native owner contract",
       "actual root/material and accepted physics callers"
     ],
-    "next_action": "Persist candidate implementation and real source-bound drivers; execute local O0/O2, then targeted physical application. Native joint gate remains mandatory before fullcap promotion or merge.",
+    "next_action": "Compile/test persisted joint native extension and actual weekly trajectory; retain all failures and mandatory full closure conditions.",
     "test_selection": {
       "small_contract": "real source-bound TCS6 policy/application, expected <30s",
       "physical_application": "actual Richards weather/crop/root weekly progression and opaque continuation; expected400-700s including compile, selected by changed root selection contract; no full FCI, RossFast, highest low-air or Actions."
+    },
+    "shared_domain_findings": {
+      "actual_failure": "11-day actual driver d10 (30Jan morning completing29Jan): FMR_APP_BOOT14; crop model last_status10 potential error, potential detail5 assimilation error. Actual29Jan rad5267700J exceeds current5000000J guard.",
+      "source": "Authenticated MOD_meteo.f90 readradmax5.d6 in kJ/m2/day; lines641/917 multiply1000 to J/m2/day.",
+      "action": "Correct existing classic assimilation guard to5.d9 J source-unit bound; no formula/tolerance change. Add exact above-old-range and source-unit witnesses; rerun affected real application.",
+      "native_plan": "Extend existing mod_crop_soil_n_joint_restart_file adapter with a weather/irrigation tag, existing CRC and trusted kernel/owner reconstruction. Add serialization-neutral views to the existing opaque weather bundle/window owner; no duplicate physical state or calendar."
+    },
+    "pull_request": 1262,
+    "scientific_failures_retained": [
+      "Initial failure-probe fixture used BOUNDED rather than TASK2; corrected test configuration, no production bypass.",
+      "11-day actual O0 first driver stops on real29Jan radiation-domain refusal; source-unit correction added with separate original/corrected O0/O2 preservation witness."
+    ],
+    "native_extension_contract": {
+      "adapter": "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+      "tag": "S5WI0001; extends existing adapter and CRC, old tag bodies unchanged",
+      "state": "Existing kernel snapshots, classic crop persistence, accepted windows, weather source bytes/revision and allocated irrigation restart. No second model owner.",
+      "caller": "Expected immutable configuration and actual current/previous weather records are supplied by existing application/input owners. Serialized IDs and policy/numerical/root/material fields are checked; decoder does not parse a second weather/configuration format.",
+      "fresh_process": "Producer stops after day8; consumer restores accepted model owners and runs only days9..10. Oracle sidecar contains independent literal recurrence/diagnostic totals, no model continuation. Both current and lagged schedules must exactly match continuous and opaque native endpoints.",
+      "remaining": "Compile all affected owners, complete O0/O2 physical/native equality and invalid decoder witnesses, preserve affected original app/native owner outputs and source proof, reconcile parallel canonical then admit only if complete."
     }
   }
 }

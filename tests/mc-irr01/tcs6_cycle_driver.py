@@ -104,6 +104,7 @@ def prepare(root,target,dcs=1,trigger=True):
  # this actual rooted configuration, preserving original assertions.
  replace('  subroutine managed_failure_probe()','  subroutine managed_failure_probe(tc0)\n    type(fmr_production_application_config_t),intent(in)::tc0')
  replace('    tc=config;tc%numerical%max_committed_substeps=1', '    tc=tc0;tc%numerical%max_committed_substeps=1')
+ s=s.replace('    c%swprep=0;c%swsow=0;c%germ_mode=0', '    c%initialization_profile=CROP_PROFILE_B111_TASK2\n    c%swprep=0;c%swsow=0;c%germ_mode=0')
  replace('    call configure_managed_sensor(tc,7,1)', '''    call configure_managed_sensor(tc,6,1)
     tc%file_weather_irrigation_depth%tcs6_threshold_mm=0._real64
     tc%file_weather_irrigation_field_capacity_head_cm=0._real64''')
@@ -113,4 +114,89 @@ def prepare(root,target,dcs=1,trigger=True):
  # Source probe checks initial counter after every rejected actual dispatcher.
  s=s.replace("'managed incomplete candidate consumes neither selection, allocation nor event')", "'managed incomplete candidate consumes neither selection, allocation nor event')\n      call require(ir%management%policy%weekly_day_counter==366,'actual failed trial retains TCS6 initial366')")
  replace("  print '(a)','MC_IRR01_MATERIAL_ROOT_POLICY_PHYSICAL_LITERAL_RESTART=PASS'", "  print '(a)','MC_IRR01_MATERIAL_ROOT_POLICY_PHYSICAL_LITERAL_RESTART=PASS'\n  print '(a)','TCS6_REAL_WEATHER_WEEK_ROOT_MASS_OPAQUE_RETRY=PASS'")
+ target.write_text(s);return target
+
+def prepare_native(root,target,dcs=1,trigger=True):
+ """Same driver plus native continuation; resume starts at day9, never replays0..8."""
+ prepare(root,target,dcs,trigger);s=target.read_text()
+ def replace(a,b):
+  nonlocal s
+  assert s.count(a)==1,(s.count(a),a);s=s.replace(a,b)
+ replace('  implicit none\n','''  use mod_crop_soil_n_joint_restart_file,only:write_weather_irrigation_joint_restart_file, &
+    read_weather_irrigation_joint_restart_file
+  implicit none
+''')
+ replace("  call require(trim(continuation_mode)=='continuous'.or.trim(continuation_mode)=='restart','explicit replay mode')", "  call require(trim(continuation_mode)=='continuous'.or.trim(continuation_mode)=='restart'.or. &\n    index(trim(continuation_mode),'native-')==1,'explicit replay mode')")
+ replace('  call test_rooted_weather_production(oxygen=.true.)','''  if(index(trim(continuation_mode),'native-')==1)then
+    call test_rooted_weather_production(trim(moisture_mode)=='hydraulic',.true.)
+    print '(a)','TCS6_NATIVE_FRESH_PROCESS_NO_DAY_REPLAY=PASS'
+    stop
+  end if
+  call test_rooted_weather_production(oxygen=.true.)''')
+ replace('    integer::expected_week,invalid_selection,weekly_events', '''    integer::expected_week,invalid_selection,weekly_events,first_day,unit
+    character(2048)::native_path
+    character(16)::phase
+    type(swap_daily_weather_record_t)::native_record,native_previous''')
+ replace('    call managed_failure_probe(tc)','    if(index(trim(continuation_mode),\'native-\')/=1)call managed_failure_probe(tc)')
+ anchor='      do d=0,10'
+ replace(anchor,'''      first_day=0
+      call get_command_argument(0,native_path)
+      phase='morning';if(dayend)phase='dayend'
+      native_path=trim(native_path)//'.'//trim(phase)
+      if(trim(continuation_mode)=='native-resume')then
+        call ta%close(st);cs=kernel_committed_state_t()
+        call read_swap_daily_weather_file(trim(path),1999,1,28,native_record,st)
+        call require(st==SWAP_WEATHER_FILE_OK,'fresh process current source day28')
+        call read_swap_daily_weather_file(trim(path),1999,1,27,native_previous,st)
+        call require(st==SWAP_WEATHER_FILE_OK,'fresh process previous source day27')
+        call read_weather_irrigation_joint_restart_file(trim(native_path)//'.checkpoint',tc,native_record,native_previous,saved,st)
+        call require(st==0,'decode existing joint native adapter weather tag')
+        call ta%restore_weather_crop_continuation(saved,cs,st);call require(st==FMR_APP_BOOT_OK,'fresh native application restore')
+        open(newunit=unit,file=trim(native_path)//'.oracle',access='stream',form='unformatted',status='old')
+        ! This sidecar contains only independent test-oracle recurrences and
+        ! cumulative diagnostics. All actual model owners come from native codec.
+        read(unit)literal_nodes,literal_actual_depth,literal_potential_depth,depth_events,depth_suppressed,depth_extended, &
+          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events
+        close(unit)
+        prior_wr=native_record
+        call cs%snapshot(ps,ok);call require(ok,'fresh native crop')
+        select type(ps)
+        type is(fmr_wofost_crop_transaction_state_t)
+          call ps%snapshot_owner(wo,ok);call require(ok,'fresh native actual owner')
+        end select
+        first_day=9
+      end if
+      do d=first_day,10''')
+ # Native producer stops before the second weekly opportunity. Consumer runs
+ # only9..10; all actual physical prefix state is obtained from the codec.
+ anchor='      prior_uptake=uptake;prior_wr=wr'
+ replace(anchor,anchor+'''
+      if(trim(continuation_mode)=='native-write'.and.d==8)then
+        call ta%capture_weather_crop_continuation(cs,saved,st);call require(st==FMR_APP_BOOT_OK,'native before week boundary capture')
+        call write_weather_irrigation_joint_restart_file(trim(native_path)//'.checkpoint',saved,st)
+        call require(st==0,'existing joint native adapter before week boundary write')
+        open(newunit=unit,file=trim(native_path)//'.oracle',access='stream',form='unformatted',status='replace')
+        write(unit)literal_nodes,literal_actual_depth,literal_potential_depth,depth_events,depth_suppressed,depth_extended, &
+          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events
+        close(unit)
+        print '(a)','TCS6_NATIVE_PREFIX_PROCESS_EXIT=PASS'
+        stop
+      end if''')
+ anchor="      call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close rooted physical application')"
+ replace(anchor,'''      call ta%capture_weather_crop_continuation(cs,saved,st);call require(st==FMR_APP_BOOT_OK,'native final capture')
+      if(trim(continuation_mode)=='native-resume')then
+        call write_weather_irrigation_joint_restart_file(trim(native_path)//'.resumed',saved,st)
+      else if(j==1)then
+        call write_weather_irrigation_joint_restart_file(trim(native_path)//'.full',saved,st)
+      else
+        call write_weather_irrigation_joint_restart_file(trim(native_path)//'.opaque',saved,st)
+      end if
+      call require(st==0,'existing native codec final full/opaque/fresh endpoint')
+'''+anchor)
+ # In a fresh consumer, execute only the restored trajectory, not a hidden
+ # continuous prefix or second full replay for comparison.
+ replace('    do j=1,2\n      maximum_residual=0;total_reduction=0;stress_cases=0;weekly_events=0', "    do j=1,merge(1,2,index(trim(continuation_mode),'native-')==1)\n      maximum_residual=0;total_reduction=0;stress_cases=0;weekly_events=0")
+ # Native consumer has no independently run morning reference in its address
+ # space; the controller compares complete endpoint bytes across processes.
+ replace('        if(dayend) then\n          call require(allocated(admitted_morning_soil)', "        if(dayend.and.index(trim(continuation_mode),'native-')/=1) then\n          call require(allocated(admitted_morning_soil)")
  target.write_text(s);return target
