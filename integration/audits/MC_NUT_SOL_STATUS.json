@@ -508,6 +508,16 @@
     "production_implemented": false,
     "production_qualified": false,
     "production_admitted": false,
-    "capability_disposition_changes": 0
+    "capability_disposition_changes": 0,
+    "pr": 1259,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1259",
+    "validation": {
+      "scientific_surface_unchanged_from_canonical": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "source_guard": "PASS existing dynamic-pond owner source guard; no src/tests/tools/reference/.github delta",
+      "docs": "source and strict PASS;16.44s strict build",
+      "concurrent_canonical": "924b6c3eef1128f4b2a39a19754ff988cdf90df5 adds only independent1258 status/ledger receipts; all preserved",
+      "no_new_numerical_qualification": "Review probes only, not new production admission"
+    }
   }
 }
